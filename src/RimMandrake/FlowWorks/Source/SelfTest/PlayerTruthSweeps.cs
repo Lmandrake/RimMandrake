@@ -98,7 +98,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             var lw = LevelWorld();
             var cells = new List<int> { 1 * WW + 1, 1 * WW + 2, 1 * WW + 3, 1 * WW + 4 };
             foreach (int c in cells) lw.k.depth[c] = 3;
-            foreach (int c in cells.Take(2)) { lw.k.fill[c] = 3; lw.cellFluid[c] = ArrayWorld.Water; }
+            foreach (int c in cells.Take(2)) { lw.k.SetNotch(c, 3); lw.cellFluid[c] = ArrayWorld.Water; }
             Assert(Perched(lw, cells, out string where) >= 2.9, "probe: a half-full pit reads as level (" + where + ")");
         }
 
@@ -676,7 +676,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     var w = LevelWorld();
                     foreach (int c in cells) w.k.depth[c] = (byte)depth[c];
-                    w.k.fill[pour] = (byte)depth[pour];
+                    w.k.SetNotch(pour, depth[pour]);
                     w.cellFluid[pour] = ArrayWorld.Water;
                     long t0 = Water(w);
                     n++;
@@ -704,7 +704,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var all = Enumerable.Range(0, WW * WH).Where(i => depth[i] > 0).ToList();
                 if (first.Count == 0 || first.Count == all.Count) continue;
                 var w = LevelWorld();
-                foreach (int c in first) { w.k.depth[c] = (byte)depth[c]; w.k.fill[c] = (byte)depth[c]; w.cellFluid[c] = ArrayWorld.Water; }
+                foreach (int c in first) { w.k.depth[c] = (byte)depth[c]; w.k.SetNotch(c, depth[c]); w.cellFluid[c] = ArrayWorld.Water; }
                 n++;
                 if (!Rest(w, first, 100)) { unrested++; continue; }
                 long t0 = Water(w);

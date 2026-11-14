@@ -20,7 +20,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		private static void EnsurePart(ArrayWorld w)
 		{
-			if (w.k.part == null || w.k.part.Length != w.w * w.h) w.k.part = new ushort[w.w * w.h];
 		}
 
 		private static long Room(ArrayWorld w, int i)
@@ -147,7 +146,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 				var w = World(8, 3);
 				var canal = Enumerable.Range(0, 6).Select(x => 1 * 8 + x).ToList();
 				foreach (int c in canal) { w.k.depth[c] = 1; }
-				w.k.part = new ushort[24];
 				foreach (int c in canal) w.k.SetWaterOf(c, 1667);   // live S3: 1,000 L over 6 squares
 				var credits = new List<KeyValuePair<int, long>>();
 				long placed = RM_LevelPour.Spread(canal[0], U, true, w.k.Cardinal, i => w.k.depth[i] != 0, null,
@@ -197,7 +195,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 			{
 				// live S3: the hose drains 9,734 units (973 L) onto canal cell 1, which holds a sheet: it must land, never vanish
 				var (w, canal, body) = Scene(12, 48f, 16, 6, 1);
-				w.k.part = new ushort[w.w * w.h];
 				foreach (int c in canal) w.k.SetWaterOf(c, 1667);
 				long t0 = Total(w);
 				long placed = LevelOps.Pour(w, canal[0], 9734);
@@ -225,14 +222,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 			{
 				var w = World(8, 3);
 				var run = Enumerable.Range(2, 3).Select(x => 1 * 8 + x).ToList();
-				w.k.part = new ushort[24];
 				foreach (int c in run) { w.k.depth[c] = 1; w.k.SetWaterOf(c, U); w.cellFluid[c] = w.activeFluid; }
 				long destroyed = LevelOps.FillIn(w, run[1]);
 				Assert(destroyed == U, "exactly 1,000 L destroyed (the sanctioned, announced overflow): " + destroyed);
 				Assert(w.k.WaterOf(run[0]) == U && w.k.WaterOf(run[2]) == U && w.k.depth[run[1]] == 0, "the ends keep theirs");
 				// a deeper square raised one notch keeps what fits and displaces only the rest
 				var v = World(8, 3);
-				v.k.part = new ushort[24];
 				int a = 9, b = 10;
 				v.k.depth[a] = 2; v.k.SetWaterOf(a, 12000); v.cellFluid[a] = v.activeFluid;
 				v.k.depth[b] = 1;

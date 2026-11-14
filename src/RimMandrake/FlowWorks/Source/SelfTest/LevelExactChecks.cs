@@ -120,7 +120,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				var w = World(8, 8);
 				var basin = new List<int>();
 				for (int z = 1; z <= 6; z++) for (int x = 1; x <= 6; x++) { int c = z * 8 + x; basin.Add(c); w.k.depth[c] = 2; }
-				foreach (int c in new[] { 3 * 8 + 3, 3 * 8 + 4, 4 * 8 + 3, 4 * 8 + 4 }) { w.k.fill[c] = 2; w.cellFluid[c] = ArrayWorld.Water; }
+				foreach (int c in new[] { 3 * 8 + 3, 3 * 8 + 4, 4 * 8 + 3, 4 * 8 + 4 }) { w.k.SetNotch(c, 2); w.cellFluid[c] = ArrayWorld.Water; }
 				Settle(w, basin, 60, out bool cons);
 				var d = basin.Select(c => Math.Round(M(w.k.WaterOf(c)), 3)).Distinct().ToArray();
 				Assert(d.Length == 1 && d[0] == 0.111, "one 0.111 m sheet: " + string.Join(" ", d));
@@ -200,8 +200,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(all.All(c => w.k.WaterOf(c) == w.k.depth[c] * (long)U), "then it fills: one body");
 				// falling: the same, settled full, drained from the far end through a sink: the near basin keeps its 0.5 m
 				var f = World(12, 3);
-				foreach (int c in left.Concat(right)) { f.k.depth[c] = 2; f.k.fill[c] = 2; f.cellFluid[c] = ArrayWorld.Water; }
-				f.k.depth[sill] = 1; f.k.fill[sill] = 1; f.cellFluid[sill] = ArrayWorld.Water;
+				foreach (int c in left.Concat(right)) { f.k.depth[c] = 2; f.k.SetNotch(c, 2); f.cellFluid[c] = ArrayWorld.Water; }
+				f.k.depth[sill] = 1; f.k.SetNotch(sill, 1); f.cellFluid[sill] = ArrayWorld.Water;
 				f.k.depth[12 + 10] = 2; f.k.depth[12 + 11] = 2;
 				f.sink[12 + 11] = true; f.k.edgeSinksEnabled = true;
 				var allF = all.Concat(new[] { 12 + 10, 12 + 11 }).ToList();
@@ -238,8 +238,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					"the load path rounds a float stock to the decilitre exactly as above");
 				// a whole-notch canal grid loads as W = F x U, part 0: unchanged
 				var w = World(4, 1);
-				w.k.depth[1] = 3; w.k.fill[1] = 2; w.cellFluid[1] = ArrayWorld.Water;
-				w.k.part = new ushort[4];
+				w.k.depth[1] = 3; w.k.SetNotch(1, 2); w.cellFluid[1] = ArrayWorld.Water;
 				Assert(w.k.WaterOf(1) == 2L * U, "an old 2-notch square is 20,000 dL");
 			});
 
@@ -258,8 +257,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			{
 				// can the instrument go red? two wet squares of one run at different surfaces read as a gap
 				var w = World(3, 1);
-				w.k.part = new ushort[3];
-				w.k.depth[0] = 2; w.k.depth[1] = 2; w.k.fill[0] = 2; w.k.fill[1] = 1;
+				w.k.depth[0] = 2; w.k.depth[1] = 2; w.k.SetNotch(0, 2); w.k.SetNotch(1, 1);
 				w.cellFluid[0] = w.cellFluid[1] = ArrayWorld.Water;
 				double g = WorstGap(w, out int nb);
 				Assert(nb == 1 && Math.Abs(g - 0.5) < 1e-9, "a 0.5 m step in one body reads 0.5 m: " + g);
@@ -443,7 +441,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 						w.k.depth[c] = (byte)Math.Max(w.k.depth[c], r.Next(1, maxDepth + 1));
 						if (!digs.Contains(c)) digs.Add(c);
 					}
-					foreach (int c in digs) if (r.Next(3) == 0) { w.k.fill[c] = (byte)r.Next(0, w.k.depth[c] + 1); if (w.k.fill[c] > 0) w.cellFluid[c] = ArrayWorld.Water; }
+					foreach (int c in digs) if (r.Next(3) == 0) { w.k.SetNotch(c, r.Next(0, w.k.depth[c] + 1)); if (w.k.Notch(c) > 0) w.cellFluid[c] = ArrayWorld.Water; }
 					bool sinks = r.Next(4) == 0;
 					if (sinks) { w.k.edgeSinksEnabled = true; for (int i = 0; i < W * H; i++) w.sink[i] = i % W == 0; }
 					long t0 = Total(w);

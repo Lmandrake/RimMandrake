@@ -92,14 +92,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 // lowering the cap never shallows: a 7 m square under a 2 m cap stays 7 m (repair clamps to the 20 m ceiling)
                 var depth = new byte[] { 14, 40, 4 };
-                var fill = new byte[] { 14, 3, 0 };
+                var fill = new int[] { 14 * RM_LevelSolve.U, 3 * RM_LevelSolve.U, 0 };
                 var fluid = new byte[] { 1, 1, 0 };
-                var rep = RM_ExcavationSanityMath.Repair(depth, fill, fluid, 1, RM_DigDepthMath.RepairCeiling);
-                Assert(depth[0] == 14 && depth[1] == 40 && fill[0] == 14 && rep.Total == 0, "the load repair keeps 7 m and 20 m squares");
+                var rep = RM_ExcavationSanityMath.Repair(depth, fill, RM_LevelSolve.U, fluid, 1, RM_DigDepthMath.RepairCeiling);
+                Assert(depth[0] == 14 && depth[1] == 40 && fill[0] == 14 * RM_LevelSolve.U && rep.Total == 0, "the load repair keeps 7 m and 20 m squares");
                 Assert(!RM_DigDepthMath.MayDeepen(14, 4) && !RM_DigDepthMath.DigToOwesWork(14, 16, 4), "a lowered cap only stops further digging");
                 // can-fail: the old clamp (the dig cap 4) WOULD have shallowed it
-                var old = new byte[] { 14 }; var of = new byte[] { 14 }; var ok = new byte[] { 1 };
-                RM_ExcavationSanityMath.Repair(old, of, ok, 1, 4);
+                var old = new byte[] { 14 }; var of = new int[] { 14 * RM_LevelSolve.U }; var ok = new byte[] { 1 };
+                RM_ExcavationSanityMath.Repair(old, of, RM_LevelSolve.U, ok, 1, 4);
                 Assert(old[0] == 4, "sanity: a clamp at the cap would shallow (that is the bug the ceiling prevents)");
                 // the wiring: setting, default, slider range, repair clamp, Deepen gate; MaxDepth is gone
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
@@ -110,7 +110,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(set, @"list\.Label\(""Deepest colonist dig: "" \+ RM_Volume\.FormatFloorMetres\(MaxDigDepth\)", "settings text in metres");
                 RiverSwitchFlipChecks.Has(set, @"\.Declare\(""digToDepthEnabled"", ""maxDigDepth"", ""digCostRisesWithDepth"", ""machineDigEnabled""\)", "greys with Dig deeper");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"RM_ExcavationSanityMath\.Repair\(depthGrid, fillGrid, fluidGrid, fluidPalette\.Count, RM_ExcavationDepth\.MaxDigCeiling\);", "repair clamps to the ceiling");
+                RiverSwitchFlipChecks.Has(ex, @"RM_ExcavationSanityMath\.Repair\(depthGrid, waterGrid, RM_LevelSolve\.U, fluidGrid, fluidPalette\.Count, RM_ExcavationDepth\.MaxDigCeiling\);", "repair clamps to the ceiling");
                 RiverSwitchFlipChecks.Has(ex, @"if \(!RM_DigDepthMath\.MayDeepen\(d, cap\)\) \{ return d; \}", "Deepen stops at the digger's cap and writes nothing");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref digTargets, ""RM_digTargets"", LookMode\.Value, LookMode\.Value", "dig-to orders are saved");
                 string src = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));
@@ -259,7 +259,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var w = World(W, H, true);
                 Array.Copy(depth, w.k.depth, depth.Length);
                 var all = ring.Concat(core).ToList();
-                foreach (int c in all) { w.k.fill[c] = depth[c]; w.cellFluid[c] = ArrayWorld.Water; }
+                foreach (int c in all) { w.k.SetNotch(c, depth[c]); w.cellFluid[c] = ArrayWorld.Water; }
                 long before = TotalDl(w);
                 for (int p = 0; p < 30; p++) w.Pulse(all);
                 Assert(before == 152L * U && TotalDl(w) == before && w.k.worstImbalance == 0, "152,000 L kept to the decilitre");
@@ -269,7 +269,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // other 32 stand 1 m deep over the whole square (surface 3 m down): ring 1 m, core 4 m
                 var v = World(W, H, true);
                 Array.Copy(depth, v.k.depth, depth.Length);
-                foreach (int c in core) { v.k.fill[c] = 14; v.cellFluid[c] = ArrayWorld.Water; }
+                foreach (int c in core) { v.k.SetNotch(c, 14); v.cellFluid[c] = ArrayWorld.Water; }
                 for (int p = 0; p < 400; p++) v.Pulse(all);
                 Assert(TotalDl(v) == 56L * U, "56,000 L kept: " + TotalDl(v));
                 Assert(ring.All(c => v.k.WaterOf(c) == 2L * U) && core.All(c => v.k.WaterOf(c) == 8L * U),
@@ -279,7 +279,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // below the ledge the core keeps its own surface (16,000 L: 1 m in each core square, the ring dry)
                 var s = World(W, H, true);
                 Array.Copy(depth, s.k.depth, depth.Length);
-                foreach (int c in core) { s.k.fill[c] = 4; s.cellFluid[c] = ArrayWorld.Water; }
+                foreach (int c in core) { s.k.SetNotch(c, 4); s.cellFluid[c] = ArrayWorld.Water; }
                 for (int p = 0; p < 100; p++) s.Pulse(all);
                 Assert(ring.All(c => s.k.WaterOf(c) == 0) && core.All(c => s.k.WaterOf(c) == 4L * U), "under the ledge the ring stays dry");
             });

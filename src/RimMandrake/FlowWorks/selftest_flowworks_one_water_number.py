@@ -5,7 +5,7 @@
 - no `FillAt(`, `TrySetDriverFill(` or the Mod Setting `levelExactEnabled` anywhere in src/ C# (comments aside);
 - the save holds one water grid (`RM_excavationWaterGrid`), never `RM_excavationFillGrid` / `RM_excavationPartGrid` /
   `RM_levelModel`;
-- the kernel's working split (`fillGrid` / `partGrid`) is named only in RM_MapComponent_Excavation.cs;
+- the old split (`fillGrid` / `partGrid`, the kernel's `byte[] fill` / `ushort[] part`) is gone: one `int[] water` (dL);
 - every yes/no "is it wet?" reader asks `WetAt` (wet = above 5 cm, `WetDl = U / 10`).
 
 Each check is shown able to fail on a planted break. Run: python3 src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py
@@ -58,9 +58,18 @@ def gone_hits(name, text):
 
 
 def split_hits(name, text):
-    if os.path.basename(name) == "RM_MapComponent_Excavation.cs":
-        return []
     return [m.group(0) for m in SPLIT.finditer(code(text))]
+
+
+KERNEL_SPLIT = re.compile(r"\bpublic\s+(byte\[\]\s+fill|ushort\[\]\s+part)\s*;")
+
+
+def kernel_problems(text):
+    t = code(text)
+    probs = [m.group(0) for m in KERNEL_SPLIT.finditer(t)]
+    if not re.search(r"\bpublic\s+int\[\]\s+water\s*;", t):
+        probs.append("no public int[] water")
+    return probs
 
 
 gone, split, saves = [], [], []
@@ -71,10 +80,13 @@ for p in cs_files():
     split += ["%s: %s" % (rel, h) for h in split_hits(p, t)]
     saves += ["%s: %s" % (rel, m.group(1)) for m in OLD_SAVE.finditer(t)]
 check("no FillAt / TrySetDriverFill / levelExactEnabled setting / LevelExact in src C#", gone == [], "; ".join(gone[:12]))
-check("fillGrid/partGrid named only in RM_MapComponent_Excavation.cs", split == [], "; ".join(split[:12]))
+check("fillGrid/partGrid named nowhere in src C#", split == [], "; ".join(split[:12]))
 check("no old save field (RM_excavationFillGrid/PartGrid/RM_levelModel)", saves == [], "; ".join(saves))
 
 ex = open(os.path.join(FW, "RM_MapComponent_Excavation.cs"), encoding="utf-8").read()
+kern = open(os.path.join(FW, "RM_FlowKernel.cs"), encoding="utf-8").read()
+check("the kernel holds one int[] water (no byte[] fill / ushort[] part)", kernel_problems(kern) == [], "; ".join(kernel_problems(kern)))
+check("the adapter holds one int[] waterGrid", re.search(r"private int\[\] waterGrid;", ex) is not None)
 check("the save holds one water grid", '"RM_excavationWaterGrid"' in ex)
 check("wet = above 5 cm (WetDl = U / 10)", re.search(r"public const long WetDl = RM_LevelSolve\.U / 10;", ex) is not None)
 check("WetAt compares water with WetDl", "WaterDl(i) > WetDl" in ex)
@@ -104,7 +116,11 @@ check("break: a reader asking the setting -> red", gone_hits("X.cs", "if (RM_Map
 check("stay green: the kernel's own field", gone_hits("X.cs", "flowKernel.levelExactEnabled = true;") == [])
 check("stay green: FillAt in a comment", gone_hits("X.cs", "// FillAt(c) was whole notches") == [])
 check("stay green: FillAtFaucet (another name)", gone_hits("X.cs", "JobDef RM_FillAtFaucet;") == [])
-check("break: fillGrid read outside the component -> red", split_hits("RM_Other.cs", "byte f = fillGrid[i];") != [])
+check("break: fillGrid read anywhere -> red", split_hits("RM_MapComponent_Excavation.cs", "byte f = fillGrid[i];") != [])
+check("break: the kernel's fill byte back -> red", kernel_problems("public int[] water;\npublic byte[] fill;") != [])
+check("break: the kernel's part back -> red", kernel_problems("public int[] water; public ushort[] part;") != [])
+check("break: no water array -> red", kernel_problems("public byte[] depth;") != [])
+check("stay green: the kernel's water array", kernel_problems("public byte[] depth;\npublic int[] water;") == [])
 check("break: old save field -> red", OLD_SAVE.search('Scribe_Values.Look(ref m, "RM_levelModel", 0);') is not None)
 print("%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

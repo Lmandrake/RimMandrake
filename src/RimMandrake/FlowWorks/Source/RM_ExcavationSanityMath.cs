@@ -3,7 +3,7 @@ using System;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1 (FL-3). Verse-free so the selftest compiles the production file.
-	/// The D/F primitive (RM_ExcavationDepth): 0 &lt;= F &lt;= D &lt;= the 20 m ceiling (RM_DigDepthMath.MaxDigCeiling, never the cap setting), and a fluid key is 0 (none) or
+	/// The depth/water primitive (RM_ExcavationDepth): 0 &lt;= water &lt;= D·U, D &lt;= the 20 m ceiling (RM_DigDepthMath.MaxDigCeiling, never the cap setting), and a fluid key is 0 (none) or
 	/// 1..paletteCount. Anything else in a loaded grid is repaired in place and counted.</summary>
 	public static class RM_ExcavationSanityMath
 	{
@@ -16,9 +16,10 @@ namespace RimMandrake.FlowWorks
 			public int Total => depthClamped + fillClamped + fluidKeyCleared;
 		}
 
-		/// <summary>Clamps depth to 0..maxDepth, fill to 0..depth, and clears fluid keys that point past the
-		/// palette. Null or mismatched-length grids are skipped (EnsureGrids owns reallocation).</summary>
-		public static Report Repair(byte[] depth, byte[] fill, byte[] fluid, int paletteCount, byte maxDepth)
+		/// <summary>Clamps depth to 0..maxDepth, water (decilitres) to 0..depth·<paramref name="unit"/> (water never stands above
+		/// the brim, below zero, or on an undug cell), and clears fluid keys that point past the palette. Null or mismatched-length
+		/// grids are skipped (EnsureGrids owns reallocation).</summary>
+		public static Report Repair(byte[] depth, int[] water, int unit, byte[] fluid, int paletteCount, byte maxDepth)
 		{
 			Report r = default(Report);
 			if (depth == null)
@@ -32,10 +33,14 @@ namespace RimMandrake.FlowWorks
 					depth[i] = maxDepth;
 					r.depthClamped++;
 				}
-				if (fill != null && fill.Length == depth.Length && fill[i] > depth[i])
+				if (water != null && water.Length == depth.Length)
 				{
-					fill[i] = depth[i];
-					r.fillClamped++;
+					long brim = depth[i] * (long)unit;
+					if (water[i] < 0 || water[i] > brim)
+					{
+						water[i] = water[i] < 0 ? 0 : (int)brim;
+						r.fillClamped++;
+					}
 				}
 				if (fluid != null && fluid.Length == depth.Length && fluid[i] > paletteCount)
 				{
@@ -44,31 +49,6 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return r;
-		}
-
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a cell's part-notch (decilitres below one whole notch of
-		/// <paramref name="unit"/>) must be under one notch, zero on an undug cell, and zero on a brim-full one (water never stands
-		/// above the brim). Returns the cells repaired. Null or mismatched grids are skipped.</summary>
-		public static int RepairPart(byte[] depth, byte[] fill, ushort[] part, int unit)
-		{
-			int n = 0;
-			if (depth == null || fill == null || part == null || part.Length != depth.Length || fill.Length != depth.Length)
-			{
-				return 0;
-			}
-			for (int i = 0; i < depth.Length; i++)
-			{
-				if (part[i] == 0)
-				{
-					continue;
-				}
-				if (part[i] >= unit || depth[i] == 0 || fill[i] >= depth[i])
-				{
-					part[i] = 0;
-					n++;
-				}
-			}
-			return n;
 		}
 
 		/// <summary>Which 1-based palette keys are referenced by any cell. Index 0 is unused.</summary>

@@ -1353,21 +1353,26 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("ExcavationSanity_corrupt_grid_is_clamped_and_palette_compacts", () =>
             {
-                byte[] d = { 0, 9, 2, 3 };
-                byte[] f = { 0, 4, 3, 1 };
-                byte[] x = { 0, 1, 200, 3 };
-                var r = RM_ExcavationSanityMath.Repair(d, f, x, 3, 4);
+                int U = RM_LevelSolve.U;
+                byte[] d = { 0, 9, 2, 3, 2, 0, 2 };
+                int[] f = { 0, 4 * U, 3 * U, 1 * U + 7, 2 * U + 5, 7, -3 };
+                byte[] x = { 0, 1, 200, 3, 1, 0, 0 };
+                var r = RM_ExcavationSanityMath.Repair(d, f, U, x, 3, 4);
                 Assert(d[1] == 4 && r.depthClamped == 1, "depth 9 clamps to 4");
-                Assert(f[2] == 2 && r.fillClamped == 1, "fill 3 over depth 2 clamps to 2");
+                Assert(f[1] == 4 * U && f[3] == U + 7, "water at or under the brim is kept to the decilitre");
+                Assert(f[2] == 2 * U, "3 notches of water over depth 2 clamp to the brim");
+                Assert(f[4] == 2 * U, "water a part over the brim clamps to the brim");
+                Assert(f[5] == 0 && f[6] == 0, "an undug cell holds no water; no cell holds less than none");
+                Assert(r.fillClamped == 4, "four water clamps, got " + r.fillClamped);
                 Assert(x[2] == 0 && r.fluidKeyCleared == 1, "fluid key past the palette is cleared");
-                Assert(RM_ExcavationSanityMath.Repair(d, f, x, 3, 4).Total == 0, "a second pass changes nothing");
+                Assert(RM_ExcavationSanityMath.Repair(d, f, U, x, 3, 4).Total == 0, "a second pass changes nothing");
                 bool[] used = RM_ExcavationSanityMath.KeysInUse(x, 3);
                 Assert(used[1] && !used[2] && used[3], "keys 1 and 3 in use, 2 not");
                 byte[] remap;
                 Assert(RM_ExcavationSanityMath.BuildCompaction(used, out remap) == 2, "palette shrinks 3 to 2");
                 RM_ExcavationSanityMath.ApplyRemap(x, remap);
                 Assert(x[1] == 1 && x[3] == 2, "key 3 remaps to 2");
-                Assert(RM_ExcavationSanityMath.Repair(null, null, null, 0, 4).Total == 0, "null grids are skipped");
+                Assert(RM_ExcavationSanityMath.Repair(null, null, RM_LevelSolve.U, null, 0, 4).Total == 0, "null grids are skipped");
             });
             Case("Fire_front_fuse_is_outrunnable_detonation_is_fast_and_source_reach_bounded", () =>
             {

@@ -8,11 +8,11 @@ This is a MODEL of the shipped arithmetic, not the C#. Its constants are read fr
 change there fails here instead of drifting (RM_Volume's yardstick, RM_ExcavationDepth.Superdeep, the water FluidDef's
 volumePerTile). The rules it mirrors, with their homes:
 
-  dug basin       integer D (1..4) and F (0..D) per cell              RM_MapComponent_Excavation depthGrid/fillGrid
+  dug basin       integer D (1..4) and F (0..D) per cell (the C# holds dL) RM_MapComponent_Excavation depthGrid/waterGrid
   pump draw       one level out of a cell (TryTakeLevel) -> +UNITS_PER_LEVEL units Building_LiquidPump.TryDraw
   pump draw body  TryDebit(volumePerTile) of float stock -> +UNITS_PER_LEVEL units Building_LiquidPump.TryDraw
   pump pour       -UNITS_PER_LEVEL units -> +1 level into the EXCAVATED cell with most room Building_LiquidPump.TryPour, PickPour
-  flow pulse      GRAVITY (recipient deeper than donor) or OVERFLOW (donor at brim) RM_FlowKernel.PickDonor
+  flow pulse      GRAVITY (recipient deeper than donor) or OVERFLOW (donor at brim) the model's own whole-notch rule (RM_FlowKernel levels exactly)
   body            capacity = sum(bed levels: shallow 2, deep 4) * volumePerTile; supported = floor(stock / mean perCell)
   tank            capacity = footprint squares * RM_Volume.UnitsPerSquare (x2 tall)  Building_LiquidTank.Capacity
   (POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one tank square = one deep canal square = one deep pond square)

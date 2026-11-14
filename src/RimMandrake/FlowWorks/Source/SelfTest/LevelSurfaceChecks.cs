@@ -108,9 +108,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Shipped(world);
                 var seeds = new List<int> { canal };
                 for (int p = 1; p <= 20; p++) Step(world, seeds, p);
-                Console.WriteLine("    S5F end: pond stock " + body.stock + " canal " + world.k.fill[canal]);
-                Assert(Math.Abs(body.stock + world.k.fill[canal] - 4f) < 1e-4f, "conserved");
-                Assert(Math.Abs(body.stock - world.k.fill[canal]) <= 1f, "level: pond " + body.stock + " canal " + world.k.fill[canal]);
+                Console.WriteLine("    S5F end: pond stock " + body.stock + " canal " + world.k.Notch(canal));
+                Assert(Math.Abs(body.stock + world.k.Notch(canal) - 4f) < 1e-4f, "conserved");
+                Assert(Math.Abs(body.stock - world.k.Notch(canal)) <= 1f, "level: pond " + body.stock + " canal " + world.k.Notch(canal));
             });
 
             Case("Level_S5B_one_square_pond_feeds_canal_no_shuttle", () =>

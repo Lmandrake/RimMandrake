@@ -85,10 +85,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     
                     int[] cells = { 1 * 5 + 1, 1 * 5 + 2, 1 * 5 + 3 };
                     byte[] start = { 3, 2, 1 };
-                    for (int i = 0; i < 3; i++) { w.k.depth[cells[i]] = dep; w.k.fill[cells[i]] = start[i]; }
+                    for (int i = 0; i < 3; i++) { w.k.depth[cells[i]] = dep; w.k.SetNotch(cells[i], start[i]); }
                     w.Sync();
                     for (int p = 0; p < 20; p++) w.Pulse(cells);
-                    string got = w.k.fill[cells[0]] + "," + w.k.fill[cells[1]] + "," + w.k.fill[cells[2]];
+                    string got = w.k.Notch(cells[0]) + "," + w.k.Notch(cells[1]) + "," + w.k.Notch(cells[2]);
                     Assert(got == "2,2,2", $"three depth-{dep} squares holding 3,2,1 level to 2,2,2 (old: past eight bands the solve gave up), got {got}");
                 }
             });

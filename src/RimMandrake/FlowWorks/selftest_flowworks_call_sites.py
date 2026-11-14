@@ -134,7 +134,7 @@ SITES = [
     Site("P7", "RM_MapComponent_Excavation.cs", [r"private void Displace\("],
          [r"bool keyOk = TryPaletteKey\( fluid , out byte claimKey \)", r"\( ! WetDug\( i \) && ! keyOk \)", r"fluidGrid\[ci\] = claimKey"],
          "displacement claims a dry cell's key before filling it", absent=[r"fluidGrid\[ci\] = PaletteKey\("], old='fluidGrid[ci] = PaletteKey(fluid);',
-         order=(r"TryPaletteKey\(", r"fillGrid\[ci\] = \(byte\)")),
+         order=(r"TryPaletteKey\(", r"SetWaterDl\( ci ,")),
     Site("P7", "RM_MapComponent_Excavation.cs", [r"private void LandRain\(int i , int levels\)"],
          [r"if \( ! TryPaletteKey\( fluid , out rainKey \) \) \{ return ; \}", r"fluidGrid\[i\] = rainKey"],
          "rain leaves a dry cell dry when no key is free", absent=[r"fluidGrid\[i\] = PaletteKey\("], old='fluidGrid[i] = PaletteKey(fluid);'),

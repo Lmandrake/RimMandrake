@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>What the flow kernel needs from the world that is not a depth/fill array: terrain, liquid
+	/// <summary>What the flow kernel needs from the world that is not a depth/water array: terrain, liquid
 	/// bodies, sinks and fluid identity. The game implements it on <see cref="RM_MapComponent_Excavation"/>;
 	/// the offline selftest implements it on plain arrays. Fluids are opaque objects compared by reference
 	/// (a FluidDef in game), exactly as <see cref="RM_StockMath.FluidsCompatible{T}"/> compares them.
@@ -145,7 +145,9 @@ namespace RimMandrake.FlowWorks
 		public readonly int width;
 		public readonly int height;
 		public byte[] depth;
-		public byte[] fill;
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: a dug cell's water in decilitres (0..depth·U), the one
+		/// water number. The adapter's grid; the offline worlds allocate their own.</summary>
+		public int[] water;
 		public RM_IFlowWorld world;
 
 		// settings, read once per pulse by the adapter
@@ -180,8 +182,6 @@ namespace RimMandrake.FlowWorks
 
 
 
-		/// <summary>The decilitres below one whole notch per cell (0..U-1); W = fill·U + part. The adapter's scribed grid.</summary>
-		public ushort[] part;
 		/// <summary>Exact mode, this pulse: dL limitless sources paid in, dL sinks took out (the adapter's ledger).</summary>
 		public long exactCreditDl;
 		public long exactDrainDl;
@@ -279,7 +279,7 @@ namespace RimMandrake.FlowWorks
 					{
 						world.Claim(c, rainFluid);
 					}
-					fill[c] += (byte)add;
+					water[c] += add * U;
 					landed += add * (long)U;
 				}
 				if (sealedFrac > 0)
@@ -738,10 +738,6 @@ namespace RimMandrake.FlowWorks
 		/// before. Networks within the cap, and pulses with pocket rain, are untouched.</summary>
 		private void NetworkSinkDrain(long pulseCount)
 		{
-			if (part == null || part.Length != width * height)
-			{
-				part = new ushort[width * height];
-			}
 			long per = flowPerPulse * (long)RM_LevelSolve.U;
 			netBodySeen.Reset(width * height);
 			netDrainCost = 0;
@@ -870,29 +866,21 @@ namespace RimMandrake.FlowWorks
 
 		private void ResolveComponent(long pulseCount, bool networkOrder = false)
 		{
-			if (part == null || part.Length != width * height)
-			{
-				part = new ushort[width * height];   // a world that keeps no part grid (the offline worlds)
-			}
 			ResolveExact((RM_ILevelWorld)world, pulseCount, networkOrder);
 		}
 
 		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the exact-level pulse ─────────────────────────────────────
 
-		/// <summary>The water (dL) a dug cell holds: fill·U + part.</summary>
+		/// <summary>The water (dL) a dug cell holds.</summary>
 		public long WaterOf(int c)
 		{
-			return fill[c] * (long)RM_LevelSolve.U + (part != null ? part[c] : 0);
+			return water[c];
 		}
 
-		/// <summary>Writes a dug cell's water as whole notches plus the part.</summary>
+		/// <summary>Writes a dug cell's water (dL).</summary>
 		public void SetWaterOf(int c, long w)
 		{
-			fill[c] = (byte)(w / RM_LevelSolve.U);
-			if (part != null)
-			{
-				part[c] = (ushort)(w % RM_LevelSolve.U);
-			}
+			water[c] = (int)w;
 		}
 
 		private readonly List<int> exDug = new List<int>();

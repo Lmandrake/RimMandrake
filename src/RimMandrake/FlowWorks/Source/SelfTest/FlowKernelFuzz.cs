@@ -10,6 +10,15 @@ using RimMandrake.FlowWorks;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
+	/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: the kernel holds one water number (dL); scenes that
+	/// are written in whole notches speak them through these. Notch = the whole notches of a cell's water (the part below one
+	/// dropped); SetNotch writes whole notches and keeps the part, as the old fill byte did.</summary>
+	internal static class KernelNotches
+	{
+		public static int Notch(this RM_FlowKernel k, int c) => k.water[c] / RM_LevelSolve.U;
+		public static void SetNotch(this RM_FlowKernel k, int c, int n) => k.water[c] = n * RM_LevelSolve.U + k.water[c] % RM_LevelSolve.U;
+	}
+
 	internal sealed class Fluid
 	{
 		public string name; public int tpt; public float vpt = 1f;
@@ -48,7 +57,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public ArrayWorld(int w, int h)
 		{
 			this.w = w; this.h = h;
-			k = new RM_FlowKernel(w, h) { world = this, depth = new byte[w * h], fill = new byte[w * h] };
+			k = new RM_FlowKernel(w, h) { world = this, depth = new byte[w * h], water = new int[w * h] };
 			natural = new bool[w * h]; terrainFluid = new Fluid[w * h]; cellFluid = new Fluid[w * h];
 			sink = new bool[w * h]; bodyOf = Enumerable.Repeat(-1, w * h).ToArray();
 		}
@@ -139,8 +148,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 			externalIn[f] = externalIn.GetValueOrDefault(f) + dl / (float)RM_LevelSolve.U;
 		}
 
-		/// <summary>A cell's water in levels (fill + part / U): the exact kernel's view, the fill alone otherwise.</summary>
-		public float WaterLevels(int i) => k.part != null ? k.WaterOf(i) / (float)RM_LevelSolve.U : k.fill[i];
+		/// <summary>A cell's water in levels (dL / U).</summary>
+		public float WaterLevels(int i) => k.WaterOf(i) / (float)RM_LevelSolve.U;
 
 		/// <summary>RM_MapComponent_Excavation.SyncFluidIdentity's grid half.</summary>
 		public void Sync()
@@ -148,7 +157,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			for (int i = 0; i < w * h; i++)
 			{
 				if (k.depth[i] == 0) continue;
-				if (k.fill[i] == 0 && (k.part == null || k.part[i] == 0)) cellFluid[i] = null;
+				if (k.water[i] == 0) cellFluid[i] = null;
 				else if (cellFluid[i] == null) cellFluid[i] = activeFluid;
 			}
 		}
@@ -172,7 +181,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				for (int x = 0; x < w; x++)
 				{
 					int i = z * w + x;
-					if (k.depth[i] > 0) sb.Append(k.fill[i]).Append('/').Append(k.depth[i]).Append(cellFluid[i]?.name[0] ?? '.').Append(' ');
+					if (k.depth[i] > 0) sb.Append(k.Notch(i)).Append('/').Append(k.depth[i]).Append(cellFluid[i]?.name[0] ?? '.').Append(' ');
 					else if (natural[i]) sb.Append(" ~").Append(terrainFluid[i].name[0]).Append("  ");
 					else sb.Append(" ..  ");
 				}
@@ -260,9 +269,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				if (w.k.worstImbalance > 0) return $"pulse {p}: kernel ledger {string.Join("; ", w.k.imbalanceReports)}";
 				for (int i = 0; i < n; i++)
 				{
-					if (w.k.fill[i] > w.k.depth[i] || w.k.depth[i] > 4) return $"pulse {p}: 0<=F<=D<=4 broken at {i}";
-					if (w.k.part != null && (w.k.part[i] >= RM_LevelSolve.U || (w.k.part[i] > 0 && w.k.fill[i] >= w.k.depth[i])))
-						return $"pulse {p}: exact water above the brim at {i} (fill {w.k.fill[i]}, part {w.k.part[i]}, D {w.k.depth[i]})";
+					if (w.k.Notch(i) > w.k.depth[i] || w.k.depth[i] > 4) return $"pulse {p}: 0<=F<=D<=4 broken at {i}";
+					if (w.k.water[i] < 0 || w.k.water[i] > w.k.depth[i] * RM_LevelSolve.U)
+						return $"pulse {p}: exact water above the brim at {i} ({w.k.water[i]} dL, D {w.k.depth[i]})";
 					// (A cell MAY change fluid across a pulse: it can give or drain its last level and then be claimed
 					// by another fluid in the same pulse - measured, seed 4764. "Never mix" is enforced below as
 					// per-fluid conservation, which a transmutation cannot pass.)
@@ -296,8 +305,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return null;
 		}
 
-		private static string Snapshot(ArrayWorld w) => Convert.ToBase64String(w.k.fill)
-			+ (w.k.part != null ? Convert.ToBase64String(w.k.part.SelectMany(BitConverter.GetBytes).ToArray()) : "");
+		private static string Snapshot(ArrayWorld w) => Convert.ToBase64String(w.k.water.SelectMany(BitConverter.GetBytes).ToArray());
 
 		// A still-filling grid legitimately changes. Settled is expected when no source can still give.
 		private static bool SettledExpected(ArrayWorld w) => w.bodies.All(b => !b.limitless && b.stock < 1f);
@@ -348,7 +356,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					for (int d = 0; d < 4; d++) { int m = w.k.Cardinal(c, d); if (m >= 0 && w.k.depth[m] > 0 && seen.Add(m)) q.Enqueue(m); }
 				}
 				foreach (int c in seen)
-					if (c != src && w.k.fill[c] < w.k.depth[c]) { fails.Add($"seed {baseSeed + k}: cell {c} connected to a limitless source ends {w.k.fill[c]}/{w.k.depth[c]}\n{w.Grid()}"); break; }
+					if (c != src && w.k.Notch(c) < w.k.depth[c]) { fails.Add($"seed {baseSeed + k}: cell {c} connected to a limitless source ends {w.k.Notch(c)}/{w.k.depth[c]}\n{w.Grid()}"); break; }
 			}
 			return fails;
 		}
@@ -418,7 +426,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			foreach (int c in digs) w.k.depth[c] = 1;
 			worst = 0f;
 			for (int p = 0; p < pulses; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			at = string.Join("", digs.Select(c => w.k.fill[c]));
+			at = string.Join("", digs.Select(c => w.k.Notch(c)));
 			ok = true;
 			return at;
 		}
@@ -433,7 +441,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			for (int x = 0; x < depths.Length; x++)
 			{
 				w.k.depth[x] = (byte)depths[x];
-				w.k.fill[x] = (byte)fills[x];
+				w.k.SetNotch(x, fills[x]);
 				if (fills[x] > 0) w.cellFluid[x] = ArrayWorld.Water;
 				w.sink[x] = x < sinkBand;
 			}
@@ -448,14 +456,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 		private static string SurfaceRun(ArrayWorld w, int pulses, out int settledAt, out float worst, out float drained)
 		{
 			var digs = Enumerable.Range(0, w.w * w.h).Where(i => w.k.depth[i] > 0).ToList();
-			string prev = string.Join(",", digs.Select(c => w.k.fill[c]));
+			string prev = string.Join(",", digs.Select(c => w.k.Notch(c)));
 			settledAt = 0; worst = 0f; drained = 0f;
 			for (int p = 1; p <= pulses; p++)
 			{
 				w.Pulse(digs);
 				worst = Math.Max(worst, w.k.worstImbalance);
 				drained += w.k.sinkDrained;
-				string now = string.Join(",", digs.Select(c => w.k.fill[c]));
+				string now = string.Join(",", digs.Select(c => w.k.Notch(c)));
 				if (now != prev) settledAt = p;
 				prev = now;
 			}
@@ -473,7 +481,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				{
 					int n = w.k.Cardinal(i, d);
 					if (n < 0 || w.k.depth[n] == 0) continue;
-					worst = Math.Max(worst, Math.Abs((w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n])));
+					worst = Math.Max(worst, Math.Abs((w.k.Notch(i) - w.k.depth[i]) - (w.k.Notch(n) - w.k.depth[n])));
 				}
 			}
 			return worst;
@@ -489,9 +497,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.k.viscosityEnabled = true; 
 			w.Pulse(digs);
 			float worst = w.k.worstImbalance;   // pulse 1's ledger counts too
-			string first = string.Join("", digs.Select(c => w.k.fill[c]));
+			string first = string.Join("", digs.Select(c => w.k.Notch(c)));
 			for (int p = 1; p < 80; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			string end = string.Join("", digs.Select(c => w.k.fill[c]));
+			string end = string.Join("", digs.Select(c => w.k.Notch(c)));
 			bool ok = first == "1000000000" && end == "2222222222" && worst <= 0.001f;
 			return (ok ? "OK: " : "BROKEN: ") + $"after 1 pulse {first}, after 80 {end}, worst imbalance {worst:F3}";
 		}
@@ -520,8 +528,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 					int c = rng.Next(64);
 					if (w.natural[c]) continue;
 					w.k.depth[c] = (byte)rng.Next(1, 5);
-					w.k.fill[c] = (byte)rng.Next(0, w.k.depth[c] + 1);
-					w.cellFluid[c] = w.k.fill[c] > 0 ? ArrayWorld.Water : null;
+					w.k.SetNotch(c, rng.Next(0, w.k.depth[c] + 1));
+					w.cellFluid[c] = w.k.Notch(c) > 0 ? ArrayWorld.Water : null;
 				}
 				for (int i = 0; i < 64; i++) { int x = i % 8, z = i / 8; w.sink[i] = band > 0 && (x < band || z < band || x >= 8 - band || z >= 8 - band); }
 				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; 
@@ -535,7 +543,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					w.Pulse(digs);
 					worst = Math.Max(worst, w.k.worstImbalance);
 					drained += w.k.sinkDrained;
-					string now = string.Join(",", digs.Select(c => w.k.part != null ? w.k.WaterOf(c) : w.k.fill[c]));
+					string now = string.Join(",", digs.Select(c => w.k.WaterOf(c)));
 					if (now != prev) lastChange = p;
 					prev = now;
 				}
@@ -553,10 +561,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 						{
 							int n = w.k.Cardinal(i, d);
 							if (n < 0 || w.k.depth[n] == 0) continue;
-							// exact: one surface to the decilitre (a step of 3 dL or more is not level); whole notches: within one notch
-							bool steepHere = w.k.part != null
-								? (w.k.WaterOf(i) - w.k.depth[i] * (long)RM_LevelSolve.U) - (w.k.WaterOf(n) - w.k.depth[n] * (long)RM_LevelSolve.U) >= 3
-								: (w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n]) >= 2;
+							// one surface to the decilitre (a step of 3 dL or more is not level)
+							bool steepHere = (w.k.WaterOf(i) - w.k.depth[i] * (long)RM_LevelSolve.U) - (w.k.WaterOf(n) - w.k.depth[n] * (long)RM_LevelSolve.U) >= 3;
 							if (steepHere) { level = false; break; }
 						}
 					}
@@ -581,9 +587,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.k.depth[1] = 2; w.k.depth[4] = 2;
 			for (int p = 0; p < 40; p++) w.Pulse(new[] { 1, 4 });
 			var f1 = w.cellFluid[1]; var f4 = w.cellFluid[4];
-			bool mixed = f1 != null && f4 != null && f1 != f4 && w.k.fill[1] > 0 && w.k.fill[4] > 0;
+			bool mixed = f1 != null && f4 != null && f1 != f4 && w.k.Notch(1) > 0 && w.k.Notch(4) > 0;
 			return !mixed && f1 != null
-				? $"OK: channel holds only {f1.name} ({w.k.fill[1]}/{w.k.depth[1]}, {w.k.fill[4]}/{w.k.depth[4]})"
+				? $"OK: channel holds only {f1.name} ({w.k.Notch(1)}/{w.k.depth[1]}, {w.k.Notch(4)}/{w.k.depth[4]})"
 				: $"BROKEN: mixed={mixed} fluids {f1?.name}/{f4?.name}";
 		}
 
@@ -600,17 +606,17 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.k.sealedCell = idx => shut && idx == 4;
 			float worst = 0f;
 			for (int p = 0; p < 40; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			string held = string.Join(",", digs.Select(c => w.k.fill[c]));
-			bool holds = digs.All(c => w.k.fill[c] == (c < 4 ? 2 : 0));
+			string held = string.Join(",", digs.Select(c => w.k.Notch(c)));
+			bool holds = digs.All(c => w.k.Notch(c) == (c < 4 ? 2 : 0));
 			shut = false;   // the sluice is opened (a pawn passing, or held open)
 			for (int p = 0; p < 40; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			bool opened = digs.All(c => w.k.fill[c] == 2);
+			bool opened = digs.All(c => w.k.Notch(c) == 2);
 			var g = new ArrayWorld(8, 1);
 			g.AddBody(true, 0f, new[] { 0 });
 			foreach (int c in digs) g.k.depth[c] = 2;
 			g.k.sealedCell = idx => false;   // a grate: never sealed
 			for (int p = 0; p < 40; p++) { g.Pulse(digs); worst = Math.Max(worst, g.k.worstImbalance); }
-			bool grate = digs.All(c => g.k.fill[c] == 2);
+			bool grate = digs.All(c => g.k.Notch(c) == 2);
 			return holds && opened && grate && worst < 0.001f
 				? $"OK: shut sluice holds F={held}; opened and grate both fill x=1..7"
 				: $"BROKEN: shut F={held} holds={holds} opened={opened} grate={grate} worstImbalance={worst}";
@@ -635,7 +641,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				w.k.viscosityEnabled = true;
 				w.k.sealedCell = idx => idx == X(4);
 				for (int p = 0; p < 60; p++) { w.Pulse(digs); Pulses++; }
-				return string.Join(",", Enumerable.Range(1, 3).Select(x => w.k.fill[X(x)]));
+				return string.Join(",", Enumerable.Range(1, 3).Select(x => w.k.Notch(X(x))));
 			}
 			string east = Run(false), west = Run(true);
 			return east == "1,1,1" && west == "1,1,1"
@@ -651,10 +657,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 				var w = new ArrayWorld(3, 1);
 				w.sink[0] = true;
 				w.k.edgeSinksEnabled = true;
-				w.k.depth[0] = 2; w.k.fill[0] = 2; w.cellFluid[0] = ArrayWorld.Water;
+				w.k.depth[0] = 2; w.k.SetNotch(0, 2); w.cellFluid[0] = ArrayWorld.Water;
 				w.k.sealedCell = idx => sealedGate && idx == 0;
 				for (int p = 0; p < 10; p++) w.Pulse(new[] { 0 });
-				return w.k.fill[0];
+				return w.k.Notch(0);
 			};
 			int shut = run(true), open = run(false);
 			return shut == 2 && open == 0

@@ -49,17 +49,14 @@ namespace RimMandrake.FlowWorks
 		/// is a pit, up to RM_ExcavationDepth.MaxDigCeiling.</summary>
 		private byte[] depthGrid;
 
-		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: the KERNEL'S working split of a dug cell's water,
-		/// W = fillGrid·U + partGrid (decilitres). Not a number anyone reads: every reader asks WaterDl/WaterDlAt (exact dL or
-		/// metres), every writer SetWaterDl, and the save holds the one dL grid (RM_excavationWaterGrid). Kept only because
-		/// RM_FlowKernel still works on these two arrays.</summary>
-		private byte[] fillGrid;
+		/// <summary>RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES: a dug cell's water in decilitres (0..depth·U), the one
+		/// water number. Readers ask WaterDl/WaterDlAt (exact dL or metres), writers SetWaterDl; the kernel works on this array
+		/// and the save holds it (RM_excavationWaterGrid).</summary>
+		private int[] waterGrid;
 		/// <summary>RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: cell index -> the level note (RM_UnderLiquid.LevelNote of the true level) the things on it were last printed at
 		/// (RM_SubmergeDraw). Drawing state, not saved: a load re-prints every section.</summary>
 		internal readonly Dictionary<int, int> submergeDrawn = new Dictionary<int, int>();
 
-		/// <summary>The part of the kernel's working split below one whole notch (0..U-1); see <see cref="fillGrid"/>.</summary>
-		private ushort[] partGrid;
 
 
 		/// <summary>Which liquid this map's excavations carry. One per map this
@@ -470,7 +467,7 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					long dl = fillGrid[i] * (long)RM_LevelSolve.U + partGrid[i];
+					long dl = waterGrid[i];
 					if (dl <= 0)
 					{
 						continue;
@@ -670,23 +667,15 @@ namespace RimMandrake.FlowWorks
 				WarnWrongSizedGrid("depth", depthGrid, cells);
 				depthGrid = new byte[cells];
 			}
-			if (fillGrid == null || fillGrid.Length != cells)
+			if (waterGrid == null || waterGrid.Length != cells)
 			{
-				WarnWrongSizedGrid("fill", fillGrid, cells);
-				fillGrid = new byte[cells];
+				WarnWrongSizedGrid("water", waterGrid, cells);
+				waterGrid = new int[cells];
 			}
 			if (fluidGrid == null || fluidGrid.Length != cells)
 			{
 				WarnWrongSizedGrid("fluid", fluidGrid, cells);
 				fluidGrid = new byte[cells];
-			}
-			if (partGrid == null || partGrid.Length != cells)
-			{
-				if (partGrid != null)
-				{
-					WarnWrongSizedGrid("water part", new byte[partGrid.Length], cells);
-				}
-				partGrid = new ushort[cells];
 			}
 			if (fluidPalette == null)
 			{
@@ -846,7 +835,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
 		/// grid is the normal first-load case and stays silent.</summary>
-		private void WarnWrongSizedGrid(string which, byte[] old, int cells)
+		private void WarnWrongSizedGrid(string which, System.Array old, int cells)
 		{
 			if (old != null && RimMandrakeFlowWorksSettings.excavationLoadRepairEnabled)
 			{
@@ -856,7 +845,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1 (FL-3). Runs once per map load after the lost-fluid report:
-		/// clamps D to 0..MaxDigCeiling and F to 0..D, clears fluid keys past the palette, then drops palette entries no cell
+		/// clamps D to 0..MaxDigCeiling and the water to 0..D·U, clears fluid keys past the palette, then drops palette entries no cell
 		/// uses (null entries included) and remaps the grid, so a long campaign never exhausts the 254 keys.
 		/// One log line when anything changed.</summary>
 		internal void RepairLoadedGrids()
@@ -867,10 +856,9 @@ namespace RimMandrake.FlowWorks
 			}
 			// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: clamp to the 20 m ceiling, never to the cap setting (lowering the cap never
 			// shallows a dug cell).
-			RM_ExcavationSanityMath.Report r = RM_ExcavationSanityMath.Repair(depthGrid, fillGrid, fluidGrid,
+			// Water never stands above the brim, below zero, or on an undug cell.
+			RM_ExcavationSanityMath.Report r = RM_ExcavationSanityMath.Repair(depthGrid, waterGrid, RM_LevelSolve.U, fluidGrid,
 				fluidPalette.Count, RM_ExcavationDepth.MaxDigCeiling);
-			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a part never stands above the brim or on an undug cell.
-			r.fillClamped += RM_ExcavationSanityMath.RepairPart(depthGrid, fillGrid, partGrid, RM_LevelSolve.U);
 			int dropped = 0;
 			bool[] used = RM_ExcavationSanityMath.KeysInUse(fluidGrid, fluidPalette.Count);
 			byte[] remap;
@@ -1171,7 +1159,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The water grid as saved: decilitres per cell, little-endian int32 (null before the grids exist).</summary>
 		private byte[] PackWater()
 		{
-			if (depthGrid == null || fillGrid == null || partGrid == null)
+			if (depthGrid == null || waterGrid == null)
 			{
 				return null;
 			}
@@ -1188,18 +1176,14 @@ namespace RimMandrake.FlowWorks
 			return b;
 		}
 
-		/// <summary>Loads the saved water grid into the kernel's working arrays (EnsureGrids sizes them; a wrong-sized or absent
-		/// grid loads dry).</summary>
+		/// <summary>Loads the saved water grid (EnsureGrids sizes it; a wrong-sized or absent grid loads dry).</summary>
 		private void UnpackWater(byte[] b)
 		{
 			int n = b == null ? 0 : b.Length / 4;
-			fillGrid = new byte[n];
-			partGrid = new ushort[n];
+			waterGrid = new int[n];
 			for (int i = 0; i < n; i++)
 			{
-				long w = b[4 * i] | (b[4 * i + 1] << 8) | (b[4 * i + 2] << 16) | ((long)b[4 * i + 3] << 24);
-				fillGrid[i] = (byte)(w / RM_LevelSolve.U);
-				partGrid[i] = (ushort)(w % RM_LevelSolve.U);
+				waterGrid[i] = b[4 * i] | (b[4 * i + 1] << 8) | (b[4 * i + 2] << 16) | (b[4 * i + 3] << 24);
 			}
 		}
 
@@ -1459,23 +1443,22 @@ namespace RimMandrake.FlowWorks
 
 		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: water in decilitres ──────────────────────────────
 
-		/// <summary>Decilitres of liquid in a dug cell: F·U + part (0 for an undug cell).</summary>
+		/// <summary>Decilitres of liquid in a dug cell (0 for an undug cell).</summary>
 		private long WaterDl(int i)
 		{
-			return depthGrid[i] == 0 ? 0 : fillGrid[i] * (long)RM_LevelSolve.U + partGrid[i];
+			return depthGrid[i] == 0 ? 0 : waterGrid[i];
 		}
 
 		/// <summary>Writes a dug cell's water, decilitres (the one write every setter goes through).</summary>
 		private void SetWaterDl(int i, long dl)
 		{
-			fillGrid[i] = (byte)(dl / RM_LevelSolve.U);
-			partGrid[i] = (ushort)(dl % RM_LevelSolve.U);
+			waterGrid[i] = dl > int.MaxValue ? int.MaxValue : (int)dl;
 		}
 
-		/// <summary>True when a dug cell holds any liquid at all (a part-notch counts: 4.5 cm of water is water).</summary>
+		/// <summary>True when a dug cell holds any liquid at all (4.5 cm of water is water).</summary>
 		private bool WetDug(int i)
 		{
-			return depthGrid[i] != 0 && (fillGrid[i] > 0 || partGrid[i] > 0);
+			return depthGrid[i] != 0 && waterGrid[i] > 0;
 		}
 
 		/// <summary>LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: the excavation grids as the levelling run walk reads them, by cell index
@@ -1483,12 +1466,11 @@ namespace RimMandrake.FlowWorks
 		/// through a 256-key table built here once per cycle, so it answers exactly what the old IntVec3 walk compared.</summary>
 		internal struct LevelRunGrid : RM_IRunGrid
 		{
-			internal byte[] depth, fill, fluidKey;
-			internal ushort[] part;
-			internal int[] fluidId;
+			internal byte[] depth, fluidKey;
+			internal int[] water, fluidId;
 			internal EdificeGrid edifices;
 			public bool Dug(int i) => depth[i] != 0;
-			public long Water(int i) => depth[i] == 0 ? 0 : fill[i] * (long)RM_LevelSolve.U + part[i];
+			public long Water(int i) => depth[i] == 0 ? 0 : water[i];
 			public int Fluid(int i) => fluidKey == null ? fluidId[0] : fluidId[fluidKey[i]];
 			public bool Seals(int i) => RM_FlowDoorRules.SealsLiquid(edifices[i]);
 			public int Depth(int i) => depth[i];
@@ -1505,7 +1487,7 @@ namespace RimMandrake.FlowWorks
 				FluidDef f = k == 0 || fluidPalette == null || k > fluidPalette.Count ? null : fluidPalette[k - 1];
 				levelRunFluidIds[k] = f == null ? activeId : f.index;
 			}
-			return new LevelRunGrid { depth = depthGrid, fill = fillGrid, part = partGrid, fluidKey = fluidGrid, fluidId = levelRunFluidIds, edifices = map.edificeGrid };
+			return new LevelRunGrid { depth = depthGrid, water = waterGrid, fluidKey = fluidGrid, fluidId = levelRunFluidIds, edifices = map.edificeGrid };
 		}
 
 		/// <summary>Whole notches of room left below the brim, in decilitres' truth: a part-filled top notch has no room for a
@@ -1788,7 +1770,6 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_ExcavationDepth.Surface;
 			}
-			byte f = fillGrid[i] > d ? d : fillGrid[i];
 			byte newD = (byte)(d - 1);
 			// POND_BED: a cut into a dry bed started at the bed's depth (Deepen), so filling it back in ends at the bed, not at
 			// ground level: one fill past the bed's floor returns the square to its pond, never shallower than it was then
@@ -1810,8 +1791,7 @@ namespace RimMandrake.FlowWorks
 			long kept = RM_LevelPour.KeptOnFillIn(water, newD, newD == RM_ExcavationDepth.Surface || backToBed);
 			long displacedDl = water - kept;
 			depthGrid[i] = newD;
-			fillGrid[i] = (byte)(kept / RM_LevelSolve.U);
-			partGrid[i] = (ushort)(kept % RM_LevelSolve.U);
+			SetWaterDl(i, kept);
 			BumpClimbGeneration(GenFill);
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
@@ -1831,8 +1811,7 @@ namespace RimMandrake.FlowWorks
 			if (newD == RM_ExcavationDepth.Surface)
 			{
 				excavatedCells.Remove(c);
-				fillGrid[i] = 0;
-				partGrid[i] = 0;
+				waterGrid[i] = 0;
 				// The water picture must come off BEFORE the base terrain is
 				// restored, or a brimming cell hands back its floor and keeps
 				// standing water on top of it (P14: the picture is on the base layer; a pre-P14 temp fill too).
@@ -1945,9 +1924,7 @@ namespace RimMandrake.FlowWorks
 				{
 					fluidGrid[ci] = claimKey;
 				}
-				long w = WaterDl(ci) + cr.Value;
-				fillGrid[ci] = (byte)(w / RM_LevelSolve.U);
-				partGrid[ci] = (ushort)(w % RM_LevelSolve.U);
+				SetWaterDl(ci, WaterDl(ci) + cr.Value);
 			}
 
 			// ── phase 2: the natural body, nearest source cell first ───────
@@ -2533,12 +2510,12 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			if (fillGrid[i] == 0)
+			if (waterGrid[i] < RM_LevelSolve.U)
 			{
 				return false;
 			}
 			fluid = FluidAt(c) ?? ActiveFluid;
-			fillGrid[i] -= 1;
+			waterGrid[i] -= RM_LevelSolve.U;
 			if (fluid != null)
 			{
 				ApplyFillTerrain(c, fluid);
@@ -2577,8 +2554,7 @@ namespace RimMandrake.FlowWorks
 			long take = maxDl < w ? maxDl : w;
 			long left = w - take;
 			fluid = FluidAt(c) ?? ActiveFluid;
-			fillGrid[i] = (byte)(left / RM_LevelSolve.U);
-			partGrid[i] = (ushort)(left % RM_LevelSolve.U);
+			SetWaterDl(i, left);
 			if (fluid != null)
 			{
 				ApplyFillTerrain(c, fluid);
@@ -2697,15 +2673,13 @@ namespace RimMandrake.FlowWorks
 			foreach (KeyValuePair<int, long> cr in credits)
 			{
 				int i = cr.Key;
-				int before = fillGrid[i];
+				int before = waterGrid[i] / RM_LevelSolve.U;
 				if (!WetDug(i))
 				{
 					fluidGrid[i] = key;
 				}
-				long w = WaterDl(i) + cr.Value;
-				fillGrid[i] = (byte)(w / RM_LevelSolve.U);
-				partGrid[i] = (ushort)(w % RM_LevelSolve.U);
-				driverInputs.NoteWrite(i, before, fillGrid[i], now);
+				SetWaterDl(i, WaterDl(i) + cr.Value);
+				driverInputs.NoteWrite(i, before, waterGrid[i] / RM_LevelSolve.U, now);
 				ApplyFillTerrain(map.cellIndices.IndexToCell(i), fluid);
 			}
 			return true;
@@ -2956,9 +2930,8 @@ namespace RimMandrake.FlowWorks
 				flowKernel.sealedCell = idx => RM_FlowDoorRules.SealsLiquid(map.edificeGrid[idx]);
 			}
 			flowKernel.depth = depthGrid;
-			flowKernel.fill = fillGrid;
 			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level): decilitres, one surface per body.
-			flowKernel.part = partGrid;
+			flowKernel.water = waterGrid;
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled || MapControls.RM_MapControls.AnyDrainEdge(map);
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
@@ -3036,8 +3009,7 @@ namespace RimMandrake.FlowWorks
 		{
 			// The grids the kernel writes are this component's; EnsureGrids may replace one between ticks.
 			flowKernel.depth = depthGrid;
-			flowKernel.fill = fillGrid;
-			flowKernel.part = partGrid;
+			flowKernel.water = waterGrid;
 			if (!flowKernel.StepPulse(cellBudget))
 			{
 				return;
@@ -3527,7 +3499,7 @@ namespace RimMandrake.FlowWorks
 			{
 				Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
 			}
-			fillGrid[i] += (byte)add;
+			waterGrid[i] += add * RM_LevelSolve.U;
 			ApplyFillTerrain(c, fluid, true);
 		}
 

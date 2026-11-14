@@ -252,9 +252,9 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			for (int p = 1; p <= pulses; p++)
 			{
 				w.Pulse(digs);
-				string at = string.Join("", digs.Select(c => w.k.fill[c]));
+				string at = string.Join("", digs.Select(c => w.k.Notch(c)));
 				bool full = at.All(ch => ch == '1');
-				if (!full && w.k.fill[digs[0]] == 0) mouthDry++;
+				if (!full && w.k.Notch(digs[0]) == 0) mouthDry++;
 				Console.WriteLine($"pulse {p,3}: {at}  stock {(limitless ? "inf" : body.stock.ToString("F0"))}");
 			}
 			Console.WriteLine($"pulses with the mouth dry while the channel is not yet full: {mouthDry}");

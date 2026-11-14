@@ -89,13 +89,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 w.canClaim = f => f != ArrayWorld.Tar;   // no key free for tar
                 float stock0 = body.stock;
                 for (int p = 0; p < 20; p++) w.Pulse(d);
-                Assert(w.k.fill[1] == 0 && w.k.fill[2] == 0 && w.cellFluid[1] == null, "no key: the dry cells stay dry and unrecorded");
+                Assert(w.k.Notch(1) == 0 && w.k.Notch(2) == 0 && w.cellFluid[1] == null, "no key: the dry cells stay dry and unrecorded");
                 Assert(body.stock == stock0, "no key: the tar body is not debited (" + stock0 + " -> " + body.stock + ")");
                 // can-fail: the same scene with keys available fills the channel and debits the body
                 var (w2, d2, body2) = Scene();
                 for (int p = 0; p < 20; p++) w2.Pulse(d2);
-                Assert(w2.k.fill[1] > 0 && w2.cellFluid[1] == ArrayWorld.Tar && body2.stock < stock0,
-                       "can-fail: with a key the scene does move tar (fill " + w2.k.fill[1] + ", stock " + body2.stock + ")");
+                Assert(w2.k.Notch(1) > 0 && w2.cellFluid[1] == ArrayWorld.Tar && body2.stock < stock0,
+                       "can-fail: with a key the scene does move tar (fill " + w2.k.Notch(1) + ", stock " + body2.stock + ")");
             });
         }
     }

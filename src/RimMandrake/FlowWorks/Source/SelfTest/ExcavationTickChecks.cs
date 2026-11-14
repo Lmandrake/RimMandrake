@@ -266,7 +266,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             int w = r.Next(10, 31), h = r.Next(10, 31), n = w * h;
             var aw = new ArrayWorld(w, h);
             var k = aw.k;
-            k.part = exact ? new ushort[n] : null;
             k.viscosityEnabled = r.Next(2) == 0;
             k.flowPerPulse = r.Next(1, 3);
             k.seamRotationEnabled = r.Next(4) != 0;
@@ -318,9 +317,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 seeds.Add(i);
                 if (r.Next(2) == 0)
                 {
-                    k.fill[i] = (byte)r.Next(0, k.depth[i] + 1);
-                    if (exact && k.fill[i] < k.depth[i] && r.Next(2) == 0) k.part[i] = (ushort)r.Next(1, RM_LevelSolve.U);
-                    if (k.fill[i] > 0 || (exact && k.part[i] > 0)) aw.cellFluid[i] = fluids[r.Next(fluids.Length)];
+                    k.SetNotch(i, r.Next(0, k.depth[i] + 1));
+                    if (exact && k.Notch(i) < k.depth[i] && r.Next(2) == 0) k.water[i] += r.Next(1, RM_LevelSolve.U);
+                    if (k.water[i] > 0) aw.cellFluid[i] = fluids[r.Next(fluids.Length)];
                 }
             }
             // seeds in a shuffled order: the kernel sorts them (owner ruling 2026-10-06)
@@ -343,7 +342,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             var k = aw.k;
             var sb = new System.Text.StringBuilder();
             for (int i = 0; i < aw.w * aw.h; i++)
-                sb.Append(k.fill[i]).Append(',').Append(k.part != null ? k.part[i] : 0).Append(',').Append(aw.cellFluid[i]?.name ?? "-").Append(';');
+                sb.Append(k.Notch(i)).Append(',').Append(k.water[i] % RM_LevelSolve.U).Append(',').Append(aw.cellFluid[i]?.name ?? "-").Append(';');
             foreach (var b in aw.bodies) sb.Append('B').Append(b.Dl()).Append('/').Append(b.stock.ToString("R"));
             foreach (var kv in aw.externalIn) sb.Append('E').Append(kv.Key.name).Append('=').Append(kv.Value.ToString("R"));
             sb.Append("|sink=").Append(k.sinkDrained.ToString("R")).Append("|cr=").Append(k.exactCreditDl).Append("|dr=").Append(k.exactDrainDl)
@@ -577,15 +576,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                             int i = r.Next(n);
                             if (aw.natural[i]) return;
                             if (aw.k.depth[i] == 0) aw.k.depth[i] = (byte)r.Next(1, 5);
-                            else { aw.k.depth[i] = 0; aw.k.fill[i] = 0; if (aw.k.part != null) aw.k.part[i] = 0; aw.cellFluid[i] = null; }
+                            else { aw.k.depth[i] = 0; aw.k.water[i] = 0; aw.cellFluid[i] = null; }
                             changed++;
                         });
                         Assert(cw.twice == 0, $"seed {seed} pulse {p}: a square was resolved twice in one pulse");
                         Assert(aw.k.worstImbalance == 0, $"seed {seed} pulse {p}: ledger {string.Join("; ", aw.k.imbalanceReports)}");
                         for (int i = 0; i < n; i++)
                         {
-                            Assert(aw.k.fill[i] <= aw.k.depth[i], $"seed {seed} pulse {p}: F > D at {i}");
-                            Assert(aw.k.part == null || aw.k.part[i] == 0 || aw.k.fill[i] < aw.k.depth[i], $"seed {seed} pulse {p}: water above the brim at {i}");
+                            Assert(aw.k.Notch(i) <= aw.k.depth[i], $"seed {seed} pulse {p}: F > D at {i}");
+                            Assert(aw.k.water[i] <= aw.k.depth[i] * RM_LevelSolve.U, $"seed {seed} pulse {p}: water above the brim at {i}");
                         }
                         seeds.Clear();
                         for (int i = 0; i < n; i++) if (aw.k.depth[i] > 0) seeds.Add(i);
@@ -606,14 +605,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                     var k = aw.k;
                     k.maxComponentCells = 6000; k.seamRotationEnabled = true; 
                     k.viscosityEnabled = true; k.flowPerPulse = 1;
-                    k.part = new ushort[w * h];
                     for (int z = 2; z <= 321; z++)
                         for (int x = 10; x <= 314; x++)
                         {
                             bool a = x <= 134, b = x >= 190;
                             if (!a && !b) continue;
                             int i = z * w + x;
-                            k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water;
+                            k.depth[i] = 4; k.SetNotch(i, (a ? 4 : 1)); aw.cellFluid[i] = ArrayWorld.Water;
                         }
                     return aw;
                 }
@@ -622,7 +620,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     for (int q = 0; q < 100; q++)
                     {
                         int ia = (4 + q * 3) * w + 134, ib = (6 + q * 3) * w + 190;
-                        if (aw.k.fill[ia] > 0) { aw.k.fill[ia]--; aw.k.fill[ib]++; }
+                        if (aw.k.Notch(ia) > 0) { aw.k.water[ia] -= RM_LevelSolve.U; aw.k.water[ib] += RM_LevelSolve.U; }
                     }
                 }
                 var atom = Make();
@@ -673,7 +671,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var k = aw.k;
                 k.maxComponentCells = 6000; k.seamRotationEnabled = true; 
                 k.viscosityEnabled = true; k.flowPerPulse = 1;
-                k.part = new ushort[w * h];
                 k.edgeSinksEnabled = true;
                 k.networkSinkSpreadEnabled = false;   // the pre-fix drain: this case needs its churn (EDGE_SINK_WATER_TAME_SEAM_FLICKER)
                 var seeds = new List<int>();
@@ -683,10 +680,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                         bool a = x <= 134, b = x >= 190;
                         if (!a && !b) continue;
                         int i = z * w + x;
-                        k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                        k.depth[i] = 4; k.SetNotch(i, (a ? 4 : 1)); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
                         aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
                     }
-                int Band(int i) => k.depth[i] == 0 ? -1 : RM_LevelSolve.LookBand(k.fill[i] * (long)RM_LevelSolve.U + k.part[i]);
+                int Band(int i) => k.depth[i] == 0 ? -1 : RM_LevelSolve.LookBand(k.water[i]);
                 var drawn = new int[w * h];
                 foreach (int i in seeds) drawn[i] = Band(i);
                 var budget = new RM_TerrainWriteBudget();
@@ -767,7 +764,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var k = aw.k;
                 k.maxComponentCells = 6000; k.seamRotationEnabled = true; 
                 k.viscosityEnabled = true; k.flowPerPulse = 1;
-                k.part = new ushort[w * h];
                 k.edgeSinksEnabled = true;
                 k.networkSinkSpreadEnabled = false;   // the pre-fix drain: this case needs its churn (EDGE_SINK_WATER_TAME_SEAM_FLICKER)
                 var seeds = new List<int>();
@@ -777,10 +773,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                         bool a = x <= 134, b = x >= 190;
                         if (!a && !b) continue;
                         int i = z * w + x;
-                        k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                        k.depth[i] = 4; k.SetNotch(i, (a ? 4 : 1)); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
                         aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
                     }
-                long Dl(int i) => k.fill[i] * (long)RM_LevelSolve.U + k.part[i];
+                long Dl(int i) => k.water[i];
                 var exactShown = new int[w * h];
                 var stickyShown = new int[w * h];
                 // the band each square showed before its last change: a write back to it is a reversal, the flicker itself
@@ -838,7 +834,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                     var k = aw.k;
                     k.maxComponentCells = 6000; k.seamRotationEnabled = true; 
                     k.viscosityEnabled = true; k.flowPerPulse = 1;
-                    k.part = new ushort[w * h];
                     k.edgeSinksEnabled = true;
                     k.networkSinkSpreadEnabled = spread;
                     var seeds = new List<int>();
@@ -848,7 +843,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                             bool a = x <= 134, b = x >= 190;
                             if (!a && !b) continue;
                             int i = z * w + x;
-                            k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                            k.depth[i] = 4; k.SetNotch(i, (a ? 4 : 1)); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
                             aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
                         }
                     long U = RM_LevelSolve.U;
@@ -961,7 +956,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                     var k = aw.k;
                     k.maxComponentCells = 6000; k.seamRotationEnabled = true; 
                     k.viscosityEnabled = true; k.flowPerPulse = 1;
-                    k.part = new ushort[w * h];
                     k.edgeSinksEnabled = sinks;
                     var seeds = new List<int>();
                     for (int z = 2; z <= 321; z++)
@@ -970,7 +964,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                             bool a = x <= 134, b = x >= 190;
                             if (!a && !b) continue;
                             int i = z * w + x;
-                            k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                            k.depth[i] = 4; k.SetNotch(i, (a ? 4 : 1)); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
                             aw.sink[i] = x < 10 || z < 10 || x >= w - 10 || z >= h - 10;
                         }
                     long bytes = 0;
@@ -980,7 +974,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         for (int q = 0; q < 100; q++)
                         {
                             int ia = (4 + q * 3) * w + 134, ib = (6 + q * 3) * w + 190;
-                            if (k.fill[ia] > 0) { k.fill[ia]--; k.fill[ib]++; }
+                            if (k.Notch(ia) > 0) { k.water[ia] -= RM_LevelSolve.U; k.water[ib] += RM_LevelSolve.U; }
                         }
                         aw.pulse++;
                         long before = GC.GetAllocatedBytesForCurrentThread();
@@ -1066,7 +1060,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             var k = aw.k; int U = RM_LevelSolve.U;
             if (k.depth[i] == 0 || roof[i]) return 0;
-            long w = k.part != null ? k.WaterOf(i) : k.fill[i] * (long)U;
+            long w = k.WaterOf(i);
             long roomDl = k.depth[i] * (long)U - w;
             int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
             bool wet = w > 0;
@@ -1074,7 +1068,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (wet && aw.cellFluid[i] != ArrayWorld.Water) return 0;
             int add = room < levels ? room : levels;
             if (!wet) aw.cellFluid[i] = ArrayWorld.Water;
-            k.fill[i] += (byte)add;
+            k.water[i] += add * U;
             landedDl += add * (long)U;
             return (levels - add) * (long)U;
         }
@@ -1086,7 +1080,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             int w = r.Next(10, 31), h = r.Next(10, 31), n = w * h;
             var aw = new ArrayWorld(w, h);
             var k = aw.k;
-            k.part = exact ? new ushort[n] : null;
             k.viscosityEnabled = r.Next(2) == 0;
             k.flowPerPulse = r.Next(1, 3);
             k.seamRotationEnabled = r.Next(4) != 0;
@@ -1106,7 +1099,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (k.depth[i] == 0) seeds.Add(i);
                         k.depth[i] = (byte)depth;
                         int fill = r.Next(3);
-                        k.fill[i] = (byte)fill;
+                        k.SetNotch(i, fill);
                         aw.cellFluid[i] = fill > 0 ? f : null;
                     }
             }
@@ -1117,8 +1110,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>Copies the water state of <paramref name="from"/> into <paramref name="to"/> (same scene).</summary>
         private static void Resync(ArrayWorld from, ArrayWorld to)
         {
-            Array.Copy(from.k.fill, to.k.fill, from.k.fill.Length);
-            if (from.k.part != null) Array.Copy(from.k.part, to.k.part, from.k.part.Length);
+            Array.Copy(from.k.water, to.k.water, from.k.water.Length);
             Array.Copy(from.cellFluid, to.cellFluid, from.cellFluid.Length);
             for (int b = 0; b < from.bodies.Count; b++) to.bodies[b].SetDl(from.bodies[b].Dl());
             to.externalIn.Clear();
@@ -1138,14 +1130,13 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             int w = row.Length + 2;
             var aw = new ArrayWorld(w, 3);
-            aw.k.part = new ushort[w * 3];
             var r = new bool[w * 3];
             var shut = new bool[w * 3];
             seeds = new List<int>();
             for (int x = 0; x < row.Length; x++)
             {
                 int i = 1 * w + x + 1;
-                aw.k.depth[i] = row[x].d; aw.k.fill[i] = row[x].f; aw.k.part[i] = row[x].part;
+                aw.k.depth[i] = row[x].d; aw.k.water[i] = row[x].f * RM_LevelSolve.U + row[x].part;
                 aw.cellFluid[i] = row[x].fl; r[i] = row[x].roof; shut[i] = row[x].shut;
                 seeds.Add(i);
             }
@@ -1603,7 +1594,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         {
                             if (x > 134 && x < 190) continue;
                             int i = z * w + x;
-                            aw.k.depth[i] = 7; aw.k.fill[i] = (byte)(x <= 134 ? 6 : 0); aw.cellFluid[i] = x <= 134 ? ArrayWorld.Water : null;
+                            aw.k.depth[i] = 7; aw.k.SetNotch(i, (x <= 134 ? 6 : 0)); aw.cellFluid[i] = x <= 134 ? ArrayWorld.Water : null;
                         }
                     return aw;
                 }
@@ -1618,7 +1609,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var pass = new RM_RainPass();
                 var budget = new RM_TerrainWriteBudget();
                 var drawn = new int[w * h];
-                int Band(ArrayWorld a, int i) => RM_LevelSolve.LookBand(a.k.fill[i] * (long)RM_LevelSolve.U);
+                int Band(ArrayWorld a, int i) => RM_LevelSolve.LookBand(a.k.Notch(i) * (long)RM_LevelSolve.U);
                 foreach (int i in order) drawn[i] = Band(sliced, i);
                 long tick = 0;
                 bool Apply(int i)
@@ -1643,7 +1634,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 for (int i = 0; i < w * h; i++)
                 {
-                    Assert(one.k.fill[i] == sliced.k.fill[i] && one.cellFluid[i] == sliced.cellFluid[i], $"square {i}: the sliced pass ends otherwise than the one-tick pass");
+                    Assert(one.k.Notch(i) == sliced.k.Notch(i) && one.cellFluid[i] == sliced.cellFluid[i], $"square {i}: the sliced pass ends otherwise than the one-tick pass");
                     if (sliced.k.depth[i] > 0) Assert(drawn[i] == Band(sliced, i), $"square {i}: its picture never caught up");
                 }
                 Assert(l1 == l2 && o1 == o2, $"landed {l1}/{l2}, run over {o1}/{o2}");
