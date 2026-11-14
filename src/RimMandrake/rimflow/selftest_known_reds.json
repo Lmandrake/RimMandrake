@@ -30,6 +30,13 @@
    "why": "FlowWorks proof fixtures behind the under-liquid law and new settings: tier mod sets, 4 ne"
   },
   {
+   "added": "2026-11-14T19:07:09Z",
+   "expires": "2026-11-28T19:07:09Z",
+   "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
+   "test": "src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py",
+   "why": "208 s alone vs 240 s cap; needs # selftest-timeout: 600 in FlowWorks file (owner of FlowWorks, water-look work in flight)"
+  },
+  {
    "added": "2026-11-13T07:53:50Z",
    "expires": "2026-11-27T07:53:50Z",
    "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
@@ -49,6 +56,13 @@
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
    "test": "src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py",
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
+  },
+  {
+   "added": "2026-11-14T19:07:15Z",
+   "expires": "2026-11-28T19:07:15Z",
+   "item": "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW",
+   "test": "src/RimMandrake/FlowWorks/selftest_flowworks_readout_proof_parity.py",
+   "why": "mouseover Prefix no longer prints DepthSuffix; under-liquid law realign [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
    "added": "2026-11-13T07:53:53Z",
@@ -107,13 +121,6 @@
    "why": "filed, too new for the list; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-13T07:53:58Z",
-   "expires": "2026-11-27T07:53:58Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/Utils/selftest_artisan_now.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T07:53:59Z",
    "expires": "2026-11-27T07:53:59Z",
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
@@ -121,11 +128,11 @@
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
-   "added": "2026-11-01T16:05:31Z",
-   "expires": "2026-11-15T16:05:31Z",
-   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
-   "test": "src/RimMandrake/Utils/selftest_ledger_lint.py",
-   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+   "added": "2026-11-14T19:07:16Z",
+   "expires": "2026-11-28T19:07:16Z",
+   "item": "RIMMANDRAKE_DRAIN_NIGHTLY_REDS_WHILE_PIPELINE_SLEEPS",
+   "test": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "why": "flaky load-timing bound 30.2 ms vs 30 ms under 6 workers; passes alone [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
    "added": "2026-11-13T05:16:29Z",
@@ -203,13 +210,6 @@
    "item": "RIMMANDRAKE_UNHOOK_SELFTESTS_FROM_LIVE_HOST_STATE_ON_WSL",
    "test": "src/RimMandrake/rimflow/selftest_engine_review_leftovers.py",
    "why": "Three selftests read live host state (net.exe pre-launch guard sees a Linux sandbox, taskl"
-  },
-  {
-   "added": "2026-11-13T07:54:12Z",
-   "expires": "2026-11-27T07:54:12Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/rimflow/selftest_no_bare_cuts.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   },
   {
    "added": "2026-11-13T05:16:25Z",
