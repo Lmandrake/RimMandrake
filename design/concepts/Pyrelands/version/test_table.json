@@ -1,7 +1,7 @@
 {
  "mod": "Pyrelands",
  "version": "0.1.0",
- "made": "2026-11-14T11:34:14-08:00",
+ "made": "2026-11-14T12:22:34-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -96,9 +96,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 13.26,
-    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.15s total -> OK",
-    "at": "2026-11-14T11:34:14-08:00",
+    "seconds": 13.44,
+    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 10.94s total -> OK",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -117,9 +117,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 61.44,
+    "seconds": 65.03,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -137,9 +137,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.21,
+    "seconds": 1.62,
     "last": "PASS: the real Postfix meets the spec, 15 mutants red",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -157,9 +157,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.07,
     "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -177,9 +177,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.25,
+    "seconds": 0.27,
     "last": "  px = list(im.getdata())",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -197,9 +197,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.54,
+    "seconds": 2.11,
     "last": "8/8 passed",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -218,9 +218,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.39,
-    "last": "[pyre] 11:35:36 scorchfruit_produces PASS",
-    "at": "2026-11-14T11:34:14-08:00",
+    "seconds": 4.5,
+    "last": "[pyre] 12:24:01 scorchfruit_produces PASS",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -239,7 +239,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.75,
+    "seconds": 1.9,
     "last": "settings screens selftest: 851/856 ok; 14 rows for this mod, 0 red",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -296,9 +296,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
+    "seconds": 0.2,
     "last": "ALL PASS",
-    "at": "2026-11-14T11:34:14-08:00",
+    "at": "2026-11-14T12:22:34-08:00",
     "result": "PASS"
    }
   },
@@ -315,7 +315,7 @@
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
    "new": true,
-   "item": "RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE (to file at Stage 3)",
+   "item": "RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE",
    "runs_today": {
     "ran": false,
     "why": "specified, not built (Stage 3)"
@@ -333,11 +333,14 @@
     "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
-   "new": true,
-   "item": "RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE (to file at Stage 3)",
+   "item": "RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built (Stage 3)"
+    "ran": true,
+    "rc": 0,
+    "seconds": 25.55,
+    "last": "PASS: 6 def facts hold, 12 of 12 mutants red, the clean copy green",
+    "at": "2026-11-14T12:22:34-08:00",
+    "result": "PASS"
    }
   },
   "T_CUT_STAYS_CUT": {
@@ -353,11 +356,14 @@
     "src/RimMandrake/Pyrelands/Patches/"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
-   "new": true,
-   "item": "RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT (to file at Stage 3)",
+   "item": "RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built (Stage 3)"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.69,
+    "last": "PASS: the three cut legs stay cut, 9 of 9 mutants red, the clean copy green",
+    "at": "2026-11-14T12:22:34-08:00",
+    "result": "PASS"
    }
   },
   "T_ASH_PROBE_OFFLINE": {
@@ -372,7 +378,7 @@
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py",
    "new": true,
-   "item": "RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE (to file at Stage 3)",
+   "item": "RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE",
    "runs_today": {
     "ran": false,
     "why": "specified, not built (Stage 3)"
@@ -1138,7 +1144,7 @@
     "ran": true,
     "result": "PASS",
     "last": "infrastructure/state/ledger/events/OWNER.jsonl:1",
-    "at": "2026-11-14T11:34:14-08:00"
+    "at": "2026-11-14T12:22:34-08:00"
    }
   },
   "LOOK_STAGE8": {
@@ -1417,8 +1423,8 @@
    "offline_decides": [
     "T_DEFS_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1520,9 +1526,9 @@
    "offline_decides": [
     "T_DEFS_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "flamefang_bite_carries_venom",
@@ -1539,7 +1545,7 @@
    "offline_decides": [],
    "offline_green_today": false,
    "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_biome_self_contained",
@@ -1795,8 +1801,8 @@
    "offline_decides": [
     "T_DEFS_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1812,9 +1818,9 @@
    "offline_decides": [
     "T_CUT_STAYS_CUT"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_firefoam_sprayer",
@@ -1863,9 +1869,9 @@
    "offline_decides": [
     "T_CUT_STAYS_CUT"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_fire_rite_hook",
@@ -1926,8 +1932,8 @@
     "RECORD_ART_SHEET",
     "T_DEFS_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   }
  ]

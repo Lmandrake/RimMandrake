@@ -10,8 +10,11 @@ valdefs = set(re.findall(r'^def (\w+)\(', open(VAL).read(), re.M))
 K = SRC + 'Source/Kernel/'
 T = {}
 def off(tid, f, observes, reads, cmd=None, new=False, item=None, mod_rows=None):
+    import os  # Stage 3: a specified test counts as built once its file exists; its item stays named, filed
+    if item: item = item.replace(' (to file at Stage 3)', '')
+    if new and os.path.exists(f): new = False
     T[tid] = dict(id=tid, kind='offline', stage='4-5', file=f, observes=observes, reads=reads,
-                  command=cmd or ('python3 ' + f), **({'new': True, 'item': item} if new else {}), **({'mod_rows': mod_rows} if mod_rows else {}))
+                  command=cmd or ('python3 ' + f), **({'new': True} if new else {}), **({'item': item} if item else {}), **({'mod_rows': mod_rows} if mod_rows else {}))
 off('T_FUZZ', 'src/RimMandrake/Utils/selftest_pyrelands_fuzz.py', 'seeded fuzz of the production kernels: burn-line component and fire-front clock, furnace thermal charge and bed-ignition clock, biome score, ash fall and fire-ecology gates, ash-on-sand rates, AshFertility (dry, watered, burn bonus), tuning relationships', [K + 'RM_BurnKernel.cs', K + 'RM_FireEcoKernel.cs', K + 'RM_FurnaceKernel.cs', K + 'RM_FireHawkKernel.cs', SRC + 'Source/PyrelandsTuning.cs', SRC + 'Source/SelfTest/Fuzz/PyrelandsFuzz.cs'])
 off('T_LINT', 'src/RimMandrake/Utils/selftest_pyrelands_lint.py', 'lint_pyrelands_defs.py clean on the real mod and 30 planted defects caught: XML against C#, tuning order, deep ash stays the ground (pyre_ground_deep_ash), the BiomeDef resolves and can win a tile, plant density equals the enforcer, every wildPlants row is on the allowlist, kernels in both csprojs', ['src/RimMandrake/Utils/lint_pyrelands_defs.py', SRC + 'Defs/', SRC + 'Source/'])
 off('T_ALLOWLIST', 'src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py', 'the real wild-plant allowlist Postfix compiled against stubs over every gate, setting, biome, cave and candidate combination; 15 mutants red', [SRC + 'Source/WildPlantAllowlist.cs', K + 'RM_FireEcoKernel.cs'])

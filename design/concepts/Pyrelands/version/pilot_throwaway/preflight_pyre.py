@@ -83,11 +83,27 @@ code_names = set(re.findall(r"\b(RM_\w+)\b", " ".join(open(f, errors="replace").
 ours_in_dump = set(x[0] for x in con.execute("select def_name from defs where package_id like 'mandrake.%'"))
 for f in glob.glob("src/Rim*/**/Defs/**/*.xml", recursive=True) + glob.glob("src/Rim*/**/Patches/**/*.xml", recursive=True):
     repo_defs |= set(re.findall(r"<defName>(\w+)</defName>", open(f, errors="replace").read()))
+# Stage 3 fix (the stale-def-list hole, lesson 2026-11-14): a name with OUR prefix is judged against the repo's CURRENT
+# defs only (Defs + Patches XML); the dump decides only names that are not ours, because a dump captured before a def was
+# deleted still holds it. A C# string mentioning a deleted def no longer vouches for it: only a declared C# type does.
+cs_types = set(re.findall(r"\b(?:class|struct|enum)\s+(RM_\w+|RUT_\w+|RSW_\w+)\b", " ".join(
+    open(f, errors="replace").read() for f in glob.glob("src/Rim*/**/Source/**/*.cs", recursive=True))))
+OURS = re.compile(r"^(RM|RUT|RSW)_")
+def def_verdict(d, defs=defs, repo_defs=repo_defs, ours_in_dump=ours_in_dump, cs_types=cs_types):
+    if OURS.match(d) or d in ours_in_dump:
+        if d in repo_defs or d in cs_types: return None
+        return d + (" (our def, only in the %s dump: deleted from the repo)" % prov.get("captured_utc", "?") if d in defs
+                    else " (our prefix, not in the repo's current defs or C# types)")
+    return None if (d in defs or d in repo_defs) else d
 for d in sorted(named):
-    if d in ours_in_dump and d not in repo_defs: r.append(d + " (only in the dump: our mod's def, deleted from the repo; the dump is older than the source)")
-    elif d not in defs and d not in repo_defs and d not in code_names: r.append(d)
-check("C9_defs_real", "every def the table, the scenes and the leaf oracles name exists in the def dump or the repo (C# class names accepted)", r,
-      "%d names checked; dump %s (%s, %d defs, %d mods)" % (len(named), DUMP.split("/")[-1], prov.get("modlist_fingerprint", prov.get("capturedUtc", "?")), len(defs), len(pkgs)),
+    v = def_verdict(d)
+    if v: r.append(v)
+_probe = [def_verdict("RM_FE_Filth_LooseAsh") is None and "RM_FE_Filth_LooseAsh" in defs,  # dump-only def of ours must refuse
+          def_verdict("RM_FE_NoSuchDef_Probe") is None, def_verdict("RM_Pyrelands") is not None, def_verdict("Rain") is not None]
+if any(_probe): r.append("C9 instrument probe failed %s: the check cannot see a stale or a real def" % _probe)
+missing_from_dump = sorted(x for x in repo_defs if OURS.match(x) and x not in defs)
+check("C9_defs_real", "every def named exists: ours (RM_/RUT_/RSW_) in the repo's current Defs/Patches or as a C# type; others in the def dump or the repo", r,
+      "%d names checked; dump %s (captured %s, %d defs, %d mods); %d of our repo defs are newer than the dump" % (len(named), DUMP.split("/")[-1], prov.get("captured_utc", "?"), len(defs), len(pkgs), len(missing_from_dump)),
       "correct the name or build the def", "Stage 1 if a wrong name, Stage 3 if owed", t)
 # C10 every mod a scene names exists
 t = time.time(); r = []

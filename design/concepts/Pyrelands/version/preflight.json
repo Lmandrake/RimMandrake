@@ -2,7 +2,7 @@
  "mod": "Pyrelands",
  "version": "0.1.0",
  "program": "preflight_pyre.py (throwaway, advance row 3, adapted from preflight_ek.py)",
- "at": "2026-11-14T11:42:21-08:00",
+ "at": "2026-11-14T12:24:50-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,9 +16,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 4.67,
+ "seconds": 6.62,
  "verdict": "refuse",
- "refusals": 17,
+ "refusals": 11,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -75,16 +75,14 @@
    "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
    "verdict": "refuse",
    "refusals": [
-    "T_SETTINGS_SWEEP_OFFLINE (offline, specified not built; item RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE (to file at Stage 3)) decides inv_settings_gate",
-    "T_DEFS_OFFLINE (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE (to file at Stage 3)) decides no_ordinary_rain, biome_text_says_engineered, inv_weather, inv_art_and_text",
-    "T_CUT_STAYS_CUT (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT (to file at Stage 3)) decides inv_firebreak_firefoam, inv_lightning_breaker",
-    "T_ASH_PROBE_OFFLINE (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE (to file at Stage 3)) decides ash_fertility_probe",
+    "T_SETTINGS_SWEEP_OFFLINE (offline, specified not built; item RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE) decides inv_settings_gate",
+    "T_ASH_PROBE_OFFLINE (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE) decides ash_fertility_probe",
     "sc_walk (entry validation.py::walk_season absent; item PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES) decides walk_season_on_the_pyre",
     "sc_firefoam_sprayer (entry validation.py::firefoam_sprayer absent; item PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS) decides firefoam_sprayer_reaches_the_fruit, inv_firefoam_sprayer",
     "sc_rite_hook_alone (entry validation.py::rite_hook_alone absent; item PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS) decides fire_rite_hook_silent_alone, inv_fire_rite_hook",
     "sc_flamefang_venom (entry validation.py::flamefang_venom absent; item PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME) decides flamefang_bite_carries_venom"
    ],
-   "evidence": "8 deciding tests not runnable",
+   "evidence": "6 deciding tests not runnable",
    "smallest_fix": "build each named test, watched failing first, under its named item",
    "route": "Stage 3 (reconcile): the bar is sound, the test is owed",
    "seconds": 0.0
@@ -111,13 +109,13 @@
   },
   {
    "id": "C9_defs_real",
-   "what": "every def the table, the scenes and the leaf oracles name exists in the def dump or the repo (C# class names accepted)",
+   "what": "every def named exists: ours (RM_/RUT_/RSW_) in the repo's current Defs/Patches or as a C# type; others in the def dump or the repo",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
+   "evidence": "17 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 582 of our repo defs are newer than the dump",
    "smallest_fix": null,
    "route": null,
-   "seconds": 3.973
+   "seconds": 5.984
   },
   {
    "id": "C10_mods_real",
@@ -153,7 +151,7 @@
    "evidence": "8 pins",
    "smallest_fix": "the Conductor reads each post-lock change; a test-text change is re-pinned in bars.md, a meaning change goes to him",
    "route": "Conductor (judgment: test text or meaning?)",
-   "seconds": 0.008
+   "seconds": 0.009
   },
   {
    "id": "C13_corrections_hold",
@@ -163,7 +161,7 @@
    "evidence": "text checks of scenes.json, tree.json, sheet.md, record.json",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C14_csharp_symbols_real",
@@ -173,7 +171,7 @@
    "evidence": "3 of our types named",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.029
+   "seconds": 0.027
   },
   {
    "id": "C16_scenes_wired",
@@ -188,17 +186,12 @@
   {
    "id": "C15_items_real",
    "what": "every ticket a test is owed under exists in the ledger",
-   "verdict": "refuse",
-   "refusals": [
-    "RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE",
-    "RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE",
-    "RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT",
-    "RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE"
-   ],
+   "verdict": "pass",
+   "refusals": [],
    "evidence": "8 items",
-   "smallest_fix": "file the item",
-   "route": "Stage 1",
-   "seconds": 0.608
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.547
   }
  ]
 }
