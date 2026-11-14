@@ -150,7 +150,7 @@ minute to copy the 541 MB dump from the Windows drive). **Verdict: refuse, 37 re
   `selftest_natives_drink_own_water.py`, `validation_v2.py --offline`); 5 offline tests specified, not built (wetting,
   wetness probe, toss flame, fetch fallen, bedless prison care); 13 in-game scenes whose entry function does not exist
   (all in `northstar/concept_scenes.py`: fill front, one surface, source pays, pawn height, hose look, trench cover, ice,
-  moat raid, toss flame, wetting, fetch fallen, islands, the season walk). By his card "Built: runs" each is a Stage 3 line.
+  moat raid, toss flame, wetting, fetch fallen, islands, the season walk). Route: Stage 3.
 - **C8 held statements (13):** every row is placed, but 13 have no 0.1.0 bar (geyser hot tub 9, liquid coating 3, dig
   interface 1). Route: his call, Problem (a new bar now) or Divergent (`next_version`).
 - **C13 scenes prove a leaf (2):** `sc_pit_trap_raid` and `sc_garden` name no requirement; they are showcase scenes whose

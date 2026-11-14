@@ -1,6 +1,6 @@
 # The Maturation Pipeline
 
-**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Nothing here is built.** He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". Everything else marked [PROPOSAL] is still not his.
+**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Nothing here is built.** He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". On 2026-11-14 he agreed the lock rule (§4, Stage 1). Everything else marked [PROPOSAL] is still not his.
 
 Item: `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.
 Live status page: `D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md` (where each mod stands today).
@@ -21,7 +21,8 @@ Words used here:
 
 - **Mod**: one RimMandrake mod, for example Explosive Knockback.
 - **Design Version**: the numbered design a mod is being built towards, for example 0.1.0. [CARRIED: his ruling of 2026-11-13, `design/RimMandrake/standing_rulings.md`, "Mod Design Versions use Semantic Versioning".]
-- **Bar**: one thing that must be true for a version to pass. An acceptance criterion.
+- **Bar**: one thing that must be true for a version to pass, written as a plain sentence about what the player sees or can do. An acceptance criterion.
+- **Check**: the code that decides a bar. In this spec a bar's "test" is its check.
 - **Line item**: one bar together with the one test that decides it. It has an id, the files it reads, and a stored verdict. [CARRIED: `design/RimMandrake/validation_map_and_rules.md`, "Words used throughout".]
 - **Blind judge**: a fresh agent that did not do the work and is not told what an earlier judge found.
 - **Offline**: without a running game. **In-game**: through a running RimWorld.
@@ -46,7 +47,7 @@ Words used here:
 
 1. Lock the five mods now in the Designer as Design Version 0.1.0, as they stand.
 2. Hold the scheduled Designer judge loop on those five.
-3. Make every bar a runnable test, tagged with the stage that proves it, checked mechanically at lock.
+3. Give every bar a test, tagged with the stage that proves it. (What the lock requires of that test is the lock rule of 2026-11-14, §4 Stage 1.)
 4. Fold his held look statements in as bars. (These are the 66 things he said during live looks on 2026-11-12 and 2026-11-13, kept in `design/RimMandrake/validation_holding/`.)
 5. Keep the Designer for arguing ideas and edges.
 6. Pilot on Explosive Knockback first.
@@ -84,9 +85,9 @@ flowchart TD
     end
 
     IN(["INTAKE<br/>mod ideas waiting"])
-    S1["STAGE 1 · DESIGNER<br/>argue the idea, write vision,<br/>bars and tests, lock the version"]
+    S1["STAGE 1 · DESIGNER<br/>argue the idea, write vision and bars,<br/>say how each bar is checked, lock the version"]
     S2["STAGE 2 · PREFLIGHT<br/>Python checks the build spec:<br/>real files, real mods, real tests"]
-    S3["STAGE 3 · OFFLINE BUILD<br/>build it, and every test<br/>the builder can think of"]
+    S3["STAGE 3 · OFFLINE BUILD<br/>build it, write every bar's check<br/>(seen failing first), and every test<br/>the builder can think of"]
     S4["STAGES 4 AND 5 · ONE STAGE, TESTS FIRST<br/>first: game-logic tests written from the bars alone,<br/>rules and maths over many cases, no game;<br/>then: code review, planted faults,<br/>rerun of the builder's tests"]
     S6["STAGE 6 · IN-GAME ACCEPTANCE<br/>dense prepared maps, scripts decide,<br/>explore, many screenshots"]
     S7["STAGE 7 · PRE-HUMAN CHECK<br/>is all the evidence consistent?<br/>anything odd that would waste his time?"]
@@ -116,9 +117,9 @@ Plain-text version of the same map:
   └──────────────────────┴─────────────────────────────┴──────────────────────────────────┘
 
   INTAKE ──▶ 1 DESIGNER ──▶ 2 PREFLIGHT ──▶ 3 OFFLINE BUILD ──▶ 4+5 ONE STAGE, TESTS FIRST
-  (ideas      (vision,       (Python,        (code + its own     (first: game-logic tests from the
-   waiting)    bars, tests,   no model)       tests)              bars alone, many cases, no game;
-               lock)                                              then: review, planted faults, reruns)
+  (ideas      (vision,       (Python,        (code, every bar's  (first: game-logic tests from the
+   waiting)    bars, how      no model)       check, its own      bars alone, many cases, no game;
+               checked, lock)                 tests)              then: review, planted faults, reruns)
                   ▲               │                 ▲              │    ▲
                   └── refused ────┘                 │              └────┘
                                                     │           fix in place, NEW blind judge;
@@ -167,12 +168,29 @@ Plain-text version of the same map:
 | Who | The Designer role (`src/RimMandrake/rimflow/roles/designer.md`), with him. Its inner steps (Read, Argue the idea, Argue the edge, Write, Exam, Lock) live inside this stage. | HIS ("Within the Designer are those 1-5 steps... more like a 'Stage 1'") |
 | Model tier | Judgment work: see Agent_Policy.md, "The one question". | CARRIED |
 | Inputs | The idea. His words. If any code exists: a live walk of what exists, before more design is added. | CARRIED (his ruling 2026-11-12 5:06 PM PST, rule 7 of `validation_map_and_rules.md`) |
-| Outputs | The mod's version folder: a short vision, the bars, and for every bar **one test, with the stage that proves it**. Also the next-version file and the Polish list. | HIS by agreement (recommendation 3); folder layout CARRIED from the Design Versions ruling |
-| Exit ("ready" means) | He said "lock it" for this version. Every bar names its test and its stage. Each test runs (a built mod) or is specified (a new mod). | CARRIED (Design Versions: locked on his word); test-per-bar HIS by agreement; runs or specified HIS by card 2026-11-13 |
+| Outputs | The mod's version folder: a short vision, the bars, and for every bar **how it will be checked (offline, or an in-game scene), with the stage that proves it**. Also the next-version file and the Polish list. | HIS by agreement (recommendation 3; the lock rule 2026-11-14); folder layout CARRIED from the Design Versions ruling |
+| Exit ("ready" means) | He said "lock it" for this version. Every bar is written and names how it will be checked and its stage. No check code is required. | CARRIED (Design Versions: locked on his word); the rest HIS by agreement (the lock rule, below) |
 | Road back | Stage 2 refuses the spec: back here for the refused lines only. After the lock, a Divergent idea never comes back here in this version; it opens the next one. | CARRIED (rule 2; Design Versions ruling) |
 | Tracked on the mod | Version number; state (drafting, locked); count of bars; tokens spent; his open questions. | CARRIED (Design Versions draft §3.7) |
 
-**What a test must be at the lock.** **[HIS, by card 2026-11-13]** "Built: runs. New: specified." For a mod whose code exists, every bar's test runs at the lock. For a new mod, every bar's test is specified at the lock (a test id, its stage, the file it will live in, what it will observe, the files it reads; Stage 2 checks that mechanically) and Stage 3 makes each one run, failing first.
+#### The lock rule
+
+**[HIS, by agreement 2026-11-14, about 12:50 PM PST]** The Conductor proposed this rule and he answered "Yes this all sounds good." (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`). His own words on it:
+
+> Acceptance tests evolve just like implementation and design evolve based on discoveries as we go. So we need to acknowledge that a lock is never as strict as we'd like. But I understand the stricter the better.
+
+> If it doesn't have good acceptance tests we need a way to get them. Designer is the only way I know how to do that... this is why most of our built mods still need that pass even if they're built.
+
+1. **Bars and checks.** A bar is a plain sentence about what the player sees or can do; a check is the code that decides it. Bars come from the Designer pass, and every built mod still needs that pass. Checks are builder work.
+2. **At the lock**, every bar is written and each names how it will be checked: offline, or an in-game scene. No check code is required at the lock. For each check Stage 2 reads its id, its stage, the file it will live in, what it will observe and the files it reads.
+3. **Right after the lock (Stage 3)**, a builder writes every check, and each is seen failing where the behaviour is missing. A mod does not move past Stage 3 until every bar has a check that runs. An in-game scene may be recorded UNRUN, with its command, until Stage 6.
+4. **A lock means changes are visible and have a reason, not that nothing changes.**
+   - The check was wrong and the bar's meaning is unchanged: the steward (the Conductor) fixes it and re-pins it, with one journal line saying why. He is not asked.
+   - A bar is added because of a discovery: agents may do it, recorded in the journal.
+   - A bar is loosened or removed: his call, brought to him with the discovery that made it wrong.
+   - A discovery that changes what the mod is: not a bar edit. It goes to the next Design Version.
+5. **Every one of these is one journal line** in the intervention form of §5 ("The steward and the journal", item 5), so the Maturation Now page shows it as a yellow arrow on that mod's stage box. A lock reopened again and again is the visible sign that the design was not ready.
+6. **The four locks of 2026-11-13** (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) were valid under this rule, not early. Their missing checks are Stage 3 work.
 
 One proposal inside Stage 1 is big enough to be an open question: whether the Designer's Exam and coverage judge stay as gates (open question 7).
 
@@ -185,7 +203,7 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 | Model tier | None. | CARRIED |
 | Inputs | The locked version folder; the repo; the list of every def in the game; the mod lists. | CARRIED (spec `design/specs/2026-11-12-ticket-preflight-before-any-token.md`) |
 | Outputs | A preflight record: each check, pass or refuse, the smallest fix for each refusal, and how long the run took. | CARRIED (same spec; "the precise time this took to run" is his) |
-| Exit ("ready" means) | Every named file, def and mod is real. Every bar has a test. Every test names its stage. Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod has been placed. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer, see below); full-list reason CARRIED (his 2026-11-12 ruling); held statements PROPOSAL |
+| Exit ("ready" means) | Every named file, def and mod is real. Every bar names its check. Every check names its stage. A check whose code is not written yet is not a refusal; it is Stage 3 work (the lock rule). Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod has been placed. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer, see below); full-list reason CARRIED (his 2026-11-12 ruling); held statements PROPOSAL |
 | Road back | A refusal names the line and the fix. A wrong fact goes back to Stage 1. A broken criterion goes to the neutral fixer (a fresh agent that repairs acceptance criteria and is neither the judge nor the builder). | CARRIED (his refusal ruling 2026-11-12 2:50 PM PST) |
 | Tracked on the mod | Last preflight time and duration; refusals open. | PROPOSAL |
 
@@ -200,7 +218,7 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 | Model tier | Per ticket: see Agent_Policy.md, "The ladder" and "Helpers in this repo". | CARRIED |
 | Inputs | The locked version; the preflight record. | PROPOSAL |
 | Outputs | Code, defs, art. For each bar, its offline test and its in-game test, each watched failing before the code made it pass. Review status clean. | CARRIED (his ruling 2026-11-13: "we build the test at the same time as the item, both offline and online versions") |
-| Exit ("ready" means) | Every bar's offline test passes. Every in-game test exists and is listed with its exact command, even though it has not run. The builder's own list of what it could not test is written down. | PROPOSAL |
+| Exit ("ready" means) | Every bar has a check that runs, each seen failing where the behaviour was missing. Every bar's offline check passes. Every in-game check exists and is listed UNRUN with its exact command until Stage 6. The builder's own list of what it could not test is written down. | HIS by agreement (the lock rule, §4 Stage 1); "passes" and the builder's list PROPOSAL |
 | Road back | None of its own. Faults found later arrive here as line items. | CARRIED (rule 2) |
 | Tracked on the mod | Tickets open and done in this stage; bars with a passing offline test, of total; tokens. | PROPOSAL |
 
@@ -224,7 +242,7 @@ For a mod that is already built (all five current mods), Stage 3 is not "build".
 
 **Guards on fix-in-place.** **[PROPOSAL]** from the Conductor; this writer agrees and adds the last one.
 
-- The fixer may not edit a bar or an acceptance criterion. A wrong criterion goes to the neutral fixer. (This part is [CARRIED], his refusal ruling.)
+- The fixer may not edit a bar or an acceptance criterion. A wrong criterion goes to the neutral fixer. (This part is [CARRIED], his refusal ruling.) A wrong check whose bar keeps its meaning is re-pinned by the steward, and a bar changes only as the lock rule allows (§4 Stage 1). [HIS by agreement]
 - Every test the fixer edits is listed in the cycle record and shown to the next blind judge. Otherwise "force the system to pass" could be done by weakening a test.
 - Added by this writer: each fix is shown red first. The fixer records the test failing on the old code, then passing on the new. "Show it working" is his phrase; red-first is how it is shown.
 
@@ -439,9 +457,9 @@ All **[PROPOSAL]** except where marked. Nothing is deleted by this document.
 
 ## 8. Questions for him
 
-Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. Questions 7 to 17 are still open; they can wait until the pilot has shown something.
+Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. On 2026-11-14 he agreed the lock rule, which is now the answer to question 6. Questions 7 to 17 are still open; they can wait until the pilot has shown something.
 
-### Decided, 2026-11-13
+### Decided, 2026-11-13 (question 6 re-answered 2026-11-14)
 
 **1. Stage 4 and Stage 5: one stage or two?** **[HIS, by card]** "One stage, tests first." The blind agent first writes and runs its own game-logic tests from the bars alone, then opens the builder's code and tests for the challenge. One load of the mod, one cycle, two reported lanes. (§4, "Stages 4 and 5".)
 
@@ -453,7 +471,7 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 
 **5. May he look early?** **[HIS, typed]** "(1) Yes, at any stage, and questions can be sent to the user at any time. If I can get to them, I might be able to steer out of a coming confusion early. Conductor will let me know."
 
-**6. What must a test be at the lock?** **[HIS, by card]** "Built: runs. New: specified." A built mod's tests run at the lock. A new mod's tests are specified at the lock (id, stage, file, what it observes, files it reads) and made to run, failing first, in Stage 3. (§4, Stage 1.)
+**6. What must a test be at the lock?** **[HIS, by agreement 2026-11-14]** The lock rule (§4, Stage 1), which replaces his card answer of 2026-11-13. At the lock every bar is written and names how it will be checked; no check code is required. Stage 3 writes every check, seen failing first, and no mod moves past Stage 3 until every bar has a check that runs. "A lock is never as strict as we'd like. But I understand the stricter the better."
 
 ### Still open: after the pilot has shown something
 

@@ -148,9 +148,7 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 - **Boring enough to automate:** all 15 checks; they are mechanical. The program is the seed of build-order step 3
   ("the Stage 2 preflight for a mod"). Def and packageId extraction from free scene text is a heuristic; a real
   preflight wants scenes to list their defs and mods as fields.
-- **Needed judgment:** whether "Built: runs" (his card) should refuse a built mod's missing tests or route them to
-  Stage 3 "reconcile" (the spec says both; this run refuses and names Stage 3 as the route); whether each post-lock
-  change is test text or meaning; the g4 fix.
+- **Needed judgment:** whether each post-lock change is test text or meaning; the g4 fix.
 
 ### 2026-11-14 12:47 PST, Stage 3 ("reconcile") done offline (rm-builder, detached, offline only)
 
@@ -205,11 +203,7 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
    say `impl: absent` though both were built in 40f4e85120 (K-18 to K-20 pass); `inv_big_corpse_spared` names skip
    reason `too_big`, which the mass rule replaced (its scope note says the 75 kg goods limit now spares it, so the
    journal line would read `too_heavy`). Stage 3 "reconcile" should correct these fields.
-4. **"Built: runs" versus "reconcile".** His card says a built mod's tests run at the lock; the spec's Stage 3 for a
-   built mod builds the missing tests after it. Explosive Knockback was locked with 22 deciding tests not runnable.
-   Either the lock was early by his own rule, or "Built: runs" means "runs by the end of Stage 3". A question for him,
-   not urgent: the work is the same.
-5. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
+4. **Three bar lists** (the 59, the 16 north-star bars, the 30 walk rows) are unreconciled; `validation.py` still reads
    the walk. Which one does Stage 6 report against? The table answers "the 59".
 6. **sc_settings_sweep's setting list is short of the settings class** (test text). The scene asserts its list plus
    `enabled` and `shieldsAbsorbThrow` equals the saved fields, but it names 20 saved settings fewer (goods flight tuning,

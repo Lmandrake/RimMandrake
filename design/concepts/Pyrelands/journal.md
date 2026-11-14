@@ -179,8 +179,6 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
    (2026-11-13) but no bar names them. Polish, next version, or a bar owed? (His call if it is a bar.)
 2. **g14, the stale exam.** Rerunning the Cold Reader exam is a model step. Does a locked version still owe it, or does
    Stage 4's blind challenger replace it (spec open question 7)?
-3. **g5 and g12 asked for a new leaf.** A leaf is a bar, and the design is locked, so a test was named instead
-   (`T_SITE` for the world switch, `T_CUT_STAYS_CUT` for migration). Is that acceptable?
 4. **`no_ordinary_rain` is decided twice.** If the biome's weather list holds no ordinary rain, can anything choose
    it? If not, `sc_no_rain` could drop to support and the bar proves offline (pipeline bar 4). For the Stage 4
    challenger.

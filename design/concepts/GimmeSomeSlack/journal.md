@@ -182,8 +182,7 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   3. `named_mods_on_the_tier`: `sc_settings` and `sc_shock_reach` stage FlowWorks; the tier lacks it. Back to Stage 1 as a
      fact (question 3).
   4. `lock_pins_current`: 6 of the 8 pinned files differ from `bars.md`'s blobs. Back to Stage 1: re-pin (question 1).
-  Refusals 1 and 2 say the same thing as his card "Built: runs": a built mod's lock wants every test runnable, and here
-  it is not. The spec's Stage 3 "reconcile" is where that is paid, as in the pilot.
+  Refusals 1 and 2 are Stage 3 work, as in the pilot.
 - **Cost:** about $1.2 of model spend (harness budget line, $4.2 to $5.4), 5 minutes wall.
 - **Boring enough to automate:** all of it; this script is a fair seed for the Stage 2 program (spec §9 build order 3).
   The dump read wants a cached defName index keyed on the dump's fingerprint (10 s each run over `/mnt/c`).
