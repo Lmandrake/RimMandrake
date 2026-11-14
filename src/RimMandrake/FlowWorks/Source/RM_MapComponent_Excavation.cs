@@ -2078,6 +2078,7 @@ namespace RimMandrake.FlowWorks
 				}
 				return RM_RestoreResult.NoRecord;
 			}
+			sunkFloor.Remove(i);   // filled back in: a floor sunk in this square went with the water write that sank it
 			if (map.terrainGrid.BaseTerrainAt(c) != original)
 			{
 				map.terrainGrid.SetTerrain(c, original);
@@ -2088,7 +2089,6 @@ namespace RimMandrake.FlowWorks
 				return RM_RestoreResult.WriteFailed;
 			}
 			originalTerrain.Remove(i);
-			sunkFloor.Remove(i);
 			SetBed(i, 0);
 			return RM_RestoreResult.Restored;
 		}
@@ -3691,11 +3691,6 @@ namespace RimMandrake.FlowWorks
 				terrainWrites.Defer(i, map.cellIndices.NumGridCells);
 				return false;
 			}
-			FluidDef held = FluidAt(c) ?? fluid;
-			bool drained = held != null && held.OwnsWetTerrain(cur) && !held.OwnsWetTerrain(want);
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 lead 4: r15 timed one ApplyFillTerrain call at 95 ms. Time the
-			// vanilla terrain write alone (DoTerrainChangedEffects' cascade), split by whether the water-body type moved
-			// (Odyssey's WaterBodyTracker flood fill is the suspect), and keep the slowest call's particulars for r16.
 			// RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 12): a floor laid on the dug floor is sunk, not
 			// destroyed, by the water, and laid back when it drains (vanilla's SetTerrain of a liquid clears the under-layer)
 			TerrainDef top = map.terrainGrid.TopTerrainAt(c);
@@ -3705,6 +3700,11 @@ namespace RimMandrake.FlowWorks
 			{
 				sunkFloor[i] = top;
 			}
+			FluidDef held = FluidAt(c) ?? fluid;
+			bool drained = held != null && held.OwnsWetTerrain(cur) && !held.OwnsWetTerrain(want);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 lead 4: r15 timed one ApplyFillTerrain call at 95 ms. Time the
+			// vanilla terrain write alone (DoTerrainChangedEffects' cascade), split by whether the water-body type moved
+			// (Odyssey's WaterBodyTracker flood fill is the suspect), and keep the slowest call's particulars for r16.
 			int gc0 = System.GC.CollectionCount(0);
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			map.terrainGrid.SetTerrain(c, want);

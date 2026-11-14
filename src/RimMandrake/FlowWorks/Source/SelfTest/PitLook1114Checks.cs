@@ -127,7 +127,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"sunkFloor\[i\] = top;[\s\S]*?map\.terrainGrid\.SetTerrain\(c, want\);[\s\S]*?map\.terrainGrid\.SetTerrain\(c, floor\);",
                     "the floor is recorded before the water write and laid back after the dry one");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref sunkFloor, ""RM_sunkFloor""", "a sunk floor survives a save");
-                RiverSwitchFlipChecks.Has(ex, @"originalTerrain\.Remove\(i\);\s*sunkFloor\.Remove\(i\);", "a filled-in square forgets its sunk floor");
+                RiverSwitchFlipChecks.Has(ex, @"sunkFloor\.Remove\(i\);\s*(//[^;]*?)?if \(map\.terrainGrid\.BaseTerrainAt\(c\) != original\)", "a filled-in square forgets its sunk floor");
                 string mouse = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
                 RiverSwitchFlipChecks.Has(mouse, @"RM_PitFloorGroundMath\.FloorPhrase\(", "the readout names the floor");
             });
