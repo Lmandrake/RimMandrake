@@ -1,0 +1,1 @@
+Editing a bash script while a run of it is going changes the running run: bash reads the file as it executes, so MandrakeModels csharp/run_stagec.sh picked up a newly added 'spread' step mid-run on an old binary and never reached fuzz (2026-11-14). Run a copy, or do not edit a script until its run ends.
