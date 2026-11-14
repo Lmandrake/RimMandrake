@@ -492,30 +492,36 @@
    "tag": "2026-11-12",
    "row": "33a",
    "words": "\"Digging a pit on a Geyser allows the Geyser to descend to the bottom of the pit (it remains and descends).\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB",
    "stage": "4-5 (live owed)",
-   "kind": "offline selftest; NO 0.1.0 BAR: geyser hot tub (question for him)"
+   "kind": "offline selftest; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
    "tag": "2026-11-12",
    "row": "33b",
    "words": "\"Filling the pit with water or any fluid still works and generates distinctive bubbles where the geyser is.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB + LOOK_STAGE8 (bubble art)",
    "stage": "4-5 and 8",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
    "tag": "2026-11-12",
    "row": "33c",
    "words": "\"When pawns are near those bubbles, they will treat it like a hot tub and gain benefits like the Hot Springs mod currently supports\" (+ card 19:50: \"Water plus harmless liquids\", \"Allowed in a dry pit; caps it\", \"Vanilla's small bonus\")",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB",
    "stage": "4-5 (live owed)",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
@@ -623,10 +629,12 @@
    "tag": "2026-11-12",
    "row": "42",
    "words": "\"In geyser_pit.png you can see a strange darker square around the geyser image that isn't welcome.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "capture ring-luminance row of the geyser pit (specified)",
    "stage": "6",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
@@ -708,20 +716,24 @@
    "tag": "2026-11-13",
    "row": "1",
    "words": "\"Hot tub: Diana seems to be properly enjoying it.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB + LOOK_STAGE8",
    "stage": "8",
-   "kind": "approval; NO 0.1.0 BAR: geyser hot tub"
+   "kind": "approval; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
    "tag": "2026-11-13",
    "row": "2",
    "words": "\"It is located in an existing lake interestingly, and the geyser itself is outside the hot tub dark blue region. Not sure about that. [Image #1] you can see the dark geyser beneath, the bubbles north of that, and the hot tub dark blue square north of that too.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB (vent, plume and pool square share one cell)",
    "stage": "4-5",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
@@ -738,10 +750,12 @@
    "tag": "2026-11-13",
    "row": "4",
    "words": "\"[Image #3] Here is another geyser pit where I can no longer see the geyser, the bubbles are in the southern area.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB + T_UNDERLIQUID (vent seen at its depth)",
    "stage": "4-5",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
@@ -784,10 +798,12 @@
    "tag": "2026-11-13",
    "row": "8",
    "words": "\"[Image #5] When I went into this pit (by adding a ladder, the blood pit) there are two strange coverings of red added to the person. I assume this is some kind of \"bloodied\" effect but it's extremely graphically crude.\"",
-   "bars": [],
-   "test": "none until designed (filed to the Designer)",
-   "stage": "-",
-   "kind": "NO 0.1.0 BAR: liquid coating on pawns (question for him)"
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "test": "T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3)",
+   "stage": "4-5 and 6",
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
@@ -806,30 +822,36 @@
    "tag": "2026-11-13",
    "row": "10",
    "words": "\"Yes, the oil makes a brown \"covering\" over the pawn image (chin and body) that I guess is supposed to be covered in oil somehow. Tar adds the same pattern on the character but black. These graphics (being dirty) need to be significantly improved and should likely be a Condition rather than just gra",
-   "bars": [],
-   "test": "none until designed (filed to the Designer)",
-   "stage": "-",
-   "kind": "NO 0.1.0 BAR: liquid coating on pawns"
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "test": "T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3)",
+   "stage": "4-5 and 6",
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
    "tag": "2026-11-13",
    "row": "11",
    "words": "\"Going in normal water seems to have removed the strange graphics, so \"washing\" seems to occur itself. Likely needs to be made more explicit.\"",
-   "bars": [],
-   "test": "none until designed (filed to the Designer)",
-   "stage": "-",
-   "kind": "NO 0.1.0 BAR: washing off a coating"
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "test": "T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3)",
+   "stage": "4-5 and 6",
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
    "tag": "2026-11-13",
    "row": "12",
    "words": "\"Appears that any Pit water within the radius of a Geyser becomes a hot tub. [Image #6] I had intended that the Geyser must itself be beneath the pit water itself, not just adjacent as shown here. There's no way for the heat to get from the hole into the pit water in this configuration.\"",
-   "bars": [],
-   "test": "T_GEYSER_TUB (selftest_flowworks_geyser_tub.py encodes the old radius rule; needs the edit)",
+   "bars": [
+    "inv_geyser_tub"
+   ],
+   "test": "T_GEYSER_TUB + PY_FLOWWORKS_GEYSER_TUB (heat only through the water over the vent: C# GeyserTub_heat_only_through_the_water_over_the_vent, python check 16)",
    "stage": "4-5",
-   "kind": "NO 0.1.0 BAR: geyser hot tub"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
@@ -934,10 +956,12 @@
    "tag": "2026-11-13_evening",
    "row": "1",
    "words": "\"Bubbles are centered on vent itself, yes. They are too large and too transparent. It should be bubbling water, not faint ghost bubbles rising up.\"",
-   "bars": [],
+   "bars": [
+    "inv_geyser_tub"
+   ],
    "test": "T_GEYSER_TUB (fleck count, size, alpha in bounds; offline)",
    "stage": "4-5",
-   "kind": "NO 0.1.0 BAR: geyser bubbles"
+   "kind": "defect; bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
@@ -991,6 +1015,30 @@
    "test": "T_UNDERLIQUID (NeedsPower and PowerOff fade with depth)",
    "stage": "4-5",
    "kind": "offline law"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "8b",
+   "words": "\"Geyser under water in pit: Bubbles look better.\"",
+   "bars": [
+    "inv_geyser_tub"
+   ],
+   "test": "T_GEYSER_TUB (GeyserTub_plume_is_bubbling_water) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "approval (KEEP); bar added by his card 2026-11-14"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-14.md",
+   "tag": "2026-11-14",
+   "row": "8c",
+   "words": "\"But it does not say Hot Tub currently even though it should (south of the B2 sign, I filled in your Geyser test pit).\"",
+   "bars": [
+    "inv_geyser_tub"
+   ],
+   "test": "sc_geyser_tub (Hot Tub on mouse-over; owed Stage 3)",
+   "stage": "6",
+   "kind": "defect; bar added by his card 2026-11-14"
   }
  ],
  "tests": {
@@ -3273,6 +3321,61 @@
     "entry_exists": true,
     "why": "offline only; awaiting ingest (validation_holding/README.md)"
    }
+  },
+  "sc_geyser_tub": {
+   "id": "sc_geyser_tub",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_geyser_tub",
+   "observes": "dig a pit on a geyser, fill it over the vent with water: bubbling water on the vent, Hot Tub on mouse-over, a pawn soaks and gains the bonus; a pit beside a geyser stays cold",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_geyser_tub; bridge held, minimal list)",
+   "why_game": "the Hot Tub mouse-over and a pawn choosing to soak exist only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "UNRUN: offline only, never the game in this run; entry function absent"
+   }
+  },
+  "T_LIQUID_COATING_OFFLINE": {
+   "id": "T_LIQUID_COATING_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "a pawn leaving a cell of oil, tar or blood gains that liquid's coating condition; a step into normal water removes it; plain water adds none",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_PitFillEffects.cs"
+   ],
+   "owed_under": "RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "sc_coating_wash": {
+   "id": "sc_coating_wash",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_coating_wash",
+   "observes": "a pawn wades through an oil pit and a blood pit: the condition shows in his health tab and the look is clean; he walks into water and both go",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_coating_wash; bridge held, minimal list)",
+   "why_game": "the pawn's drawn look and his health tab exist only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "UNRUN: offline only, never the game in this run; entry function absent"
+   }
   }
  },
  "bars": [
@@ -4776,6 +4879,64 @@
    "offline_green_today": false,
    "every_decider_runnable_today": false,
    "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_geyser_tub",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_GEYSER_TUB",
+    "PY_FLOWWORKS_GEYSER_TUB",
+    "sc_geyser_tub"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "2026-11-12#33a",
+    "2026-11-12#33b",
+    "2026-11-12#33c",
+    "2026-11-12#42",
+    "2026-11-13#1",
+    "2026-11-13#2",
+    "2026-11-13#4",
+    "2026-11-13#12",
+    "2026-11-13_evening#1",
+    "2026-11-14#8b",
+    "2026-11-14#8c"
+   ],
+   "offline_decides": [
+    "T_GEYSER_TUB",
+    "PY_FLOWWORKS_GEYSER_TUB"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_liquid_coating",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LIQUID_COATING_OFFLINE",
+    "sc_coating_wash"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "2026-11-13#8",
+    "2026-11-13#10",
+    "2026-11-13#11"
+   ],
+   "offline_decides": [
+    "T_LIQUID_COATING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
   }
  ]
 }

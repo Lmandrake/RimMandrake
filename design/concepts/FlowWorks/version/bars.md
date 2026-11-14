@@ -13,7 +13,7 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 | `design/concepts/FlowWorks/scenes.json` | `a550df656c8bb6d5738d9fad37bfd58712707159` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/FlowWorks/floor.json` | `3900148bd1edf3363db29730f066f6b82fc69271` | the quality floor lines every mod meets |
 | `design/concepts/FlowWorks/exam.json` | `b43a214ac27bbc15012422a085f9b6fa1cb905a3` | the Cold Reader exam of tree and sheet |
-| `design/concepts/FlowWorks/record.json` | `95690e151854b087c7d545f459f3f080b3d3813a` | the inventory of built capabilities (checklist rows too) |
+| `design/concepts/FlowWorks/record.json` | `f92658db8208733bc5a9b258a5552a34a6ff4502` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the two bars his card added (journal, kind bar-added) |
 | `design/concepts/FlowWorks/plan.md` | `2c6b947a6f2ddf615cb4877241d38da30165c2fb` | the build and proof plan |
 | `design/concepts/FlowWorks/stage.json` | `3af3420690554212deb6c62f32e8f2d4f9716c08` | the Designer's stage, budget and judge rounds (state, not a bar) |
 
@@ -21,7 +21,7 @@ Tree hash (`concept_tree.py hash`): `572198fed9a064df1898d695529f85fc343cfeb09ba
 
 ## Counts at the lock
 
-- Bars (the coverage checklist): **59** = 28 inventory rows + 31 tree leaves.
+- Bars (the coverage checklist): **61** = 30 inventory rows + 31 tree leaves (59 at the lock; `inv_geyser_tub` and `inv_liquid_coating` added by his card 2026-11-14).
 - Floor lines: 23 (23 applicable).
 - Exam: 17 of 17 scenarios right.
 - Waived lines: 0.
@@ -90,3 +90,5 @@ Tree hash (`concept_tree.py hash`): `572198fed9a064df1898d695529f85fc343cfeb09ba
 - `inv_prison_no_bed`
 - `inv_toss_flame`
 - `inv_raider_fetch_fallen`
+- `inv_geyser_tub` (added 2026-11-14, his card)
+- `inv_liquid_coating` (added 2026-11-14, his card)

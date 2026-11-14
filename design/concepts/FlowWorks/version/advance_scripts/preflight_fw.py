@@ -5,7 +5,7 @@ Check ids and record shape follow the pilot's preflight_ek.py (design/concepts/E
 import json, os, re, glob, sqlite3, subprocess, time, datetime
 
 T0 = time.time()
-ROOT = "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT.det"
+ROOT = os.environ.get("FW_ROOT") or os.path.abspath(os.path.join(os.path.dirname(__file__), *[".."] * 5))
 os.chdir(ROOT)
 C = "design/concepts/FlowWorks"
 FW = "src/RimMandrake/FlowWorks"

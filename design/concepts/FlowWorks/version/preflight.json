@@ -2,7 +2,7 @@
  "mod": "FlowWorks",
  "version": "0.1.0",
  "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
- "at": "2026-11-14T11:52:18-08:00",
+ "at": "2026-11-14T14:04:43-08:00",
  "dump": {
   "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
   "provenance": {
@@ -11,16 +11,16 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.24,
+ "seconds": 0.27,
  "verdict": "refuse",
- "refusals": 37,
+ "refusals": 48,
  "checks": [
   {
    "id": "C1_bars_complete",
    "what": "the table holds exactly the locked bars (record inventory + tree leaves)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "59 locked, 59 in table",
+   "evidence": "61 locked, 61 in table",
    "seconds": 0.0
   },
   {
@@ -28,7 +28,7 @@
    "what": "every bar names at least one deciding test, and every named test is defined",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "59 bars",
+   "evidence": "61 bars",
    "seconds": 0.0
   },
   {
@@ -36,7 +36,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "115 tests",
+   "evidence": "118 tests",
    "seconds": 0.0
   },
   {
@@ -44,7 +44,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "107 built tests",
+   "evidence": "109 built tests",
    "seconds": 0.0
   },
   {
@@ -52,7 +52,7 @@
    "what": "every file a test reads exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "273 reads",
+   "evidence": "278 reads",
    "seconds": 0.0
   },
   {
@@ -96,6 +96,13 @@
      "would_pass": "it runs and is green"
     },
     {
+     "line": "T_LIQUID_COATING_OFFLINE",
+     "evidence": "specified, not built (deciding 1 bars: inv_liquid_coating)",
+     "smallest_fix": "Stage 3 builds it, failing first",
+     "route": "Stage 3",
+     "would_pass": "it runs and is green"
+    },
+    {
      "line": "T_PRISON_CARE_OFFLINE",
      "evidence": "specified, not built (deciding 2 bars: inv_prison_no_bed, drained_hole_is_a_prison)",
      "smallest_fix": "Stage 3 builds it, failing first",
@@ -124,6 +131,13 @@
      "would_pass": "it runs and is green"
     },
     {
+     "line": "sc_coating_wash",
+     "evidence": "in-game scene: entry scene_coating_wash absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
      "line": "sc_fetch_fallen",
      "evidence": "in-game scene: entry scene_fetch_fallen absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
      "smallest_fix": "build the entry (owed under FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN)",
@@ -134,6 +148,13 @@
      "line": "sc_fill_front",
      "evidence": "in-game scene: entry scene_fill_front absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
      "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
+     "route": "Stage 3",
+     "would_pass": "the entry function exists"
+    },
+    {
+     "line": "sc_geyser_tub",
+     "evidence": "in-game scene: entry scene_geyser_tub absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+     "smallest_fix": "build the entry (owed under RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE)",
      "route": "Stage 3",
      "would_pass": "the entry function exists"
     },
@@ -215,7 +236,7 @@
      "would_pass": "the entry function exists"
     }
    ],
-   "evidence": "108 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
+   "evidence": "113 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
    "seconds": 0.0
   },
   {
@@ -223,7 +244,7 @@
    "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "29 in-game tests",
+   "evidence": "31 in-game tests",
    "seconds": 0.0
   },
   {
@@ -232,81 +253,144 @@
    "verdict": "refuse",
    "refusals": [
     {
-     "line": "2026-11-12#33a",
-     "evidence": "held statement has no 0.1.0 bar (offline selftest; NO 0.1.0 BAR: geyser hot tub (question for him))",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#1",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-12#33b",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-12#33c",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10b",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-12#42",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10c",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#1",
-     "evidence": "held statement has no 0.1.0 bar (approval; NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10d",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#2",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10e",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#4",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#10f",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#8",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: liquid coating on pawns (question for him))",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#11",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#10",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: liquid coating on pawns)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#12",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#11",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: washing off a coating)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#12b",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
-     "line": "2026-11-13#12",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser hot tub)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
+     "line": "2026-11-14#2",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#3",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#4",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#5",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#6",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#7",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#7b",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#8",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#9",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
+    },
+    {
+     "line": "2026-11-14#9b",
+     "evidence": "held row not placed",
+     "smallest_fix": "place it on a bar and a test",
+     "route": "Stage 1",
+     "would_pass": "placed"
     },
     {
      "line": "2026-11-13_dig_interface#2",
@@ -314,16 +398,9 @@
      "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
      "route": "owner question",
      "would_pass": "a bar or a next-version entry"
-    },
-    {
-     "line": "2026-11-13_evening#1",
-     "evidence": "held statement has no 0.1.0 bar (NO 0.1.0 BAR: geyser bubbles)",
-     "smallest_fix": "his call: Problem in 0.1.0 (a new bar) or Divergent (next_version)",
-     "route": "owner question",
-     "would_pass": "a bar or a next-version entry"
     }
    ],
-   "evidence": "81 held rows in the files, 81 placed",
+   "evidence": "103 held rows in the files, 83 placed",
    "seconds": 0.001
   },
   {
@@ -331,8 +408,8 @@
    "what": "every RM_/RUT_/RSW_ name in the scenes and the table exists in the def dump or the repo (C# class names accepted)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "12 names checked against 52790 defs/classes (dump defs.sqlite)",
-   "seconds": 0.165
+   "evidence": "13 names checked against 52793 defs/classes (dump defs.sqlite)",
+   "seconds": 0.185
   },
   {
    "id": "C10_mods_real",
@@ -348,7 +425,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 settings fields named",
-   "seconds": 0.029
+   "seconds": 0.031
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -386,8 +463,8 @@
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "7138 items known",
-   "seconds": 0.035
+   "evidence": "7153 items known",
+   "seconds": 0.037
   },
   {
    "id": "C15_tiers_consistent",

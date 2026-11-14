@@ -4,15 +4,15 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 
 ## Counts (measured)
 
-- bars: 59
-- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 51
+- bars: 61
+- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 52
 - with every deciding test runnable today: 25
-- with an offline deciding test, all green today: 44
-- with an offline deciding test that exists (built), green or red: 49
+- with an offline deciding test, all green today: 45
+- with an offline deciding test that exists (built), green or red: 50
 - with no offline deciding test at all: 2
 - decided offline only (no game needed): 6
-- in-game scenes: 29, entry exists 14, absent 15
-- offline tests: 78 built (ran today: 74 PASS, 4 red), 6 specified for Stage 3
+- in-game scenes: 31, entry exists 14, absent 17
+- offline tests: 78 built (ran today: 74 PASS, 4 red), 7 specified for Stage 3
 
 ## Bars
 
@@ -77,6 +77,8 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `wetting_is_not_flood` | tree | 6 | T_WETTING_OFFLINE, sc_wetting | - | none | no |
 | `wetness_probe` | tree | 4-5 | T_WETNESS_PROBE_OFFLINE | - | none | no |
 | `walk_moat_season` | tree | 6 | sc_walk | LOOK_STAGE8, T_SETTINGS_SWEEP_OFFLINE | some | no |
+| `inv_geyser_tub` | record | 6 | T_GEYSER_TUB, PY_FLOWWORKS_GEYSER_TUB, sc_geyser_tub | LOOK_STAGE8 | some | yes |
+| `inv_liquid_coating` | record | 6 | T_LIQUID_COATING_OFFLINE, sc_coating_wash | LOOK_STAGE8 | none | no |
 
 ## Tests
 
@@ -197,8 +199,11 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | `LOOK_STAGE8` | look | 8 | `(his walk)` | not run: Stage 8 |
 | `LOOK_BLIND_READER` | look | 6 | `(a blind reader agent on the scene captures)` | not run: needs captures from Stage 6 |
 | `OL_OWNER_LOOK_READS` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py` | not run (offline only); entry exists |
+| `sc_geyser_tub` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `T_LIQUID_COATING_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
+| `sc_coating_wash` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
 
-## Held look statements placed (81 rows)
+## Held look statements placed (83 rows)
 
 | row | bars | test | stage | kind |
 |---|---|---|---|---|
@@ -240,9 +245,9 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | 2026-11-12#30 | - | process: capture_list.json puts the deepest copy first (Stage 7 pre-human check) | 7 | process instruction, no bar |
 | 2026-11-12#31 | - | harness: src/RimMandrake/Utils/selftest_screenshot_mode_restored.py + OL_screenshot_mode_off | 4-5 and 6 | harness, no FlowWorks bar |
 | 2026-11-12#32 | - | harness: as row 31 | 4-5 and 6 | harness, no FlowWorks bar |
-| 2026-11-12#33a | - | T_GEYSER_TUB | 4-5 (live owed) | offline selftest; NO 0.1.0 BAR: geyser hot tub (question for him) |
-| 2026-11-12#33b | - | T_GEYSER_TUB + LOOK_STAGE8 (bubble art) | 4-5 and 8 | NO 0.1.0 BAR: geyser hot tub |
-| 2026-11-12#33c | - | T_GEYSER_TUB | 4-5 (live owed) | NO 0.1.0 BAR: geyser hot tub |
+| 2026-11-12#33a | inv_geyser_tub | T_GEYSER_TUB | 4-5 (live owed) | offline selftest; bar added by his card 2026-11-14 |
+| 2026-11-12#33b | inv_geyser_tub | T_GEYSER_TUB + LOOK_STAGE8 (bubble art) | 4-5 and 8 | defect; bar added by his card 2026-11-14 |
+| 2026-11-12#33c | inv_geyser_tub | T_GEYSER_TUB | 4-5 (live owed) | defect; bar added by his card 2026-11-14 |
 | 2026-11-12#34 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
 | 2026-11-12#35 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
 | 2026-11-12#36 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
@@ -251,25 +256,25 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | 2026-11-12#39 | fill_flows_along_canal | LOOK_STAGE8 (motion over time) | 8 | look only |
 | 2026-11-12#40 | fill_level_legible, inv_looks | T_UNDERLIQUID (specified parity: blue share rises with depth) + LOOK_STAGE8 | 4-5 and 8 | offline (specified) + look |
 | 2026-11-12#41 | fill_level_legible, inv_looks | T_UNDERLIQUID (specified parity: 4 m hides >= DeepOpacity) + LOOK_STAGE8 | 4-5 and 8 | offline (specified) + look |
-| 2026-11-12#42 | - | capture ring-luminance row of the geyser pit (specified) | 6 | NO 0.1.0 BAR: geyser hot tub |
+| 2026-11-12#42 | inv_geyser_tub | capture ring-luminance row of the geyser pit (specified) | 6 | defect; bar added by his card 2026-11-14 |
 | 2026-11-12#43 | fill_level_legible, inv_looks | T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_corpses_covered) + overlay hook | 6 | in-game state read + blocked hook |
 | 2026-11-12#44 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
 | 2026-11-12#45 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
 | 2026-11-12#46 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
 | 2026-11-12#47 | fill_level_legible, inv_looks | T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_opaque_hides on item Novel) | 6 | in-game state read (seen by the Conductor, not his words) |
 | 2026-11-12#48 | - | rule: the holding store itself (README.md) | - | rule, no bar |
-| 2026-11-13#1 | - | T_GEYSER_TUB + LOOK_STAGE8 | 8 | approval; NO 0.1.0 BAR: geyser hot tub |
-| 2026-11-13#2 | - | T_GEYSER_TUB (vent, plume and pool square share one cell) | 4-5 | NO 0.1.0 BAR: geyser hot tub |
+| 2026-11-13#1 | inv_geyser_tub | T_GEYSER_TUB + LOOK_STAGE8 | 8 | approval; bar added by his card 2026-11-14 |
+| 2026-11-13#2 | inv_geyser_tub | T_GEYSER_TUB (vent, plume and pool square share one cell) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13#3 | - | process: every scene reads as its caption (Stage 7 pre-human check) | 7 | look only, process |
-| 2026-11-13#4 | - | T_GEYSER_TUB + T_UNDERLIQUID (vent seen at its depth) | 4-5 | NO 0.1.0 BAR: geyser hot tub |
+| 2026-11-13#4 | inv_geyser_tub | T_GEYSER_TUB + T_UNDERLIQUID (vent seen at its depth) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13#5 | ways_in_and_out | T_PIT_ACCESS + staging reachability read | 4-5 and 6 | offline + in-game read |
 | 2026-11-13#6 | ways_in_and_out | T_PIT_ACCESS (LadderClimb_*) | 4-5 | approval kept for re-check: offline selftest |
 | 2026-11-13#7 | ways_in_and_out | T_PIT_ACCESS (PY_FLOWWORKS_DRAFTED_MOVE_PIT) + sc_ways_out | 4-5 and 6 | offline + in-game read |
-| 2026-11-13#8 | - | none until designed (filed to the Designer) | - | NO 0.1.0 BAR: liquid coating on pawns (question for him) |
+| 2026-11-13#8 | inv_liquid_coating | T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3) | 4-5 and 6 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13#9 | ways_in_and_out | pit exposure thought math (specified offline case in T_PIT_ACCESS) | 4-5 | offline (specified) |
-| 2026-11-13#10 | - | none until designed (filed to the Designer) | - | NO 0.1.0 BAR: liquid coating on pawns |
-| 2026-11-13#11 | - | none until designed (filed to the Designer) | - | NO 0.1.0 BAR: washing off a coating |
-| 2026-11-13#12 | - | T_GEYSER_TUB (selftest_flowworks_geyser_tub.py encodes the old radius rule; needs the edit) | 4-5 | NO 0.1.0 BAR: geyser hot tub |
+| 2026-11-13#10 | inv_liquid_coating | T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3) | 4-5 and 6 | defect; bar added by his card 2026-11-14 |
+| 2026-11-13#11 | inv_liquid_coating | T_LIQUID_COATING_OFFLINE + sc_coating_wash (owed Stage 3) | 4-5 and 6 | defect; bar added by his card 2026-11-14 |
+| 2026-11-13#12 | inv_geyser_tub | T_GEYSER_TUB + PY_FLOWWORKS_GEYSER_TUB (heat only through the water over the vent: C# GeyserTub_heat_only_through_the_water_over_the_vent, python check 16) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13#13 | fill_level_legible, inv_looks | LOOK_STAGE8 | 8 | approval, look only (taste) |
 | 2026-11-13#14 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | approval kept for re-check |
 | 2026-11-13#15 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | blocked on a proof hook |
@@ -278,11 +283,13 @@ Generated 2026-11-14T11:50:14-08:00 from `test_table.json` (the record; this is 
 | 2026-11-13#18 | - | harness: tier_cut_creature_check.py against proof-scene creatures | 2 | harness staging, no FlowWorks bar |
 | 2026-11-13_dig_interface#1 | canal_reads_as_dug, inv_dig_depth | T_DIG_TIME_ARITHMETIC (specified; his target not set) | 4-5 | offline arithmetic (specified); Problem-or-Divergent is his open call |
 | 2026-11-13_dig_interface#2 | - | none until the design is ruled (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION) | - | NO 0.1.0 BAR yet: dig interface consolidation, his open call |
-| 2026-11-13_evening#1 | - | T_GEYSER_TUB (fleck count, size, alpha in bounds; offline) | 4-5 | NO 0.1.0 BAR: geyser bubbles |
+| 2026-11-13_evening#1 | inv_geyser_tub | T_GEYSER_TUB (fleck count, size, alpha in bounds; offline) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13_evening#2 | fill_level_legible, inv_looks | T_UNDERLIQUID (things lying flat draw under the sheet) | 4-5 | offline law |
 | 2026-11-13_evening#3 | fill_level_legible, inv_looks, pit_reads_as_hole | T_UNDERLIQUID (every draw path enumerated; sprite inside the pit) | 4-5 | offline law |
 | 2026-11-13_evening#4 | fill_level_legible, inv_looks | T_UNDERLIQUID (overlays follow the depth rule) + OL_OWNER_LOOK_READS | 4-5 and 6 | offline law + in-game read |
 | 2026-11-13_evening#5 | fill_level_legible, inv_looks | T_UNDERLIQUID (NeedsPower and PowerOff fade with depth) | 4-5 | offline law |
+| 2026-11-14#8b | inv_geyser_tub | T_GEYSER_TUB (GeyserTub_plume_is_bubbling_water) + LOOK_STAGE8 | 4-5 and 8 | approval (KEEP); bar added by his card 2026-11-14 |
+| 2026-11-14#8c | inv_geyser_tub | sc_geyser_tub (Hot Tub on mouse-over; owed Stage 3) | 6 | defect; bar added by his card 2026-11-14 |
 
 ## Judge corrections
 

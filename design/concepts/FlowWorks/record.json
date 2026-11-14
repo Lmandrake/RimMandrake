@@ -921,6 +921,44 @@
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
    ],
    "speaker": "agent"
+  },
+  {
+   "id": "inv_geyser_tub",
+   "what": "A pit dug on a geyser keeps the geyser at its bottom; once water or another harmless liquid covers the vent it bubbles there as real bubbling water, the pit reads Hot Tub on mouse-over, and pawns nearby bathe in it for vanilla's small hot-spring bonus, while a geyser beside the water rather than under it heats nothing.",
+   "text": "Geyser hot tub: a geyser pit filled over the vent bubbles and is a hot tub",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_GeyserPit.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/JobDriver_RM_SoakInGeyserPool.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GeyserTubChecks.cs"
+   ],
+   "proof": "offline",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1794693278631337978"
+   ],
+   "source": [
+    "OWNER:1794693278631337978",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#33a"
+   ],
+   "speaker": "owner by card 2026-11-14"
+  },
+  {
+   "id": "inv_liquid_coating",
+   "what": "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off.",
+   "text": "Liquid coating on pawns reads as a condition and washes off in normal water",
+   "impl": "partial",
+   "search_scope": "src/RimMandrake/FlowWorks/Source: no coating condition found; the graphics he saw wash off on their own (2026-11-13 row 11)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1794693278631337978"
+   ],
+   "source": [
+    "OWNER:1794693278631337978",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md#10"
+   ],
+   "speaker": "owner by card 2026-11-14"
   }
  ],
  "contradictions": [

@@ -14,14 +14,17 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
   a northstar proof harness).
 - **Stage now:** Stage 1 finished by hand 2026-11-14 11:50 PST (`version/test_table.json`); Stage 2 by a throwaway
   program (`version/preflight.json`).
-- **Bars:** 59 = 28 inventory rows of `record.json` + 31 leaves of `tree.json` (`coverage_judge.required_ids()`).
+- **Bars:** 61 = 30 inventory rows of `record.json` + 31 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
+  lock, and his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (interventions below).
 - **Judge corrections open:** none. FlowWorks has no `coverage_verdict.json` and no `coverage_fixes.json`; the Arbiter
   signed the 59-row checklist covered on 2026-11-05 (`tree.json` coverage). So the pilot's "six corrections" step is
   empty here.
-- **Held look statements for this mod:** 81 rows in four files of `design/RimMandrake/validation_holding/` (2026-11-12:
-  56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5). [measured, row count]
-- **Waiting on:** a builder for Stage 3 "reconcile" (list at the end of the history), and four answers from him
-  ("Questions for him", none blocking). Stage 2 verdict: refuse, 37 refusals (`version/preflight.json`).
+- **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
+  56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
+  in `version/test_table.json`, and 20 rows of 2026-11-14 are not yet. [measured, preflight C8, 14:04 PST]
+- **Waiting on:** a builder for Stage 3 "reconcile" (list at the end of the history), and two answers from him
+  ("Questions for him", none blocking). Stage 2 verdict: refuse, 48 refusals (`version/preflight.json`, 2026-11-14
+  14:04 PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -82,6 +85,8 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 ### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
 
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind hold): Stage 3 is held while the look-fix builder (item `RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE`, run since 11:53 PST) edits FlowWorks water code; the other three mods' Stage 3 runs started at 12:15 without it. Source: the Conductor's brief for the Maturation page (12:20 PST) and the detached-run records.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_geyser_tub` added to 0.1.0: "A pit dug on a geyser keeps the geyser at its bottom; once water or another harmless liquid covers the vent it bubbles there as real bubbling water, the pit reads Hot Tub on mouse-over, and pawns nearby bathe in it for vanilla's small hot-spring bonus, while a geyser beside the water rather than under it heats nothing." Checked at Stage 4-5 by `T_GEYSER_TUB` (C# `GeyserTub_*`, 11 cases green) and `PY_FLOWWORKS_GEYSER_TUB` (green); at Stage 6 by scene `sc_geyser_tub` (entry absent, owed Stage 3, UNRUN); looked at Stage 8. Its 11 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_liquid_coating` added to 0.1.0: "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off." Checked at Stage 4-5 by `T_LIQUID_COATING_OFFLINE` and at Stage 6 by scene `sc_coating_wash`, both owed Stage 3 (no coating condition exists in the code; item `RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS`), the scene UNRUN; looked at Stage 8. Its 3 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
@@ -181,12 +186,12 @@ minute to copy the 541 MB dump from the Windows drive). **Verdict: refuse, 37 re
 4. Reach or delete the 2 never-reached C# cases; add leaves to `sc_pit_trap_raid` and `sc_garden` (neutral fixer).
 5. The specified held checks (GodLiquid naming and never-"No room", the deep-opacity and blue-with-depth parity rows, the
    drafted-move release ring): small each.
+6. The two bars his card added on 2026-11-14: the coating condition, its washing and `T_LIQUID_COATING_OFFLINE` (code
+   absent: medium), and the scene entries `scene_geyser_tub` and `scene_coating_wash`.
+7. Place the 20 held rows of 2026-11-14 that are not yet in the table (preflight C8).
 
 ### Questions for him (none blocks Stage 3)
 
-1. **The geyser hot tub** (9 held rows, his own 2026-11-12 request): it is built and tested (`GeyserTub_*`, 11 cases
-   green) but no 0.1.0 bar names it. Problem in 0.1.0 (a new bar) or Divergent (next version)?
-2. **Liquid coating on pawns and washing it off** (3 rows, filed to the Designer): same question.
 3. **The dig interface consolidation and the dig speed** ("daunting"; "it's slow"): already open with him on
    RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; the dig-time test waits for his target.
 4. **Melee shove into a pit** (proposed for the next version): his now-or-next call is still open.
