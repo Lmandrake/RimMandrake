@@ -1,7 +1,7 @@
 {
  "mod": "Pyrelands",
  "version": "0.1.0",
- "made": "2026-11-14T12:35:13-08:00",
+ "made": "2026-11-14T14:24:37-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -96,9 +96,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 12.27,
-    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 10.86s total -> OK",
-    "at": "2026-11-14T12:35:13-08:00",
+    "seconds": 14.53,
+    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.39s total -> OK",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -117,9 +117,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 80.2,
+    "seconds": 76.22,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -137,9 +137,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.13,
+    "seconds": 1.52,
     "last": "PASS: the real Postfix meets the spec, 15 mutants red",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -159,7 +159,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -177,9 +177,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.34,
+    "seconds": 0.42,
     "last": "  px = list(im.getdata())",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -197,9 +197,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.33,
+    "seconds": 2.49,
     "last": "8/8 passed",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -218,9 +218,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.45,
-    "last": "[pyre] 12:36:56 scorchfruit_produces PASS",
-    "at": "2026-11-14T12:35:13-08:00",
+    "seconds": 4.62,
+    "last": "[pyre] 14:26:17 scorchfruit_produces PASS",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -239,7 +239,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.89,
+    "seconds": 2.42,
     "last": "settings screens selftest: 851/856 ok; 14 rows for this mod, 0 red",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.04,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -296,9 +296,51 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.22,
     "last": "ALL PASS",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_FH_LETTER": {
+   "id": "T_FH_LETTER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
+   "observes": "the first-sighting letter: keyed strings for every key the code translates, the Mod Settings toggle ships on, is saved and drawn, and feeds the once-per-game gate with its saved flag",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/FireHawkRewards.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+    "src/RimMandrake/Pyrelands/Languages/"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "selftest_pyrelands_firehawk_letter: PASS",
+    "at": "2026-11-14T14:24:37-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_FH_CRESTFEATHER": {
+   "id": "T_FH_CRESTFEATHER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
+   "observes": "the crestfeather trophy: the def exists with label, Beauty and a MarketValue above the hawk's; the hawk's race carries the 35 % butcher-trophy extension and the postfix that rolls it is on",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/",
+    "src/RimMandrake/Pyrelands/Source/FireHawkRewards.cs"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "selftest_pyrelands_firehawk_crestfeather: PASS",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -318,9 +360,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.33,
+    "seconds": 1.63,
     "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 10 of 10 mutants red, the clean copy green",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -340,9 +382,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 24.88,
+    "seconds": 30.22,
     "last": "PASS: 6 def facts hold, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -351,7 +393,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
-   "observes": "the cut legs stay cut: no Firebreak terrain or chemfuel firebreak, no lightning breaker or fulgurite, no world-map herd migration in any description and herdMigrationAllowed false (g12)",
+   "observes": "the cut legs stay cut: no Firebreak terrain or chemfuel firebreak, no lightning breaker or fulgurite, no world-map herd migration in any description (g12)",
    "reads": [
     "src/RimMandrake/Pyrelands/Defs/",
     "src/RimMandrake/Pyrelands/About/",
@@ -363,9 +405,31 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.72,
-    "last": "PASS: the three cut legs stay cut, 9 of 9 mutants red, the clean copy green",
-    "at": "2026-11-14T12:35:13-08:00",
+    "seconds": 0.79,
+    "last": "PASS: the three cut legs stay cut, 8 of 8 mutants red, the clean copy green",
+    "at": "2026-11-14T14:24:37-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_ULLAI_HERD_MIGRATES": {
+   "id": "T_ULLAI_HERD_MIGRATES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py",
+   "observes": "RM_Ullai stays a herd vanilla herd migration can pick: herdAnimal true, an animal (not a tool user, organic flesh), herdMigrationAllowed never false through its parents or any patch, a PawnKindDef for it, and RM_Pyrelands lists it with commonality above 0 (IncidentWorker_HerdMigration.IsValidBiomeAnimal); 12 mutants red",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml",
+    "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+    "src/Rim*/**/Patches/",
+    "RimWorld Data/*/Defs/ThingDefs_Races/"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 6.49,
+    "last": "PASS: RM_Ullai is a herd vanilla herd migration can pick, 12 of 12 mutants red, the clean copy green",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -384,9 +448,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.21,
+    "seconds": 1.82,
     "last": "PASS: the probe reads cells part by part and refuses with the ash field off; 8 mutants red",
-    "at": "2026-11-14T12:35:13-08:00",
+    "at": "2026-11-14T14:24:37-08:00",
     "result": "PASS"
    }
   },
@@ -1137,6 +1201,44 @@
     "why": "live: this run is offline only; entry exists in gate_live_proof.py"
    }
   },
+  "firehawk_first_sighting_letter": {
+   "id": "firehawk_first_sighting_letter",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
+   "entry": "firehawk_first_sighting_letter",
+   "observes": "a staged hawk carrying an ember on the home map, unfogged: exactly one letter pointing at it; a second carrying hawk: still one; toggle off and re-armed: none",
+   "reads": [
+    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
+   ],
+   "command": "modcheck run Pyrelands --chains firehawk_first_sighting_letter   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
+   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
+   "why_full_list": null,
+   "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   }
+  },
+  "firehawk_crestfeather_yield": {
+   "id": "firehawk_crestfeather_yield",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
+   "entry": "firehawk_crestfeather_yield",
+   "observes": "400 fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: the 35 % yield within 4 sigma; the trophy's Beauty and MarketValue in the running game equal the def's",
+   "reads": [
+    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
+   ],
+   "command": "modcheck run Pyrelands --chains firehawk_crestfeather_yield   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
+   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
+   "why_full_list": null,
+   "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   }
+  },
   "RECORD_ART_SHEET": {
    "id": "RECORD_ART_SHEET",
    "kind": "record",
@@ -1150,7 +1252,7 @@
     "ran": true,
     "result": "PASS",
     "last": "infrastructure/state/ledger/events/OWNER.jsonl:1",
-    "at": "2026-11-14T12:35:13-08:00"
+    "at": "2026-11-14T14:24:37-08:00"
    }
   },
   "LOOK_STAGE8": {
@@ -1780,7 +1882,8 @@
     "sc_furnace_giant"
    ],
    "supports": [
-    "T_CUT_STAYS_CUT"
+    "T_CUT_STAYS_CUT",
+    "T_ULLAI_HERD_MIGRATES"
    ],
    "held": [],
    "offline_decides": [],
@@ -1937,6 +2040,30 @@
    "offline_decides": [
     "RECORD_ART_SHEET",
     "T_DEFS_OFFLINE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_firehawk_hunt_rewards",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FH_LETTER",
+    "T_FH_CRESTFEATHER",
+    "firehawk_first_sighting_letter",
+    "firehawk_crestfeather_yield"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FH_LETTER",
+    "T_FH_CRESTFEATHER"
    ],
    "offline_green_today": true,
    "every_decider_runnable_today": true,

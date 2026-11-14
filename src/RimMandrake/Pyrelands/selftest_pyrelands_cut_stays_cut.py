@@ -6,8 +6,9 @@
   lightning breaker  (inv_lightning_breaker; owner "Drop both" 2026-10-16) no breaker or fulgurite def, code or text
   world migration    (inv_ullai_herd_giant; his card 2026-10-23, commit 84cc81013d) no furnace-herd world object,
                      seeder, map-removal patch or setting; no shipped text (XML element text, not comments, in Defs,
-                     About, Languages and Patches) says "migrat"; no def of ours sets herdMigrationAllowed true;
-                     the shipped DLL holds none of the cut type names
+                     About, Languages and Patches) says "migrat"; the shipped DLL holds none of the cut type names.
+                     Vanilla map herd migration of ullai is kept (owner by card 2026-11-14, "Yes, let them cross"):
+                     herdMigrationAllowed is not a cut leg; T_ULLAI_HERD_MIGRATES checks the ullai can still be picked.
 Every planted fault (one per leg part) must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -41,7 +42,7 @@ def facts(root):
     def fact(name, bad, detail=""):
         out.append((name, not bad, "; ".join(bad)[:300] if bad else detail))
 
-    texts, defnames, herd_true, chem_floor, unparsed = [], [], [], [], []
+    texts, defnames, chem_floor, unparsed = [], [], [], []
     for f in _xml(root):
         try:
             r = ET.parse(f).getroot()
@@ -54,8 +55,6 @@ def facts(root):
                 texts.append((rel, e.tag, e.text))
             if e.tag == "defName" and e.text:
                 defnames.append((rel, e.text.strip()))
-            if e.tag == "herdMigrationAllowed" and (e.text or "").strip().lower() == "true":
-                herd_true.append(rel)
         for t in r.iter("TerrainDef"):
             cost = t.find("costList")
             if cost is not None and cost.find("Chemfuel") is not None:
@@ -67,7 +66,6 @@ def facts(root):
          "%d text elements" % len(texts))
     fact("no_breaker_text", ["%s <%s>" % (f, tag) for f, tag, x in texts
                              if re.search(r"lightning ?breaker|fulgurite|firebreak", x, re.I)])
-    fact("herd_migration_never_true", herd_true)
     src = {os.path.relpath(f, root): open(f, errors="replace").read()
            for f in glob.glob(os.path.join(root, MOD, "Source", "**", "*.cs"), recursive=True)}
     fact("no_cut_type_in_source", ["%s in %s" % (t, f) for f, s in src.items() for t in CUT_TYPES
@@ -105,8 +103,6 @@ MUTANTS = [
     ("fulgurite in text", MOD + "/Languages/English/Keyed/Pyrelands.xml", "</LanguageData>",
      "<RM_X>Lightning leaves fulgurite here.</RM_X></LanguageData>"),
     ("migration promised in About", MOD + "/About/About.xml", "</description>", " Herds migrate across the world.</description>"),
-    ("ullai migrate", MOD + "/Defs/ThingDefs_Races/RM_Ullai.xml", "<herdAnimal>true</herdAnimal>",
-     "<herdAnimal>true</herdAnimal><herdMigrationAllowed>true</herdMigrationAllowed>"),
     ("world herd class back", MOD + "/Source/WorldObject_RM_FurnaceHerd.cs", None,
      "namespace RimMandrake.Pyrelands { public class WorldObject_RM_FurnaceHerd { } }"),
     ("migration setting back", MOD + "/Source/RM_PyrelandsMod.cs", "public static float sandShovelYieldMultiplier",

@@ -26,10 +26,15 @@ off('T_FRUIT_CLEAR', SRC + 'selftest_pyrelands_fruit_clear.py', 'the scene harne
 off('T_SETTINGS_SCREENS', 'src/RimMandrake/Utils/selftest_settings_screens.py', 'the real Mod Settings screen: every setting grouped, resettable, scoped honestly, Reset-all present; mutants caught (Pyrelands rows only)', [SRC + 'Source/RM_PyrelandsMod.cs'], mod_rows='Pyrelands:')
 off('T_BARBSLINGER', 'src/RimMandrake/Utils/selftest_barbslinger_two_tails.py', 'the barbslinger art shows two tails', [SRC + 'Textures/', SRC + 'Defs/ThingDefs_Races/'])
 off('T_REVIEW_MAP', SRC + 'review/selftest_pyre_review_map.py', 'the review map plan: layout, coverage, every def a station names exists', [SRC + 'review/'])
+# the fire-hawk hunt rewards (bar inv_firehawk_hunt_rewards, his card 2026-11-14): tests built with the items 2026-11-13
+off('T_FH_LETTER', SRC + 'selftest_pyrelands_firehawk_letter.py', 'the first-sighting letter: keyed strings for every key the code translates, the Mod Settings toggle ships on, is saved and drawn, and feeds the once-per-game gate with its saved flag', [SRC + 'Source/FireHawkRewards.cs', SRC + 'Source/RM_PyrelandsMod.cs', SRC + 'Languages/'])
+off('T_FH_CRESTFEATHER', SRC + 'selftest_pyrelands_firehawk_crestfeather.py', 'the crestfeather trophy: the def exists with label, Beauty and a MarketValue above the hawk\'s; the hawk\'s race carries the 35 % butcher-trophy extension and the postfix that rolls it is on', [SRC + 'Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml', SRC + 'Defs/ThingDefs_Races/', SRC + 'Source/FireHawkRewards.cs'])
 # specified, built in Stage 3
 off('T_SETTINGS_SWEEP_OFFLINE', SRC + 'selftest_pyrelands_settings_sweep.py', 'the settings sweep moved off the game: every Scribe field of RM_PyrelandsSettings has its default equal to its initializer and to shipped behaviour; every mechanic switch has a reader in its mechanic outside the settings file; every mechanic entry point consults PyrelandsMechanicsGate.On (static half of g10); a mutant dropping a reader or flipping a default goes red', [SRC + 'Source/RM_PyrelandsMod.cs', SRC + 'Source/PyrelandsMechanicsGate.cs', SRC + 'Source/'], new=True, item='RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE (to file at Stage 3)')
 off('T_DEFS_OFFLINE', SRC + 'selftest_pyrelands_defs_offline.py', 'static def reads: the biome weather list holds no ordinary rain; the biome description says engineered; flamefang venom is tendable and immunizable with falling tended severity (g7, def half); furnace-beast body size 6 in the def and its heat-immunity patch targets it (g6, static half); the sand shovel yields 5 glass sand and leaves gravel', [SRC + 'Defs/', SRC + 'Source/Patch_FurnaceBeastHeatImmunity.cs', SRC + 'Source/RM_TerrainDig.cs'], new=True, item='RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE (to file at Stage 3)')
-off('T_CUT_STAYS_CUT', SRC + 'selftest_pyrelands_cut_stays_cut.py', 'the cut legs stay cut: no Firebreak terrain or chemfuel firebreak, no lightning breaker or fulgurite, no world-map herd migration in any description and herdMigrationAllowed false (g12)', [SRC + 'Defs/', SRC + 'About/', SRC + 'Languages/', SRC + 'Patches/'], new=True, item='RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT (to file at Stage 3)')
+off('T_CUT_STAYS_CUT', SRC + 'selftest_pyrelands_cut_stays_cut.py', 'the cut legs stay cut: no Firebreak terrain or chemfuel firebreak, no lightning breaker or fulgurite, no world-map herd migration in any description (g12)', [SRC + 'Defs/', SRC + 'About/', SRC + 'Languages/', SRC + 'Patches/'], new=True, item='RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT (to file at Stage 3)')
+# his card 2026-11-14 on ullai crossing the map in vanilla herd migrations: "Yes, let them cross"
+off('T_ULLAI_HERD_MIGRATES', SRC + 'selftest_pyrelands_ullai_herd_migration.py', 'RM_Ullai stays a herd vanilla herd migration can pick: herdAnimal true, an animal (not a tool user, organic flesh), herdMigrationAllowed never false through its parents or any patch, a PawnKindDef for it, and RM_Pyrelands lists it with commonality above 0 (IncidentWorker_HerdMigration.IsValidBiomeAnimal); 12 mutants red', [SRC + 'Defs/ThingDefs_Races/RM_Ullai.xml', SRC + 'Defs/BiomeDefs/Pyrelands.xml', 'src/Rim*/**/Patches/', 'RimWorld Data/*/Defs/ThingDefs_Races/'])
 off('T_ASH_PROBE_OFFLINE', SRC + 'selftest_pyrelands_ash_probe.py', 'PyrelandsAshField.ProbeCell reports fertility part by part (dry, watered, burn bonus) from RM_FireEcoKernel.AshFertility, and refuses with ashWaterFertilityEnabled off', [SRC + 'Source/PyrelandsAshField.cs', K + 'RM_FireEcoKernel.cs'], new=True, item='RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE (to file at Stage 3)')
 GAME = 'a running Pyrelands map with the biome\'s clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s'
 for c in scn['scenes']:
@@ -46,6 +51,11 @@ for fn in ['startup_and_def_wiring', 'mapgen_log', 'grass_cover', 'animal_census
         command='python.exe src\\RimMandrake\\Pyrelands\\validation.py --live %s' % fn, why_game=GAME, why_full_list=None, entry_exists=fn in valdefs)
 for fn, f in [('P_firefoam_aim', SRC + 'firefoam_aim_live_proof.py'), ('P_gate', SRC + 'gate_live_proof.py')]:
     T[fn] = dict(id=fn, kind='live_minimal', stage='6', file=f, observes='live proof script cited by record.json proof_evidence', reads=[f], command='python.exe ' + f.replace('/', '\\'), why_game=GAME, why_full_list=None, entry_exists=True)
+FHL = SRC + 'firehawk_rewards_live.py'; fhdefs = set(re.findall(r'^    def (\w+)\(', open(FHL).read(), re.M))
+for fn, obs in [('firehawk_first_sighting_letter', 'a staged hawk carrying an ember on the home map, unfogged: exactly one letter pointing at it; a second carrying hawk: still one; toggle off and re-armed: none'),
+                ('firehawk_crestfeather_yield', '400 fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: the 35 % yield within 4 sigma; the trophy\'s Beauty and MarketValue in the running game equal the def\'s')]:
+    T[fn] = dict(id=fn, kind='live_minimal', stage='6', file=FHL, entry=fn, observes=obs, reads=[FHL], command='modcheck run Pyrelands --chains ' + fn + '   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)',
+        why_game=GAME, why_full_list=None, entry_exists=fn in fhdefs)
 T['RECORD_ART_SHEET'] = dict(id='RECORD_ART_SHEET', kind='record', stage='2', file='infrastructure/state/ledger/events/', observes='his approval of the shipped art sheet exists on the ledger (OWNER:1792122659817386516)', reads=['infrastructure/state/ledger/events/'])
 T['LOOK_STAGE8'] = dict(id='LOOK_STAGE8', kind='look', stage='8', file='(his walk)', observes='his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9)', reads=[], runs_today={'ran': False, 'why': 'Stage 8'})
 # ---- bars: decides / supports (hand judgment)
@@ -82,7 +92,7 @@ B = [
  ('inv_firehawk_ember', ['sc_firehawk'], ['T_FUZZ']),
  ('inv_furnacebeast', ['sc_furnace', 'sc_furnace_bed', 'T_FURNACE_WARMTH'], ['T_FUZZ', 'T_DEFS_OFFLINE', 'P_furnace_room']),
  ('inv_burrowers_heat_dome', ['sc_ashwallow', 'sc_heat_dome'], ['T_BURN_COST']),
- ('inv_ullai_herd_giant', ['sc_ullai', 'sc_furnace_giant'], ['T_CUT_STAYS_CUT']),
+ ('inv_ullai_herd_giant', ['sc_ullai', 'sc_furnace_giant'], ['T_CUT_STAYS_CUT', 'T_ULLAI_HERD_MIGRATES']),
  ('inv_weather', ['sc_three_skies', 'sc_no_rain', 'T_DEFS_OFFLINE'], ['P_ashfall_weather_accumulation', 'P_ashfall_drifts', 'P_blackrain']),
  ('inv_firebreak_firefoam', ['T_CUT_STAYS_CUT'], []),
  ('inv_firefoam_sprayer', ['sc_firefoam_sprayer'], ['P_firefoam_aim']),
@@ -91,6 +101,7 @@ B = [
  ('inv_fire_rite_hook', ['sc_rite_hook_alone'], []),
  ('inv_settings_gate', ['T_SETTINGS_SWEEP_OFFLINE', 'T_SETTINGS_SCREENS', 'T_SITE'], ['sc_walk', 'P_gate']),
  ('inv_art_and_text', ['RECORD_ART_SHEET', 'T_DEFS_OFFLINE'], ['sc_three_skies', 'T_BARBSLINGER', 'T_TRACKS', 'T_REVIEW_MAP']),
+ ('inv_firehawk_hunt_rewards', ['T_FH_LETTER', 'T_FH_CRESTFEATHER', 'firehawk_first_sighting_letter', 'firehawk_crestfeather_yield'], ['T_FUZZ', 'LOOK_STAGE8']),
 ]
 # ---- measure: run every built offline test
 for t in T.values():
@@ -125,7 +136,7 @@ for bid, dec, sup in B:
     bars.append(dict(id=bid, source=src, kind=kind, proves_at=max((T[x]['stage'] for x in dec), key=lambda s: SO[s]), decides=dec, supports=sup, held=[],
         offline_decides=offd, offline_green_today=bool(offd) and all(runnable(x) for x in offd),
         every_decider_runnable_today=all(runnable(x) for x in dec), any_test_runnable_today=any(runnable(x) for x in dec + sup)))
-assert set(b['id'] for b in bars) == set(leaves) | set(inv) and len(bars) == 41, 'bar set differs from bars.md'
+assert set(b['id'] for b in bars) == set(leaves) | set(inv) and len(bars) == 42, 'bar set differs from bars.md'
 for b in bars:
     for x in b['decides'] + b['supports']: assert x in T, x
 out = dict(mod='Pyrelands', version='0.1.0', made=NOW, made_by='rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)',
