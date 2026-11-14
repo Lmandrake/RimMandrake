@@ -55,7 +55,7 @@ namespace RimMandrake.ExplosiveKnockback
             "mass_and_power_250_x2",
             // 2026-11-14 Stage 3 reconcile (Maturation Pipeline pilot): the locked scenes.json entry points. NOT YET RUN LIVE.
             "pawn_hits_pawn", "only_explosions", "open_storage", "no_cross_ordered", "spared_states", "blast_kinds",
-            "goods_fly_wild", "gas_chain", "gas_census", "pawn_arc",
+            "goods_fly_wild", "gas_chain", "gas_census", "pawn_arc", "pit_goods_fetch",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -2080,6 +2080,101 @@ namespace RimMandrake.ExplosiveKnockback
                         return Result(sc, arc && onPlanned && hitWalker && stun && rehaul && control, "arcTicks=" + bt + " planned=" + planned.x + "," + planned.z
                             + " onPlanned=" + onPlanned + " hitWalker=" + hitWalker + " stun=" + stun + " rehaul=" + rehaul + " teleportControlClean=" + control
                             + " (step 900 ticks)");
+                    };
+                    return null;
+
+                case "pit_goods_fetch":
+                    {
+                        // sc_pit_fetch: a stack and a corpse on a pit floor with a lowered ladder; a stockpile and a corpse
+                        // stockpile outside; one free hauler. Control: the same in a second pit whose ladder is raised.
+                        if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, 2, -1), 3, 3) || !Pit(O(s, -5, -1), 3, 3))
+                        {
+                            return "FlowWorks not loaded / dig failed";
+                        }
+                        ThingDef ld = DefDatabase<ThingDef>.GetNamedSilentFail("RM_LadderPortable");
+                        var lowered = AccessTools.Method(AccessTools.TypeByName("RimMandrake.FlowWorks.RM_CliffMask"), "LoweredLadderAt", new[] { typeof(Map), typeof(IntVec3) });
+                        if (ld == null || lowered == null)
+                        {
+                            return "the FlowWorks ladder def or RM_CliffMask.LoweredLadderAt is not loaded";
+                        }
+                        Thing Ladder(IntVec3 rim, IntVec3 edge)
+                        {
+                            foreach (IntVec3 at in new[] { rim, edge })
+                            {
+                                foreach (Rot4 r in new[] { Rot4.East, Rot4.West, Rot4.North, Rot4.South })
+                                {
+                                    Thing l = GenSpawn.Spawn(ThingMaker.MakeThing(ld, ld.MadeFromStuff ? GenStuff.DefaultStuffFor(ld) : null), at, Map, r);
+                                    l.SetFactionDirect(Faction.OfPlayer);
+                                    if ((bool)lowered.Invoke(null, new object[] { Map, rim }) || (bool)lowered.Invoke(null, new object[] { Map, edge }))
+                                    {
+                                        return l;
+                                    }
+                                    l.Destroy();
+                                }
+                            }
+                            return null;
+                        }
+                        Thing lad = Ladder(O(s, 1, 0), O(s, 2, 0));
+                        Thing ctl = Ladder(O(s, -6, 0), O(s, -5, 0));
+                        if (lad == null || ctl == null)
+                        {
+                            return "no placement of RM_LadderPortable reads as a lowered ladder at the pit rim";
+                        }
+                        ThingComp comp = ((ThingWithComps)ctl).AllComps.FirstOrDefault(c => c.GetType().Name == "RM_CompLadder");
+                        if (comp == null)
+                        {
+                            return "the control ladder has no RM_CompLadder";
+                        }
+                        Traverse.Create(comp).Field("raised").SetValue(true);
+                        Traverse.Create(comp).Field("wantRaised").SetValue(true);
+                        Item(s, "st", "Steel", 20, O(s, 3, 0));
+                        Item(s, "cst", "Steel", 20, O(s, -4, 0));
+                        Pawn dead = Colonist(s, "dead", O(s, 3, 1), drafted: false);
+                        dead.Kill(null);
+                        Track(s, "corpse", dead.Corpse);
+                        var zones = new List<Zone>();
+                        var za = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, Map.zoneManager);
+                        Map.zoneManager.RegisterZone(za);
+                        za.AddCell(O(s, 0, 5));
+                        var zb = new Zone_Stockpile(StorageSettingsPreset.DumpingStockpile, Map.zoneManager);
+                        Map.zoneManager.RegisterZone(zb);
+                        zb.AddCell(O(s, 2, 5));
+                        zones.Add(za);
+                        zones.Add(zb);
+                        Action prev = s.restore;
+                        s.restore = () => { foreach (Zone z in zones) if (z.zoneManager != null) z.Delete(); prev?.Invoke(); };
+                        if (!za.GetStoreSettings().AllowedToAccept(s.things["st"]) || !zb.GetStoreSettings().AllowedToAccept(s.things["corpse"]))
+                        {
+                            return "a stockpile does not accept its thing";
+                        }
+                        Pawn h = Colonist(s, "h", O(s, 0, 3), drafted: false);
+                        if (h.WorkTypeIsDisabled(WorkTypeDefOf.Hauling))
+                        {
+                            return "the hauler cannot haul";
+                        }
+                        Map m0 = Map;
+                        for (int d = 30; d <= 60000; d += 30)
+                        {
+                            RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () =>
+                            {
+                                if (m0 == Find.CurrentMap && h.Spawned && RM_KnockbackCompat.IsSuperdeep(m0, h.Position))
+                                {
+                                    s.numbers["haulerInPit"] = 1;
+                                }
+                            }));
+                        }
+                    }
+                    s.verdict = sc =>
+                    {
+                        Thing st = sc.things["st"], cst = sc.things["cst"], corpse = sc.things["corpse"];
+                        Map m = Map;
+                        bool stOut = st.Spawned && !RM_KnockbackCompat.IsSuperdeep(m, st.Position) && m.zoneManager.ZoneAt(st.Position) is Zone_Stockpile;
+                        bool corpseOut = corpse.Destroyed ? false : corpse.Spawned ? !RM_KnockbackCompat.IsSuperdeep(m, corpse.Position)
+                            && m.zoneManager.ZoneAt(corpse.Position) is Zone_Stockpile : corpse.ParentHolder is Building_Grave;
+                        bool ladder = sc.numbers.ContainsKey("haulerInPit");
+                        bool control = cst.Spawned && RM_KnockbackCompat.IsSuperdeep(m, cst.Position);
+                        return Result(sc, stOut && corpseOut && ladder && control, "stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + ladder
+                            + " raised-ladder control stack still in its pit=" + control + " (step up to 60000 ticks)");
                     };
                     return null;
 

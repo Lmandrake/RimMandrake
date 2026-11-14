@@ -1,7 +1,7 @@
 {
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
- "made": "2026-11-14T12:39:16-08:00",
+ "made": "2026-11-14T12:42:19-08:00",
  "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -111,9 +111,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.04,
+    "seconds": 1.11,
     "last": "explosive knockback kernel: 152/152 passed",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -132,9 +132,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.8,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.28s total -> OK",
-    "at": "2026-11-14T12:39:16-08:00",
+    "seconds": 3.04,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.33s total -> OK",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -154,9 +154,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.17,
+    "seconds": 1.74,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -174,9 +174,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 36.95,
+    "seconds": 34.25,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -194,9 +194,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.19,
+    "seconds": 8.43,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -216,9 +216,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.17,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.67,
+    "seconds": 3.64,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 6.88,
+    "seconds": 5.78,
     "last": "<unknown>:2342: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.91,
+    "seconds": 1.78,
     "last": "settings screens selftest: 851/856 ok",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"
    }
   },
@@ -297,9 +297,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
+    "seconds": 0.04,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -322,9 +322,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.03,
+    "seconds": 1.0,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught | PASS",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -344,9 +344,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.86,
+    "seconds": 0.84,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -367,7 +367,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback gas clumps: PASS (0 faults, 6/6 planted faults caught)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -388,9 +388,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.02,
+    "seconds": 1.05,
     "last": "explosive knockback kernel: 152/152 passed",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -412,7 +412,7 @@
     "rc": 0,
     "seconds": 0.13,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-14T12:39:16-08:00",
+    "at": "2026-11-14T12:42:19-08:00",
     "result": "PASS"
    }
   },
@@ -1101,15 +1101,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 60000   (proof build, minimal list)",
    "why_game": "a hauler's job and ladder route over up to a day of game time",
    "why_full_list": null,
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "the ladder is found by trying placements until FlowWorks reads it lowered (INVALID if none); 'the hauler used the ladder' is read as the hauler standing on a pit cell at a 30-tick sample",
    "item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_frame_probe_check": {
@@ -2185,8 +2185,8 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "no_teleport",
@@ -2554,8 +2554,8 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_hose_drop",

@@ -2,7 +2,7 @@
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
  "program": "preflight_ek.py (throwaway, pilot row 3)",
- "at": "2026-11-14T12:40:26-08:00",
+ "at": "2026-11-14T12:43:26-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,9 +16,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 3.3,
+ "seconds": 3.32,
  "verdict": "refuse",
- "refusals": 7,
+ "refusals": 6,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -78,12 +78,11 @@
     "sc_hose_drop (entry RM_KnockbackProof.cs::hose_carry_drop absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides hose_drops_at_takeoff, inv_hose_drop",
     "sc_settings_sweep (entry RM_KnockbackProof.cs::settings_sweep absent; item RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS) decides settings_scale_and_switch, inv_settings, inv_mass_limit_skip",
     "sc_closed_containers (entry RM_KnockbackProof.cs::closed_containers absent; item RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED) decides closed_container_holds, inv_closed_guard, inv_container_shove",
-    "sc_pit_fetch (entry RM_KnockbackProof.cs::pit_goods_fetch absent; item RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE) decides pit_goods_fetched, inv_pit_floor_haul",
     "sc_frame_probe_check (entry RM_KnockbackProof.cs::frame_probe_selfcheck absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides frame_time_probe",
     "sc_barrage_perf (entry RM_KnockbackProof.cs::barrage_perf absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides barrage_frame_budget, inv_perf_all_fly",
     "sc_walk_raid (entry validation.py::walk_storeroom_raid absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides walk_storeroom_raid"
    ],
-   "evidence": "7 deciding tests not runnable; 0 built since the table was written (table flags stale: none)",
+   "evidence": "6 deciding tests not runnable; 0 built since the table was written (table flags stale: none)",
    "smallest_fix": "build each named test, watched failing first, under its named item",
    "route": "Stage 3 (reconcile): the bar is sound, the test is owed",
    "seconds": 0.001
@@ -106,7 +105,7 @@
    "evidence": "2 held rows found by file name",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.001
+   "seconds": 0.0
   },
   {
    "id": "C9_defs_real",
@@ -116,7 +115,7 @@
    "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 2.673
+   "seconds": 2.768
   },
   {
    "id": "C10_mods_real",
@@ -126,7 +125,7 @@
    "evidence": "6 named: lwm.deepstorage, mandrake.rm.cauldron, mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards, mandrake.rm.flowworks, mandrake.rsw.armoury",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.002
   },
   {
    "id": "C11_settings_fields_real",
@@ -146,7 +145,7 @@
    "evidence": "8 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.015
+   "seconds": 0.007
   },
   {
    "id": "C13_mass_scene_consistent",
@@ -176,7 +175,7 @@
    "evidence": "10 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.559
+   "seconds": 0.497
   }
  ]
 }
