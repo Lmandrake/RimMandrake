@@ -228,7 +228,7 @@ unplaced = [("%s#%s" % (os.path.basename(f), r)) for f, r in held_hits if (f, r)
 check("held_statements_placed", not unplaced, len(held_hits), line=", ".join(unplaced),
       evidence="a held row names GSS but the table places it nowhere", smallest_fix="place it on a bar and a test", return_to="1")
 checks.append(dict(check="held_statements_without_a_bar", result="note", n=len(table["held_statements"]),
-                   note="all three sit on the nearest bars; none of the 47 says cords draw beneath items (journal question 2)"))
+                   note="all three sit on cords_draw_under_things, the bar his card 2026-11-14 added"))
 
 # 10. the locked bytes: current blobs against bars.md's pins
 pins = re.findall(r"\| `(design/concepts/GimmeSomeSlack/[^`]+)` \| `([0-9a-f]{40})` \|", open(C + "version/bars.md").read())

@@ -1,14 +1,14 @@
 # Gimme Some Slack 0.1.0: test-and-stage table
 
-Generated 2026-11-14T12:58:08-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-14T14:10:22-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
-- bars: 47
-- with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 47
+- bars: 48
+- with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 48
 - with every deciding test runnable today: 46
-- with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 47
-- with an offline deciding test, all green today: 21
+- with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 48
+- with an offline deciding test, all green today: 22
 - decided offline only (no game needed): 2
 - in-game scenes: 26 named in scenes.json plus 1 specified here; entry exists 26, absent 1
 - older proof rows (supports): 166 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 166; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
@@ -40,6 +40,7 @@ Generated 2026-11-14T12:58:08-08:00 from `test_table.json` (the record; this is 
 | `no_hose` | record | 4-5 | T_NO_HOSE | - | 0 | all |
 | `floor_end_shock` | record | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 7 | all |
 | `shock_reach_setting` | both | 6 | T_SHOCK_RULE_OFFLINE, sc_shock_reach | - | 3 | all |
+| `cords_draw_under_things` | record | 6 | T_CORE, sc_cords_under_items | T_FW_PIT_DRAW_CENSUS, LOOK_STAGE8 | 0 | some |
 | `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
 | `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP | 19 | all |
 | `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, sc_no_sharp_turn | - | 1 | all |
@@ -128,9 +129,9 @@ Generated 2026-11-14T12:58:08-08:00 from `test_table.json` (the record; this is 
 
 ## Held look statements placed
 
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 34, "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit." -> bars drawing_true_to_grid, walk_scavenger_base; test T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified) (stage 4-5 then 6, offline census (runs today) + in-game draw-order read (specified; no bar of the 47 says it, see journal question 2))
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 36, "The wires are also above the items and furniture otherwise, likely all the same problem." -> bars drawing_true_to_grid, walk_scavenger_base; test T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified) (stage 4-5 then 6, as row 34)
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md` row 16, "[Image #8] Also, the GSS cables are now correctly below the items." -> bars drawing_true_to_grid, walk_scavenger_base; test sc_cords_under_items (specified) keeps it so (stage 6, approval: the regression the in-game read guards)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 34, "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3) (stage 4-5 then 6, defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 36, "The wires are also above the items and furniture otherwise, likely all the same problem." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3) (stage 4-5 then 6, as row 34)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md` row 16, "[Image #8] Also, the GSS cables are now correctly below the items." -> bars cords_draw_under_things; test sc_cords_under_items (owed Stage 3) keeps it so (stage 6, approval: the regression the in-game read guards; bar added by his card 2026-11-14)
 
 ## The five judge corrections (rm-coverage-judge-1794599377), checked against the current text
 

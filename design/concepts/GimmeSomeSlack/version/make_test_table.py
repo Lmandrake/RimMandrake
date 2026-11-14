@@ -139,6 +139,8 @@ OFF_DECIDES = {
     "break_ends_live_dead": ["T_CORE"], "power_theft": ["T_CORE"], "four_styles": ["T_CORE"],
     "mod_settings": ["T_SETTINGS_SWEEP_OFFLINE"], "pipe_pole_switch": ["T_CORE"], "no_hose": ["T_NO_HOSE"],
     "floor_end_shock": ["T_SHOCK_RULE_OFFLINE"],
+    # added by his card 2026-11-14 (OWNER:1794693278631337978): T_CORE's slideunder "under" check (cord layer below Building)
+    "cords_draw_under_things": ["T_CORE"],
 }
 OFF_SUPPORTS = {
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
@@ -152,6 +154,7 @@ OFF_SUPPORTS = {
     "connectivity_truth": ["T_MATRIX"], "rebuild_cost": ["T_CORE"], "overhead_spans": ["T_CORE"], "downed_spans": ["T_CORE"],
     "fallen_wire_shock": ["T_SHOCK_OUTLIVES", "T_SHOCK_OUTLIVES_BINDING", "T_SHOCK_BITES_BINDING", "T_SHOCK_RULE_OFFLINE"],
     "mod_settings": ["T_CORE", "T_GATE"], "four_styles": ["T_GATE", "T_JUNCTION_ART"], "shock_reach_setting": [],
+    "cords_draw_under_things": ["T_FW_PIT_DRAW_CENSUS"],
 }
 for k, (_f, _o, bars) in HARNESS.items():
     for b in bars:
@@ -162,16 +165,16 @@ H = "design/RimMandrake/validation_holding/"
 HELD = [
     dict(file=H + "owner_look_defects_2026-11-12.md", row=34,
          words="Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit.",
-         bars=["drawing_true_to_grid", "walk_scavenger_base"], test="T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified)",
-         stage="4-5 then 6", kind="offline census (runs today) + in-game draw-order read (specified; no bar of the 47 says it, see journal question 2)"),
+         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3)",
+         stage="4-5 then 6", kind="defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14"),
     dict(file=H + "owner_look_defects_2026-11-12.md", row=36,
          words="The wires are also above the items and furniture otherwise, likely all the same problem.",
-         bars=["drawing_true_to_grid", "walk_scavenger_base"], test="T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified)",
+         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3)",
          stage="4-5 then 6", kind="as row 34"),
     dict(file=H + "owner_look_defects_2026-11-13.md", row=16,
          words="[Image #8] Also, the GSS cables are now correctly below the items.",
-         bars=["drawing_true_to_grid", "walk_scavenger_base"], test="sc_cords_under_items (specified) keeps it so",
-         stage="6", kind="approval: the regression the in-game read guards"),
+         bars=["cords_draw_under_things"], test="sc_cords_under_items (owed Stage 3) keeps it so",
+         stage="6", kind="approval: the regression the in-game read guards; bar added by his card 2026-11-14"),
 ]
 
 CORRECTIONS = [  # rm-coverage-judge-1794599377's five gaps; needles are text the fix put in scenes.json
@@ -257,7 +260,9 @@ tests["sc_cords_under_items"] = dict(
     "the cord's draw altitude and queue read below the thing's, the junction piece too; control: a cord forced to the overhead queue reads above",
     reads=[G + "Source/CordUnderLiquid.cs", G + "Source/SectionLayer_RM_MessyCords.cs"], held=True,
     why_game="draw order is a property of the running renderer; the offline census proves the routing, not the drawn result",
-    runs_today=dict(ran=False, why="specified for the held statements; not in scenes.json (journal question 2)"))
+    command="python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py  (entry scene_cords_under_items; bridge held, minimal list)",
+    owed_under="GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+    runs_today=dict(ran=False, why="UNRUN: offline only, never the game in this run; entry function absent (owed Stage 3)"))
 tests["LOOK_STAGE8"] = dict(id="LOOK_STAGE8", kind="look", stage="8", file=None, entry=None, entry_exists=False,
                             observes="his walk of a scavenger base on his full list, with a mid-way reload",
                             reads=[C + "sheet.md", C + "version/vision.md"], why_game="his eye is the instrument",
@@ -323,12 +328,16 @@ for bid in ids:
     decides = list(dict.fromkeys(OFF_DECIDES.get(bid, []) + sc))
     if kind == "walk":
         decides.append("LOOK_STAGE8")
+    if bid == "cords_draw_under_things":  # his card 2026-11-14: the in-game draw-order read decides, his walk supports
+        decides.append("sc_cords_under_items")
     leaves_here = [bid] if is_leaf else sorted({r for s in sc for r in (SCENE[s].get("requirement") or [])})
     sup = list(OFF_SUPPORTS.get(bid, []))
     for l in leaves_here:
         sup += rows_for_leaf.get(l, [])
     if bid in ("drawing_true_to_grid", "walk_scavenger_base"):
         sup.append("sc_cords_under_items")
+    if bid == "cords_draw_under_things":
+        sup.append("LOOK_STAGE8")
     sup = [s for s in dict.fromkeys(sup) if s not in decides]
     if not decides:
         decides = []

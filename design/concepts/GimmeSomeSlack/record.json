@@ -713,6 +713,26 @@
     "OWNER:1793996551266756043",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs"
    ]
+  },
+  {
+   "id": "cords_draw_under_things",
+   "what": "A floor cord, and the strip or connector at its junction, draws beneath any item, building or furniture standing over it, a battery included, on dry floor and under the liquid of a pit alike, so nothing a player put down ever has a wire showing through it.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordSlideUnderChecks.cs"
+   ],
+   "proof": "offline",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794693278631337978",
+   "source": [
+    "OWNER:1794693278631337978",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#34",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#36",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md#16"
+   ],
+   "speaker": "owner by card 2026-11-14"
   }
  ],
  "contradictions": [

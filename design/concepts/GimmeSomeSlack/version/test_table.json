@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "made": "2026-11-14T12:58:08-08:00",
+ "made": "2026-11-14T14:10:22-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -18,22 +18,20 @@
    "row": 34,
    "words": "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit.",
    "bars": [
-    "drawing_true_to_grid",
-    "walk_scavenger_base"
+    "cords_draw_under_things"
    ],
-   "test": "T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified)",
+   "test": "T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3)",
    "stage": "4-5 then 6",
-   "kind": "offline census (runs today) + in-game draw-order read (specified; no bar of the 47 says it, see journal question 2)"
+   "kind": "defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
    "row": 36,
    "words": "The wires are also above the items and furniture otherwise, likely all the same problem.",
    "bars": [
-    "drawing_true_to_grid",
-    "walk_scavenger_base"
+    "cords_draw_under_things"
    ],
-   "test": "T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (specified)",
+   "test": "T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3)",
    "stage": "4-5 then 6",
    "kind": "as row 34"
   },
@@ -42,12 +40,11 @@
    "row": 16,
    "words": "[Image #8] Also, the GSS cables are now correctly below the items.",
    "bars": [
-    "drawing_true_to_grid",
-    "walk_scavenger_base"
+    "cords_draw_under_things"
    ],
-   "test": "sc_cords_under_items (specified) keeps it so",
+   "test": "sc_cords_under_items (owed Stage 3) keeps it so",
    "stage": "6",
-   "kind": "approval: the regression the in-game read guards"
+   "kind": "approval: the regression the in-game read guards; bar added by his card 2026-11-14"
   }
  ],
  "corrections": [
@@ -1604,9 +1601,11 @@
    ],
    "held": true,
    "why_game": "draw order is a property of the running renderer; the offline census proves the routing, not the drawn result",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py  (entry scene_cords_under_items; bridge held, minimal list)",
+   "owed_under": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "runs_today": {
     "ran": false,
-    "why": "specified for the held statements; not in scenes.json (journal question 2)"
+    "why": "UNRUN: offline only, never the game in this run; entry function absent (owed Stage 3)"
    }
   },
   "LOOK_STAGE8": {
@@ -6530,6 +6529,32 @@
    "any_decider_runnable_today": true
   },
   {
+   "id": "cords_draw_under_things",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_CORE",
+    "sc_cords_under_items"
+   ],
+   "supports": [
+    "T_FW_PIT_DRAW_CENSUS",
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "owner_look_defects_2026-11-12.md#34",
+    "owner_look_defects_2026-11-12.md#36",
+    "owner_look_defects_2026-11-13.md#16"
+   ],
+   "offline_decides": [
+    "T_CORE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
+  },
+  {
    "id": "conduit_invisible",
    "source": "tree.json",
    "kind": "experience",
@@ -6799,11 +6824,7 @@
     "P_SL3_after_load_census_equal",
     "sc_cords_under_items"
    ],
-   "held": [
-    "owner_look_defects_2026-11-12.md#34",
-    "owner_look_defects_2026-11-12.md#36",
-    "owner_look_defects_2026-11-13.md#16"
-   ],
+   "held": [],
    "offline_decides": [
     "T_CORE"
    ],
@@ -7265,11 +7286,7 @@
     "P_Z_log_budget",
     "sc_cords_under_items"
    ],
-   "held": [
-    "owner_look_defects_2026-11-12.md#34",
-    "owner_look_defects_2026-11-12.md#36",
-    "owner_look_defects_2026-11-13.md#16"
-   ],
+   "held": [],
    "offline_decides": [],
    "offline_green_today": false,
    "every_decider_runnable_today": false,

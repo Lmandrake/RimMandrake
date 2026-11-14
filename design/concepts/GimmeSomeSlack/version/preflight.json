@@ -1,9 +1,9 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "ran_at": "2026-11-14T12:58:14-0800",
- "seconds": 5.63,
- "dump_read_seconds": 5.19,
+ "ran_at": "2026-11-14T14:10:55-0800",
+ "seconds": 5.08,
+ "dump_read_seconds": 4.67,
  "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
  "verdict": "refuse",
@@ -11,12 +11,12 @@
   {
    "check": "bars_match_required_ids",
    "result": "pass",
-   "n": 47
+   "n": 48
   },
   {
    "check": "every_bar_has_a_test",
    "result": "pass",
-   "n": 47
+   "n": 48
   },
   {
    "check": "every_test_names_its_stage",
@@ -26,7 +26,7 @@
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 688
+   "n": 692
   },
   {
    "check": "game_tests_say_why",
@@ -46,12 +46,12 @@
   {
    "check": "inventory_evidence_exists",
    "result": "pass",
-   "n": 69
+   "n": 72
   },
   {
    "check": "built_mod_decider_entries_exist",
-   "result": "pass",
-   "n": 26
+   "result": "refuse",
+   "n": 27
   },
   {
    "check": "built_mod_offline_deciders_run",
@@ -66,7 +66,7 @@
   {
    "check": "named_defs_and_symbols_real",
    "result": "pass",
-   "n": 59
+   "n": 60
   },
   {
    "check": "our_defs_in_dump",
@@ -98,7 +98,7 @@
    "check": "held_statements_without_a_bar",
    "result": "note",
    "n": 3,
-   "note": "all three sit on the nearest bars; none of the 47 says cords draw beneath items (journal question 2)"
+   "note": "all three sit on cords_draw_under_things, the bar his card 2026-11-14 added"
   },
   {
    "check": "lock_pins_current",
@@ -107,6 +107,13 @@
   }
  ],
  "refusals": [
+  {
+   "check": "built_mod_decider_entries_exist",
+   "line": "sc_cords_under_items",
+   "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
+   "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
+   "return_to": "3"
+  },
   {
    "check": "built_offline_tests_green",
    "line": "T_CORD_GEOMETRY_OFFLINE",
@@ -152,6 +159,7 @@
    "CordGraph",
    "CordShapeAudit",
    "CordSlideUnderChecks",
+   "CordUnderLiquid",
    "GimmeSomeSlackMod",
    "GssSessionReset",
    "PowerStrip",

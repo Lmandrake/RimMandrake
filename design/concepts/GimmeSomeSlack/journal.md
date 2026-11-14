@@ -14,13 +14,16 @@ mods read alike.
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4508 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
 - **Stage now:** Stage 3 (reconcile) done 2026-11-14 13:05 PST, offline only. Preflight: 4 refusals before, **1 after**
-  (`built_offline_tests_green`: `T_CORD_GEOMETRY_OFFLINE` red, filed `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`). [measured]
-  Next: decide that red (mod or criterion), then Stages 4 and 5 (blind challenge), then Stage 6 runs the 26 scenes live.
-- **Bars:** 47 (22 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 48 rows
-  name 47 ids). The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), made by the
-  throwaway `version/make_test_table.py`. Of 47 bars: 18 have a deciding test runnable today, 2 have every deciding test
-  runnable (both `no_hose` bars), 43 have some runnable evidence when the older proof rows count, 4 have nothing
-  (`floor_end_shock`, `floor_end_shocks_crossers`, `shock_reach_setting`, `uninstall_clean`). [measured]
+  (`built_offline_tests_green`: `T_CORD_GEOMETRY_OFFLINE` red, filed `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR`); after
+  the bar his card added (2026-11-14 14:10 PST) **2**, the second `built_mod_decider_entries_exist`: `sc_cords_under_items`
+  has no entry point yet (owed Stage 3, item `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`). [measured]
+  Next: build that entry and decide the geometry red (mod or criterion), then Stages 4 and 5 (blind challenge), then Stage 6
+  runs the 27 scenes live.
+- **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
+  name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
+  `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
+  bars: 48 have a deciding test runnable today, 46 have every deciding test runnable (not `cords_draw_under_things`, whose
+  scene is owed, nor `walk_scavenger_base`, his walk), 22 have offline deciders all green today. [measured, 14:10 PST]
 - **Waiting on:** the geometry red's reading (below, question 4); Stage 6 for every in-game test (all UNRUN, commands in
   `version/test_table.md`). Built in Stage 3: the floor-end shock and its three-value setting; the 4 offline tests; the 26
   scene entry points; tier `gimmesomeslack_flowworks`.
@@ -92,13 +95,8 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 1. **Which bytes are 0.1.0?** `bars.md` pins `237b791167`; his "lock" came after `910f69411e` landed the five gap fixes
    (4 leaves' `experience` text changed). This run reads the later text. Re-pin `bars.md` to `910f69411e`?
    Recommendation: yes; it is what stood when he said "lock".
-2. **A held defect with no bar.** He reported cords drawn over a battery and over items (2026-11-12 rows 34, 36) and later
-   approved the fix (2026-11-13 row 16). No bar of the 47 says "floor cords draw beneath items, buildings and furniture,
-   dry and under liquid". Add it to 0.1.0 as a Problem bar (its in-game read `sc_cords_under_items` is specified), or leave
-   it to the walk? Recommendation: add it; a cord over a battery is the kind of thing a player rejects.
-
 3. ~~Two scenes need FlowWorks~~: answered by the steward, tier `gimmesomeslack_flowworks` (2026-11-14). Question 1 is
-   answered the same way (re-pinned). Question 2 stays with him: no bar added.
+   answered the same way (re-pinned).
 4. **The geometry bar reads red offline.** `T_CORD_GEOMETRY_OFFLINE` reads the `cords_lie_slack` and `no_unforced_sharp_turn`
    oracles as written: 25 of 76 strands on the oracle scenes are under 1.4 times their chord (all short leads, chord 2 to 3
    cells), 1 long strand is flat, 7 bends are unforced. Is "1.4 per edge" meant for a 2-cell lead? If yes, the builder must
@@ -114,7 +112,7 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 ### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
 
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind re-pin): the lock record is re-pinned to the text he actually locked (his lock word came after the gap fixes); done in `a4be8a3ff3` at `bf33322d77`, answering question 1. Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-advance-gimmesomeslack-offli-1794687332`.
-- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): the cords-over-battery bar question stays with him; Stage 3 adds no bar for it (question 2). Source: the same brief.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:10 PM PST, kind bar-added): bar `cords_draw_under_things` added to 0.1.0 (record.json inventory, scope opened_by_owner): "A floor cord, and the strip or connector at its junction, draws beneath any item, building or furniture standing over it, a battery included, on dry floor and under the liquid of a pit alike, so nothing a player put down ever has a wire showing through it." Decided by `T_CORE` (slideunder "under", stage 4-5) and `sc_cords_under_items` (stage 6, entry owed Stage 3); the three held rows moved onto it; record.json re-pinned `a6fa51434c`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
 
@@ -146,8 +144,8 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
   No judge has read them.
 - **The held statements** (three, all about cords drawing over or under items) are placed on `drawing_true_to_grid` and
   `walk_scavenger_base`, with FlowWorks' offline `selftest_flowworks_pit_draw_census.py` (PASS today) as support and a new
-  in-game draw-order read, `sc_cords_under_items`, specified. No bar of the 47 says "floor cords draw beneath items":
-  question 2.
+  in-game draw-order read, `sc_cords_under_items`, specified. No bar of the 47 says "floor cords draw beneath items"
+  (his card 2026-11-14 added it: `cords_draw_under_things`).
 - **The settings sweep, moved offline.** Specified `T_SETTINGS_SWEEP_OFFLINE`: flip-and-return for each of the 26 shipped
   floor settings and each aerial setting, or a listed reason and its live row; every Harmony patch gated by exactly one
   setting (a source read). The C# SelfTest already flips the aerial switches offline (`SwitchFlipChecks.cs`). `sc_settings`
@@ -225,7 +223,7 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
 - **Built, in-game (UNRUN):** the 26 scene entry points; 10 new rows `SC_floor_end_*` and `SC_shock_reach_*` in
   `northstar/scene_rows.py` (2 UNMEASURED by design: the fixer's blueprint order has no known bridge call offline; the
   FlowWorks deck cord per value runs on the FlowWorks tier). Commands: `version/test_table.md`.
-- **Not built:** `sc_cords_under_items` (question 2, his); the M2c lab world (needs a `rect:` capture of the live core site).
+- **Not built:** `sc_cords_under_items` (now the deciding scene of `cords_draw_under_things`, owed Stage 3); the M2c lab world (needs a `rect:` capture of the live core site).
 - **Cost:** about $10.3 of model spend for Stage 3 by the harness budget line (this run's whole $15 cap; tokens not
   separately measured), 50 minutes wall (12:15 to 13:05 PST), of which about 15 minutes were tests running (C# SelfTest 3
   times at ~105 s, the offline gate twice at ~140 s, the full table run 6.4 min). His minutes: 0.
