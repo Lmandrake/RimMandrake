@@ -20,7 +20,7 @@ namespace RimMandrake.ExplosiveKnockback
     /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".
     /// impactFactor: scales wall / pawn / door impact damage for this blast (0 = no impact: an arrest tool).
     /// creatureMassLimitOverride: replaces the global creature mass limit (kg) for this blast (0 = unset); a living pawn
-    /// heavier than it stays, so the grav-ram's 216 throws a dewback (180 kg) and never a bantha (240).
+    /// heavier than it stays, so the grav-ram's 216 throws a 180 kg animal and never a 240 kg one.
     /// refDamage: on a DamageDef only, this type's reference damage for blast power (0 = unset: the def's defaultDamage);
     /// a blast of this type at refDamage throws at its plain force, twice that damage twice as hard.
     /// Lookup (design §2.1): the explosion's PROJECTILE ThingDef, then its WEAPON ThingDef, then its DamageDef; the first
@@ -254,7 +254,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
                 list.CheckboxLabeled("Throw mechanoids", ref throwMechanoids);
                 list.Label("Creatures heavier than " + creatureMassLimit.ToString("0")
-                    + " kg stay put  (150 kg: a gelagrub, 144, flies; a dewback, 180, and a bantha, 240, do not)");
+                    + " kg stay put  (living creatures only; at 150 kg a 144 kg animal still flies, 180 and 240 kg ones do not)");
                 creatureMassLimit = Mathf.Round(list.Slider(creatureMassLimit, 20f, 500f));
                 list.CheckboxLabeled("Throw items", ref throwItems);
                 list.CheckboxLabeled("Throw corpses", ref throwCorpses);

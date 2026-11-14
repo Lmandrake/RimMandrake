@@ -46,7 +46,7 @@ SCENES = [
     ("lookup_projectile", "config", "projectile_extension_wins_over_damagedef", "ownCapScale"),
     ("lookup_zero_wins", "config", "explicit_zero_on_projectile_throws_nothing", None),
     ("impact_factor", "config", "impact_factor_zero_no_wall_impact", None),
-    ("body_override", "config", "mass_override_throws_a_dewback_global_does_not", None),
+    ("body_override", "config", "mass_override_throws_a_160_200_kg_animal_global_does_not", None),
     ("immunity_window", "guards", "second_blast_in_recovery_window_is_immune", "recoveryWindowTicks"),
     ("shield_counter", "guards", "shield_belt_absorbs_throw_and_drains", "shieldsAbsorbThrow"),
     # 2026-11-12 RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: thrown goods fly in a carrier (proof build only)
@@ -65,12 +65,12 @@ SCENES = [
     ("land_no_bump_pit", "pits", "landing_in_a_pit_never_shoves_a_resident_out", None),
     ("gas_clumps", "gas", "burning_gas_bursts_clump_by_clump_no_damage", "gasChain"),
     # 2026-11-13 creature mass limit + blast power (owner cards; sc_mass_and_power, the showcase). NOT YET RUN LIVE.
-    ("mass_and_power", "mass_power", "heavier_flies_less_scurrier_colonist_gelagrub_bantha_spared", "creatureMassLimit"),
+    ("mass_and_power", "mass_power", "heavier_flies_less_lightest_colonist_under_150_kg_heavy_spared", "creatureMassLimit"),
     ("mass_and_power_x2", "mass_power", "double_damage_throws_each_creature_farther", "blastPowerFromDamage"),
     ("mass_and_power_off", "mass_power", "power_off_damage_50_throws_as_before", "blastPowerFromDamage"),
     ("mass_and_power_off_x2", "mass_power", "power_off_damage_100_throws_as_damage_50", "blastPowerFromDamage"),
-    ("mass_and_power_250", "mass_power", "limit_250_throws_the_bantha_1_cell", "creatureMassLimit"),
-    ("mass_and_power_250_x2", "mass_power", "limit_250_double_damage_throws_the_bantha_3_cells", "blastPowerRefPercent"),
+    ("mass_and_power_250", "mass_power", "limit_250_throws_the_220_260_kg_animal", "creatureMassLimit"),
+    ("mass_and_power_250_x2", "mass_power", "limit_250_double_damage_throws_the_220_260_kg_animal_farther", "blastPowerRefPercent"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "

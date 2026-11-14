@@ -24,10 +24,13 @@ creatures on the SHIP list, defined by 5 mods: Core and DLC).
   were retired under this item.
 - On the full list Thrumbo is cut (live Cherry Picker settings and SHIP; also `IncidentDef/ThrumboPasses`).
 - Explosive Knockback's proof code also named vanilla beasts (Rat, Muffalo, Thrumbo, plus an any-animal search for
-  `body_override`). That was fixed alongside this item: the scenes now use our creatures, resolved by name and
-  refused loudly when missing (`RM_KnockbackProof.Kind`): bestiary RSW_Scurrier 12 kg, RSW_Gelagrub 144, RSW_Dewback
-  180, RSW_Bantha 240 (60 x body size; the kernel's mass table is unchanged). The `explosiveknockback` tier now loads
-  `mandrake.rsw.swbestiary` so those scenes can stand them up; `kineticarms` and the `acc_*` tiers do not load it.
+  `body_override`). That was fixed alongside this item, and then reworked (Conductor, 2026-11-13: Explosive Knockback is
+  a franchise-free RM_ mod, so it names no creature, canon or vanilla). The scenes now choose their animals BY MASS
+  from the loaded animal kinds (`RM_KnockbackProof.ByMass`): the lightest, the heaviest under 150 kg, one of 160-200 kg
+  and one of 220-260 kg, non-Ludeon kinds first, then mass, then defName; an empty band throws, naming the band in kg.
+  Each result row prints the chosen label and its measured mass. The `explosiveknockback` tier loads
+  `mandrake.rsw.swbestiary` so those picks are our animals; on a tier with no non-Ludeon animal in a band the
+  vanilla one is picked, which is exactly this item's gap. The mod's settings and About text name no creature.
 - Not fixed here: `Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo` is vanilla art reused as the desiccated graphic of
   RUT_Vhessk, RM_Dorrak and RM_MycoidColossus (no player-facing "Thrumbo" name).
 

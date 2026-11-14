@@ -197,8 +197,9 @@ TIERS = {
         "why": "Explosive Knockback first script (ExplosiveKnockback/validation.py, knockback_runner.py): the mod "
                "with FlowWorks (pit scenes, blasts break covers) and Gimme Some Slack (hose drop) on a dev "
                "quicktest map. Harmony and all five DLCs resolve automatically. Same FlowWorks guards as its tier. "
-               "The bestiary supplies the mass scenes' creatures (scurrier, gelagrub, dewback, bantha): the "
-               "proof never stands up a vanilla beast (owner 2026-11-13, RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS).",
+               "The mass scenes pick their animals by mass from whatever is loaded, preferring non-Ludeon kinds; "
+               "the bestiary is loaded so those picks are ours, not the cut vanilla beasts (owner 2026-11-13, "
+               "RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS). The mod itself depends on no animal mod.",
         "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
                  "mandrake.rsw.swbestiary"],
         "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],

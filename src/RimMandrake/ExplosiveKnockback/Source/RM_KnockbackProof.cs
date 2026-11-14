@@ -612,27 +612,59 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>Proof build only: things whose damage is absorbed whole (sc_mass_and_power stages a real 50 / 100 damage
-        /// blast beside a 12 kg scurrier; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
+        /// blast beside the lightest loaded animal; the throw must be read, not the kill). Cleared by the scene's restore.</summary>
         internal static readonly HashSet<int> NoHarm = new HashSet<int>();
 
-        /// <summary>The creatures the mass scenes stand up: OUR animals, all from the bestiary
-        /// (mandrake.rsw.swbestiary), so any list that loads it has them (owner 2026-11-13, at sc_mass_and_power: "We
-        /// shouldn't have anything called a Thrumbo in the game anymore"). Masses are 60 x body size, the stated table's: scurrier 12 (0.2), gelagrub 144 (2.4),
-        /// dewback 180 (3.0), bantha 240 (4.0). Never a vanilla beast: the full list cuts them (VANILLA_BEAST_EXCISION_1).</summary>
-        internal const string SmallKind = "RSW_Scurrier", UnderLimitKind = "RSW_Gelagrub", OverrideKind = "RSW_Dewback",
-            HeavyKind = "RSW_Bantha";
-
-        /// <summary>A scene's creature by defName, or a loud ERROR naming it: a missing kind never falls back to another animal.
-        /// Resolve every kind a scene needs before spawning anything, so a miss leaves nothing on the map.</summary>
-        private static PawnKindDef Kind(string defName)
+        /// <summary>The mass scenes choose their animals BY MASS from whatever animal kinds are loaded, never by name: this
+        /// mod names no creature (a franchise-free RM_ tier mod; owner 2026-11-13 at sc_mass_and_power: "We shouldn't have
+        /// anything called a Thrumbo in the game anymore"). Candidates: flesh animal kinds with a life stage, not dryads, weighed
+        /// as the adult's body size x 60 kg (the Mass stat's pawn rule). Tie-break, deterministic: non-Ludeon content first (a
+        /// tier without Cherry Picker still loads the vanilla beasts the full list cuts, VANILLA_BEAST_EXCISION_1), then the
+        /// band's preference (lightest, heaviest, or nearest the band's middle), then defName ordinal. An empty band throws,
+        /// naming the band in kg. The scene re-weighs the spawned pawn and its row prints the label and the measured mass.</summary>
+        internal static float KindMass(PawnKindDef k)
         {
-            PawnKindDef k = DefDatabase<PawnKindDef>.GetNamedSilentFail(defName);
-            if (k == null || k.RaceProps == null)
+            RaceProperties r = k.RaceProps;
+            float factor = r.lifeStageAges[r.lifeStageAges.Count - 1].def?.bodySizeFactor ?? 1f;
+            return r.baseBodySize * factor * 60f;
+        }
+
+        private static IEnumerable<PawnKindDef> AnimalKinds()
+        {
+            return DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => k.race != null && k.RaceProps != null
+                && k.RaceProps.Animal && k.RaceProps.IsFlesh && !k.RaceProps.Dryad && k.RaceProps.lifeStageAges != null
+                && k.RaceProps.lifeStageAges.Count > 0);
+        }
+
+        private static bool Official(PawnKindDef k)
+        {
+            return k.modContentPack != null && k.modContentPack.IsOfficialMod;
+        }
+
+        /// <summary>One animal kind with lo &lt;= adult mass &lt; hi kg; prefer: "light", "heavy" or "middle".</summary>
+        internal static PawnKindDef ByMass(string band, float lo, float hi, string prefer)
+        {
+            float mid = (lo + hi) / 2f;
+            var inBand = AnimalKinds().Where(k => KindMass(k) >= lo && KindMass(k) < hi).ToList();
+            if (inBand.Count == 0)
             {
-                throw new InvalidOperationException("proof creature kind " + defName + " is not on this mod list (a tier "
-                    + "without mandrake.rsw.swbestiary, or the def was renamed)");
+                throw new InvalidOperationException("no loaded animal kind for the " + band + " band, " + lo.ToString("0.#")
+                    + "-" + hi.ToString("0.#") + " kg adult");
             }
-            return k;
+            return inBand.OrderBy(k => Official(k) ? 1 : 0)
+                .ThenBy(k => prefer == "light" ? KindMass(k) : prefer == "heavy" ? -KindMass(k) : Math.Abs(KindMass(k) - mid))
+                .ThenBy(k => k.defName, StringComparer.Ordinal).First();
+        }
+
+        /// <summary>The four bands sc_mass_and_power, heavy_skip and body_override stand up.</summary>
+        internal static PawnKindDef SmallAnimal() => ByMass("lightest", 0.1f, 30f, "light");
+        internal static PawnKindDef UnderLimitAnimal() => ByMass("heaviest under the 150 kg limit", 100f, 150f, "heavy");
+        internal static PawnKindDef OverrideAnimal() => ByMass("160-200 kg", 160f, 200f, "middle");
+        internal static PawnKindDef HeavyAnimal() => ByMass("220-260 kg", 220f, 260f, "middle");
+
+        private static string Named(Pawn p, float mass)
+        {
+            return p.kindDef.label + " " + mass.ToString("0.0") + " kg";
         }
 
         private static Pawn Adult(PawnKindDef k)
@@ -1064,8 +1096,9 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "heavy_skip":
                     {
-                        // an adult bantha, 240 kg: over the global 150 kg creature limit (a calf could weigh under it)
-                        Pawn a = Adult(Kind(HeavyKind));
+                        // an adult animal of 220-260 kg, chosen by mass: over the global 150 kg creature limit (a calf could
+                        // weigh under it)
+                        Pawn a = Adult(HeavyAnimal());
                         GenSpawn.Spawn(a, O(s, 1, 0), Map);
                         Track(s, "big", a);
                         s.restore = () => { if (!a.Destroyed) a.Destroy(); };
@@ -1075,7 +1108,8 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         string m = Moved(sc, "big", out Thing t, out int cells);
                         var skip = ForThing(sc, "skip", t).Where(r => (string)r["reason"] == "too_heavy_creature").ToList();
-                        return Result(sc, skip.Count == 1 && ForThing(sc, "launch", t).Count == 0, m + " skips(too_heavy_creature)=" + skip.Count
+                        return Result(sc, skip.Count == 1 && ForThing(sc, "launch", t).Count == 0, Named((Pawn)t, t.GetStatValue(StatDefOf.Mass)
+                            - MassUtility.InventoryMass((Pawn)t)) + ": " + m + " skips(too_heavy_creature)=" + skip.Count
                             + (skip.Count > 0 ? " [" + Rec(skip[0]) + "]" : ""));
                     };
                     return null;
@@ -1202,9 +1236,9 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "body_override":
                 {
-                    // a living animal heavier than the global 150 kg and at most 216 (an adult dewback, 180): spared by the global
-                    // creature mass limit, thrown under a creatureMassLimitOverride of 216 (the grav-ram's)
-                    PawnKindDef big = Kind(OverrideKind);
+                    // a living adult animal of 160-200 kg, chosen by mass: heavier than the global 150 kg, so spared by the
+                    // global creature mass limit, and thrown under a creatureMassLimitOverride of 216 (the grav-ram's)
+                    PawnKindDef big = OverrideAnimal();
                     ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
                     AddExt(s, proj, new RM_KnockbackExtension { force = 4f, maxThrowCells = 10, creatureMassLimitOverride = 216f });
                     Pawn a = Adult(big);
@@ -1216,7 +1250,7 @@ namespace RimMandrake.ExplosiveKnockback
                     s.numbers["mass"] = a.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(a);
                     if (s.numbers["mass"] <= 150f || s.numbers["mass"] > 216f)
                     {
-                        return big.defName + " weighs " + s.numbers["mass"].ToString("0") + " kg, not 150-216";
+                        return big.label + " (" + big.defName + ") weighs " + s.numbers["mass"].ToString("0.0") + " kg, not 150-216";
                     }
                     Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 1, proj);
                     Boom(Map, O(s, -1, 4), 1.5f, DamageDefOf.Bomb, 1); // control: Bomb, the global 150 kg holds
@@ -1230,7 +1264,7 @@ namespace RimMandrake.ExplosiveKnockback
                         int bigLaunch = ForThing(sc, "launch", t).Count;
                         int ctrlLaunch = ForThing(sc, "launch", tc).Count;
                         bool ctrlSkip = ForThing(sc, "skip", tc).Any(r => (string)r["reason"] == "too_heavy_creature");
-                        return Result(sc, bigLaunch == 1 && ctrlLaunch == 0 && ctrlSkip, m + "; " + mc + " mass=" + sc.numbers["mass"].ToString("0")
+                        return Result(sc, bigLaunch == 1 && ctrlLaunch == 0 && ctrlSkip, Named((Pawn)t, sc.numbers["mass"]) + ": " + m + "; " + mc
                             + " bigLaunches=" + bigLaunch + " controlLaunches=" + ctrlLaunch + " controlTooHeavy=" + ctrlSkip);
                     };
                     return null;
@@ -1722,7 +1756,8 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>sc_mass_and_power (design/concepts/ExplosiveKnockback/scenes.json; owner cards 2026-11-13 "Cutoff -> A mass
-        /// limit", "Blast power -> Type x damage"): a scurrier N, a clothed colonist with a sidearm E, a gelagrub S and a bantha W,
+        /// limit", "Blast power -> Type x damage"): the lightest loaded animal N, a clothed colonist with a sidearm E, the heaviest
+        /// animal under 150 kg S and a 220-260 kg animal W (chosen by mass, ByMass),
         /// each one cell from one Bomb blast of radius 2.9 at damage 50 (or 100: the _x2 scenes). The blast REALLY deals that
         /// damage, so the push reads it; NoHarm absorbs the injury on the four (asserted: no new hediff). Lanes: _off =
         /// blastPowerFromDamage off; _250 = creatureMassLimit 250. Every other setting at its default (Reset, restored after).
@@ -1764,19 +1799,19 @@ namespace RimMandrake.ExplosiveKnockback
                 RimMandrakeExplosiveKnockbackSettings.creatureMassLimit = 250f;
             }
 
-            PawnKindDef smallKind = Kind(SmallKind), underKind = Kind(UnderLimitKind), heavyKind = Kind(HeavyKind);
-            Pawn scurrier = Adult(smallKind);
-            Pawn gelagrub = Adult(underKind);
-            Pawn bantha = Adult(heavyKind);
-            GenSpawn.Spawn(scurrier, O(s, 0, 1), Map);
-            Track(s, "scurrier", scurrier);
-            GenSpawn.Spawn(gelagrub, O(s, 0, -1), Map);
-            Track(s, "gelagrub", gelagrub);
-            GenSpawn.Spawn(bantha, O(s, -1, 0), Map);
-            Track(s, "bantha", bantha);
+            PawnKindDef smallKind = SmallAnimal(), underKind = UnderLimitAnimal(), heavyKind = HeavyAnimal();
+            Pawn small = Adult(smallKind);
+            Pawn under = Adult(underKind);
+            Pawn heavy = Adult(heavyKind);
+            GenSpawn.Spawn(small, O(s, 0, 1), Map);
+            Track(s, "small", small);
+            GenSpawn.Spawn(under, O(s, 0, -1), Map);
+            Track(s, "under", under);
+            GenSpawn.Spawn(heavy, O(s, -1, 0), Map);
+            Track(s, "heavy", heavy);
             // a colonist with a revolver, 45-76 kg as the kernel weighs it (Mass stat minus inventory: worn clothes add nothing,
             // MEASURED live 2026-11-13 at 48.75 and 60.75 kg, so the old 64-76 band never drew one in 40 tries). Under 63.5 kg a
-            // colonist ties the capped scurrier at damage 100 (the order judge allows a tie at the cap); over 76.9 the gelagrub at 50
+            // colonist ties a capped light animal at damage 100 (the order judge allows a tie at the cap); over 76.9 a 144 kg one at 50
             Pawn col = null;
             ThingDef revolver = DefDatabase<ThingDef>.GetNamedSilentFail("Gun_Revolver");
             for (int tries = 0; tries < 40 && col == null; tries++)
@@ -1815,15 +1850,15 @@ namespace RimMandrake.ExplosiveKnockback
             s.numbers["ratio"] = ratio;
             var bands = new Dictionary<string, (float lo, float hi)>
             {
-                ["scurrier"] = (1f, 30f), ["colonist"] = (45f, 76f), ["gelagrub"] = (100f, 150f), ["bantha"] = (150.001f, 1000f),
+                ["small"] = (0.1f, 30f), ["colonist"] = (45f, 76f), ["under"] = (100f, 150f), ["heavy"] = (150.001f, 1000f),
             };
-            foreach (string key in new[] { "scurrier", "colonist", "gelagrub", "bantha" })
+            foreach (string key in Keys)
             {
                 var p = (Pawn)s.things[key];
                 float mass = p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p);
                 if (mass < bands[key].lo || mass > bands[key].hi)
                 {
-                    return key + " weighs " + mass.ToString("0.0") + " kg, outside " + bands[key].lo.ToString("0") + "-" + bands[key].hi.ToString("0");
+                    return key + " " + p.kindDef.label + " weighs " + mass.ToString("0.0") + " kg, outside " + bands[key].lo.ToString("0") + "-" + bands[key].hi.ToString("0");
                 }
                 s.numbers["mass_" + key] = mass;
                 s.numbers["want_" + key] = RM_KnockbackMath.Eligible(KbKind.Pawn, mass, k)
@@ -1831,26 +1866,20 @@ namespace RimMandrake.ExplosiveKnockback
                 s.numbers["hediffs_" + key] = p.health.hediffSet.hediffs.Count;
                 NoHarm.Add(p.thingIDNumber);
             }
-            // the table DEFAULTS.md states for the stated masses (scurrier 12, colonist ~70, gelagrub 144, bantha 240)
-            var table = lane == "off" || !x2
-                ? new Dictionary<string, int> { ["scurrier"] = 5, ["colonist"] = 3, ["gelagrub"] = 2, ["bantha"] = lane == "250" ? 1 : 0 }
-                : new Dictionary<string, int> { ["scurrier"] = 6, ["colonist"] = 5, ["gelagrub"] = 4, ["bantha"] = lane == "250" ? 3 : 0 };
-            foreach (var kv in table)
-            {
-                s.numbers["table_" + kv.Key] = kv.Value;
-            }
             Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, damage, null, true);
             s.verdict = sc => MassAndPowerVerdict(sc, damage, lane);
             return null;
         }
 
+        private static readonly string[] Keys = { "small", "colonist", "under", "heavy" };
+
         private static string MassAndPowerVerdict(Scene sc, int damage, string lane)
         {
             var sb = new StringBuilder();
-            bool ok = true, table = true;
+            bool ok = true;
             var cells = new Dictionary<string, int>();
-            var dirs = new Dictionary<string, IntVec3> { ["scurrier"] = IntVec3.North, ["colonist"] = IntVec3.East, ["gelagrub"] = IntVec3.South, ["bantha"] = IntVec3.West };
-            foreach (string key in new[] { "scurrier", "colonist", "gelagrub", "bantha" })
+            var dirs = new Dictionary<string, IntVec3> { ["small"] = IntVec3.North, ["colonist"] = IntVec3.East, ["under"] = IntVec3.South, ["heavy"] = IntVec3.West };
+            foreach (string key in Keys)
             {
                 var p = (Pawn)sc.things[key];
                 int want = (int)sc.numbers["want_" + key];
@@ -1881,15 +1910,14 @@ namespace RimMandrake.ExplosiveKnockback
                     return "INVALID " + sc.name + " the injury hook let " + newHediffs + " hediff(s) through on " + key;
                 }
                 cells[key] = want == 0 ? 0 : got;
-                table &= cells[key] == (int)sc.numbers["table_" + key];
                 ok &= rowOk && reqOk;
-                sb.Append(" " + key + "(" + sc.numbers["mass_" + key].ToString("0.0") + "kg)=" + (want == 0 ? "spared" : got.ToString())
+                sb.Append(" " + key + "(" + Named(p, sc.numbers["mass_" + key]) + ")=" + (want == 0 ? "spared" : got.ToString())
                     + "/want " + want + (rowOk ? "" : "!") + (reqOk ? "" : " request!"));
             }
-            bool order = cells["scurrier"] >= cells["colonist"] && cells["colonist"] > cells["gelagrub"] && cells["gelagrub"] > cells["bantha"]
-                && (lane == "250" || cells["bantha"] == 0) && (cells["scurrier"] > cells["colonist"] || cells["scurrier"] == 6);
+            bool order = cells["small"] >= cells["colonist"] && cells["colonist"] > cells["under"] && cells["under"] > cells["heavy"]
+                && (lane == "250" ? cells["heavy"] > 0 : cells["heavy"] == 0) && (cells["small"] > cells["colonist"] || cells["small"] == 6);
             return Result(sc, ok && order, "lane=" + lane + " damage=" + damage + " ratio=" + sc.numbers["ratio"].ToString("0.00")
-                + sb + " order=" + order + " statedTable=" + table);
+                + sb + " order=" + order);
         }
     }
 
