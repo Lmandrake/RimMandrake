@@ -7051,3 +7051,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:50:39Z","tsn":1794646239351239960}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-14T08:54:25Z","tsn":1794646465696465401}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:54:31Z","tsn":1794646471244208710}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 25.0 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-14T08:57:16Z","tsn":1794646636019480849}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-14T08:57:21Z","tsn":1794646641142044963}
