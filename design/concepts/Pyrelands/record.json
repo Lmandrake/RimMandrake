@@ -893,6 +893,34 @@
     "OWNER:1792122659817386516"
    ],
    "proof_note": "he approved the whole sheet 2026-10-16 ('This is amazing ... playtest tuning much later'); open follow-ups: grass lifecycle states, kept-art judge digest, ashwallow dome sprite"
+  },
+  {
+   "id": "inv_firehawk_hunt_rewards",
+   "what": "The first time a fire-hawk is seen carrying an ember on your map, one letter names the hawk and the ember it carries and jumps to it, once per game and switchable off in Mod Settings; butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather, a valuable object of beauty that rewards the hunt.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/FireHawkRewards.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml",
+    "ITEM:RIMMANDRAKE_ANNOUNCE_FIREHAWK_EMBER_LETTER_ON_FIRST_SIGHTING",
+    "ITEM:RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY"
+   ],
+   "proof": "offline",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
+    "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
+    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
+   ],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794693278631337978",
+   "source": [
+    "OWNER:1794693278631337978",
+    "OWNER:1794600390169223631",
+    "OWNER:1794601365424410800",
+    "OWNER:1794601370818167138",
+    "OWNER:1794601807357091049"
+   ],
+   "speaker": "owner by card 2026-11-14"
   }
  ],
  "built_reviewed": [

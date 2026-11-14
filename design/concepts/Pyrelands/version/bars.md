@@ -13,8 +13,8 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 | `design/concepts/Pyrelands/scenes.json` | `57c653bbd444655585b9935e32ad3600b1e326eb` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/Pyrelands/floor.json` | `e2d58b07a62b036530ff175022a51ec732a55537` | the quality floor lines every mod meets |
 | `design/concepts/Pyrelands/exam.json` | `6793f3c53ff73f8f9f13b7d131a1579f29343a94` | the Cold Reader exam of tree and sheet |
-| `design/concepts/Pyrelands/record.json` | `ee440984bcfdfcc22c3338d9c7b60ff48348b955` | the inventory of built capabilities (checklist rows too) |
-| `design/concepts/Pyrelands/plan.md` | `0d8be55bbc706a257b9a09f09e83eac665eea9ce` | the build and proof plan |
+| `design/concepts/Pyrelands/record.json` | `f478008aa8be303144b492442c54b4a5664e72b0` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added, `inv_firehawk_hunt_rewards` (journal, kind bar-added) |
+| `design/concepts/Pyrelands/plan.md` | `dd3ec4b45dc33c1d85e43a2258d37ac8a55c00d8` | the build and proof plan |
 | `design/concepts/Pyrelands/stage.json` | `3db94065beaee5d3c634042a2655b2420fb92ae6` | the Designer's stage, budget and judge rounds (state, not a bar) |
 
 **Re-pinned 2026-11-14 (Stage 3, the Conductor's steward decision: test-text corrections are re-pinned, a changed bar never is).**
@@ -23,15 +23,18 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 leaf `oracle_proposed` and `scenario` moved (every `experience`, `red` and id identical); in `record.json` the
 `inv_ash_field` evidence list, the `d_worldgen_outside_promise` text (g5) and the `inv_ullai_herd_giant` sentence about
 the cut migration's text (g12: it said the description still promised migration, which was false) moved, no row added or
-removed; `scenes.json` holds tests; `sheet.md` lost the false lines g5, g12 and g13 named. **`plan.md` is NOT re-pinned:**
-commit `82d9247595` (2026-11-13 19:42, after the lock) changed the fire-hawk's ember reach from eighteen cells to anywhere
-on the map, a behaviour change, so it stays a preflight refusal for the Conductor (journal question 5).
+removed; `scenes.json` holds tests; `sheet.md` lost the false lines g5, g12 and g13 named.
+
+**`plan.md` re-pinned 2026-11-14 (owner by card, about 2:10 PM PST: "Keep anywhere on the map").** Commit `82d9247595`
+(2026-11-13 19:42, after the lock) changed the fire-hawk's ember reach from eighteen cells to anywhere on the map, carried
+to the largest unburnt fuel it can see. He kept that as Pyrelands 0.1.0, so `plan.md`'s lock blob `0d8be55bbc` is replaced
+by its current blob; no other locked file moved for it (no bar or check text said eighteen cells).
 
 Tree hash (`concept_tree.py hash`): `6dd32c14a94d4b84499ed155eb5c6da32302dcb8967583a414cc5c5773892c55`; sheet hash: `4f77fad249a2160d032c6514071758be5c5e17be45e7155a06dbbe8aaebe7d49`.
 
 ## Counts at the lock
 
-- Bars (the coverage checklist): **41** = 20 inventory rows + 21 tree leaves.
+- Bars (the coverage checklist): **42** = 21 inventory rows + 21 tree leaves (41 at the lock; `inv_firehawk_hunt_rewards` added by his card 2026-11-14).
 - Floor lines: 23 (23 applicable).
 - Exam: 22 of 22 scenarios right (against an earlier tree and sheet; see VERSION.json caveats).
 - Waived lines: 0.
@@ -82,3 +85,4 @@ Tree hash (`concept_tree.py hash`): `6dd32c14a94d4b84499ed155eb5c6da32302dcb8967
 - `inv_fire_rite_hook`
 - `inv_settings_gate`
 - `inv_art_and_text`
+- `inv_firehawk_hunt_rewards` (added 2026-11-14, his card)

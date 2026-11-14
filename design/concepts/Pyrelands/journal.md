@@ -14,7 +14,8 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
 - **Stage now:** Stage 3 ("reconcile") done offline 2026-11-14 12:40 PST. Preflight re-run: **1 refusal** (was 17):
   `plan.md` changed after the lock by a behaviour change (fire-hawk ember reach), for the Conductor. Stages 4-5 are next.
-- **Bars:** 41 (20 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them.
+- **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
+  the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
   The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), same columns as Explosive
   Knockback's.
@@ -22,6 +23,9 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   live scene whose entry exists in `validation.py`); 14 have an offline deciding test green; the 6 decided offline only are
   all built and green. 15 built offline tests ran green for this mod, 0 specified. All 23 scenes have an entry. No live
   scene ran (offline only); the four new entries are UNRUN with their commands in `version/test_table.json`.
+- **Measured 2026-11-14 14:19 (the hunt-rewards bar added):** 42 bars, all with every deciding test runnable today; 15
+  with an offline deciding test green; 17 built offline tests green (`T_FH_LETTER`, `T_FH_CRESTFEATHER` new in the table).
+  The two live chains in `firehawk_rewards_live.py` have their entries and are UNRUN (offline only).
 - **Judge gaps:** 14 from the last coverage verdict (`version/gaps_sorted.md`). 6 of the 7 CORRECTIONs are applied to test
   text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. Of the 6 PROBLEMs, the offline halves
   of g6, g7 and g10 are built (Stage 3); every live half, and g2, g4, g9, stays open. 1 POLISH (g8) stays.
@@ -69,9 +73,6 @@ fire's own cast of animals, three skies and never ordinary rain, whole on its ow
    no (not run: offline only)` unless an offline test also decides it.
 6. **The Designer stage record says stage 4, blocked**, on a pending note about the 2026-11-06 verdict's five gaps.
    That note is stale (the worldgen question was answered by card 2026-11-13). The version lock supersedes it.
-7. **Built behaviour with no bar.** The fire-hawk's hunt rewards (the once-per-game letter and the crestfeather trophy,
-   `FireHawkRewards.cs`, two green selftests) are in the lock commit but no bar or inventory row names them. They are
-   left out of the table, as a question.
 8. **One entry, three skies.** `sc_three_skies` names `validation.py::cinderfall` as its entry; whether that function
    also forces ash fall and black rain is for Stage 2 or the Stage 4 challenger to read, not assumed here.
 9. **`selftest_settings_screens.py` is red as a file** (851/856 today) on five rows of other mods (Explosive Knockback,
@@ -82,7 +83,10 @@ fire's own cast of animals, three skies and never ordinary rain, whole on its ow
 ### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
 
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): a locked file that changed after the lock only by test-text corrections or by today's table work is re-pinned in `version/bars.md` with a journal line saying what changed; a changed bar is never re-pinned (`plan.md`'s fire-hawk reach change, question 5). Source: Steward's decisions in the Stage 3 brief of run `rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794687328`.
-- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): the fire-hawk hunt rewards and the two places the judge asked for a new bar stay with him; Stage 3 builds no bar for them and keeps the named tests. Source: the same brief.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind decision): the two places the judge asked for a new bar stay with him; Stage 3 builds no bar for them and keeps the named tests. Source: the same brief.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 14:25 PST, kind re-pin): `plan.md` re-pinned in `version/bars.md` to its current blob `dd3ec4b45d`; the fire-hawk's map-wide ember carry (commit `82d9247595`) is Pyrelands 0.1.0, owner by card 2026-11-14 ("Keep anywhere on the map"); settles questions 5 and 6. Source: OWNER:1794694152010085063.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 14:25 PST, kind decision): ullai keep vanilla herd migration, owner by card 2026-11-14 ("Yes, let them cross"); new offline check `T_ULLAI_HERD_MIGRATES` supports `inv_ullai_herd_giant`, and `T_CUT_STAYS_CUT` no longer refuses herdMigrationAllowed true (the cut leg was the world-map migration only); settles question 7. Source: OWNER:1794694157698359872.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:30 PM PST, kind bar-added): bar `inv_firehawk_hunt_rewards` added to 0.1.0 (record.json inventory, scope opened_by_owner): "The first time a fire-hawk is seen carrying an ember on your map, one letter names the hawk and the ember it carries and jumps to it, once per game and switchable off in Mod Settings; butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather, a valuable object of beauty that rewards the hunt." Decided by `T_FH_LETTER` and `T_FH_CRESTFEATHER` (stage 4-5, green) and the live chains `firehawk_first_sighting_letter` and `firehawk_crestfeather_yield` (stage 6, entries exist, UNRUN: `modcheck run Pyrelands --chains firehawk_first_sighting_letter,firehawk_crestfeather_yield`); supported by `T_FUZZ` (rewards family) and `LOOK_STAGE8`. record.json re-pinned `f478008aa8`; settles question 1 and oddity 7. Source: owner by card 2026-11-14, OWNER:1794693278631337978.
 
 ### 2026-11-14 11:25 PST, advance begins (rm-builder, detached, offline only)
 
@@ -175,14 +179,11 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 
 ### Questions (open)
 
-1. **The fire-hawk's hunt rewards have no bar.** The letter and the crestfeather trophy are built and tested
-   (2026-11-13) but no bar names them. Polish, next version, or a bar owed? (His call if it is a bar.)
 2. **g14, the stale exam.** Rerunning the Cold Reader exam is a model step. Does a locked version still owe it, or does
    Stage 4's blind challenger replace it (spec open question 7)?
 4. **`no_ordinary_rain` is decided twice.** If the biome's weather list holds no ordinary rain, can anything choose
    it? If not, `sc_no_rain` could drop to support and the bar proves offline (pipeline bar 4). For the Stage 4
    challenger.
-5. **`plan.md` changed after the lock** (fire-hawk reach). Test text or meaning? For the Conductor.
 
 ### 2026-11-14 12:40 PST, Stage 3 (offline build, as reconcile) done by hand (rm-builder, detached, offline only)
 
@@ -226,13 +227,6 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 
 ### Questions (added at Stage 3)
 
-6. **The fire-hawk reach change (`plan.md`, commit `82d9247595`) is a behaviour change after the lock** ("up to eighteen
-   cells" became "anywhere on the map", agent default). Keep it as 0.1.0 (re-pin), or is it Divergent? For the Conductor,
-   and his if it moves a bar.
-7. **Ullai can still join vanilla herd migrations across the map:** `RM_Ullai` is a herd animal and does not set
-   `herdMigrationAllowed` (vanilla default true). The cut leg was the furnace-beast's *world-map* migration, which is gone;
-   `T_CUT_STAYS_CUT` checks no def of ours sets it true, not that ullai set it false. Is a vanilla map-crossing herd of
-   ullai wanted?
 8. **The PROBLEM gaps' live halves** (g2 foreign arrivals, g4 dry-ash grass, g6 heat immunity, g7 venom tended, g9 eviction
    shown, g10 gate off) need scene text in the locked `scenes.json` or a ruling that their offline halves suffice.
 
