@@ -1,0 +1,3 @@
+Before saving a new review keeper on a map an earlier sitting used, run jawa/review_label action=list and clear the old tags. Labels live in process memory, and every SaveGame writes ALL of the current map's labels to the new save's sign sidecar. On 2026-11-14 the map still held 72 labels (pfm/bigpit/geyserpit) from the EVENING_20261113 sitting. Several of them named liquid levels ('D2 F2 1.0 m water in 1.0 m') on pits that were now dry, so they would have shipped into SITTING_20261114_PIT_FIXES and misled the owner. The earlier save keeps its own sidecar, so clearing them on the live map loses nothing.
+item: RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR
+home: skills/rimworld-live-review/SKILL.md §6
