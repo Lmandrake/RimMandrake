@@ -373,10 +373,36 @@ def test_slow_helper_budget_is_cut():
     check(any(x.get("do") == "ring" and x.get("result") for x in j), "slow helper budget: the acts before it ran")
 
 
+def test_killed_publish_leaves_the_helper_budget_its_slot():
+    # live 2026-11-14 15:14Z: a publish killed at its deadline every beat, and the helper budget cut after it 4 times
+    sch = sched()
+    saved = D.BEAT_ACT_RESERVE_S, D.decide, D.HB.tick_step, D.publish_bounded
+    os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "slow_publish")
+    hb = []
+    D.BEAT_ACT_RESERVE_S, D.decide = 1.0, ring_then(0)
+    D.HB.tick_step = lambda *a, **k: hb.append(1)
+    D.publish_bounded = lambda n, timeout, **k: time.sleep(max(0.0, timeout)) or "publish KILLED (stub)"
+    fx = {"lock": Lock, "note": lambda i, t: (True, ""), "ring": lambda *a, **k: "rung"}
+    o = {"paused": None, "agents": {"state": "MEASURED", "sessions": []}}
+    try:
+        t0 = time.time()
+        out = D.tick(sch, True, obs=o, now=t0, fx=fx, beat_end=t0 + 5.0)
+    finally:
+        D.BEAT_ACT_RESERVE_S, D.decide, D.HB.tick_step, D.publish_bounded = saved
+        os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
+    root = os.path.join(TMP, "slow_publish")
+    j = journal(root)
+    check(hb == [1] and not any(x.get("do") == "step_cut" for x in j),
+          "a publish killed at its deadline still leaves the helper budget its slot: ran %s, cuts %s"
+          % (hb, [x.get("step") for x in j if x.get("do") == "step_cut"]))
+    check(isinstance(out, list) and time.time() < t0 + 5.0, "the slow-publish tick ends inside its beat")
+
+
 def main():
     for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
               test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
-              test_slow_observe_is_cut, test_slow_execute_is_cut, test_slow_helper_budget_is_cut):
+              test_slow_observe_is_cut, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
+              test_killed_publish_leaves_the_helper_budget_its_slot):
         try:
             t()
         except Exception as e:  # noqa: BLE001

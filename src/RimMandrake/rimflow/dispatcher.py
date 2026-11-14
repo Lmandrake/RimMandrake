@@ -128,6 +128,9 @@ BEAT_STARVED_AFTER = 5        # beats in a row that deferred: an alarm, and the 
 # its end is cut by SIGALRM (StepCut), given back as a killed tick gives back, and journalled `step_cut` by name.
 BEAT_HARD_RESERVE_S = 1.5
 BEAT_BUDGET_MIN_S = 1.0       # the helper budget (~0.25 s measured) starts only with this much left before its end
+# notes and publish end this much earlier still, so a publish killed at its deadline (11 s, every beat from
+# 2026-11-14 15:14Z) leaves the helper budget its slot: 4 beats in a row were cut there before this reserve
+BEAT_BUDGET_RESERVE_S = 1.5
 STEPS_FILE = "tick_steps.jsonl"   # one line per beat's tick: seconds per step, for measuring which step is slow
 STEPS_MAX_BYTES = 2 * 1024 * 1024
 
@@ -2364,7 +2367,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
         deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
         act_deadline = None
         if beat_end is not None:
-            deadline = min(deadline, beat_end - BEAT_END_RESERVE_S)
+            deadline = min(deadline, beat_end - BEAT_END_RESERVE_S - BEAT_BUDGET_RESERVE_S)
             act_deadline = beat_end - BEAT_ACT_RESERVE_S
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         hard_end = beat_end - BEAT_HARD_RESERVE_S if beat_end is not None else None
