@@ -49,6 +49,66 @@ namespace RimMandrake.FlowWorks.MapControls
 			return due;
 		}
 
+		/// <summary>RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL (owner card 2026-11-14 "Pour whatever fits"): the
+		/// decilitres due this pulse at <paramref name="ratePerPulse"/> levels a pulse, given the part decilitre
+		/// <paramref name="carry"/> left by earlier pulses (in place, always in [0, 1)). Like <see cref="Due"/>, what falls due
+		/// and is not delivered is dropped, never banked.</summary>
+		public static long DueDl(ref float carry, float ratePerPulse)
+		{
+			if (float.IsNaN(carry) || carry < 0f || carry >= 1f)
+			{
+				carry = 0f;
+			}
+			double total = carry + (double)ClampRate(ratePerPulse) * RM_LevelSolve.U;
+			long due = (long)Math.Floor(total + 1e-4);
+			carry = (float)(total - due);
+			if (carry < 0f || carry >= 1f)
+			{
+				carry = 0f;
+			}
+			return due;
+		}
+
+		/// <summary>RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL: a source pours what fits, not whole levels. Up to
+		/// <paramref name="dueDl"/> goes into the <paramref name="reach"/> candidates (0 .. reach-1, reach order): each round the
+		/// candidate with room and the LOWEST surface (<see cref="PickPourTarget"/>) takes as much as its canal holds,
+		/// <paramref name="roomDl"/>(i, want) (0 = closed or full), through <paramref name="pour"/>(i, dl) (all or nothing). A
+		/// whole level no longer has to fit, so a source does not back up behind its own last pour while the canal has room.
+		/// Returns the decilitres poured; less than due means it backed up.</summary>
+		public static long PourWhatFits(long dueDl, int reach, Func<int, long, long> roomDl, Func<int, long> surfaceDl,
+			Func<int, long, bool> pour)
+		{
+			long done = 0;
+			var cand = new List<int>();
+			var surf = new List<int>();
+			for (int round = 0; round <= reach && done < dueDl; round++)
+			{
+				cand.Clear();
+				surf.Clear();
+				for (int i = 0; i < reach; i++)
+				{
+					if (roomDl(i, dueDl - done) > 0)
+					{
+						cand.Add(i);
+						long s = surfaceDl(i);
+						surf.Add(s > int.MaxValue ? int.MaxValue : s < int.MinValue ? int.MinValue : (int)s);
+					}
+				}
+				int pick = PickPourTarget(surf);
+				if (pick < 0)
+				{
+					break;
+				}
+				long amount = roomDl(cand[pick], dueDl - done);
+				if (amount <= 0 || !pour(cand[pick], amount))
+				{
+					break;
+				}
+				done += amount;
+			}
+			return done;
+		}
+
 		/// <summary>Where a source pours its next level: the candidate with the LOWEST surface (fill - dug depth), the
 		/// first in reach order on a tie (own square first, then N, E, S, W). -1 when there is no candidate.</summary>
 		public static int PickPourTarget(IList<int> surfaces)

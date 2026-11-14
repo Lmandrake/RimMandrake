@@ -36,6 +36,93 @@ namespace RimMandrake.FlowWorks.SelfTest
             return s.Substring(a, b - a);
         }
 
+        /// <summary>One pulse of RM_FlowSource over the excavation's pour walk (LevelOps.PourRoom / Pour = PourRoomDl /
+        /// TryPourDl): whatFits = as shipped (DueDl + PourWhatFits), else the whole-level pour it replaced (Due + CanPourLevel +
+        /// TryPourLevel). Returns the dL poured.</summary>
+        private static long SourcePulse(ArrayWorld world, int[] reach, bool whatFits, ref float carry, float rate)
+        {
+            const long U = RM_LevelSolve.U;
+            var k = world.k;
+            if (whatFits)
+            {
+                long dueDl = RM_MapControlMath.DueDl(ref carry, rate);
+                return RM_MapControlMath.PourWhatFits(dueDl, reach.Length,
+                    (i, want) => LevelOps.PourRoom(world, reach[i], want),
+                    i => k.WaterOf(reach[i]) - k.depth[reach[i]] * U,
+                    (i, dl) => LevelOps.PourRoom(world, reach[i], dl) == dl && LevelOps.Pour(world, reach[i], dl) == dl);
+            }
+            long poured = 0;
+            int due = RM_MapControlMath.Due(ref carry, rate);
+            for (int n = 0; n < due; n++)
+            {
+                var cand = reach.Where(c => LevelOps.PourRoom(world, c, U) >= U).ToList();
+                int pick = RM_MapControlMath.PickPourTarget(cand.Select(c => (int)(k.WaterOf(c) - k.depth[c] * U)).ToList());
+                if (pick < 0) break;
+                poured += LevelOps.Pour(world, cand[pick], U);
+            }
+            return poured;
+        }
+
+        /// <summary>A 3-square row dug to 1 holding 2.4 levels (0.6 of a level of room, less than a whole level) and a
+        /// 1/pulse source beside square 0: (dL poured in one pulse, dL the row holds after).</summary>
+        private static (long poured, long held) PourIntoNearlyFull(bool whatFits)
+        {
+            const long U = RM_LevelSolve.U;
+            var world = new ArrayWorld(3, 1);
+            for (int i = 0; i < 3; i++) { world.k.depth[i] = 1; world.cellFluid[i] = ArrayWorld.Water; }
+            world.k.SetWaterOf(0, U); world.k.SetWaterOf(1, U); world.k.SetWaterOf(2, 4 * U / 10);
+            float carry = 0f;
+            long poured = SourcePulse(world, new[] { 0, 1 }, whatFits, ref carry, 1f);
+            long held = 0;
+            for (int i = 0; i < 3; i++) held += world.k.WaterOf(i);
+            return (poured, held);
+        }
+
+        private struct TapRun { public long poured, drained; public int sinkSawWater; public string error, grid; }
+
+        /// <summary>The source and sink of RM_FlowTaps on a 1-row channel dug to 2, 400 pulses, over the production exact
+        /// kernel and the excavation's pour walk (LevelOps.PourRoom / Pour = PourRoomDl / TryPourDl). whatFits: the source
+        /// as shipped (DueDl + PourWhatFits); else the whole-level pour it replaced (Due + CanPourLevel + TryPourLevel).
+        /// The sink as shipped: whole levels due, taken in dL from the fullest square, a level at most per take.</summary>
+        private static TapRun TapChannel(int W, bool whatFits)
+        {
+            const long U = RM_LevelSolve.U;
+            var world = new ArrayWorld(W, 1);
+            var k = world.k;
+            k.flowPerPulse = 1;
+            for (int i = 0; i < W; i++) k.depth[i] = 2;
+            var seeds = Enumerable.Range(0, W).ToList();
+            var srcReach = new[] { 0, 1 };
+            var sinkReach = new[] { W - 1, W - 2 };
+            float sc = 0f, kc = 0f;
+            var r = new TapRun { sinkSawWater = -1 };
+            for (int p = 1; p <= 400; p++)
+            {
+                r.poured += SourcePulse(world, srcReach, whatFits, ref sc, 0.5f);
+                long sinkDue = RM_MapControlMath.Due(ref kc, 0.25f) * U, took = 0;
+                while (took < sinkDue)
+                {
+                    var cand = sinkReach.Where(c => k.WaterOf(c) > 0).ToList();
+                    int pick = RM_MapControlMath.PickDrainTarget(cand.Select(c => (int)k.WaterOf(c)).ToList());
+                    if (pick < 0) break;
+                    long t = Math.Min(Math.Min(U, sinkDue - took), k.WaterOf(cand[pick]));
+                    k.SetWaterOf(cand[pick], k.WaterOf(cand[pick]) - t);
+                    took += t;
+                    if (r.sinkSawWater < 0) r.sinkSawWater = p;
+                }
+                r.drained += took;
+                world.Pulse(seeds);
+                long held = 0;
+                for (int i = 0; i < W; i++) held += k.WaterOf(i);
+                if (k.worstImbalance >= 0.001f && r.error == null)
+                    r.error = "pulse " + p + ": the kernel ledger did not balance: " + string.Join("; ", k.imbalanceReports);
+                if (held != r.poured - r.drained && r.error == null)
+                    r.error = "pulse " + p + ": channel holds " + held + " dL, poured " + r.poured + " - drained " + r.drained + " dL";
+            }
+            r.grid = world.Grid();
+            return r;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             Case("MapControl_rate_to_levels", () =>
@@ -88,61 +175,46 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // A 12-square channel dug to 2: a 0.5/pulse source at square 0, a 0.25/pulse sink at square 11. The taps
                 // act before the kernel, as RM_MapComponent_Excavation.DoPulse runs them, so the kernel's own ledger must
-                // balance every pulse, and the channel must hold exactly poured - drained.
+                // balance every pulse, and the channel must hold exactly poured - drained (in dL, exact).
+                // RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL (owner card 2026-11-14 "Pour whatever fits"): the
+                // source runs the production RM_MapControlMath.PourWhatFits over the excavation's pour walk (LevelOps), so
+                // it pours the decilitres that fit instead of backing up behind a whole level, and the channel fills as the
+                // whole-notch engine filled it.
                 const int W = 12;
-                var world = new ArrayWorld(W, 1);
-                var k = world.k;
-                k.flowPerPulse = 1;
-                // In game the source pours through TrySetDriverFill, which marks its squares as driver inputs that seed the
-                // flow order (FLOW_ORDER_EXTERNAL_INPUT_1); the same here, or a flat channel never spreads away from it.
-                for (int i = 0; i < W; i++) k.depth[i] = 2;
-                var seeds = Enumerable.Range(0, W).ToList();
-                float sc = 0f, kc = 0f;
-                // exact water (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES): the taps move whole notches as RM_FlowTaps does
-                // (a pour only where a notch fits, CanPourLevel), and the books are kept in dL
-                long poured = 0, drained = 0;
-                int sinkSawWater = -1;
-                for (int p = 1; p <= 400; p++)
-                {
-                    int due = RM_MapControlMath.Due(ref sc, 0.5f);
-                    for (int n = 0; n < due; n++)
-                    {
-                        var reach = new List<int> { 0, 1 }.Where(c => k.WaterOf(c) + RM_LevelSolve.U <= k.depth[c] * (long)RM_LevelSolve.U).ToList();
-                        int pick = RM_MapControlMath.PickPourTarget(reach.Select(c => (int)(k.WaterOf(c) / RM_LevelSolve.U) - k.depth[c]).ToList());
-                        if (pick < 0) break;
-                        int cell = reach[pick];
-                        if (k.WaterOf(cell) == 0) world.cellFluid[cell] = ArrayWorld.Water;
-                        long add = RM_LevelSolve.U;
-                        k.SetWaterOf(cell, k.WaterOf(cell) + add);
-                        poured += add;
-                    }
-                    int dueOut = RM_MapControlMath.Due(ref kc, 0.25f);
-                    for (int n = 0; n < dueOut; n++)
-                    {
-                        var reach = new List<int> { 11, 10 };
-                        int pick = RM_MapControlMath.PickDrainTarget(reach.Select(c => (int)(k.WaterOf(c) / RM_LevelSolve.U)).ToList());
-                        if (pick < 0) break;
-                        long take = RM_LevelSolve.U;
-                        k.SetWaterOf(reach[pick], k.WaterOf(reach[pick]) - take);
-                        drained += take;
-                        if (sinkSawWater < 0) sinkSawWater = p;
-                    }
-                    world.Pulse(seeds);
-                    Assert(k.worstImbalance < 0.001f, "pulse " + p + ": the kernel ledger did not balance: " + string.Join("; ", k.imbalanceReports));
-                    long held = 0;
-                    for (int i = 0; i < W; i++) held += k.WaterOf(i);
-                    Assert(held == poured - drained, "pulse " + p + ": channel holds " + held + " dL, poured " + poured + " - drained " + drained + " dL");
-                }
-                // A 0.5 source out-pours a 0.25 sink, so the channel fills and the source backs up (it never banks).
-                Assert(poured <= 200L * RM_LevelSolve.U, "a 0.5 source over 400 pulses poured " + poured + " dL, more than its rate");
-                // The whole-notch engine filled this channel (holds >= 2W-4 notches). The exact kernel spreads a poured notch about one
-                // square a pulse, so the source backs up against its own last pour and settles near the sink's rate, the channel
-                // about half full: shipped behaviour since 2026-10-17, measured here, filed as
-                // RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL (not a bar of this case, whose bar is conservation).
-                Console.WriteLine("      holds " + (poured - drained) / (float)RM_LevelSolve.U + " notches of " + 2 * W + " (poured " + poured / RM_LevelSolve.U + ", drained " + drained / RM_LevelSolve.U + ")");
-                Assert(poured - drained > 0, "the source never out-poured the sink: holds " + (poured - drained) + " dL\n" + world.Grid());
-                Assert(sinkSawWater > 0, "the water never reached the sink 11 squares away:\n" + world.Grid());
-                Assert(drained > 0 && drained <= 100L * RM_LevelSolve.U, "a 0.25 sink took " + drained + " dL over 400 pulses");
+                var r = TapChannel(W, true);
+                Console.WriteLine("      pour what fits: holds " + (r.poured - r.drained) / (float)RM_LevelSolve.U + " levels of " + 2 * W
+                    + " (poured " + r.poured / (float)RM_LevelSolve.U + ", drained " + r.drained / (float)RM_LevelSolve.U + ")");
+                Assert(r.error == null, r.error);
+                Assert(r.poured <= 200L * RM_LevelSolve.U, "a 0.5 source over 400 pulses poured " + r.poured + " dL, more than its rate");
+                Assert(r.sinkSawWater > 0, "the water never reached the sink 11 squares away:\n" + r.grid);
+                Assert(r.drained > 0 && r.drained <= 100L * RM_LevelSolve.U, "a 0.25 sink took " + r.drained + " dL over 400 pulses");
+                // the bar: it fills as the whole-notch engine did (that engine held 2W-4 levels or more)
+                Assert(r.poured - r.drained >= (2 * W - 4) * (long)RM_LevelSolve.U, "the channel holds only "
+                    + (r.poured - r.drained) / (float)RM_LevelSolve.U + " of " + 2 * W + " levels: the source backed up\n" + r.grid);
+                Assert(r.poured - r.drained <= 2L * W * RM_LevelSolve.U, "the channel holds more than its brim");
+                // the whole-level pour this replaced (CanPourLevel + TryPourLevel), measured beside it; it must conserve too
+                var old = TapChannel(W, false);
+                Console.WriteLine("      whole levels only (the old pour): holds " + (old.poured - old.drained) / (float)RM_LevelSolve.U + " levels");
+                Assert(old.error == null, "whole-level pour: " + old.error);
+            });
+            Case("MapControl_source_pours_what_fits", () =>
+            {
+                // RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL (owner card 2026-11-14 "Pour whatever fits"): a source
+                // facing less than a whole level of room pours exactly that room and stops at the brim; the whole-level
+                // pour it replaced poured nothing there (CanPourLevel needs a whole level of room).
+                const long U = RM_LevelSolve.U;
+                var r = PourIntoNearlyFull(true);
+                Assert(r.poured == 6 * U / 10, "a source facing 0.6 level of room poured " + r.poured + " dL, not " + 6 * U / 10);
+                Assert(r.held == 3 * U, "the row holds " + r.held + " dL after, not brim-full " + 3 * U);
+                var old = PourIntoNearlyFull(false);
+                Assert(old.poured == 0 && old.held == 3 * U - 6 * U / 10, "can-fail: the whole-level pour poured " + old.poured + " dL into 0.6 level of room");
+                // the dL due: a fractional rate carries its part decilitre, and what is not delivered is dropped
+                float c = 0f;
+                long sum = 0;
+                for (int p = 0; p < 10; p++) sum += RM_MapControlMath.DueDl(ref c, 0.1f);
+                Assert(sum == U, "10 pulses at 0.1 level fell due as " + sum + " dL, not one level (" + U + ")");
+                Assert(c >= 0f && c < 1f, "the carry left [0, 1) dL: " + c);
+                Assert(RM_MapControlMath.PourWhatFits(U, 2, (i, w) => 0, i => 0, (i, d) => true) == 0, "poured into no room");
             });
             Case("MapControl_wiring_and_master_switch", () =>
             {
@@ -158,9 +230,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(pa.Contains("if (!RM_MapControlSettings.mapControlsEnabled"), "the master switch does not gate PulseAll");
                 Assert(pa.Contains("mc.active"), "a switched-off control still pulses");
                 string taps2 = File.ReadAllText(Path.Combine(root, "Source", "MapControls", "RM_FlowTaps.cs"));
-                Assert(taps2.Contains("ex.TryPourLevel(") && taps2.Contains("ex.CanPourLevel("), "the source does not pour through the engine's driver write");
+                Assert(taps2.Contains("ex.TryPourDl(") && taps2.Contains("ex.PourRoomDl(") && taps2.Contains("RM_MapControlMath.PourWhatFits("),
+                    "the source does not pour what fits through the engine's driver write");
+                Assert(!taps2.Contains("ex.TryPourLevel(") && !taps2.Contains("ex.CanPourLevel("), "can-fail: the source still pours whole levels only");
                 Assert(taps2.Contains("ex.TryTakeDl("), "the sink does not take through the engine");
-                Assert(taps2.Contains("ex.NoteMapControlFlow(done, 0)") && taps2.Contains("ex.NoteMapControlFlowDl(0, doneDl)"), "a tap does not record its flow");
+                Assert(taps2.Contains("ex.NoteMapControlFlowDl(done, 0)") && taps2.Contains("ex.NoteMapControlFlowDl(0, doneDl)"), "a tap does not record its flow");
                 string xml = File.ReadAllText(Path.Combine(root, "Defs", "Canals", "ThingDefs", "FlowWorks_MapControls.xml"));
                 Assert(!xml.Contains("<designationCategory>"), "a map control is buildable (designationCategory)");
                 Assert(!xml.Contains("<costList>"), "a map control has a build cost");

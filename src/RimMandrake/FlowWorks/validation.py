@@ -891,7 +891,10 @@ def pipes_meet_centre(t):
 # OWED live: place both on a dug channel (RM_MapControls.PlaceSource / PlaceSink via jawa/static_call), watch the level
 # rise and fall, read the L0 ledger (flowSources= / flowSinks=) and see no conservation warning; save and reload.
 MAP_CONTROL_CASES = ["MapControl_rate_to_levels", "MapControl_rate_clamps", "MapControl_blocked_source_never_banks",
-                     "MapControl_pick_targets", "MapControl_source_and_sink_conserve_through_the_kernel"]
+                     "MapControl_pick_targets", "MapControl_source_and_sink_conserve_through_the_kernel",
+                     # RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL (owner card 2026-11-14 "Pour whatever fits")
+                     "MapControl_source_pours_what_fits"]
+# live: northstar/tap_fill_live.py (a 0.5 source and 0.25 sink on a 12-square row dug to 2; fills and conserves)
 suite.toggles += [t for t in ["mapControlsEnabled"] if t not in suite.toggles]
 
 

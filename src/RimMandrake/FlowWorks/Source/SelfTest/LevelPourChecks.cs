@@ -29,6 +29,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return r > 0 ? r : 0;
 		}
 
+		/// <summary>The excavation's PourRoomDl: how much of <paramref name="want"/> dL a pour at <paramref name="idx"/> would place
+		/// (the square, then the canal it joins, nearest first), read-only. CanPourLevel is PourRoom(w, idx, U) &gt;= U.</summary>
+		public static long PourRoom(ArrayWorld w, int idx, long want)
+		{
+			if (idx < 0 || w.k.depth[idx] == 0 || want <= 0) return 0;
+			return RM_LevelPour.Spread(idx, want, true, w.k.Cardinal, i => w.k.depth[i] != 0 && !w.k.IsSealed(i), null,
+				i => Room(w, i), RM_LevelPour.PourWalkCap, null, null);
+		}
+
 		/// <summary>Pour up to <paramref name="dl"/> at dug square <paramref name="idx"/> (the square, then the canal it joins,
 		/// nearest first); returns what was placed (0 on an undug square). The production TryPourDl is all-or-nothing on the
 		/// amount the pump asked for after reading PourRoomDl, which is this same plan.</summary>

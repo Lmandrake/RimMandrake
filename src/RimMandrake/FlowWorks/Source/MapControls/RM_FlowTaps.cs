@@ -7,20 +7,20 @@ using Verse;
 namespace RimMandrake.FlowWorks.MapControls
 {
 	/// <summary>FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: the flow SOURCE. Each pulse it pours its liquid into the dug squares
-	/// in reach (its own, then N/E/S/W), one level at a time into the lowest surface, through the engine's own driver
-	/// write (RM_MapComponent_Excavation.TryPourLevel: brim, no-mix, liquids switched off in Mod Settings and the fluid
-	/// palette all respected; the square becomes a flow-order input so a flat channel spreads away from it). Liquid
+	/// in reach (its own, then N/E/S/W) into the lowest surface, through the engine's own driver write
+	/// (RM_MapComponent_Excavation.TryPourDl: brim, no-mix, liquids switched off in Mod Settings and the fluid palette all
+	/// respected). It pours the decilitres that fit (RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL, owner card
+	/// 2026-11-14 "Pour whatever fits"; RM_MapControlMath.PourWhatFits), so it backs up only when the canal is full. Liquid
 	/// enters the world here, so it is recorded as an external input (NoteMapControlFlow), never a ledger imbalance.</summary>
 	public class Building_RM_FlowSource : Building_RM_MapControl
 	{
 		public FluidDef fluid;
 		public float ratePerPulse = 1f;
 		private float carry;
-		private int pouredTotal;
+		private long pouredDl;
 		private bool backedUp;
 
-		private readonly List<IntVec3> candCells = new List<IntVec3>();
-		private readonly List<int> candSurface = new List<int>();
+		private readonly List<IntVec3> reachCells = new List<IntVec3>();
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
@@ -37,29 +37,21 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				return;
 			}
-			int due = RM_MapControlMath.Due(ref carry, ratePerPulse);
-			int done = 0;
-			backedUp = false;
-			while (done < due)
+			long dueDl = RM_MapControlMath.DueDl(ref carry, ratePerPulse);
+			reachCells.Clear();
+			foreach (IntVec3 c in Reach())
 			{
-				candCells.Clear();
-				candSurface.Clear();
-				foreach (IntVec3 c in Reach())
+				if (Open(ex, c))
 				{
-					if (Open(ex, c) && ex.CanPourLevel(c, fluid))
-					{
-						candCells.Add(c);
-						candSurface.Add((int)ex.SurfaceDlAt(c));   // surface vs brim, dL
-					}
+					reachCells.Add(c);
 				}
-				int pick = RM_MapControlMath.PickPourTarget(candSurface);
-				if (pick < 0 || !ex.TryPourLevel(candCells[pick], fluid))
-				{
-					backedUp = true;
-					break;
-				}
-				done++;
 			}
+			FluidDef f = fluid;
+			long done = RM_MapControlMath.PourWhatFits(dueDl, reachCells.Count,
+				(i, want) => ex.PourRoomDl(reachCells[i], f, want),
+				i => (long)ex.SurfaceDlAt(reachCells[i]),   // surface vs brim, dL
+				(i, dl) => ex.TryPourDl(reachCells[i], f, dl));
+			backedUp = done < dueDl;
 			if (backedUp)
 			{
 				// P4: a driver held back by a brimming square still feeds the channel; keep it a flow-order input.
@@ -73,8 +65,8 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			if (done > 0)
 			{
-				pouredTotal += done;
-				ex.NoteMapControlFlow(done, 0);
+				pouredDl += done;
+				ex.NoteMapControlFlowDl(done, 0);
 			}
 		}
 
@@ -89,7 +81,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				sb.AppendLine("Backed up: the channel is full here (or holds another liquid).");
 			}
-			sb.Append("Poured so far: " + pouredTotal + " level(s)");
+			sb.Append("Poured so far: " + RM_Volume.FormatLitres(pouredDl / (double)RM_Volume.UnitsPerLitre));
 		}
 
 		protected override IEnumerable<Gizmo> ControlGizmos()
@@ -117,7 +109,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override string StateLine()
 		{
 			return "source " + ThingID + " at " + Position.x + "," + Position.z + " fluid=" + (fluid?.defName ?? "none")
-				+ " rate=" + ratePerPulse.ToString("0.###") + " active=" + active + " poured=" + pouredTotal + " backedUp=" + backedUp;
+				+ " rate=" + ratePerPulse.ToString("0.###") + " active=" + active + " poured=" + (pouredDl / (double)RM_LevelSolve.U).ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + " backedUp=" + backedUp;
 		}
 
 		public override void ExposeData()
@@ -126,7 +118,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			Scribe_Defs.Look(ref fluid, "RM_flowSourceFluid");
 			Scribe_Values.Look(ref ratePerPulse, "RM_flowSourceRate", 1f);
 			Scribe_Values.Look(ref carry, "RM_flowSourceCarry", 0f);
-			Scribe_Values.Look(ref pouredTotal, "RM_flowSourcePoured", 0);
+			Scribe_Values.Look(ref pouredDl, "RM_flowSourcePouredDl", 0L);
 		}
 	}
 
