@@ -105,9 +105,8 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   Not edited: it is a question (below).
 - **The 2 held look statements are placed** in the table (`held_statements`): "Anything that draws its contents is
   open" on the storage census test (offline, runs today, PASS); "a shelf should be ruled as open, period … staged
-  misleadingly" on sc_open_storage and sc_closed_containers plus a Stage 2 staging check. They are **not** removed from
-  `design/RimMandrake/validation_holding/`: its README says nothing leaves until the ladder is "fully defined and
-  regenerated", and spec question 12 (does accepting this map count as that?) is open.
+  misleadingly" on sc_open_storage and sc_closed_containers plus a Stage 2 staging check. Their rows stay in
+  `design/RimMandrake/validation_holding/` as the verbatim source the preflight reads.
 - **The settings sweep is moved offline in the table:** `settings_scale_and_switch` and `inv_settings` are decided by
   the specified offline test T_SETTINGS_SWEEP_OFFLINE (its acceptance is the already-filed
   RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING); `sc_settings_sweep` keeps only the game-side wiring
@@ -194,11 +193,15 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
   spotting that the landing patch re-targeted a pawn against the leaf; keeping the flyer lane out; deciding the census
   reasons; telling the restore-check red apart from new leaks (the same pre-existing lines; none added).
 
+### 2026-11-14 about 1:50 PM PST, his card on the held statements
+
+- **Owner, by card 2026-11-14 about 1:40 PM PST:** "Per mod, as it advances." A mod's held statements are placed in its
+  table when it reaches preflight, and that placement counts as the ingest (spec §8, decision 12). This mod's 2 were
+  placed at row 2, so they are ingested; the former question 2 is deleted as answered.
+
 ### Questions (open)
 
 1. ~~g4~~ settled 2026-11-14 by the Conductor's decision: a test-only proof hook pins the colonist at 64 to 76 kg (Stage 3).
-2. **Held statements:** does this pilot's placement count as the ingest his 2026-11-12 ruling waits for (spec
-   question 12)? Until then they stay in the holding store as well.
 3. **`record.json` state fields are stale** (not bar meaning): `inv_creature_mass_limit` and `inv_blast_power_damage`
    say `impl: absent` though both were built in 40f4e85120 (K-18 to K-20 pass); `inv_big_corpse_spared` names skip
    reason `too_big`, which the mass rule replaced (its scope note says the 75 kg goods limit now spares it, so the

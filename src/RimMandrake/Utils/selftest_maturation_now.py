@@ -274,6 +274,9 @@ def p8_interventions(d, page):
     g2, _ = M.parse_interventions("- CONDUCTOR INTERVENED (stage 5, kind re-pin): x", "j")
     check("8 stage 5 is the 4+5 box; a line without a time reads UNMEASURED",
           g2 and g2[0]["stage"] == "4+5" and g2[0]["when"] == "UNMEASURED", "got %r" % g2)
+    g3, b3 = M.parse_interventions("- CONDUCTOR INTERVENED (stage 3, 2026-11-14 13:50 PST, kind bar-added): x", "j")
+    check("8 kind bar-added (spec 5 item 5) parses and is not left unparsed",
+          g3 and g3[0]["kind"] == "bar-added" and not b3, "got %r / %r" % (g3, b3))
     # the live tree: every journal line is on the page (count measured by grep here, not by the generator)
     want = {}
     for f in glob.glob(os.path.join(REPO, "design", "concepts", "*", "journal.md")):

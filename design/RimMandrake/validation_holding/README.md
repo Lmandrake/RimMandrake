@@ -1,7 +1,7 @@
 # Validation holding store
 
-Where an owner-reported look defect waits until the validation ladder is built. Nothing here is a test, a gate or a
-ladder stage; nothing here is wired into one.
+Where an owner-reported look defect waits until its mod reaches preflight (Stage 2 of the Maturation Pipeline,
+`design/specs/2026-11-13-maturation-pipeline.md`). Nothing here is a test, a gate or a stage; nothing here is wired into one.
 
 ## The ruling
 
@@ -12,6 +12,10 @@ Owner, 2026-11-12 ~9:35 PM PST (phone typos fixed, meaning unchanged; on item
 
 It answers his 9:20 PM PST question whether each defect is being recorded for future testing, and replaces the earlier
 rule that a defect closes only with a named check.
+
+Owner, by card 2026-11-14 about 1:40 PM PST, "When should the held look statements go into the mods' tables?":
+**"Per mod, as it advances."** A mod's held statements are placed in its table when it reaches preflight, and that
+placement counts as the ingest the ruling above waited for (spec §8, decision 12).
 
 ## How an entry is added
 
@@ -28,9 +32,11 @@ reader months from now:
 
 ## How an entry leaves
 
-Only when the ladder is fully defined and regenerated: each entry is ingested where and how it belongs (a stage line
-item, a matrix cell, a selftest, or a look-only criterion), and its row is removed from the file here (the file is
-deleted when empty). Until then nothing from here is placed into the ladder, a gate, the nightly sweep or a close check.
+When its mod reaches preflight, each of its statements is placed in the mod's test table
+(`design/concepts/<Mod>/version/test_table.json`, `held_statements`): on a bar's test, a scene, a selftest, or a look-only
+criterion. That placement is the ingest. The row stays here as the verbatim source: each mod's preflight reads these files
+and refuses the mod while any statement of its own is unplaced. A statement that names no advancing mod waits here until
+its mod reaches preflight.
 Ingest item: `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`.
 
 ## Contents

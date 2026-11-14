@@ -409,7 +409,7 @@ def live_facts(mods):
 # note on the mod's items (spec §5); a stage run more than once adds one derived "relaunch" per extra run.
 
 YELLOW = "#ffd23f"
-IV_KINDS = ("decision", "re-pin", "hold", "release", "relaunch", "brief")
+IV_KINDS = ("decision", "re-pin", "hold", "release", "relaunch", "brief", "bar-added")
 IV_RX = re.compile(r"CONDUCTOR INTERVENED\s*\(\s*stage\s+(intake|4\s*\+\s*5|[1-8])\s*"
                    r"(?:,\s*(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*(AM|PM)?\s*(?:PST|PDT)?)?\s*"
                    r"(?:,\s*kind\s+([a-z-]+))?\s*\)\s*:\s*(\S.*)$", re.I)

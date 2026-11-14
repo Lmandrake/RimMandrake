@@ -1,6 +1,6 @@
 # The Maturation Pipeline
 
-**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Nothing here is built.** He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". On 2026-11-14 he agreed the lock rule (§4, Stage 1). Everything else marked [PROPOSAL] is still not his.
+**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13. Nothing here is built.** He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". On 2026-11-14 he agreed the lock rule (§4, Stage 1) and answered questions 8 and 12 by card (§8). Everything else marked [PROPOSAL] is still not his.
 
 Item: `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.
 Live status page: `D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md` (where each mod stands today).
@@ -152,11 +152,11 @@ Plain-text version of the same map:
 | | | mark |
 |---|---|---|
 | Purpose | Hold mod ideas, and mods that exist but have no locked design, until one is chosen to advance. Show how many are waiting. | HIS ("We need to show how many 'new mod ideas' we have waiting to process") |
-| Who | Nobody works here. He and the Conductor choose what enters Stage 1. | PROPOSAL (from the Design Versions draft: opening work on a mod is weighed against the other mods) |
+| Who | Nobody works here. No mod enters Stage 1 until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8); how the waiting mods then enter is asked again at that point. | HIS, by card 2026-11-14 ("Wait for one full pass"; §8, decision 8) |
 | Model tier | None. A list, read by a program. | PROPOSAL |
 | Inputs | Today: 42 "first touch" Designer items in RimFlow (`python3 src/RimMandrake/Utils/owner_queue.py`, measured 2026-11-13 3:03 PM PST). Other ideas sit inside tickets and are not counted yet. | measured; "trapped in tickets" is HIS |
 | Outputs | One line per waiting mod: its name, one sentence, whether code already exists. | PROPOSAL |
-| Exit ("ready" means) | He or the Conductor picked it, and fewer mods are advancing than the limit (open question "How many mods advance at once"). | PROPOSAL |
+| Exit ("ready" means) | Closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. | HIS, by card 2026-11-14 |
 | Road back | A mod can be put back at intake at any time. Nothing is lost: its folder stays. | PROPOSAL |
 | Tracked on the mod | Date it arrived; date it was picked. | PROPOSAL |
 
@@ -204,7 +204,7 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 | Model tier | None. | CARRIED |
 | Inputs | The locked version folder; the repo; the list of every def in the game; the mod lists. | CARRIED (spec `design/specs/2026-11-12-ticket-preflight-before-any-token.md`) |
 | Outputs | A preflight record: each check, pass or refuse, the smallest fix for each refusal, and how long the run took. | CARRIED (same spec; "the precise time this took to run" is his) |
-| Exit ("ready" means) | Every named file, def and mod is real. Every bar names its check. Every check names its stage. A check whose code is not written yet is not a refusal; it is Stage 3 work (the lock rule). Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod has been placed. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer, see below); full-list reason CARRIED (his 2026-11-12 ruling); held statements PROPOSAL |
+| Exit ("ready" means) | Every named file, def and mod is real. Every bar names its check. Every check names its stage. A check whose code is not written yet is not a refusal; it is Stage 3 work (the lock rule). Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod (`design/RimMandrake/validation_holding/`) has been placed in its table; that placement is the ingest. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer, see below); full-list reason CARRIED (his 2026-11-12 ruling); held statements HIS, by card 2026-11-14 ("Per mod, as it advances"; §8, decision 12) |
 | Road back | A refusal names the line and the fix. A wrong fact goes back to Stage 1. A broken criterion goes to the neutral fixer (a fresh agent that repairs acceptance criteria and is neither the judge nor the builder). | CARRIED (his refusal ruling 2026-11-12 2:50 PM PST) |
 | Tracked on the mod | Last preflight time and duration; refusals open. | PROPOSAL |
 
@@ -306,7 +306,7 @@ Nothing changes in what Operations watches. **[PROPOSAL]** One thing is added to
 
 **[PROPOSAL]** What replaces "take the next ticket":
 
-- Dispatch holds a short list of **advancing mods**. Everything else waits at intake or rests.
+- Dispatch holds a short list of **advancing mods**. Everything else waits at intake or rests. **[HIS, by card 2026-11-14]** The list is the four (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands), and Dispatch adds no mod to it until one of them reaches Stage 8 (§8, decision 8).
 - For each advancing mod it asks one question: what does this mod's current stage need right now? A game, an offline builder, a blind judge, or him.
 - The two games are the narrow point. A mod at Stage 6 waits for a game; a mod at Stage 8 waits for him and for the game on his machine. Offline stages never wait for a game.
 - Inside a stage, the work is still tickets in RimFlow. The stage's worker picks among that mod's tickets. Nobody picks among all tickets of all mods.
@@ -340,7 +340,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 4. **Live looks must feed the design.** Today the Designer loop ran on paper beside the hands-on work, and what he saw in the game never reached its scenes (measured by the Conductor today). Proposal: every look, early or formal, writes its line items into the same version folder the Designer locked. There is one list of bars per version, not a paper one and a hands-on one.
 5. **[RULE, Conductor, 2026-11-14] Every steward intervention is one journal line, in one fixed form.** A steward's decision, a re-pin of a lock record, a hold, its release, a relaunch, or a brief carrying "Steward's decisions" is written, when it is made, under the journal's `### Conductor interventions` heading (the first part of the history) as:
    `- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:15 PST, kind hold): <one plain line: what it did and why>. Source: <run, commit or ledger id>.`
-   The stage is `intake`, `1` to `8` (4 and 5 are one stage); the time is Pacific; the kind is one of decision, re-pin, hold, release, relaunch, brief. A hold stands until a `kind release` line for the same stage. A ledger note on the mod's pipeline item may carry the same line. `src/RimMandrake/Utils/maturation_now.py` reads both every run and marks the stage with a yellow arrow; a line it cannot parse is listed under "Needs Conductor", never dropped.
+   The stage is `intake`, `1` to `8` (4 and 5 are one stage); the time is Pacific; the kind is one of decision, re-pin, hold, release, relaunch, brief, bar-added (a bar added under the lock rule, §4 Stage 1, item 4). A hold stands until a `kind release` line for the same stage. A ledger note on the mod's pipeline item may carry the same line. `src/RimMandrake/Utils/maturation_now.py` reads both every run and marks the stage with a yellow arrow; a line it cannot parse is listed under "Needs Conductor", never dropped.
 
 ---
 
@@ -400,7 +400,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | 9 | A gate that is always red is not a gate (the nightly sweep) | Operations | CARRIED |
 | 10 | Publish runs the fast whole-tree checks and refuses on a red | unchanged, outside the pipeline | CARRIED |
 | 11 | A flyer's flight state may be read paused, without him | Stage 6, for flyers; flight itself is Stage 8 only | CARRIED |
-| 12 | A defect he reports in a look is stored until the ladder is regenerated, then ingested | The store is `design/RimMandrake/validation_holding/`. Ingest is agreed (recommendation 4). When and how: open question "When the held look statements are ingested". | CARRIED / HIS by agreement |
+| 12 | A defect he reports in a look is stored until the ladder is regenerated, then ingested | The store is `design/RimMandrake/validation_holding/`. A mod's held statements are placed in its table when it reaches Stage 2, and that placement is the ingest. | CARRIED; ingest HIS by agreement (recommendation 4); when and how HIS, by card 2026-11-14 (§8, decision 12) |
 
 ### The Designer's inner steps
 
@@ -458,9 +458,9 @@ All **[PROPOSAL]** except where marked. Nothing is deleted by this document.
 
 ## 8. Questions for him
 
-Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. On 2026-11-14 he agreed the lock rule, which is now the answer to question 6. Questions 7 to 17 are still open; they can wait until the pilot has shown something.
+Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. On 2026-11-14 he agreed the lock rule, which is now the answer to question 6, and answered questions 8 and 12 by card. Questions 7, 9 to 11 and 13 to 17 are still open; they can wait until the pilot has shown something.
 
-### Decided, 2026-11-13 (question 6 re-answered 2026-11-14)
+### Decided, 2026-11-13 (question 6 re-answered, questions 8 and 12 answered, 2026-11-14)
 
 **1. Stage 4 and Stage 5: one stage or two?** **[HIS, by card]** "One stage, tests first." The blind agent first writes and runs its own game-logic tests from the bars alone, then opens the builder's code and tests for the challenge. One load of the mod, one cycle, two reported lanes. (§4, "Stages 4 and 5".)
 
@@ -474,6 +474,10 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 
 **6. What must a test be at the lock?** **[HIS, by agreement 2026-11-14]** The lock rule (§4, Stage 1), which replaces his card answer of 2026-11-13. At the lock every bar is written and names how it will be checked; no check code is required. Stage 3 writes every check, seen failing first, and no mod moves past Stage 3 until every bar has a check that runs. "A lock is never as strict as we'd like. But I understand the stricter the better."
 
+**8. How do the waiting mods enter?** **[HIS, by card 2026-11-14, about 1:40 PM PST]** "Wait for one full pass." No new mod enters until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8). How the waiting mods then enter is asked of him again at that point. (§4, "Intake"; §5, "Dispatch".)
+
+**12. When are the held look statements ingested?** **[HIS, by card 2026-11-14, about 1:40 PM PST]** "Per mod, as it advances." A mod's held statements (`design/RimMandrake/validation_holding/`) are placed in its table when it reaches Stage 2, and that placement counts as the ingest his 2026-11-12 ruling waited for. Preflight refuses a mod whose held statements are not placed. (§4, Stage 2; §7, rule 12.)
+
 ### Still open: after the pilot has shown something
 
 **7. Do the Designer's Exam and coverage judge stay as gates before the lock?**
@@ -483,18 +487,11 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 - *Keep the Exam for mods with no code, where there is nothing else to test the design against.*
 - **Recommendation:** drop both as gates for built mods now; decide for unbuilt mods after the first one goes through.
 
-**8. How do the 42 waiting mods enter?**
-
-- *Each gets a full Designer first touch, as queued today.*
-- *A built mod enters "as built": a short vision written from what exists, bars taken from its signed list and its existing tests, locked as 0.1.0 on his read, straight to Stage 2.* Most of the 42 already have code.
-- *He ranks a handful; the rest wait at intake untouched.*
-- **Recommendation:** he ranks five. Built mods among them enter as built. The 42 items stay filed and become the intake list.
-
-**9. How many mods advance at once?**
+**9. How many mods advance at once?** Until one of the four reaches Stage 8, the four advance and none is added (decision 8). This asks the limit after that.
 
 - One, three or five.
 - The trade: the narrow points are the two games and his own time. More mods advancing means more waiting at stages 6 and 8, and more half-finished work.
-- **Recommendation:** one during the pilot, then three.
+- **Recommendation:** three.
 
 **10. The light path: what may a small change skip?**
 
@@ -508,13 +505,6 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 - *In its own parallel pipeline that joins at Stage 6.* That is how it runs today.
 - *As a lane of the same stages:* made in Stage 3; the existing art evaluation is its Stage 4 challenge; a true-scale review sheet goes to him only when the evaluation cannot decide; seen in the world at stages 6 to 8. An art bar is a line item like any other.
 - **Recommendation:** the second, so that a mod's art cannot be "done" on a different clock from its code.
-
-**12. When are the 66 held look statements ingested?** (Ingesting them is agreed.)
-
-- *All now, in one pass.*
-- *Per mod, when that mod reaches Stage 2.* Preflight refuses a mod whose held statements are not yet placed. Explosive Knockback's 2 go in during the pilot; the 64 from the FlowWorks pit looks go in when FlowWorks advances.
-- His earlier ruling says they wait "until our validation ladder is fully defined and regenerated". So this also asks: **does accepting this map count as that?**
-- **Recommendation:** per mod, and yes.
 
 **13. What counts as a release candidate?**
 
