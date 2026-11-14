@@ -1,0 +1,4781 @@
+{
+ "mod": "FlowWorks",
+ "version": "0.1.0",
+ "made": "2026-11-14T11:50:14-08:00",
+ "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
+ "stages": {
+  "2": "preflight (a program)",
+  "4-5": "blind offline challenge and game-logic testing",
+  "6": "in-game acceptance",
+  "8": "his live walk"
+ },
+ "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
+ "settings_move": "inv_settings: the per-toggle default check is decided offline by T_SETTINGS_SWEEP_OFFLINE (C# SettingsReset/MachinerySettings/Settings cases, the settings registry selftest, the settings search selftest, the northstar selftest's registry rows, and validation_v2.py --offline O2's C# toggle census). The game keeps only sc_walk's master switch off and on mid-game, which needs a running colony. validation_v2's live L2 'settings_default' read stays a harness precondition (installed settings equal shipped), not a bar. No bar text is edited.",
+ "corrections": [],
+ "corrections_note": "FlowWorks has no coverage_verdict.json and no coverage_fixes.json: the Arbiter signed all 59 rows covered on 2026-11-05 at the locked tree and sheet; no judge correction is open (version/gaps_sorted.md)",
+ "held_statements": [
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "1",
+   "words": "\"Tar is not nearly dark enough (fix). It reads grey. It should be dark indeed.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "inv_liquid_roster"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "2",
+   "words": "\"Ramp: Slowly becomes immersed but invisible beneath the water (not transparent water, fix)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "3",
+   "words": "\"but cover-line is good (pass)\" (PINNED PASS)",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "approval kept for re-check: in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "4",
+   "words": "\"Portable Ladder: not shown through water (fix, both materials)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "ways_in_and_out"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "5",
+   "words": "\"but peaks out correctly over top (pass) same as security gates\" (PINNED PASS)",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "sluice_drains_on_command"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "approval kept for re-check: in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "6",
+   "words": "\"Items (raw steel, minified furniture) never become covered (fix)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "7",
+   "words": "\"I'm not sure how to judge the swale (what is expected behavior here?)\"",
+   "bars": [],
+   "test": "none: his question, answered by row 13 of the same file",
+   "stage": "-",
+   "kind": "question (answered)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "8",
+   "words": "\"Wall ladders should be shown through transparent water and are not (fix)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "ways_in_and_out"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "9a",
+   "words": "\"D8 row shows extraordinary variety: sometimes water is transparent, sometimes it isn't.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "9b",
+   "words": "\"Sometimes items are cut off, sometimes they are not.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "9c",
+   "words": "\"Sometimes the color gets paler, sometimes it does not.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "offline parity + look only (wash colour has no reader)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "9d",
+   "words": "\"Sometimes the water extends horizontally all the way to the edge but not vertically, sometimes it does not.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "9e",
+   "words": "\"It's as though each case is independently set in these variables, badly (major fix).\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (PY_FLOWWORKS_UNDERLIQUID_PARITY: one law for every drawer)",
+   "stage": "4-5",
+   "kind": "offline selftest"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "10a",
+   "words": "\"Shadows surround the deepest pit (D8 D8) even though it's entirely filled\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "pit_reads_as_hole"
+   ],
+   "test": "OL_OWNER_LOOK_READS (brim_no_shade_outside capture row)",
+   "stage": "6",
+   "kind": "in-game capture"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "10b",
+   "words": "\"and shadows are shown to be outside the pit rather than inside (major fix)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "pit_reads_as_hole"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "11a",
+   "words": "\"Planks over pit are correctly always shown on top\" (PINNED PASS)",
+   "bars": [
+    "covered_pit_springs"
+   ],
+   "test": "T_PIT_COVER + OL_OWNER_LOOK_READS",
+   "stage": "6",
+   "kind": "approval kept for re-check: in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "11b",
+   "words": "\"please ensure they can only be placed where there are two sides adjacent to solid ground, to avoid \"covered pit bridges\" being built.\"",
+   "bars": [
+    "covered_pit_springs",
+    "inv_pits"
+   ],
+   "test": "T_PIT_COVER (PitCover_rests_on_two_banks)",
+   "stage": "4-5",
+   "kind": "offline selftest"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "12",
+   "words": "\"Then the swale should be drawn as a floor tile, not a channel slide as it is now\"",
+   "bars": [
+    "canal_reads_as_dug",
+    "inv_dig_depth"
+   ],
+   "test": "OL_OWNER_LOOK_READS + LOOK_STAGE8 (swale texture is art)",
+   "stage": "6 and 8",
+   "kind": "in-game state read + look only"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "13",
+   "words": "\"Shadows should ALWAYS be inside the pit only for \"negative height items\" like a pit of course. But it's not that \"a full pit just hides shadows\" it should simply be transparent to them as usual. It's much more that they're only inside the pit, ok?\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "pit_reads_as_hole"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "14",
+   "words": "\"For the game, I would appreciate a VERY large pit be drawn at several fill levels, plenty deep, filled with a wide assortment of different items different from the existing tests.\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "big pit review scene (northstar/selftest_big_pit_scene.py offline; the scene itself feeds LOOK_STAGE8)",
+   "stage": "6 and 8",
+   "kind": "staging for his look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "15",
+   "words": "\"Also place some furniture in there (not just minified but installed) so I can watch it work. Make sure some mod entries are present as well as vanilla game elements.\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "big pit review scene (BP*_furn rows) + OL_OWNER_LOOK_READS (OL_buildings_covered)",
+   "stage": "6",
+   "kind": "in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "16",
+   "words": "\"You failed to assert \"no mountain above\" on the test map, and it collapsed all over\"",
+   "bars": [],
+   "test": "harness: src/RimMandrake/Utils/selftest_validation_core_site.py (open-sky site)",
+   "stage": "4-5",
+   "kind": "harness, no FlowWorks bar (floor line test_isolation)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "17",
+   "words": "\"I believe you can remove overhead mountain yourself as part of a test map creation from now on.\"",
+   "bars": [],
+   "test": "harness: as row 16",
+   "stage": "4-5",
+   "kind": "harness, no FlowWorks bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "18",
+   "words": "\"It needs to repopulate the items in the pits. It cleaned the debris but most of the items were destroyed.\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "big pit review scene (per-thing rows, HP against spawn_baseline.json)",
+   "stage": "6",
+   "kind": "staging for his look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "19",
+   "words": "\"I also need it to generate my series of a very large pit at different levels filled with a wide variety of items to examine in addition to these\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "as row 14",
+   "stage": "6 and 8",
+   "kind": "staging for his look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "20",
+   "words": "\"Why is there a label of \"Canal 1m\" at the central northern wall of the pit and \"Pit 2m or more\" elsewhere? It's supposed to show the precise depth no matter what, and Pit and Canal are totally interchangeable. Something is very wrong here (fix).\"",
+   "bars": [
+    "pit_reads_as_hole"
+   ],
+   "test": "T_PIT_LABEL (offline) + on-screen label text BLOCKED (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)",
+   "stage": "4-5 and 6",
+   "kind": "offline selftest + blocked in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "21",
+   "words": "\"we need some God Mode capabilities to allow the debug player the ability to drop large units of various liquids on the terrain or in a pit as well as remove it.\"",
+   "bars": [
+    "inv_map_controls"
+   ],
+   "test": "T_MAP_CONTROLS (GodLiquid_*)",
+   "stage": "4-5",
+   "kind": "offline selftest"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "22",
+   "words": "\"So the new water is much better: it's very transparent at first\" (PINNED PASS)",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (parity: shallow end) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "approval kept for re-check: offline parity + look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "23",
+   "words": "\"but it becomes about twice too opaque as it should by the end.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (parity: deep opacity; replaced by row 41)",
+   "stage": "4-5",
+   "kind": "offline parity"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "24",
+   "words": "\"Its color should also be darkened.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "offline parity + look only (taste)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "25",
+   "words": "\"Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "pit_reads_as_hole"
+   ],
+   "test": "T_UNDERLIQUID (dry floor = wet floor ground) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "offline parity + look only"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "26",
+   "words": "\"There appears to be a dinosaur in the pit, that's surprising. Do we really have that segnosaurus in our game?\"",
+   "bars": [],
+   "test": "harness: big pit scene wildlife_none_left rows",
+   "stage": "6",
+   "kind": "harness staging (and his question, answered)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "27",
+   "words": "\"Also, the items appear to be hanging out the pit to the east and west and north, adjustments are needed.\"",
+   "bars": [
+    "inv_looks"
+   ],
+   "test": "big pit review scene (pack_layout, BP*_inside_margin)",
+   "stage": "4-5 and 6",
+   "kind": "staging for his look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "28",
+   "words": "\"It's easy to see which items are not going under water.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_buildings_covered)",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "29",
+   "words": "\"Strange shadows are being cast by some items and not others.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_no_surface_shadow)",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game state read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "30",
+   "words": "\"Examine each item and look for obvious defects. A second screenshot shows it at the deepest setting shown, so examine that too.\"",
+   "bars": [],
+   "test": "process: capture_list.json puts the deepest copy first (Stage 7 pre-human check)",
+   "stage": "7",
+   "kind": "process instruction, no bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "31",
+   "words": "\"The game is no longer allowing me to select objects at all...\"",
+   "bars": [],
+   "test": "harness: src/RimMandrake/Utils/selftest_screenshot_mode_restored.py + OL_screenshot_mode_off",
+   "stage": "4-5 and 6",
+   "kind": "harness, no FlowWorks bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "32",
+   "words": "\"the game still does not allow me to select nor take screenshots\"",
+   "bars": [],
+   "test": "harness: as row 31",
+   "stage": "4-5 and 6",
+   "kind": "harness, no FlowWorks bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "33a",
+   "words": "\"Digging a pit on a Geyser allows the Geyser to descend to the bottom of the pit (it remains and descends).\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB",
+   "stage": "4-5 (live owed)",
+   "kind": "offline selftest; NO 0.1.0 BAR: geyser hot tub (question for him)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "33b",
+   "words": "\"Filling the pit with water or any fluid still works and generates distinctive bubbles where the geyser is.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB + LOOK_STAGE8 (bubble art)",
+   "stage": "4-5 and 8",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "33c",
+   "words": "\"When pawns are near those bubbles, they will treat it like a hot tub and gain benefits like the Hot Springs mod currently supports\" (+ card 19:50: \"Water plus harmless liquids\", \"Allowed in a dry pit; caps it\", \"Vanilla's small bonus\")",
+   "bars": [],
+   "test": "T_GEYSER_TUB",
+   "stage": "4-5 (live owed)",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "34",
+   "words": "\"Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "35",
+   "words": "\"This appears to be a common problem for the cooler and the Glowtank.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "36",
+   "words": "\"The wires are also above the items and furniture otherwise, likely all the same problem.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "37",
+   "words": "\"you shouldn't call it God Mode in the name of the skill, God Mode is a game mode when you click on the little head icon in the debug menu. The debug skill should just be called what you said without God Mode\"",
+   "bars": [
+    "inv_map_controls"
+   ],
+   "test": "T_MAP_CONTROLS (specified case GodLiquid_no_god_mode_in_names)",
+   "stage": "2 and 4-5",
+   "kind": "offline text check (specified)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "38",
+   "words": "\"But it always responded \"No Room.\" It shouldn't do that. It should go ahead and overflow.\"",
+   "bars": [
+    "inv_map_controls"
+   ],
+   "test": "T_MAP_CONTROLS (specified case GodLiquid_pour_over_brim_overflows_never_no_room) + OL_OWNER_LOOK_READS (OL_pour_never_no_room)",
+   "stage": "4-5 and 6",
+   "kind": "offline (specified) + in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "39",
+   "words": "\"I wanted to watch the water bulge and move.\"",
+   "bars": [
+    "fill_flows_along_canal"
+   ],
+   "test": "LOOK_STAGE8 (motion over time)",
+   "stage": "8",
+   "kind": "look only"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "40",
+   "words": "(card) pit water colour: \"Blue that grows with depth\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (specified parity: blue share rises with depth) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "offline (specified) + look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "41",
+   "words": "\"The water still does not read as water well even at 4m, looks more like faint blue mist patches. I think I asked you for too little opacity.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (specified parity: 4 m hides >= DeepOpacity) + LOOK_STAGE8",
+   "stage": "4-5 and 8",
+   "kind": "offline (specified) + look"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "42",
+   "words": "\"In geyser_pit.png you can see a strange darker square around the geyser image that isn't welcome.\"",
+   "bars": [],
+   "test": "capture ring-luminance row of the geyser pit (specified)",
+   "stage": "6",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "43",
+   "words": "\"Some very strange water coverage behavior (deep tar) seems to ignore bodies\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_corpses_covered) + overlay hook",
+   "stage": "6",
+   "kind": "in-game state read + blocked hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "44",
+   "words": "\"torches\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "45",
+   "words": "\"the battery full symbol (the dynamic indicator)\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "46",
+   "words": "\"and the AC unit arrow.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "47",
+   "words": "(seen in his BP6 shot by the Conductor, not his words) a Novel crisp under tar",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID + OL_OWNER_LOOK_READS (OL_opaque_hides on item Novel)",
+   "stage": "6",
+   "kind": "in-game state read (seen by the Conductor, not his words)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md",
+   "tag": "2026-11-12",
+   "row": "48",
+   "words": "\"So are we recording each of these defects for future testing to keep them fixed? ... especially if they can be made offline or very fast ingame validations, yes?\"",
+   "bars": [],
+   "test": "rule: the holding store itself (README.md)",
+   "stage": "-",
+   "kind": "rule, no bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "1",
+   "words": "\"Hot tub: Diana seems to be properly enjoying it.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB + LOOK_STAGE8",
+   "stage": "8",
+   "kind": "approval; NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "2",
+   "words": "\"It is located in an existing lake interestingly, and the geyser itself is outside the hot tub dark blue region. Not sure about that. [Image #1] you can see the dark geyser beneath, the bubbles north of that, and the hot tub dark blue square north of that too.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB (vent, plume and pool square share one cell)",
+   "stage": "4-5",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "3",
+   "words": "\"[Image #2] Not sure what these were supposed to measure or demonstrate.\"",
+   "bars": [],
+   "test": "process: every scene reads as its caption (Stage 7 pre-human check)",
+   "stage": "7",
+   "kind": "look only, process"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "4",
+   "words": "\"[Image #3] Here is another geyser pit where I can no longer see the geyser, the bubbles are in the southern area.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB + T_UNDERLIQUID (vent seen at its depth)",
+   "stage": "4-5",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "5",
+   "words": "\"[Image #4] People can't seem to get into this geyser pit. I added northern wall ladder.\"",
+   "bars": [
+    "ways_in_and_out"
+   ],
+   "test": "T_PIT_ACCESS + staging reachability read",
+   "stage": "4-5 and 6",
+   "kind": "offline + in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "6",
+   "words": "\"The colonist DID slow and speed back up climbing the ladder more accurate to its size than before.\"",
+   "bars": [
+    "ways_in_and_out"
+   ],
+   "test": "T_PIT_ACCESS (LadderClimb_*)",
+   "stage": "4-5",
+   "kind": "approval kept for re-check: offline selftest"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "7",
+   "words": "\"FIX: there is still an odd behavior when you click on a drafted pawn to go to a place in a large pit like this: it shows you where you can go correctly, but then they go to a different place usually more south than intended.\"",
+   "bars": [
+    "ways_in_and_out"
+   ],
+   "test": "T_PIT_ACCESS (PY_FLOWWORKS_DRAFTED_MOVE_PIT) + sc_ways_out",
+   "stage": "4-5 and 6",
+   "kind": "offline + in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "8",
+   "words": "\"[Image #5] When I went into this pit (by adding a ladder, the blood pit) there are two strange coverings of red added to the person. I assume this is some kind of \"bloodied\" effect but it's extremely graphically crude.\"",
+   "bars": [],
+   "test": "none until designed (filed to the Designer)",
+   "stage": "-",
+   "kind": "NO 0.1.0 BAR: liquid coating on pawns (question for him)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "9",
+   "words": "\"Also, the colonist now only said \"pit exposure\" even though they willingly entered, the ladder is down. I can soak in the hot blood pool while also getting pit exposure, oddly.\"",
+   "bars": [
+    "ways_in_and_out"
+   ],
+   "test": "pit exposure thought math (specified offline case in T_PIT_ACCESS)",
+   "stage": "4-5",
+   "kind": "offline (specified)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "10",
+   "words": "\"Yes, the oil makes a brown \"covering\" over the pawn image (chin and body) that I guess is supposed to be covered in oil somehow. Tar adds the same pattern on the character but black. These graphics (being dirty) need to be significantly improved and should likely be a Condition rather than just gra",
+   "bars": [],
+   "test": "none until designed (filed to the Designer)",
+   "stage": "-",
+   "kind": "NO 0.1.0 BAR: liquid coating on pawns"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "11",
+   "words": "\"Going in normal water seems to have removed the strange graphics, so \"washing\" seems to occur itself. Likely needs to be made more explicit.\"",
+   "bars": [],
+   "test": "none until designed (filed to the Designer)",
+   "stage": "-",
+   "kind": "NO 0.1.0 BAR: washing off a coating"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "12",
+   "words": "\"Appears that any Pit water within the radius of a Geyser becomes a hot tub. [Image #6] I had intended that the Geyser must itself be beneath the pit water itself, not just adjacent as shown here. There's no way for the heat to get from the hole into the pit water in this configuration.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB (selftest_flowworks_geyser_tub.py encodes the old radius rule; needs the edit)",
+   "stage": "4-5",
+   "kind": "NO 0.1.0 BAR: geyser hot tub"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "13",
+   "words": "\"The transparency of the water and the color now looks great.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "LOOK_STAGE8",
+   "stage": "8",
+   "kind": "approval, look only (taste)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "14",
+   "words": "\"But as shown in this tar image, the battery indicator is now properly submerged\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "approval kept for re-check"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "15",
+   "words": "\"but the Cooler is not and still shows its arrow side above the liquid.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "blocked on a proof hook"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "16",
+   "words": "\"[Image #8] Also, the GSS cables are now correctly below the items.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook)",
+   "stage": "6",
+   "kind": "approval kept for re-check"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "17",
+   "words": "\"Colonists still can't walk around a pit properly. It's really strange. I just took two in-game screenshots. You can see the green circle say where I clicked, then you can see where they end up in the second shot. Something's really wrong with the click-walk location and pathing in pits. Always has ",
+   "bars": [
+    "ways_in_and_out",
+    "pit_reads_as_hole"
+   ],
+   "test": "T_PIT_ACCESS (PY_FLOWWORKS_DRAFTED_MOVE_PIT checks only the destination remap; the release ring and the pit's top rows are unchecked) + sc_ways_out",
+   "stage": "4-5 and 6",
+   "kind": "offline (partly specified) + in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md",
+   "tag": "2026-11-13",
+   "row": "18",
+   "words": "\"WTF is that Thrumbo creature?! We shouldn't have anything called a Thrumbo in the game anymore, and that is a HIDEOUS image. I don't even know what it is!\"",
+   "bars": [],
+   "test": "harness: tier_cut_creature_check.py against proof-scene creatures",
+   "stage": "2",
+   "kind": "harness staging, no FlowWorks bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_dig_interface.md",
+   "tag": "2026-11-13_dig_interface",
+   "row": "1",
+   "words": "\"Colonist DID start digging, and it's slow.\"",
+   "bars": [
+    "canal_reads_as_dug",
+    "inv_dig_depth"
+   ],
+   "test": "T_DIG_TIME_ARITHMETIC (specified; his target not set)",
+   "stage": "4-5",
+   "kind": "offline arithmetic (specified); Problem-or-Divergent is his open call"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_dig_interface.md",
+   "tag": "2026-11-13_dig_interface",
+   "row": "2",
+   "words": "\"We will want to think about what the dig interface should be. The vast grid of options when I selected Digging was... daunting and not how the game usually is. Worth some deeper design. There's also a LOT of options for dig, repair, fill in, all sorts of things. So a full consolidation of the UI is",
+   "bars": [],
+   "test": "none until the design is ruled (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION)",
+   "stage": "-",
+   "kind": "NO 0.1.0 BAR yet: dig interface consolidation, his open call"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
+   "tag": "2026-11-13_evening",
+   "row": "1",
+   "words": "\"Bubbles are centered on vent itself, yes. They are too large and too transparent. It should be bubbling water, not faint ghost bubbles rising up.\"",
+   "bars": [],
+   "test": "T_GEYSER_TUB (fleck count, size, alpha in bounds; offline)",
+   "stage": "4-5",
+   "kind": "NO 0.1.0 BAR: geyser bubbles"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
+   "tag": "2026-11-13_evening",
+   "row": "2",
+   "words": "\"No, the vent does not appear to be under water. The blue seems to fade away, and the vent looks on top of the water. But you could see that for yourself.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (things lying flat draw under the sheet)",
+   "stage": "4-5",
+   "kind": "offline law"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
+   "tag": "2026-11-13_evening",
+   "row": "3",
+   "words": "\"The ancient shopping Cart isn't shown as under the water. Not sure if the chunks are either. And the chunks don't honor the pit, they overlap its edges unphysically. But the pits altogether, the murk looks really good. If it gets even deeper it keeps getting more murky right?\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks",
+    "pit_reads_as_hole"
+   ],
+   "test": "T_UNDERLIQUID (every draw path enumerated; sprite inside the pit)",
+   "stage": "4-5",
+   "kind": "offline law"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
+   "tag": "2026-11-13_evening",
+   "row": "4",
+   "words": "\"I keep telling you that the Cooler still keeps its little red arrow icon above the surface... the tar shows it cleanly.\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (overlays follow the depth rule) + OL_OWNER_LOOK_READS",
+   "stage": "4-5 and 6",
+   "kind": "offline law + in-game read"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_evening.md",
+   "tag": "2026-11-13_evening",
+   "row": "5",
+   "words": "\"And yes, if we could put the yellow power disconnect icons under the water too when the item is under water that would be great\"",
+   "bars": [
+    "fill_level_legible",
+    "inv_looks"
+   ],
+   "test": "T_UNDERLIQUID (NeedsPower and PowerOff fade with depth)",
+   "stage": "4-5",
+   "kind": "offline law"
+  }
+ ],
+ "tests": {
+  "T_DIG": {
+   "id": "T_DIG",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "dig jobs and labour: dig progress, deep digs to 8 m, excavation pulses, dig plans, digging time (35 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepDigChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DigProgressChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExcavationTickChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LineDigBreakChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PlanChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewFixBatch01Checks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeepDig*,DigCanal*,DigProgress*,ExcavationTick*,Fillin*,LineDigBreak*,Plan*",
+   "runs_today": {
+    "ran": true,
+    "cases": 35,
+    "seen": 35,
+    "ok": 35,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_REVIEW1022_EXCAVATION": {
+   "id": "PY_FLOWWORKS_REVIEW1022_EXCAVATION",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_excavation.py",
+   "observes": "FlowWorks code review 2026-10-22, RM_MapComponent_Excavation.cs (offline, no game). Each check reads the source and",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_excavation.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_excavation.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "all checks passed"
+   }
+  },
+  "T_WALL_FACES": {
+   "id": "T_WALL_FACES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "depth legible by wall faces: cliff masks, ramps, wall faces per depth (21 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/CliffMaskChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitDrawHoldChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WaterLookChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Cliff*,CliffMask*,PitSide*,PitSun*,Ramp*,WallFaces*",
+   "runs_today": {
+    "ran": true,
+    "cases": 21,
+    "seen": 21,
+    "ok": 21,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_FLAT_SHADOW": {
+   "id": "PY_FLOWWORKS_FLAT_SHADOW",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_flat_shadow.py",
+   "observes": "RIMMANDRAKE_REMOVE_DARK_SQUARE_AROUND_SUNK_GEYSER_UNWELCOME_BOX: no hard dark box under flat things in a pit.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_flat_shadow.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_flat_shadow.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "RESULT GREEN"
+   }
+  },
+  "T_LEVEL": {
+   "id": "T_LEVEL",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "the levelling kernel: one surface per connected still body, exact levels, pours, settling, conserved volume, seeded fuzz (66 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelExactChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelPourChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelPrejitChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelRunWalkChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelSurfaceChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevellingChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SettleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/VolumeChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Exact*,Fuzz*,LEVELLING*,LEVELPOUR*,LEVELPREJIT*,LEVELRUN*,Level*,LevelPour*,Settle*,Volume*",
+   "runs_today": {
+    "ran": true,
+    "cases": 66,
+    "seen": 66,
+    "ok": 66,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_KERNEL_ORACLE": {
+   "id": "PY_FLOWWORKS_KERNEL_ORACLE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py",
+   "observes": "Differential test: the production pulse kernel (FlowWorks/Source/RM_FlowKernel.cs) against the independent",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 126.0,
+    "tail": "PASS [gaps]: kernel == PulseOracle on 3000/3000 scenes"
+   }
+  },
+  "PY_FLOWWORKS_ONE_WATER_NUMBER": {
+   "id": "PY_FLOWWORKS_ONE_WATER_NUMBER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py",
+   "observes": "RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES (owner cards 2026-11-12 23:52 and 2026-11-13 00:15 PST: \"Delete it\";",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.3,
+    "tail": "0 failure(s)"
+   }
+  },
+  "PY_FLOWWORKS_FLOOD_HOUR_CADENCE": {
+   "id": "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_flood_hour_cadence.py",
+   "observes": "BRIDGE_FLOOD_FIX_RUNS_EVERY_THREE_HOURS: bridge flood damage is advertised per in-game hour, but its check sat",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_flood_hour_cadence.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_flood_hour_cadence.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "selftest_flowworks_flood_hour_cadence: PASS (240 hours, 1 fire each; old = every 3rd)"
+   }
+  },
+  "T_STOCK": {
+   "id": "T_STOCK",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "every source is stock: refill by season and seep, creditable levels, limitless edge bodies, pond depth and return, body mending, liquid theft (79 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseBandChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LakeFloorChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LiquidTheftChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PondDepthChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PondReturnChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewFixChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WaterBodyMendChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Body*,ContainerMat*,CreditableLevels*,Lake*,Limitless*,Placer*,PlacerStock*,Pond*,PondDepth*,Refill*,ReviewFix*,Scenario*,Season*,Theft*,WaterMend*,Wetness*",
+   "runs_today": {
+    "ran": true,
+    "cases": 79,
+    "seen": 79,
+    "ok": 79,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL": {
+   "id": "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pond_outlet_fractional.py",
+   "observes": "POND_OUTLET_FIX_REJECTS_FRACTIONAL_ROOM (offline, no game). RM_LiquidSpill.Outlet chose a pond (Body) only when it had a",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_pond_outlet_fractional.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pond_outlet_fractional.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "pond outlet fractional room: PASS (5 source pins, sweep rooms 0..2000, planted fails 3)"
+   }
+  },
+  "PY_PUMP_DRAW_CONSERVES": {
+   "id": "PY_PUMP_DRAW_CONSERVES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py",
+   "observes": "PUMP_DRAW_FIX_LOSES_A_LEVEL: offline proof that a pump's channel draw conserves liquid, and that the live bar which",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "tail": "PASS"
+   }
+  },
+  "T_SHEET": {
+   "id": "T_SHEET",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "overspill sheets: liquid over open ground, soak-in, freeze and thaw, flood release, outflow (49 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FloodReleaseChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/OutflowChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SheetWaterChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "runs_today": {
+    "ran": true,
+    "cases": 49,
+    "seen": 48,
+    "ok": 48,
+    "fail": 0,
+    "rc": 0,
+    "not_reached": [
+     "Sheet_runs_back_into_the_canal_when_it_is_drawn_down_relief_"
+    ],
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_SHEET_DROWN_MESSAGE": {
+   "id": "PY_FLOWWORKS_SHEET_DROWN_MESSAGE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py",
+   "observes": "OVERFLOW_DROWNING_FIX_NO_WARNING (offline, no game): a pawn drowning in spilled sheet water on undug soil gets the",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS"
+   }
+  },
+  "T_ROSTER": {
+   "id": "T_ROSTER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "liquid roster: every supported liquid, its terrains and hazards, fluid compatibility, immersion damage (17 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GateAcidChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ImmersionChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PaletteExhaustionChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewFixBatch01Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RewireChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "runs_today": {
+    "ran": true,
+    "cases": 17,
+    "seen": 17,
+    "ok": 17,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_LIQUID_DEFS_HAZARDS": {
+   "id": "PY_LIQUID_DEFS_HAZARDS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py",
+   "observes": "selftest_liquid_defs_hazards.py -- GPT review batch B (2026-10-23). Pins, offline, in the shipped XML:",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS covered 25 terrains (24 fill + deep sand), got 25"
+   }
+  },
+  "PY_WATER_TERRAINS_NAME_LIQUID": {
+   "id": "PY_WATER_TERRAINS_NAME_LIQUID",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py",
+   "observes": "LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER -- every Water-tagged TerrainDef our mods ship must NAME the liquid a pawn",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.5,
+    "tail": "PASS 139 Water-tagged terrains all name a liquid or are fresh by design"
+   }
+  },
+  "PY_LAVA_ROW": {
+   "id": "PY_LAVA_ROW",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py",
+   "observes": "selftest_lava_row.py -- LAVA_LIQUID_BUILD_PROMISED_BY_CARD: the lava LiquidDef row exists with the matrix's faces.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "ALL PASS"
+   }
+  },
+  "PY_FLOWWORKS_HOT_WET_TERRAIN": {
+   "id": "PY_FLOWWORKS_HOT_WET_TERRAIN",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_hot_wet_terrain.py",
+   "observes": "selftest_flowworks_hot_wet_terrain.py \u2014 HOT_RELEASE_FIX_OWN_WET_TERRAIN (GPT finding FA_core_sim_1.4).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_hot_wet_terrain.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_hot_wet_terrain.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS selftest_flowworks_hot_wet_terrain"
+   }
+  },
+  "T_FIRE": {
+   "id": "T_FIRE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "flammable liquid fire: ignition, long burn back to the source, firebreak gates (13 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FuelFireChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GateFirebreakChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FuelFire*,GateFirebreak*",
+   "runs_today": {
+    "ran": true,
+    "cases": 13,
+    "seen": 13,
+    "ok": 13,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_FUEL_MOAT": {
+   "id": "PY_FLOWWORKS_FUEL_MOAT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py",
+   "observes": "selftest_flowworks_fuel_moat.py \u2014 CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "12/12 passed"
+   }
+  },
+  "T_SLIME": {
+   "id": "T_SLIME",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "slime: sinking, slip and slide-back on the climb (6 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SlimeChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Slime*",
+   "runs_today": {
+    "ran": true,
+    "cases": 6,
+    "seen": 6,
+    "ok": 6,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_PIT_DRAW": {
+   "id": "T_PIT_DRAW",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "a pit reads as a hole: lip occlusion, draw hold, occupant drawn below the lip, floor ground (22 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitDrawHoldChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitFloorGroundChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitDrawHold*,PitFloorGround*,PitLip*,PitStuck*,Relative*",
+   "runs_today": {
+    "ran": true,
+    "cases": 22,
+    "seen": 22,
+    "ok": 22,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
+   "id": "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+   "observes": "Census of everything drawn outside the map-mesh print, against FlowWorks' one under-liquid law.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "tail": "PASS"
+   }
+  },
+  "PY_FLOWWORKS_PIT_FLOOR_GROUND": {
+   "id": "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_floor_ground.py",
+   "observes": "RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR: a dry dug floor carries what its ground carried.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_pit_floor_ground.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_floor_ground.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "RESULT GREEN"
+   }
+  },
+  "PY_FLOWWORKS_REVIEW1022_SUPERDEEP": {
+   "id": "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_superdeep.py",
+   "observes": "FlowWorks DIRTY-file review 2026-10-22 (superdeep helper), fixed offline (no game). Each check reads FlowWorks source and",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_superdeep.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_superdeep.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "ALL PASS"
+   }
+  },
+  "T_PIT_LABEL": {
+   "id": "T_PIT_LABEL",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "the pit's label names its exact depth and liquid (6 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitLabelChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLabel*",
+   "runs_today": {
+    "ran": true,
+    "cases": 6,
+    "seen": 6,
+    "ok": 6,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_PIT_COVER": {
+   "id": "T_PIT_COVER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "covered pits: cover rests on two banks, beneath-cover walkers, cover look, spikes and piercing, fall rails, deck collapse (42 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeckCollapseLinesChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FallRailChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitCoverBeneathChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitCoverLookChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitDeckChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SpikeDrawChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SpikePierceChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Beneath*,DeckCollapse*,FallRail*,LidWalker*,PitCover*,PitCoverLook*,PitDeck*,SpikePierce*,Spikes*,SuperdeepTrap*",
+   "runs_today": {
+    "ran": true,
+    "cases": 42,
+    "seen": 42,
+    "ok": 42,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_COVER_BREAKS": {
+   "id": "PY_FLOWWORKS_COVER_BREAKS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+   "observes": "FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 11 (owner, 2026-10-06): \"And when something falls into a covered pit, of",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "tail": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); o"
+   }
+  },
+  "PY_SPIKE_FLOAT32_PARITY": {
+   "id": "PY_SPIKE_FLOAT32_PARITY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py",
+   "observes": "SPIKES_PARITY_FIX_FLOAT32_MIRROR: the Python spike mirror (fw_scenes_spikes.py floor_rect / submerged_alpha /",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.4,
+    "tail": "ALL OK"
+   }
+  },
+  "T_PIT_ACCESS": {
+   "id": "T_PIT_ACCESS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "ways in and out: wall ladders on rails, rescue ladders, ramps, climbing gear, wall reach, pocket grids, drafted moves into a pit (95 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExcavationTickChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FwFix2Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LadderClimbSpanChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LadderParityChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LadderWallChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitAccessChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PocketGridChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RulingsWetDoorWakeBottleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WallClimbChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WallReachChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WallReachReadChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WallReachSliceChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Climb*,Diagonal*,LadderClimb*,LadderInspect*,LadderParity*,LadderRails*,LadderWall*,PitAccess*,PitRamp*,PitRescue*,PitRoute*,PitTravel*,Pocket*,PocketGrid*,Step*,WallClimb*,WallReach*",
+   "runs_today": {
+    "ran": true,
+    "cases": 95,
+    "seen": 94,
+    "ok": 94,
+    "fail": 0,
+    "rc": 0,
+    "not_reached": [
+     "LadderClimb_slow_only_on_the_art_D"
+    ],
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_DRAFTED_MOVE_PIT": {
+   "id": "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_drafted_move_pit.py",
+   "observes": "RIMMANDRAKE_FIX_DRAFTED_MOVE_IN_BIG_PIT_WALKS_SOUTH (offline, no game).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_drafted_move_pit.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_drafted_move_pit.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS selftest_flowworks_drafted_move_pit (4 checks, 10 mutants red)"
+   }
+  },
+  "PY_FLOWWORKS_PIT_TRAVEL_TAGS": {
+   "id": "PY_FLOWWORKS_PIT_TRAVEL_TAGS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_travel_tags.py",
+   "observes": "selftest_flowworks_pit_travel_tags.py \u2014 the pit-travel lore tags (PIT_TRAVEL_TAGS_VET_LORE_FIRST_GUESS).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_pit_travel_tags.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_travel_tags.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.3,
+    "tail": "selftest_flowworks_pit_travel_tags: races=632 lore_hits=48 floats=7 jumps=7 left_out=28 mutants=5 -> PASS"
+   }
+  },
+  "T_PRISON": {
+   "id": "T_PRISON",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "pit-held capture: capture from the rim waits for a held pawn, pit room needs an enclosed pit, prisoners in the current (12 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RelativeRulesChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TakenIdentityChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitCapture*,PitRoom*,PitRooms*,SWEEP*,TAKEN*",
+   "runs_today": {
+    "ran": true,
+    "cases": 12,
+    "seen": 12,
+    "ok": 12,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_DOORS": {
+   "id": "T_DOORS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "flow doors: a shut sluice seals, a grate always passes, door facing, gate lift (15 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FlowDoorFacingChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RulingsWetDoorWakeBottleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SuspensionBridgeChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FLOWWORKS*,FlowDoor*,FlowDoorFacing*,Grate*,Ruling18*,Sluice*",
+   "runs_today": {
+    "ran": true,
+    "cases": 15,
+    "seen": 15,
+    "ok": 15,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FW_GATE_LIFT": {
+   "id": "PY_FW_GATE_LIFT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py",
+   "observes": "selftest_fw_gate_lift.py -- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS + GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE as",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.3,
+    "tail": "0 failure(s)"
+   }
+  },
+  "T_BRIDGES": {
+   "id": "T_BRIDGES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "spans: drawbridges raise and lower, suspension decks hang between anchors, underpasses, span bases (70 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DrawbridgeChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SpanBaseChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SuspensionBridgeChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/UnderpassReachChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Drawbridge*,SpanBase*,Suspension*,SuspensionBridges*,Underpass*,Waters*",
+   "runs_today": {
+    "ran": true,
+    "cases": 70,
+    "seen": 70,
+    "ok": 70,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_DRAWBRIDGE_POSE": {
+   "id": "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_pose.py",
+   "observes": "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED: a raised drawbridge leaf is drawn as a rigid leaf turned about its hinge, never an",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_pose.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_pose.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS drawbridge leaf pose"
+   }
+  },
+  "PY_FLOWWORKS_SUSPENSION_LINKED": {
+   "id": "PY_FLOWWORKS_SUSPENSION_LINKED",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_suspension_linked.py",
+   "observes": "SUSPENSION_DECK_LINKED_NO_SEAMS: the suspension deck atlases join up. Every deck def and deck style names a `_Atlas` texPath with",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_suspension_linked.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_suspension_linked.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.1,
+    "tail": "suspension linked decks: 26 atlases checked, 0 failure(s)"
+   }
+  },
+  "T_TRENCH": {
+   "id": "T_TRENCH",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "trench cover: higher neighbouring ground covers like a sandbag; raiders never shelter in a pit; trench strides (19 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/CliffMaskChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RaiderTrenchChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TrenchStrideChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only RaiderTrench*,Trench*,TrenchStride*",
+   "runs_today": {
+    "ran": true,
+    "cases": 19,
+    "seen": 19,
+    "ok": 19,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_SWIM": {
+   "id": "T_SWIM",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "the water ladder: wading costs, swimming at 2 m and deeper, slow drowning, wet cost by height (35 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitDrawHoldChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SwimChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WaterLadderChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WetCostChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DugSwim*,P14*,SHALLOW*,SWIM*,Swim*,SwimPose*,WATERED*,WetCost*",
+   "runs_today": {
+    "ran": true,
+    "cases": 35,
+    "seen": 35,
+    "ok": 35,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_SWIM_SHORE_REACH": {
+   "id": "PY_SWIM_SHORE_REACH",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py",
+   "observes": "selftest_swim_shore_reach.py \u2014 TIRED_SWIMMER_FIX_UNREACHABLE_SHORE (GPT FA_core_sim_4.1).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 285.6,
+    "tail": "PASS: 3/3 shore cases ok"
+   }
+  },
+  "T_HOSE": {
+   "id": "T_HOSE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "hoses: reel, lay, plump when flowing, routing, ports, bands, splices, shadows (71 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseBandChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseBandsApplyChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseBodyInletChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseCacheChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseClothoidChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseDrawGeometryChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseEndLipChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseHoldChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseLayoutChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseNanShapeChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseReplanChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseRulingTextChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseShadowHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseSwitchFlipChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseTickAllocChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseWallSeamChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/HoseWorldPatchChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LevelPourChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only HOSE*,HOSEBANDS*,HOSECACHE*,HOSEPATCH*,HOSEPORTRULE*,HOSEPORTS*,HOSEREELRECT*,HOSES*,HS*,HoseBand*,HoseClothoid*,HoseDraw*,HoseHold*,HoseLayout*,HoseNan*,HoseReplan*,HoseShadow*,HoseSwitchFlip*,HoseTankFeed*,HoseText*,HoseWall*,Hoses*,ReelBodyInlet*,ReelFacing*",
+   "runs_today": {
+    "ran": true,
+    "cases": 71,
+    "seen": 71,
+    "ok": 71,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_HOSE_OFFLINE": {
+   "id": "PY_HOSE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_offline.py",
+   "observes": "Runs validation_hose_offline.py (HO5-HO9) inside run_selftests.py's sweep.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_hose_offline.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_offline.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.3,
+    "tail": "hose offline: 6/6 rows PASS"
+   }
+  },
+  "PY_HOSE_PORTS": {
+   "id": "PY_HOSE_PORTS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_ports.py",
+   "observes": "HOSE_ENDS_FIX_MISSES_THE_PORTS -- the hose's attachment points match the INSTALLED art (offline, no game).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_hose_ports.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_ports.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.2,
+    "tail": "selftest_hose_ports.py: 0 failure(s)"
+   }
+  },
+  "PY_HOSE_LAY_SETTLE": {
+   "id": "PY_HOSE_LAY_SETTLE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py",
+   "observes": "HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: since fa833277f8 the hose census reads the cached lay and never lays, so a proof row",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.6,
+    "tail": "PASS: 0 failed"
+   }
+  },
+  "PY_HOSE_FITTINGS": {
+   "id": "PY_HOSE_FITTINGS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_fittings.py",
+   "observes": "HOSE_FITTING_GATE_BUILD_BELIEVED_HOSEMATH -- every hose port the CODE defines has an opaque DRAWN fitting there (offline).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_hose_fittings.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_fittings.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.3,
+    "tail": "selftest_hose_fittings.py: 0 failure(s)"
+   }
+  },
+  "T_NET": {
+   "id": "T_NET",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "one liquid network: pipes, pumps, tanks attach (never connect two runs), adapters, transfer of real litres, tank theft (104 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/AdapterChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExternalTankTheftChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FwFix2Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/LiquidJoinChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/NetComponentChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/NetIncrementalChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipePoleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipeSpanNetChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PumpChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PumpOutflowHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RewireChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankDebugChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftCallerChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TankTheftHarness.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TransferChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Adapter*,LiquidJoin*,Net*,PipeArm*,PipePole*,PipeSpan*,PipeStub*,Pump*,PumpOutflow*,PumpPorts*,Rewire*,TankDebug*,TankFlange*,TankSearch*,TankTheft*,Transfer*",
+   "runs_today": {
+    "ran": true,
+    "cases": 104,
+    "seen": 104,
+    "ok": 104,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_PUMP_STATION_PORTS": {
+   "id": "PY_PUMP_STATION_PORTS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_pump_station_ports.py",
+   "observes": "selftest_pump_station_ports.py -- a multi-cell pump takes a hose at a port on each of its four sides (offline, no game).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_pump_station_ports.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_station_ports.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "tail": "selftest_pump_station_ports.py: 0 failure(s)"
+   }
+  },
+  "PY_FLOWWORKS_TANK_DRINK_RECHECK": {
+   "id": "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_tank_drink_recheck.py",
+   "observes": "selftest_flowworks_tank_drink_recheck.py \u2014 a tank drink re-checks the tank's CURRENT liquid (TANK_DRINK_FIX_LIQUID_SWAPS_MIDJOB).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_tank_drink_recheck.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_tank_drink_recheck.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "GREEN: tank drink re-checks MayDrink mid-job and at the sip; salt break keeps BreakOnly"
+   }
+  },
+  "PY_PIPE_SEAT": {
+   "id": "PY_PIPE_SEAT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py",
+   "observes": "selftest_pipe_seat.py -- SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE: a fitting set on a pipe sits on the DRAWN centreline.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.8,
+    "tail": "0 failure(s)"
+   }
+  },
+  "T_CONVERT": {
+   "id": "T_CONVERT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "converters and reactions on the network (8 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GptEdge1016Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GptFixesAChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PrePortFixChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TransferChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "runs_today": {
+    "ran": true,
+    "cases": 8,
+    "seen": 8,
+    "ok": 8,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_THIRST": {
+   "id": "T_THIRST",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "thirst need, bottles filled, emptied and washed, containers (29 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ContainerStyleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RulingsWetDoorWakeBottleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only BottleLoop*,ContainerStyle*,Thirst*",
+   "runs_today": {
+    "ran": true,
+    "cases": 29,
+    "seen": 29,
+    "ok": 29,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_WATER_NOT_FOOD": {
+   "id": "PY_WATER_NOT_FOOD",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+   "observes": "selftest_water_not_food.py -- WATER_NUTRITION_JUDGE_DRINKING_DINNER, owner by card 2026-10-15 (\"Water isn't food\").",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "tail": "selftest_water_not_food: PASS"
+   }
+  },
+  "PY_NATIVES_DRINK_OWN_WATER": {
+   "id": "PY_NATIVES_DRINK_OWN_WATER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py",
+   "observes": "selftest_natives_drink_own_water.py \u2014 every Baroque Biome native drinks its own environmental water",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 7.4,
+    "tail": "   BLOCKED RM_TheChill: RM_PropaneDeep -> RM_Liquid_Propane"
+   }
+  },
+  "T_DRILL": {
+   "id": "T_DRILL",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "subsurface survey and drilling (5 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/CoverFloorSurveyChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "runs_today": {
+    "ran": true,
+    "cases": 5,
+    "seen": 5,
+    "ok": 5,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_SPRINKLER": {
+   "id": "T_SPRINKLER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "sprinkler heads on a pumped universal pipe (20 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SprinklerChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Sprinkler*",
+   "runs_today": {
+    "ran": true,
+    "cases": 20,
+    "seen": 20,
+    "ok": 20,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_RIVER": {
+   "id": "T_RIVER",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "rivers: current, weirs, ferry and levee, silt, colours, swept pawns returned (64 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DirtyReview1022Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ExcavationTickChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/FwFix2Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RiverSwitchFlipChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/RiverWashChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/TakenIdentityChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WaterBodyMendChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WeirPoolChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Fish*,Flotsam*,P10*,RIVER*,Rain*,RiverCurrent*,RiverProbe*,RiverSwitchFlip*,RiverWalk*,WeirBreach*,WeirCatch*,WeirFoam*,WeirPool*",
+   "runs_today": {
+    "ran": true,
+    "cases": 64,
+    "seen": 64,
+    "ok": 64,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_RIVERS": {
+   "id": "PY_FLOWWORKS_RIVERS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py",
+   "observes": "Offline static selftest for FlowWorks Rivers (River Works, SURFACE_RIVER_WEIRS_1; merged into FlowWorks",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "PASS: 0 failure(s)"
+   }
+  },
+  "PY_FLOWWORKS_RIVER_COLORS": {
+   "id": "PY_FLOWWORKS_RIVER_COLORS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_river_colors.py",
+   "observes": "Offline static selftest for FlowWorks River colours (River Colors, WORLD_RIVER_COLORS_1; was its own mod",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_river_colors.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_river_colors.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "tail": "PASS: 0 failed"
+   }
+  },
+  "PY_WEIR_INSTALLED": {
+   "id": "PY_WEIR_INSTALLED",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_weir_installed.py",
+   "observes": "selftest_weir_installed.py -- the weir looks as INSTALLED (WEIR_LOOKS_REDRAW_ONE_PER_PIPE_STYLE). Owner 2026-10-24 on the",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_weir_installed.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_installed.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 36.8,
+    "tail": "ALL OK"
+   }
+  },
+  "T_MAP_CONTROLS": {
+   "id": "T_MAP_CONTROLS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "map-maker controls and the debug liquid tools: source/sink taps at a set rate, level holder, current painter (27 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GodLiquidChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/MapControlChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GodLiquid*,MapControl*",
+   "runs_today": {
+    "ran": true,
+    "cases": 27,
+    "seen": 27,
+    "ok": 27,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_QUARRY": {
+   "id": "T_QUARRY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "digging uncovers local materials and spoil (2 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewFixBatch01Checks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DigFind*",
+   "runs_today": {
+    "ran": true,
+    "cases": 2,
+    "seen": 2,
+    "ok": 2,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_ICE": {
+   "id": "T_ICE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "ice and packed snow cut into crushed ice; one pile melts at a time (3 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GroundClassChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only IceDig*,IceMelt*",
+   "runs_today": {
+    "ran": true,
+    "cases": 3,
+    "seen": 3,
+    "ok": 3,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "T_UNDERLIQUID": {
+   "id": "T_UNDERLIQUID",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "the one under-liquid law: what is seen through which liquid at which level, one cut from the foot, shadows (33 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/DeepBedChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SubmergeDrawChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/UnderLiquidParityChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/WaterLookChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeepBed*,Submerge*,UnderLiquid*,WaterLook*",
+   "runs_today": {
+    "ran": true,
+    "cases": 33,
+    "seen": 33,
+    "ok": 33,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_UNDERLIQUID_PARITY": {
+   "id": "PY_FLOWWORKS_UNDERLIQUID_PARITY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
+   "observes": "selftest_flowworks_underliquid_parity.py \u2014 RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY,",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "tail": "RESULT GREEN"
+   }
+  },
+  "PY_LIQUID_LOOK_TUNE": {
+   "id": "PY_LIQUID_LOOK_TUNE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_liquid_look_tune.py",
+   "observes": "TAR_LOOK_TUNE_THICK_AND_SLOW \u2014 the offline half of live liquid-look tuning.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_liquid_look_tune.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_liquid_look_tune.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "tail": "ok  liquid look tune: 31 fields round-trip (dump == generator == class), 3 bridge tools bound, tar base Solid + ripple, no overlay"
+   }
+  },
+  "PY_FLOWWORKS_TANK_SHADOW": {
+   "id": "PY_FLOWWORKS_TANK_SHADOW",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py",
+   "observes": "selftest_flowworks_tank_shadow.py \u2014 TANK_SHADOW_DIAGNOSE_DRIFTS_OFF_THE_SKID.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "ALL PASS"
+   }
+  },
+  "T_STYLES": {
+   "id": "T_STYLES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "pipe, reel and tank looks: four pipe styles, tank styles, default look, build menu (15 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipeStraightVariantChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PipeStyleChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReelRiserShadowChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only BuildMenu*,DefaultLook*,PipeStraightVariants*,PipeStyles*,PipeTankRiser*,TankStyles*",
+   "runs_today": {
+    "ran": true,
+    "cases": 15,
+    "seen": 15,
+    "ok": 15,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FW_OFFLINE_ART": {
+   "id": "PY_FW_OFFLINE_ART",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py",
+   "observes": "selftest_fw_offline_art.py -- the owner's art defects as permanent offline checks (fw_offline_checks.py on",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 14.1,
+    "tail": "ALL OK"
+   }
+  },
+  "PY_LIQUID_LOOKS": {
+   "id": "PY_LIQUID_LOOKS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py",
+   "observes": "selftest_liquid_looks.py -- FLOWWORKS_LIQUID_LOOKS_1: the per-liquid look table is complete and shipped.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "1 FAIL"
+   }
+  },
+  "PY_FLOWWORKS_PIPE_POLE_ART": {
+   "id": "PY_FLOWWORKS_PIPE_POLE_ART",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py",
+   "observes": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 stand-in art: every texPath in Defs/Machinery/RM_PipePoles.xml (the pole def",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "pipe pole art: 5 texPaths, 0 failing"
+   }
+  },
+  "T_GEYSER_TUB": {
+   "id": "T_GEYSER_TUB",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "a pit dug on a geyser keeps the geyser at the bottom; a filled geyser pit is a hot tub (11 C# cases)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/GeyserTubChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GeyserTub*",
+   "runs_today": {
+    "ran": true,
+    "cases": 11,
+    "seen": 11,
+    "ok": 11,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_FLOWWORKS_GEYSER_TUB": {
+   "id": "PY_FLOWWORKS_GEYSER_TUB",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py",
+   "observes": "RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB -- a geyser in a pit sinks, bubbles and is a hot pool (offline, no game).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.8,
+    "tail": "PASS selftest_flowworks_geyser_tub (17 checks, 30 mutants red)"
+   }
+  },
+  "T_SETTINGS_SWEEP_OFFLINE": {
+   "id": "T_SETTINGS_SWEEP_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "observes": "every Mod Settings toggle: C# initialiser = Scribe default = the shipped table, the registry names real Scribe keys, per-section reset restores defaults, search shows its hits (6 C# cases); plus validation_v2.py --offline O2 (the C# toggle census against site_spec.SETTINGS)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PondReturnChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/ReviewBatch56Checks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SettingsResetChecks.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only MachinerySettings*,Settings*,SettingsReset*",
+   "runs_today": {
+    "ran": true,
+    "cases": 6,
+    "seen": 6,
+    "ok": 6,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 531,
+    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+   }
+  },
+  "PY_SETTINGS_REGISTRY": {
+   "id": "PY_SETTINGS_REGISTRY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
+   "observes": "Offline selftest of the typed settings registry (hose port step 4, design FINAL \u00a73.10 G5.10/G6.1). No game.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "tail": "settings registry: PASS -- 415 rows, 246 toggles"
+   }
+  },
+  "PY_SETTINGS_SEARCH": {
+   "id": "PY_SETTINGS_SEARCH",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_settings_search.py",
+   "observes": "BLEED_WELL_STRINGS_RENAME_TAP_RETIRED -- the Flow Works settings search shows its hits, not blank rows (offline, no game).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_settings_search.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_settings_search.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.3,
+    "tail": "settings search: PASS"
+   }
+  },
+  "PY_FLOWWORKS_NORTHSTAR": {
+   "id": "PY_FLOWWORKS_NORTHSTAR",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+   "observes": "Offline selftest for the FlowWorks trial site tooling (FLOWWORKS_NORTHSTAR_SITE_PREP_1).",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 10.4,
+    "tail": "FAIL: 2 failure(s): ['every settings class under Source/ is in site_spec.SETTINGS_SOURCES', '217 toggles: every registry bool (S.toggles), not the harness floor"
+   }
+  },
+  "PY_VALIDATION_V2_OFFLINE": {
+   "id": "PY_VALIDATION_V2_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+   "observes": "tier O: defs, settings census (O2), unbuilt register, geometry, oracle selftest, scene predictions, lint, pit width, negative controls",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2.py"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 46.6,
+    "tail": "O-LIVE-NEG FAIL   clean mock run not green: [('X4_pit_wall_over_head', 'FAIL', \"colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's heigh"
+   }
+  },
+  "T_WETTING_OFFLINE": {
+   "id": "T_WETTING_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "cells within two squares of a filled canal read wetted, the third does not; a wetted cell holds no liquid and costs no wading; fast growth spends wetting; plants drink a flood down",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs"
+   ],
+   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "T_WETNESS_PROBE_OFFLINE": {
+   "id": "T_WETNESS_PROBE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "the wetness probe answers differently on a hand-wetted and a dry cell, and refuses when wetting is off",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs"
+   ],
+   "owed_under": "with T_WETTING_OFFLINE",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "T_TOSS_FLAME_OFFLINE": {
+   "id": "T_TOSS_FLAME_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "the toss-a-flame order: target validation (burnable liquid cell, rim reachable), first fire on the picked cell, a water cell does not light",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source"
+   ],
+   "owed_under": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "T_FETCH_FALLEN_OFFLINE": {
+   "id": "T_FETCH_FALLEN_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "raider rescue plan: comrade in a pit -> chop, carry, place a ladder, climb down; under fire -> retreat leaving the fallen",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccessMath.cs"
+   ],
+   "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "T_PRISON_CARE_OFFLINE": {
+   "id": "T_PRISON_CARE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "a held pawn in a drained, enclosed pit counts as a prisoner without a bed; needs are met; a bed elsewhere does not move him",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
+   ],
+   "owed_under": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "T_DIG_TIME_ARITHMETIC": {
+   "id": "T_DIG_TIME_ARITHMETIC",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "(specified, Stage 3)",
+   "observes": "the first-cut time at default settings is within his target (held: 'Colonist DID start digging, and it's slow.'; target not yet set by him)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_DigLabor.cs"
+   ],
+   "owed_under": "RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built"
+   }
+  },
+  "sc_dig_and_read": {
+   "id": "sc_dig_and_read",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "plot_H_depth_ladder",
+   "observes": "depths read apart, banks dry, the dig takes hours",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry plot_H_depth_ladder; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_dig_finds": {
+   "id": "sc_dig_finds",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "dig_finds",
+   "observes": "each cut yields the local find or spoil and takes game hours",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry dig_finds; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_fill_front": {
+   "id": "sc_fill_front",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_fill_front",
+   "observes": "front advances cell by cell, tar behind water, banks dry",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_fill_front; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_fill_tiers": {
+   "id": "sc_fill_tiers",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "plot_B_fill_tiers",
+   "observes": "fill tiers and liquids told apart; 0.5 m reads silty",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry plot_B_fill_tiers; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_one_surface": {
+   "id": "sc_one_surface",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_one_surface",
+   "observes": "one level in every cell within one step",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_one_surface; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_source_pays": {
+   "id": "sc_source_pays",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_source_pays",
+   "observes": "pond and shore drop, flow stops when empty, refill visible; the lake never drops and reads Endless",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_source_pays; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_canal_fire": {
+   "id": "sc_canal_fire",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+   "entry": "_x10_canal_fire",
+   "observes": "the tar burns back to the pool and leaves a spent channel",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\validation_v2.py  (entry _x10_canal_fire; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_slime": {
+   "id": "sc_slime",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "slime_slip",
+   "observes": "slime crossing far slower with slide-backs",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry slime_slip; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_pawn_height": {
+   "id": "sc_pawn_height",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_pawn_height",
+   "observes": "draw offset follows depth both ways; swims and tires at 2 m",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_pawn_height; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_pit_reads": {
+   "id": "sc_pit_reads",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "plot_G_pit",
+   "observes": "read as holes; occupant below the lip; occupied and trapped told apart",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry plot_G_pit; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_covered_pit": {
+   "id": "sc_covered_pit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "pit_cover_fall",
+   "observes": "it falls onto the spikes and is hurt",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry pit_cover_fall; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_ways_out": {
+   "id": "sc_ways_out",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/live_session.py",
+   "entry": "g_pit_access",
+   "observes": "out by ladder or gear only; jump into the 2 m pit unhurt",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/live_session.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\live_session.py  (entry g_pit_access; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_sluice": {
+   "id": "sc_sluice",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "flow_doors",
+   "observes": "moat litres move to the drain fast",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry flow_doors; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_hose_look": {
+   "id": "sc_hose_look",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_hose_look",
+   "observes": "plump and tinted when flowing, flat when not; styles apart",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_hose_look; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_one_network": {
+   "id": "sc_one_network",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+   "entry": "machinery_pipes",
+   "observes": "litres conserved along pipe and hose; nothing through the dropped hose",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/extensions.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\extensions.py  (entry machinery_pipes; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_trench_cover": {
+   "id": "sc_trench_cover",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_trench_cover",
+   "observes": "the trench pawn is covered and shown so; no raider shelters in the pit",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_trench_cover; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_hung_bridge": {
+   "id": "sc_hung_bridge",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py",
+   "entry": "posts",
+   "observes": "both paths complete; reads hung",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\suspension_bridge_proof.py  (entry posts; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_ice": {
+   "id": "sc_ice",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_ice",
+   "observes": "crushed ice on the cut that melts back into the pond",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_ice; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_river": {
+   "id": "sc_river",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py",
+   "entry": "scene_R1",
+   "observes": "Endless readout, weir pool held, swept pawn returns with a message",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\river_scenes_walk.py  (entry scene_R1; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_moat_raid": {
+   "id": "sc_moat_raid",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_moat_raid",
+   "observes": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_moat_raid; bridge held, minimal list)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_hole_prison": {
+   "id": "sc_hole_prison",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_hole_prison",
+   "observes": "both prisoners, held in the hole, needs met",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_hole_prison; bridge held, minimal list)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_toss_flame": {
+   "id": "sc_toss_flame",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_toss_flame",
+   "observes": "the colonist walks to the rim and that square lights first",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_toss_flame; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_wetting": {
+   "id": "sc_wetting",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_wetting",
+   "observes": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_wetting; bridge held, minimal list)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_fetch_fallen": {
+   "id": "sc_fetch_fallen",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_fetch_fallen",
+   "observes": "chop, ladder into the pit, climb down to a fallen; retreat under fire",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_fetch_fallen; bridge held, minimal list)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_islands": {
+   "id": "sc_islands",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_islands",
+   "observes": "trapped, a winch destroyed, that drawbridge falls, they escape",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_islands; bridge held, minimal list)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_walk": {
+   "id": "sc_walk",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_walk_moat_season",
+   "observes": "state digests match across the reload; the pond pays again; no leftovers; log clean",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_walk_moat_season; bridge held, full list)",
+   "why_game": "the breadth failure only shows on his full list with every system at once, and a reload from a mid-way save",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_pit_trap_raid": {
+   "id": "sc_pit_trap_raid",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_pit_trap_raid",
+   "observes": "two fall onto spikes, the rest try a ladder under arrows, are driven off, the fallen become prisoners in the pit",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_pit_trap_raid; bridge held, minimal list)",
+   "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "sc_garden": {
+   "id": "sc_garden",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_garden",
+   "observes": "wetted rows and sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_garden; bridge held, minimal list)",
+   "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "offline only: never the game in this run; entry function absent"
+   }
+  },
+  "LOOK_STAGE8": {
+   "id": "LOOK_STAGE8",
+   "kind": "look",
+   "stage": "8",
+   "file": "(his walk)",
+   "observes": "his walk of the moat showcase save, then the garden and pit-trap faces",
+   "reads": [],
+   "runs_today": {
+    "ran": false,
+    "why": "Stage 8"
+   }
+  },
+  "LOOK_BLIND_READER": {
+   "id": "LOOK_BLIND_READER",
+   "kind": "look",
+   "stage": "6",
+   "file": "(a blind reader agent on the scene captures)",
+   "observes": "a reader who did not make it names what the captures show (depth order, liquid, hole vs trap, hose vs cord, hung bridge)",
+   "reads": [],
+   "why_game": "captures exist only from a running map",
+   "runs_today": {
+    "ran": false,
+    "why": "needs captures from Stage 6"
+   }
+  },
+  "OL_OWNER_LOOK_READS": {
+   "id": "OL_OWNER_LOOK_READS",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py",
+   "observes": "in-game state reads built early for the held look rows (OL_opaque_hides, OL_goods_covered, OL_buildings_covered, OL_no_surface_shadow, OL_overlays_hidden, OL_corpses_covered, OL_pour_never_no_room ...)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\owner_look_regressions.py  (bridge held, minimal list)",
+   "why_game": "what is drawn over what is a live render-state read; the law itself is decided offline by T_UNDERLIQUID",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "offline only; awaiting ingest (validation_holding/README.md)"
+   }
+  }
+ },
+ "bars": [
+  {
+   "id": "inv_dig_depth",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_DIG",
+    "PY_FLOWWORKS_REVIEW1022_EXCAVATION",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW",
+    "sc_dig_and_read"
+   ],
+   "supports": [
+    "sc_moat_raid",
+    "T_DIG_TIME_ARITHMETIC"
+   ],
+   "held": [
+    "2026-11-12#12",
+    "2026-11-13_dig_interface#1"
+   ],
+   "offline_decides": [
+    "T_DIG",
+    "PY_FLOWWORKS_REVIEW1022_EXCAVATION",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_flow_level",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
+    "sc_fill_front",
+    "sc_one_surface"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_stock",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES",
+    "sc_source_pays"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_overflow_sheet",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_SHEET",
+    "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SHEET",
+    "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_irrigation",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_liquid_roster",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_ROSTER",
+    "PY_LIQUID_DEFS_HAZARDS",
+    "PY_WATER_TERRAINS_NAME_LIQUID",
+    "PY_LAVA_ROW",
+    "PY_FLOWWORKS_HOT_WET_TERRAIN",
+    "sc_fill_tiers"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [
+    "2026-11-12#1"
+   ],
+   "offline_decides": [
+    "T_ROSTER",
+    "PY_LIQUID_DEFS_HAZARDS",
+    "PY_WATER_TERRAINS_NAME_LIQUID",
+    "PY_LAVA_ROW",
+    "PY_FLOWWORKS_HOT_WET_TERRAIN"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_fire",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT",
+    "sc_canal_fire"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_slime",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SLIME",
+    "sc_slime"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_SLIME"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pits",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+    "T_PIT_COVER",
+    "PY_FLOWWORKS_COVER_BREAKS",
+    "PY_SPIKE_FLOAT32_PARITY",
+    "sc_pit_reads",
+    "sc_covered_pit"
+   ],
+   "supports": [
+    "sc_moat_raid",
+    "sc_pit_trap_raid"
+   ],
+   "held": [
+    "2026-11-12#11b"
+   ],
+   "offline_decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+    "T_PIT_COVER",
+    "PY_FLOWWORKS_COVER_BREAKS",
+    "PY_SPIKE_FLOAT32_PARITY"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_pit_access",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_ACCESS",
+    "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
+    "PY_FLOWWORKS_PIT_TRAVEL_TAGS",
+    "sc_ways_out"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_PIT_ACCESS",
+    "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
+    "PY_FLOWWORKS_PIT_TRAVEL_TAGS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_doors",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_DOORS",
+    "PY_FW_GATE_LIFT",
+    "sc_sluice"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_DOORS",
+    "PY_FW_GATE_LIFT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_bridges",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "sc_hung_bridge"
+   ],
+   "supports": [
+    "sc_moat_raid",
+    "sc_islands"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_trench_cover",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_TRENCH",
+    "sc_trench_cover"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TRENCH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_swim",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH",
+    "sc_pawn_height"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_hoses",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS",
+    "sc_hose_look"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_liquid_net",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT",
+    "sc_one_network"
+   ],
+   "supports": [
+    "sc_moat_raid",
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_converters",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_CONVERT"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_CONVERT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_bottles_thirst",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_THIRST",
+    "PY_WATER_NOT_FOOD",
+    "PY_NATIVES_DRINK_OWN_WATER"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_THIRST",
+    "PY_WATER_NOT_FOOD",
+    "PY_NATIVES_DRINK_OWN_WATER"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_drilling",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_DRILL"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_DRILL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_sprinklers",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_SPRINKLER"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SPRINKLER"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_rivers",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_RIVER",
+    "PY_FLOWWORKS_RIVERS",
+    "PY_FLOWWORKS_RIVER_COLORS",
+    "PY_WEIR_INSTALLED",
+    "sc_river"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_RIVER",
+    "PY_FLOWWORKS_RIVERS",
+    "PY_FLOWWORKS_RIVER_COLORS",
+    "PY_WEIR_INSTALLED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_map_controls",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_MAP_CONTROLS",
+    "sc_source_pays"
+   ],
+   "supports": [],
+   "held": [
+    "2026-11-12#21",
+    "2026-11-12#37",
+    "2026-11-12#38"
+   ],
+   "offline_decides": [
+    "T_MAP_CONTROLS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_quarry",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_QUARRY",
+    "sc_dig_finds"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_QUARRY"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_settings",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "PY_SETTINGS_REGISTRY",
+    "PY_SETTINGS_SEARCH",
+    "PY_FLOWWORKS_NORTHSTAR",
+    "PY_VALIDATION_V2_OFFLINE",
+    "sc_walk"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "PY_SETTINGS_REGISTRY",
+    "PY_SETTINGS_SEARCH",
+    "PY_FLOWWORKS_NORTHSTAR",
+    "PY_VALIDATION_V2_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_looks",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_UNDERLIQUID",
+    "PY_FLOWWORKS_UNDERLIQUID_PARITY",
+    "PY_LIQUID_LOOK_TUNE",
+    "PY_FLOWWORKS_TANK_SHADOW",
+    "T_STYLES",
+    "PY_FW_OFFLINE_ART",
+    "PY_LIQUID_LOOKS",
+    "PY_FLOWWORKS_PIPE_POLE_ART",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [
+    "OL_OWNER_LOOK_READS",
+    "sc_fill_tiers",
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "2026-11-12#1",
+    "2026-11-12#2",
+    "2026-11-12#3",
+    "2026-11-12#4",
+    "2026-11-12#5",
+    "2026-11-12#6",
+    "2026-11-12#8",
+    "2026-11-12#9a",
+    "2026-11-12#9b",
+    "2026-11-12#9c",
+    "2026-11-12#9d",
+    "2026-11-12#9e",
+    "2026-11-12#10a",
+    "2026-11-12#10b",
+    "2026-11-12#13",
+    "2026-11-12#14",
+    "2026-11-12#15",
+    "2026-11-12#18",
+    "2026-11-12#19",
+    "2026-11-12#22",
+    "2026-11-12#23",
+    "2026-11-12#24",
+    "2026-11-12#25",
+    "2026-11-12#27",
+    "2026-11-12#28",
+    "2026-11-12#29",
+    "2026-11-12#34",
+    "2026-11-12#35",
+    "2026-11-12#36",
+    "2026-11-12#40",
+    "2026-11-12#41",
+    "2026-11-12#43",
+    "2026-11-12#44",
+    "2026-11-12#45",
+    "2026-11-12#46",
+    "2026-11-12#47",
+    "2026-11-13#13",
+    "2026-11-13#14",
+    "2026-11-13#15",
+    "2026-11-13#16",
+    "2026-11-13_evening#2",
+    "2026-11-13_evening#3",
+    "2026-11-13_evening#4",
+    "2026-11-13_evening#5"
+   ],
+   "offline_decides": [
+    "T_UNDERLIQUID",
+    "PY_FLOWWORKS_UNDERLIQUID_PARITY",
+    "PY_LIQUID_LOOK_TUNE",
+    "PY_FLOWWORKS_TANK_SHADOW",
+    "T_STYLES",
+    "PY_FW_OFFLINE_ART",
+    "PY_LIQUID_LOOKS",
+    "PY_FLOWWORKS_PIPE_POLE_ART",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_prison_no_bed",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_PRISON",
+    "T_PRISON_CARE_OFFLINE",
+    "sc_hole_prison"
+   ],
+   "supports": [
+    "sc_moat_raid",
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_PRISON",
+    "T_PRISON_CARE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_toss_flame",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_TOSS_FLAME_OFFLINE",
+    "sc_toss_flame"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TOSS_FLAME_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_raider_fetch_fallen",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FETCH_FALLEN_OFFLINE",
+    "sc_fetch_fallen"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FETCH_FALLEN_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "canal_reads_as_dug",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_DIG",
+    "PY_FLOWWORKS_REVIEW1022_EXCAVATION",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW",
+    "sc_dig_and_read",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [
+    "sc_dig_finds",
+    "T_DIG_TIME_ARITHMETIC"
+   ],
+   "held": [
+    "2026-11-12#12",
+    "2026-11-13_dig_interface#1"
+   ],
+   "offline_decides": [
+    "T_DIG",
+    "PY_FLOWWORKS_REVIEW1022_EXCAVATION",
+    "T_WALL_FACES",
+    "PY_FLOWWORKS_FLAT_SHADOW"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "fill_flows_along_canal",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
+    "sc_fill_front"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "2026-11-12#39"
+   ],
+   "offline_decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "fill_level_legible",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_UNDERLIQUID",
+    "PY_FLOWWORKS_UNDERLIQUID_PARITY",
+    "PY_LIQUID_LOOK_TUNE",
+    "PY_FLOWWORKS_TANK_SHADOW",
+    "sc_fill_tiers",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [
+    "OL_OWNER_LOOK_READS",
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    "2026-11-12#1",
+    "2026-11-12#2",
+    "2026-11-12#3",
+    "2026-11-12#4",
+    "2026-11-12#5",
+    "2026-11-12#6",
+    "2026-11-12#8",
+    "2026-11-12#9a",
+    "2026-11-12#9b",
+    "2026-11-12#9c",
+    "2026-11-12#9d",
+    "2026-11-12#9e",
+    "2026-11-12#10a",
+    "2026-11-12#10b",
+    "2026-11-12#13",
+    "2026-11-12#22",
+    "2026-11-12#23",
+    "2026-11-12#24",
+    "2026-11-12#25",
+    "2026-11-12#28",
+    "2026-11-12#29",
+    "2026-11-12#34",
+    "2026-11-12#35",
+    "2026-11-12#36",
+    "2026-11-12#40",
+    "2026-11-12#41",
+    "2026-11-12#43",
+    "2026-11-12#44",
+    "2026-11-12#45",
+    "2026-11-12#46",
+    "2026-11-12#47",
+    "2026-11-13#13",
+    "2026-11-13#14",
+    "2026-11-13#15",
+    "2026-11-13#16",
+    "2026-11-13_evening#2",
+    "2026-11-13_evening#3",
+    "2026-11-13_evening#4",
+    "2026-11-13_evening#5"
+   ],
+   "offline_decides": [
+    "T_UNDERLIQUID",
+    "PY_FLOWWORKS_UNDERLIQUID_PARITY",
+    "PY_LIQUID_LOOK_TUNE",
+    "PY_FLOWWORKS_TANK_SHADOW"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "one_still_surface",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
+    "sc_one_surface"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "source_pays_and_refills",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES",
+    "sc_source_pays"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "canal_fire_burns_back",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT",
+    "sc_canal_fire"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "slime_holds_the_crossing",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_SLIME",
+    "sc_slime"
+   ],
+   "supports": [
+    "LOOK_BLIND_READER"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SLIME"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "pawn_height_follows_depth",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH",
+    "sc_pawn_height"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "pit_reads_as_hole",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+    "T_PIT_LABEL",
+    "sc_pit_reads",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [
+    "OL_OWNER_LOOK_READS"
+   ],
+   "held": [
+    "2026-11-12#10a",
+    "2026-11-12#10b",
+    "2026-11-12#13",
+    "2026-11-12#20",
+    "2026-11-12#25",
+    "2026-11-13#17",
+    "2026-11-13_evening#3"
+   ],
+   "offline_decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+    "T_PIT_LABEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "covered_pit_springs",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_COVER",
+    "PY_FLOWWORKS_COVER_BREAKS",
+    "PY_SPIKE_FLOAT32_PARITY",
+    "sc_covered_pit",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [
+    "2026-11-12#11a",
+    "2026-11-12#11b"
+   ],
+   "offline_decides": [
+    "T_PIT_COVER",
+    "PY_FLOWWORKS_COVER_BREAKS",
+    "PY_SPIKE_FLOAT32_PARITY"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "ways_in_and_out",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_ACCESS",
+    "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
+    "PY_FLOWWORKS_PIT_TRAVEL_TAGS",
+    "sc_ways_out"
+   ],
+   "supports": [],
+   "held": [
+    "2026-11-12#4",
+    "2026-11-12#8",
+    "2026-11-13#5",
+    "2026-11-13#6",
+    "2026-11-13#7",
+    "2026-11-13#9",
+    "2026-11-13#17"
+   ],
+   "offline_decides": [
+    "T_PIT_ACCESS",
+    "PY_FLOWWORKS_DRAFTED_MOVE_PIT",
+    "PY_FLOWWORKS_PIT_TRAVEL_TAGS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "sluice_drains_on_command",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_DOORS",
+    "PY_FW_GATE_LIFT",
+    "sc_sluice"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [
+    "2026-11-12#5"
+   ],
+   "offline_decides": [
+    "T_DOORS",
+    "PY_FW_GATE_LIFT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "hose_reads_as_hose",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS",
+    "sc_hose_look",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "one_liquid_network",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT",
+    "sc_one_network"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "trench_gives_cover",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_TRENCH",
+    "sc_trench_cover"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TRENCH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "hung_bridge_spans",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "sc_hung_bridge",
+    "LOOK_BLIND_READER"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "ice_cuts_and_melts",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_ICE",
+    "sc_ice"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_ICE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "river_flows_endless",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_RIVER",
+    "PY_FLOWWORKS_RIVERS",
+    "PY_FLOWWORKS_RIVER_COLORS",
+    "PY_WEIR_INSTALLED",
+    "sc_river"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_RIVER",
+    "PY_FLOWWORKS_RIVERS",
+    "PY_FLOWWORKS_RIVER_COLORS",
+    "PY_WEIR_INSTALLED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "moat_raid_sequence",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_moat_raid"
+   ],
+   "supports": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH",
+    "T_DOORS",
+    "PY_FW_GATE_LIFT",
+    "T_PRISON",
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT",
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "sc_hole_prison",
+    "sc_toss_flame",
+    "sc_sluice",
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "drained_hole_is_a_prison",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_PRISON",
+    "T_PRISON_CARE_OFFLINE",
+    "sc_hole_prison"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_PRISON",
+    "T_PRISON_CARE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "toss_flame_from_rim",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_TOSS_FLAME_OFFLINE",
+    "sc_toss_flame"
+   ],
+   "supports": [
+    "sc_moat_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TOSS_FLAME_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "canal_wets_two_squares",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "raiders_fetch_their_fallen",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_FETCH_FALLEN_OFFLINE",
+    "sc_fetch_fallen"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FETCH_FALLEN_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "island_bridges_trap_and_fail",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "sc_islands"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_liquid_on_open_ground",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_SHEET",
+    "PY_FLOWWORKS_SHEET_DROWN_MESSAGE",
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
+    "sc_dig_and_read"
+   ],
+   "supports": [
+    "LOOK_BLIND_READER"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SHEET",
+    "PY_FLOWWORKS_SHEET_DROWN_MESSAGE",
+    "T_LEVEL",
+    "PY_FLOWWORKS_KERNEL_ORACLE",
+    "PY_FLOWWORKS_ONE_WATER_NUMBER",
+    "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_full_source_after_draw",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES",
+    "sc_source_pays"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_STOCK",
+    "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
+    "PY_PUMP_DRAW_CONSERVES"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_snared_standing",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP",
+    "sc_pit_reads"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_PIT_DRAW",
+    "PY_FLOWWORKS_PIT_DRAW_CENSUS",
+    "PY_FLOWWORKS_PIT_FLOOR_GROUND",
+    "PY_FLOWWORKS_REVIEW1022_SUPERDEEP"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_impossible_plumbing",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT",
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS",
+    "sc_one_network"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_NET",
+    "PY_PUMP_STATION_PORTS",
+    "PY_FLOWWORKS_TANK_DRINK_RECHECK",
+    "PY_PIPE_SEAT",
+    "T_HOSE",
+    "PY_HOSE_OFFLINE",
+    "PY_HOSE_PORTS",
+    "PY_HOSE_LAY_SETTLE",
+    "PY_HOSE_FITTINGS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "wetting_is_not_flood",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wetness_probe",
+   "source": "tree.json",
+   "kind": "instrument",
+   "proves_at": "4-5",
+   "decides": [
+    "T_WETNESS_PROBE_OFFLINE"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WETNESS_PROBE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "walk_moat_season",
+   "source": "tree.json",
+   "kind": "walk",
+   "proves_at": "6",
+   "decides": [
+    "sc_walk"
+   ],
+   "supports": [
+    "LOOK_STAGE8",
+    "T_SETTINGS_SWEEP_OFFLINE"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  }
+ ]
+}
