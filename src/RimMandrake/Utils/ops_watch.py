@@ -2246,12 +2246,47 @@ RL_RANGES = ("relentless.why", "relentless.ready", "relentless.tick_age_s", "rel
              "relentless.breaker_open_min", "relentless.no_live_min", "relentless.progress_age_min", "relentless.blind")
 
 
+RL_HOME = "/home/mandrake/rm/relentless"
+
+
 def rl_root(cfg) -> Path:
-    return Path(os.environ.get("RELENTLESS_ROOT") or cfg.get("root") or "/home/mandrake/rm/relentless")
+    return Path(os.environ.get("RELENTLESS_ROOT") or cfg.get("root") or RL_HOME)
 
 
 RL_UNIT = "rm-relentless.timer"      # what writes the store at cfg["root"]; a store elsewhere has no timer to ask
 RL_SYSTEMD = subprocess.run          # a selftest's double
+RL_RETIRED = "relentless.retired"    # the point every relentless reading is judged by once the belt is retired
+RL_RETIRED_FILE = None               # deadman_check's live_retired.txt; a selftest's double
+RL_RETIRED_WHY = ("Relentless retired by the owner 2026-11-13 (design/RimMandrake/retired_loops_2026-11-13.md): "
+                  "unit=%s is in live_retired.txt, so its silence is the retirement, not an outage" % RL_UNIT)
+RL_OTHER = ("relentless.books_behind_min", "relentless.game_hold_idle_min", "relentless.live_measured_pct",
+            "relentless.checks_lost_items", "relentless.checker_deaths_run", "relentless.jam_unnamed", "relentless.jam_repeat")
+
+
+def rl_retired(cfg):
+    """True when the belt at the real store is retired on purpose: its timer is listed in deadman_check's live_retired.txt
+    (owner 2026-11-13, 'stop those processes such that there's nothing to resume'). A store elsewhere (a selftest's) is
+    never retired. Unreadable reads as not retired: an outage stays an outage."""
+    if str(rl_root(cfg)) != RL_HOME:
+        return False
+    import deadman_check
+    try:
+        return "unit=" + RL_UNIT in deadman_check.load_retired(RL_RETIRED_FILE)
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def rl_retired_points(held):
+    """-> every relentless reading UNMEASURED and judged by relentless.retired, so no target on it crosses (an absent key
+    would hold its alarm OPEN for good), no silent flag rings, and an incident reads it sane. `held`: the items whose churn
+    alarm alarms.json still holds; each gets its key so that alarm clears too."""
+    keys = set(RL_KEYS + RL_RANGES + CHURN_KEYS + RL_OTHER) | {CHURN_ITEM_PREFIX + n for n in held or ()}
+    pts = {k: dict(U(RL_RETIRED_WHY), judged_by=RL_RETIRED) for k in sorted(keys)}
+    # run() replaces an unmeasured relentless.blind with a suppressed-collector reading, which alarms: no source is
+    # expected of a retired belt, so none is unseen
+    pts["relentless.blind"] = dict(M(0, "sources not seen", cause="none expected: " + RL_RETIRED_WHY), judged_by=RL_RETIRED)
+    pts[RL_RETIRED] = M(1, "1 while Relentless is retired", cause=RL_RETIRED_WHY)
+    return pts
 
 
 def rl_timer_clock(cfg, now, limit):
@@ -3052,6 +3087,8 @@ def c_relentless(now, rules, ctx):
     relentless.blind (which alarms) without unseating it. Freshness is the stamp inside
     the file, never its mtime; relentless.progress_age_min catches a stamp that moves on a belt that does not."""
     cfg = rules.get("relentless")
+    if rl_retired(cfg if isinstance(cfg, dict) else {}):
+        return rl_retired_points(held_churn_items())
     if not isinstance(cfg, dict):
         return {**{k: U("ops_watch_rules.json has no relentless block") for k in RL_KEYS},
                 "relentless.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no relentless block")}
@@ -3907,7 +3944,7 @@ def andon(points, hist, last_measured, rules, now):
         def silent():
             # silence is "no MEASURED reading", the same test last_measured keeps: a MEASURED state string is not silent
             if (not counts_as_measured(p) and matches(k, sl["keys"]) and not matches(k, sl["skip"])
-                    and not tt_retired(k, rules)):
+                    and not tt_retired(k, rules) and not judged_elsewhere(p, points)):
                 lm = last_measured.get(k)
                 lim = next((h for pat, h in sl["per_key"].items() if fnmatch.fnmatchcase(k, pat)), sl["default_h"])
                 if lm is not None and now - lm > lim * HOUR:

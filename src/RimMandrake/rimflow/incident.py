@@ -138,8 +138,12 @@ def readings(table, status, now):
     if not fresh:
         return {"ops_watch.blind": {"class": None, "item": None, "ack": None}}, False, {}
     bad, seen = {}, {}
-    for k, p in (status.get("points") or {}).items():
+    pts = status.get("points") or {}
+    for k, p in pts.items():
         if not isinstance(p, dict) or "class" not in p:
+            continue
+        if p.get("judged_by") in pts:              # ops_watch judges this one by another point (a retired belt's readings)
+            seen[k] = True
             continue
         if p.get("m") == "MEASURED" and p["class"] in BAD:
             bad[k] = {"class": p["class"], "item": None, "ack": p.get("ack_within_min")}
