@@ -987,6 +987,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PitExposureMath.Exposed(true, true, true), "can-fail: soaking in a geyser pool: not exposed");
                 Assert(!RM_PitExposureMath.Exposed(true, false, true), "ladder down and soaking (the owner's blood pool): not exposed");
                 Assert(!RM_PitExposureMath.Exposed(false, true, false), "can-fail: roofed or off the pit floor: not exposed");
+                // live 2026-11-13: a colonist behind a raised ladder could not reach the rim yet read "not exposed" (IsTrapped is
+                // captures-only); exposure asks HasNoWayOut, which falls back to the pocket's own no-way-out test for any pawn
+                string pe = RiverSwitchFlipChecks.Src("RM_PitExposure.cs");
+                Assert(pe.Contains("RM_SuperdeepTrap.HasNoWayOut(p)") && !pe.Contains("RM_SuperdeepTrap.IsTrapped(p)"), "can-fail: exposure reads HasNoWayOut, not the captures-only IsTrapped");
+                string st = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
+                int h0 = st.IndexOf("public static bool HasNoWayOut(Pawn p)", StringComparison.Ordinal);
+                string hb = h0 < 0 ? "" : st.Substring(h0, Math.Min(700, st.Length - h0));
+                Assert(hb.Contains("g.TrappedIn(k, g.ComponentOf(k, p.Position), p)") && hb.Contains("RM_PocketGrid.FreePitTraveller(p)") && !hb.Contains("Captures("),
+                    "can-fail: no-way-out is the pocket test without the capture gate, flyers excluded");
             });
             Case("PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero", () =>
             {

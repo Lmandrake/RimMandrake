@@ -229,6 +229,26 @@ namespace RimMandrake.FlowWorks
 			return g.TrappedIn(k, g.ComponentOf(k, p.Position), p);
 		}
 
+		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (live 2026-11-13: Scotty on G1's floor, ladder raised, could not reach
+		/// the rim and still read "not exposed"): no way out of the pit for ANY pawn. <see cref="IsTrapped"/> only holds a pawn the
+		/// pit captures (own colonists are not, unless superdeepCapturesOwnFaction), so a colonist behind a raised ladder never
+		/// counted. Exposure asks this instead: trapped, or (relative rule) standing in a pocket with no ladder it may use and no
+		/// way out at all (<see cref="RM_PocketGrid.TrappedIn"/>), not a flyer or jumper.</summary>
+		public static bool HasNoWayOut(Pawn p)
+		{
+			if (IsTrapped(p))
+			{
+				return true;
+			}
+			if (p == null || !p.Spawned || !RM_PocketGrid.Relative || RM_PocketGrid.FreePitTraveller(p))
+			{
+				return false;
+			}
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
+			return g != null && g.TrappedIn(k, g.ComponentOf(k, p.Position), p);
+		}
+
 		/// <summary>Is the destination inside component <paramref name="comp"/> (or, for a non-OnCell end mode, touching it)?</summary>
 		private static bool DestInComponent(RM_PocketGrid g, int k, int comp, LocalTargetInfo dest, PathEndMode peMode, Map map)
 		{

@@ -35,8 +35,9 @@ namespace RimMandrake.FlowWorks
 			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q9: a deck is not a roof): a pawn under a suspension deck is exposed as in
 			// the open hole
 			bool open = (RM_PitRooms.IsPitFloor(map, eng, c) || Pits.RM_SuspensionUnderpass.InFloorBand(p)) && !map.roofGrid.Roofed(c);
-			// RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY: only a pawn that cannot get out, and never one soaking
-			return RM_PitExposureMath.Exposed(open, open && RM_SuperdeepTrap.IsTrapped(p), RM_GeyserPit.Soaking(p));
+			// RIMMANDRAKE_FIX_PIT_EXPOSURE_THOUGHT_ON_LADDER_ENTRY: only a pawn that cannot get out, and never one soaking; any pawn,
+			// captured or not (a colonist behind a raised ladder, live 2026-11-13)
+			return RM_PitExposureMath.Exposed(open, open && RM_SuperdeepTrap.HasNoWayOut(p), RM_GeyserPit.Soaking(p));
 		}
 
 		/// <summary>
