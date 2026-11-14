@@ -30,6 +30,13 @@ It lands the clone's conversation records, publishes the seat shard if the run l
 ./sync, then hands what is still unlanded to Effects.remove_clone, which bundles every commit, stash and dirty file to
 the store before the clone goes (or parks it as a warm spare). A bundle that cannot be made KEEPS the clone, and the step
 says so; a clone the caller gave with --clone, one a process sits in and one another live run uses are never touched.
+A launch never takes a <ITEM>.det another run still holds (RIMMANDRAKE_HOLD_DET_CLONE_UNTIL_RETURNED, 2026-11-13/14: a
+relaunch read "ended", started inside the clone the return step deleted seconds later, and two runs spent ~0.67 USD each on
+nothing): it WAITS (RETURN_WAIT_S) while the run before is still in its stop steps or its -return unit is going, then
+refuses with the command that passes; a live run's clone, a dead run's (record running, unit gone) and one its return
+kept are refused at once. A run whose unit is gone reads "dead", never "running" (live_status). The unit's working
+directory is "-"-prefixed, so its ExecStopPost steps still run (in /) once the clone is gone; they used to fail
+200/CHDIR, finish never ran, and the stale "running" record kept later runs' clones.
 Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expected to run over ~20 min; the Agent
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
 """
@@ -62,6 +69,10 @@ MODEL_IDS = {"fable": "claude-fable-5-2"}
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
+DEAD_STATES = ("inactive", "failed", "not-found")   # a unit in one of these runs nothing; "unknown" is not proof of death
+LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its unit yet
+RETURN_WAIT_S = 600    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
+RETURN_POLL_S = 10
 EVENTS_REL = "infrastructure/state/ledger/events"
 
 FOOTER = """
@@ -207,6 +218,78 @@ def origin_check(item, runner=subprocess.run, repo=None):
     return "refused: %s is not on %s; %s%s" % (item, ORIGIN_REF, say, " (%s; %s may be stale)" % (stale, ORIGIN_REF) if stale else "")
 
 
+def live_status(rec, runner=subprocess.run, now=None):
+    """The record's status as its unit sees it: "launching" or "running" whose unit is inactive, failed or not found is
+    "dead" (finish never ran: the 2026-11-14 stale records). A young "launching" record and an unreadable unit keep theirs."""
+    st = rec.get("status")
+    if st not in ("launching", "running"):
+        return st
+    if st == "launching" and (now or time.time()) - (rec.get("at") or 0) < LAUNCH_GRACE_S:
+        return st
+    import role_launch as RL
+    return "dead" if RL.unit_state(rec["unit"], runner=runner) in DEAD_STATES else st
+
+
+def all_records(root=None):
+    d = runs_dir(root)
+    for n in sorted(os.listdir(d)):
+        if n.endswith(".json") and not n.endswith(".out.json"):
+            rec = read_record(n[:-5], root)
+            if rec and rec.get("unit"):
+                yield rec
+
+
+def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=False):
+    """-> [(unit, wait, why)] for every run that still holds the clone at `dest`. wait=True: it is giving the clone back
+    (its stop steps or its -return unit are going), so launch may wait; False: refuse now. `why` names the command that
+    passes. kept_ok: the caller named the clone with --clone, so one a return kept is theirs to take as it stands, and only
+    runs that took it as their own pool clone (whose return step may delete it) count; a run on a given clone never does."""
+    import role_launch as RL
+    me = "python3 src/RimMandrake/rimflow/detached_helper.py"
+    out = []
+    for rec in all_records(root):
+        if os.path.abspath(rec.get("clone") or "") != os.path.abspath(dest) or rec.get("returned"):
+            continue
+        if kept_ok and not owns_clone(rec):
+            continue
+        u = rec["unit"]
+        st = live_status(rec, runner, now)
+        if st in ("launching", "running"):
+            out.append((u, False, "run %s is %s in it; it ends with a line in the Conductor log, then its return step "
+                                  "gives the clone back: launch again after that" % (u, st)))
+        elif st == "dead":
+            out.append((u, False, "run %s is recorded running but its unit is gone, so its finish step never ran; to pass: "
+                                  "%s finish --unit %s, then %s return --unit %s, then launch again" % (u, me, u, me, u)))
+        elif st == "finished" and owns_clone(rec) and os.path.isdir(dest):
+            going = [(x, s) for x, s in ((u, RL.unit_state(u, runner=runner)),
+                                         (u + "-return", RL.unit_state(u + "-return", runner=runner))) if s not in DEAD_STATES]
+            if going:
+                out.append((u, True, "run %s is still giving the clone back (%s); to pass: wait for it to end "
+                                      "(systemctl --user status %s) and launch again"
+                                      % (u, ", ".join("%s %s" % g for g in going), going[-1][0])))
+            elif not kept_ok:
+                steps = "; ".join(rec.get("return_steps") or []) or "its return step left no steps"
+                out.append((u, False, "run %s finished but its return did not give the clone back (%s); to pass: %s "
+                                      "return --unit %s (it bundles what is left), or launch with --clone %s to take it "
+                                      "as it stands" % (u, fulltext.clip(steps, 160, record_path(u, root)), me, u, dest)))
+    return out
+
+
+def hold_until_returned(dest, runner=subprocess.run, sleep=time.sleep, now=None, root=None, kept_ok=False):
+    """-> None when no run holds `dest` (waiting up to RETURN_WAIT_S while one is giving it back), else the refusal line."""
+    waited = 0
+    while True:
+        held = clone_holders(dest, runner, now, root, kept_ok)
+        if not held:
+            return None
+        hard = [h for h in held if not h[1]]
+        if hard or waited >= RETURN_WAIT_S:
+            return "refused: clone %s is held%s: %s" % (
+                dest, "" if hard else " after %d s of waiting" % waited, " | ".join(h[2] for h in (hard or held)))
+        sleep(RETURN_POLL_S)
+        waited += RETURN_POLL_S
+
+
 def take_clone(item, runner=subprocess.run):
     """-> (clone path, log line). A pool clone named <ITEM>.det: made by scratch_clone.py, or reused and synced."""
     name = item + ".det"
@@ -266,18 +349,11 @@ def owns_clone(rec):
     return how.startswith(("made ", "reused ")) and os.path.abspath(rec.get("clone") or "") == os.path.abspath(want)
 
 
-def other_users(rec, root=None):
-    """Units of other runs that are still going and hold this run's clone."""
-    out = []
-    d = runs_dir(root)
-    for n in sorted(os.listdir(d)):
-        if not n.endswith(".json") or n.endswith(".out.json"):
-            continue
-        o = read_record(n[:-5], root)
-        if o and o.get("unit") != rec.get("unit") and o.get("clone") == rec.get("clone") \
-                and o.get("status") in ("launching", "running"):
-            out.append(o["unit"])
-    return out
+def other_users(rec, root=None, runner=subprocess.run):
+    """Units of other runs that are still going and hold this run's clone. A dead one (unit gone, record "running") holds
+    nothing: it used to keep later runs' clones forever."""
+    return [o["unit"] for o in all_records(root) if o["unit"] != rec.get("unit") and o.get("clone") == rec.get("clone")
+            and live_status(o, runner) in ("launching", "running")]
 
 
 def clone_busy(clone):
@@ -318,7 +394,7 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         return 0, "left alone: %s is not a pool clone this helper made (%s)" % (clone, rec.get("clone_how", "-"))
     if rec.get("status") != "finished":
         return 0, "kept %s: the run is %s, not finished (its finish step has not recorded it)" % (clone, rec.get("status"))
-    mates = other_users(rec, root)
+    mates = other_users(rec, root, runner)
     if mates:
         return 0, "kept %s: still in use by %s" % (clone, ", ".join(mates))
     if not os.path.isdir(clone):
@@ -417,7 +493,7 @@ def launch_argv(rec, msg, claude):
             "-p", "ExecStopPost=" + finish,
             "-p", "ExecStopPost=" + wrapup,     # the census of what it left (wrapup.py), after finish recorded it
             "-p", "ExecStopPost=" + back,       # last: the pool clone goes back, bundled (return_clone)
-            "--working-directory", clone,
+            "-p", "WorkingDirectory=-" + clone,    # "-": a gone clone is not fatal, so ExecStopPost still runs (in /)
             "--setenv", "AGENT_SEAT=" + seat, "--setenv", "RIMFLOW_SEAT=" + seat,
             *(sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(rec["tmp"]).items()), []) if rec.get("tmp") else []),
             "--setenv", "CLAUDE_SCOPE_UNIT=" + scope_name(seat, unit)[:-len(".scope")],
@@ -435,8 +511,9 @@ def parse_max_s(v):
     return int(v)
 
 
-def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None):
-    """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief."""
+def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep):
+    """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
+    a clone another run still holds (after waiting for one that is being given back)."""
     now = now or time.time()
     if seat not in SEATS:
         return 2, "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS))
@@ -457,6 +534,10 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     unpublished = origin_check(item, runner=runner)     # before a clone is made or a unit started
     if unpublished:
         return 2, unpublished
+    held = hold_until_returned(clone or os.path.join(pool_root(), "clones", item + ".det"), runner, sleep, now,
+                               kept_ok=bool(clone))
+    if held:
+        return 2, held
     if clone:
         how = "given " + clone
     else:
@@ -550,15 +631,18 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not (and TimeoutStopSec=30)
-    r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
-               cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
-    steps.append("note exit %d" % r.returncode)
-    r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item,
-                "infrastructure/state/ledger/events/%s.jsonl" % seat],
-               cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
-    pub = ((r.stdout or "") + (r.stderr or "")).strip()
-    m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
-    steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
+    if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
+        steps.append("clone gone: no note on the item, nothing published")
+    else:
+        r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
+                   cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+        steps.append("note exit %d" % r.returncode)
+        r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item,
+                    "infrastructure/state/ledger/events/%s.jsonl" % seat],
+                   cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
+        pub = ((r.stdout or "") + (r.stderr or "")).strip()
+        m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
+        steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
         path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens. %s. READ: rimflow show %s."
                               % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens,
@@ -574,16 +658,15 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
 def status(show_all=False, runner=subprocess.run):
     import role_launch as RL
     lines = []
-    d = runs_dir()
-    for n in sorted(os.listdir(d)):
-        if not n.endswith(".json") or n.endswith(".out.json"):
-            continue
-        rec = read_record(n[:-5])
-        if not rec or (rec.get("status") == "finished" and not show_all):
+    for rec in all_records():
+        if rec.get("status") == "finished" and not show_all:
             continue
         live = RL.unit_state(rec["unit"], runner=runner) if rec.get("status") != "finished" else "-"
-        lines.append("%s  %s  %s  item %s  %s  started %s" % (rec["unit"], rec.get("status"), live, rec["item"],
-                                                               rec["model"], iso(rec["at"])))
+        st = rec.get("status")
+        if live in DEAD_STATES and (st == "running" or (st == "launching" and time.time() - (rec.get("at") or 0) >= LAUNCH_GRACE_S)):
+            st = "DEAD (unit %s, finish never ran: detached_helper.py finish --unit %s)" % (live, rec["unit"])
+        lines.append("%s  %s  %s  item %s  %s  started %s" % (rec["unit"], st, live, rec["item"],
+                                                               rec.get("model"), iso(rec["at"])))
     return "\n".join(lines) or "no detached runs" + ("" if show_all else " running (--all lists finished ones)")
 
 

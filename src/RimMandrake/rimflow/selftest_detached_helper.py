@@ -22,6 +22,12 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              any clone or unit, naming the shard to publish; one fetch, then a search of the shards at origin/main; allowed
              when a `file` event's id or a `spawn` event's name is the item (a mention, a spawn's `from` and a longer id
              are not); a failed fetch is said only on a refusal; an unreadable git is a refusal, not a pass
+  midreturn  RIMMANDRAKE_HOLD_DET_CLONE_UNTIL_RETURNED (2026-11-13/14, two runs lost, ~0.67 USD each): a launch whose
+             <ITEM>.det is still being returned by the run before WAITS until the return lands, then makes a fresh clone;
+             one still returning past the wait, one a live run holds, one whose run is dead (unit inactive, record
+             'running') and one whose return kept it are REFUSED before any sync or unit, naming the command that passes;
+             a dead run reads 'dead', never 'running', in status and never blocks a return; the ExecStopPost steps run
+             when the clone is gone (WorkingDirectory=-), and finish records a run whose clone is gone
 """
 import json
 import os
@@ -41,6 +47,7 @@ FAILS = []
 T0 = 1_800_000_000.0
 KNOWN = {"SOME_ITEM_TO_BUILD"}
 CLONE = os.path.join(TMP, "clone")
+os.makedirs(CLONE)        # a clone that stands: finish notes and publishes from it (a gone one is skipped)
 
 
 def check(ok, msg):
@@ -564,6 +571,175 @@ def test_origin():
         ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
 
 
+def units_runner(states, log=None):
+    """Answers `systemctl --user show -p ActiveState` from `states` (unit -> state; absent = not-found) and the origin check;
+    any other call (./sync, scratch_clone, systemd-run) is logged and succeeds."""
+    log = [] if log is None else log
+
+    def run(argv, **kw):
+        if argv[:2] in (["git", "fetch"], ["git", "grep"]):
+            return fake_origin_git(argv, kw)
+        if argv[:3] == ["systemctl", "--user", "show"]:
+            u = argv[-1]
+            if states.get(u, "") is None:       # systemd says it has no such unit (a collected one)
+                r = R(1, "")
+                r.stderr = "Unit %s not found." % u
+                return r
+            if u in states:
+                return R(0, states[u] + "\n") if "ActiveState" in argv else R(0, "loaded\n")
+            return R(0, "inactive\n") if "ActiveState" in argv else R(0, "not-found\n")
+        log.append((list(argv), kw))
+        if argv and argv[0] == "python3" and "scratch_clone.py" in " ".join(argv):     # a fresh clone at --name
+            os.makedirs(os.path.join(POOL, "clones", argv[argv.index("--name") + 1], ".git"), exist_ok=True)
+        return R(0, "")
+    return log, run
+
+
+def test_midreturn():
+    os.environ["RM_DETACHED_POOL"] = POOL
+    real_wait = getattr(DH, "RETURN_WAIT_S", None)
+    try:
+        _test_midreturn()
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+        if real_wait is not None:
+            DH.RETURN_WAIT_S = real_wait
+
+
+def _mr_launch(item, run, sleep=None, clone=None):
+    kw = {} if sleep is None else {"sleep": sleep}
+    try:
+        return DH.launch("BENCH", item, "Build.", "sonnet", None, 5, now=T0 + 900, runner=run, known={item}, clone=clone, **kw)
+    except TypeError:               # a launch with no wait at all (the base): run its real path, so the race shows
+        return DH.launch("BENCH", item, "Build.", "sonnet", None, 5, now=T0 + 900, runner=run, known={item}, clone=clone)
+
+
+def _mr_starts(log):
+    return [c for c in log if c[0][:1] == ["systemd-run"]]
+
+
+def _mr_syncs(log):
+    return [c for c in log if c[0][:1] == ["./sync"]]
+
+
+def _test_midreturn():
+    global ORIGIN
+    # 1. the race as measured: the run before has FINISHED (Conductor log line written) and its return unit is still
+    # bundling. Launch must wait, see the record returned and the clone gone, then make a fresh clone, never ./sync the old one.
+    item = "RACE_ITEM_RETURNING"
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    unit, clone = det_clone(item, status="finished")
+    os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    states = {unit: "inactive", unit + "-return": "active"}
+    log, run = units_runner(states)
+    slept = []
+
+    def sleep(s):                   # the return lands while launch waits
+        slept.append(s)
+        if len(slept) == 2:
+            shutil.rmtree(clone)
+            rec = DH.read_record(unit)
+            rec["returned"] = T0 + 905
+            DH.write_record(rec)
+            states[unit + "-return"] = "inactive"
+    rc, text = _mr_launch(item, run, sleep)
+    check(rc == 0 and len(slept) >= 2 and _mr_syncs(log) == [] and len(_mr_starts(log)) == 1 and "made " in text,
+          "midreturn: a launch while the clone is being returned waits for the return, then makes a fresh clone "
+          "(rc %s, slept %d, syncs %d): %s" % (rc, len(slept), len(_mr_syncs(log)), text[:120]))
+    # 2. still returning when the wait runs out: refused before any sync or unit, naming the return unit and what passes
+    item = "RACE_ITEM_STILL_RETURNING"
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    unit, clone = det_clone(item, status="finished")
+    os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    log, run = units_runner({unit: "inactive", unit + "-return": "active"})
+    DH.RETURN_WAIT_S = 30
+    rc, text = _mr_launch(item, run, lambda s: None)
+    check(rc == 2 and text.startswith("refused:") and unit + "-return" in text and "launch again" in text
+          and _mr_syncs(log) == [] and _mr_starts(log) == [] and os.path.isdir(clone),
+          "midreturn: a clone still returning after the wait is refused, nothing synced or started: %s" % text[:160])
+    # 2b. the unit itself still deactivating (finish, wrapup and the return's start are its ExecStopPost) also waits
+    log, run = units_runner({unit: "deactivating"})
+    rc, text = _mr_launch(item, run, lambda s: None)
+    check(rc == 2 and "deactivating" in text and _mr_starts(log) == [],
+          "midreturn: a finished run whose unit is still in its stop steps holds the clone: %s" % text[:140])
+    # 3. a live run holds it: refused at once (no waiting on a run that may last hours)
+    item = "RACE_ITEM_LIVE_RUN"
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    unit, clone = det_clone(item, status="running")
+    os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    log, run = units_runner({unit: "active"})
+    slept = []
+    rc, text = _mr_launch(item, run, slept.append)
+    check(rc == 2 and unit in text and "running" in text and slept == [] and _mr_starts(log) == [] and _mr_syncs(log) == [],
+          "midreturn: a clone a live run holds is refused at once: %s" % text[:140])
+    # 4. a dead run (record 'running', unit gone: the 2026-11-14 stale records) is refused with the finish/return commands
+    log, run = units_runner({})
+    rc, text = _mr_launch(item, run, slept.append)
+    check(rc == 2 and "finish --unit " + unit in text and "return --unit " + unit in text and _mr_starts(log) == [],
+          "midreturn: a dead run's clone is refused, naming finish then return: %s" % text[:160])
+    check(DH.live_status(DH.read_record(unit), runner=run, now=T0 + 900) == "dead"
+          if hasattr(DH, "live_status") else False, "midreturn: a run whose unit is gone reads 'dead'")
+    st = DH.status(runner=run)
+    line = [ln for ln in st.splitlines() if unit in ln]
+    check(line and "running" not in line[0].split("item")[0] and "dead" in line[0].lower(),
+          "midreturn: status never reads 'running' for a run whose unit is gone: %s" % (line[0][:120] if line else st[:120]))
+    log, run = units_runner({unit: None})
+    check(DH.live_status(DH.read_record(unit), runner=run, now=T0 + 900) == "dead"
+          if hasattr(DH, "live_status") else False, "midreturn: a run whose unit systemd no longer knows (not-found) reads 'dead'")
+    # 4b. a fresh 'launching' record (systemd-run not yet returned) is not dead
+    young = {"status": "launching", "unit": "rm-young", "at": T0 + 890}
+    check(hasattr(DH, "live_status") and DH.live_status(young, runner=run, now=T0 + 900) == "launching",
+          "midreturn: a record launching a few seconds ago is not called dead")
+    # 4c. a dead run no longer blocks another run's return of the same clone
+    mate, _ = det_clone(item, status="finished", path=clone)
+    rc, text = DH.return_clone(mate, now=T0 + 950, runner=run, evictor=fake_evictor()[1], busy=not_busy)
+    check(text.startswith("RETURNED") and unit not in text,
+          "midreturn: a dead run's stale record does not keep another run's clone: %s" % text[:120])
+    # 5. a clone its return KEPT (a bundle failed): refused, naming return --unit and the --clone escape
+    item = "RACE_ITEM_KEPT"
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    unit, clone = det_clone(item, status="finished")
+    os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    log, run = units_runner({})
+    rc, text = _mr_launch(item, run, lambda s: None)
+    check(rc == 2 and "return --unit " + unit in text and "--clone " + clone in text and _mr_starts(log) == [],
+          "midreturn: a clone its return kept is refused, naming return and --clone: %s" % text[:160])
+    rc, text = _mr_launch(item, run, lambda s: None, clone=clone)
+    check(rc == 0 and len(_mr_starts(log)) == 1, "midreturn: --clone takes a kept clone as it stands: %s" % text[:80])
+    # 5b. a returned record and an old finished one whose clone is gone do not block: the clone is simply reused
+    item = "RACE_ITEM_CLEAR"
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    unit, clone = det_clone(item, status="finished")
+    rec = DH.read_record(unit)
+    rec["returned"] = T0
+    DH.write_record(rec)
+    os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    log, run = units_runner({})
+    rc, text = _mr_launch(item, run, lambda s: None)
+    check(rc == 0 and len(_mr_syncs(log)) == 1 and "reused " in text, "midreturn: a returned run's clone is reused: %s" % text[:80])
+    # 6. the stop steps run when the clone is gone: the working directory carries systemd's '-' (missing is not fatal)
+    argv = ([c for c in log if c[0][:1] == ["systemd-run"]] or [([], {})])[-1][0]
+    check("--working-directory" not in argv and "WorkingDirectory=-" + clone in argv,
+          "midreturn: the unit's WorkingDirectory is '-'-prefixed, so ExecStopPost survives a gone clone (measured: runs in /)")
+    # 7. finish on a run whose clone is gone records it finished and logs it; no note is attempted in a missing dir
+    unit, clone = det_clone("RACE_ITEM_GONE_FINISH", status="running")
+    shutil.rmtree(clone)
+    calls = []
+
+    def frun(argv, **kw):
+        if kw.get("cwd") and not os.path.isdir(kw["cwd"]):
+            raise FileNotFoundError(kw["cwd"])
+        calls.append(argv)
+        return R(0, "")
+    try:
+        rc, text = DH.finish(unit, now=T0 + 999, env={}, runner=frun)
+    except Exception as e:  # noqa: BLE001
+        rc, text = 99, "raised %r" % e
+    check(rc == 0 and DH.read_record(unit)["status"] == "finished" and "gone" in text,
+          "midreturn: finish records a run whose clone is gone, and says so: %s" % text[:120])
+    ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
+
+
 def test_hook_points_here():
     hook = os.path.join(HERE, "..", "..", "..", ".claude", "hooks", "block_agent_over_slots.py")
     with open(hook, encoding="utf-8") as f:
@@ -580,6 +756,7 @@ def main():
     test_return()
     test_return_real_git()
     test_origin()
+    test_midreturn()
     test_hook_points_here()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
