@@ -48,9 +48,9 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				bool onGrate = share < 1f;
-				// wet above 5 cm (owner card 2026-11-13); the slip chance takes the water as notches, at least one when wet
-				int fill = ex.IsExcavated(c) && ex.WetAt(c) ? System.Math.Max(1, (int)System.Math.Round(ex.WaterDlAt(c) / (double)RM_LevelSolve.U)) : 0;
-				if (fill <= 0)
+				// wet above 5 cm (owner card 2026-11-13); the slip chance takes the exact water in dL
+				int waterDl = ex.IsExcavated(c) && ex.WetAt(c) ? ex.WaterDlAt(c) : 0;
+				if (waterDl <= 0)
 				{
 					if (onGrate)
 					{
@@ -58,7 +58,7 @@ namespace RimMandrake.FlowWorks
 					}
 					// natural slime ground: no fill, no climb
 					RM_SlipperyTerrain ground = NaturalSlime(map, c);
-					if (ground != null && Rand.Chance(RM_SlimeMath.SlipChance(ground.slipperiness, 1, 1, false, false,
+					if (ground != null && Rand.Chance(RM_SlimeMath.SlipChance(ground.slipperiness, RM_LevelSolve.U, 1, false, false,
 						RimMandrakeFlowWorksSettings.slimeSlipChanceMultiplier, 1f)))
 					{
 						Slip(p, map, (map.terrainGrid.TerrainAt(c).label ?? "slime").Split(',')[0], false);
@@ -73,7 +73,7 @@ namespace RimMandrake.FlowWorks
 				IntVec3 next = p.pather.nextCell;
 				bool climbingOut = !onGrate && next.IsValid && next != c && next.InBounds(map)
 					&& RM_SlimeMath.IsClimbingOut(ex.HollowDepthAt(c), ex.HollowDepthAt(next));
-				float chance = share * RM_SlimeMath.SlipChance(fluid.slipperiness, fill, ex.DepthAt(c), climbingOut, false,
+				float chance = share * RM_SlimeMath.SlipChance(fluid.slipperiness, waterDl, ex.DepthAt(c), climbingOut, false,
 					RimMandrakeFlowWorksSettings.slimeSlipChanceMultiplier, RimMandrakeFlowWorksSettings.slimeClimbOutSlipFactor);
 				if (!Rand.Chance(chance))
 				{

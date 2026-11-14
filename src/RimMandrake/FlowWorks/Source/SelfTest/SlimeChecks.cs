@@ -27,25 +27,32 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private const float Stun = RM_SlimeMath.DefaultStunSeconds;
         private const float ClimbF = RM_SlimeMath.DefaultClimbOutFactor;
+        private const int U = RM_Volume.UnitsPerLevel; // dL per notch: SlipChance takes exact water dL
 
         public static void Run(Action<string, Action> Case)
         {
             Case("Slime_no_slip_where_it_should_not", () =>
             {
-                Assert(RM_SlimeMath.SlipChance(0f, 2, 2, false, false, 1f, ClimbF) == 0f, "a non-slippery liquid slips");
+                Assert(RM_SlimeMath.SlipChance(0f, 2 * U, 2, false, false, 1f, ClimbF) == 0f, "a non-slippery liquid slips");
                 Assert(RM_SlimeMath.SlipChance(1f, 0, 2, false, false, 1f, ClimbF) == 0f, "a dry cell slips");
-                Assert(RM_SlimeMath.SlipChance(1f, 2, 2, false, true, 1f, ClimbF) == 0f, "a flier slips");
-                Assert(RM_SlimeMath.SlipChance(1f, 2, 2, false, false, 0f, ClimbF) == 0f, "multiplier 0 still slips");
+                Assert(RM_SlimeMath.SlipChance(1f, 2 * U, 2, false, true, 1f, ClimbF) == 0f, "a flier slips");
+                Assert(RM_SlimeMath.SlipChance(1f, 2 * U, 2, false, false, 0f, ClimbF) == 0f, "multiplier 0 still slips");
             });
             Case("Slime_fuller_and_climbing_out_slip_more", () =>
             {
-                float trace = RM_SlimeMath.SlipChance(1f, 1, 3, false, false, 1f, ClimbF);
-                float brim = RM_SlimeMath.SlipChance(1f, 3, 3, false, false, 1f, ClimbF);
-                float outBrim = RM_SlimeMath.SlipChance(1f, 3, 3, true, false, 1f, ClimbF);
+                float trace = RM_SlimeMath.SlipChance(1f, 1 * U, 3, false, false, 1f, ClimbF);
+                float brim = RM_SlimeMath.SlipChance(1f, 3 * U, 3, false, false, 1f, ClimbF);
+                float outBrim = RM_SlimeMath.SlipChance(1f, 3 * U, 3, true, false, 1f, ClimbF);
                 Assert(trace > 0f && trace < brim, "trace " + trace + " vs brim " + brim);
                 Assert(Math.Abs(brim - RM_SlimeMath.BaseSlipChance) < 1e-6, "brim slip " + brim + " != base");
                 Assert(outBrim > brim && outBrim <= RM_SlimeMath.MaxSlipChance, "climb-out " + outBrim);
-                Assert(RM_SlimeMath.SlipChance(1f, 3, 3, true, false, 10f, 10f) == RM_SlimeMath.MaxSlipChance,
+                // one water number (item RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES): the chance follows the exact dL,
+                // never a rounded notch count
+                float one = RM_SlimeMath.SlipChance(1f, U, 3, false, false, 1f, ClimbF);
+                float oneHalf = RM_SlimeMath.SlipChance(1f, U + U / 2, 3, false, false, 1f, ClimbF);
+                float two = RM_SlimeMath.SlipChance(1f, 2 * U, 3, false, false, 1f, ClimbF);
+                Assert(one < oneHalf && oneHalf < two, "1.5 notches of slime " + oneHalf + " not between 1 (" + one + ") and 2 (" + two + ")");
+                Assert(RM_SlimeMath.SlipChance(1f, 3 * U, 3, true, false, 10f, 10f) == RM_SlimeMath.MaxSlipChance,
                     "never a certainty: capped at MaxSlipChance");
                 Assert(RM_SlimeMath.IsClimbingOut(2, 0) && RM_SlimeMath.IsClimbingOut(3, 2) && !RM_SlimeMath.IsClimbingOut(2, 2)
                        && !RM_SlimeMath.IsClimbingOut(1, 2), "climbing out = toward shallower ground only");
@@ -55,7 +62,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // a brim-full D2 canal cell at the shipped pathCost 450: ~463 ticks of walking for a 13-tick pawn
                 int walk = 450 + 13;
-                float brim = RM_SlimeMath.SlipChance(1f, 2, 2, false, false, 1f, ClimbF);
+                float brim = RM_SlimeMath.SlipChance(1f, 2 * U, 2, false, false, 1f, ClimbF);
                 float perCell = walk / 60f + RM_SlimeMath.ExpectedStunSecondsPerCell(brim, walk, Stun);
                 float tarCell = (300 + 13) / 60f;
                 Assert(perCell > 2f * tarCell, "a slime cell (" + perCell + " s) is not much worse than tar (" + tarCell + " s)");
@@ -63,7 +70,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("Slime_climb_out_takes_a_great_deal_of_time", () =>
             {
-                float outC = RM_SlimeMath.SlipChance(1f, 2, 2, true, false, 1f, ClimbF);
+                float outC = RM_SlimeMath.SlipChance(1f, 2 * U, 2, true, false, 1f, ClimbF);
                 // the climb step off a D2 canal: surface ~0 + the dry D2 climb 45, ~58 ticks for a 13-tick pawn
                 float clean = 58 / 60f;
                 float slimy = RM_SlimeMath.ExpectedClimbOutSeconds(outC, 58, Stun);
@@ -74,9 +81,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Slime_natural_ground_slips_too", () =>
             {
                 // owner 2026-10-16: "Natural slime should also be slippery." Natural ground has no fill ladder and no climb:
-                // RM_SlimeSlip rolls SlipChance(s, 1, 1, climbingOut false) there, i.e. the brim chance.
+                // RM_SlimeSlip rolls SlipChance(s, U, 1, climbingOut false) there, i.e. the brim chance.
                 string root = ModRoot();
-                Assert(Math.Abs(RM_SlimeMath.SlipChance(1f, 1, 1, false, false, 1f, 1f) - RM_SlimeMath.BaseSlipChance) < 1e-6,
+                Assert(Math.Abs(RM_SlimeMath.SlipChance(1f, 1 * U, 1, false, false, 1f, 1f) - RM_SlimeMath.BaseSlipChance) < 1e-6,
                     "natural slime does not slip at the brim chance");
                 string patch = File.ReadAllText(Path.Combine(root, "Patches", "Canals", "RM_SlipperySlimeGround.xml"));
                 var targets = new System.Collections.Generic.SortedSet<string>();

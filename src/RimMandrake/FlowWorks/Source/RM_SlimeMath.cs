@@ -34,15 +34,15 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Chance of a slip on one roll. 0 for a flier, a dry cell or a non-slippery liquid; otherwise the base chance
 		/// times slipperiness, times how full the cell is (a trace of slime is less treacherous than a brimming canal, but
 		/// any slime counts for at least half), times the climb-out factor when climbing out, times the setting multiplier,
-		/// capped at <see cref="MaxSlipChance"/>.</summary>
-		public static float SlipChance(float slipperiness, int fill, int depth, bool climbingOut, bool flying,
+		/// capped at <see cref="MaxSlipChance"/>. waterDl = the cell's exact water in dL; depth = its hollow depth in notches.</summary>
+		public static float SlipChance(float slipperiness, int waterDl, int depth, bool climbingOut, bool flying,
 			float chanceMultiplier, float climbOutFactor)
 		{
-			if (flying || fill <= 0 || slipperiness <= 0f || chanceMultiplier <= 0f)
+			if (flying || waterDl <= 0 || slipperiness <= 0f || chanceMultiplier <= 0f)
 			{
 				return 0f;
 			}
-			float frac = RM_FillEffectMath.FillFraction(fill, depth);
+			float frac = RM_FillEffectMath.FillFraction(waterDl / (float)RM_Volume.UnitsPerLevel, depth);
 			float c = BaseSlipChance * slipperiness * (0.5f + 0.5f * frac) * chanceMultiplier;
 			if (climbingOut)
 			{
