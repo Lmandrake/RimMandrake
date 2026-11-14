@@ -2,7 +2,7 @@
  "mod": "Pyrelands",
  "version": "0.1.0",
  "program": "preflight_pyre.py (throwaway, advance row 3, adapted from preflight_ek.py)",
- "at": "2026-11-14T12:38:29-08:00",
+ "at": "2026-11-14T14:31:03-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,16 +16,16 @@
    "defs_total": "59262"
   }
  },
- "seconds": 3.72,
- "verdict": "refuse",
- "refusals": 1,
+ "seconds": 4.85,
+ "verdict": "pass",
+ "refusals": 0,
  "checks": [
   {
    "id": "C1_bars_complete",
    "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "41 locked, 41 in table",
+   "evidence": "42 locked, 42 in table",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -35,7 +35,7 @@
    "what": "every bar names at least one deciding test, and every named test is defined",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "41 bars",
+   "evidence": "42 bars",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -45,7 +45,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "54 tests",
+   "evidence": "59 tests",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -105,10 +105,10 @@
    "what": "every def named exists: ours (RM_/RUT_/RSW_) in the repo's current Defs/Patches or as a C# type; others in the def dump or the repo",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "17 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 582 of our repo defs are newer than the dump",
+   "evidence": "20 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 582 of our repo defs are newer than the dump",
    "smallest_fix": null,
    "route": null,
-   "seconds": 3.164
+   "seconds": 4.197
   },
   {
    "id": "C10_mods_real",
@@ -118,7 +118,7 @@
    "evidence": "1 named: mandrake.rm.biomes",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.002
+   "seconds": 0.003
   },
   {
    "id": "C11_settings_fields_real",
@@ -133,14 +133,12 @@
   {
    "id": "C12_locked_files_unchanged",
    "what": "the locked bar files match the blobs pinned in version/bars.md",
-   "verdict": "refuse",
-   "refusals": [
-    "design/concepts/Pyrelands/plan.md: pinned 0d8be55bbc, now dd3ec4b45d"
-   ],
+   "verdict": "pass",
+   "refusals": [],
    "evidence": "8 pins",
-   "smallest_fix": "the Conductor reads each post-lock change; a test-text change is re-pinned in bars.md, a meaning change goes to him",
-   "route": "Conductor (judgment: test text or meaning?)",
-   "seconds": 0.007
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.009
   },
   {
    "id": "C13_corrections_hold",
@@ -150,7 +148,7 @@
    "evidence": "text checks of scenes.json, tree.json, sheet.md, record.json",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C14_csharp_symbols_real",
@@ -160,7 +158,7 @@
    "evidence": "3 of our types named",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.028
+   "seconds": 0.043
   },
   {
    "id": "C16_scenes_wired",
@@ -180,7 +178,7 @@
    "evidence": "8 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.472
+   "seconds": 0.547
   }
  ]
 }

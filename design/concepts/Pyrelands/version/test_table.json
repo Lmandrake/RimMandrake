@@ -1,7 +1,7 @@
 {
  "mod": "Pyrelands",
  "version": "0.1.0",
- "made": "2026-11-14T14:24:37-08:00",
+ "made": "2026-11-14T14:28:36-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -96,9 +96,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 14.53,
-    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.39s total -> OK",
-    "at": "2026-11-14T14:24:37-08:00",
+    "seconds": 14.5,
+    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.45s total -> OK",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -117,9 +117,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 76.22,
+    "seconds": 77.79,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -137,9 +137,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.52,
+    "seconds": 1.91,
     "last": "PASS: the real Postfix meets the spec, 15 mutants red",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -157,9 +157,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.07,
     "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -177,9 +177,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.42,
+    "seconds": 0.33,
     "last": "  px = list(im.getdata())",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -197,9 +197,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.49,
+    "seconds": 2.42,
     "last": "8/8 passed",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -218,9 +218,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.62,
-    "last": "[pyre] 14:26:17 scorchfruit_produces PASS",
-    "at": "2026-11-14T14:24:37-08:00",
+    "seconds": 4.59,
+    "last": "[pyre] 14:30:18 scorchfruit_produces PASS",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 2.42,
+    "seconds": 2.15,
     "last": "settings screens selftest: 851/856 ok; 14 rows for this mod, 0 red",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.02,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -296,9 +296,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.22,
+    "seconds": 0.18,
     "last": "ALL PASS",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -319,7 +319,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "selftest_pyrelands_firehawk_letter: PASS",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -340,7 +340,7 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "selftest_pyrelands_firehawk_crestfeather: PASS",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -360,9 +360,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.63,
+    "seconds": 1.39,
     "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 10 of 10 mutants red, the clean copy green",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -382,9 +382,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 30.22,
+    "seconds": 28.17,
     "last": "PASS: 6 def facts hold, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -405,9 +405,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.79,
+    "seconds": 0.68,
     "last": "PASS: the three cut legs stay cut, 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -420,16 +420,16 @@
    "reads": [
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml",
     "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
-    "src/Rim*/**/Patches/",
-    "RimWorld Data/*/Defs/ThingDefs_Races/"
+    "src/RimMandrake/Pyrelands/Patches/",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.49,
+    "seconds": 6.17,
     "last": "PASS: RM_Ullai is a herd vanilla herd migration can pick, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -448,9 +448,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.82,
+    "seconds": 1.37,
     "last": "PASS: the probe reads cells part by part and refuses with the ash field off; 8 mutants red",
-    "at": "2026-11-14T14:24:37-08:00",
+    "at": "2026-11-14T14:28:36-08:00",
     "result": "PASS"
    }
   },
@@ -1252,7 +1252,7 @@
     "ran": true,
     "result": "PASS",
     "last": "infrastructure/state/ledger/events/OWNER.jsonl:1",
-    "at": "2026-11-14T14:24:37-08:00"
+    "at": "2026-11-14T14:28:36-08:00"
    }
   },
   "LOOK_STAGE8": {
