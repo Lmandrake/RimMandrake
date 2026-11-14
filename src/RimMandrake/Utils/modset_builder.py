@@ -687,7 +687,10 @@ TIERS["evening_20261113"] = {
     "why": "Evening showing 2026-11-13 (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE): ratchet_pilot (Pyrelands + FlowWorks + "
            "Gimme Some Slack) plus Explosive Knockback and Kinetic Arms, so the liquid-look fixes, pit furniture, fire-hawk "
            "reads and knockback scenes all run on ONE load. Union of both tiers' guards.",
-    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.explosiveknockback", "mandrake.rm.kineticarms"],
+    # VEF core: Baroque Biomes' donor ports name VEF classes (see biomes_sprint); coldstorage: the keeper saves
+    # UNDER_LIQUID_LAW_*_20261112* were written with it
+    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.explosiveknockback", "mandrake.rm.kineticarms",
+                                                     "oskarpotocki.vanillafactionsexpanded.core", "mandrake.rm.coldstorage"],
     "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphabiomes"],
     "forbid_substr": list(TIERS["ratchet_pilot"]["forbid_substr"]),
     "dlc": True,
