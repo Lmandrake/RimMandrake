@@ -290,13 +290,6 @@
    "key": "BS_JotunSword"
   },
   {
-   "defName": "Beer",
-   "label": "beer",
-   "mod": "Core",
-   "note": "",
-   "key": "Beer"
-  },
-  {
    "defName": "Bow_Great",
    "label": "greatbow",
    "mod": "Core",
@@ -1284,7 +1277,7 @@
    "key": "m_RatKing"
   }
  ],
- "kept_count": 616,
+ "kept_count": 617,
  "total_count": 799,
  "notes": {
   "HMC_Wall_Emp_Turret_Top": "wall turret, not a weapon"
