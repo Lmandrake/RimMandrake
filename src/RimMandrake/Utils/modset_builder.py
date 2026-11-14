@@ -683,6 +683,16 @@ TIERS["biomes_sprint"] = {
     "dlc": True,
 }
 
+TIERS["evening_20261113"] = {
+    "why": "Evening showing 2026-11-13 (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE): ratchet_pilot (Pyrelands + FlowWorks + "
+           "Gimme Some Slack) plus Explosive Knockback and Kinetic Arms, so the liquid-look fixes, pit furniture, fire-hawk "
+           "reads and knockback scenes all run on ONE load. Union of both tiers' guards.",
+    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.explosiveknockback", "mandrake.rm.kineticarms"],
+    "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphabiomes"],
+    "forbid_substr": list(TIERS["ratchet_pilot"]["forbid_substr"]),
+    "dlc": True,
+}
+
 TIERS["flowworks_hugethings"] = {
     "why": "BIG_CREATURES_DESIGN_WALLS_AND_SLOTS A2-A8 live sitting (HugeThings/northstar/walls_slots_live.py): Huge Things beside "
            "FlowWorks. Huge Things has no dependency on FlowWorks; the walls-and-slots rows need its titans (RM_Hwelgrue, RM_Totchak, "
