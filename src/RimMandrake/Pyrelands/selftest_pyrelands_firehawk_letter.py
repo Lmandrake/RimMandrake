@@ -84,6 +84,13 @@ def check_letter(probs):
         probs.append("letter: the once-only flag does not live in a GameComponent (once per game)")
     if "LetterDefOf.ThreatSmall" not in code:
         probs.append("letter: not sent as LetterDefOf.ThreatSmall")
+    # live 2026-11-13: an 80-100 tick carry fell between two 250-tick looks and no letter came; the carry toil reports itself
+    driver = _read(os.path.join(SRC, "JobDriver_RUT_FireHawkCarryEmber.cs"))
+    carry = driver[driver.find("Toil carry = "):driver.find("yield return carry;")]
+    if "GameComponent_RM_FireHawkSighting.NoteCarrying(pawn)" not in carry:
+        probs.append("letter: the carry toil does not report itself (NoteCarrying), so a carry shorter than a look is missed")
+    if not re.search(r"TryClaimSighting\(\s*ref\s+c\.announced\s*,\s*RM_PyrelandsSettings\." + SETTING, code):
+        probs.append("letter: NoteCarrying does not pass the saved flag and the toggle to the kernel gate")
     if "IsPlayerHome" not in code or "Fogged(" not in code:
         probs.append("letter: no player-home or fog check in the component")
     if not os.path.exists(KERNEL) or "TryClaimSighting" not in _read(KERNEL):

@@ -102,7 +102,10 @@ def register(suite, V):
         r = t.bridge_call("jawa/letter_list") or {}
         if not isinstance(r, dict) or r.get("success") is False:
             V._unmeasured(t, "jawa/letter_list gave no answer: %r" % (r,))
-        return [l for l in (r.get("letters") or []) if l.get("label") == label]
+        # the label comes back as a TaggedString object ({"RawText": ...}), never a bare string: compare its text (live
+        # 2026-11-13, a sent letter read as 0 letters)
+        text = lambda v: v.get("RawText") if isinstance(v, dict) else v
+        return [l for l in (r.get("letters") or []) if text(l.get("label")) == label]
 
     def comp(t, hawk, members):
         r = t.bridge_call("jawa/comp_read", thing=hawk, comp="CompFireHawkSpread", members=members) or {}
@@ -208,7 +211,9 @@ def register(suite, V):
         far = (sx - 50, sz // 2 - 15, 30, 30)              # the largest fuel on the map, ~150 cells off on a 250 map
         with V._comp(t, "firehawk_ember_lands_in_the_largest_far_patch"):
             V._set(t, {"burnLineEnabled": False, "fireHawkSpreadEnabled": True})
-            t.bridge_call("jawa/set_plants", ops="CLEAR:" + V._whole(t))
+            # in 20-row strips: one whole-map CLEAR outran the bridge's 30 s call limit (live 2026-11-13, chain UNMEASURED)
+            for sz0 in range(0, sz, 20):
+                t.bridge_call("jawa/set_plants", ops="CLEAR:%d,%d,%d,%d" % (0, sz0, sx, min(20, sz - sz0)))
             t.bridge_call("jawa/set_fog", action="unfog", rect=V._whole(t))
             for r in (source, near, far):
                 V._firebreak(t, r)

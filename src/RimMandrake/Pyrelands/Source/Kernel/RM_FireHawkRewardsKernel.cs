@@ -8,8 +8,9 @@ namespace RimMandrake.Pyrelands
 
     public static class RM_FireHawkRewardsKernel
     {
-        /// <summary>How often the sighting component looks at the player's home maps: four times a game hour, never per tick.
-        /// An ember carry lasts many seconds of flight, so a 250-tick look cannot miss one.</summary>
+        /// <summary>How often the sighting component looks at the player's home maps: four times a game hour, never per tick. A
+        /// backstop only: a carry can be far shorter than this (MEASURED live 2026-11-13: 80-100 ticks, missed between two
+        /// looks), so the carry toil reports itself (GameComponent_RM_FireHawkSighting.NoteCarrying).</summary>
         public const int SightingLookIntervalTicks = 250;
 
         public static bool LookThisTick(int ticksGame)

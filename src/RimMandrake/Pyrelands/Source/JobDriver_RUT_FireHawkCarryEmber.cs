@@ -93,6 +93,7 @@ namespace RimMandrake.Pyrelands
             Toil carry = Toils_Goto.GotoCell(IgniteCellInd, PathEndMode.OnCell);
             carry.AddPreTickAction(delegate
             {
+                GameComponent_RM_FireHawkSighting.NoteCarrying(pawn);   // the first-sighting letter: every carry, however short
                 if (pawn.IsHashIntervalTick(20) && pawn.Map != null)
                 {
                     FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);

@@ -38,8 +38,30 @@ namespace RimMandrake.Pyrelands
             return "rearmed wasAnnounced=" + was;
         }
 
+        /// <summary>This game's component, so the carry toil can report a sighting without a component lookup each tick.</summary>
+        private static GameComponent_RM_FireHawkSighting current;
+
         public GameComponent_RM_FireHawkSighting(Game game)
         {
+            current = this;
+        }
+
+        /// <summary>Called by the carry toil (JobDriver_RUT_FireHawkCarryEmber) every tick the ember is in the beak. Live
+        /// 2026-11-13: a carry lasted 80-100 ticks and fell wholly between two 250-tick looks, so no letter came; the toil now
+        /// reports itself and no carry can be missed. Returns at once after the one letter of the game.</summary>
+        public static void NoteCarrying(Pawn hawk)
+        {
+            GameComponent_RM_FireHawkSighting c = current;
+            if (c == null || c.announced || hawk == null || !hawk.Spawned || Current.Game == null || c != Current.Game.GetComponent<GameComponent_RM_FireHawkSighting>())
+            {
+                return;
+            }
+            Map map = hawk.Map;
+            if (RM_FireHawkRewardsKernel.TryClaimSighting(ref c.announced, RM_PyrelandsSettings.fireHawkSightingLetterEnabled,
+                    PyrelandsMechanicsGate.On, true, map.IsPlayerHome, hawk.Position.Fogged(map)))
+            {
+                SendLetter(hawk, map);
+            }
         }
 
         public override void GameComponentTick()
