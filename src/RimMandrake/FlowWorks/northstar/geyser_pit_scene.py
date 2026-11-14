@@ -128,7 +128,7 @@ def main(argv):
             static("RimMandrake.FlowWorks.RM_PromotionProofs", "ProofLadder", "%d,%d,lower" % (lx, lz))
         G = geysers()
     colonists = (B.call("rimworld/list_colonists") or {}).get("colonists") or []
-    pid = str((colonists[0].get("id") or colonists[0].get("thingId") or "")).replace("Thing_", "") if colonists else ""
+    pid = str((colonists[0].get("pawnId") or colonists[0].get("id") or colonists[0].get("thingId") or "")).replace("Thing_", "") if colonists else ""
     answers = {}
     for r in rows:
         lx, lz, _ = r["ladder"]
