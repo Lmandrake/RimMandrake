@@ -327,9 +327,9 @@ namespace RimMandrake.FlowWorks
         // FALL_GUARDRAILS_BUILD_REAL_OBJECT (owner 2026-10-18): a guardrail (RM_PitGuardrail) or any fence on a lip stops falls
         // over its edges (RM_FallRails). Off: no cell is a rail, the old behaviour.
         public static bool pitGuardrailEnabled = true;
-        // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
+        // PIT_DEPTH_DRAW_OFFSET_1 (owner 2026-11-13 9:50 PM: 0.05 cells/level, 0.4 square at 4 m, fixed click-walk in pits; was 0.3): pawns drawn lower on dug cells.
         public static bool pitDepthDrawOffsetEnabled = true;
-        public static float pitSinkPerLevel = 0.3f;
+        public static float pitSinkPerLevel = 0.05f;
         // EXCAVATION_WALL_ART_1: wall faces drawn by SectionLayer_RMExcavationWalls (procedural until art lands).
         public static bool excavationWallFacesEnabled = true;
         // FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 1-5, 2026-10-05). Each OFF falls back to the flat look.
@@ -685,7 +685,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
             Scribe_Values.Look(ref spikeMinDropMetres, "spikeMinDropMetres", 2f);
             Scribe_Values.Look(ref pitDepthDrawOffsetEnabled, "pitDepthDrawOffsetEnabled", true);
-            Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.3f);
+            Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.05f);
             Scribe_Values.Look(ref excavationWallFacesEnabled, "excavationWallFacesEnabled", true);
             Scribe_Values.Look(ref excavationWallMaterialEnabled, "excavationWallMaterialEnabled", true);
             Scribe_Values.Look(ref pitLipOcclusionEnabled, "pitLipOcclusionEnabled", true);

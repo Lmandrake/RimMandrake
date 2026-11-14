@@ -79,7 +79,7 @@ SETTINGS = {
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0, "fallDamagePerMetrePast2": 0.5, "fallDamageCap": 4.0, "fallDeathEnabled": True, "fallDeathFromMetres": 6.0, "fallDeathCertainMetres": 25.0,   # P7 V3; FALL_DAMAGE_BUILD_DEEP_DROPS_KILL
         "spikesEnabled": True, "spikeDamageMultiplier": 1.0, "spikeMinDropMetres": 2.0, "pitGuardrailEnabled": True,   # P7 V4;     # CANAL_BOTTOM_SPIKES_1
         "pitExposureEnabled": True, "pitExposureNarrowing": 8.0, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (narrowing: owner Q1 2026-10-11)
-        "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.3,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
+        "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.05,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
         "pitFloorCarriesGroundEnabled": True,   # RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR (RM_PitFloorGround)
         "pitSubmergeCutEnabled": True,   # liquid in a cut covers what stands in it (RM_UnderLiquid)
         "underLiquidDeepOpacity": 0.9, "underLiquidFullMetres": 4.0, "underLiquidDarken": 0.6, "pitThingShadowAlpha": 0.3,   # RM_UnderLiquid.Default*

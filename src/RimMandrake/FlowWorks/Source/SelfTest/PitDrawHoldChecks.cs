@@ -357,6 +357,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(sw.Contains("return RM_SwimMath.SwimPose(false, true, false, deck, RM_SwimWater.WaterMetresAt(map, ex, c),"), "SwimsAt runs the pure rule");
             });
 
+            Case("PitSink_shipped_default_keeps_every_depth_under_half_a_square", () =>
+            {
+                // owner 2026-11-13 9:50 PM: "The settings you changed fixed the walking around problem." (0.05 per half metre)
+                string mod = Src("RimMandrakeFlowWorksMod.cs");
+                const float shipped = 0.05f;
+                Assert(mod.Contains("public static float pitSinkPerLevel = 0.05f;"), "can-fail: the shipped default is 0.05, not the old 0.3");
+                Assert(mod.Contains("Scribe_Values.Look(ref pitSinkPerLevel, \"pitSinkPerLevel\", 0.05f)"), "the Scribe default matches the field");
+                for (int d = 1; d <= 8; d++)
+                {
+                    float sink = RM_PitDrawMath.SinkFor(d, shipped);
+                    Assert(sink > 0f && sink < 0.5f, "depth " + d + " half-metres: drawn offset " + sink + " squares is under 0.5");
+                }
+                Assert(RM_PitDrawMath.SinkFor(30, shipped) < 0.5f, "past the cap it stays under 0.5");
+                // a drafted-move destination is the pointed square's centre: under half a square of sink shifts NO row
+                Func<int, float> pit = z => z >= 10 && z <= 20 ? RM_PitDrawMath.SinkFor(8, shipped) : 0f;
+                for (int z = 10; z <= 19; z++)
+                {
+                    Assert(RM_PitDrawMath.PickRowForDrawnClick(z, z + 0.5f, pit, 4) == z, "centre click on row " + z + " at the default sink: same row");
+                }
+            });
+
             Case("PitSink_a_swimmer_floats_at_the_surface", () =>
             {
                 Assert(RM_SwimMath.SurfaceDrawDepth(10, 10) == 0, "brim-full 5 m pit: drawn at ground level (sink 0)");

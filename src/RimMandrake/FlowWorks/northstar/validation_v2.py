@@ -154,7 +154,7 @@ FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPer
                   "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
                   "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,
-                  "pitSinkPerLevel": 0.3,
+                  "pitSinkPerLevel": 0.05,
                   "burnDaysPerNotch": 1.0,     # Phase 6, ruling 7 (one rate: LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD)
                   "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,
                   "pitDrowningRateMultiplier": 1.0}
@@ -2689,7 +2689,7 @@ def phase_X(L, args):
         if not ok_all:
             L.row("X1_pawn_height_ladder", False, "HARNESS", "ProofPawnSink unreadable: %s" % got, status="UNMEASURED")
         else:
-            L.row("X1_pawn_height_ladder", not bad, "MOD", bad[:3] or "sink/drawDz by depth (0.3/level PROVISIONAL, "
+            L.row("X1_pawn_height_ladder", not bad, "MOD", bad[:3] or "sink/drawDz by depth (0.05/level shipped, owner 2026-11-13, "
                   "strictly deeper each step to 4 m, flat past it): %s" % "; ".join(got))
         for _d, pid in hares:                      # off the player's books so the sweep below clears them
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
