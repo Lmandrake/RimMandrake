@@ -1,0 +1,1 @@
+Timing solver candidates as parallel jobs (12 at once) doubled the absolute ms/tick (frcap 0.77-0.89 vs 0.40-0.45 alone) and scattered the candidate/reference ratios in both directions (river 1.20 in parallel vs 1.54 alone, same code; MandrakeModels ripsense, 2026-11-14). Compare costs by alternating reference and candidate steps in one process
