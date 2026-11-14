@@ -74,6 +74,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The tied strain-relief loops at this strand's plugs (<see cref="CordPlugExit"/>): each loop's arc along Pts is the north star's own coil, not a bend
         /// (CordShapeAudit leaves it out); null when the strand has none.</summary>
         internal List<CordTie> Ties;
+        /// <summary>Which of the builder's lays drew this strand (nub, joint, hop, routed, fell, dive): the geometry check names it beside a strand it refuses.</summary>
+        internal string Lay;
     }
 
     /// <summary>A small closed loop a cord makes just past its plug, held by a tie band where it crosses itself (owner 2026-11-08: "a tight wire-tied strain-relief LOOP").
@@ -732,7 +734,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
                     CordLayer.ProjectOut(w, coil);
                 }
-                if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
+                if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value(), Lay = "coil" });
                 outp.Add(p);
             }
             (tangleCache, tangleNext) = (tangleNext, tangleCache);
@@ -1102,6 +1104,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
             int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
             double laid = 0;
+            // the side a slackened lead's lobe tries first: one draw for the edge, so a bundle sags together (a fresh stream: every draw above is unchanged)
+            int slackSide = CordRng.Of(opt.Seed, "slacken", key).Sign();
             List<V2> nub = StripNub(g, e, opt) ?? (prm.FairBends ? BoxNub(w, g, e, opt) : null);
             if (nub != null)
             {
@@ -1113,7 +1117,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 if (nub != null)
                 {
-                    piece.Strands.Add(new CordStrand { Pts = nub, S0 = rr.Value() });
+                    piece.Strands.Add(new CordStrand { Pts = nub, S0 = rr.Value(), Lay = "nub" });
                     laid += Geo.Length(nub);
                     continue;
                 }
@@ -1179,8 +1183,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bool jointFit = joint != null;
                 if (jointFit) P = joint;
                 // a short cord that still bends sharp where nothing makes it (never_taut_straight_cord) is laid again whole, fitting to fitting; a cord that passes keeps its lay
+                string lay = fell ? "fell" : jointFit ? "joint" : "routed";
                 if (!jointFit && !fell && prm.FairBends && !cutEnd && n == 1 && L <= HopMaxPath && (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0 || CordShapeAudit.FittingsForce(P)))
-                    P = HopWhole(w, g, e, C, opt, piece, key, isLive) ?? P;
+                {
+                    List<V2> hop = HopWhole(w, g, e, C, opt, piece, key, isLive);
+                    if (hop != null) { P = hop; lay = "hop"; }
+                }
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
                 if (!jointFit && !fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
                 List<CordTie> ties = null;
@@ -1192,7 +1200,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 if (prm.FairBends || FinalKinkLog)
                     P = FinalCurvature(w, g, e, P, ties, key, i, allowRepair: prm.FairBends && !jointFit);
-                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
+                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties, Lay = (cutEnd ? "cut-" : "") + lay });
                 laid += Geo.Length(P);
             }
             piece.PathLen = L;
@@ -1200,6 +1208,24 @@ namespace RimMandrake.GimmeSomeSlack.Core
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             SeatPlugTails(g, e, piece, opt);
+            // the 1.4x slack bar holds for every cord, a short lead's too (owner by card 2026-11-14, "Loosen the short cords"): a strand still drawn near its chord keeps
+            // its fitted, seated ends and takes a lobe or a broad loop between them (CordSlacken). A bend the bar still counts on any cord, a cut end's included, is
+            // eased in place first. Last, so no later step undoes either; a cord to a cut end keeps its old length (ShortBow, above).
+            if (prm.FairBends)
+            {
+                bool cut = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
+                Func<V2, bool> off = null;
+                foreach (CordStrand s in piece.Strands)
+                {
+                    if (s.FellBack || s.Lifted || s.OverFace || s.SwayW != null || s.Pts == null || s.Pts.Count < 3) continue;
+                    off = off ?? SlackClear(g, e);
+                    List<V2> eased = CordSlacken.Unbend(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB);
+                    if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
+                    if (cut || s.WhipA > 0 || s.WhipB > 0) continue;
+                    List<V2> loose = CordSlacken.Slacken(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, slackSide);
+                    if (loose != null) { s.Pts = loose; s.Lay += "+slack"; }
+                }
+            }
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -2217,6 +2243,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How much further than the two facings ask <see cref="FitCorner"/>'s turn may go, radians.</summary>
         private const double FitTurnSpare = 0.3;
 
+        /// <summary>Ground a slackened lead's lobe keeps off: every other box, strip and plate this edge does not end at (<see cref="BoxKeepOff"/>, as <see cref="HopWhole"/>).</summary>
+        private static Func<V2, bool> SlackClear(CordGraph g, CordEdge e)
+        {
+            List<V2> boxes = OtherBoxes(g, e);
+            return q => { foreach (V2 bx in boxes) if (V2.Dist(q, bx) < BoxKeepOff) return false; return true; };
+        }
+
         /// <summary>Lab trace of <see cref="HopWhole"/>: what each cord laid again whole met.</summary>
         internal static Action<string> HopWhy;
 
@@ -2436,7 +2469,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                     if (prm.FairBends || FinalKinkLog)
                         P = FinalCurvature(w, g, e, P, ties, key, i, !diveA, !diveB, si, prm.FairBends);
-                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
+                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties, Lay = "dive" });
                     laid += Geo.Length(P);
                 }
             }
@@ -4337,7 +4370,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     List<V2> walk = HeapWalk(onGround, mid, via, pa, pb, rw);
                     if (walk != null)
                     {
-                        p.Strands.Add(new CordStrand { Pts = walk, S0 = rw.Value() });
+                        p.Strands.Add(new CordStrand { Pts = walk, S0 = rw.Value(), Lay = "tangle" });
                         used.Add(a); used.Add(b);
                         internalEnds[pa.Connector]++; internalEnds[pb.Connector]++;
                         continue;
@@ -4376,7 +4409,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 P = CordShape.Unfold(w, P);
                 if (opt.Lay.FairBends) P = CordShape.Fair(w, P, 0.22, 0.22, null, compSet, cutLoops: false);
                 if (!P.All(q => compSet.Contains(q.Floor))) continue;
-                p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
+                p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value(), Lay = "tangle" });
                 used.Add(a); used.Add(b);
                 internalEnds[pa.Connector]++; internalEnds[pb.Connector]++;
             }

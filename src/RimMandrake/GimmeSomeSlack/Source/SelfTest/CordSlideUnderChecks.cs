@@ -51,7 +51,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         /// <summary>For each strand end inside the pump: the last vertex outside the footprint, the run before it, the end.</summary>
-        private static void Ends(List<LaidPiece> ps, MachineInfo m, Action<V2, V2, V2> each)
+        private static void Ends(List<LaidPiece> ps, MachineInfo m, Action<V2, V2, V2, string> each)
         {
             foreach (CordStrand s in ps.SelectMany(p => p.Strands).Where(s => !s.OverFace))
             {
@@ -64,7 +64,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 int j = i;
                 double run = 0;
                 while (j > 0 && run < 0.12) { run += V2.Dist(q[j], q[j - 1]); j--; }
-                each(q[i], q[i] - q[j], q[q.Count - 1]);
+                each(q[i], q[i] - q[j], q[q.Count - 1], s.Lay);
             }
         }
 
@@ -78,21 +78,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     CordWorld w = Scene(side, size.Item1, size.Item2, out MachineInfo pump);
                     var ports = PortMidpoints(pump);
                     V2 nrm = side == 0 ? new V2(0, 1) : side == 1 ? new V2(0, -1) : side == 2 ? new V2(1, 0) : new V2(-1, 0);
-                    Ends(new CordBuilder().Build(w, new BuildOptions(), c => true), pump, (last, run, end) =>
+                    Ends(new CordBuilder().Build(w, new BuildOptions(), c => true), pump, (last, run, end, lay) =>
                     {
                         ends++;
                         double gap = ports.Min(p => V2.Dist(p, last));
                         if (gap < 0.2) { onFlange++; msg.Add($"{size} side {side}: crosses at {last}, {gap:0.00} from a port midpoint"); }
                         double cos = (run.X * nrm.X + run.Z * nrm.Z) / Math.Max(1e-9, run.Len);
                         double ang = Math.Acos(Math.Max(-1, Math.Min(1, cos))) * 180 / Math.PI;
-                        if (ang < 30 || ang > 60) { square++; msg.Add($"{size} side {side}: approach {ang:0} deg off the normal"); }
+                        if (ang < 30 || ang > 60) { square++; msg.Add($"{size} side {side}: approach {ang:0} deg off the normal (lay {lay})"); }
                         if (V2.Dist(end, CordBuilder.Centroid(pump)) > 1e-6) offCentre++;
                     });
                     Ends(new CordBuilder().Build(Scene(side, size.Item1, size.Item2, out MachineInfo p2), new BuildOptions { SlideUnder = false }, c => true), p2,
-                         (last, run, end) => { if (PortMidpoints(p2).Min(p => V2.Dist(p, last)) < 0.2) onFlangeOld++; });
+                         (last, run, end, lay) => { if (PortMidpoints(p2).Min(p => V2.Dist(p, last)) < 0.2) onFlangeOld++; });
                 }
             Check(ends >= 16 && onFlange == 0, $"flange: {onFlange}/{ends} cords meet the footprint on a port midpoint" + (msg.Count > 0 ? ": " + string.Join("; ", msg.Take(6)) : ""));
-            Check(ends >= 16 && square == 0, $"diagonal: {square}/{ends} cords come in square, not diagonal");
+            Check(ends >= 16 && square == 0, $"diagonal: {square}/{ends} cords come in square, not diagonal" + (square > 0 ? ": " + string.Join("; ", msg.Where(x => x.Contains("approach")).Take(6)) : ""));
             Check(offCentre == 0 && DrawOrder.LayerConduits < LayerBuilding, $"under: {offCentre}/{ends} cords end off the centroid; cord layer {DrawOrder.LayerConduits} vs Building {LayerBuilding}");
             Check(onFlangeOld >= 8, $"can fail: SlideUnder off plugs {onFlangeOld} cords into a port midpoint (screenshot 20261023070639_1)");
             Console.WriteLine($"  slideunder: {ends} pump ends, {onFlange} on a flange, {square} square; old rule {onFlangeOld} on a flange");

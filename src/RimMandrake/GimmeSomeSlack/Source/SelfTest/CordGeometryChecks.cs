@@ -25,8 +25,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             public int Strands, Short, Long, Taut, Flat, Unforced;
             public double MinSeenRatio = double.MaxValue;
             public readonly List<string> Worst = new List<string>();
+            /// <summary>Every refused strand, named with the lay that drew it (printed under GSS_GEOM_ALL=1).</summary>
+            public readonly List<string> All = new List<string>();
         }
 
+        private static double V2Len(List<V2> p) => Len(p);
         private static double Len(List<V2> p) { double s = 0; for (int i = 1; i < p.Count; i++) s += V2.Dist(p[i - 1], p[i]); return s; }
 
         private static double Excursion(List<V2> p)
@@ -53,21 +56,32 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     r.Strands++;
                     double ratio = Len(pts) / chord;
                     r.MinSeenRatio = Math.Min(r.MinSeenRatio, ratio);
-                    if (ratio < MinRatio) { r.Taut++; if (r.Worst.Count < 5) r.Worst.Add($"{p.EndA}|{p.EndB} ratio {ratio:0.00} chord {chord:0.0}"); }
+                    if (ratio < MinRatio) { r.Taut++; Note(r, $"{p.EndA}|{p.EndB} ratio {ratio:0.00} chord {chord:0.0} lay {s.Lay}"); }
                     if (chord > LongChord)
                     {
                         r.Long++;
-                        if (Excursion(pts) < MinExcursion) { r.Flat++; if (r.Worst.Count < 5) r.Worst.Add($"{p.EndA}|{p.EndB} excursion {Excursion(pts):0.00} chord {chord:0.0}"); }
+                        if (Excursion(pts) < MinExcursion) { r.Flat++; Note(r, $"{p.EndA}|{p.EndB} excursion {Excursion(pts):0.00} chord {chord:0.0} lay {s.Lay}"); }
                     }
-                    if (!taut) tally.Add(w, p, s);
+                    if (!taut)
+                    {
+                        int before = tally.Unforced;
+                        tally.Add(w, p, s);
+                        if (tally.Unforced > before)
+                            Note(r, $"{p.EndA}|{p.EndB} unforced bends {tally.Unforced - before} chord {chord:0.0} lay {s.Lay}: " + string.Join(" ",
+                                CordShapeAudit.Bends(s.Pts, s.Ties).Where(bd => CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, bd) == "unforced")
+                                    .Select(bd => $"at {bd.Apex} s {bd.S:0.00}/{V2Len(s.Pts):0.00} turn {bd.Turn:0} arc {bd.Arc:0.00} sharp {bd.Sharp:0} round {bd.Round:0} r {bd.RoundR:0.00}")));
+                    }
                 }
             r.Unforced = tally.Unforced;
             return r;
         }
 
+        private static void Note(Read r, string x) { if (r.Worst.Count < 5) r.Worst.Add(x); r.All.Add(x); }
+
         public static void Run(List<JsonElement> scenes)
         {
             var all = new Read();
+            if (Environment.GetEnvironmentVariable("GSS_GEOM_ALL") == "1") CordSlacken.Why = x => Console.WriteLine("  slacken kept: " + x);
             int plantedCaught = 0, plantedScenes = 0;
             foreach (JsonElement s in scenes)
             {
@@ -81,12 +95,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 all.Strands += r.Strands; all.Long += r.Long; all.Taut += r.Taut; all.Flat += r.Flat; all.Unforced += r.Unforced; all.Short += r.Short;
                 all.MinSeenRatio = Math.Min(all.MinSeenRatio, r.MinSeenRatio);
                 foreach (string x in r.Worst) if (all.Worst.Count < 8) all.Worst.Add(name + ": " + x);
+                foreach (string x in r.All) all.All.Add(name + ": " + x);
                 Read t = Measure(w, pieces, true);
                 if (t.Strands > 0) { plantedScenes++; if (t.Taut > 0) plantedCaught++; }
             }
             Console.WriteLine($"geometry: {all.Strands} strands over {scenes.Count} oracle scenes ({all.Short} one-cell stubs skipped), " +
                               $"{all.Long} over {LongChord} cells; ratio min {all.MinSeenRatio:0.00}; taut {all.Taut}, flat {all.Flat}, unforced bends {all.Unforced}");
             foreach (string x in all.Worst) Console.WriteLine("  geometry worst: " + x);
+            if (Environment.GetEnvironmentVariable("GSS_GEOM_ALL") == "1") foreach (string x in all.All) Console.WriteLine("  geometry refused: " + x);
+            CordSlacken.Why = null;
             Check(all.Strands > 0, "the oracle scenes lay strands to measure");
             Check(all.Taut == 0, $"every strand's drawn length is at least {MinRatio} x its chord ({all.Taut} under)");
             Check(all.Flat == 0, $"every strand over {LongChord} cells strays a cell or more off its chord ({all.Flat} flat)");

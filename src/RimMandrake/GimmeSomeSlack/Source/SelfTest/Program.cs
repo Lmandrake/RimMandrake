@@ -51,12 +51,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int fd = Array.IndexOf(args, "--fallen-dump");
             if (fd >= 0) { AerialSelfTest.DumpFallen(args[fd + 1]); return 0; }
             bool probe = args.Contains("--probe");
+            if (args.Contains("--no-slacken")) { CordSlacken.Off = true; Console.WriteLine("slacken: OFF (--no-slacken, the builder before CordSlacken)"); }
             int di = Array.IndexOf(args, "--dump");
             if (di >= 0) { dumpDir = args[di + 1]; Directory.CreateDirectory(dumpDir); }
             string path = args.Where((a, i) => !a.StartsWith("--") && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path));
             var scenes = doc.RootElement.GetProperty("scenes").EnumerateArray().ToList();
             Console.WriteLine($"oracle: {path} ({scenes.Count} scenes)");
+            if (args.Contains("--geometry-only")) { CordGeometryChecks.Run(scenes); Console.WriteLine($"{checks - fails}/{checks} checks passed (geometry only)"); return fails == 0 ? 0 : 1; }
             int probeFails = 0;
             foreach (JsonElement s in scenes)
             {

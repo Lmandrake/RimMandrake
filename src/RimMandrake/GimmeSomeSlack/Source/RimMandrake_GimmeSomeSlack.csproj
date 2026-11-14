@@ -46,6 +46,7 @@
     <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="Core\CordBuilder.cs" />
+    <Compile Include="Core\CordSlacken.cs" />
     <Compile Include="Core\CordReach.cs" />
     <Compile Include="Core\RebuildGate.cs" />
     <Compile Include="Core\RebuildTail.cs" />
