@@ -1,0 +1,204 @@
+{
+ "mod": "Pyrelands",
+ "version": "0.1.0",
+ "program": "preflight_pyre.py (throwaway, advance row 3, adapted from preflight_ek.py)",
+ "at": "2026-11-14T11:42:21-08:00",
+ "dump": {
+  "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
+  "provenance": {
+   "builder": "measure/dumpdb.py",
+   "captured_utc": "2026-11-12T08:10:06Z",
+   "collided_names": "0",
+   "collision_blind": "0",
+   "defcount_entries": "481",
+   "defcount_names": "481",
+   "defs_lost_to_collision": "0",
+   "defs_total": "59262"
+  }
+ },
+ "seconds": 4.67,
+ "verdict": "refuse",
+ "refusals": 17,
+ "checks": [
+  {
+   "id": "C1_bars_complete",
+   "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "41 locked, 41 in table",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C2_every_bar_has_a_test",
+   "what": "every bar names at least one deciding test, and every named test is defined",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "41 bars",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C3_every_test_has_a_stage",
+   "what": "every test names a stage of 2, 4-5, 6 or 8",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "54 tests",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C4_test_files_real",
+   "what": "every built test's file exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C5_read_files_real",
+   "what": "every file a test reads exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C6_built_tests_run",
+   "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
+   "verdict": "refuse",
+   "refusals": [
+    "T_SETTINGS_SWEEP_OFFLINE (offline, specified not built; item RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE (to file at Stage 3)) decides inv_settings_gate",
+    "T_DEFS_OFFLINE (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE (to file at Stage 3)) decides no_ordinary_rain, biome_text_says_engineered, inv_weather, inv_art_and_text",
+    "T_CUT_STAYS_CUT (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT (to file at Stage 3)) decides inv_firebreak_firefoam, inv_lightning_breaker",
+    "T_ASH_PROBE_OFFLINE (offline, specified not built; item RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE (to file at Stage 3)) decides ash_fertility_probe",
+    "sc_walk (entry validation.py::walk_season absent; item PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES) decides walk_season_on_the_pyre",
+    "sc_firefoam_sprayer (entry validation.py::firefoam_sprayer absent; item PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS) decides firefoam_sprayer_reaches_the_fruit, inv_firefoam_sprayer",
+    "sc_rite_hook_alone (entry validation.py::rite_hook_alone absent; item PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS) decides fire_rite_hook_silent_alone, inv_fire_rite_hook",
+    "sc_flamefang_venom (entry validation.py::flamefang_venom absent; item PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME) decides flamefang_bite_carries_venom"
+   ],
+   "evidence": "8 deciding tests not runnable",
+   "smallest_fix": "build each named test, watched failing first, under its named item",
+   "route": "Stage 3 (reconcile): the bar is sound, the test is owed",
+   "seconds": 0.0
+  },
+  {
+   "id": "C7_game_reason_written",
+   "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "the reason's truth is the Stage 4 challenger's question, not this program's",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C8_held_statements_placed",
+   "what": "every held look statement for this mod is placed on a bar and a test",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 held rows name this mod's words",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.002
+  },
+  {
+   "id": "C9_defs_real",
+   "what": "every def the table, the scenes and the leaf oracles name exists in the def dump or the repo (C# class names accepted)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 3.973
+  },
+  {
+   "id": "C10_mods_real",
+   "what": "every packageId a scene names is a mod in the dump's mod list or the repo",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "1 named: mandrake.rm.biomes",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.003
+  },
+  {
+   "id": "C11_settings_fields_real",
+   "what": "every settings field named by the scenes, the leaves and the table exists in RM_PyrelandsMod.cs",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "5 named, 41 static fields in the settings class",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.001
+  },
+  {
+   "id": "C12_locked_files_unchanged",
+   "what": "the locked bar files match the blobs pinned in version/bars.md",
+   "verdict": "refuse",
+   "refusals": [
+    "design/concepts/Pyrelands/tree.json: pinned 3c3e252e28, now e600b1386c",
+    "design/concepts/Pyrelands/sheet.md: pinned 73d2aeb66c, now 3486c02215",
+    "design/concepts/Pyrelands/scenes.json: pinned a30b299bc2, now 57c653bbd4",
+    "design/concepts/Pyrelands/record.json: pinned 19dddf23d7, now ee440984bc",
+    "design/concepts/Pyrelands/plan.md: pinned 0d8be55bbc, now dd3ec4b45d"
+   ],
+   "evidence": "8 pins",
+   "smallest_fix": "the Conductor reads each post-lock change; a test-text change is re-pinned in bars.md, a meaning change goes to him",
+   "route": "Conductor (judgment: test text or meaning?)",
+   "seconds": 0.008
+  },
+  {
+   "id": "C13_corrections_hold",
+   "what": "the coverage judge's CORRECTION gaps g1 g3 g5 g11 g12 g13 stay applied",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "text checks of scenes.json, tree.json, sheet.md, record.json",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C14_csharp_symbols_real",
+   "what": "every Type.Member of ours that the scenes, leaves or table name exists in the mod's C#",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "3 of our types named",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.029
+  },
+  {
+   "id": "C16_scenes_wired",
+   "what": "every scene's requirement is a locked leaf, every scene is in the table, every coverage_rest name resolves",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "23 scenes",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C15_items_real",
+   "what": "every ticket a test is owed under exists in the ledger",
+   "verdict": "refuse",
+   "refusals": [
+    "RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE",
+    "RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE",
+    "RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT",
+    "RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE"
+   ],
+   "evidence": "8 items",
+   "smallest_fix": "file the item",
+   "route": "Stage 1",
+   "seconds": 0.608
+  }
+ ]
+}

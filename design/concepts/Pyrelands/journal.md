@@ -12,7 +12,8 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 1 finished by hand 2026-11-14 11:37 PST (advance row 2); Stage 2 next.
+- **Stage now:** Stage 2 (preflight) run by hand 2026-11-14 11:43 PST: **refuse, 17 refusals** (`version/preflight.json`).
+  Stage 3 ("reconcile") is next; not begun.
 - **Bars:** 41 (20 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
   The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), same columns as Explosive
@@ -24,7 +25,8 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Judge gaps:** 14 from the last coverage verdict (`version/gaps_sorted.md`). 6 of the 7 CORRECTIONs are applied to test
   text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. 6 PROBLEM and 1 POLISH stay for Stage 3.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** Stage 2's verdict on the table, then a builder for Stage 3 ("reconcile").
+- **Waiting on:** a builder for Stage 3 (the 8 missing deciding tests, the 6 PROBLEM gaps), the Conductor's read of the
+  post-lock file changes (Stage 2 C12), and the questions at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -119,3 +121,61 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 - **Needed judgment:** which tests decide a bar and which only support it; whether an existing test really observes the
   bar (the fuzz covers the fertility kernel, not a crop growing); declining the judge's "add a leaf" (a new bar) for a
   test; spotting the unbarred fire-hawk rewards.
+
+### 2026-11-14 11:43 PST, row 3 done: Stage 2 preflight, by a throwaway program
+
+- **The program:** `version/pilot_throwaway/preflight_pyre.py`, adapted from the pilot's `preflight_ek.py` so the mods
+  read alike (no model; reads `version/test_table.json`, the repo, the def dump and the ledger; writes
+  `version/preflight.json`). 16 checks; the pilot's two Knockback-only checks are replaced by Pyrelands ones (C13 the
+  six corrections hold, C14 every C# `Type.Member` of ours that the text names exists, C16 every scene's leaf and
+  coverage name resolves). **Run time 0.8 to 4.7 s** (the spread is the def dump read from `C:`). Def list: the live
+  dump `defs.sqlite`, captured 2026-11-12T08:10Z, 59262 entries.
+- **Each check was watched going red** on its own planted fault in a copy (bar dropped, bar with no test, stage 7,
+  missing file, missing read, no game reason, no full-list reason, unknown def, unknown packageId, unknown settings
+  field, the deleted loose-ash def put back, a misspelt `ProbeSleep`, a held row naming scorch-fruit, a scene requiring
+  an unknown leaf), and an unchanged copy stayed at the baseline.
+- **The check caught itself:** with the loose-ash def put back, C9 at first stayed green, because the 2026-11-12 dump still
+  holds `RM_FE_Filth_LooseAsh` (as "loose ash (old)" in `mandrake.rm.biomes`) though the repo deleted it 2026-11-08. C9
+  now requires a def of ours to exist in the repo. Lesson filed; `preflight_ek.py` has the same hole.
+- **Result: 17 refusals, in three checks:**
+  - **C6 "Built: runs" (8).** 4 offline tests are specified, not built (`T_SETTINGS_SWEEP_OFFLINE`, `T_DEFS_OFFLINE`,
+    `T_CUT_STAYS_CUT`, `T_ASH_PROBE_OFFLINE`), and 4 deciding scenes have no entry in `validation.py` (`walk_season`,
+    `firefoam_sprayer`, `rite_hook_alone`, `flamefang_venom`). Route: Stage 3. The three items `scenes.json` names for
+    those entries (`PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES`, `PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS`,
+    `PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME`) have ledger events but no item file, live or closed.
+  - **C12 locked files changed (5).** `tree.json`, `scenes.json`, `sheet.md`, `record.json`: this run's corrections
+    (test text; leaf `experience` and `red` byte-identical to the lock). `plan.md`: commit `82d9247595` (2026-11-13 19:42,
+    the fire-hawk carries its ember anywhere on the map), after the lock. Route: the Conductor reads each; test text is
+    re-pinned in `bars.md`, a meaning change goes to him.
+  - **C15 items (4).** The four new offline tests name items not yet filed; filed at Stage 3 start.
+- **Cost:** about $1.3 for the row (running total about $4.9), 6 minutes wall.
+- **Boring enough to automate:** all 16 checks; the mutation run (one planted fault per check) is itself a loop a program
+  can do. A real preflight wants scenes to list their defs, settings and C# probes as fields, not free text.
+- **Needed judgment:** whether a dump-only def of ours is real (it is not); whether `plan.md`'s post-lock fire-hawk change
+  is test text or meaning (not judged here).
+
+### Stage 3 must build (sizes are guesses)
+
+1. `T_DEFS_OFFLINE`: static def reads (no ordinary rain on the list, "engineered" in the text, venom tendable, body
+   size 6 and the heat-immunity patch, shovel yield). Small, ~1 hour.
+2. `T_CUT_STAYS_CUT`: firebreak, lightning breaker and migration stay absent. Small, under 1 hour.
+3. `T_SETTINGS_SWEEP_OFFLINE`: defaults, readers and the roster gate for 41 settings, with mutants. Medium, 2 to 3 hours.
+4. `T_ASH_PROBE_OFFLINE`: `ProbeCell` parts and its refusal, compiled against stubs like the allowlist test. Medium, ~2 hours.
+5. Four missing scene entries in `validation.py`: `flamefang_venom` and `rite_hook_alone` small (~1 hour each);
+   `firefoam_sprayer` medium (`firefoam_aim_live_proof.py` exists to start from); `walk_season` large (two weeks of play
+   with a reload, the showcase build).
+6. The 6 PROBLEM gaps (g2 foreign arrivals, g4 dry-ash grass reads, g6 heat immunity, g7 venom tending, g9 allowlist
+   eviction shown, g10 gate off): scene text plus validation code, small to medium each.
+
+### Questions (open)
+
+1. **The fire-hawk's hunt rewards have no bar.** The letter and the crestfeather trophy are built and tested
+   (2026-11-13) but no bar names them. Polish, next version, or a bar owed? (His call if it is a bar.)
+2. **g14, the stale exam.** Rerunning the Cold Reader exam is a model step. Does a locked version still owe it, or does
+   Stage 4's blind challenger replace it (spec open question 7)?
+3. **g5 and g12 asked for a new leaf.** A leaf is a bar, and the design is locked, so a test was named instead
+   (`T_SITE` for the world switch, `T_CUT_STAYS_CUT` for migration). Is that acceptable?
+4. **`no_ordinary_rain` is decided twice.** If the biome's weather list holds no ordinary rain, can anything choose
+   it? If not, `sc_no_rain` could drop to support and the bar proves offline (pipeline bar 4). For the Stage 4
+   challenger.
+5. **`plan.md` changed after the lock** (fire-hawk reach). Test text or meaning? For the Conductor.
