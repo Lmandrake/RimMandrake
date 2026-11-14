@@ -75,7 +75,7 @@ strip = None
 for z in range(cz - 14, cz + 14):
     for x in range(cx - 14, cx + 7):
         if all((x + i, z + j) in ok_cells for i in range(-1, 8) for j in (-1, 0, 1)):
-            source = (x, z)            # painted WaterShallow: a 1-cell limited body (cap 5)
+            source = (x, z)            # painted WaterShallow: a 1-cell limited body (cap V2.pond_capacity(1))
             strip = [(x + 1 + i, z) for i in range(4)]
             deep = (x + 6, z)          # one dry gap cell between the strip and the D=4 cell
             break
@@ -83,6 +83,13 @@ for z in range(cz - 14, cz + 14):
         break
 if not strip:
     sys.exit("no undug dry 1x7 strip near the centre - use a fresh map")
+
+# validation_v2's PulseOracle (the exact-level engine) and its pond rule, for P2's expectations
+import importlib.util  # noqa: E402
+_spec = importlib.util.spec_from_file_location(
+    "fw_v2", str(_RM_ROOT / "src" / "RimMandrake" / "FlowWorks" / "northstar" / "validation_v2.py"))
+V2 = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(V2)
 
 # P1 refusal path
 for bad in (0, 501):
@@ -93,14 +100,24 @@ for bad in (0, 501):
 r = call("jawa/set_terrain_batch", ops="WaterShallow:%d,%d,1,1" % source)
 check("P2 paint source %s" % (source,), r.get("success") and r.get("cellsChanged") == 1, r)
 b = call("jawa/flowworks_body_report", x=source[0], z=source[1], classify=True)
-check("P2 source classified (limited, cap 5)", b.get("success") and (b.get("body") or {}).get("limitless") is False
-      and (b.get("body") or {}).get("capacity") == 5, b)
+cap1 = V2.pond_capacity(1)
+check("P2 source classified (limited, cap %g)" % cap1, b.get("success") and (b.get("body") or {}).get("limitless") is False
+      and abs(((b.get("body") or {}).get("capacity") or 0) - cap1) < 1e-3 and abs(((b.get("body") or {}).get("stock") or 0) - cap1) < 1e-3, b)
 for i, (x, z) in enumerate(strip):
     r = call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=1, setBodyWaterM=-1)
     check("P2 drive %s" % ((x, z),), r.get("success") and r.get("depth") == 1, r)
 for _ in range(4):
     call("jawa/flowworks_excavation_drive", x=deep[0], z=deep[1], deepenLevels=1, setBodyWaterM=-1)
-p = call("jawa/flowworks_pulse", count=3, x=strip[0][0], z=strip[0][1], w=4, h=1)
+# Refill OFF for the three pulses: the exact oracle models no refill, and refill adds a few dL a pulse to the pond, which
+# the per-dL compare sees (live 2026-11-13 round 4: [3336,3336] against [3334,3333]; validation_v2 reds the same way).
+refill0 = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="refillEnabled")
+try:
+    call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="refillEnabled", value="False")
+    p = call("jawa/flowworks_pulse", count=3, x=strip[0][0], z=strip[0][1], w=4, h=1)
+finally:
+    call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="refillEnabled", value=str(refill0.get("value", True)))
+check("P2 refill restored", str(call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="refillEnabled").get("value"))
+      == str(refill0.get("value")), refill0)
 check("P2 pulse call", p.get("success"), p)
 pulses = p.get("pulses") or []
 LV = lambda row: [d // 10000 for d in row["dl"]]   # noqa: E731  whole levels from the one water number (no notch vector since it)
@@ -111,16 +128,14 @@ check("P2 zero ticks spent", p.get("ticksBefore") == p.get("ticksGame"), (p.get(
 check("P2 scheduler untouched", p.get("nextPulseTickUntouched") is True, p)
 check("P2 pulse-0 vector == [0,0,0,0]", pulses and pulses[0]["dl"] == [0, 0, 0, 0], pulses[:1])
 check("P2 something moved in 3 pulses", any(r["cellsDlChanged"] for r in pulses[1:]), pulses)
-# The oracle (validation_v2's PulseOracle, fixed algo) for a cap-5 1-cell source at shipped
-# recession: pulse 1 draws one level (stock 5 -> 4); pulse 2's recession pass dries the cell
-# (floor(4/5) = 0 supported cells), so the strip keeps exactly ONE level, at its far end.
-import importlib.util  # noqa: E402
-_spec = importlib.util.spec_from_file_location(
-    "fw_v2", str(_RM_ROOT / "src" / "RimMandrake" / "FlowWorks" / "northstar" / "validation_v2.py"))
-V2 = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(V2)
+# The oracle seeded with the LIVE body (stock and capacity as classified): the exact engine solves the pond and the strip it
+# reaches to ONE surface each pulse, and a still pond sheds no squares (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD). The old P2
+# (notch era) expected a cap-5 source that receded after one level (RIMMANDRAKE_RECHECK_PULSE_PROOF_P2_BUILT_FOR_NOTCHES).
+bod = b.get("body") or {}
 o = V2.PulseOracle(info.get("sizeX") or 250, info.get("sizeZ") or 250, {source: 0},
-                   {0: {"limitless": False, "stock": 5.0, "capacity": 5.0, "cells": [source]}}, recession=True)
+                   {0: {"limitless": False, "stock": float(bod.get("stock") or 0), "capacity": float(bod.get("capacity") or 0),
+                        "cells": [source]}}, recession=True,
+                   beds={source: V2.POND_LEVELS_PER_CELL})   # a painted WaterShallow square's bed, as validation_v2.site_beds()
 for c in strip:
     o.dig(c, 1)
 pred = o.run(strip, 3)
@@ -131,8 +146,10 @@ check("P2 every pulse vector == oracle %s" % pred, pulses and [list(r["dl"]) for
 # body by id from the pulse tool's own per-pulse bodies[] instead.
 bid = (b.get("body") or {}).get("id")
 last = next((x for x in ((pulses[-1].get("bodies") or []) if pulses else []) if x.get("id") == bid), {})
-check("P2 source spent and receded (stock ~4, recededCount 1)",
-      abs((last.get("stock") if last.get("stock") is not None else -9) - 4.0) < 0.05 and last.get("recededCount") == 1, last)
+want = o.stock_of(0)
+got = last.get("stock") if last.get("stock") is not None else -9
+check("P2 source paid into the strip, stock == oracle %.4f, nothing receded" % want,
+      abs(got - want) < 0.0005 and got < float(bod.get("capacity") or 0) - 0.5 and last.get("recededCount") == 0, last)
 
 # P3 independent read
 r = call("jawa/flowworks_excavation_rect", x=strip[0][0], z=strip[0][1], w=4, h=1)
