@@ -12,8 +12,9 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 1 finished by hand 2026-11-14 11:50 PST (`version/test_table.json`); Stage 2 by a throwaway
-  program (`version/preflight.json`).
+- **Stage now:** Stage 3 "reconcile" done as far as offline work can take it, 2026-11-14 2:45 PM PST: every bar has a
+  check that runs (offline) or exists (in-game, UNRUN); five bars' offline checks are red because their behaviour is not
+  built, one is red on his call (history, Stage 3). Stage 1 by hand 11:50 PST; Stage 2 by a throwaway program.
 - **Bars:** 61 = 30 inventory rows of `record.json` + 31 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, and his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (interventions below).
 - **Judge corrections open:** none. FlowWorks has no `coverage_verdict.json` and no `coverage_fixes.json`; the Arbiter
@@ -21,10 +22,10 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
   empty here.
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
-  in `version/test_table.json`, and 20 rows of 2026-11-14 are not yet. [measured, preflight C8, 14:04 PST]
-- **Waiting on:** a builder for Stage 3 "reconcile" (list at the end of the history), and two answers from him
-  ("Questions for him", none blocking). Stage 2 verdict: refuse, 48 refusals (`version/preflight.json`, 2026-11-14
-  14:04 PST).
+  in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
+- **Waiting on:** builds for four absent behaviours (wetting and its probe, the toss-flame order, raiders fetching their
+  fallen, the liquid coating), each now with its acceptance test on its item; and his answers to the questions at the
+  end. Preflight: refuse, 7 refusals (`version/preflight.json`, 2026-11-14 2:40 PM PST; 48 when Stage 3 began).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -70,15 +71,16 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
    `inv_raider_fetch_fallen`, and `inv_irrigation` is `unknown`. Their leaves (`drained_hole_is_a_prison`,
    `toss_flame_from_rim`, `raiders_fetch_their_fallen`, `canal_wets_two_squares`) are owed code, not owed tests.
 4. **`stage.json` is the only locked file that moved since the lock** (blob `3af342069` → `34f93a515`; state, not a bar).
-   The seven bar files are byte-identical to `version/bars.md`. `VERSION.json`'s caveat names the old block
-   (CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED); `stage.json` now reads an OWNER HOLD instead. [measured 2026-11-14]
+   The seven bar files are byte-identical to `version/bars.md`. `stage.json` reads `locked` since 2026-11-14 (it read
+   an OWNER HOLD pending the lock until then; intervention of 2:28 PM PST). [measured 2026-11-14]
 5. **Every live scene's tier says "quicktest"**, but the `tier_reason` of 25 of 31 leaves is one boiler-plate sentence ("an
    on-screen look and a live state change: needs a running map"). Whether a faster test decides each is the Stage 4
    challenger's question; the reason is written, not shown true.
 6. **The C# SelfTest is one console app holding most of the offline checks** (325+ cases); a Python wrapper
    `src/RimMandrake/Utils/selftest_flowworks_stock.py` builds it with Windows `dotnet.exe`. One run covers many bars.
-7. **Another helper is changing water code** under `src/RimMandrake/FlowWorks` during this run; a red offline test today
-   may be that work, not a regression.
+7. **The Stage 3 offline checks of five bars are source laws, not behaviour runs** (`selftest_stage3_owed.py`): the
+   code is Verse-bound. They decide "the code that would make the bar true exists and has this shape"; whether it
+   works is the scene's question at Stage 6.
 
 ## History (dated, added to only)
 
@@ -231,6 +233,20 @@ Batch 3, the owed tests (preflight 23 → 7 refusals):
   `T_LIQUID_COATING_OFFLINE`.
 - `T_PIT_LOOK_1114` ran: the look-fix builder's 7 C# cases and the 11 geyser-tub cases, 18 of 18 ok, 232 s.
 
+Stage change, Stage 3 "reconcile" (2:14 to 2:47 PM PST, rm-builder, detached):
+
+- **Cost:** about $9.5 of model spend (the harness budget line, $0 → about $9.5 of the $15 bound; tokens not separately
+  measured); about 33 minutes wall, of which about 4 minutes were one C# SelfTest run and 1 minute the v2 offline tier;
+  none of his minutes.
+- **Boring enough to automate:** re-running a named test and writing its result into the table (`rerun_tests.py`);
+  recomputing each bar's derived fields and the md view (`render_table.py`); the preflight itself; linting a scene file
+  against the tool schema and smoke-running it on a fake bridge; finding which commit hand-edited a generated file.
+- **Needed judgment:** whether a red test was the mod or the test (two tables behind the mod, one mod against his
+  ruling, one check against his newer word, left to him); which bar each of 20 held rows sits on, and which are next
+  version, harness or another mod's; that a checker refusing named leaves was blind, not the scenes wrong; what a
+  scene's rows and controls are when the mod has no hook yet; stopping short of building behaviour that his thin-film
+  ruling or a design item may change.
+
 ### What Stage 3 ("reconcile") must build, not begun here
 
 1. Make the 4 red offline deciders green (settings registry / O2 `digLabourMultiplier`, liquid looks, natives' propane
@@ -247,8 +263,31 @@ Batch 3, the owed tests (preflight 23 → 7 refusals):
    absent: medium), and the scene entries `scene_geyser_tub` and `scene_coating_wash`.
 7. Place the 20 held rows of 2026-11-14 that are not yet in the table (preflight C8).
 
+### What remains after Stage 3 "reconcile" (2:45 PM PST)
+
+1. **Four behaviours to build**, each item now carrying its acceptance test (ledger notes 2:41 PM PST):
+   FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP (wetting and its probe; see question 5 first),
+   FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM, FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN,
+   RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS (a design item: the coating's look wants a ruling first).
+2. **X4 in `validation_v2.py`**: his call (question 6).
+3. **Row 4 of 2026-11-14, the swale**: his call (question 7).
+4. **Stage 6 owns** the first run of the 17 written scenes and `pit_look_1114_live.py`, their coordinates, the unverified
+   argument shapes named in `concept_scenes.py`'s header, and the four controls not yet written.
+5. Not done here: the 2 never-reached C# cases and the specified held checks (items 4 and 5 of the list above); the
+   code review (`code_review_status.py`) of the files this stage touched, all DIRTY.
+
 ### Questions for him (none blocks Stage 3)
 
 3. **The dig speed** ("it's slow"): his target is a question inside the 0.2.0 dig-interface design
    (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his card 2026-11-13 10:12 PM PST put the whole redesign in
    0.2.0, `version/next_version/README.md`); the dig-time test waits for his target.
+5. **Wetting in 0.1.0, or only the thin film?** Bar `wetting_is_not_flood` says wetted ground is never standing water;
+   your ruling of 2026-11-14 12:01 PM PST says "ALL game wetness should now migrate to a thin film", placed as next
+   version. Building a separate wetted state now may be work the next version removes. Build it for 0.1.0 as the bar
+   says, or move the wetting bars to 0.2.0 with the film?
+6. **Pit walls over the head.** A check (X4 in `validation_v2.py`) wants a standing colonist drawn 1.2 heads below the
+   rim at 4 m ("walls 20% above the head"); on 2026-11-13 ~9:50 PM PST you confirmed the pit sink at 0.05 per half metre,
+   which draws him 0.2 down. Is the 20% rule retired (the check then follows 0.05), or should the wall picture rise to
+   make it true?
+7. **The swale as a soaking floor** (your row 4 of 2026-11-14): no 0.1.0 bar names the swale. A Problem fixed now (a new
+   bar), or the next version?

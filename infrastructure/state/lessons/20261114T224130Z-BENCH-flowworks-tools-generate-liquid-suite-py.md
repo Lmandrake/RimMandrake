@@ -1,0 +1,1 @@
+FlowWorks: Tools/generate_liquid_suite.py has no argument parser, so '--help' RUNS it and rewrites the generated liquid XML; and a hand-edit to that generated XML (441c321a20's dark tar) turns selftest_liquid_looks red on its byte-compare. Change the generator's tables, never the XML, then regenerate.
