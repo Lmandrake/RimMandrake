@@ -1461,3 +1461,4 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: ended without a good result","ts":"2026-11-14T08:49:12Z","tsn":1794646152683722168}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: ended without a good result","ts":"2026-11-14T08:49:17Z","tsn":1794646157788757949}
 {"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher alarm BENCH: seat restart of BENCH FAILED (firstturn): the new window bd431e0f-35f4-413c-9549-a22d8102e69d never ended its first turn in 900 s","ts":"2026-11-14T08:54:39Z","tsn":1794646479413082960}
+{"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher alarm : tick raised SystemExit: 143; launches given back: none; rings/recovers/withdraws undone: none","ts":"2026-11-14T08:57:29Z","tsn":1794646649106175874}
