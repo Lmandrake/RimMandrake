@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -22,21 +23,18 @@ namespace RimMandrake.Pyrelands
     /// that "the fire a tamed hawk spreads is still nobody's friend", so a tamed
     /// hawk carries twigs in your base exactly as a wild one does.
     ///
-    /// Where the ember goes (owner, 2026-11-13: "Prefers to carry it farther rather than shorter if available fuel exists."):
-    /// the farthest fuelled cell inside spreadDistance of the stolen fire, a nearer one only when no farther one is lawful, and
-    /// no sortie at all when there is no fuel in range. Equally far cells are split by distance from the burn's centre, so the
-    /// ember still lands ahead of the blaze (north star: "ahead of the existing blaze"). The pick is
-    /// RM_FireHawkKernel.FarthestFuelledDrop, fuzzed offline (family hawk). Wind was NOT wired: the engine exposes wind as a
-    /// weather-driven speed (Map.windManager.WindSpeed), not a bearing, so there is no cheap "downwind" vector to read.
+    /// Where the ember goes (owner, 2026-11-13: "Carry distance should actually be anywhere on the map, unlimited. To the largest
+    /// fuel source easily found."; earlier the same day: "Prefers to carry it farther rather than shorter if available fuel
+    /// exists."): anywhere on the map, to the best bucket of MapComponent_RM_FireHawkFuel's coarse fuel map, its densest fuel
+    /// cell. "Largest" is the fuel in a bucket's 3 x 3 block; "easily found" is unfogged, unroofed, unburnt, out of the blaze's
+    /// block and reachable; ties go to the farther patch. No fuel anywhere, no sortie. The pick is RM_FireHawkKernel.PickDrop,
+    /// fuzzed offline (family hawk). Owner, 2026-11-13: "That gives a great reason for players to hunt the Firehawk."
     /// </summary>
     public class JobGiver_RUT_FireHawkCarryEmber : ThinkNode_JobGiver
     {
-        /// <summary>A cap on reach checks per sortie: the pick asks CanReach only of fuelled cells, farthest first, and a hawk
-        /// walled off from this many of them waits out its cooldown instead of pathing to every cell in range.</summary>
+        /// <summary>A cap on reach checks per sortie: one per candidate patch, best first, and a hawk walled off from this many
+        /// of them waits out its cooldown instead of asking every bucket on the map.</summary>
         private const int MaxReachTries = 48;
-
-        /// <summary>Younger grass than this is a scar's sprouts, not fuel worth an ember.</summary>
-        private const float MinFuelGrowth = 0.25f;
 
         protected override Job TryGiveJob(Pawn pawn)
         {
@@ -66,14 +64,14 @@ namespace RimMandrake.Pyrelands
             // not only once a landing cell is also found. CompFireHawkSpread's own
             // header is explicit: "charged when the sortie STARTS, not when it
             // succeeds, so a hawk that fails to find a lawful cell still pays."
-            // Charging it only after TryFindCellBeyondTheFire also succeeds left a
+            // Charging it only after the drop search (TryFindFuelOnTheMap) also succeeds left a
             // hawk beside a fire with no reachable/flammable cell nearby (map edge,
             // rock, water) with NO cooldown at all — CanSortieNow stays true and it
             // re-runs FindFireToStealFrom + the drop search every think tick,
             // exactly the "fire timer with no cooldown" the comment warns against.
             comp.Notify_SortieStarted();
 
-            if (!TryFindCellBeyondTheFire(pawn, source, comp.Props.spreadDistance, out IntVec3 target))
+            if (!TryFindFuelOnTheMap(pawn, source.Position, out IntVec3 target))
             {
                 return null;
             }
@@ -98,28 +96,53 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>
-        /// The farthest fuelled cell inside distance of the fire's own position (RM_FireHawkKernel.FarthestFuelledDrop over
-        /// GenRadial's cells, nearest first). Fuel is vanilla's own ChanceToStartFireIn (terrain flammability, fire bulwarks and
-        /// fires in the cell, none of it re-derived) plus standing grass with no fire beside it. Cost per sortie, once per
-        /// FireHawkCooldownTicks: at most GenRadial.NumCellsInRadius(18) (about 1,000) cells, each a plant lookup first, the 9-cell
-        /// fire check and ChanceToStartFireIn only on grown grass, and CanReach on at most MaxReachTries fuelled cells; in open
-        /// grass the walk stops in the outermost ring.
+        /// The ember's target anywhere on the map (RM_FireHawkKernel.PickDrop). Cost per sortie, once per FireHawkCooldownTicks: the
+        /// cached fuel counts (a whole-map scan only when they are FireHawkFuelRefreshTicks old), one pass over the map's fires to
+        /// mark burning buckets, a sort of the candidate buckets (1,024 on a 250 map), and per candidate tried a 64-cell densest-cell
+        /// walk, the full drop check and one CanReach, at most MaxReachTries of them.
         /// </summary>
-        private static bool TryFindCellBeyondTheFire(Pawn pawn, Fire source, int distance, out IntVec3 result)
+        /// <summary>Script probe (jawa/static_call, args "hawkThingID|x,z"; firehawk_mapwide_carry): recount the hawk's map now and
+        /// say where an ember stolen at `from` would go. A STATE read of the same pick a sortie makes, never a flight.</summary>
+        public static string ProbeFuelPick(Pawn hawk, IntVec3 from)
+        {
+            if (hawk?.Map == null) return "pick=none reason=no-map";
+            MapComponent_RM_FireHawkFuel fuel = MapComponent_RM_FireHawkFuel.For(hawk.Map);
+            if (fuel == null) return "pick=none reason=no-fuel-component";
+            fuel.Recount();
+            bool ok = TryFindFuelOnTheMap(hawk, from, out IntVec3 c);
+            return (ok ? "pick=" + c.x + "," + c.z : "pick=none") + " fuelCells=" + fuel.CountedCells + " bucket=" + PyrelandsTuning.FireHawkFuelBucket;
+        }
+
+        private static bool TryFindFuelOnTheMap(Pawn pawn, IntVec3 origin, out IntVec3 result)
         {
             Map map = pawn.Map;
-            MapComponent_BurnLine burn = map.GetComponent<MapComponent_BurnLine>();
-            IntVec3 centre = burn != null && burn.AnyBurn ? burn.BurnCenter : source.Position;
-            IntVec3 origin = source.Position;
-            int n = GenRadial.NumCellsInRadius(distance);
-            int pick = RM_FireHawkKernel.FarthestFuelledDrop(n,
-                i => GenRadial.RadialPattern[i].LengthHorizontalSquared,
-                i => IsFuelledDrop(origin + GenRadial.RadialPattern[i], map),
-                i => (origin + GenRadial.RadialPattern[i]).DistanceToSquared(centre),
-                i => pawn.CanReach(origin + GenRadial.RadialPattern[i], PathEndMode.OnCell, Danger.Deadly),
+            MapComponent_RM_FireHawkFuel fuel = MapComponent_RM_FireHawkFuel.For(map);
+            result = IntVec3.Invalid;
+            if (fuel == null)
+            {
+                return false;
+            }
+            int sx = map.Size.x, sz = map.Size.z, bucket = PyrelandsTuning.FireHawkFuelBucket;
+            var fires = new List<int>();
+            List<Thing> all = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            for (int i = 0; i < all.Count; i++)
+            {
+                fires.Add(map.cellIndices.CellToIndex(all[i].Position));
+            }
+            int pick = RM_FireHawkKernel.PickDrop(sx, sz, bucket, fuel.Counts, RM_FireHawkKernel.FireBuckets(sx, sz, bucket, fires),
+                origin.x, origin.z, fuel.FuelCell,
+                (x, z) =>
+                {
+                    IntVec3 c = new IntVec3(x, 0, z);
+                    return IsFuelledDrop(c, map) && pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly);
+                },
                 MaxReachTries);
-            result = pick < 0 ? IntVec3.Invalid : origin + GenRadial.RadialPattern[pick];
-            return result.IsValid;
+            if (pick < 0)
+            {
+                return false;
+            }
+            result = map.cellIndices.IndexToCell(pick);
+            return true;
         }
 
         private static bool IsFuelledDrop(IntVec3 cell, Map map)
@@ -130,11 +153,12 @@ namespace RimMandrake.Pyrelands
             }
             Plant plant = cell.GetPlant(map);
             float growth = plant == null ? -1f : plant.Growth;
-            if (growth < MinFuelGrowth)
+            float min = MapComponent_RM_FireHawkFuel.MinFuelGrowth;
+            if (growth < min || cell.Fogged(map) || cell.Roofed(map))
             {
                 return false;
             }
-            return RM_FireHawkKernel.FuelledDrop(true, FireUtility.ChanceToStartFireIn(cell, map) > 0f, growth, MinFuelGrowth, FireOnOrBeside(cell, map));
+            return RM_FireHawkKernel.FuelledDrop(true, FireUtility.ChanceToStartFireIn(cell, map) > 0f, growth, min, FireOnOrBeside(cell, map));
         }
 
         private static bool FireOnOrBeside(IntVec3 cell, Map map)

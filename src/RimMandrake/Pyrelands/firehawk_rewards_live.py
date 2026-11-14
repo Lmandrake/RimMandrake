@@ -11,12 +11,13 @@ into the formal tests."). Chains of the Pyrelands suite (validation.py registers
                                    Beauty and MarketValue as the running game computes them equal the def's.
   firehawk_mapwide_carry           RIMMANDRAKE_TRIPLE_FIREHAWK_REACH_PREFERS_FARTHEST_FUEL (owner, 2026-11-13: "Carry distance
                                    should actually be anywhere on the map, unlimited. To the largest fuel source easily
-                                   found."): the map's plants cleared, a fire beside the hawk, a small patch near and a large
-                                   one far away, each ringed by a firebreak -> the ember's drop cell (CompFireHawkSpread's
-                                   lastDropCell, a STATE read) lies in the far patch.
+                                   found."): the map refogged (fogged fuel is not "easily found"), a fire beside the hawk, a
+                                   small patch near and a large one far away, each ringed by a firebreak and unfogged -> the
+                                   job-giver's own pick (ProbeFuelPick) and the ember's drop cell (CompFireHawkSpread's
+                                   lastDropCell), both STATE reads, lie in the far patch.
 
 Flight is never watched or pictured (flyers are not live-tested visually unattended): every verdict here is a state read
-(jawa/comp_read, jawa/letter_list, jawa/static_call). UNRUN as written 2026-11-13 (no game in the building run). Run:
+(jawa/comp_read, jawa/letter_list, jawa/static_call). firehawk_mapwide_carry's fog-site version is UNRUN (2026-11-13, written with the map-wide carry; no game in that run). Run:
     modcheck run Pyrelands --chains firehawk_first_sighting_letter,firehawk_crestfeather_yield,firehawk_mapwide_carry
 `python3 <this file> --selftest` checks the pure readers offline.
 """
@@ -27,6 +28,7 @@ import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIGHT = "RimMandrake.Pyrelands.GameComponent_RM_FireHawkSighting"
+PICK = "RimMandrake.Pyrelands.JobGiver_RUT_FireHawkCarryEmber"
 TROPHY_PATCH = "RimMandrake.Pyrelands.ButcherTrophyPatch"
 TROPHY = "RM_PristineFirehawkCrestfeather"
 YIELD_N, YIELD_SEED = 400, 20261113
@@ -88,6 +90,18 @@ def parse_cell(text):
     if not m or int(m.group(1)) < 0:
         return None
     return int(m.group(1)), int(m.group(3))
+
+
+def grown(rect, by):
+    """`rect` (x, z, w, h) widened by `by` cells on every side: a staged patch and its firebreak ring."""
+    x, z, w, h = rect
+    return x - by, z - by, w + 2 * by, h + 2 * by
+
+
+def parse_pick(text):
+    """'pick=212,124 fuelCells=...' (JobGiver_RUT_FireHawkCarryEmber.ProbeFuelPick) -> (212, 124); 'pick=none ...' or no answer -> None."""
+    m = re.search(r"pick=(-?\d+),(-?\d+)", text or "")
+    return (int(m.group(1)), int(m.group(2))) if m else None
 
 
 def in_rect(cell, rect):
@@ -209,37 +223,52 @@ def register(suite, V):
         source = (x - 4, z - 4, 8, 8)
         near = (x + 12, z - 3, 6, 6)                       # inside the old 18-cell carry: must NOT win
         far = (sx - 50, sz // 2 - 15, 30, 30)              # the largest fuel on the map, ~150 cells off on a 250 map
-        with V._comp(t, "firehawk_ember_lands_in_the_largest_far_patch"):
-            V._set(t, {"burnLineEnabled": False, "fireHawkSpreadEnabled": True})
-            # in 20-row strips: one whole-map CLEAR outran the bridge's 30 s call limit (live 2026-11-13, chain UNMEASURED)
-            for sz0 in range(0, sz, 20):
-                t.bridge_call("jawa/set_plants", ops="CLEAR:%d,%d,%d,%d" % (0, sz0, sx, min(20, sz - sz0)))
-            t.bridge_call("jawa/set_fog", action="unfog", rect=V._whole(t))
-            for r in (source, near, far):
-                V._firebreak(t, r)
-                V._soil(t, r)
-                V._plants(t, "RM_FE_Plant_EmberGrass", r)
-            V._fire(t, (x - 2, z - 2, 4, 4), size=0.5)
-            hawk = V._spawn_wild(t, "RM_FireHawk", x - 10, z)
-            drop, seen_job = None, False
-            for _ in range(200):                           # 12000 ticks: a map-length carry is long
-                V._wait(t, 60)
-                seen_job = seen_job or V._job_of(t, hawk) == V.FIRE_HAWK_JOB
-                vals = comp(t, hawk, "drops,lastDropCell,lastDropLit")
-                if str(vals.get("drops", "0")).strip() not in ("", "0"):
-                    drop = parse_cell(vals.get("lastDropCell"))
-                    V._note(t, "first drop", vals)
-                    break
-            V._note(t, "patches", {"source": source, "near": near, "far": far, "map": (sx, sz)})
-            if not V._live(t):
-                return
-            if drop is None:
-                if seen_job:
-                    V._fail("hawk %s took the ember job and dropped nothing in 12000 ticks" % hawk)
-                V._unmeasured(t, "hawk %s never started an ember sortie beside a live fire" % hawk)
-            if not in_rect(drop, far):
-                where = "the near patch" if in_rect(drop, near) else "the source patch" if in_rect(drop, source) else "outside every patch"
-                V._fail("the ember landed at %s, in %s; the largest fuel is the far patch %r" % (drop, where, far))
+        try:
+            with V._comp(t, "firehawk_ember_lands_in_the_largest_far_patch"):
+                V._set(t, {"burnLineEnabled": False, "fireHawkSpreadEnabled": True})
+                # A small prepared site, no whole-map plant clear (live 2026-11-13: one CLEAR outran the bridge's 30 s limit;
+                # 13 strips fit but cost the chain 40 s). The hawk's fuel is "easily found" only off fog, so refogging the map
+                # hides every natural plant and the three staged patches are the only fuel it can see.
+                r = t.bridge_call("jawa/set_fog", action="refog", rect=V._whole(t)) or {}
+                if V._live(t) and r.get("success") is False:
+                    V._unmeasured(t, "jawa/set_fog refog of the whole map failed: %r" % (r,))
+                for rect in (source, near, far):
+                    V._firebreak(t, rect)
+                    V._soil(t, rect)
+                    V._plants(t, "RM_FE_Plant_EmberGrass", rect)
+                    t.bridge_call("jawa/set_fog", action="unfog", rect=V._rs(grown(rect, 4)))
+                hawk = V._spawn_wild(t, "RM_FireHawk", x - 10, z)
+                # The pick the sortie will make, read before the fire is lit (a STATE read through the job-giver's own search).
+                pick = static(t, PICK, "ProbeFuelPick", "%s|%d,%d" % (hawk, x, z))
+                V._note(t, "predicted pick", {"probe": pick})
+                V._fire(t, (x - 2, z - 2, 4, 4), size=0.5)
+                drop, seen_job = None, False
+                for _ in range(200):                           # 12000 ticks: a map-length carry is long
+                    V._wait(t, 60)
+                    seen_job = seen_job or V._job_of(t, hawk) == V.FIRE_HAWK_JOB
+                    vals = comp(t, hawk, "drops,lastDropCell,lastDropLit")
+                    if str(vals.get("drops", "0")).strip() not in ("", "0"):
+                        drop = parse_cell(vals.get("lastDropCell"))
+                        V._note(t, "first drop", vals)
+                        break
+                V._note(t, "patches", {"source": source, "near": near, "far": far, "map": (sx, sz)})
+                if not V._live(t):
+                    return
+                predicted = parse_pick(pick)
+                if predicted is not None and not in_rect(predicted, far):
+                    V._fail("the fuel pick for an ember from %d,%d is %s, not in the far patch %r (probe: %s)" % (x, z, predicted, far, pick))
+                if drop is None:
+                    if seen_job:
+                        V._fail("hawk %s took the ember job and dropped nothing in 12000 ticks" % hawk)
+                    V._unmeasured(t, "hawk %s never started an ember sortie beside a live fire (probe: %s)" % (hawk, pick))
+                if not in_rect(drop, far):
+                    where = "the near patch" if in_rect(drop, near) else "the source patch" if in_rect(drop, source) else "outside every patch"
+                    V._fail("the ember landed at %s, in %s; the largest fuel is the far patch %r" % (drop, where, far))
+        finally:
+            try:
+                V._session_call(t, "jawa/set_fog", action="unfogAll")      # the site's fog must not leak into later chains
+            except Exception:   # noqa: BLE001 - a leak shows in the next chain's own fog reads
+                pass
 
 
 def selftest():
@@ -262,6 +291,10 @@ def selftest():
             bad.append("yield_verdict %r -> %r (%s), want %r" % (k, ok, why, want))
     if parse_cell("(12, 0, 200)") != (12, 200) or parse_cell("(-1000, -1000, -1000)") is not None or parse_cell(None) is not None:
         bad.append("parse_cell")
+    if parse_pick("pick=212,124 fuelCells=900 bucket=8") != (212, 124) or parse_pick("pick=none fuelCells=0") is not None or parse_pick(None) is not None:
+        bad.append("parse_pick")
+    if grown((10, 20, 6, 6), 4) != (6, 16, 14, 14):
+        bad.append("grown")
     if not in_rect((5, 5), (0, 0, 6, 6)) or in_rect((6, 5), (0, 0, 6, 6)) or in_rect(None, (0, 0, 6, 6)):
         bad.append("in_rect")
     if keyed("RM_FireHawkSightedLabel") != "Fire-hawk carrying an ember":

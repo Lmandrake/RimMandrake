@@ -16,7 +16,7 @@ built; this plan is the proof work and two owed changes, nothing new.
    save holding firebreak cells loads them as a missing terrain; state the outcome (`save_compat`). The firefoam sprayer
    stays: his root ending (OWNER:1793950669508519029) names it as the way to the scorch-fruit. The paved-strip leaf
    was deleted by his card 2026-11-13; the offline row `paved_strip_excised` checks the floor stays gone. A fire-hawk
-   ember carried up to eighteen cells past a strip is the sprayer's job (`firefoam_sprayer_reaches_the_fruit`).
+   ember carried past a strip (anywhere on the map) is the sprayer's job (`firefoam_sprayer_reaches_the_fruit`).
 3. **Biome text** (item `PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID`): the RM_Pyrelands description says the savanna was
    genetically engineered (leaf `biome_text_says_engineered`); About.xml and the furnace-beast description stop
    promising the world migration his card cut on 2026-10-23 (commit 84cc81013d).

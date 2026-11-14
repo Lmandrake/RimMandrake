@@ -30,10 +30,10 @@
              🔴 Spread-only, never ex nihilo — the hawk cannot start a fire,
              only move one. That law lives in the job-giver's first gate;
              scanRadius (how far it may look for a fire to steal from, NOT a
-             chance to light one) and spreadDistance (how far it may carry the
-             ember) are left to the comp's defaults, PyrelandsTuning's
-             FireHawkScanRadius / FireHawkSpreadDistance, so no number lives
-             in two places.
+             chance to light one) is left to the comp's default,
+             PyrelandsTuning's FireHawkScanRadius, so no number lives in two
+             places. The ember carry has no limit: it goes to the largest
+             easily found fuel on the map (owner, 2026-11-13).
         ============================================================ -->
         <li Class="PatchOperationAdd">
           <xpath>Defs/ThingDef[defName="RM_FireHawk"]</xpath>

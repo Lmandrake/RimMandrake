@@ -8,7 +8,7 @@ Run `rm-role-designer-1793897137`, 2026-11-05. Two questions. Each one changes w
 - Today black rain wipes the fresh-burn gift.
 - A firebreak has no scene proving it holds.
 - The code lets the biome start a new fire *inside* a ring of firebreak. The smoulder relight keeps clear of colony buildings and the home area, not of fields.
-- A fire-hawk drops its twig up to eighteen cells from the fire, as far as it finds fuel, without regard to firebreaks.
+- A fire-hawk drops its twig anywhere on the map, on the largest unburnt fuel it can see, without regard to firebreaks.
 
 ## 1. Black rain on a burn scar (`a_blackrain_compound`)
 

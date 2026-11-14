@@ -6,7 +6,7 @@
 //   furnace  the thermal-charge step, the world herd's three-leg cycle, the nearest-tile search vs brute force, biome routing against
 //            the real name lists, the bed-ignition rest clock, size ratio, hawk cooldown, the warmth maths
 //   eco      biome placement score, ash-fall rate and attempts, the once-per-fire roll set, terrain-family predicates, gates, list parser
-//   hawk     the fire-hawk's sortie pick: 54-cell scan, 18-cell carry, farthest fuelled lawful cell first, nothing without fire or fuel
+//   hawk     the fire-hawk's sortie pick: 54-cell scan, carry anywhere on the map to the largest easily found fuel, nothing without fire or fuel
 //   units    tuning-file relationships (read from PyrelandsTuning.cs itself) and exhaustive truth tables
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -49,6 +49,7 @@ namespace RimMandrake.Pyrelands.Fuzz
         public float F(string n) { if (!v.TryGetValue(n, out double d)) throw new Exception("PyrelandsTuning.cs has no constant " + n); return (float)d; }
         public int I(string n) { if (!v.TryGetValue(n, out double d)) throw new Exception("PyrelandsTuning.cs has no constant " + n); return (int)d; }
         public string[] A(string n) { if (!arrays.TryGetValue(n, out string[] a)) throw new Exception("PyrelandsTuning.cs has no string array " + n); return a; }
+        public bool Has(string n) => v.ContainsKey(n);
         public int Count => v.Count;
     }
 
@@ -1055,8 +1056,86 @@ namespace RimMandrake.Pyrelands.Fuzz
             return fails;
         }
 
-        // RIMMANDRAKE_TRIPLE_FIREHAWK_REACH_PREFERS_FARTHEST_FUEL: the fire-hawk's sortie pick (RM_FireHawkKernel). Fixed cases for each
-        // clause of the owner's ruling, then random cell grids round a stolen fire checked against a brute-force reading of the rule.
+        // RIMMANDRAKE_TRIPLE_FIREHAWK_REACH_PREFERS_FARTHEST_FUEL: the fire-hawk's sortie pick (RM_FireHawkKernel). Owner, 2026-11-13:
+        // "Carry distance should actually be anywhere on the map, unlimited. To the largest fuel source easily found." Fixed synthetic
+        // maps for each clause, then random maps checked against a brute-force reading of the rule written here, cell by cell.
+        // A synthetic map: rects of one kind each, later rects over earlier. F fuel, R roofed fuel, G fogged fuel, S sprouts, N
+        // burnt (a plant that will not burn), U fuel the hawk cannot reach, * fire, . bare.
+        private sealed class HawkMap
+        {
+            public int Sx, Sz;
+            public char[] K;
+            public HawkMap(int sx, int sz, params (char k, int x, int z, int w, int h)[] rects)
+            {
+                Sx = sx; Sz = sz; K = Enumerable.Repeat('.', sx * sz).ToArray();
+                foreach (var r in rects)
+                    for (int x = r.x; x < r.x + r.w; x++)
+                        for (int z = r.z; z < r.z + r.h; z++)
+                            if (x >= 0 && z >= 0 && x < sx && z < sz) K[z * sx + x] = r.k;
+            }
+            public char At(int x, int z) => K[z * Sx + x];
+            public bool Fuel(int x, int z)
+            {
+                char k = At(x, z);
+                bool plant = k == 'F' || k == 'R' || k == 'G' || k == 'U' || k == 'S' || k == 'N';
+                return RM_FireHawkKernel.MapFuelCell(plant && k != 'N', !plant ? -1f : k == 'S' ? 0.1f : 0.8f, 0.25f, k == '*', k == 'G', k == 'R');
+            }
+            public bool Reach(int x, int z) => At(x, z) != 'U';
+            public IEnumerable<int> Fires() => Enumerable.Range(0, K.Length).Where(i => K[i] == '*');
+        }
+
+        // The whole pipeline the mod runs (JobGiver_RUT_FireHawkCarryEmber.TryFindFuelOnTheMap), on a synthetic map. -> (x, z) or (-1, -1).
+        private static (int x, int z) HawkPick(HawkMap m, int bucket, int srcX, int srcZ, int tries = 48)
+        {
+            int[] fuel = RM_FireHawkKernel.BucketFuel(m.Sx, m.Sz, bucket, m.Fuel);
+            bool[] fire = RM_FireHawkKernel.FireBuckets(m.Sx, m.Sz, bucket, m.Fires());
+            int c = RM_FireHawkKernel.PickDrop(m.Sx, m.Sz, bucket, fuel, fire, srcX, srcZ, m.Fuel, (x, z) => m.Fuel(x, z) && m.Reach(x, z), tries);
+            return c < 0 ? (-1, -1) : (c % m.Sx, c / m.Sx);
+        }
+
+        private static bool In((int x, int z) c, int x, int z, int w, int h) => c.x >= x && c.z >= z && c.x < x + w && c.z < z + h;
+
+        // The rule read naively, straight from the cells (no bucket arrays): the reference the random maps are checked against.
+        private static (int x, int z) HawkNaive(HawkMap m, int b, int srcX, int srcZ, int tries)
+        {
+            int bw = (m.Sx + b - 1) / b, bh = (m.Sz + b - 1) / b, sbx = srcX / b, sbz = srcZ / b;
+            var cand = new List<(int bx, int bz, int score, int far)>();
+            for (int bz = 0; bz < bh; bz++)
+                for (int bx = 0; bx < bw; bx++)
+                {
+                    int own = 0, score = 0; bool burning = false;
+                    for (int x = Math.Max(0, (bx - 1) * b); x < Math.Min(m.Sx, (bx + 2) * b); x++)
+                        for (int z = Math.Max(0, (bz - 1) * b); z < Math.Min(m.Sz, (bz + 2) * b); z++)
+                        {
+                            bool f = m.Fuel(x, z);
+                            if (f) score++;
+                            if (f && x / b == bx && z / b == bz) own++;
+                            if (m.At(x, z) == '*') burning = true;
+                        }
+                    if (own > 0 && !burning) cand.Add((bx, bz, score, (bx - sbx) * (bx - sbx) + (bz - sbz) * (bz - sbz)));
+                }
+            int used = 0;
+            foreach (var c in cand.OrderByDescending(c => c.score).ThenByDescending(c => c.far).ThenBy(c => c.bz * bw + c.bx))
+            {
+                var best = (x: -1, z: -1); int bestN = -1, bestD = 0;
+                for (int z = c.bz * b; z < Math.Min(m.Sz, (c.bz + 1) * b); z++)
+                    for (int x = c.bx * b; x < Math.Min(m.Sx, (c.bx + 1) * b); x++)
+                    {
+                        if (!m.Fuel(x, z)) continue;
+                        int n = 0;
+                        for (int ax = -1; ax <= 1; ax++) for (int az = -1; az <= 1; az++)
+                            { int nx = x + ax, nz = z + az; if (nx >= 0 && nz >= 0 && nx < m.Sx && nz < m.Sz && m.Fuel(nx, nz)) n++; }
+                        int dx = 2 * x + 1 - (2 * c.bx * b + b), dz = 2 * z + 1 - (2 * c.bz * b + b), d = dx * dx + dz * dz;
+                        if (n > bestN || (n == bestN && d < bestD)) { best = (x, z); bestN = n; bestD = d; }
+                    }
+                if (best.x < 0) continue;
+                if (used >= tries) break;
+                used++;
+                if (m.Reach(best.x, best.z)) return best;
+            }
+            return (-1, -1);
+        }
+
         private static List<string> Hawk(int n, int seed)
         {
             var fails = new List<string>();
@@ -1064,88 +1143,95 @@ namespace RimMandrake.Pyrelands.Fuzz
             {
                 Cases++;
                 float scan = T.F("FireHawkScanRadius");
-                int carry = T.I("FireHawkSpreadDistance");
+                int bucket = T.I("FireHawkFuelBucket");
                 Check(scan == 54f, "FireHawkScanRadius is " + scan + ", ruled 54 (18 x3)");
-                Check(carry == 18, "FireHawkSpreadDistance is " + carry + ", ruled 18 (6 x3)");
+                Check(!T.Has("FireHawkSpreadDistance"), "FireHawkSpreadDistance still exists: the carry is ruled unlimited ('anywhere on the map')");
+                Check(bucket >= 4 && bucket <= 16, "FireHawkFuelBucket is " + bucket + " cells, outside the 4..16 a coarse fuel map means");
+                Check(T.I("FireHawkFuelRefreshTicks") > 0 && T.I("FireHawkFuelRefreshTicks") <= T.I("FireHawkCooldownTicks"),
+                      "the cached fuel map must refresh at least once per sortie cooldown");
                 // Spread-only: a fire outside the scan circle is no fire at all.
                 Check(RM_FireHawkKernel.FireInScan(54, 0, scan) && RM_FireHawkKernel.FireInScan(38, 38, scan) && RM_FireHawkKernel.FireInScan(0, 0, scan),
                       "a fire inside 54 cells must be seen");
                 Check(!RM_FireHawkKernel.FireInScan(55, 0, scan) && !RM_FireHawkKernel.FireInScan(39, 39, scan) && !RM_FireHawkKernel.FireInScan(0, -60, scan),
                       "a fire beyond 54 cells must not be seen (spread-only: no fire in range, no sortie)");
-                // The fuel predicate: flammable, grown, nothing burning on or beside it.
+                // The drop's last check: flammable, grown, nothing burning on or beside it.
                 Check(RM_FireHawkKernel.FuelledDrop(true, true, 0.6f, 0.25f, false), "grown flammable grass with no fire beside it is fuel");
                 Check(!RM_FireHawkKernel.FuelledDrop(true, true, 0.6f, 0.25f, true), "a cell already burning (or beside a fire) is not fuel");
                 Check(!RM_FireHawkKernel.FuelledDrop(true, false, 0.6f, 0.25f, false), "a non-flammable cell is not fuel");
-                Check(!RM_FireHawkKernel.FuelledDrop(true, true, 0.1f, 0.25f, false) && !RM_FireHawkKernel.FuelledDrop(true, true, -1f, 0.25f, false),
-                      "sprouts and bare ground are not fuel");
                 Check(!RM_FireHawkKernel.FuelledDrop(false, true, 0.6f, 0.25f, false), "a cell off the map is not fuel");
+                // The map's fuel cell: easily found means not fogged and not under a roof.
+                Check(RM_FireHawkKernel.MapFuelCell(true, 0.8f, 0.25f, false, false, false), "open grown flammable grass is map fuel");
+                Check(!RM_FireHawkKernel.MapFuelCell(true, 0.8f, 0.25f, false, true, false), "fogged grass is not easily found");
+                Check(!RM_FireHawkKernel.MapFuelCell(true, 0.8f, 0.25f, false, false, true), "roofed grass is not easily found");
+                Check(!RM_FireHawkKernel.MapFuelCell(true, 0.8f, 0.25f, true, false, false), "burning grass is not fuel");
+                Check(!RM_FireHawkKernel.MapFuelCell(false, 0.8f, 0.25f, false, false, false) && !RM_FireHawkKernel.MapFuelCell(true, -1f, 0.25f, false, false, false)
+                      && !RM_FireHawkKernel.MapFuelCell(true, 0.1f, 0.25f, false, false, false), "burnt plants, bare ground and sprouts are not fuel");
 
-                // Fixed lines of cells along +x from the fire at x = 0: kind per cell, F fuel, B burning, R rock, U unreachable fuel, . bare.
-                int Pick(string line, int tries = 1000)
-                {
-                    return RM_FireHawkKernel.FarthestFuelledDrop(line.Length, i => i * i,
-                        i => line[i] == 'F' || line[i] == 'U', i => 0f, i => line[i] != 'U', tries);
-                }
-                Check(Pick(".....F...........F") == 17, "farthest fuelled cell must win: " + Pick(".....F...........F"));
-                Check(Pick(".....F..........BR") == 5, "nearer fuel only when no farther fuel: " + Pick(".....F..........BR"));
-                Check(Pick("..........RRRB.B..") == -1, "no fuel in range must give no target: " + Pick("..........RRRB.B.."));
-                Check(Pick("F") == -1, "the fire's own cell is never a drop");
-                Check(Pick("...F.......F.....U") == 11, "an unreachable farther cell gives way to the farthest reachable one: " + Pick("...F.......F.....U"));
-                Check(Pick("...F....UUUUU") == 3 && Pick("...F....UUUUU", 3) == -1 && Pick("...F...UU", 3) == 3,
-                      "the reach-try budget ends the search instead of walking every cell");
-                // A tie on distance from the fire is broken by distance from the burn's centre (ahead of the blaze).
-                int tie = RM_FireHawkKernel.FarthestFuelledDrop(4, i => i == 0 ? 0 : 9, i => i > 0, i => i == 2 ? 5f : 1f, i => true, 1000);
-                Check(tie == 2, "of equally far cells, the one farthest ahead of the blaze must win: " + tie);
+                const int B = 8;
+                var fireAt = ('*', 4, 4, 4, 4);
+                var nearP = ('F', 20, 4, 4, 4);                 // 16 cells, ~16 cells from the fire
+                // 1. One big far patch and one small near patch: the far one, ~270 cells away on a 250 map (no carry limit).
+                var c1 = HawkPick(new HawkMap(250, 250, fireAt, nearP, ('F', 200, 200, 30, 30)), B, 5, 5);
+                Check(In(c1, 200, 200, 30, 30), "big far patch + small near patch: picked " + c1 + ", not the far 30x30");
+                var c1b = HawkPick(new HawkMap(250, 250, fireAt, nearP), B, 5, 5);
+                Check(In(c1b, 20, 4, 4, 4), "the small near patch alone must be picked (else case 1 proves nothing): " + c1b);
+                // 2. All fuel burnt (or only sprouts): no target.
+                var c2 = HawkPick(new HawkMap(250, 250, fireAt, ('N', 20, 4, 4, 4), ('N', 200, 200, 30, 30), ('S', 100, 100, 20, 20)), B, 5, 5);
+                Check(c2.x == -1, "all fuel burnt: picked " + c2);
+                // 3. The best bucket roofed or fogged: skipped, the open near patch wins.
+                var c3 = HawkPick(new HawkMap(250, 250, fireAt, nearP, ('R', 200, 200, 30, 30)), B, 5, 5);
+                Check(In(c3, 20, 4, 4, 4), "roofed big patch must be skipped: picked " + c3);
+                var c3b = HawkPick(new HawkMap(250, 250, fireAt, nearP, ('G', 200, 200, 30, 30)), B, 5, 5);
+                Check(In(c3b, 20, 4, 4, 4), "fogged big patch must be skipped: picked " + c3b);
+                // 4. Empty map, with and without the fire; a 0-cell-wide map does not throw.
+                Check(HawkPick(new HawkMap(64, 64), B, 5, 5).x == -1, "an empty map gave a target");
+                Check(HawkPick(new HawkMap(64, 64, fireAt), B, 5, 5).x == -1, "a map holding only the fire gave a target");
+                Check(HawkPick(new HawkMap(0, 0), B, 0, 0).x == -1, "a 0x0 map gave a target");
+                // 5. A single cell of fuel: that cell, wherever it is; beside the blaze (inside the fire's bucket block): none.
+                var c5 = HawkPick(new HawkMap(250, 250, fireAt, ('F', 247, 3, 1, 1)), B, 5, 5);
+                Check(c5 == (247, 3), "a single far fuel cell must be the target: " + c5);
+                Check(HawkPick(new HawkMap(250, 250, fireAt, ('F', 12, 12, 1, 1)), B, 5, 5).x == -1, "fuel inside the burning block is not a drop");
+                // 6. Ties: equal patches, the one farther from the fire; equally far too, the lower bucket index; the same answer twice.
+                var tieFar = HawkPick(new HawkMap(250, 250, ('*', 0, 0, 2, 2), ('F', 40, 0, 8, 8), ('F', 160, 0, 8, 8)), B, 0, 0);
+                Check(In(tieFar, 160, 0, 8, 8), "equal patches must tie-break to the farther: " + tieFar);
+                var tieMap = new HawkMap(250, 250, ('*', 0, 0, 2, 2), ('F', 40, 0, 8, 8), ('F', 0, 40, 8, 8));
+                var t1 = HawkPick(tieMap, B, 0, 0); var t2 = HawkPick(tieMap, B, 0, 0);
+                Check(t1 == (43, 3) && t1 == t2, "an exact tie must be deterministic: lower bucket, its densest cell nearest the centre, lowest index (want (43, 3)): " + t1 + " / " + t2);
+                // Largest, not densest: a big half-full patch beats a small full one.
+                var sparse = new HawkMap(250, 250, fireAt, ('F', 100, 100, 8, 8));
+                for (int x = 180; x < 220; x++) for (int z = 180; z < 220; z++) if ((x + z) % 2 == 0) sparse.K[z * 250 + x] = 'F';
+                var cs = HawkPick(sparse, B, 5, 5);
+                Check(In(cs, 180, 180, 40, 40), "a 40x40 half-full patch must beat a full 8x8: " + cs);
+                // 7. The best patch out of reach: the next; with one reach try only: none.
+                var c7 = HawkPick(new HawkMap(250, 250, fireAt, nearP, ('U', 200, 200, 30, 30)), B, 5, 5);
+                Check(In(c7, 20, 4, 4, 4), "an unreachable best patch must give way to the next: " + c7);
+                Check(HawkPick(new HawkMap(250, 250, fireAt, nearP, ('U', 200, 200, 30, 30)), B, 5, 5, 1).x == -1,
+                      "the reach-try budget must end the search");
 
-                // Random grids: cells inside the carry radius round the fire in ascending distance (GenRadial's order), each random.
+                // Random maps against the naive reading.
                 var r = new Random(seed);
-                var offs = new List<(int x, int z, int d)>();
-                for (int x = -carry; x <= carry; x++)
-                    for (int z = -carry; z <= carry; z++)
-                        if (x * x + z * z <= carry * carry) offs.Add((x, z, x * x + z * z));
-                offs = offs.OrderBy(o => o.d).ThenBy(o => Math.Atan2(o.z, o.x)).ToList();
                 int picked = 0, none = 0;
                 for (int c = 0; c < n; c++)
                 {
                     Cases++;
-                    double pFuel = r.NextDouble(), pBurn = r.NextDouble() * 0.3, pReach = 0.3 + r.NextDouble() * 0.7;
-                    var burning = new HashSet<(int, int)>();
-                    for (int x = -carry - 1; x <= carry + 1; x++)
-                        for (int z = -carry - 1; z <= carry + 1; z++)
-                            if (r.NextDouble() < pBurn) burning.Add((x, z));
-                    burning.Add((0, 0));
-                    int m = offs.Count;
-                    var inB = new bool[m]; var flam = new bool[m]; var grow = new float[m]; var reach = new bool[m]; var ahead = new float[m]; var fire = new bool[m];
-                    int cx = r.Next(-40, 40), cz = r.Next(-40, 40);
-                    for (int i = 0; i < m; i++)
-                    {
-                        var o = offs[i];
-                        inB[i] = r.NextDouble() < 0.95; flam[i] = r.NextDouble() < 0.8;
-                        grow[i] = r.NextDouble() < pFuel ? (float)r.NextDouble() : -1f;
-                        reach[i] = r.NextDouble() < pReach;
-                        ahead[i] = (o.x - cx) * (o.x - cx) + (o.z - cz) * (o.z - cz);
-                        bool f = false;
-                        for (int ax = -1; ax <= 1 && !f; ax++) for (int az = -1; az <= 1 && !f; az++) f = burning.Contains((o.x + ax, o.z + az));
-                        fire[i] = f;
-                    }
-                    bool Fuel(int i) => RM_FireHawkKernel.FuelledDrop(inB[i], flam[i], grow[i], 0.25f, fire[i]);
-                    int got = RM_FireHawkKernel.FarthestFuelledDrop(m, i => offs[i].d, Fuel, i => ahead[i], i => reach[i], 1000000);
-                    // the rule, read naively: every lawful (fuelled, reachable, not the fire's cell) cell; the farthest; then most ahead.
-                    var lawful = Enumerable.Range(0, m).Where(i => offs[i].d > 0 && inB[i] && flam[i] && grow[i] >= 0.25f && !fire[i] && reach[i]).ToList();
-                    if (lawful.Count == 0) { Check(got == -1, $"grid {c}: no lawful fuel, but cell {got} was picked"); none++; continue; }
-                    int far = lawful.Max(i => offs[i].d);
-                    float best = lawful.Where(i => offs[i].d == far).Max(i => ahead[i]);
-                    Check(got >= 0, $"grid {c}: lawful fuel exists ({lawful.Count} cells) but nothing was picked");
-                    Check(offs[got].d == far, $"grid {c}: picked a cell at d^2 {offs[got].d}, a lawful one stands at {far}");
-                    Check(ahead[got] == best && lawful.Contains(got), $"grid {c}: picked cell {got} is not the most-ahead lawful cell of the farthest ring");
-                    // with a small reach-try budget the pick is either the same cell or none, never a nearer one
-                    int capped = RM_FireHawkKernel.FarthestFuelledDrop(m, i => offs[i].d, Fuel, i => ahead[i], i => reach[i], 1 + r.Next(4));
-                    Check(capped == -1 || capped == got, $"grid {c}: a capped search picked {capped}, the full one {got}");
-                    picked++;
+                    int sx = 8 + r.Next(90), sz = 8 + r.Next(90), b = 4 + r.Next(9);
+                    var rects = new List<(char, int, int, int, int)>();
+                    string kinds = "FFFFRGSNU*.";
+                    int k = r.Next(12);
+                    for (int i = 0; i < k; i++)
+                        rects.Add((kinds[r.Next(kinds.Length)], r.Next(sx), r.Next(sz), 1 + r.Next(Math.Max(1, sx / 2)), 1 + r.Next(Math.Max(1, sz / 2))));
+                    var m = new HawkMap(sx, sz, rects.ToArray());
+                    for (int i = 0; i < m.K.Length; i++) if (r.NextDouble() < 0.02) m.K[i] = "F*U"[r.Next(3)];
+                    int srcX = r.Next(sx), srcZ = r.Next(sz), tries = r.Next(8) == 0 ? 1 + r.Next(3) : 48;
+                    var got = HawkPick(m, b, srcX, srcZ, tries);
+                    var want = HawkNaive(m, b, srcX, srcZ, tries);
+                    Check(got == want, $"map {c} ({sx}x{sz}, bucket {b}, fire src {srcX},{srcZ}, tries {tries}): picked {got}, the rule says {want}");
+                    if (got.x >= 0) { Check(m.Fuel(got.x, got.z) && m.Reach(got.x, got.z), $"map {c}: picked {got} is not lawful fuel"); picked++; }
+                    else none++;
                     Steps++;
                 }
-                Check(picked > 0 && none > 0, $"hawk grids are blind: {picked} picked, {none} without fuel");
-                Console.WriteLine($"hawk: scan {scan}, carry {carry}, {offs.Count} cells in carry range; grids picked {picked} / no fuel {none}");
+                Check(picked > 0 && none > 0, $"hawk maps are blind: {picked} picked, {none} without a target");
+                Console.WriteLine($"hawk: scan {scan}, carry unlimited, fuel bucket {bucket}; random maps picked {picked} / no target {none}");
             }
             catch (Exception e) { fails.Add("hawk: " + e.Message); }
             return fails;

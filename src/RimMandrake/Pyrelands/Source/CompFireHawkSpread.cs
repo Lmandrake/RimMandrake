@@ -29,9 +29,6 @@ namespace RimMandrake.Pyrelands
         /// owner 2026-09-10).</summary>
         public float scanRadius = PyrelandsTuning.FireHawkScanRadius;
 
-        /// <summary>How far from the stolen fire the ember may be carried: it goes to the farthest fuelled cell inside this.</summary>
-        public int spreadDistance = PyrelandsTuning.FireHawkSpreadDistance;
-
         /// <summary>A twig, not a bomb.</summary>
         public float startFireSize = PyrelandsTuning.SmoulderFireSize;
 
@@ -45,9 +42,8 @@ namespace RimMandrake.Pyrelands
     {
         private int lastSortieTick = -99999;
 
-        // The last ember drop, for the live probe (jawa/comp_read): where, when, and whether a fire took. A drop up to eighteen cells
-        // past a ragged front often lands within a few cells of other flames, so "a new fire away from the blaze" cannot be told
-        // from the fire map alone.
+        // The last ember drop, for the live probe (jawa/comp_read): where, when, and whether a fire took. The drop may be anywhere on
+        // the map, so the probe reads it here rather than guessing it from the fire map.
         private IntVec3 lastDropCell = IntVec3.Invalid;
         private int lastDropTick = -1;
         private bool lastDropLit;
@@ -69,8 +65,8 @@ namespace RimMandrake.Pyrelands
             if (lit)
             {
                 dropsLit++;
-                // The player's only sign of cause and effect: a new fire up to eighteen cells from the blaze, and nobody
-                // to blame.
+                // The player's only sign of cause and effect: a new fire, maybe across the map from the blaze, and
+                // nobody to blame but the hawk (owner, 2026-11-13: "That gives a great reason for players to hunt the Firehawk.").
                 // Thrown like RM_JobDriver_Burrow's "Burrowed!" (3.65 s before it fades), at the fire it lit.
                 if (parent.Spawned)
                 {

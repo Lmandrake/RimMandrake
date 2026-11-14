@@ -20,13 +20,13 @@ builder reading the paragraph would build a firebreak floor that no longer exist
 > grass behind it is greening and scorch-fruit stands in the scar.
 
 > *Proposed:* The biome is whole on its own, with no other mod's plants or animals. Ordinary paving (a strip at least two
-> cells wide) stops the spreading ground fire, though a fire-hawk can carry an ember up to eighteen cells past it, and a
+> cells wide) stops the spreading ground fire, though a fire-hawk can carry an ember anywhere on the map past it, and a
 > firefoam sprayer lets a colonist step into the burn for the scorch-fruit and back out. Judged first: a fresh map in ordinary play where the burn line is visibly walking across deep ash with a
 > scorched trail behind it, scorch-fruit coming up in the scar right behind the front, and a few days later the grass
 > greening.
 
 What you are not deciding: whether the firefoam sprayer stays (it is built and stays), or the paving rule's numbers (the
-two-cell width is vanilla fire's own jump distance, the hawk's eighteen cells are built today; neither is decided here).
+two-cell width is vanilla fire's own jump distance, the hawk's map-wide carry is built today; neither is decided here).
 
 ## The paragraph's ending (`a_root_ending`)
 

@@ -97,10 +97,14 @@ namespace RimMandrake.Pyrelands
         // Fire-hawk (§7c). Spread-only: every one of these is downstream of an
         // existing fire being found first.
         // ---------------------------------------------------------------
-        // Owner, 2026-11-13: "make a longer carry distance x3 both in vision and then a matching distance" (was 18 and 6). The
-        // ember goes to the farthest fuelled cell inside the carry range (RM_FireHawkKernel.FarthestFuelledDrop).
+        // Owner, 2026-11-13: "make a longer carry distance x3 both in vision" (the scan, was 18), then "Carry distance should actually
+        // be anywhere on the map, unlimited. To the largest fuel source easily found." There is no carry limit: the ember goes to the
+        // best bucket of the map's coarse fuel map (RM_FireHawkKernel.PickDrop). Agent defaults, his to change: an 8-cell bucket
+        // (a 250 map is 32 x 32 of them), scored by the unburnt, unfogged, unroofed grown grass in its 3 x 3 block (24 x 24 cells),
+        // the fuel counts cached per map for an in-game hour.
         public const float FireHawkScanRadius = 54f;
-        public const int FireHawkSpreadDistance = 18;
+        public const int FireHawkFuelBucket = 8;
+        public const int FireHawkFuelRefreshTicks = 2500;
         public const int FireHawkCooldownTicks = 15000;   // ~6 in-game hours
         public const int FireHawkTakeEmberTicks = 90;
 

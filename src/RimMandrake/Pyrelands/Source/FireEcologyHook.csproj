@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
     <Compile Include="JobGiver_RUT_FireHawkSeekBurn.cs" />
+    <Compile Include="MapComponent_RM_FireHawkFuel.cs" />
     <Compile Include="CompWithersUnderRoof.cs" />
     <Compile Include="ThinkNode_ConditionalPyrelandsColonist.cs" />
     <Compile Include="PyrelandsFireSense.cs" />
