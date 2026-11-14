@@ -213,6 +213,24 @@ Batch 2, table work (preflight 45 → 23 refusals):
   failing on planted faults (an invented leaf, a scene with neither field: 2 refusals).
 - `version/advance_scripts/render_table.py` recomputes each bar's derived fields and rewrites `test_table.md`.
 
+Batch 3, the owed tests (preflight 23 → 7 refusals):
+
+- **17 in-game scene entries written** in `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` (the 13 of the first
+  preflight, the two showcase scenes, and `scene_geyser_tub` and `scene_coating_wash` for his two new bars), on one shared
+  stage helper: stage, act, read, the control case where the scene names one, restore settings and the scene-begin save.
+  Each is UNRUN, listed with its command (`python.exe ...concept_scenes.py --scene <name> --out <json>`). Checked: imports,
+  every bridge call literal and in the tool schema (54 calls; the lint watched failing on two planted bad calls), a smoke
+  run of all 17 on a fake bridge (0 Python errors), and `selftest_hole_prison.py` still green on the extended file.
+  **Not checked:** the argument shapes of a few tools and proof verbs (named in the file's header) and every coordinate;
+  Stage 6 owns those on its prepared map. Controls not written: the islands' indestructible winches, the hose's unpowered
+  pump, the garden's unpowered pump, the walk's pre-fill reload.
+- **6 offline tests built** in `src/RimMandrake/FlowWorks/selftest_stage3_owed.py`, one `--only` section each, as source
+  laws over the shipping code (the code is Verse-bound; the C# SelfTest cannot run it). `T_PRISON_CARE_OFFLINE` is green,
+  and its five undo mutants each turn it red. **Red as intended, the behaviour is absent:** `T_WETTING_OFFLINE`,
+  `T_WETNESS_PROBE_OFFLINE`, `T_TOSS_FLAME_OFFLINE`, `T_FETCH_FALLEN_OFFLINE` (the ladder half exists, the fetch does not),
+  `T_LIQUID_COATING_OFFLINE`.
+- `T_PIT_LOOK_1114` ran: the look-fix builder's 7 C# cases and the 11 geyser-tub cases, 18 of 18 ok, 232 s.
+
 ### What Stage 3 ("reconcile") must build, not begun here
 
 1. Make the 4 red offline deciders green (settings registry / O2 `digLabourMultiplier`, liquid looks, natives' propane

@@ -1,28 +1,28 @@
 # FlowWorks 0.1.0: test-and-stage table
 
-Generated 2026-11-14T14:29:10-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
+Generated 2026-11-14T14:38:32-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
 
 ## Counts (measured)
 
 - bars: 61
-- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 52
-- with every deciding test runnable today: 25
-- with an offline deciding test, all green today: 47
-- with an offline deciding test that exists (built), green or red: 50
+- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 61
+- with every deciding test runnable today: 54
+- with an offline deciding test, all green today: 49
+- with an offline deciding test that exists (built), green or red: 59
 - with no offline deciding test at all: 2
 - decided offline only (no game needed): 6
-- in-game scenes: 32, entry exists 15, absent 17
-- offline tests: 79 built (ran today: 77 PASS, 1 red), 7 specified for Stage 3
+- in-game scenes: 32, entry exists 32, absent 0
+- offline tests: 85 built (ran today: 79 PASS, 6 red), 1 specified for Stage 3
 
 ## Bars
 
 | bar | from | proves at | decides | supports | runnable today | offline green |
 |---|---|---|---|---|---|---|
 | `inv_dig_depth` | record | 6 | T_DIG, PY_FLOWWORKS_REVIEW1022_EXCAVATION, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, sc_dig_and_read | sc_moat_raid, T_DIG_TIME_ARITHMETIC | all | yes |
-| `inv_flow_level` | record | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_fill_front, sc_one_surface | sc_moat_raid | some | yes |
-| `inv_stock` | record | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | sc_moat_raid | some | yes |
+| `inv_flow_level` | record | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_fill_front, sc_one_surface | sc_moat_raid | all | yes |
+| `inv_stock` | record | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | sc_moat_raid | all | yes |
 | `inv_overflow_sheet` | record | 4-5 | T_SHEET, PY_FLOWWORKS_SHEET_DROWN_MESSAGE | sc_garden | all | yes |
-| `inv_irrigation` | record | 6 | T_WETTING_OFFLINE, sc_wetting | sc_garden | none | no |
+| `inv_irrigation` | record | 6 | T_WETTING_OFFLINE, sc_wetting | sc_garden | all | no |
 | `inv_liquid_roster` | record | 6 | T_ROSTER, PY_LIQUID_DEFS_HAZARDS, PY_WATER_TERRAINS_NAME_LIQUID, PY_LAVA_ROW, PY_FLOWWORKS_HOT_WET_TERRAIN, sc_fill_tiers | sc_moat_raid | all | yes |
 | `inv_fire` | record | 6 | T_FIRE, PY_FLOWWORKS_FUEL_MOAT, sc_canal_fire | sc_moat_raid | all | yes |
 | `inv_slime` | record | 6 | T_SLIME, sc_slime | - | all | yes |
@@ -30,55 +30,55 @@ Generated 2026-11-14T14:29:10-08:00 from `test_table.json` (the record; this is 
 | `inv_pit_access` | record | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | sc_pit_trap_raid, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `inv_doors` | record | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | sc_moat_raid | all | yes |
 | `inv_bridges` | record | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hung_bridge | sc_moat_raid, sc_islands | all | yes |
-| `inv_trench_cover` | record | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | some | yes |
-| `inv_swim` | record | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | sc_moat_raid | some | yes |
-| `inv_hoses` | record | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look | sc_garden | some | yes |
+| `inv_trench_cover` | record | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | all | yes |
+| `inv_swim` | record | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | sc_moat_raid | all | yes |
+| `inv_hoses` | record | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look | sc_garden | all | yes |
 | `inv_liquid_net` | record | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_moat_raid, sc_garden | all | yes |
 | `inv_converters` | record | 4-5 | T_CONVERT | sc_garden | all | yes |
 | `inv_bottles_thirst` | record | 4-5 | T_THIRST, PY_WATER_NOT_FOOD, PY_NATIVES_DRINK_OWN_WATER | sc_garden | all | yes |
 | `inv_drilling` | record | 4-5 | T_DRILL | sc_garden | all | yes |
 | `inv_sprinklers` | record | 4-5 | T_SPRINKLER | sc_garden | all | yes |
 | `inv_rivers` | record | 6 | T_RIVER, PY_FLOWWORKS_RIVERS, PY_FLOWWORKS_RIVER_COLORS, PY_WEIR_INSTALLED, sc_river | - | all | yes |
-| `inv_map_controls` | record | 6 | T_MAP_CONTROLS, sc_source_pays | - | some | yes |
+| `inv_map_controls` | record | 6 | T_MAP_CONTROLS, sc_source_pays | - | all | yes |
 | `inv_quarry` | record | 6 | T_QUARRY, sc_dig_finds | - | all | yes |
-| `inv_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, PY_SETTINGS_REGISTRY, PY_SETTINGS_SEARCH, PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE, sc_walk | - | some | no |
+| `inv_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, PY_SETTINGS_REGISTRY, PY_SETTINGS_SEARCH, PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE, sc_walk | - | all | no |
 | `inv_looks` | record | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, T_STYLES, PY_FW_OFFLINE_ART, PY_LIQUID_LOOKS, PY_FLOWWORKS_PIPE_POLE_ART, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, sc_fill_tiers, LOOK_STAGE8, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | some | yes |
-| `inv_prison_no_bed` | record | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid, sc_pit_trap_raid | some | no |
-| `inv_toss_flame` | record | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | none | no |
-| `inv_raider_fetch_fallen` | record | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | none | no |
+| `inv_prison_no_bed` | record | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid, sc_pit_trap_raid | all | yes |
+| `inv_toss_flame` | record | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | all | no |
+| `inv_raider_fetch_fallen` | record | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | all | no |
 | `canal_reads_as_dug` | tree | 6 | T_DIG, PY_FLOWWORKS_REVIEW1022_EXCAVATION, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, sc_dig_and_read, LOOK_BLIND_READER | sc_dig_finds, T_DIG_TIME_ARITHMETIC | some | yes |
-| `fill_flows_along_canal` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_fill_front | LOOK_STAGE8 | some | yes |
+| `fill_flows_along_canal` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_fill_front | LOOK_STAGE8 | all | yes |
 | `fill_level_legible` | tree | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, sc_fill_tiers, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, LOOK_STAGE8 | some | yes |
-| `one_still_surface` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_one_surface | - | some | yes |
-| `source_pays_and_refills` | tree | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | - | some | yes |
+| `one_still_surface` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_one_surface | - | all | yes |
+| `source_pays_and_refills` | tree | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | - | all | yes |
 | `canal_fire_burns_back` | tree | 6 | T_FIRE, PY_FLOWWORKS_FUEL_MOAT, sc_canal_fire | - | all | yes |
 | `slime_holds_the_crossing` | tree | 6 | T_SLIME, sc_slime | LOOK_BLIND_READER | all | yes |
-| `pawn_height_follows_depth` | tree | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | - | some | yes |
+| `pawn_height_follows_depth` | tree | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | - | all | yes |
 | `pit_reads_as_hole` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_LABEL, sc_pit_reads, LOOK_BLIND_READER | OL_OWNER_LOOK_READS | some | yes |
 | `covered_pit_springs` | tree | 6 | T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_covered_pit, LOOK_BLIND_READER | sc_pit_trap_raid | some | yes |
 | `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `sluice_drains_on_command` | tree | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | sc_moat_raid | all | yes |
 | `hose_reads_as_hose` | tree | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look, LOOK_BLIND_READER | - | some | yes |
 | `one_liquid_network` | tree | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_garden | all | yes |
-| `trench_gives_cover` | tree | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | some | yes |
+| `trench_gives_cover` | tree | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | all | yes |
 | `hung_bridge_spans` | tree | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hung_bridge, LOOK_BLIND_READER | - | some | yes |
-| `ice_cuts_and_melts` | tree | 6 | T_ICE, sc_ice | - | some | yes |
+| `ice_cuts_and_melts` | tree | 6 | T_ICE, sc_ice | - | all | yes |
 | `river_flows_endless` | tree | 6 | T_RIVER, PY_FLOWWORKS_RIVERS, PY_FLOWWORKS_RIVER_COLORS, PY_WEIR_INSTALLED, sc_river | - | all | yes |
-| `moat_raid_sequence` | tree | 6 | sc_moat_raid | T_SWIM, PY_SWIM_SHORE_REACH, T_DOORS, PY_FW_GATE_LIFT, T_PRISON, T_FIRE, PY_FLOWWORKS_FUEL_MOAT, T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hole_prison, sc_toss_flame, sc_sluice, LOOK_STAGE8 | some | no |
-| `drained_hole_is_a_prison` | tree | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid | some | no |
-| `toss_flame_from_rim` | tree | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | none | no |
-| `canal_wets_two_squares` | tree | 6 | T_WETTING_OFFLINE, sc_wetting | sc_garden | none | no |
-| `raiders_fetch_their_fallen` | tree | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | none | no |
-| `island_bridges_trap_and_fail` | tree | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_islands | - | some | yes |
+| `moat_raid_sequence` | tree | 6 | sc_moat_raid | T_SWIM, PY_SWIM_SHORE_REACH, T_DOORS, PY_FW_GATE_LIFT, T_PRISON, T_FIRE, PY_FLOWWORKS_FUEL_MOAT, T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hole_prison, sc_toss_flame, sc_sluice, LOOK_STAGE8 | all | no |
+| `drained_hole_is_a_prison` | tree | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid | all | yes |
+| `toss_flame_from_rim` | tree | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | all | no |
+| `canal_wets_two_squares` | tree | 6 | T_WETTING_OFFLINE, sc_wetting | sc_garden | all | no |
+| `raiders_fetch_their_fallen` | tree | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | all | no |
+| `island_bridges_trap_and_fail` | tree | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_islands | - | all | yes |
 | `no_liquid_on_open_ground` | tree | 6 | T_SHEET, PY_FLOWWORKS_SHEET_DROWN_MESSAGE, T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_dig_and_read | LOOK_BLIND_READER | all | yes |
-| `no_full_source_after_draw` | tree | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | - | some | yes |
+| `no_full_source_after_draw` | tree | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | - | all | yes |
 | `no_snared_standing` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, sc_pit_reads | - | all | yes |
 | `no_impossible_plumbing` | tree | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_one_network | - | all | yes |
-| `wetting_is_not_flood` | tree | 6 | T_WETTING_OFFLINE, sc_wetting | - | none | no |
-| `wetness_probe` | tree | 4-5 | T_WETNESS_PROBE_OFFLINE | - | none | no |
-| `walk_moat_season` | tree | 6 | sc_walk | LOOK_STAGE8, T_SETTINGS_SWEEP_OFFLINE | some | no |
-| `inv_geyser_tub` | record | 6 | T_GEYSER_TUB, PY_FLOWWORKS_GEYSER_TUB, sc_geyser_tub | LOOK_STAGE8 | some | yes |
-| `inv_liquid_coating` | record | 6 | T_LIQUID_COATING_OFFLINE, sc_coating_wash | LOOK_STAGE8 | none | no |
+| `wetting_is_not_flood` | tree | 6 | T_WETTING_OFFLINE, sc_wetting | - | all | no |
+| `wetness_probe` | tree | 4-5 | T_WETNESS_PROBE_OFFLINE | - | all | no |
+| `walk_moat_season` | tree | 6 | sc_walk | LOOK_STAGE8, T_SETTINGS_SWEEP_OFFLINE | all | no |
+| `inv_geyser_tub` | record | 6 | T_GEYSER_TUB, PY_FLOWWORKS_GEYSER_TUB, sc_geyser_tub | LOOK_STAGE8 | all | yes |
+| `inv_liquid_coating` | record | 6 | T_LIQUID_COATING_OFFLINE, sc_coating_wash | LOOK_STAGE8 | all | no |
 
 ## Tests
 
@@ -155,54 +155,54 @@ Generated 2026-11-14T14:29:10-08:00 from `test_table.json` (the record; this is 
 | `PY_FW_OFFLINE_ART` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py` | PASS, 14.1s |
 | `PY_LIQUID_LOOKS` | offline | 4-5 | `src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py` | PASS, 0.1s |
 | `PY_FLOWWORKS_PIPE_POLE_ART` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py` | PASS, 0.0s |
-| `T_GEYSER_TUB` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (11/11 cases ok), 531s |
+| `T_GEYSER_TUB` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (11/11 cases ok), 232s |
 | `PY_FLOWWORKS_GEYSER_TUB` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py` | PASS, 0.8s |
 | `T_SETTINGS_SWEEP_OFFLINE` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (6/6 cases ok), 531s |
 | `PY_SETTINGS_REGISTRY` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py` | PASS, 0.0s |
 | `PY_SETTINGS_SEARCH` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_settings_search.py` | PASS, 1.3s |
 | `PY_FLOWWORKS_NORTHSTAR` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py` | PASS, 10.8s |
 | `PY_VALIDATION_V2_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | RED rc 1, 58.3s |
-| `T_WETTING_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
-| `T_WETNESS_PROBE_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
-| `T_TOSS_FLAME_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
-| `T_FETCH_FALLEN_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
-| `T_PRISON_CARE_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
+| `T_WETTING_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.2s |
+| `T_WETNESS_PROBE_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.1s |
+| `T_TOSS_FLAME_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.1s |
+| `T_FETCH_FALLEN_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.1s |
+| `T_PRISON_CARE_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | PASS, 0.1s |
 | `T_DIG_TIME_ARITHMETIC` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
 | `sc_dig_and_read` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
 | `sc_dig_finds` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
-| `sc_fill_front` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_fill_front` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_fill_tiers` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
-| `sc_one_surface` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_source_pays` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_one_surface` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_source_pays` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_canal_fire` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | not run (offline only); entry exists |
 | `sc_slime` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
-| `sc_pawn_height` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_pawn_height` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_pit_reads` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
 | `sc_covered_pit` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
 | `sc_ways_out` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/live_session.py` | not run (offline only); entry exists |
 | `sc_sluice` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
-| `sc_hose_look` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_hose_look` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_one_network` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/extensions.py` | not run (offline only); entry exists |
-| `sc_trench_cover` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_trench_cover` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_hung_bridge` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py` | not run (offline only); entry exists |
-| `sc_ice` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_ice` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_river` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py` | not run (offline only); entry exists |
-| `sc_moat_raid` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_moat_raid` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_hole_prison` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
-| `sc_toss_flame` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_wetting` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_fetch_fallen` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_islands` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_walk` | live_full | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_pit_trap_raid` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `sc_garden` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
+| `sc_toss_flame` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_wetting` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_fetch_fallen` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_islands` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_walk` | live_full | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_pit_trap_raid` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `sc_garden` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `LOOK_STAGE8` | look | 8 | `(his walk)` | not run: Stage 8 |
 | `LOOK_BLIND_READER` | look | 6 | `(a blind reader agent on the scene captures)` | not run: needs captures from Stage 6 |
 | `OL_OWNER_LOOK_READS` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py` | not run (offline only); entry exists |
-| `sc_geyser_tub` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `T_LIQUID_COATING_OFFLINE` | offline | 4-5 | `(specified, Stage 3)` | not run: specified, not built |
-| `sc_coating_wash` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry ABSENT |
-| `T_PIT_LOOK_1114` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | not run: added 2026-11-14 Stage 3; filled by the next run |
+| `sc_geyser_tub` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `T_LIQUID_COATING_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.1s |
+| `sc_coating_wash` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
+| `T_PIT_LOOK_1114` | offline | 4-5 | `src/RimMandrake/Utils/selftest_flowworks_stock.py` | PASS (7/7 cases ok), 232s |
 | `PIT_LOOK_1114_LIVE` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/pit_look_1114_live.py` | not run (offline only); entry exists |
 
 ## Held look statements placed (103 rows)

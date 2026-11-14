@@ -369,18 +369,414 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
 
 
 
+# =====================================================================================================================
+# Stage 3 scene entries (FlowWorks 0.1.0 Maturation Stage 3 "reconcile", 2026-11-14). One function per in-game test of
+# design/concepts/FlowWorks/version/test_table.json, from the scene's start / action / expect / control in
+# design/concepts/FlowWorks/scenes.json (sc_geyser_tub and sc_coating_wash from the two bars his card added 2026-11-14).
+# Status: WRITTEN, IMPORT-CHECKED AND LINT-CHECKED (every bridge call literal and in the tool schema), NEVER RUN. They run
+# in Stage 6:  python.exe concept_scenes.py --scene <scene_name> --out <json>   (bridge held; minimal list + FlowWorks,
+# except scene_walk_moat_season, which is the full list). Stage 6 owns the coordinates (one dense prepared map) and the
+# first-run harness repairs. A row reads PASS, FAIL (MOD), or UNMEASURED (HARNESS: a read came back without the field);
+# a hook the mod does not have yet (wetting probe, toss-flame order, raider fetch, coating condition) is a FAIL by design:
+# those scenes are red until their behaviour is built. UNVERIFIED argument shapes, for Stage 6's first run to settle:
+# list_things / list_pawns / inspect_string `rect` strings, set_plants `ops`, set_terrain_batch `ops`, and the verbs after
+# ';' passed to ProofCover, ProofDrainGate and ProofStageBasin (their read forms are documented in the C#; the verbs are not).
+# =====================================================================================================================
+EXC = 'RimMandrake.FlowWorks.RM_PromotionProofs'
+NSP = 'RimMandrake.FlowWorks.RM_NorthstarProofs'
+FLUIDID = 'RimMandrake.FlowWorks.RM_FluidIdentityProof'
+WATER, TAR, FUEL, OIL = 'RM_Fluid_Water', 'RM_Fluid_Tar', 'RM_Fluid_Chemfuel', 'RM_Fluid_Oil'
+O = (60, 60)  # scene origin on the prepared map; Stage 6 moves it to the dense map's free block
+
+
+class _Stage:
+    """The shared half of every Stage 3 scene: recorded calls, settings restored, real ticks, rows, restore in finally."""
+
+    def __init__(self, B, receipt, name):
+        self.B, self.r, self.prior = B, receipt, {}
+        receipt.update({'scene': name, 'rows': [], 'calls': receipt.get('calls', [])})
+        self.reload = None
+
+    def again(self):
+        """Back to the scene-begin snapshot for the control case (settings stay as poked; restored at the end)."""
+        self.reload()
+
+    # an order the game may refuse is a reading (the row decides), not a staging fault
+    SOFT = ('jawa/order_pawn', 'jawa/flowworks_job_probe', 'jawa/ordered_job')
+
+    def call(self, tool, **kw):
+        r = self.B.call(tool, **kw)
+        self.r['calls'].append({'tool': tool, 'args': kw, 'result': r})
+        if isinstance(r, dict):
+            require(tool in self.SOFT or r.get('success') is not False, '%s refused: %s' % (tool, r))
+        return r
+
+    def sc(self, typ, method, arg=''):
+        r = self.B.call('jawa/static_call', type=typ, method=method, args=arg)
+        self.r['calls'].append({'tool': 'jawa/static_call', 'args': [typ, method, arg], 'result': r})
+        return str((r or {}).get('result', 'REFUSED: no result %s' % r))
+
+    def setting(self, name, value, typ=SETTINGS):
+        if (typ, name) not in self.prior:
+            self.prior[(typ, name)] = self.B.call('jawa/mod_settings_field', typeName=typ, field=name, action='get').get('value')
+        self.B.call('jawa/mod_settings_field', typeName=typ, field=name, action='set', value=str(value))
+
+    def restore_settings(self):
+        for (typ, name), v in self.prior.items():
+            self.B.call('jawa/mod_settings_field', typeName=typ, field=name, action='set', value=str(v))
+
+    def ticks(self, n):
+        self.B.call('rimworld/step_game_ticks', ticks=n, pauseFirst=True, timeoutMs=600000)
+
+    def pulse(self, n):
+        self.B.call('jawa/flowworks_pulse', count=n, x=0, z=0, w=0, h=0, includeBodies=False)
+
+    def dig(self, cells, levels, water_m=-1):
+        for c in cells:
+            self.call('jawa/flowworks_excavation_drive', x=c[0], z=c[1], deepenLevels=levels, setBodyWaterM=water_m)
+
+    def fill(self, cells, metres, fluid):
+        for c in cells:
+            txt = self.sc(FLUIDID, 'ProofFillWithFluid', '%d,%d,%g,%s' % (c[0], c[1], metres, fluid))
+            require(txt.startswith('FILLED'), 'fill %s with %s: %s' % (c, fluid, txt))
+
+    def cells(self, cells):
+        xs, zs = [c[0] for c in cells], [c[1] for c in cells]
+        r = self.call('jawa/flowworks_excavation_rect', x=min(xs), z=min(zs), w=max(xs) - min(xs) + 1, h=max(zs) - min(zs) + 1)
+        m = {(q['x'], q['z']): q for q in r.get('rows') or []}
+        return [m.get(c, {}) for c in cells]
+
+    def dl(self, cells):
+        return [q.get('dl') for q in self.cells(cells)]
+
+    def pawn(self, kind, at, faction):
+        r = self.call('jawa/spawn_pawn', kindDef=kind, x=at[0], z=at[1], faction=faction, count=1, xenotype='Baseliner')
+        ids = [p['id'] for p in r.get('pawns', [])]
+        require(len(ids) == 1, 'spawn failed: %s' % r)
+        return ids[0]
+
+    def walk(self, pid, at, wait=1500):
+        return self.call('jawa/order_pawn', pawnId=pid, x=at[0], z=at[1], waitTicks=wait, draft=True)
+
+    def shot(self, tag, at, w=12, h=12):
+        self.B.call('rimworld/screenshot_cell_rect', x=at[0], z=at[1], width=w, height=h, fileName='%s_%s' % (self.r['scene'], tag),
+                    suppressMessage=True)
+
+    def row(self, rid, ok, detail, unmeasured=False):
+        self.r['rows'].append({'id': rid, 'status': 'UNMEASURED' if unmeasured else ('PASS' if ok else 'FAIL'),
+                               'kind': 'HARNESS' if unmeasured else 'MOD', 'detail': str(detail)[:400]})
+
+    def done(self):
+        self.r['status'] = 'PASS' if self.r['rows'] and all(x['status'] == 'PASS' for x in self.r['rows']) else 'FAIL'
+        return self.r
+
+
+def _line(x, z, n, dx=1, dz=0):
+    return [(x + i * dx, z + i * dz) for i in range(n)]
+
+
+def _run(name, body):
+    """Every scene: snapshot, body(stage), restore (settings, then the snapshot reload) even on an assertion."""
+    def scene(B, snapshot, reload_snapshot, receipt):
+        S = _Stage(B, receipt, name)
+        S.reload = reload_snapshot
+        snapshot()
+        try:
+            body(S)
+        except AssertionError as e:
+            S.row(name + '_staging', False, repr(e), unmeasured=True)
+        finally:
+            S.restore_settings()
+            reload_snapshot()
+        return S.done()
+    scene.__name__ = name
+    return scene
+
+
+def _fill_front(S):
+    a, b = _line(O[0], O[1], 12), _line(O[0], O[1] + 4, 12)
+    S.dig(a + b, 4)                                            # D2 = four half-metre notches
+    S.row('FF_start_dry', all(v in (0, None) for v in S.dl(a + b)) and None not in S.dl(a + b), S.dl(a + b))
+    seen = []
+    S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.fill([(O[0] - 1, O[1] + 4)], 2.0, TAR)
+    for _ in range(12):
+        S.pulse(1); seen.append((S.dl(a), S.dl(b)))
+    front = [sum(1 for v in w if v) for w, _ in seen], [sum(1 for v in t if v) for _, t in seen]
+    S.row('FF_front_cell_by_cell', all(y - x <= 2 for x, y in zip(front[0], front[0][1:])) and front[0][-1] == 12, front[0])
+    S.row('FF_tar_behind_water', all(t <= w for w, t in zip(*front)), front)
+    banks = S.dl(_line(O[0], O[1] + 1, 12) + _line(O[0], O[1] + 3, 12))
+    S.row('FF_banks_dry', all(not v for v in banks), banks)
+    S.shot('front', O, 14, 6)
+
+
+def _one_surface(S):
+    canal = _line(O[0], O[1], 10)
+    pit = [(O[0] + 10 + i, O[1] + j) for i in range(3) for j in range(-1, 2)]
+    S.dig(canal, 2); S.dig(pit, 8)
+    S.fill([(O[0] - 1, O[1])], 1.5, WATER)
+    S.pulse(30); S.ticks(5000)                                 # two game hours
+    lv = S.sc(NSP, 'ProofLevelSurface', '%d,%d,%d,%d' % (O[0], O[1] - 1, 13, 3))
+    S.row('ONE_level_every_cell', 'spread=0' in lv or 'ok=True' in lv, lv)
+    S.call('jawa/spawn_batch', ops='RM_Sluice:%d,%d' % (O[0] + 5, O[1]))
+    S.pulse(30)
+    S.row('ONE_control_sluice_splits', len(set(S.dl(canal[:4]) + S.dl(canal[6:]))) > 1, (S.dl(canal[:4]), S.dl(canal[6:])))
+
+
+def _source_pays(S):
+    pond = [(O[0] + i, O[1] + j) for i in range(20) for j in range(10)]
+    moat = _line(O[0], O[1] + 12, 60)
+    before = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5))
+    S.dig(moat, 4); S.pulse(60)
+    after = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5))
+    S.row('SRC_pond_drops', before != after, (before, after))
+    S.call('jawa/spawn_batch', ops='RM_FlowSink:%d,%d' % (O[0] + 19, O[1] + 9))
+    S.pulse(200)
+    S.row('SRC_flow_stops_when_empty', all(not v for v in S.dl(pond[:20])), S.dl(pond[:20]))
+    S.call('jawa/weather_set', weather='Rain', lockWeather=True)
+    S.ticks(5 * 60000)
+    S.row('SRC_refill_visible', any(S.dl(pond)), S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5)))
+    S.call('jawa/weather_set', unlock=True)
+    lake = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 70, O[1]))
+    S.row('SRC_lake_reads_endless', 'ndless' in lake, lake)
+
+
+def _pawn_height(S):
+    pads = _line(O[0], O[1], 17)
+    for i, c in enumerate(pads):
+        S.dig([c], i)
+    col = S.pawn('Colonist', (O[0] - 2, O[1]), 'player')
+    got = []
+    for i, c in enumerate(pads):
+        S.walk(col, c, 400); got.append(kv(S.sc(EXC, 'ProofPawnSink', col)).get('sink'))
+    S.row('PH_offset_follows_depth', all(g is not None for g in got) and [float(g) for g in got] == sorted(float(g) for g in got), got)
+    S.fill(pads, 2.0, WATER); S.walk(col, pads[-1], 1500)
+    sw = S.sc(NSP, 'ProofReadout', '%d,%d' % pads[-1])
+    S.row('PH_swims_and_tires_at_2m', 'swim' in sw.lower(), sw)
+    S.walk(col, (O[0], O[1] - 3), 400)
+    ctl = kv(S.sc(EXC, 'ProofPawnSink', col)).get('sink')
+    S.row('PH_control_undug_no_offset', ctl is not None and abs(float(ctl)) < 1e-3, ctl)
+
+
+def _hose_look(S):
+    S.call('jawa/spawn_batch', ops='RM_LiquidPump:%d,%d' % O)
+    S.call('jawa/spawn_batch', ops='RM_HoseReel:%d,%d' % (O[0] + 10, O[1]))
+    on = S.sc(NSP, 'ProofPump', '%d,%d' % O)
+    S.shot('flowing', O, 14, 6)
+    S.row('HOSE_plump_when_flowing', 'running=True' in on, on)
+    S.call('jawa/static_call', type=NSP, method='ProofPump', args='%d,%d;draw' % O)
+    S.shot('stopped', O, 14, 6)
+    off = S.sc(NSP, 'ProofPump', '%d,%d' % O)
+    S.row('HOSE_flat_when_not', 'running=False' in off, off)
+
+
+def _trench_cover(S):
+    trench = _line(O[0], O[1], 6); pit = [(O[0] + 8 + i, O[1] + j) for i in range(2) for j in range(2)]
+    S.dig(trench, 4); S.dig(pit, 8)
+    col = S.pawn('Colonist', trench[2], 'player')
+    S.call('jawa/fire_raid', points=400, faction='Pirate', strategy='ImmediateAttack')
+    S.ticks(2500)
+    cov = S.sc(EXC, 'ProofCover', '%d,%d' % trench[2])
+    S.row('TR_trench_pawn_covered', 'covered=True' in cov, cov)
+    inpit = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,2,2' % pit[0])
+    S.row('TR_no_raider_shelters_in_pit', not inpit.get('pawns'), inpit.get('pawns'))
+    S.walk(col, (O[0], O[1] + 4), 300)
+    S.row('TR_control_open_ground_no_cover', 'covered=True' not in S.sc(EXC, 'ProofCover', '%d,%d' % (O[0], O[1] + 4)), 'open ground')
+
+
+def _ice(S):
+    pond = [(O[0] + i, O[1] + j) for i in range(5) for j in range(5)]
+    S.dig(pond, 2); S.fill(pond, 1.0, WATER)
+    S.sc(NSP, 'ProofStageBasin', '%d,%d,5,5;freeze' % O)
+    col = S.pawn('Colonist', (O[0] - 2, O[1]), 'player')
+    r = S.call('jawa/flowworks_job_probe', pawnId=col, kind='dig', x=O[0], z=O[1], forced=True)
+    S.ticks(5000)
+    ice = S.call('jawa/list_things', defName='RM_CrushedIce', rect='%d,%d,7,7' % (O[0] - 1, O[1] - 1))
+    S.row('ICE_cut_leaves_crushed_ice', bool(ice.get('things')), (r, ice.get('things')))
+    S.ticks(30000)
+    S.row('ICE_melts_back_into_pond', S.dl([O])[0] not in (0, None), S.dl([O]))
+
+
+def _moat_raid(S):
+    moat = [(O[0] + i, O[1]) for i in range(20)] + [(O[0] + i, O[1] + 1) for i in range(20)]
+    S.dig(moat, 8); S.fill(moat, 2.0, WATER)
+    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d' % (O[0] + 10, O[1]))
+    S.call('jawa/spawn_batch', ops='RM_Sluice:%d,%d' % (O[0] + 20, O[1]))
+    S.call('jawa/spawn_batch', ops='RM_LiquidTank:%d,%d' % (O[0] + 5, O[1] + 4))
+    S.sc(NSP, 'ProofTank', '%d,%d;Store;RM_Liquid_Chemfuel;400' % (O[0] + 5, O[1] + 4))
+    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack')
+    S.ticks(3000)
+    swim = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,20,2' % O, includeHealth=True)
+    S.row('MOAT_raiders_swim', bool(swim.get('pawns')), swim.get('pawns'))
+    S.sc(NSP, 'ProofDrainGate', '%d,%d;open' % (O[0] + 20, O[1])); S.pulse(80)
+    S.row('MOAT_drains_fast', all(not v for v in S.dl(moat)), S.dl(moat)[:8])
+    held = [S.sc(NSP, 'ProofCaptureDown', p['id']) for p in (swim.get('pawns') or [])[:2]]
+    S.row('MOAT_two_held_and_captured', len(held) == 2 and all('prisoner=True' in h for h in held), held)
+    S.sc(NSP, 'ProofPump', '%d,%d;pour' % (O[0] + 5, O[1] + 3)); S.pulse(40)
+    S.row('MOAT_chemfuel_pumped', any(S.dl(moat)), S.sc(NSP, 'ProofTank', '%d,%d' % (O[0] + 5, O[1] + 4)))
+    _toss(S, moat[3], 'MOAT_moat_burns')
+    S.again()                                                  # control: the drawbridge lowered, nobody swims
+    S.dig(moat, 8); S.fill(moat, 2.0, WATER)
+    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d' % (O[0] + 10, O[1]))
+    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack'); S.ticks(3000)
+    S.row('MOAT_control_bridge_down_no_swim', 'swim' not in S.sc(NSP, 'ProofReadout', '%d,%d' % moat[10]).lower(), 'bridge down')
+
+
+def _toss(S, target, rid, want_fire=True):
+    """The toss-flame order (inv_toss_flame; no such order exists in the mod today, so the lit row is red)."""
+    col = S.pawn('Colonist', (target[0], target[1] + 4), 'player')
+    r = S.call('jawa/ordered_job', pawnId=col, jobDef='RM_TossFlame', targetAX=target[0], targetAZ=target[1])
+    S.ticks(1200)
+    fire = S.call('jawa/list_things', defName='Fire', rect='%d,%d,1,1' % target)
+    S.row(rid, r.get('success') is not False and bool(fire.get('things')) == want_fire, (r, fire.get('things')))
+    return col
+
+
+def _toss_flame(S):
+    fuel, water = _line(O[0], O[1], 8), _line(O[0], O[1] + 6, 8)
+    S.dig(fuel + water, 4); S.fill(fuel, 1.0, FUEL); S.fill(water, 1.0, WATER)
+    _toss(S, fuel[6], 'TOSS_picked_square_lights_first')
+    _toss(S, water[6], 'TOSS_control_water_twin_stays_dark', want_fire=False)
+
+
+def _wetting(S):
+    canal, dry = _line(O[0], O[1], 12), _line(O[0], O[1] + 10, 12)
+    S.call('jawa/set_terrain_batch', ops='%d,%d,14,16' % (O[0] - 1, O[1] - 3), terrainDef='Sand')
+    S.dig(canal + dry, 4); S.fill(canal, 1.5, WATER)
+    S.call('jawa/set_plants', ops='%d,%d,12,5;%d,%d,12,5' % (O[0], O[1] - 3, O[0], O[1] + 7), density=1.0, growth=0.1)
+    S.ticks(5 * 60000)
+    probe = [S.sc('RimMandrake.FlowWorks.RM_Wetting', 'ProbeWetness', '%d,%d' % (O[0] + 5, O[1] + d)) for d in (1, 2, 3)]
+    S.row('WET_two_squares_then_none', 'wetted=True' in probe[0] and 'wetted=True' in probe[1] and 'wetted=False' in probe[2], probe)
+    S.row('WET_control_dry_canal', 'wetted=False' in S.sc('RimMandrake.FlowWorks.RM_Wetting', 'ProbeWetness', '%d,%d' % (O[0] + 5, O[1] + 11)), 'dry twin')
+    S.row('WET_never_standing_water', all(not v for v in S.dl(_line(O[0], O[1] + 1, 12))), S.dl(_line(O[0], O[1] + 1, 12)))
+
+
+def _pit_trap(S, fall=True):
+    pit = [(O[0] + i, O[1] + j) for i in range(3) for j in range(3)]
+    S.dig(pit, 8)
+    S.call('jawa/spawn_batch', ops=';'.join('RM_Spikes:%d,%d' % c for c in pit))
+    if fall:
+        S.sc(EXC, 'ProofCover', '%d,%d;cover' % pit[4])
+    S.call('jawa/set_plants', ops='%d,%d,4,2' % (O[0] - 1, O[1] - 3), density=1.0, growth=1.0)
+    S.call('jawa/fire_raid', points=700, faction='Pirate', strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0] + 1, O[1] - 20))
+    S.ticks(4000)
+    return pit
+
+
+def _fetch_fallen(S):
+    pit = _pit_trap(S)
+    fallen = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or []
+    S.row('FETCH_two_fell', len(fallen) >= 2, fallen)
+    lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect='%d,%d,5,5' % (O[0] - 1, O[1] - 1))
+    S.row('FETCH_ladder_into_pit', bool(lad.get('things')), lad.get('things'))
+    return pit
+
+
+def _fetch_fallen_scene(S):
+    _fetch_fallen(S)
+    S.again(); _pit_trap(S, fall=False)  # control: the cover left off, so no one falls
+    lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect='%d,%d,5,5' % (O[0] - 1, O[1] - 1))
+    S.row('FETCH_control_none_fallen_no_ladder', not lad.get('things'), lad.get('things'))
+
+
+def _pit_trap_raid(S):
+    pit = _fetch_fallen(S)
+    for p in (S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or [])[:2]:
+        S.row('PTR_fallen_become_prisoners', 'prisoner=True' in S.sc(NSP, 'ProofCaptureDown', p['id']), p['id'])
+    S.again(); _pit_trap(S, fall=False)
+    fell = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or []
+    S.row('PTR_control_open_pit_no_one_falls', not fell, fell)
+
+
+def _islands(S):
+    span = _line(O[0], O[1], 16)
+    S.dig(span, 8); S.fill(span, 2.0, WATER)
+    S.call('jawa/spawn_batch', ops='RM_SuspensionBridge:%d,%d' % span[0])
+    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d;RM_DrawbridgeGate:%d,%d' % (span[0] + span[-1]))
+    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack', spawnCenter='%d,%d' % span[8])
+    S.ticks(5000)
+    on = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,16,1' % O).get('pawns') or []
+    gates = S.call('jawa/list_things', defName='RM_DrawbridgeGate', rect='%d,%d,17,1' % (O[0] - 1, O[1])).get('things') or []
+    S.row('ISL_winch_destroyed_and_escape', len(gates) < 2 and not on, (len(gates), on))
+
+
+def _walk(S):
+    S.dig(_line(O[0], O[1], 20), 4); S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.pulse(40)
+    a = S.call('jawa/flowworks_engine_state')
+    S.setting('depthEngineEnabled', False); S.ticks(600); S.setting('depthEngineEnabled', True); S.ticks(600)
+    b = S.call('jawa/flowworks_engine_state')
+    S.row('WALK_toggle_off_on_digest_matches', {k: a.get(k) for k in ('stock', 'cells')} == {k: b.get(k) for k in ('stock', 'cells')}, (a, b))
+
+
+def _garden(S):
+    _wetting(S)
+    S.call('jawa/spawn_batch', ops='RM_LiquidDrill:%d,%d;RM_LiquidPump:%d,%d;RM_SprinklerHead:%d,%d;RM_LiquidTank:%d,%d;RM_PipeFaucet:%d,%d'
+           % (O[0] + 14, O[1], O[0] + 15, O[1], O[0] + 14, O[1] - 3, O[0] + 16, O[1] + 2, O[0] + 17, O[1] + 2))
+    S.ticks(60000)
+    t = S.sc(NSP, 'ProofTank', '%d,%d' % (O[0] + 16, O[1] + 2))
+    S.row('GARDEN_hose_fills_tank', 'units=0' not in t and 'REFUSED' not in t, t)
+
+
+def _geyser_tub(S):
+    gey = S.call('jawa/list_things', defName='SteamGeyser', rect='0,0,250,250', limit=1).get('things') or []
+    require(gey, 'no SteamGeyser on the prepared map')
+    c = (gey[0]['x'], gey[0]['z']); pit = [(c[0] + i, c[1] + j) for i in range(-1, 3) for j in range(-1, 3)]
+    S.dig(pit, 8); S.fill(pit, 1.0, WATER); S.pulse(20)
+    ins = S.call('jawa/inspect_string', rect='%d,%d,1,1' % c)
+    S.row('TUB_reads_hot_tub', 'Hot tub' in str(ins) or 'Hot Tub' in str(ins), str(ins)[:200])
+    col = S.pawn('Colonist', (c[0] + 4, c[1]), 'player'); S.ticks(30000)
+    S.row('TUB_pawn_soaks_bonus', 'HotSpring' in str(S.call('jawa/pawn_need', pawn=col, action='list')), col)
+
+
+def _coating_wash(S):
+    """inv_liquid_coating, owed under RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS: red until the condition exists."""
+    oil, water = _line(O[0], O[1], 4), _line(O[0] + 6, O[1], 4)
+    S.dig(oil + water, 2); S.fill(oil, 0.5, OIL); S.fill(water, 0.5, WATER)
+    col = S.pawn('Colonist', (O[0] - 1, O[1]), 'player')
+    S.walk(col, oil[-1], 600); S.walk(col, (O[0] + 5, O[1] + 2), 400)
+    h = S.call('jawa/list_pawns', faction='player', rect='%d,%d,1,1' % (O[0] + 5, O[1] + 2), includeHealth=True)
+    S.row('COAT_named_condition', 'Coated' in str(h) or 'coated' in str(h), str(h)[:200])
+    S.walk(col, water[-1], 600)
+    h2 = S.call('jawa/list_pawns', faction='player', rect='%d,%d,1,1' % water[-1], includeHealth=True)
+    S.row('COAT_water_washes_it', 'oated' not in str(h2), str(h2)[:200])
+
+
+scene_fill_front = _run('scene_fill_front', _fill_front)
+scene_one_surface = _run('scene_one_surface', _one_surface)
+scene_source_pays = _run('scene_source_pays', _source_pays)
+scene_pawn_height = _run('scene_pawn_height', _pawn_height)
+scene_hose_look = _run('scene_hose_look', _hose_look)
+scene_trench_cover = _run('scene_trench_cover', _trench_cover)
+scene_ice = _run('scene_ice', _ice)
+scene_moat_raid = _run('scene_moat_raid', _moat_raid)
+scene_toss_flame = _run('scene_toss_flame', _toss_flame)
+scene_wetting = _run('scene_wetting', _wetting)
+scene_fetch_fallen = _run('scene_fetch_fallen', _fetch_fallen_scene)
+scene_islands = _run('scene_islands', _islands)
+scene_walk_moat_season = _run('scene_walk_moat_season', _walk)
+scene_pit_trap_raid = _run('scene_pit_trap_raid', _pit_trap_raid)
+scene_garden = _run('scene_garden', _garden)
+scene_geyser_tub = _run('scene_geyser_tub', _geyser_tub)
+scene_coating_wash = _run('scene_coating_wash', _coating_wash)
+STAGE3_SCENES = {f.__name__: f for f in (scene_fill_front, scene_one_surface, scene_source_pays, scene_pawn_height,
+                 scene_hose_look, scene_trench_cover, scene_ice, scene_moat_raid, scene_toss_flame, scene_wetting,
+                 scene_fetch_fallen, scene_islands, scene_walk_moat_season, scene_pit_trap_raid, scene_garden,
+                 scene_geyser_tub, scene_coating_wash)}
+
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
     ap.add_argument('--absolute', action='store_true')
     ap.add_argument('--abort', action='store_true')
+    ap.add_argument('--scene', default='scene_hole_prison', choices=['scene_hole_prison'] + sorted(STAGE3_SCENES))
     a = ap.parse_args()
     import validation_core as V
     import test_site_saves as T
     from game_paths import SAVES
     B = V.Bridge()
     res = {'script': __file__, 'started': time.time(), 'mode': 'live', 'calls': []}
-    name = 'WHITTLE_HolePrison_Begin_' + time.strftime('%Y%m%dT%H%M%S')
+    name = ('WHITTLE_HolePrison_Begin_' if a.scene == 'scene_hole_prison' else 'FW_%s_Begin_' % a.scene) + time.strftime('%Y%m%dT%H%M%S')
     try:
         loaded = T.load_site(B.call, 'calm')
         res['site'] = loaded
@@ -398,6 +794,11 @@ def main():
             r = T.load_site(B.call, 'calm', name=occupied, check=False, map_controls=('modal_broker',))
             require(r['verified'], 'occupied reload failed: '+str(r))
             return r
+        if a.scene != 'scene_hole_prison':
+            out = STAGE3_SCENES[a.scene](B, snapshot, reload_snapshot, res)
+            require(out['status'] == 'PASS', 'rows not all PASS: %s' % [(x['id'], x['status']) for x in out['rows']])
+            res['status'] = 'PASS'
+            return 0
         scene_hole_prison(B, snapshot, reload_snapshot, res, relative=not a.absolute, abort=a.abort,
                           save_occupied=save_occupied, load_occupied=load_occupied,
                           expected_sha256=hashlib.sha256((HERE.parent/'Assemblies/RimMandrakeFlowWorks.dll').read_bytes()).hexdigest())

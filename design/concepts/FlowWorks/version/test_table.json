@@ -1,7 +1,7 @@
 {
  "mod": "FlowWorks",
  "version": "0.1.0",
- "made": "2026-11-14T14:29:10-08:00",
+ "made": "2026-11-14T14:38:32-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
  "stages": {
   "2": "preflight (a program)",
@@ -2738,8 +2738,8 @@
     "ok": 11,
     "fail": 0,
     "rc": 0,
-    "seconds": 531,
-    "note": "one full C# SelfTest run, read per case; seconds is the whole suite's"
+    "seconds": 232,
+    "note": "one C# SelfTest run with --only PitLook1114*,GeyserTub* (18 cases, all ok, rc 0), 2026-11-14 ~2:30 PM PST; seconds is the run's"
    }
   },
   "PY_FLOWWORKS_GEYSER_TUB": {
@@ -2856,77 +2856,102 @@
    "id": "T_WETTING_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "cells within two squares of a filled canal read wetted, the third does not; a wetted cell holds no liquid and costs no wading; fast growth spends wetting; plants drink a flood down",
    "reads": [
     "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
-    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs"
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.2,
+    "tail": "RED 3: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: \"Two squares away from the canal\"); wetting: a wetted cell is never standing water: the wetting class writes no liquid",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetting"
   },
   "T_WETNESS_PROBE_OFFLINE": {
    "id": "T_WETNESS_PROBE_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "the wetness probe answers differently on a hand-wetted and a dry cell, and refuses when wetting is off",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs"
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "with T_WETTING_OFFLINE",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "RED 1: wetness_probe: a static_call probe reads one cell's wetting (\"x,z\" -> \"WETTING ... wetted=b\")",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetness_probe"
   },
   "T_TOSS_FLAME_OFFLINE": {
    "id": "T_TOSS_FLAME_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "the toss-a-flame order: target validation (burnable liquid cell, rim reachable), first fire on the picked cell, a water cell does not light",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source"
+    "src/RimMandrake/FlowWorks/Source",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "RED 3: toss_flame: a JobDef for the toss-flame order; toss_flame: its JobDriver walks to the rim and lights the picked square; toss_flame: the player can give it: a float-menu or gizmo offers it",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
   },
   "T_FETCH_FALLEN_OFFLINE": {
    "id": "T_FETCH_FALLEN_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "raider rescue plan: comrade in a pit -> chop, carry, place a ladder, climb down; under fire -> retreat leaving the fallen",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccessMath.cs"
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccessMath.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "RED 2: fetch_fallen: a raider job to fetch a comrade held in a pit; fetch_fallen: its target is a pawn of the raider's own faction held in a pit",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
   },
   "T_PRISON_CARE_OFFLINE": {
    "id": "T_PRISON_CARE_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "a held pawn in a drained, enclosed pit counts as a prisoner without a bed; needs are met; a bed elsewhere does not move him",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "tail": "PASS",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only prison_care"
   },
   "T_DIG_TIME_ARITHMETIC": {
    "id": "T_DIG_TIME_ARITHMETIC",
@@ -2994,13 +3019,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_fill_front; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_fill_front --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_fill_tiers": {
@@ -3034,13 +3059,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_one_surface; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_one_surface --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_source_pays": {
@@ -3054,13 +3079,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_source_pays; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_pays --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_canal_fire": {
@@ -3114,13 +3139,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_pawn_height; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_pawn_height --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_pit_reads": {
@@ -3214,13 +3239,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_hose_look; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_hose_look --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_one_network": {
@@ -3254,13 +3279,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_trench_cover; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_trench_cover --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_hung_bridge": {
@@ -3294,13 +3319,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_ice; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_ice --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_river": {
@@ -3334,13 +3359,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_moat_raid; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_moat_raid --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_hole_prison": {
@@ -3374,13 +3399,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_toss_flame; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_toss_flame --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_wetting": {
@@ -3394,13 +3419,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_wetting; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_wetting --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_fetch_fallen": {
@@ -3414,13 +3439,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_fetch_fallen; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_fetch_fallen --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
    "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_islands": {
@@ -3434,13 +3459,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_islands; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_islands --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_walk": {
@@ -3454,13 +3479,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_walk_moat_season; bridge held, full list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_moat_season --out <json>  (bridge held; his full list)",
    "why_game": "the breadth failure only shows on his full list with every system at once, and a reload from a mid-way save",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_pit_trap_raid": {
@@ -3474,13 +3499,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_pit_trap_raid; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_pit_trap_raid --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "sc_garden": {
@@ -3494,13 +3519,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_garden; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_garden --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "offline only: never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "LOOK_STAGE8": {
@@ -3556,29 +3581,34 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_geyser_tub; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_geyser_tub --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "the Hot Tub mouse-over and a pawn choosing to soak exist only in a played map; the minimal list plus FlowWorks isolates it",
    "owed_under": "RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "UNRUN: offline only, never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "T_LIQUID_COATING_OFFLINE": {
    "id": "T_LIQUID_COATING_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "(specified, Stage 3)",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "a pawn leaving a cell of oil, tar or blood gains that liquid's coating condition; a step into normal water removes it; plain water adds none",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/RM_PitFillEffects.cs"
+    "src/RimMandrake/FlowWorks/Source/RM_PitFillEffects.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built"
-   }
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "RED 3: coating: a named condition for a staining coat; coating: leaving oil, tar, blood or another staining liquid applies it; coating: normal water washes it off",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
   },
   "sc_coating_wash": {
    "id": "sc_coating_wash",
@@ -3591,13 +3621,13 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py  (entry scene_coating_wash; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_coating_wash --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "the pawn's drawn look and his health tab exist only in a played map; the minimal list plus FlowWorks isolates it",
    "owed_under": "RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS",
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "UNRUN: offline only, never the game in this run; entry function absent"
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
   "T_PIT_LOOK_1114": {
@@ -3611,8 +3641,14 @@
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLook1114*",
    "runs_today": {
-    "ran": false,
-    "why": "added 2026-11-14 Stage 3; filled by the next run"
+    "ran": true,
+    "cases": 7,
+    "seen": 7,
+    "ok": 7,
+    "fail": 0,
+    "rc": 0,
+    "seconds": 232,
+    "note": "one C# SelfTest run with --only PitLook1114*,GeyserTub* (18 cases, all ok, rc 0), 2026-11-14 ~2:30 PM PST; seconds is the run's"
    }
   },
   "PIT_LOOK_1114_LIVE": {
@@ -3691,7 +3727,7 @@
     "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3715,7 +3751,7 @@
     "PY_PUMP_DRAW_CONSERVES"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3758,8 +3794,8 @@
     "T_WETTING_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_liquid_roster",
@@ -3965,7 +4001,7 @@
     "T_TRENCH"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3987,7 +4023,7 @@
     "PY_SWIM_SHORE_REACH"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4015,7 +4051,7 @@
     "PY_HOSE_FITTINGS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4168,7 +4204,7 @@
     "T_MAP_CONTROLS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4212,7 +4248,7 @@
     "PY_VALIDATION_V2_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4323,8 +4359,8 @@
     "T_PRISON",
     "T_PRISON_CARE_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4344,8 +4380,8 @@
     "T_TOSS_FLAME_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_raider_fetch_fallen",
@@ -4364,8 +4400,8 @@
     "T_FETCH_FALLEN_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "canal_reads_as_dug",
@@ -4423,7 +4459,7 @@
     "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4516,7 +4552,7 @@
     "PY_FLOWWORKS_FLOOD_HOUR_CADENCE"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4538,7 +4574,7 @@
     "PY_PUMP_DRAW_CONSERVES"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4598,7 +4634,7 @@
     "PY_SWIM_SHORE_REACH"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4795,7 +4831,7 @@
     "T_TRENCH"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4836,7 +4872,7 @@
     "T_ICE"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4890,7 +4926,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4911,8 +4947,8 @@
     "T_PRISON",
     "T_PRISON_CARE_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4932,8 +4968,8 @@
     "T_TOSS_FLAME_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "canal_wets_two_squares",
@@ -4952,8 +4988,8 @@
     "T_WETTING_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "raiders_fetch_their_fallen",
@@ -4972,8 +5008,8 @@
     "T_FETCH_FALLEN_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "island_bridges_trap_and_fail",
@@ -4994,7 +5030,7 @@
     "PY_FLOWWORKS_SUSPENSION_LINKED"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -5046,7 +5082,7 @@
     "PY_PUMP_DRAW_CONSERVES"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -5122,8 +5158,8 @@
     "T_WETTING_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "wetness_probe",
@@ -5139,8 +5175,8 @@
     "T_WETNESS_PROBE_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "walk_moat_season",
@@ -5157,7 +5193,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -5191,7 +5227,7 @@
     "PY_FLOWWORKS_GEYSER_TUB"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -5215,8 +5251,8 @@
     "T_LIQUID_COATING_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   }
  ]
 }

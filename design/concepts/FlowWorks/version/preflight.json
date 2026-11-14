@@ -2,7 +2,7 @@
  "mod": "FlowWorks",
  "version": "0.1.0",
  "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
- "at": "2026-11-14T14:29:36-08:00",
+ "at": "2026-11-14T14:38:50-08:00",
  "dump": {
   "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
   "provenance": {
@@ -11,9 +11,9 @@
    "defs_total": "59262"
   }
  },
- "seconds": 0.27,
+ "seconds": 0.26,
  "verdict": "refuse",
- "refusals": 23,
+ "refusals": 7,
  "checks": [
   {
    "id": "C1_bars_complete",
@@ -44,7 +44,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "111 built tests",
+   "evidence": "117 built tests",
    "seconds": 0.0
   },
   {
@@ -52,7 +52,7 @@
    "what": "every file a test reads exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "280 reads",
+   "evidence": "286 reads",
    "seconds": 0.0
   },
   {
@@ -69,150 +69,38 @@
     },
     {
      "line": "T_FETCH_FALLEN_OFFLINE",
-     "evidence": "specified, not built (deciding 2 bars: inv_raider_fetch_fallen, raiders_fetch_their_fallen)",
-     "smallest_fix": "Stage 3 builds it, failing first",
+     "evidence": "red today (rc 1): RED 2: fetch_fallen: a raider job to fetch a comrade held in a pit; fetch_fallen: its target is a pawn of the raider's own faction held in a pit",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
-     "would_pass": "it runs and is green"
+     "would_pass": "rc 0"
     },
     {
      "line": "T_LIQUID_COATING_OFFLINE",
-     "evidence": "specified, not built (deciding 1 bars: inv_liquid_coating)",
-     "smallest_fix": "Stage 3 builds it, failing first",
+     "evidence": "red today (rc 1): RED 3: coating: a named condition for a staining coat; coating: leaving oil, tar, blood or another staining liquid applies it; coating: normal water washes it off",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
-     "would_pass": "it runs and is green"
-    },
-    {
-     "line": "T_PRISON_CARE_OFFLINE",
-     "evidence": "specified, not built (deciding 2 bars: inv_prison_no_bed, drained_hole_is_a_prison)",
-     "smallest_fix": "Stage 3 builds it, failing first",
-     "route": "Stage 3",
-     "would_pass": "it runs and is green"
+     "would_pass": "rc 0"
     },
     {
      "line": "T_TOSS_FLAME_OFFLINE",
-     "evidence": "specified, not built (deciding 2 bars: inv_toss_flame, toss_flame_from_rim)",
-     "smallest_fix": "Stage 3 builds it, failing first",
+     "evidence": "red today (rc 1): RED 3: toss_flame: a JobDef for the toss-flame order; toss_flame: its JobDriver walks to the rim and lights the picked square; toss_flame: the player can give it: a float-menu or gizmo offers it",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
-     "would_pass": "it runs and is green"
+     "would_pass": "rc 0"
     },
     {
      "line": "T_WETNESS_PROBE_OFFLINE",
-     "evidence": "specified, not built (deciding 1 bars: wetness_probe)",
-     "smallest_fix": "Stage 3 builds it, failing first",
+     "evidence": "red today (rc 1): RED 1: wetness_probe: a static_call probe reads one cell's wetting (\"x,z\" -> \"WETTING ... wetted=b\")",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
-     "would_pass": "it runs and is green"
+     "would_pass": "rc 0"
     },
     {
      "line": "T_WETTING_OFFLINE",
-     "evidence": "specified, not built (deciding 3 bars: inv_irrigation, canal_wets_two_squares, wetting_is_not_flood)",
-     "smallest_fix": "Stage 3 builds it, failing first",
+     "evidence": "red today (rc 1): RED 3: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: \"Two squares away from the canal\"); wetting: a wetted cell is never standing water",
+     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
-     "would_pass": "it runs and is green"
-    },
-    {
-     "line": "sc_coating_wash",
-     "evidence": "in-game scene: entry scene_coating_wash absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_fetch_fallen",
-     "evidence": "in-game scene: entry scene_fetch_fallen absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_fill_front",
-     "evidence": "in-game scene: entry scene_fill_front absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_geyser_tub",
-     "evidence": "in-game scene: entry scene_geyser_tub absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_hose_look",
-     "evidence": "in-game scene: entry scene_hose_look absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_ice",
-     "evidence": "in-game scene: entry scene_ice absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_islands",
-     "evidence": "in-game scene: entry scene_islands absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_moat_raid",
-     "evidence": "in-game scene: entry scene_moat_raid absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_one_surface",
-     "evidence": "in-game scene: entry scene_one_surface absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_pawn_height",
-     "evidence": "in-game scene: entry scene_pawn_height absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_source_pays",
-     "evidence": "in-game scene: entry scene_source_pays absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_toss_flame",
-     "evidence": "in-game scene: entry scene_toss_flame absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_trench_cover",
-     "evidence": "in-game scene: entry scene_trench_cover absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_walk",
-     "evidence": "in-game scene: entry scene_walk_moat_season absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
-    },
-    {
-     "line": "sc_wetting",
-     "evidence": "in-game scene: entry scene_wetting absent from src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-     "smallest_fix": "build the entry (owed under FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP)",
-     "route": "Stage 3",
-     "would_pass": "the entry function exists"
+     "would_pass": "rc 0"
     }
    ],
    "evidence": "113 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
@@ -240,7 +128,7 @@
     }
    ],
    "evidence": "103 held rows in the files, 103 placed",
-   "seconds": 0.001
+   "seconds": 0.0
   },
   {
    "id": "C9_defs_real",
@@ -248,7 +136,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "11 names checked against 52793 defs/classes (dump defs.sqlite)",
-   "seconds": 0.186
+   "seconds": 0.183
   },
   {
    "id": "C10_mods_real",
@@ -272,7 +160,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "8 pinned files (stage.json is state, not a bar: exempt)",
-   "seconds": 0.01
+   "seconds": 0.008
   },
   {
    "id": "C13_scenes_prove_a_leaf",
@@ -287,8 +175,8 @@
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "7154 items known",
-   "seconds": 0.039
+   "evidence": "7155 items known",
+   "seconds": 0.034
   },
   {
    "id": "C15_tiers_consistent",
