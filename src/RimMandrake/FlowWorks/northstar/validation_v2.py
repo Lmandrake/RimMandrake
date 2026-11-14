@@ -15,9 +15,9 @@ no shrine/casket/trigger/hive/ruin/fog/hostile, read back after the load). --fre
 before; --current-map runs on whatever map is current; --site-save NAME picks another registered site.
     python3    src/RimMandrake/FlowWorks/northstar/validation_v2.py --compare A.json B.json
 
-Tier O (offline): O1 defs, O2 settings defaults, O3 UNBUILT register, O4 geometry, O5/O6 pulse
-oracle, O7 scene predictions, O8 schema lint, O9 shared source, O10 pit width, O-NEG (every offline
-check O1-O10 mutated in memory and shown able to go red) and
+Tier O (offline): O1 defs, O2 settings defaults, O3 UNBUILT register, O4 geometry, O5 pulse
+oracle, O7 scene predictions, O8 schema lint, O10 pit width, O-NEG (every offline check
+mutated in memory and shown able to go red) and
 O-LIVE-NEG (a clean --mock run is green, and each of MockBridge.FAULTS turns its live row red).
 Live (python.exe, flowworks tier, bridge held): the clean saved site (--fresh-map: a fresh quicktest map, main menu first),
 L preflight, site painted by the runner, S state (0 ticks), A/B/C/R flow phases through
@@ -34,10 +34,10 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
     DoPulse component walk (older than the rank pass) marked source cells in pulseVisited, shared
     across components, so the first-seeded component claimed the source and the other had no
     supplying source -> all keys equal -> only its inlet (fed directly by PickDonor) ever filled.
-    Fix: RM_StockMath.CollectComponent tracks sources per component (oracle claim_sources=False);
-    O9 + the C# SharedSource_* selftests guard it, and claim_sources=True must go red (O-NEG).
+    Fix: RM_StockMath.CollectComponent tracks sources per component; the C# SharedSource_* selftests
+    guard it (the offline O9 replay of the whole-notch walk went with that engine, 2026-11-13).
     LIMITED-body split rule: components resolve in excavatedCells order, so each pulse the
-    earlier-seeded channel's inlet is paid first; an odd stock gives it the extra level (O9: 3/2).
+    earlier-seeded channel's inlet is paid first.
   * The fixed engine (ddb473416) fills a channel FAR END FIRST: [0,0,0,1] -> [1,1,1,1] in n*D pulses,
     every compass direction, identical vectors (E2_*); reproduced on two fresh maps bit-for-bit.
   * A 1-cell pond at shipped recession supplied exactly ONE level, then receded (floor(4/5) = 0
@@ -202,14 +202,11 @@ def _ticks_per_tile(fluid):
     return _TPT.get(fluid, 60)
 
 
-# The shipped creep switches (waterFrontCreepEnabled, thickCreepEnabled; both default ON), as PulseOracle kwargs.
-CREEP_LIVE = dict(creep_water=True, creep_thick=True, level_surface=True, level_set=True)   # + levelBySurfaceEnabled, levelSetEnabled (default ON)
 # WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, "ruled exactly level" by card): the shipped engine counts
-# water in decilitres, one surface per connected body (levelExactEnabled, default ON). The live oracle, the mock game and
-# oracle_for are level_water's exact model; the live site follows the game's own setting (phase_site reads it).
+# water in decilitres, one surface per connected body. The live oracle, the mock game and oracle_for are level_water's
+# exact model (PulseOracle); the whole-notch model and its setting are deleted (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES).
 # V2 day 3 (2026-10-17, 32/24/5): the live oracle was still the whole-notch model, so every 0-tick flow row compared the
 # exact engine with the notch engine (replayed offline: VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG).
-LIVE_EXACT = True
 
 
 def fluid_moves(pulse, fluid):
@@ -221,77 +218,25 @@ def fluid_moves(pulse, fluid):
 
 
 class PulseOracle(object):
-    """A pure-Python port of the depth engine's pulse: RM_MapComponent_Excavation.DoPulse and
-    RM_FlowKernel's ResolveComponent / PickDonor / CompareDeepestFirst (cited by method name; line
-    numbers drift). Rain (ApplyRain) and recession (RM_LiquidStock.Recede) are modelled when switched
-    on; refill/restore are not. Deterministic by construction: recipients sorted (-D, cell index),
-    donors scanned N,E,S,W with strict '>'.
+    """A pure-Python model of the shipped exact-level pulse (RM_MapComponent_Excavation.DoPulse through RM_FlowKernel):
+    every dug square holds W decilitres (self.W), every limited pond a whole number of dL (bodies[b]["dl"]), and each
+    connected body is solved to ONE surface; northstar/level_water.py is the engine (exact_pulse) and its reference
+    (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES, owner 2026-10-17, ruled exactly level by card). F is the whole-notch view
+    (W // U) for readers that count notches. Rain is modelled when switched on (level_water.exact_rain).
 
-    NOT ported (shipped rules no current live scene reaches; the --mock game inherits the gaps):
-      * recession's topology filter -- RM_LiquidStock.PickRecedeCell rejects a cell whose removal
-        would split the body (RM_StockMath.LocalRemovalKeepsConnected); the oracle picks by
-        neighbours / centroid distance / index only;
-    A scene that brings that rule into play needs the port first.
+    NOT modelled: pond recession (RM_LiquidStock.Recede; `recession` is carried for the runner that toggles it, and no
+    square ever recedes here) and refill/restore. A scene that brings those into play needs the port first.
 
-    algo="old" is that engine as measured live 2026-10-01 (east/north channels oscillate).
-    algo="fixed" (default) is FLOWWORKS_CHANNEL_OSCILLATION_1's fix: a per-component flow order
-    gates cell-to-cell gifts and orders recipients (see _downstream). O6 proves it.
+    The whole-notch engine this class used to port (algo old/fixed, the flow order, water-front and thick creep, the
+    level-by-surface and level-set solves, the mouth top-up, the pond head rule) was deleted with the kernel's
+    (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES); so were the offline checks that drove only it (O6, O9, O11
+    and O5's notch cases)."""
 
-    VALIDATED once against live data (INT section 2): given plot D's geometry (5x5 limited pond,
-    12-cell D=3 channel running east, stock 125) it reproduces BOTH oscillating F vectors the
-    2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
-
-    def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
-                 recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False,
-                 level_set=False, head_rule=False, beds=None, level_exact=False):
+    def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, recession=False, beds=None):
         self.w, self.h = w, h
-        # WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): RM_FlowKernel
-        # levelExactEnabled. Every dug square holds W decilitres (self.W), every limited pond a whole number of dL
-        # (bodies[b]["dl"]), and each connected body is solved to ONE surface: northstar/level_water.py is the reference.
-        # F stays the whole-notch view (W // U) for the older readers.
-        self.level_exact = level_exact
         self.W = {}
-        # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner 2026-10-16: "It should slosh around until it levels, pond or canal or
-        # otherwise."): RM_FlowKernel.sourceDrawdown / HeadAllows. A limited body whose source cells carry beds (cell -> levels)
-        # has drawdown s (RM_PondDepthMath.Drawdown over its undug cells' bed histogram); a source gives a dug cell only while
-        # D - F >= s + 1 (s = 0 is today's rule). Default off, so every older scene is the pre-pond engine.
-        self.head_rule = head_rule
         self.beds = dict(beds or {})
-        # RM_FlowKernel creepWaterEnabled (CANAL_FRONT_FIX_WRONG_END_WETS_FIRST, shipped ON as
-        # waterFrontCreepEnabled) / creepEnabled (THICK_LIQUID_CREEP_1, thickCreepEnabled): a NON-source donor that
-        # RECEIVED a level this pulse cannot pass it on until the next pulse (water uses the water flag, a viscous
-        # fluid, stride > 1, the thick flag). Both default False so the offline INT/O6 bounds (n*D brigade) are the
-        # pre-creep engine; the LIVE oracles (oracle_for, the live tier, the mock) pass CREEP_LIVE.
-        self.creep_water, self.creep_thick = creep_water, creep_thick
-        # RM_FlowKernel levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, shipped ON): a donor gives when its
-        # surface (F - D; a source 0) stands above the recipient's, a drop of 1 only down the flow order. Default False so
-        # the older offline bounds stay the pre-surface engine; the LIVE oracles pass CREEP_LIVE, which carries it.
-        self.low = {}
-        self.level_surface = level_surface and algo == "fixed"   # the "old" engine predates it (fault mock included)
-        # RM_FlowKernel levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON, needs level_surface): each wet region + dry rim is
-        # SOLVED to its flat level (_levelset_regions); a drop of exactly 1 between two dug cells no longer moves in _pick.
-        self.level_set = level_set and self.level_surface
-        # RM_FlowKernel.TopUpWaterMouths (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME), on with creep_water. False replays the
-        # engine before it (the recorded live E2 vectors of 2026-10-12, O11), whose mouth read dry every other pulse.
-        self.mouth_top_up = True
-        self.ds, self.dk = {}, {}
-        self.received = {}                # cell -> pulse_n it last received a level
-        # WATER_SURFACE_REPAIR_LEVEL_OR_BUST (owner 2026-10-17, "a level surface"): the WATER creep hold is on the FRONT only,
-        # a cell that was DRY when it took its first level this pulse (RM_FlowKernel.frontStamp); thick liquids keep `received`.
-        self.front = {}                   # cell -> pulse_n it went from dry to wet
-        # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
-        # marked in the visited set SHARED across components, so the first-seeded channel claims it).
-        # Default: True for algo="old" (as measured 2026-10-01), False for "fixed" (the shipped fix,
-        # RM_StockMath.CollectComponent: sources tracked per component only).
-        self.claim_sources = (algo == "old") if claim_sources is None else claim_sources
-        # recession (RM_LiquidStock.Recede, run before the flow each pulse): a LIMITED body whose
-        # bodies[id] carries "cells" and "capacity" sheds active cells down to floor(stock/perCell),
-        # picking fewest 8-way source neighbours, then furthest from the integer centroid, then
-        # lowest cell index (RM_StockMath.PrefersCandidate). Refill/Restore are NOT modelled
-        # (<0.04 level per pulse at the shipped rates; scenes stay far from floor boundaries).
         self.recession = recession
-        self.keep_last = True             # recedeKeepsLastCell (shipped default, PROVISIONAL 2026-10-09)
-        self.spare_outflow = True         # recedeSparesOutflow (shipped default, PROVISIONAL 2026-10-09)
         self.receded = set()
         # rain (ApplyRain, first thing in DoPulse): accumulator += rate * perPulse; whole levels
         # go into EVERY unroofed, not-full excavated cell on the map (not just one scene).
@@ -301,18 +246,15 @@ class PulseOracle(object):
         self.src = dict(sources)          # cell -> body id
         self.bodies = bodies              # id -> {"limitless": bool, "stock": float}
         self.per, self.budget, self.sink_band = per, budget, sink_band
-        assert algo in ("old", "fixed")
-        self.algo = algo                  # "old" = pre-FLOWWORKS_CHANNEL_OSCILLATION_1 engine
-        self.drained = 0
-        self.credited = 0                 # units sources paid in (limited AND limitless)
+        self.drained = 0                  # dL the sinks took
+        self.credited = 0                 # dL sources paid in (limited AND limitless)
         # LIQUID_BODY_FLUID_IDENTITY_1 + viscosity (2026-10-05): cell -> fluid defName for cells a scene filled
         # with a NAMED fluid (absent = water, which every older scene is). A wet cell refuses a different
-        # fluid (PickDonor's no-mix filter); a donor of a viscous fluid gives only every Nth pulse
-        # (RM_StockMath.FluidMovesThisPulse over the map's scribed pulseCount, mirrored by pulse_n).
+        # fluid; a viscous fluid moves only every Nth pulse (RM_StockMath.FluidMovesThisPulse over the map's
+        # scribed pulseCount, mirrored by pulse_n).
         self.fluid = {}
         self.pulse_n = 0
         self.viscosity = True
-        self.key = {}                     # fixed algo: cell -> (dSrc, -dSink), this component
 
     def idx(self, c):
         return c[1] * self.w + c[0]
@@ -325,43 +267,6 @@ class PulseOracle(object):
 
     def is_source(self, c):
         return c in self.src and c not in self.receded and not self.exc(c)
-
-    def drawdown(self, c):
-        """RM_PondDepthMath.Drawdown for the body behind source c (0 = limitless, no beds, or the rule off)."""
-        if not self.head_rule:
-            return 0
-        bid = self.src[c]
-        b = self.bodies[bid]
-        if b["limitless"]:
-            return 0
-        beds = [self.beds[x] for x, i in self.src.items() if i == bid and not self.exc(x) and x in self.beds]
-        if not beds:
-            return 0
-        mx = max(beds)
-        h = [0] * (mx + 1)
-        for v in beds:
-            h[max(v, 0)] += 1
-        for l in range(mx - 1, -1, -1):
-            h[l] += h[l + 1]
-        levels = int(math.floor(b["stock"] + 1e-4)) if b["stock"] > 0 else 0
-        s, above = mx, 0
-        if mx <= 0 or levels <= 0:
-            return s
-        while s > 0 and above + h[s] <= levels:
-            above += h[s]
-            s -= 1
-        return s
-
-    def head_allows(self, src, r):
-        """RM_FlowKernel.HeadAllows: s = 0 always gives; else D(r) - F(r) >= s + 1."""
-        s = self.drawdown(src)
-        return s <= 0 or self.D.get(r, 0) - self.F.get(r, 0) >= s + 1
-
-    def can_supply(self, c):
-        if not self.budget:
-            return True
-        b = self.bodies[self.src[c]]
-        return b["limitless"] or b["stock"] >= 1
 
     def is_sink(self, c):
         if self.sink_band is None or not self.exc(c):
@@ -382,104 +287,15 @@ class PulseOracle(object):
         return True
 
     def drained_levels(self):
-        """What the sinks took, in notch-levels (exact mode counts decilitres; sinkTransferredTotal is in levels)."""
-        return self.drained / float(level_water.U) if self.level_exact else float(self.drained)
+        """What the sinks took, in notch-levels (the oracle counts decilitres; sinkTransferredTotal is in levels)."""
+        return self.drained / float(level_water.U)
 
     def stock_of(self, bid):
-        """A limited body's stock in levels, as the live body report prints it (exact mode: its dL truth / U)."""
+        """A limited body's stock in levels, as the live body report prints it (its dL truth / U)."""
         b = self.bodies[bid]
-        if self.level_exact and "dl" in b:
+        if "dl" in b:
             return b["dl"] / float(level_water.U)
         return float(b.get("stock") or 0.0)
-
-    def _pick(self, r, dr):
-        best, best_score = None, -1
-        for dx, dz in CARDINAL:
-            n = (r[0] + dx, r[1] + dz)
-            if not self.inb(n):
-                continue
-            src = self.is_source(n)
-            if src:
-                if not self.can_supply(n) or not self.head_allows(n, r):
-                    continue
-                dn = fn = 4
-            else:
-                dn = self.D.get(n, 0)
-                if dn == 0:
-                    continue
-                fn = self.F[n]
-            if fn == 0:
-                continue
-            fl_n = "RM_Fluid_Water" if src else self.fluid.get(n, "RM_Fluid_Water")
-            if self.F.get(r, 0) > 0 and self.fluid.get(r, "RM_Fluid_Water") != fl_n:
-                continue                                     # no-mix (owner Q3)
-            if self.viscosity and not fluid_moves(self.pulse_n, fl_n):
-                continue                                     # viscosity: a viscous donor waits its stride
-            if not src and self._held(n, fl_n):
-                continue                                     # creep: filled THIS pulse, passes nothing on until the next
-            if self.level_surface:
-                drop = (fn - dn) - (self.F.get(r, 0) - dr)
-                if drop < 1 or (drop == 1 and not src and self.level_set):
-                    continue
-                if not src and (self.key.get(n) is None or self.key.get(r) is None
-                                or (drop == 1 and not self._downstream(n, r, dn, dr))):
-                    continue
-                score = 1000 if src else (fn - dn + 5) * 10 + dn
-            else:
-                if dr <= dn and fn < dn:
-                    continue
-                if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
-                    continue
-                score = 1000 if src else fn * 10 + dn
-            if score > best_score:
-                best_score, best = score, n
-        return best
-
-    def _downstream(self, n, r, dn, dr):
-        """FIXED algo's one new gate (mirrors RM_StockMath.MayFlowBetween, wired in PickDonor;
-        keys from ComputeFlowOrder/HopsFrom; recipients sorted by CompareDeepestFirst). A non-source donor n
-        may give to r only if r is strictly further along the component's flow order: key =
-        (hops from a SUPPLYING source, -hops to a sink), then depth. A brimming donor may
-        overflow only to a strictly later key; at an equal key only GRAVITY (deeper r) moves.
-        A static strict order is acyclic, so no unit can come back: no period-2 shuttle, and
-        the result no longer depends on cell-index order."""
-        kn, kr = self.key.get(n), self.key.get(r)
-        if kn is None or kr is None:
-            return False
-        if kn < kr:
-            return True
-        if kn == kr and self.level_surface and self.low.get(n, 0) != self.low.get(r, 0):
-            return self.low.get(n, 0) > self.low.get(r, 0)   # third tier: farther from the deepest bed gives to nearer
-        return kn == kr and dr > dn
-
-    def _keys(self, comp):
-        """Per component: BFS hops from every supplying source (0 if none supply) and to the
-        nearest sink cell (0 if none), through excavated cells only."""
-        exc = [c for c in comp if self.exc(c)]
-        excset = set(exc)
-
-        def bfs(seeds, seeds_excavated):        # mirrors HopsFrom (multi-seed BFS, hop 0 at seeds)
-            dist = {c: 0 for c in seeds} if seeds_excavated else {}
-            q, i = list(seeds), 0
-            while i < len(q):
-                c = q[i]
-                i += 1
-                for dx, dz in CARDINAL:
-                    m = (c[0] + dx, c[1] + dz)
-                    if m in excset and m not in dist:
-                        dist[m] = dist.get(c, 0) + 1
-                        q.append(m)
-            return dist
-
-        src = [c for c in comp if self.is_source(c) and self.can_supply(c)]
-        snk = [c for c in exc if self.is_sink(c)]
-        ds = bfs(src, False)
-        dk = bfs(snk, True)
-        self.key = {c: (ds.get(c, 0), -dk.get(c, 0)) for c in exc}
-        self.ds, self.dk = ds, dk
-        # levelBySurfaceEnabled: hops to the component's deepest bed (RM_FlowKernel.lowHops).
-        deepest = max((self.D[c] for c in exc), default=0)
-        self.low = bfs([c for c in exc if self.D[c] == deepest], True) if self.level_surface else {}
 
     def set_cell(self, c, d, f):
         """Mirror a live cell the oracle did not drive (a pawn job's result)."""
@@ -490,387 +306,14 @@ class PulseOracle(object):
             self.D[c], self.F[c] = d, max(0, min(f, d))
             self.W[c] = self.F[c] * level_water.U
 
-    def _rain(self):
-        if not self.rain_on or not any(self.exc(c) for c in self.D) or self.rain_rate <= 0.01:
-            return
-        self.rain_acc += self.rain_rate * self.rain_per
-        levels = 0
-        while self.rain_acc >= 1 and levels < 4:
-            self.rain_acc -= 1
-            levels += 1
-        for c in sorted(self.D, key=self.idx):
-            if levels and self.exc(c) and self.F[c] < self.D[c] and c not in self.roofed:
-                self.F[c] += min(self.D[c] - self.F[c], levels)
-
-    def _recede(self):
-        for bid in sorted(self.bodies):
-            b = self.bodies[bid]
-            cells = b.get("cells")
-            if b.get("limitless") or not cells or not b.get("capacity"):
-                continue
-            per = float(b["capacity"]) / len(cells)
-            sup = max(0, int(b["stock"] // per))
-            # LIQUID_RECESSION_TOPOLOGY_1 (RM_StockMath.SupportedCellsKeepingLast, setting recedeKeepsLastCell, shipped ON):
-            # a body with any stock left keeps its last wet cell, so a pump or channel can still draw the sub-cell residual
-            if self.keep_last and sup == 0 and b["stock"] > 0 and per > 0:
-                sup = 1
-            cx = sum(c[0] for c in cells) // len(cells)
-            cz = sum(c[1] for c in cells) // len(cells)
-            rec = b.setdefault("receded", [])
-            guard = 0
-            while len(cells) - len(rec) > sup and guard < 64:
-                guard += 1
-                best = None
-                for c in cells:
-                    if not self.is_source(c):
-                        continue
-                    nb = sum(1 for dx in (-1, 0, 1) for dz in (-1, 0, 1) if (dx or dz)
-                             and self.inb((c[0] + dx, c[1] + dz)) and self.is_source((c[0] + dx, c[1] + dz)))
-                    # POND_RECESSION_STRANDS_CHANNEL_1 (setting recedeSparesOutflow, shipped ON): a cell with a dug
-                    # CARDINAL neighbour feeds the flow and recedes after every other cell
-                    feeds = self.spare_outflow and any(self.inb(n) and self.exc(n) for n in
-                                                       ((c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)))
-                    key = (feeds, nb, -((c[0] - cx) ** 2 + (c[1] - cz) ** 2), self.idx(c))
-                    if best is None or key < best[0]:
-                        best = (key, c)
-                if best is None:
-                    break
-                rec.append(best[1])
-                self.receded.add(best[1])
-
     def pulse(self):
-        if self.level_exact:
-            level_water.exact_pulse(self)
-            return
-        self.pulse_n += 1
-        self._rain()
-        if self.recession:
-            self._recede()
-        seen = set()
-        # Seeds in CELL-INDEX order (z*width+x) - owner ruling 2026-10-06, RM_FlowKernel.Pulse sorts them. It matters
-        # only for a LIMITED body that cannot pay every adjacent inlet in one pulse: the lower-index component is
-        # paid first, unit by unit, identically in a session and after a load. (Before that ruling this was DIG
-        # order; a live run against a DLL older than the ruling will disagree on exactly that case.)
-        for seed in sorted(self.D, key=lambda c: (c[1], c[0])):
-            if seed in seen or not self.exc(seed):
-                continue
-            comp, queue, comp_src = [], [seed], set()
-            seen.add(seed)
-            while queue:
-                c = queue.pop(0)
-                comp.append(c)
-                if self.is_source(c):
-                    continue
-                for dx, dz in CARDINAL:
-                    n = (c[0] + dx, c[1] + dz)
-                    if not self.inb(n):
-                        continue
-                    if self.exc(n):
-                        if n not in seen:
-                            seen.add(n)
-                            queue.append(n)
-                    elif self.is_source(n):
-                        claimed = seen if self.claim_sources else comp_src
-                        if n not in claimed:
-                            claimed.add(n)
-                            queue.append(n)
-            for c in comp:                                   # sinks drain before the flow
-                if self.exc(c) and self.is_sink(c):
-                    take = min(self.F[c], self.per)
-                    self.F[c] -= take
-                    self.drained += take
-            if self.algo == "fixed":
-                self._keys(comp)
-                rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
-                             key=lambda c: (-self.D[c], self.key[c], self.idx(c)))
-            else:
-                rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
-                             key=lambda c: (-self.D[c], self.idx(c)))
-            took = set()
-            for r in rec:
-                moved = 0
-                while moved < self.per and self.F[r] < self.D[r]:
-                    d = self._pick(r, self.D[r])
-                    if d is None:
-                        break
-                    if self.is_source(d):
-                        b = self.bodies[self.src[d]]
-                        if self.budget and not b["limitless"]:
-                            if b["stock"] < 1:
-                                break
-                            b["stock"] -= 1
-                        self.credited += 1
-                    else:
-                        self.F[d] -= 1
-                    if self.F[r] == 0:                       # first level claims a dry cell for its fluid
-                        self.front[r] = self.pulse_n
-                        fl = "RM_Fluid_Water" if self.is_source(d) else self.fluid.get(d, "RM_Fluid_Water")
-                        if fl == "RM_Fluid_Water":
-                            self.fluid.pop(r, None)
-                        else:
-                            self.fluid[r] = fl
-                    self.F[r] += 1
-                    self.received[r] = self.pulse_n
-                    moved += 1
-                if moved:
-                    took.add(r)
-            if self.level_set:
-                self._levelset_regions(comp)
-            elif self.level_surface:
-                self._level_regions(comp)
-            if self.creep_water and self.mouth_top_up:
-                self._top_up_mouths(comp, took)
-        for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
-            del self.fluid[c]
-
-    def _top_up_mouths(self, comp, took):
-        """RM_FlowKernel.TopUpWaterMouths (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME): after the pass and the solve, a dug
-        cell beside a supplying (water) source that took nothing this pulse and has room takes up to `per` from it, in
-        cell-index order; otherwise a brim mouth that passed its unit on read dry every other pulse."""
-        for r in sorted((c for c in comp if self.exc(c) and self.F[c] < self.D[c] and c not in took), key=self.idx):
-            moved = 0
-            while moved < self.per and self.F[r] < self.D[r]:
-                d = None
-                for dx, dz in CARDINAL:
-                    n = (r[0] + dx, r[1] + dz)
-                    if not self.inb(n) or not self.is_source(n) or not self.can_supply(n) or not self.head_allows(n, r):
-                        continue
-                    if self.F.get(r, 0) > 0 and self.fluid.get(r, "RM_Fluid_Water") != "RM_Fluid_Water":
-                        continue                                 # no-mix: a source pays water only
-                    d = n
-                    break
-                if d is None:
-                    break
-                b = self.bodies[self.src[d]]
-                if self.budget and not b["limitless"]:
-                    if b["stock"] < 1:
-                        break
-                    b["stock"] -= 1
-                self.credited += 1
-                if self.F[r] == 0:
-                    self.fluid.pop(r, None)
-                    self.front[r] = self.pulse_n
-                self.F[r] += 1
-                self.received[r] = self.pulse_n
-                moved += 1
-
-    def _held(self, c, fl):
-        if viscosity_stride(_ticks_per_tile(fl)) > 1:
-            return self.creep_thick and self.received.get(c) == self.pulse_n
-        return self.creep_water and self.front.get(c) == self.pulse_n
-
-    def _level_regions(self, comp):
-        """RM_FlowKernel.LevelWetRegions (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND): per connected wet region of one
-        fluid (not held by creep), move a unit from the highest surface to the lowest surface among the region and its
-        dug rim while they differ by 2+; each cell gives <= per and takes <= per in this pass, never a region cell's
-        last unit (so the region stays connected through wet squares). Donor ties: lowest
-        index; taker ties: deepest bed, then lowest index. Regions in order of their lowest cell index."""
-        per = self.per
-        surf = lambda c: self.F[c] - self.D[c]
-        flu = lambda c: self.fluid.get(c, "RM_Fluid_Water")
-        gave, got, member = {}, {}, set()
-        seeds = sorted((c for c in comp if self.exc(c) and self.F[c] > 0), key=self.idx)
-        for seed in seeds:
-            if seed in member:
-                continue
-            fl = flu(seed)
-            if self._held(seed, fl):
-                continue
-            region, i = [seed], 0
-            member.add(seed)
-            while i < len(region):
-                c = region[i]
-                i += 1
-                for dx, dz in CARDINAL:
-                    n = (c[0] + dx, c[1] + dz)
-                    if n in member or not self.exc(n) or self.F[n] == 0 or flu(n) != fl or self._held(n, fl):
-                        continue
-                    member.add(n)
-                    region.append(n)
-            if self.viscosity and not fluid_moves(self.pulse_n, fl):
-                continue
-            rim = set()
-            for c in region:
-                for dx, dz in CARDINAL:
-                    n = (c[0] + dx, c[1] + dz)
-                    if n in member or not self.exc(n) or self.F[n] >= self.D[n] or (self.F[n] > 0 and flu(n) != fl):
-                        continue
-                    rim.add(n)
-            rset = set(region)
-            while True:
-                donors = [c for c in region if self.F[c] >= 2 and gave.get(c, 0) < per]   # never its last unit here
-                takers = [c for c in list(rset) + sorted(rim, key=self.idx)
-                          if self.F[c] < self.D[c] and got.get(c, 0) < per]
-                if not donors or not takers:
-                    break
-                d = min(donors, key=lambda c: (-surf(c), self.idx(c)))
-                t = min(takers, key=lambda c: (surf(c), -self.D[c], self.idx(c)))
-                if surf(d) - surf(t) < 2:
-                    break
-                self.F[d] -= 1
-                if self.F[t] == 0:
-                    if fl == "RM_Fluid_Water":
-                        self.fluid.pop(t, None)
-                    else:
-                        self.fluid[t] = fl
-                self.F[t] += 1
-                gave[d] = gave.get(d, 0) + 1
-                got[t] = got.get(t, 0) + 1
-
-    def _ls_key(self, c, drains):
-        """RM_FlowKernel.CellKey: the part-filled band's priority (lowest first)."""
-        far = 1 << 20
-        wet = 0 if self.F.get(c, 0) > 0 and not self._ls_mouth(c) else 1
-        if drains:
-            return (self.dk.get(c, far), wet, self.idx(c))
-        src = 0 if not self.ds else (far - self.ds[c] if c in self.ds else 2 * far)
-        return (self.low.get(c, far), wet, src, self.idx(c))
-
-    def _ls_mouth(self, c):
-        """RM_FlowKernel.IsLiveMouth: a dug square beside a supplying source never keeps its unit for being wet, so a fed
-        D=1 run passes the unit on and the source refills the mouth (CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY). The kernel also counts
-        a pump/drill inlet (externalInput) as a mouth (FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS); this oracle models no drivers, so
-        that clause never applies here and the differential scenes (externalInput null) are unchanged."""
-        for dx, dz in CARDINAL:
-            n = (c[0] + dx, c[1] + dz)
-            if self.inb(n) and self.is_source(n) and self.can_supply(n) and self.head_allows(n, c):
-                return True
-        return False
-
-    def _levelset_regions(self, comp):
-        """RM_FlowKernel.LevelSetWetRegions / SolveRegion / Assign / PickBand (WATER_LEVELSET_SOLVE): per wet region of one
-        fluid (not held by creep) plus its DRY dug rim, the region's volume is re-laid at its flat level. Band L (the layer
-        between surface -L and -L+1) splits the domain into connected pieces of squares dug >= L; bottom up each piece counts
-        the water already at or below its band (trapped behind its sill), top down it fills its deeper pieces (in key order)
-        before its own band, and a part-filled band is grown best-first by _ls_key from the piece's best square."""
-        compset = set(comp)
-        flu = lambda c: self.fluid.get(c, "RM_Fluid_Water")
-        member = set()
-        seeds = sorted((c for c in comp if self.exc(c) and self.F[c] > 0), key=self.idx)
-        for seed in seeds:
-            if seed in member or self.F[seed] == 0:
-                continue
-            fl = flu(seed)
-            if self._held(seed, fl):
-                continue
-            region, i = [seed], 0
-            member.add(seed)
-            while i < len(region):
-                c = region[i]
-                i += 1
-                for dx, dz in CARDINAL:
-                    n = (c[0] + dx, c[1] + dz)
-                    if n in member or n not in compset or not self.exc(n):
-                        continue
-                    if self.F[n] == 0:                 # a one-square dry gap joins the wet squares beyond it
-                        for ex, ez in CARDINAL:
-                            m = (n[0] + ex, n[1] + ez)
-                            if m == c or m in member or m not in compset or not self.exc(m) or self.F[m] == 0 \
-                                    or flu(m) != fl or self._held(m, fl):
-                                continue
-                            member.add(m)
-                            region.append(m)
-                        continue
-                    if flu(n) != fl or self._held(n, fl):
-                        continue
-                    member.add(n)
-                    region.append(n)
-            if self.viscosity and not fluid_moves(self.pulse_n, fl):
-                continue
-            domain = list(region)
-            dset = set(region)
-            for c in region:
-                for dx, dz in CARDINAL:
-                    n = (c[0] + dx, c[1] + dz)
-                    if n in dset or n not in compset or not self.exc(n) or self.F[n] != 0:
-                        continue
-                    dset.add(n)
-                    domain.append(n)
-            # FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK: the region drains only if a sink is reachable from its own domain
-            drains = any(c in self.dk for c in domain)
-            volume = sum(self.F[c] for c in region)
-            maxband = max(self.D[c] for c in domain)
-            comps, comp_of = [], {}             # comp: dict(band, cells, children); comp_of[(band, cell)] = comp index
-            for band in range(1, maxband + 1):
-                for c0 in domain:
-                    if self.D[c0] < band or (band, c0) in comp_of:
-                        continue
-                    k = len(comps)
-                    comps.append(dict(band=band, cells=[c0], children=[]))
-                    if band > 1:
-                        comps[comp_of[(band - 1, c0)]]["children"].append(k)
-                    comp_of[(band, c0)] = k
-                    j = 0
-                    cells = comps[k]["cells"]
-                    while j < len(cells):
-                        c = cells[j]
-                        j += 1
-                        for dx, dz in CARDINAL:
-                            n = (c[0] + dx, c[1] + dz)
-                            if n in dset and self.D[n] >= band and (band, n) not in comp_of:
-                                comp_of[(band, n)] = k
-                                cells.append(n)
-            for k in range(len(comps) - 1, -1, -1):
-                cp = comps[k]
-                cp["water"] = sum(1 for c in cp["cells"] if self.F[c] > self.D[c] - cp["band"]) + sum(comps[ch]["water"] for ch in cp["children"])
-                cp["cap"] = len(cp["cells"]) + sum(comps[ch]["cap"] for ch in cp["children"])
-                cp["key"] = min(self._ls_key(c, drains) for c in cp["cells"])
-                cp["children"].sort(key=lambda ch: comps[ch]["key"])
-            new = {c: 0 for c in domain}
-
-            def pick(cp, r):
-                if r >= len(cp["cells"]):
-                    return list(cp["cells"])
-                band, k = cp["band"], comp_of[(cp["band"], cp["cells"][0])]
-                start = min(cp["cells"], key=lambda c: self._ls_key(c, drains))
-                frontier, seen, out, deferred = [(self._ls_key(start, drains), start)], {start}, [], []
-                fed = not drains and bool(self.ds)
-                while len(out) < r and frontier:
-                    frontier.sort()
-                    _, c = frontier.pop(0)
-                    if fed and self._ls_mouth(c):
-                        deferred.append(c)   # LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY: a live mouth is passed through, filled last
-                    else:
-                        out.append(c)
-                    for dx, dz in CARDINAL:
-                        n = (c[0] + dx, c[1] + dz)
-                        if comp_of.get((band, n)) == k and n not in seen:
-                            seen.add(n)
-                            frontier.append((self._ls_key(n, drains), n))
-                return out + deferred[:max(0, r - len(out))]
-
-            def assign(k, amount):
-                cp = comps[k]
-                free = amount - sum(comps[ch]["water"] for ch in cp["children"])
-                laid = 0
-                for ch in cp["children"]:
-                    give = max(0, min(free, comps[ch]["cap"] - comps[ch]["water"]))
-                    free -= give
-                    laid += assign(ch, comps[ch]["water"] + give)
-                r = max(0, min(free, len(cp["cells"])))
-                if r > 0:
-                    for c in pick(cp, r):
-                        new[c] += 1
-                        laid += 1
-                return laid
-
-            laid = sum(assign(k, comps[k]["water"]) for k in range(len(comps)) if comps[k]["band"] == 1)
-            if laid != volume:
-                continue
-            for c in domain:
-                if new[c] != self.F[c]:
-                    if self.F[c] == 0 and new[c] > 0:
-                        if fl == "RM_Fluid_Water":
-                            self.fluid.pop(c, None)
-                        else:
-                            self.fluid[c] = fl
-                    self.F[c] = new[c]
+        level_water.exact_pulse(self)
 
     def run(self, cells, pulses):
         out = []
         for _ in range(pulses):
             self.pulse()
-            out.append([self.W[c] if self.level_exact else self.F[c] for c in cells])
+            out.append([self.W[c] for c in cells])
         return out
 
 
@@ -1054,16 +497,14 @@ def site_beds():
     return {c: POND_LEVELS_PER_CELL for b in BODIES.values() for c in b["cells"]}
 
 
-def oracle_for(scene_key, pulses, recession=False, exact=LIVE_EXACT):
-    """Predicted F vectors for one channel scene in isolation (per pulse). exact: the shipped exact-level engine
-    (levelExactEnabled); False = the whole-notch engine before WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES."""
+def oracle_for(scene_key, pulses, recession=False):
+    """Predicted F vectors for one channel scene in isolation (per pulse), through the shipped exact-level engine."""
     s = SCENES[scene_key]
     body = BODIES[s["body"]]
     stock = body_stock0(body)
     o = PulseOracle(MAP_W, MAP_H, {c: 0 for c in body["cells"]},
                     {0: {"limitless": body["limitless"], "stock": stock, "capacity": stock,
-                         "cells": list(body["cells"])}}, sink_band=SINK_BAND, recession=recession,
-                    level_exact=exact, beds=site_beds() if exact else None, **CREEP_LIVE)
+                         "cells": list(body["cells"])}}, sink_band=SINK_BAND, recession=recession, beds=site_beds())
     for c in s["cells"]:
         o.dig(c, s["D"])
     out = []
@@ -1408,216 +849,19 @@ def o4_geometry(bodies=None, scenes=None):
 
 
 def o5_oracle_selftest():
+    """The oracle's own check (the whole-notch cases went with that engine, RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES;
+    the exact model's hand-worked cases are northstar/selftest_level_water.py): the E3 budget through the exact engine,
+    the W2 pond's decilitres plus its run's are its capacity, always, and the run took water from it."""
     probs = []
-    # (1) the live reproduction (INT section 2) -- plot D geometry, 2026-10-01 run
-    px, pz = 167, 204
-    o = PulseOracle(250, 250, {c: 0 for c in rect_cells(px, pz, 5, 5)},
-                    {0: {"limitless": False, "stock": 125.0}}, algo="old")
-    cells = _run(px + 5, pz + 2, 12, 1, 0)
-    for c in cells:
-        o.dig(c, 3)
-    hist = [tuple(v) for v in o.run(cells, 60)]
-    live = [(3, 3, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3), (3, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2)]
-    if not all(v in hist[-10:] for v in live):
-        probs.append("oracle no longer reproduces the measured live oscillation")
-    # (2) hand-worked: 3-cell east channel off a limitless source oscillates, south fills
-    def chan(dx, dz, n=3, p=12):
-        oo = PulseOracle(100, 100, {(50, 50): 0}, {0: {"limitless": True, "stock": 0}}, algo="old")
-        cs = _run(50 + dx, 50 + dz, n, dx, dz)
-        for c in cs:
-            oo.dig(c)
-        return oo.run(cs, p)
-    e, s = chan(1, 0), chan(0, -1)
-    if e[-2:] != [[1, 0, 1], [1, 1, 0]] and e[-2:] != [[1, 1, 0], [1, 0, 1]]:
-        probs.append("east 3-cell: %s (hand-worked: period-2 [1,0,1]<->[1,1,0])" % e[-2:])
-    if s[-1] != [1, 1, 1]:
-        probs.append("south 3-cell final %s want [1,1,1]" % s[-1])
-    # (4) budget: W2 (its capacity) -> E3 channel receives exactly that many levels and no more. The VECTOR does
-    # not come to rest: a partly filled equal-depth run keeps shuttling units (period 2) after
-    # the source is spent -- the same OVERFLOW-clause behaviour as the east/north oscillation
-    # (INT section 2). So the check is on the SUM, and E3 asserts the exact oracle vector.
-    v = oracle_for("E3_budget", 14, exact=False)
     want = int(BODIES["W2"]["capacity"])
-    if any(sum(row) != want for row in v[-4:]):
-        probs.append("E3 budget (notch engine): last sums %s (want %d)" % ([sum(r) for r in v[-4:]], want))
-    # (5) the same budget through the shipped exact engine: the pond's decilitres plus the run's are its capacity, always
     o, _ = _exact_scene("E3_budget", 14)
-    tot = level_water.pond_dl(o, 0) + sum(o.W[c] for c in SCENES["E3_budget"]["cells"])
+    run = sum(o.W[c] for c in SCENES["E3_budget"]["cells"])
+    tot = level_water.pond_dl(o, 0) + run
     if tot != int(want * level_water.U):
         probs.append("E3 budget (exact): pond + run %d dL != capacity %d dL" % (tot, want * level_water.U))
-    return Check("O5", not probs, "; ".join(probs) or "live oscillation reproduced; hand cases; budget = W2 capacity "
-                 "(notch engine: in the run; exact: pond + run to the dL)")
-
-
-DIRS = {"E": (1, 0), "N": (0, 1), "W": (-1, 0), "S": (0, -1)}   # E/N: cell index rises away
-O6_LENGTHS = (3, 4, 6, 12)
-
-
-def _o6_channel(algo, d, n, depth=1, pulses=None, limitless=True, stock=0.0, src_cells=None):
-    """A depth-`depth` channel of n cells running direction d off a source; returns (oracle, cells, hist)."""
-    dx, dz = DIRS[d]
-    src = src_cells or [(100, 100)]
-    o = PulseOracle(200, 200, {c: 0 for c in src}, {0: {"limitless": limitless, "stock": stock}}, algo=algo)
-    x0, z0 = src[0]
-    cs = _run(x0 + dx, z0 + dz, n, dx, dz)
-    for c in cs:
-        o.dig(c, depth)
-    return o, cs, o.run(cs, pulses if pulses is not None else 4 * n * depth + 8)
-
-
-def o6_fill_bound(n, depth):
-    """Stated convergence bound (pulses) for an n-cell, depth-D straight channel off one source
-    at FlowPerPulse 1. The mouth admits <= 1 level per pulse, so n*D pulses is also the LOWER
-    bound; the fixed engine meets it exactly (the brigade carries each level to the far end in
-    the pulse it enters). Measured 2026-10-02: n=3,4,6,12 x D=1,3, every direction, = n*D."""
-    return n * depth
-
-
-def _is_fixed_point(o):
-    before = dict(o.F)
-    stock = [b["stock"] for b in o.bodies.values()]
-    o.pulse()
-    same = o.F == before and stock == [b["stock"] for b in o.bodies.values()]
-    return same
-
-
-def o6_channel_directions():
-    """FLOWWORKS_CHANNEL_OSCILLATION_1 (INT section 2). OLD algo: east/north oscillate, west/south
-    fill, and the live 2026-10-01 vectors reproduce. FIXED algo: all four directions fill, with
-    IDENTICAL per-pulse vectors (no cell-index dependence), within o6_fill_bound, conserving stock,
-    and a partly filled / spent / sink-draining run comes to rest (fixed point)."""
-    probs, notes = [], []
-    # --- OLD: the defect, as measured
-    for n in O6_LENGTHS:
-        for d in "ENWS":
-            _, cs, h = _o6_channel("old", d, n)
-            full = h[-1] == [1] * n
-            if d in "EN":
-                if full or h[-1] != h[-3] or h[-1] == h[-2]:
-                    probs.append("old %s%d should oscillate period 2: %s" % (d, n, h[-2:]))
-            elif not full:
-                probs.append("old %s%d should fill: %s" % (d, n, h[-1]))
-    _, _, h = _o6_channel("old", "E", 3)
-    if sorted(map(tuple, h[-2:])) != [(1, 0, 1), (1, 1, 0)]:
-        probs.append("old E3 hand vector %s" % h[-2:])
-    _, _, h = _o6_channel("old", "E", 6)
-    if sorted(map(tuple, h[-2:])) != [(1, 1, 0, 1, 1, 0), (1, 1, 1, 0, 0, 1)]:
-        probs.append("old E6 doc vector %s" % h[-2:])
-    pond = rect_cells(167, 204, 5, 5)
-    live = [(3, 3, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3), (3, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2)]
-    for algo in ("old", "fixed"):
-        o = PulseOracle(250, 250, {c: 0 for c in pond}, {0: {"limitless": False, "stock": 125.0}}, algo=algo)
-        cells = _run(172, 206, 12, 1, 0)
-        for c in cells:
-            o.dig(c, 3)
-        hh = [tuple(v) for v in o.run(cells, 80)]
-        stock = o.bodies[0]["stock"]
-        if algo == "old":
-            if not all(v in hh[-10:] for v in live) or stock != 94:
-                probs.append("old plot-D: live vectors/stock 94 not reproduced (stock %s)" % stock)
-        else:
-            first = next((i + 1 for i, v in enumerate(hh) if v == (3,) * 12), None)
-            if first is None or stock != 125 - 36 or not _is_fixed_point(o):
-                probs.append("fixed plot-D: final %s stock %s (want all 3, stock 89, at rest)" % (hh[-1], stock))
-            else:
-                notes.append("plot-D full at pulse %d (bound %d), stock 89" % (first, o6_fill_bound(12, 3)))
-    # --- FIXED: every direction fills, identically, within the bound, conserving stock
-    worst = -10 ** 9
-    for n in O6_LENGTHS:
-        for depth in (1, 3):
-            hist = {}
-            for d in "ENWS":
-                o, cs, h = _o6_channel("fixed", d, n, depth)
-                hist[d] = h
-                first = next((i + 1 for i, v in enumerate(h) if v == [depth] * n), None)
-                if first is None:
-                    probs.append("fixed %s%d D%d never fills: %s" % (d, n, depth, h[-1]))
-                    continue
-                worst = max(worst, first - o6_fill_bound(n, depth))
-                if first > o6_fill_bound(n, depth):
-                    probs.append("fixed %s%d D%d full at pulse %d > bound %d" % (d, n, depth, first, o6_fill_bound(n, depth)))
-                if not _is_fixed_point(o):
-                    probs.append("fixed %s%d D%d not at rest when full" % (d, n, depth))
-                if o.credited != n * depth:
-                    probs.append("fixed %s%d D%d credited %d != capacity %d" % (d, n, depth, o.credited, n * depth))
-            if len({str(v) for v in hist.values()}) != 1:
-                probs.append("fixed n%d D%d: per-pulse vectors differ by direction (cell-index dependence)" % (n, depth))
-            # limited stock: conservation every pulse, exact delivery, then rest
-            for d in "ENWS":
-                cap = n * depth
-                stock0 = float(cap // 2 + 1)
-                o, cs, _ = _o6_channel("fixed", d, n, depth, pulses=0, limitless=False, stock=stock0)
-                for p in range(4 * cap + 8):
-                    o.pulse()
-                    if sum(o.F[c] for c in cs) + o.bodies[0]["stock"] != stock0:
-                        probs.append("fixed %s%d D%d: conservation broken at pulse %d" % (d, n, depth, p + 1))
-                        break
-                if sum(o.F[c] for c in cs) != stock0 or not _is_fixed_point(o):
-                    probs.append("fixed %s%d D%d limited: delivered %d of %d, rest=%s"
-                                 % (d, n, depth, sum(o.F[c] for c in cs), stock0, _is_fixed_point(o)))
-    # --- FIXED: the "second symptom" (INT section 2) -- a 5-level pond into 8-cell D=1 comes to rest
-    for d in "ENWS":
-        o, cs, h = _o6_channel("fixed", d, 8, 1, pulses=30, limitless=False, stock=5.0)
-        if sum(h[-1]) != 5 or h[-1] != h[-2] or not _is_fixed_point(o):
-            probs.append("fixed %s: spent 1-cell pond run not at rest: %s / %s" % (d, h[-2], h[-1]))
-    # --- FIXED: a full, sourceless channel breached into the sink band drains (ruling 9), to the
-    # same end state the OLD engine reaches: D=1 empties; D=2 keeps its bottom level, because
-    # only a BRIMMING cell overflows sideways (unchanged semantics, both algos).
-    for d in "ENWS":
-        dx, dz = DIRS[d]
-        x0, z0 = {"E": (230, 100), "W": (19, 100), "N": (100, 230), "S": (100, 19)}[d]
-        for depth in (1, 2):
-            ends = {}
-            for algo in ("old", "fixed"):
-                o = PulseOracle(250, 250, {}, {}, sink_band=SINK_BAND, algo=algo)
-                cs = _run(x0 - dx * 12, z0 - dz * 12, 25, dx, dz)   # 12+ interior cells, then the band
-                for c in cs:
-                    o.dig(c, depth)
-                    o.set_fill(c, depth)
-                o.run(cs, 200)
-                ends[algo] = [o.F[c] for c in cs]
-                if algo == "fixed" and not _is_fixed_point(o):
-                    probs.append("fixed sink %s D%d not at rest" % (d, depth))
-            want = [0] * 25 if depth == 1 else [1 if edge_distance(c) >= SINK_BAND else 0 for c in cs]
-            if ends["fixed"] != want or ends["old"] != want:
-                probs.append("sink %s D%d: fixed %s old %s want %s" % (d, depth, ends["fixed"], ends["old"], want))
-    # --- FIXED: random small networks reach a fixed point and the ledger balances
-    import random
-    rng = random.Random(1234)
-    for trial in range(300):
-        W = H = 9
-        srcs = {}
-        bodies = {}
-        for b in range(rng.randint(0, 2)):
-            c = (rng.randrange(W), rng.randrange(H))
-            srcs[c] = b
-            bodies[b] = {"limitless": rng.random() < 0.5, "stock": float(rng.randint(0, 20))}
-        o = PulseOracle(W, H, srcs, bodies, per=rng.randint(1, 3),
-                        sink_band=rng.choice([None, 1]), algo="fixed")
-        for _ in range(rng.randint(3, 30)):
-            c = (rng.randrange(W), rng.randrange(H))
-            if c in srcs:
-                continue
-            o.dig(c, rng.randint(1, 4))
-            o.set_fill(c, rng.randint(0, 4))
-        f0 = sum(o.F.values())
-        rest = False
-        for p in range(400):
-            o.pulse()
-            if _is_fixed_point(o):
-                rest = True
-                break
-        total = sum(o.F.values())
-        if total != f0 + o.credited - o.drained:
-            probs.append("fuzz %d: ledger %d != %d+%d-%d" % (trial, total, f0, o.credited, o.drained))
-        if not rest:
-            probs.append("fuzz %d: no fixed point in 400 pulses" % trial)
-        if len(probs) > 12:
-            break
-    return Check("O6", not probs, "; ".join(probs[:12]) or
-                 "old: E/N oscillate, W/S fill, live reproduced; fixed: ENWS identical & full for n=%s D=1,3 "
-                 "within n*D pulses (worst first-full minus bound: %d), stock conserved, spent/partial runs rest, sinks drain, "
-                 "300 fuzz nets reach a fixed point; %s" % (list(O6_LENGTHS), worst, "; ".join(notes)))
+    if run <= 0:
+        probs.append("E3 budget (exact): the run took nothing from the pond (an engine that never flows)")
+    return Check("O5", not probs, "; ".join(probs) or "budget = W2 capacity (exact: pond + run to the dL; the run took %d dL)" % run)
 
 
 # ============================================================================ tier O additions
@@ -1628,7 +872,7 @@ def _exact_scene(scene_key, pulses):
     stock = body_stock0(body)
     o = PulseOracle(MAP_W, MAP_H, {c: 0 for c in body["cells"]},
                     {0: {"limitless": body["limitless"], "stock": stock, "capacity": stock, "cells": list(body["cells"])}},
-                    sink_band=SINK_BAND, recession=True, level_exact=True, beds=site_beds(), **CREEP_LIVE)
+                    sink_band=SINK_BAND, recession=True, beds=site_beds())
     for c in s["cells"]:
         o.dig(c, s["D"])
     out = []
@@ -1661,56 +905,6 @@ def o7_scene_predictions():
     return Check("O7", not probs, "; ".join(probs) or "E2 limitless-fed x5 full at pulse 4 (water front creep, mouth topped "
                  "up), mouth end first; the limited-pond runs (E2_west, E3b, E3) level with their pond to the dL, below the "
                  "brim, the pond paying exactly what the run holds, then rest")
-
-
-def o9_shared_source(claim=False):
-    """FLOWWORKS_SHARED_SOURCE_STALL_1. Two channels off ONE source cell (perpendicular at a body
-    corner, and opposite off a 1-cell source), every orientation, both dig orders. The fixed walk
-    (claim=False): both fill to n*D within n*D pulses, identically, and rest; a LIMITED body's stock
-    is conserved every pulse, fully delivered, and split by the stated rule -- each pulse the
-    channel whose inlet has the LOWER cell index (z*width+x) is paid first, so an odd stock gives it
-    the one extra level, whichever was dug first (owner ruling 2026-10-06; RM_FlowKernel.Pulse).
-    claim=True is the shipped-until-fix walk and must go red (the second-dug channel stalls)."""
-    probs, n = [], 4
-    pairs = [("E", "N"), ("N", "W"), ("W", "S"), ("S", "E"), ("E", "W"), ("N", "S")]
-    for a, b in pairs:
-        for first, second in ((a, b), (b, a)):
-            for limitless, stock0 in ((True, 0.0), (False, 5.0)):
-                o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": limitless, "stock": stock0}},
-                                algo="fixed", claim_sources=claim)
-                runs = {}
-                for d in (first, second):
-                    dx, dz = DIRS[d]
-                    runs[d] = _run(100 + dx, 100 + dz, n, dx, dz)
-                    for c in runs[d]:
-                        o.dig(c)
-                tag = "%s-then-%s %s" % (first, second, "limitless" if limitless else "stock 5")
-                hist = {d: [] for d in runs}
-                for p in range(4 * n + 8):
-                    o.pulse()
-                    for d in runs:
-                        hist[d].append([o.F[c] for c in runs[d]])
-                    tot = sum(o.F.values())
-                    if not limitless and tot + o.bodies[0]["stock"] != stock0:
-                        probs.append("%s: conservation broken at pulse %d" % (tag, p + 1))
-                        break
-                if limitless:
-                    full = {d: next((i + 1 for i, v in enumerate(h) if v == [1] * n), None) for d, h in hist.items()}
-                    if any(f is None or f > o6_fill_bound(n, 1) for f in full.values()):
-                        probs.append("%s: first-full %s (bound %d), final %s" % (tag, full, n, {d: h[-1] for d, h in hist.items()}))
-                    elif hist[first] != hist[second]:
-                        probs.append("%s: the two channels' vectors differ" % tag)
-                else:
-                    got = {d: sum(hist[d][-1]) for d in runs}
-                    low = min(runs, key=lambda d: o.idx(runs[d][0]))
-                    high = second if low == first else first
-                    if got[low] != 3 or got[high] != 2:
-                        probs.append("%s: split %s (rule: lower-index inlet %s gets the odd level, 3/2)" % (tag, got, low))
-                if not _is_fixed_point(o):
-                    probs.append("%s: not at rest" % tag)
-    return Check("O9", not probs, "; ".join(probs[:8]) or
-                 "%d pairs x 2 dig orders: limitless -> both full at pulse %d, identical; stock 5 -> conserved, "
-                 "split 3/2 to the lower-index inlet, either dig order; all at rest" % (len(pairs), n))
 
 
 def o8_lint(src=None):
@@ -1769,7 +963,7 @@ def offline_negative_controls():
 
 
 def _offline_negative_controls():
-    """Each offline check O1-O10 must be ABLE to go red: mutate inputs in memory, expect FAIL."""
+    """Each offline check (O1-O5, O7, O8, O10) must be ABLE to go red: mutate inputs in memory, expect FAIL."""
     out = []
     defs = dict(_xml_blocks())
     mid = defs["RM_Channel_Mid"]
@@ -1817,26 +1011,13 @@ def _offline_negative_controls():
     finally:
         FLOAT_DEFAULTS.clear()
         FLOAT_DEFAULTS.update(saved)
-    real = PulseOracle._downstream
-    PulseOracle._downstream = lambda self, n, r, dn, dr: True                      # break the fix
-    try:
-        out.append(("O6 oracle without the flow-order gate", o6_channel_directions().ok))
-    finally:
-        PulseOracle._downstream = real
-    real_pick = PulseOracle._pick
-    real_top = PulseOracle._top_up_mouths
     real_exact = level_water.exact_pulse
-    PulseOracle._pick = lambda self, r, dr: None                                    # an engine that never flows
-    PulseOracle._top_up_mouths = lambda self, comp, took: None                      # (the source tops up no mouth either)
-    level_water.exact_pulse = lambda o: None                                        # nor does the exact-level one
+    level_water.exact_pulse = lambda o: None                                        # an engine that never flows
     try:
         out.append(("O5 inert engine", o5_oracle_selftest().ok))
         out.append(("O7 inert engine", o7_scene_predictions().ok))
     finally:
-        PulseOracle._pick = real_pick
-        PulseOracle._top_up_mouths = real_top
         level_water.exact_pulse = real_exact
-    out.append(("O9 shared-source walk with the source claimed (pre-fix)", o9_shared_source(claim=True).ok))
     # the retired holder model: any D=4 cell held any pawn
     out.append(("O10 holder model (any D=4 cell holds anything)",
                 o10_pit_width(held_fn=lambda cells, c, b, ladder=False, **k: c in set(cells) and not ladder).ok))
@@ -1845,48 +1026,9 @@ def _offline_negative_controls():
                  "%d in-memory mutations, every one went red" % len(out))
 
 
-# Recorded live case, v2_20261012e.json (Transient/bench_live_20261012e, 2026-10-12): E2 4-cell D=1 channel off a
-# limitless source on the shipped mod (waterFrontCreepEnabled ON), first four pulses' F vectors, first-full pulse 7.
-# The pre-creep oracle predicted the brigade (full at pulse 4) and 12 live rows went red on that alone.
-# The record shows the mouth dry on pulses 2 and 4: CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME, fixed by the mouth top-up, so
-# the record is replayed with the top-up OFF, and the shipped engine is first full at n = 4 (one cell a pulse, no brigade).
-O11_LIVE_E2 = [[1, 0, 0, 0], [0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1]]
-O11_LIVE_E2_FULL = 7
-O11_SHIPPED_FULL = 4
-
-
-def o11_creep_recorded():
-    probs = []
-    for d in "ENWS":
-        _, _, h = _o6_channel("fixed", d, 4, pulses=12)
-        dx, dz = DIRS[d]
-        cs = _run(100 + dx, 100 + dz, 4, dx, dz)
-        # the record predates the level solve (2732aa5fa), so its vectors are replayed on that engine (level_set off);
-        # and before the mouth top-up; shipped (CREEP_LIVE) fills one cell a pulse from the mouth, full at n
-        for kw, want_vec in ((dict(CREEP_LIVE, level_set=False), O11_LIVE_E2), (CREEP_LIVE, None)):
-            o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": True, "stock": 0}}, algo="fixed", **kw)
-            o.mouth_top_up = want_vec is None
-            for c in cs:
-                o.dig(c)
-            hc = o.run(cs, 12)
-            tag = "pre-level-solve" if want_vec else "shipped"
-            if want_vec is not None and hc[:4] != want_vec:
-                probs.append("%s: %s creep oracle %s != recorded live %s" % (d, tag, hc[:4], want_vec))
-            full = next((i + 1 for i, v in enumerate(hc) if v == [1] * 4), None)
-            want_full = O11_LIVE_E2_FULL if want_vec else O11_SHIPPED_FULL
-            if full != want_full:
-                probs.append("%s: %s first full %s != %s" % (d, tag, full, want_full))
-            if want_vec is None and hc[:4] != [[1, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [1, 1, 1, 1]]:
-                probs.append("%s: shipped front is not one cell a pulse from a wet mouth: %s" % (d, hc[:4]))
-        if next((i + 1 for i, v in enumerate(h) if v == [1] * 4), None) != 4:
-            probs.append("%s: creep-off oracle lost the n*D brigade" % d)
-    return Check("O11", not probs, "; ".join(probs) or "pre-top-up creep oracle reproduces the recorded live E2 vectors (full at 7); shipped fills one cell a pulse, mouth wet, full at 4; creep off still 4")
-
-
 def run_offline():
     checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest(),
-              o6_channel_directions(), o7_scene_predictions(), o8_lint(), o9_shared_source(), o10_pit_width(),
-              o11_creep_recorded(), offline_negative_controls()]
+              o7_scene_predictions(), o8_lint(), o10_pit_width(), offline_negative_controls()]
     for c in checks:
         print(c)
     return checks
@@ -1914,7 +1056,7 @@ SHIPPED_SINK_CAP_LEVELS = _shipped_sink_cap_levels()
 # are red there too (and run_live's `green` forgives them in the mock only); a fix makes them green and this dict shrinks.
 # pawn_height_ladder_legible says a colonist keeps sinking to 4 m (card 2026-10-20); the shipped sink stops at SinkCapLevels = 2 m.
 KNOWN_MOD_RED = {"X1_pawn_height_ladder": "PIT_SINK_CAP_WIDEN_TWO_METRES_TO_FOUR"} if SHIPPED_SINK_CAP_LEVELS < 8 else {}
-# (FLOWWORKS_SHARED_SOURCE_STALL_1 fixed 2026-10-02: O9 + E2s_shared_source_both_fill)
+# (FLOWWORKS_SHARED_SOURCE_STALL_1 fixed 2026-10-02: E2s_shared_source_both_fill + the C# SharedSource_* cases)
 
 
 class Abort(Exception):
@@ -2104,7 +1246,6 @@ class Live(object):
             probs.append("pulse-0 vector != oracle state (out of sync before pulsing)")
         per_scene = {}
         mism = {}
-        exact = getattr(self.o, "level_exact", False)
         for p in range(1, len(pul)):
             self.o.pulse()
             dl = pul[p].get("dl")
@@ -2116,7 +1257,6 @@ class Live(object):
             # GPT 6.2 (FW_PROOF_TOOLS_HARDEN_READ_GAPS): F is the floored whole notch, so 1,000/9,000 dL reads like the
             # oracle's 5,000/5,000. The exact oracle's W is compared to the bridge's per-cell dL too; a bridge with no
             # dL is a contract problem, never a silent F-only pass.
-            dl = dl if exact else None
             for i, c in enumerate(cells):
                 if c in self.jobcells or c not in self.o.D:
                     continue
@@ -2443,9 +1583,7 @@ def phase_site(L, args):
         bodies = {n: dict(limitless=b["limitless"], stock=body_stock0(b), capacity=body_stock0(b) or None,
                           cells=list(b["cells"])) for n, b in BODIES.items()}
         # the oracle is the engine the GAME runs: exact-level water, always (the whole-notch setting is deleted)
-        L.exact = True
-        L.o = PulseOracle(MAP_W, MAP_H, src, bodies, sink_band=SINK_BAND, algo="fixed", recession=True,
-                          level_exact=L.exact, beds=site_beds() if L.exact else None, **CREEP_LIVE)
+        L.o = PulseOracle(MAP_W, MAP_H, src, bodies, sink_band=SINK_BAND, recession=True, beds=site_beds())
 
 
 def _pos(p):
@@ -2633,7 +1771,7 @@ def phase_A(L, args):
         # to the brim, one square a pulse from the mouth; a channel off a LIMITED pond (E2_west, W5) settles at the pond's
         # ONE surface, below the brim, so its first-full pulse is None by the ruling, not by a stall. Each direction's
         # want is its own oracle's; the limitless three must also agree with each other (the oscillation guard).
-        want = {k: next((p + 1 for p, v in enumerate(oracle_for(k, 12, exact=L.exact)) if v == [1] * 4), None)
+        want = {k: next((p + 1 for p, v in enumerate(oracle_for(k, 12)) if v == [1] * 4), None)
                 for k in full}
         lim3 = [want[k] for k in ("E2_east_A", "E2_north", "E2_south")]
         L.row("E2_channels_fill_every_direction", None not in lim3 and len(set(lim3)) == 1 and full == want
@@ -2657,18 +1795,11 @@ def phase_A(L, args):
         # run (D=1 each), keeps stock cap-4, and keeps floor(stock/perCell) cells (keep-last-cell: at least one while stock > 0);
         # the rest recede. Recession OFF sheds none (the no_recession fault)
         w2r = BODIES["W2R"]
-        if L.exact:
-            # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (owner 2026-10-16: "It should slosh around until it levels, pond or canal or
-            # otherwise.") + exact level: the still W2R pond and its run share ONE surface; the pond sheds no squares (the
-            # picture shallows instead), its stock is the oracle's (refill adds < 0.01 a pulse: tolerance 0.05) and it paid
-            want_stock, want_rec = L.o.stock_of("W2R"), 0
-            want_vec = [L.o.F[c] for c in SCENES["E3b_recede"]["cells"]]
-        else:
-            want_stock = w2r["capacity"] - 4.0
-            per_cell = w2r["capacity"] / len(w2r["cells"])
-            kept = max(int((want_stock + 1e-6) // per_cell), 1 if want_stock > 0 else 0)
-            want_rec = len(w2r["cells"]) - kept
-            want_vec = [1, 1, 1, 1]
+        # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (owner 2026-10-16: "It should slosh around until it levels, pond or canal or
+        # otherwise.") + exact level: the still W2R pond and its run share ONE surface; the pond sheds no squares (the
+        # picture shallows instead), its stock is the oracle's (refill adds < 0.01 a pulse: tolerance 0.05) and it paid
+        want_stock, want_rec = L.o.stock_of("W2R"), 0
+        want_vec = [L.o.F[c] for c in SCENES["E3b_recede"]["cells"]]
         got_stock = brec.get("stock") if brec.get("stock") is not None else -9
         L.row("E3b_recession_shipped", "E3b_recede" not in mism and e3b == want_vec and brec.get("recededCount") == want_rec
               and abs(got_stock - want_stock) < 0.05 and got_stock < w2r["capacity"] - 0.5, "MOD",
@@ -2701,13 +1832,10 @@ def phase_B(L, args):
             v = vec.get("E3_budget", [[]])
             cap2 = BODIES["W2"]["capacity"]
             got2 = b.get("stock") if b.get("stock") is not None else 9
-            if L.exact:
-                # exact level: the 1-square W2 pond and its 8-square run share one surface (the pond keeps the bottom
-                # notch of its own square, the rest lies level over all nine), so the run never shows a whole notch: the
-                # budget reads in the pond's stock (= the oracle's, refill < 0.01 a pulse) and in the run's F vector
-                spent = abs(got2 - L.o.stock_of("W2")) < 0.05 and got2 < cap2 - 0.5
-            else:
-                spent = sum(v[-1]) == int(cap2) and got2 < 1
+            # exact level: the 1-square W2 pond and its 8-square run share one surface (the pond keeps the bottom
+            # notch of its own square, the rest lies level over all nine), so the run never shows a whole notch: the
+            # budget reads in the pond's stock (= the oracle's, refill < 0.01 a pulse) and in the run's F vector
+            spent = abs(got2 - L.o.stock_of("W2")) < 0.05 and got2 < cap2 - 0.5
             L.row("E3_budget_exhaustion", not probs and "E3_budget" not in mism and spent and v[-1] == v[-2], "MOD",
                   (probs, mism.get("E3_budget", "")[:3]) if (probs or mism) else
                   "cap-%g pond paid into its run (%s), then rested; stock %s (oracle %.4f)" % (
@@ -3444,13 +2572,13 @@ def _litres(L, c):
     return int(m.group(1).replace(",", "")) if m else None
 
 
-def _x_two_oracle(exact, tar_row, water_row, pulse0=0):
+def _x_two_oracle(tar_row, water_row, pulse0=0):
     """X_two alone after phase X's 3 + 9 pulses: the tar row (D=1, one notch each), the water row (D=1, one notch each)
-    and the dry D=2 junction between them, through the engine the game runs (exact or whole-notch). pulse0 = the map's
+    and the dry D=2 junction between them, through the engine the game runs (exact level). pulse0 = the map's
     scribed pulse count before the first of them: tar moves only on pulses that are a multiple of its stride
     (RM_StockMath.FluidMovesThisPulse over PulseCount), so the race at the junction depends on it (full read 2026-10-19:
     the oracle started at 0, right only when the map's count happened to sit on a stride boundary)."""
-    o = PulseOracle(MAP_W, MAP_H, {}, {}, algo="fixed", level_exact=exact, **CREEP_LIVE)
+    o = PulseOracle(MAP_W, MAP_H, {}, {})
     o.pulse_n = pulse0
     for c in tar_row + water_row:
         o.dig(c, 1)
@@ -3618,7 +2746,7 @@ def phase_X(L, args):
                 pulse0 = int(kv3.get("pulse")) - 3          # ProofFluidRow prints the map's PulseCount after the first 3
             except (TypeError, ValueError):
                 pulse0 = None
-            xo = _x_two_oracle(getattr(L, "exact", LIVE_EXACT), tar_row, water_row, pulse0=pulse0 or 0)
+            xo = _x_two_oracle(tar_row, water_row, pulse0=pulse0 or 0)
             allc = tar_row + water_row + [X_JUNCTION]
             fl_of = lambda c: (rows[c]["fluid"] if levels(rows.get(c), None) else None)          # noqa: E731
             want_fl = lambda c: ((xo.fluid.get(c, WATER)) if xo.F.get(c, 0) else None)          # noqa: E731
@@ -3938,7 +3066,7 @@ class MockBridge(object):
     would, and selftest_live_mock() asserts the named row goes non-PASS. Not a model of
     RimWorld beyond what the runner reads."""
     FAULTS = {   # fault -> rows that must NOT pass
-        "oscillate": ["G_every_cell_vs_oracle", "E2_channels_fill_every_direction"],
+        "engine_lags": ["G_every_cell_vs_oracle", "E2_channels_fill_every_direction"],   # the engine flows every other pulse
         "pond_sheds_squares": ["E3b_recession_shipped"],
         "lake_floor_on_site": ["S3_classification"],      # the site's deepBedsEnabled pin is lost: painted ponds get a P11 shelf   # the pre-POND_DEPTH whole-square recession is back on a still pond
         "budget_ignored": ["E3_budget_exhaustion"],
@@ -4035,11 +3163,17 @@ class MockBridge(object):
             self.settings[S_FW]["flowPerPulse"] = 2.0
         self.terrain = {}
         self.roof = set()
-        # the shipped engine: exact-level water (levelExactEnabled); "oscillate" replays the pre-fix notch engine
-        exact = LIVE_EXACT and "oscillate" not in self.faults
-        self.o = PulseOracle(MAP_W, MAP_H, {}, {}, sink_band=SINK_BAND,
-                             algo="old" if "oscillate" in self.faults else "fixed", recession=True,
-                             level_exact=exact, **CREEP_LIVE)
+        # the shipped engine: exact-level water
+        self.o = PulseOracle(MAP_W, MAP_H, {}, {}, sink_band=SINK_BAND, recession=True)
+        if "engine_lags" in self.faults:          # a defect: every other pulse is counted and nothing moves
+            real_pulse = self.o.pulse
+
+            def lagging(o=self.o, real=real_pulse):
+                if o.pulse_n % 2:
+                    o.pulse_n += 1
+                else:
+                    real()
+            self.o.pulse = lagging
         if "save_pulse_count" in self.faults:     # a loaded save carries its own scribed PulseCount, not 0
             self.o.pulse_n = 1
         self.next_pulse = self.tick + PULSE_SHIPPED
@@ -4286,10 +3420,6 @@ class MockBridge(object):
         """RM_MapComponent_Excavation.FillIn (CANAL_FILLIN_FIX_SHEET_WATER_DESTROYED): one level shallower, the water above
         the new floor displaced in dL into the cardinal neighbours' room, the rest a sanctioned overflow."""
         U = level_water.U
-        if not self.o.level_exact:          # the notch engine keeps F only: derive the dL view from it first
-            for x in [c] + [(c[0] + dx, c[1] + dz) for dx, dz in CARDINAL]:
-                if x in self.o.F:
-                    self.o.W[x] = self.o.F[x] * U
         d, w = self.o.D.get(c, 0), self.o.W.get(c, self.o.F.get(c, 0) * U)
         nd = d - 1
         disp = max(0, w - max(nd, 0) * U)
@@ -4643,7 +3773,7 @@ class MockBridge(object):
 
     def burnable(self, c):
         # LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (P4): BurnableFluidAt sees a sheet: exact-level, any decilitre burns
-        wet = self.o.W.get(c, 0) > 0 if self.o.level_exact else self.o.F.get(c, 0) > 0
+        wet = self.o.W.get(c, 0) > 0
         return self.o.exc(c) and wet and self.o.fluid.get(c) in self.BURNABLE
 
     def fire_tick(self):
@@ -4670,27 +3800,16 @@ class MockBridge(object):
         if "fire_never_burns" in self.faults:
             return
         per = max(1, int(round(60000 * max(0.01, float(self.S("burnDaysPerNotch"))))))
-        if self.o.level_exact:
-            # P4: a canal square burns RM_FireMath.DlDue decilitres a pulse (a notch per burnDaysPerNotch); its whole-notch
-            # view F reaches 0 while the last part-notch still burns, and it is spent (ashed, unlit) only at 0 dL
-            due = max(1, level_water.U * pulse_ticks // per)
-            for c in list(self.fire):
-                w = max(0, self.o.W.get(c, 0) - due)
-                self.o.W[c], self.o.F[c] = w, w // level_water.U
-                if w == 0:
-                    del self.fire[c]
-                    if "fire_no_ash" not in self.faults:
-                        self.ash.add(c)
-            return
+        # P4: a canal square burns RM_FireMath.DlDue decilitres a pulse (a notch per burnDaysPerNotch); its whole-notch
+        # view F reaches 0 while the last part-notch still burns, and it is spent (ashed, unlit) only at 0 dL
+        due = max(1, level_water.U * pulse_ticks // per)
         for c in list(self.fire):
-            self.fire[c] += pulse_ticks
-            while self.fire.get(c, 0) >= per:
-                self.fire[c] -= per
-                self.put(c, max(0, self.o.F.get(c, 0) - 1))
-                if self.o.F[c] == 0:
-                    del self.fire[c]
-                    if "fire_no_ash" not in self.faults:
-                        self.ash.add(c)
+            w = max(0, self.o.W.get(c, 0) - due)
+            self.o.W[c], self.o.F[c] = w, w // level_water.U
+            if w == 0:
+                del self.fire[c]
+                if "fire_no_ash" not in self.faults:
+                    self.ash.add(c)
 
     def t_jawa_list_things(self, defName=None, rect=None, limit=200, **kw):
         x, z, w, h = map(int, rect.split(","))
@@ -4818,7 +3937,7 @@ class MockBridge(object):
         elif method == "ProofReadout":
             x, z = map(int, args.split(","))
             c = (x, z)
-            w = o.W.get(c, 0) if o.level_exact else o.F.get(c, 0) * level_water.U
+            w = o.W.get(c, 0)
             res = "OK Hole %.1f m \u00b7 Water %.2f m (%s L)" % (0.5 * o.D.get(c, 0), w * level_water.M_PER_UNIT,
                                                                 format(int(round(w / 10.0)), ","))
         elif method == "ProofFluidRow" and "fluid_row_blind" in self.faults:

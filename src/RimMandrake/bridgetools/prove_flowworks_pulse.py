@@ -9,7 +9,7 @@ Checks (each prints PASS/FAIL; exit 1 on any FAIL):
   P1  refusal path: count=0 and count=501 fail and run nothing
   P2  a 1x4 D=1 strip fed by a painted 1-cell WaterShallow SOURCE at its west end; 3 pulses at
       0 ticks: pulsesRun==3, ticksGame unchanged, nextPulseTick untouched, pulse-0 vector ==
-      [0,0,0,0], something moved, and every per-pulse vector == PulseOracle(fixed).
+      [0,0,0,0], something moved, and every per-pulse vector == PulseOracle (exact level; it models no recession).
       (Before 2026-10-02 the strip had NO source: F=1 at its west end on a uniform D=1 strip is
       already a fixed point of the engine, so 'something moved' could never pass -- HARNESS.)
   P3  second instrument: excavation_rect over the strip == the last pulse vector

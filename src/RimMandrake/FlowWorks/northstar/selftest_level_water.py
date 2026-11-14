@@ -35,7 +35,7 @@ def check(name, ok, detail=""):
 
 def oracle(w, h, sources=None, bodies=None, beds=None, sink_band=None, per=1):
     return v.PulseOracle(w, h, dict(sources or {}), bodies or {}, per=per, budget=True, sink_band=sink_band,
-                         algo="fixed", level_exact=True, beds=beds)
+                         beds=beds)
 
 
 def total(o):

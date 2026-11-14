@@ -83,15 +83,14 @@ def ops_scene(seed):
 
 
 def oracle(sc):
-    """The exact-level engine (level_water.py through PulseOracle(level_exact=True)) at the shipped flags. The whole-notch
+    """The exact-level engine (level_water.py through PulseOracle, the only engine it has) at the shipped flags. The whole-notch
     modes (depth, surface, levelset, shipped, pond) were deleted with the C# whole-notch kernel
     (RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES): there is no second engine left to compare."""
     w, h, pulses, band, bodies, src, digs = sc[:7]
     beds = (sc[7] or None) if len(sc) > 7 else None
     events = sc[8] if len(sc) > 8 else []
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
-                      sink_band=band or None, algo="fixed", level_surface=True, level_set=True,
-                      creep_water=True, creep_thick=True, head_rule=False, beds=beds, level_exact=True)
+                      sink_band=band or None, beds=beds)
     order = []
     for c, d in digs:
         o.dig(c, d)
