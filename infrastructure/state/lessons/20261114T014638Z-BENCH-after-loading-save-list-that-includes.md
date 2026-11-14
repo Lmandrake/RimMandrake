@@ -1,0 +1,1 @@
+After loading a save on a list that includes VEF core, VEF.Factions.Dialog_NewFactionSpawning opens ~10 times in a row and force-pauses: jawa/order_pawn then reports 'THE GAME DID NOT TICK'. Close in a loop until get_ui_state.windowsForcePause is false (measured 2026-11-13, evening_20261113 tier).

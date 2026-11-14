@@ -1,0 +1,1 @@
+A JawaBench companion older than a FlowWorks API change throws NullReferenceException in flowworks_excavation_drive; check the game copy's date against the last commit touching JawaBench.BridgeTools before a FlowWorks live run, and rebuild with build.py --gm (without --gm it would drop ~50 tools incl. jawa/static_call).

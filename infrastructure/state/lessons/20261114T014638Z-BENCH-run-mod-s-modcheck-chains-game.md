@@ -1,0 +1,1 @@
+To run a mod's modcheck chains on the game already up, without the mod-list swap, set MODCHECK_KEEP_MODLIST=1 and MODCHECK_SKIP_DEPLOY=1 (pass them to python.exe with WSLENV) and load a map of the suite's biome first; on any other biome Pyrelands chains read UNMEASURED SITE.

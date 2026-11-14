@@ -1,0 +1,1 @@
+jawa/list_things does not return pawns (a defName=Human or RM_FireHawk query reads empty); use jawa/list_pawns (keys id/def) or rimworld/list_colonists (thingIdNumber is what PawnById-style proofs parse).
