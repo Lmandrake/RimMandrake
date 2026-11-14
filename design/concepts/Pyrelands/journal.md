@@ -12,21 +12,22 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 2 (preflight) run by hand 2026-11-14 11:43 PST: **refuse, 17 refusals** (`version/preflight.json`).
-  Stage 3 ("reconcile") is next; not begun.
+- **Stage now:** Stage 3 ("reconcile") done offline 2026-11-14 12:40 PST. Preflight re-run: **1 refusal** (was 17):
+  `plan.md` changed after the lock by a behaviour change (fire-hawk ember reach), for the Conductor. Stages 4-5 are next.
 - **Bars:** 41 (20 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
   The test-and-stage table is `version/test_table.json` (read view `version/test_table.md`), same columns as Explosive
   Knockback's.
-- **Measured 2026-11-14:** 34 of 41 bars have at least one test that runs today (a built offline test that ran green, or
-  an in-game scene whose entry exists in `validation.py`); 27 have every deciding test runnable; 6 have offline deciding
-  tests, and none of those 6 is decided by built tests alone. 11 built offline tests ran green for this mod; 4 are
-  specified for Stage 3. 4 of the 23 `scenes.json` scenes have no entry in `validation.py`. No live scene ran (offline only).
+- **Measured 2026-11-14 12:35 (after Stage 3):** all 41 bars have every deciding test runnable today (offline green, or a
+  live scene whose entry exists in `validation.py`); 14 have an offline deciding test green; the 6 decided offline only are
+  all built and green. 15 built offline tests ran green for this mod, 0 specified. All 23 scenes have an entry. No live
+  scene ran (offline only); the four new entries are UNRUN with their commands in `version/test_table.json`.
 - **Judge gaps:** 14 from the last coverage verdict (`version/gaps_sorted.md`). 6 of the 7 CORRECTIONs are applied to test
-  text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. 6 PROBLEM and 1 POLISH stay for Stage 3.
+  text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. Of the 6 PROBLEMs, the offline halves
+  of g6, g7 and g10 are built (Stage 3); every live half, and g2, g4, g9, stays open. 1 POLISH (g8) stays.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** a builder for Stage 3 (the 8 missing deciding tests, the 6 PROBLEM gaps), the Conductor's read of the
-  post-lock file changes (Stage 2 C12), and the questions at the end of the history.
+- **Waiting on:** the Conductor's read of `plan.md`'s post-lock change (the one preflight refusal); the live halves of the
+  PROBLEM gaps g2, g4, g6, g7, g9, g10 (Stage 6, or more scene text); the questions at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -184,3 +185,56 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
    it? If not, `sc_no_rain` could drop to support and the bar proves offline (pipeline bar 4). For the Stage 4
    challenger.
 5. **`plan.md` changed after the lock** (fire-hawk reach). Test text or meaning? For the Conductor.
+
+### 2026-11-14 12:40 PST, Stage 3 (offline build, as reconcile) done by hand (rm-builder, detached, offline only)
+
+- **Preflight: 17 refusals before, 1 after** [measured, `version/preflight.json`, 3.7 s]. C6 8 -> 0 (all 8 owed tests
+  built), C15 4 -> 0 (items filed), C12 5 -> 1 (four files re-pinned, `plan.md` not).
+- **Offline tests built, each green with its own planted faults red:** `T_DEFS_OFFLINE` (6 def facts, 12 of 12 mutants;
+  reads patch-added weather too, so the ash-storm patch is counted), `T_CUT_STAYS_CUT` (10 absence facts incl. the shipped
+  DLL, 9 of 9), `T_SETTINGS_SWEEP_OFFLINE` (41 settings scribed, shipped as ruled, read, gated; 10 of 10),
+  `T_ASH_PROBE_OFFLINE` (real kernel compiled with a harness; 8 of 8; red on the base commit: "RM_FireEcoKernel has no
+  ProbeLine"). The first three are new tests of built behaviour, so their red is the planted faults, not the base.
+- **Mod behaviour built (C#, `FireEcologyHook.dll` rebuilt):** the ash probe the leaf `ash_fertility_probe` asks for:
+  `RM_FireEcoKernel.ProbeLine` (base, watered lift, fresh-burn bonus with age and days left, rain on the cell, expected
+  beside the grid's value); `ProbeCell` now goes through it and starts `refused=<reason>;` when the ash field or the
+  gate is off, still listing the parts (the gate-off check `ash_field_activates_after_init` reads them);
+  `ProbeRect` for a rectangle. For `rite_hook_alone`: a counting test listener on `PyrelandsFireRiteHook`
+  (refuses to replace a real hook) and `MapComponent_BurnLine.ForceFrontDue` (one fire-clock beat on demand).
+- **Scene entries built, UNRUN (Stage 6):** `flamefang_venom`, `rite_hook_alone`, `firefoam_sprayer`, `walk_season`
+  in `validation.py`, each with its control. Import-checked and run through the offline declaration probe (every
+  component declares, none crashes). `walk_season` runs only with `PYRE_WALK=1` (two game weeks, full list); it does
+  not automate the harvest, the sowing or the furnace-beast shelter (the colony's own work; his walk reads them).
+- **Items:** filed `RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE`, `RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT`,
+  `RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE`, `RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE`, each with its acceptance test;
+  all four closed on their landing commits.
+- **Re-pinned (steward's decision):** `tree.json`, `scenes.json`, `sheet.md`, `record.json`, checked field by field
+  against the lock blobs (only test text and the g5/g12/g13 false lines moved; `record.json`'s `inv_ullai_herd_giant`
+  sentence about the cut migration's text is among them). `plan.md` is not: commit `82d9247595` changed the fire-hawk's
+  reach after the lock. Detail in `version/bars.md`.
+- **Preflight hole fixed:** C9 judges a def with our prefix against the repo's current Defs/Patches (or a declared C#
+  type), never the 2026-11-12 dump or a C# string; a built-in probe refuses if it cannot see the deleted loose-ash def.
+  The pilot's `preflight_ek.py` still has the hole (not this mod's file).
+- **Regressions:** fuzz, lint, allowlist, burn cost, site, fruit clear green after the C# change.
+  `selftest_settings_screens.py` stays red on other mods' rows only (oddity 9).
+- **Code review:** every C# and test file touched is DIRTY (`code_review_status.py`); Stage 4's blind review is the review.
+- **Cost:** about $7.3 of model spend (harness budget line; running total about $12.2), about 25 minutes wall, 0 of his minutes.
+- **Boring enough to automate:** deriving "built" from the test file existing (now in `make_test_table.py`); the mutant
+  loop every test repeats (copy, plant, run, expect red) is one helper; field-by-field diff of a locked file against its
+  pin, sorting test-text fields from bar fields; filing an item with its acceptance test from the table row.
+- **Needed judgment:** whether `plan.md`'s reach change is meaning (yes, so not re-pinned); what "refuses" means for a
+  probe another check reads (prefix plus parts); what "herdMigrationAllowed false" asks (no def sets it true; see Q7);
+  which parts of the two-week walk a script can honestly decide.
+
+### Questions (added at Stage 3)
+
+6. **The fire-hawk reach change (`plan.md`, commit `82d9247595`) is a behaviour change after the lock** ("up to eighteen
+   cells" became "anywhere on the map", agent default). Keep it as 0.1.0 (re-pin), or is it Divergent? For the Conductor,
+   and his if it moves a bar.
+7. **Ullai can still join vanilla herd migrations across the map:** `RM_Ullai` is a herd animal and does not set
+   `herdMigrationAllowed` (vanilla default true). The cut leg was the furnace-beast's *world-map* migration, which is gone;
+   `T_CUT_STAYS_CUT` checks no def of ours sets it true, not that ullai set it false. Is a vanilla map-crossing herd of
+   ullai wanted?
+8. **The PROBLEM gaps' live halves** (g2 foreign arrivals, g4 dry-ash grass, g6 heat immunity, g7 venom tended, g9 eviction
+   shown, g10 gate off) need scene text in the locked `scenes.json` or a ruling that their offline halves suffice.
+

@@ -1,0 +1,1 @@
+A modcheck chain runs once OFFLINE with t.session None (the declaration probe): t.bridge_call no-ops there, but _session_call (validation.py) calls t.session.call and crashes it. Guard any _session_call in a chain body with 'if t.session is not None', or use t.bridge_call. Found writing Pyrelands rite_hook_alone/walk_season, 2026-11-14.
