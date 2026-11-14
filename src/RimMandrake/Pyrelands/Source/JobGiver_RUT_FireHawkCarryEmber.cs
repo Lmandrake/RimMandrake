@@ -109,8 +109,15 @@ namespace RimMandrake.Pyrelands
             MapComponent_RM_FireHawkFuel fuel = MapComponent_RM_FireHawkFuel.For(hawk.Map);
             if (fuel == null) return "pick=none reason=no-fuel-component";
             fuel.Recount();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            int[] counted = fuel.Counts;                       // the whole-map rescan a sortie pays once per FireHawkFuelRefreshTicks
+            double recountMs = sw.Elapsed.TotalMilliseconds;
+            sw.Restart();
             bool ok = TryFindFuelOnTheMap(hawk, from, out IntVec3 c);
-            return (ok ? "pick=" + c.x + "," + c.z : "pick=none") + " fuelCells=" + fuel.CountedCells + " bucket=" + PyrelandsTuning.FireHawkFuelBucket;
+            double pickMs = sw.Elapsed.TotalMilliseconds;
+            return (ok ? "pick=" + c.x + "," + c.z : "pick=none") + " fuelCells=" + fuel.CountedCells + " bucket=" + PyrelandsTuning.FireHawkFuelBucket
+                + " recountMs=" + recountMs.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture)
+                + " pickMs=" + pickMs.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private static bool TryFindFuelOnTheMap(Pawn pawn, IntVec3 origin, out IntVec3 result)

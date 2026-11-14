@@ -139,10 +139,19 @@ def register(suite, V):
         r = t.bridge_call("jawa/static_call", type=typ, method=method, args=args) or {}
         return r.get("result") if isinstance(r, dict) and r.get("success") else None
 
-    def stage_fire(t, rect):
+    def stage_fire(t, rect, dx=0):
+        """Grass and a fire centred dx cells east of the anchor. The first fire burns the whole pad, so a later one goes on
+        fresh ground with its own firebreak (live 2026-11-13: the second fire on the burnt pad refused all 16 cells)."""
         x, z = t.anchor
+        x += dx
+        if dx:
+            rect = (x - 5, z - 5, 10, 10)
+            V._firebreak(t, rect)
+            V._soil(t, rect)
+            t.bridge_call("jawa/set_fog", action="unfog", rect=V._rs(grown(rect, 4)))
         V._plants(t, "RM_FE_Plant_EmberGrass", rect)
         V._fire(t, (x - 2, z - 2, 4, 4), size=0.5)
+        return x
 
     @suite.chain("firehawk_first_sighting_letter")
     @V._teardown(fire=True)
@@ -176,8 +185,8 @@ def register(suite, V):
                 if a not in (new.get("lookTargetIds") or []):
                     V._fail("the letter does not point at hawk %s: %r" % (a, new.get("lookTargetIds")))
             # a second hawk, a fresh fire: the letter is once per game
-            stage_fire(t, rect)
-            b = V._spawn_wild(t, "RM_FireHawk", x - 8, z)
+            bx = stage_fire(t, rect, dx=30)
+            b = V._spawn_wild(t, "RM_FireHawk", bx - 8, z)
             if V._live(t) and not until_carrying(t, b):
                 V._unmeasured(t, "the second hawk %s never carried an ember: the once-only half is unjudged" % b)
             V._wait(t, LOOK_WAIT)
@@ -187,8 +196,8 @@ def register(suite, V):
             V._set(t, {"fireHawkSightingLetterEnabled": False})
             V._note(t, "rearm", static(t, SIGHT, "ProbeRearmForLiveTest"))
             before = len(letters(t, label))
-            stage_fire(t, rect)
-            c = V._spawn_wild(t, "RM_FireHawk", x, z + 8)
+            cx = stage_fire(t, rect, dx=-30)
+            c = V._spawn_wild(t, "RM_FireHawk", cx, z + 8)
             if V._live(t) and not until_carrying(t, c):
                 V._unmeasured(t, "hawk %s never carried an ember with the letter off: unjudged" % c)
             V._wait(t, LOOK_WAIT)
