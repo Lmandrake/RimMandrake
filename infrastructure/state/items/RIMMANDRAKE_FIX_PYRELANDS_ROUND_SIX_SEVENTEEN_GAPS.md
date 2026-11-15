@@ -59,6 +59,6 @@ Script parts the fixes owe: RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_TH
 No new tree leaf (each would be a new locked bar): every gap folds into existing leaves, scenes and coverage_rest rows.
 - [x] g1, g2, g4: 6a4318a295 (new offline test T_SELF_CONTAINED_OFFLINE, 8 of 8 mutants red)
 - [x] g5, g6, g7, g8, g9, g10: 6d8f7fe94c (record.json's "dome sprite is the standing body" was false and is corrected)
-- [x] g11-g16: (this commit; art items RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET and RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN filed with acceptance tests)
-- [ ] g17, g18
+- [x] g11-g16: 4a7b2faf61 (art items RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET and RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN filed with acceptance tests)
+- [x] g17, g18: this commit; T_ROUND6_GAPS 18 of 18 PASS; showcases accepted (4: fire_solace, overlap 0.25 inv_scorchfruit with overlap_why)
 - [ ] coverage_fixes.json (18 claims), then ONE re-pin

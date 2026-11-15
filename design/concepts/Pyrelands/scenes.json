@@ -802,6 +802,24 @@
     "inv_furnacebeast",
     "inv_ruins_scorched"
    ]
+  },
+  {
+   "id": "fire_solace",
+   "scenes": [
+    "sc_firefoam_sprayer",
+    "sc_scorchfruit",
+    "sc_sand_shovel",
+    "sc_firehawk_rewards"
+   ],
+   "exercises": [
+    "inv_firefoam_sprayer",
+    "inv_sand_shovel",
+    "inv_firehawk_hunt_rewards",
+    "inv_scorchfruit"
+   ],
+   "overlap_why": {
+    "inv_scorchfruit": "the solace is the fruit the sprayer reaches: sc_firefoam_sprayer stages a harvest of scorch-fruit standing in a live burn, so the fruit is the staging of this showcase, not new coverage"
+   }
   }
  ],
  "coverage_rest": [
@@ -817,22 +835,6 @@
     "T_SITE"
    ],
    "why": "the self-contained biome is checked where each part can fail, not by a showcase (no showcase scene uses the payload, the ports or the text): sc_populations censuses the map's own plants and cast and reads the log; biome_text_says_engineered reads the description; T_SELF_CONTAINED_OFFLINE (python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py) reads that the acoustic-scanner payload RM_AcousticPayload_Pyrelands is FindMod-guarded on the scanner's own About name and targets RM_Pyrelands and defs our mods declare, so with the scanner absent nothing applies and nothing logs; that every ported pyroclastic mutator in RM_RetiredMutatorPorts_Pyrelands is a mapped port the canon save's tiles resolve to; and that no label, description or keyed text carries campaign vocabulary (RSW_/RUT_ names, Ashkarr, Jawa, Star Wars canon words). The ports are inert until the one paint; the canon save loading their tiles with no missing-def error is a live read, UNRUN (load the canonical world save on the composed list and read Player.log for 'Could not resolve' naming an RM_ mutator)"
-  },
-  {
-   "capability": "inv_firefoam_sprayer",
-   "by": [
-    "sc_firefoam_sprayer",
-    "firefoam_sprayer_reaches_the_fruit"
-   ],
-   "why": "one built tool; his root names it as the way to the fruit, and a staged harvest through a live burn checks exactly that without a showcase built round it"
-  },
-  {
-   "capability": "inv_sand_shovel",
-   "by": [
-    "sc_sand_shovel",
-    "sand_shovel_yields_glass_sand"
-   ],
-   "why": "one dig order on sand, unrelated to the fire; a direct order check is cheaper"
   },
   {
    "capability": "inv_fire_rite_hook",
@@ -1133,14 +1135,6 @@
      "note": "the art exists (AshwallowDome_*, adf45e2103, 2026-10-15, the day before his sheet); whether his sheet showed it is UNMEASURED, so it is judged with the rest"
     }
    ]
-  },
-  {
-   "capability": "inv_firehawk_hunt_rewards",
-   "by": [
-    "sc_firehawk_rewards",
-    "firehawk_hunt_rewards"
-   ],
-   "why": "a once-a-game letter and a butcher product are read directly; a showcase built round a hunt adds nothing the scene does not read"
   }
  ]
 }
