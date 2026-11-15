@@ -12,9 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 3 "reconcile" done as far as offline work can take it, 2026-11-14 2:45 PM PST: every bar has a
-  check that runs (offline) or exists (in-game, UNRUN); five bars' offline checks are red because their behaviour is not
-  built, one is red on his call (history, Stage 3). Stage 1 by hand 11:50 PST; Stage 2 by a throwaway program.
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 11:49 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -24,9 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** builds for three absent behaviours (the toss-flame order, raiders fetching their fallen, the liquid
-  coating), each now with its acceptance test on its item. Wetting and its probe are 0.2.0 work since his card of
-  2026-11-14. Open question for him: dig speed (end), which waits on the 0.2.0 dig-interface design. Preflight: refuse, 7 refusals (`version/preflight.json`, 2026-11-14 2:40 PM PST; 48 when Stage 3 began).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 11:49 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -297,3 +293,12 @@ Stage change, Stage 3 "reconcile" (2:14 to 2:47 PM PST, rm-builder, detached):
 3. **The dig speed** ("it's slow"): his target is a question inside the 0.2.0 dig-interface design
    (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his card 2026-11-13 10:12 PM PST put the whole redesign in
    0.2.0, `version/next_version/README.md`); the dig-time test waits for his target.
+
+### 2026-11-14 11:49 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: Every Stage 3 exit test passes after his three cards were enacted (39753a53ff)
+- Checks passed: order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle.
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3 "reconcile" done as far as offline work can take it, 2026-11-14 2:45 PM PST: every bar has a check that runs (offline) or exists (in-game, UNRUN); five bars' offline checks are red because their behaviour is not built, one is red on his call (history, Stage 3). Stage 1 by hand 11:50 PST; Stage 2 by a throwaway program.
+- Was, "Waiting on": - **Waiting on:** builds for three absent behaviours (the toss-flame order, raiders fetching their fallen, the liquid coating), each now with its acceptance test on its item. Wetting and its probe are 0.2.0 work since his card of 2026-11-14. Open question for him: dig speed (end), which waits on the 0.2.0 dig-interface design. Preflight: refuse, 7 refusals (`version/preflight.json`, 2026-11-14 2:40 PM PST; 48 when Stage 3 began).
+- Record: `version/stage_record.json`.

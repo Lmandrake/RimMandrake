@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-14T11:52:00-08:00",
-  "since_from": "the end of the stage before it, journal heading: row 3 done: Stage 2 by a throwaway program",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-14T23:49:31-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -15,11 +15,28 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 0,
-    "total": 0
+    "visit": 1,
+    "total": 1
   },
   "pre_human_arrivals": 0,
-  "moves": [],
+  "moves": [
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-14T23:49:31-08:00",
+      "by": "CONDUCTOR",
+      "why": "Every Stage 3 exit test passes after his three cards were enacted (39753a53ff)",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle"
+      ]
+    }
+  ],
   "spend": [
     {
       "stage": "designer",
