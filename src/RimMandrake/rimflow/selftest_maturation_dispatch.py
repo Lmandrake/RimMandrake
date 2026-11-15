@@ -586,13 +586,16 @@ def ingame_main():
             return rd["mods"][mod]["decision"]
 
         base = MD.load_cfg()
-        chk(lambda: base.get("ingame_enabled") is False and isinstance(base.get("ingame_cap_usd"), (int, float))
+        # ingame_enabled shipped false and was set true 2026-11-15 by the Conductor once the first visit (Pyrelands)
+        # had run by hand, as the settings' _ingame_doc says; the pin is now "a bool", and the off case is built
+        # explicitly below rather than read from the shipped file.
+        chk(lambda: isinstance(base.get("ingame_enabled"), bool) and isinstance(base.get("ingame_cap_usd"), (int, float))
             and base["ingame_cap_usd"] > 0 and base.get("ingame_auto_runs_per_visit") == 1
             and base.get("ingame_model") == "opus",
-            "the settings as shipped: in-game launches OFF (the Conductor runs the first by hand), a positive cap, one "
+            "the settings as shipped: in-game launches a bool (the Conductor ran the first by hand), a positive cap, one "
             "automatic run per visit, opus (%s, %s, %s)" % (base.get("ingame_enabled"), base.get("ingame_cap_usd"),
                                                            base.get("ingame_auto_runs_per_visit")))
-        off = dict(base, advancing=["Pyrelands"])
+        off = dict(base, advancing=["Pyrelands"], ingame_enabled=False)
         on = dict(off, ingame_enabled=True)
         cap = "%g" % base.get("ingame_cap_usd", 0)
 
@@ -603,7 +606,7 @@ def ingame_main():
             rd[0] = tick(off)
             return (dec(rd[0]) == "ingame_off" and not launches() and not filed and not asked
                     and "by hand" in need(rd[0], "Pyrelands"))
-        chk(t_off, "as shipped (ingame_enabled false), visit 1 owed: no launch, the bridge not even asked, a Needs "
+        chk(t_off, "off (ingame_enabled false), visit 1 owed: no launch, the bridge not even asked, a Needs "
                    "Conductor line saying run it by hand")
 
         # ---- on: one launch, then never a second automatic try -------------------------------------------------------

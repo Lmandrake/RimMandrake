@@ -16,10 +16,10 @@
   "blind_enabled": true,
   "blind_cap_usd": 20,
   "blind_auto_cycles_per_visit": 1,
-  "ingame_enabled": false,
-  "ingame_cap_usd": 20,
+  "ingame_enabled": true,
+  "ingame_cap_usd": 30,
   "ingame_model": "opus",
   "ingame_auto_runs_per_visit": 1,
-  "_ingame_doc": "In-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST). One live driver (opus, ingame_cap_usd) when visit N is owed (no visit_N folder), nothing is live, just ended or seen as an in-game run on it, no in-game run is live on any mod (one live-game driver at a time), and `rimflow bridge idle` says takeable. At most ingame_auto_runs_per_visit automatic runs per visit; every ended visit is a Needs Conductor line; the program never advances. ingame_enabled ships false by the night order of 2026-11-15: the timer starts no live run until the Conductor has run the first visit by hand (maturation.py launch) and sets it true.",
+  "_ingame_doc": "In-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST). One live driver (opus, ingame_cap_usd) when visit N is owed (no visit_N folder), nothing is live, just ended or seen as an in-game run on it, no in-game run is live on any mod (one live-game driver at a time), and `rimflow bridge idle` says takeable. At most ingame_auto_runs_per_visit automatic runs per visit; every ended visit is a Needs Conductor line; the program never advances. ingame_enabled ships false by the night order of 2026-11-15: the timer starts no live run until the Conductor has run the first visit by hand (maturation.py launch) and sets it true. Set true 2026-11-15 ~05:30 PST by the Conductor (Pyrelands visit 1 ran by hand, ended 05:11; selftests green), ingame_cap_usd 20 -> 30 to match the hand launches ($30 bound; Pyrelands visit 1 spent about $18).",
   "_blind_doc": "The blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED). One judge (opus, blind_cap_usd: the hand briefs' $20 bound) when cycle N is owed (no cycle_N folder) and nothing is live, just ended (settle_s) or seen as a blind run since the cycle opened. At most blind_auto_cycles_per_visit automatic cycles per visit, by the owner's condition: \"As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble.\" Every ended cycle is a Needs Conductor line; the program never advances."
 }
