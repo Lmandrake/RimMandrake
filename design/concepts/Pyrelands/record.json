@@ -565,7 +565,7 @@
      "sc_walk",
      "sc_flamefang_venom"
     ],
-    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts), the slow thirst and one-at-a-time water visits (sc_walk), the venom bite tool (sc_flamefang_venom)"
+    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts against a same-seed map with the genstep's gate off), the slow thirst and one-at-a-time water visits (sc_walk), the venom bite tool (sc_flamefang_venom)"
    }
   },
   {
@@ -607,7 +607,7 @@
      "sc_ash_ground",
      "sc_three_skies"
     ],
-    "why": "parts: wet roots (sc_ash_watered: a crop growing at the biome's heat at all is the cooler-roots read, its control the watered-lift switch, the same gate), the standing-water ring (sc_ash_ground), ash depth and its drawing (sc_ash_ground, sc_three_skies)"
+    "why": "parts: wet roots (sc_ash_watered: the strips held above the crop's maxOptimalGrowthTemperature and each strip's Plant.GrowthRateFactor_Temperature read daily is the cooler-roots read, its control the watered-lift switch, the same gate), the standing-water ring (sc_ash_ground), ash depth and its drawing (sc_ash_ground, sc_three_skies)"
    }
   },
   {
@@ -645,9 +645,10 @@
    ],
    "parts_covered_by": {
     "by": [
+     "sc_fire_sense",
      "sc_walk"
     ],
-    "why": "part: people keep clear of fire and eat before fire duty; two weeks of ordinary play beside the front is where a colonist would burn or starve, and the walk reads it"
+    "why": "part: people keep clear of fire and eat before fire duty; sc_fire_sense stages a colonist beside a lit fire and an urgently hungry one given fire duty, reads RM_PyreStepAwayFromFire and the Ingest-before-BeatFire order, and its control turns the roster toggle (PyrelandsMechanicsGate) both sit behind off; sc_walk's two weeks beside the front is ordinary play on top"
    }
   },
   {

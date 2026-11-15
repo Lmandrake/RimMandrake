@@ -58,18 +58,22 @@
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::ash_fertility_watered",
    "start": [
     "two deep-ash strips of the same size, one beside a watered channel (asserted: terrain on both strips reads RM_FE_Ash_Deep, wet read on one)",
-    "same crop sown on the same tick"
+    "same crop sown on the same tick",
+    "the cell temperature on both strips above the crop's plant.maxOptimalGrowthTemperature (asserted: each strip's cell temperature read against the crop def), so wet roots (PyrelandsWetRoots) has heat to act on"
    ],
-   "action": "grow five days, reading growth each day",
-   "expect": "the watered strip clearly ahead; fertility about 140% watered and about 70% dry",
+   "action": "grow five days, reading growth and each strip's Plant.GrowthRateFactor_Temperature each day",
+   "expect": "the watered strip clearly ahead; fertility about 140% watered and about 70% dry; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
    "control": {
     "case": "the same watered deep-ash strip with the watered-lift switch (ashWaterFertilityEnabled) off, sown on the same tick",
-    "expect": "reads dry-ash fertility (about 70%) and grows at the dry strip's rate",
+    "expect": "reads dry-ash fertility (about 70%) and grows at the dry strip's rate; its GrowthRateFactor_Temperature equals the dry strip's (wet roots sits behind the same switch)",
     "rules_out": "richer soil by the water passing for watered ash: the lift is the mechanism, not the ground"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both strips and the channel), restore the watered-lift switch",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains ash_fertility_watered"
   },
   {
    "id": "sc_burn_compounds",
@@ -156,11 +160,11 @@
     "wild-plant allowlist (wildPlantAllowlistEnabled) on (asserted from the settings read)"
    ],
    "action": "census every wild plant and animal on the map against the biome manifest; count fire-hawks and ashwallows; read the log; then add a donor plant to the map's wild-plant pass and let wild-plant spawning run for a day, allowlist on, then the same day with it off",
-   "expect": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and eight ashwallows, no red error; with the allowlist on the donor plant is evicted or never spawns",
+   "expect": "every defName in the manifest, grazers outnumber predators, fire-hawks = max(2, the gate-off control's count) and ashwallows at least max(8, the control's count) (GenStep_PyrelandsFireCast tops each kind up by exactly its shortfall; its grazer balance may add ashwallow groups), no red error; with the allowlist on the donor plant is evicted or never spawns",
    "control": {
-    "case": "one donor plant and one donor animal spawned before the census; the same wild-plant day with wildPlantAllowlistEnabled off",
-    "expect": "both seeded donors are reported as intruders; with the allowlist off the donor plant grows",
-    "rules_out": "a census that cannot see intruders reporting a clean map, and a map where no donor ever leaked passing for the allowlist evicting one"
+    "case": "one donor plant and one donor animal spawned before the census; the same wild-plant day with wildPlantAllowlistEnabled off; a fresh map on the same seed and tile with the roster toggle (PyrelandsMechanicsGate) off, so GenStep_PyrelandsFireCast returns before its top-up (asserted the same roll: every other wild kind's count equals the toggle-on map's)",
+    "expect": "both seeded donors are reported as intruders; with the allowlist off the donor plant grows; the gate-off map holds the vanilla roll's fire-hawk and ashwallow counts, the ones the top-up started from",
+    "rules_out": "a census that cannot see intruders reporting a clean map, and a map where no donor ever leaked passing for the allowlist evicting one, and a natural roll already at two hawks and eight ashwallows passing for the top-up"
    },
    "restore": "despawn the seeded intruders and every donor plant the wild-plant day spawned, take the donor out of the wild-plant pass and restore the allowlist switch",
    "hold": "immediate",
@@ -365,6 +369,32 @@
    "live_command": "modcheck run Pyrelands --chains walk_season"
   },
   {
+   "id": "sc_fire_sense",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_season_on_the_pyre"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::fire_sense",
+   "entry_point_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "start": [
+    "fresh Pyrelands map (biome RM_Pyrelands asserted), the Baroque Biomes roster toggle (PyrelandsMechanicsGate) on (asserted from the settings read), a cleared 9x9 pad of bare ground inside the home area",
+    "colonist P undrafted and idle at the pad's centre with no Fire attached (asserted); colonist H undrafted, its food need set to UrgentlyHungry (asserted from its food category), Firefighter work enabled, a meal on a shelf 10 cells off the pad"
+   ],
+   "action": "light one Fire on a cell next to P (the test's own spark); every 30 ticks for 600 ticks read P's current job def, P's cell and whether a Fire is attached to P; then light a Fire in the home area 15 cells from H and read H's job defs in order until H reaches the fire or 2,500 ticks pass",
+   "expect": "P's job turns RM_PyreStepAwayFromFire within the window and P ends on a cell at least 3 cells (PyrelandsFireSense.SafeClear) from every fire, with no Fire attached to P at any poll; H's first job is Ingest of the meal (RM_PyreEatBeforeFireDuty) and only after it a firefight job (BeatFire); log clean",
+   "control": {
+    "case": "the same two stagings with the roster toggle (PyrelandsMechanicsGate) off: fire sense and RM_PyreEatBeforeFireDuty both sit behind it",
+    "expect": "P never takes RM_PyreStepAwayFromFire over the same polls; H takes the firefight job (BeatFire) before any Ingest (vanilla runs emergency firefighting before food short of starving)",
+    "rules_out": "a colonist never placed beside fire or never urgently hungry at fire duty passing for fire sense and eat-before-duty, and vanilla's own flee or food logic passing for the mod's"
+   },
+   "restore": "extinguish every fire the scene lit, put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, despawn the meal, restore H's food need and the roster toggle",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains fire_sense"
+  },
+  {
    "id": "sc_firefoam_sprayer",
    "kind": "acceptance",
    "staged_by": "script",
@@ -447,11 +477,11 @@
     "furnace thermal (furnaceThermalEnabled) on",
     "A's health and hediffs recorded before its bed fire; a like-sized vanilla animal (a muffalo) laid down asleep on a third 5x5 of ember grass beside A's, health recorded"
    ],
-   "action": "keep both asleep; every poll read each with CompFurnaceBedIgnition.ProbeSleep and count Fire within 2 cells of each; once A's bed is alight, light the muffalo's bed; read both animals' health and hediffs until each fire burns out on its cell",
-   "expect": "A's grass is alight after about two hours of sleep on average, never at once; A takes no burn injury from its own bed fire (immune to its own heat)",
+   "action": "keep both asleep; every poll read each with CompFurnaceBedIgnition.ProbeSleep and count Fire within 2 cells of each; once A's bed is alight, light the muffalo's bed; read both animals' health and hediffs until each fire burns out on its cell; at every poll also read whether a Fire stands on A's own cell while A lies on it, and the same for the muffalo",
+   "expect": "A's grass is alight after about two hours of sleep on average, never at once; at least one poll shows a Fire on A's own cell while A occupies it (exposure asserted), and A gains no Burn hediff over the whole fire (immune to its own heat)",
    "control": {
     "case": "B asleep on bare soil, which burns (Flammability 0.6), in the same weather; the muffalo in the same kind of bed fire",
-    "expect": "no sleep-roll fire on B's bed; the muffalo takes burn damage",
+    "expect": "no sleep-roll fire on B's bed; the muffalo, with a Fire on its own cell for at least one poll, gains a Burn hediff",
     "rules_out": "a roll that ignores the plant, or the wake-up smoulder (any ground, put out before B lies down again) passing for the sleep roll, and A's fire never reaching A passing for the heat immunity"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn both beasts and the muffalo, unlock the weather",
@@ -521,7 +551,7 @@
     "a hostile RM_Flamefang beside them"
    ],
    "action": "let the flamefang land bites until two colonists carry RM_FlamefangVenom; the doctor tends one, the other is left untended; read both colonists' venom severity at once and each hour for six hours; then read the untended colonist's immunity and force it to complete (or wait it out) and read severity until the hediff goes",
-   "expect": "RM_FlamefangVenom present after each bite, its severity rising over the hours; X over the same hours; once immunity completes the severity falls and the hediff goes",
+   "expect": "RM_FlamefangVenom present after each bite, its severity rising over the hours; the tended colonist's RM_FlamefangVenom severity rises more slowly than the untended colonist's at every hourly read from the tend onwards and stays below it (the def's TendDuration severityPerDayTended -0.4, scaled by tend quality, against Immunizable severityPerDayNotImmune +0.35); once immunity completes the severity falls and the hediff goes",
    "control": {
     "case": "the third colonist bitten by a non-venomous predator of like size",
     "expect": "a bite wound and no RM_FlamefangVenom",
