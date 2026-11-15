@@ -32,16 +32,15 @@ evidence against the obvious answer, and every ask carries that evidence.
 
 ## owed
 
-- Docs (step 2 of the brief), not yet written:
-  - CLAUDE.md: a short section with his quote and a pointer, near the delegation lines (~229-244, 265-267).
-  - design/RimMandrake/standing_rulings.md: the full rule, his words, the incident (0.1.0 asked every time), and fix
-    §Mod Design Versions (delete the text that says the lock is his).
+- 2fb89c96e5: docs written: CLAUDE.md (section "The Evidence-for-Ask rule"), standing_rulings.md (new section,
+  plus a §Mod Design Versions bullet: a new mod's 0.1.0 is locked by the pipeline), and the lock lines of
+  design/specs/2026-11-13-mod-design-versions.md:24 and 2026-11-13-maturation-pipeline.md:172.
+- Docs still owed:
   - design/RimMandrake/delegation_policy.md §1/§2: a new mod's first Design Version is 0.1.0 without asking; each §2
     hold of his stays, and its ask carries the evidence. CONFLICT to put to him, not resolve: line 132, "A reserved call
     is asked as a card ... It never times out into a decision", reads against Evidence-for-Ask for any reserved call
     with an obvious answer.
-  - Delete (not supersede) the opposite text in design/specs/2026-11-13-mod-design-versions.md and
-    design/specs/2026-11-13-maturation-pipeline.md (version opening and locking "decided with him").
+  - maturation-pipeline.md: opening the next version is still "decided with him" (see OWNER_STAGES `passed` below).
   - infrastructure/agents/CHARTER.md, roles/conductor.md and the role files listed below.
 
 ## other places that pause for him (listed, not fixed; obvious answer for each)
