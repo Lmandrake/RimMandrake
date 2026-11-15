@@ -107,6 +107,31 @@
    "source": "OWNER:1794156867388116050",
    "date": "2026-11-08",
    "what": "mark_reads_at_play_zoom applies to every face-on mark (by card)."
+  },
+  {
+   "id": "d_flagship_spree",
+   "kind": "decision",
+   "speaker": "owner",
+   "source": "OWNER:1794728091811038301",
+   "date": "2026-11-14",
+   "what": "Graffiti's face (showcase 1) is the spree corridor: one pawn's break leaving many visibly different punk marks, a skilled piece beside an ugly scrawl. His lean ('not easy for me to understand this decision'); revisit cheaply at the showcase stage if the scene does not read.",
+   "flagship": "spree_corridor"
+  },
+  {
+   "id": "d_raider_pressure",
+   "kind": "decision",
+   "speaker": "owner",
+   "source": "OWNER:1794728164229812842",
+   "date": "2026-11-14",
+   "what": "While a raider faction's mark stands on the colony's walls, that faction's next raid comes sooner or larger, announced by a letter (by card, option b, over the recommended aim)."
+  },
+  {
+   "id": "d_raider_pressure_traceable",
+   "kind": "derived",
+   "speaker": "agent",
+   "source": "OWNER:1794728164229812842",
+   "date": "2026-11-14",
+   "what": "Designer's reading of (b), undoable: the letter names the faction and points at its standing mark(s), so the player can trace the pressure to the wall; scrubbing or weathering the last mark of that faction lifts it; the sooner/larger split and the size of the push are Mod Settings tuning (defaults = shipped). This answers the stated weakness of (b), untraceable difficulty, without reopening his pick."
   }
  ],
  "asks": [
@@ -173,7 +198,7 @@
   },
   {
    "id": "a_flagship",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1794718990",
    "source": [
     "design/validation_walks/RimMandrake/Graffiti.md"
@@ -199,11 +224,17 @@
     "speaker": "owner",
     "by_card": "Decide after the walk",
     "until": "ITEM:RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES"
+   },
+   "answer": {
+    "source": "OWNER:1794728091811038301",
+    "speaker": "owner",
+    "his_words": "It's not easy for me to understand this decision, but I'd say B.",
+    "becomes": "B, the spree corridor, is showcase 1; his lean, cheap to revisit at the showcase stage because he found the choice hard to read"
    }
   },
   {
    "id": "a_raider_next_attack",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1794722090",
    "source": [
     "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs",
@@ -226,6 +257,12 @@
     "by": "rm-judge a1e871e9d2b85d5c6 (fresh reviewer)",
     "verdict": "pass",
     "why": "first draft struck on two false phrases (marks also weather away; raider marks carry no breach lure), fixed in its words; re-review: claims check against code, open unbuilt decision answerable in a phrase"
+   },
+   "answer": {
+    "source": "OWNER:1794728164229812842",
+    "speaker": "owner",
+    "by_card": "What should a raider's mark left standing do to that faction's next raid? -> Sooner or bigger raid",
+    "becomes": "(b) pressure, chosen over the recommended (a) aim"
    }
   }
  ],
@@ -575,7 +612,7 @@
   },
   {
    "id": "inv_raider_future_marks",
-   "text": "Raiders leave marks that bear on a future attack (a threat promising return, a target sign the next raid of that faction acts on)",
+   "text": "Raiders leave marks that bear on a future attack: while a faction's mark stands, its next raid comes sooner or larger, announced by a letter naming it (d_raider_pressure)",
    "impl": "absent",
    "search_scope": "src/RimMandrake/Graffiti/Source/*.cs and Defs/ (2026-11-14, rm-role-designer-1794722090): no IncidentWorker_Raid, RaidStrategy or storyteller hook; RaidExitTagger only paints, BreachBiasHook only reads breachLure marks, which raid-exit marks do not carry",
    "proof": "missing",
@@ -584,7 +621,8 @@
    "source": [
     "OWNER:1794721657820999692",
     "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
-   ]
+   ],
+   "scope_decision": "OWNER:1794728164229812842"
   },
   {
    "id": "inv_weathering",

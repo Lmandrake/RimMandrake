@@ -1,0 +1,750 @@
+{
+ "scenes": [
+  {
+   "id": "sc_spree_corridor",
+   "kind": "interaction",
+   "features": [
+    "mark_appears",
+    "marks_various",
+    "ugliness_visible",
+    "art_skill"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_spree_corridor",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "a lit 1x20 corridor of fresh walls, no marks (asserted: marks in rect 0)",
+    "one colonist, art skill 3, at the corridor head; a second colonist, art skill 16, painting one designated piece mid-corridor"
+   ],
+   "action": "force the first colonist's painting spree and let it run its length; the skilled colonist paints its piece",
+   "expect": "the spree leaves many marks along the corridor, at least 3 kinds; the skilled piece raises the corridor's beauty and the scrawls lower it; a 64 px capture shows both",
+   "control": {
+    "case": "the same corridor with the spree break refused",
+    "expect": "no mark appears and beauty is unchanged",
+    "rules_out": "marks placed by anything but the spree job"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "owner_review",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES"
+  },
+  {
+   "id": "sc_spree_wall",
+   "kind": "acceptance",
+   "requirement": [
+    "mark_appears"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::spree_wall",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "six wall lanes, no marks (asserted)",
+    "six colonists, one per lane"
+   ],
+   "action": "force each colonist's painting spree, 3000 ticks",
+   "expect": "every lane holds marks made by its painter",
+   "control": {
+    "case": "a lane whose painter is not broken",
+    "expect": "no mark in that lane",
+    "rules_out": "marks spawned by the test harness"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_spree_variety",
+   "kind": "acceptance",
+   "requirement": [
+    "marks_various"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::spree_variety",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "the six lanes after sc_spree_wall (asserted: marks present)"
+   ],
+   "action": "read def and variant of every mark",
+   "expect": "at least 3 defs and 5 def-variant pairs",
+   "control": {
+    "case": "the pool gated to one def",
+    "expect": "one def only",
+    "rules_out": "variety coming from tint alone"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_wall_closeup",
+   "kind": "acceptance",
+   "requirement": [
+    "sits_on_wall"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::wall_closeup",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "a painted lane with walls on each side (asserted)"
+   ],
+   "action": "capture each painted wall face close up",
+   "expect": "every mark lies on its wall face",
+   "control": {
+    "case": "a mark whose wall side is cleared",
+    "expect": "it draws on the floor and is flagged",
+    "rules_out": "a camera angle hiding a floor decal"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_gallery",
+   "kind": "acceptance",
+   "requirement": [
+    "reads_at_play_zoom",
+    "punk_register",
+    "no_english",
+    "not_dirt"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::gallery",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "every shipped mark def and variant placed face-on on a lit wall run (asserted against the def list)",
+    "vanilla dirt filth beside each mark on the dirt pages"
+   ],
+   "action": "capture 64 px pages, close-up pages and dirt pages; a judge reads each cell",
+   "expect": "each cell reads as a deliberate punk mark, none as signage, English or dirt",
+   "control": {
+    "case": "a planted test texture with a hazard triangle and a word",
+    "expect": "the judge flags it",
+    "rules_out": "a judge that passes everything"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_beauty_pair",
+   "kind": "acceptance",
+   "requirement": [
+    "ugliness_visible"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::beauty_pair",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "a vandal scrawl and a tally on one wall (asserted defs)"
+   ],
+   "action": "capture the pair at 64 px, unlabelled",
+   "expect": "the judge picks the scrawl as uglier",
+   "control": {
+    "case": "the beauty stats read from the defs",
+    "expect": "-15 and -3",
+    "rules_out": "a judge guessing from labels"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_art_skill",
+   "kind": "acceptance",
+   "requirement": [
+    "art_skill"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_art_skill",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "two identical closed rooms, no marks (asserted beauty equal)",
+    "painters of art skill 2 and 16; a viewer each"
+   ],
+   "action": "each painter paints one mark; viewers walk through; a third pair paints a skilled mockery of a named colonist",
+   "expect": "room beauty falls for skill 2 and rises for skill 16; the mockery's subject holds anger and beauty thoughts together",
+   "control": {
+    "case": "the same marks with craft forced Normal",
+    "expect": "equal beauty, no skill-signed thought",
+    "rules_out": "beauty differing by def, not skill"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_own_fun",
+   "kind": "acceptance",
+   "requirement": [
+    "own_fun"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_own_fun",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "a colonist with joy under 0.3, free time, a fresh wall in reach"
+   ],
+   "action": "run until the colonist picks recreation",
+   "expect": "the paint joy job runs, joy rises, a maker thought appears",
+   "control": {
+    "case": "painting switched off",
+    "expect": "the joy giver is never chosen",
+    "rules_out": "joy rising from another activity"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_rereads",
+   "kind": "acceptance",
+   "requirement": [
+    "rereads_daily"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_rereads",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "one mockery mark on a patrol route; one walker"
+   ],
+   "action": "walk the route hourly for two in-game days",
+   "expect": "the mark's thought refreshes at most once per day, opinion changes once",
+   "control": {
+    "case": "a second, different mark on the route",
+    "expect": "its own first read",
+    "rules_out": "a thought cap hiding all reads"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_mockery",
+   "kind": "acceptance",
+   "requirement": [
+    "mockery"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_mockery",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "five colonists with a recorded feud between two (asserted opinions)"
+   ],
+   "action": "the feuding colonist paints a mockery of the other; the rest walk past",
+   "expect": "subject hurt and lower opinion of the painter, a rival of the subject amused",
+   "control": {
+    "case": "a plain tag by the same painter",
+    "expect": "no opinion change",
+    "rules_out": "opinion drift from the feud itself"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_tribute_memorial",
+   "kind": "acceptance",
+   "requirement": [
+    "tribute_memorial"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_tribute_memorial",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "a colonist with a dead friend; a colonist with a partner and a rival"
+   ],
+   "action": "run until a memorial and a tribute are painted",
+   "expect": "grief eased for the memorial's painter; warm, jealous or annoyed thoughts for the tribute",
+   "control": {
+    "case": "a colonist with no dead friend",
+    "expect": "never paints a memorial",
+    "rules_out": "memorials chosen at random"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_answer_wall",
+   "kind": "acceptance",
+   "requirement": [
+    "answer_wall"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_answer_wall",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "a standing mockery, its subject, a friend of the subject and the painter on the map"
+   ],
+   "action": "run until an answer job completes",
+   "expect": "a scrub, deface, reply or confront finishes and the mark changes to match",
+   "control": {
+    "case": "a mark nobody is offended by",
+    "expect": "no answer job",
+    "rules_out": "marks removed by auto-clean"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_scrub_protection",
+   "kind": "acceptance",
+   "requirement": [
+    "scrub_protection"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A6",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "own vandal, enemy devotional and enemy vandal marks on the site wall (asserted)"
+   ],
+   "action": "700 ticks unforced, then forced and ordered cleaning",
+   "expect": "unforced own and devotional kept, control cleaned; forced and ordered all gone",
+   "control": {
+    "case": "the enemy vandal control",
+    "expect": "cleaned unforced",
+    "rules_out": "a cleaner that cleans nothing"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_sigil",
+   "kind": "acceptance",
+   "requirement": [
+    "ideo_sigil"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A3",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "a colonist with an ideoligion"
+   ],
+   "action": "paint RM_Graffiti_IdeoSigil",
+   "expect": "ideo True, frame halo_0, iconIsIdeo True, tinted True",
+   "control": {
+    "case": "a colonist without an ideoligion",
+    "expect": "no sigil in its pool",
+    "rules_out": "a fixed placeholder icon"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_player_orders",
+   "kind": "acceptance",
+   "requirement": [
+    "player_orders"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A7",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "three cells designated with three named marks"
+   ],
+   "action": "order the colonist; up to 6000 ticks",
+   "expect": "painted 3, matched 3, pending 0",
+   "control": {
+    "case": "an undesignated cell",
+    "expect": "no ordered mark",
+    "rules_out": "the colonist painting its own picks"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_raid_exit",
+   "kind": "acceptance",
+   "requirement": [
+    "raid_mark_troubles"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A2",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "the 20x12 walled site, south half a closed roofed room; raiders under an assault lord (asserted marksIn 0)"
+   ],
+   "action": "120 ticks, then move the lord to its leaving toil",
+   "expect": "no tag on the way in, tags on exterior walls on the way out, each in its faction's mark",
+   "control": {
+    "case": "the raid before it turns to leave",
+    "expect": "mid 0",
+    "rules_out": "tags painted by colonists"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_hostile_thought",
+   "kind": "acceptance",
+   "requirement": [
+    "raid_mark_troubles"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A5",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "an enemy tag 3 cells from a colonist"
+   ],
+   "action": "run until the colonist reads it",
+   "expect": "makerHostile True, worker True, mood True",
+   "control": {
+    "case": "the colonist's own tag at the same distance",
+    "expect": "no hostile thought",
+    "rules_out": "any mark giving the thought"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_raid_retaken",
+   "kind": "acceptance",
+   "requirement": [
+    "raid_mark_troubles"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_raid_retaken",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "raid exit tags on the outer wall and colonists holding the enemy-marks thought (asserted)"
+   ],
+   "action": "scrub every enemy mark",
+   "expect": "the enemy-marks thought ends once the last mark is gone",
+   "control": {
+    "case": "one enemy mark left standing",
+    "expect": "the thought stays",
+    "rules_out": "the thought timing out on its own"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_going_over",
+   "kind": "acceptance",
+   "requirement": [
+    "going_over"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A4",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "a colonist's Tag_A on a wall cell"
+   ],
+   "action": "an enemy paints ThrowUp_A on the same cell",
+   "expect": "firstGone True, marksAtCell 1, rivalFaction True",
+   "control": {
+    "case": "a second colonist's tag on the cell",
+    "expect": "no rival going-over",
+    "rules_out": "two marks stacked"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_raider_pressure",
+   "kind": "acceptance",
+   "requirement": [
+    "raider_pressure"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_raider_pressure",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "two hostile factions A and B with equal goodwill; faction A's exit marks standing on the outer wall, none of B's (asserted)"
+   ],
+   "action": "trigger A's and B's next raid at the same storyteller points; scrub A's marks; trigger A again",
+   "expect": "a letter names A and points at its mark; A's raid is larger or sooner by the setting; after scrubbing, A matches B",
+   "control": {
+    "case": "the pressure setting off",
+    "expect": "equal raids, no letter",
+    "rules_out": "raid size varying from storyteller noise"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL"
+  },
+  {
+   "id": "sc_visitors",
+   "kind": "acceptance",
+   "requirement": [
+    "visitors"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_visitors",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "an insult to the trader faction on a wall its caravan passes"
+   ],
+   "action": "a trader caravan visits and passes the wall many times",
+   "expect": "one goodwill change per visit within the cap",
+   "control": {
+    "case": "an insult to another faction",
+    "expect": "no goodwill change for this faction",
+    "rules_out": "goodwill moved by trade itself"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_fights",
+   "kind": "acceptance",
+   "requirement": [
+    "fights_reasons"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_fights",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "a feud mockery; its subject drafted in one run and area-restricted in another; an unrelated colonist nearby"
+   ],
+   "action": "run three in-game days",
+   "expect": "any confrontation is subject against painter with the mark as reason; drafted and restricted pawns stay",
+   "control": {
+    "case": "the social layer off",
+    "expect": "no confrontation",
+    "rules_out": "fights from ordinary social fights"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_temperament",
+   "kind": "acceptance",
+   "requirement": [
+    "temperament"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_temperament",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
+    "four viewers: ordinary, psychopath, sensitive, clean freak; a good and a bad mark"
+   ],
+   "action": "viewers pass both marks; lower the clean freak's mood to break",
+   "expect": "psychopath none, sensitive larger both ways, clean freak extra debuff and the cleaning break",
+   "control": {
+    "case": "the ordinary viewer",
+    "expect": "offsets equal the def values",
+    "rules_out": "trait effects from other mods"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_settings",
+   "kind": "acceptance",
+   "requirement": [
+    "stands_alone_settings"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_settings_each_switch",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers), ideoligions off (asserted)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)"
+   ],
+   "action": "paint marks; save and reload; flip each setting off in turn and trigger its behaviour",
+   "expect": "marks intact on reload; each switch stops only its own behaviour",
+   "control": {
+    "case": "each switch back on",
+    "expect": "its behaviour returns",
+    "rules_out": "a dead behaviour that never ran at all"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_breach_toggle",
+   "kind": "acceptance",
+   "requirement": [
+    "stands_alone_settings"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::breach_bias_toggle_flips",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "breach bias setting at default"
+   ],
+   "action": "write the breach bias setting off, then on, reading each back",
+   "expect": "the setting reads back off, then on (write and read-back only: the behavioural A/B of a raid biased toward a warning glyph is not built)",
+   "control": {
+    "case": "a read-back before any write",
+    "expect": "the shipped default, on",
+    "rules_out": "a read-back that returns whatever was last written by another test"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_wall_loss",
+   "kind": "acceptance",
+   "requirement": [
+    "paint_dies_with_wall"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_wall_loss",
+   "start": [
+    "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
+    "two painted wall cells and an untouched painted neighbour"
+   ],
+   "action": "deconstruct one wall, destroy the other",
+   "expect": "both marks gone the tick their wall goes",
+   "control": {
+    "case": "the untouched neighbour",
+    "expect": "its mark stays",
+    "rules_out": "a sweep removing every mark"
+   },
+   "restore": "destroy the quicktest map; nothing persistent changed",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES"
+  },
+  {
+   "id": "sc_lived_in_soak",
+   "kind": "acceptance",
+   "requirement": [
+    "stories_not_tax"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_lived_in_soak",
+   "start": [
+    "full list, all five DLC, a colony of six on ordinary walls (asserted)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)"
+   ],
+   "action": "run three in-game weeks at top speed, no forcing",
+   "expect": "summed mark thoughts stay small and Graffiti messages few per week",
+   "control": {
+    "case": "painting forced every hour",
+    "expect": "a visible standing tax",
+    "rules_out": "an instrument blind to thoughts"
+   },
+   "restore": "load the save from before the soak",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+  },
+  {
+   "id": "sc_walk",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_lived_in"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_walk_lived_in",
+   "start": [
+    "full list, all five DLC, the lived-in save made mid-way (asserted save name)",
+    "all 8 settings at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)"
+   ],
+   "action": "reload; repeat a spree on the corridor; raid then trader; reload; trader then raid",
+   "expect": "marks and the pressure record survive reload; both orders give the same results",
+   "control": {
+    "case": "a fresh map instead of the save",
+    "expect": "differences the walk must catch",
+    "rules_out": "results that only hold on fresh maps"
+   },
+   "restore": "keep the lived-in save; delete runtime saves",
+   "hold": "owner_review",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES"
+  }
+ ],
+ "showcases": [
+  {
+   "id": "spree_corridor",
+   "scenes": [
+    "sc_spree_corridor",
+    "sc_beauty_pair"
+   ],
+   "exercises": [
+    "inv_spree",
+    "inv_mark_on_wall",
+    "inv_mark_art_set",
+    "inv_beauty_and_craft",
+    "inv_viewer_mood"
+   ],
+   "source": [
+    "OWNER:1794728091811038301"
+   ],
+   "decision": "d_flagship_spree",
+   "said": "It's not easy for me to understand this decision, but I'd say B."
+  },
+  {
+   "id": "social_wall",
+   "scenes": [
+    "sc_mockery",
+    "sc_answer_wall",
+    "sc_temperament",
+    "sc_visitors",
+    "sc_own_fun"
+   ],
+   "exercises": [
+    "inv_social_layer",
+    "inv_temperament",
+    "inv_visitors",
+    "inv_joy_and_idle_tag",
+    "inv_mark_on_wall"
+   ]
+  },
+  {
+   "id": "after_the_raid",
+   "scenes": [
+    "sc_raid_exit",
+    "sc_going_over",
+    "sc_raid_retaken",
+    "sc_raider_pressure"
+   ],
+   "exercises": [
+    "inv_raid_marks",
+    "inv_raider_future_marks",
+    "inv_player_orders",
+    "inv_weathering"
+   ]
+  },
+  {
+   "id": "devout_wall",
+   "scenes": [
+    "sc_sigil",
+    "sc_scrub_protection",
+    "sc_wall_loss"
+   ],
+   "exercises": [
+    "inv_ideo_sigils",
+    "inv_scrub_protection",
+    "inv_wall_loss"
+   ]
+  }
+ ],
+ "coverage_rest": [
+  {
+   "capability": "inv_breach_bias",
+   "by": [
+    "sc_breach_toggle"
+   ],
+   "why": "built and approved but with no north-star line of its own; today's only scripted check is its switch write and read-back (validation.py says the behavioural A/B is not built), so its proof stays missing; a raid aimed at a colonist glyph is a long live run for one hook"
+  },
+  {
+   "capability": "inv_settings",
+   "by": [
+    "sc_settings",
+    "stands_alone_settings"
+   ],
+   "why": "a switch sweep is a checklist, not a face; each switch is checked off and on in one scripted pass"
+  },
+  {
+   "capability": "inv_standalone",
+   "by": [
+    "sc_settings",
+    "stands_alone_settings"
+   ],
+   "why": "no ideoligion and a save reload are start conditions of the same scripted pass, nothing a player watches"
+  }
+ ]
+}

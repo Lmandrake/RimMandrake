@@ -39,3 +39,18 @@ a_flagship stays deferred to RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_M
 ### a_raider_next_attack
 
 You added raiders who leave threats and marks for future attacks. Built today: a raid leaving your map paints its marks on your outer walls, and colonists feel 'enemy marks on our walls', a small mood penalty that grows with the number of marks, until someone scrubs them or the paint weathers away (a few weeks). Nothing yet links a mark to the NEXT attack. Which link: (a) aim: while that faction's mark stands, its next raid comes at the marked wall, so you choose between scrubbing it, fortifying there, or building a killbox behind it; (b) pressure: while the mark stands, that faction's next raid comes sooner or larger, announced by a letter; (c) threat only: a letter naming the faction and its promise to return, with no change to the raid itself? We recommend (a): you can watch it work, it gives you a choice, and part of it exists (breaching raids already aim at a wall carrying a colonist-painted warning glyph; raiders' own marks don't carry that lure yet); (b) adds difficulty you cannot trace back to the wall.
+
+## Stage 2, run rm-role-designer-1794728785 (2026-11-14 23:47 PST): both asks answered
+
+- a_flagship (OWNER:1794728091811038301, his words): "It's not easy for me to understand this decision, but I'd say B." → showcase 1 is the spree corridor; his lean, revisit cheaply at the showcase stage.
+- a_raider_next_attack (OWNER:1794728164229812842, by card): "Sooner or bigger raid" → (b) pressure, over our recommended (a) aim.
+  What moved us: his pick, not a new argument. Our objection to (b) was untraceable difficulty; the letter he chose is the trace. Derived (agent, undoable, d_raider_pressure_traceable): the letter names the faction and its standing mark; the last mark scrubbed or weathered lifts the pressure; sooner-vs-larger and its size are Mod Settings tuning.
+- No ask is sent; no core contradiction is open (c_proof_home, c_site_settings are script gaps routed to stage 3). Stage 2 done.
+
+## Stage 3, run rm-role-designer-1794729618 (2026-11-15 ~00:10 PST): written
+
+- sheet.md, tree.json (28 leaves, one walk), plan.md, scenes.json (28 scenes, 4 showcases, 3 coverage_rest), floor.json.
+- Filed: RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT (c_site_settings; acceptance test watched failing),
+  RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL (d_raider_pressure, no build yet),
+  RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES (flagship corridor, wall loss, walk entry points).
+  c_proof_home routes to the existing RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE, named on twelve scenes.

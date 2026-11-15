@@ -1,0 +1,75 @@
+{
+ "lines": {
+  "tick_cost": {
+   "status": "applicable"
+  },
+  "long_stall": {
+   "status": "applicable"
+  },
+  "latency": {
+   "status": "applicable"
+  },
+  "memory": {
+   "status": "applicable"
+  },
+  "load_time": {
+   "status": "applicable"
+  },
+  "save_size": {
+   "status": "applicable"
+  },
+  "save_compat": {
+   "status": "applicable"
+  },
+  "load_order": {
+   "status": "applicable"
+  },
+  "log": {
+   "status": "applicable"
+  },
+  "mod_settings": {
+   "status": "applicable"
+  },
+  "multiplayer": {
+   "status": "applicable"
+  },
+  "art": {
+   "status": "applicable"
+  },
+  "reads_as": {
+   "status": "applicable"
+  },
+  "clickable": {
+   "status": "applicable"
+  },
+  "order_taken": {
+   "status": "applicable"
+  },
+  "text": {
+   "status": "applicable"
+  },
+  "dlc": {
+   "status": "applicable"
+  },
+  "worldgen": {
+   "status": "applicable"
+  },
+  "flight": {
+   "status": "applicable"
+  },
+  "naming": {
+   "status": "applicable"
+  },
+  "test_isolation": {
+   "status": "applicable"
+  },
+  "motion": {
+   "status": "not_applicable",
+   "evidence": "a mark is a static filth thing drawn on its wall face (Filth_Mark.cs); the mod animates nothing, the painter moves by vanilla jobs"
+  },
+  "biome_scope": {
+   "status": "not_applicable",
+   "evidence": "the mod adds no BiomeDef and no biome mechanic: src/RimMandrake/Graffiti/Defs holds no BiomeDef (its files are thing, job, joy, thought, mental, social, designation, work-giver and think-tree defs)"
+  }
+ }
+}
