@@ -624,7 +624,8 @@ def copy_blind(root):
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
                 pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True,
                 fix_runs=None, lane1_after=None, record_decider=None, fault_key="class", polish_cites=None,
-                lane1_extra=None, lane1_rows=True, edited_text=None, planted=None, rerun_row=None, fixed=False):
+                lane1_extra=None, lane1_rows=True, edited_text=None, planted=None, rerun_row=None, fixed=False,
+                lane1_row=None):
     """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
@@ -684,7 +685,8 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
         if lane1_rows:   # the happy fixture has no UNSETTLED row (RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES)
             f.write(json.dumps({"id": "L1_a", "verdict": "PASS"}) + "\n" + json.dumps({"id": "L1_b", "verdict": "INFO"})
                     + "\n" + (json.dumps({"id": "L1_c", "verdict": "FAIL"}) + "\n" if lane1_fail else "")
-                    + (json.dumps({"id": "L1_d", "verdict": lane1_extra}) + "\n" if lane1_extra else ""))
+                    + (json.dumps({"id": "L1_d", "verdict": lane1_extra}) + "\n" if lane1_extra else "")
+                    + (json.dumps(lane1_row) + "\n" if lane1_row else ""))
     if edited:
         with open(os.path.join(d, "tests_edited.json"), "w") as f:
             f.write(edited_text if edited_text is not None else json.dumps({"cycle": n, "edited": []}))
@@ -816,6 +818,11 @@ def blind_main():
             ok(ex.get("state") == "not_met" and ex.get("checks", {}).get("judge_owed") is True
                and "new blind judge is owed" in " ".join(ex.get("why") or []) and g.get("owed") == "exit not met",
                "%s: a new blind judge is owed, not met (%s)" % (what, (ex.get("why") or ["-"])[0][:100]))
+        # RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_NEVER_OFFLINE's rows: one bar proving live, one offline
+        fw_tt = json.load(open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")))
+        live_bar = next(b["id"] for b in fw_tt["bars"] if str(b.get("proves_at")) not in M.OFFLINE_PROVES)
+        off_bar = next(b["id"] for b in fw_tt["bars"] if str(b.get("proves_at")) in M.OFFLINE_PROVES)
+        nk = lambda bars: {"id": "L1_NK_X", "kind": "not_kernel", "verdict": "UNSETTLED", "bars": bars}  # noqa: E731
         met = (
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "INFO", "L1_c": "PASS"}),
              "a lane-1 FAIL that lane 1 after the fixes shows PASS"),
@@ -823,12 +830,15 @@ def blind_main():
              "a lane-1 UNSETTLED row that lane 1 after the fixes shows PASS"),
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}, polish_cites="L1_c"),
              "a lane-1 FAIL still FAIL after the fixes that a Polish fault names (Polish is not part of passing)"),
+            (dict(lane1_row=nk([live_bar])), "a not_kernel UNSETTLED row on stage-6 bars only (deferred to Stage 6)"),
         )
         for kw, what in met:
             write_cycle(root, "FlowWorks", 1, **kw)
             ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
             ok(ex.get("state") == "met" and (not kw.get("polish_cites") or "Polish" in (ex.get("why") or [""])[0]
-                                             and "L1_c" in (ex.get("why") or [""])[0]),
+                                             and "L1_c" in (ex.get("why") or [""])[0])
+               and (not kw.get("lane1_row") or ex.get("checks", {}).get("lane1_deferred_to_stage6") == ["L1_NK_X"]
+                    and "deferred to Stage 6" in (ex.get("why") or [""])[0]),
                "%s reads met (%s)" % (what, (ex.get("why") or ["-"])[-1][-120:]))
         # a Polish row later fixed: lane 1 after the fixes shows it PASS, so the reading must not call it left as Polish
         write_cycle(root, "FlowWorks", 1, lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "PASS"}, polish_cites="L1_c")
@@ -857,6 +867,15 @@ def blind_main():
             (dict(fix_runs=dict(red={"command": "t.py --source <parent Source>", "rc": 1},
                                 green={"command": "t.py --source <parent Source>", "rc": 0})),
              "a fix row whose command holds a placeholder", "<parent Source>"),
+        )
+        # RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_NEVER_OFFLINE: a not_kernel UNSETTLED row on Stage-6 bars only is
+        # deferred to Stage 6; one naming an offline bar, a bar the table lacks, or no bar still blocks
+        broken = broken + (
+            (dict(lane1_row=nk([live_bar, off_bar])), "a not_kernel UNSETTLED row naming an offline bar", "L1_NK_X"),
+            (dict(lane1_row=nk(["no_such_bar_in_the_table"])), "a not_kernel UNSETTLED row naming an unknown bar",
+             "L1_NK_X"),
+            (dict(lane1_row=nk([])), "a not_kernel UNSETTLED row naming no bar", "L1_NK_X"),
+            (dict(lane1_row=dict(nk([live_bar]), kind="fixed")), "a kernel UNSETTLED row on a stage-6 bar", "L1_NK_X"),
         )
         for kw, what, word in broken:
             write_cycle(root, "FlowWorks", 1, **kw)

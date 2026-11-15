@@ -1311,6 +1311,20 @@ def _side_cmds(fx, side):
 LANE1_OK = ("PASS", "INFO")
 
 
+def _lane1_deferred(r, tt):
+    """A lane-1 row the blind exit defers to Stage 6 (not a pass, not a block): a `not_kernel` UNSETTLED row naming at
+    least one bar, every one of them in the test table and proving outside OFFLINE_PROVES. The blind brief asks lane 1 to
+    write a game-side bar this way; it proves live through its stage-6 checks (ingame_debts carries it there). A row
+    naming an offline bar, or a bar the table does not hold, still blocks (RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_
+    NEVER_OFFLINE; the loophole ef6a38dbb6 closed stays closed)."""
+    if not isinstance(r, dict) or "_bad" in r or str(r.get("kind", "")).lower() != "not_kernel" or \
+            str(r.get("verdict", "")).upper() != "UNSETTLED":
+        return False
+    at = {b.get("id"): str(b.get("proves_at")) for b in (tt or {}).get("bars") or [] if isinstance(b, dict)}
+    bars = _split_bars(r.get("bars"))
+    return bool(bars) and all(b in at and at[b] not in OFFLINE_PROVES for b in bars)
+
+
 def _planted_caught(r):
     """A planted_results.jsonl row caught its fault: `caught` true at the top, on any suite/result, or by deciders/lane 1."""
     if any(r.get(k) is True for k in ("caught", "caught_by_deciders", "caught_by_lane1")):
@@ -1456,14 +1470,21 @@ def read_exit(root, mod, n, tt=None):
         why.append("lane1/lane1_rows.jsonl is missing")
     if l1 is not None and not l1:
         why.append("lane1/lane1_rows.jsonl has no rows (lane 1 judged nothing)")
-    # UNSETTLED (or any verdict but PASS and INFO) is not a pass: it clears the way a FAIL does
-    fails = [r.get("id", "?") for r in l1 or [] if str(r.get("verdict", "")).upper() not in LANE1_OK or "_bad" in r]
+    # UNSETTLED (or any verdict but PASS and INFO) is not a pass: it clears the way a FAIL does, except a not_kernel row
+    # on Stage-6-or-later bars only, which is deferred to Stage 6 (_lane1_deferred)
+    deferred = sorted({r.get("id", "?") for r in l1 or [] if _lane1_deferred(r, tt)})
+    fails = [r.get("id", "?") for r in l1 or [] if (str(r.get("verdict", "")).upper() not in LANE1_OK or "_bad" in r)
+             and not _lane1_deferred(r, tt)]
+    if deferred:
+        out["checks"]["lane1_deferred_to_stage6"] = deferred
+    if l1 and not fails:
+        out["checks"]["lane1_fail_cleared_after_fix"] = True     # nothing to clear: no row blocks
     if fails:
         # lane 1 is recorded blind, before the fixes, and stays as recorded: a FAIL there is how a Problem is found. It
         # clears only when lane 1 rerun after the fixes (LANE1_AFTER_FIX) has no FAIL and shows each of those rows PASS.
         after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
-        bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() not in LANE1_OK
-                     or "_bad" in r]
+        bad_after = [r.get("id", "?") for r in after or [] if (str(r.get("verdict", "")).upper() not in LANE1_OK
+                     or "_bad" in r) and not _lane1_deferred(r, tt)]
         passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
         # a FAIL a Polish fault owns is not passing's; a row that PASSes after the fixes is cleared, not left as Polish
         polish = _polish_rows(faults, sorted((set(fails) - passed) | set(bad_after)))
@@ -1507,10 +1528,11 @@ def read_exit(root, mod, n, tt=None):
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}
-        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)%s"
+        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)%s%s"
                    % (len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
                       "steward confirms the move): %s" % ", ".join("%s (%s)" % kv for kv in sorted(pol.items()))
-                      if pol else ""))
+                      if pol else "", "; lane-1 not_kernel UNSETTLED row(s) deferred to Stage 6, owed there: %s" % ", ".join(
+                          deferred[:8]) if deferred else ""))
     return out
 
 
@@ -1767,7 +1789,9 @@ def blind_brief_text(root, mod, cap_usd=None):
         L.append("")
         L.append("After those, spend what is left on stage-6 bars whose logic plainly lives in a kernel (%d `*Math.cs` / "
                  "`*Kernel.cs` file(s) outside SelfTest%s). Write a bar whose logic is game-side as one `not_kernel` "
-                 "row; do not stretch a kernel to cover it." % (nk, (": " + ", ".join("`%s`" % x for x in ks) +
+                 "row (verdict UNSETTLED, its `bars` naming only that bar's ids); do not stretch a kernel to cover it. "
+                 "The exit defers such a row to Stage 6 when every bar it names proves at stage 6 or later; a "
+                 "`not_kernel` row naming an offline bar still blocks the exit." % (nk, (": " + ", ".join("`%s`" % x for x in ks) +
                                                                   (", ..." if nk > 15 else "")) if ks else ""))
     lane1_scratch = "/mnt/d/ClaudeWork/rimmandrake/scratch/%s_blind_c%d_lane1/" % (mod.lower(), n)
     L += ["", "**Tests to write**, your own, from what the bars promise:",
