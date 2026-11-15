@@ -9,6 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Immutable;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
+using System.Reflection.PortableExecutable;
 using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -228,15 +234,128 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string dl = Src("Machinery", "RM_DeckCollapseLines.cs");
                 Assert(dl.Contains("public const string GssShockType = \"RimMandrake.GimmeSomeSlack.Aerial.RM_FallenWireShock\";")
                     && dl.Contains("GenTypes.GetTypeInAnyAssembly(GssShockType)") && dl.Contains("if (t == null) { return;"), "looked up by name; absent GSS is a quiet no-op");
-                string gss = Src("..", "..", "GimmeSomeSlack", "Source", "Aerial", "RM_FallenWireShock.cs");
-                Assert(gss.Contains("namespace RimMandrake.GimmeSomeSlack.Aerial") && gss.Contains("public static class RM_FallenWireShock"), "the type name FlowWorks looks up is the real one");
-                Assert(gss.Contains("public static void RegisterLiveWireSource(Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>> source)")
-                    && dl.Contains("t.GetMethod(\"RegisterLiveWireSource\"") && dl.Contains("new[] { typeof(Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>>) }"),
-                    "can-fail: the entry point's signature matches the lookup");
-                Assert(gss.Contains("public static void LiveWiresChanged(Map map)") && dl.Contains("t.GetMethod(\"LiveWiresChanged\""), "the change poke matches too");
-                string rebuild = Body(gss, "public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips,");
-                Assert(rebuild.Contains("ExternalContacts(map, contacts, tips, dropped);"), "can-fail: GSS feeds the external wires into the same shock and ignition contacts");
+                Assert(dl.Contains("t.GetMethod(\"RegisterLiveWireSource\"") && dl.Contains("new[] { typeof(Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>>) }"),
+                    "FlowWorks binds RegisterLiveWireSource by name and its one parameter type (checked against GSS below)");
+                Assert(dl.Contains("t.GetMethod(\"LiveWiresChanged\""), "and the change poke by name");
+                // GSS is read as COMPILED metadata (the DLL that loads beside FlowWorks), never its source text: the reflection
+                // lookups above bind name and parameter types, and nothing else of GSS's signatures (a source pin broke on
+                // GSS 63ac285403's new RebuildContacts parameter).
+                GssContract.Check(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath(Path.Combine("Rivers", "RM_RiverMath.cs"))),
+                    "..", "..", "..", "GimmeSomeSlack", "Assemblies", "RimMandrakeGimmeSomeSlack.dll"));
             });
+        }
+    }
+    /// <summary>What FlowWorks's deck collapse relies on in Gimme Some Slack, read from the compiled DLL: the type its
+    /// GenTypes lookup names, the two public static entry points its GetMethod calls bind (name + parameter types), and
+    /// the data path behind them (RebuildContacts calls ExternalContacts, which reads the list RegisterLiveWireSource fills).</summary>
+    internal static class GssContract
+    {
+        private static void Assert(bool ok, string msg)
+        {
+            if (!ok) throw new Exception(msg);
+        }
+
+        public const string LiveWireFunc = "System.Func`2<Verse.Map,System.Collections.Generic.IEnumerable`1<System.Collections.Generic.KeyValuePair`2<Verse.IntVec3,Verse.IntVec3>>>";
+
+        public static void Check(string dll)
+        {
+            Assert(File.Exists(dll), "the GSS DLL is staged: " + dll);
+            using (var pe = new PEReader(File.OpenRead(dll)))
+            {
+                MetadataReader md = pe.GetMetadataReader();
+                TypeDefinition type = default;
+                bool found = false;
+                foreach (TypeDefinitionHandle h in md.TypeDefinitions)
+                {
+                    TypeDefinition t = md.GetTypeDefinition(h);
+                    if (md.GetString(t.Namespace) == "RimMandrake.GimmeSomeSlack.Aerial" && md.GetString(t.Name) == "RM_FallenWireShock") { type = t; found = true; }
+                }
+                Assert(found, "can-fail: the compiled GSS has the type FlowWorks looks up, RimMandrake.GimmeSomeSlack.Aerial.RM_FallenWireShock");
+                Assert((type.Attributes & TypeAttributes.VisibilityMask) == TypeAttributes.Public, "RM_FallenWireShock is public");
+                var names = new Names(md);
+                MethodDefinition register = One(md, type, names, "RegisterLiveWireSource", "System.Void(" + LiveWireFunc + ")");
+                One(md, type, names, "LiveWiresChanged", "System.Void(Verse.Map)");
+                HashSet<string> filled = Operands(md, pe, register, ILOpcodeField);
+                Assert(filled.Count > 0, "RegisterLiveWireSource keeps its source in a static field");
+                MethodDefinition external = Named(md, type, "ExternalContacts");
+                Assert(Operands(md, pe, external, ILOpcodeField).Overlaps(filled), "can-fail: ExternalContacts reads the sources RegisterLiveWireSource fills");
+                Assert(Operands(md, pe, Named(md, type, "RebuildContacts"), ILOpcodeCall).Contains("ExternalContacts"),
+                    "can-fail: GSS feeds the external wires into the same shock and ignition contacts (RebuildContacts calls ExternalContacts)");
+            }
+        }
+
+        private const int ILOpcodeField = 0x7E, ILOpcodeCall = 0x28;   // ldsfld, call
+
+        private static MethodDefinition Named(MetadataReader md, TypeDefinition type, string name)
+        {
+            var hits = type.GetMethods().Select(md.GetMethodDefinition).Where(m => md.GetString(m.Name) == name).ToList();
+            Assert(hits.Count == 1, "the compiled RM_FallenWireShock has one " + name + " (found " + hits.Count + ")");
+            return hits[0];
+        }
+
+        private static MethodDefinition One(MetadataReader md, TypeDefinition type, Names names, string name, string want)
+        {
+            MethodDefinition m = Named(md, type, name);
+            MethodSignature<string> sig = m.DecodeSignature(names, null);
+            string got = sig.ReturnType + "(" + string.Join(",", sig.ParameterTypes) + ")";
+            Assert((m.Attributes & MethodAttributes.Static) != 0 && (m.Attributes & MethodAttributes.MemberAccessMask) == MethodAttributes.Public,
+                "can-fail: " + name + " is public static (FlowWorks's GetMethod binds it so)");
+            Assert(got == want, "can-fail: the compiled " + name + " is " + got + ", FlowWorks binds " + want);
+            return m;
+        }
+
+        /// <summary>The names of the fields (ldsfld) or methods (call) one method's IL names, walked opcode by opcode.</summary>
+        private static HashSet<string> Operands(MetadataReader md, PEReader pe, MethodDefinition m, int opcode)
+        {
+            var hits = new HashSet<string>();
+            BlobReader il = pe.GetMethodBody(m.RelativeVirtualAddress).GetILReader();
+            while (il.RemainingBytes > 0)
+            {
+                int v = il.ReadByte();
+                if (v == 0xFE) v = 0xFE00 | il.ReadByte();
+                OpCode op = Ops[unchecked((short)v)];
+                switch (op.OperandType)
+                {
+                    case OperandType.InlineNone: break;
+                    case OperandType.ShortInlineBrTarget: case OperandType.ShortInlineI: case OperandType.ShortInlineVar: il.ReadByte(); break;
+                    case OperandType.InlineVar: il.ReadInt16(); break;
+                    case OperandType.InlineI8: case OperandType.InlineR: il.ReadInt64(); break;
+                    case OperandType.InlineSwitch: int n = il.ReadInt32(); for (int i = 0; i < n; i++) il.ReadInt32(); break;
+                    default:
+                        int token = il.ReadInt32();
+                        if (v != opcode) break;
+                        EntityHandle h = MetadataTokens.EntityHandle(token);
+                        if (h.Kind == HandleKind.FieldDefinition) hits.Add(md.GetString(md.GetFieldDefinition((FieldDefinitionHandle)h).Name));
+                        else if (h.Kind == HandleKind.MethodDefinition) hits.Add(md.GetString(md.GetMethodDefinition((MethodDefinitionHandle)h).Name));
+                        else if (h.Kind == HandleKind.MemberReference) hits.Add(md.GetString(md.GetMemberReference((MemberReferenceHandle)h).Name));
+                        break;
+                }
+            }
+            return hits;
+        }
+
+        private static readonly Dictionary<short, OpCode> Ops = typeof(OpCodes).GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Select(f => (OpCode)f.GetValue(null)).ToDictionary(o => o.Value);
+
+        /// <summary>Type names as C# metadata spells them: Namespace.Name, generics as Name`n&lt;args&gt;.</summary>
+        private sealed class Names : ISignatureTypeProvider<string, object>
+        {
+            private readonly MetadataReader md;
+            public Names(MetadataReader md) { this.md = md; }
+            public string GetPrimitiveType(PrimitiveTypeCode c) => "System." + c;
+            public string GetTypeFromDefinition(MetadataReader r, TypeDefinitionHandle h, byte k) { var t = r.GetTypeDefinition(h); return r.GetString(t.Namespace) + "." + r.GetString(t.Name); }
+            public string GetTypeFromReference(MetadataReader r, TypeReferenceHandle h, byte k) { var t = r.GetTypeReference(h); return r.GetString(t.Namespace) + "." + r.GetString(t.Name); }
+            public string GetTypeFromSpecification(MetadataReader r, object g, TypeSpecificationHandle h, byte k) => r.GetTypeSpecification(h).DecodeSignature(this, g);
+            public string GetGenericInstantiation(string t, ImmutableArray<string> a) => t + "<" + string.Join(",", a) + ">";
+            public string GetSZArrayType(string e) => e + "[]";
+            public string GetArrayType(string e, ArrayShape s) => e + "[" + new string(',', s.Rank - 1) + "]";
+            public string GetByReferenceType(string e) => e + "&";
+            public string GetPointerType(string e) => e + "*";
+            public string GetPinnedType(string e) => e;
+            public string GetModifiedType(string m, string u, bool req) => u;
+            public string GetGenericTypeParameter(object g, int i) => "!" + i;
+            public string GetGenericMethodParameter(object g, int i) => "!!" + i;
+            public string GetFunctionPointerType(MethodSignature<string> s) => "fnptr";
         }
     }
 }

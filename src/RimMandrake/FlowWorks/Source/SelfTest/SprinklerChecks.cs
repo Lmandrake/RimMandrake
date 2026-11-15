@@ -111,6 +111,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SprinklerKernel.BudgetLeft(0, 50, UPL) == -1 && RM_SprinklerKernel.BudgetLeft(10, 50, UPL) == 50, "budget arithmetic");
                 Assert(RM_SprinklerKernel.Saved(10, 4, 0.5f, UPL) == 30, "saved litres");
             });
+            Case("Sprinkler_max_cells_exact_fit", () =>
+            {
+                Assert(RM_SprinklerKernel.MaxCellsFor(7, 0.1f, UPL) == 7, "7 units pays exactly 7 cells at 0.1 L (got " + RM_SprinklerKernel.MaxCellsFor(7, 0.1f, UPL) + ")");
+                for (int step = 2; step <= 100; step++)
+                {
+                    float l = step * 0.05f;   // the slider: 0.1 .. 5 L, step 0.05
+                    for (int units = 0; units <= 400; units++)
+                    {
+                        int n = RM_SprinklerKernel.MaxCellsFor(units, l, UPL);
+                        Assert(n >= 0 && RM_SprinklerKernel.UnitsFor(n, l, UPL) <= units && RM_SprinklerKernel.UnitsFor(n + 1, l, UPL) > units,
+                            "MaxCellsFor(" + units + ", " + l + ") = " + n + " is not the largest payable count");
+                    }
+                }
+            });
             Case("Sprinkler_conserves_litres", () =>
             {
                 string s = Src("Sprinklers/RM_Sprinkle.cs");

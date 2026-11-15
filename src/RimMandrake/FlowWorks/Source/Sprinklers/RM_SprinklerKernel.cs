@@ -133,8 +133,11 @@ namespace RimMandrake.FlowWorks.Sprinklers
         public static int MaxCellsFor(int units, float litresPerCellHour, int unitsPerLitre)
         {
             if (units <= 0 || litresPerCellHour <= 0f || unitsPerLitre <= 0) return 0;
+            // The float estimate can sit either side of UnitsFor's rounded cost (0.1f x 10 = 1.0000000149 makes 7 units
+            // read as 6.99 cells), so settle it against UnitsFor itself in both directions.
             int n = (int)Math.Floor(units / (litresPerCellHour * (double)unitsPerLitre) + 1e-9);
             while (n > 0 && UnitsFor(n, litresPerCellHour, unitsPerLitre) > units) n--;
+            while (UnitsFor(n + 1, litresPerCellHour, unitsPerLitre) <= units) n++;
             return n;
         }
 
