@@ -32,25 +32,89 @@ determinism, the cache after a change, reach soundness, the rebuild gate, the sl
 
 
 ## Lane 2 reruns
-(owed until lane 1 is committed)
+All 27 `kind: offline` tests of `version/test_table.json` rerun with their recorded commands (`lane2/rerun_offline.py`,
+rows in `lane2/reruns.jsonl`) [measured]:
+- Same verdict: 26 of 27. Exact match (verdict and last line): 23 of 27.
+- T_CORE, T_SHOCK_RULE_OFFLINE and T_CORD_GEOMETRY_OFFLINE: PASS as recorded; their check counts grew since `runs_today`
+  (4508 to 4510, 4515 to 4513 [measured]: tests were added or moved after the table was written), so the last line differs.
+- T_GATE: rc 1 on the first rerun (`validation:O3_core_selftest` red), rc 0 on a second run minutes later with O3 4510/4510.
+  The first red was not explained (RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN).
+- The offline bars' decider T_NO_HOSE: PASS before and after the fix (`lane2/reruns_after_fix.jsonl`, 6 of 6 match).
 
 ## Planted
-(owed)
+31 faults first (`lane2/planted_faults.json`, results `lane2/planted_results.jsonl`, baseline row first, `tree_clean_after: true`
+last). 21 in kernels (every kernel the brief names has at least one), 6 in game-side callers, a setting and a patch, and 4 hose
+plants for the two offline bars [measured]:
+- Caught (a NEW failing row against the baseline): 25 of 31. The core suite caught 20, lane 1 caught 15.
+- Missed: PF_GAME_FLOOR_DEAD_ENDS_BITE, PF_GAME_ANY_BUILDER_EXEMPT, PF_PATCH_SWITCH_NOT_STYLED, PF_MOTION_LIVE_END_LIMP (no offline
+  test reaches them; their deciders are Stage 6 scenes), and **PF_HOSE_TEXTURE_FOLDER and PF_HOSE_COMP_CLASS_ATTR**.
+- **T_NO_HOSE was the only thing between a hose leak and green on both offline bars, and two of its four hose plants passed it**
+  (a texture in a `Hose/` folder, a comp named only by its `Class` attribute). My own lane-1 hose scan missed the same two.
+  It caught the planted defName and texPath. Fixed (below).
+- After the fixes (`lane2/planted_after_fix.jsonl`): both hose plants and the old master gate, put back, are caught; tree clean.
 
 ## Faults
-(owed)
+`lane2/faults.json`, ten refusal records, each filed as a rimflow item [measured]:
+
+| id | class | bar | status |
+|---|---|---|---|
+| RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS | Problem | no_hose_in_gss, no_hose | FIXED 6d2aeb9c3f |
+| RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER | Problem | shock_reach_setting, settings_switch_cleanly | FIXED 6d2aeb9c3f |
+| RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS | Problem | cords_never_repeat | PENDING |
+| RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT | Problem | no_unforced_sharp_turn | PENDING |
+| RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK | Problem | cords_lie_slack | PENDING |
+| RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE | Problem | cords_lie_slack | PENDING |
+| RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER | Polish | fallen_span_on_ground | PENDING |
+| RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN | Polish | (instrument) T_GATE | PENDING |
+| RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES | Polish | no_hose_in_gss (bar words) | NOTED_FOR_CONDUCTOR |
+| RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST | Polish | callers' offline coverage | PENDING |
+
+The four PENDING Problems are kernel geometry. Lane 1 saw them first, on random bases. The builder's geometry check passes
+because it reads only the 7 oracle scenes. Their bars prove at Stage 6, but each one fails its own oracle offline. I did not fix them in place: each is a planner change in
+CordBuilder/CordPlanner whose smallest fix I could not name with confidence within this bound. Each item carries an acceptance
+test (a lane-1 row) watched failing.
+
+On the NOTED one: the sheet says "No hose, reel or pipe is drawn by this mod", but GSS draws FlowWorks pipe-pole spans by
+design. The oracle (hose, reel) is sound and is what the verdict below rests on. The word "pipe" gets no verdict and goes to
+the neutral fixer.
 
 ## Fixes
-(owed)
+Both red first (`lane2/fixes.jsonl`). Parent 67ddc758e5 (replayed onto origin as 3105e794f7); fix commit **6d2aeb9c3f**:
+- The no-hose scan now reads texture paths and `Class` attributes. New mutants M5 and M6 went rc 1 against the old scanner and
+  rc 0 after.
+- `RM_FallenWireShock`: the overhead-lines master gates only GSS's own fallen spans. FlowWorks' dropped deck cords now bite and
+  light fuel with it off. New test `selftest_gss_dropped_cords_ignore_aerial_master.py`: rc 1 on the parent, rc 0 on the fix.
+  It is a source binding, because the code is Verse-bound. The live proof (sc_shock_reach with overhead lines off) is
+  **UNRUN**; command: the scene `scene_shock_reach` in `src/RimMandrake/GimmeSomeSlack/validation.py`.
+- The DLL was rebuilt (`winbuild.py GimmeSomeSlack`, 0 errors) and committed with its `.srchash`. It was not deployed.
+- The touched tests plus the shock bindings and the settings sweep: `run_selftests.py --only` 6/6 GREEN.
+- `code_review_status.py check`: all three changed files read DIRTY. They need a full-file review, which this run did not do.
 
 ## Tests edited
-(owed)
+`tests_edited.json`: `northstar/selftest_gss_no_hose.py` was extended, not weakened. Every earlier check and mutant is
+kept; it now also scans folders and Class attributes. `selftest_gss_dropped_cords_ignore_aerial_master.py` is new. No assertion
+was removed, skipped or loosened. No bar, criterion, locked file or `test_table.json` field was edited.
 
 ## Unsettled
-(owed)
+- 14 lane-1 rows are `not_kernel`, with reasons in the rows. Those bars live in game code and are owed to Stage 6.
+- Whether FloorEndShock can drop a live end when two end tips share one cell (its contact map is keyed by cell) is a guess
+  [guess ~20% that it happens]. It was not measured and not filed.
+- The second fix has no live run.
 
 ## Exit
-(owed)
+```
+offline_bars: {no_hose: green, no_hose_in_gss: green}
+problems_open: 4
+exit_met: false
+```
+Both offline bars are green on the fresh rerun of T_NO_HOSE, before and after the fix. Four Problems stay PENDING (lane-1
+geometry against the bars' own oracles), so the exit is not met. The Conductor decides: a cycle 2 after a builder fixes the
+four, or a re-route of those bars to Stage 6, where they prove.
 
 ## Owed
-(in progress)
+- The four PENDING Problems (items above, each with its acceptance test).
+- A full-file review of the three changed files, so they can be marked CLEAN.
+- The live run of sc_shock_reach with the overhead-lines master off.
+- The two kernels I did not read in full (CordBuilder 4427 lines, CordShape 1719) were reached only through their outputs.
+
+Spend at the record: about $11.5 of the $20 bound [measured, the session's budget line]. Lane 1 landed ce294c48e1 (00:51 PST).

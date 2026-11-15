@@ -1,0 +1,146 @@
+[
+ {
+  "id": "RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS",
+  "class": "Problem",
+  "bar": "no_hose_in_gss (and inventory no_hose)",
+  "criterion": "oracle: offline scan finds no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack; false pass named by the leaf: 'the scan matching only def names, missing a texture folder'",
+  "evidence": [
+   "T_NO_HOSE is the only decider of both proves_at 4-5 bars (test_table.json bars no_hose, no_hose_in_gss: decides [T_NO_HOSE])",
+   "planted PF_HOSE_TEXTURE_FOLDER (Textures/Things/Hose/Segment_south.png) and PF_HOSE_COMP_CLASS_ATTR (<li Class=\"CompProperties_HoseReel\" />) both left T_NO_HOSE green: design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/planted_results.jsonl",
+   "the scanner matched texture FILE names only and element text only, never a folder or a Class attribute",
+   "today's tree ships no hose either way: the widened scan reads T1 green (reruns_after_fix.jsonl T_NO_HOSE PASS)"
+  ],
+  "would_pass": "T_NO_HOSE goes red by name on a hose texture inside a Hose/ folder and on a comp or worker named only by its Class attribute, and stays green on the shipped tree",
+  "smallest_fix": "scan the texture path under Textures/ (not just the file name) and every Class attribute in Defs/ and Patches/; add the two as mutants M5, M6",
+  "verdict_on_criterion": "sound: the leaf itself names the texture-folder false pass",
+  "status": "FIXED 6d2aeb9c3f"
+ },
+ {
+  "id": "RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER",
+  "class": "Problem",
+  "bar": "shock_reach_setting; settings_switch_cleanly",
+  "criterion": "shock_reach_setting: under Only downed lines and All the live cord a collapsed FlowWorks bridge deck dropped bites (sheet, delegated: 'Only downed lines keeps FlowWorks' dropped bridge-deck cords biting'); settings_switch_cleanly: flipping a feature switch changes just that feature",
+  "evidence": [
+   "RM_FallenWireShock.RebuildContacts returned on !AerialSettings.enabled BEFORE ExternalContacts (the FlowWorks dropped-cord source), and CheckPawns returned on the same switch (source at 67ddc758e5, lines 65 and 148)",
+   "so with the overhead-lines master off, a dropped deck cord neither shocked nor lit fuel, whatever shockReach said: a power-lines switch silencing another mod's floor hazard",
+   "red: selftest_gss_dropped_cords_ignore_aerial_master.py rc 1 on the parent (C1..C4 FAIL); green rc 0 after the fix; planted PF_GAME_DROPPED_CORD_MASTER_GATE (the old gate put back) caught: design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/planted_after_fix.jsonl",
+   "game-side code: no offline test could reach it before; the live proof is the sc_shock_reach scene (Stage 6), UNRUN here"
+  ],
+  "would_pass": "with AerialSettings.enabled false and shockReach OnlyDownedLines or All, a pawn on a FlowWorks dropped-cord contact is shocked; our own fallen-span contacts are not",
+  "smallest_fix": "gate only the aerial-strand loop of RebuildContacts on the master; let ExternalContacts run; in CheckPawns skip only DownedSpan contacts while the master is off",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 6d2aeb9c3f"
+ },
+ {
+  "id": "RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS",
+  "class": "Problem",
+  "bar": "cords_never_repeat",
+  "criterion": "every pair of same-class edges above a minimum shape distance (cord_shape_variation_probe); cords of the same length do not repeat one shape across a room. Owner card 2026-11-13 exempts only cords shorter than 3 cells",
+  "evidence": [
+   "lane 1 L1_NO_REPEAT (written blind): two 4-cell generator->lamp runs side by side, 4 cells apart, build seed 6, draw cords whose mean point gap in their own frames is 0.01 cell (shrunk from 8 runs to 2)",
+   "the kernel's own CordShape.Table on the same rooms: 31 of 672 pairs under its TooAlikeBelow 0.3, every one at run length 4 (up to 15 of 28 pairs in one room); lengths 6, 9 and 12: none (smallest gap 0.46)",
+   "T_CORE and T_H_NO_TWO_ALIKE_SHORT are green: neither lays a room of equal 4-cell runs side by side"
+  ],
+  "would_pass": "L1_NO_REPEAT green: no pair of same-class cords under 0.1 mean gap, and CordShape.Table TooAlike 0, for 2..8 equal runs of 4 cells side by side over build seeds 1..6",
+  "smallest_fix": "unknown until the lay of a short routed edge is read; [guess ~50%] its shape seed comes from the edge's own geometry rather than its map position, so identical short runs get identical cords. Mix the edge's cells into the lay seed for short edges, then rerun lane 1",
+  "verdict_on_criterion": "sound (the 4-cell class is inside the owner's bar; only under 3 cells is exempt)",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT",
+  "class": "Problem",
+  "bar": "no_unforced_sharp_turn",
+  "criterion": "the bends probe (CordShapeAudit.Bends) over every strand, ends included: tally unforced == 0",
+  "evidence": [
+   "lane 1 L1_CORD_BENDS_TALLY: the bar's named instrument CordShapeAudit.BendTally over 80 random scenes (seeds 6000..6039 open floor, 6500..6539 with walls): 82 unforced of 1381 bends in 728 strands",
+   "first rows: junction:37,38|consumer:37,37 turn 98 deg over 0.09 cell, 0.10 from the plug end (a one-cell junction-to-device lead); my coarser independent measure L1_CORD_SHARP_TURN agrees",
+   "T_CORD_GEOMETRY_OFFLINE is green (4513/4513) because it reads the 7 oracle scenes only; RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR closed against those 7"
+  ],
+  "would_pass": "L1_CORD_BENDS_TALLY reads unforced 0 over the same 80 seeds (or every remaining row is shown forced by a wall, building, door or socket the audit's Why() misses, which would be an instrument fix)",
+  "smallest_fix": "add random scenes to the geometry check (the lane-1 scene maker is reusable), then fix the planner where the unforced rows point, starting with plug-end hooks on one-cell leads",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK",
+  "class": "Problem",
+  "bar": "cords_lie_slack",
+  "criterion": "per edge: drawn length / chord at least 1.4",
+  "evidence": [
+   "lane 1 L1_CORD_SLACK_RATIO and L1_CORD_SLACK_RATE: 4 of 434 strands under 1.4 (worst 1.206: seed 3000, terminal:38,19 -> battery:42,19, chord 4.47, the kernel's own LaidRatio 1.32), all cut-routed leads carrying a live whip tail",
+   "every other lay kind reads 1.45 or more over the same 50 seeds"
+  ],
+  "would_pass": "L1_CORD_SLACK_RATIO green over seeds 3000..3049",
+  "smallest_fix": "[guess ~60%] the cut-routed lay counts the whip tail toward its slack budget, or trims slack to make room for it; aim the cut-routed lay at CordSlacken.Aim with the tail excluded",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE",
+  "class": "Problem",
+  "bar": "cords_lie_slack",
+  "criterion": "at least one excursion of a cell or more off the conduit line per edge longer than four cells",
+  "evidence": [
+   "lane 1 L1_CORD_EXCURSION and L1_CORD_EXCURSION_RATE: 5 of 139 edges of more than four conduit cells never leave their own conduit line by a full cell (lowest 0.56: a 6-cell junction-junction routed+slack edge; 3 cut-routed, 1 routed+slack, 1 hop+slack)",
+   "measured as the distance from the edge's chain polyline through cell centres, the most lenient reading of 'off the conduit line'"
+  ],
+  "would_pass": "L1_CORD_EXCURSION green over seeds 4000..4039",
+  "smallest_fix": "enforce CordSlacken.MinExcursion (1.0, already declared) on every edge over CordSlacken.LongChord, cut-routed and hop lays included",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER",
+  "class": "Polish",
+  "bar": "fallen_span_on_ground",
+  "criterion": "fallen wire present at ground layer; LayFallen's own contract: slack crossing an unwalkable cell is halved, then the first unwalkable cell stops the wire (Blocked)",
+  "evidence": [
+   "lane 1 L1_FALLEN_LAY_GROUND: seed 97531 trial 117 (1 of 1500), base (8,31) toward (2.53,30.91): a grounded point 0.044 cell inside wall cell (6,31), the lay not Blocked"
+  ],
+  "would_pass": "no grounded point of an unblocked lay inside an unwalkable cell",
+  "smallest_fix": "test the bends of the ground path against walls at sub-cell steps, not only the bare line",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN",
+  "class": "Polish",
+  "bar": "(instrument) T_GATE",
+  "criterion": "a rerun repeats the recorded result",
+  "evidence": [
+   "reruns.jsonl: T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept"
+  ],
+  "would_pass": "T_GATE green on repeated runs, or the O3 red's cause printed",
+  "smallest_fix": "keep the nested O3 run's last lines in the GATE_JSON so a red is explainable",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES",
+  "class": "Polish",
+  "bar": "no_hose_in_gss",
+  "criterion": "sheet: 'No hose, reel or pipe is drawn by this mod'; experience: 'it draws power cords only'; oracle: hoses or reels only",
+  "evidence": [
+   "GSS draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), owner-sanctioned (pipe poles 'Their own switch', 2026-10-22; leaf settings_switch_cleanly names the pipe-pole switch)",
+   "so the bar's word 'pipe' and 'power cords only' are not true of the shipped design, while the oracle (hose/reel) is"
+  ],
+  "would_pass": "the bar's words say what the oracle checks (no hose or reel; FlowWorks pipe-pole spans are drawn by design)",
+  "smallest_fix": "the neutral fixer rewords the leaf's experience and sheet line; no code change",
+  "verdict_on_criterion": "the oracle is sound; the bar words overreach. Verdict here rests on the oracle (hose, reel); the 'pipe' clause has no verdict",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST",
+  "class": "Polish",
+  "bar": "floor_end_shocks_crossers; cut_live_and_dead_ends; four_looks_one_run",
+  "criterion": "planted faults in game-side callers and patches should turn some offline test red where an offline test can see them",
+  "evidence": [
+   "missed by every offline suite: PF_GAME_FLOOR_DEAD_ENDS_BITE (FloorEndShock lists dead ends as contacts), PF_GAME_ANY_BUILDER_EXEMPT (any construction job beside an end exempt), PF_PATCH_SWITCH_NOT_STYLED (patch xpath typo), PF_MOTION_LIVE_END_LIMP (WhipAmp 0): design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/planted_results.jsonl",
+   "their deciders are Stage 6 scenes (sc_floor_end_shock, sc_cut_ends, sc_four_looks), so this is coverage, not a defect today"
+  ],
+  "would_pass": "a source-binding or XML-patch check reds each of the four plants",
+  "smallest_fix": "a binding test of FloorEndShock's EndLive and EverTransmitsPower guards; run validate_patch.py on Patches/ offline; a kernel row that WhipAmp > 0",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING"
+ }
+]

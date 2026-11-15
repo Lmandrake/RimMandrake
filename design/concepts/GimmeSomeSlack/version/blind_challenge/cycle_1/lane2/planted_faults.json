@@ -1,0 +1,436 @@
+[
+ {
+  "id": "PF_SHOCKRULE_FLOOR_BITES_UNDER_DOWNED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "kind == LineKind.FloorEnd ? reach == ShockReach.All : reach != ShockReach.None",
+  "new": "kind == LineKind.FloorEnd ? reach != ShockReach.None : reach != ShockReach.None",
+  "bars": [
+   "shock_reach_setting",
+   "floor_end_shocks_crossers"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_SHOCKRULE_FIXER_NOT_EXEMPT",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "flesh && !dead && !alreadyOut && !fixingThisLine;",
+  "new": "flesh && !dead && !alreadyOut;",
+  "bars": [
+   "floor_end_shocks_crossers",
+   "fallen_wire_shocks_crossers"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_SHOCKRULE_EXEMPT_TWO_CELLS_AWAY",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "Math.Abs(ez - tz) <= 1;",
+  "new": "Math.Abs(ez - tz) <= 2;",
+  "bars": [
+   "floor_end_shocks_crossers"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_TAPWINDOW_NO_FLUSH_ON_SWITCH",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/TapWindow.cs",
+  "old": "if (key != null && !ReferenceEquals(key, newKey)) Flush(flush);",
+  "new": "",
+  "bars": [
+   "tap_steals_and_costs_goodwill"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_AERIAL_FOREIGN_LINK_ALLOWED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (a.Faction != b.Faction) return LinkVerdict.Foreign;",
+  "new": "",
+  "bars": [
+   "spans_above_everything",
+   "owner_change_coils_wires"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_AERIAL_IDLE_CLAMP_ACCRUES",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (!draining || ticks <= 0 || ticksPerDay <= 0) return 0;",
+  "new": "if (ticks <= 0 || ticksPerDay <= 0) return 0;",
+  "bars": [
+   "tap_steals_and_costs_goodwill"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_AERIAL_CUT_SPAN_FALLS_AGAIN",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (killed && st == SpanState.Up) plan.Fallen.Add",
+  "new": "if (killed) plan.Fallen.Add",
+  "bars": [
+   "fallen_span_on_ground"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_AERIAL_PIPE_FOLLOWS_POWER_SWITCH",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "CarriesPower(k) ? powerOn : pipeOn;",
+  "new": "CarriesPower(k) ? powerOn : powerOn;",
+  "bars": [
+   "settings_switch_cleanly",
+   "pipe_pole_switch"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_REACH_NO_MARGIN",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+  "old": "public const int Block = 8, Margin = 3;",
+  "new": "public const int Block = 8, Margin = 0;",
+  "bars": [
+   "no_stall_on_rewire"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_GATE_IGNORES_POWERED_CELL",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+  "old": "!reach.Reaches(c) && !holdsPower(c));",
+  "new": "!reach.Reaches(c));",
+  "bars": [
+   "no_stall_on_rewire"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_TARGETS_INVERTED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+  "old": "(excluded == null || !excluded.Contains(c))",
+  "new": "(excluded == null || excluded.Contains(c))",
+  "bars": [
+   "conduit_invisible"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_SLACKEN_BAR_ONE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+  "old": "public const double Bar = 1.4, Aim = 1.5, Settle = 1.45;",
+  "new": "public const double Bar = 1.0, Aim = 1.05, Settle = 1.02;",
+  "bars": [
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_LAYER_SLACK_LOW",
+  "file": "src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs",
+  "old": "public double SlackLo = 1.4, SlackHi = 2.4;",
+  "new": "public double SlackLo = 1.05, SlackHi = 1.1;",
+  "bars": [
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_GRAPH_THREE_WAY_NOT_JUNCTION",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+  "old": "if (d >= 3) return new CordNode { Type = NodeType.Junction",
+  "new": "if (d >= 4) return new CordNode { Type = NodeType.Junction",
+  "bars": [
+   "strip_at_every_junction"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_BUILDER_MODERN_DRAWS_BOX",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "== PileArt.Strips)\n                {\n                    // d_modern_junction_strip",
+  "new": "== PileArt.Junctions)\n                {\n                    // d_modern_junction_strip",
+  "bars": [
+   "strip_at_every_junction"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_SHAPE_TOO_ALIKE_BLIND",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+  "old": "public const double TooAlikeBelow = 0.3;",
+  "new": "public const double TooAlikeBelow = 0.0;",
+  "bars": [
+   "cord_shape_variation_probe",
+   "cords_never_repeat"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_MOTION_LIVE_END_LIMP",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+  "old": "public const double WhipAmp = 0.24;",
+  "new": "public const double WhipAmp = 0.0;",
+  "bars": [
+   "cut_live_and_dead_ends"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_WALLMOUNT_DEEP_SOUTH",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
+  "old": "public const double SouthBand = 0.38;",
+  "new": "public const double SouthBand = 0.95;",
+  "bars": [
+   "cords_meet_walls_at_face"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_HOOKUP_NO_PARENT",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+  "old": "return dx * dx + dz * dz <= 36 ? parentCell : (Cell?)null;",
+  "new": "return dx * dx + dz * dz <= 0 ? parentCell : (Cell?)null;",
+  "bars": [
+   "drawing_true_to_grid"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_POOL_HANDS_OUT_HELD",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+  "old": "ReferenceEquals(w, src) || IsHeld(w)) continue;",
+  "new": "ReferenceEquals(w, src)) continue;",
+  "bars": [
+   "no_stall_on_rewire"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_SLICE_MAX_KEEPS_FIRST",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+  "old": "if (Max == null || r.TotalMs > Max.TotalMs) Max = r;",
+  "new": "if (Max == null) Max = r;",
+  "bars": [
+   "no_stall_on_rewire"
+  ],
+  "suites": [
+   "core",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_GAME_FLOOR_DEAD_ENDS_BITE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/FloorEndShock.cs",
+  "old": "if (g.EndLive(e.NetCell) != true) continue;",
+  "new": "",
+  "bars": [
+   "floor_end_shocks_crossers",
+   "cut_live_and_dead_ends"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings"
+  ]
+ },
+ {
+  "id": "PF_GAME_ANY_BUILDER_EXEMPT",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/FloorEndShock.cs",
+  "old": "if (!(built is ThingDef td) || !td.EverTransmitsPower) return false;",
+  "new": "if (!(built is ThingDef td)) return false;",
+  "bars": [
+   "floor_end_shocks_crossers"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings"
+  ]
+ },
+ {
+  "id": "PF_GAME_DEFAULT_ONLY_DOWNED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs",
+  "old": "public static ShockReach shockReach = ShockReach.All;",
+  "new": "public static ShockReach shockReach = ShockReach.OnlyDownedLines;",
+  "bars": [
+   "shock_reach_setting"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings"
+  ]
+ },
+ {
+  "id": "PF_GAME_RESTRINGER_ANY_SPAN",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (p.CurJobDef != Restringing.Job) return false;",
+  "new": "if (p.CurJobDef == Restringing.Job) return true;",
+  "bars": [
+   "fallen_wire_shocks_crossers"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings"
+  ]
+ },
+ {
+  "id": "PF_GAME_SLACK_SETTING_IGNORED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+  "old": "o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);",
+  "new": "o.Lay.SlackScale = 0f;",
+  "bars": [
+   "cords_lie_slack",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings"
+  ]
+ },
+ {
+  "id": "PF_PATCH_SWITCH_NOT_STYLED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml",
+  "old": "<xpath>Defs/ThingDef[defName=\"PowerSwitch\"]/comps</xpath>",
+  "new": "<xpath>Defs/ThingDef[defName=\"PowerSwitchX\"]/comps</xpath>",
+  "bars": [
+   "four_looks_one_run"
+  ],
+  "suites": [
+   "lane1",
+   "binding",
+   "settings",
+   "nohose"
+  ]
+ },
+ {
+  "id": "PF_HOSE_DEFNAME",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_PowerTheft.xml",
+  "old": "<defName>RM_PowerTheftCaught</defName>",
+  "new": "<defName>RM_HoseTheftCaught</defName>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_HOSE_TEXPATH",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/WallBracket</texPath>",
+  "new": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/HoseReelBracket</texPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ]
+ },
+ {
+  "id": "PF_HOSE_TEXTURE_FOLDER",
+  "file": "src/RimMandrake/GimmeSomeSlack/Textures/Things/Hose/Segment_south.png",
+  "old": null,
+  "new": "PNG",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose"
+  ]
+ },
+ {
+  "id": "PF_HOSE_COMP_CLASS_ATTR",
+  "file": "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml",
+  "old": "<li Class=\"CompProperties_Styleable\" />\n      </value>\n    </nomatch>\n  </Operation>\n  <Operation Class=\"PatchOperationConditional\">\n    <xpath>Defs/ThingDef[defName=\"PowerSwitch\"]",
+  "new": "<li Class=\"CompProperties_HoseReel\" />\n      </value>\n    </nomatch>\n  </Operation>\n  <Operation Class=\"PatchOperationConditional\">\n    <xpath>Defs/ThingDef[defName=\"PowerSwitch\"]",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose"
+  ]
+ },
+ {
+  "id": "PF_GAME_DROPPED_CORD_MASTER_GATE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "            if (contacts.Count == 0 || AerialSettings.shockReach == ShockReach.None) return;",
+  "new": "            if (contacts.Count == 0 || !AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None) return;",
+  "bars": [
+   "shock_reach_setting",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "dropcord",
+   "binding"
+  ],
+  "added_after_fix": "6d2aeb9c3f"
+ }
+]
