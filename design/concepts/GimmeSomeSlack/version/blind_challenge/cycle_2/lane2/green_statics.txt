@@ -1,0 +1,4 @@
+statics: 363 in 63 files: LISTED 22, RESET 11, table 117, value 213
+planted: a new unreset static List<Thing> refused; the tap-registry reset removed refused
+PASS
+rc 0

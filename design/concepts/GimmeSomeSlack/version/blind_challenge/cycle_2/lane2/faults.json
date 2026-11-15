@@ -1,0 +1,142 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT",
+   "class": "Problem",
+   "bar": "statics_clear_between_games, game_statics_reset",
+   "criterion": "T_STATICS_CENSUS: every mutable static that can hold a game's objects is reset in GssSessionReset.cs or listed with a reason",
+   "evidence": [
+    "rerun 2026-11-15: T_STATICS_CENSUS FAIL rc 1 (recorded PASS 2026-11-14): 'FAIL Core/CordBuilder.cs::StepTrace (Action<string, string, string, List<V2>>): can hold a game's objects; neither reset in GssSessionReset.cs nor listed with a reason' (lane2/red_statics.txt)",
+    "StepTrace was added 2026-11-15 by 6f8bfb47c4 (a diagnostics delegate set by SliceGateChecks.LayProfile; null in a game unless a diagnostic run is interrupted)"
+   ],
+   "would_pass": "the census reads StepTrace as RESET (GssSessionReset clears it) or LISTED with a true reason, and its planted controls still go red",
+   "smallest_fix": "GssSessionReset: Core.CordBuilder.StepTrace = null; plus the census RESET row that pins that call (done)",
+   "verdict_on_criterion": "sound: a static delegate can capture a map; the census is right to refuse it",
+   "status": "FIXED 164931fd9490e8d16ff61d9d604a6d08d2175bb5",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE",
+   "class": "Problem",
+   "bar": "no_stall_on_rewire, rebuild_cost (T_CORE also decides cord_slack_lay, junction_strips, connectivity_truth and 15 more stage-6 bars)",
+   "criterion": "T_CORE: SliceGateChecks.GraphWorker (2): after a graph-job fault the Builds end equal to one unbudgeted Build",
+   "evidence": [
+    "T_CORE FAIL rc 1 on 3 of 3 full runs at 8d03656883 (4509/4510; recorded 4508/4508 PASS): 'FAIL graph worker: after a job fault the Builds did not end equal to one unbudgeted Build (60 Builds)'; T_GATE red through its O3 (lane2/reruns.jsonl, red_core.txt)",
+    "diagnostic run: at the 60-Build cap 20 edges still pending, lay running, 0.8 s elapsed; with the cap lifted the Builds end equal at 63 Builds (eq=True, 0.9 s)",
+    "the same run: 'async: cold E=248 over 57 Builds' - the live scene's async lay grew past the guard after the 2026-11-15 CordBuilder changes; --perdig-only passed 2 of 2 (the margin is load-dependent)"
+   ],
+   "would_pass": "the check still asserts the fault is recorded and the Builds end bit-identical to one unbudgeted Build; only the loop guard bounds a hang (120 s) not the frames a lay takes",
+   "smallest_fix": "guard builds < 600 with the 120 s time bound kept; the failure message names pending and running (done; no assertion changed)",
+   "verdict_on_criterion": "sound; the loop guard was not part of it",
+   "status": "FIXED 164931fd9490e8d16ff61d9d604a6d08d2175bb5",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED",
+   "class": "Problem",
+   "bar": "no_hose, no_hose_in_gss",
+   "criterion": "T_NO_HOSE (observes: 'the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red')",
+   "evidence": [
+    "planted NH_PLANT_PIPE_DEF (a ThingDef RM_WaterPipe 'water pipe' under Defs/) MISSED by T_NO_HOSE and lane 1 (lane2/planted_results.jsonl)",
+    "check_pipe_plant.py at 8510908174: 0 of 3 pipe plants (def, texture, class) caught, rc 1 (lane2/red_pipe_plant.txt); the scan's WORD was hose|reel",
+    "nothing GSS ships is named pipe (Defs, Patches, Textures, Source types): the wider scan reads the clean tree green"
+   ],
+   "would_pass": "a planted pipe def, texture and class each go red by name; the clean copy and a hose comment stay green",
+   "smallest_fix": "WORD hose|reel|pipe, TYPE with Pipe, mutant M7_planted_pipe_def (done)",
+   "verdict_on_criterion": "sound for what GSS ships; the bar's words about what GSS DRAWS are a separate item (RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE)",
+   "status": "FIXED 349f9aa86b450efd0fbc5f77bab84d126ed2a07d",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE",
+   "class": "Polish",
+   "bar": "no_hose_in_gss (and pipe_pole_switch)",
+   "criterion": "sheet.md leaf no_hose_in_gss: 'No hose, reel or pipe is drawn by this mod.'",
+   "evidence": [
+    "lane-1 row L1_NOHOSE_PIPE_WORDS (INFO): the kernel carries AerialLineKind.Pipe (one stiff strand, its own span and sag)",
+    "AerialLineProfiles.LookOfThing/RangeFor/Noun('pipe span'): GSS's aerial engine draws the spans between FlowWorks pipe poles, under FlowWorks' own switch (bar pipe_pole_switch, his 2026-10-22 'Their own switch.')",
+    "record.json no_hose 'what': 'GSS draws no hose or pipe: hoses and reels live in FlowWorks'"
+   ],
+   "would_pass": "the words say what is true: GSS ships no hose, reel or pipe of its own; the spans between FlowWorks pipe poles are drawn by GSS's line engine in FlowWorks' art",
+   "smallest_fix": "the neutral fixer rewords the leaf (e.g. 'No hose, reel or pipe of its own is shipped by this mod; FlowWorks' pipe-pole spans use its line engine'), or the steward rules the spans out",
+   "verdict_on_criterion": "the bar's words conflict with pipe_pole_switch; no defect a player sees",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME",
+   "class": "Polish",
+   "bar": "restring_cut_span, restring_job",
+   "criterion": "lane 1 L1_RESTRING_TICKS_SWEEP: RestringTicks is >= 1 and monotone over every speed",
+   "evidence": [
+    "L1_RESTRING_TICKS_SWEEP FAIL: speed NaN -> -2147483648 ticks (Math.Max(0.1, NaN) is NaN); 300 at speed 1, monotone, >= 1 elsewhere",
+    "the caller passes a pawn's ConstructionSpeed stat, which is never NaN in play [guess ~90%]"
+   ],
+   "would_pass": "RestringTicks(NaN) returns RestringBaseTicks / 0.1 or RestringBaseTicks",
+   "smallest_fix": "treat NaN like a speed under 0.1 in AerialMath.RestringTicks",
+   "verdict_on_criterion": "a defensive bound no bar states",
+   "status": "PENDING",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_TRIM_GSS_FALLEN_WIRE_COILS_OUTGROW_CABLE",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground, downed_spans",
+   "criterion": "lane 1 L1_DOWNED_LAY_ON_GROUND_RANDOM: a fallen wire's drawn ground length is at most 2x its cable + 2 cells (nothing created)",
+   "evidence": [
+    "L1_DOWNED_LAY_ON_GROUND_RANDOM FAIL (seed 4202): 13 of 1500; case 277: 14.27 cells drawn for a 5.66-cell cable, unblocked, 3 walls; shrunk: still over at a 5.16-cell span",
+    "AerialMath.LayFallen draws one or two coils (AddCoil) and up to four bends on any lay over 3 or 7 cells: drawn polyline length the cable does not have"
+   ],
+   "would_pass": "the drawn ground length stays within the bound, or the steward accepts that coils read as slack rather than as cable",
+   "smallest_fix": "scale AddCoil's radius by the cable left (cable - reach) on an unblocked lay",
+   "verdict_on_criterion": "lane 1's own conservation bound; no bar states a length",
+   "status": "PENDING",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PROVE_GSS_GEOMETRY_RAN_COUNT_IS_ONLY_TELL",
+   "class": "Polish",
+   "bar": "cords_lie_slack, no_unforced_sharp_turn (T_CORD_GEOMETRY_OFFLINE)",
+   "criterion": "T_CORD_GEOMETRY_OFFLINE: python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
+   "evidence": [
+    "planted WRAP_GEOMETRY_NOT_FORWARDED and PROG_GEOMETRY_SKIPPED: the decider passes rc 0 with no geometry check run; only the count (4510 vs 4520) differs",
+    "the run prints 'geometry: M2c junction-battery site NOT CAPTURED (lab/m2c_site.json absent)' though the test observes the M2c site as a lab world offline"
+   ],
+   "would_pass": "--geometry run without the geometry checks goes red (e.g. Program.cs fails when --geometry is given and CordGeometryChecks ran 0 checks)",
+   "smallest_fix": "Program.cs: count CordGeometryChecks' checks and fail when --geometry was asked and the count is 0; the wrapper asserts its forwarded flags",
+   "verdict_on_criterion": "sound; the rerun's last-line compare is today's only guard",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_EXERCISE_GSS_CORD_GUARDS_THREE_PLANTS_SURVIVE",
+   "class": "Polish",
+   "bar": "cords_lie_slack, no_unforced_sharp_turn",
+   "criterion": "T_CORE and T_CORD_GEOMETRY_OFFLINE as deciders of the cord-lay bars",
+   "evidence": [
+    "CB_TAUT_FAULT_HALVED, CB_BEND_ALLOWANCE, CS_FLAT_LONG_EDGE each MISSED by the full --geometry run (planted_results.jsonl)",
+    "a firing probe on --geometry-only: the taut guard never fires in the band the plant changes (0); the bend guard 20 times, the flat guard 71 times, and the outputs still read 0 unforced bends and 0 flat long edges, so a later stage masks them or the change stays inside the bar [guess ~65%]"
+   ],
+   "would_pass": "a seeded case where each guard is the last line of defence, or the redundant guard removed",
+   "smallest_fix": "add one scene per guard to the oracle set, or delete the guard as redundant after a digest comparison",
+   "verdict_on_criterion": "the bars' own checks hold; no behaviour change against the bar was seen",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_REPIN_GSS_ASYNC_FAULT_CAP_FIFTY_SEVEN_USED",
+   "class": "Polish",
+   "bar": "no_stall_on_rewire",
+   "criterion": "SliceGateChecks (5): 'async: a faulted key stayed pending after {builds5} Builds' asserts builds5 < 60",
+   "evidence": [
+    "the same full run reports 'async: cold E=248 over 57 Builds'; check (2)'s guard of 60 failed 3 of 3 at 57-63 Builds before this cycle's fix",
+    "(5) is an assertion bound, which a fixer may not loosen; it passed on every run this cycle"
+   ],
+   "would_pass": "a bound with headroom over the scene's measured async lay, chosen by the steward",
+   "smallest_fix": "the steward re-pins builds5 < 60 to a bound derived from the scene's cold lay (e.g. 2x the async Build count)",
+   "verdict_on_criterion": "the bound is near the edge; a false red is likely on a loaded machine [guess ~50%]",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 0
+  }
+ ]
+}

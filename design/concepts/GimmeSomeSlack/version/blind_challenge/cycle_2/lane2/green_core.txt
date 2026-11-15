@@ -1,0 +1,135 @@
+wrote /home/mandrake/rm/relentless/clones/RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_TWO_TESTS_FIRST.det/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/oracle_scenes.json: 7 scenes
+sliced rebuild callers: ok
+staging src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest
+  src/RimMandrake/_Shared/SlackGeometry/
+  src/RimMandrake/GimmeSomeSlack/Source/Core/
+  src/RimMandrake/GimmeSomeSlack/Source/Aerial/
+  src/RimMandrake/GimmeSomeSlack/Source/SelfTest/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\CordSlideUnderChecks.cs(73,68): warning CS0219: The variable 'offCentreOld' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,21): warning CS0649: Field 'SliceRecord.LayBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,28): warning CS0649: Field 'SliceRecord.Pending' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(24,21): warning CS0649: Field 'SliceRecord.HeapDelta' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(4488,45): warning CS0649: Field 'CordBuilder.HeapWalkOff' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,30): warning CS0649: Field 'SliceRecord.Gc2' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,30): warning CS0649: Field 'SliceRecord.GraphBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,25): warning CS0649: Field 'SliceRecord.Gc1' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,20): warning CS0649: Field 'SliceRecord.Landed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(189,38): warning CS0649: Field 'BuildOptions.PlugBootAt' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+  RimMandrakeGimmeSomeSlack.SelfTest -> D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\bin\Release\net8.0\RimMandrakeGimmeSomeSlack.SelfTest.dll
+
+Build succeeded.
+
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\CordSlideUnderChecks.cs(73,68): warning CS0219: The variable 'offCentreOld' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,21): warning CS0649: Field 'SliceRecord.LayBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,28): warning CS0649: Field 'SliceRecord.Pending' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(24,21): warning CS0649: Field 'SliceRecord.HeapDelta' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(4488,45): warning CS0649: Field 'CordBuilder.HeapWalkOff' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,30): warning CS0649: Field 'SliceRecord.Gc2' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,30): warning CS0649: Field 'SliceRecord.GraphBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,25): warning CS0649: Field 'SliceRecord.Gc1' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,20): warning CS0649: Field 'SliceRecord.Landed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(189,38): warning CS0649: Field 'BuildOptions.PlugBootAt' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+    10 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.20
+oracle: D:\ClaudeWork\rimmandrake\scratch\gimmesomeslack_blind_c2_rerun\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\bin\Release\net8.0\oracle_scenes.json (7 scenes)
+  nodal: 6/6 machine cord ends on the centroid
+  nodal: art fit: 4 junctions (0 faults), 6 plug ends (0), 5 stubs (0); dead tip off-line [] live arrival deg [0]
+  nodal: 18 nodes, 13 cord edges, 20 strands (0 fell back), laid/path median 1.71, unroutable 0
+  gap: 2/2 machine cord ends on the centroid
+  gap: art fit: 0 junctions (0 faults), 2 plug ends (0), 2 stubs (0); dead tip off-line [0.33 0.33 0.32] live arrival deg [0]
+  gap: 6 nodes, 3 cord edges, 5 strands (0 fell back), laid/path median 1.73, unroutable 0
+  downed: 2/2 machine cord ends on the centroid
+  downed: art fit: 2 junctions (0 faults), 2 plug ends (0), 2 stubs (0); dead tip off-line [0.29 0.34 0.30] live arrival deg [0 0 0 0 0]
+  downed: 12 nodes, 7 cord edges, 15 strands (0 fell back), laid/path median 2.40, unroutable 0
+  under: 3/3 machine cord ends on the centroid
+  under: art fit: 1 junctions (0 faults), 3 plug ends (0), 2 stubs (0); dead tip off-line [] live arrival deg []
+  under: 12 nodes, 6 cord edges, 10 strands (0 fell back), laid/path median 1.57, unroutable 0
+  needless: 4/4 machine cord ends on the centroid
+  needless: art fit: 3 junctions (0 faults), 4 plug ends (0), 0 stubs (0); dead tip off-line [] live arrival deg [0 0 0]
+  needless: 8 nodes, 7 cord edges, 11 strands (0 fell back), laid/path median 3.05, unroutable 0
+  tangle: 4/4 machine cord ends on the centroid
+  tangle: art fit: 0 junctions (0 faults), 4 plug ends (0), 0 stubs (0); dead tip off-line [] live arrival deg []
+  tangle: 5 nodes, 4 cord edges, 14 strands (0 fell back), laid/path median 1.88, unroutable 0
+  tangle_off: 4/4 machine cord ends on the centroid
+  tangle_off: art fit: 0 junctions (0 faults), 4 plug ends (0), 0 stubs (0); dead tip off-line [] live arrival deg []
+  tangle_off: 5 nodes, 4 cord edges, 14 strands (0 fell back), laid/path median 1.88, unroutable 0
+  nodal: settle: 17 strands, max stretch 0.0052 (max compression 0.045), max length dev 1.94%, iters 70-70, points max 640
+  gap: settle: 5 strands, max stretch 0.0000 (max compression 0.044), max length dev 1.86%, iters 70-70, points max 114
+  downed: settle: 10 strands, max stretch 0.0019 (max compression 0.059), max length dev 1.74%, iters 70-70, points max 192
+  under: settle: 9 strands, max stretch 0.0026 (max compression 0.061), max length dev 2.27%, iters 70-70, points max 343
+  needless: settle: 11 strands, max stretch 0.0057 (max compression 0.043), max length dev 2.16%, iters 70-70, points max 800
+  tangle: settle: 1 strands, max stretch 0.0000 (max compression 0.024), max length dev 1.07%, iters 70-70, points max 110
+  tangle_off: settle: 1 strands, max stretch 0.0000 (max compression 0.024), max length dev 1.07%, iters 70-70, points max 110
+  hose yard: path 30.7, hose laid 32.7 (+2.04), min bend R 12.32 (wire 0.02), self-x hose 0 wire 9, points 672
+  perf: 1027 conduit cells -> 124 nodes, 188 cord edges, 349 strands, 75573 laid points, settle work 9124002; cold 1709 ms, warm 1 ms
+  stub merge: comb -> 1 stub(s), 1 junction(s); with a through-wall pass -> 2 stubs
+  long run: 64 cells, end heaps near A 1, near B 1; short run end heaps 0
+  strips: tangle: lit 3, dark 0
+  strips: tangle_off: lit 0, dark 3
+  whip: 10 live tails, 0 dead, 10 riding fray decals; lifted strands 2
+  shader sway alpha tip 89; ripple max 0.0344 cells at wind 1
+  motion: whip max 0.089, snaps 3/20 s; drip states 4, gaps 0.30-2.50 mean 0.89, sparks 284/200
+geometry: skipped (known red; run with --geometry)
+aerial: 155/155 checks passed
+  review1 piles: junction look 3 boxes / 6 cables / 0 strips; modern 2 strips / 6 plugs
+  review1: rock holes 2 (on-face rule WallMount); solar cord depth 2.00
+  review3: wall plates 2 (on-face rule WallMount); leads 2; tap pieces 2; bundle probe 5
+  review4: plates 9 on 3 face kinds; loose wires 1; brackets 16; wall-home end True
+determinism: 64/64 floor scenes fresh == incremental
+  tapclamp: 48/48 poses on their wire (worst 0.000 cell, 0.0 deg); old pose caught 48/48; mutants off/turn/flip 48/48/48
+PASS door-loop: can-fail: with plain floor there the loops reach those cells (18746 points)
+PASS door-loop: no loop or heap point lies in a doorway the strand does not run through (0 points)
+PASS door-loop: loops still form, small enough to stay out of the doorways (40/40 lays)
+  slideunder: 16 pump ends, 0 on a flange, 0 square; old rule 14 on a flange
+  cord shape: 40 cords over 5 seeds, closest pair 0.91 cells apart, 0 too alike
+  FOLD seed 3 [ | ] tangle:(8,8) x1 at (7.94,6.76)
+  cord folds: 1 in 115 strands
+  furniture: 5 passes under a bed in 46 strands; laid blind to the beds 173
+  cord saws, open runs: 0 in 122 strands
+  cord saws, short stumps: 0 in 145 strands
+  cord saws, heap: 0 in 64 strands
+  cord doubled: 1 of 66 strands over, worst 1.35 cells
+  door strays: 0 in 77 strands; plain draw 1
+  ring returns: 0 at the door and 0 at an end in 79 lays through a door; plain draw 18
+  bends tighter than 0.6 cell on open floor: 24 in 48 short slack hops; drawn as before 117
+  stiff exits bent: (211.23,102.41) 24deg
+  Modern socket ends: 39, past 100: 2, past 150: 0, socket-excused bends 0, loops 11
+  heap Modern tangle:(184,93): 5 cables, 3 connectors
+  heap Scrapper tangle:(109,73): 9 cables, 5 connectors
+  junction strips: 48 over 24 seeds, 0 faults
+rebuild-per-dig: E=178 first Build 774.2 ms, all-reused Build 0.28 ms (one graph reduce alone 2.81 ms)
+rebuild-per-dig: reach soundness 427 worlds, 6672 out-of-reach cells changed, 0 altered
+rebuild-per-dig: live scene E=248 all-reused Build 0.43 ms = inputs 0.14 + reduce/reuse 0.00 + edges 0.27 (keys 0.03, cache+corridor check 0.18) + nodes 0.01 + reach 0.02
+slice: cold E=248 planned over 86 Builds, worst 24.5 ms (budget 8 ms)
+async: cold E=248 over 60 Builds / 1 batches, worst frame Build 3.49 ms, all-reused Build 0.56 ms, laid on caller 0
+alloc budget: E=980 changed-graph hand-off 320 bytes, all-reused Build 15336 bytes
+graph worker: spawn over 91 Builds, 26 waited, 25 jobs, 1 adopted
+graph worker gate: 1 attempt(s), caller work 0; spawn frame Build worst (GC-excluded) / p95: beside 0 lattices 3.26 / 0.43 ms, beside 8 (E=1984) 4.87 / 3.81 ms
+sustained change: 120 changing frames, 120 jobs, 0 adopted, 120 stale frames (675 cords shown whole); quiet: 0 new job, 1 adopted, fresh after 2 Builds
+coalesce: cold build rebuilds per-frame 248, coalesced 38 (213 frames held)
+gate: farSkips 3, regenSkips 1, relevant 4
+rebuild tail (elig off): 93 frames, 4032 section-frames, 860 dirtied, seeds and dirty decisions identical: True
+rebuild tail (elig on): 95 frames, 4113 section-frames, 3892 dirtied, seeds and dirty decisions identical: True
+rebuild tail k=8: 3393 pieces, 110 frames; former tail worst 7.73 ms mean 4.78 ms 7430 KB/frame; new tail worst 10.27 ms (no GC 10.27) mean 1.14 ms 94 KB/frame; first frame (memos fill) 4.40 ms
+tail scale: pass 1 over the time bound (10.27 ms vs former 7.73 ms), retrying
+rebuild tail k=8: 3393 pieces, 111 frames; former tail worst 8.67 ms mean 4.65 ms 7433 KB/frame; new tail worst 2.37 ms (no GC 2.02) mean 1.04 ms 94 KB/frame; first frame (memos fill) 3.74 ms
+snapshot-pool: bytes per snapshot copy, 325 map: clone 952352, pooled 0
+astar heap PASS H1 12000 searches identical to the SortedSet reference (3847 walk routes, 344 cut by a cap; diverged 0); time new 742 ms, reference 1193 ms
+astar heap PASS H2 routes unchanged across the stamp wrap and map-size changes (scratch field found)
+astar heap PASS H3 40 warmed searches on a 120x120 rock field allocate 0 bytes (bar 0; walk routed True, 172 cells; dive 172 cells)
+MEASURE A10 2,500-cell field: first build 57 ms (1 pieces), unchanged rebuild 0 ms (1 pieces)
+  D8 lamp through a wall: way round 24.9 cells, now 3.0 with 1 dive; door beside 4.2 with 0 dive
+MEASURE A3 8x8 conduit ring, no device: 0 terminal nodes, 0 fray decals
+MEASURE A2 20x20 pile: 14 junction boxes, 0 idle, 0 loose ends
+MEASURE A6 block-kind swap incremental==fresh: True; A7 home moved incremental==fresh: True
+fuzz (approach B): scale 1
+  fuzz cords      120 cases      3057 steps   55.22 s   digest e68f4292ed682e49, closest strand to its limit: over by -3.21
+  fuzz aerial    5000 cases    165292 steps    0.33 s
+fuzz total: 5120 cases, 168349 steps, 55.55 s
+4510/4510 checks passed
+rc 0

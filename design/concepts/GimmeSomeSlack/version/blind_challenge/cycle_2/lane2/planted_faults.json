@@ -1,0 +1,534 @@
+[
+ {
+  "id": "NH_PLANT_HOSE_DEF",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/ThingDefs_Buildings/RM_PlantedHoseReel.xml",
+  "old": null,
+  "new": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n  <ThingDef ParentName=\"BuildingBase\">\n    <defName>RM_HoseReel</defName>\n    <label>hose reel</label>\n  </ThingDef>\n</Defs>\n",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ],
+  "why": "a hose def ships"
+ },
+ {
+  "id": "NH_PLANT_REEL_TEXTURE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Reel/Spool_south.png",
+  "old": null,
+  "new": "PNG",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ],
+  "why": "a reel texture in its own folder ships"
+ },
+ {
+  "id": "NH_PLANT_HOSE_CLASS",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/PlantedHoseSegment.cs",
+  "old": null,
+  "new": "namespace RimMandrake.GimmeSomeSlack.Core { public class HoseSegment { } }\n",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ],
+  "why": "a C# hose class compiles in"
+ },
+ {
+  "id": "NH_PLANT_PIPE_DEF",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/ThingDefs_Buildings/RM_PlantedPipe.xml",
+  "old": null,
+  "new": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n  <ThingDef ParentName=\"BuildingBase\">\n    <defName>RM_WaterPipe</defName>\n    <label>water pipe</label>\n  </ThingDef>\n</Defs>\n",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose",
+   "lane1"
+  ],
+  "why": "a pipe def ships (the bar's words: no pipe)"
+ },
+ {
+  "id": "NH_TEST_CLASS_ATTR_BLIND",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "if cls and WORD.search(cls):",
+  "new": "if cls and False:",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose"
+  ],
+  "why": "the scan stops reading Class attributes; its own planted comp must go red"
+ },
+ {
+  "id": "NH_TEST_TEX_FOLDER_BLIND",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "if f.is_file() and WORD.search(str(f.relative_to(tex))):",
+  "new": "if f.is_file() and WORD.search(f.name):",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "nohose"
+  ],
+  "why": "the scan reads file names only; its own Hose/ folder plant must go red"
+ },
+ {
+  "id": "FW_KIND_SWAPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "LineKind kind = dropped != null && dropped.Contains(kv.Key) ? LineKind.DroppedCord : LineKind.DownedSpan;",
+  "new": "LineKind kind = dropped != null && dropped.Contains(kv.Key) ? LineKind.DownedSpan : LineKind.DroppedCord;",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "binding",
+   "dropcord",
+   "val",
+   "settings"
+  ],
+  "why": "dropped cords and our spans swap kinds"
+ },
+ {
+  "id": "FW_STALE_SPAN_BITES",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (kind == LineKind.DownedSpan && !AerialSettings.enabled) continue;",
+  "new": "if (kind == LineKind.DownedSpan && !AerialSettings.enabled) { }",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "binding",
+   "dropcord",
+   "val",
+   "settings"
+  ],
+  "why": "behaviour: a stale span contact bites with the master off; the guard's text is kept"
+ },
+ {
+  "id": "FW_OWN_SPANS_UNGATED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (AerialSettings.enabled)\n            foreach (CompAerialAnchor a in aerial.Anchors)",
+  "new": "if (true)\n            foreach (CompAerialAnchor a in aerial.Anchors)",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "binding",
+   "dropcord",
+   "val",
+   "settings"
+  ],
+  "why": "our own spans listed as contacts with the master off"
+ },
+ {
+  "id": "FW_EARLY_RETURN_BACK",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (contacts.Count == 0 || AerialSettings.shockReach == ShockReach.None) return;",
+  "new": "if (contacts.Count == 0 || !AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None) return;",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "binding",
+   "dropcord",
+   "val",
+   "settings"
+  ],
+  "why": "the cycle-1 bug put back"
+ },
+ {
+  "id": "RESET_TAP_LEDGER_DROPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+  "old": "            Aerial.TapRegistry.Clear();                         // C14: the tap ledger held the old game's transmitters\n",
+  "new": "",
+  "bars": [
+   "statics_clear_between_games",
+   "game_statics_reset"
+  ],
+  "suites": [
+   "statics"
+  ],
+  "why": "the tap ledger outlives a game"
+ },
+ {
+  "id": "RESET_STEPTRACE_DROPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+  "old": "            Core.CordBuilder.StepTrace = null;",
+  "new": "            // planted",
+  "bars": [
+   "statics_clear_between_games",
+   "game_statics_reset"
+  ],
+  "suites": [
+   "statics"
+  ],
+  "why": "this cycle's own fix undone"
+ },
+ {
+  "id": "PIPE_SWITCH_DEFAULT_OFF",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
+  "old": "if (pipeOn == null) return true;",
+  "new": "if (pipeOn == null) return false;",
+  "bars": [
+   "pipe_pole_switch",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "core_perdig",
+   "settings",
+   "val"
+  ],
+  "why": "pipe poles off when FlowWorks registers no switch"
+ },
+ {
+  "id": "PIPE_KIND_FOLLOWS_POWER",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "public static bool KindOn(AerialLineKind k, bool powerOn, bool pipeOn) => CarriesPower(k) ? powerOn : pipeOn;",
+  "new": "public static bool KindOn(AerialLineKind k, bool powerOn, bool pipeOn) => CarriesPower(k) ? powerOn : powerOn;",
+  "bars": [
+   "pipe_pole_switch",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "lane1",
+   "settings",
+   "binding"
+  ],
+  "why": "pipe poles hostage to the power master again"
+ },
+ {
+  "id": "AM_PIPE_TWO_STRANDS",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "k == AerialLineKind.Pipe ? 1 : maxStrands;",
+  "new": "k == AerialLineKind.Pipe ? 2 : maxStrands;",
+  "bars": [
+   "pipe_pole_switch",
+   "overhead_spans"
+  ],
+  "suites": [
+   "lane1",
+   "binding"
+  ],
+  "why": "a pipe span draws two strands"
+ },
+ {
+  "id": "AM_RESTRING_SPEED_FLOOR",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "RestringBaseTicks / Math.Max(0.1, constructionSpeed)",
+  "new": "RestringBaseTicks / Math.Max(1.0, constructionSpeed)",
+  "bars": [
+   "restring_cut_span",
+   "restring_job"
+  ],
+  "suites": [
+   "lane1",
+   "binding"
+  ],
+  "why": "a slow builder re-strings as fast as a normal one"
+ },
+ {
+  "id": "CB_TWINS_UNSEEN",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "if (d < TwinApart) m = Math.Min(m, d);",
+  "new": "if (d < 0) m = Math.Min(m, d);",
+  "bars": [
+   "cords_never_repeat",
+   "cord_shape_variation_probe"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "the twin detector is blind"
+ },
+ {
+  "id": "CB_TAUT_FAULT_HALVED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "if (ch >= 2 && Geo.Length(s.Pts) < CordSlacken.Bar * ch) f++;",
+  "new": "if (ch >= 2 && Geo.Length(s.Pts) < CordSlacken.Bar * ch * 0.5) f++;",
+  "bars": [
+   "cords_lie_slack",
+   "cord_slack_lay"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "a strand under the slack bar is no longer a fault"
+ },
+ {
+  "id": "CB_BEND_ALLOWANCE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, R) > bad) { No(\"bend\"); continue; }",
+  "new": "if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, R) > bad + 4) { No(\"bend\"); continue; }",
+  "bars": [
+   "no_unforced_sharp_turn"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "re-lays accept four more unforced bends"
+ },
+ {
+  "id": "CS_LOOP_THROUGH_WALLS",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+  "old": "foreach (V2 q in loop) if (!Open(w, q) || (clear != null && !clear(q))) { ok = false; break; }",
+  "new": "foreach (V2 q in loop) if (false) { ok = false; break; }",
+  "bars": [
+   "cords_draw_under_things",
+   "drawing_true_to_grid"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "a varied loop may cross walls and things"
+ },
+ {
+  "id": "CS_FLAT_LONG_EDGE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+  "old": "if (longEdge && Stray(Q) < MinExcursion)",
+  "new": "if (longEdge && Stray(Q) < MinExcursion * 0.1)",
+  "bars": [
+   "cords_lie_slack",
+   "cord_slack_lay"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "a long edge may lie flat on its chord"
+ },
+ {
+  "id": "CS_VARY_BENDS_FREE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+  "old": "CordShapeAudit.Unforced(w, endA, endB, Q) > uOld ||",
+  "new": "CordShapeAudit.Unforced(w, endA, endB, Q) > uOld + 3 ||",
+  "bars": [
+   "no_unforced_sharp_turn"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "a varied lead may add unforced bends"
+ },
+ {
+  "id": "CGC_RATIO_BAR_LOWERED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
+  "old": "public const double MinRatio = 1.4,",
+  "new": "public const double MinRatio = 1.0,",
+  "bars": [
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "the 1.4x bar becomes 1.0x; the planted taut builder control should go red"
+ },
+ {
+  "id": "CGC_PLANT_CONTROL_SKIPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
+  "old": "Check(plantedScenes > 0 && plantedCaught == plantedScenes,",
+  "new": "Check(true || plantedScenes > 0 && plantedCaught == plantedScenes,",
+  "bars": [
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "core_geom"
+  ],
+  "why": "the negative control no longer asserts (pure weakening)"
+ },
+ {
+  "id": "PROG_GEOMETRY_SKIPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
+  "old": "if (args.Contains(\"--geometry\")) CordGeometryChecks.Run(scenes);",
+  "new": "if (false) CordGeometryChecks.Run(scenes);",
+  "bars": [
+   "cords_lie_slack",
+   "no_unforced_sharp_turn"
+  ],
+  "suites": [
+   "core_full_geom"
+  ],
+  "why": "T_CORD_GEOMETRY_OFFLINE's checks silently not run"
+ },
+ {
+  "id": "PROG_FUZZ_SKIPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
+  "old": "            GssFuzz.Run(args);             // approach B",
+  "new": "            // GssFuzz.Run(args);             // approach B",
+  "bars": [
+   "connectivity_truth",
+   "drawing_true_to_grid"
+  ],
+  "suites": [
+   "core_full"
+  ],
+  "why": "the seeded fuzz silently not run"
+ },
+ {
+  "id": "SGC_CALLER_REDUCE_UNCHECKED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
+  "old": "Program.Check(callerReduce == 0,",
+  "new": "Program.Check(callerReduce >= 0,",
+  "bars": [
+   "no_stall_on_rewire"
+  ],
+  "suites": [
+   "core_perdig"
+  ],
+  "why": "pure weakening of a stall check"
+ },
+ {
+  "id": "SGC_HANDOFF_BUDGET_x100",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
+  "old": "internal const long HandoffBytes = 4096,",
+  "new": "internal const long HandoffBytes = 409600,",
+  "bars": [
+   "no_stall_on_rewire",
+   "rebuild_cost"
+  ],
+  "suites": [
+   "core_perdig"
+  ],
+  "why": "pure weakening of an allocation budget"
+ },
+ {
+  "id": "WRAP_GEOMETRY_NOT_FORWARDED",
+  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "old": "([\"--geometry\"] if \"--geometry\" in argv else [])",
+  "new": "[]",
+  "bars": [
+   "cords_lie_slack",
+   "no_unforced_sharp_turn"
+  ],
+  "suites": [
+   "core_full_geom"
+  ],
+  "why": "the wrapper drops --geometry: T_CORD_GEOMETRY_OFFLINE would pass without geometry"
+ },
+ {
+  "id": "WRAP_RC_SWALLOWED",
+  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "old": "        if r.returncode:\n            return r.returncode",
+  "new": "        if False:\n            return r.returncode",
+  "bars": [
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "core_full"
+  ],
+  "why": "an export or build failure no longer stops the run"
+ },
+ {
+  "id": "VAL_C2_SHAPE_BLIND",
+  "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+  "old": "\"Aerial/RM_FallenWireShock.cs\", \"kind == LineKind.DownedSpan && !AerialSettings.enabled\"),",
+  "new": "\"Aerial/RM_FallenWireShock.cs\", \"AerialSettings\"),",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "val"
+  ],
+  "why": "pure weakening of a source-shape check"
+ },
+ {
+  "id": "VAL_SCENE_OWN_ROWS_EMPTY",
+  "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+  "old": "SCENE_OWN_ROWS = {\"sc_cords_under_items\": \"UNDER_ROWS\"}",
+  "new": "SCENE_OWN_ROWS = {}",
+  "bars": [
+   "cords_draw_under_things"
+  ],
+  "suites": [
+   "under",
+   "val"
+  ],
+  "why": "sc_cords_under_items decided by every row of its leaf again"
+ },
+ {
+  "id": "CU_ONE_ENTRY_UNCHECKED",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
+  "old": "check(len(mine) == 1, \"scenes.json holds sc_cords_under_items once",
+  "new": "check(len(mine) >= 0, \"scenes.json holds sc_cords_under_items once",
+  "bars": [
+   "cords_draw_under_things"
+  ],
+  "suites": [
+   "under"
+  ],
+  "why": "pure weakening"
+ },
+ {
+  "id": "CU_CONTRACT_SKIPPED",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
+  "old": "errs = designer_stage.scene_errors(scn, concept_tree.load(concept), repo)",
+  "new": "errs = []",
+  "bars": [
+   "cords_draw_under_things"
+  ],
+  "suites": [
+   "under"
+  ],
+  "why": "pure weakening"
+ },
+ {
+  "id": "DC_C4_ALWAYS_TRUE",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+  "old": "\"C4_checkpawns_skips_stale_span\": (bool(re.search(",
+  "new": "\"C4_checkpawns_skips_stale_span\": (True or bool(re.search(",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "dropcord"
+  ],
+  "why": "pure weakening of C4"
+ },
+ {
+  "id": "DC_EARLY_REGEX_BLIND",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+  "old": "EARLY = re.compile(r\"if\\s*\\([^;{]*!\\s*AerialSettings\\.enabled[^;{]*\\)\\s*return\\s*;\")",
+  "new": "EARLY = re.compile(r\"PLANTED_NEVER_MATCHES\")",
+  "bars": [
+   "floor_end_shock",
+   "shock_reach_setting",
+   "fallen_wire_shock",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "dropcord"
+  ],
+  "why": "C1/C3 blind; its own mutants must go red"
+ }
+]

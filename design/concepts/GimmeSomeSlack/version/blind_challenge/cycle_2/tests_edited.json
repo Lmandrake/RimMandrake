@@ -1,0 +1,41 @@
+{
+ "cycle": 2,
+ "edited": [
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
+   "why": "added the RESET row Core/CordBuilder.cs::StepTrace -> 'Core.CordBuilder.StepTrace = null;' (strengthens: the census now pins that reset); no row removed",
+   "before": {
+    "sha": "6a0e5b7a13851255a853a2b346fda259cf8473d3",
+    "sha256_16": "c4e8a4b0679d7da2"
+   },
+   "after": {
+    "sha": "164931fd9490e8d16ff61d9d604a6d08d2175bb5",
+    "sha256_16": "41508963d39f50f6"
+   }
+  },
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
+   "why": "GraphWorker (2): the loop guard builds < 60 -> < 600 with the 120 s time bound kept; the assertion (fault recorded, Builds end bit-identical to one unbudgeted Build) unchanged; the message names pending and running",
+   "before": {
+    "sha": "6a0e5b7a13851255a853a2b346fda259cf8473d3",
+    "sha256_16": "f7313bceb8c916f4"
+   },
+   "after": {
+    "sha": "164931fd9490e8d16ff61d9d604a6d08d2175bb5",
+    "sha256_16": "1747a920628bd945"
+   }
+  },
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+   "why": "WORD hose|reel -> hose|reel|pipe, TYPE adds Pipe, new mutant M7_planted_pipe_def (strengthens)",
+   "before": {
+    "sha": "851090817422c8e875a85962f1a83f781c3f842b",
+    "sha256_16": "86224fd0c1b05460"
+   },
+   "after": {
+    "sha": "349f9aa86b450efd0fbc5f77bab84d126ed2a07d",
+    "sha256_16": "e1d9f66d563b1707"
+   }
+  }
+ ]
+}

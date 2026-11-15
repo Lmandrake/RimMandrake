@@ -1,0 +1,5 @@
+CAUGHT  pipe_def  want=RM_WaterPipe got=['defName: RM_WaterPipe (Defs/RM_PlantedPipe.xml)']
+CAUGHT  pipe_texture  want=RM_WaterPipe_south got=['texture: Textures/Things/RM_WaterPipe_south.png']
+CAUGHT  pipe_class  want=Building_WaterPipe got=['type: Building_WaterPipe (Source/PlantedPipe.cs)']
+scan at 349f9aa86b: 3 of 3 pipe plants caught
+rc 0

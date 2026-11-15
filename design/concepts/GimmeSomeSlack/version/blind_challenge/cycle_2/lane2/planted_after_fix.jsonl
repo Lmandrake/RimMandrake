@@ -1,0 +1,2 @@
+{"id": "NH_PLANT_PIPE_DEF", "file": "src/RimMandrake/GimmeSomeSlack/Defs/ThingDefs_Buildings/RM_PlantedPipe.xml", "bars": ["no_hose", "no_hose_in_gss"], "applied": true, "suites": {"nohose": {"rc": 2, "new_fails": ["FAIL  T1_tree_ships_no_hose  ['defName: RM_WaterPipe (Defs/ThingDefs_Buildings/RM_PlantedPipe.xml)']"]}, "lane1": {"rc": 1, "new_fails": []}}, "caught": true, "caught_by": ["nohose"], "rc_only": [], "seconds": 7.3}
+{"id": "tree_clean_after", "tree_clean_after": true, "git_diff_quiet": true, "untracked": ""}

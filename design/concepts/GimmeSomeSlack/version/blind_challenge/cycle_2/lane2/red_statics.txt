@@ -1,0 +1,5 @@
+statics: 363 in 63 files: DANGER 1, LISTED 22, RESET 10, table 117, value 213
+FAIL Core/CordBuilder.cs::StepTrace (Action<string, string, string, List<V2>>): can hold a game's objects; neither reset in GssSessionReset.cs nor listed with a reason
+planted: a new unreset static List<Thing> refused; the tap-registry reset removed refused
+FAIL
+rc 1

@@ -1,0 +1,5 @@
+MISSED  pipe_def  want=RM_WaterPipe got=[]
+MISSED  pipe_texture  want=RM_WaterPipe_south got=[]
+MISSED  pipe_class  want=Building_WaterPipe got=[]
+scan at 8510908174: 0 of 3 pipe plants caught
+rc 1
