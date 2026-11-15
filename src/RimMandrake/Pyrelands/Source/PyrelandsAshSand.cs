@@ -329,6 +329,28 @@ namespace RimMandrake.Pyrelands
             return n;
         }
 
+        /// <summary>Bar pyre_ruins_scorched (jawa/static_call): the built floors on the CURRENT map over <paramref name="rect"/>
+        /// ("x,z,w,h" or "all") and how many carry the charred paint, "cells=N;floors=N;charred=N". A floor here is what the ruin
+        /// genstep's CharFloor keeps (IsFloor, not a road, not water); no bridge tool reads a terrain colour.</summary>
+        public static string ProbeCharred(string rect)
+        {
+            Map m = Find.CurrentMap;
+            if (m == null) return "error=no map";
+            if (!TryRect(m, rect, out CellRect r)) return "error=bad rect '" + rect + "' (want x,z,w,h or all)";
+            ColorDef charredDef = DefDatabase<ColorDef>.GetNamedSilentFail("RM_FE_Charred");
+            if (charredDef == null) return "error=no ColorDef RM_FE_Charred";
+            int cells = 0, floors = 0, charred = 0;
+            foreach (IntVec3 c in r)
+            {
+                cells++;
+                TerrainDef t = m.terrainGrid.TerrainAt(c);
+                if (t == null || !t.IsFloor || t.IsRoad || t.IsWater) continue;
+                floors++;
+                if (m.terrainGrid.ColorAt(c) == charredDef) charred++;
+            }
+            return "cells=" + cells + ";floors=" + floors + ";charred=" + charred;
+        }
+
         private static bool TryRect(Map m, string rect, out CellRect r)
         {
             r = CellRect.Empty;

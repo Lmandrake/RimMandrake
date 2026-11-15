@@ -1593,6 +1593,65 @@ def test_offline_acceptance_2026_11_12():
           not got["paved_strip_excised"][0] and got["biome_text_says_engineered"][0], got["paved_strip_excised"])
 
 
+def test_ruins_count_charred_floors_2026_11_15(v=None):
+    """RIMMANDRAKE_COUNT_RUIN_CHARRED_FLOORS_AS_SCORCHED_BY_DESIGN: visit 1 read ruins_scorched at 83% twice (75 deep ash, 6
+    AncientConcrete, 9 TileLimestone) because the genstep keeps a ruin's floor and paints it RM_FE_Charred (CharFloor) and the
+    check counted only deep ash. A charred floor is scorched; an unpainted one (CharFloor off) is not."""
+    v = v or _load_validation("pyre_validation_ruins")
+    share = v.ruin_scorched_share
+    visit = {"RM_FE_Ash_Deep": 75, "AncientConcrete": 6, "TileLimestone": 9}
+    check("ruins: visit 1's samples with every floor charred read scorched",
+          share(visit, 15) >= v.RUIN_ASH_MIN, share(visit, 15))
+    check("ruins: the same samples with CharFloor disabled (0 charred) fail the bar",
+          share(visit, 0) < v.RUIN_ASH_MIN, share(visit, 0))
+    check("ruins: a third of the floors charred still fails", share(visit, 3) < v.RUIN_ASH_MIN, share(visit, 3))
+    check("ruins: no cells -> None, never a pass", share({}, 0) is None)
+    check("ruins: water counts, a clean floor does not",
+          share({"RM_FE_Ash_Deep": 80, "WaterShallow": 10, "TileLimestone": 10}, 0) == 0.9)
+    check("ruins: an over-count never reads above 1", share({"RM_FE_Ash_Deep": 9}, 5) == 1.0)
+
+    class _T(object):
+        upstream_failed = False
+
+        def __init__(self, reply):
+            self.session, self.reply, self.rec, self.calls = object(), reply, [], []
+
+        def bridge_call(self, tool, **p):
+            self.calls.append((tool, p))
+            return self.reply
+
+        def _record(self, *a):
+            self.rec.append(a)
+
+    t = _T({"success": True, "result": "cells=9;floors=4;charred=3"})
+    got = v._charred(t, "10,10,3,3")
+    check("ruins: ProbeCharred parsed", got == {"cells": 9, "floors": 4, "charred": 3}, got)
+    check("ruins: ProbeCharred called on PyrelandsAsh with the rect",
+          t.calls == [("jawa/static_call", {"type": v.ASH_SAND, "method": "ProbeCharred", "args": "10,10,3,3"})], t.calls)
+    for bad in ({"success": True, "result": "error=no ColorDef RM_FE_Charred"}, {"success": True, "result": ""}):
+        t = _T(bad)
+        try:
+            v._charred(t, "1,1,3,3")
+            check("ruins: unreadable ProbeCharred %r is UNMEASURED" % bad, False, "returned")
+        except Exception as ex:
+            check("ruins: unreadable ProbeCharred %r is UNMEASURED" % bad,
+                  type(ex).__name__ == "_Unmeasured" and t.rec and t.rec[0][0] == "UNMEASURED", repr(ex))
+    t = _T(None)
+    t.session = None
+    check("ruins: offline ProbeCharred is {}", v._charred(t, "1,1,3,3") == {})
+
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    body = src[src.index("def ruins(t):"):src.index('@suite.chain("burn_line")')]
+    check("ruins chain reads charred floors and scores with ruin_scorched_share",
+          "_charred(t, " in body and "ruin_scorched_share(got, charred)" in body)
+    cs = open(os.path.join(HERE, "Source", "PyrelandsAshSand.cs"), encoding="utf-8").read()
+    hook = open(os.path.join(HERE, "Source", "FireEcologyHook.cs"), encoding="utf-8").read()
+    check("PyrelandsAsh.ProbeCharred exists in C#", "public static string ProbeCharred(string rect)" in cs
+          and "class PyrelandsAsh" in cs and v.ASH_SAND.endswith(".PyrelandsAsh"))
+    check("ProbeCharred reads the ColorDef CharFloor paints", '"RM_FE_Charred"' in cs
+          and 'GetNamedSilentFail("RM_FE_Charred")' in hook)
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -1600,7 +1659,7 @@ def main():
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
               test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15,
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
-              test_offline_acceptance_2026_11_12):
+              test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15):
         try:
             t()
         except Exception as ex:

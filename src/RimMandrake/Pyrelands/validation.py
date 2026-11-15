@@ -138,7 +138,7 @@ DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land o
 WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.70)
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
-RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
+RUIN_ASH_MIN = 0.9    # the sweep lays deep ash or chars the floor on every non-water footprint+rim cell (3x3 sits inside)
 RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying ash in their 3x3
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
@@ -605,6 +605,33 @@ def _ops_counts(ops):
         h = p[3] if len(p) > 3 else 1
         out[d.strip()] = out.get(d.strip(), 0) + w * h
     return out
+
+
+def _charred(t, rect):
+    """PyrelandsAsh.ProbeCharred over `rect` ('x,z,w,h') -> {cells, floors, charred}: built floors and those carrying the
+    RM_FE_Charred paint (the ruin genstep's CharFloor). {} offline. Raises on an unreadable result."""
+    r = t.bridge_call("jawa/static_call", type=ASH_SAND, method="ProbeCharred", args=rect)
+    if not _live(t):
+        return {}
+    _ok(r, "ProbeCharred(%s)" % rect)
+    out = {}
+    for part in str(r.get("result") or "").split(";"):
+        k, _, v = part.partition("=")
+        if v.isdigit():
+            out[k] = int(v)
+    if "charred" not in out or not out.get("cells"):
+        _unmeasured(t, "ProbeCharred(%s) unreadable (is this Pyrelands DLL deployed?): %r" % (rect, r))
+    return out
+
+
+def ruin_scorched_share(terrain, charred):
+    """Share of ruin-sample cells that read scorched: deep ash, water (never ashed), or a floor the genstep kept and painted
+    RM_FE_Charred. `terrain` {def: cells} over the samples, `charred` the charred-floor cells among them. None on no cells."""
+    total = sum(terrain.values())
+    if total <= 0:
+        return None
+    ash = sum(v for k, v in terrain.items() if k == DEEP_ASH or "Water" in k)
+    return float(min(total, ash + charred)) / total
 
 
 def _terrain(t, rect):
@@ -1075,7 +1102,7 @@ def grass_cover(t):
 def ruins(t):
     """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
     the ruin's own floors' structures) -- and their footprint is read for what GenStep_ScorchPyrelandsRuins
-    lays (deep ash on the footprint and rim, ash on the ground over it). The earlier probe listed
+    lays (deep ash on the footprint and rim, a built floor kept and painted charred, ash on the ground over it). The earlier probe listed
     things named `RM_FE_ScorchRuins`, which is the GENSTEP def, never a Thing, so it read UNMEASURED on
     every site by construction (2026-10-11 pilot: the map carried 600+ cells of ruin floors)."""
     _pad(t, PAD_PROBE)
@@ -1101,15 +1128,21 @@ def ruins(t):
                 _unmeasured(t, "every ruin building sits on the map edge; no 3x3 footprint sample fits")
             _note(t, "ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls",
                   [(x.get("def"), x["x"], x["z"]) for x in picks])
-            got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
-            frac = sum(v for k, v in got.items() if k == DEEP_ASH or "Water" in k) / float(max(1, sum(got.values())))
-            filthy = sum(1 for x in picks if _ash(t, "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)).get("ashed", 0) > 0)
+            rects = ["%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks]
+            got = _terrain(t, ";".join(rects))
+            floors = [_charred(t, rc) for rc in rects]
+            charred = sum(f.get("charred", 0) for f in floors)
+            frac = ruin_scorched_share(got, charred) or 0.0
+            filthy = sum(1 for rc in rects if _ash(t, rc).get("ashed", 0) > 0)
             _note(t, "ruin footprint terrain + ash on the ground (3x3 at %d sampled ruin buildings)" % len(picks),
-                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithAsh": filthy})
-            # Deep ash is ~85% of the map, so terrain alone barely marks a ruin; the genstep lays deep ash on EVERY
-            # footprint cell (ruin floors included) and ash (sand depth 0.25) on ~70% of them, which is the visible scorch.
+                  {"terrain": got, "floors": sum(f.get("floors", 0) for f in floors), "charredFloors": charred,
+                   "scorchedFraction": round(frac, 3), "ruinsWithAsh": filthy})
+            # Deep ash is ~85% of the map, so terrain alone barely marks a ruin. The genstep lays deep ash on every footprint
+            # cell EXCEPT a built floor, which it keeps and paints RM_FE_Charred (CharFloor, since the 2026-11-08 merge: "the
+            # ruin floors look clean"); either one is the scorch. Ash (sand depth 0.25) lies on ~70% of the cells on top.
             if frac < RUIN_ASH_MIN:
-                _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
+                _fail("ruin footprints are %.0f%% deep ash or charred floor, want >= %.0f%%: %r, %d charred floor cells"
+                      % (100 * frac, 100 * RUIN_ASH_MIN, got, charred))
             # The site builder now sets the season BEFORE the map is generated (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST),
             # so loose ash (6~9 day lifetime, absolute growTick) is minutes old here and 2-of-10 is a genstep finding.
             # A fixture built before that change still carries the old 6-10 day gap: rebuild it, do not excuse it.
