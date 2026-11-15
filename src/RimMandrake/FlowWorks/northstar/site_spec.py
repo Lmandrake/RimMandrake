@@ -90,6 +90,7 @@ SETTINGS = {
         "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "pitDrowningHeadFraction": 0.9, "pitDrowningLyingFraction": 0.2, "poisonFillEnabled": True,   # P7 V2;   # PIT_FILL_EFFECTS_1
         "slimeSlipEnabled": True, "slimeSlipChanceMultiplier": 1.0, "slimeSlipStunSeconds": 2.0,
         "slimeClimbOutSlipFactor": 2.0,    # SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (PROVISIONAL)
+        "liquidCoatEnabled": True, "liquidCoatFadeDays": 3.0,   # bar inv_liquid_coating
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
         "waterBodyTypeFlipFixEnabled": True,   # FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: vanilla water-body count fix on type change
         "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load

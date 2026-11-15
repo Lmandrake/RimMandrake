@@ -111,7 +111,32 @@ def coating(cs, xml):
         ("a named condition for a staining coat", re.search(r"<HediffDef[\s\S]{0,300}?<defName>RM_\w*Coat\w*</defName>", xml)),
         ("leaving oil, tar, blood or another staining liquid applies it", _any(cs, r"Coat\w*[\s\S]{0,800}?(Oil|Tar|Blood|stain)")),
         ("normal water washes it off", _any(cs, r"(Wash|Rinse)\w*[\s\S]{0,600}?(RM_Liquid_FreshWater|Fresh|Water)[\s\S]{0,300}?Coat")),
+        # RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING: the three laws above match loose text; these pin the
+        # behaviour in RM_LiquidCoating.cs (each has an undo mutant in COAT_MUTANTS)
+        ("the map ticks the coating", _any(cs, r"RM_LiquidCoating\.Tick\(map, this\);")),
+        ("stepping out of a coating liquid adds the coat",
+         _any(cs, r"if \(f != null && f\.coats\)[\s\S]{0,200}?wading\.Remove\(id\);\s*Coat\(p, left\);")
+         and _any(cs, r"public static void Coat\([\s\S]{0,700}?p\.health\.AddHediff\(h\);")),
+        ("wading a washing liquid removes the coat",
+         _any(cs, r"if \(f != null && f\.washesCoat\)\s*\{\s*Wash\(p, f\);")
+         and _any(cs, r"public static bool Wash\([\s\S]{0,400}?p\.health\.RemoveHediff\(h\);")),
+        ("oil, tar and blood coat; water washes",
+         all(re.search(r"<defName>%s</defName>[\s\S]{0,200}?<%s>true</%s>" % (d, f, f), xml)
+             for d, f in (("RM_Fluid_Oil", "coats"), ("RM_Fluid_Tar", "coats"), ("RM_Fluid_Blood", "coats"),
+                          ("RM_Fluid_Water", "washesCoat")))),
+        ("the coat is named for its liquid", _any(cs, r"class Hediff_LiquidCoat[\s\S]{0,300}?LabelBase => \"coated in \" \+")),
     ]
+
+
+COAT_FILE = SRC / "RM_LiquidCoating.cs"
+COAT_MUTANTS = {
+    "never ticked": (SRC / "RM_MapComponent_Excavation.cs", "RM_LiquidCoating.Tick(map, this);", ""),
+    "leaving forgets the coat": (COAT_FILE, "Coat(p, left);", ""),
+    "coat never added": (COAT_FILE, "p.health.AddHediff(h);", ""),
+    "water never washes": (COAT_FILE, "Wash(p, f);", ""),
+    "wash keeps the coat": (COAT_FILE, "p.health.RemoveHediff(h);", ""),
+    "nameless coat": (COAT_FILE, 'LabelBase => "coated in " +', 'LabelBase => "x" +'),
+}
 
 
 SECTIONS = {"prison_care": prison_care, "wetting": wetting, "wetness_probe": wetness_probe, "toss_flame": toss_flame,
@@ -154,6 +179,18 @@ def main():
                 if not [w for w, ok in prison_care({**cs, p: raw.replace(old, new)}, xml) if not ok]:
                     faults.append("prison_care mutant %r stayed green (blind law)" % m)
             print("  %d undo mutants checked" % len(PRISON_MUTANTS))
+        if name == "coating" and not [f for f in faults if f.startswith("coating:")]:
+            for m, (p, old, new) in COAT_MUTANTS.items():
+                if old not in cs[p]:
+                    faults.append("coating mutant %r: its text is not in the source (the law moved)" % m)
+                    continue
+                if not [w for w, ok in coating({**cs, p: cs[p].replace(old, new)}, xml) if not ok]:
+                    faults.append("coating mutant %r stayed green (blind law)" % m)
+            for d, f in (("RM_Fluid_Water", "washesCoat"), ("RM_Fluid_Oil", "coats")):
+                bad = re.sub(r"(<defName>%s</defName>[\s\S]{0,200}?)<%s>true</%s>" % (d, f, f), r"\1", xml, count=1)
+                if bad == xml or not [w for w, ok in coating(cs, bad) if not ok]:
+                    faults.append("coating mutant %s loses %s stayed green (blind law)" % (d, f))
+            print("  %d undo mutants checked" % (len(COAT_MUTANTS) + 2))
     print(("RED %d: " % len(faults) + "; ".join(faults)) if faults else "PASS")
     return 1 if faults else 0
 

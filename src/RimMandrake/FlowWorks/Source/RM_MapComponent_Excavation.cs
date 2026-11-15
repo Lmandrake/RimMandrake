@@ -2823,6 +2823,8 @@ namespace RimMandrake.FlowWorks
 			liquidHeat.Tick(map, this);
 			// SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: natural slime slips too, so this runs even with nothing dug (own timer and switch)
 			RM_SlimeSlip.Tick(map, this);
+			// bar inv_liquid_coating: a pawn out of oil, tar, blood or slime carries a coat that water washes off (own timer and switch)
+			RM_LiquidCoating.Tick(map, this);
 			// GPT deep review 2026-10-22 #5: spilled water on undug ground drowns too, so a map whose last pit was filled in
 			// still runs it while any sheet is wet (the interval test first: GetComponent is not free every tick)
 			if (excavatedCells.Count > 0

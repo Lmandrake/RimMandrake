@@ -1667,6 +1667,22 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (2026-10-13): its live rows are the climb proof owed on
                         # the item (design §8.6), not yet a toggle chain
                         "pitRelativeClimbEnabled",
+                        # RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING (2026-11-15): its live rows are
+                        # concept_scenes.scene_coating_wash (COAT_*), not yet a toggle chain
+                        "liquidCoatEnabled",
+                        # RIMMANDRAKE_LIST_FLOWWORKS_SEVENTEEN_SWITCHES_NO_FLOOR_KNEW (2026-11-15): on the registry, on neither list.
+                        # The geyser pit (RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB): offline selftest_flowworks_geyser_tub.py,
+                        # live concept_scenes.scene_geyser_tub, not yet a toggle chain
+                        "geyserBathBloodEnabled", "geyserBathFilthEnabled", "geyserBathMoodCostEnabled", "geyserBathOilEnabled",
+                        "geyserBathSlimeEnabled", "geyserBathSlipEnabled", "geyserBathTarEnabled", "geyserGeneratorOnSunkEnabled",
+                        "geyserPlumeEnabled", "geyserPoolAfterglowEnabled", "geyserPoolEnabled", "geyserPoolHidesClothes",
+                        "geyserPoolMoodEnabled", "geyserSinksEnabled",
+                        # furniture never straddles a pit edge (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE, its own live proof)
+                        "pitEdgeStraddleRefusedEnabled",
+                        # RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR: offline selftest_flowworks_pit_floor_ground.py
+                        "pitFloorCarriesGroundEnabled",
+                        # RM_SubmergeDraw: a draw-only switch (a picture, never the flow)
+                        "pitSubmergeCutEnabled",
                         # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (2026-10-25): its live rows are the SH_* targeted run owed on
                         # the item, not yet a toggle chain
                         "shovelRequired",

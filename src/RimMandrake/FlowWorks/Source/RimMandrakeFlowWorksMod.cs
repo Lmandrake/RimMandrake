@@ -313,6 +313,9 @@ namespace RimMandrake.FlowWorks
         public static float slimeSlipChanceMultiplier = 1f;
         public static float slimeSlipStunSeconds = 2f;
         public static float slimeClimbOutSlipFactor = 2f;
+        // bar inv_liquid_coating (RM_LiquidCoating): leaving oil, tar, blood or slime coats a pawn; water washes it; it fades.
+        public static bool liquidCoatEnabled = true;
+        public static float liquidCoatFadeDays = 3f;
         public static float pitTemperatureCoupling = 3f;
         public static float pitResistanceLossMultiplier = 1f;
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes at the foot of a sheer drop (spikeMinDropMetres below, any depth) stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
@@ -663,6 +666,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref slimeSlipChanceMultiplier, "slimeSlipChanceMultiplier", 1f);
             Scribe_Values.Look(ref slimeSlipStunSeconds, "slimeSlipStunSeconds", 2f);
             Scribe_Values.Look(ref slimeClimbOutSlipFactor, "slimeClimbOutSlipFactor", 2f);
+            Scribe_Values.Look(ref liquidCoatEnabled, "liquidCoatEnabled", true);
+            Scribe_Values.Look(ref liquidCoatFadeDays, "liquidCoatFadeDays", 3f);
             Scribe_Values.Look(ref pitTemperatureCoupling, "pitTemperatureCoupling", 3f);
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
@@ -787,6 +792,7 @@ namespace RimMandrake.FlowWorks
             .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
             .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningLyingFraction")
             .Declare("slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor")
+            .Declare("liquidCoatEnabled", "liquidCoatFadeDays")
             .Declare("pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier")
             .Declare("fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled")
             .Declare("fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres")
@@ -823,6 +829,7 @@ namespace RimMandrake.FlowWorks
             .Name("chemfuelInfernoEnabled", "Chemfuel and propane burn like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
+            .Name("liquidCoatEnabled", "Oil, tar, blood and slime coat whoever wades out of them")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
             .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("fallDeathEnabled", "A deep fall can kill").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in").Name("pitGuardrailEnabled", "Guardrails and fences stop falls off a lip")
             .Name("pitDepthDrawOffsetEnabled", "Pawns sink into dug channels and rise out of them")
@@ -1692,7 +1699,7 @@ namespace RimMandrake.FlowWorks
               + "walking at it: a colonist lifts and lowers it from beside it.)");
             }
 
-            if (Section(list, "Drowning, poison, slime and exposure", new[] { "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier" }))
+            if (Section(list, "Drowning, poison, slime and exposure", new[] { "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "liquidCoatEnabled", "liquidCoatFadeDays", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier" }))
             {
             list.CheckboxLabeled("Water over the head drowns whoever cannot swim", ref pitDrowningEnabled,
                 "Water over a creature's head drowns it (about an hour), in a pit or a lake alike: a puddle in a deep pit drowns "
@@ -1735,6 +1742,15 @@ namespace RimMandrake.FlowWorks
                 slimeSlipStunSeconds = list.Slider(slimeSlipStunSeconds, 0.5f, 6f);
                 list.Label("Slipping while climbing out: x" + slimeClimbOutSlipFactor.ToString("F1") + " as often");
                 slimeClimbOutSlipFactor = list.Slider(slimeClimbOutSlipFactor, 1f, 4f);
+            }
+            list.CheckboxLabeled("Oil, tar, blood and slime coat whoever wades out of them", ref liquidCoatEnabled,
+                "Anyone who comes out of oil, tar, blood or slime carries it as a condition, \"coated in oil\", shown in their "
+              + "health and said over their head. Walking into water washes it off, and it wears off by itself after a few "
+              + "days. It changes nothing else about them. Off: nobody is coated.");
+            using (Dependent(list, "liquidCoatFadeDays"))
+            {
+                list.Label("A coat wears off by itself after " + liquidCoatFadeDays.ToString("F1") + " days");
+                liquidCoatFadeDays = Mathf.Round(list.Slider(liquidCoatFadeDays, 0.5f, 15f) * 2f) / 2f;
             }
             list.CheckboxLabeled("An open pit leaves whoever is in it exposed to the elements", ref pitExposureEnabled,
                 "Nobody in an open pit (no roof, no cover) can find shade, shelter or a windbreak: their comfortable "

@@ -750,10 +750,15 @@ def _coating_wash(S):
     col = S.pawn('Colonist', (O[0] - 1, O[1]), 'player')
     S.walk(col, oil[-1], 600); S.walk(col, (O[0] + 5, O[1] + 2), 400)
     h = S.call('jawa/list_pawns', faction='player', rect='%d,%d,1,1' % (O[0] + 5, O[1] + 2), includeHealth=True)
-    S.row('COAT_named_condition', 'Coated' in str(h) or 'coated' in str(h), str(h)[:200])
+    coated = 'Coated' in str(h) or 'coated' in str(h)
+    S.row('COAT_named_condition', coated, str(h)[:200])
     S.walk(col, water[-1], 600)
     h2 = S.call('jawa/list_pawns', faction='player', rect='%d,%d,1,1' % water[-1], includeHealth=True)
-    S.row('COAT_water_washes_it', 'oated' not in str(h2), str(h2)[:200])
+    # RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING (visit 1 passed this with no coat on the pawn): washing
+    # passes only a coat seen before the water, and only on a read that found the pawn
+    found = "'pawns': [{" in str(h2) or '"pawns": [{' in str(h2)
+    S.row('COAT_water_washes_it', coated and found and 'oated' not in str(h2),
+          ('no coat before the water: nothing to wash; ' if not coated else '') + str(h2)[:200])
 
 
 scene_fill_front = _run('scene_fill_front', _fill_front)

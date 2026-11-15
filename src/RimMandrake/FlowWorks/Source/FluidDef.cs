@@ -104,6 +104,15 @@ namespace RimMandrake.FlowWorks
 		/// RM_SlimeMath). 0 = never slips; the four slimes ship 1 (owner: "so slippery that it is nearly impossible to cross").</summary>
 		public float slipperiness;
 
+		/// <summary>RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING (bar inv_liquid_coating, owner card 2026-11-14:
+		/// "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition ... and walking
+		/// into normal water plainly washes it off"): a pawn leaving this liquid carries RM_LiquidCoat (RM_LiquidCoating).
+		/// Shipped: oil, tar, blood and the four slimes.</summary>
+		public bool coats;
+
+		/// <summary>The same bar: wading into this liquid washes RM_LiquidCoat off. Shipped: water and icy water.</summary>
+		public bool washesCoat;
+
 		/// <summary>LIQUID_HEAT_PUSH_1: this fluid warms (hot) or chills (cold) the room it stands in through vanilla heat
 		/// (RM_LiquidHeat). A FluidDef with neither flag still heats when its LiquidDef (the one naming it as canalFluid)
 		/// is hot or cold. Shipped: RM_Fluid_BoilingWater sets hot, RM_Fluid_IcyWater sets cold (FlowWorks_PitFluids.xml).</summary>

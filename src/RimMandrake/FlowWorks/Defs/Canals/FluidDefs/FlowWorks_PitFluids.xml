@@ -8,6 +8,8 @@
        Patches/LiquidTypes/RM_FluidSurfaceLooks.xml). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Oil</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Oil</bathGroup>
     <bathCost>
@@ -58,6 +60,8 @@
        Settings ("Liquids that can fill a cut"). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Blood</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Blood</bathGroup>
     <bathCost>
@@ -177,6 +181,8 @@
 
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_IcyWater</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <washesCoat>true</washesCoat>
     <label>icy water</label>
     <cold>true</cold>
     <floodTerrain>RM_Fill_IcyWater_Trace</floodTerrain>

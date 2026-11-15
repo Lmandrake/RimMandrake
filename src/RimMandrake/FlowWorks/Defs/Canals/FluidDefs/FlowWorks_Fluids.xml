@@ -15,6 +15,8 @@
        recoverable, per the owner's 2026-09-02 ruling. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Water</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <washesCoat>true</washesCoat>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Water</bathGroup>
     <label>water</label>
@@ -49,6 +51,8 @@
        OUR OWN defNames. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Tar</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Tar</bathGroup>
     <bathCost>
@@ -104,6 +108,8 @@
        rather than inventing a second mechanic. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeRed</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Slime</bathGroup>
     <bathCost>
@@ -127,6 +133,8 @@
 
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeGreen</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Slime</bathGroup>
     <bathCost>
@@ -150,6 +158,8 @@
 
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeWhite</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Slime</bathGroup>
     <bathCost>
@@ -181,6 +191,8 @@
        independent of hazard. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeYellow</defName>
+    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->
+    <coats>true</coats>
     <!-- RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB: bathes over a sunk geyser (owner by card 2026-11-12) -->
     <bathGroup>Slime</bathGroup>
     <bathCost>

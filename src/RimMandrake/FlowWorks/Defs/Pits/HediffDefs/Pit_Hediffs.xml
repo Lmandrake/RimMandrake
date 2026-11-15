@@ -111,4 +111,21 @@
     </stages>
   </HediffDef>
 
+  <!-- RM_LiquidCoat (bar inv_liquid_coating, owner card 2026-11-14): "A pawn who comes out of oil, tar, blood or another
+       staining liquid carries it as a named condition ... and walking into normal water plainly washes it off."
+       RM_LiquidCoating (Source/RM_LiquidCoating.cs) adds it on leaving a FluidDef that coats and removes it in one that
+       washesCoat; the label names the liquid ("coated in oil"). A condition only: no stage effects, no graphic (the look
+       waits on RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS). Fades after the Mod Setting liquidCoatFadeDays. -->
+  <HediffDef>
+    <defName>RM_LiquidCoat</defName>
+    <label>coated</label>
+    <description>Coated in a liquid they waded out of. Walking into water washes it off; otherwise it wears off in a few days.</description>
+    <hediffClass>RimMandrake.FlowWorks.Hediff_LiquidCoat</hediffClass>
+    <defaultLabelColor>(0.8, 0.7, 0.5)</defaultLabelColor>
+    <isBad>false</isBad>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <everCurableByItem>false</everCurableByItem>
+  </HediffDef>
+
 </Defs>
