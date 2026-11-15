@@ -28,6 +28,14 @@ os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 import known_reds as KR  # noqa: E402
 import nightly_catchup as NC  # noqa: E402
 import ops_watch as OW  # noqa: E402
+import testing_policy as TP  # noqa: E402
+
+# the cases are written for a 03:00 night and 3 attempts: they run on those two pinned, never on the owner's shipped
+# numbers; the timer-vs-policy agreement below reads the shipped hour (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+_param = TP.param
+_PINNED = {"selftest.nightly_full_hour_local": 3, "selftest.nightly_catchup_attempts": 3}
+TP.param = lambda name, policy=None, path=None: (_PINNED[name] if name in _PINNED and policy is None and path is None
+                                                 else _param(name, policy, path))
 
 FAILS = []
 
@@ -226,9 +234,8 @@ check("the catch-up timer installs into timers.target", ct.has_section("Install"
 check("the catch-up timer fires its own service", ct["Timer"].get("Unit", "rm-selftests-nightly-catchup.service") == "rm-selftests-nightly-catchup.service")
 check("the service is a one-shot pass", cs["Service"].get("Type") == "oneshot")
 check("the pass's own names are shipped units", (HERE / "systemd" / NC.SERVICE).is_file() and (HERE / "systemd" / NC.TIMER).is_file(), (NC.SERVICE, NC.TIMER))
-import testing_policy as TP  # noqa: E402
 cal = unit(NC.TIMER)["Timer"].get("OnCalendar", "")
-check("the night this reads starts when the nightly timer fires", cal.endswith(" %02d:00:00" % int(TP.param("selftest.nightly_full_hour_local"))), cal)
+check("the night this reads starts when the nightly timer fires", cal.endswith(" %02d:00:00" % int(_param("selftest.nightly_full_hour_local"))), cal)
 check("the sweep prints the line 'finished' is read from, last of all",
       'print("RESULT: "' in (HERE / "run_selftests.py").read_text(encoding="utf-8") and "tail -40" in unit(NC.SERVICE)["Service"]["ExecStart"])
 

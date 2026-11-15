@@ -36,9 +36,10 @@ def main():
     pol = TP.load_policy()
     names = set(pol["params"])
     check(len(names) >= 10, "the shipped policy loads with %d params" % len(names))
-    check(TP.param("mutation.full_min_stable_days", pol) == 3, "approved rule: full run only after 3 stable days")
+    # ranges, not his numbers: the owner may move a day count or the bar (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+    check(TP.param("mutation.full_min_stable_days", pol) >= 1, "approved rule: full run only after >= 1 stable day")
     check(TP.param("mutation.full_requires_review_clean", pol) is True, "approved rule: full run only when CLEAN")
-    check(TP.param("mutation.score_bar", pol) == 0.85, "approved rule: 85% bar")
+    check(0.5 <= TP.param("mutation.score_bar", pol) <= 1, "approved rule: a score bar in [0.5, 1]")
     check(TP.param("mutation.evolving_scope", pol) == "changed_functions", "approved rule: evolving -> changed functions")
     check(all(pol["params"][n]["provenance"] == "O" for n in names if n.startswith("mutation.") and
               n in ("mutation.scope", "mutation.full_min_stable_days", "mutation.full_requires_review_clean",

@@ -99,7 +99,8 @@ def gate_checks():
     run at most; the TARGETS map must hold every selftest that imports the module."""
     import subprocess
     pol = M.policy()
-    check(pol["stable_days"] == 3 and pol["need_clean"] is True, "policy: read from testing_policy.json (%s)" % pol)
+    # a range, not the owner's number (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+    check(pol["stable_days"] >= 1 and pol["need_clean"] is True, "policy: read from testing_policy.json, sane (%s)" % pol)
 
     # logic signature: docstrings and comments are not logic, a changed expression is
     a = 'def f(x):\n    """doc"""\n    return x + 1\n'
@@ -158,7 +159,7 @@ def gate_checks():
             q = os.path.join(td, "p.json")
             _j.dump(d, open(q, "w"))
             return q
-        check(M.policy(pol_with())["stable_days"] == 3, "policy: loads from a path outside rimflow/")
+        check(M.policy(pol_with(full_min_stable_days=3))["stable_days"] == 3, "policy: loads from a path outside rimflow/")
         for label, over in (("NaN stable days", {"full_min_stable_days": float("nan")}),
                             ("negative stable days", {"full_min_stable_days": -1}),
                             ("non-bool review flag", {"full_requires_review_clean": "false"}),
