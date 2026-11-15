@@ -481,6 +481,74 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return (slices, worst, outp, minPieces);
         }
 
+        /// <summary>The cold planned build's ms bound, as the graph worker's check holds its own (GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE): wall-clock ms on a loaded machine is
+        /// split from the cause. The cause (an edge laid unbudgeted, the budget never deferring) is checked on every Build; the ms bound must hold on one of up to
+        /// <see cref="SliceAttempts"/> fresh cold builds, since a load spike is transient and a regression repeats. RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN: one
+        /// Build read 30.7 ms against 30 once in five T_CORE runs; --slice-repeat read 3 of 20 cold builds over 30 ms, one of them with no collection in the Build, so
+        /// leaving out the Builds a collection ran in (the graph worker's other half) does not steady it: a collection ran in 42 of every ~75 Builds.</summary>
+        private static (double worst, int attempts) SliceBound(Func<CordWorld> world, BuildOptions opt, Func<Cell, bool> live, double first)
+        {
+            double best = first;
+            int attempts = 1;
+            while (best > SyncLayBoundMs && attempts < SliceAttempts)
+            {
+                var r = Converge(new CordBuilder(), world(), opt, live);
+                attempts++;
+                best = Math.Min(best, r.worst);
+            }
+            return (best, attempts);
+        }
+        private const int SliceAttempts = 3;
+
+        /// <summary>--slice-repeat: n fresh cold planned builds of the live scene, the old form (one build's slowest Build) beside the new (<see cref="SliceBound"/>).
+        /// -> 0 when the form asked for (<paramref name="oldForm"/>: the parent's one-build reading) held the bound in all n, else 1.</summary>
+        public static int SliceRepeat(int n, bool oldForm)
+        {
+            Func<Cell, bool> dead = c => false;
+            int oldOver = 0, newOver = 0;
+            for (int i = 0; i < n; i++)
+            {
+                var r = Converge(new CordBuilder(), RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead);
+                var (best, attempts) = SliceBound(() => RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead, r.worst);
+                if (r.worst > SyncLayBoundMs) oldOver++;
+                if (best > SyncLayBoundMs) newOver++;
+                Console.WriteLine($"slice-repeat {i + 1}/{n}: old form {r.worst:0.0} ms over {r.slices} Builds, new form {best:0.0} ms in {attempts} attempt(s) (bound {SyncLayBoundMs} ms)");
+            }
+            Console.WriteLine($"slice-repeat: over the bound, old form {oldOver} of {n}, new form {newOver} of {n}");
+            return (oldForm ? oldOver : newOver) == 0 ? 0 : 1;
+        }
+
+        /// <summary>--lay-profile: one unbudgeted build of the live scene (dead ends, as Slices), each edge's lay ms split by LayEdge stage (CordBuilder.StepTrace), the
+        /// costliest edges first: where the cold build's Builds go (RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD).</summary>
+        public static void LayProfile()
+        {
+            Func<Cell, bool> dead = c => false;
+            new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead);   // JIT warm
+            var sw = Stopwatch.StartNew();
+            var byPiece = new Dictionary<string, Dictionary<string, double>>();
+            var byStage = new Dictionary<string, double>();
+            double last = 0; string prev = null, prevKey = null;
+            CordBuilder.StepTrace = (st, ea, eb, P) =>
+            {
+                double now = sw.Elapsed.TotalMilliseconds;
+                string key = ea + "|" + eb, k = (prevKey == key ? prev : "lay") + "->" + st;
+                if (!byPiece.TryGetValue(key, out var d)) byPiece[key] = d = new Dictionary<string, double>();
+                d[k] = d.GetValueOrDefault(k) + now - last;
+                byStage[k] = byStage.GetValueOrDefault(k) + now - last;
+                last = now; prev = st; prevKey = key;
+            };
+            var total = Stopwatch.StartNew();
+            List<LaidPiece> ps = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead);
+            double all = total.Elapsed.TotalMilliseconds;
+            CordBuilder.StepTrace = null;
+            Console.WriteLine($"lay-profile: {ps.Count(p => p.EndA != null)} edges, {all:0} ms; by stage: " + string.Join(", ", byStage.OrderByDescending(kv => kv.Value).Take(12).Select(kv => $"{kv.Key} {kv.Value:0}")));
+            foreach (var kv in byPiece.OrderByDescending(kv => kv.Value.Values.Sum()).Take(15))
+            {
+                LaidPiece p = ps.FirstOrDefault(q => q.EndA + "|" + q.EndB == kv.Key);
+                Console.WriteLine($"  {kv.Value.Values.Sum():0.0} ms {kv.Key} lays {(p == null ? "?" : string.Join("/", p.Strands.Select(s => s.Lay)))}: " + string.Join(", ", kv.Value.OrderByDescending(x => x.Value).Take(5).Select(x => $"{x.Key} {x.Value:0.0}")));
+            }
+        }
+
         private static void Slices()
         {
             Func<Cell, bool> dead = c => false;
@@ -490,8 +558,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // a cold planned build (the first build on a loaded map, a lattice placed at once)
             var opt = new BuildOptions { LayBudgetMs = BudgetMs };
             var b = new CordBuilder();
-            var (slices, worst, last, _) = Converge(b, RebuildPerDigChecks.LiveScene(), opt, dead);
-            Program.Check(worst <= SyncLayBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms (bound {SyncLayBoundMs} ms, budget {BudgetMs} ms)");
+            var (slices, worst0, last, _) = Converge(b, RebuildPerDigChecks.LiveScene(), opt, dead);
+            var (worst, attempts) = SliceBound(() => RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead, worst0);
+            Program.Check(worst <= SyncLayBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms at best over {attempts} cold build(s), first {worst0:0.0} ms (bound {SyncLayBoundMs} ms, budget {BudgetMs} ms)");
             Program.Check(slices > 1, $"slice: the cold build finished in {slices} Build (the budget never deferred an edge: instrument blind)");
             Program.Check(b.LastPending == 0 && GssFuzz.Digest(last) == want, "slice: the budgeted Builds did not end bit-identical to one unbudgeted Build");
             Console.WriteLine($"slice: cold E={edges} planned over {slices} Builds, worst {worst:0.0} ms (budget {BudgetMs} ms)");

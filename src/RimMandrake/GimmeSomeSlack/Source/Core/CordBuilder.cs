@@ -1083,6 +1083,91 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static double CutPin(CordNode nd, Func<Cell, bool> isLive) => nd.Type == NodeType.Terminal && !nd.Seam ? CutKeep : FairPin(nd, isLive);
         private const double CutKeep = 1.0;
 
+        /// <summary>A faired cut lead's join: <see cref="CordShape.Fair"/> leaves the cut end's kept run (<see cref="CutKeep"/>) as laid and draws the cord after it in,
+        /// so the two can meet at an angle the fold check refuses, and the fairing was dropped, its bends with it (blind cycle 1's last 4 bends). The cord from the kept
+        /// run's end on to <see cref="BlendReach"/> further is laid again as a Dubins path leaving the kept run's own heading, no tighter than <see cref="BlendRadii"/>
+        /// (82 degrees a cell at 0.7: under the bar's 90), into the faired cord's own heading there. Geometry first: cut_end_sweep.py (cycle_1/lane2/judge_the_judge)
+        /// finds such a lay, with slack, stray and two distinct shapes, in every chord x kept-run heading x fitting cell. -> null when no join is clear and fold-free.</summary>
+        private static List<V2> BlendCutRun(CordWorld w, List<V2> laid, List<V2> P, bool atStart, LaidPiece piece, double keep)
+        {
+            if (P == null || P.Count < 8 || laid == null || laid.Count < 4) return null;
+            // the kept run as laid, from the cord before the fairing: the fairing's own resample bends its last sample toward the drawn-in cord
+            List<V2> O = atStart ? new List<V2>(laid) : Enumerable.Reverse(laid).ToList();
+            double[] co = Geo.CumLen(O);
+            if (co[co.Length - 1] < keep + 1.0) return null;
+            var kept = new List<V2>();
+            for (int k = 0; k < O.Count && co[k] < keep; k++) kept.Add(O[k]);
+            V2 a = PointAlong(O, co, keep), ta = a - PointAlong(O, co, keep - 0.15);
+            if (ta.Len < 1e-9 || kept.Count < 2) return null;
+            List<V2> Q = atStart ? new List<V2>(P) : Enumerable.Reverse(P).ToList();
+            double[] cum = Geo.CumLen(Q);
+            double L = cum[cum.Length - 1];
+            int k0 = Array.BinarySearch(cum, keep);
+            if (k0 < 0) k0 = ~k0;
+            if (k0 < 2 || k0 > Q.Count - 4) return null;
+            double ha = Math.Atan2(ta.Z, ta.X);
+            int kinks = CordShape.Kinks(P).Count, bad = CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P);
+            List<MachineInfo> own = CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB);
+            var why = HopWhy == null ? null : new Dictionary<string, int>();
+            void No(string x) { if (why != null) why[x] = why.TryGetValue(x, out int k) ? k + 1 : 1; }
+            bool Clear(V2 q)
+            {
+                Cell c = q.Floor;
+                if (!w.IsWalkable(c) || w.IsFurniture(c) || w.IsDoor(c)) return false;
+                foreach (MachineInfo m in w.Machines) if (m.Contains(c) && !own.Contains(m)) return false;
+                return w.Clearance(q) >= LayParams.RC || own.Any(m => m.Contains(c));
+            }
+            // the joins tried: a little way on first, then further, then the whole cord to its far end's fitting, arriving its own way (cut_end_sweep.py's lay)
+            var ends = new List<double>();
+            foreach (double d in BlendReach) { double s = Math.Min(keep + d, L - BlendTail); if (s > keep + 0.3 && !ends.Contains(s)) ends.Add(s); }
+            // the whole cord only on a short lead: a long one keeps the faired cord past the join, its own draw's shape (cords_never_repeat: a whole
+            // Dubins lay is one curve per pair of poses, so equal runs side by side came out twins)
+            if (L - keep <= BlendWholeMax) ends.Add(L);
+            foreach (double s1 in ends)
+            {
+                bool whole = s1 >= L;
+                int k1 = whole ? Q.Count - 1 : Array.BinarySearch(cum, s1);
+                if (k1 < 0) k1 = ~k1;
+                if (!whole && k1 >= Q.Count - 2) continue;
+                V2 b = Q[k1], tb = whole ? b - PointAlong(Q, cum, L - 0.15) : Q[k1 + 1] - Q[k1 - 1];
+                if (tb.Len < 1e-9) continue;
+                double hb = Math.Atan2(tb.Z, tb.X), old = cum[k1] - cum[k0], turnCap = CordShapeAudit.TotalTurn(Q, k0, k1) + Math.PI / 2;
+                foreach (double r in BlendRadii)
+                    foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a, ha, b, hb, r).OrderBy(x => x.Len))
+                    {
+                        if (dp.Turning > turnCap || dp.Len > old + 2.5) { No("turn/len"); continue; }
+                        List<V2> arc = CordShape.Dubins.Sample(a, ha, dp, 0.05);
+                        if (arc.Count == 0 || !arc.All(Clear)) { No("ground"); continue; }
+                        var R = new List<V2>(Q.Count + arc.Count);
+                        R.AddRange(kept);
+                        R.Add(a);
+                        R.AddRange(arc);
+                        for (int k = k1 + 1; k < Q.Count; k++) R.Add(Q[k]);
+                        if (whole) R[R.Count - 1] = b;
+                        if (!atStart) R.Reverse();
+                        if (CordShape.Kinks(R).Count >= kinks) { No("fold"); continue; }
+                        if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, R) > bad) { No("bend"); continue; }
+                        return R;
+                    }
+            }
+            if (why != null) HopWhy("blend " + piece.EndA + "|" + piece.EndB + " none " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value)));
+            return null;
+        }
+        private static V2 PointAlong(List<V2> q, double[] cum, double s)
+        {
+            int k = Array.BinarySearch(cum, s);
+            if (k < 0) k = ~k;
+            if (k <= 0) return q[0];
+            if (k >= q.Count) return q[q.Count - 1];
+            double d = cum[k] - cum[k - 1];
+            return d < 1e-12 ? q[k] : q[k - 1] + (q[k] - q[k - 1]) * ((s - cum[k - 1]) / d);
+        }
+        private static readonly double[] BlendReach = { 0.5, 0.8, 1.2, 1.6, 2.2, 3.0 };
+        private const double BlendWholeMax = 3.0;
+        private static readonly double[] BlendRadii = { 0.7, 0.85, 1.0, 0.66 };
+        /// <summary>The far end's own run a blend never reaches into (a fitting's straight bit, a plug's approach), cells.</summary>
+        private const double BlendTail = 0.5;
+
         /// <summary>The cord at an end the vary passes leave as laid: a strip socket's plug exit (its stiff length, bend or tied loop: the sitting's
         /// last-1.2-cell hook read), else <see cref="FairPin"/>.</summary>
         private static double VaryPin(CordNode nd, BuildOptions opt, Func<Cell, bool> isLive) =>
@@ -1193,6 +1278,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 // the loops and the settle leave folds a cord cannot make: its ribbon spikes there (live, a real colony: 2.9 a strand)
                 if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
+                StepTrace?.Invoke("unfold", piece.EndA, piece.EndB, P);
                 // a cord to a cut end keeps its old lay, as it keeps its length (ShortBow): its live run, limp curl and writhing tail are break_live_and_dead_ends_differ's art
                 bool cutEnd = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
                 if (!fell && prm.FairBends && !cutEnd) P = CordShape.Fair(w, P, FairPin(na, isLive), FairPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB));
@@ -1201,7 +1287,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // a cut lead is faired too (blind cycle 1: its mid-cord bends were never eased), its cut end's run kept (CutPin) and its loops left whole
                     // (it keeps its length), unless the fairing folds it where its kept run meets the faired cord (the shape check read 24 folds in 115 strands there)
                     List<V2> faired = CordShape.Fair(w, P, CutPin(na, isLive), CutPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB), cutLoops: false);
-                    if (CordShape.Kinks(faired).Count <= CordShape.Kinks(P).Count) P = faired;
+                    int kinksNow = CordShape.Kinks(P).Count;
+                    if (CordShape.Kinks(faired).Count > kinksNow)
+                    {
+                        // the fold sits where the kept run meets the faired cord: lay that join again leaving the kept run's own heading (BlendCutRun)
+                        List<V2> blended = faired;
+                        // from the end of the whole kept run first, else from the end of the live run's own art (FairPin): the old lay can curve in its
+                        // last 0.4 cell so far round that no join from there clears (blind cycle 1, seed 6520), and the bar reads that cell as the cut end's own
+                        if (na.Type == NodeType.Terminal && !na.Seam) blended = BlendCutRun(w, P, blended, true, piece, CutKeep) ?? BlendCutRun(w, P, blended, true, piece, FairPin(na, isLive)) ?? blended;
+                        if (nb.Type == NodeType.Terminal && !nb.Seam) blended = BlendCutRun(w, P, blended, false, piece, CutKeep) ?? BlendCutRun(w, P, blended, false, piece, FairPin(nb, isLive)) ?? blended;
+                        faired = blended;
+                    }
+                    if (CordShape.Kinks(faired).Count <= kinksNow) P = faired;
+                    StepTrace?.Invoke("cutfair", piece.EndA, piece.EndB, P);
                 }
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
@@ -1229,6 +1327,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
                 if (!jointFit && !fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
+                StepTrace?.Invoke("smooth", piece.EndA, piece.EndB, P);
                 List<CordTie> ties = null;
                 if (!jointFit && !fell && prm.FairBends)
                 {
@@ -1238,6 +1337,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 if (prm.FairBends || FinalKinkLog)
                     P = FinalCurvature(w, g, e, P, ties, key, i, allowRepair: prm.FairBends && !jointFit);
+                    StepTrace?.Invoke("final", piece.EndA, piece.EndB, P);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties, Lay = (cutEnd ? "cut-" : "") + lay });
                 laid += Geo.Length(P);
             }
@@ -1261,12 +1361,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     List<V2> eased = CordSlacken.Unbend(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB,
                                                         FittedTip(na, opt), FittedTip(nb, opt));
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
+                    StepTrace?.Invoke("unbend", piece.EndA, piece.EndB, s.Pts);
                     // a cut end's lead is slack too (cords_lie_slack names no exception; blind cycle 1 found 6 of 679 under 1.4, every one a cut lead): its
                     // limp curl or live run is pinned (FairPin) and its writhing tail kept whole (WhipA/WhipB), the lobe lies between
                     line = line ?? ConduitLine(e);
                     List<V2> loose = CordSlacken.Slacken(w, s.Pts, CutPin(na, isLive), CutPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, slackSide, s.WhipA, s.WhipB, line,
                                                          jitter: CordRng.Of(opt.Seed, "slackshape", key, piece.Strands.IndexOf(s)));
                     if (loose != null) { s.Pts = loose; s.Lay += "+slack"; }
+                    StepTrace?.Invoke("slack", piece.EndA, piece.EndB, s.Pts);
                     // a short lead's shape from its own draw (cords_never_repeat; the owner's card exempts cords under 3 cells): equal runs side by side otherwise
                     // settle to one curve, the room clamping every excursion alike (blind cycle 1)
                     if (!cut && s.WhipA == 0 && s.WhipB == 0 && L >= VaryMinPath && L < VaryMaxPath && !s.Lay.StartsWith("nub", StringComparison.Ordinal))
@@ -1285,6 +1387,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                                               CordRng.Of(opt.Seed, "varyloop2", key, si), CordSlacken.VaryLoop2P, most);
                         if (looped2 != null) { s.Pts = looped2; s.Lay += "+loop"; }
                     }
+                    StepTrace?.Invoke("vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
@@ -2266,14 +2369,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                         double ratio = Geo.Length(P) / gap;
                                         if (ratio > HopMaxRatio && (pass == 0 || Geo.Length(P) > gap + HopLoopTurn * rad)) { No("long"); continue; }
                                         bool rod = CordShapeAudit.LongestRod(P, out _) >= CordShapeAudit.RodLen;
+                                        // a loose cord, not a taut one: short of the slack census's 1.15 it costs, a straight rod costs more
+                                        double cost = Math.Abs(ratio - aim) + (ratio < 1.15 ? 0.4 : 0) + (rod ? 1 : 0) + (shape == 1 ? 0.04 + sBias : 0) + 0.01 * (rad - HopRadii[0]);
+                                        // a draw no cheaper than the best so far is never taken, so its bends are not read (the bend read is most of a hop's cost; the same draw wins: gss_last lay cost)
+                                        if (cost >= bestCost) { No("worse"); continue; }
                                         if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
                                         if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
                                         P = PastFace(P, true, na);
                                         P = PastFace(P, false, nb);
                                         if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0) { No("bends"); continue; }
-                                        // a loose cord, not a taut one: short of the slack census's 1.15 it costs, a straight rod costs more
-                                        double cost = Math.Abs(ratio - aim) + (ratio < 1.15 ? 0.4 : 0) + (rod ? 1 : 0) + (shape == 1 ? 0.04 + sBias : 0) + 0.01 * (rad - HopRadii[0]);
-                                        if (cost < bestCost) { best = P; bestCost = cost; }
+                                        best = P; bestCost = cost;
                                     }
                         }
                 }
@@ -2340,6 +2445,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>Lab trace of <see cref="HopWhole"/>: what each cord laid again whole met.</summary>
         internal static Action<string> HopWhy;
+        /// <summary>Diagnostics only (judge_the_judge/Diag.cs): each LayEdge stage's strand, with the stage's name and the piece's ends. Null in the game.</summary>
+        internal static Action<string, string, string, List<V2>> StepTrace;
 
         /// <summary>A whole-laid short cord's Dubins radii (cells): a heap cable's turn and wider.</summary>
         private static readonly double[] HopRadii = { HeapTurnR, 0.85, 1.0 };

@@ -215,9 +215,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return best;
         }
 
-        /// <summary>The unforced bends left on the bend seeds (RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT, open: 82 before the fix). A ratchet: it may
-        /// only come down; when it reads lower, lower it here.</summary>
-        private const int BendsRatchet = 4;
+        /// <summary>The unforced bends left on the bend seeds (RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT: 82 before the fix, 4 after the first, 0 since the cut
+        /// lead's join is blended, gss_last). A ratchet: it may only come down; at 0 it is the bar itself.</summary>
+        private const int BendsRatchet = 0;
 
         private static void RandomBases()
         {
