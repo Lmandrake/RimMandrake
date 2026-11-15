@@ -115,7 +115,12 @@ namespace JawaBench.BridgeTools
 
         private static void WorldLoaded()
         {
-            if (Armed) Interlocked.Increment(ref WorldLoadsSeen);
+            try { if (Armed) Interlocked.Increment(ref WorldLoadsSeen); }
+            catch (Exception e)
+            {
+                Interlocked.Increment(ref RecordErrors);
+                LastRecordError = e.GetType().Name + ": " + e.Message;
+            }
         }
 
         // Harmony binds 'image' by parameter name; the engine's own test is Unity's == null,
@@ -126,7 +131,8 @@ namespace JawaBench.BridgeTools
             if (image != null) return true;
             if (_selftestActive)
             {
-                _selftestFrames = WalkStack(out _);
+                try { _selftestFrames = WalkStack(out _); }
+                catch (Exception e) { _selftestFrames = new List<string> { "WalkStack threw " + e.GetType().Name + ": " + e.Message }; }
                 return false;   // not a draw: Unity's body would read Event.current off the main thread
             }
             if (!Armed) return true;
