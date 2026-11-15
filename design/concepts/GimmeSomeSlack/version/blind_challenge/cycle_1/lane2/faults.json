@@ -56,12 +56,13 @@
    "lane 1 L1_CORD_BENDS_TALLY: the bar's named instrument CordShapeAudit.BendTally over 80 random scenes (seeds 6000..6039 open floor, 6500..6539 with walls): 82 unforced of 1381 bends in 728 strands",
    "first rows: junction:37,38|consumer:37,37 turn 98 deg over 0.09 cell, 0.10 from the plug end (a one-cell junction-to-device lead); my coarser independent measure L1_CORD_SHARP_TURN agrees",
    "T_CORD_GEOMETRY_OFFLINE is green (4513/4513) because it reads the 7 oracle scenes only; RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR closed against those 7",
-   "lane 2 (gss_four) at 0416599c69: 82 -> 4 unforced on the same 80 scenes; 1580 -> 92 over 2000 seeded scenes (17821 strands); the 4 left are mid-cord bends on cut leads the fold guard keeps unfaired (fairing them folds the cord where its kept cut-end run meets it: the builder's fold bar)"
+   "lane 2 (gss_four) at 0416599c69: 82 -> 4 unforced on the same 80 scenes; 1580 -> 92 over 2000 seeded scenes (17821 strands); the 4 left are mid-cord bends on cut leads the fold guard keeps unfaired (fairing them folds the cord where its kept cut-end run meets it: the builder's fold bar)",
+   "gss_last: a faired cut lead's join blended from its kept run (CordBuilder.BlendCutRun; cut_end_sweep.py: 5040/5040 cut-lead cells meet bends, fold, slack, stray and distinct at once). L1_CORD_BENDS_TALLY rc 1 at 7a9444f717 (unforced 4), rc 0 at 6f8bfb47c4 (unforced 0); lane 1 after the fix: lane2/lane1_rows_after_fix.jsonl. Over 2000 seeded scenes the same instrument still reads 115 unforced (174 at the parent): RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES, a Problem below"
   ],
   "would_pass": "L1_CORD_BENDS_TALLY reads unforced 0 over the same 80 seeds (or every remaining row is shown forced by a wall, building, door or socket the audit's Why() misses, which would be an instrument fix)",
   "smallest_fix": "add random scenes to the geometry check (the lane-1 scene maker is reusable), then fix the planner where the unforced rows point, starting with plug-end hooks on one-cell leads",
   "verdict_on_criterion": "sound",
-  "status": "PENDING (82 -> 4; see evidence)"
+  "status": "FIXED 6f8bfb47c4"
  },
  {
   "id": "RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK",
@@ -112,12 +113,13 @@
   "criterion": "a rerun repeats the recorded result",
   "evidence": [
    "reruns.jsonl: T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept",
-   "lane 2 (gss_four): one of five T_CORE runs here read 'slice: a planned build of the live scene held one Build 30.7 ms (bound 30 ms)' (others 17.1-20.6 ms): a single-Build wall-clock bound in SliceGateChecks.Slices, GC and load included; [guess ~60%] the cause of O3's one red (the cycle-1 record did not name the failing check). Not ruled out: a shared build lock (not measured). Smallest fix: the GC-excluded worst the graph-worker gate already uses (WorstNoGcMs), or its one-of-three-attempts rule; not applied (unconfirmed cause)"
+   "lane 2 (gss_four): one of five T_CORE runs here read 'slice: a planned build of the live scene held one Build 30.7 ms (bound 30 ms)' (others 17.1-20.6 ms): a single-Build wall-clock bound in SliceGateChecks.Slices, GC and load included; [guess ~60%] the cause of O3's one red (the cycle-1 record did not name the failing check). Not ruled out: a shared build lock (not measured). Smallest fix: the GC-excluded worst the graph-worker gate already uses (WorstNoGcMs), or its one-of-three-attempts rule; not applied (unconfirmed cause)",
+   "gss_last: leaving out Builds a collection ran in does not steady it (a collection ran in ~42 of ~75 Builds; a 36.8 ms Build had none). The slice bound now holds on one of up to 3 fresh cold builds (the graph worker's own rule: a load spike is transient, a regression repeats). selftest_gimmesomeslack.py --slice-repeat: old form over 30 ms in 2 of 20 cold builds (one the process's first, JIT), new form 0 of 20"
   ],
   "would_pass": "T_GATE green on repeated runs, or the O3 red's cause printed",
   "smallest_fix": "keep the nested O3 run's last lines in the GATE_JSON so a red is explainable",
   "verdict_on_criterion": "sound",
-  "status": "PENDING"
+  "status": "FIXED 6f8bfb47c4"
  },
  {
   "id": "RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES",
@@ -147,5 +149,45 @@
   "smallest_fix": "a binding test of FloorEndShock's EndLive and EverTransmitsPower guards; run validate_patch.py on Patches/ offline; a kernel row that WhipAmp > 0",
   "verdict_on_criterion": "sound",
   "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES",
+  "class": "Problem",
+  "bar": "no_unforced_sharp_turn; cords_lie_slack; cords_never_repeat",
+  "criterion": "the same bars' oracles over a wider sample than lane 1's: the bends probe tally unforced == 0; drawn length >= 1.4 x chord; an excursion of a cell on edges over four cells; no same-class pair under 0.1",
+  "evidence": [
+   "judge_the_judge/diag.py all 1000 (2000 seeded scenes, lane 1's scene maker, open and walled) at 6f8bfb47c4: unforced bends 115 in 83 of 17821 strands (all 115 outside lane 1's 80 seeds; 28 heap cables near a pile port, the rest mostly cut leads near their junction or cut end), slack 7 of 16740 under 1.4 (2 'fell' centreline fallbacks, 3 one walled cut-lead bundle seed 53623), stray 7 of 6070 edges (5 walled), twins 6 of 33600 pairs (L3-L5)",
+   "at the parent 7a9444f717 the same command read 174 / 6 / 7 / 6; the item's earlier '92 unforced' was not reproduced by the committed Diag.cs",
+   "none of the residue is shown forced by walls (no feasibility search was run on these scenes), so no check exempts it"
+  ],
+  "would_pass": "diag.py all 1000 reads 0 unforced, 0 under, 0 miss, 0 twins, or each remaining case is shown forced by a feasibility search in its own walls and the checks exempt exactly those, with the reason printed",
+  "smallest_fix": "bucket by lay: heap cables (tangle) at a pile port first, then cut leads near the junction end; the walled cut-lead bundle 53623 and the two 'fell' fallbacks each need a sweep of their own walls",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL",
+  "class": "Polish",
+  "bar": "no_unforced_sharp_turn (instrument agreement)",
+  "criterion": "lane 1's coarser row L1_CORD_SHARP_TURN against the bar's named instrument CordShapeAudit.Bends",
+  "evidence": [
+   "after the loop repair, lane 1 L1_CORD_SHARP_TURN still FAILs: 21 windows over its 40 scenes (Diag.cs sharprow), none a bend the bar's named instrument counts: 15 inside a cut end's first cell (the instrument's 'limp': apex within LimpReach 1.0 by arc; the row exempts 0.75 Euclid from its window's midpoint), 6 at 93-95 deg where the row's window sums 21 samples and the instrument's 20",
+   "L1_CORD_BENDS_TALLY (the named instrument) PASSes on the same seeds"
+  ],
+  "would_pass": "the row defers to the instrument on a cut end's first cell and on the window's length, or the Conductor rules either reading of the row's the bar's",
+  "smallest_fix": "two lines in BlindLane1.cs CordSharpTurn: the cut-end reach by arc from a terminal end (LimpReach), the window as 20 samples",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_REPIN_GSS_GATE_O7_ON_SUPERSEDED_SHAPE",
+  "class": "Polish",
+  "bar": "(instrument) T_GATE",
+  "criterion": "the offline gate reads the build as it is ruled: validation O7 pins each GPT pre-release fix's source shape",
+  "evidence": [
+   "T_GATE rc 1 at 8f1338a19a: red [validation:O7_gpt_read_fixes], missing 'C2 aerial master gates the shock check': the pinned shape '!AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None' was replaced on purpose by cycle 1's UNGATE fix 6d2aeb9c3f, so the gate read red from that fix on (not a flake)",
+   "re-pinned to the shapes the fix left (the master gates GSS's own downed spans; reach None gates every contact): T_GATE rc 0 at ffe1a381b8"
+  ],
+  "would_pass": "T_GATE rc 0",
+  "smallest_fix": "re-pin O7's C2 shape (applied)",
+  "status": "FIXED ffe1a381b8"
  }
 ]

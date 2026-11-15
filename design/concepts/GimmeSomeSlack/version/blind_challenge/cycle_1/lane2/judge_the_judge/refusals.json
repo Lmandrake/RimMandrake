@@ -49,10 +49,12 @@
   "verdict_on_criterion": "the bar's oracle names CordShapeAudit.Bends; the judge's own coarser row reads a loop differently and fails on base and fix alike",
   "evidence": [
    "CordShapeAudit calls a stretch a loop when it turns 300+ degrees one way at a MEAN radius of 0.45+; L1_CORD_SHARP_TURN also needs the 1-cell window's own rate under 1/0.45 rad a cell",
-   "base: FAIL (a cut lead turning 135 deg in a cell); after the fix: FAIL (a cut lead's sprawl loop with a tight part, 173 deg in a cell) while BendTally counts it a loop"
+   "base: FAIL (a cut lead turning 135 deg in a cell); after the fix: FAIL (a cut lead's sprawl loop with a tight part, 173 deg in a cell) while BendTally counts it a loop",
+   "after the repair the row still FAILs on two other definition gaps (cut-end reach, window length): RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL"
   ],
   "would_pass": "one definition of a broad loop for both instruments",
   "smallest_fix": "cycle 2 decides which reading is the bar's: if the local rate, CordShapeAudit.Bend.IsLoop gains the window-rate test (a builder change follows); if the mean radius, L1_CORD_SHARP_TURN's BroadLoop drops it",
-  "status": "OPEN_FOR_CYCLE_2"
+  "status": "CHECK_REPAIRED",
+  "decision": "gss_last 2026-11-15: the bar's own words define no loop; its oracle names CordShapeAudit.Bends (tally unforced == 0), whose loop is 300+ degrees one way at a mean radius of 0.45+. So the instrument's reading is the bar's and wins; the row's extra window-rate test was the judge's own and is removed: the row now asks the instrument which bends are loops. The local reading was measured, not adopted: in the instrument it reads 55 unforced on lane 1's 80 scenes with the kernel's shaping unchanged (1573 over 2000), and making the shaping cut those loops cost slack (7 -> 22 under) and twins (6 -> 23). If the owner wants loops broad all round, that is a builder change for the next version, not a repair (variant kept at D:\\ClaudeWork\\rimmandrake\\scratch\\gss_last\\CordBuilder_localloop_variant.cs)"
  }
 ]

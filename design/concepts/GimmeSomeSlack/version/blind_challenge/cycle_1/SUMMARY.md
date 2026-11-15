@@ -107,9 +107,13 @@ offline_bars: {no_hose: green, no_hose_in_gss: green}
 problems_open: 1
 exit_met: false
 ```
-Both offline bars are green on the fresh rerun of T_NO_HOSE, before and after the fix. Four Problems stay PENDING (lane-1
-geometry against the bars' own oracles), so the exit is not met. The Conductor decides: a cycle 2 after a builder fixes the
-four, or a re-route of those bars to Stage 6, where they prove.
+Read from the files at ffe1a381b8 (gss_last, 2026-11-15): both offline bars green (T_NO_HOSE PASS on the rerun after the fixes, `lane2/reruns_after_fix.jsonl`).
+Of the eight Problems in `lane2/faults.json`, seven are FIXED, each red then green in `lane2/fixes.jsonl`. One is open:
+RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES. Over 2000 seeded scenes the bars' own oracles still read 115 unforced bends,
+7 strands under 1.4, 7 edges with no full-cell stray and 6 twin pairs, and none of these is shown forced. Lane 1 after the fixes
+(`lane2/lane1_rows_after_fix.jsonl`) has two FAIL rows, each owned by a Polish fault: L1_FALLEN_LAY_GROUND
+(RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER) and L1_CORD_SHARP_TURN (RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL, for
+the Conductor). The exit is not met.
 
 ## Owed
 - The four PENDING Problems (items above, each with its acceptance test).
@@ -126,3 +130,26 @@ L1_NO_REPEAT could never pass. Fix 0416599c69 (parent 0725d4522a), red then gree
 judge's 80 scenes, still open. Over 2000 seeded scenes, base -> fix: slack 243 -> 5 of 16740 strands, stray 31 -> 6 of 6070 edges, unforced bends
 1580 -> 92, twins (3-6 cells) 468 -> 1 of 11200 pairs. T_CORE 4510/4510. Lane 1 after the fix: `lane2/lane1_rows_after_fix.jsonl` (FAIL: bends, the judge's
 sharp-turn row, the fallen wire Polish).
+
+## Lane 2 follow-up (gss_last, 2026-11-15)
+- **Bends, the last 4.** Geometry first: `lane2/judge_the_judge/cut_end_sweep.py` (`cut_end_step30.txt`) tested every cut-lead cell, chord 1-12 x kept-run
+  heading (the whole circle) x fitting heading x live/dead (both curl sides) x fitted/plug end. 5040 of 5040 cells meet bends, fold (past the kept run),
+  slack, stray and two distinct shapes at once, so the criteria do not conflict. Ported as `CordBuilder.BlendCutRun` (6f8bfb47c4): the join where a cut end's
+  kept run meets its faired cord is laid again as a Dubins path (R 0.66-1.0) leaving the kept run's own heading; the whole cord is relaid only on a lead of
+  3 cells or less, which keeps equal runs apart. Unforced bends on lane 1's 80 scenes: 4 -> 0 (L1_CORD_BENDS_TALLY rc 1 at 7a9444f717, rc 0 at 6f8bfb47c4).
+  Over 2000 scenes: 174 -> 115. The builder's ratchet is now 0. T_CORE 4510/4510, --geometry 4517/4517.
+- **Two loop definitions.** The bar's words define no loop. Its oracle names CordShapeAudit.Bends, which counts a turn of 300+ degrees one way at a mean
+  radius of 0.45+ as a loop, so that reading is the bar's. Lane 1's row also required the 1-cell window's own rate, and it now asks the instrument
+  (28b3041500, refusal record CHECK_REPAIRED). The local reading was measured, not adopted: 55 unforced on the 80 scenes (1573 over 2000) with
+  shaping unchanged. Making the shaping cut those loops cost slack (7 -> 22 strands under) and twins (6 -> 23). The row still fails on two other
+  definition gaps (a cut end's first cell, a window of 21 samples), filed for the Conductor.
+- **Walled residue.** Not fixed, and not proven forced. No exemption was written without a proof (Problem above).
+- **Lay cost.** New `--lay-profile`: HopWhole no longer reads bends on a draw costlier than the best so far. The same draw still wins. A cold live-scene
+  build went from 733 to about 690 ms. The cold build still plans over 71-78 Builds (the count is wall-clock, so it is noisy; the base was 57). The floor:
+  bundle strands now hop and re-slacken (the S-hook fix), about 250 of the 690 ms. Getting back to 57 would undo that fix.
+- **T_GATE.** The slice flake was not GC: a collection ran in about 42 of 75 Builds, and a 36.8 ms Build had none. The slice bound now has to hold on
+  one of up to 3 fresh cold builds, the graph worker's own rule (`--slice-repeat`: old form 2 of 20 over 30 ms, new form 0 of 20). The gate was also
+  red on every run from 6d2aeb9c3f on: O7 had pinned the shape that the UNGATE fix replaced. It is re-pinned (ffe1a381b8), and T_GATE now reads rc 0.
+- The DLL was rebuilt at landing (8f1338a19a, with its .srchash) and not deployed. Live checks are UNRUN; the commands are the scenes in
+  `src/RimMandrake/GimmeSomeSlack/validation.py` (Stage 6).
+

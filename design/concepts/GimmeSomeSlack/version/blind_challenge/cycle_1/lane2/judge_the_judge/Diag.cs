@@ -146,6 +146,40 @@ static partial class BlindLane1
             return 0;
         }
 #endif
+        if (mode == "sharprow")
+        {
+            // L1_CORD_SHARP_TURN's own windows over its 40 scenes (all failures, not the first): what the bar's instrument calls the bend nearest each one
+            var by = new Dictionary<string, int>(); var ex = new List<string>();
+            for (int t = 0; t < N; t++)
+            {
+                var sc = MakeScene(6000 + t, 6, 14, false);
+                foreach (var p in Build(sc.W)) foreach (var s in p.Strands.Where(HasPts))
+                {
+                    var r = Geo.Resample(s.Pts, 0.05); if (r.Count < 25) continue;
+                    double[] cum = Geo.CumLen(r);
+                    var bends = CordShapeAudit.Bends(s.Pts, s.Ties);
+                    var loops = bends.Where(b => b.IsLoop).Select(b => (b.S, half: Math.Max(b.Arc, 0.5 * b.Round * Math.PI / 180 * b.RoundR))).ToList();
+                    for (int i = 1; i + 1 < r.Count; i++)
+                    {
+                        int j = i; double turn = 0;
+                        while (j + 1 < r.Count && cum[j] - cum[i] < 1.0) { var u = (r[j] - r[j - 1]).Norm(); var v = (r[j + 1] - r[j]).Norm(); turn += Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z); j++; }
+                        if (Math.Abs(turn) <= Math.PI / 2 + 0.05) continue;
+                        double mid = cum[(i + j) / 2];
+                        if (loops.Any(lp => Math.Abs(mid - lp.S) <= lp.half)) { i = j; continue; }
+                        var at = r[(i + j) / 2];
+                        bool forced = Near(sc.W, at, 1.0) || V2.Dist(at, r[0]) < 0.75 || V2.Dist(at, r[r.Count - 1]) < 0.75 || (s.Ties != null && s.Ties.Count > 0) || s.Lifted;
+                        if (forced) { i = j; continue; }
+                        var nb = bends.OrderBy(b => Math.Abs(b.S - mid)).FirstOrDefault();
+                        string why = bends.Count == 0 ? "no bend" : CordShapeAudit.Why(sc.W, p.EndA, p.EndB, s.Pts, nb) + (Math.Abs(nb.S - mid) > 1.0 ? " (far)" : "");
+                        Inc(by, why);
+                        if (ex.Count < 8) ex.Add($"seed {6000 + t} {p.EndA}|{p.EndB} {s.Lay} {Math.Abs(turn) * 180 / Math.PI:0} deg at {at} mid {mid:0.00}/{cum[cum.Length - 1]:0.00} -> {why} (apex S {nb.S:0.00} fromEnd {nb.FromEnd:0.00})");
+                        i = j;
+                    }
+                }
+            }
+            Console.WriteLine("SHARPROW " + Top(by)); foreach (var x in ex) Console.WriteLine("  " + x);
+            return 0;
+        }
         if (mode == "time")
         {
             var sw = System.Diagnostics.Stopwatch.StartNew(); int pieces = 0;
