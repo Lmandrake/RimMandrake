@@ -414,6 +414,9 @@ def main():
         def d3(rd_):
             return rd_["mods"]["FlowWorks"]["decision"]
 
+        def nc3(rd_):   # FlowWorks's own lines: the fixture's other mods carry real stage data (a DIVERGING line)
+            return [x for x in rd_.get("needs_conductor") or [] if x.startswith("FlowWorks:")]
+
         def file_flaky(n_fail):
             calls = []
 
@@ -428,10 +431,10 @@ def main():
         f1, c1 = file_flaky(1)
         r1, r2 = t3(dict(fx, file=f1)), t3(dict(fx, file=f1), at=600)
         st1 = json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
-        ok(d3(r1) == "launch_retry" and not r1["needs_conductor"] and d3(r2) == "launched" and len(launches()) == 1
+        ok(d3(r1) == "launch_retry" and not nc3(r1) and d3(r2) == "launched" and len(launches()) == 1
            and not st1.get("stopped"),
            "a Stage 3 filing that hit a lock retries on the next tick, no stop, no Needs Conductor line (%s, %s, %s)"
-           % (d3(r1), d3(r2), r1["needs_conductor"]))
+           % (d3(r1), d3(r2), nc3(r1)))
         reset()
         pubs, lc = [], []
 
@@ -450,8 +453,42 @@ def main():
         f9, _ = file_flaky(99)
         rs = [t3(dict(fx, file=f9), at=600 * i) for i in range(4)]
         ok([d3(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"] and not launches()
-           and rs[2]["needs_conductor"],
+           and nc3(rs[2]),
            "a transient fault that outlasts launch_tries stops with a Needs Conductor line (%s)" % [d3(x) for x in rs])
+
+        # ---- a steward or fixer run is not a builder (RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP).
+        # Graffiti 2026-11-15: its preflight steward moved it into the offline build and was still live, so the tick
+        # watched it as a builder and wrote "stopped, 33 -> 33" when it ended. Its own book and cap govern its retries.
+        for book, key in (("steward", "0.1.0|preflight"), ("fixers", "RIMMANDRAKE_FIX_FLOWWORKS_SOME_TICKET")):
+            reset()
+            u = "rm-detached-bench-rimmandrake-%s-flowworks-1" % book
+            os.makedirs(sd, exist_ok=True)
+            with open(os.path.join(sd, "state.json"), "w") as f:
+                json.dump({"mods": {"FlowWorks": {book: {key: {"unit": u, "item": "X", "at": CLOCK - 60}}}}}, f)
+            world["live"] = {"FlowWorks": [u]}
+            r1 = t3(fx)
+            world["live"] = {}
+            r2 = t3(fx, at=600)
+            s2 = json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
+            ok(d3(r1) == "live" and d3(r2) == "launched" and not s2.get("stopped") and not nc3(r2)
+               and len(launches()) == 1 and (s2.get("last_run") or {}).get("unit") == u,
+               "a %s run that ends with the refused bars unchanged is not judged as a builder: no stop, the builder "
+               "launches (%s -> %s, stopped %s)" % (book, d3(r1), d3(r2), s2.get("stopped")))
+        # the stop such a run already wrote (Graffiti's, before the fix) lifts itself on the next tick
+        reset()
+        u = "rm-detached-bench-rimmandrake-steward-flowworks-preflight-s-1"
+        os.makedirs(sd, exist_ok=True)
+        with open(os.path.join(sd, "state.json"), "w") as f:
+            json.dump({"mods": {"FlowWorks": {
+                "steward": {"0.1.0|preflight": {"unit": u, "item": "X", "at": CLOCK - 900}},
+                "last_run": {"unit": u, "refused_before": 7, "refused_after": 7, "ended_seen": CLOCK - 300},
+                "stopped": {"ids": [], "at": CLOCK - 300,
+                            "why": "run %s ended and the refused bars went 7 -> 7, none resolved" % u}}}}, f)
+        r1 = t3(fx)
+        ok(d3(r1) == "launched" and "as a builder" in str(r1["mods"]["FlowWorks"].get("stop_lifted"))
+           and not nc3(r1) and len(launches()) == 1,
+           "a stop already written on a steward run lifts itself, the builder launches (%s, %s)"
+           % (d3(r1), r1["mods"]["FlowWorks"].get("stop_lifted")))
 
         # ---- the idle reading and its Operations family ---------------------------------------------------------------
         reset()

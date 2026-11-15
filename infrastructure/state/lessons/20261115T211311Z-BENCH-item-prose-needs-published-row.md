@@ -1,0 +1,3 @@
+A helper told to write items/<PARENT>.md cannot publish it while the parent's 'file' event sits only in another clone's uncommitted shard (here bench's OWNER.jsonl): the pre-push orphan-prose guard diffs base...head and refuses the whole push, and ./publish then loops retrying for minutes. Check first with 'git grep <ID> origin/main -- infrastructure/state/ledger/events/' that a file row is on origin; if not, land the code alone and hand the prose off (git rm in a follow-up commit clears the net add). Briefs that order prose for a fresh parent should say the Conductor publishes the OWNER shard first.
+item: RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP
+home: brief template for helpers whose parent item was filed this session

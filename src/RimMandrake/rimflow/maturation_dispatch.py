@@ -292,6 +292,19 @@ def account_gate(sched_path=None, dstate=None):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
+def autonomy_book(s, unit):
+    """-> "steward" or "fixers" when `unit` is a run the autonomy layer launched for this mod, else None.
+    RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP: Graffiti's preflight steward moved it into the offline
+    build while still live, and its end was judged as a builder's ("stopped, 33 -> 33")."""
+    if not unit:
+        return None
+    for book in ("steward", "fixers"):
+        for e in (s.get(book) or {}).values():
+            if isinstance(e, dict) and e.get("unit") == unit:
+                return book
+    return None
+
+
 def progressed(w, ids, fp_now):
     """-> (progress?, why). RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: progress is a refused bar resolved, by ids, not
     a fall in the count: no id may appear that was not refused before (a rename), and a resolved bar whose checks are
@@ -518,8 +531,11 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         if w:       # a run ended since the last tick: did the refused count fall?
             was = w.get("refused")
             s["last_run"] = {"unit": w.get("unit"), "refused_before": was, "refused_after": n, "ended_seen": now}
+            book = autonomy_book(s, w.get("unit"))
+            if book:    # a steward or fixer is not a builder: its own book and cap govern its retries
+                s["last_run"]["autonomy"] = book
             prog, pwhy = progressed(w, ids, f.get("bar_fp"))
-            if not prog:
+            if not prog and not book:
                 s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and %s" % (w.get("unit"), pwhy)}
         owed = f.get("owed")
         if owed in OWED:
@@ -558,6 +574,13 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         if stop and (stop.get("ceiling") or "ceiling" in str(stop.get("why"))) and rid:
             s.pop("stopped")
             row["stop_lifted"], stop = "a ceiling release (%s)" % rid, None
+        lr = s.get("last_run") or {}
+        if (stop and lr.get("unit") and str(stop.get("why")).startswith("run %s ended and " % lr["unit"])
+                and autonomy_book(s, lr["unit"])):
+            # a stop written before the progress test learned that a steward or fixer run is not a builder's
+            s.pop("stopped")
+            row["stop_lifted"], stop = "it judged the %s run %s as a builder" % (
+                autonomy_book(s, lr["unit"]), lr["unit"]), None
         # a stop lifts only when refused bars were resolved (the set shrank); a renamed id is not a resolution
         if stop and not (isinstance(ids, list) and isinstance(stop.get("ids"), list)
                          and set(ids) < set(stop["ids"])):
@@ -1154,7 +1177,8 @@ def reading(cfg, rows, now):
                          if r.get("decision") == "launched"],
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
-                                                       "idle_min", "stage_usd", "cycle", "visit", "exit")} for r in rows}}
+                                                       "idle_min", "stage_usd", "cycle", "visit", "exit",
+                                                       "stop_lifted")} for r in rows}}
 
 
 CLONE_FETCH_S = 30          # the tick's fetch of its own clone
