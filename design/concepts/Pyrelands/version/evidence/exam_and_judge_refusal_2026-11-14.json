@@ -1,0 +1,78 @@
+{
+ "item": "RIMMANDRAKE_SIT_PYRELANDS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST",
+ "family": "designer_stage gates (open_run, reopen_if_stale) and coverage_judge.run",
+ "sha": "7939c1ff759fd79e8c3b8998247ef6e4f30f1980",
+ "given": {
+  "inputs": [
+   "design/concepts/Pyrelands/stage.json",
+   "design/concepts/Pyrelands/record.json",
+   "design/concepts/Pyrelands/version/VERSION.json",
+   "src/RimMandrake/rimflow/designer_stage.py",
+   "src/RimMandrake/rimflow/coverage_judge.py",
+   "infrastructure/state/ledger/events/OWNER.jsonl"
+  ],
+  "criteria": {
+   "park_ceiling": "designer_stage.open_run: a concept whose judge-and-rework loop has spent more than twice its cap since the last park lift is parked; nothing opens until his own word (ownerSaid or byCard on an OWNER event) names the concept's item (standing_park)",
+   "stale_root_reopens_stage_1": "designer_stage.reopen_if_stale: the earliest accepted stage whose inputs changed is reopened before any later stage runs (stage 1 depends on root)",
+   "judge_needs_stage5_exam": "coverage_judge.run: judges only at stage 5 with exam.json passing (or exam_waived in his words)"
+  },
+  "root": "design/concepts/Pyrelands"
+ },
+ "passed": [],
+ "refusals": [
+  {
+   "clause": "park_ceiling",
+   "criterion_hash": "0be8afd22e7fd1d3",
+   "evidence": [
+    "design/concepts/Pyrelands/stage.json",
+    "src/RimMandrake/rimflow/designer_stage.py:1364-1389",
+    "infrastructure/state/ledger/events/OWNER.jsonl"
+   ],
+   "observed": "A preview of open_run (commit=False, on a scratch copy after unblock) refused: 'PARKED (ceiling): the judge-and-rework loop has spent 8070268 tokens since 2026-11-06T02:30:55Z, past its ceiling of 8000000 (2x the cap); nothing opens until his word on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS'. His card of 2026-11-14 (one exam and one judge pass, no loop) is recorded on RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT, not on the concept's stage item, so standing_park does not see it. (His card: OWNER event tsn 1794721014843506307.)",
+   "would_pass": "An OWNER event with byCard or ownerSaid naming BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS, written after the park; or standing_park reading his word on the mod's ADVANCE item too.",
+   "smallest_fix": {
+    "what": "Record his 2026-11-14 card (one exam and one judge pass on the locked tree, no loop) as a --by-card OWNER event on item BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS, then `designer_stage.py unblock design/concepts/Pyrelands --why ...` (or `coverage_judge.py release`).",
+    "attainable": "yes",
+    "cost": "owner"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The ceiling exists to stop unattended rework loops; it rightly wants his word, it only reads it on a different item id than the one his card was filed on."
+  },
+  {
+   "clause": "stale_root_reopens_stage_1",
+   "criterion_hash": "86e68d669080221b",
+   "evidence": [
+    "design/concepts/Pyrelands/stage.json",
+    "design/concepts/Pyrelands/record.json",
+    "design/concepts/Pyrelands/version/VERSION.json",
+    "src/RimMandrake/rimflow/designer_stage.py:216-262"
+   ],
+   "observed": "Stage 1 was accepted 2026-11-06 with root hash 219a7768...; record.json's root now hashes ae26d34f..., changed by his card 2026-11-14 'Drop the sentence' (commit f71693d77a, which also changed tree, sheet and scenes). stale_stage = (1, ['root']); stages 2 and 3 are stale too (root, owner, sheet, tree, scenes). Once the hold and the park lift, open_run reopens stage 1 (Argue the idea), discards the accepted results for stages 1-3, and the chain (chain_stages, up to 8 a day) runs stages 1, 2, 3 before any exam. Those are Designer rework runs on a locked tree, which this brief forbids ('no loop'; 'never edit a bar, the sheet or the plan').",
+   "would_pass": "The accepted stage 1-3 results carry the current inputs because the change is his own locked_change on the locked version, so stage 4 (Exam) is the open stage.",
+   "smallest_fix": {
+    "what": "Add a designer_stage verb that re-pins the accepted results' inputs to the current hashes when the change is an owner-only record kind (locked_change) citing an OWNER event (here his 2026-11-14 card, commit f71693d77a), refusing otherwise; then open runs stage 4. The alternative, letting stages 1-3 rerun as confirm-as-is Designer runs, costs about three runs (~$8 cap each) and may edit the locked tree.",
+    "attainable": "yes",
+    "cost": "new instrument"
+   },
+   "criterion_verdict": "flawed",
+   "criterion_why": "Sound for an unlocked concept; for a version locked by his word, a change he made by card is not new design input to re-argue, and the stage machine has no way to tell the two apart."
+  },
+  {
+   "clause": "judge_needs_stage5_exam",
+   "criterion_hash": "516a1edba3122c5d",
+   "evidence": [
+    "src/RimMandrake/rimflow/coverage_judge.py:2-12",
+    "design/concepts/Pyrelands/stage.json"
+   ],
+   "observed": "The coverage judge runs only at stage 5 with a passing exam; the concept is at stage 4 with an exam.json that no longer matches the tree and sheet, and the ceiling stops judging too. No judge was launched. `coverage_judge.py status` at 2026-11-14 9:40 PM PST printed the ceiling line.",
+   "would_pass": "The exam passes on the locked tree (after the two fixes above), then `coverage_judge.py run design/concepts/Pyrelands` at stage 5.",
+   "smallest_fix": {
+    "what": "None of its own: it follows from the two refusals above.",
+    "attainable": "yes",
+    "cost": "rerun"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A coverage verdict on a tree the exam has not read would be signed against an unexamined tree."
+  }
+ ]
+}

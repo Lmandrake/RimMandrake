@@ -237,3 +237,11 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 - Was, "Stage now": - **Stage now:** Stage 3 ("reconcile") done offline 2026-11-14 12:40 PST. Preflight re-run 2026-11-14 14:32: **0 refusals**, verdict pass (17 before Stage 3; 1 after it, `plan.md`, since re-pinned by his card). Stages 4-5 are next.
 - Was, "Waiting on": - **Waiting on:** the Conductor's read of `plan.md`'s post-lock change (the one preflight refusal); the live halves of the PROBLEM gaps g2, g4, g6, g7, g9, g10 (Stage 6, or more scene text); the questions at the end of the history.
 - Record: `version/stage_record.json`.
+
+### 2026-11-14 9:45 PM PST, owed exam and coverage judge: refused by the stage machine before either ran (helper RIMMANDRAKE_SIT_PYRELANDS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST)
+
+- His card 2026-11-14: one exam and one coverage judge pass on the locked tree, no loop. Neither ran; stage.json untouched.
+- Refused 1: the concept is past its loop ceiling (8,070,268 of 8,000,000); the park lifts only on his word naming `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, and his card sits on the ADVANCE item.
+- Refused 2: his 2026-11-14 card changed the root (commit f71693d77a), so the next open reopens Designer stage 1, not the exam (`RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE`).
+- The judge runs only at stage 5 after a passing exam, so it waits on both.
+- Record: `version/evidence/exam_and_judge_refusal_2026-11-14.json`.
