@@ -1,0 +1,2 @@
+walk row follows its bar: PASS
+rc=0
