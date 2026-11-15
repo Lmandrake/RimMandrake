@@ -44,6 +44,10 @@ cards at 8 yes). Decide, log `--why "delegated: <class>"`, and list it in the di
 him — but it never waits on the answer. Unanswered by the time the work needs it (or at the end of his sitting),
 the call is taken as a delegated decision and logged as one. ⛔ An unanswered card is never his approval.
 
+**Evidence-for-Ask** (owner, 2026-11-15; CHARTER §Decisions, `standing_rulings.md` §Evidence-for-Ask): any call not on
+the §2 list that an agent would pause for is §1's. Take the obvious answer and log it (§3); pause only on concrete
+evidence against it, carried on the ask. Example: a new mod's first Design Version is 0.1.0, locked by the pipeline.
+
 ## 2. What still needs him — the short list
 
 Each line is reserved by a ruling of his that says so; nothing else is.
@@ -130,13 +134,20 @@ may not validate.
    content items naming an uncertified mod are still held.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
-work waits on it. It never times out into a decision.
+work waits on it. It never times out into a decision. **Evidence-for-Ask is not a timeout:** it decides what is
+reserved in the first place (only these seven lines), not what happens to an unanswered ask. A call on these lines
+stays his and waits for him, and its ask carries its evidence: what he must see to decide, and why the obvious answer
+is not simply taken. (The Conductor gave him this reading 2026-11-15 ~12:00 PM PST; he did not object. That is not a
+ruling of his.)
 
 ## 3. How a delegated decision is recorded
 
 - **Ledger:** `rimflow note <ID> --why "delegated: <class>" --text "<the decision; judge verdict file if any>"`
-  (or the same `--why` on `close`/`drop`/`supersede`/`file`). ⛔ Never `--owner-said`, `--by-card` or
-  `--per-ruling` — those name his authority; this ruling authorises the *class*, the call itself is ours.
+  (or the same `--why` on `close`/`drop`/`supersede`/`file`). ⛔ Never `--owner-said` or `--by-card`, and no
+  `--per-ruling` for a §1 class — those name his authority; this ruling authorises the *class*, the call itself is
+  ours. The one exception is an Evidence-for-Ask call, which cites its ruling: `--per-ruling
+  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`;
+  the `delegated:` why keeps it ours in the digest, never his approval.
 - **Commit:** a body line `Delegated: <class> — <one-line decision>` so `git log --grep '^Delegated:'` finds it.
 - **Art install:** `art.py install … --why "delegated: art <verdict file>"` (`--why` grants no owner authority: the mechanical guards apply, so it never displaces a kept, purged or rejected picture; `--reason` takes only mechanical tags and refuses this text). The pre-push `art_guard` accepts it when the verdict file exists in the clone (`ART_GUARD_FIX_REFUSES_THE_DELEGATE`).
 - **Verdicts:** the judge's output (§4) is committed as

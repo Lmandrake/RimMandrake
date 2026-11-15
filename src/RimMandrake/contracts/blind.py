@@ -156,7 +156,7 @@ Seat = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "
 State = Literal["proposed", "ready", "doing", "built", "validated", "done", "dropped", "superseded"]
 Needs = Literal["offline", "deploy", "game-up", "bridge", "harvest", "owner"]
 DigestClass = Literal["technical", "scope", "design", "art", "cosmetic", "art geometric correction", "art marks",
-                      "bridge idle", "leftovers", "ceiling release", "unclassified"]
+                      "bridge idle", "leftovers", "ceiling release", "evidence-for-ask", "unclassified"]
 POLICY_CLASSES = tuple(sorted(DigestClass.__args__[:-1], key=len, reverse=True))   # longest first: `art marks` > `art`
 Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release"]
 SOURCES = Source.__args__

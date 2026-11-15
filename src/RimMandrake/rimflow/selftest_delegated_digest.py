@@ -382,6 +382,8 @@ def test_triage_and_bridge_free_classed():
     check(len(D.ledger_read(ev)["items"]) == 1, "triage-worded call read, other not")
     check(class_of("delegated backlog triage: moot") == "scope", "triage -> scope")
     check(class_of("delegated: bridge free (ours)") == "bridge idle", "bridge free -> bridge idle")
+    check(class_of("delegated: evidence-for-ask: Contagion q04 answered as the Designer's own guess") ==
+          "evidence-for-ask", "Evidence-for-Ask call -> its own class, not unclassified")
 
 
 def main():
