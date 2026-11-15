@@ -14,3 +14,10 @@ Polish improves play but is not part of passing 0.1.0. **Each entry below is PRO
 - **Why:** a burn that is nearly all green after a week reads closer to "largely green again", but 60% already meets his thresholds.
 - **Acceptance test:** none, playtest tuning judged by eye in play; the locked bar is already met by the threshold.
 - **Decision:** pending his confirmation.
+
+## RIMMANDRAKE_TEST_FIREHAWK_PICKS_LARGEST_FUEL
+- **From:** coverage gap g3 of rm-coverage-judge-1794750987 (2026-11-15). Proposed by the round-6 sort, 2026-11-15 (Evidence-for-Ask, a Conductor sort). Least-sure call: it could be a Problem if a hawk is seen dropping embers on scraps.
+- **Why:** `inv_firehawk_ember` says the hawk takes the ember to the largest easily found fuel. `sc_firehawk` reads only that a fire starts at the drop cell beyond the front, so a hawk that picks any fuel passes. A player would hardly tell the largest fuel from a large one.
+- **Change:** in `sc_firehawk`, stage two fuel piles of clearly different size, both in reach. The expect is that the drop lands on the larger pile. The control is to remove the larger pile, after which the drop goes to the smaller.
+- **Acceptance test:** `python3 -c "import json,sys;x=[c for c in json.load(open('design/concepts/Pyrelands/scenes.json'))['scenes'] if c['id']=='sc_firehawk'][0];sys.exit(0 if 'larg' in x['expect'].lower() and 'larg' in json.dumps(x['control']).lower() else 1)"`
+- **Decision:** pending his confirmation.

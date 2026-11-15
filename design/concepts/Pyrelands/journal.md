@@ -263,3 +263,32 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 1:47 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 1:47 AM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-15 11:50 AM PST, Evidence-for-Ask: questions 2, 4 and 8 taken, round-6 gaps sorted (BENCH helper, delegated)
+
+Under his Evidence-for-Ask rule (2026-11-15, `RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`): each
+question below has an obvious answer from his recorded words or the shipped record, and no evidence was found against it,
+so the Conductor takes it. These are Conductor decisions, not his.
+
+- CONDUCTOR INTERVENED (stage 3, 2026-11-15 11:50 AM PST, kind decision): answers question 2 (g14, the stale exam):
+  yes, a locked version owes the Cold Reader exam again whenever its tree or sheet changes, and Stage 4's blind
+  challenger does not replace it. Already done: the exam was retaken on the current tree at `292b94bca8` (20 of 20,
+  readers agree, control missed; its inputs hash equals the tree the round-6 judge read). Source: his card 2026-11-14
+  "one exam on the locked tree"; the re-pin rule `RIMMANDRAKE_REPIN_STAGE_FOUR_LEAVES_EXAM_VOID`.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-15 11:50 AM PST, kind decision): answers question 4 (`no_ordinary_rain`
+  decided twice): no, `sc_no_rain` does not drop to support. Something other than the weather list can choose ordinary
+  rain: a game condition's forced weather and Odyssey's wet-climate tile mutator (`version/blind_challenge/cycle_1/SUMMARY.md`
+  "Rain question"). The code fix landed (`RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST`) and visit 1 showed the
+  forced-rain swap live. `sc_no_rain` stays the decider and still owes the forced-weather case (round-6 g8).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-15 11:50 AM PST, kind decision): answers question 8 (the PROBLEM gaps' live
+  halves): they stay in 0.1.0 with scene text, and offline halves alone do not suffice. Source: his card 2026-11-15 "Fix
+  all 12 in 0.1.0" (OWNER:1794748469904049550). The scene text landed in `91a7c61989`. Visit 1 (`f5c2c3cf0b`) passed
+  `sc_grass_regreens`, `sc_populations`, `sc_furnace_bed`, `sc_flamefang_venom` and the gate-off check. `sc_foreign_arrivals`
+  was not run and is owed at the next Stage 6.
+- Dry-ash text: the biome description said dry ash "barely feeds a crop". The locked leaf `ash_fertile_when_watered`
+  says sowable dry (about 70%), very fertile watered, and "must not read as ash being barren" (his card 2026-11-07:
+  "Keep 70%, sowable"). The text was fixed to match the bar, and the bar did not move
+  (`RIMMANDRAKE_RECONCILE_DRY_ASH_TEXT_WITH_VERY_FERTILE_BAR`).
+- Round-6 gaps (rm-coverage-judge-1794750987) are sorted in `version/gaps_sorted.md` "Round 6". Of the 18, 14 are
+  PROBLEM, 3 CORRECTION, 1 POLISH (`version/polish.md`, proposed) and 0 NEXT VERSION. Judging stays stopped
+  (REFUSAL_NOTHING_COULD_EVER_PASS); this sort releases nothing.
