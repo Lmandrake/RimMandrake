@@ -78,7 +78,9 @@ def main():
                 print("   ", k)
             return 0
 
-        rb.call("rimworld/set_god_mode", {"enabled": True})
+        # RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (p1.F22): god mode is a write; a dry run or a plan sends none
+        if a.apply and not a.dry_run:
+            rb.call("rimworld/set_god_mode", {"enabled": True})
         ok = fail = 0
         first = last = None
         for i, k in enumerate(ks):

@@ -605,7 +605,10 @@ def sweep_at_start(B, made_map):
 def remove_intruders(B, rect=None, margin=SITE_SWEEP_MARGIN):
     """Vanish (no death action: a killed Toughspike/Fingerspike runs DeathActionWorker_Divide) every hostile pawn and every
     factionless stranger / wild animal -- on the whole map, or inside rect +- margin. Colonists and the colony's own are never
-    matched. Read back; -> {"removed": [...], "left": [...]}."""
+    matched. Read back; -> {"removed": [...], "left": [...]}. Keep snapshot unreadable: remove nothing, as
+    sweep_non_colonists does (RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS, p1.F15)."""
+    if KEEP_UNREAD[0]:
+        return {"route": "refused: the keep snapshot was unreadable", "removed": [], "left": []}
     H = _helpers()
 
     def pick(x):

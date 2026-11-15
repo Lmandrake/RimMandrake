@@ -279,11 +279,18 @@ def run(rb, n, do_real, verbose):
     # Safety: this paints ONE cell, alternating between two terrains so the
     # real write path is exercised rather than a no-op, then puts the original
     # terrain back. On a real colony that is a single cell, restored.
+    # RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (p1.F20): a write, so only under do_real, and only when the
+    # original terrain was read (an unreadable original cannot be put back).
     tool_names = {t.get("name") for t in tools}
-    if "jawa/set_terrain" in tool_names:
+    original = None
+    if "jawa/set_terrain" in tool_names and do_real:
         original = ((rb.call("rimworld/get_cell_info", {"x": cx, "z": cz}) or {})
                     .get("cell") or {}).get("terrainDefName")
         results["context"]["terrainBenchCell"] = {"x": cx, "z": cz, "original": original}
+        if not original:
+            results["classes"].append({"name": "companion: jawa/set_terrain",
+                                       "skipped": "original terrain unreadable, so it could not be restored"})
+    if original:
         flip = ["Sand", "Gravel"]
         samples = []
         try:
