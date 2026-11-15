@@ -97,8 +97,10 @@ namespace JawaBench.BridgeTools
                     Meters = keys.Select(_ => new H.Meter()).ToArray();
                     Keys = keys.ToArray();
                     _map = map;
+                    // marked patched only once Patch returned (c02.F6): a Patch that throws must not leave the method
+                    // recorded as hooked, or every later start skips it and its meter reads a silent zero
                     foreach (var mb in map.Keys)
-                        if (_patched.Add(mb)) _harmony.Patch(mb, prefix: pre, finalizer: fin);
+                        if (!_patched.Contains(mb)) { _harmony.Patch(mb, prefix: pre, finalizer: fin); _patched.Add(mb); }
                 }
                 catch (Exception e) { _on = false; Status = "failed: " + e.GetType().Name + ": " + e.Message; return Status; }
                 Refused.Clear(); Refused.AddRange(refused);

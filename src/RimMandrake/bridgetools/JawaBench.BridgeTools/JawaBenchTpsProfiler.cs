@@ -215,7 +215,14 @@ namespace JawaBench.BridgeTools
             int c;
             try { c = TlCat(__instance); }      // pure field read; the category is captured ONCE, here, for the finalizer
             catch (Exception e) { Fail("tl-prefix", e); __state.Rejected = true; return; }
-            JawaBenchStallProbe.Enter(__instance, Find.TickManager.TicksGame);   // BRIDGE_STALL_DIAGNOSTIC_1: read only by a stall dump
+            // BRIDGE_STALL_DIAGNOSTIC_1 (read only by a stall dump). Inside a try (c02.F1): a TickManager read that throws is a
+            // recorded fault, never an exception out of the game's TickList.Tick. Enter stays ahead of Begin and unkeyed to
+            // the scope on purpose: every TlPre past the two returns above enters, and TlFin's Leave only nulls the mark.
+            try
+            {
+                JawaBenchStallProbe.Enter(__instance, Find.TickManager.TicksGame);
+            }
+            catch (Exception e) { Fail("tl-stallprobe", e); __state.Rejected = true; return; }
             Begin(WD.PTlNormal + c - CNormal, c, out __state);
         }
 

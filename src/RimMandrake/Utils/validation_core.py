@@ -94,8 +94,9 @@ def rows_exit(rows):
 
 
 def hrow(rows, rid, status, cls, detail):
-    """A harness/site row: a row of its own standalone; in SHARED mode only when it is not PASS."""
-    if SHARED and status == "PASS":
+    """A harness/site row: a row of its own standalone; in SHARED mode only when it is not PASS (after PRE's judgement: a
+    PASS under a pending fault reads UNMEASURED and is a row)."""
+    if SHARED and status == "PASS" and PRE.judge(status, cls, detail)[0] == "PASS":
         SITE_NOTES.append({"id": rid, "detail": detail})
         return
     row(rows, rid, status, cls, detail)
@@ -895,7 +896,8 @@ class LogTap(object):
     is evicted ~3,400 ticks after it is written: a log budget read once at the end of a 10-minute proof saw only its last
     blocks (v2's E9 found "0 warn+ lines since base" though E7b's warning had fired). The tap is polled after every
     step_game_ticks a bridge makes (tap_after) and at block boundaries; `lost` counts journal entries that scrolled out
-    between two polls -- a budget with lost > 0 is not evidence."""
+    between two polls -- a budget with lost > 0 is not evidence. A list_logs reply that is a failure envelope (or carries no
+    logs list) is a BLIND read, not a quiet log: it counts as at least one lost entry and leaves a gap naming why."""
 
     def __init__(self, B):
         self.B = B
@@ -907,10 +909,23 @@ class LogTap(object):
         lg = B.call("rimbridge/list_logs", limit=1, minimumLevel="trace") or {}
         self.last = max([x.get("Sequence", 0) for x in lg.get("logs") or []] or [0])
         self.base = self.last
+        self._blind(lg, "base")
+
+    def _blind(self, lg, when):
+        """True (and recorded as lost) when a list_logs reply is a failure envelope rather than a journal read."""
+        if isinstance(lg, dict) and lg.get("success") is not False and isinstance(lg.get("logs"), list):
+            return False
+        self.lost += 1
+        if len(self.gaps) < 20:
+            why = str(lg.get("error") or lg.get("message") or lg)[:120] if isinstance(lg, dict) else repr(lg)[:120]
+            self.gaps.append((None, None, self.polls, "list_logs %s read failed: %s" % (when, why)))
+        return True
 
     def poll(self):
         self.polls += 1
         lg = self.B.call("rimbridge/list_logs", afterSequence=self.last, limit=1000, minimumLevel="trace") or {}
+        if self._blind(lg, "poll"):
+            return
         logs = lg.get("logs") or []
         if not logs:
             return
@@ -1363,8 +1378,8 @@ def _mineable_things(B, r):
     lt = B.call("jawa/list_things", rect=r, limit=5000) or {}
     things = lt.get("things") or []
     why = None
-    if lt.get("success") is False:
-        why = "list_things unreadable: %s" % str(lt)
+    if lt.get("success") is False or not isinstance(lt.get("things"), list):
+        why = "list_things unreadable: %s" % str(lt)[:200]
     elif isinstance(lt.get("countMatched"), int) and lt["countMatched"] > len(things):
         why = "list_things capped: %d of %d things returned" % (len(things), lt["countMatched"])
     names = sorted({str(t.get("def") or t.get("defName") or "") for t in things} - {""})
@@ -1390,8 +1405,8 @@ def assert_open_sky(B, rect, margin=SKY_MARGIN, size=None):
     why = []
     rf = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = _roof_cells(rf.get("ops"))
-    if rf.get("success") is False:
-        why.append("get_roof_batch unreadable: %s" % str(rf))
+    if rf.get("success") is False or not isinstance(rf.get("ops"), str) and not isinstance(rf.get("roofs"), list):
+        why.append("get_roof_batch unreadable: %s" % str(rf)[:200])
     elif not roofs and [x for x in (rf.get("roofs") or []) if x not in (None, "None")]:
         why.append("roof present over the site: %s" % rf.get("roofs"))  # a reply with names but no ops
     if roofs:

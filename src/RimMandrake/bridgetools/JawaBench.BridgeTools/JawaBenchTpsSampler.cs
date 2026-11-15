@@ -494,6 +494,19 @@ namespace JawaBench.BridgeTools
             // the crashed session's Player-prev.log to the next launch's overwrite.
             RootFinalizerCore(__state, __exception);
             PumpIdleSafe();
+            TierFrameSafe();
+        }
+
+        // RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND (c02.F9): the test tier's TTL and campaign-profile disarm run on EVERY
+        // main-thread frame, like the pump. Inside RootFinalizerCore they sat after its early returns, so a sampler that had
+        // faulted (RuntimeError) or a frame whose Root.Update threw left an armed test tier armed past its TTL and on a
+        // campaign. A Frame that throws is recorded once and not called again.
+        private static bool _tierFrameFaulted;
+        private static void TierFrameSafe()
+        {
+            if (_tierFrameFaulted || !OnMain()) return;
+            try { JawaBenchTpsTier.Frame(WD.Now); }
+            catch (Exception e) { _tierFrameFaulted = true; Fail("tier-frame", e); }
         }
 
         private static void RootFinalizerCore(JawaBenchHookGuard.Scope __state, Exception __exception)
@@ -511,7 +524,6 @@ namespace JawaBench.BridgeTools
                 try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
                 double now = WD.Now;
                 if (now - _lastMarker >= 3600) { _lastMarker = now; if (now > 60) Marker("hourly"); }
-                JawaBenchTpsTier.Frame(now);
             }
             catch (Exception e) { GRoot.Fault("root-finalizer", e); Fail("root-finalizer", e); }
         }

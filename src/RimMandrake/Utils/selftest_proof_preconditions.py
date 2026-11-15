@@ -243,6 +243,8 @@ class RFFake(object):
             return {"success": True, "things": [{"id": 7}] if kw.get("defName") == "Battery" else []}
         if tool == "jawa/comp_read":
             return {"success": True, "values": {"heldUnits": 0}}
+        if tool == "jawa/get_roof_batch":   # the real reply carries ops; a bare success is no roof data (assert_open_sky)
+            return {"success": True, "ops": "None:" + kw.get("rects", ""), "roofs": ["None"]}
         if tool == "rimworld/list_selected_gizmos":
             return {"success": True, "gizmos": [{"label": "Job: Empty", "gizmoId": 1}]}
         return {"success": True}

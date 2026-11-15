@@ -50,6 +50,19 @@ def main():
     check([r["id"] for r in kept] == ["a1", "a2", "a3"] and kept[2]["status"] == "FAIL",
           "the rows measured so far are kept beside the yield file: %s" % [r["id"] for r in kept])
     os.environ.pop("TESTQ_YIELD_FILE", None)
+    # RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND (p1.F14): in SHARED mode a PASS hrow under a pending fault is a row, UNMEASURED
+    saved, V.SHARED = V.SHARED, True
+    try:
+        hr, n0 = [], len(V.SITE_NOTES)
+        V.hrow(hr, "h1", "PASS", "SITE", "clean")
+        check(hr == [] and len(V.SITE_NOTES) == n0 + 1, "SHARED clean PASS hrow goes to SITE_NOTES, no row")
+        with V.PRE.scope("f14"):
+            V.PRE.fault("jawa/map_info", "refused")
+            V.hrow(hr, "h2", "PASS", "SITE", "faulted")
+        check([(r["id"], r["status"]) for r in hr] == [("h2", "UNMEASURED")],
+              "SHARED faulted PASS hrow reads UNMEASURED as a row: %s" % [(r["id"], r["status"]) for r in hr])
+    finally:
+        V.SHARED = saved
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

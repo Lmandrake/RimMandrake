@@ -60,6 +60,11 @@ class FakeBridge(object):
             return {"success": True, "hasCurrentGame": True, "mapCount": 1}
         if tool == "jawa/running_mods":
             return {"success": True, "packageIds": ["mandrake.rm.flowworks"]}
+        # the real replies carry their data; a bare success is no roof / thing data to assert_open_sky
+        if tool == "jawa/get_roof_batch":
+            return {"success": True, "ops": "None:" + kw.get("rects", ""), "roofs": ["None"]}
+        if tool == "jawa/list_things":
+            return {"success": True, "things": [], "countMatched": 0, "isCompleteList": True}
         return {"success": True}
 
     def probe(self, cmd, wait_s=20.0):

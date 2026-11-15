@@ -408,5 +408,44 @@ V._CALM.clear()
 ok(cr2.get("ok") is False and sorted(hb2.need_sets) == [(1, "Food", 1.0), (6, "Food", 1.0)],
    "a calm piece that breaks still feeds the starving colonist (ok=False names it): %s" % hb2.need_sets)
 
+# RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND (p1.F17): a reply that carries no roof / thing data is not an open site.
+class _SkyBlind(_Sky):
+    def __init__(self, blank):
+        _Sky.__init__(self, {}, {})
+        self.blank = blank
+
+    def call(self, tool, **kw):
+        if tool == self.blank:
+            return {}
+        return _Sky.call(self, tool, **kw)
+
+
+for _tool in ("jawa/get_roof_batch", "jawa/list_things"):
+    _vb = V.assert_open_sky(_SkyBlind(_tool), _site)
+    ok(_vb["ok"] is False and _vb["why"], "assert_open_sky: an empty %s reply (no data) is not ok: %s" % (_tool, _vb["why"]))
+
+
+# p1.F13: a list_logs failure envelope is a blind poll, not a quiet log
+class _LogsDown(object):
+    def __init__(self, first_ok):
+        self.first_ok = first_ok
+
+    def call(self, tool, **kw):
+        if self.first_ok:
+            self.first_ok = False
+            return {"success": True, "logs": [{"Sequence": 10, "Level": "Info"}]}
+        return {"success": False, "error": "bridge refused"}
+
+
+_t1 = V.LogTap(_LogsDown(True))
+_t1.poll()
+ok(_t1.lost > 0 and _t1.gaps, "LogTap: a list_logs failure envelope on a poll is recorded blind (lost=%s gaps=%s)" % (_t1.lost, _t1.gaps))
+_t2 = V.LogTap(_LogsDown(False))
+ok(_t2.lost > 0, "LogTap: a list_logs failure envelope at the base read is recorded blind (lost=%s)" % _t2.lost)
+_t3 = V.LogTap(_LogsDown(True))
+_t3.B = type("Q", (), {"call": lambda self, tool, **kw: {"success": True, "logs": []}})()
+_t3.poll()
+ok(_t3.lost == 0 and not _t3.gaps, "LogTap: a quiet log (success, no lines) stays not blind")
+
 print("selftest_validation_core_site: %d/%d" % (sum(RES), len(RES)))
 sys.exit(0 if all(RES) else 1)

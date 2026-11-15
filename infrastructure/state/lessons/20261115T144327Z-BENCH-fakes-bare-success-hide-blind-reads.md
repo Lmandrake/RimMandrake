@@ -1,0 +1,3 @@
+Selftest fake bridges that answer every tool with a bare {'success': True} (selftest_proof_hose FakeBridge, selftest_proof_preconditions RFFake) were certifying open-sky sites from no roof/thing data; once assert_open_sky treated a reply with no ops/roofs or no things list as unreadable, those fakes had to carry the real reply shape. Separately, selftest_extensions (FlowWorks/northstar) and bridgetools/selftest_terrain_overlays ('C#: set_terrain_batch takes clearOverlays') fail at HEAD 1a2a8e70c5 in clone RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES.det with validation_core.py restored to HEAD: pre-existing, not from this item.
+item: RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND
+home: live-debugging-proof-harness
