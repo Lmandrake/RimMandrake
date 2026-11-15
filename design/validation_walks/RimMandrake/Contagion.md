@@ -126,9 +126,11 @@ least certain. `### the experience` is his to dictate.
       changes, and its tells come before it rather than after. (guess: a sequence)
 
 **Helix devices**
-- [ ] `contagion_repulsor_clears_sky` — a powered `RM_CloudRepulsor` shows a
-      cleared patch of sky or light around it while the map beyond stays under the
-      Bloom. (guess)
+- [ ] `contagion_repulsor_clears_sky` — a powered `RM_CloudRepulsor` warns, before
+      it starts, that its Burn covers the whole map and everyone in the open; once
+      warm, the whole Contagion map's sky visibly clears into the Burn (owner
+      2026-11-15, OWNER:1794772416196929336; the old "cleared patch" guess was wrong:
+      the built condition is map-wide).
 - [ ] `contagion_sunbeam_reads_as_beam` — an `RM_Sunbeam` reads as a beam of light
       striking the ground. (guess)
 

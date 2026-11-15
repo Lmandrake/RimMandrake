@@ -1,0 +1,828 @@
+{
+ "scenes": [
+  {
+   "id": "sc_burn_dash",
+   "kind": "acceptance",
+   "requirement": [
+    "tells_then_burn",
+    "shelter_in_lead",
+    "one_dash_at_cost",
+    "touched_reads_early",
+    "sunbeam_arrest_treats"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_burn_dash",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "standing Bloom at midday, no condition active (asserted)",
+    "four colonists: two working 8 cells from roofed refuge A, two 60 cells away; one of the near pair already Contagion-touched below the first mutation (asserted severity)",
+    "refuge B, roofed, 20 open cells from A",
+    "a colonist holding a Sunbeam inside A"
+   ],
+   "action": "jump the clock to the start of a natural Burn's tells window and run to Burn start; order one near colonist to dash from A to B mid-Burn; after the Burn order the Sunbeam holder to treat the touched colonist",
+   "expect": "tells render before the Burn; the near pair are in shade at Burn start and the far pair are not; the dasher arrives alive with a Burn dose; the treated colonist's progression stops, mutations kept, a Sunbeam burn added",
+   "control": {
+    "case": "the same staging with the dash order replaced by drafting the colonist in the open for the whole Burn",
+    "expect": "that colonist's dose is at least three times the dasher's and the dasher's is below the downed threshold",
+    "rules_out": "a Burn so weak that staying out is as safe as dashing, or so strong that the dash kills: a lockdown with no purposeful dash"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_bloom_reads_sick",
+   "kind": "acceptance",
+   "requirement": [
+    "bloom_reads_sick"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_bloom_reads_sick",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "standing Bloom at midday (asserted weather def and hour)",
+    "a second map: temperate quicktest under vanilla rain at midday"
+   ],
+   "action": "capture both maps at play zoom",
+   "expect": "a judge names the Contagion shot a red storm-roofed sky and the control grey overcast",
+   "control": {
+    "case": "the temperate rain capture",
+    "expect": "named grey ordinary rain",
+    "rules_out": "a capture so dark at any hour that every sky looks alike"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_tells_then_burn",
+   "kind": "acceptance",
+   "requirement": [
+    "tells_then_burn"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_tells_then_burn",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "standing Bloom, a gawpsack and a rattlegrope in view (asserted)",
+    "the natural Burn tick known from the saved schedule"
+   ],
+   "action": "jump to one tick before the tells window and advance through Burn start, reading tell render state each 60 ticks",
+   "expect": "the first tell renders at least the configured window before the Burn condition starts",
+   "control": {
+    "case": "tells switched off in settings",
+    "expect": "no tell renders and the Burn still arrives on its tick",
+    "rules_out": "a tell flag that is set but never drawn, or a Burn that only arrives because the tells ran"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_shelter_in_lead",
+   "kind": "acceptance",
+   "requirement": [
+    "shelter_in_lead"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_shelter_in_lead",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "two colonists working 8 cells from a roofed refuge, two working 60 cells away (asserted positions and jobs)",
+    "no draft, no forced job (asserted)"
+   ],
+   "action": "run a natural Burn tells window to Burn start",
+   "expect": "the near pair are in shade, the far pair in the open, each by its own job",
+   "control": {
+    "case": "the same with the near pair placed already under the roof",
+    "expect": "they are in shade but the scene records no lead taken, so it is not counted",
+    "rules_out": "a pass from pawns that never had to move"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_one_dash_at_cost",
+   "kind": "acceptance",
+   "requirement": [
+    "one_dash_at_cost"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_one_dash_at_cost",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "forced Burn running (asserted condition)",
+    "two roofed refuges 20 open cells apart, a prepared colonist in the first"
+   ],
+   "action": "order the colonist to the second refuge; draft a second colonist in the open for the Burn's length",
+   "expect": "the dasher arrives alive with a dose above zero and below downed; the standing colonist's dose is at least three times larger",
+   "control": {
+    "case": "the same dash with the Burn ended first",
+    "expect": "the dasher's dose stays zero",
+    "rules_out": "dose from some other cause than the Burn"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_refuge_is_shade",
+   "kind": "acceptance",
+   "requirement": [
+    "refuge_is_shade"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_refuge_is_shade",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_BURN_REFUGE_READS_SHARED_SHADE landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "forced Burn running",
+    "five pawns: on a roofed cell, in a tree's cast canopy shade off the trunk, in water, on a trunk cell the shade grid reads open, on open ground (asserted shade grid reads)"
+   ],
+   "action": "hold the Burn 2500 ticks",
+   "expect": "dose rises on the two cells the shade grid reads open and stays zero on the three it reads shade",
+   "control": {
+    "case": "the same five placements with the Burn ended",
+    "expect": "no dose anywhere",
+    "rules_out": "a protection that comes from the exact trunk cell rather than the shade grid"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_natives_take_burn",
+   "kind": "acceptance",
+   "requirement": [
+    "natives_take_burn"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_natives_take_burn",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a UV-shy native, a Scaldhide and a Crispling in the open, predators removed (asserted)"
+   ],
+   "action": "force a Burn and hold 2500 ticks",
+   "expect": "the UV-shy native carries a Burn injury; the Scaldhide and Crispling carry none",
+   "control": {
+    "case": "the same three for 2500 ticks with no Burn",
+    "expect": "none carries a Burn injury",
+    "rules_out": "harm from a predator or the heat rather than the Burn"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_preburn_dive",
+   "kind": "acceptance",
+   "requirement": [
+    "preburn_dive"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_preburn_dive",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_PREBURN_DIVE_NATIVES_LEAVE_FIRST landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "UV-shy natives and a sun-loving native in the open, the natural Burn tick known"
+   ],
+   "action": "run the tells window to Burn start",
+   "expect": "the UV-shy natives are sheltered with zero dose and the sun lover is in the open at Burn start",
+   "control": {
+    "case": "the same with the dive switched off in settings",
+    "expect": "the UV-shy natives are in the open at Burn start",
+    "rules_out": "the reactive sprint after damage that exists today"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_bloom_quiets_sundash",
+   "kind": "acceptance",
+   "requirement": [
+    "bloom_quiets_sundash"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_bloom_quiets_sundash",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "standing Bloom at midday, three Unfinished in the open (asserted)"
+   ],
+   "action": "count sun-escape jobs for 2500 ticks; then force a Burn and count again",
+   "expect": "zero under the Bloom; at least one under the Burn",
+   "control": {
+    "case": "the same Unfinished on a clear temperate quicktest at midday",
+    "expect": "at least one sun-escape job",
+    "rules_out": "a count that is zero because the escape is off everywhere"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_repulsor_warns_and_clears",
+   "kind": "acceptance",
+   "requirement": [
+    "repulsor_warns_and_clears"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_repulsor_warns_and_clears",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "standing Bloom, no condition (asserted)",
+    "a built Repulsor unpowered; a gravship hardpoint Repulsor on a second staging"
+   ],
+   "action": "power the Repulsor, read the warning before warmup, run warmup, then cut power; repeat for the hardpoint variant and once on a temperate quicktest",
+   "expect": "warning names the whole map before warmup; RM_ContagionBurn after warmup; lapses within its hold time; off-biome RM_RepulsorClearSky only",
+   "control": {
+    "case": "the Repulsor with its setting off",
+    "expect": "it never warms and no condition appears",
+    "rules_out": "a natural Burn that happened to start in the window"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_touched_reads_early",
+   "kind": "acceptance",
+   "requirement": [
+    "touched_reads_early"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_touched_reads_early",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)"
+   ],
+   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff",
+   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure",
+   "control": {
+    "case": "the same colonist kept indoors for the day",
+    "expect": "no touched hediff and no message",
+    "rules_out": "a severity set by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_sunbeam_arrest_treats",
+   "kind": "acceptance",
+   "requirement": [
+    "sunbeam_arrest_treats"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_sunbeam_arrest_treats",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a touched colonist mid-progression with one mutation (asserted)",
+    "a second colonist holding a Sunbeam"
+   ],
+   "action": "order hold-the-lens on the touched colonist; capture during the job; after it, re-expose outdoors for a day",
+   "expect": "progression stops, the mutation stays, a Sunbeam burn is added, re-exposure restarts progression; a judge names the capture a beam",
+   "control": {
+    "case": "the job interrupted at half its bar",
+    "expect": "progression continues and no burn is added",
+    "rules_out": "a progression that was already stopped before the job"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_unfinished_malformed",
+   "kind": "acceptance",
+   "requirement": [
+    "unfinished_malformed"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_unfinished_malformed",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a Bloody Mess, no Unfinished on the map (asserted)"
+   ],
+   "action": "jump the budding deadline three times; capture each Unfinished; kill one",
+   "expect": "three buds with pairwise different limb rolls; the dead one leaves slime and mulch, no corpse",
+   "control": {
+    "case": "the same with budding switched off",
+    "expect": "no Unfinished appears",
+    "rules_out": "Unfinished spawned by the test rather than budded"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_coalescence_grows_and_breaks",
+   "kind": "acceptance",
+   "requirement": [
+    "coalescence_grows_and_breaks"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_coalescence_grows_and_breaks",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a placed Coalescence at stage 1 (asserted mass)",
+    "six Unfinished within 20 cells",
+    "a second Coalescence for the control"
+   ],
+   "action": "jump passive growth and let the Unfinished walk; read mass, stage and manhunters; then power a Repulsor to force a Burn and read the remains",
+   "expect": "at least one stage up with absorption counted from arrivals; manhunters within the cap; Burn collapse leaves Monstrous samples and mulch",
+   "control": {
+    "case": "the second Coalescence destroyed by gunfire",
+    "expect": "less mulch and no samples",
+    "rules_out": "absorption counted from Unfinished removed by cleanup"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_waiting_costs_more",
+   "kind": "acceptance",
+   "requirement": [
+    "waiting_costs_more"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_waiting_costs_more",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a placed Coalescence at stage 1, incidents off except its own emission (asserted storyteller quiet)"
+   ],
+   "action": "read manhunter count and spread at stage 1, jump to stage 2, read again",
+   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident",
+   "control": {
+    "case": "the same span with growth held at stage 1",
+    "expect": "no rise in emissions",
+    "rules_out": "pressure from an unrelated raid"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_genome_brings_tissue",
+   "kind": "acceptance",
+   "requirement": [
+    "genome_brings_tissue"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_genome_brings_tissue",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "a donor colonist and a Bloody Mess host (asserted)",
+    "a second Bloody Mess for the interrupt control"
+   ],
+   "action": "extract a sample, read the odds before ordering the injection, inject, jump four days; install one organ on the donor",
+   "expect": "odds shown before the job; 2 to 4 donor-labelled parts; matched install gives the mood and no mismatch",
+   "control": {
+    "case": "a second injection interrupted mid-bar",
+    "expect": "the sample is still carried and no gestation starts",
+    "rules_out": "a batch spawned by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_limb_still_grows",
+   "kind": "acceptance",
+   "requirement": [
+    "limb_still_grows"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_limb_still_grows",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a Monstrous sample and a Bloody Mess host (asserted)",
+    "a natural-armed colonist beside the patient"
+   ],
+   "action": "inject, jump gestation, install the limb, capture both colonists in four facings; then surgically remove it",
+   "expect": "one of the five limb items; the fitted colonist renders differently; removal spawns a stunned Unfinished",
+   "control": {
+    "case": "the same with grown limbs switched off",
+    "expect": "an ordinary batch and no limb",
+    "rules_out": "a limb spawned by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_prints_pay",
+   "kind": "acceptance",
+   "requirement": [
+    "prints_pay"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_prints_pay",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a living Unfinished with a known roll, the colony with a Contagion home (asserted)"
+   ],
+   "action": "scan it, fire a Helix contract for that roll, deliver; scan it again",
+   "expect": "one print whose label names the roll; the contract consumes it and pays; the second scan is refused",
+   "control": {
+    "case": "a contract asking for a different roll",
+    "expect": "the print is not accepted",
+    "rules_out": "a print spawned by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_bodyprints_phased",
+   "kind": "acceptance",
+   "requirement": [
+    "bodyprints_phased"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_bodyprints_phased",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_BODYPRINTS_SKIN_BEFORE_PRINT landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "a native corpse in the open, a Bloody Mess 10 cells away"
+   ],
+   "action": "jump the phase clock through each stage, reading the thing; sample the final print",
+   "expect": "corpse, collapsed skin and print in order; the Bloody Mess eats the skin; the print yields a sample",
+   "control": {
+    "case": "the same corpse with Bodyprints switched off",
+    "expect": "the old slime death and no print",
+    "rules_out": "instant slime standing in for the phases"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_flora_flesh",
+   "kind": "acceptance",
+   "requirement": [
+    "flora_flesh"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_flora_flesh",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "one patch per rostered plant (asserted defs)",
+    "a zhool in a mixed patch; the same zhool on a temperate quicktest"
+   ],
+   "action": "capture the patches at play zoom; jump the haze clock on both maps",
+   "expect": "every plant renders its own RM art; conversions on the Contagion, none on the temperate map",
+   "control": {
+    "case": "the temperate map",
+    "expect": "no conversion",
+    "rules_out": "converted plants planted by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_cast_lives_here",
+   "kind": "acceptance",
+   "requirement": [
+    "cast_lives_here"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_cast_lives_here",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "wild animals cleared, animalDensity read from the def (asserted)"
+   ],
+   "action": "run one in-game day by clock; count spawns per roster row; capture each species",
+   "expect": "at least half the rows spawn; no missing texture",
+   "control": {
+    "case": "the same day with the biome's animalDensity read as zero on a stock biome tile",
+    "expect": "no Contagion species spawns",
+    "rules_out": "animals spawned by the test"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_settings_superb",
+   "kind": "acceptance",
+   "requirement": [
+    "settings_superb"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_settings_superb",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "quicktest map retiled to the Contagion"
+   ],
+   "action": "flip each feature switch off in turn and run its step; reset to defaults",
+   "expect": "each switch stops its feature alone; reset restores shipped values; the scoring worker's rarity switch is labelled unsupported",
+   "control": {
+    "case": "every switch on",
+    "expect": "every feature runs",
+    "rules_out": "a switch that reads back but changes nothing"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_no_vanilla_forest",
+   "kind": "acceptance",
+   "requirement": [
+    "no_vanilla_forest"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_no_vanilla_forest",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "the Contagion site and a temperate forest quicktest, both at midday"
+   ],
+   "action": "capture both at play zoom for a judge who did not stage them",
+   "expect": "the judge does not name the Contagion shot a forest and does name the control one",
+   "control": {
+    "case": "the temperate forest capture",
+    "expect": "named a forest",
+    "rules_out": "a judge shown only close-ups"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_walk_red_lid",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_red_lid"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_walk_red_lid",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "start": [
+    "a lived-in Contagion save made mid-way through two in-game weeks, owner's full list plus all five DLC (asserted save path and list hash)"
+   ],
+   "action": "take a natural Burn with one dash, then a Coalescence harvest under a Repulsor Burn and a gestation; reload and take them in the second order, harvest first; repeat the dash on the next Burn",
+   "expect": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same samples and letters; the repeated dash costs a dose again",
+   "control": {
+    "case": "the same walk on a fresh quicktest map",
+    "expect": "refused as not lived-in, recorded INVALID",
+    "rules_out": "a fresh map standing in for the lived-in save"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate"
+  }
+ ],
+ "showcases": [
+  {
+   "id": "burn_dash",
+   "scenes": [
+    "sc_burn_dash",
+    "sc_sunbeam_arrest_treats"
+   ],
+   "exercises": [
+    "bloom",
+    "burn_clock",
+    "visible_tells",
+    "burn_pressure_dive",
+    "preburn_dive",
+    "touched_exposure",
+    "sunbeam_arrest",
+    "sunbeam_weapon",
+    "fauna_gawpsack",
+    "flora_rattlegrope"
+   ],
+   "source": [
+    "OWNER:1794772416196929336"
+   ],
+   "decision": "d_q02_first_demo"
+  },
+  {
+   "id": "living_map",
+   "scenes": [
+    "sc_flora_flesh",
+    "sc_cast_lives_here",
+    "sc_no_vanilla_forest"
+   ],
+   "exercises": [
+    "biome_roster",
+    "zhool_haze",
+    "zhool_render",
+    "bulloo",
+    "zhooliza",
+    "rustpuff_roster",
+    "wrecks",
+    "fauna_blisterfloat",
+    "fauna_scorchpod",
+    "fauna_bloodlurk",
+    "fauna_meltgut",
+    "fauna_sparkleech",
+    "fauna_sparkleech_grub",
+    "fauna_scaldhide",
+    "fauna_doublemaw",
+    "fauna_gnashling",
+    "fauna_contagion_ikee",
+    "fauna_peeper",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_skinflap",
+    "fauna_gorekite",
+    "fauna_danglemaw",
+    "fauna_crispling",
+    "fauna_sloshbelly",
+    "fauna_ogleknot",
+    "flora_eyebark",
+    "flora_lashgrass",
+    "flora_bleedleaf",
+    "flora_gorestalk",
+    "flora_sapblister",
+    "flora_bloody_fist",
+    "flora_halfmade_tree",
+    "flora_halfmade_blighted",
+    "flora_meatvine",
+    "flora_toothmoss",
+    "flora_wombpod"
+   ]
+  },
+  {
+   "id": "coalescence_harvest",
+   "scenes": [
+    "sc_coalescence_grows_and_breaks",
+    "sc_waiting_costs_more",
+    "sc_unfinished_malformed"
+   ],
+   "exercises": [
+    "unfinished_budding",
+    "unfinished_variation",
+    "unfinished_mulch",
+    "coalescence_formation",
+    "coalescence_growth",
+    "coalescence_threat",
+    "coalescence_payoff",
+    "fauna_bloody_mess",
+    "repulsor",
+    "mulched_soil"
+   ]
+  },
+  {
+   "id": "genome_bench",
+   "scenes": [
+    "sc_genome_brings_tissue"
+   ],
+   "exercises": [
+    "genome_extract",
+    "genome_inject",
+    "gestation",
+    "birth_safety",
+    "natural_match",
+    "wombpod_hatch"
+   ]
+  },
+  {
+   "id": "helix_market",
+   "scenes": [
+    "sc_prints_pay",
+    "sc_bodyprints_phased"
+   ],
+   "exercises": [
+    "draftprints",
+    "helix_contracts",
+    "helix_trade",
+    "bodyprints"
+   ]
+  }
+ ],
+ "coverage_rest": [
+  {
+   "capability": "mutation_deck",
+   "by": [
+    "mutations_both_ways"
+   ],
+   "why": "a weighted deck is a pure rule; 200 seeded draws offline prove split, cap and no duplicates more cheaply than any staging"
+  },
+  {
+   "capability": "repulsor_ship",
+   "by": [
+    "sc_repulsor_warns_and_clears"
+   ],
+   "why": "the hardpoint uses the same powered comp; one extra powering step in the Repulsor scene covers it"
+  },
+  {
+   "capability": "flight",
+   "by": [
+    "airborne_stats"
+   ],
+   "why": "flight is never live-tested without him; a def and frame read is the check allowed"
+  },
+  {
+   "capability": "settings",
+   "by": [
+    "sc_settings_superb"
+   ],
+   "why": "a switch sweep is a checklist, not a face"
+  },
+  {
+   "capability": "proof_tooling",
+   "by": [
+    "walk_red_lid"
+   ],
+   "why": "the tooling is what runs every scene; the walk exercises it end to end"
+  },
+  {
+   "capability": "legacy_placement_worker",
+   "by": [
+    "sc_settings_superb"
+   ],
+   "why": "scoped out by the standing no-worldgen ruling; no showcase may use it; the sweep checks its switch is labelled unsupported"
+  },
+  {
+   "capability": "legacy_flora_terrain",
+   "by": [
+    "no_magenta"
+   ],
+   "why": "unrostered retained defs; texture resolution offline covers that they load clean"
+  },
+  {
+   "capability": "creep_defs",
+   "by": [
+    "no_magenta"
+   ],
+   "why": "defs only, their event belongs to EnvironmentalHazards and TheForge"
+  },
+  {
+   "capability": "scanner_payload",
+   "by": [
+    "no_magenta"
+   ],
+   "why": "an opt-in patch owned by AcousticScanner; the offline def resolution covers its Contagion half"
+  },
+  {
+   "capability": "pillar_arm",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  },
+  {
+   "capability": "lash",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  },
+  {
+   "capability": "eyeburst",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  },
+  {
+   "capability": "caudal_spring",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  },
+  {
+   "capability": "bellows",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  },
+  {
+   "capability": "limb_removal",
+   "by": [
+    "sc_limb_still_grows"
+   ],
+   "why": "grown-limb costs and tuning moved to 0.2.0 by his 2026-11-15 words; 0.1.0 checks only that a Monstrous batch yields a limb that shows and comes off"
+  }
+ ]
+}

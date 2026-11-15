@@ -176,7 +176,8 @@
    "speaker": "owner",
    "source": "OWNER:1794772416196929336",
    "date": "2026-11-15",
-   "what": "The first demonstration is A: warning signs, shelter through a Burn, one prepared dash, the touched worker treated. The review stops if the Burn gives only a colony-wide lockdown with no purposeful dash."
+   "what": "The first demonstration is A: warning signs, shelter through a Burn, one prepared dash, the touched worker treated. The review stops if the Burn gives only a colony-wide lockdown with no purposeful dash.",
+   "flagship": "burn_dash"
   },
   {
    "id": "d_limbs_next_version",
