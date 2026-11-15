@@ -905,7 +905,7 @@
     "ITEM:RIMMANDRAKE_ANNOUNCE_FIREHAWK_EMBER_LETTER_ON_FIRST_SIGHTING",
     "ITEM:RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY"
    ],
-   "proof": "offline",
+   "proof": "missing",
    "proof_evidence": [
     "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
     "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
@@ -920,7 +920,8 @@
     "OWNER:1794601370818167138",
     "OWNER:1794601807357091049"
    ],
-   "speaker": "owner by card 2026-11-14"
+   "speaker": "owner",
+   "proof_note": "offline half green (selftest_pyrelands_firehawk_letter.py and selftest_pyrelands_firehawk_crestfeather.py PASS, measured 2026-11-14 ~10:20 PM PST); live half firehawk_rewards_live.py UNRUN. Schema fix of the 2026-11-14 entry (was speaker 'owner by card 2026-11-14', proof 'offline'), bar text unchanged."
   }
  ],
  "built_reviewed": [
