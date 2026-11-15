@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -51,10 +52,17 @@
     "ref": "run rm-role-designer-1794774716",
     "stage": 3,
     "tokens": 993461
+   },
+   {
+    "at": "2026-11-15T21:25:54Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794775427",
+    "stage": 4,
+    "tokens": 740925
    }
   ],
   "reserve": 60000,
-  "spent": 3243095
+  "spent": 3984020
  },
  "history": [
   {
@@ -134,6 +142,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794774716: stage 3 done"
+  },
+  {
+   "at": "2026-11-15T20:43:54Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794775427, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-15T21:25:54Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794775427: stage 4 blocked"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -279,12 +299,40 @@
    "run": "rm-role-designer-1794774716",
    "stage": 3,
    "summary": "Stage 3 Write: tree.json (26 leaves, one walk, against the DRAFT north star whose false repulsor 'cleared patch' line was corrected to his certified whole-map warning), sheet.md, plan.md, floor.json (all 23 floor lines applicable), scenes.json (24 script scenes, flagship sc_burn_dash held for review, 5 showcases: burn_dash 10 new, living_map 37, coalescence_harvest 10, genome_bench 6, helix_market 4, all at 0.00 overlap; 15 capabilities in coverage_rest, grown limbs among them per his 0.2.0 move). record.json d_q02_first_demo now carries flagship burn_dash. Filed: RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL (all 24 entry points), and four owed builds: ..._BURN_REFUGE_READS_SHARED_SHADE, ..._BATCH_ODDS_BEFORE_THE_STAB, ..._PREBURN_DIVE_NATIVES_LEAVE_FIRST, ..._BODYPRINTS_SKIN_BEFORE_PRINT. c_open_fixes resolved: the 2026-10-17 fixes are built on origin/main and owe live proof, which the scenes carry."
+  },
+  {
+   "at": "2026-11-15T21:25:54Z",
+   "inputs": {
+    "exam": null,
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "2e7b332764d2380de35dd3075fb4060e707d9968fa95d29c0fa53557c2fd6f29",
+    "designer_exam.md": "9e46f4dbb52985f581b7ae4ed845434513370ee8f3e34d91e1848be937acb8fc"
+   },
+   "on": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS",
+   "outcome": "blocked",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "stage 4 asks him nothing; it waits for helper slots, not a decision"
+   },
+   "run": "rm-role-designer-1794775427",
+   "stage": 4,
+   "summary": "The exam needs five fresh helpers (Examiner, Challenger, two Readers, Control). The slot hook counts this run's spawns as CONDUCTOR helpers: six Conductor-window helpers held N=3 from 12:45 to 13:23 PST, then the budget fell to N=0 (PAYDOWN, about 10 h). No helper ran, so no scenario exists and nothing was scored. Prepared for the retake: the control copy in exam_control/ removes the core leaf sunbeam_arrest_treats, which no other leaf or sheet line mentions (checked: zero residue). Unblock when the seat has at least 2 slots."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 4,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }

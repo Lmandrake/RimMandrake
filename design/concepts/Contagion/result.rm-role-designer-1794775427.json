@@ -1,0 +1,4 @@
+{"run": "rm-role-designer-1794775427", "stage": 4, "outcome": "blocked",
+ "on": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS",
+ "summary": "The exam needs five fresh helpers (Examiner, Challenger, two Readers, Control). The slot hook counts this run's spawns as CONDUCTOR helpers: six Conductor-window helpers held N=3 from 12:45 to 13:23 PST, then the budget fell to N=0 (PAYDOWN, about 10 h). No helper ran, so no scenario exists and nothing was scored. Prepared for the retake: the control copy in exam_control/ removes the core leaf sunbeam_arrest_treats, which no other leaf or sheet line mentions (checked: zero residue). Unblock when the seat has at least 2 slots.",
+ "quick_look": {"offer": false, "why": "stage 4 asks him nothing; it waits for helper slots, not a decision"}}
