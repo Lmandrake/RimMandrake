@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1794722090",
+ "stage": 2,
+ "outcome": "waiting_owner",
+ "summary": "Stage 2 turn sent: one question, what a raider's left-behind mark does to that faction's next raid: (a) aims it at the marked wall (recommended), (b) brings it sooner or larger, or (c) a threat letter only. Settled by looking, not asking: the shipped vandal art no longer carries the hazard bolt or prohibition sign (GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT is stale). The proof-home and site-settings gaps go to stage 3. The flagship pick still waits on the agent walk he ordered (RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES, not yet run). New inventory entry: paint weathers away.",
+ "quick_look": {
+  "offer": false,
+  "why": "the link to a later raid is not built, so no look can show it; the look at what is built (exit tags, enemy-claim mood, flagship scenes) is the agent walk he already ordered"
+ }
+}
