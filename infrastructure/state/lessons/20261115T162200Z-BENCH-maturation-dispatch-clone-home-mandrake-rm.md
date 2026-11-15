@@ -1,0 +1,1 @@
+The maturation dispatch clone (/home/mandrake/rm/dispatch) pulls origin only when the tick itself publishes (a filing or spend rows), so a landed fix, a steward's move or a closed item can sit unread by the tick until ./sync is run there; a code change that alters a reading's text also re-keys stewards (the key hashes the why).
