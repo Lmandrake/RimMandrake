@@ -1,0 +1,3 @@
+Beyond src/RimMandrake/contracts (lesson 20261115T205525Z-BENCH-sparse-clone-misses-contracts), a default sparse pool clone also lacks design/ (selftest_maturation reads design stage records), src/RimMandrake/FlowWorks/northstar (selftest_wrapup imports validation_v2) and src/RimMandrake/FlowWorks/Source (selftest_wrapup reads RM_PitDrawMath.cs): those selftests CRASH or go red for a reason unrelated to the change. Before running selftests in a sparse clone, git sparse-checkout add the four paths; read a CRASH's traceback before blaming the diff.
+item: RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER
+home: skills/clone-landing-commits
