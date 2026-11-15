@@ -7431,3 +7431,4 @@
 {"seat":"RUNNER","event":"raise","id":"SELFTEST_FIX_INCIDENT_ZXZH","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-15T12:24:24Z","tsn":1794745464236218701}
 {"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_CODEX_SEATS_SRMA","text":"ops_watch: cleared at 2026-11-15T12:33:23Z (testing.red_anerkj now 0)","ts":"2026-11-15T12:33:32Z","tsn":1794746012493476019}
 {"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_CONDUCTOR_AUTHORITY_HIWQ","text":"ops_watch: new at 2026-11-15T12:45:53Z: src/RimMandrake/rimflow/selftest_conductor_authority.py (due 2026-11-18T11:00:00Z)","ts":"2026-11-15T12:46:01Z","tsn":1794746761617403360}
+{"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_CONDUCTOR_AUTHORITY_HIWQ","text":"ops_watch: new at 2026-11-15T12:47:09Z: src/RimMandrake/rimflow/selftest_conductor_authority.py (due 2026-11-18T11:00:00Z)","ts":"2026-11-15T12:47:16Z","tsn":1794746836479974570}
