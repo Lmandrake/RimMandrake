@@ -234,8 +234,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && dl.Contains("t.GetMethod(\"RegisterLiveWireSource\"") && dl.Contains("new[] { typeof(Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>>) }"),
                     "can-fail: the entry point's signature matches the lookup");
                 Assert(gss.Contains("public static void LiveWiresChanged(Map map)") && dl.Contains("t.GetMethod(\"LiveWiresChanged\""), "the change poke matches too");
-                string rebuild = Body(gss, "public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)");
-                Assert(rebuild.Contains("ExternalContacts(map, contacts, tips);"), "can-fail: GSS feeds the external wires into the same shock and ignition contacts");
+                string rebuild = Body(gss, "public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips,");
+                Assert(rebuild.Contains("ExternalContacts(map, contacts, tips, dropped);"), "can-fail: GSS feeds the external wires into the same shock and ignition contacts");
             });
         }
     }
