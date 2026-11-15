@@ -91,6 +91,13 @@ def fixture(mod, rel):
     return r.stdout if r.returncode == 0 else None
 
 
+def no_convergence(root, rd):
+    """The fixture convergence source: no dispatch check reads the fixture mods' real rounds (item
+    RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE); the reading itself is selftest_maturation_convergence's."""
+    rd["convergence"] = {}
+    return rd
+
+
 def ok(cond, what):
     print("%s  %s" % ("PASS" if cond else "FAIL", what))
     if not cond:
@@ -144,7 +151,7 @@ def main():
                 out[mod] = f
             return out
 
-        fx = {"autonomy": False, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "convergence": no_convergence, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
               "clone": lambda: world.get("clone", (0, 0)),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model=cfg["model"],
@@ -168,6 +175,18 @@ def main():
         d = {m: r["decision"] for m, r in rd["mods"].items()}
         ok(len(launches()) == 1 and d["FlowWorks"] == "launched", "one builder launches, on FlowWorks (%s)" % d)
         ok(d["ExplosiveKnockback"] == "live", "Explosive Knockback has a live run: no second builder")
+        ok(not rd.get("convergence") and not any("DIVERGING" in x for x in rd["needs_conductor"]),
+           "the fixture convergence source: no real mod's rounds reach a dispatch check (%s)"
+           % [x for x in rd["needs_conductor"] if "DIVERGING" in x])
+        seen = []
+
+        def one_diverging(root_, rd_):
+            seen.append(root_)
+            rd_.setdefault("needs_conductor", []).append("FlowWorks Stage 3 (coverage) DIVERGING, fixture")
+            return rd_
+        rdc = MD.tick(root, cfg, False, fx=dict(fx, convergence=one_diverging), now=CLOCK, page=False)
+        ok(seen == [root] and "FlowWorks Stage 3 (coverage) DIVERGING, fixture" in rdc["needs_conductor"],
+           "the tick reads convergence through its fx seam, on its own root (%s)" % seen)
         ok(d["GimmeSomeSlack"] == "hand_step" and any(x.startswith("GimmeSomeSlack: hand step")
                                                        for x in rd["needs_conductor"]),
            "Gimme Some Slack owes a hand step: a Needs Conductor line, no launch")
@@ -716,7 +735,7 @@ def blind_main():
                 out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
             return out
 
-        fx = {"autonomy": False, "account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                                   **kw)}
@@ -1204,7 +1223,7 @@ def ingame_main():
             asked.append(p)
             return world["bridge"]
 
-        fx = {"autonomy": False, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
+        fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                             bridge=lambda p, s: world["bridge"])}

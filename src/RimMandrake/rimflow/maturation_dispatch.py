@@ -1316,8 +1316,11 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         AUT.post_cards(rows, st, now, fx)
     rd = AUT.annotate(reading(cfg, rows, now), rows)
     try:    # a DIVERGING stage is a Needs Conductor line; it pauses nothing (maturation_convergence.py)
-        import maturation_convergence as MC     # noqa: E402
-        MC.annotate_reading(root, rd)
+        conv = fx.get("convergence")    # a selftest's fixture source (RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE)
+        if conv is None:
+            import maturation_convergence as MC     # noqa: E402
+            conv = MC.annotate_reading
+        conv(root, rd)
     except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
         rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
     if apply:
