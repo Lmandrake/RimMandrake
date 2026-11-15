@@ -61,8 +61,13 @@ The exit is "every offline bar green, no Problem found". From the record a progr
 - `test_table.json` bars with `proves_at` in {2, 4-5} (the offline bars) and their `decides`; a fresh rerun of each
   decider (`reruns.jsonl`, not `runs_today`, which may be stale) with `result == PASS`.
 - `faults.json` with no fault of class `Problem` whose status is not `FIXED <sha>`; and for each FIXED one a `fixes.jsonl`
-  row whose red rc is non-zero on the parent sha and green rc is zero on the fix sha.
-- `lane1_rows.jsonl` with no `FAIL` (an `UNSETTLED` row is not a failure of this stage; it is owed to Stage 6).
+  row whose red rc is non-zero on the parent sha and green rc is zero on the fix sha (`red`/`green` one run
+  `{on, cmd, rc, line}` or a list of them; a later row for the same fault replaces an earlier one).
+- `lane1_rows.jsonl` with no `FAIL` (an `UNSETTLED` row is not a failure of this stage; it is owed to Stage 6), or,
+  since lane 1 stays as recorded (blind, before the fixes), each of its FAIL rows PASS in `lane2/lane1_rows_after_fix.jsonl`,
+  lane 1 rerun at the fix sha with no FAIL.
+- A `kind: record` decider has a `command` (`src/RimMandrake/rimflow/record_check.py`: the event is still there, its line's
+  hash unchanged) and is rerun like any other; `not_rerunnable` never meets the exit.
 - `tests_edited.json` present (possibly empty) so the next judge is shown every weakened test.
 - `planted_results.jsonl` ending in `tree_clean_after: true`.
 

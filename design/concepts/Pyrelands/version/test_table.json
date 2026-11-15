@@ -1246,13 +1246,16 @@
    "file": "infrastructure/state/ledger/events/",
    "observes": "his approval of the shipped art sheet exists on the ledger (OWNER:1792122659817386516)",
    "reads": [
-    "infrastructure/state/ledger/events/"
+    "infrastructure/state/ledger/events/OWNER.jsonl"
    ],
+   "command": "python3 src/RimMandrake/rimflow/record_check.py --seat OWNER --tsn 1792122659817386516 --id PYRELANDS_SHIP_READINESS_1 --said-contains \"approving this whole sheet\" --sha256 4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8",
+   "command_why": "a record has no behaviour to rerun; its rerun checks the event is still on the ledger, unchanged (sha256 of its line pinned 2026-11-15, Pyrelands blind cycle 1 reconcile)",
    "runs_today": {
     "ran": true,
     "result": "PASS",
-    "last": "infrastructure/state/ledger/events/OWNER.jsonl:1",
-    "at": "2026-11-14T14:28:36-08:00"
+    "rc": 0,
+    "last": "RECORD PASS OWNER.jsonl:646 tsn=1792122659817386516 id=PYRELANDS_SHIP_READINESS_1 sha256=4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8",
+    "at": "2026-11-15T01:38:35-08:00"
    }
   },
   "LOOK_STAGE8": {

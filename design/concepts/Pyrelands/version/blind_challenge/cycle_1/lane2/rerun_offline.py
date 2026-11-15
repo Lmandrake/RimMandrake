@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rerun every kind=offline test of Pyrelands' version/test_table.json with its recorded command; compare with runs_today.
+"""Rerun every kind=offline test (and every kind=record test that has a command: record_check.py) of Pyrelands' version/test_table.json with its recorded command; compare with runs_today.
     python3 rerun_offline.py [--only T_A,T_B] [--out reruns.jsonl]
 Verdict first: PASS = rc 0, except T_SETTINGS_SCREENS (rc 1 by design: the shared suite) which is judged by its own
 Pyrelands rows ("N rows for this mod, 0 red"). `last` = last non-empty stdout line (stderr if stdout is empty); a recorded
@@ -39,7 +39,7 @@ def main():
     only = set(filter(None, a.only.split(",")))
     rows = []
     for tid, v in t["tests"].items():
-        if v.get("kind") != "offline" or (only and tid not in only):
+        if not (v.get("kind") == "offline" or (v.get("kind") == "record" and v.get("command"))) or (only and tid not in only):
             continue
         rec = v.get("runs_today") or {}
         rc, out, last, secs = run(tid, v["command"])
@@ -51,8 +51,9 @@ def main():
             last = last + "; %d rows for this mod, %d red" % (len(mine), sum(1 for l in mine if not l.startswith("ok ")))
         rows.append({"id": tid, "command": v["command"], "rc": rc, "seconds": secs, "result": res, "recorded_result": rec.get("result"),
                      "last": last[:300], "recorded_last": rl[:300], "last_prefix_match": pref, "match": res == rec.get("result")})
-    rows.append({"id": "RECORD_ART_SHEET", "result": "not_rerunnable", "recorded_result": "recorded",
-                 "last": "a record (the owner's sheet approval), no command", "match": None})
+    if not t["tests"]["RECORD_ART_SHEET"].get("command") and (not only or "RECORD_ART_SHEET" in only):
+        rows.append({"id": "RECORD_ART_SHEET", "result": "not_rerunnable", "recorded_result": "recorded",
+                     "last": "a record (the owner's sheet approval), no command", "match": None})
     with open(a.out, "w") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")

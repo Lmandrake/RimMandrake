@@ -22,7 +22,8 @@ Recorded before any lane-2 input was opened (journal, exam, evidence, test table
 record [measured, `lane2/reruns.jsonl`]; after the fixes, 18 of 18 again [measured, `lane2/reruns_after_fix.jsonl`].
 `T_SETTINGS_SCREENS` exits 1 by design and is judged by its own rows: 14 Pyrelands rows, 0 red (the suite prints no per-mod
 tally; the recorded "14 rows for this mod, 0 red" was the recorder's words, so the rerun counts the rows itself).
-`RECORD_ART_SHEET` is `not_rerunnable` (a record) and is not counted. Seven recorded `last` lines are not a prefix of
+`RECORD_ART_SHEET` (a record) had no command; the reconcile gave it one (`rimflow/record_check.py`, the event's line
+hash pinned) and its rerun reads PASS (last row of `lane2/reruns_after_fix.jsonl`). Seven recorded `last` lines are not a prefix of
 today's (T_FUZZ's timing, T_SITE's last row name, etc.); every verdict matches.
 
 ## Planted
@@ -89,7 +90,7 @@ offline_bars: {ash_fertility_probe: green, biome_text_says_engineered: green, in
 problems_open: 0
 exit_met: true
 ```
-Green = every decider PASS on the rerun after the fixes (`lane2/reruns_after_fix.jsonl`), `RECORD_ART_SHEET` as recorded.
+Green = every decider PASS on the rerun after the fixes (`lane2/reruns_after_fix.jsonl`), `RECORD_ART_SHEET` included.
 The 14 coverage gaps are advisory and not counted.
 
 ## Owed
@@ -99,3 +100,15 @@ The 14 coverage gaps are advisory and not counted.
 - The five NOTED Polish items; Stage 6 owes the rain postfix live (forced RainyThunderstorm on a Pyrelands pad) and the two
   callers lane 2 could not see.
 - Spend: about $10.3 of the $20 bound [measured, the session budget line]; wall about 1 h (08:35 to about 09:35 UTC).
+
+## Reconcile (2026-11-15, BENCH, same item)
+`maturation.py next` read this cycle not met for three reasons; none was the judge's build. (1) The two `fixes.jsonl` rows
+wrote `red`/`green` as lists of runs, which the reader did not read, and their commands held `<parent>`: both reds and
+greens were rerun for real (parent tree exported from `0f209f1db58d`, lane 1 at `8f67415cc5`; red rc 1, green rc 0) and
+appended as the last row per fault [measured, `lane2/reconcile/`]. (2) `lane1_rows.jsonl` keeps its blind FAIL by design;
+lane 1 after the fixes is now `lane2/lane1_rows_after_fix.jsonl`: 100 rows, 87 PASS, 0 FAIL [measured]. (3)
+`RECORD_ART_SHEET` got a rerun command (above). The reader now reads list-shaped runs and the after-fix lane 1, and says
+by name when a record decider has no command. All offline tests rerun at `8f67415cc5`: 18 of 18 PASS [measured,
+`lane2/reconcile/reruns_head_8f67415cc5.jsonl`]. Still owed to Stage 6: with no anchor, a herd off ash walks to the nearest
+ash of any age within 25 cells (`RM_PyrelandsGiants.JobFor`), so fresh ash is not excluded there.
+

@@ -8,7 +8,7 @@
  },
  {
   "path": "design/concepts/Pyrelands/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
-  "why": "blind judge's own: row forced_or_mutator_rain_becomes_black_rain added; ullai history-ring row reads after the read-side prune (the kernel's documented contract)",
+  "why": "blind judge's own: row forced_or_mutator_rain_becomes_black_rain added (the only change between the two hashes)",
   "before_sha256_16": "e3fd945c54528ae4",
   "after_sha256_16": "50d19cfa14b6a879",
   "weakened": false

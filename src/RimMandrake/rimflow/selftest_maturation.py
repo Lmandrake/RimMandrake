@@ -398,7 +398,8 @@ def copy_blind(root):
 
 
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
-                pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True):
+                pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True,
+                fix_runs=None, lane1_after=None, record_decider=None):
     """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
@@ -410,13 +411,21 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
                       if b["id"] != drop_bar)
     ex = ("offline_bars: {%s}\nproblems_open: %d\nexit_met: %s\n" % (shown, problems_open, str(exit_met).lower())
           if block else "(pending)\n")
+    if record_decider:   # one decider becomes a record with no command; its rerun row reads not_rerunnable
+        for b in bars:
+            for t in b.get("offline_decides") or b.get("decides") or []:
+                if t == record_decider:
+                    tt["tests"][t] = {"id": t, "kind": "record", "observes": "a selftest approval"}
+        with open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json"), "w") as f:
+            json.dump(tt, f)
     with open(os.path.join(d, "SUMMARY.md"), "w") as f:
         f.write("# cycle %d\n\n## Start time\n2026-11-15T08:00Z\n\n## Exit\n```\n%s```\n\n## Owed\nnone\n" % (n, ex)
                 if block else "# cycle %d\n\n## Exit\n%s\n## Owed\n(pending)\n" % (n, ex))
     with open(os.path.join(d, "lane2", "reruns.jsonl"), "w") as f:
         for b in bars:
             for t in b.get("offline_decides") or b.get("decides") or []:
-                f.write(json.dumps({"test": t, "result": "FAIL" if t == rerun_fail else "PASS",
+                f.write(json.dumps({"test": t, "result": "FAIL" if t == rerun_fail else
+                                    "not_rerunnable" if t == record_decider else "PASS",
                                     "recorded_result": "PASS", "match": t != rerun_fail}) + "\n")
     faults = [{"id": "RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED", "class": "Problem", "status": "FIXED abc1234"},
               {"id": "RIMMANDRAKE_NOTE_SELFTEST_POLISH_LEFT_ALONE", "class": "Polish", "status": "NOTED_FOR_CONDUCTOR"}]
@@ -426,7 +435,11 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
     with open(os.path.join(d, "lane2", "faults.json"), "w") as f:
         json.dump({"cycle": n, "faults": faults}, f)
     with open(os.path.join(d, "lane2", "fixes.jsonl"), "w") as f:
-        f.write(json.dumps({"fault": faults[0]["id"], "red": {"rc": [fix_red_rc, fix_red_rc]}, "green": {"rc": [0, 0]}}) + "\n")
+        f.write(json.dumps({"fault": faults[0]["id"], "red": {"rc": [fix_red_rc, fix_red_rc]}, "green": {"rc": [0, 0]}}
+                           if fix_runs is None else dict(fault=faults[0]["id"], **fix_runs)) + "\n")
+    if lane1_after is not None:   # lane 1 rerun after the fixes: {id: verdict}
+        with open(os.path.join(d, "lane2", "lane1_rows_after_fix.jsonl"), "w") as f:
+            f.write("".join(json.dumps({"id": k, "verdict": v}) + "\n" for k, v in lane1_after.items()))
     with open(os.path.join(d, "lane1", "lane1_rows.jsonl"), "w") as f:
         f.write(json.dumps({"id": "L1_a", "verdict": "PASS"}) + "\n" + json.dumps({"id": "L1_b", "verdict": "UNSETTLED"})
                 + "\n" + (json.dumps({"id": "L1_c", "verdict": "FAIL"}) + "\n" if lane1_fail else ""))
@@ -472,6 +485,8 @@ def blind_main():
         ok("design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/SUMMARY.md" in text
            and "exit_met: true|false" in text and "problems_open:" in text and "offline_bars:" in text,
            "the brief names the skeleton path and the machine-checkable exit block")
+        ok("lane2/lane1_rows_after_fix.jsonl" in text and "may be a list of such runs" in text,
+           "the brief names the after-fix lane-1 rerun and the list form of a fix's runs")
         ok("`design/concepts/GimmeSomeSlack/journal.md`" in text and "version/test_table.*" in text
            and "FORMAT_NOTES.md" in text, "the brief keeps the journal and the test table closed until lane 1")
         ok("## Steward's decisions (SEALED" in text and M.BLIND_DEFAULT[:60] in text,
@@ -529,6 +544,37 @@ def blind_main():
             ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
             ok(ex.get("state") == "not_met" and word in " ".join(ex.get("why") or []),
                "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:90]))
+        # a fix shown as a list of runs (Pyrelands cycle 1 wrote it so); a lane-1 FAIL cleared by lane 1 after the fixes
+        runs = dict(red=[{"cmd": "a", "rc": 1}, {"cmd": "b", "rc": 1}], green=[{"cmd": "a", "rc": 0}, {"cmd": "b", "rc": 0}])
+        met = (
+            (dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "UNSETTLED", "L1_c": "PASS"}),
+             "a lane-1 FAIL that lane 1 after the fixes shows PASS"),
+        )
+        for kw, what in met:
+            write_cycle(root, "FlowWorks", 1, **kw)
+            ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+            ok(ex.get("state") == "met", "%s reads met (%s)" % (what, (ex.get("why") or ["-"])[0][:120]))
+        tt_saved = open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")).read()
+        broken = (
+            (dict(fix_runs=dict(runs, red=[{"cmd": "a", "rc": 0}])), "a list-of-runs fix never shown red", "red"),
+            (dict(fix_runs=dict(runs, green=[{"cmd": "a", "rc": 0}, {"cmd": "b"}])),
+             "a list-of-runs green with an unrecorded rc", "green"),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}),
+             "a lane-1 FAIL still FAIL after the fixes", "still fails L1_c"),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS"}), "a lane-1 FAIL dropped from the after-fix rerun",
+             "does not show PASS for L1_c"),
+            (dict(lane1_fail=True, lane1_after={"L1_c": "PASS", "L1_d": "FAIL"}),
+             "a new FAIL in the after-fix rerun", "still fails L1_d"),
+            (dict(record_decider="T_CONVERT"), "a record decider with no command", "record with no command"),
+        )
+        for kw, what, word in broken:
+            write_cycle(root, "FlowWorks", 1, **kw)
+            ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+            ok(ex.get("state") == "not_met" and word in " ".join(ex.get("why") or []),
+               "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:110]))
+        with open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json"), "w") as fh:
+            fh.write(tt_saved)
         write_cycle(root, "FlowWorks", 1, block=False)
         f = M.blind_facts(root, "FlowWorks")
         ok(f.get("owed") == "no exit block" and (f.get("exit") or {}).get("state") == "no_exit_block",

@@ -845,6 +845,7 @@ BLIND_DEFAULT = ("No Conductor decisions are written for this cycle, so the stan
                  "NOTED_FOR_CONDUCTOR, and build no verdict on it. Nothing here asks you to change a bar, its wording, "
                  "the Design Version or the stage.")
 EXIT_KEYS = ("offline_bars", "problems_open", "exit_met")
+LANE1_AFTER_FIX = "lane2/lane1_rows_after_fix.jsonl"   # lane 1 rerun at the fix sha, same rows; lane1_rows.jsonl stays blind
 
 
 def cycle_numbers(root, mod):
@@ -883,6 +884,10 @@ def _jsonl(path):
 
 
 def _rcs(v):
+    """-> the rcs of a fixes.jsonl `red` or `green`: one run {`rc`: n or [n, ...]} or a list of runs, one rc each (a run
+    with no rc counts as None, so a green list with one unrecorded run is not green)."""
+    if isinstance(v, list):
+        return [c for x in v for c in (_rcs(x) if isinstance(x, dict) and "rc" in x else [None])]
     v = v.get("rc") if isinstance(v, dict) else None
     return v if isinstance(v, list) else [v] if v is not None else []
 
@@ -917,7 +922,8 @@ def read_exit(root, mod, n, tt=None):
     check of FORMAT_NOTES to agree: each offline bar green in the block and each of its deciders PASS on the cycle's own
     rerun (reruns_after_fix.jsonl rows over reruns.jsonl), no Problem whose status is not FIXED, a fixes.jsonl row for
     each FIXED Problem shown red (an rc non-zero) then green (every rc zero), no FAIL row in lane 1, tests_edited.json
-    present, and the planted-fault results ending tree_clean_after true. Any doubt reads not_met, never met."""
+    present, and the planted-fault results ending tree_clean_after true. A lane-1 FAIL (recorded blind, before the
+    fixes) clears only when LANE1_AFTER_FIX has no FAIL and shows it PASS. Any doubt reads not_met, never met."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
     base = "%s/cycle_%d" % (BLIND_DIR, n)
@@ -951,11 +957,16 @@ def read_exit(root, mod, n, tt=None):
         t = r.get("test") or r.get("id")
         if t:
             reruns[t] = str(r.get("result", "")).upper()
+    tests = (tt or {}).get("tests") or {}
     for b, deciders in bars:
         for t in deciders:
             if reruns.get(t) != "PASS":
-                why.append("decider %s of offline bar %s %s on this cycle's rerun" % (
-                    t, b, ("reads " + reruns[t]) if t in reruns else "has no row"))
+                x = tests.get(t) if isinstance(tests.get(t), dict) else {}
+                why.append("decider %s of offline bar %s %s on this cycle's rerun%s" % (
+                    t, b, ("reads " + reruns[t]) if t in reruns else "has no row",
+                    "; it is a record with no command to rerun: give it one in test_table.json (a check that the "
+                    "record is still there, unchanged: rimflow/record_check.py), then rerun it" if x.get("kind") == "record"
+                    and not x.get("command") else ""))
     fj, ferr = read_json(root, mod, base + "/lane2/faults.json")
     faults = (fj.get("faults") if isinstance(fj, dict) else fj) if fj is not None else None
     if not isinstance(faults, list):
@@ -984,7 +995,20 @@ def read_exit(root, mod, n, tt=None):
         why.append("lane1/lane1_rows.jsonl is missing")
     fails = [r.get("id", "?") for r in l1 or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
     if fails:
-        why.append("lane 1 has %d FAIL or unreadable row(s): %s" % (len(fails), ", ".join(fails[:8])))
+        # lane 1 is recorded blind, before the fixes, and stays as recorded: a FAIL there is how a Problem is found. It
+        # clears only when lane 1 rerun after the fixes (LANE1_AFTER_FIX) has no FAIL and shows each of those rows PASS.
+        after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
+        bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
+        passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
+        left = [f for f in fails if f not in passed]
+        out["checks"]["lane1_fail_cleared_after_fix"] = after is not None and not bad_after and not left
+        if after is None:
+            why.append("lane 1 has %d FAIL or unreadable row(s): %s, and no %s shows them PASS after the fixes"
+                       % (len(fails), ", ".join(fails[:8]), LANE1_AFTER_FIX))
+        elif bad_after or left:
+            why.append("lane 1 has %d FAIL or unreadable row(s): %s; after the fixes %s still fails %s%s" % (
+                len(fails), ", ".join(fails[:8]), LANE1_AFTER_FIX, ", ".join(bad_after[:8]) or "nothing",
+                (" and does not show PASS for %s" % ", ".join(left[:8])) if left else ""))
     if not os.path.exists(os.path.join(d, "tests_edited.json")):
         why.append("tests_edited.json is missing (an empty list is written, never left out)")
     pr = _jsonl(os.path.join(d, "lane2", "planted_results.jsonl"))
@@ -1283,6 +1307,12 @@ def blind_brief_text(root, mod, cap_usd=None):
             seen.add(t)
             x = tests.get(t) or {}
             r = x.get("runs_today") if isinstance(x.get("runs_today"), dict) else {}
+            if x.get("kind") == "record" and not x.get("command"):
+                L.append("- `%s` (%s): a record (%s) with no command. A record is rerun too: check the event it names "
+                         "with `python3 src/RimMandrake/rimflow/record_check.py --seat <SEAT> --tsn <tsn> --id <item> "
+                         "--sha256 <its line's hash>` and write that command in the rerun row; `not_rerunnable` never "
+                         "meets the exit" % (t, b, x.get("observes") or "no description"))
+                continue
             L.append("- `%s` (%s): `%s`%s" % (t, b, x.get("command") or "no command recorded", (
                 " — recorded %s" % (r.get("result") or ("rc %s" % r.get("rc")) if r else "")) if r else ""))
     red_other = []
@@ -1323,10 +1353,14 @@ def blind_brief_text(root, mod, cap_usd=None):
     # ---- edits
     L += ["", "## What you may and may not edit", "",
           "You **may** fix mod code to fix a Problem, red first: the test fails on the parent sha and passes on the fix "
-          "sha; record both in `lane2/fixes.jsonl` (`fault`, `red` {`on`, `cmd`, `rc`, `line`}, `green` {same}, `sha`). "
+          "sha; record both in `lane2/fixes.jsonl` (`fault`, `red` {`on`, `cmd`, `rc`, `line`}, `green` {same}, `sha`; "
+          "`red` or `green` may be a list of such runs, each with its own `rc`: red needs one rc non-zero, green every "
+          "rc zero). Run each command for real at both shas; a `cmd` holding a placeholder like `<parent>` is not a "
+          "rerunnable record, so name the path. Leave `lane1/lane1_rows.jsonl` as recorded, blind; after the fixes, "
+          "rerun lane 1 into `%s`: a lane-1 FAIL clears only when that file has no FAIL and shows it PASS. "
           "You may add tests or extend existing ones; list every test you touch in `tests_edited.json` (write it even "
           "when empty). Build C# with `python3 src/RimMandrake/Utils/winbuild.py` and your private `WINBUILD_ROOT`; "
-          "never deploy it.", "",
+          "never deploy it." % LANE1_AFTER_FIX, "",
           "You **may not** edit any bar text or acceptance criterion; edit the locked tree (%s); weaken, skip or delete "
           "an assertion; change `proves_at` or `decides`; move a bar between versions; or run `maturation.py advance`."
           % ", ".join("`%s`" % x for x in ("tree.json", "sheet.md", "plan.md", "scenes.json", "record.json",
@@ -1357,10 +1391,12 @@ def blind_brief_text(root, mod, cap_usd=None):
           "problems_open: N", "exit_met: true|false", "```", "",
           "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads that block and checks it against your files "
           "(each offline bar's deciders PASS in `reruns.jsonl` or `reruns_after_fix.jsonl`, no Problem not FIXED, each "
-          "FIXED one red then green in `fixes.jsonl`, no FAIL row in lane 1, `tests_edited.json` present, "
+          "FIXED one red then green in `fixes.jsonl`, no FAIL row in lane 1 or, after the fixes, in `%s`, "
+          "`tests_edited.json` present, "
           "`planted_results.jsonl` ending `tree_clean_after: true`). That reading is evidence for the steward, not a "
           "move: the Conductor reads your SUMMARY.md and either advances with `--to in_game --steward-confirms "
-          "\"...\"` or opens the next cycle with `--to blind_challenge`. You run one cycle and stop." % mod, "",
+          "\"...\"` or opens the next cycle with `--to blind_challenge`. You run one cycle and stop." % (
+              mod, LANE1_AFTER_FIX), "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: lane 1 rows passing of total and how many UNSETTLED; lane 2 "
           "reruns matching of rerun; planted faults caught of planted; the Problem and Polish counts%s; shas; the tests "
