@@ -11,7 +11,11 @@ cap is missing, for a mod not on the list, for a mod not at the offline build, o
 ceiling, past max_live, on an account hold, or in a dry pass; a run that reduced the refusals lets the next one start;
 a failed launch is not retried; a mod ready to advance and one owing a hand step get a Needs Conductor line; the idle
 reading fires on a planted idle mod and ops_watch's maturation family reads it (stale is UNMEASURED); the alarm target
-is in ops_watch_rules.json; nothing in the repo is written.
+is in ops_watch_rules.json; nothing in the repo is written. The blind challenge (blind_main): one automatic judge for
+a mod whose cycle is owed with nothing live, never a second in the visit (live, settling, ended without a record, exit
+not met, exit met, the Conductor's next cycle, a failed launch), nothing on a hand-launched cycle that is live, just
+ended, ended with no exit block or with nothing written, nothing off the list, on a hold, with blind launches off, with
+no cap, on an account hold or with the slots full.
 """
 import json
 import os
@@ -295,5 +299,205 @@ def main():
     return 1 if FAILS else 0
 
 
+# ---- the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED) ----------------------------
+# The four records as they stood at the blind challenge, read from git (all four hand-launched that night). Written before
+# maturation_dispatch.py had add_blind and watched failing on the base 7e85866394 (AttributeError), then passing.
+BLIND_SHA = "da54e5338ea493e0cb1575b684791d7136756488"
+BLIND_CLOCK = 1794736800.0      # 2026-11-15 1:20 AM PST, pinned
+FW_JUDGE_AT = 1794729034.9711447    # the hand-launched FlowWorks judge's start (rm-detached-...-1794729034)
+
+
+def blind_main():
+    sys.path.insert(0, HERE)
+    import selftest_maturation as SM
+    before = git_status()
+    root = tempfile.mkdtemp(prefix="maturation_dispatch_blind_")
+    keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
+            "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL")
+    env_was = {k: os.environ.get(k) for k in keys}
+    try:
+        for mod in FOUR:
+            for rel in COPY:
+                r = subprocess.run(["git", "-C", REPO, "show", "%s:design/concepts/%s/%s" % (BLIND_SHA, mod, rel)],
+                                   capture_output=True, timeout=60)
+                if r.returncode == 0:
+                    dst = os.path.join(root, "design", "concepts", mod, rel)
+                    os.makedirs(os.path.dirname(dst), exist_ok=True)
+                    with open(dst, "wb") as f:
+                        f.write(r.stdout)
+        fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
+        with open(fake, "w") as f:
+            f.write(FAKE_DH)
+        open(log, "w").close()
+        sd = os.path.join(root, "state")
+        os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(BLIND_CLOCK),
+                          MATURATION_BRIEF_DIR=os.path.join(root, "briefs"), RM_MATURATION_DISPATCH_DIR=sd)
+        os.environ.pop("FAKE_DH_FAIL", None)
+
+        def launches():
+            with open(log) as f:
+                return [json.loads(x) for x in f if x.strip()]
+
+        filed = []
+        world = {"live": {}, "last_end": {}, "runs": {}, "account": (True, "test account KEEP")}
+
+        def facts_for(c):
+            out = {}
+            for mod in c["advancing"]:
+                f = M.build_facts(root, mod)
+                f["live_units"] = list(world["live"].get(mod, []))
+                f["last_end"], f["stage_runs"], f["run_usd"] = world["last_end"].get(mod), {}, {}
+                out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
+            return out
+
+        fx = {"account": lambda: world["account"], "known": lambda: set(),
+              "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
+              "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH")}
+
+        def tick(c, at=0, apply=True):
+            return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=BLIND_CLOCK + at, page=False)
+
+        def reset():
+            shutil.rmtree(sd, ignore_errors=True)
+            open(log, "w").close()
+            del filed[:]
+            world.update(live={}, last_end={}, runs={})
+
+        def need(rd, mod):
+            return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
+
+        base = MD.load_cfg()
+        ok(base.get("blind_enabled") is True and isinstance(base.get("blind_cap_usd"), (int, float))
+           and base["blind_cap_usd"] > 0 and base.get("blind_auto_cycles_per_visit") == 1,
+           "the settings: blind launches on, a positive cap, ONE automatic cycle per visit (%s, %s, %s)" % (
+               base.get("blind_enabled"), base.get("blind_cap_usd"), base.get("blind_auto_cycles_per_visit")))
+        gss = dict(base, advancing=["GimmeSomeSlack"])
+        cap = "%g" % base.get("blind_cap_usd", 0)
+
+        # ---- no cycle, nothing live: one automatic cycle, then never a second in the visit --------------------------
+        rd = tick(gss)
+        d = rd["mods"]["GimmeSomeSlack"]
+        a = launches()
+        ok(d["decision"] == "launched" and len(a) == 1, "Gimme Some Slack, cycle 1 owed and nothing live: one judge "
+                                                        "launches (%s: %s)" % (d["decision"], d["why"][:80]))
+        ok(a and a[0][a[0].index("--budget-usd") + 1] == cap and a[0][a[0].index("--model") + 1] == "opus"
+           and "# Blind challenge" in open(a[0][a[0].index("--brief-file") + 1]).read(),
+           "the launch carries the settings' blind cap, opus and the blind-challenge brief")
+        nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0] if filed else "X"],
+                            capture_output=True, text=True, timeout=120)
+        ok(len(filed) == 1 and nc.returncode == 0 and "BLIND" in filed[0][0],
+           "the judge's item is filed once and its name passes namecheck (%s)" % [x[0] for x in filed])
+        unit = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"]["blind_auto"][0]["unit"]
+        world["live"]["GimmeSomeSlack"] = [unit]
+        rd = tick(gss, at=600)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "live" and len(launches()) == 1, "while it is live: nothing more")
+        world["live"] = {}
+        world["last_end"]["GimmeSomeSlack"] = BLIND_CLOCK + 900
+        rd = tick(gss, at=960)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "settling" and len(launches()) == 1,
+           "60 s after it ends: settling, nothing judged or launched")
+        rd = tick(gss, at=1200)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "stopped" and need(rd, "GimmeSomeSlack")
+           and len(launches()) == 1, "it ended and wrote no record: stopped, a Needs Conductor line, no second try")
+        SM.write_cycle(root, "GimmeSomeSlack", 1, exit_met=False, problems_open=1, pending_problem=True)
+        rd = tick(gss, at=1300)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "exit_not_met" and "exit not met" in need(rd, "GimmeSomeSlack")
+           and len(launches()) == 1, "a cycle that ends with exit not met: a Needs Conductor line, nothing launched")
+        SM.write_cycle(root, "GimmeSomeSlack", 1)
+        rd = tick(gss, at=1400)
+        rec = json.load(open(os.path.join(root, "design/concepts/GimmeSomeSlack/version/stage_record.json")))
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "exit_met" and "steward-confirms" in need(rd, "GimmeSomeSlack")
+           and rec["stage"] == "blind_challenge" and len(launches()) == 1,
+           "exit met: the steward's confirmation is named, the record is not advanced, nothing launched")
+        res = M.advance(root, "GimmeSomeSlack", "blind_challenge", by="CONDUCTOR", why="selftest: a new blind judge")
+        rd = tick(gss, at=1500)
+        ok(res["ok"] and rd["mods"]["GimmeSomeSlack"]["decision"] == "auto_spent" and len(launches()) == 1
+           and "by hand" in need(rd, "GimmeSomeSlack"),
+           "the Conductor opens cycle 2 in the same visit: the visit's one automatic cycle is spent, no launch (%s)"
+           % rd["mods"]["GimmeSomeSlack"]["decision"])
+
+        # ---- hand-launched cycles: live, just ended, ended without an exit, ended with nothing written -------------
+        fw = dict(base, advancing=["FlowWorks"])
+        reset()
+        world["live"]["FlowWorks"] = ["rm-detached-bench-rimmandrake-challenge-flowworks-blind-cy-1794729034"]
+        world["runs"]["FlowWorks"] = [{"unit": world["live"]["FlowWorks"][0], "at": FW_JUDGE_AT, "end": None,
+                                       "live": True, "item": "RIMMANDRAKE_CHALLENGE_FLOWWORKS_BLIND_CYCLE_ONE_FIFTY_SEVEN_BARS"}]
+        rd = tick(fw)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "live" and not launches(),
+           "a hand-launched judge is live and has written nothing yet: no second cycle")
+        world["live"] = {}
+        world["runs"]["FlowWorks"][0].update(live=False, end=BLIND_CLOCK - 60)
+        world["last_end"]["FlowWorks"] = BLIND_CLOCK - 60
+        rd = tick(fw)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "settling" and not launches(),
+           "it ended a minute ago: settling, no second cycle")
+        world["last_end"]["FlowWorks"] = BLIND_CLOCK - 3600
+        rd = tick(fw)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "hand_run_seen" and not launches() and need(rd, "FlowWorks"),
+           "it ended an hour ago and wrote no cycle folder: a Needs Conductor line, no second cycle")
+        SM.write_cycle(root, "FlowWorks", 1, block=False)
+        rd = tick(fw)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "cycle_unfinished" and not launches() and need(rd, "FlowWorks"),
+           "it ended with its Exit still (pending): a Needs Conductor line, no second cycle")
+
+        # ---- each refusal to launch ---------------------------------------------------------------------------------
+        def none(c, what, want, **w):
+            reset()
+            world.update(w)
+            rd = tick(c)
+            dec = rd["mods"].get("GimmeSomeSlack", {}).get("decision")
+            ok(not launches() and dec == want, "%s: nothing launches (%s)" % (what, dec))
+            return rd
+
+        p = os.path.join(root, "design/concepts/GimmeSomeSlack/version/blind_challenge")
+        shutil.rmtree(p, ignore_errors=True)
+        rp = os.path.join(root, "design/concepts/GimmeSomeSlack/version/stage_record.json")
+        r = subprocess.run(["git", "-C", REPO, "show", "%s:design/concepts/GimmeSomeSlack/version/stage_record.json"
+                            % BLIND_SHA], capture_output=True, timeout=60)
+        with open(rp, "wb") as f:
+            f.write(r.stdout)
+        jp = os.path.join(root, "design/concepts/GimmeSomeSlack/journal.md")
+        jsaved = open(jp).read()
+        none(dict(gss, blind_enabled=False), "blind launches off in the settings", "blind_off")
+        none(dict(gss, blind_cap_usd=0), "no blind cap", "no_cap")
+        none(gss, "the account pick holds role launches", "account_hold",
+             account=(False, "the Dispatcher's account pick reads HOLD"))
+        world["account"] = (True, "test account KEEP")
+        none(dict(base, advancing=["ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack"], max_live=2),
+             "two live runs on other advancing mods", "slots_full", live={"ExplosiveKnockback": ["u1"], "FlowWorks": ["u2"]})
+        with open(jp, "w") as f:
+            f.write(M.add_intervention(jsaved, "- CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 12:50 AM PST, kind hold): "
+                                               "selftest hold. Source: selftest."))
+        none(gss, "a Conductor hold on stage 4+5", "held")
+        with open(jp, "w") as f:
+            f.write(jsaved)
+        reset()
+        rd = tick(dict(base, advancing=["Graffiti"]))
+        ok(not launches() and "GimmeSomeSlack" not in rd["mods"], "a mod not on the advancing list: no row, no launch")
+        reset()
+        rd = tick(gss, apply=False)
+        ok(not launches() and rd["mods"]["GimmeSomeSlack"]["decision"] == "would_launch",
+           "a dry pass launches nothing")
+        reset()
+        os.environ["FAKE_DH_FAIL"] = "1"
+        rd = tick(gss)
+        os.environ.pop("FAKE_DH_FAIL")
+        rd2 = tick(gss, at=600)
+        ok(len(launches()) == 1 and rd["mods"]["GimmeSomeSlack"]["decision"] == "launch_failed"
+           and rd2["mods"]["GimmeSomeSlack"]["decision"] == "stopped",
+           "a failed blind launch spends the visit's one automatic cycle: never retried")
+    finally:
+        for k, v in env_was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(root, ignore_errors=True)
+    ok(git_status() == before, "nothing under design/concepts in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    rc = main()
+    sys.exit(blind_main() or rc)

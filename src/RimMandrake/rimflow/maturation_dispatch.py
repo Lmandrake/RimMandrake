@@ -18,8 +18,8 @@ Runs on rm-maturation-dispatch.timer (every 60 s, from the dispatch clone); its 
 so a slow ledger read never cuts a Dispatcher beat. Settings: maturation_dispatch.json beside this file.
 
 Per mod on the advancing list, in order, one decision:
-  not_offline   the mod's record is not at the offline build (no record, the Designer, any later stage): nothing; the
-                Designer stays his and later stages are hand steps (plan §3: the blind challenge onward is not built)
+  not_offline   the mod's record is at neither the offline build nor the blind challenge (no record, the Designer, any
+                later stage): nothing; the Designer stays his and the stages after the blind challenge are hand steps
   live          a detached run is live on the mod (maturation_now maps runs to mods by item id): nothing; the run is
                 watched, and its refused count when first seen is kept
   stopped       the last run on the mod ended and the count of refused bars did NOT fall, or the mod's dollars at the
@@ -34,6 +34,17 @@ Per mod on the advancing list, in order, one decision:
   slots_full    max_live live runs on advancing mods already (the Conductor's included)
   account_hold  the Dispatcher's account pick holds role launches (its rule's `hold` list): nothing
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
+At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED), per advancing mod, one of:
+  launch        cycle N (the record's cycles.total) is owed (no cycle_N folder), nothing live or just ended, no blind run
+                since it opened, and no automatic cycle yet this visit: one judge (opus, blind_cap_usd), item
+                RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST spawned the same way as a build item
+  live | settling   a run is live on it, or one ended under settle_s ago: nothing
+  exit_met | exit_not_met | cycle_unfinished   cycle N is recorded (maturation.read_exit): a Needs Conductor line each;
+                the steward confirms or opens the next cycle by hand, never the program
+  stopped | auto_spent | hand_run_seen   the visit's automatic cycle ended with no record or failed to launch, or was
+                already spent (blind_auto_cycles_per_visit, 1), or a hand-launched blind run worked on the cycle and wrote
+                nothing: a Needs Conductor line, never a second automatic cycle
+  held | blocked | blind_off | no_cap | account_hold | slots_full   as for the offline build
 The program never judges, rejects or sends a mod back, never takes the bridge or a game, never runs `advance`.
 
 The reading (<RM_DISPATCHER_STATE>/maturation/reading.json, RM_MATURATION_DISPATCH_DIR overrides the folder) carries
@@ -150,8 +161,21 @@ def gather(root, cfg, live=True):
                             for r in runs if r.get("unit")}
         else:
             f["live_units"] = UNM
-        out[mod] = f
+        out[mod] = add_blind(root, mod, f, runs if isinstance(runs, list) else [])
     return out
+
+
+def add_blind(root, mod, f, runs):
+    """At the blind challenge: maturation.blind_facts (cycle, visit, exit reading, owed) and blind_runs, the runs whose
+    item names a blind run (BLIND in it) that started since the cycle opened (10 min of slack for a launch that beat
+    its own advance to origin/main). Any other stage: f unchanged."""
+    if f.get("stage") != "blind_challenge":
+        return f
+    f.update(M.blind_facts(root, mod))
+    t0 = _ts(f.get("opened"))
+    f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper()
+                       and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
+    return f
 
 
 def account_gate(sched_path=None, dstate=None):
@@ -196,10 +220,17 @@ def decide(cfg, st, facts, now, account=(True, "")):
             if need:
                 row["need"] = "%s: %s" % (mod, need)
 
+        if f.get("stage") == "blind_challenge":
+            s.pop("owed_since", None)
+            s.pop("watch", None)
+            if decide_blind(cfg, s, f, row, put, now, account, live_total):
+                live_total += 1
+                launches.append(mod)
+            continue
         if f.get("stage") != "offline_build":
             s.pop("owed_since", None)
             s.pop("watch", None)
-            put("not_offline", "stands at %s; only the offline build launches from here%s" % (
+            put("not_offline", "stands at %s; only the offline build and the blind challenge launch from here%s" % (
                 f.get("stage"), " (the Designer stays his)" if f.get("stage") in (UNM, "designer", "intake") else ""))
             continue
         live = f.get("live_units")
@@ -289,6 +320,112 @@ def decide(cfg, st, facts, now, account=(True, "")):
     return rows, launches
 
 
+def decide_blind(cfg, s, f, row, put, now, account, live_total):
+    """One decision for an advancing mod at the blind challenge -> True to launch its judge. The owner's condition, 2026-11-14
+    ~9 PM PST: "As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble."
+    So at most blind_auto_cycles_per_visit (1) automatic cycles per visit (a visit is keyed by the version and the visit's
+    first cycle number); a cycle already in a cycle_N folder, live, ended under settle_s ago, or worked by a blind run
+    that wrote nothing is never launched again; every ended cycle (exit met, not met, or no exit block) is a Needs
+    Conductor line, and the program never advances: the steward's confirmation stays a hand step."""
+    mod, n = f.get("mod"), f.get("cycle")
+    ex = f.get("exit") or {}
+    vid = "%s#%s" % (f.get("version"), f.get("visit_first"))
+    ours = [x for x in s.get("blind_auto") or [] if x.get("visit_id") == vid]
+    row.update(cycle=n, exit=ex.get("state"))
+    summ = "%s/SUMMARY.md" % ex.get("record", "the cycle record")
+    live = f.get("live_units")
+    if not isinstance(live, list):
+        put("blind", "the detached-run records could not be read; nothing launches on a blind reading",
+            "the run records are unreadable, so the Dispatch step launches nothing on it")
+        return False
+    if live:
+        put("live", "%s is live on it (blind cycle %s)" % (", ".join(live), n))
+        return False
+    le, settle = f.get("last_end"), float(cfg.get("settle_s", 180))
+    if isinstance(le, (int, float)) and 0 <= now - le < settle:
+        put("settling", "a run ended %d s ago; blind cycle %s is read %d s after the end, not before" % (now - le, n, settle))
+        return False
+    owed = f.get("owed")
+    if owed == "blocked":
+        b = "; ".join(f.get("blocked") or [])
+        put("held" if "hold" in b else "blocked", b)
+        return False
+    if owed == "exit met":
+        put("exit_met", "blind cycle %s: exit met (%s)" % (n, (ex.get("why") or ["-"])[0]),
+            "blind cycle %s: exit met (a program's reading of %s); the steward reads it and confirms: maturation.py "
+            "advance %s --to in_game --steward-confirms \"...\" (a Conductor step; the program never advances)"
+            % (n, summ, mod))
+        return False
+    if owed == "exit not met":
+        put("exit_not_met", "; ".join((ex.get("why") or [])[:3]),
+            "blind cycle %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and decides "
+            "(maturation.py advance %s --to blind_challenge opens cycle %s)" % (
+                n, "; ".join((ex.get("why") or [])[:3]), summ, mod, (n or 0) + 1))
+        return False
+    if owed == "no exit block":
+        put("cycle_unfinished", "nothing is live and %s has no exit block" % summ,
+            "blind cycle %s has a record (%s) with no exit block and nothing live on it; nothing launches: the "
+            "Conductor reads it" % (n, summ))
+        return False
+    if owed != "cycle":
+        put("blind", "the blind challenge's state cannot be read (%s)" % owed,
+            "the blind challenge's state cannot be read (%s); nothing launches" % owed)
+        return False
+    mine = [x for x in ours if x.get("cycle") == n]
+    if mine:
+        x = mine[-1]
+        why = ("the automatic launch of cycle %s failed: %s" % (n, x.get("failed")) if x.get("failed") else
+               "the automatic cycle %s (%s) ended and wrote no record" % (n, x.get("unit")))
+        put("stopped", why, "stopped, %s; never a second automatic try" % why)
+        return False
+    per = int(cfg.get("blind_auto_cycles_per_visit", 1))
+    if len(ours) >= per:
+        put("auto_spent", "the visit's %d automatic cycle(s) are spent (cycle %s)" % (
+            per, ", ".join(str(x.get("cycle")) for x in ours)),
+            "blind cycle %s is open; the Dispatch step runs %d automatic cycle(s) per visit (cycle %s was), so launch "
+            "it by hand: maturation.py launch %s --budget-usd <cap> --item <ID>" % (
+                n, per, ", ".join(str(x.get("cycle")) for x in ours), mod))
+        return False
+    if f.get("blind_runs"):
+        put("hand_run_seen", "blind run(s) %s worked on cycle %s and wrote no cycle_%s folder" % (
+            ", ".join(f["blind_runs"]), n, n),
+            "blind run(s) %s worked on cycle %s since it opened and wrote no record; nothing launches: the Conductor "
+            "reads what it left" % (", ".join(f["blind_runs"]), n))
+        return False
+    if not cfg.get("blind_enabled"):
+        put("blind_off", "blind_enabled is off in maturation_dispatch.json",
+            "blind cycle %s is owed with nothing live; the Dispatch step's blind launches are off" % n)
+        return False
+    cap = cfg.get("blind_cap_usd")
+    if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
+        put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
+        return False
+    if not account[0]:
+        put("account_hold", account[1])
+        return False
+    if live_total >= int(cfg.get("max_live", 2)):
+        put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+        return False
+    row.update(cap=cap, visit_id=vid)
+    put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle (%s)" % (
+        n, account[1]))
+    return True
+
+
+def blind_item_id(mod, cycle, known):
+    """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST (64 chars at most)."""
+    base = "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s_TESTS_FIRST" % (mod.upper(), word(cycle or 0))
+    if len(base) > 64:
+        base = "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s" % (mod.upper(), word(cycle or 0))
+    if base not in known:
+        return base
+    for k in range(2, 20):
+        cand = "%s_RUN_%s" % (base, ONES[k])
+        if cand not in known and len(cand) <= 64:
+            return cand
+    return None
+
+
 # ---- the acts -------------------------------------------------------------------------------------------------------
 
 def _ingest():
@@ -336,18 +473,40 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         if row["mod"] not in launches:
             continue
         mod, s = row["mod"], st["mods"][row["mod"]]
-        item = item_id(mod, row["refused"], known)
-        title = ("%s Stage 3: build the checks for the %d bars not runnable, offline (launched by the Dispatch step)"
-                 % (mod, row["refused"]))
-        why = ("delegated: maturation_dispatch.py; maturation.py refuses %d bars as build work (%s), nothing live on "
-               "it, measured %s" % (row["refused"], ", ".join(row["refused_ids"][:12]), pac(now)))
+        blind = row.get("stage") == "blind_challenge"
+        if blind:
+            item = blind_item_id(mod, row.get("cycle"), known)
+            title = ("%s Stages 4 and 5: blind challenge cycle %s, tests first, offline (launched by the Dispatch step)"
+                     % (mod, row.get("cycle")))
+            why = ("delegated: maturation_dispatch.py; blind cycle %s is owed (no cycle_%s folder), nothing live or "
+                   "recorded on it, the visit's first automatic cycle, measured %s" % (
+                       row.get("cycle"), row.get("cycle"), pac(now)))
+        else:
+            item = item_id(mod, row["refused"], known)
+            title = ("%s Stage 3: build the checks for the %d bars not runnable, offline (launched by the Dispatch step)"
+                     % (mod, row["refused"]))
+            why = ("delegated: maturation_dispatch.py; maturation.py refuses %d bars as build work (%s), nothing live on "
+                   "it, measured %s" % (row["refused"], ", ".join(row["refused_ids"][:12]), pac(now)))
         ok, text = do_file(item, title, why) if item else (False, "no free item name")
         if ok:
-            rc, text2, unit = do_launch(mod, cfg["cap_usd"], item)
+            rc, text2, unit = do_launch(mod, row["cap"] if blind else cfg["cap_usd"], item)
             text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
             ok = rc == 0 and bool(unit)
         else:
             unit = None
+        if blind:
+            # launched or failed, it is the visit's automatic cycle: never a second try (the owner's condition)
+            s.setdefault("blind_auto", []).append({"visit_id": row.get("visit_id"), "cycle": row.get("cycle"),
+                                                   "unit": unit if ok else None, "item": item, "at": now,
+                                                   "cap": row.get("cap"), "failed": None if ok else text})
+            if ok:
+                row.update(decision="launched", unit=unit, item=item, why=text)
+                known.add(item) if isinstance(known, set) else None
+                done.append(row)
+            else:
+                row.update(decision="launch_failed", why=text,
+                           need="%s: the blind launch failed (%s); the step will not retry it on its own" % (mod, text))
+            continue
         if ok:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "refused": row["refused"],
                                                  "ids": row["refused_ids"], "cap": cfg["cap_usd"],
@@ -375,7 +534,7 @@ def reading(cfg, rows, now):
                          if r.get("decision") == "launched"],
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
-                                                       "idle_min", "stage_usd")} for r in rows}}
+                                                       "idle_min", "stage_usd", "cycle", "exit")} for r in rows}}
 
 
 def tick(root, cfg, apply, fx=None, now=None, page=True):

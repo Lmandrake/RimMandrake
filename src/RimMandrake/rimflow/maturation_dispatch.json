@@ -12,5 +12,9 @@
   "_stage_ceiling_doc": "Set by the builder of this step: one mod's measured dollars at the offline build (every run the status page places there, plus this step's launches, a run with no measured dollars counted at its cap) past this line stops the step on that mod, with a Needs Conductor line. About four capped runs.",
   "settle_s": 180,
   "_settle_doc": "A run that ended less than this many seconds ago is not judged yet (the tick is 60 s; its published files may not have reached the dispatch clone). Nothing launches on the mod meanwhile.",
-  "idle_alarm_min": 60
+  "idle_alarm_min": 60,
+  "blind_enabled": true,
+  "blind_cap_usd": 20,
+  "blind_auto_cycles_per_visit": 1,
+  "_blind_doc": "The blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED). One judge (opus, blind_cap_usd: the hand briefs' $20 bound) when cycle N is owed (no cycle_N folder) and nothing is live, just ended (settle_s) or seen as a blind run since the cycle opened. At most blind_auto_cycles_per_visit automatic cycles per visit, by the owner's condition: \"As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble.\" Every ended cycle is a Needs Conductor line; the program never advances."
 }
