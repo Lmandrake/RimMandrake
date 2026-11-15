@@ -555,6 +555,24 @@ internal static class Program
             Check("K-22 no rows: summary is empty and nothing passes", !KbFrameStats.WithinBudget(KbFrameStats.Summarize(new float[0], new bool[0], new int[0], 0, 0f), 50f, out _));
         }
 
+        // K-23 the fire-at-half switch (sheet "off: fire throws nothing"; blind cycle 3): every fire type the def patch
+        // reaches is zeroed with the switch off, including Anomaly's ElectricalBurn, which inherits Flame's force 0.5
+        // through ParentName="Flame" but carries its own hediff; a projectile's or weapon's tuning and non-fire types stay.
+        {
+            Check("K-23 switch off zeroes Flame's own force", RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Flame", "Burn"));
+            Check("K-23 switch off zeroes Burn (ParentName Flame)", RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Burn", "Burn"));
+            Check("K-23 switch off zeroes Anomaly's ElectricalBurn (ParentName Flame, hediff ElectricalBurn)",
+                RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "ElectricalBurn", "ElectricalBurn"));
+            Check("K-23 switch on: fire keeps its half", !RM_KnockbackMath.FireSwitchedOff(true, "damageDef", "Flame", "Burn")
+                && !RM_KnockbackMath.FireSwitchedOff(true, "damageDef", "ElectricalBurn", "ElectricalBurn"));
+            Check("K-23 a projectile's or weapon's own tuning is not switched", !RM_KnockbackMath.FireSwitchedOff(false, "projectile", "Flame", "Burn")
+                && !RM_KnockbackMath.FireSwitchedOff(false, "weapon", "Flame", "Burn") && !RM_KnockbackMath.FireSwitchedOff(false, "unpatched", "Flame", "Burn"));
+            Check("K-23 bombs, EMP, smoke, thump and tox gas are not fire",
+                !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Bomb", "Shredded") && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "BombSuper", "Shredded")
+                && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "EMP", null) && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Smoke", null)
+                && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Thump", "Crush") && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "ToxGas", null));
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

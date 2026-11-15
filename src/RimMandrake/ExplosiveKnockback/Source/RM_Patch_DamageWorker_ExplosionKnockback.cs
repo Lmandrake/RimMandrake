@@ -48,7 +48,7 @@ namespace RimMandrake.ExplosiveKnockback
                 def != null && def.harmsHealth, RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent / 100f);
             // fire at half off (sheet: "off: fire throws nothing"): a fire damage type's own patched force is switched off; a
             // projectile's or weapon's own tuning is that weapon's and stays
-            if (!RimMandrakeExplosiveKnockbackSettings.fireAtHalf && c.source == "damageDef" && IsFire(def))
+            if (RM_KnockbackMath.FireSwitchedOff(RimMandrakeExplosiveKnockbackSettings.fireAtHalf, c.source, def?.defName, def?.hediff?.defName))
             {
                 c.force = 0f;
             }
@@ -75,7 +75,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>A fire damage type: Flame, or any type that burns (Anomaly's ElectricalBurn inherits Flame's patch).</summary>
         public static bool IsFire(DamageDef def)
         {
-            return def != null && (def == DamageDefOf.Flame || def.hediff?.defName == "Burn");
+            return def != null && RM_KnockbackMath.IsFireDamage(def.defName, def.hediff?.defName);
         }
 
         /// <summary>A damage type's reference damage for blast power: its extension's refDamage when set, else its own

@@ -278,6 +278,20 @@ namespace RimMandrake.ExplosiveKnockback
             return onStorage && (closed || openStorageProtects);
         }
 
+        /// <summary>The fire-at-half switch (sheet: "fire at half ... off: fire throws nothing"): true when a resolved config's
+        /// force is to be zeroed: the switch is off, the force is the damage type's own patch (source "damageDef"; a
+        /// projectile's or weapon's own tuning is that weapon's and stays) and the type is fire (IsFireDamage).</summary>
+        public static bool FireSwitchedOff(bool fireAtHalf, string source, string damageDefName, string hediffDefName)
+        {
+            return !fireAtHalf && source == "damageDef" && IsFireDamage(damageDefName, hediffDefName);
+        }
+
+        /// <summary>A fire damage type: Flame, or a type whose injury is a burn.</summary>
+        public static bool IsFireDamage(string damageDefName, string hediffDefName)
+        {
+            return damageDefName == "Flame" || hediffDefName == "Burn";
+        }
+
         /// <summary>A closed container's planned throw (owner 2026-11-12, "the whole crate/chest would go flying a bit", by card
         /// 2026-11-14 thrown as built): a 1x1 container whose own mass plus its goods is at or under the container mass limit
         /// (closedContainerMassLimit, 250 kg, not the 75 kg goods limit) flies the kernel's item throw at that mass, so shorter
