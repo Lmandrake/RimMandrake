@@ -1,0 +1,14 @@
+ok    old-save row: fixture lit at its birth tick -> UNMEASURED 
+ok    old-save row: fixture lit on its first watch interval -> UNMEASURED 
+ok    old-save row: fixture lit at the window's last tick -> UNMEASURED 
+ok    old-save row: pre-change save lit late (after load) -> FAIL 
+ok    old-save row: save lit one tick past its window -> FAIL 
+ok    old-save row: save still owes its front -> FAIL 
+ok    old-save row: lit count with no litTick -> FAIL 
+ok    old-save row: clean old save -> PASS 
+ok    old-save row: fresh map inside the window -> UNMEASURED 
+ok    old-save row: unreadable probe -> UNMEASURED 
+ok    old-save row: probe with no mapAge -> UNMEASURED 
+ok    old-save row: a re-arm this session -> UNMEASURED HARNESS 
+ok    opening_front_old_save_inert reads its verdict from old_save_opening_verdict 
+PASS: 0 failure(s)
