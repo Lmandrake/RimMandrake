@@ -44,7 +44,7 @@ def ok(cond, what):
 
 def git_status():
     return subprocess.run(["git", "-C", REPO, "status", "--porcelain", "--", "design/concepts"],
-                          capture_output=True, text=True).stdout
+                          capture_output=True, text=True, timeout=120).stdout
 
 
 def copy_mods(root):
@@ -246,10 +246,10 @@ def main():
         ok("advance" in nx["next"] or "hand step" in nx["next"], "next on an offline-build mod says the move")
         cli = subprocess.run([sys.executable, os.path.join(HERE, "maturation.py"), "--root", root, "advance",
                               "ExplosiveKnockback", "--to", "in_game", "--by", "BENCH", "--why", "x"],
-                             capture_output=True, text=True, env=dict(os.environ))
+                             capture_output=True, text=True, env=dict(os.environ), timeout=120)
         ok(cli.returncode == 1 and "REFUSED" in cli.stdout, "the command line refuses with exit 1")
         cli = subprocess.run([sys.executable, os.path.join(HERE, "maturation.py"), "--root", root, "next",
-                              "Pyrelands"], capture_output=True, text=True, env=dict(os.environ))
+                              "Pyrelands"], capture_output=True, text=True, env=dict(os.environ), timeout=120)
         ok(cli.returncode == 0 and "NEXT" in cli.stdout, "the command line prints a NEXT line")
     finally:
         shutil.rmtree(root, ignore_errors=True)

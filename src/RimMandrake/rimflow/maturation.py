@@ -484,7 +484,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                           "a design fault, or one more cycle)",
                fix="bring the Conductor the three cycles' findings and pass its decision", cost="owner",
                why_sound="his words of 2026-11-13: after three cycles the Conductor is brought in")
-    sha = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    sha = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True,
+                         timeout=60).stdout.strip()
     verdict = {"item": "%s@%s" % (mod, rec.get("version")), "family": "maturation_advance:%s->%s" % (cur, to),
                "sha": sha or UNM, "given": {"criteria": crit, "inputs": inputs}, "passed": passed,
                "refusals": refusals}
