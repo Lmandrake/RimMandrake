@@ -62,7 +62,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             tips.Clear();
             dropped?.Clear();
             AerialSettings.SyncDerived();
-            if (!AerialSettings.enabled || (!ShockRule.KindBites(AerialSettings.shockReach, LineKind.DownedSpan) && !AerialSettings.fallenWireIgnites)) return;
+            if (!ShockRule.KindBites(AerialSettings.shockReach, LineKind.DownedSpan) && !AerialSettings.fallenWireIgnites) return;
+            // the overhead-lines master governs our own spans only: another mod's dropped cord is not an overhead line, so
+            // ExternalContacts runs with the master off (blind challenge 2026-11-15, RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER)
+            if (AerialSettings.enabled)
             foreach (CompAerialAnchor a in aerial.Anchors)
             {
                 if (a.fallen.Count == 0 || !(aerial.FallenLiveCached(a) ?? false)) continue;
@@ -144,18 +147,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// dropped cord are both downed lines, biting under Only downed lines and All).</summary>
         public static void CheckPawns(Map map, Dictionary<int, IntVec3> contacts, HashSet<int> dropped = null)
         {
-            // GPT pre-release C2: the master switch counts too (contacts are also dropped at once on any lay change)
-            if (contacts.Count == 0 || !AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None) return;
+            // GPT pre-release C2: the master switch still counts for our own spans (below; contacts are also dropped at once on any lay change);
+            // a dropped cord bites with the overhead-lines master off; our own span contacts may still be listed for a moment after
+            // the master is switched off, so those are skipped here
+            if (contacts.Count == 0 || AerialSettings.shockReach == ShockReach.None) return;
             ResolveDefs();
             if (shockDef == null) return;
             List<Pawn> hit = null;
             foreach (KeyValuePair<int, IntVec3> kv in contacts)
             {
                 IntVec3 c = map.cellIndices.IndexToCell(kv.Key);
+                LineKind kind = dropped != null && dropped.Contains(kv.Key) ? LineKind.DroppedCord : LineKind.DownedSpan;
+                if (kind == LineKind.DownedSpan && !AerialSettings.enabled) continue;
                 List<Thing> things = map.thingGrid.ThingsListAtFast(c);
                 for (int i = 0; i < things.Count; i++)
                 {
-                    LineKind kind = dropped != null && dropped.Contains(kv.Key) ? LineKind.DroppedCord : LineKind.DownedSpan;
                     if (things[i] is Pawn p && ShockRule.Takes(AerialSettings.shockReach, kind, true, p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), OnOwnCut(p, map, c)))
                         (hit ??= new List<Pawn>()).Add(p);
                 }

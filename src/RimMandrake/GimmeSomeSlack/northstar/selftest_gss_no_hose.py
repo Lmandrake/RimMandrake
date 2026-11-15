@@ -8,7 +8,8 @@ hose went are not defs). The shared draw-order table (_Shared/SlackGeometry/Draw
 compiled into the DLL but is not under this mod's Source/ and names an altitude, not a thing; it is not scanned.
 
 Mutants, each in a temp copy of the mod (never the tree): a planted RM_HoseReel ThingDef, a planted texture, a planted
-C# class, and a planted Patches def must each go red BY NAME; the clean copy and a hose COMMENT must stay green.
+C# class, a planted Patches def, a texture inside a Hose/ folder and a comp named only by its Class attribute (both added by the
+blind challenge of 2026-11-15, which saw them pass the old scan) must each go red BY NAME; the clean copy and a hose COMMENT must stay green.
 Exit 0 green, 1 red, 2 instrument broke (a mutant that never applied, or the clean copy read red).
 """
 import re
@@ -37,9 +38,14 @@ def scan(mod):
             for el in root.iter():
                 if el.tag in ("defName", "thingClass", "texPath", "graphicClass", "compClass", "workerClass") and el.text and WORD.search(el.text):
                     hits.append("%s: %s (%s)" % (el.tag, el.text.strip(), f.relative_to(mod)))
+                # a comp, worker or graphic named by its Class attribute (<li Class="CompProperties_HoseReel" />) is a class too
+                cls = el.get("Class")
+                if cls and WORD.search(cls):
+                    hits.append("Class: %s (%s)" % (cls, f.relative_to(mod)))
     tex = mod / "Textures"
     for f in sorted(tex.rglob("*")) if tex.is_dir() else []:
-        if f.is_file() and WORD.search(f.name):
+        # the whole path under Textures/, so a hose texture inside a Hose/ folder is seen (the bar's false pass: "missing a texture folder")
+        if f.is_file() and WORD.search(str(f.relative_to(tex))):
             hits.append("texture: %s" % f.relative_to(mod))
     src = mod / "Source"
     for f in sorted(src.rglob("*.cs")) if src.is_dir() else []:
@@ -84,6 +90,22 @@ def _plant_patch(m):
     return "defName: RM_FireHose"
 
 
+def _plant_tex_folder(m):
+    d = m / "Textures" / "Things" / "Hose"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "Segment_south.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    return "texture: Textures/Things/Hose/Segment_south.png"
+
+
+def _plant_class_attr(m):
+    d = m / "Patches"
+    d.mkdir(exist_ok=True)
+    (d / "RM_PlantedComp.xml").write_text('<?xml version="1.0" encoding="utf-8"?>\n<Patch><Operation Class="PatchOperationAdd">'
+                                          '<xpath>Defs/ThingDef[defName="PowerConduit"]/comps</xpath><value>'
+                                          '<li Class="CompProperties_HoseReel" /></value></Operation></Patch>\n', encoding="utf-8")
+    return "Class: CompProperties_HoseReel"
+
+
 def _green_comment(m):
     p = m / "Defs" / "RM_PlantedComment.xml"
     p.write_text('<?xml version="1.0" encoding="utf-8"?>\n<Defs><!-- the hose reel lives in FlowWorks now --></Defs>\n', encoding="utf-8")
@@ -98,7 +120,8 @@ def main():
     print("%s  T1_tree_ships_no_hose  %s" % ("PASS" if not real else "FAIL", real or "0 hose/reel defs, textures or types"))
     ok &= not real
     for name, plant in (("M1_planted_thingdef", _plant_def), ("M2_planted_texture", _plant_tex), ("M3_planted_class", _plant_type),
-                        ("M4_planted_patch_def", _plant_patch), ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
+                        ("M4_planted_patch_def", _plant_patch),
+                        ("M5_planted_texture_folder", _plant_tex_folder), ("M6_planted_comp_class_attr", _plant_class_attr), ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
         with tempfile.TemporaryDirectory(prefix="gss_nohose_") as tmp:
             m = _copy(tmp)
             before = scan(m)
