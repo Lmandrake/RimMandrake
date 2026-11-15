@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-15T14:11:31Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794751445",
+    "stage": 0,
+    "tokens": 723572
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 723572
  },
  "history": [
   {
@@ -12,14 +20,52 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000)"
+  },
+  {
+   "at": "2026-11-15T14:04:14Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1794751445, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-15T14:11:33Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1794751445: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
  "mod": "Contagion",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-15T14:11:32Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_grounding.md": "93ae18170f31b2bf96b7033e46ab50221db5c669d0c1a324a902c933a8fc6cb6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "run": "rm-role-designer-1794751445",
+   "stage": 0,
+   "summary": "Stage 0 Read for Contagion. record.json carries 83 inventory capabilities (79 built, 4 absent: pre-Burn Dive, Bodyprints, Rawshade, Zhool'Iza), taken over from the Codex dry pass of 2026-11-09 and re-checked against src (one Contagion commit since, 9fe1f933f0); all 29 built-evidence lines are accounted for in built_reviewed. Scope and decisions hold his words with sources: admission 2026-11-15, the 2026-11-10 card (weather and body lead; one dash at a cost; other useful tissue), mulch plain fertilizer, Dive and Bodyprints kept in, geometry-only sun, peaks look-only. Ten contradictions are open, three of them new: Bloom-time sun escape against his geometry ruling, the Coalescence stuck at Stage 1, and seven fix items still open that the source read describes as built. Three failure modes: the sky clock is not a decision, the body bargain collapses, green by counters but empty in play. Stage 1 opens with a draft live-walk proposal on the saved Contagion site (a_live_walk) before any design question; the Codex questions q01, q03 and q06 are answered and q02, q04, q05, q07 and q08 stay draft."
+  }
+ ],
+ "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
