@@ -1,0 +1,7 @@
+{"type": "scenario", "scene": "immunity_window", "status": "PASS", "detail": "launches=1 immuneSkip=True guardHolds=True", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":2702,\"exp\":18525,\"thing\":\"Human18522\",\"def\":\"Human\",\"from\":[9,12],\"centre\":[8,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":2702,\"exp\":18525,\"thing\":\"Human18522\",\"def\":\"Human\",\"from\":[9,12],\"to\":[12,12],\"planned\":3,\"cells\":3,\"stop\":\"Distance\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":60.75,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":2721,\"exp\":0,\"thing\":\"Human18522\",\"def\":\"Human\",\"at\":[12,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":false}"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":2952,\"exp\":18528,\"thing\":\"Human18522\",\"def\":\"Human\",\"from\":[12,12],\"centre\":[11,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":2952,\"exp\":18528,\"thing\":\"Human18522\",\"def\":\"Human\",\"reason\":\"immune\",\"recoversAt\":3415}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

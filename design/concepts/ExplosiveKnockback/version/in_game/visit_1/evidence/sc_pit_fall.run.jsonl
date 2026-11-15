@@ -1,0 +1,6 @@
+{"type": "scenario", "scene": "pit_colonist", "status": "PASS", "detail": "p 13,12->15,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":14102,\"exp\":20163,\"thing\":\"Human20153\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":14102,\"exp\":20163,\"thing\":\"Human20153\",\"def\":\"Human\",\"from\":[13,12],\"to\":[15,12],\"planned\":3,\"cells\":2,\"stop\":\"Pit\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":48.75,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":14121,\"exp\":0,\"thing\":\"Human20153\",\"def\":\"Human\",\"at\":[15,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":true}"}
+{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":14121,\"exp\":0,\"thing\":\"Human20153\",\"def\":\"Human\",\"at\":[15,12]}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

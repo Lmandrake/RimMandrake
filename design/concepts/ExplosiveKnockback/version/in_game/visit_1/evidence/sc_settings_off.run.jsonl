@@ -1,0 +1,3 @@
+{"type": "scenario", "scene": "settings_off", "status": "PASS", "detail": "p 13,12->13,12 (0 cells); steel 11,12->11,12 (0 cells) waveHitThem=True", "origin": "12,12"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 3901, 'operation': {'OperationId': 'op_1ea1962b8de846b68c9a4e094bf54589', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 3901}}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

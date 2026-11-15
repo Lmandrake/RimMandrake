@@ -1,0 +1,3 @@
+{"type": "scenario", "scene": "gas_into_pit", "status": "INVALID", "detail": "unknown scene gas_into_pit", "origin": "12,12"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 17182, 'operation': {'OperationId': 'op_fd196844a50245f6935f2b1b575a43ab', 'Status': 'Completed', 'Success': True, 'DurationMs': 35}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 17182}}"}
+{"type": "run_end", "verdict": "INVALID", "scenes": 1}

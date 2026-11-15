@@ -1,0 +1,6 @@
+{"type": "scenario", "scene": "pit_enemy", "status": "PASS", "detail": "p 13,12->16,11 (3 cells) landedOnFirstPitCell=True stillInPit=True descents=1", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":14402,\"exp\":20177,\"thing\":\"Human20168\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":14402,\"exp\":20177,\"thing\":\"Human20168\",\"def\":\"Human\",\"from\":[13,12],\"to\":[15,12],\"planned\":2,\"cells\":2,\"stop\":\"Pit\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":78.3,\"hoseDropped\":false,\"faction\":\"OutlanderRoughPig\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":14421,\"exp\":0,\"thing\":\"Human20168\",\"def\":\"Human\",\"at\":[15,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":true}"}
+{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":14421,\"exp\":0,\"thing\":\"Human20168\",\"def\":\"Human\",\"at\":[15,12]}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

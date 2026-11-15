@@ -1,0 +1,5 @@
+{"type": "scenario", "scene": "pawn_arc", "status": "INVALID", "detail": "the walker never stood on the planned cell between launch and landing", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":1202,\"exp\":18481,\"thing\":\"Human18471\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":1202,\"exp\":18481,\"thing\":\"Human18471\",\"def\":\"Human\",\"from\":[13,12],\"to\":[16,12],\"planned\":3,\"cells\":3,\"stop\":\"Distance\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":60.8,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":1221,\"exp\":0,\"thing\":\"Human18471\",\"def\":\"Human\",\"at\":[16,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":false}"}
+{"type": "run_end", "verdict": "INVALID", "scenes": 1}

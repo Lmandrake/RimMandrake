@@ -1,0 +1,5 @@
+{"type": "scenario", "scene": "over_sandbags", "status": "PASS", "detail": "p 13,12->16,12 (3 cells) (sandbags at x+2)", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":602,\"exp\":18459,\"thing\":\"Human18451\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":602,\"exp\":18459,\"thing\":\"Human18451\",\"def\":\"Human\",\"from\":[13,12],\"to\":[16,12],\"planned\":3,\"cells\":3,\"stop\":\"Distance\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":48.8,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":621,\"exp\":0,\"thing\":\"Human18451\",\"def\":\"Human\",\"at\":[16,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":false}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}
