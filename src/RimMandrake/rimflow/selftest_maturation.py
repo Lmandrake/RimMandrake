@@ -52,14 +52,27 @@ def git_status():
                           capture_output=True, text=True, timeout=120).stdout
 
 
+# The mods' design/concepts files as these tests were written, read from git: the live tables move as builders land
+# (2026-11-14: FlowWorks 7 -> 0 and Explosive Knockback 12 -> 1 refused bars turned both maturation selftests red).
+FIXTURE_SHA = "f5d809fb03a59ccca0f72da4a509cfb15b01fd64"
+
+
+def fixture(mod, rel):
+    """-> the bytes of design/concepts/<mod>/<rel> at FIXTURE_SHA, or None when it was absent there."""
+    r = subprocess.run(["git", "-C", REPO, "show", "%s:design/concepts/%s/%s" % (FIXTURE_SHA, mod, rel)],
+                       capture_output=True, timeout=60)
+    return r.stdout if r.returncode == 0 else None
+
+
 def copy_mods(root):
     for mod in FOUR + ("PyrelandsMechanics",):
         for rel in COPY:
-            src = os.path.join(REPO, "design", "concepts", mod, rel)
-            if os.path.exists(src):
+            data = fixture(mod, rel)
+            if data is not None:
                 dst = os.path.join(root, "design", "concepts", mod, rel)
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
-                shutil.copy(src, dst)
+                with open(dst, "wb") as f:
+                    f.write(data)
 
 
 def synthetic(root, state="drafting"):

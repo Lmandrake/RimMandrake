@@ -1,7 +1,7 @@
 {
  "mod": "FlowWorks",
  "version": "0.1.0",
- "made": "2026-11-14T21:20:42-08:00",
+ "made": "2026-11-14T21:26:38-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
  "stages": {
   "2": "preflight (a program)",
@@ -3555,7 +3555,7 @@
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14 (17 questions, a foil per bar from scenes.json); scorer proven offline by selftest_blind_reader.py (3 mutants red) and the claude -p transport smoke-read on a synthetic picture; needs the Stage 6 captures"
+    "why": "UNRUN: written Stage 3 2026-11-14 (18 questions, a foil per bar from scenes.json); scorer and blindness proven offline by selftest_blind_reader.py (6 mutants red); the sandboxed claude -p reader smoke-read a synthetic picture and was refused a read of the repo; needs the Stage 6 captures"
    },
    "entry": "read",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/blind_reader.py read --manifest <captures.json> --out <json>  (after the six Stage 6 scenes; manifest from `blind_reader.py template`)",

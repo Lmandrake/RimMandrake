@@ -1,6 +1,6 @@
 # FlowWorks 0.1.0: test-and-stage table
 
-Generated 2026-11-14T21:20:42-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
+Generated 2026-11-14T21:26:38-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
 
 ## Counts (measured)
 
