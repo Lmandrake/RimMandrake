@@ -34,7 +34,7 @@ T = {}
 def off(tid, f, observes, reads, cmd=None, new=False, item=None, mod_rows=None,
         defs=(), symbols=(), mods=()):
     T[tid] = dict(id=tid, kind="offline", stage="4-5", file=f, observes=observes,
-                  reads=list(reads), command=cmd or ("python3 " + f), new=new, item=item,
+                  reads=list(reads), command=cmd or ("python3 " + f), new=new and not (ROOT / f).exists(), item=item,
                   mod_rows=mod_rows, defs=list(defs), symbols=list(symbols), mods=list(mods))
 
 

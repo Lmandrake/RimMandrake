@@ -7,6 +7,7 @@
 //   cells   wall-cell candidate gathering against a sort-then-take oracle (cap, bare before marked, scan order)
 //   lure    the breach-lure choice: nearest wins, ties by key, order does not matter
 //   wall    the wall-face draw: side priority over all 16 neighbour masks, offset onto that wall, angle facing it
+//   weather the fade curve: roofed life > open for every form and craft, alpha 1 to 60% of life, 0 at its end, monotone; planted mutants must go red
 // A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
@@ -475,6 +476,73 @@ namespace RimMandrake.Graffiti.SelfTest
             });
         }
 
+        // ════════════════════════ weather ════════════════════════
+        // The fade curve (T_WEATHER_OFFLINE, RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE): a roof always keeps a mark longer, for
+        // every form and craft; nothing shows for the first 60% of a life, the mark is gone at its end, and the fade only ever goes one way.
+        // Alpha is 1 - WeatherFade. The checks take the formulas as arguments so the same checks also run on planted mutants, each of which
+        // must go red: a check that passes a mutant is blind, and that is a failure of this family.
+        private static void WeatherOne(Random r, Func<GraffitiForm, int, bool, int, float> days, Func<float, float, float> fade, Func<float, int> step)
+        {
+            int[] edgeIds = { 0, 1, -1, int.MaxValue, int.MinValue };
+            int id = r.Next(8) == 0 ? edgeIds[r.Next(edgeIds.Length)] : r.Next(int.MinValue, int.MaxValue);
+            foreach (GraffitiForm form in Enum.GetValues(typeof(GraffitiForm)))
+            {
+                for (int craft = RM_GraffitiKernel.Awful; craft <= RM_GraffitiKernel.Legendary; craft++)
+                {
+                    float roofed = days(form, craft, false, id), open = days(form, craft, true, id);
+                    Check(!float.IsNaN(open) && !float.IsInfinity(roofed) && open > 0f, $"a mark has a finite, positive life ({form} craft {craft} id {id}: open {open}, roofed {roofed})");
+                    Check(roofed > open, $"a roof keeps a mark longer than the rain does ({form} craft {craft} id {id}: roofed {roofed} <= open {open})");
+                    // the life it really gets: alpha 1 to 60% of it, then down to 0 at its end
+                    float life = r.Next(2) == 0 ? roofed : open;
+                    float early = life * 0.6f * (float)r.NextDouble() * 0.999f;
+                    Check(fade(0f, life) == 0f && fade(early, life) == 0f, $"alpha 1 before 60% of its life ({form} craft {craft}: fade at {early:F3} of {life:F3} days is {fade(early, life)})");
+                    float end = fade(life, life), after = fade(life * (1.01f + (float)r.NextDouble()), life);
+                    Check(1f - end <= 1e-6f && step(end) == 4, $"alpha 0 at its end ({form} craft {craft}: fade {end}, step {step(end)})");
+                    Check(after == 1f && step(after) == 4, $"gone stays gone after its end (fade {after})");
+                }
+            }
+            // monotone: sorted ages over 0..1.5 lives, any life
+            float l = 0.05f + (float)r.NextDouble() * 200f;
+            var ages = new float[64];
+            for (int i = 0; i < ages.Length; i++) ages[i] = (float)r.NextDouble() * 1.5f * l;
+            ages[0] = 0.6f * l; ages[1] = l; ages[2] = 0f;
+            Array.Sort(ages);
+            float last = -1f; int lastStep = -1;
+            foreach (float a in ages)
+            {
+                float f = fade(a, l);
+                Check(f >= 0f && f <= 1f, $"fade in 0..1 (age {a} of {l}: {f})");
+                Check(f >= last, $"the fade never comes back (age {a} of {l}: {f} after {last})");
+                Check(step(f) >= lastStep && step(f) >= 0 && step(f) <= 4, $"the drawn step never comes back (age {a} of {l}: step {step(f)} after {lastStep})");
+                last = f; lastStep = step(f);
+            }
+        }
+
+        private static List<string> Weather(int n, int seed)
+        {
+            Func<GraffitiForm, int, bool, int, float> days = RM_GraffitiKernel.WeatherDays;
+            Func<float, float, float> fade = RM_GraffitiKernel.WeatherFade;
+            Func<float, int> step = RM_GraffitiKernel.WeatherStep;
+            var fails = Loop("weather", n, seed, r => { Steps++; WeatherOne(r, days, fade, step); });
+            float Clamp01(float x) { return x < 0f ? 0f : (x > 1f ? 1f : x); }
+            var mutants = new (string name, Func<GraffitiForm, int, bool, int, float> d, Func<float, float, float> f)[]
+            {
+                ("roof and rain swapped", (fo, c, o, i) => days(fo, c, !o, i), fade),
+                ("a paste ignores its roof", (fo, c, o, i) => days(fo, c, o || fo == GraffitiForm.Paste, i), fade),
+                ("a legendary hand ignores its roof", (fo, c, o, i) => days(fo, c, o || c == RM_GraffitiKernel.Legendary, i), fade),
+                ("fade shows from 50%", days, (a, li) => li <= 0f ? 0f : Clamp01((a / li - 0.5f) / 0.5f)),
+                ("never quite gone", days, (a, li) => Math.Min(fade(a, li), 0.9f)),
+                ("comes back after its end", days, (a, li) => a > li * 1.2f ? 0.5f : fade(a, li)),
+            };
+            foreach (var m in mutants)
+            {
+                var hit = Loop("weather mutant", Math.Max(n, 1), seed, r => WeatherOne(r, m.d, m.f, step));
+                Console.WriteLine($"  weather mutant '{m.name}': {(hit.Count > 0 ? "RED (caught)" : "GREEN (survived)")}");
+                if (hit.Count == 0) fails.Add($"weather mutant '{m.name}' survived every check: the family is blind to it");
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -492,6 +560,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("lure", () => Lure(N(4000), S(1))),
                 ("wall", () => Wall()),
                 ("paint", () => Paint()),
+                ("weather", () => Weather(N(400), S(1))),
             };
             foreach (var f in fam)
             {

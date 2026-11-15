@@ -510,3 +510,316 @@ def raid_exit_tag_toggle_flips(t):
 def auto_clean_protection_toggle_flips(t):
     """Closes the floor gap (see raid_exit_tag_toggle_flips)."""
     _flip(t, "auto_clean_protection_setting_flips", "autoCleanProtectionEnabled")
+
+
+# ------------------------------------------------------- raid marks: retaken, weathered, pressure (scenes.json)
+# Staged through the mod's own A2 probe (RM_GraffitiProof.RaidStart / RaidExit, RM_GraffitiProof.cs:172,219): its site is in the
+# Home area (RM_GraffitiProof.cs:44), so its exit tags are the enemy marks RM_Graffiti_EnemyClaim counts (GraffitiSocial.cs:227).
+
+PROOF = "RimMandrake.Graffiti.RM_GraffitiProof"
+STAGE = "RimMandrake.Graffiti.RM_GraffitiStage"
+SOCIAL_PROOF = "RimMandrake.Graffiti.RM_GraffitiSocialProof"
+ENEMY_CLAIM = "RM_Graffiti_EnemyClaim"
+SCRUB_JOB = "RM_ScrubMark"                  # WorkGiver_ScrubGraffitiDesignated's job (WorkGiver_ScrubGraffitiDesignated.cs:42)
+SITE_SETTINGS_ITEM = "RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT"
+PRESSURE_ITEM = "RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL"
+ROOFED_TWIN_ITEM = "RIMMANDRAKE_PAINT_GRAFFITI_ROOFED_TWIN_RANDOM_ENEMY_WONT_DO"
+CRAFTS = ["awful", "poor", "normal", "good", "excellent", "masterwork", "legendary"]   # RM_GraffitiKernel.cs:992, QualityCategory labels
+
+
+def _pressure_built():
+    """True once the mod's source carries a raider-pressure setting (the scene's 3 settings, PRESSURE_ITEM). A source read, so an
+    unlanded dependency fails by name before any game state is touched."""
+    pat = re.compile(r"public\s+static\s+\w+\s+\w*[Pp]ressure\w*\s*=")
+    src = os.path.join(_HERE, "Source")
+    for d, dirs, files in os.walk(src):
+        dirs[:] = [x for x in dirs if x not in ("SelfTest", "obj", "bin")]
+        for f in files:
+            if f.endswith(".cs") and pat.search(open(os.path.join(d, f), encoding="utf-8-sig").read()):
+                return True
+    return False
+
+
+def _need_pressure(what):
+    if not _pressure_built():
+        raise ExpectationFailed("UNLANDED: %s (no raider-pressure setting in Graffiti/Source): %s cannot be read" % (PRESSURE_ITEM, what))
+    raise ExpectationFailed("MISSING TOOL: %s has landed but this scene has no reader for %s yet: write it here, naming the "
+                            "settings and letter it built (never a guessed name)" % (PRESSURE_ITEM, what))
+
+
+def _static(t, typ, method, args=""):
+    """jawa/static_call on one of the mod's probes -> (result text, ticksGame); a refusal or REFUSED answer fails the component."""
+    r = t.bridge_call("jawa/static_call", type=typ, method=method, args=args)
+    if not t._guard():
+        return "", None
+    text = str((r or {}).get("result") or "")
+    if not (r or {}).get("success") or text.startswith("REFUSED") or text.startswith("error="):
+        raise ExpectationFailed("%s.%s(%r) answered %r" % (typ.rsplit(".", 1)[-1], method, args, r))
+    return text, (r or {}).get("ticksGame")
+
+
+def _probe_fields(text):
+    """'EXIT mid 0 | after 3 | faction Pirate Band' -> {'mid': '0', 'after': '3', 'faction': 'Pirate Band'} (the first word is the verb)."""
+    out = {}
+    for i, part in enumerate(text.split("|")):
+        w = part.split()[1:] if i == 0 else part.split()
+        if w:
+            out[w[0]] = " ".join(w[1:])
+    return out
+
+
+def _territory_stage(n):
+    """RM_GraffitiKernel.TerritoryStage (RM_GraffitiKernel.cs:1257): -1 none, 0 for 1-2 marks, 1 for 3-5, 2 for 6+."""
+    return -1 if n <= 0 else (0 if n <= 2 else (1 if n <= 5 else 2))
+
+
+def _weather_days(form, craft, outdoors, idn):
+    """RM_GraffitiKernel.WeatherDays (RM_GraffitiKernel.cs:1208), transcribed; T_WEATHER_OFFLINE pins the kernel it copies."""
+    days = 22.0 if outdoors else 44.0
+    days *= {"Paste": 0.5, "Stencil": 1.3, "Scrawl": 0.8}.get(form, 1.0)
+    days *= [0.75, 0.85, 1.0, 1.1, 1.2, 1.35, 1.35][max(0, min(6, craft))]
+    h = (idn * 2246822519 + 3266489917) & 0xFFFFFFFF
+    return days * (0.75 + 0.5 * ((h >> 9) & 1023) / 1023.0)
+
+
+def _whole_map(t):
+    mm = t.bridge_call("jawa/map_info") or {}
+    return "0,0,%s,%s" % (mm.get("sizeX") or 250, mm.get("sizeZ") or 250)
+
+
+def _all_marks(t, rect):
+    """{thing id: {def, x, z}} for every mark of this mod standing in rect (a truncated read fails, never reads as fewer)."""
+    r = t.bridge_call("jawa/list_things", defName=MARK_CSV, rect=rect, limit=2000)
+    if not t._guard():
+        return {}
+    if not (r or {}).get("success", True) or (r or {}).get("isCompleteList") is False:
+        raise ExpectationFailed("jawa/list_things unreadable or truncated: %r" % (r,))
+    return {x.get("id"): {"def": x.get("def") or x.get("defName"), "x": (x.get("position") or {}).get("x", x.get("x")),
+                          "z": (x.get("position") or {}).get("z", x.get("z"))} for x in ((r or {}).get("things") or []) if x.get("id")}
+
+
+def _claim_holders(t):
+    """{pawn id: EnemyClaim stage} for every pawn now holding RM_Graffiti_EnemyClaim (jawa/pawn_thoughts per listed pawn)."""
+    held = {}
+    for p in _all_colonists(t):
+        r = t.bridge_call("jawa/pawn_thoughts", pawn=p["id"]) or {}
+        for th in r.get("thoughts") or []:
+            if th.get("def") == ENEMY_CLAIM:
+                held[p["id"]] = th.get("stage")
+    return held
+
+
+def _claim_stage(t, settle=300):
+    """The colony's one EnemyClaim stage (it is map-wide: every holder must agree), or None when nobody holds it."""
+    t.wait_ticks(settle)                     # situational thoughts are recomputed on their own cadence, not on the scrub's tick
+    held = _claim_holders(t)
+    stages = sorted(set(held.values()), key=str)
+    if len(stages) > 1:
+        raise ExpectationFailed("EnemyClaim holders disagree on its stage (it counts the map's marks, one number): %s" % held)
+    return stages[0] if stages else None
+
+
+def _raid_start(t, comp):
+    """The scenes' shared start: Graffiti loaded, the site preflight clean, social reactions on, then one A2 raid exit.
+    -> (raid faction name, {id: mark} of the exit tags it left)."""
+    import importlib.util          # Graffiti's own northstar_site.py, by path: a bare import can find Pyrelands' (modcheck/biome_site.py:66)
+    spec = importlib.util.spec_from_file_location("graffiti_northstar_site", os.path.join(_HERE, "northstar_site.py"))
+    northstar_site = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(northstar_site)
+    loaded, _ = _static(t, PROOF, "Loaded")
+    if t._guard() and "graffiti True" not in loaded:
+        raise ExpectationFailed("RM_GraffitiProof.Loaded: %r" % loaded)
+
+    class _S(object):
+        call = staticmethod(lambda tool, **q: t.bridge_call(tool, **q))
+    bad = northstar_site.preflight(_S()) if t._guard() else []
+    if bad:
+        raise ExpectationFailed("site preflight: %s" % "; ".join(bad))
+    r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="socialEnabled")
+    if t._guard() and str((r or {}).get("value")).lower() != "true":
+        raise ExpectationFailed("socialEnabled reads %r, not its shipped true (RM_GraffitiMod.cs:47); EnemyClaim is off without it "
+                                "(the site's social pair is %s's to check)" % ((r or {}).get("value"), SITE_SETTINGS_ITEM))
+    rect = _whole_map(t)
+    before = _all_marks(t, rect)
+    started, _ = _static(t, PROOF, "RaidStart")
+    exit_, _ = _static(t, PROOF, "RaidExit")       # no tick between: the exit tags are the only new marks
+    if not t._guard():
+        return None, {}
+    tags = {k: v for k, v in _all_marks(t, rect).items() if k not in before}
+    f = _probe_fields(exit_)
+    if str(f.get("exterior")) != str(len(tags)) or not tags:
+        raise ExpectationFailed("%s: the raid exit left %d new mark(s), probe says %r" % (comp, len(tags), exit_))
+    t._current.detail = "%s; %s; %d exit tag(s)" % (started, exit_, len(tags))
+    return _probe_fields(started).get("faction"), tags
+
+
+def _scrub_one(t, mid, m, seen_jobs, budget=6000, step=500):
+    """Designate one mark with the player's Scrub drag (RM_GraffitiStage.Scrub, through Designator_ScrubGraffiti) and run the clock until it
+    is gone. Records each colonist job seen meanwhile in seen_jobs. -> ticks it took; a mark still standing at the budget fails."""
+    _static(t, STAGE, "Scrub", "%d,%d,1,1" % (m["x"], m["z"]))
+    rect = "%d,%d,1,1" % (m["x"], m["z"])
+    waited = 0
+    while waited < budget and t._guard():
+        t.wait_ticks(step)
+        waited += step
+        for p in _all_colonists(t):
+            g = t.bridge_call("jawa/pawn_get", pawn=p["id"])
+            if SCRUB_JOB in str(g):
+                seen_jobs.add(p["id"])
+        if mid not in _all_marks(t, rect):
+            return waited
+    raise ExpectationFailed("mark %s (%s at %d,%d) still stands %d ticks after its Scrub designation" % (mid, m["def"], m["x"], m["z"], budget))
+
+
+@suite.chain("scene_raid_retaken")
+def scene_raid_retaken(t):
+    """sc_raid_retaken (raid_mark_troubles): scrubbing a raid's exit tags one by one walks RM_Graffiti_EnemyClaim's stage down with the
+    count, WorkGiver_ScrubGraffitiDesignated does each scrub, and the thought ends with the last mark. Control: one mark left standing for a
+    day keeps the thought (it does not time out). Restore: the runner destroys the quicktest map; nothing persistent changed.
+    The raider-pressure settings of the start are PRESSURE_ITEM's; until it lands they are not part of this site."""
+    order, steps, seen = [], [], set()
+    with t.component("site_ready_raid_retaken"):
+        faction, tags = _raid_start(t, "site_ready_raid_retaken")
+        if t._guard():
+            if len(tags) < 3:
+                raise ExpectationFailed("only %d exit tag(s): a stage fall needs >= 3 (TerritoryStage, RM_GraffitiKernel.cs:1257)" % len(tags))
+            order = sorted(tags.items(), key=lambda kv: (kv[1]["x"], kv[1]["z"]))
+            s0 = _claim_stage(t)
+            if s0 != _territory_stage(len(order)):
+                raise ExpectationFailed("EnemyClaim stage %r at %d enemy marks, kernel says %d" % (s0, len(order), _territory_stage(len(order))))
+            steps.append((len(order), s0))
+
+    with t.component("enemy_claim_falls_with_scrubs"):
+        if t._guard():
+            for i, (mid, m) in enumerate(order[:-1]):
+                _scrub_one(t, mid, m, seen)
+                left = len(order) - i - 1
+                st = _claim_stage(t)
+                steps.append((left, st))
+                if st != _territory_stage(left):
+                    raise ExpectationFailed("EnemyClaim stage %r at %d marks left, kernel says %d (steps %s)" % (st, left, _territory_stage(left), steps))
+            if not seen:
+                raise ExpectationFailed("the marks went, but no colonist was seen on %s (WorkGiver_ScrubGraffitiDesignated): steps %s" % (SCRUB_JOB, steps))
+            if not any(b[1] < a[1] for a, b in zip(steps, steps[1:])):
+                raise ExpectationFailed("the stage never fell with the count: %s" % steps)
+            t._current.detail = "(marks, stage): %s; scrubbers %s" % (steps, sorted(seen))
+
+    with t.component("control_one_mark_keeps_claim"):
+        if t._guard():
+            t.wait_ticks(60000)              # a day with one mark left: a thought that timed out on its own would be gone
+            st = _claim_stage(t)
+            if st != 0:
+                raise ExpectationFailed("one enemy mark standing a day on: EnemyClaim stage %r, expected 0 (it must stay)" % st)
+
+    with t.component("enemy_claim_ends_with_last_mark"):
+        if t._guard():
+            mid, m = order[-1]
+            _scrub_one(t, mid, m, seen)
+            st = _claim_stage(t)
+            if st is not None:
+                raise ExpectationFailed("every enemy mark scrubbed, EnemyClaim still held at stage %r" % st)
+
+
+def _age_by(t, days, why):
+    """Advance TicksGame by `days` (jawa/time_set_ticks, a declared time exception), then run the scene's 2500 ticks so the weathering pass
+    (GraffitiSocial's fade >= 1 Destroy) sees the new age."""
+    _, now = _static(t, PROOF, "Loaded")
+    if not t._guard():
+        return
+    if now is None:
+        raise ExpectationFailed("static_call returned no ticksGame: cannot age the marks")
+    r = t.bridge_call("jawa/time_set_ticks", ticks=int(now) + int(days * 60000), timeException=True, why=why)
+    if not (r or {}).get("success", False):
+        raise ExpectationFailed("jawa/time_set_ticks refused: %r" % (r,))
+    t.wait_ticks(2500)
+
+
+def _craft_at(t, x, z):
+    """The craft of the mark at (x, z) from RM_GraffitiSocialProof.Marks ('craft <label>'; '-' is RM_GraffitiKernel.Normal, Filth_Mark.cs:196)."""
+    text, _ = _static(t, SOCIAL_PROOF, "Marks")
+    for line in text.splitlines():
+        if line.startswith("(%d, 0, %d) " % (x, z)):
+            mm = re.search(r"\bcraft (\S+)", line)
+            lab = mm.group(1) if mm else "-"
+            return (CRAFTS.index(lab) if lab in CRAFTS else 2), line
+    raise ExpectationFailed("RM_GraffitiSocialProof.Marks lists no mark at (%d, %d)" % (x, z))
+
+
+@suite.chain("scene_weathered_raid_mark")
+def scene_weathered_raid_mark(t):
+    """sc_weathered_raid_mark (weathering_bounds_marks, raid_mark_troubles): a raid's unroofed exit mark weathers away while its same-age
+    roofed twin stands, so EnemyClaim stays; aged past its own life the roofed one goes too and EnemyClaim ends (and A's raider pressure
+    lifts, once PRESSURE_ITEM lands). Control: the roofed twin at the first age still stands. Restore: the runner destroys the quicktest
+    map. The scene asks the twin to read faded at the first age; the kernel does not promise it (open/roofed life is 0.3..0.83 for one form
+    and craft, RM_GraffitiKernel.cs:1208, and fading starts at 0.6), so its weather step is recorded, not judged."""
+    tags, twin = {}, None
+    with t.component("site_ready_weathered_raid_mark"):
+        faction, tags = _raid_start(t, "site_ready_weathered_raid_mark")
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: no probe paints a mark by the raid's faction (%s) under a roof at the raid's tick: "
+                                    "RM_GraffitiProof.RaidExit tags exterior walls only (RM_GraffitiProof.cs:219) and HostileThought "
+                                    "picks a random enemy (RM_GraffitiProof.cs:294); filed as %s" % (faction, ROOFED_TWIN_ITEM))
+
+    open_life = roof_life = None
+    with t.component("unroofed_mark_weathers_away_first"):
+        if t._guard():
+            (oid, om), (tid, tm) = sorted(tags.items())[0], twin
+            oc, _ = _craft_at(t, om["x"], om["z"])
+            tc, _ = _craft_at(t, tm["x"], tm["z"])
+            num = lambda i: int(re.search(r"(\d+)$", i).group(1))
+            open_life = _weather_days(FORM_OF.get(om["def"], "Scrawl"), oc, True, num(oid))
+            roof_life = _weather_days(FORM_OF.get(tm["def"], "Scrawl"), tc, False, num(tid))
+            if roof_life <= open_life * 1.02:
+                raise ExpectationFailed("SITE: the twin's life %.1f d is not past the open mark's %.1f d; re-stage" % (roof_life, open_life))
+            _age_by(t, open_life * 1.02, "sc_weathered_raid_mark: past the unroofed exit mark's WeatherDays")
+            left = _all_marks(t, _whole_map(t))
+            if oid in left:
+                raise ExpectationFailed("unroofed mark %s still stands %.1f d past placing (its life %.1f d)" % (oid, open_life * 1.02, open_life))
+            st = _claim_stage(t)
+            if st is None:
+                raise ExpectationFailed("the roofed twin stands but EnemyClaim ended with the unroofed mark")
+
+    with t.component("control_roofed_twin_stands"):
+        if t._guard():
+            tid, tm = twin
+            if tid not in _all_marks(t, _whole_map(t)):
+                raise ExpectationFailed("the roofed twin %s is gone at %.1f d of its %.1f d life: weathering ignores the roof" % (tid, open_life * 1.02, roof_life))
+            _, line = _craft_at(t, tm["x"], tm["z"])
+            t._current.detail = "twin at the first age: %s" % line
+
+    with t.component("roofed_twin_weathers_and_claim_ends"):
+        if t._guard():
+            tid, tm = twin
+            _age_by(t, roof_life * 1.02 - open_life * 1.02, "sc_weathered_raid_mark: past the roofed twin's WeatherDays")
+            if tid in _all_marks(t, _whole_map(t)):
+                raise ExpectationFailed("roofed twin %s still stands past its %.1f d life" % (tid, roof_life))
+            st = _claim_stage(t)
+            if st is not None:
+                raise ExpectationFailed("both raid marks weathered away, EnemyClaim still held at stage %r" % st)
+
+    with t.component("raider_pressure_lifts_with_the_marks"):
+        if t._guard():
+            _need_pressure("faction A's raider pressure before and after its marks weather away")
+
+
+@suite.chain("scene_raider_pressure")
+def scene_raider_pressure(t):
+    """sc_raider_pressure (raider_pressure): in each mode (larger, then sooner) A's raid, with two exit marks standing, beats B's at the same
+    storyteller points by the setting and a letter names A and points at its marks; one A mark scrubbed keeps the pressure; both scrubbed and
+    A matches B. Control: the pressure setting off gives equal raids and no letter. Restore: the runner destroys the quicktest map.
+    Every row waits on PRESSURE_ITEM (the switch, mode and push-size settings and the letter); until it lands each fails by that name."""
+    with t.component("site_ready_raider_pressure"):
+        if not _pressure_built():
+            raise ExpectationFailed("UNLANDED: %s: no raider-pressure setting in Graffiti/Source, so there is no pressure to stage" % PRESSURE_ITEM)
+        faction, tags = _raid_start(t, "site_ready_raider_pressure")
+        if t._guard() and len(tags) < 2:
+            raise ExpectationFailed("faction A (%s) left %d exit mark(s); the scene needs two" % (faction, len(tags)))
+    for mode in ("larger", "sooner"):
+        with t.component("pressure_%s_names_A_and_beats_B" % mode):
+            _need_pressure("the %s-mode raid of A against B and the letter naming A" % mode)
+        with t.component("pressure_%s_stays_with_one_scrubbed" % mode):
+            _need_pressure("A's %s-mode pressure with one of its marks scrubbed" % mode)
+        with t.component("pressure_%s_gone_with_both_scrubbed" % mode):
+            _need_pressure("A against B in %s mode with both marks scrubbed" % mode)
+    with t.component("control_pressure_off_equal_raids"):
+        _need_pressure("A against B with the pressure switch off (equal raids, no letter)")

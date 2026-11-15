@@ -310,13 +310,28 @@ namespace RimMandrake.Graffiti
             int bareSeen = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, RaidExitSearchRadius, useCenter: true))
             {
-                bool usable = c.InBounds(map) && c.Standable(map) && OnFace(c, map) && IsExteriorCell(c, map);
+                bool usable = c.InBounds(map) && c.Standable(map) && OnFace(c, map) && IsExteriorCell(c, map) && FacesBuiltWall(c, map);
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
                 states.Add(new RM_MarkCell(usable, marked));
                 if (usable && !marked && ++bareSeen >= RM_GraffitiKernel.MaxCandidates) break;
             }
             return PickFrom(cells, states, map, out result);
+        }
+
+        /// <summary>The wall `c`'s mark would be drawn on (Filth_Mark.ReadWallSide) is built, not natural rock: a raider tags the colony's walls,
+        /// never a vein out in the hills nobody walks past (walk defect #2, 2026-11-14; T_RAID_TAG_BUILT_WALL_ONLY). Colonists still paint rock faces.</summary>
+        internal static bool FacesBuiltWall(IntVec3 c, Map map)
+        {
+            int side = Filth_Mark.ReadWallSide(c, map);
+            if (side < 0 || side > 3) return false;
+            IntVec3 n = c + new Rot4(side).FacingCell;
+            return n.InBounds(map) && n.GetEdifice(map) is Building building && IsBuiltWall(building.def);
+        }
+
+        internal static bool IsBuiltWall(ThingDef def)
+        {
+            return def.Fillage == FillCategory.Full && def.building?.isNaturalRock != true && def.graphicData?.Linked == true;
         }
 
         /// <summary>An exterior cell: unroofed, and its room known and psychologically outdoors (Verse.Room, rw16).</summary>

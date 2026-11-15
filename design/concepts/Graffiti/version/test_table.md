@@ -1,14 +1,14 @@
 # Graffiti 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes when every deciding test passes.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes when every deciding test passes.
 
 ## Counts
 
 - bars: 47 (locked: 47)
-- tests: 46 (10 built offline, 3 new offline, 32 live, 1 look)
-- scene entries present: 10, absent: 20
-- built offline green today: 9, red: 1
-- bars with every decider runnable today: 14
+- tests: 46 (12 built offline, 1 new offline, 32 live, 1 look)
+- scene entries present: 13, absent: 17
+- built offline green today: 11, red: 1
+- bars with every decider runnable today: 20
 - known red: P_A9 = RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
 
 ## Bars
@@ -25,15 +25,15 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes
 | inv_viewer_mood | 6 | sc_rereads, sc_hostile_thought | sc_beauty_pair, T_LINT | - | no |
 | inv_social_layer | 6 | sc_mockery, sc_answer_wall, sc_tribute_memorial, sc_fights | T_FUZZ, T_MSG_COUNTERS_RESET | - | no |
 | inv_visitors | 6 | sc_visitors | - | - | no |
-| inv_raid_marks | 6 | sc_raid_exit, sc_going_over, sc_raid_retaken, T_RAID_TAG_BUILT_WALL_ONLY | - | 2 | no |
+| inv_raid_marks | 6 | sc_raid_exit, sc_going_over, sc_raid_retaken, T_RAID_TAG_BUILT_WALL_ONLY | - | 2 | yes |
 | inv_breach_bias | 6 | sc_breach_bias_raid, sc_breach_toggle | T_FUZZ | - | no |
 | inv_scrub_protection | 6 | sc_scrub_protection | T_FUZZ | - | yes |
 | inv_temperament | 6 | sc_temperament | - | - | no |
 | inv_wall_loss | 6 | sc_wall_loss | - | - | no |
 | inv_settings | 6 | sc_settings, T_SETTINGS_SCREENS | T_LINT, T_SHIP_CHECK, sc_breach_toggle | - | no |
 | inv_standalone | 6 | sc_settings, H1_IDEO_RELOAD | T_SHIP_CHECK | 1 | no |
-| inv_raider_future_marks | 6 | sc_raider_pressure | - | - | no |
-| inv_weathering | 6 | sc_weathered_raid_mark, T_WEATHER_OFFLINE | - | - | no |
+| inv_raider_future_marks | 6 | sc_raider_pressure | - | - | yes |
+| inv_weathering | 6 | sc_weathered_raid_mark, T_WEATHER_OFFLINE | - | - | yes |
 | mark_appears | 6 | sc_spree_wall | sc_spree_corridor, T_FRESH_QT, T_SPREE_SURPRISE, T_FUZZ | - | yes |
 | reads_at_play_zoom | 6 | sc_gallery | T_PLAY_ZOOM, LOOK_STAGE8 | - | yes |
 | sits_on_wall | 6 | sc_wall_closeup, P_A9 | T_FUZZ | - | no |
@@ -51,16 +51,16 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes
 | answer_wall | 6 | sc_answer_wall | - | - | no |
 | scrub_protection | 6 | sc_scrub_protection | T_FUZZ | - | yes |
 | player_orders | 6 | sc_player_orders | - | - | yes |
-| raid_mark_troubles | 6 | sc_raid_exit, sc_hostile_thought, sc_raid_retaken, sc_weathered_raid_mark, T_RAID_TAG_BUILT_WALL_ONLY | T_FUZZ | 2 | no |
+| raid_mark_troubles | 6 | sc_raid_exit, sc_hostile_thought, sc_raid_retaken, sc_weathered_raid_mark, T_RAID_TAG_BUILT_WALL_ONLY | T_FUZZ | 2 | yes |
 | going_over | 6 | sc_going_over | - | - | yes |
-| raider_pressure | 6 | sc_raider_pressure | - | - | no |
+| raider_pressure | 6 | sc_raider_pressure | - | - | yes |
 | visitors | 6 | sc_visitors | - | - | no |
 | fights_reasons | 6 | sc_fights | - | - | no |
 | temperament | 6 | sc_temperament | - | - | no |
 | stands_alone_settings | 6 | sc_settings, sc_breach_toggle, sc_breach_bias_raid | H1_IDEO_RELOAD, T_SETTINGS_SCREENS | 1 | no |
 | stories_not_tax | 6 | sc_lived_in_soak | sc_rereads, T_MSG_COUNTERS_RESET | 3, 4, 6 | no |
 | paint_dies_with_wall | 6 | sc_wall_loss | - | - | no |
-| weathering_bounds_marks | 6 | T_WEATHER_OFFLINE, sc_weathered_raid_mark | - | - | no |
+| weathering_bounds_marks | 6 | T_WEATHER_OFFLINE, sc_weathered_raid_mark | - | - | yes |
 | walk_lived_in | 6 | sc_walk | LOOK_STAGE8, T_FULL_LIST_MODE | - | no |
 
 ## Tests
@@ -77,8 +77,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes
 | T_PLAY_ZOOM | offline | 4-5 | src/RimMandrake/Graffiti/selftest_graffiti_play_zoom.py | PASS | - |
 | T_SPREE_SURPRISE | offline | 4-5 | src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py | PASS | - |
 | T_V1_LIVE_VERDICTS | offline | 4-5 | src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py | PASS | - |
-| T_WEATHER_OFFLINE | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_weather.py | not written yet: Stage 3 work (RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE) | RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE |
-| T_RAID_TAG_BUILT_WALL_ONLY | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py | not written yet: Stage 3 work (RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK) | RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK |
+| T_WEATHER_OFFLINE | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_weather.py | PASS | - |
+| T_RAID_TAG_BUILT_WALL_ONLY | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py | PASS | - |
 | T_MSG_COUNTERS_RESET | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_message_counters.py | not written yet: Stage 3 work (RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME) | RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME |
 | sc_spree_corridor | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_spree_corridor | entry absent | - |
 | sc_spree_wall | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::spree_wall | entry present | - |
@@ -97,9 +97,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes
 | sc_player_orders | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A7 | entry present | - |
 | sc_raid_exit | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A2 | entry present | - |
 | sc_hostile_thought | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A5 | entry present | - |
-| sc_raid_retaken | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_raid_retaken | entry absent | - |
+| sc_raid_retaken | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_raid_retaken | entry present | - |
 | sc_going_over | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A4 | entry present | - |
-| sc_raider_pressure | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_raider_pressure | entry absent | - |
+| sc_raider_pressure | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_raider_pressure | entry present | - |
 | sc_visitors | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_visitors | entry absent | - |
 | sc_fights | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_fights | entry absent | - |
 | sc_temperament | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_temperament | entry absent | - |
@@ -108,7 +108,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T20:56:02Z. A bar passes
 | sc_wall_loss | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_wall_loss | entry absent | - |
 | sc_lived_in_soak | live_full | 6 | src/RimMandrake/Graffiti/validation.py::scene_lived_in_soak | entry absent | - |
 | sc_walk | live_full | 6 | src/RimMandrake/Graffiti/validation.py::scene_walk_lived_in | entry absent | - |
-| sc_weathered_raid_mark | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_weathered_raid_mark | entry absent | - |
+| sc_weathered_raid_mark | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_weathered_raid_mark | entry present | - |
 | sc_breach_bias_raid | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_breach_bias_raid | entry absent | - |
 | P_A9 | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A9 | entry present (known red) | - |
 | H1_IDEO_RELOAD | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_ideo_removed_save_reload | entry absent | RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST |
