@@ -1,101 +1,17 @@
 {
- "against": "rm-coverage-judge-1794730911",
+ "against": "rm-coverage-judge-1794734941",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_spree_corridor gains a walker whose negative scrawl and positive piece thoughts are asserted (inv_viewer_mood now used); sc_raid_retaken scrubs through Designator_ScrubGraffiti (inv_player_orders used); inv_weathering dropped from after_the_raid and listed in coverage_rest by sc_weathered_raid_mark and weathering_bounds_marks; after_the_raid exercises 3 new (showcases accepted, min_new_after_first 3)"
+   "evidence": "scenes.json sc_spree_corridor: the skilled piece is a script-forced RM_PaintGraffitiJob painting the pool's pick for an art-16 hand, with no Designator_PaintGraffitiMark and no paint designation on the map (asserted designations 0), in start, action and control; so inv_player_orders is first used by after_the_raid (sc_raid_retaken's Designator_ScrubGraffiti). designer_stage.py showcases: after_the_raid exercises 3, new 3, overlap 0.00; showcase set accepted"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json sc_spree_corridor.control: spree break refused, designated piece still ordered; expect only that piece, beauty moved by it alone"
-  },
-  {
-   "gap": "g3",
-   "evidence": "scenes.json sc_art_skill.expect: skill-2 room viewer negative mark thought, skill-16 positive; noted on RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
-  },
-  {
-   "gap": "g4",
-   "evidence": "scenes.json sc_gallery.control: planted vanilla filth cell must be called dirt, two identical dirt cells called alike, plus the signage texture; entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE"
-  },
-  {
-   "gap": "g5",
-   "evidence": "scenes.json sc_beauty_pair.control: side-swapped repeat and identical-tally pair; sc_walk action and expect capture a scrawl and tally pair on the lived-in wall"
-  },
-  {
-   "gap": "g6",
-   "evidence": "scenes.json sc_answer_wall: four sub-cases (scrub, deface, reply, confront incl. painted-out work), each job expected to complete; tree.json answer_wall.oracle_proposed requires all four"
-  },
-  {
-   "gap": "g7",
-   "evidence": "scenes.json sc_fights: an unrestricted third run in start; expect at least one confrontation subject against painter, reason the mark, in that run"
-  },
-  {
-   "gap": "g8",
-   "evidence": "scenes.json sc_mockery.expect: the mark's subject field is the target; a neutral viewer holds no amused thought"
-  },
-  {
-   "gap": "g9",
-   "evidence": "scenes.json sc_tribute_memorial: start asserts grief thought and partner and rival relations; expect grief eased, subject warm AND rival jealous or annoyed"
-  },
-  {
-   "gap": "g10",
-   "evidence": "scenes.json sc_raider_pressure: both modes, two A marks, one scrubbed (stays) then both (lifts); noted on RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL"
-  },
-  {
-   "gap": "g11",
-   "evidence": "scenes.json new acceptance scene sc_weathered_raid_mark (entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE): aged raid mark despawns, EnemyClaim ends, pressure lifts, roofed control; coverage_rest inv_weathering by sc_weathered_raid_mark and weathering_bounds_marks"
-  },
-  {
-   "gap": "g12",
-   "evidence": "record.json inv_settings.what names the 3 raider-pressure settings (11 in all); sheet.md stands_alone_settings line says 8 today, 11 with pressure; every scenes.json settings start line includes them; sc_settings flips the pressure switch; tree.json stands_alone_settings.scenario"
-  },
-  {
-   "gap": "g13",
-   "evidence": "scenes.json new acceptance scene sc_breach_bias_raid (entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE): glyph wall vs vanilla pick, a breaching raid's first target, glyph-removed control; coverage_rest inv_breach_bias.by names it"
-  },
-  {
-   "gap": "g14",
-   "evidence": "scenes.json sc_own_fun: idle-tag sub-case through JobGiver_IdleTag with joy not low; control painting off gives no tag"
-  },
-  {
-   "gap": "g15",
-   "evidence": "scenes.json sc_sigil: meme-gate sub-case (meme present vs absent decides the glyph in the pool), zero-red-error start assertion; entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE"
-  },
-  {
-   "gap": "g16",
-   "evidence": "scenes.json sc_rereads: in-sight and same-room viewer sub-cases, control viewer behind a wall in another room gains no thought"
-  },
-  {
-   "gap": "g17",
-   "evidence": "scenes.json sc_scrub_protection: designated scrub through Designator_ScrubGraffiti by WorkGiver_ScrubGraffitiDesignated; undesignated protected neighbour stays; entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE"
-  },
-  {
-   "gap": "g18",
-   "evidence": "measured RM_GraffitiKernel.SidePaintable/PaintsEdgeOn (WallPlane.cs, GraffitiPool.cs:163): front face only; tree.json sits_on_wall.experience and record.json inv_mark_on_wall.what now agree; sheet.md line; scenes.json sc_wall_closeup gains the edge-on control and the wall-top (option D) assertion"
-  },
-  {
-   "gap": "g19",
-   "evidence": "scenes.json sc_raid_retaken.expect: the EnemyClaim stage read at N marks and at fewer marks falls with the count"
-  },
-  {
-   "gap": "g20",
-   "evidence": "scenes.json sc_going_over.control: the same Tag_A on a second cell, no enemy painter, same ticks, stays; A4 addition in item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE"
-  },
-  {
-   "gap": "g21",
-   "evidence": "scenes.json start lines assert joy level (sc_own_fun), each viewer's traits (sc_temperament), the painter's ideo, memes and colour (sc_sigil)"
-  },
-  {
-   "gap": "g22",
-   "evidence": "scenes.json sc_settings.expect: a mark painted with ideoligions off; def, variant, wall side, craft and subject equal before and after reload"
-  },
-  {
-   "gap": "g23",
-   "evidence": "scenes.json sc_walk: recreation paint job in action, mark count rises after the repeated spree in expect, control reloads with Graffiti save data stripped and must fail"
-  },
-  {
-   "gap": "g24",
-   "evidence": "sheet.md does list has [leaf:walk_lived_in]; stands_alone_settings line states the settings count (8 today, 11 with pressure)"
+   "evidence": "scenes.json sc_wall_closeup: start adds a cell whose only wall is south of it (asserted ReadWallSide 2, FaceHidden); control issues a paint order and a pool pick there and expects no Filth_Mark, marked expected-to-fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL (filed 2026-11-15: apply SidePaintable in GraffitiPool.WeightedPick and JobDriver_PaintGraffiti.ChooseMark) lands; tree.json sits_on_wall oracle, scenario and false_pass carry the far-side case; record.json inv_mark_on_wall cites the item"
   }
+ ],
+ "also": [
+  "tree.json answer_wall.scenario now stages four sub-cases, one per answer, matching its oracle and sc_answer_wall",
+  "scenes.json sc_breach_bias_raid now flips breach bias off after the lure read, so its stands_alone_settings citation is true (that switch's behavioural row); requirement_why says breach bias has no leaf of its own and binds through coverage_rest"
  ]
 }

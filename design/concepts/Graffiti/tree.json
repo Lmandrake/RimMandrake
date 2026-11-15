@@ -73,7 +73,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "in the close-up every mark's drawn rect lies on its wall cell's front face and over the crease onto the top; control: a mark with the wall side cleared draws on the floor and is flagged, and a cell whose only wall is edge-on gets no mark",
+   "oracle_proposed": "in the close-up every mark's drawn rect lies on its wall cell's front face and over the crease onto the top; control: a mark with the wall side cleared draws on the floor and is flagged, a cell whose only wall is edge-on gets no mark, and a cell whose only wall is south of it (the far side) gets no mark from a paint order or a pool pick",
    "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -85,10 +85,11 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player sees each mark drawn on the front face of the wall it was painted on (the face the camera sees, the wall north of the painter's cell), aligned to it and climbing over the crease onto the wall top, never floating over the floor beside it; a wall seen edge-on and a wall's far side carry no paint.",
-   "scenario": "Close-up of a painted wall lane after the spree, walls on each side of the painter's cell.",
+   "scenario": "Close-up of a painted wall lane after the spree, walls on each side of the painter's cell, and a cell whose only wall is south of it.",
    "false_pass": [
     "the mark is drawn on the floor cell beside the wall",
-    "a mark turned along the edge-on strip of a wall top passes as painted"
+    "a mark turned along the edge-on strip of a wall top passes as painted",
+    "a mark on a wall's far side, drawn as a lip, passes as painted"
    ],
    "red": "a build that draws the mark at the floor cell's centre with no wall offset",
    "tier_proposed": "live_minimal",
@@ -384,7 +385,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player sees pawns answer what is on the wall and watches each answer finish: a scrub, a cross-out, a reply painted, or a confrontation with the painter.",
-   "scenario": "A mockery stands; its subject, a friend of the subject and the painter are on the map; run until an answer completes.",
+   "scenario": "A mockery stands with its subject, a friend of the subject and the painter on the map, in four sub-cases, one per answer (scrub, cross-out, reply, confront; the confront case with the painter's earlier work painted out); run each until its answer completes.",
    "false_pass": [
     "the answer is logged but no job runs",
     "the mark vanishes with no pawn at it"

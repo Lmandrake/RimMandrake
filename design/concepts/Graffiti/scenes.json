@@ -15,14 +15,14 @@
     "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
     "all 8 shipped settings, and the 3 raider-pressure settings (switch, sooner-or-larger mode, push size) once RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL lands, at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)",
     "a lit 1x20 corridor of fresh walls, no marks (asserted: marks in rect 0)",
-    "one colonist, art skill 3, at the corridor head; a second colonist, art skill 16, painting one designated piece mid-corridor",
+    "one colonist, art skill 3, at the corridor head; a second colonist, art skill 16, given a script-forced RM_PaintGraffitiJob at one mid-corridor wall cell, painting the pool's pick for that hand (no Designator_PaintGraffitiMark and no paint designation anywhere on the map: asserted designations 0)",
     "a third colonist, no traits that change mark thoughts (asserted), who walks the corridor after the spree"
    ],
-   "action": "force the first colonist's painting spree and let it run its length; the skilled colonist paints its piece; then the third colonist walks the corridor end to end",
+   "action": "force the first colonist's painting spree and let it run its length; the skilled colonist's forced paint job runs to completion; then the third colonist walks the corridor end to end",
    "expect": "the spree leaves many marks along the corridor, at least 3 kinds; the skilled piece raises the corridor's beauty and the scrawls lower it; a 64 px capture shows both; the walker holds a negative viewed-mark thought from a scrawl and a positive one from the skilled piece (asserted thought defs and signs)",
    "control": {
-    "case": "the spree break refused, the designated piece still ordered",
-    "expect": "only the designated piece in the corridor, no spree marks; beauty moves by that piece alone and the walker holds only its positive thought",
+    "case": "the spree break refused, the skilled colonist's forced paint job still run",
+    "expect": "only the skilled piece in the corridor, no spree marks; beauty moves by that piece alone and the walker holds only its positive thought",
     "rules_out": "marks placed by anything but the spree job"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",
@@ -85,18 +85,21 @@
    "entry_point": "src/RimMandrake/Graffiti/validation.py::wall_closeup",
    "start": [
     "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
-    "a painted lane on wall front faces (each mark's wall north of its cell, asserted wallSide 0); a cell whose only wall is east or west of it"
+    "a painted lane on wall front faces (each mark's wall north of its cell, asserted wallSide 0); a cell whose only wall is east or west of it; a cell whose only wall is south of it, the wall's far side (asserted ReadWallSide 2, FaceOfSide FaceHidden)"
    ],
    "action": "capture each painted wall face close up",
    "expect": "every mark lies on its wall's front face and climbs over the crease onto the wall top (option D), the face part bolder than the top",
    "control": {
-    "case": "a mark whose wall side is cleared; a paint order on the cell whose only wall is seen edge-on",
-    "expect": "the cleared mark draws on the floor and is flagged; the edge-on cell gets no mark (the pool returns none)",
-    "rules_out": "a camera angle hiding a floor decal, or paint on an edge-on strip"
+    "case": "a mark whose wall side is cleared; a paint order on the cell whose only wall is seen edge-on; a paint order and a pool pick (GraffitiPool) on the cell whose only wall is south of it",
+    "expect": "the cleared mark draws on the floor and is flagged; the edge-on cell gets no mark (the pool returns none); the south-only cell holds no Filth_Mark after the order's job ends and the pool returns none for it. Expected to fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands (code read 2026-11-15: GraffitiPool.cs:163 refuses only edge-on faces, JobDriver_PaintGraffiti.ChooseMark only NoWall, and WallPlane.cs:471 draws a FaceHidden mark as a lip)",
+    "rules_out": "a camera angle hiding a floor decal, paint on an edge-on strip, or paint on a wall's far side drawn as a lip"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",
    "hold": "immediate",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE"
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "depends_on": [
+    "RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL"
+   ]
   },
   {
    "id": "sc_gallery",
@@ -699,18 +702,19 @@
    "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
    "start": [
     "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
-    "breach bias on (asserted)",
+    "breach bias on at its shipped default (asserted)",
     "a walled site; a colonist-painted RM_Graffiti_WarningGlyph (breachLure) on wall W, which is not vanilla's breach pick (asserted: BreachingGrid.FindBuildingToBreach with bias off returns another building)"
    ],
-   "action": "read FindBuildingToBreach with bias on; then send a breaching raid and let its lord pick its first breach target",
-   "expect": "with bias on the pick is W (or the eligible building carrying the glyph), and the breaching raid's first target is W",
+   "action": "read FindBuildingToBreach with bias on; send a breaching raid and let its lord pick its first breach target; then switch breach bias off and read FindBuildingToBreach again",
+   "expect": "with bias on the pick is W (or the eligible building carrying the glyph) and the breaching raid's first target is W; with bias off the pick is vanilla's building: the breach-bias switch stops its own behaviour (stands_alone_settings' row for this switch, the behaviour half that sc_breach_toggle's write and read-back leaves out)",
    "control": {
     "case": "the same wall W with the glyph removed, bias on",
     "expect": "the pick is vanilla's building, not W",
     "rules_out": "W chosen for a reason other than the lure"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",
-   "hold": "immediate"
+   "hold": "immediate",
+   "requirement_why": "breach bias has no leaf of its own (sheet.md: covered by its switch check only); this is that switch's behavioural check under stands_alone_settings, 'each switch off stops its own behaviour', and it binds inv_breach_bias through coverage_rest"
   }
  ],
  "showcases": [

@@ -132,6 +132,14 @@
    "source": "OWNER:1794728164229812842",
    "date": "2026-11-14",
    "what": "Designer's reading of (b), undoable: the letter names the faction and points at its standing mark(s), so the player can trace the pressure to the wall; scrubbing or weathering the last mark of that faction lifts it; the sooner/larger split and the size of the push are Mod Settings tuning (defaults = shipped). This answers the stated weakness of (b), untraceable difficulty, without reopening his pick."
+  },
+  {
+   "id": "d_rework_no_park",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794749812865303715",
+   "date": "2026-11-15",
+   "what": "By card ('Rework, and stop parking for these'): rework Graffiti, fixing coverage gaps g1 and g18 at stage 3 before the judge looks again; and a coverage refusal whose every gap the Designer can fix alone is reworked without parking for him."
   }
  ],
  "asks": [
@@ -269,7 +277,7 @@
  "inventory": [
   {
    "id": "inv_mark_on_wall",
-   "what": "A mark is a filth-class thing on the floor cell south of a wall, recording the wall side and drawn on that wall's front face (the face the camera sees), climbing over the crease onto the wall top (option D), facing it (no linked-atlas crop); a wall seen edge-on (east or west of the cell) and a wall's far side take no paint (RM_GraffitiKernel.SidePaintable, PaintsEdgeOn; WallPlane.cs)",
+   "what": "A mark is a filth-class thing on the floor cell south of a wall, recording the wall side and drawn on that wall's front face (the face the camera sees), climbing over the crease onto the wall top (option D), facing it (no linked-atlas crop); a wall seen edge-on (east or west of the cell) and a wall's far side take no paint (RM_GraffitiKernel.SidePaintable, PaintsEdgeOn; WallPlane.cs); the far-side refusal is the kernel rule SidePaintable(2)=false, which the live paint paths do not yet apply (RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
@@ -287,7 +295,8 @@
     "src/RimMandrake/Graffiti/",
     "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
     "ITEM:GRAFFITI_WALL_LINKED_CROP_1",
-    "ITEM:GRAFFITI_LINKED_MARK_FIX_1"
+    "ITEM:GRAFFITI_LINKED_MARK_FIX_1",
+    "ITEM:RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL"
    ],
    "proof_note": "bars mark_actually_appears, mark_sits_on_the_wall, mark_reads_at_play_zoom proven in the loop close at b967d9e9cb (2026-11-08); no Graffiti source change since. GRAFFITI_WALLFACE_BUILD_NO_NEW_THING_CLASS (built) still owes live levels"
   },
