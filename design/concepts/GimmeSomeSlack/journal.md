@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 9:28 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 8:16 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 9:28 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 8:16 AM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -262,3 +262,14 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Exam: PASS, 24 of 24 frozen scenarios, two fresh Readers agree, none accepts where a core line rejects; the control on `owner_change_coils_wires` missed e11 (`exam.json`, stage 4 closed by the program, `a9f3080583`). [measured]
 - Coverage judge: covered, 0 gaps, signed (rm-coverage-judge-1794721967, delta round, 268958 tokens; `f3d28f97d0`). `stage.json` now reads locked (`0a9faf9acf`); `concept_tree.py gate` PASS. [measured]
 - The blind-challenge stage is not touched: no `maturation.py advance`; `version/stage_record.json` unchanged.
+
+### 2026-11-15 8:16 AM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward run two: blind cycle 1 not met on one open Problem (twin short leads, 6 of 33600 pairs), now RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX on the road back; both pipeline faults that made run one hold have landed (d4e28fabbf deferred Stage-6 rows, 76c578b59e road-back fixers before the next cycle), so cycle 2 opens and the tick fixes the twin first
+- Checks passed: order, by, version, hold, fourth_cycle.
+- Steward confirms: read cycle_1/SUMMARY.md Exit block and lane2/faults.json: 13 of 14 faults FIXED or Polish/noted, 1 Problem open (twin leads); DEFER acceptance PASS, RUN_ROAD_BACK acceptance PASS in /home/mandrake/rm/dispatch at ca5dbe81f4; verdict: open cycle 2 down the road back
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward run two: blind cycle 1 not met on one open Problem (twin short leads, 6 of 33600 pairs), now RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX on the road back; both pipeline faults that made run one hold have landed (d4e28fabbf deferred Stage-6 rows, 76c578b59e road-back fixers before the next cycle), so cycle 2 opens and the tick fixes the twin first
+- Blind cycle 2 of this visit (2 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 9:28 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 9:28 PM PST).
+- Record: `version/stage_record.json`.
