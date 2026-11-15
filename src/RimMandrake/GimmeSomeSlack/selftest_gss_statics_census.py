@@ -39,6 +39,7 @@ RESET = {
     "GimmeSomeSlackProbe.cs::request": 'GimmeSomeSlackProbe.request = "";',
     "Aerial/AerialProbe.cs::request": 'Aerial.AerialProbe.request = "";',
     "Aerial/CompAerialAnchor.cs::debugSkipReseed": "Aerial.CompAerialAnchor.debugSkipReseed = false;",
+    "Core/CordBuilder.cs::StepTrace": "Core.CordBuilder.StepTrace = null;",
 }
 # field -> why it is safe across games
 LISTED = {

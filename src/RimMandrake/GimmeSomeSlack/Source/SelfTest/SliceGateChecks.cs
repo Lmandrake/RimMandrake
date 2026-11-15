@@ -373,7 +373,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 List<LaidPiece> last = null;
                 int builds = 0;
                 var sw = Stopwatch.StartNew();
-                while (builds < 60 && sw.Elapsed.TotalSeconds < 120)
+                // the guard bounds a hang, not the frames a cold lay takes: the live scene's async lay runs ~57-63 Builds (blind cycle 2,
+                // 2026-11-15), so a cap of 60 ran out with 20 edges still pending and failed a builder that ends equal at 63
+                while (builds < 600 && sw.Elapsed.TotalSeconds < 120)
                 {
                     last = b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
                     builds++;
@@ -381,7 +383,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     WaitFor(() => b.LayReady, "ready");
                 }
                 Program.Check(b.LastGraphFault != null && b.LastGraphFault.Contains("selftest graph fault"), "graph worker: the job fault was not recorded");
-                Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, $"graph worker: after a job fault the Builds did not end equal to one unbudgeted Build ({builds} Builds)");
+                Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, $"graph worker: after a job fault the Builds did not end equal to one unbudgeted Build ({builds} Builds, {b.LastPending} pending, lay running {b.LayRunning})");
             }
             // (3) the instrument: the slowest frame Build while a lattice spawns must not grow with the lattices already there
             //     (before the fix: 17 ms beside none, 188 ms beside eight, offline .NET 8). GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE:

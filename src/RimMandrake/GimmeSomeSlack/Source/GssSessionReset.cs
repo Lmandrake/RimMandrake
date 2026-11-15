@@ -24,6 +24,7 @@ namespace RimMandrake.GimmeSomeSlack
             Aerial.AerialProbe.request = "";                   //      in this one (thing ids repeat across loads)
             Aerial.CompAerialAnchor.debugSkipReseed = false;   // C15: an interrupted negative control never leaks into a game
             Aerial.RM_LiveWirePathCost.Clear();                 // map ids repeat across games: the last one's priced cells go
+            Core.CordBuilder.StepTrace = null;                  // a lab trace left set by an interrupted diagnostic never fires in a game
         }
     }
 
