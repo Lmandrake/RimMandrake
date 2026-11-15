@@ -346,8 +346,11 @@ def main():
                 "owner_said", "an OWNER:<tsn> not on the shard")
         ok(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001")["ok"],
            "his real OWNER event passing the version moves it")
-        refused(M.advance(root, "PyrelandsMechanics", "designer", by="BENCH", why="x"), "owner_said",
-                "intake after a mod reached his walk still asks him")
+        e = M.evaluate(root, "PyrelandsMechanics", "designer", by="BENCH", why="x")
+        cl = [r["clause"] for r in e["verdict"]["refusals"]]
+        ok("owner_said" not in cl and "intake_closed" not in cl and "owner_said" not in e["hand_steps"],
+           "intake after a mod reached his walk asks him nothing (Evidence-for-Ask: his card only said wait for one "
+           "full pass): %s" % cl)
         ok(M.advance(root, "Pyrelands", "offline_build", by="CONDUCTOR", why="a Problem he saw: the ember")["ok"],
            "his walk sends a Problem back to offline build")
         ok(M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="fixed")["ok"]

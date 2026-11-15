@@ -500,13 +500,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                               "his order to add this mod", fix="wait for a walk, or pass his words admitting the mod",
                    attainable="yes", cost="rerun", why_sound="his card of 2026-11-14: wait for one full pass; "
                    "his order of 2026-11-15 adds a mod when the pipeline is not busy")
-            if walked:
-                hand.append("owner_said")
-                clause("owner_said", "how the waiting mods enter after the first walk is asked of him again",
-                       bool(owner), [req_ref], observed="owner_said: none in the request",
-                       would_pass="--owner-said quoting his answer on how waiting mods enter",
-                       fix="ask him by card how the waiting mods enter, then pass his words", cost="owner",
-                       why_sound="his card of 2026-11-14 says it is asked again at that point")
+            # after the first walk a waiting mod enters in queue order with no ask: his card of 2026-11-14 picked only
+            # "Wait for one full pass" (the "asked again then" was our note), so nothing argues against the obvious
+            # answer (his Evidence-for-Ask ruling, 2026-11-15)
         elif cur == "designer":
             st = str((v or {}).get("state") or "")
             # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: "locked" as a word (a date may follow), locked by him, or by the
