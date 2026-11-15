@@ -618,11 +618,11 @@ def spend_by_stage(rec):
 def next_step(root, mod):
     rec = load(root, mod)
     if rec is None:
-        return {"mod": mod, "stage": UNM, "next": "NEXT: seed its record: maturation.py seed %s" % mod, "refusals": []}
+        return {"mod": mod, "stage": UNM, "next": "NEXT (automatic: the Dispatch tick seeds a Designer concept's record): maturation.py seed %s" % mod, "refusals": []}
     cur = rec["stage"]
     if cur == "passed":
         return {"mod": mod, "stage": cur, "refusals": [], "hand_steps": [],
-                "next": "NEXT (hand step): decide with him whether to open the next version (spec §3.8, a portfolio "
+                "next": "NEXT (OWNER, a card in the Conductor log): decide with him whether to open the next version (spec §3.8, a portfolio "
                         "decision); nothing here opens one"}
     to = WORDS[WORDS.index(cur) + 1]
     res = evaluate(root, mod, to, by="next", why="what is the next step")
@@ -631,52 +631,61 @@ def next_step(root, mod):
     blind = blind_facts(root, mod) if cur == "blind_challenge" else None
     ing = ingame_facts(root, mod) if cur == "in_game" else None
     if ing and ing.get("owed") == "blocked":
-        nxt = "NEXT (hand step): in-game acceptance is blocked: %s" % "; ".join(ing["blocked"])
+        nxt = "NEXT (PAUSED, OPS_MATURATION_MOD_PAUSED): in-game acceptance is blocked: %s" % "; ".join(ing["blocked"])
     elif ing and ing.get("owed") == "run":
-        nxt = ("NEXT: launch in-game visit %d when the bridge is free (maturation.py launch %s --budget-usd <cap> --item "
-               "RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_<N>, filed first; or the Dispatch step); its record goes "
+        nxt = ("NEXT (automatic: the Dispatch tick launches it when the game is free, queued fairly): in-game visit %d (maturation.py launch %s --budget-usd <cap> --item "
+               "RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_<N as a word: ONE>, filed first; or the Dispatch step); its record goes "
                "in %s" % (ing["visit"], mod, mod.upper(), ing["exit"]["record"]))
     elif ing and ing.get("owed") == "no exit block":
-        nxt = ("NEXT: visit %d is recorded without an exit block: wait for its run to write one, or (nothing live) the "
-               "Conductor reads %s/SUMMARY.md" % (ing["visit"], ing["exit"]["record"]))
+        nxt = ("NEXT (wait on its live run, else PAUSED): visit %d is recorded without an exit block: its run writes one, "
+               "or (nothing live) the mod is PAUSED until someone reads %s/SUMMARY.md" % (ing["visit"], ing["exit"]["record"]))
     elif ing and ing.get("owed") == "exit met":
-        nxt = ("NEXT (hand step): visit %d: exit met (a program's reading of its record: %s); the steward reads "
+        nxt = ("NEXT (automatic: one steward run): visit %d: exit met (a program's reading of its record: %s); the steward reads "
                "%s/SUMMARY.md and confirms: maturation.py advance %s --to pre_human --by <SEAT> --why \"...\" "
                "--steward-confirms \"...\"" % (ing["visit"], ing["exit"]["why"][0], ing["exit"]["record"], mod))
     elif ing:
-        nxt = ("NEXT (hand step): visit %d: exit not met (%s); the Conductor reads %s/SUMMARY.md and sends each failed "
-               "line item down its road back (maturation.py advance %s --to offline_build or --to blind_challenge), or "
-               "launches the next visit by hand once the fixes land" % (
+        nxt = ("NEXT (automatic: one steward run, then a fixer per item): visit %d: exit not met (%s); the steward reads "
+               "%s/SUMMARY.md, files each failed line as a named item and sends the mod down its road back (maturation.py "
+               "advance %s --to offline_build or --to blind_challenge); the next visit launches when they close" % (
                    ing["visit"], "; ".join(ing["exit"]["why"][:3]), ing["exit"]["record"], mod))
     elif blind and blind.get("owed") == "blocked":
-        nxt = "NEXT (hand step): the blind challenge is blocked: %s" % "; ".join(blind["blocked"])
+        nxt = "NEXT (PAUSED, OPS_MATURATION_MOD_PAUSED): the blind challenge is blocked: %s" % "; ".join(blind["blocked"])
     elif blind and blind.get("owed") == "cycle":
-        nxt = ("NEXT: launch blind cycle %d (maturation.py launch %s --budget-usd <cap> --item <ID>, or the Dispatch "
+        nxt = ("NEXT (automatic: the Dispatch tick launches it): blind cycle %d (maturation.py launch %s --budget-usd <cap> --item <ID>, or the Dispatch "
                "step); its record goes in %s" % (blind["cycle"], mod, blind["exit"]["record"]))
     elif blind and blind.get("owed") == "no exit block":
-        nxt = ("NEXT: cycle %d is recorded without an exit block: wait for its run to write one, or (nothing live) the "
-               "Conductor reads %s/SUMMARY.md" % (blind["cycle"], blind["exit"]["record"]))
+        nxt = ("NEXT (wait on its live run, else PAUSED): cycle %d is recorded without an exit block: its run writes one, "
+               "or (nothing live) the mod is PAUSED until someone reads %s/SUMMARY.md" % (blind["cycle"], blind["exit"]["record"]))
     elif blind and blind.get("owed") == "exit met":
-        nxt = ("NEXT (hand step): cycle %d: exit met (a program's reading of its record: %s); the steward reads "
+        nxt = ("NEXT (automatic: one steward run): cycle %d: exit met (a program's reading of its record: %s); the steward reads "
                "%s/SUMMARY.md and confirms: maturation.py advance %s --to in_game --by <SEAT> --why \"...\" "
                "--steward-confirms \"...\"" % (blind["cycle"], blind["exit"]["why"][0], blind["exit"]["record"], mod))
     elif blind:
-        nxt = ("NEXT (hand step): cycle %d: exit not met (%s); the Conductor reads %s/SUMMARY.md and decides: a new "
-               "blind judge (maturation.py advance %s --to blind_challenge%s) or another road" % (
-                   blind["cycle"], "; ".join(blind["exit"]["why"][:3]), blind["exit"]["record"], mod,
+        nxt = ("NEXT (%s): cycle %d: exit not met (%s); the steward reads %s/SUMMARY.md, files the failures as named "
+               "items and opens the next blind cycle (maturation.py advance %s --to blind_challenge%s) or another road" % (
+                   "PAUSED: three cycles, the Conductor decides" if (blind.get("visit") or 0) >= CYCLE_LIMIT else
+                   "automatic: one steward run", blind["cycle"], "; ".join(blind["exit"]["why"][:3]), blind["exit"]["record"], mod,
                    " --conductor-decision \"...\": three cycles in this visit" if (blind.get("visit") or 0) >= CYCLE_LIMIT
                    else ""))
     elif prog:
-        nxt = "NEXT: %s; then maturation.py advance %s --to %s (%s refuses it now: %s)" % (
-            prog[0]["smallest_fix"]["what"], mod, to, prog[0]["clause"], prog[0]["observed"])
+        tag = ("OWNER or the Designer's own launcher: maturation_dispatch.py status says which" if cur in (
+                   "intake", "designer") else
+               "automatic: the Dispatch tick launches a capped builder" if prog[0]["clause"] in BUILD_CLAUSES else
+               "automatic: one steward run" if cur in ("preflight", "pre_human") else
+               "PAUSED, OPS_MATURATION_MOD_PAUSED: %s refuses it" % prog[0]["clause"])
+        nxt = "NEXT (%s): %s; then maturation.py advance %s --to %s (%s refuses it now: %s)" % (
+            tag, prog[0]["smallest_fix"]["what"], mod, to, prog[0]["clause"], prog[0]["observed"])
     elif hand:
         flag = {"steward_confirms": "--steward-confirms", "walk_bars_confirmed": "--steward-confirms",
                 "owner_said": "--owner-said",
                 "conductor_decision": "--conductor-decision"}
-        nxt = "NEXT (hand step): %s; then maturation.py advance %s --to %s --by <SEAT> --why \"...\" %s \"...\"" % (
-            hand[0]["smallest_fix"]["what"], mod, to, flag.get(hand[0]["clause"], ""))
+        nxt = "NEXT (%s): %s; then maturation.py advance %s --to %s --by <SEAT> --why \"...\" %s \"...\"" % (
+            "OWNER, a card in the Conductor log" if hand[0]["clause"] == "owner_said" else
+            "PAUSED: three cycles, the Conductor decides" if hand[0]["clause"] == "conductor_decision" else
+            "automatic: one steward run", hand[0]["smallest_fix"]["what"], mod, to, flag.get(hand[0]["clause"], ""))
     else:
-        nxt = "NEXT: maturation.py advance %s --to %s --by <SEAT> --why \"...\" (every exit test passes)" % (mod, to)
+        nxt = ("NEXT (automatic: one steward run advances it): maturation.py advance %s --to %s --by <SEAT> --why \"...\" "
+               "(every exit test passes)" % (mod, to))
     return {"mod": mod, "version": rec.get("version"), "stage": cur, "stage_label": label(cur),
             "since": rec.get("since"), "to": to, "passed": [p["clause"] for p in res["verdict"]["passed"]],
             "refusals": [{k: r[k] for k in ("clause", "observed", "would_pass", "smallest_fix")} for r in prog + hand],

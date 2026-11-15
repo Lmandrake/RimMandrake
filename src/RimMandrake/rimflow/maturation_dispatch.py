@@ -80,6 +80,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation as M          # noqa: E402
 import maturation_now as MN     # noqa: E402
+import maturation_autonomy as AUT   # noqa: E402
 
 UNM = "UNMEASURED"
 CFG_PATH = os.path.join(HERE, "maturation_dispatch.json")
@@ -722,14 +723,22 @@ def reading(cfg, rows, now):
                                                        "idle_min", "stage_usd", "cycle", "visit", "exit")} for r in rows}}
 
 
+def _aut(rows, mod):
+    return any(r["mod"] == mod and r.get("aut") for r in rows)
+
+
 def tick(root, cfg, apply, fx=None, now=None, page=True):
     fx = fx or {}
     now = now or time.time()
     d = sdir()
     st = _read(os.path.join(d, "state.json"), {})
+    aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
+    cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
     facts = fx["facts"]() if "facts" in fx else gather(root, cfg)
     account = fx["account"]() if "account" in fx else account_gate()
     rows, launches = decide(cfg, st, facts, now, account, bridge=fx.get("bridge"))
+    if aut:
+        rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
@@ -740,13 +749,18 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
             if r["mod"] in launches:
                 r.update(decision="would_launch")
         launches = []
-    execute(root, cfg, st, rows, launches, now, fx)
-    rd = reading(cfg, rows, now)
+    execute(root, cfg, st, rows, [m for m in launches if not _aut(rows, m)], now, fx)
+    AUT.execute(root, cfg, st, rows, [m for m in launches if _aut(rows, m)], now, fx)
+    AUT.classify(cfg, st, rows, now)
+    if apply and aut:
+        AUT.post_cards(rows, st, now, fx)
+    rd = AUT.annotate(reading(cfg, rows, now), rows)
     if apply:
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:
-            f.write(json.dumps({"at": now, "decisions": {r["mod"]: [r.get("decision"), r.get("refused")] for r in rows},
+            f.write(json.dumps({"at": now, "decisions": {r["mod"]: [r.get("decision"), r.get("refused"), r.get("klass")]
+                                                         for r in rows},
                                 "launched": rd["launched"]}) + "\n")
     if page and apply:
         regen = fx.get("page") or (lambda: subprocess.run([sys.executable, os.path.join(
@@ -773,7 +787,7 @@ def main(argv=None):
     if o.cmd == "tick":
         rd = tick(os.path.abspath(o.root), cfg, o.apply, page=not o.no_page)
         for mod, r in rd["mods"].items():
-            print("%-20s %-13s %s" % (mod, r["decision"], r["why"]))
+            print("%-20s %-7s %-13s %s" % (mod, r.get("klass"), r["decision"], r.get("status") or r["why"]))
         print("idle owed max %s min%s; launched %d; page %s" % (
             rd["idle_owed_max_min"], (" (over %s: %s)" % (rd["idle_alarm_min"], ", ".join(rd["idle_owed_mods"])))
             if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "not regenerated")))

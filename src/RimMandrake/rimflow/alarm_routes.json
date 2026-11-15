@@ -71,6 +71,7 @@
     {"match": "tps.*", "route": "role", "reader": "Operations", "cause": "tps", "_why": "per-session game health check (memory/TPS limits crossed by the newest full-list session, HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME)"},
     {"match": "testing.*", "route": "role", "reader": "Operations", "cause": "testing"},
     {"match": "wrapup.*", "route": "role", "reader": "Operations", "cause": "wrapup", "_why": "AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED added wrapup.debris_standing and wrapup.records_24h with no route; selftest_incident went red on origin (found by OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS)"},
+    {"match": "maturation.stalled", "route": "role", "reader": "Operations", "cause": "maturation", "_why": "RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING: a mod waiting on nothing named for 10 min (OPS_MATURATION_MOD_STALLED); maturation.paused rides the family line below"},
     {"match": "maturation.*", "route": "role", "reader": "Operations", "cause": "maturation", "_why": "the Maturation Dispatch step added maturation.idle_owed_max_min and maturation.needs_conductor with no route; selftest_incident went red"},
     {"match": "timers.*", "route": "role", "reader": "Operations", "cause": "timers"},
     {"match": "timer:*", "route": "role", "reader": "Operations", "cause": "timers"},

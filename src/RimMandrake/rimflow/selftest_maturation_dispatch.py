@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """selftest_maturation_dispatch.py: the Dispatch step (maturation_dispatch.py), offline, in a temp tree, with a fake
 detached_helper and a fake filer. Item RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE. Written before
-maturation_dispatch.py and watched failing on the base (the import fails), then passing.
+maturation_dispatch.py and watched failing on the base (the import fails), then passing. It tests the per-stage
+decision alone (fx autonomy False): what decide() reads. Since 2026-11-15 the tick's autonomy layer
+(maturation_autonomy.py, selftest_maturation_autonomy.py) turns its hand-step and Needs Conductor decisions into steward
+runs, PAUSED or OWNER; the "Needs Conductor" wording below names decide()'s reading, not the live outcome.
 
     python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py      exit 0 when every check prints PASS
     python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py --ingame   in-game acceptance only (ingame_main)
@@ -119,7 +122,7 @@ def main():
                 out[mod] = f
             return out
 
-        fx = {"facts": facts, "account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model=cfg["model"],
                                                             seat=cfg["seat"])}
@@ -355,7 +358,7 @@ def blind_main():
                 out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
             return out
 
-        fx = {"account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH")}
 
@@ -373,10 +376,10 @@ def blind_main():
 
         base = MD.load_cfg()
         ok(base.get("blind_enabled") is True and isinstance(base.get("blind_cap_usd"), (int, float))
-           and base["blind_cap_usd"] > 0 and base.get("blind_auto_cycles_per_visit") == 1,
-           "the settings: blind launches on, a positive cap, ONE automatic cycle per visit (%s, %s, %s)" % (
+           and base["blind_cap_usd"] > 0 and base.get("blind_auto_cycles_per_visit") == M.CYCLE_LIMIT,
+           "the settings: blind launches on, a positive cap, automatic cycles per visit = his CYCLE_LIMIT (%s, %s, %s)" % (
                base.get("blind_enabled"), base.get("blind_cap_usd"), base.get("blind_auto_cycles_per_visit")))
-        gss = dict(base, advancing=["GimmeSomeSlack"])
+        gss = dict(base, advancing=["GimmeSomeSlack"], blind_auto_cycles_per_visit=1)   # the spent-visit mechanism, at 1
         cap = "%g" % base.get("blind_cap_usd", 0)
 
         # ---- no cycle, nothing live: one automatic cycle, then never a second in the visit --------------------------
@@ -563,7 +566,7 @@ def ingame_main():
             asked.append(p)
             return world["bridge"]
 
-        fx = {"account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
+        fx = {"autonomy": False, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                             bridge=lambda p, s: world["bridge"])}

@@ -776,6 +776,27 @@ def dispatch_needs(now, errors):
     return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in rd.get("needs_conductor") or []]
 
 
+def dispatch_pipeline(now, errors):
+    """Per mod, what the Dispatch tick made of it (maturation_autonomy.py, item
+    RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING): moving / waiting on <unit> / PAUSED <why> / OWNER
+    <card>, and for how long. A stale reading says so and lists nothing as current."""
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+        import maturation_dispatch as MD  # noqa: E402
+        rd, _ = read_json(os.path.join(MD.sdir(), "reading.json"))
+    except Exception as e:      # noqa: BLE001
+        errors.append("dispatch pipeline reading: %s: %s" % (e.__class__.__name__, str(e)))
+        return []
+    if not isinstance(rd, dict) or now - float(rd.get("at") or 0) > 1800:
+        return []
+    out = []
+    for mod, r in sorted((rd.get("mods") or {}).items()):
+        if r.get("status"):
+            out.append("%s: %s (%s min)%s" % (mod, r["status"], r.get("for_min", "?"),
+                                              " STALLED" if mod in (rd.get("stalled") or []) else ""))
+    return out
+
+
 def gather(root, live=True):
     names = designer_names()
     croot = os.path.join(root, "design", "concepts")
@@ -825,6 +846,7 @@ def gather(root, live=True):
     needs = reactions(mods, now)
     if live:
         needs["conductor"] += dispatch_needs(now, lf["errors"])
+        needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
             "errors": lf["errors"]}
@@ -1217,16 +1239,18 @@ def boxes_html(m):
 
 def needs_md(d):
     out = []
-    for key, title in (("mandrake", "Needs Mandrake"), ("conductor", "Needs Conductor")):
-        L = d["needs"][key]
+    for key, title in (("mandrake", "Needs Mandrake"), ("conductor", "Needs Conductor"),
+                       ("pipeline", "Pipeline now (the Dispatch tick)")):
+        L = d["needs"].get(key) or []
         out += ["## %s (%d)" % (title, len(L)), ""] + (["- " + md_cell(x) for x in L] or ["- nothing on disk asks"]) + [""]
     return out
 
 
 def needs_html(d):
     out = []
-    for key, title, col in (("mandrake", "Needs Mandrake", ALERT), ("conductor", "Needs Conductor", YELLOW)):
-        L = d["needs"][key]
+    for key, title, col in (("mandrake", "Needs Mandrake", ALERT), ("conductor", "Needs Conductor", YELLOW),
+                            ("pipeline", "Pipeline now (the Dispatch tick)", YELLOW)):
+        L = d["needs"].get(key) or []
         out.append('<h2 style="color:%s">%s (%d)</h2><ul>%s</ul>' % (col, title, len(L), "".join(
             "<li>%s</li>" % esc(x) for x in L) or "<li>nothing on disk asks</li>"))
     return "".join(out)

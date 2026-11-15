@@ -3825,9 +3825,13 @@ def c_maturation(now, rules, ctx):
                                                 mods=",".join(rd.get("idle_owed_mods") or []))
         out["maturation.needs_conductor"] = M(len(rd.get("needs_conductor") or []), "lines",
                                               first=(rd.get("needs_conductor") or [])[:4])
+        out["maturation.paused"] = M(len(rd.get("paused") or []), "mods", first=(rd.get("paused") or [])[:4])
+        out["maturation.stalled"] = M(len(rd.get("stalled") or []), "mods", mods=",".join(rd.get("stalled") or []))
     except Exception as e:  # noqa: BLE001
         out["maturation.idle_owed_max_min"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.needs_conductor"] = U("%s: %s" % (type(e).__name__, str(e)))
+        out["maturation.paused"] = U("%s: %s" % (type(e).__name__, str(e)))
+        out["maturation.stalled"] = U("%s: %s" % (type(e).__name__, str(e)))
     return out
 
 

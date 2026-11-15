@@ -532,6 +532,30 @@
   "why": "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE (the owner, 2026-11-14): an advancing mod at the offline build has had work owed (a build, a hand step, or ready to advance) with nothing running on it for over 60 min; `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` names the mod and the reason, and the Needs Conductor lines on MATURATION_NOW say what is owed"
  },
  {
+  "key": "maturation.paused",
+  "op": ">",
+  "value": 0,
+  "alarm": true,
+  "tag": "MATURATION_PAUSED",
+  "name": "OPS_MATURATION_MOD_PAUSED",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING (the owner, 2026-11-15: \"at least then it's paused animation instead of manual replication of no automation\"): the Dispatch step has PAUSED a mod (a run that did not move it, an unreadable input, a hold, a spent steward or fixer); `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` says why and what un-pauses it; one fixed id, a repeat reopens it"
+ },
+ {
+  "key": "maturation.stalled",
+  "op": ">",
+  "value": 0,
+  "alarm": true,
+  "tag": "MATURATION_STALLED",
+  "name": "OPS_MATURATION_MOD_STALLED",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING: a mod has had no running unit, no pause and no owner stop for 10 minutes (it waits on nothing named); `maturation_dispatch.py status` names it"
+ },
+ {
   "key": "wrapup.debris_standing",
   "op": ">",
   "value": 0,
