@@ -62,6 +62,9 @@ namespace RimMandrake.ExplosiveKnockback
             // each with its control lane. settings_sweep_<lane> is any lane of SweepLanes. NOT YET RUN LIVE.
             "hose_carry_drop", "hose_carry_drop_off", "closed_containers", "closed_containers_control", "settings_sweep",
             "settings_sweep_after", "frame_probe_selfcheck", "frame_probe_selfcheck_paused", "barrage_perf", "barrage_perf_off",
+            // 2026-11-15 Stage 6 visit 1 road back (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD): sc_gas_shove_into_pit
+            // and its control lane. NOT YET RUN LIVE.
+            "gas_into_pit", "gas_into_pit_off",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -1756,6 +1759,89 @@ namespace RimMandrake.ExplosiveKnockback
                             + " bursts=" + bursts.Count + " burstTicks=" + ticks + " goodsMoves=" + moves.Count + " maxGoodsPlanned=" + moves.Select(r => (int)r["planned"]).DefaultIfEmpty(0).Max()
                             + " pawnShoves=" + mine.Count + " cooldownOk=" + gap + " gasReg=" + RM_KnockbackCompat.VentGasRegistered
                             + (sc.things.ContainsKey("cover") ? " coverHp=" + (sc.things["cover"].Destroyed ? -1 : Hp(sc.things["cover"])) + "/" + sc.numbers["coverHp"] : " no cover"));
+                    };
+                    return null;
+
+                case "gas_into_pit":
+                case "gas_into_pit_off":
+                    {
+                        // sc_gas_shove_into_pit (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD): a drafted colonist on the
+                        // west rim of an open 3x3 pit, on the east edge cell of a radius-2 cloud of the Cauldron's vent gas that
+                        // stops short of the pit. The cell due west of the colonist is lit first, so the first burst in reach
+                        // (bursts are processed in order; the 120-tick cooldown drops the rest) shoves it due east, into the pit.
+                        // _off, the control: the vent grid's registration with the gas chain removed, the same lit; no shove.
+                        bool off = s.name == "gas_into_pit_off";
+                        if (!RM_KnockbackCompat.FlowWorks)
+                        {
+                            return "FlowWorks not loaded";
+                        }
+                        MapComponent vg = VentGas(out Type vt);
+                        if (vg == null)
+                        {
+                            return "The Cauldron (RimMandrake.Biomes) not loaded: no vent gas";
+                        }
+                        if (!RM_KnockbackCompat.VentGasRegistered)
+                        {
+                            return "the Cauldron's vent gas is not registered with the gas chain";
+                        }
+                        if (!Pit(O(s, 1, -1), 3, 3) || RM_KnockbackCompat.CoverAt(Map, O(s, 1, 0)) != null)
+                        {
+                            return "could not dig an open pit";
+                        }
+                        vt.GetMethod("ClearOf")?.Invoke(null, new object[] { Map });
+                        bool reg = RM_KnockbackCompat.VentGasRegistered;
+                        Action prev = s.restore;
+                        s.restore = () =>
+                        {
+                            RM_KnockbackCompat.VentGasRegistered = reg;
+                            vt.GetMethod("ClearOf")?.Invoke(null, new object[] { Map });
+                            prev?.Invoke();
+                        };
+                        string seeded = (string)vt.GetMethod("SeedCloud").Invoke(null, new object[] { Map, O(s, -2, 0), 2, 250 });
+                        Pawn p = Colonist(s, "p", O(s, 0, 0));
+                        int dens = (int)vt.GetMethod("DensityAt").Invoke(vg, new object[] { O(s, 0, 0) });
+                        if (dens <= 0)
+                        {
+                            return "the colonist's cell holds no vent gas: " + seeded;
+                        }
+                        s.numbers["dens"] = dens;
+                        if (off)
+                        {
+                            RM_KnockbackCompat.VentGasRegistered = false;
+                        }
+                        object lit = vt.GetMethod("Ignite").Invoke(vg, new object[] { O(s, -1, 0), null });
+                        if (!(lit is bool b) || !b)
+                        {
+                            return "the vent gas did not light: " + seeded;
+                        }
+                        s.numbers["pHurt"] = p.health.hediffSet.hediffs.Count(h => h is Hediff_Injury);
+                    }
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        var launch = ForThing(sc, "launch", t);
+                        var desc = ForThing(sc, "descent", t);
+                        var land = ForThing(sc, "land", t);
+                        int bursts = Recs(sc, "gas_burst").Count;
+                        bool inPit = t.Spawned && RM_KnockbackCompat.IsSuperdeep(Map, t.Position);
+                        string d = m + " bursts=" + bursts + " launches=" + launch.Count + " descents=" + desc.Count + " inPit=" + inPit
+                            + " gasAtColonist=" + sc.numbers["dens"] + " gasReg=" + RM_KnockbackCompat.VentGasRegistered
+                            + (launch.Count > 0 ? " [" + Rec(launch[0]) + "]" : "");
+                        if (sc.name == "gas_into_pit_off")
+                        {
+                            // row control: fails alone when the colonist ends in the pit with the gas chain unhooked (the
+                            // fire, or a walk, put it there)
+                            return Result(sc, bursts == 0 && launch.Count == 0 && desc.Count == 0 && !inPit && cells == 0, d);
+                        }
+                        // row shove: one launch, one cell, no impact (a shove is not a throw)
+                        bool shove = launch.Count == 1 && (int)launch[0]["planned"] <= 1 && Convert.ToSingle(launch[0]["impact"]) == 0f;
+                        // row fell: it landed on the pit's first cell and went down it once
+                        bool landed = land.Count == 1 && (IntVec3)land[0]["at"] == O(sc, 1, 0);
+                        bool fell = landed && desc.Count == 1 && inPit;
+                        // row unhurt: the shove added no injury (the fall's own, if any, comes with the descent: reported)
+                        int hurt = t is Pawn pp ? pp.health.hediffSet.hediffs.Count(h => h is Hediff_Injury) : -1;
+                        return Result(sc, bursts >= 1 && shove && fell, d + " shove=" + shove + " landedOnFirstPitCell=" + landed
+                            + " injuries " + sc.numbers["pHurt"] + "->" + hurt);
                     };
                     return null;
 

@@ -213,6 +213,8 @@ def main():
         "settings_sweep": R + "settings_sweep," + ",".join("settings_sweep_" + l for l in ("throwAnimals", "throwMechanoids", "throwDowned", "throwItems", "throwCorpses", "landingStun", "doorsTakeDamage", "debugDrawVectors", "vanillaCratesClosed", "heavyGoodsMinMass", "heavyGoodsKnock", "flyingGoods", "shoveClosedContainers", "gasChain", "lightMassLimit20", "closedGuard", "fireHalf")) + ",settings_sweep_after --ticks 300   (proof build, minimal list + LWM's Deep Storage + the Cauldron and its 3 dependencies, dev mode)",
         "frame_probe_selfcheck": R + "frame_probe_selfcheck,frame_probe_selfcheck_paused --ticks 0 --real-seconds 8   (proof build, minimal list)",
         "barrage_perf": R + "frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, the owner's full list on Archmagi)",
+        # Stage 6 visit 1 road back (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD)
+        "gas_into_pit": R + "gas_into_pit,gas_into_pit_off --ticks 300   (proof build, minimal list + FlowWorks + the Cauldron and its 3 dependencies)",
     }
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     for tid, t in OFF.items():
