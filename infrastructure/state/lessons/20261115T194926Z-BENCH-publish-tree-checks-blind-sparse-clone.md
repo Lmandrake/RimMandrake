@@ -1,0 +1,3 @@
+./publish in a default sparse scratch clone (scratch_clone.py, no mod src dirs) refuses a design/ledger-only commit on 7 whole-tree checks that cannot see the tree (selftest_biome_twins_retired 'instrument sees the tree (138 xml, 3 BiomeDefs)', alpha_biomes_census STALE_PORT 'src defines it as nothing', launch_gate, fauna_normalization, modlist_order_lint, fuelsnows_name_cull, drawn_art_ruled). The reds are the sparse checkout, not the commit: publish_tree_checks should skip or report UNMEASURED when the paths they read are outside the sparse cone. Seen 2026-11-15 in /home/mandrake/rm/scratch/BENCH/efa_ek_fw; worked round with RM_PUBLISH_SKIP_TREE_CHECKS naming why.
+item: NONE
+home: design/RimMandrake/GIT_WORKFLOW.md
