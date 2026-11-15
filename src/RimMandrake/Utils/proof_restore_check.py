@@ -71,6 +71,8 @@ LIST_POKE = re.compile(r"\.(modExtensions|comps)\s*\.\s*(Add|AddRange|Insert|Rem
 DEF_POKE = re.compile(r"(?<![\w.])((?:\w+\.)*\w*Def(?:Of\.\w+)?)\.(\w+)\s*=(?!=)")
 LITERAL = re.compile(r"^\s*(true|false|null|-?[0-9][0-9_.]*[fFdDmM]?|\"[^\"]*\")\s*$")
 RESTORE_REG = re.compile(r"(?:\w+\.)*\w*[Rr]estore\w*\s*(\+=|=)\s*(?:\(\s*\)|\w+)\s*=>")
+# `s.restore = FlightRestore(s);`: the delegate is built by a helper in the same file whose body returns the restoring lambda
+RESTORE_HELPER_REG = re.compile(r"(?:\w+\.)*\w*[Rr]estore\w*\s*(?:\+=|=)\s*(\w+)\s*\([^;=]*\)\s*;")
 RESTORE_RUN = re.compile(r"(RunRestore\w*\s*\(|[Rr]estore\w*\s*\?\s*\.\s*Invoke\s*\(|[Rr]estore\w*\s*\.\s*Invoke\s*\(|"
                          r"\b[Rr]estore\w*\s*\(\s*\))")
 
@@ -239,6 +241,15 @@ def cs_pokes(f: CsFile):
             yield kind, m
 
 
+def _snapshot_restores(before: str, body: str, target: str) -> bool:
+    """A reflection snapshot restore: `var fields = typeof(C).GetFields(...)` and `saved = fields.Select(f => f.GetValue(null))`
+    before the delegate, `fields[i].SetValue(null, saved[i])` in it, puts back every static field of C, so it restores C.x."""
+    cls = target.rsplit(".", 1)[0] if "." in target else ""
+    return bool(cls) and re.search(r"\.SetValue\(\s*null\s*,\s*saved\b", body) is not None \
+        and re.search(r"typeof\(\s*%s\s*\)\s*\.GetFields\(" % re.escape(cls.split(".")[-1]), before) is not None \
+        and re.search(r"\bsaved\s*=\s*\w+\.Select\(\s*\w+\s*=>\s*\w+\.GetValue\(\s*null\s*\)", before) is not None
+
+
 def check_cs(rel: str, text: str):
     f = CsFile(text)
     hits = []
@@ -253,6 +264,17 @@ def check_cs(rel: str, text: str):
         else:
             end = f.stmt_end(m.end())
         regs.append((st, end, f.s[st:end]))
+    helpers = {}
+    for m in RESTORE_HELPER_REG.finditer(f.s):
+        name = m.group(1)
+        if name not in helpers:
+            d = re.search(r"\bAction\s+%s\s*\(" % re.escape(name), f.s)
+            ob = f.s.find("{", d.end()) if d else -1
+            b = f.block_at(ob) if ob >= 0 else None
+            helpers[name] = (d.start(), b[1], f.s[d.start():b[1]]) if b and "=>" in f.s[ob:b[1]] else None
+        if helpers[name]:
+            regs.append((m.start(), f.stmt_end(m.end() - 1), helpers[name][2]))   # the call site registers the helper's restore
+    regs.extend(h for h in helpers.values() if h)                                  # writes inside the helper ARE the restore
     finally_blocks = []
     catch_blocks = []
     for b in f.blocks:
@@ -311,7 +333,8 @@ def check_cs(rel: str, text: str):
         # (c) a restore delegate for the same target registered before it in the same case, or right after it
         if not guarded:
             for (rs, re_, body) in regs:
-                if not _writes_target(body, kind, target) and not (kind == "deflist" and target in body):
+                if not _writes_target(body, kind, target) and not (kind == "deflist" and target in body) \
+                        and not _snapshot_restores(f.s[max(0, rs - 1500):rs], body, target):
                     continue
                 if re_ < p:
                     between = f.s[re_:p]
