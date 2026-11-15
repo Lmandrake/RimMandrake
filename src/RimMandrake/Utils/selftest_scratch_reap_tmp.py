@@ -230,13 +230,18 @@ def main():
             os.getuid = real
         ok((tmp / "foreign.txt").exists() and out["removed"] == 0, "another uid's entry is never judged")
 
-        os.environ["SCRATCH_REAP_TMP"] = "/tmp"
-        os.environ["SCRATCH_REAP_ROOTS"] = os.pathsep.join([str(roots), "/tmp"])
-        m = s.Ctx.mounted(ctx, Path("/tmp/selftest-no-such-entry"))
-        ok(m == [], "the /tmp tmpfs's own mount is the filesystem, not an alias (%s)" % m)
+        # a tmp root that is its own mount: /tmp where it is a tmpfs; else (WSL: /tmp on the root fs) any real mount point
+        mps = sorted(m for m in s.mount_points() if m != "/" and os.path.isdir(m))
+        mnt = "/tmp" if "/tmp" in mps else ("/dev/shm" if "/dev/shm" in mps else (mps[0] if mps else None))
+        ok(mnt is not None, "the fixture found a mount point to stand in for a tmpfs tmp root (%s)" % mps[:5])
+        mnt = mnt or "/tmp"
+        os.environ["SCRATCH_REAP_TMP"] = mnt
+        os.environ["SCRATCH_REAP_ROOTS"] = os.pathsep.join([str(roots), mnt])
+        m = s.Ctx.mounted(ctx, Path(mnt) / "selftest-no-such-entry")
+        ok(m == [], "the tmp root's own mount (%s) is the filesystem, not an alias (%s)" % (mnt, m))
         os.environ["SCRATCH_REAP_TMP"] = str(tmp)
-        m = s.Ctx.mounted(ctx, Path("/tmp/selftest-no-such-entry"))
-        ok(bool(m), "a mount above a candidate in a root that is not the tmp root still refuses")
+        m = s.Ctx.mounted(ctx, Path(mnt) / "selftest-no-such-entry")
+        ok(bool(m), "a mount above a candidate in a root that is not the tmp root still refuses (%s)" % mnt)
         os.environ["SCRATCH_REAP_ROOTS"] = os.pathsep.join([str(roots), str(tmp)])
 
         (tmp / "loose2.txt").write_text("q" * 10)
