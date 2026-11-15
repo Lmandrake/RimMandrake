@@ -362,11 +362,60 @@
     "ref": "run rm-role-designer-1794596464",
     "stage": 3,
     "tokens": 288608
+   },
+   {
+    "at": "2026-11-15T06:05:27Z",
+    "kind": "helper",
+    "ref": "rm-judge ac4bb834dfc8e0bc2 examiner (opus)",
+    "stage": 4,
+    "tokens": 37993
+   },
+   {
+    "at": "2026-11-15T06:05:27Z",
+    "kind": "helper",
+    "ref": "rm-judge abad3224c4711c5e0 challenger (opus)",
+    "stage": 4,
+    "tokens": 36018
+   },
+   {
+    "at": "2026-11-15T06:05:27Z",
+    "kind": "helper",
+    "ref": "reader a33602048ccbba765 (opus)",
+    "stage": 4,
+    "tokens": 43076
+   },
+   {
+    "at": "2026-11-15T06:05:27Z",
+    "kind": "helper",
+    "ref": "reader a11a4a910abe95935 (opus)",
+    "stage": 4,
+    "tokens": 43214
+   },
+   {
+    "at": "2026-11-15T06:05:27Z",
+    "kind": "helper",
+    "ref": "control reader ab8c3a63be26a19c8 (opus)",
+    "stage": 4,
+    "tokens": 43168
+   },
+   {
+    "at": "2026-11-15T06:06:46Z",
+    "kind": "stage",
+    "ref": "run bench-pyre-owed-exam-st4-20261114",
+    "stage": 4,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 11949013
+  "spent": 12152482
  },
+ "coverage_releases": [
+  {
+   "at": "2026-11-15T06:01:06Z",
+   "rounds_at": 3,
+   "why": "his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016): one exam and one coverage judge pass on the locked 0.1.0 tree, no loop; the OWNER HOLD for the lock is spent (VERSION.json locked)"
+  }
+ ],
  "coverage_rounds": [
   {
    "at": "2026-11-13T18:33:24Z",
@@ -414,10 +463,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-13T23:05:35Z",
-  "why": "OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\""
- },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -820,10 +865,56 @@
    "stage": 4,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\"; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-15T05:59:36Z",
+   "stage": 4,
+   "what": "locked_change",
+   "why": "Pyrelands 0.1.0 is locked; his card 2026-11-14 'Drop the sentence' (f71693d77a) and the six Stage-1 test-text corrections run under his card 'All four now, offline only' (08d917c12a) changed it; his card 2026-11-14 ~9:45 PM PST orders one exam and one coverage judge on the locked tree, no loop (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE); re-pinned stage 1 (root); stage 2 (root, owner); stage 3 (root, sheet, tree, scenes); sources OWNER:1794695014598425560@f71693d77a, OWNER:1794684238949922350@08d917c12a, OWNER:1794611171307640419, OWNER:1794721773574845016"
+  },
+  {
+   "at": "2026-11-15T06:01:06Z",
+   "stage": 4,
+   "what": "coverage_release",
+   "why": "his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016): one exam and one coverage judge pass on the locked 0.1.0 tree, no loop; the OWNER HOLD for the lock is spent (VERSION.json locked)"
+  },
+  {
+   "at": "2026-11-15T06:01:06Z",
+   "stage": 4,
+   "what": "park_lifted",
+   "why": "his word on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-15T06:01:06Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "11949013 of 4000000 spent; run bench-pyre-owed-exam-st4-20261114 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T06:01:06Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-pyre-owed-exam-st4-20261114, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-15T06:06:46Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-pyre-owed-exam-st4-20261114: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
+ "loop_since": "2026-11-15T06:01:06Z",
  "mod": "RimMandrake/Pyrelands",
+ "parks": [
+  {
+   "at": "2026-11-13T19:03:33Z",
+   "by": "lift_park: OWNER:1794721773574845016 after the crossing",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-15T06:01:06Z",
+   "why": "the judge-and-rework loop has spent 8070268 tokens since 2026-11-06T02:30:55Z, past its ceiling of 8000000 (2x the cap)"
+  }
+ ],
  "pending_decision": "Stage 3 owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
  "recovery": [],
  "results": [
@@ -1008,7 +1099,7 @@
     "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
     "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
     "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
     "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
@@ -1020,6 +1111,20 @@
    "outcome": "done",
    "owner_uncited": [
     "1793766816609436834"
+   ],
+   "repinned": [
+    {
+     "at": "2026-11-15T05:59:36Z",
+     "inputs": [
+      "root"
+     ],
+     "sources": [
+      "OWNER:1794695014598425560@f71693d77a",
+      "OWNER:1794684238949922350@08d917c12a",
+      "OWNER:1794611171307640419",
+      "OWNER:1794721773574845016"
+     ]
+    }
    ],
    "run": "rm-role-designer-1793952159",
    "stage": 1,
@@ -1088,8 +1193,8 @@
    "inputs": {
     "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
     "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
     "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
     "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
@@ -1100,7 +1205,24 @@
    },
    "outcome": "done",
    "owner_uncited": [
-    "1793766816609436834"
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794721773574845016"
+   ],
+   "repinned": [
+    {
+     "at": "2026-11-15T05:59:36Z",
+     "inputs": [
+      "root",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794695014598425560@f71693d77a",
+      "OWNER:1794684238949922350@08d917c12a",
+      "OWNER:1794611171307640419",
+      "OWNER:1794721773574845016"
+     ]
+    }
    ],
    "run": "rm-role-designer-1793981883",
    "stage": 2,
@@ -1127,10 +1249,10 @@
     "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-    "scenes": "38e56fd27b868e32ebc4ac7323e26da3300ef9030918bfe0115cfd205f7134c4",
-    "sheet": "4f77fad249a2160d032c6514071758be5c5e17be45e7155a06dbbe8aaebe7d49",
-    "tree": "6dd32c14a94d4b84499ed155eb5c6da32302dcb8967583a414cc5c5773892c55"
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b0d4bf5386106ab28f81e6a9a6e611da02c5a30118f17178d4dc8829af251269",
+    "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
+    "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -1141,15 +1263,61 @@
    "owner_uncited": [
     "1793766816609436834"
    ],
+   "repinned": [
+    {
+     "at": "2026-11-15T05:59:36Z",
+     "inputs": [
+      "root",
+      "sheet",
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794695014598425560@f71693d77a",
+      "OWNER:1794684238949922350@08d917c12a",
+      "OWNER:1794611171307640419",
+      "OWNER:1794721773574845016"
+     ]
+    }
+   ],
    "run": "rm-role-designer-1794596464",
    "stage": 3,
    "summary": "Stage 3 rewritten after the stage-5 run's edits reopened it. Gate A lint passes; scenes.json showcases accepted (burn_line 7, fire_cast 3, sky_and_shelter 3, every unit covered). Worldgen: sheet floor:worldgen reads no worldgen of our own, the vanilla new-world switch outside the promise and shipped off and labelled unsupported per his card 2026-11-13 (OWNER:1794594166295378777, built e36d2374af), now cited on the sheet and recorded as d_worldswitch_off_by_card; floor.json worldgen stays applicable. The 2026-11-13 coverage verdict is advisory (uncalibrated brief) and does not send this run back."
+  },
+  {
+   "at": "2026-11-15T06:06:46Z",
+   "inputs": {
+    "exam": "4e1d8e877a629908d3c8f77fde63a3b1a62f7be9e97a753fae0dc867907a1282",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b0d4bf5386106ab28f81e6a9a6e611da02c5a30118f17178d4dc8829af251269",
+    "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
+    "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794721773574845016"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "nothing is asked of him: the exam closes on its own score"
+   },
+   "run": "bench-pyre-owed-exam-st4-20261114",
+   "stage": 4,
+   "summary": "Cold Reader exam on the locked 0.1.0 tree (3ffd15d1) and sheet (2935f04b), his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016, one exam and one coverage judge pass, no loop): 20/20 frozen scenarios (14 Examiner, 6 Challenger; 13 reject cases) matched by two fresh Readers, accept_where_reject_core 0, no Challenger miss; control on flamefang_bite_carries_venom missed e7. Stages 1-3 re-pinned by designer_stage repin for his locked changes (f71693d77a, 08d917c12a)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
- "status": "blocked",
+ "stage": 5,
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

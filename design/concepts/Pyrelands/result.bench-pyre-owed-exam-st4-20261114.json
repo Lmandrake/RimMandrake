@@ -1,0 +1,10 @@
+{
+ "run": "bench-pyre-owed-exam-st4-20261114",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam on the locked 0.1.0 tree (3ffd15d1) and sheet (2935f04b), his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016, one exam and one coverage judge pass, no loop): 20/20 frozen scenarios (14 Examiner, 6 Challenger; 13 reject cases) matched by two fresh Readers, accept_where_reject_core 0, no Challenger miss; control on flamefang_bite_carries_venom missed e7. Stages 1-3 re-pinned by designer_stage repin for his locked changes (f71693d77a, 08d917c12a).",
+ "quick_look": {
+  "offer": false,
+  "why": "nothing is asked of him: the exam closes on its own score"
+ }
+}
