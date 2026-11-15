@@ -1,0 +1,22 @@
+[
+ {
+  "after": 0,
+  "fires": 46,
+  "hist": "now=1101501;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=0;center=invalid"
+ },
+ {
+  "after": 60,
+  "fires": 45,
+  "hist": "now=1101562;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=45;center=177,11"
+ },
+ {
+  "after": 60,
+  "fires": 46,
+  "hist": "now=1101622;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=45;center=176,11"
+ },
+ {
+  "after": 480,
+  "fires": 53,
+  "hist": "now=1102102;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=54;center=177,12"
+ }
+]

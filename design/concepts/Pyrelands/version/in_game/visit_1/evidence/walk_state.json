@@ -1,0 +1,54 @@
+{
+ "phase": "done",
+ "tile": 5,
+ "pre": "pyre_walk_pre",
+ "t1": 681501,
+ "colonists": 3,
+ "stops": [
+  "{'seq': 5, 'kind': 'downed', 'severity': 'threat', 'tick': 699861, 'map': 1, 'subjectId': 99796, 'subject': 'gizka', 'critical': False, 'declared': False, 'deta",
+  "{'seq': 9, 'kind': 'downed', 'severity': 'threat', 'tick': 716841, 'map': 1, 'subjectId': 99794, 'subject': 'gizka', 'critical': False, 'declared': False, 'deta",
+  "{'seq': 19, 'kind': 'downed', 'severity': 'threat', 'tick': 776241, 'map': 1, 'subjectId': 99798, 'subject': 'fire-hawk', 'critical': False, 'declared': False, ",
+  "{'seq': 39, 'kind': 'downed', 'severity': 'threat', 'tick': 898881, 'map': 1, 'subjectId': 99792, 'subject': 'gizka', 'critical': False, 'declared': False, 'det",
+  "{'seq': 68, 'kind': 'downed', 'severity': 'threat', 'tick': 1165941, 'map': 1, 'subjectId': 99787, 'subject': 'zeer', 'critical': False, 'declared': False, 'det",
+  "{'seq': 70, 'kind': 'downed', 'severity': 'threat', 'tick': 1225461, 'map': 1, 'subjectId': 99788, 'subject': 'zeer', 'critical': False, 'declared': False, 'det"
+ ],
+ "d_mid": {
+  "Fire": 46,
+  "RM_FE_Plant_ScorchFruit": 26,
+  "RM_FE_ScorchFruitYield": 0,
+  "RM_FurnaceBeast": 0,
+  "RM_Ullai": 0,
+  "regrowth": "now=1101501;0=596/90/72;1=802/196/193;2=551/209/205;3=5828/2775/2248;4=20264/11058/7716;5=13866/8679/5331;6=6960/4380/2203",
+  "burnHistory": "now=1101501;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=46;center=176,11"
+ },
+ "d_mid_reloaded": {
+  "Fire": 46,
+  "RM_FE_Plant_ScorchFruit": 26,
+  "RM_FE_ScorchFruitYield": 0,
+  "RM_FurnaceBeast": 0,
+  "RM_Ullai": 0,
+  "regrowth": "now=1101502;0=596/90/72;1=802/196/193;2=551/209/205;3=5828/2775/2248;4=20264/11058/7716;5=13866/8679/5331;6=6960/4380/2203",
+  "burnHistory": "now=1101502;samples=168;oldestTick=680099;newestTick=1100939;newest=176,11;ago=176,11;burning=0;center=invalid"
+ },
+ "d_pre": {
+  "Fire": 20,
+  "RM_FE_Plant_ScorchFruit": 0,
+  "RM_FE_ScorchFruitYield": 0,
+  "RM_FurnaceBeast": 0,
+  "RM_Ullai": 0,
+  "regrowth": "now=681502;0=20/20/15",
+  "burnHistory": "now=681502;samples=1;oldestTick=680099;newestTick=680099;newest=140,24;ago=140,24;burning=0;center=invalid"
+ },
+ "t2": 1103002,
+ "fruit": 2,
+ "fires_off": 0,
+ "log_window": {
+  "mark": 1000,
+  "total": 1000,
+  "read": 0
+ },
+ "errors": [],
+ "reload_equal": false,
+ "pre_differs": true,
+ "verdict": "FAIL"
+}

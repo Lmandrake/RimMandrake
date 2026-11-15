@@ -62,3 +62,28 @@ Six wild ullai staged facing north (walk save, station 5) read as thin vertical 
 a furnace-beast giant several cells wide; from the side (ruin station) the same creature reads as a full giraffe-like
 body. The north facing may be correct for a long-necked animal seen from behind, or a facing-art defect. Acceptance test:
 none, an art judgement (rimworld-sprite-facings; the owner approved the art as a sheet).
+
+## RIMMANDRAKE_FIX_WALK_DIGEST_COMPARES_A_TICK_STAMP (HARNESS; sc_walk, check judged wrong, row UNMEASURED)
+
+`walk_digest` keeps ProbeRegrowth's and ProbeBurnHistory's `now=` field and the burn line's `burning`/`center`. Measured on
+the full list (316 mods, `scripts/walk_steps.py`, `evidence/walk_state.json`): every count matched across the reload (Fire 46,
+scorch-fruit 26, the 7-row regrowth table, 168 history samples, newest and ago), but `now` read 1101501 before and 1101502
+after, and `burning=46;center=176,11` read `burning=0;center=invalid`. `scripts/walk_reload_probe.py`: that is a cache the
+next 60-tick watch rebuilds (0 at load, 45 and centre 177,11 after 60 ticks, 54 after 480: the front walks on). So the
+digest can never match on a correct reload. Also fixed in the sitting (validation.py): the walk's error filter read `level`
+where drain_log returns `type`, and its log window was a count, blind once the buffer sits at its 1000-line cap (it read
+mark 1000, total 1000); it is now a sentinel line. Acceptance test: the digest drops the `now=` stamps and the watch-rebuilt
+`burning`/`center`, matches across a reload of pyre_walk_mid, and still differs from pyre_walk_pre.
+
+Also on the walk digest: `jawa/list_things defName=RM_Ullai` (and RM_FurnaceBeast) counts 0 while `jawa/list_pawns` lists 6
+ullai and 1 furnace-beast on the same map (measured after staging the full-list walk save), so the digest's two creature
+fields were blind (0 = 0 on every read). The fix reads pawns through list_pawns.
+
+## RIMMANDRAKE_TRACE_ZHAKKA_ON_THE_WALKED_PYRELANDS_MAP (strange; populations on his list)
+
+After two walked weeks on the full list (316 mods), the Pyrelands map held 9 RSW_Zhakka and 1 RSW_WompRat (neither among
+the 16 roster kinds), plus 2 Tribal_Warrior and 1 Tribal_HeavyArcher, not hostile. `jawa/biome_probe` on the same game reads
+the RM_Pyrelands roster as exactly the 16 manifest kinds, so the biome's own spawner is clean; the newcomers came some other
+way, although both weeks ran under the quiet site profile (the site build and the return to mid both settle with it). A
+mod's own event outside the storyteller is my guess [guess ~50%]. Acceptance test: none, a trace (load `pyre_walk_end`, read the incident history or the pawns' spawn records,
+name the route).

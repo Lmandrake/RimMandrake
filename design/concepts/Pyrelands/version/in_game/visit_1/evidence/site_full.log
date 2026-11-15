@@ -1,0 +1,2 @@
+site 1: tile 5 map 1 saved NS_Pyrelands_site_1_090cd707f5_visit1full -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_ACCEPT_PYRELANDS_IN_GAME_RAIN_FIX_NEVER_RUN.det\Transient\modcheck\pyrelands\sites\site_1_visit1full.json
+[bridge split] 179.2 s wall: load 21.5 / ticks 8.6 / reads 11.8 / other 58.5 / outside calls 78.8 s

@@ -2972,25 +2972,29 @@ def flamefang_venom(t):
 
 def _log_mark(t):
     """jawa/drain_log does NOT drain: it returns the newest `limit` lines of the whole Verse.Log buffer every call (visit 1,
-    2026-11-15: a 'drain' before a beat and a read after it returned the game-load banner, read as a rite-hook line). Mark the
-    buffer's size now; _log_since(t, mark) returns only the lines logged after it. None offline."""
-    r = t.bridge_call("jawa/drain_log", limit=1)
-    return (r or {}).get("totalInBuffer") if _live(t) else None
+    2026-11-15: a 'drain' before a beat and a read after it returned the game-load banner, read as a rite-hook line). And the
+    buffer is capped at 1000 lines, so on the full list its size stops growing and a count cannot window it (the walk read
+    mark 1000, total 1000: blind). So the mark is a sentinel warning line; _log_since(t, mark) returns the lines after it.
+    None offline."""
+    if not _live(t):
+        return None
+    token = "pyre log mark %d" % int(time.time() * 1000)
+    _ok(t.bridge_call("jawa/static_call", type="Verse.Log", method="Warning", args=token), "Log.Warning(mark)")
+    return token
 
 
-def _log_since(t, mark, limit=500):
-    """Lines (dicts) logged after _log_mark. Fails when the buffer shrank (a Log.Clear or the cap), since the window is then
-    unknown."""
+def _log_since(t, mark, limit=1000):
+    """Lines (dicts) logged after the _log_mark sentinel. UNMEASURED when the sentinel is not among the newest `limit`
+    lines: logging stopped (Verse.Log's 10,000-message cap) or the window overflowed the buffer."""
     r = t.bridge_call("jawa/drain_log", limit=limit) or {}
     if not _live(t):
         return []
-    total, msgs = r.get("totalInBuffer"), r.get("messages") or []
-    if mark is None or total is None or total < mark:
-        _unmeasured(t, "log window unknown: buffer %r lines now, %r at the mark" % (total, mark))
-    new = total - mark
-    if new > len(msgs):
-        _unmeasured(t, "%d lines logged in the window, only %d readable (limit %d)" % (new, len(msgs), limit))
-    return msgs[len(msgs) - new:] if new > 0 else []
+    msgs = r.get("messages") or []
+    at = [i for i, m in enumerate(msgs) if mark and mark in str(m.get("text", ""))]
+    if not at:
+        _unmeasured(t, "log window unknown: the mark %r is not in the newest %d lines (buffer %r): logging stopped or the "
+                       "window overflowed" % (mark, len(msgs), r.get("totalInBuffer")))
+    return msgs[at[-1] + 1:]
 
 
 def rite_offers(before, after):

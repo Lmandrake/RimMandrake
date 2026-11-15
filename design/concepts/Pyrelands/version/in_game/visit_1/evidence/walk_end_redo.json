@@ -1,0 +1,10 @@
+{
+ "fruit_end": 2,
+ "fires_off": 0,
+ "window_lines": 3,
+ "errors": [],
+ "warnings": [],
+ "canary_errors": [
+  "visit1 canary error"
+ ]
+}
