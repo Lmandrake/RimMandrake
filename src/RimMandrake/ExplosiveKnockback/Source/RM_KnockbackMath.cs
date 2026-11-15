@@ -77,6 +77,9 @@ namespace RimMandrake.ExplosiveKnockback
         public float damage = -1f;           // the explosion's own damage amount; -1 = not an explosion (gas burst)
         public float damageRatio = 1f;
         public string source = "none";       // projectile | weapon | damageDef | unpatched | none (journal)
+        // false = ownCap is exact, never rescaled by the "weapons with their own maximum" scale: a gas burst's goods cap is
+        // gasBurstGoodsCells, not a weapon's (blind cycle 1, RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE)
+        public bool scaleOwnCap = true;
     }
 
     public static class KbLookup
@@ -111,7 +114,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 globalMultiplier = global.globalMultiplier,
                 baseCells = global.baseCells,
-                maxCells = RM_KnockbackMath.CapFor(c?.ownCap ?? 0, globalCap, ownCapScale),
+                maxCells = RM_KnockbackMath.CapFor(c?.ownCap ?? 0, globalCap, c == null || c.scaleOwnCap ? ownCapScale : 1f),
                 refMass = global.refMass,
                 creatureMassLimit = c != null && c.massLimitOverride > 0f ? c.massLimitOverride : global.creatureMassLimit,
                 lightMassLimit = global.lightMassLimit,
@@ -199,11 +202,27 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Cells to throw. 0 = no move. Calibration (owner Q7): mortar r 2.9, distance 1, 60 kg -> 3.</summary>
         public static int ThrowCells(float dist, float radius, float force, float mass, KbSettings s)
         {
+            return Cells(ThrowRaw(dist, radius, force, mass, s), s);
+        }
+
+        /// <summary>Loose goods and corpses fly wild (owner card "C, wild"; sheet: about 1.6 times as far as a person): the
+        /// kernel's unrounded throw times `wild`, rounded and capped like any throw. wild 1 = the plain kernel.</summary>
+        public static int WildCells(float dist, float radius, float force, float mass, KbSettings s, float wild)
+        {
+            return Cells(ThrowRaw(dist, radius, force, mass, s) * Math.Max(0f, wild), s);
+        }
+
+        private static double ThrowRaw(float dist, float radius, float force, float mass, KbSettings s)
+        {
             if (force <= 0f || s.globalMultiplier <= 0f)
             {
-                return 0;
+                return 0.0;
             }
-            double raw = s.baseCells * force * Falloff(dist, radius) * MassScale(mass, s) * s.globalMultiplier;
+            return s.baseCells * force * Falloff(dist, radius) * MassScale(mass, s) * s.globalMultiplier;
+        }
+
+        private static int Cells(double raw, KbSettings s)
+        {
             int cells = (int)Math.Round(raw, MidpointRounding.AwayFromZero);
             if (cells > s.maxCells)
             {
@@ -515,8 +534,9 @@ namespace RimMandrake.ExplosiveKnockback
             return true;
         }
 
-        /// <summary>Cells a rebound still flies: `keepPercent` of the cells left when the throw hit, rounded DOWN so a
-        /// throw always runs out (1 cell left at 70% = 0, no rebound).</summary>
+        /// <summary>Cells a rebound still flies: `keepPercent` of the cells left when the throw hit, rounded DOWN so below
+        /// 100% a throw always runs out (1 cell left at 70% = 0, no rebound). At 100% nothing is lost and the chain does not
+        /// end here: the carrier's MaxBounces ends it.</summary>
         public static int ReboundCells(int cellsLeft, float keepPercent)
         {
             if (cellsLeft <= 0 || keepPercent <= 0f)

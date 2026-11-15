@@ -412,7 +412,7 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             float dist = (t.Position - explosion.Position).LengthHorizontal;
-            return RM_KnockbackMath.ThrowCells(dist, explosion.radius, cfg.force, mass, s) > 0;
+            return RM_KnockbackMath.WildCells(dist, explosion.radius, cfg.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild) > 0;
         }
 
         /// <summary>Owner ruling 2026-11-12, "worse damage if they then hit a solid object": a stack stopped by a wall, door or
@@ -620,7 +620,10 @@ namespace RimMandrake.ExplosiveKnockback
             }
             IntVec3 start = t.Position;
             float dist = (start - r.centre).LengthHorizontal;
-            int cells = RM_KnockbackMath.ThrowCells(dist, r.radius, r.force, mass, s);
+            int kernelCells = RM_KnockbackMath.ThrowCells(dist, r.radius, r.force, mass, s);
+            // goods and corpses fly wild (GoodsThrowWild); people keep the kernel
+            int cells = kind == KbKind.Pawn ? kernelCells
+                : RM_KnockbackMath.WildCells(dist, r.radius, r.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
             if (cells <= 0)
             {
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "too_weak", "dist", dist, "mass", mass);
@@ -673,7 +676,7 @@ namespace RimMandrake.ExplosiveKnockback
                     RM_KnockbackJournal.ItemMoves++;
                     RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", dest,
                         "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count,
-                        "flying", true, "flyer", f.thingIDNumber, "flightTicks", f.TicksLeft);
+                        "kernelCells", kernelCells, "wildCells", cells, "flying", true, "flyer", f.thingIDNumber, "flightTicks", f.TicksLeft);
                     return true;
                 }
                 if (!t.Spawned)
@@ -687,6 +690,7 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.ItemMoves++;
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed.Spawned ? placed.Position : dest,
                 "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count, "flying", false,
+                "kernelCells", kernelCells, "wildCells", cells,
                 "residentsMoved", bumped, "spawnFallback", fallback);
             GoodsWallImpact(r, placed, res, cells);
             return true;
@@ -888,7 +892,8 @@ namespace RimMandrake.ExplosiveKnockback
             }
             int id = -(++comp.gasBursts);
             float radius = Mathf.Max(0.9f, RimMandrakeExplosiveKnockbackSettings.gasBurstRadius);
-            var cfg = new KbConfig { force = 1f, ownCap = Math.Max(1, RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells), impactFactor = 0f, source = "gas" };
+            var cfg = new KbConfig { force = 1f, ownCap = Math.Max(1, RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells), impactFactor = 0f, source = "gas",
+                scaleOwnCap = false };
             int now = Find.TickManager.TicksGame;
             int n = 0;
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(c, radius, true))

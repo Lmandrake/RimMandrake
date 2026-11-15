@@ -4,7 +4,7 @@
 Stages BlindLane1.cs + the kernel under <agent storage>/scratch/ek_blind_lane1 (dotnet.exe cannot build from a WSL
 path), builds and runs it with the per-user Windows dotnet, writes one JSON row per line, prints the verdict counts.
 Exit 0 = every decided row PASS."""
-import argparse, glob, json, os, shutil, subprocess, sys
+import argparse, glob, json, os, re, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, *[".."] * 7))
 KERNEL = os.path.join(REPO, "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs")
@@ -23,7 +23,13 @@ def main():
     win = subprocess.run(["wslpath", "-w", stage], capture_output=True, text=True, check=True).stdout.strip()
     b = subprocess.run([dn, "build", win + "\\BlindLane1.csproj", "-c", "Release", "--nologo", "-v", "q"], capture_output=True, text=True)
     if b.returncode: sys.exit("BUILD FAILED\n" + b.stdout[-3000:] + b.stderr[-2000:])
-    r = subprocess.run([dn, win + "\\bin\\Release\\net8.0\\BlindLane1.dll"], capture_output=True, text=True)
+    # numbers the kernel does not hold, read from the shipped game-side files and handed over (WSLENV carries them to dotnet.exe)
+    src = os.environ.get("EK_SRC") or os.path.join(REPO, "src/RimMandrake/ExplosiveKnockback/Source")
+    flyer = open(os.path.join(src, "RM_ThingFlyer_Knockback.cs")).read(); mod = open(os.path.join(src, "RM_KnockbackMod.cs")).read()
+    mb = re.search(r"public const int MaxBounces = (\d+);", flyer); gw = re.search(r"public const float GoodsThrowWild = ([\d.]+)f;", mod)
+    env = dict(os.environ, EK_MAX_BOUNCES=mb.group(1) if mb else "-1", EK_GOODS_WILD=gw.group(1) if gw else "0")
+    env["WSLENV"] = ":".join(filter(None, [os.environ.get("WSLENV", ""), "EK_MAX_BOUNCES", "EK_GOODS_WILD"]))
+    r = subprocess.run([dn, win + "\\bin\\Release\\net8.0\\BlindLane1.dll"], capture_output=True, text=True, env=env)
     rows = [json.loads(l) for l in r.stdout.splitlines() if l.startswith("{")]
     with open(a.out, "w") as f:
         for row in rows: f.write(json.dumps(row) + "\n")

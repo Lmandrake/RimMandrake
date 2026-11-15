@@ -392,7 +392,7 @@ namespace RimMandrake.ExplosiveKnockback
                                     Spawn("Shell_HighExplosive", 1, o);
                                     Thing t = Spawn(defs[r], counts[r], o + new IntVec3(1, 0, 0));
                                     float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-                                    int cellsN = RM_KnockbackMath.ThrowCells(1f, radius, 1f, mass, k);
+                                    int cellsN = RM_KnockbackMath.WildCells(1f, radius, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild); // goods fly wild (blind cycle 1)
                                     IntVec3 land = o + new IntVec3(1 + Math.Max(1, cellsN), 0, 0);
                                     if (spots[ci] == "pit")
                                     {
@@ -836,7 +836,7 @@ namespace RimMandrake.ExplosiveKnockback
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
             Thing t = s.things[key];
             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.ThrowCells((s.starts[key] - s.o).LengthHorizontal, r, 1f, mass, k);
+            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((s.starts[key] - s.o).LengthHorizontal, r, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
         }
 
         // ── the scenes ───────────────────────────────────────────────────
@@ -1017,7 +1017,7 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             Thing t = sc.things[key];
                             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-                            int want = mass > k.lightMassLimit ? 0 : RM_KnockbackMath.ThrowCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, 1f, mass, k);
+                            int want = mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
                             sb.Append(Moved(sc, key, out Thing tt, out int cells)).Append(" mass=").Append(mass.ToString("0.#")).Append(" want=").Append(want).Append("; ");
                             ok &= tt.Spawned && cells == want;
                         }

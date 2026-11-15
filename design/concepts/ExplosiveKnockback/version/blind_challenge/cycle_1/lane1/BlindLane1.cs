@@ -385,14 +385,19 @@ static class BlindLane1
             Row("L1_rebound_keeps_70_and_runs_out", "goods_arc_spin_rebound", "fixed", ok, 10, det + "; every chain ends, total within n/(1-0.7)");
         }
         {
-            // the shipped slider runs goodsReboundKeepPercent 0..100; does the chain still run out at every point?
-            string bad = null;
+            // the shipped slider runs goodsReboundKeepPercent 0..100. Cycle-1 rescope (after lane 2 read the carrier): below 100
+            // the kernel's rounding ends the chain; at exactly 100 the kernel keeps every cell and the carrier's MaxBounces
+            // (RM_ThingFlyer_Knockback, read as text by the runner and passed in) ends it. The first version demanded the kernel
+            // alone end it at 100 and failed; that FAIL is lane 1's record, kept in the cycle summary.
+            string bad = null; int maxBounces = int.Parse(Environment.GetEnvironmentVariable("EK_MAX_BOUNCES") ?? "-1");
             for (float k = 0f; k <= 100f; k += 1f)
             {
-                int n = 6, hops = 0; while (n > 0 && hops < 1000) { n = RM_KnockbackMath.ReboundCells(n, k); hops++; }
-                if (hops >= 1000) { bad = $"keep {k}%: a 6-cell rebound chain never runs out (ReboundCells(6,{k}) = {RM_KnockbackMath.ReboundCells(6, k)})"; break; }
+                int n = 6, hops = 0, limit = k < 100f ? 1000 : maxBounces;
+                while (n > 0 && hops < 1000 && (limit < 0 || hops < limit)) { n = RM_KnockbackMath.ReboundCells(n, k); hops++; }
+                if (k < 100f && n > 0) { bad = $"keep {k}%: the kernel never ends a 6-cell chain"; break; }
+                if (k >= 100f && !(maxBounces > 0 && maxBounces <= 20)) { bad = $"keep 100%: the kernel keeps every cell and the carrier bound is {maxBounces}"; break; }
             }
-            Row("L1_sweep_rebound_keep_slider_chain_ends", "goods_arc_spin_rebound,settings_scale_and_switch", "sweep", bad == null, 101, bad ?? "every keep percent 0..100 ends the chain");
+            Row("L1_sweep_rebound_keep_slider_chain_ends", "goods_arc_spin_rebound,settings_scale_and_switch", "sweep", bad == null, 101, bad ?? $"keep 0..99%: the kernel's rounding ends every chain; 100%: the carrier's MaxBounces {maxBounces} ends it");
         }
         Property("L1_reflect_never_reenters_block", "goods_arc_spin_rebound", 50000, 67, ReflectInvariant);
         {
@@ -633,6 +638,54 @@ static class BlindLane1
             bool ok = g.worstMs == 100f && g.pausedRows == 1 && g.maxInAir == 69 && self && !within;
             var gNo = KbFrameStats.Summarize(new float[0], new bool[0], new int[0], 0, 0f); ok &= !KbFrameStats.WithinBudget(gNo, 50f, out _);
             Row("L1_frame_probe_reading", "frame_time_probe,barrage_frame_budget", "fixed", ok, 3, $"worst {g.worstMs} (paused 500 ms row ignored), slept 100 ms seen {self} ({w1}), 50 ms budget refused {!within} ({w2}); an empty run is not within budget");
+        }
+
+        // ===================== cycle-1 fixes, red first (lane2/faults.json) =====================
+        {
+            // RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED: goods fly about 1.6x a person (sheet), wild/kernel 1.3..2.0 (advisory)
+            var wildM = typeof(RM_KnockbackMath).GetMethod("WildCells");
+            float wild = float.Parse(Environment.GetEnvironmentVariable("EK_GOODS_WILD") ?? "0", System.Globalization.CultureInfo.InvariantCulture);
+            if (wildM == null || !(wild > 0f)) Row("L1_goods_fly_wild", "goods_arc_spin_rebound", "random", false, 0, $"no wild factor ships: RM_KnockbackMath.WildCells {(wildM == null ? "missing" : "present")}, setting goodsThrowWild {(wild > 0f ? wild.ToString() : "missing")}");
+            else
+            {
+                Func<float, float, float, float, KbSettings, float, int> W = (d, rad, f, m, s, w) => (int)wildM.Invoke(null, new object[] { d, rad, f, m, s, w });
+                var r = new Random(101); string bad = null; int n = 20000; double sumW = 0, sumK = 0;
+                for (int i = 0; i < n && bad == null; i++)
+                {
+                    float rad = (float)(1 + r.NextDouble() * 7), d = (float)(r.NextDouble() * rad), m = (float)(0.1 + r.NextDouble() * 74.9), f = (float)(r.NextDouble() * 2);
+                    int k = RM_KnockbackMath.ThrowCells(d, rad, f, m, S), w = W(d, rad, f, m, S, wild), w1 = W(d, rad, f, m, S, 1f);
+                    double raw = 4.0 * f * RM_KnockbackMath.Falloff(d, rad) * RM_KnockbackMath.MassScale(m, S);
+                    if (w1 != k) bad = $"wild 1 is not the kernel: {w1} vs {k}";
+                    else if (w < k) bad = $"a good flies less wild than its kernel: {w} < {k}";
+                    else if (w > MaxCells) bad = $"wild {w} over the maximum";
+                    else if (w < MaxCells && Math.Abs(w - raw * wild) > 0.5 + 1e-6 && raw * wild >= 0.5) bad = $"wild {w} is not round({raw * wild:0.###})";
+                    if (k >= 2 && w < MaxCells) { sumW += w; sumK += k; }
+                }
+                int corpse = W(1f, MortarRadius, 1f, 60f, S, wild), person = RM_KnockbackMath.ThrowCells(1f, MortarRadius, 1f, Colonist, S);
+                double ratio = sumK > 0 ? sumW / sumK : 0;
+                bool ok = bad == null && corpse > person && ratio >= 1.3 && ratio <= 2.0;
+                Row("L1_goods_fly_wild", "goods_arc_spin_rebound", "random", ok, n, bad ?? $"seed 101, wild {wild}: wild 1 = kernel; wild never below the kernel or over the maximum; wild = round(raw x {wild}) below the cap; uncapped wild/kernel ratio {ratio:0.###}; a 60 kg corpse beside a mortar {corpse} cells vs a colonist {person}");
+            }
+        }
+        {
+            // RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE: the gas burst's goods cap is exact at every weapon cap scale
+            var fld = typeof(KbConfig).GetField("scaleOwnCap");
+            if (fld == null) Row("L1_gas_goods_cap_ignores_weapon_scale", "gas_goes_clump_by_clump,settings_scale_and_switch", "sweep", false, 0, $"KbConfig has no scaleOwnCap: a gas burst's own cap 2 becomes {KbLookup.Apply(S, new KbConfig { ownCap = 2 }, MaxCells, 2f).maxCells} at cap scale 2 and {KbLookup.Apply(S, new KbConfig { ownCap = 2 }, MaxCells, 0.25f).maxCells} at 0.25");
+            else
+            {
+                string bad = null; int cases = 0;
+                for (float scale = 0.25f; scale <= 2.0001f && bad == null; scale += 0.25f)
+                    for (int gc = 1; gc <= 6 && bad == null; gc++)
+                    {
+                        cases++;
+                        var gasCfg = new KbConfig { ownCap = gc }; fld.SetValue(gasCfg, false);
+                        int got = KbLookup.Apply(S, gasCfg, MaxCells, scale).maxCells;
+                        int weapon = KbLookup.Apply(S, new KbConfig { ownCap = gc }, MaxCells, scale).maxCells;
+                        if (got != gc) bad = $"gas goods cells {gc} at cap scale {scale}: cap {got}";
+                        if (weapon != Math.Max(1, (int)Math.Round(gc * scale, MidpointRounding.AwayFromZero))) bad = $"a weapon's own cap {gc} no longer scales at {scale}: {weapon}";
+                    }
+                Row("L1_gas_goods_cap_ignores_weapon_scale", "gas_goes_clump_by_clump,settings_scale_and_switch", "sweep", bad == null, cases, bad ?? "gas goods cells 1..6 x cap scale 0.25..2: the gas cap is exact; a weapon's own cap still scales");
+            }
         }
 
         // ===================== bars the kernel cannot decide =====================

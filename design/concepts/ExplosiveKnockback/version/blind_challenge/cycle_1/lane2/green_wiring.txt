@@ -1,0 +1,12 @@
+ok   kernel has WildCells
+ok   Execute throws goods by WildCells with GoodsThrowWild
+ok   Execute keeps the plain kernel for pawns
+ok   Execute journals kernel and wild cells
+ok   ItemWillBeThrown decides by WildCells
+ok   a container is not thrown wild
+ok   GoodsThrowWild ships at 1.6
+ok   the proof's goods expectations fly wild
+ok   KbConfig has scaleOwnCap
+ok   Apply honours scaleOwnCap
+ok   GasBurst sets scaleOwnCap = false
+blind cycle 1 fix wiring: 11/11 PASS

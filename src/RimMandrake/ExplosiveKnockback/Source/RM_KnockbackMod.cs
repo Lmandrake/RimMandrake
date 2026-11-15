@@ -90,7 +90,11 @@ namespace RimMandrake.ExplosiveKnockback
         public static float goodsArcHeight = 1.2f;         // cells the arc's top is drawn above the ground line
         public static float goodsSpinDegPerTick = 18f;     // 18 = three turns a second
         public static bool goodsRebound = true;
-        public static float goodsReboundKeepPercent = 70f; // of the cells left at the hit; rounded down, so a chain ends
+        public static float goodsReboundKeepPercent = 70f; // of the cells left at the hit; rounded down, so below 100 a chain ends (at 100, MaxBounces)
+        /// <summary>Sheet leaf goods_arc_spin_rebound ("about 1.6 times as far as a person", owner card "C, wild"): a loose good
+        /// or corpse flies this many times its kernel throw, capped by the blast's maximum. A constant, not a Mod Setting: a
+        /// new setting would need sc_settings_sweep's locked action text to name it (blind cycle 1, written up for the Conductor).</summary>
+        public const float GoodsThrowWild = 1.6f;
         /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, hoppers,
         /// tables: anything that draws its contents) gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
         public static bool openStorageProtectsGoods = false;

@@ -1,0 +1,12 @@
+FAIL kernel has WildCells
+FAIL Execute throws goods by WildCells with GoodsThrowWild
+FAIL Execute keeps the plain kernel for pawns
+FAIL Execute journals kernel and wild cells
+FAIL ItemWillBeThrown decides by WildCells
+ok   a container is not thrown wild
+FAIL GoodsThrowWild ships at 1.6
+FAIL the proof's goods expectations fly wild
+FAIL KbConfig has scaleOwnCap
+FAIL Apply honours scaleOwnCap
+FAIL GasBurst sets scaleOwnCap = false
+blind cycle 1 fix wiring: 1/11 FAIL
