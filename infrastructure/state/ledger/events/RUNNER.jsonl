@@ -7296,3 +7296,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-15T04:33:04Z","tsn":1794717184248615046}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_EB2A","reason":"steward: lane unowned 31 min (BRAKED)","ts":"2026-11-15T04:43:45Z","tsn":1794717825771371464}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_EB2A","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261115T044111Z.log","ts":"2026-11-15T04:43:59Z","tsn":1794717839121364271}
+{"seat":"RUNNER","event":"note","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","text":"ops_watch: WORSE at 2026-11-15T04:54:37Z: 1 -> 2 filed wrap-up rows still standing, the rule's step is {\"factor\": 2}","ts":"2026-11-15T04:54:45Z","tsn":1794718485938440530}
