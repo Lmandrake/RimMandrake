@@ -125,7 +125,18 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
 - **Owner-only, his own words on an OWNER event:** the root's approval, `## his words`, a waiver's `scope`,
   `exam_waived`, a `floor.off` line (a floor line `disabled`), and changing a locked tree (record kinds `root`,
   `his_words`, `waiver`, `exam_waived`, `floor_disable`, `locked_change`). The Conductor cannot supply these, because
-  they are quotations, not decisions.
+  they are quotations, not decisions. An owner root cites an event of his about THIS concept (filed on its item, or
+  his words name the mod); any other `OWNER:<tsn>` is refused.
+- **The Evidence-for-Ask rule** (owner, 2026-11-15: "For ALL questions and choices from now on, Conductor must have
+  evidence why it does not select the obvious answer before it pauses for the human";
+  `RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`): the root's approval and the flagship pick (showcase
+  1) may instead be a recorded delegated call. The Conductor writes it with `--per-ruling
+  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <concept>: <the
+  answer and why nothing argues against it>"` (it reaches his daily digest). Record it as speaker `conductor`,
+  `delegated: "evidence-for-ask"`, source `CONDUCTOR:<tsn>`; a root adds `answers: <ask id>`, a flagship decision adds
+  `flagship: <showcase id>`. An ask whose `evidence_against` is filled still waits for him; write there the concrete
+  evidence against the obvious answer, and every ask you send carries it. The other owner-only kinds above and the
+  Lock stage's first-touch certification stay his.
 - Record his reply with `rimflow note <ITEM> ... --owner-said "<his words>"` first, then cite its `tsn`.
 
 ## His answers

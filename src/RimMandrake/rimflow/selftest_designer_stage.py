@@ -371,6 +371,7 @@ def main():
         refusals_scene_floor(repo, tree, good, flood, inter, expl, lines, floor)
         refusals_record_result(tmp, repo, tree)
         refusals_showcases(repo, root_src, good, flood, tree)
+        evidence_for_ask(repo, root_src, good, flood, tree)
         show = [{"id": "ladder_show", "scenes": ["climb"], "exercises": ["ladder"], "source": [root_src],
                  "decision": "d_flag"}]
         flag = {"id": "d_flag", "text": "judged first on the ladder climb", "source": [root_src], "speaker": "owner",
@@ -593,6 +594,102 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d: %s" % (len(FAILS), FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
+
+
+def evidence_for_ask(repo, root_src, good, flood, tree):
+    """RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME (owner 2026-11-15): a root, or the flagship pick, is
+    approvable by a recorded delegated Evidence-for-Ask call (per-ruling that item, why "delegated: evidence-for-ask:",
+    so it reaches his digest), stored as the Conductor's, never as his; an ask that carries evidence against the obvious
+    answer still waits for him. And an owner root must cite an event of his about THIS concept."""
+    foo = {"mod": "Foo", "item": ITEM, "aliases": []}
+
+    def dele(text, why="delegated: evidence-for-ask: Foo root a_root approved as written", ruling=None, item="EFA_X"):
+        repo.tsn += 1
+        with open(repo.owner, "a") as f:
+            f.write(json.dumps({"tsn": str(repo.tsn), "id": item, "seat": "OWNER", "text": text, "why": why,
+                                "perRuling": ruling or getattr(DS, "EVIDENCE_FOR_ASK", "x")}) + "\n")
+        return "CONDUCTOR:%d" % repo.tsn
+    cs = dele("Foo root a_root: approve as written; nothing on record argues against it")
+    other_ruling = dele("Foo root a_root: approve as written", ruling="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM")
+    no_efa_why = dele("Foo root a_root: approve as written", why="delegated: triage")
+    bar = dele("Bar root a_root: approve as written", why="delegated: evidence-for-ask: Bar root approved")
+    other = repo.said("the pit should be deep", item="SOME_OTHER_ITEM_ENTIRELY")
+    # not filed on ITEM: an OWNER line naming the concept's item is his new word on it and reopens the main flow
+    ruling_only = dele("Foo: the ladder lets a pawn climb out", why="per his ruling", ruling="SOME_RULING_ITEM",
+                       item="EFA_Y").replace("CONDUCTOR:", "OWNER:")
+    ev = CT.owner_events(repo.root)
+    droot = {"text": "climb out", "source": [cs], "speaker": "conductor", "delegated": "evidence-for-ask",
+             "answers": "a_root"}
+    base = {"root": droot, "inventory": [inv()], "asks": [ask(id="a_root", decision="root")]}
+
+    def rc(owner_ev=ev, concept=foo, **kw):
+        r = copy.deepcopy(base)
+        r.update(kw)
+        try:
+            return DS.record_errors(r, repo.root, owner_ev, concept=concept)
+        except TypeError as e:
+            return ["no concept parameter: %s" % e]
+    check("evidence-for-ask: a root approved by a recorded delegated Evidence-for-Ask call is accepted", rc() == [],
+          rc())
+    refuses("evidence-for-ask: an ask carrying evidence against the obvious answer still waits for him",
+            rc(asks=[ask(id="a_root", decision="root", evidence_against="his 11-10 card says the opposite")]),
+            "waits for him")
+    refuses("evidence-for-ask: a delegated root must name the ask it answers",
+            rc(root=dict(droot, answers="")), "names the ask it answers")
+    refuses("evidence-for-ask: a delegated root citing a ruling other than Evidence-for-Ask is refused",
+            rc(root=dict(droot, source=[other_ruling])), "Evidence-for-Ask")
+    refuses("evidence-for-ask: a delegated root whose event is not a delegated: evidence-for-ask call is refused",
+            rc(root=dict(droot, source=[no_efa_why])), "Evidence-for-Ask")
+    refuses("evidence-for-ask: a delegated call about another concept does not approve this root",
+            rc(root=dict(droot, source=[bar])), "Evidence-for-Ask")
+    refuses("evidence-for-ask: a delegated root is never stored as his quotation",
+            rc(root=dict(droot, quote=True)), "a quotation is his words only")
+    refuses("evidence-for-ask: a delegated root is refused blind (no OWNER ledger to check it against)",
+            rc(owner_ev=None), "Evidence-for-Ask")
+    refuses("evidence-for-ask: a conductor root that does not say it is delegated stays owner-only",
+            rc(root=dict(droot, delegated="")), "owner-only")
+    oroot = {"text": "climb out", "source": [root_src], "speaker": "owner"}
+    check("owner root: his event about this concept is accepted", rc(root=oroot) == [], rc(root=oroot))
+    refuses("owner root: an OWNER event about another concept does not approve this root (any OWNER:<tsn> passed)",
+            rc(root=dict(oroot, source=[other])), "not about Foo")
+    refuses("owner root: words found on another concept's event still do not approve this root",
+            rc(root=dict(oroot, source=[other], words="the pit should be deep")), "not about Foo")
+    refuses("owner root: a per-ruling event with none of his words is not his approval",
+            rc(root=dict(oroot, source=[ruling_only])), "none of his words")
+    refuses("owner root: an OWNER:<tsn> with no event is refused", rc(root=dict(oroot, source=["OWNER:99999999"])),
+            "finds no event")
+
+    # the flagship (showcase 1) pick, the same way
+    rules = {"max_overlap": 0.25, "min_new_after_first": 3}
+    units = "abcdefghij"
+    fcs = dele("Foo flagship: demonstration flag first; nothing on record argues against it",
+               why="delegated: evidence-for-ask: Foo flagship flag")
+    rec = {"inventory": [inv(id=u, what=u) for u in units],
+           "decisions": [{"id": "d_dflag", "text": "flag first", "source": [fcs], "speaker": "conductor",
+                          "delegated": "evidence-for-ask", "flagship": "flag"}]}
+    scenes = [dict(good, id=s) for s in ("s1", "s2", "s3")] + [flood]
+    s1 = {"id": "flag", "scenes": ["s1"], "exercises": ["a", "b", "c"], "source": [fcs], "decision": "d_dflag"}
+    s2 = {"id": "two", "scenes": ["s2"], "exercises": ["d", "e", "f"]}
+    s3 = {"id": "three", "scenes": ["s3"], "exercises": ["g", "h", "i"]}
+    rest = [{"capability": "j", "by": ["flood_ok"], "why": "one leaf check covers it"}]
+
+    ev = CT.owner_events(repo.root)
+
+    def sh(first=s1, rec_=rec, concept=foo):
+        try:
+            return DS.showcase_table({"scenes": scenes, "showcases": [first, s2, s3], "coverage_rest": rest}, rec_,
+                                     tree, ev, repo.root, rules, concept=concept)[1]
+        except TypeError as e:
+            return ["no concept parameter: %s" % e]
+    check("evidence-for-ask: a flagship picked by a recorded delegated Evidence-for-Ask call is accepted",
+          sh() == [], sh())
+    r2 = copy.deepcopy(rec)
+    r2["decisions"][0]["delegated"] = ""
+    refuses("evidence-for-ask: a conductor flagship decision that does not say it is delegated is refused", sh(rec_=r2),
+            "showcase 1 names no record.json decision")
+    refuses("evidence-for-ask: a flagship delegated call about another concept is refused",
+            sh(rec_={"inventory": rec["inventory"], "decisions": [dict(rec["decisions"][0], source=[bar])]},
+               first=dict(s1, source=[bar])), "Evidence-for-Ask")
 
 
 # ---- one refusal per branch: each mutates ONE field of a clean baseline and names the refusal it must draw
@@ -1059,7 +1156,7 @@ def refusals_record_result(tmp, repo, tree):
 
     def rs(at, outcome, rec=base, **kw):
         put(dr, "record.json", rec)
-        st = {"stage": at, "running": {"run": "r1"}, "item": "RES_ITEM", "must_cite": []}
+        st = {"stage": at, "running": {"run": "r1"}, "item": "TABLE_ITEM", "must_cite": []}   # the item his root words were filed on
         return DS.result_errors(dict({"run": "r1", "stage": at, "outcome": outcome}, **kw), dr, st, repo.root)
     refuses("result: a result for another stage is refused", rs(2, "done", stage=1),
             "result is for stage 1")

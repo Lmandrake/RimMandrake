@@ -71,6 +71,13 @@ PROOF = ("current", "stale", "missing", "exercised_unrecorded")
 SCOPE = ("approved", "not_opened", "opened_by_owner", "open_question", "later", "out")
 SPEAKERS = ("owner", "conductor", "agent")
 OWNER_ONLY = ("root", "exam_waived", "floor_disable", "locked_change", "waiver", "his_words")
+# The Evidence-for-Ask rule (owner, 2026-11-15, item below): the root and the flagship pick may instead be approved by a
+# recorded delegated call: an OWNER.jsonl event per-ruling that item, why "delegated: evidence-for-ask: ..." (so it
+# reaches his daily digest) and about this concept, cited as CONDUCTOR:<tsn> and stored speaker conductor, delegated
+# "evidence-for-ask", never as his. An ask carrying evidence_against still waits for him. The other OWNER_ONLY kinds
+# and the Lock stage's first-touch certification (concept_tree certify --owner-event) stay his.
+EVIDENCE_FOR_ASK = "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME"
+EFA_WHY = "delegated: evidence-for-ask"
 SOURCE = re.compile(r"(OWNER|CONDUCTOR):[0-9]+|ITEM:[A-Za-z0-9_]+|log\.md#L[0-9]+|[A-Za-z0-9_./-]+(:[0-9]+)?")
 SCENE_KINDS = ("acceptance", "exploration", "interaction")
 STAGED_BY = ("script", "hand", "mock")
@@ -295,8 +302,68 @@ def source_errors(src, where, repo, owner_ev):
     return errs
 
 
-def authority_errors(e, where, owner_ev):
-    """Who said it, and may they. Conductor text is never stored as his quotation; owner-only kinds need his words."""
+def concept_of(st, d=None):
+    """The concept a state names, for about_concept; None (no check) when there is no state."""
+    if not isinstance(st, dict):
+        return None
+    return {"mod": st.get("mod") or (os.path.basename(os.path.abspath(d)) if d else None), "item": st.get("item"),
+            "aliases": list(st.get("aliases") or [])}
+
+
+def about_concept(ev, concept):
+    """An OWNER event is about this concept: filed on its item, or its words name the mod or an alias."""
+    if not concept:
+        return True
+    if CT.txt(concept.get("item")) and ev.get("id") == concept["item"]:
+        return True
+    said = " ".join(str(ev.get(k) or "") for k in ("ownerSaid", "byCard", "text", "why"))
+    return any(CT.in_words(n, said) for n in [concept.get("mod")] + list(concept.get("aliases") or []) if CT.txt(n))
+
+
+def efa_problem(owner_ev, srcs, concept):
+    """Why no CONDUCTOR:<tsn> in srcs is a recorded Evidence-for-Ask call about this concept, or None."""
+    if owner_ev is None:
+        return "an Evidence-for-Ask delegation cannot be checked blind (OWNER.jsonl unread)"
+    for s in [s for s in srcs if isinstance(s, str) and s.startswith("CONDUCTOR:")]:
+        ev = owner_ev.get(s.split(":", 1)[1])
+        if (isinstance(ev, dict) and ev.get("perRuling") == EVIDENCE_FOR_ASK
+                and str(ev.get("why") or "").startswith(EFA_WHY) and about_concept(ev, concept)):
+            return None
+    return ("cites no recorded Evidence-for-Ask call about this concept: a CONDUCTOR:<tsn> whose OWNER.jsonl event is "
+            "per-ruling %s, why \"%s: ...\", naming %s" % (EVIDENCE_FOR_ASK, EFA_WHY,
+                                                           (concept or {}).get("mod") or "the concept"))
+
+
+def ask_waits(rec, ans):
+    """Why the ask `ans` cannot be answered by delegation, or None."""
+    a = next((a for a in (rec or {}).get("asks") or [] if isinstance(a, dict) and a.get("id") == ans), None)
+    if a is None:
+        return "names the ask it answers (answers: an ask id in record.asks)"
+    if a.get("evidence_against"):
+        return "ask %s carries evidence against the obvious answer (evidence_against), so it waits for him" % ans
+    return None
+
+
+def owner_root_errors(e, where, owner_ev, concept):
+    """An owner root cites an event of his (ownerSaid or byCard) about THIS concept, not any OWNER:<tsn>."""
+    srcs = e.get("source") if isinstance(e.get("source"), list) else [e.get("source")]
+    evs = [owner_ev.get(s[6:]) for s in srcs if isinstance(s, str) and s.startswith("OWNER:")]
+    evs = [x for x in evs if isinstance(x, dict)]     # an absent event is refused by source_errors
+    if not evs:
+        return []
+    his = [x for x in evs if x.get("ownerSaid") or x.get("byCard")]
+    if not his:
+        return ["%s: its OWNER event carries none of his words (no ownerSaid or byCard); a per-ruling event is the "
+                "Conductor's: record it as a delegated Evidence-for-Ask root instead" % where]
+    if not any(about_concept(x, concept) for x in his):
+        return ["%s: its OWNER event is not about %s (not filed on %s, and naming neither it nor an alias)" % (
+            where, concept.get("mod"), concept.get("item"))]
+    return []
+
+
+def authority_errors(e, where, owner_ev, concept=None, rec=None):
+    """Who said it, and may they. Conductor text is never stored as his quotation; owner-only kinds need his words,
+    except a root approved by a recorded Evidence-for-Ask call."""
     errs = []
     sp = e.get("speaker", "agent")
     if sp not in SPEAKERS:
@@ -308,18 +375,28 @@ def authority_errors(e, where, owner_ev):
     if e.get("quote") and sp != "owner":
         errs.append("%s: a quotation is his words only; %s text is never quoted as his" % (where, sp))
     if e.get("kind") in OWNER_ONLY:
-        if sp != "owner" or not owner_src:
+        if e["kind"] == "root" and sp == "conductor" and e.get("delegated") == "evidence-for-ask":
+            why = efa_problem(owner_ev, srcs, concept)
+            if why:
+                errs.append("%s: %s" % (where, why))
+            why = ask_waits(rec, e.get("answers"))
+            if why:
+                errs.append("%s: a delegated root %s" % (where, why))
+        elif sp != "owner" or not owner_src:
             errs.append("%s: %s is owner-only (his words on an OWNER event), not %s; a Conductor instruction "
                         "(per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM) carries decisions, but this is a "
                         "quotation" % (where, e["kind"], sp))
-        elif owner_ev is not None and e.get("words"):
-            why = CT.his_words_problem(owner_ev, owner_src[0], e["words"])
-            if why:
-                errs.append("%s: %s" % (where, why))
+        else:
+            if owner_ev is not None and e.get("words"):
+                why = CT.his_words_problem(owner_ev, owner_src[0], e["words"])
+                if why:
+                    errs.append("%s: %s" % (where, why))
+            if e["kind"] == "root" and owner_ev is not None:
+                errs += owner_root_errors(e, where, owner_ev, concept)
     return errs
 
 
-def record_errors(rec, repo=REPO, owner_ev=None):
+def record_errors(rec, repo=REPO, owner_ev=None, concept=None):
     if not isinstance(rec, dict):
         return ["record.json is missing or not an object"]
     errs = []
@@ -348,7 +425,7 @@ def record_errors(rec, repo=REPO, owner_ev=None):
             errs.append("root: needs text")
         else:
             errs += source_errors(root.get("source"), "root", repo, owner_ev)
-            errs += authority_errors(dict(root, kind="root"), "root", owner_ev)
+            errs += authority_errors(dict(root, kind="root"), "root", owner_ev, concept, rec)
     return errs
 
 
@@ -647,7 +724,7 @@ def out_units(rec):
             if isinstance(e, dict) and e.get("scope") == "out"}
 
 
-def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
+def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None, concept=None):
     """-> (rows, errs). One row per showcase in order: new-coverage count, overlap share and the overlapped units;
     errs = why the showcase set cannot be accepted. The program checks what is countable (coverage, overlap, order,
     the stop criterion); whether a showcase's functionality is 'very different' in play is the reviewer's to read."""
@@ -713,16 +790,28 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
             src = [x for x in lst(s.get("source")) if isinstance(x, str) and x.startswith("OWNER:")]
             dec = decisions.get(CT.txt(s.get("decision"))) or {}
             dsrc = [x for x in lst(dec.get("source")) if isinstance(x, str)]
-            if not src:
-                errs.append("%s: showcase 1 is the flagship he picked; source needs his OWNER:<tsn>" % w)
+            csrc = [x for x in lst(s.get("source")) if isinstance(x, str) and x.startswith("CONDUCTOR:")]
+            if dec.get("speaker") == "conductor" and dec.get("delegated") == "evidence-for-ask" and csrc:
+                # the Evidence-for-Ask rule: his pick by a recorded delegated call, stored as the Conductor's
+                why = efa_problem(owner_ev, csrc, concept) or (
+                    ask_waits(rec, dec.get("answers")) if dec.get("answers") else None)
+                if why:
+                    errs.append("%s: showcase 1 %s" % (w, why))
+                if not set(csrc) & set(dsrc) or dec.get("flagship") != s["id"]:
+                    errs.append("%s: showcase 1 names no record.json decision (decision) of the delegated pick: "
+                                "flagship: \"%s\" citing the same CONDUCTOR event" % (w, s["id"]))
             else:
-                errs += source_errors(src, w, repo, owner_ev)
-            # binds his words to THIS showcase: the record.json decision (speaker owner) whose `flagship` field
-            # names this showcase id and cites the same event. A root approval, or any owner decision that does
-            # not name this showcase as his flagship, is not his pick.
-            if dec.get("speaker") != "owner" or not set(src) & set(dsrc) or dec.get("flagship") != s["id"]:
-                errs.append("%s: showcase 1 names no record.json decision (decision) of his picking it: an owner "
-                            "decision with flagship: \"%s\" that cites the same OWNER event" % (w, s["id"]))
+                if not src:
+                    errs.append("%s: showcase 1 is the flagship he picked; source needs his OWNER:<tsn>, or a "
+                                "delegated Evidence-for-Ask CONDUCTOR:<tsn>" % w)
+                else:
+                    errs += source_errors(src, w, repo, owner_ev)
+                # binds his words to THIS showcase: the record.json decision (speaker owner) whose `flagship` field
+                # names this showcase id and cites the same event. A root approval, or any owner decision that does
+                # not name this showcase as his flagship, is not his pick.
+                if dec.get("speaker") != "owner" or not set(src) & set(dsrc) or dec.get("flagship") != s["id"]:
+                    errs.append("%s: showcase 1 names no record.json decision (decision) of his picking it: an owner "
+                                "decision with flagship: \"%s\" that cites the same OWNER event" % (w, s["id"]))
         else:
             if len(new) < min_new:
                 errs.append("%s: newly exercises %d capabilit%s, under min_new_after_first %d; those belong in "
@@ -773,10 +862,10 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
     return rows, errs
 
 
-def showcase_check(sc, rec, tree, owner_ev, repo=REPO, rules=None):
+def showcase_check(sc, rec, tree, owner_ev, repo=REPO, rules=None, concept=None):
     """showcase_table's errs; an unreadable rules file is a refusal reason, never a pass."""
     try:
-        return showcase_table(sc, rec, tree, owner_ev, repo, rules)[1]
+        return showcase_table(sc, rec, tree, owner_ev, repo, rules, concept)[1]
     except Refused as e:
         return [str(e)]
 
@@ -1146,7 +1235,7 @@ def result_errors(res, d, st, repo=REPO):
         if stage > 2 and to < 2 and res.get("question"):
             return ["an owner question returns to stage 2, not %d" % to]
         return quick_look_errors(res, rec) if CT.txt(res.get("question")) else []
-    errs = record_errors(rec, repo, owner_ev)
+    errs = record_errors(rec, repo, owner_ev, concept_of(st, d))
     if out == "waiting_owner":
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
@@ -1190,7 +1279,7 @@ def result_errors(res, d, st, repo=REPO):
         tree = CT.load(d) if not lint_errs else None
         errs += scene_errors(read_json(os.path.join(d, "scenes.json")), tree, repo)
         errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
-                                                              owner_ev, repo)]
+                                                              owner_ev, repo, concept=concept_of(st, d))]
         errs += floor_errors(read_json(os.path.join(d, "floor.json")), tree, owner_ev=owner_ev)
     elif stage == 4:
         errs += exam_errors(read_json(os.path.join(d, "exam.json")), d, st, repo)
@@ -1208,7 +1297,8 @@ def result_errors(res, d, st, repo=REPO):
         # the showcase set names scenes, so the scenes it leans on must still meet the contract at the lock (a scene
         # added after stage 3 is checked here, not trusted by its id)
         errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, repo)]
-        errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, repo)]
+        errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, repo,
+                                                              concept=concept_of(st, d))]
     return errs
 
 
