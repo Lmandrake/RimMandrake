@@ -1,0 +1,6 @@
+sha 7c910364ce62; proof build (RmProofs=true) compiled 0 errors, RaiseLockerMass and ClosedContainers in MethodDef table; release DLL rebuilt by winbuild
+PASS          0.1s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py
+PASS          0.1s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py
+
+PASS 3/3  FAIL 0/3  UNMEASURED 0/3  CRASH 0/3  SKIPPED 0/3  (wall 3.2s) — contained in rm-harness.slice (max 24G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
