@@ -156,6 +156,7 @@ def read_json(root, mod, p):
 def write_text(root, mod, p, text):
     path = os.path.join(mod_dir(root, mod), p)
     tmp = path + ".tmp"
+    os.makedirs(os.path.dirname(path), exist_ok=True)   # a concept seeded before its Lock has no version/ yet
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(text)
     os.replace(tmp, path)

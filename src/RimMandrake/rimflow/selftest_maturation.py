@@ -146,6 +146,16 @@ def main():
         snap = read(root, "ExplosiveKnockback", M.RECORD)
         rec, made = M.seed_mod(root, "ExplosiveKnockback", live=False)
         ok(not made and read(root, "ExplosiveKnockback", M.RECORD) == snap, "a re-seed changes nothing")
+        # a concept still at the Designer has a journal but no version/ folder (Graffiti, 2026-11-15: seed crashed)
+        jd = os.path.join(root, "design", "concepts", "JournalOnlyMod")
+        os.makedirs(jd)
+        with open(os.path.join(jd, "journal.md"), "w", encoding="utf-8") as f:
+            f.write("# J\n\n## The mod as it stands\n\n- **Stage now:** Stage 1, the Designer.\n")
+        try:
+            rec, made = M.seed_mod(root, "JournalOnlyMod", live=False)
+            ok(made and rec["stage"] == "designer", "seed a journal-only concept (no version/): lands at the Designer")
+        except OSError as e:
+            ok(False, "seed a journal-only concept (no version/) crashed: %s" % e)
         dspend = [s for s in M.load(root, "ExplosiveKnockback")["spend"] if s["stage"] == "designer"]
         ok(dspend and dspend[0]["tokens"] == 97196907, "seed takes the Designer's tokens from VERSION.json")
 
