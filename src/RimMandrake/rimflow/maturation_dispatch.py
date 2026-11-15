@@ -244,6 +244,30 @@ def account_gate(sched_path=None, dstate=None):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
+def progressed(w, ids, fp_now):
+    """-> (progress?, why). RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: progress is a refused bar resolved, by ids, not
+    a fall in the count: no id may appear that was not refused before (a rename), and a resolved bar whose checks are
+    unchanged is a flag flipped. A watch with no ids (an older state) falls back to the count."""
+    was, before = w.get("refused"), w.get("ids")
+    n = len(ids) if isinstance(ids, list) else None
+    if not isinstance(before, list) or not isinstance(ids, list):
+        ok = isinstance(was, int) and isinstance(n, int) and n < was
+        return ok, "the refused bars went %s -> %s%s" % (was, n, "" if ok else ", not down")
+    new = sorted(set(ids) - set(before))
+    gone = sorted(set(before) - set(ids))
+    if new:
+        return False, "refused bar(s) %s appeared that were not refused before (a rename is not progress)" % ", ".join(
+            new[:6])
+    if not gone:
+        return False, "the refused bars went %s -> %s, none resolved" % (was, n)
+    fp0 = w.get("fp") or {}
+    flipped = [b for b in gone if fp0.get(b) and (fp_now or {}).get(b) == fp0.get(b)]
+    if flipped and len(flipped) == len(gone):
+        return False, "bar(s) %s turned runnable with their checks unchanged (a flag flipped, not a check built)" % (
+            ", ".join(flipped[:6]))
+    return True, "refused bars resolved: %s" % ", ".join(gone[:6])
+
+
 def occupancy(facts):
     """-> the live runs on advancing mods, or None when any mod's live runs cannot be read: an unknown occupancy is
     never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch)."""
@@ -316,7 +340,8 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
         ids = M.refused_ids(f) if f.get("stage") == "offline_build" else None
         n = len(ids) if ids is not None else None
         row = {"mod": mod, "stage": f.get("stage", UNM), "owed": f.get("owed"), "refused": n,
-               "refused_ids": ids, "live": f.get("live_units"), "hand_steps": f.get("hand_steps")}
+               "refused_ids": ids, "live": f.get("live_units"), "hand_steps": f.get("hand_steps"),
+               "bar_fp": f.get("bar_fp")}
         rows.append(row)
 
         def put(decision, why, need=None):
@@ -354,7 +379,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
         if live:
             w = s.get("watch")
             if not w or w.get("unit") not in live:
-                s["watch"] = {"unit": live[0], "refused": n, "ids": ids, "at": now,
+                s["watch"] = {"unit": live[0], "refused": n, "ids": ids, "at": now, "fp": f.get("bar_fp"),
                               "ours": any(x.get("unit") == live[0] for x in s.get("launches") or [])}
             s.pop("owed_since", None)
             put("live", "%s is live on it (refused bars %s when first seen)" % (", ".join(live), s["watch"]["refused"]))
@@ -371,9 +396,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
         if w:       # a run ended since the last tick: did the refused count fall?
             was = w.get("refused")
             s["last_run"] = {"unit": w.get("unit"), "refused_before": was, "refused_after": n, "ended_seen": now}
-            if not (isinstance(was, int) and isinstance(n, int) and n < was):
-                s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and the refused bars went %s -> %s, "
-                                "not down" % (w.get("unit"), was, n)}
+            prog, pwhy = progressed(w, ids, f.get("bar_fp"))
+            if not prog:
+                s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and %s" % (w.get("unit"), pwhy)}
         owed = f.get("owed")
         if owed in OWED:
             if not s.get("owed_since"):
@@ -399,7 +424,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
             put("blind", "the test table cannot be read", "the test table cannot be read; no builder launches on it")
             continue
         stop = s.get("stopped")
-        if stop and stop.get("ids") == ids:
+        # a stop lifts only when refused bars were resolved (the set shrank); a renamed id is not a resolution
+        if stop and not (isinstance(ids, list) and isinstance(stop.get("ids"), list)
+                         and set(ids) < set(stop["ids"])):
             put("stopped", stop.get("why"), "stopped, %s; never a second automatic try at the same refusals "
                 "(`maturation_dispatch.py clear %s --why ...` lifts it)" % (stop.get("why"), mod))
             continue
@@ -765,7 +792,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "refused": row["refused"],
                                                  "ids": row["refused_ids"], "cap": cfg["cap_usd"],
                                                  "stage": "offline_build"})
-            s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True}
+            s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True,
+                          "fp": row.get("bar_fp")}
             s.pop("owed_since", None)
             row.update(decision="launched", unit=unit, item=item, why=text)
             known.add(item) if isinstance(known, set) else None

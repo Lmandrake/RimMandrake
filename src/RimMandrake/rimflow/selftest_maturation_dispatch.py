@@ -197,14 +197,33 @@ def main():
         tp = os.path.join(root, "design", "concepts", "FlowWorks", "version", "test_table.json")
         saved = open(tp).read()
         tt = json.loads(saved)
+        # RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: first a flag flipped with no check changed: not progress, a stop
         for b in tt["bars"]:
             if b.get("every_decider_runnable_today") is False:
                 b["every_decider_runnable_today"] = True
+                flip = b
                 break
         with open(tp, "w") as f:
             json.dump(tt, f)
         world["live"] = {}
+        st_path = os.path.join(sd, "state.json")
+        st_keep = open(st_path).read()
         rd = tick(at=1200)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "stopped" and "flag flipped" in rd["mods"]["FlowWorks"]["why"]
+           and len(launches()) == 1, "a refused bar turned runnable with its checks unchanged is not progress (%s)"
+           % rd["mods"]["FlowWorks"]["why"][:90])
+        with open(st_path, "w") as f:
+            f.write(st_keep)
+        pr = MD.progressed({"ids": ["b1", "b2"], "refused": 2}, ["b1", "b9"], {})
+        ok(pr[0] is False and "rename" in pr[1], "a renamed refused bar (b2 -> b9) is not progress (%s)" % pr[1])
+        # then the check is built: the bar's decider gains a command, so its fingerprint moves
+        for t in flip.get("decides") or []:
+            tt["tests"].setdefault(t, {})
+            if isinstance(tt["tests"][t], dict):
+                tt["tests"][t]["command"] = "python3 selftest_built_%s.py" % t
+        with open(tp, "w") as f:
+            json.dump(tt, f)
+        rd = tick(at=1260)
         ok(len(launches()) == 2 and rd["mods"]["FlowWorks"]["decision"] == "launched"
            and filed[-1][0] == "RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SIX_BARS_LEFT",
            "the run took the refused bars 7 -> 6: the next builder starts (%s)" % rd["mods"]["FlowWorks"]["decision"])

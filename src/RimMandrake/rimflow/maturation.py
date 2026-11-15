@@ -318,14 +318,34 @@ def add_intervention(text, line):
 
 # ---- the exit tests --------------------------------------------------------------------------------------------------
 
-def _table_runnable(tt):
+def _table_runnable(tt, v=None):
     bars = tt.get("bars") if isinstance(tt, dict) else None
     if not isinstance(bars, list) or not bars:
         return None, "the table has no bars list"
+    # RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS (the count half): the table holds the locked version's bars, each once
+    ids = [b.get("id") for b in bars if isinstance(b, dict)]
+    if len(set(ids)) != len(ids) or None in ids:
+        return None, "the table's bar ids are not unique (or one has none)"
+    # VERSION.json's bars_total is not a lock record (the selftest fixtures' history has it differ from the table), so
+    # the count is not compared; deriving the table from the locked bars waits on a locked bar list (left open)
     flags = [b.get("every_decider_runnable_today") for b in bars if isinstance(b, dict)]
     if len(flags) != len(bars) or not all(isinstance(f, bool) for f in flags):
         return None, "a bar lacks a true/false every_decider_runnable_today"
     return [b.get("id", "?") for b in bars if b.get("every_decider_runnable_today") is not True], len(bars)
+
+
+def bar_fingerprints(tt):
+    """-> {bar id: hash of its deciders' test entries}: a refused bar that turns runnable with its checks unchanged is a
+    flag flipped, not progress (RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS)."""
+    import hashlib
+    tests = (tt or {}).get("tests") or {} if isinstance(tt, dict) else {}
+    out = {}
+    for b in (tt or {}).get("bars") or [] if isinstance(tt, dict) else []:
+        if isinstance(b, dict) and b.get("id"):
+            ds = sorted(str(x) for x in (b.get("decides") or []))
+            out[b["id"]] = hashlib.sha256(json.dumps([ds, [tests.get(x) for x in ds]], sort_keys=True,
+                                                     default=str).encode()).hexdigest()[:16]
+    return out
 
 
 def _walk_deciders(tt, bar_ids):
@@ -491,7 +511,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
         elif cur == "offline_build":
             tt, terr = read_json(root, mod, "version/test_table.json")
             tref = rel(mod, "version/test_table.json")
-            res = _table_runnable(tt) if tt is not None else (None, terr)
+            res = _table_runnable(tt, v) if tt is not None else (None, terr)
             bad, n = res
             walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
             if isinstance(bad, list):
@@ -938,7 +958,9 @@ def build_facts(root, mod):
     res = evaluate(root, mod, "blind_challenge", by="maturation.py brief", why="what the offline build owes")
     refs = res["verdict"]["refusals"]
     tt, _ = read_json(root, mod, "version/test_table.json")
-    bad, n = _table_runnable(tt) if tt is not None else (None, None)
+    v, _ = read_json(root, mod, "version/VERSION.json")
+    bad, n = _table_runnable(tt, v) if tt is not None else (None, None)
+    out["bar_fp"] = bar_fingerprints(tt)
     walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
     out.update({
         "refused_bars": [b for b in bad if b not in walk] if isinstance(bad, list) else UNM,
