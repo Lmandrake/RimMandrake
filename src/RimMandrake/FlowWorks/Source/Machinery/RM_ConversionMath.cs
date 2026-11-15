@@ -72,10 +72,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			return -1;
 		}
 
-		/// <summary>Accrued budget is never held above one batch or one rare tick's budget, whichever is larger.</summary>
+		/// <summary>Accrued budget is never held above one batch, or, when one rare tick's income pays for more than a batch, above
+		/// that income plus one batch. CONVERTER_RATE_FIX_CAP_EATS_REMAINDER (blind cycle 1): the old cap of one tick's income
+		/// dropped the part-batch remainder every tick once income beat a batch (up to 40 % of the rate on the shipped slider);
+		/// the extra batch of headroom carries it, so an idle machine still bursts at most one tick's income plus one batch.</summary>
 		public static float CapAccrued(float accrued, int inputUnits, float perTick)
 		{
-			return Math.Min(accrued, Math.Max(inputUnits, perTick));
+			return Math.Min(accrued, perTick > inputUnits ? perTick + inputUnits : inputUnits);
 		}
 
 		/// <summary>FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE: the part of this tick's income the cap clipped off, at most one rare tick's

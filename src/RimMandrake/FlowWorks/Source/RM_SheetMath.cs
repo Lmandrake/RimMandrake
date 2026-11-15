@@ -484,6 +484,11 @@ namespace RimMandrake.FlowWorks
 						f = f * p.DoorLeakPermille / 1000;
 					}
 					if (f < 1) f = 1; // no dead zone (§6 item 13): f ≤ diff/2 always, so no overshoot
+					// SHEET_LEVEL_FIX_DRY_ISLAND_UNDER_POOL (blind cycle 1): a dry square whose ground sits well under the donor's
+					// surface (diff/2 at least the dry-square minimum) is wetted with that minimum; diff/5 alone left a square 0.6 cm
+					// up inside a 3 cm pool dry for good. Still no overshoot: f ≤ diff/2.
+					int minNewHere = w.Kinds[i] == Kind.Door || w.Kinds[j] == Kind.Door ? 1 : p.MinReceiveDl;
+					if (s.Dl[j] == 0 && f < minNewHere && diff / 2 >= minNewHere) f = minNewHere;
 					f4[d] = (int)Math.Min(f, int.MaxValue);
 					sum += f4[d];
 				}

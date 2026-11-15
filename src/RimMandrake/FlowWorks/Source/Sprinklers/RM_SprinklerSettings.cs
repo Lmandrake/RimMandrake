@@ -59,7 +59,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 				+ "network (the pump is the pressure). Walls stop the spray. Off: built heads sit idle and draw nothing.");
 			list.Label("Water per square per hour: " + sprinklerLitresPerCellHour.ToString("0.0#") + " L  (ruled 0.5)");
 			sprinklerLitresPerCellHour = Mathf.Round(list.Slider(sprinklerLitresPerCellHour, 0.1f, 5f) * 20f) / 20f;
-			list.Label("Head radius: " + sprinklerNativeRadius.ToString("0.0") + " (default 2.9: about 29 squares watered)");
+			list.Label("Head radius: " + sprinklerNativeRadius.ToString("0.0") + " (default 2.9: about 25 squares watered)");
 			int ri = System.Array.IndexOf(RadiusChoices, sprinklerNativeRadius);
 			if (ri < 0) ri = 1;
 			ri = Mathf.RoundToInt(list.Slider(ri, 0f, RadiusChoices.Length - 1));

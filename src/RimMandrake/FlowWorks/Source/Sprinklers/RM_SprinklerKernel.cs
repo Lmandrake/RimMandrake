@@ -42,7 +42,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
         /// <summary>OQ-S1 RULED: 0.5 L per cell per hour (the settings default).</summary>
         public const float RuledLitresPerCellHour = 0.5f;
 
-        /// <summary>§2 PROPOSED: the native head's radius (29 cells incl. its own).</summary>
+        /// <summary>§2 PROPOSED: the native head's radius (25 cells incl. its own: GenRadial counts distance &lt;= 2.9).</summary>
         public const float NativeRadius = 2.9f;
 
         /// <summary>The tank units one pulse costs: cells x litres x units-per-litre, rounded up (never free).</summary>
