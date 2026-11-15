@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-14T21:28:26-08:00",
+  "since": "2026-11-15T00:34:12-08:00",
   "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 1,
-    "total": 1
+    "visit": 2,
+    "total": 2
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -36,6 +36,20 @@
         "every_bar_has_a_check_that_runs",
         "walk_bars_confirmed",
         "table_version",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T00:34:12-08:00",
+      "by": "CONDUCTOR",
+      "why": "Cycle 1 of the blind challenge did not meet the exit (inv_proof_scenes red, four notes for the Conductor); cycle 2 starts with the Conductor's rulings in its brief",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
         "fourth_cycle"
       ]
     }
