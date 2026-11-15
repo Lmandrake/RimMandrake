@@ -54,7 +54,7 @@ Escalation (section 6.4), each at most once per incident:
              the still-open item of an earlier incident (never a duplicate); refused, with the reason on the incident,
              when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
-  T+30 min   `rimflow raise` it: first in relentless pool_order and `rimflow next --seat BENCH`, a line in the phone brief
+  T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH`, a line in the phone brief
   T+120 min  with no claim: tell Operations, never him (STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP: unsticking a lane is no
              delegation_policy s2 call, and its OWNER needs=owner item went back to agents): one told row, metric
              STEVE_RUNG_KIND, routed by alarm_routes.json steve.* to an Operations incident whose chain climbs to the

@@ -739,7 +739,7 @@ _res = OW.real_filer(calls[0] if calls else [], _cf)   # an empty `calls` alread
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
 check("fixed id: the filer records `live <same id> --result broken` and spawns nothing",
       _res.get(FIX) is None and len(_seen) == 2 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
-# T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): a reopened alarm is raised, so relentless pool_order takes it first
+# T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): a reopened alarm is raised, so the BENCH queue offers it first
 check("T2: a reopened alarm is raised after its `live`", _seen[1:] and _seen[1][:2] == ["raise", FIX], _seen)
 (TMP / "stub.log").write_text("")
 _res = OW.real_filer([{"name": "OPS_T2_NEW_X", "title": "t", "aid": "a"}], _cf)

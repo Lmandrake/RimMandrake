@@ -485,7 +485,7 @@ def live_filer(todo, conf):
                                       "--why", "live sweep (deterministic, no AI): " + t["item"])
             if rc == 0:
                 rc, out = ing.rimflow("live", t["item"], "--result", t["result"], "--detail", t["detail"])
-            if rc == 0 and t["result"] == "broken":    # a broken promise is first in relentless pool_order
+            if rc == 0 and t["result"] == "broken":    # a broken promise is raised, first in the BENCH queue
                 rrc, rout = ing.rimflow("raise", t["item"], "--reason", OW.RAISE_REASON)
                 if rrc != 0:
                     res.setdefault("_raise", {})[t["item"]] = rout

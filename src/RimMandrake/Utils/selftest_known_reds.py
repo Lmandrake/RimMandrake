@@ -236,7 +236,7 @@ check("BUILD COP: a listed red files nothing", not any("selftest_a.py" in a["tit
 import pulse_core as PC  # noqa: E402  (ops_watch put pulse/ on the path)
 check("BUILD COP: the minted name passes the ledger's name rules", f and not PC._model().mint_problems(f[0]["name"], set()), f)
 item, item_key = f[0]["name"], f[0]["key"]
-check("BUILD COP: the real filer raises every item it files (first in relentless pool_order)",
+check("BUILD COP: the real filer raises every item it files (first in the BENCH queue)",
       'ing.rimflow("raise", a["name"]' in Path(OW.__file__).read_text(encoding="utf-8"))
 known |= {item}
 calls.clear()

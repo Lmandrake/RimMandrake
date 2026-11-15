@@ -4156,7 +4156,7 @@ def alarm_receiver_problem(conf):
         return "receiver check failed: %s: %s" % (type(e).__name__, e)
 
 
-RAISE_REASON = "alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)"
+RAISE_REASON = "alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)"
 
 
 def expedite_of(tg, pt):
@@ -4220,8 +4220,8 @@ def beat_deadline():
 def real_filer(todo, conf):
     """todo: [{"name", "title"}] -> {name: None | error}, plus "_publish". Spawns as RUNNER from the dispatch clone
     under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both). Nothing is filed for a
-    receiver nobody picks up (alarm_receiver_problem), and every alarm it files or reopens is raised, so relentless
-    pool_order takes it before unraised work."""
+    receiver nobody picks up (alarm_receiver_problem), and every alarm it files or reopens is raised (first in the
+    BENCH queue); build-cop red items are then launched on by rimflow/red_dispatch.py."""
     import fcntl
     path = Path(conf["clone"]) / "src/RimMandrake/Utils/testq/ingest.py"
     spec = importlib.util.spec_from_file_location("ops_watch_ingest", str(path))

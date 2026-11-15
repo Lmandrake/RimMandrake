@@ -162,7 +162,8 @@ def uncovered(v):
 
 
 # ---- BUILD COP (RED_COP_BUILD_NO_ORPHAN_REDS; design/RimMandrake/build_system_practices_2026-11-03.md top-5 #4):
-# every red no entry parks gets an item, one per root cause, raised to the top of relentless' pool, with a deadline;
+# every red no entry parks gets an item, one per root cause, raised, with a deadline, and rimflow/red_dispatch.py hands
+# it to one capped detached fixer (one attempt, then a Needs Conductor line);
 # a red still red past its deadline alarms, item or no item. The item makes a red owned, never fixed.
 #   GROUPS   the night's full output (Transient/selftests_nightly.last) gives each red its first error line; reds whose
 #            normalised line is the same (one root cause, e.g. a full disk) are one group. A group is the ops_watch

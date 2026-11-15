@@ -1,0 +1,19 @@
+# The build cop's fix step (rimflow/red_dispatch.py; item RIMMANDRAKE_ROUTE_NIGHTLY_REDS_RAISED_INTO_A_RETIRED_POOL): one
+# capped detached fixer per OPEN nightly-red item (SELFTEST_FIX_* / NIGHTLY_COP_FIX_*), at most 2 live, one attempt, then a
+# Needs Conductor line. No model of its own. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\red_dispatch\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/dispatcher/red_dispatch/reading.json)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-red-dispatch.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-red-dispatch.timer
+# Off:      systemctl --user disable --now rm-red-dispatch.timer   (or "enabled": false in rimflow/red_dispatch.json)
+[Unit]
+Description=RimMandrake build cop fix step (one capped detached fixer per nightly red), every 10 min
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/red_dispatch.py tick --apply
+Nice=10
+MemoryMax=1G
+TimeoutStartSec=20min
