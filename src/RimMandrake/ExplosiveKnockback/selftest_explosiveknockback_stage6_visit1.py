@@ -17,6 +17,8 @@ scene read it wrong. Read from the C# source, since the scenes only run in a gam
      runs (2026-11-15). The haul is remembered before MakeFlyer (RememberHaul) and re-issued on landing, its reservations
      asked first (a pawn that took the dropped stack mid-flight keeps it); with it, 3 of 3 (bar pawn_flight_arc, "the
      pawn go back to what it was doing")
+  S4 spared_states' sleeper starts tired (rest 0.05): a rested colonist got up before the blast (INVALID 2 of 6)
+  M1 mass_and_power's guard counts injuries only: a hot afternoon gave a colonist Heatstroke, read as a leaked injury
   S3 spared_states carries the downed pawn with the count overload: TryStartCarry(thing) cannot take a spawned pawn
   W2 the sweep's gas-goods stack lies inside the seeded cloud (radius 1 at O(-5,-5)), so a burst always reaches it; two
      cells out it was reached on 13 of 18 lanes and the default lane's "still" read as drift on the rest
@@ -74,6 +76,9 @@ def main():
     check("J1", "static void RememberHaul(" in fl and 0 <= rem < mc.find("PawnFlyer.MakeFlyer(") and "JobMaker.MakeJob(orig.def" in fl
           and "p.CanReserve(target)" in fl and fl.find("p.CanReserve(target)") < fl.find("jobs.StartJob(haul"),
           "the haul is remembered before MakeFlyer and re-issued on landing, its reservations asked before StartJob")
+    check("S4", "sleeper.needs.rest.CurLevel = 0.05f" in sp, "spared_states' sleeper starts tired")
+    check("M1", 'Count(h => h is Hediff_Injury || h is Hediff_MissingPart) - (int)sc.numbers["hediffs_"' in proof,
+          "mass_and_power's leak guard counts injuries, not every hediff")
     check("S3", re.search(r"TryStartCarry\(carried, 1", sp) is not None and re.search(r"TryStartCarry\(carried\)", sp) is None,
           "spared_states carries the downed pawn with TryStartCarry(thing, count)")
     print("%s stage6 visit1 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))

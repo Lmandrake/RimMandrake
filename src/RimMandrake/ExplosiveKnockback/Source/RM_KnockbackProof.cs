@@ -1907,6 +1907,10 @@ namespace RimMandrake.ExplosiveKnockback
                         carrier.carryTracker.TryStartCarry(carried, 1, reserve: false);   // the count overload despawns it (SplitOff)
                         Thing bed = Build("Bed", O(s, 1, -2), "WoodLog");
                         Pawn sleeper = Colonist(s, "sleeper", bed.Position, drafted: false);
+                        if (sleeper.needs?.rest != null)
+                        {
+                            sleeper.needs.rest.CurLevel = 0.05f;   // a rested colonist got up before the blast (visit 1)
+                        }
                         sleeper.jobs.StartJob(JobMaker.MakeJob(JobDefOf.LayDown, bed), JobCondition.InterruptForced);
                         Pawn corpseOf = Adult(HeavyAnimal());
                         GenSpawn.Spawn(corpseOf, O(s, -1, -1), Map);
@@ -2412,7 +2416,8 @@ namespace RimMandrake.ExplosiveKnockback
                 s.numbers["mass_" + key] = mass;
                 s.numbers["want_" + key] = RM_KnockbackMath.Eligible(KbKind.Pawn, mass, k)
                     ? RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f * ratio, mass, k) : 0f;
-                s.numbers["hediffs_" + key] = p.health.hediffSet.hediffs.Count;
+                // injuries only: a hot afternoon gave a colonist Heatstroke in the window, which is not the hook's to stop (visit 1)
+                s.numbers["hediffs_" + key] = p.health.hediffSet.hediffs.Count(h => h is Hediff_Injury || h is Hediff_MissingPart);
                 NoHarm.Add(p.thingIDNumber);
             }
             Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, damage, null, true);
@@ -2453,7 +2458,7 @@ namespace RimMandrake.ExplosiveKnockback
                     bool landed = ForThing(sc, "land", p).Any(r => (bool)r["spawned"] && !(bool)r["dead"]);
                     rowOk = got == want && straight && landed && !p.Dead;
                 }
-                int newHediffs = p.health.hediffSet.hediffs.Count - (int)sc.numbers["hediffs_" + key];
+                int newHediffs = p.health.hediffSet.hediffs.Count(h => h is Hediff_Injury || h is Hediff_MissingPart) - (int)sc.numbers["hediffs_" + key];
                 if (newHediffs > 0)
                 {
                     return "INVALID " + sc.name + " the injury hook let " + newHediffs + " hediff(s) through on " + key;
