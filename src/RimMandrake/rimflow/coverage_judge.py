@@ -47,6 +47,7 @@ environment variable, so a writer who sets it by hand forges the ledger note too
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -65,6 +66,7 @@ TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pr
 MODEL = "opus"
 BUDGET_USD = 8          # hard spend stop per judge run (claude --max-budget-usd; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
+ROW_REASK_MAX = 2       # re-asks of only the broken refusal records; one still broken is kept on file as malformed
 # The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3). EK's judge said
 # not_covered 9 times in 3 h. The third not_covered on one concept, a 4th judge run, or judge spend past 4x the measured
 # p90 stops judging: the concept is blocked on the alarm and the Designer's run never starts. `release` grants one look.
@@ -106,7 +108,8 @@ RECORD_TEXT = (
     "judges the criterion itself: `sound`, `flawed` (wrong or ambiguous) or `unattainable` (nothing could ever pass "
     "it), with `criterion_why`, a sentence, whatever the verdict. A flawed or unattainable criterion goes to a neutral "
     "fixer, not back to the Designer. Each checklist row's `evidence` names the files its parts rest on, so every file "
-    "you were given is cited by some row or gap. A refusal without these is itself refused and re-asked once.")
+    "you were given is cited by some row or gap. A refusal without these is itself refused and re-asked (only the "
+    "broken records, at most twice); one still broken is kept on file as malformed and counts for nothing.")
 SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
           "properties": {"verdict": {"enum": ["covered", "not_covered"]},
                          "checklist": {"type": "array", "items": {
@@ -132,6 +135,8 @@ SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict
                                                                  "since": {"type": "string"},
                                                                  "late_why": {"type": "string"}})}},
                          "reasons": {"type": "string"}}}
+GAPS_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["gaps"],
+               "properties": {"gaps": SCHEMA["properties"]["gaps"]}}   # the row re-ask: the broken records only
 
 
 def required_ids(d, tree):
@@ -493,8 +498,10 @@ def contract_verdict(d, rec, item):
     and `contract_errors` adds that each is a concept file."""
     ent = entries(d)
     gaps = [g for g in rec.get("gaps") or [] if isinstance(g, dict)]
-    mine = [g for g in gaps if not g.get("carried")]
-    carried = {i for g in gaps if g.get("carried") for i in g.get("ids") or []}
+    mine = [g for g in gaps if not g.get("carried") and not g.get("malformed")]
+    # carried gaps were checked when written; a record kept on file as malformed is neither refused nor passed
+    held = [g for g in gaps if g.get("carried") or g.get("malformed")]
+    carried = {i for g in held for i in g.get("ids") or [REST_CLAUSE]}
     refused = {}
     for g in mine:
         for c in list(g.get("ids") or []) or [REST_CLAUSE]:
@@ -527,7 +534,7 @@ def contract_verdict(d, rec, item):
         e = ent.get("inv:%s" % c) or ent.get("leaf:%s" % c)
         crit[c] = json.dumps(e, sort_keys=True) if e is not None else None
         passed.append({"clause": c, "evidence": [str(x) for x in r.get("evidence") or []]})
-    if REST_CLAUSE not in refused:
+    if REST_CLAUSE not in refused and REST_CLAUSE not in carried:
         crit[REST_CLAUSE] = REST_TEXT
         passed.append({"clause": REST_CLAUSE, "evidence": []})
     crit = {c: t for c, t in crit.items() if t is not None}   # an id that is no row or leaf: check says so
@@ -538,11 +545,24 @@ def contract_verdict(d, rec, item):
         inputs = sorted({RC._split(e)[0] for r in list(refused.values()) + passed for e in r["evidence"]})
     else:
         inputs = [f for f in INPUT_FILES if os.path.exists(os.path.join(d, f))]
+        # a file only a held malformed record (or its row) cites was read and cited: it is not an unread input
+        cited = {RC._split(e)[0] for r in list(refused.values()) + passed for e in r["evidence"]}
+        gone = {i for i in held_cites(rec, held) if i not in cited}
+        inputs = [f for f in inputs if f not in gone]
     given = {"inputs": inputs, "criteria": crit, "root": d}
     verdict = {"item": str(item or os.path.basename(d)), "family": CONTRACT_FAMILY,
                "sha": str(rec.get("tree") or CT.tree_hash(CT.load(d))), "given": given,
                "passed": passed, "refusals": list(refused.values())}
     return verdict, given
+
+
+def held_cites(rec, held):
+    """The files the malformed gaps in `held`, and their checklist rows, cite."""
+    bad = [g for g in held if g.get("malformed")]
+    ids = {i for g in bad for i in g.get("ids") or []}
+    evs = [e for g in bad for e in g.get("evidence") or []] + [
+        e for r in rec.get("checklist") or [] if isinstance(r, dict) and r.get("id") in ids for e in r.get("evidence") or []]
+    return {RC._split(str(e))[0] for e in evs}
 
 
 def contract_errors(d, rec, item):
@@ -553,6 +573,55 @@ def contract_errors(d, rec, item):
         errs += ["evidence %r is not a concept file (%s)" % (i, ", ".join(INPUT_FILES))
                  for i in given["inputs"] if i not in INPUT_FILES]
     return v, given, errs
+
+
+ROW_ERR_RE = re.compile(r"^refusal \d+ \((?P<clause>[^)]*)\): ")
+
+
+def row_errors(errs, cv):
+    """-> ({clause: [its errors]}, [errors of no single refusal record]). A delta input that is no concept file is the
+    error of every refusal record citing it; one only a passed row cites is the whole verdict's."""
+    rows, glob = {}, []
+    for e in errs:
+        m = ROW_ERR_RE.match(e)
+        if m:
+            rows.setdefault(m.group("clause"), []).append(e)
+            continue
+        hit = [r["clause"] for r in cv.get("refusals") or [] for ev in r.get("evidence") or []
+               if e.startswith("evidence %r is not a concept file" % RC._split(ev)[0])]
+        for c in hit:
+            rows.setdefault(c, []).append(e)
+        if not hit:
+            glob.append(e)
+    return rows, glob
+
+
+def gaps_of(rec, clauses):
+    """The judge's own gaps (not carried, not already held as malformed) whose records make the given clauses."""
+    return [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried") and not g.get("malformed")
+            and set(g.get("ids") or [REST_CLAUSE]) & set(clauses)]
+
+
+def row_reask_text(rows, cv, given, gaps):
+    """The row re-ask: only the broken records, each with the checker's exact words and the text its evidence cites."""
+    out = ["These refusal records in your verdict still break the refusal contract; every other row and gap stands as "
+           "you wrote it. For each, the checker's exact complaint and the text your evidence actually cites:"]
+    by = {r["clause"]: r for r in cv.get("refusals") or []}
+    for g in gaps:
+        cs = [c for c in g.get("ids") or [REST_CLAUSE] if c in rows]
+        out.append("- gap on %s (%s):" % (", ".join(g.get("ids") or [REST_CLAUSE]), CT.txt(g.get("what"))[:160]))
+        out += ["  complaint: %s" % e for c in cs for e in rows[c]]
+        for ev in (by.get(cs[0]) or {}).get("evidence") or [] if cs else []:
+            ref, a, b = RC._split(ev)
+            txt = RC._text_of(ref, given)
+            if txt is None:
+                continue
+            if a is not None:
+                txt = "\n".join(txt.splitlines()[a - 1:b])
+            out.append("  %s reads: %s" % (ev, " ".join(txt.split())[:400] or "(nothing: no such lines)"))
+    out.append("Answer with `gaps`: one corrected record for each gap listed here, the same ids, nothing else. "
+               "`observed` quotes words that stand in the lines its evidence cites; cite `file:a-b` spanning them.")
+    return "\n".join(out)
 
 
 def stop_exit(rec):
@@ -703,9 +772,12 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     hashes = entry_hashes(d)
     unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
-    tail = ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
-            "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
-            "--max-budget-usd", "%g" % BUDGET_USD]
+
+    def tail_for(schema):
+        return ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
+                "--json-schema", json.dumps(schema, separators=(",", ":")), "--dangerously-skip-permissions",
+                "--max-budget-usd", "%g" % BUDGET_USD]
+    tail = tail_for(SCHEMA)
     round_no = len(rounds(st0, d)) + 1
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
     argv = [CLAUDE, "-p", text] + tail
@@ -717,8 +789,9 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         if dp["refused"]:
             rec["claims_refused"] = dp["refused"]
 
-    def ask(call, wall):
-        """-> (exit code, the well-formed verdict or None, session id). Charges what the call spent."""
+    def ask(call, wall, gaps_only=False):
+        """-> (exit code, the well-formed verdict (or, gaps_only, a {gaps} answer) or None, session id). Charges what
+        the call spent."""
         try:
             code, out = runner(call, repo, env, wall)
             res = json.loads(out or "null")
@@ -741,8 +814,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             except Exception as e:  # noqa: BLE001
                 rec["charge_error"] = str(e)
         so = res.get("structured_output")
-        ok = (isinstance(so, dict) and so.get("verdict") in ("covered", "not_covered")
-              and isinstance(so.get("gaps"), list) and isinstance(so.get("checklist"), list))
+        ok = isinstance(so, dict) and isinstance(so.get("gaps"), list) and (gaps_only or (
+            so.get("verdict") in ("covered", "not_covered") and isinstance(so.get("checklist"), list)))
         if not ok:
             rec["error"] = "no well-formed verdict (exit %s)" % code
         return code, so if ok else None, res.get("session_id")
@@ -782,9 +855,12 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         # The refusal contract (RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_JUDGE_BRIEFS): a refusal that names no attainable
         # path to pass is refused itself, re-asked once in the same session, and if still malformed recorded as
         # `malformed`: it never counts as a not_covered round and never sends the Designer back.
+        # A broken record must not void the look (RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL): when every
+        # error is one record's, only those records are re-asked (at most ROW_REASK_MAX times); one still broken is
+        # kept on file marked `malformed`, is not submitted, and the well-formed rows are the stored verdict.
         cv, given, errs = contract_errors(d, rec, st0.get("item"))
         left = timeout - (time.monotonic() - started)
-        if errs and session and left >= REASK_MIN_S:
+        if errs and session and left >= REASK_MIN_S and row_errors(errs, cv)[1]:
             rec["contract_reasked"] = errs
             _c, so3, _s = ask([CLAUDE, "-p", "Your verdict's refusal records do not meet the refusal contract:\n%s\n"
                                "Answer again with the whole verdict, every row and every gap, each gap a complete record."
@@ -795,6 +871,41 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
                 errs = contract_errors(d, rec, st0.get("item"))[2] if rec["verdict"] == "not_covered" else []
                 cv, given = contract_verdict(d, rec, st0.get("item"))
             rec.pop("error", None)
+        tries = 0
+        while errs and rec.get("verdict") == "not_covered" and session and tries < ROW_REASK_MAX:
+            rows, glob = row_errors(errs, cv)
+            bad = gaps_of(rec, rows)
+            if glob or not bad or timeout - (time.monotonic() - started) < REASK_MIN_S:
+                break
+            tries += 1
+            rec.setdefault("rows_reasked", []).append(sorted(rows))
+            _c, so4, _s = ask([CLAUDE, "-p", row_reask_text(rows, cv, given, bad), "--resume", session]
+                              + tail_for(GAPS_SCHEMA), timeout - (time.monotonic() - started), gaps_only=True)
+            rec.pop("error", None)
+            new = [g for g in (so4 or {}).get("gaps") or [] if isinstance(g, dict)]
+            want = {i for g in bad for i in g.get("ids") or [REST_CLAUSE]}
+            if not new or not want <= {i for g in new for i in g.get("ids") or [REST_CLAUSE]}:
+                continue   # an answer that drops a refused id would lose a refusal: the old records stand
+            at = rec["gaps"].index(bad[0])
+            rest = [g for g in rec["gaps"] if not any(g is b for b in bad)]
+            rec["gaps"] = rest[:at] + new + rest[at:]
+            late = tag_gaps(new, earlier)
+            if late:
+                rec["late"] = sorted(set(rec.get("late") or []) | set(late))
+            cv, given, errs = contract_errors(d, rec, st0.get("item"))
+        if errs and rec.get("verdict") == "not_covered":
+            rows, glob = row_errors(errs, cv)
+            bad = gaps_of(rec, rows)
+            if bad and not glob:
+                for g in bad:
+                    g["malformed"] = [e for c in g.get("ids") or [REST_CLAUSE] for e in rows.get(c, [])]
+                cv2, given2, errs2 = contract_errors(d, rec, st0.get("item"))
+                if cv2["refusals"] and not errs2:
+                    rec["malformed_rows"] = [{"clause": c, "errors": rows[c]} for c in sorted(rows)]
+                    cv, given, errs = cv2, given2, []
+                else:   # nothing well formed is left to stand: the whole look is malformed, as before
+                    for g in bad:
+                        g.pop("malformed", None)
         if rec.get("verdict") == "not_covered":
             rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
             if errs:

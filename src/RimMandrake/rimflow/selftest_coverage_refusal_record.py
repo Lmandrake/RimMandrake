@@ -150,12 +150,56 @@ def main():
             check("fixed on the re-ask -> the not_covered stands", rec["verdict"] == "not_covered"
                   and rec["contract"]["ok"], rec.get("contract"))
 
-            # Malformed twice: refused itself; never a not_covered; stops the Designer's run start.
+            # RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL: one broken record must not void a whole look.
+            # The re-ask names only the broken records (the gaps schema), with the checker's complaint and the text
+            # the record cites; the well-formed rows stand.
+            throw_bad = good_gap(ids=["inv_throw"], evidence=["sheet.md:1"], what="the throw scene reads no distance",
+                                 observed="the range reading is missing; nobody measures distance",
+                                 new_since="unfixed")
+            throw_ok = dict(throw_bad, evidence=["record.json", "scenes.json"],
+                            observed="record.json inv_throw says items are thrown outward; sc_throw asserts steel lands")
+            argvs = []
+            rec, _ = CJ.run(d, root, script([answer("not_covered", [good_gap(new_since="unfixed"), throw_bad]),
+                                             json.dumps({"structured_output": {"gaps": [throw_ok]},
+                                                         "session_id": "sess"})], argvs))
+            ask2 = argvs[1][2] if len(argvs) > 1 else ""
+            check("bad row fixed on re-ask: one row re-ask, only the broken record, its complaint and its cited text",
+                  len(argvs) == 2 and "observed quotes no token of its evidence" in ask2 and "# Foo" in ask2
+                  and "leaf_wall" not in ask2 and '"gaps"' in argvs[1][argvs[1].index("--json-schema") + 1]
+                  and '"checklist"' not in argvs[1][argvs[1].index("--json-schema") + 1], ask2[:500])
+            check("bad row fixed on re-ask: both refusals stand, the contract accepts the whole look",
+                  rec["verdict"] == "not_covered" and rec["contract"]["ok"] and not rec.get("malformed_rows")
+                  and sorted(i for g in rec["gaps"] for i in g["ids"]) == ["inv_throw", "leaf_wall"],
+                  (rec.get("verdict"), rec.get("malformed"), [g["ids"] for g in rec.get("gaps") or []]))
+
+            # One bad row that stays bad: bounded re-asks, then the well-formed row is the stored verdict and the
+            # broken one is kept on file marked malformed (the evidence rule is not loosened: it is not submitted).
+            argvs = []
+            rec, msg = CJ.run(d, root, script([answer("not_covered", [good_gap(new_since="unfixed"), throw_bad])]
+                                              + [json.dumps({"structured_output": {"gaps": [throw_bad]},
+                                                             "session_id": "sess"})] * CJ.ROW_REASK_MAX, argvs))
+            bad_rows = [g for g in rec.get("gaps") or [] if g.get("malformed")]
+            check("one bad row: re-asked at most ROW_REASK_MAX times, then the look is kept",
+                  len(argvs) == 1 + CJ.ROW_REASK_MAX and rec["verdict"] == "not_covered", (len(argvs), rec["verdict"]))
+            check("one bad row: it is marked malformed with the checker's words; the good row is the stored refusal",
+                  [g["ids"] for g in bad_rows] == [["inv_throw"]]
+                  and "observed quotes no token" in " ".join(bad_rows[0]["malformed"])
+                  and [r["clause"] for r in rec.get("malformed_rows") or []] == ["inv_throw"]
+                  and rec["contract"]["ok"] and not rec.get("malformed") and CJ.stop_exit(rec) is bool(
+                      rec.get("advisory")), (rec.get("malformed_rows"), rec.get("contract"), msg))
+            rows = [json.loads(x) for x in open(os.path.join(root, "refusals", "refusals.jsonl"))]
+            check("one bad row: the broken record never reaches the contract store as a refusal",
+                  not any(r.get("kind") == "refusal" and r["record"]["clause"] == "inv_throw"
+                          and r["record"]["observed"] == throw_bad["observed"] for r in rows), rows[-1:])
+
+            # Every row bad, every re-ask too: refused itself; never a not_covered; stops the Designer's run start.
             st0 = DS.load_state(d)
             nc0 = sum(1 for r in st0.get("coverage_rounds") or [] if r.get("verdict") == "not_covered")
             argvs = []
-            rec, msg = CJ.run(d, root, script([answer("not_covered", [bad_gap()]), answer("not_covered", [bad_gap()])],
-                                              argvs))
+            rec, msg = CJ.run(d, root, script([answer("not_covered", [bad_gap()])]
+                                              + [answer("not_covered", [bad_gap()])] * CJ.ROW_REASK_MAX, argvs))
+            check("all rows bad: bounded re-asks, then the whole look is malformed",
+                  len(argvs) == 1 + CJ.ROW_REASK_MAX and not rec.get("malformed_rows"), len(argvs))
             st1 = DS.load_state(d)
             nc1 = sum(1 for r in st1.get("coverage_rounds") or [] if r.get("verdict") == "not_covered")
             check("malformed twice -> verdict `malformed`, the errors on file, not signed",
