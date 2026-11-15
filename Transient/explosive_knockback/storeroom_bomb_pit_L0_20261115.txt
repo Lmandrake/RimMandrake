@@ -1,0 +1,57 @@
+sha 5298951585 2026-11-15 08:59:38 PST
+== proof build: BUILT src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll (source a3c833a6803b+dirty)
+== acceptance grep -c '"storeroom_bomb_pit"' RM_KnockbackProof.cs: 2
+== test_table entry_exists: True
+== selftest (base 93ff43d36a: 40 failed, watched)
+PASS N0 SceneNames parsed (68 names)
+PASS N1 storeroom_bomb_pit storeroom_bomb_pit is in SceneNames
+PASS N1 storeroom_bomb_pit_control storeroom_bomb_pit_control is in SceneNames
+PASS N2 Build routes both lanes to StoreroomBombPit
+PASS N3 the csproj compiles RM_KnockbackProof_StoreroomBombPit.cs
+PASS N4 scenes.json entry point is storeroom_bomb_pit (src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::storeroom_bomb_pit)
+PASS G0 the builder StoreroomBombPit exists
+PASS G FlowWorks not loaded builder/verdict carries FlowWorks not loaded
+PASS G LWM_WeaponsLocker builder/verdict carries LWM_WeaponsLocker
+PASS G lwm.deepstorage builder/verdict carries lwm.deepstorage
+PASS G "Shelf" builder/verdict carries "Shelf"
+PASS G "ShelfSmall" builder/verdict carries "ShelfSmall"
+PASS G InClosedContainer builder/verdict carries InClosedContainer
+PASS G IsClosedContainer builder/verdict carries IsClosedContainer
+PASS G closedContainerMassLimit builder/verdict carries closedContainerMassLimit
+PASS G heavyGoodsMinMass builder/verdict carries heavyGoodsMinMass
+PASS G WantCells(s, "g_steel", 2.9f) < 2 builder/verdict carries WantCells(s, "g_steel", 2.9f) < 2
+PASS G RM_PitCover_WovenScrap builder/verdict carries RM_PitCover_WovenScrap
+PASS G Pit(O(s, -3, -5), 7, 2) builder/verdict carries Pit(O(s, -3, -5), 7, 2)
+PASS G the thing trace never ran builder/verdict carries the thing trace never ran
+PASS G not at rest builder/verdict carries not at rest
+PASS G p4 was reached builder/verdict carries p4 was reached
+PASS G planned path crosses builder/verdict carries planned path crosses
+PASS G put no builder/verdict carries put no
+PASS G was not planned onto builder/verdict carries was not planned onto
+PASS G storeroom_bomb_pit_control builder/verdict carries storeroom_bomb_pit_control
+PASS G FillToSurface builder/verdict carries FillToSurface
+PASS G Blast(s.o, 2.9f) builder/verdict carries Blast(s.o, 2.9f)
+PASS G <= 900 builder/verdict carries <= 900
+PASS O east colonist stops dead at the east wall with a wall hit the verdict reads: east colonist stops dead at the east wall with a wall hit
+PASS O lands alive and stunned the verdict reads: lands alive and stunned
+PASS O south colonist carried about three cells straight south the verdict reads: south colonist carried about three cells straight south
+PASS O every stack with a throw request moved the verdict reads: every stack with a throw request moved
+PASS O arc, spin, wall rebounds the verdict reads: arc, spin, wall rebounds
+PASS O zero despawn-spawn pairs the verdict reads: zero despawn-spawn pairs
+PASS O closed container contents unchanged, thrown at least one cell the verdict reads: closed container contents unchanged, thrown at least one cell
+PASS O steel strikes the colonist in line, 2 to 5 blunt, a stagger, stops there the verdict reads: steel strikes the colonist in line, 2 to 5 blunt, a stagger, stops there
+PASS O goods and a colonist on the pit floor, one descent each the verdict reads: goods and a colonist on the pit floor, one descent each
+PASS O covered-cell stack falls through, cover destroyed the verdict reads: covered-cell stack falls through, cover destroyed
+PASS O control: nothing descends, land on the planned cells the verdict reads: control: nothing descends, land on the planned cells
+PASS R the scene spawns through Item/Track (Prepare and the disposable map clean up) and changes no setting or def
+PASS K1 pE (1,0) thrown 3 east stops at the east wall two cells on: (3, 0) Wall
+PASS K2 pS (0,-1) thrown 3 south lands in the pit's near row: (0, -4) Pit
+PASS K3 the steel's 2-cell line from (1,1) reaches p4 at (3,3): [(2, 2), (3, 3)]
+PASS K4 no colonist's 3-cell path crosses another colonist's cell []
+PASS K5 a floor cell within two cells throws exactly onto a near-row pit cell (2 ways, e.g. ((-1, -2), 2, (-2, -4)))
+PASS K6 the locker at (-2,0) has a free cell (-3,0) behind it, then the wall
+PASS T test_table.json sc_storeroom_bomb_pit entry_exists is True
+PASS: 0 failed
+== stage3_scenes: PASS stage3 scenes: 0 failed
+== proofgate: PASS proofgate (R1 P1 G1)
+== stage6_visit1: PASS stage6 visit1 scenes: 0 failed
