@@ -30,49 +30,46 @@ evidence against the obvious answer, and every ask carries that evidence.
 - The Contagion root and flagship were NOT applied through it: he certified them himself ~11:55 PST (owner-said note on
   RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME).
 
-## owed
+## done (2026-11-15, BENCH restart after the ~12:00 PM PST account switch)
 
-- 2fb89c96e5: docs written: CLAUDE.md (section "The Evidence-for-Ask rule"), standing_rulings.md (new section,
-  plus a §Mod Design Versions bullet: a new mod's 0.1.0 is locked by the pipeline), and the lock lines of
-  design/specs/2026-11-13-mod-design-versions.md:24 and 2026-11-13-maturation-pipeline.md:172.
-- Docs still owed:
-  - design/RimMandrake/delegation_policy.md §1/§2: a new mod's first Design Version is 0.1.0 without asking; each §2
-    hold of his stays, and its ask carries the evidence. CONFLICT to put to him, not resolve: line 132, "A reserved call
-    is asked as a card ... It never times out into a decision", reads against Evidence-for-Ask for any reserved call
-    with an obvious answer.
-  - maturation-pipeline.md: opening the next version is still "decided with him" (see OWNER_STAGES `passed` below).
-  - infrastructure/agents/CHARTER.md, roles/conductor.md and the role files listed below.
+- 2fb89c96e5: CLAUDE.md, standing_rulings.md, the two version specs (before the switch).
+- f8e409678f: CHARTER §Decisions states the rule once; conductor.md, designer_dialogue.md, designer_grounding.md and
+  designer_write.md point at it. Goal order with no order of his: listed as he gave them, logged delegated. A wider
+  budget (Operations proposal) is paid, so it stays his with Operations' evidence on the card. New-skill proposals
+  stay a discussion: his 2026-10-29 words ask for it, which is the evidence. CHARTER grew 4 lines (its "does not
+  grow" note): nothing in it was found to delete for them.
+- 2e5513ef60: delegation_policy.md. Evidence-for-Ask is not a timeout: it decides what is reserved (only the seven §2
+  lines); a §2 call still waits and its ask carries its evidence (the Conductor's reading, given to him ~12:00 PM PST,
+  no objection; not a ruling of his). §1 names the rule; §3 allows `--per-ruling` for this one ruling, with the
+  `delegated:` why. The digest now classes these calls `evidence-for-ask` (they were reaching it as `unclassified`).
+- c6004c67da: a passed version RESTS (new class `rested`, no owner card, no pause alarm); opening the next version is
+  the Conductor's ordering call against the other mods (`maturation.py next-version`). The `version` clause's fix no
+  longer says "decided with him".
+- e333f1eb5c: `designer_stage.py turns` / his queue line: each sent ask shows its `evidence_against`, or is marked
+  "no evidence against the obvious answer: the Conductor takes it delegated". conductor.md: such an ask is the
+  Conductor's, never relayed.
+- f2c998c131: intake after the first walk asks him nothing. His 2026-11-14 card picked only "Wait for one full pass";
+  "asked again then" was our note. His 2026-11-15 order (next most mature biome mod) is the obvious answer. Spec fixed.
 
-## other places that pause for him (listed, not fixed; obvious answer for each)
+## kept as his, with the evidence (no change)
 
-Code:
-- src/RimMandrake/rimflow/maturation_autonomy.py:79-80 OWNER_STAGES `his_walk`: stays his (his live walk is the stage's
-  exit by his own words). `passed`: opening the next version is "decided with him"; obvious answer: open the next
-  version (minor bump) when the walk's findings name work, else nothing to open.
-- maturation_autonomy.py:223, :552 "OWNER HOLD" blocks: a hold he placed stays until he releases it (his own hold).
-- src/RimMandrake/rimflow/maturation.py:~479-480 clause `version` (open a new version by hand, cost owner): obvious
-  answer: seed the next version's stage record when the old version passed.
-- maturation.py:~489 `hold`: a Conductor hold, released by the Conductor; no owner pause needed.
-- maturation.py:~505-507 `intake_closed`/`owner_said` "how the waiting mods enter after the first walk is asked of him
-  again": obvious answer: the next mod in queue order enters when one reaches his walk.
-- maturation.py:~538-544, ~572, ~589 `steward_confirms` (cost owner): the Conductor's own read; obvious answer: the
-  steward confirms when every refusal left is named in the record.
-- maturation.py:~597 `owner_said` at his walk: stays his.
-- maturation.py:~608 `fourth_cycle`: the Conductor decides after three blind cycles; obvious answer: take the
-  majority finding and record it delegated.
-- src/RimMandrake/rimflow/designer_stage.py:73 OWNER_ONLY `exam_waived`, `floor_disable`, `locked_change`, `waiver`,
-  `his_words`: quotations, stay his. `waiting_owner` (designer_stage.py:1150, roles/designer.md:61,76): any ask; obvious
-  answer per ask is the Designer's recommended option, so every ask should carry `evidence_against` or not be sent.
-- concept_tree.py certify --owner-event (Lock-stage first touch): stays his (his words 2026-11-04).
+- his walk (`his_walk`, `maturation.py` `owner_said` at Stage 8): the pass is his alone (spec Stage 8).
+- OWNER HOLD blocks (maturation_autonomy): his own holds. The one standing today, PyrelandsMechanics, waits on his card
+  of 2026-11-13 ("started only after Pyrelands 0.1.0 passes", VERSION.json `owner_words`); `version_evidence` reads
+  the same state. Its `blocked_on` lift text ("locks on his word after he reads the entry summary") is older than the
+  0.1.0 ruling and could be cut to the card's condition when Pyrelands passes.
+- designer_stage OWNER_ONLY quotations (`exam_waived`, `floor_disable`, `locked_change`, `waiver`, `his_words`) and
+  concept_tree certify (delegation_policy §2.7): quotations and the reserved first-touch certification.
 
-Docs and roles:
-- design/RimMandrake/delegation_policy.md:132 reserved calls asked as a card, never time out (conflict above).
-- src/RimMandrake/rimflow/roles/designer_dialogue.md:10, :75, :105 ask him only the gaps / `pass` asks reach him: add
-  "and each carries its evidence against the obvious answer".
-- roles/designer_grounding.md:45 "Ask him only on a real fork": same.
-- roles/designer_write.md:5 "Ask him to approve the root text before this stage": now a delegated root may approve it.
-- roles/conductor.md:31 "when he gives no order, ask him rather than guess" (goal cuts): obvious answer: cut the lowest
-  ranked goal's work first, as the line itself says.
-- roles/conductor.md:76 bring a file to him on his card; :173 skill proposals on a question card: obvious answer:
-  accept when nothing argues against it, record delegated.
-- roles/innovator.md:60 the proves-itself line on his card: a report, not a pause.
+## not owner pauses (no change)
+
+- maturation.py `hold`, `steward_confirms`, `walk_bars_confirmed`, `fourth_cycle`: Conductor and steward steps that
+  steward runs carry (maturation_autonomy STEWARD_ON); `cost="owner"` there labels owner authority, which the Conductor
+  holds (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM). Nothing routes on that label.
+- roles/innovator.md:60: a report line on his card, not a pause.
+
+## unrun
+
+- The `rested` path and the turn marks on real data: no mod is at `passed` and no Designer turn waits today
+  (dry `maturation_dispatch.py tick` and `designer_stage.py turns` on /home/mandrake/rm/bench, 2026-11-15 20:2xZ).
+  Fixture tests only.
