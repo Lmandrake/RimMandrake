@@ -206,6 +206,34 @@ def publish_checks():
               % (out, ahead))
     finally:
         shutil.rmtree(root, ignore_errors=True)
+    # RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: another git in the clone (a `git status` index refresh,
+    # testq-tick's unlocked pull) holds index.lock for a second as publish adds: the add waits it out, not "add failed"
+    out, root, disp, sh = publish_sandbox(conflict=False)
+    try:
+        import ingest as I
+        import threading
+        with open(os.path.join(disp, I.SHARD_REL), "a") as f:
+            f.write('{"runner":"locked"}\n')
+        lock = os.path.join(disp, ".git", "index.lock")
+        real, held = I.subprocess.run, []
+
+        def run(cmd, **kw):
+            if "add" in cmd and not held:
+                held.append(1)
+                open(lock, "w").close()
+                threading.Timer(1.5, lambda: os.path.exists(lock) and os.remove(lock)).start()
+            return real(cmd, **kw)
+        old, I.REPO = I.REPO, disp
+        I.subprocess.run = run
+        try:
+            got = I.publish(0)
+        finally:
+            I.REPO = old
+            I.subprocess.run = real
+        check(held and got == "pushed", "a fresh index.lock another git holds for 1.5 s as publish adds: the add "
+              "retries and the shard is pushed (read %r)" % got)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def crash_checks():

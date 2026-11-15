@@ -763,12 +763,22 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
     DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
+
+    def git_index(*a):
+        # repo_lock serializes publishers only: a `git status` index refresh or testq-tick's ExecStartPre pull in this
+        # clone holds index.lock for a second, and an add then failed (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_
+        # COUNTED_AS_SPENT, 2026-11-15 08:00 PST). Wait it out, a bounded number of times.
+        for i in range(INDEX_LOCK_TRIES):
+            r = git(*a)
+            if r.returncode == 0 or "index.lock" not in (r.stderr or "") or i == INDEX_LOCK_TRIES - 1:
+                return r
+            time.sleep(INDEX_LOCK_WAIT_S)
     paths = [shard_rel] + (repair_prose_paths(git) if shard_rel == SHARD_REL else [])
-    a = git("add", "--", *paths)
+    a = git_index("add", "--", *paths)
     if a.returncode != 0:
         return "add failed (the lines stay in the working tree; the next ingest retries): " + a.stderr.strip()[-200:]
     if git("diff", "--cached", "--quiet", "--", *paths).returncode != 0:
-        c = git("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", *paths)
+        c = git_index("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", *paths)
         if c.returncode != 0:
             return "commit failed: " + c.stderr.strip()[-200:]
     p = None
@@ -798,6 +808,7 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
 
 
 STALE_LOCK_S = 300
+INDEX_LOCK_TRIES, INDEX_LOCK_WAIT_S = 6, 2     # an add/commit waits up to ~10 s on another git's index.lock
 
 
 def git_targets_repo(argv, env, cwd, root):
