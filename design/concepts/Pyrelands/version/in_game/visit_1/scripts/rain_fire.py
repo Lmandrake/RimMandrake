@@ -35,4 +35,12 @@ with RimBridge(h,p,tk) as rb:
         rb.call("jawa/map_fire",{"action":"extinguish","rect":W})
         rb.call("jawa/weather_set",{"weather":"Clear","lockWeather":True}); adv(60); rb.call("jawa/weather_set",{"unlock":True})
         for f,v in prior.items(): rb.call("jawa/mod_settings_field",{"typeName":S,"action":"set","field":f,"value":str(v)})
+# RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: the black-rain pad reaches 0 fires >= 1,000 ticks before the Clear pad.
+def out_at(w):
+    ser=(out.get(w) or {}).get("fires_every_250") or []
+    return next((i*250 for i,n in enumerate(ser) if n==0), None)
+b,c=out_at("RM_FE_BlackRain"),out_at("Clear")
+if c is None: c=len((out.get("Clear") or {}).get("fires_every_250") or [])*250   # still burning at the last sample: out no sooner than the next
+out["verdict"]=("PASS" if b is not None and c-b>=1000 else "FAIL")+" black rain out at %s, clear at %s ticks"%(b,c)
+print(out["verdict"])
 json.dump(out, open(r"Transient\pv1\rain_fire.json","w"), indent=1)

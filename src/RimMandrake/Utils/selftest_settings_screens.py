@@ -209,6 +209,7 @@ MODS = {
     "Pyrelands": ("RM_PyrelandsMod.cs", "FireEcologyHook.csproj", {
         "Mod enabled": "Now",
         "Fire's ash and scorch-fruit": "Now",
+        "Black rain puts fires out": "Now",   # Patch_FireTick_BlackRainDouses reads both on each fire's 150-tick beat
         "Ash accumulation (Ash Fall / Cinderfall weather)": "Now",
         "Plant art and wild flora": "Now",
         "Scorched ruins (new maps)": "NewMapsOnly",

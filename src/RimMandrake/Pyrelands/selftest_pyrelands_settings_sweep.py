@@ -30,7 +30,8 @@ RULED = {"biomeGenerationEnabled": False, "crossBiomeEnabled": False, "crossBiom
 # The switches "Mod enabled" stops (RM_PyrelandsSettings.Masters, SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST, 2026-10-14).
 GATED = {"ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled", "ambientAshEnabled",
          "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
-         "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "burrowOnFireEnabled", "ashWaterFertilityEnabled"}
+         "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "burrowOnFireEnabled", "ashWaterFertilityEnabled",
+         "blackRainDousingEnabled"}
 
 
 def _strip(s):
@@ -107,7 +108,7 @@ MUTANTS = [
     ("reader dropped", S + "RM_TerrainDig.cs", "RM_PyrelandsSettings.sandShovelYieldMultiplier", "1f"),
     ("reader only in a comment", S + "RM_PyrelandsGiants.cs", "RM_PyrelandsSettings.furnaceBeastGiant", "true /* RM_PyrelandsSettings.furnaceBeastGiant */"),
     ("gate dropped at a read site", S + "PlantGrowthStages.cs", GATE, "true"),
-    ("switch undeclared from the master", S + SETTINGS, '"burrowOnFireEnabled", "ashWaterFertilityEnabled")', '"ashWaterFertilityEnabled")'),
+    ("switch undeclared from the master", S + SETTINGS, '"burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled")', '"ashWaterFertilityEnabled", "blackRainDousingEnabled")'),
 ]
 
 

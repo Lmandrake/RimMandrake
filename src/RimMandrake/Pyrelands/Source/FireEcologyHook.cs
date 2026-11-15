@@ -36,6 +36,9 @@ namespace RimMandrake.Pyrelands
                   typeof(Patch_FireTick_AshAndScorchFruit), "fire-tick-ash-scorchfruit",
                   "armed; burning cells on scorchable ground lay ash (sand depth) "
                   + "and rarely seed a scorch-fruit pod");
+            Apply(h, AccessTools.Method(typeof(Fire), "TickInterval"),
+                  typeof(Patch_FireTick_BlackRainDouses), "black-rain-douses-fire",
+                  "armed; black rain deals its own Extinguish on top of vanilla rain's, so it puts a grass fire out");
             Apply(h, AccessTools.Method(typeof(FilthMaker), nameof(FilthMaker.CanMakeFilth)),
                   typeof(Patch_FilthMaker_NoAshOnAsh), "no-vanilla-ash-on-natural-ground",
                   "armed; flame leaves no Filth_Ash on natural ground here, the biome's own ash marks a burn");
@@ -305,6 +308,41 @@ namespace RimMandrake.Pyrelands
         {
             if (map == null || !c.InBounds(map)) return;
             PyrelandsAsh.RaiseTo(map, c, RM_FireEcoKernel.ScarAshLaid(PyrelandsAsh.Depth(map, c), Target(map, c, true)));
+        }
+    }
+
+    // RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: vanilla rain loses to an ember-grass fire (Extinguish 10 = -0.10 vs
+    // +0.132 growth per 150 ticks; RM_FireEcoKernel.FireSizeAfterRainBeat), so black rain, "the loop's full stop", put out nothing
+    // sooner than a clear sky (Pyrelands visit 1, rain_fire.py: both pads out at 2,250 ticks). On the fire's own 150-tick beat, after
+    // vanilla's DoComplexCalcs, black rain deals RM_PyrelandsSettings.blackRainDousing more, on the fires vanilla rain reaches.
+    public static class Patch_FireTick_BlackRainDouses
+    {
+        private static WeatherDef blackRain;
+
+        public static void Postfix(Fire __instance, int delta)
+        {
+            try
+            {
+                if (__instance == null || !__instance.Spawned || !RM_PyrelandsSettings.blackRainDousingEnabled) return;
+                if (!__instance.IsHashIntervalTick(150, delta)) return;
+                Map map = __instance.Map;
+                WeatherManager wm = map?.weatherManager;
+                if (wm == null) return;
+                if (blackRain == null) blackRain = DefDatabase<WeatherDef>.GetNamedSilentFail(RM_FireEcoKernel.BlackRainDefName);
+                if (blackRain == null) return;
+                float share = RM_FireEcoKernel.BlackRainShare(wm.curWeather == blackRain, wm.lastWeather == blackRain, wm.TransitionLerpFactor);
+                if (share <= 0f) return;
+                RoofDef roof = map.roofGrid.RoofAt(__instance.Position);
+                bool exposed = RM_FireEcoKernel.FireExposedToRain(roof != null, roof != null && roof.isThickRoof,
+                    roof != null && (__instance.Position.GetEdifice(map)?.def.holdsRoof ?? false));
+                float amount = RM_FireEcoKernel.BlackRainDouseAmount(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.blackRainDousingEnabled,
+                    RM_PyrelandsSettings.blackRainDousing, share, exposed);
+                if (amount > 0f) __instance.TakeDamage(new DamageInfo(DamageDefOf.Extinguish, amount));
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] black-rain-douses-fire: " + e.Message, 0x46E22);
+            }
         }
     }
 

@@ -203,6 +203,47 @@ namespace RimMandrake.Pyrelands
         public static readonly string[] OrdinaryRainDefNames = { "Rain", "FoggyRain", "RainyThunderstorm", "TorrentialRain" };
         public const string BlackRainDefName = "RM_FE_BlackRain";
 
+        /// <summary>RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: vanilla Fire.DoComplexCalcs, every 150 ticks: rain deals
+        /// Extinguish 10 (fireSize -0.10) and the fire grows 0.00055 x flammability x 150 (+0.132 on ember grass, Flammability 1.6), so
+        /// vanilla rain cannot put out a grass fire. Black rain adds its own Extinguish on top.</summary>
+        public const float VanillaRainExtinguishPer150 = 10f;
+        public const float FireGrowthPerTickPerFlammability = 0.00055f;
+        /// <summary>Shipped black-rain Extinguish per 150 ticks on top of vanilla rain's (RM_PyrelandsSettings.blackRainDousing).</summary>
+        public const float BlackRainDousingDefault = 40f;
+
+        /// <summary>How much of the current sky is black rain: the weather manager's blend, curWeather at lerp, lastWeather at 1 - lerp.</summary>
+        public static float BlackRainShare(bool curIsBlackRain, bool lastIsBlackRain, float transitionLerp)
+        {
+            float lerp = transitionLerp < 0f ? 0f : (transitionLerp > 1f ? 1f : transitionLerp);
+            float share = (curIsBlackRain ? lerp : 0f) + (lastIsBlackRain ? 1f - lerp : 0f);
+            return share > 1f ? 1f : share;
+        }
+
+        /// <summary>Vanilla Fire.VulnerableToRain: open sky; a thick roof never; a thin roof only where the edifice holds it.</summary>
+        public static bool FireExposedToRain(bool hasRoof, bool thickRoof, bool edificeHoldsRoof)
+        {
+            return !hasRoof || (!thickRoof && edificeHoldsRoof);
+        }
+
+        /// <summary>Black rain's extra Extinguish, dealt on vanilla's own 150-tick beat (the fire's DoComplexCalcs hash interval), scaled
+        /// by the sky's black-rain share. 0 when off or sheltered.</summary>
+        public static float BlackRainDouseAmount(bool gateOn, bool enabled, float dousePer150, float share, bool exposed)
+        {
+            if (!gateOn || !enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;
+            return dousePer150 * (share > 1f ? 1f : share);
+        }
+
+        /// <summary>One 150-tick beat of a fire's size under rain (vanilla's growth, vanilla rain, black rain's extra), capped at 1.75;
+        /// a fire under 0.1 is out (returns 0). The offline model the live rain_fire.py row checks.</summary>
+        public static float FireSizeAfterRainBeat(float fireSize, float flammability, float rainShare, float blackRainExtra)
+        {
+            float s = fireSize + FireGrowthPerTickPerFlammability * flammability * 150f;
+            if (s > 1.75f) s = 1.75f;
+            if (rainShare > 0f) s -= VanillaRainExtinguishPer150 * 0.01f;
+            s -= blackRainExtra * 0.01f;
+            return s < 0.1f ? 0f : s;
+        }
+
         /// <summary>Does the weather the decider just chose become black rain? Only an ordinary rain, only on a Pyrelands map, only
         /// with the mechanics gate on (Mod enabled, Baroque Biomes toggle); every other choice stands.</summary>
         public static bool RainBecomesBlackRain(string chosenDefName, bool pyrelandsMap, bool gateOn)

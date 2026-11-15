@@ -60,6 +60,12 @@ namespace RimMandrake.Pyrelands
         public static bool ashfallAccumulationEnabled = true;
         public static float ashfallRateMultiplier = 1f;
 
+        // RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: black rain's own Extinguish per 150 ticks on top of vanilla rain's 10
+        // (Patch_FireTick_BlackRainDouses). Vanilla rain alone loses to an ember-grass fire (-0.10 vs +0.132 fireSize per 150 ticks).
+        public static bool blackRainDousingEnabled = true;
+        public const float BlackRainDousingDefault = 40f; // the literal the settings sweep parses; equals RM_FireEcoKernel.BlackRainDousingDefault (the fuzz model)
+        public static float blackRainDousing = BlackRainDousingDefault;
+
         // Ships OFF, labelled unsupported (owner card 2026-11-13: "ship biomeGenerationEnabled OFF, labelled
         // unsupported"): players receive the frozen world and never generate one, so this switch is untested.
         public static bool biomeGenerationEnabled = false;
@@ -183,6 +189,8 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref freshBurnBonus, "freshBurnBonus", 0.50f);
             Scribe_Values.Look(ref freshBurnDays, "freshBurnDays", 6f);
             Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
+            Scribe_Values.Look(ref blackRainDousingEnabled, "blackRainDousingEnabled", true);
+            Scribe_Values.Look(ref blackRainDousing, "blackRainDousing", BlackRainDousingDefault);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
             Scribe_Values.Look(ref ambientAshHeavy, "ambientAshHeavy", false);
@@ -216,7 +224,8 @@ namespace RimMandrake.Pyrelands
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled",
-                     "burrowOnFireEnabled", "ashWaterFertilityEnabled")
+                     "burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled")
+            .Declare("blackRainDousingEnabled", "blackRainDousing")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
@@ -355,6 +364,22 @@ namespace RimMandrake.Pyrelands
                     scorchFruitChance = list.Slider(scorchFruitChance, 0.0125f, 0.15f);
                     list.Label("Per-map cap: " + scorchFruitMapCap + " (stops seeding once a map holds this many)");
                     scorchFruitMapCap = (int)list.Slider(scorchFruitMapCap, 10f, 100f);
+                }
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Black rain puts fires out", RimMandrake.Shared.SettingScope.Now, new[] { "blackRainDousingEnabled", "blackRainDousing" }))
+            {
+                using (Dependent(list, "blackRainDousingEnabled", "blackRainDousing"))
+                {
+                list.CheckboxLabeled("Black rain douses fires", ref blackRainDousingEnabled,
+                    "Black rain hits every fire it falls on (unroofed, as vanilla rain) harder than ordinary rain, so a burn goes out under it "
+                  + "while a clear-sky burn still runs. Off: black rain extinguishes only as vanilla rain does, which cannot put out a grass fire.");
+                using (Dependent(list, "blackRainDousing"))
+                {
+                    list.Label("Extra dousing: " + blackRainDousing.ToString("0") + " per 150 ticks (vanilla rain 10; default " + BlackRainDousingDefault.ToString("0") + ")");
+                    blackRainDousing = list.Slider(blackRainDousing, 0f, 100f);
                 }
                 }
                 list.GapLine();

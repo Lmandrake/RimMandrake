@@ -23,10 +23,12 @@
       weather-check interval to 25% of normal, so the roll happens ~4x more
       often while the fire is large — the switch arrives quickly once the
       fire is big enough, not on the next lazy roll.
-    - Extinguishing is equally vanilla: Fire.TickInterval (Source/RimWorld/
-      Fire.cs:~309) already applies Extinguish damage to any rain-vulnerable
-      fire whenever map.weatherManager.RainRate > 0.01 — nothing reads Black
-      Rain specially, it "rains" and vanilla's own fire code does the rest.
+    - Extinguishing is NOT vanilla alone: vanilla rain (Fire.DoComplexCalcs)
+      deals Extinguish 10 per 150 ticks (fireSize -0.10) while a fire grows
+      0.00055 x flammability x 150 (+0.132 on ember grass), so vanilla rain
+      cannot put out a grass fire (Pyrelands visit 1: black-rain and clear
+      pads both out at 2,250 ticks). Black rain adds its own Extinguish on the
+      same beat (Patch_FireTick_BlackRainDouses, setting blackRainDousing).
 
     No eventMakers on this one, deliberately — DryThunderstorm/
     RainyThunderstorm both spawn WeatherEvent_LightningStrike; Black Rain is

@@ -753,6 +753,29 @@ namespace RimMandrake.Pyrelands.Fuzz
                     // ASH_FIELD_FIX_FORGETS_THE_WATER: the Black Rain setting at 0 dries the field at once; wet-to-dry is an overlay edge.
                     Check(RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, false) && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 0f, false)
                           && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, true) && !RM_FireEcoKernel.BlackRainWaters(4000, 4000, 24f, false), "BlackRainWaters table");
+                    {   // RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: the live rain_fire.py pads, modelled on vanilla's 150-tick beat.
+                        // An ember-grass fire (Flammability 1.6) lit at 1.2: vanilla rain alone never puts it out; black rain at the
+                        // shipped dousing does within 1,250 ticks (the live bar: >= 1,000 ticks before a clear pad's 2,250).
+                        float van = 1.2f, blk = 1.2f; int blkOut = -1;
+                        for (int beat = 1; beat <= 40; beat++)
+                        {
+                            van = RM_FireEcoKernel.FireSizeAfterRainBeat(van, 1.6f, 1f, 0f);
+                            blk = RM_FireEcoKernel.FireSizeAfterRainBeat(blk, 1.6f, 1f, RM_FireEcoKernel.BlackRainDouseAmount(true, true, RM_FireEcoKernel.BlackRainDousingDefault, 1f, true));
+                            if (blk <= 0f && blkOut < 0) blkOut = beat * 150;
+                        }
+                        Check(van > 0f, "vanilla rain alone put out an ember-grass fire (the model no longer matches the measured visit)");
+                        Check(blkOut > 0 && blkOut <= 1250, "black rain at the shipped dousing does not put an ember-grass fire out within 1,250 ticks: " + blkOut);
+                        float sh = (float)r.NextDouble(), d = (float)(r.NextDouble() * 100.0);
+                        Check(RM_FireEcoKernel.BlackRainDouseAmount(true, true, d, sh, false) == 0f
+                              && RM_FireEcoKernel.BlackRainDouseAmount(false, true, d, sh, true) == 0f
+                              && RM_FireEcoKernel.BlackRainDouseAmount(true, false, d, sh, true) == 0f
+                              && RM_FireEcoKernel.BlackRainDouseAmount(true, true, d, 0f, true) == 0f, "black rain douses a sheltered, switched-off or clear-sky fire");
+                        Check(Math.Abs(RM_FireEcoKernel.BlackRainDouseAmount(true, true, d, sh, true) - d * sh) < 1e-4f, "dousing is not the setting times the sky's share");
+                        Check(Math.Abs(RM_FireEcoKernel.BlackRainShare(true, false, sh) - sh) < 1e-6f && Math.Abs(RM_FireEcoKernel.BlackRainShare(false, true, sh) - (1f - sh)) < 1e-6f
+                              && RM_FireEcoKernel.BlackRainShare(true, true, sh) == 1f && RM_FireEcoKernel.BlackRainShare(false, false, sh) == 0f, "BlackRainShare blend");
+                        Check(RM_FireEcoKernel.FireExposedToRain(false, false, false) && !RM_FireEcoKernel.FireExposedToRain(true, true, true)
+                              && !RM_FireEcoKernel.FireExposedToRain(true, false, false) && RM_FireEcoKernel.FireExposedToRain(true, false, true), "FireExposedToRain is vanilla's VulnerableToRain");
+                    }
                     Check(RM_FireEcoKernel.WateredExpiredWithin(3900, 4000, 250) && RM_FireEcoKernel.WateredExpiredWithin(4000, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(3750, 4000, 250) && !RM_FireEcoKernel.WateredExpiredWithin(4001, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(0, 100, 250) && !RM_FireEcoKernel.WateredExpiredWithin(-1, 100, 250), "WateredExpiredWithin boundaries");
