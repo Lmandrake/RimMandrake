@@ -400,6 +400,139 @@ def road_back_checks(root):
     ok(r.get("fix_item") == "FIX_LATE", "road back: the late filings get their fixer")
 
 
+STOP = {"status": "blocked", "stage": 5, "item": "CONCEPT_P", "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: stopped",
+        "history": [{"at": "2026-11-15T13:54:40Z", "what": "locked_change"},
+                    {"at": "2026-11-15T13:56:22Z", "what": "coverage_release"},
+                    {"at": "2026-11-15T14:05:35Z", "what": "coverage_stop", "why": "round 6 not_covered"}]}
+
+
+def _res(root, st, dst, tickets=(), runs=None, live=(), dec="ready", stage="offline_build", extra=None):
+    """One resolve + classify on mod P (coverage-stopped by default) -> (row, launches)."""
+    import maturation_autonomy as A
+    facts = {"P": {"version": "0.1.0", "live_units": []}}
+    for i, u in enumerate(live):
+        facts["L%d" % i] = {"version": "0.1.0", "live_units": [u]}
+    fx = {"designer_state": lambda m: dst, "version_locked": lambda m: False, "open_items": lambda ids: [],
+          "version_evidence": lambda m: [], "designer_unit": lambda m: None, "designer_chain": lambda m: None,
+          "stop_tickets": lambda m, d, s: None if tickets is None else [{"id": t} for t in tickets],
+          "ticket_runs": lambda i: (runs or {}).get(i, [])}
+    fx.update(extra or {})
+    rows = [{"mod": "P", "stage": stage, "decision": dec, "why": "decide's reading", "need": "P: ready to advance"}]
+    rows, launches = A.resolve(root, dict(CFG), st, facts, rows, [], CLOCK, fx)
+    A.classify(dict(CFG), st, rows, CLOCK)
+    return rows[0], launches
+
+
+def paused_fix_checks(root):
+    """RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED ("paused-fix"): a coverage-stopped mod's own open fix tickets (the
+    granted look's items, its road back, the fix items caused by its concept item) get their one fixer run each while
+    it stays paused, within max_live and the caps, and its status names the ticket. Watched failing on 6d8f7fe94c."""
+    import types
+    import maturation_autonomy as A
+    st = {"mods": {}}
+    r, la = _res(root, st, STOP, ["FIX_T"])
+    ok(r.get("aut") == "fixer" and r.get("fix_item") == "FIX_T" and la == ["P"] and "FIX_T" in str(r.get("status")),
+       "paused-fix: a coverage-stopped mod with an open fix ticket launches one fixer on it, its status naming it "
+       "(read %s, %s)" % (r.get("decision"), r.get("status")))
+    ok(not r.get("need"), "paused-fix: a fixer launch owes no Needs Conductor line (read %s)" % r.get("need"))
+    st = {"mods": {}}
+    r, la = _res(root, st, STOP, ["FIX_T"], live=["rm-u1", "rm-u2"])
+    ok(r.get("decision") == "slots_full" and la == [] and "FIX_T" in str(r.get("status")),
+       "paused-fix: full slots: the ticket's fixer waits, its status naming the ticket (read %s, %s)" % (
+           r.get("decision"), r.get("status")))
+    st = {"mods": {}}
+    unit = "rm-detached-bench-fix-t-1794775111"
+    r, la = _res(root, st, STOP, ["FIX_T"], runs={"FIX_T": [(unit, "running")]})
+    ok(la == [] and r.get("klass") == "wait" and unit in str(r.get("status")) and "FIX_T" in str(r.get("status")),
+       "paused-fix: a live hand run on the ticket is waited on, never doubled (read %s, %s)" % (
+           r.get("decision"), r.get("status")))
+    ok((st["mods"]["P"].get("fixers") or {}).get("FIX_T", {}).get("unit") == unit,
+       "paused-fix: the live hand run is booked as the ticket's one fixer run")
+    st = {"mods": {}}
+    r, la = _res(root, st, STOP, ["FIX_T"], runs={"FIX_T": [("rm-old", "launch_failed"), ("rm-done", "finished")]})
+    ok(la == [] and r.get("decision") == "coverage_stop" and r.get("klass") == "paused"
+       and "FIX_T" in str(r.get("status")) and "FIX_T" in str(r.get("need")),
+       "paused-fix: an earlier run on the still-open ticket counts: PAUSED naming the spent ticket, no second run "
+       "(read %s, %s)" % (r.get("decision"), r.get("status")))
+    st = {"mods": {"P": {"fixers": {"FIX_T": {"item": "FIX_T", "unit": "u9"}}}}}
+    r, la = _res(root, st, STOP, ["FIX_T", "FIX_U"])
+    ok(r.get("fix_item") == "FIX_U" and la == ["P"], "paused-fix: the next unspent ticket gets its fixer (read %s)" %
+       r.get("fix_item"))
+    for tk, what in (([], "no ticket"), (None, "an unreadable ledger")):
+        st = {"mods": {}}
+        r, la = _res(root, st, STOP, tk)
+        ok(la == [] and not r.get("aut") and r.get("decision") == "coverage_stop" and "PAUSED" in str(r.get("status")),
+           "paused-fix: %s: PAUSED on the stop as before, never launched on (read %s)" % (what, r.get("decision")))
+    # the default ticket reader: grant items, road-back items, fix items caused by the concept's item; open ones only
+    it = lambda st_, kind, cb: types.SimpleNamespace(state=st_, kind=kind, caused_by=cb)     # noqa: E731
+    items = {"FIX_G": it("ready", "task", None), "FIX_K": it("proposed", "fix", "CONCEPT_P"),
+             "BUILD_K": it("proposed", "build", "CONCEPT_P"), "FIX_DONE": it("done", "fix", "CONCEPT_P"),
+             "FIX_R": it("doing", "task", "ROUTE_P"), "FIX_OTHER": it("ready", "fix", "CONCEPT_Q")}
+    dst = dict(STOP, coverage_release_granted={"at": "x", "why": "y", "after": ["FIX_G", "FIX_NEVER"]})
+    got = A.stop_tickets(dst, {"road_back": {"caused_by": "ROUTE_P"}}, items) if hasattr(A, "stop_tickets") else None
+    ok([x["id"] for x in got or []] == ["FIX_G", "FIX_R", "FIX_K"],
+       "paused-fix: the default reader finds the granted, road-back and concept fix tickets, open only, in that order "
+       "(read %s)" % [x["id"] for x in got or []])
+
+
+def final_look_checks(root):
+    """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE ("final look"): a stop after the final look (a release coverage_judge
+    applied from a grant) is the owner's: an OWNER card naming coverage_verdict.json, even after a later locked change;
+    a stop after a plain release stays PAUSED. Watched failing on 6d8f7fe94c."""
+    rel = {"at": "2026-11-15T15:00:00Z", "why": "per d_x", "final": True, "granted_at": "2026-11-15T14:30:00Z",
+           "after": ["FIX_T"]}
+    hist = STOP["history"] + [{"at": "2026-11-15T14:58:00Z", "what": "locked_change"},
+                              {"at": "2026-11-15T15:00:00Z", "what": "coverage_release"},
+                              {"at": "2026-11-15T15:20:00Z", "what": "coverage_stop", "why": "round 7 not_covered"}]
+    dst = dict(STOP, history=hist, coverage_releases=[rel])
+    r, la = _res(root, {"mods": {}}, dst, ["FIX_T"])
+    ok(r.get("klass") == "owner" and la == [] and "final look" in str(r.get("card"))
+       and "coverage_verdict.json" in str(r.get("card")),
+       "final look: a stop after the final look is an OWNER card naming coverage_verdict.json, no fixer (read %s, %s)" % (
+           r.get("decision"), str(r.get("card"))[:100]))
+    dst2 = dict(dst, status="ready", history=hist + [{"at": "2026-11-15T16:00:00Z", "what": "locked_change"}])
+    r, la = _res(root, {"mods": {}}, dst2, [], dec="not_offline", stage="designer")
+    ok(r.get("klass") == "owner" and la == [], "final look: a locked change after it is still his, never a chain "
+       "(read %s)" % r.get("decision"))
+    dst3 = dict(dst, coverage_releases=[dict(rel, final=False)])
+    r, la = _res(root, {"mods": {}}, dst3, [])
+    ok(r.get("decision") == "coverage_stop", "final look: a stop after a plain release stays PAUSED (read %s)" %
+       r.get("decision"))
+
+
+def exam_gate_checks(root):
+    """RIMMANDRAKE_RETAKE_FAILING_EXAM_NOT_SILENT ("exam gate"): a stage-5 concept whose exam fails its gate is owed
+    work: one exam_retake steward whose brief is roles/designer_exam.md in full; a spent retake is PAUSED with the
+    gate's text; a passing exam stays a Designer wait. Watched failing on 6d8f7fe94c."""
+    import maturation_autonomy as A
+    ds = {"status": "ready", "stage": 5, "history": []}
+    errs = ["exam: no scenario is the Challenger's", "exam: no control copy"]
+    gate = {"exam_gate": lambda m: (errs, "treehash123456")}
+    st = {"mods": {}}
+    r, la = _res(root, st, ds, dec="not_offline", stage="designer", extra=gate)
+    ok(r.get("aut") == "steward" and r.get("steward_kind") == "exam_retake" and la == ["P"]
+       and "exam fails its gate" in str(r.get("status")),
+       "exam gate: a failing exam launches one exam_retake steward, its status saying so (read %s, %s)" % (
+           r.get("decision"), r.get("status")))
+    brief = A.steward_brief(root, "P", r) if r.get("aut") else ""
+    ok("roles/designer_exam.md" in brief and "Challenger" in brief and "no control copy" in brief,
+       "exam gate: the retake brief names roles/designer_exam.md and the gate's errors")
+    name = A.item_name(dict(r, mod="Pyrelands"), set()) if r.get("aut") else ""
+    ok(name == "RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_FAILING_ITS_GATE", "exam gate: its item is named for it (read %s)" %
+       name)
+    st["mods"]["P"]["steward"] = {r.get("steward_key"): {"item": name, "unit": "rm-u7"}}
+    r, la = _res(root, st, ds, dec="not_offline", stage="designer", extra=gate)
+    ok(r.get("klass") == "paused" and la == [] and "exam fails its gate" in str(r.get("status")),
+       "exam gate: a spent retake on the same tree is PAUSED with the gate's text (read %s)" % r.get("status"))
+    r, la = _res(root, {"mods": {}}, ds, dec="not_offline", stage="designer",
+                 extra={"exam_gate": lambda m: ([], "treehash123456")})
+    ok(r.get("decision") == "designer_wait" and la == [], "exam gate: a passing exam stays a Designer wait (read %s)" %
+       r.get("decision"))
+    r, la = _res(root, {"mods": {}}, dict(ds, stage=3), dec="not_offline", stage="designer", extra=gate)
+    ok(r.get("decision") == "designer_wait", "exam gate: before stage 5 the exam is not read (read %s)" %
+       r.get("decision"))
+
+
 def main():
     if os.environ.get("MAT_AUT_BASE_DIR"):
         print("against the base dispatcher in %s" % os.path.dirname(MD.__file__))
@@ -604,6 +737,9 @@ def main():
         rs = routes.get("routes", routes) if isinstance(routes, dict) else routes
         ok("maturation.stalled" in json.dumps(rs), "alarm_routes.json routes maturation.stalled")
         road_back_checks(root)
+        paused_fix_checks(root)
+        final_look_checks(root)
+        exam_gate_checks(root)
         designer_lock_checks(root)
         launch_retry_checks(root)
     finally:

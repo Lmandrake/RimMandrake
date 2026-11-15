@@ -247,6 +247,80 @@ def chain_owed(dst):
     return lc[-1] if all(t > a for a in after) else None
 
 
+def final_stop(dst):
+    """-> (release, stop) when judging stopped after the FINAL look (a release coverage_judge applied from his grant,
+    RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE) and nothing he does (a lock, another release) has followed the stop: the
+    next step is his, so a later locked change owes no chain and no fixer runs. Else None."""
+    if not isinstance(dst, dict) or not isinstance(dst.get("coverage_releases"), list) or not dst["coverage_releases"]:
+        return None
+    rel = dst["coverage_releases"][-1]
+    if not (isinstance(rel, dict) and rel.get("final")):
+        return None
+    t = _iso_ts(rel.get("at")) or 0
+    hist = [h for h in dst.get("history") or [] if isinstance(h, dict)]
+    stops = [h for h in hist if h.get("what") == "coverage_stop" and (_iso_ts(h.get("at")) or 0) > t]
+    if not stops:
+        return None
+    ts = _iso_ts(stops[-1].get("at")) or 0
+    if any(h.get("what") in ("coverage_release", "lock") and (_iso_ts(h.get("at")) or 0) > ts for h in hist):
+        return None
+    return rel, stops[-1]
+
+
+_LEDGER = {}
+
+
+def ledger_items():
+    """-> {id: Item} from the whole ledger (model.replay), read once per process."""
+    if "items" not in _LEDGER:
+        import model
+        _LEDGER["items"] = model.replay(model.read()).items
+    return _LEDGER["items"]
+
+
+def stop_tickets(dst, s, items):
+    """-> [{id}] the coverage-stopped concept's OWN open fix tickets, in order: the items his granted look waits on
+    (coverage_release_granted.after), its open road back's items (any kind), and the kind-fix items caused by the
+    concept's item. RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED: they get their fixer runs while the mod stays paused."""
+    import model
+    want, out = [], []
+    g = dst.get("coverage_release_granted") if isinstance(dst, dict) else None
+    want += [i for i in (g or {}).get("after") or [] if i in items]
+    rb = (s or {}).get("road_back")
+    cbs = set(_road_back_ids(s, rb)) if rb else set()
+    want += sorted(i for i, x in items.items() if cbs and x.caused_by in cbs)
+    if isinstance(dst, dict) and dst.get("item"):
+        want += sorted(i for i, x in items.items() if x.kind == "fix" and x.caused_by == dst["item"])
+    for i in want:
+        if i not in out and items[i].state and items[i].state not in model.TERMINAL:
+            out.append(i)
+    return [{"id": i} for i in out]
+
+
+def ticket_runs(item):
+    """-> [(unit, status)] of the detached runs launched on this item (a hand launch counts as its one fixer run)."""
+    import detached_helper as DH
+    return [(r.get("unit"), r.get("status")) for r in DH.all_records() if r.get("item") == item]
+
+
+def exam_gate(root, mod):
+    """-> (errors, tree hash): the gate coverage_judge.plan reads before a stage-5 look (an exam that does not pass makes
+    it skip). ([], None) when the concept is not at stage 5, is parked, or has no real tree."""
+    import concept_tree as CT
+    import designer_stage as DS
+    d = os.path.join(root, "design", "concepts", mod)
+    st = DS.read_json(os.path.join(d, "stage.json"), {}) or {}
+    if st.get("stage") != 5 or DS.standing_park(st, d, root):
+        return [], None
+    try:
+        tree = CT.load(d)
+    except (OSError, ValueError):
+        return [], None
+    if not isinstance(tree, dict) or tree.get("dry_walk") is True:
+        return [], None
+    return DS.exam_errors(DS.read_json(os.path.join(d, "exam.json")), d, st, root), CT.tree_hash(tree)
+
+
 def version_locked(root, mod):
     v, _ = M.read_json(root, mod, "version/VERSION.json")
     return str((v or {}).get("state") or "").startswith("locked")
@@ -349,7 +423,7 @@ def autolock_and_land(root, mod, now=None, land=None):
 
 def _steward(row, kind, key, why, brief_need):
     row.update(aut="steward", steward_kind=kind, steward_key=key, decision="steward", why=why, need=None)
-    row["steward_need"] = brief_need
+    row["steward_need"], row["steward_why"] = brief_need, why
 
 
 def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
@@ -375,8 +449,22 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             queue.setdefault(mod, now)
         elif dec in LAUNCH or f.get("owed") != "run":
             queue.pop(mod, None)
-        cs = None if dec in ("live", "settling") else coverage_stopped(dstate(mod))
-        if cs:
+        dst = None if dec in ("live", "settling") else dstate(mod)
+        fs, cs = final_stop(dst), coverage_stopped(dst)
+        if fs:
+            rel, stop = fs
+            row.update(decision="owner", aut=None,
+                       why="judging stopped %s after the final look he granted (%s): %s" % (
+                           stop.get("at"), rel.get("granted_at") or rel.get("at"),
+                           str(stop.get("why") or "no reason written")[:300]),
+                       card="%s: the final look (granted %s, after %s) ran at %s and judging stopped %s: %s. Judging "
+                            "stays stopped; the next step is his. Evidence: design/concepts/%s/coverage_verdict.json "
+                            "and stage.json." % (mod, rel.get("granted_at") or "-", ", ".join(rel.get("after") or [])
+                                                 or "nothing", rel.get("at"), stop.get("at"),
+                                                 str(stop.get("why") or "no reason written")[:400], mod))
+            row["need"] = "%s: OWNER, judging stopped after the final look; the next step is his" % mod
+            launches = [m for m in launches if m != mod]
+        elif cs:
             row.update(decision="coverage_stop", aut=None, why="judging stopped %s: %s; `coverage_judge.py release "
                        "design/concepts/%s --why ...` (one more look, on his word) un-pauses it" % (
                            cs.get("at"), str(cs.get("why") or "no reason written")[:300], mod))
@@ -384,6 +472,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row["need"] = ("%s: PAUSED, coverage judging stopped %s; nothing moves on it until `coverage_judge.py "
                            "release design/concepts/%s --why ...` (one more look, on his word)" % (mod, cs.get("at"), mod))
             launches = [m for m in launches if m != mod]
+            _stop_tickets(fx, row, s, dst, now)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
                 _road_back(s, row, open_items, now, moved=True):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
@@ -395,7 +484,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
-                   fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence)
+                   fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
+                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)))
         if row.get("aut") == "autolock":
             # the pipeline's lock is an act, not a run: no slot; tried once (transient faults up to launch_tries)
             x = (s.get("steward") or {}).get(row["steward_key"])
@@ -416,8 +506,44 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                 live_total = None if live_total is None else live_total + 1
                 launches = [m for m in launches if m != mod] + [mod]
             else:
-                row.update(decision=why[0], why=why[1], aut=None)
+                if why[0] == "slots_full":
+                    row["waits_on"] = "a free slot for the %s run on %s" % (
+                        row["aut"], row.get("fix_item") or row.get("steward_kind"))
+                row.update(decision=why[0], aut=None, why=why[1] + (
+                    "; it was for: %s" % str(row["steward_why"])[:300] if row.get("steward_why") else ""))
     return rows, launches
+
+
+def _stop_tickets(fx, row, s, dst, now):
+    """RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED: a coverage-stopped mod stays paused, but its own open fix tickets get
+    one fixer run each (the road-back fixer, extended): a live run on a ticket is waited on and booked as its run, an
+    earlier run on it counts as spent, and the status names the ticket. No ticket or an unreadable ledger: as before."""
+    try:
+        tk = fx["stop_tickets"](row["mod"], dst, s) if "stop_tickets" in fx else stop_tickets(dst, s, ledger_items())
+    except Exception:       # noqa: BLE001  an unreadable ledger leaves the plain pause
+        tk = None
+    if not tk:
+        return
+    runs_of = fx.get("ticket_runs", ticket_runs)
+    fixed = s.setdefault("fixers", {})
+    for t in tk:
+        for unit, status in runs_of(t["id"]):
+            if status == "launch_failed":
+                continue
+            fixed.setdefault(t["id"], {"item": t["id"], "unit": unit, "hand": True, "at": now})
+            if status in ("launching", "running"):
+                row.update(decision="live", waits_on="%s (fix ticket %s)" % (unit, t["id"]), need=None,
+                           why="judging stopped and stays paused; its fix ticket %s has a live run %s" % (t["id"], unit))
+                return
+    todo = [t["id"] for t in tk if t["id"] not in fixed]
+    ids = ", ".join(t["id"] for t in tk)
+    if todo:
+        row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None,
+                   why="judging stopped; its fix ticket %s (of %d open: %s) gets one fixer run while the mod stays "
+                       "paused" % (todo[0], len(tk), ids))
+    else:
+        row["why"] += "; every open fix ticket (%s) has had its one fixer run and is still open" % ids
+        row["need"] += "; its open fix tickets (%s) have each had their one fixer run" % ids
 
 
 def classify(cfg, st, rows, now):
@@ -492,7 +618,7 @@ def _after_road_backs(s, key):
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
-           fx_evidence=None):
+           fx_evidence=None, fx_exam=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -501,8 +627,12 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "a locked change landed %s and no coverage look has followed it: re-pin, Cold Reader exam retake, "
                  "ONE coverage-judge look" % lc.get("at"),
                  "the locked change of %s (%s): check its re-pin (designer_stage.py repin, already done when the history "
-                 "says re-pinned), retake the Cold Reader exam on the new tree, then give it ONE coverage-judge look "
-                 "(coverage_judge.py release <dir> --why ..., then run). Never a second look." % (
+                 "says re-pinned), retake the Cold Reader exam on the new tree by "
+                 "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
+                 "copy included: an exam failing its gate makes the judge skip), then give it ONE coverage-judge look "
+                 "(coverage_judge.py release <dir> --why ..., then run; when stage.json holds coverage_release_granted, "
+                 "the judge applies that grant itself once its items close: release nothing by hand). Never a second "
+                 "look." % (
                      lc.get("at"), str(lc.get("why"))[:300]))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
@@ -519,7 +649,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
     if stage in (UNM, "designer", "intake") or stage is None:
-        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain, evidence=fx_evidence)
+        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain, evidence=fx_evidence, exam=fx_exam)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
@@ -540,7 +670,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
             row["road_back_after"] = after
 
 
-def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None, evidence=None):
+def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None, evidence=None, exam=None):
     if dst is None:
         row.update(decision="designer_unreadable", why="design/concepts/%s/stage.json cannot be read" % mod)
         return
@@ -597,6 +727,13 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
                        "chained %d runs on it today, the most is %d (chain_max_per_day): no run-now is asked until "
                        "tomorrow; look at its stage history, then `role_launch.py run-now --role Designer --concept "
                        "design/concepts/%s --by Conductor --why \"...\" --apply` un-pauses it" % (stg, stt, cc[0], cc[1], mod))
+            return
+        errs, th = exam(mod) if exam and stg == 5 and not unit else ([], None)
+        if errs:
+            # RIMMANDRAKE_RETAKE_FAILING_EXAM_NOT_SILENT: coverage_judge skips a stage-5 concept whose exam fails its
+            # gate, so nothing ever moved it; the retake is owed work, once per tree
+            _steward(row, "exam_retake", "%s|exam_retake|%s" % (ver, str(th)[:12]),
+                     "exam fails its gate: %s" % "; ".join(errs)[:400], "; ".join(errs))
             return
         row.update(decision="designer_wait", waits_on=unit,
                    why="the Designer stands at stage %s (%s): %s" % (stg, stt, "its run %s is live" % unit if unit else
@@ -662,6 +799,10 @@ def _klass(cfg, s, row, now, queue):
     dec = row.get("decision")
     if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "autolock")):
         k, txt = "launch", "moving: %s %s" % (row.get("aut") or "run", row.get("unit") or row.get("item") or "")
+        if row.get("fix_item") and row["fix_item"] not in txt:
+            txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
+        if row.get("steward_why"):
+            txt = "%s for: %s" % (txt.rstrip(), str(row["steward_why"])[:200])
     elif dec in WAIT:
         on = row.get("waits_on")
         if on is None and dec != "designer_wait":
@@ -742,6 +883,17 @@ def steward_brief(root, mod, row):
                     "advance with --steward-confirms naming the run and the verdict read; if not, file what is wrong "
                     "as named items caused by this item and do not advance.",
         "ready": "Every exit test passes: advance the mod one stage (no confirmation is owed).",
+        "exam_retake": "The concept stands at Designer stage 5 and its Cold Reader exam fails its gate, so the coverage "
+                       "judge skips it and nothing else moves it. The gate reads: %s. Retake the exam by "
+                       "src/RimMandrake/rimflow/roles/designer_exam.md IN FULL (read the whole file first): frozen "
+                       "inputs, the Examiner's scenarios, the Challenger's scenarios (a second fresh agent), the "
+                       "Readers, and the control copy (`designer_stage.py exam-control design/concepts/%s --leaf <id>`, "
+                       "its control Reader's missed_ids). Its Examiner, Challenger, Readers and control Reader are "
+                       "fresh subagents you start (opus or sonnet), as that file says; they are not pipeline runs. "
+                       "Never edit tree.json, the sheet or the scenes. Done when `designer_stage.py check "
+                       "design/concepts/%s` passes and `coverage_judge.py status design/concepts/%s` no longer reads "
+                       "\"the exam does not pass\"; land exam.json and exam_control/ with ./publish." % (
+                           row.get("steward_need") or row.get("why"), mod, mod, mod),
         "hand_step": "Only hand steps remain (%s): read what each asks and pass --steward-confirms if it holds; if it "
                      "does not, file the gap as a named item caused by this item." % ", ".join(row.get("hand_steps") or []),
     }.get(kind, row.get("steward_need") or row.get("why"))
@@ -781,6 +933,7 @@ def item_name(row, known):
             "ready": "RIMMANDRAKE_ADVANCE_%s_PAST_%s" % (mod, str(row.get("stage")).upper()),
             "hand_step": "RIMMANDRAKE_CONFIRM_%s_%s_HAND_STEPS" % (mod, str(row.get("stage")).upper()),
             "chain": "RIMMANDRAKE_RETAKE_%s_EXAM_AFTER_LOCKED_CHANGE" % mod,
+            "exam_retake": "RIMMANDRAKE_RETAKE_%s_EXAM_FAILING_ITS_GATE" % mod,
             "designer_locked": "RIMMANDRAKE_ADVANCE_%s_LOCKED_VERSION_TO_PREFLIGHT" % mod,
             "stage": "RIMMANDRAKE_STEWARD_%s_%s_STAGE" % (mod, str(row.get("stage")).upper()),
             }.get(kind, "RIMMANDRAKE_STEWARD_%s_HAND_STEP" % mod)
