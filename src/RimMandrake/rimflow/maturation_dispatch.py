@@ -45,6 +45,18 @@ At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MOD
                 already spent (blind_auto_cycles_per_visit, 1), or a hand-launched blind run worked on the cycle and wrote
                 nothing: a Needs Conductor line, never a second automatic cycle
   held | blocked | blind_off | no_cap | account_hold | slots_full   as for the offline build
+At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST), per advancing mod, one of:
+  launch        visit N (the moves into in_game) is owed (no visit_N folder), nothing live or just ended on it, no
+                in-game run since it opened, no automatic run yet this visit, no in-game run live on ANY mod (one
+                live-game driver at a time across all mods), and `rimflow bridge idle` says takeable: one live driver
+                (opus, ingame_cap_usd), item RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (needs game-up)
+  ingame_off    ingame_enabled is false: a Needs Conductor line. It ships false: the timer starts no live run until
+                the Conductor has run the first one by hand and set it true
+  driver_busy | bridge_held   an in-game run is live on some mod, or the bridge is not takeable (another seat, a live
+                driver lock, his OWNER hold): nothing this tick
+  exit_met | exit_not_met | visit_unfinished   visit N is recorded (maturation.read_ingame_exit): a Needs Conductor line
+  stopped | auto_spent | hand_run_seen | live | settling | held | blocked | no_cap | account_hold | slots_full
+                as for the blind challenge (ingame_auto_runs_per_visit, 1)
 The program never judges, rejects or sends a mod back, never takes the bridge or a game, never runs `advance`.
 
 The reading (<RM_DISPATCHER_STATE>/maturation/reading.json, RM_MATURATION_DISPATCH_DIR overrides the folder) carries
@@ -57,6 +69,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -161,8 +174,29 @@ def gather(root, cfg, live=True):
                             for r in runs if r.get("unit")}
         else:
             f["live_units"] = UNM
-        out[mod] = add_blind(root, mod, f, runs if isinstance(runs, list) else [])
+        out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
+                              runs if isinstance(runs, list) else [])
     return out
+
+
+def _is_ingame_item(item):
+    """An in-game run's item names IN_GAME_ACCEPTANCE or IN_GAME_VISIT (this step's names, and the one `maturation.py
+    next` suggests for a hand launch); a bare IN_GAME is not enough (this launcher's own build item has one)."""
+    return bool(re.search(r"IN_GAME_(ACCEPTANCE|VISIT)", str(item or "").upper()))
+
+
+def add_ingame(root, mod, f, runs):
+    """ingame_live (every mod): the live runs whose item names an in-game run (_is_ingame_item), for the one-driver rule.
+    At in-game acceptance also maturation.ingame_facts (visit, exit reading, owed) and ingame_runs, the in-game runs
+    started since the visit opened (10 min of slack, as for the blind challenge)."""
+    f["ingame_live"] = [r.get("unit") for r in runs or [] if r.get("live") and _is_ingame_item(r.get("item"))]
+    if f.get("stage") != "in_game":
+        return f
+    f.update(M.ingame_facts(root, mod))
+    t0 = _ts(f.get("opened"))
+    f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item"))
+                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
+    return f
 
 
 def add_blind(root, mod, f, runs):
@@ -198,14 +232,16 @@ def account_gate(sched_path=None, dstate=None):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
-def decide(cfg, st, facts, now, account=(True, "")):
+def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
     """-> (rows, launches). Pure over (cfg, st, facts): it mutates st (watch, stop, owed_since) and returns one row per
-    advancing mod and the mods to launch, in list order. Never launches on a mod twice in one tick."""
+    advancing mod and the mods to launch, in list order. Never launches on a mod twice in one tick, and at most one
+    in-game run in all. bridge(purpose) -> (takeable, why) is asked only for an in-game launch otherwise decided."""
     rows, launches = [], []
     cap = cfg.get("cap_usd")
     cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
     mods = st.setdefault("mods", {})
     live_total = sum(len(f["live_units"]) for f in facts.values() if isinstance(f.get("live_units"), list))
+    drivers = [u for f in facts.values() for u in (f.get("ingame_live") or [])]
     for mod in cfg.get("advancing") or []:
         f = facts.get(mod) or {"stage": UNM}
         s = mods.setdefault(mod, {})
@@ -227,10 +263,19 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 live_total += 1
                 launches.append(mod)
             continue
+        if f.get("stage") == "in_game":
+            s.pop("owed_since", None)
+            s.pop("watch", None)
+            if decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge):
+                live_total += 1
+                drivers.append("(this tick: %s)" % mod)
+                launches.append(mod)
+            continue
         if f.get("stage") != "offline_build":
             s.pop("owed_since", None)
             s.pop("watch", None)
-            put("not_offline", "stands at %s; only the offline build and the blind challenge launch from here%s" % (
+            put("not_offline", "stands at %s; only the offline build, the blind challenge and in-game acceptance "
+                "launch from here%s" % (
                 f.get("stage"), " (the Designer stays his)" if f.get("stage") in (UNM, "designer", "intake") else ""))
             continue
         live = f.get("live_units")
@@ -412,6 +457,119 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total):
     return True
 
 
+def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge):
+    """One decision for an advancing mod at in-game acceptance -> True to launch its live driver. At most
+    ingame_auto_runs_per_visit (1) automatic runs per visit (keyed by the version and the visit number), one live-game
+    driver at a time across all mods (drivers: the live in-game runs), only when the bridge is takeable, and only with
+    ingame_enabled true (it ships false: the Conductor runs the first visit by hand). Every ended visit is a Needs
+    Conductor line; the program never advances and never takes the bridge itself."""
+    mod, n = f.get("mod"), f.get("visit")
+    ex = f.get("exit") or {}
+    vid = "%s#%s" % (f.get("version"), n)
+    ours = [x for x in s.get("ingame_auto") or [] if x.get("visit_id") == vid]
+    row.update(visit=n, exit=ex.get("state"))
+    summ = "%s/SUMMARY.md" % ex.get("record", "the visit record")
+    live = f.get("live_units")
+    if not isinstance(live, list):
+        put("blind", "the detached-run records could not be read; nothing launches on a blind reading",
+            "the run records are unreadable, so the Dispatch step launches nothing on it")
+        return False
+    if live:
+        put("live", "%s is live on it (in-game visit %s)" % (", ".join(live), n))
+        return False
+    le, settle = f.get("last_end"), float(cfg.get("settle_s", 180))
+    if isinstance(le, (int, float)) and 0 <= now - le < settle:
+        put("settling", "a run ended %d s ago; in-game visit %s is read %d s after the end, not before" % (
+            now - le, n, settle))
+        return False
+    owed = f.get("owed")
+    if owed == "blocked":
+        b = "; ".join(f.get("blocked") or [])
+        put("held" if "hold" in b else "blocked", b)
+        return False
+    if owed == "exit met":
+        put("exit_met", "in-game visit %s: exit met (%s)" % (n, (ex.get("why") or ["-"])[0]),
+            "in-game visit %s: exit met (a program's reading of %s); the steward reads it and confirms: maturation.py "
+            "advance %s --to pre_human --steward-confirms \"...\" (a Conductor step; the program never advances)"
+            % (n, summ, mod))
+        return False
+    if owed == "exit not met":
+        put("exit_not_met", "; ".join((ex.get("why") or [])[:3]),
+            "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and sends "
+            "each failed line item down its road back" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
+        return False
+    if owed == "no exit block":
+        put("visit_unfinished", "nothing is live and %s has no exit block" % summ,
+            "in-game visit %s has a record (%s) with no exit block and nothing live on it; nothing launches: the "
+            "Conductor reads it (and checks the game was left closed or healthy)" % (n, summ))
+        return False
+    if owed != "run":
+        put("blind", "in-game acceptance's state cannot be read (%s)" % owed,
+            "in-game acceptance's state cannot be read (%s); nothing launches" % owed)
+        return False
+    mine = [x for x in ours if x.get("visit") == n]
+    if mine:
+        x = mine[-1]
+        why = ("the automatic launch of in-game visit %s failed: %s" % (n, x.get("failed")) if x.get("failed") else
+               "the automatic in-game visit %s (%s) ended and wrote no record" % (n, x.get("unit")))
+        put("stopped", why, "stopped, %s; never a second automatic try" % why)
+        return False
+    per = int(cfg.get("ingame_auto_runs_per_visit", 1))
+    if len(ours) >= per:
+        put("auto_spent", "the visit's %d automatic run(s) are spent" % per,
+            "in-game visit %s is open and its automatic run is spent; launch it by hand: maturation.py launch %s "
+            "--budget-usd <cap> --item <ID>" % (n, mod))
+        return False
+    if f.get("ingame_runs"):
+        put("hand_run_seen", "in-game run(s) %s worked on visit %s and wrote no visit_%s folder" % (
+            ", ".join(f["ingame_runs"]), n, n),
+            "in-game run(s) %s worked on visit %s since it opened and wrote no record; nothing launches: the Conductor "
+            "reads what it left (and checks the game was left closed or healthy)" % (", ".join(f["ingame_runs"]), n))
+        return False
+    if not cfg.get("ingame_enabled"):
+        put("ingame_off", "ingame_enabled is off in maturation_dispatch.json",
+            "in-game visit %s is owed; the Dispatch step's live launches are off until the Conductor has run the first "
+            "by hand (maturation.py launch %s --budget-usd <cap> --item <ID>, then ingame_enabled true)" % (n, mod))
+        return False
+    cap = cfg.get("ingame_cap_usd")
+    if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
+        put("no_cap", "the settings have no positive ingame_cap_usd; no live driver launches without a cap")
+        return False
+    if not account[0]:
+        put("account_hold", account[1])
+        return False
+    if drivers:
+        put("driver_busy", "an in-game run is live (%s): one live-game driver at a time across all mods" % (
+            ", ".join(drivers)))
+        return False
+    if live_total >= int(cfg.get("max_live", 2)):
+        put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+        return False
+    go, why = (bridge or (lambda p: M.bridge_idle(p, cfg.get("seat", "BENCH"))))(
+        "%s in-game acceptance visit %s" % (mod, n))
+    if not go:
+        put("bridge_held", "the bridge is not takeable: %s" % why)
+        return False
+    row.update(cap=cap, visit_id=vid)
+    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run, bridge %s (%s)" % (
+        n, why, account[1]))
+    return True
+
+
+def ingame_item_id(mod, visit, known):
+    """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (64 at most)."""
+    base = "RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_%s" % (mod.upper(), word(visit or 0))
+    if len(base) > 64:
+        base = "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (mod.upper(), word(visit or 0))
+    if base not in known:
+        return base
+    for k in range(2, 20):
+        cand = "%s_RUN_%s" % (base, ONES[k])
+        if cand not in known and len(cand) <= 64:
+            return cand
+    return None
+
+
 def blind_item_id(mod, cycle, known):
     """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST (64 chars at most)."""
     base = "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s_TESTS_FIRST" % (mod.upper(), word(cycle or 0))
@@ -437,7 +595,7 @@ def _ingest():
     return ing
 
 
-def file_and_publish(item, title, why):
+def file_and_publish(item, title, why, needs="offline"):
     """Spawn the build item as RUNNER under this item (the way ops_watch files its alarms: DISPATCHER only notes) and
     publish the RUNNER shard, under the dispatch clone's ingest lock; detached_helper refuses an item not filed on
     origin/main. -> (ok, text)."""
@@ -447,7 +605,7 @@ def file_and_publish(item, title, why):
         return False, "ingest.lock stayed busy; nothing filed"
     try:
         ing = _ingest()
-        rc, out = ing.rimflow("spawn", "--from", ITEM, "--for", "RELENTLESS", "--needs", "offline", "--name", item,
+        rc, out = ing.rimflow("spawn", "--from", ITEM, "--for", "RELENTLESS", "--needs", needs, "--name", item,
                               "--title", title, "--why", why)
         if rc:
             return False, "spawn refused: %s" % out
@@ -465,8 +623,10 @@ def known_items():
 def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
     do_file = fx.get("file", file_and_publish)
-    do_launch = fx.get("launch", lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model=cfg.get("model", "opus"),
-                                                                     seat=cfg.get("seat", "BENCH")))
+    do_launch = fx.get("launch", lambda mod, cap, item: M.launch_mod(
+        root, mod, cap, item, seat=cfg.get("seat", "BENCH"),
+        model=cfg.get("ingame_model", "opus") if (M.load(root, mod) or {}).get("stage") == "in_game"
+        else cfg.get("model", "opus")))
     known = fx["known"]() if "known" in fx else known_items()
     done = []
     for row in rows:
@@ -474,6 +634,31 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             continue
         mod, s = row["mod"], st["mods"][row["mod"]]
         blind = row.get("stage") == "blind_challenge"
+        if row.get("stage") == "in_game":
+            item = ingame_item_id(mod, row.get("visit"), known)
+            title = ("%s Stage 6: in-game acceptance visit %s, one live driver on the bridge (launched by the Dispatch "
+                     "step)" % (mod, row.get("visit")))
+            why = ("delegated: maturation_dispatch.py; in-game visit %s is owed (no visit_%s folder), nothing live or "
+                   "recorded on it, no other live-game driver, the bridge takeable, measured %s" % (
+                       row.get("visit"), row.get("visit"), pac(now)))
+            ok, text = do_file(item, title, why, needs="game-up") if item else (False, "no free item name")
+            unit = None
+            if ok:
+                rc, text2, unit = do_launch(mod, row["cap"], item)
+                text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
+                ok = rc == 0 and bool(unit)
+            # launched or failed, it is the visit's automatic run: never a second try (the owner's condition)
+            s.setdefault("ingame_auto", []).append({"visit_id": row.get("visit_id"), "visit": row.get("visit"),
+                                                    "unit": unit if ok else None, "item": item, "at": now,
+                                                    "cap": row.get("cap"), "failed": None if ok else text})
+            if ok:
+                row.update(decision="launched", unit=unit, item=item, why=text)
+                known.add(item) if isinstance(known, set) else None
+                done.append(row)
+            else:
+                row.update(decision="launch_failed", why=text,
+                           need="%s: the in-game launch failed (%s); the step will not retry it on its own" % (mod, text))
+            continue
         if blind:
             item = blind_item_id(mod, row.get("cycle"), known)
             title = ("%s Stages 4 and 5: blind challenge cycle %s, tests first, offline (launched by the Dispatch step)"
@@ -534,7 +719,7 @@ def reading(cfg, rows, now):
                          if r.get("decision") == "launched"],
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
-                                                       "idle_min", "stage_usd", "cycle", "exit")} for r in rows}}
+                                                       "idle_min", "stage_usd", "cycle", "visit", "exit")} for r in rows}}
 
 
 def tick(root, cfg, apply, fx=None, now=None, page=True):
@@ -544,7 +729,7 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
     st = _read(os.path.join(d, "state.json"), {})
     facts = fx["facts"]() if "facts" in fx else gather(root, cfg)
     account = fx["account"]() if "account" in fx else account_gate()
-    rows, launches = decide(cfg, st, facts, now, account)
+    rows, launches = decide(cfg, st, facts, now, account, bridge=fx.get("bridge"))
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:

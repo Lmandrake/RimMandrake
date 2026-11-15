@@ -40,6 +40,13 @@ files, its sealed "Steward's decisions" from the journal's intervention lines si
 N's exit block and checks it against the record's files (read_exit; FORMAT_NOTES.md), names the launch when no cycle_N
 folder exists, and keeps steward_confirms a hand step; `launch` launches one judge (opus or fable) when cycle N is owed.
 
+At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST): `brief` writes the live
+driver's brief for visit N (N = the moves into in_game; the visit_N folder is its record): every stage-6 check of the
+test table with its exact command, what the newest blind cycle left owed to Stage 6, the bridge rules; `next` reads
+visit N's exit block against its files (read_ingame_exit) and names the launch when no visit_N folder exists; `launch`
+launches one live driver (opus) when visit N is owed and `rimflow bridge idle` says the bridge is takeable, and never
+takes the bridge itself.
+
 What is settled and tested here, and what stays a hand step (the open question named), is the plan's section 3 table.
 This program has no timer and never retries; `launch` is the only way it starts work, through detached_helper.py with
 --budget-usd (no default cap). Its caller on a timer is maturation_dispatch.py (the Dispatch step, its guard rails).
@@ -477,7 +484,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             hand.append("steward_confirms")
             what = {"blind_challenge": "the blind judge's cycle record (maturation.py next reads its exit block; "
                                        "the exit itself is a proposal)",
-                    "in_game": "the in-game rows (no common row format exists across mods)",
+                    "in_game": "the visit's in-game record (maturation.py next reads its exit block; the exit "
+                               "itself is carried plus a proposal)",
                     "pre_human": "the fresh reader's verdict and the walk brief"}[cur]
             clause("steward_confirms", "the steward has read %s and says the stage's exit is met" % what,
                    bool(steward), [req_ref], observed="steward_confirms: none in the request",
@@ -620,7 +628,26 @@ def next_step(root, mod):
     prog = [r for r in res["verdict"]["refusals"] if r["clause"] not in res["hand_steps"]]
     hand = [r for r in res["verdict"]["refusals"] if r["clause"] in res["hand_steps"]]
     blind = blind_facts(root, mod) if cur == "blind_challenge" else None
-    if blind and blind.get("owed") == "blocked":
+    ing = ingame_facts(root, mod) if cur == "in_game" else None
+    if ing and ing.get("owed") == "blocked":
+        nxt = "NEXT (hand step): in-game acceptance is blocked: %s" % "; ".join(ing["blocked"])
+    elif ing and ing.get("owed") == "run":
+        nxt = ("NEXT: launch in-game visit %d when the bridge is free (maturation.py launch %s --budget-usd <cap> --item "
+               "RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_<N>, filed first; or the Dispatch step); its record goes "
+               "in %s" % (ing["visit"], mod, mod.upper(), ing["exit"]["record"]))
+    elif ing and ing.get("owed") == "no exit block":
+        nxt = ("NEXT: visit %d is recorded without an exit block: wait for its run to write one, or (nothing live) the "
+               "Conductor reads %s/SUMMARY.md" % (ing["visit"], ing["exit"]["record"]))
+    elif ing and ing.get("owed") == "exit met":
+        nxt = ("NEXT (hand step): visit %d: exit met (a program's reading of its record: %s); the steward reads "
+               "%s/SUMMARY.md and confirms: maturation.py advance %s --to pre_human --by <SEAT> --why \"...\" "
+               "--steward-confirms \"...\"" % (ing["visit"], ing["exit"]["why"][0], ing["exit"]["record"], mod))
+    elif ing:
+        nxt = ("NEXT (hand step): visit %d: exit not met (%s); the Conductor reads %s/SUMMARY.md and sends each failed "
+               "line item down its road back (maturation.py advance %s --to offline_build or --to blind_challenge), or "
+               "launches the next visit by hand once the fixes land" % (
+                   ing["visit"], "; ".join(ing["exit"]["why"][:3]), ing["exit"]["record"], mod))
+    elif blind and blind.get("owed") == "blocked":
         nxt = "NEXT (hand step): the blind challenge is blocked: %s" % "; ".join(blind["blocked"])
     elif blind and blind.get("owed") == "cycle":
         nxt = ("NEXT: launch blind cycle %d (maturation.py launch %s --budget-usd <cap> --item <ID>, or the Dispatch "
@@ -657,8 +684,13 @@ def next_step(root, mod):
                        "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else
             ("maturation.py launch %s --budget-usd <cap> --item <ID> (blind cycle %d; or the Dispatch step, "
              "maturation_dispatch.py)" % (mod, blind["cycle"])) if blind and blind.get("owed") == "cycle" else
-            ("none: blind cycle %d is %s" % (blind["cycle"], blind.get("owed"))) if blind else "none at this stage",
-            "blind": blind, "next": nxt}
+            ("none: blind cycle %d is %s" % (blind["cycle"], blind.get("owed"))) if blind else
+            ("maturation.py launch %s --budget-usd <cap> --item <ID naming IN_GAME_ACCEPTANCE> (in-game visit %d, "
+             "a live driver, opus; refused "
+             "while the bridge is held; or the Dispatch step, maturation_dispatch.py, when ingame_enabled)" % (
+                 mod, ing["visit"])) if ing and ing.get("owed") == "run" else
+            ("none: in-game visit %s is %s" % (ing.get("visit"), ing.get("owed"))) if ing else "none at this stage",
+            "blind": blind, "ingame": ing, "next": nxt}
 
 
 # ---- slice 4: the offline-build brief and its capped launch ---------------------------------------------------------
@@ -736,9 +768,12 @@ def _bar_lines(tt, ids):
 
 def brief_text(root, mod, cap_usd=None):
     """-> (the mechanical half of an offline-build brief, build_facts). Never refuses for a blank steward section.
-    A mod at the blind challenge gets blind_brief_text instead."""
-    if (load(root, mod) or {}).get("stage") == "blind_challenge":
+    A mod at the blind challenge gets blind_brief_text instead, one at in-game acceptance ingame_brief_text."""
+    stage = (load(root, mod) or {}).get("stage")
+    if stage == "blind_challenge":
         return blind_brief_text(root, mod, cap_usd)
+    if stage == "in_game":
+        return ingame_brief_text(root, mod, cap_usd)
     f = build_facts(root, mod)
     tt, _ = read_json(root, mod, "version/test_table.json")
     jtext = read_text(root, mod, "journal.md") or ""
@@ -795,11 +830,13 @@ def brief_dir():
     return d
 
 
-def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run):
+def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
-    opus or a cycle already recorded or blocked; otherwise writes the brief and calls detached_helper.py launch
-    --budget-usd <cap>. It launches nothing else and never retries."""
+    opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
+    recorded or blocked, or a bridge `rimflow bridge idle` does not call takeable (bridge: a stand-in for bridge_idle);
+    otherwise writes the brief and calls detached_helper.py launch --budget-usd <cap>. It launches nothing else and
+    never retries; it never takes the bridge itself (the launched driver does, with --idle-ok)."""
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
@@ -812,9 +849,20 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
             return 2, "REFUSED: %s owes no blind cycle: cycle %s is %s (%s)" % (
                 mod, f.get("cycle"), "recorded" if f.get("owed") != "blocked" else "blocked",
                 "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None
+    elif f.get("stage") == "in_game":
+        if model not in LIVE_MODELS:
+            return 2, "REFUSED: a live driver runs on %s (Agent_Policy.md, rm-bridge); not %s" % (
+                " or ".join(LIVE_MODELS), model), None
+        if f.get("owed") != "run":
+            return 2, "REFUSED: %s owes no in-game visit: visit %s is %s (%s)" % (
+                mod, f.get("visit"), "recorded" if f.get("owed") != "blocked" else "blocked",
+                "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None
+        go, why = (bridge or bridge_idle)("%s in-game acceptance visit %s" % (mod, f.get("visit")), seat)
+        if not go:
+            return 2, "REFUSED: the bridge is not takeable for %s's in-game visit %s: %s" % (mod, f.get("visit"), why), None
     elif f.get("stage") != "offline_build":
-        return 2, "REFUSED: %s stands at %s; only an offline build or a blind challenge launches from here" % (
-            mod, f.get("stage")), None
+        return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "
+                   "launches from here" % (mod, f.get("stage"))), None
     elif f.get("owed") != "build":
         return 2, "REFUSED: %s owes no build work (%s)" % (mod, f.get("owed")), None
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
@@ -1448,6 +1496,495 @@ def blind_brief_text(root, mod, cap_usd=None):
     return "\n".join(L) + "\n", f
 
 
+# ---- in-game acceptance (Stage 6): brief, exit reading, launch -------------------------------------------------------
+#
+# Item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST. Measured 2026-11-15 1:47 AM PST: Pyrelands 0.1.0
+# was advanced to in-game acceptance and `next` said "launch: none at this stage", the gap the blind challenge had an hour
+# before. This half writes the in-game brief from the mod's own files (every stage-6 check of its test table with its
+# exact command, the live tests the blind cycles left owed, the bridge rules), reads a machine-checkable exit from the
+# visit's record, and launches one live driver when the visit is owed and the bridge is takeable. The exit stays the
+# steward's to confirm (spec Stage 6, Exit: CARRIED plus PROPOSAL); this reading is evidence, never a move.
+#
+# The visit's record, design/concepts/<Mod>/version/in_game/visit_<N>/ (N = the moves into in_game so far):
+#   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
+#                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence"}; the last row per test counts (a
+#                  rerun after a fix made in the sitting supersedes; the earlier FAIL stays as history)
+#   strange.jsonl  one row per strange thing seen that no bar covers: {"what", "explained": "..."} or {"what", "filed": ID}
+#   SUMMARY.md     its "## Exit" section holds the block: ingame_rows: {test: pass|fail|unmeasured, ...} / strange_open: N
+#                  / savegame: <path> / exit_met: true|false
+# met needs the driver's block to say exit_met true AND the files to agree: every stage-6 check of the table pass in the
+# block and PASS in its last row, on a site checked first, with the game and the mod's sha named; every strange thing
+# explained or filed, strange_open equal to the count left; the savegame on disk. Any doubt reads not_met, never met.
+
+INGAME_DIR = "version/in_game"
+INGAME_KEYS = ("ingame_rows", "strange_open", "savegame", "exit_met")
+LIVE_MODELS = ("opus",)     # a live driver: Agent_Policy.md "Helpers in this repo" (rm-bridge, opus); Fable never waits
+                            # on a live resource (the user-level model ladder)
+GAMES = ("archmagi", "stevedesktop")
+BRIDGE_RULES = (
+    "- Take the bridge first, delegated: `python3 src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"%s\" "
+    "--seat %s`. Refused (another seat or a live driver holds it): stop, write a note, report \"bridge held\". Never "
+    "`--force` a hold that is not stale, and never take his OWNER hold.",
+    "- Keep the hold fresh: a ledger event at least every 40 minutes (a note on your item), or another window may take "
+    "it as stale.",
+    "- Release it the moment you stop, whatever the outcome: `python3 src/RimMandrake/rimflow/cli.py bridge release "
+    "--seat %s`.",
+    "- Never a flyer's flight: a flyer is read by its `Pawn_FlightTracker` state, paused; never watched, never captured "
+    "in flight (owner: \"For the third time, do not do live testing of flyers without a human present.\").",
+    "- Never leave a broken game running: a game that errors at load, hangs or holds a broken map when you stop is "
+    "closed (`./game --why \"<why>\" down`). Never fullscreen or focus the game window.",
+    "- Every mod list holds all five DLC (owner: \"ALL TEST MOD LISTS should include ALL THE EXPANSIONS\"). Use the "
+    "smallest list a check names (the 13-mod minimal list plus what its command adds: ~22 s a load, against ~15 min "
+    "on the full list); the full list only for a check whose `why_full_list` says why. "
+    "`src/RimMandrake/Utils/modlist_swap.py` does the swap; never restore his list afterwards (owner, 2026-10-24).",
+    "- Deploy before you test: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s` (a dry run), then "
+    "`--apply`. Writing a file is not deploying it.",
+    "- Only the canonical world saves are precious (`infrastructure/state/CANONICAL_SAVE.md`): never overwrite one. Back "
+    "up the Saves folder before you write the labelled savegame.",
+    "- A site is asserted, never hoped: check each test site (open sky, no stray animals, the biome the check needs) "
+    "before a row counts, and write `site_checked` on the row.",
+)
+INGAME_DEFAULT = ("No Conductor decisions are written for this visit, so the standing default holds: run every stage-6 "
+                  "check above and the owed cases, look beyond them, and fix in the sitting what a small fix can fix. "
+                  "Do not change a bar, its wording, the Design Version or the stage.")
+OWNER_STAGE6 = ("In-game acceptance testing with setup maps, proper acceptance testing, and using the fastest methods "
+                "available with dense, rich setups that test many items simultaneously + allowances to explore beyond "
+                "the acceptance tests and plentiful screenshots to look for 'strange unexpected things.'")
+
+
+def ingame_tests(tt):
+    """-> [(test id, test)] for the table's stage-6 in-game checks (kind live*, stage 6), in table order."""
+    return [(k, t) for k, t in ((tt or {}).get("tests") or {}).items()
+            if isinstance(t, dict) and str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
+
+
+def visit_numbers(root, mod):
+    d = os.path.join(mod_dir(root, mod), INGAME_DIR)
+    out = []
+    for f in os.listdir(d) if os.path.isdir(d) else []:
+        m = re.match(r"visit_(\d+)$", f)
+        if m and os.path.isdir(os.path.join(d, f)):
+            out.append(int(m.group(1)))
+    return sorted(out)
+
+
+def ingame_openings(rec):
+    """-> {visit number: iso time} for the moves into in-game acceptance (visit k is the k-th)."""
+    return {i + 1: m.get("at") for i, m in enumerate(m for m in rec.get("moves") or [] if m.get("to") == "in_game")}
+
+
+def native_to_here(p):
+    """A Windows path (C:\\...) as this machine reads it (/mnt/c/...); any other path unchanged."""
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", str(p or ""))
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/")) if m else str(p or "")
+
+
+def ingame_exit_block(summary):
+    """-> ({key: value} for the keys found in the SUMMARY.md Exit section, or None when it has no Exit heading)."""
+    lines = (summary or "").split("\n")
+    start = next((i for i, ln in enumerate(lines) if re.match(r"^##\s+Exit\b", ln)), None)
+    if start is None:
+        return None
+    end = next((j for j in range(start + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
+    sec = "\n".join(lines[start + 1:end])
+    got = {}
+    m = re.search(r"ingame_rows\s*[:=]\s*\{([^}]*)\}", sec)
+    if m:
+        got["ingame_rows"] = {k: v.lower() for k, v in re.findall(
+            r"[`\"']?([A-Za-z0-9_]+)[`\"']?\s*:\s*[`\"']?(pass|fail|unmeasured)\b", m.group(1), re.I)}
+    m = re.search(r"strange_open\s*[:=]\s*`?(\d+)", sec)
+    if m:
+        got["strange_open"] = int(m.group(1))
+    m = re.search(r"^\s*savegame\s*[:=]\s*`?([^`\n]+?)`?\s*$", sec, re.M)
+    if m:
+        got["savegame"] = m.group(1).strip()
+    m = re.search(r"exit_met\s*[:=]\s*`?(true|false)\b", sec, re.I)
+    if m:
+        got["exit_met"] = m.group(1).lower() == "true"
+    return got
+
+
+def read_ingame_exit(root, mod, n, tt=None):
+    """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder)
+    | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
+    not_met. See the record layout above this section."""
+    if tt is None:
+        tt, _ = read_json(root, mod, "version/test_table.json")
+    base = "%s/visit_%d" % (INGAME_DIR, n)
+    d = os.path.join(mod_dir(root, mod), base)
+    out = {"visit": n, "record": rel(mod, base), "why": [], "rows": {}}
+    if not os.path.isdir(d):
+        out["state"] = "absent"
+        return out
+    blk = ingame_exit_block(read_text(root, mod, base + "/SUMMARY.md"))
+    out["claimed"] = blk
+    if not blk or not all(k in blk for k in INGAME_KEYS):
+        out["state"] = "no_exit_block"
+        out["why"].append("%s/SUMMARY.md has no Exit block with %s%s" % (
+            rel(mod, base), ", ".join(INGAME_KEYS), "" if blk is None else " (found: %s)" % (", ".join(sorted(blk))
+                                                                                            or "none")))
+        return out
+    why = out["why"]
+    if not blk["exit_met"]:
+        why.append("the driver's block says exit_met false")
+    checks = ingame_tests(tt)
+    if not checks:
+        why.append("the test table names no stage-6 in-game check (kind live*, stage 6)")
+    rows = _jsonl(os.path.join(d, "rows.jsonl"))
+    if rows is None:
+        why.append("rows.jsonl is missing")
+    last = {}
+    for r in rows or []:
+        t = r.get("test") or r.get("id")
+        if t:
+            last[t] = r
+    for t, _ in checks:
+        claim = blk["ingame_rows"].get(t)
+        r = last.get(t)
+        v = str((r or {}).get("verdict", "")).upper()
+        out["rows"][t] = v or "NO ROW"
+        if claim != "pass":
+            why.append("in-game check %s reads %s in the block" % (t, claim or "nothing (left out)"))
+        if r is None:
+            why.append("in-game check %s has no row in rows.jsonl" % t)
+            continue
+        if v != "PASS":
+            why.append("in-game check %s: its last row reads %s" % (t, v or "no verdict"))
+        if r.get("site_checked") is not True:
+            why.append("in-game check %s: its row does not say the site was checked first (site_checked)" % t)
+        if str(r.get("game", "")).lower() not in GAMES:
+            why.append("in-game check %s: its row names no game (%s)" % (t, " or ".join(GAMES)))
+        if not r.get("mod_sha"):
+            why.append("in-game check %s: its row names no mod_sha (the build it ran)" % t)
+    st = _jsonl(os.path.join(d, "strange.jsonl"))
+    if st is None:
+        why.append("strange.jsonl is missing (an empty file says nothing strange was seen)")
+    left = [x.get("what", x.get("_bad", "?")) for x in st or []
+            if not (str(x.get("explained") or "").strip() or str(x.get("filed") or "").strip())]
+    out["strange_open"] = len(left)
+    if left:
+        why.append("%d strange thing(s) neither explained nor filed: %s" % (len(left), "; ".join(str(x)[:60]
+                                                                                             for x in left[:3])))
+    if st is not None and blk["strange_open"] != len(left):
+        why.append("the block says strange_open %d; strange.jsonl leaves %d" % (blk["strange_open"], len(left)))
+    sv = blk["savegame"]
+    if not os.path.isfile(native_to_here(sv)):
+        why.append("the savegame %s is not on disk" % sv)
+    out["state"] = "not_met" if why else "met"
+    if not why:
+        why.append("%d of %d in-game checks PASS on checked sites; strange things all explained or filed; savegame %s"
+                   % (len(checks), len(checks), sv))
+    return out
+
+
+def _bars_of(tt, tid):
+    return [b.get("id") for b in (tt or {}).get("bars") or [] if isinstance(b, dict) and tid in (b.get("decides") or [])]
+
+
+def _stage6_of_bars(tt, bars):
+    """-> the stage-6 checks that decide any of the bars, table order; when none decides them (a bar proved offline),
+    the stage-6 checks that support them, each marked "(supports)"."""
+    ids = dict(ingame_tests(tt))
+    want = set(bars)
+    out, sup = [], []
+    for b in (tt or {}).get("bars") or []:
+        if isinstance(b, dict) and b.get("id") in want:
+            out += [t for t in b.get("decides") or [] if t in ids and t not in out]
+            sup += [t for t in b.get("supports") or [] if t in ids and t not in sup]
+    return out or ["%s (supports)" % t for t in sup]
+
+
+def _split_bars(v):
+    return [x.strip() for x in (v if isinstance(v, list) else str(v or "").split(",")) if x.strip()]
+
+
+def _section(text, head):
+    """-> the body of a '## <head>' section of a markdown text, stripped, or ''."""
+    lines = (text or "").split("\n")
+    start = next((i for i, ln in enumerate(lines) if re.match(r"^##\s+%s\b" % re.escape(head), ln)), None)
+    if start is None:
+        return ""
+    end = next((j for j in range(start + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
+    return "\n".join(lines[start + 1:end]).strip()
+
+
+def ledger_items_caused_by(root, ids):
+    """-> [{id, title}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed, dropped or
+    superseded since, read from every shard under infrastructure/state/ledger/events/."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, filed, ended = set(ids), {}, set()
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"caused_by"' not in ln and '"close"' not in ln and '"drop"' not in ln and '"supersede"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("event") in ("file", "spawn") and e.get("caused_by") in want:
+                    filed[e.get("id")] = e.get("title") or ""
+                elif e.get("event") in ("close", "drop", "supersede"):
+                    ended.add(e.get("id"))
+    return [{"id": k, "title": v} for k, v in sorted(filed.items()) if k not in ended]
+
+
+def ingame_debts(root, mod, tt=None):
+    """-> what the newest blind cycle left owed to Stage 6, from its own files: fixed Problems never run live, scene
+    Polish, planted faults no offline test caught, lane 1's UNSETTLED rows, open ledger items caused by its faults, and
+    its SUMMARY's Owed and Unsettled sections verbatim. Each entry names its bars and their stage-6 checks."""
+    if tt is None:
+        tt, _ = read_json(root, mod, "version/test_table.json")
+    have = cycle_numbers(root, mod)
+    out = {"cycle": max(have) if have else None, "fixed_problems": [], "scene_polish": [], "planted_misses": [],
+           "lane1_unsettled": [], "items": [], "owed_text": "", "unsettled_text": ""}
+    if not have:
+        return out
+    base = "%s/cycle_%d" % (BLIND_DIR, out["cycle"])
+    d = os.path.join(mod_dir(root, mod), base)
+    out["record"] = rel(mod, base)
+    summ = read_text(root, mod, base + "/SUMMARY.md") or ""
+    out["owed_text"], out["unsettled_text"] = _section(summ, "Owed"), _section(summ, "Unsettled")
+    fj, _ = read_json(root, mod, base + "/lane2/faults.json")
+    faults = fj if isinstance(fj, list) else (fj or {}).get("faults") or []
+    for x in faults:
+        if not isinstance(x, dict):
+            continue
+        bars = _split_bars(x.get("bar") or x.get("bars"))
+        e = {"id": x.get("id"), "bars": bars, "checks": _stage6_of_bars(tt, bars), "status": x.get("status"),
+             "fix": x.get("smallest_fix") or ""}
+        cls = str(x.get("class", ""))
+        if cls.startswith("Problem") and str(x.get("status", "")).startswith("FIXED") and e["checks"]:
+            out["fixed_problems"].append(e)
+        elif cls.startswith("Polish") and re.search(r"scene|live|stage 6", "%s %s" % (x.get("id"), e["fix"]), re.I):
+            out["scene_polish"].append(e)
+    pf, _ = read_json(root, mod, base + "/lane2/planted_faults.json")
+    pf = {y.get("id"): y for y in (pf if isinstance(pf, list) else (pf or {}).get("faults") or [])
+          if isinstance(y, dict)}
+    for r in _jsonl(os.path.join(d, "lane2", "planted_results.jsonl")) or []:
+        if r.get("id") and r.get("caught") is False:
+            bars = _split_bars(r.get("bars") or (pf.get(r["id"]) or {}).get("bars"))
+            out["planted_misses"].append({"id": r["id"], "file": r.get("file") or (pf.get(r["id"]) or {}).get("file"),
+                                          "new": (pf.get(r["id"]) or {}).get("new"), "bars": bars,
+                                          "checks": _stage6_of_bars(tt, bars)})
+    l1 = _jsonl(os.path.join(d, "lane2", "lane1_rows_after_fix.jsonl"))
+    for r in l1 if l1 is not None else _jsonl(os.path.join(d, "lane1", "lane1_rows.jsonl")) or []:
+        if str(r.get("verdict", "")).upper() == "UNSETTLED":
+            bars = _split_bars(r.get("bars"))
+            out["lane1_unsettled"].append({"id": r.get("id"), "bars": bars, "detail": r.get("detail") or "",
+                                           "checks": _stage6_of_bars(tt, bars)})
+    out["items"] = ledger_items_caused_by(root, [x.get("id") for x in faults if isinstance(x, dict) and x.get("id")])
+    return out
+
+
+def ingame_facts(root, mod):
+    """-> what in-game acceptance owes now: visit (the moves into in_game so far), exit (read_ingame_exit of visit_N),
+    checks (the stage-6 ids), testq (those carrying a testq block: what SteveDesktop's queue may admit), and owed:
+    "run" (no visit_N folder: a live driver is owed) | "no exit block" | "exit met" | "exit not met" | "blocked" (a
+    hold, a version mismatch, an unreadable table, no stage-6 check, a folder past the record)."""
+    rec = load(root, mod)
+    if rec is None:
+        return {"mod": mod, "stage": UNM, "why": "no stage record"}
+    cur = rec["stage"]
+    out = {"mod": mod, "version": rec.get("version"), "stage": cur, "since": rec.get("since")}
+    if cur != "in_game":
+        return out
+    n = max(1, len(ingame_openings(rec)))
+    tt, terr = read_json(root, mod, "version/test_table.json")
+    v, verr = read_json(root, mod, "version/VERSION.json")
+    blocked = []
+    if held(read_text(root, mod, "journal.md"), cur):
+        blocked.append("a Conductor hold stands on stage 6 (a kind hold line with no later kind release)")
+    if v is None or v.get("version") != rec.get("version"):
+        blocked.append("the record says version %s; VERSION.json says %s" % (rec.get("version"),
+                                                                          (v or {}).get("version", verr)))
+    if tt is None:
+        blocked.append("version/test_table.json: %s" % terr)
+    checks = ingame_tests(tt)
+    if tt is not None and not checks:
+        blocked.append("the test table names no stage-6 in-game check")
+    have = visit_numbers(root, mod)
+    past = [k for k in have if k > n]
+    if past:
+        blocked.append("visit folder(s) %s are past the record's visit %d" % (past, n))
+    ex = read_ingame_exit(root, mod, n, tt)
+    out.update({"visit": n, "visits_present": have, "exit": ex, "opened": ingame_openings(rec).get(n) or rec.get("since"),
+                "blocked": blocked, "checks": [k for k, _ in checks],
+                "testq": [k for k, t in checks if isinstance(t.get("testq"), dict)]})
+    out["owed"] = ("blocked" if blocked else "run" if ex["state"] == "absent" else
+                   "no exit block" if ex["state"] == "no_exit_block" else
+                   "exit met" if ex["state"] == "met" else "exit not met")
+    return out
+
+
+def bridge_idle(purpose, seat="BENCH", runner=subprocess.run):
+    """-> (takeable, text): `rimflow bridge idle`, the delegated take's own verdict (the ledger holder, his OWNER hold,
+    the shared lock across clones and the Archmagi driver lock), read-only. MATURATION_BRIDGE_IDLE names a stand-in
+    command (the selftests'); a reading that fails is not takeable."""
+    cmd = os.environ.get("MATURATION_BRIDGE_IDLE")
+    argv = ([sys.executable, cmd] if cmd else [sys.executable, os.path.join(HERE, "cli.py")]) + [
+        "bridge", "idle", "--for", purpose, "--seat", seat]
+    try:
+        r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return False, "the bridge reading failed: %s" % e
+    text = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()
+    line = next((x for x in reversed(text) if x.startswith(("TAKEABLE", "NOT TAKEABLE"))), text[-1] if text else "")
+    return r.returncode == 0 and line.startswith("TAKEABLE"), line or "no reading (rc %s)" % r.returncode
+
+
+def _check_lines(tt, ids, root):
+    tests = (tt or {}).get("tests") or {}
+    out = []
+    for t in ids:
+        x = tests.get(t) or {}
+        out.append("- **`%s`** (%s; decides %s): %s" % (t, x.get("kind", "?"), ", ".join(_bars_of(tt, t)) or "no bar",
+                                                       x.get("observes", "no observation written")))
+        out.append("  - command: `%s`" % (x.get("command") or "NONE WRITTEN: the table owes one; record the row "
+                                                              "UNMEASURED and say so"))
+        f = x.get("file")
+        if f:
+            out.append("  - entry `%s` in `%s`%s" % (x.get("entry") or "?", f, "" if os.path.exists(
+                os.path.join(root, f)) else " (NOT ON DISK in this tree)"))
+        if x.get("why_full_list"):
+            out.append("  - full list, because: %s" % x["why_full_list"])
+    return out
+
+
+def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
+    """-> (the mechanical half of an in-game acceptance brief, ingame_facts). Never refuses; launch_mod does."""
+    f = ingame_facts(root, mod)
+    rec = load(root, mod) or {}
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    tt = tt or {}
+    n, ver = f.get("visit", 1), f.get("version", UNM)
+    vdir = "design/concepts/%s/%s/visit_%d" % (mod, INGAME_DIR, n)
+    when = pac_heading(now_ts())
+    cap = ("$%g" % cap_usd) if cap_usd else "the --budget-usd the launch carries"
+    purpose = "%s in-game acceptance visit %d" % (mod, n)
+    checks = f.get("checks") or []
+    full = [k for k in checks if (tt.get("tests") or {}).get(k, {}).get("kind") == "live_full"]
+    debts = ingame_debts(root, mod, tt)
+    L = ["# In-game acceptance (Stage 6): %s %s, visit %d" % (mod, ver, n), "",
+         "Written by `maturation.py brief %s` at %s: the mechanical half, from the mod's own files (item "
+         "RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST; spec §4 Stage 6)." % (mod, when), "",
+         "You are a helper of the Conductor; this brief carries the owner's authority. You are the live driver of one "
+         "game for one visit. The owner's words for this stage: \"%s\"" % OWNER_STAGE6, "",
+         "- You start no helpers and no subagents. Work in your own clone, and run `./sync` first.",
+         "- Commit by explicit path. Land with `./publish`; load skill `clone-landing-commits` once, before your first "
+         "commit. Load `live-debugging-proof-harness` and `rimbridge` before the first live call, "
+         "`rimworld-live-review` before the first screenshot.",
+         "- Foreground commands only, each with a timeout of 540 s or less. Never `pkill -f`.",
+         "- Write progress to your skeleton (`%s/SUMMARY.md`) at least every 8 minutes, and a note on your item at "
+         "least every 20." % vdir, "",
+         "**Spend bound: %s.** If you cannot see your spend, stop at 3 hours of wall time. At the bound, record where "
+         "you are, release the bridge, commit, publish, and report what is owed." % cap, "",
+         "## Precondition (check first; stop if it fails)", "",
+         "```",
+         "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d['version'])\""
+         % (mod, RECORD), "```", "",
+         "It must print `in_game %s`. Otherwise stop, report \"%s visit %d not open on origin/main\", and do not "
+         "advance it yourself." % (ver, mod, n), "",
+         "## Where it runs", "",
+         "The spec (§4 Stage 6, \"Which game runs what\"; his card of 2026-11-14, 18a): either game may give a bar's "
+         "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue admits only a stage-6 entry "
+         "with a `testq` block (`src/RimMandrake/Utils/testq/pipeline_admit.py`, his 18c \"Pipeline tests only\"): "
+         "%s." % ("%d of %d of this mod's checks carry one (%s); queue those with `testq.py submit` if SteveDesktop is "
+                  "free, and run the rest here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]))
+                  if f.get("testq") else "none of this mod's %d checks carries one, so this visit runs on Archmagi "
+                  "through the bridge" % len(checks)), "",
+         "## The bridge and the game (rules; each one binds)", ""]
+    L += [r % tuple(x for x in ((purpose, seat) if "take --idle-ok" in r else (seat,) if "release" in r else
+                                (mod,) if "deploy_custom_mods" in r else ()))
+          for r in BRIDGE_RULES]
+    L += ["", "## The checks: every stage-6 in-game check of `design/concepts/%s/version/test_table.json` (%d)"
+          % (mod, len(checks)), "",
+          "Run each with its exact command. Batch them: one dense prepared map holds many checks at once (the mod's own "
+          "proof script builds it). %s" % ("%d need%s the full list (%s); run %s last, in one load." % (
+              len(full), "s" if len(full) == 1 else "", ", ".join(full), "it" if len(full) == 1 else "those")
+              if full else "None needs the full list."), ""]
+    L += _check_lines(tt, checks, root)
+    L += ["", "## Owed from the blind challenge%s" % (" (cycle %d, `%s`)" % (debts["cycle"], debts["record"])
+                                                      if debts.get("cycle") else ": no cycle on record"), "",
+          "Each of these was proved offline at most; none has run in a game. Each is a case inside the check named, "
+          "or a row of its own in `rows.jsonl` (`test` = its id) when no check covers it."]
+    for e in debts["fixed_problems"]:
+        L.append("- Problem `%s` (bars %s), %s, never run live: run %s and show the fixed behaviour in the game (%s)."
+                 % (e["id"], ", ".join(e["bars"]), e["status"], ", ".join("`%s`" % c for c in e["checks"]),
+                    e["fix"][:200]))
+    for e in debts["scene_polish"]:
+        L.append("- Polish `%s` (bars %s): %s; scene %s." % (e["id"], ", ".join(e["bars"]), e["fix"][:200],
+                                                           ", ".join("`%s`" % c for c in e["checks"]) or "none named"))
+    for e in debts["planted_misses"]:
+        L.append("- Planted fault `%s` in `%s` (`%s`), missed by every offline test (bars %s): the in-game check %s "
+                 "must see it. Say in its row whether it would have." % (
+                     e["id"], e.get("file"), e.get("new"), ", ".join(e["bars"]),
+                     ", ".join("`%s`" % c for c in e["checks"]) or "(none decides those bars: write the case)"))
+    for e in debts["items"]:
+        L.append("- Item `%s`: %s" % (e["id"], e["title"]))
+    for e in debts["lane1_unsettled"]:
+        L.append("- Lane 1 `%s` UNSETTLED (bars %s): %s; checks %s." % (
+            e["id"], ", ".join(e["bars"]), e["detail"], ", ".join("`%s`" % c for c in e["checks"]) or "none"))
+    if not any(debts[k] for k in ("fixed_problems", "scene_polish", "planted_misses", "items", "lane1_unsettled")):
+        L.append("- nothing read from the cycle's files")
+    if debts.get("owed_text"):
+        L += ["", "The cycle's SUMMARY.md, \"Owed\", as written:", ""] + ["> " + x for x in debts["owed_text"].split("\n")]
+    if debts.get("unsettled_text"):
+        L += ["", "Its \"Unsettled\", as written:", ""] + ["> " + x for x in debts["unsettled_text"].split("\n")]
+    L += ["", "## Beyond the checks", "",
+          "Explore past the bars on the same maps: plentiful screenshots (`src/RimMandrake/Utils/system_screenshot.py` "
+          "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "
+          "covers is a row of `strange.jsonl`: explained (what it is and why it is fine) or filed (a rimflow item, its "
+          "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
+          "", "## A FAIL is diagnosed in the sitting", "",
+          "A FAIL is not a verdict to carry home: diagnose it by experiment while the game is up (change one thing, "
+          "watch the row). A small fix is made on the spot: write the offline test that fails on the old code first, "
+          "then the fix, deploy, rerun the row; the rerun's row supersedes the FAIL in `rows.jsonl` (the FAIL stays as "
+          "history). A fix too big for the sitting is a filed item and the row stays FAIL. Never weaken a check to "
+          "pass it; a check you judge wrong is a note to the Conductor, its row UNMEASURED.", "",
+          "## The record (skeleton first: create it before the first live call)", "",
+          "`%s/`:" % vdir,
+          "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
+          "\"site_checked\": true, \"game\": \"archmagi\"|\"stevedesktop\", \"mod_sha\": <sha of the deployed source>, "
+          "\"command\": ..., \"evidence\": <path>}`, and in `evidence` or beside it the active mod list parsed from "
+          "that game's `ModsConfig.xml` (`activeMods`, in order) and the game build (spec: a verdict counts only on the "
+          "version and list he walks).",
+          "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",
+          "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block.",
+          "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
+          "(the program reads it):", "",
+          "```", "## Exit", "```", "ingame_rows: {%s}" % ", ".join("%s: pass|fail|unmeasured" % k for k in checks[:3])
+          + (" ... every one of the %d" % len(checks) if len(checks) > 3 else ""),
+          "strange_open: <count neither explained nor filed>", "savegame: <its full path>", "exit_met: true|false",
+          "```", "```", "",
+          "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads it and checks it against the files: met needs "
+          "every check pass in the block AND PASS in its last row with the site checked, the game and mod_sha named, "
+          "every strange thing explained or filed, and the savegame on disk. That reading is evidence for the steward, "
+          "not a move: the Conductor reads your SUMMARY.md and advances with `--to pre_human --steward-confirms "
+          "\"...\"`, or sends a line item down its road back. Never run `maturation.py advance`." % mod, "",
+          "## Report (10 lines or fewer, plain words)", "",
+          "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
+          "fixes made in the sitting (shas); strange things seen, explained, filed; the savegame path; the mod list "
+          "and game; whether the exit is met; bridge released; spend." % len(checks)]
+    steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
+    ivs, undated = MN.parse_interventions(read_text(root, mod, "journal.md") or "", "journal")
+    first = _ts(f.get("opened"))
+    lines = [iv for iv in ivs if iv["at"] is not None and (iv["stage"] == "6" or (first and iv["at"] >= first))]
+    L += ["", "## Steward's decisions", "",
+          "The Conductor's decisions as steward carry the owner's authority; record each one you act on with "
+          "`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`.", ""]
+    if lines:
+        L += ["- %s (stage %s, kind %s): %s" % (pac_heading(iv["at"]), iv["stage"], iv["kind"], iv["what"])
+              for iv in lines]
+    if steward:
+        L += ["", "From `design/concepts/%s/%s`:" % (mod, STEWARD_FILE), "", steward]
+    if not lines and not steward:
+        L.append(INGAME_DEFAULT)
+    return "\n".join(L) + "\n", f
+
+
 # ---- the command line ------------------------------------------------------------------------------------------------
 
 def versioned(root):
@@ -1555,6 +2092,11 @@ def main(argv=None):
             print("  blind cycle %s (visit %s, total %s): exit %s: %s" % (b.get("cycle"), b.get("visit"), b.get("total"),
                                                                        b["exit"]["state"], "; ".join(b["exit"]["why"])
                                                                        or "no record yet"))
+        g = nx.get("ingame")
+        if g and g.get("exit"):
+            print("  in-game visit %s: %d stage-6 checks (%d with a testq block); exit %s: %s" % (
+                g.get("visit"), len(g.get("checks") or []), len(g.get("testq") or []), g["exit"]["state"],
+                "; ".join(g["exit"]["why"][:4]) or "no record yet"))
         print("  launch: %s" % nx.get("launch", "none"))
         print(nx["next"])
         return 0

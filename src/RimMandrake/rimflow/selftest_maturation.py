@@ -9,6 +9,10 @@ section 4, slice 1. Written before maturation.py and watched failing on it (the 
                                                                      launch (item
                                                                      RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED;
                                                                      watched failing on the base da54e5338e, then passing)
+    python3 src/RimMandrake/rimflow/selftest_maturation.py --ingame  in-game acceptance: brief, next's exit reading,
+                                                                     launch and its bridge gate (item
+                                                                     RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST;
+                                                                     watched failing on the base ab858016ee, then passing)
     python3 src/RimMandrake/rimflow/selftest_maturation.py --launch  slice 4 (brief, capped launch) with a fake
                                                                      detached_helper (item
                                                                      RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE;
@@ -628,6 +632,269 @@ def blind_main():
     return 1 if FAILS else 0
 
 
+# ---- in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST) ---------------------
+#
+# Pyrelands as it stood when it arrived first at in-game acceptance (visit 1), read from git with its blind cycle 1
+# record. Written before maturation.py had ingame_facts and watched failing on the base ab858016ee (every check FAIL:
+# each runs in chk(), so a missing function fails that check and the next still runs), then passing.
+INGAME_SHA = "ab858016ee6b6fcb74e663ddd3487e4b3c5a86a1"
+INGAME_CLOCK = 1794741600.0     # 2026-11-15 2:40 AM PST, pinned
+INGAME_CYCLE = ("SUMMARY.md", "lane2/faults.json", "lane2/planted_faults.json", "lane2/planted_results.jsonl",
+                "lane2/lane1_rows_after_fix.jsonl", "lane1/lane1_rows.jsonl")
+FAKE_IDLE = """#!/usr/bin/env python3
+import os, sys
+with open(os.environ["FAKE_IDLE_LOG"], "a") as f:
+    f.write(" ".join(sys.argv[1:]) + "\\n")
+v = os.environ.get("FAKE_IDLE", "NOT")
+print("TAKEABLE  delegated: bridge idle (free)" if v == "YES" else "NOT TAKEABLE  driver lock held by BENCH (selftest)")
+sys.exit(0 if v == "YES" else 1)
+"""
+
+
+def chk(fn, what):
+    """ok(fn(), what), with an exception read as FAIL: on the base each check fails by itself."""
+    try:
+        cond = fn()
+    except Exception as e:  # noqa: BLE001
+        cond, what = False, "%s (raised %s: %s)" % (what, type(e).__name__, str(e)[:80])
+    ok(bool(cond), what)
+
+
+def copy_ingame(root, mod="Pyrelands", as_mod=None):
+    for rel in COPY + ("version/stage_record.json",) + tuple("version/blind_challenge/cycle_1/" + x for x in INGAME_CYCLE):
+        r = subprocess.run(["git", "-C", REPO, "show", "%s:design/concepts/%s/%s" % (INGAME_SHA, mod, rel)],
+                           capture_output=True, timeout=60)
+        if r.returncode == 0:
+            dst = os.path.join(root, "design", "concepts", as_mod or mod, rel)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            with open(dst, "wb") as f:
+                f.write(r.stdout)
+
+
+def write_ledger(root):
+    """One open item caused by a cycle-1 fault, one closed: only the open one is owed."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    os.makedirs(d, exist_ok=True)
+    evs = [{"seat": "CONDUCTOR", "event": "file", "id": "RIMMANDRAKE_PROVE_SELFTEST_HERD_LIVE_OPEN",
+            "title": "selftest: prove the herd live", "caused_by": "RIMMANDRAKE_FIX_HERD_ANCHOR_FALLS_BACK_TO_FRESH_ASH"},
+           {"seat": "CONDUCTOR", "event": "file", "id": "RIMMANDRAKE_PROVE_SELFTEST_RAIN_LIVE_CLOSED",
+            "title": "selftest: closed already", "caused_by": "RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST"},
+           {"seat": "CONDUCTOR", "event": "close", "id": "RIMMANDRAKE_PROVE_SELFTEST_RAIN_LIVE_CLOSED"}]
+    with open(os.path.join(d, "BENCH.jsonl"), "w") as f:
+        f.write("".join(json.dumps(e) + "\n" for e in evs))
+
+
+def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=False, site=True, game="archmagi",
+                sha="abc1234", strange=None, strange_open=None, strange_file=True, save=True, rows_file=True,
+                block=True):
+    """A visit record in the layout maturation.py reads, every file present, with one thing broken on request."""
+    tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
+    ids = [k for k, t in tt["tests"].items() if str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
+    d = os.path.join(root, "design", "concepts", mod, "version", "in_game", "visit_%d" % n)
+    shutil.rmtree(d, ignore_errors=True)
+    os.makedirs(d)
+    sv = os.path.join(root, "Saves", "%s_stage6_visit%d.rws" % (mod, n))
+    os.makedirs(os.path.dirname(sv), exist_ok=True)
+    if save:
+        open(sv, "w").write("<savegame/>")
+    elif os.path.exists(sv):
+        os.remove(sv)
+    if rows_file:
+        with open(os.path.join(d, "rows.jsonl"), "w") as f:
+            for t in ids:
+                if t == drop:
+                    continue
+                row = {"test": t, "verdict": "FAIL" if t == fail else "PASS", "site_checked": site, "game": game,
+                       "mod_sha": sha, "command": tt["tests"][t].get("command"), "evidence": "selftest"}
+                f.write(json.dumps({k: v for k, v in row.items() if v is not None}) + "\n")
+                if t == fail and rerun_pass:
+                    f.write(json.dumps(dict(row, verdict="PASS")) + "\n")
+    strange = [{"what": "a selftest oddity", "explained": "vanilla does it too"}] if strange is None else strange
+    if strange_file:
+        with open(os.path.join(d, "strange.jsonl"), "w") as f:
+            f.write("".join(json.dumps(x) + "\n" for x in strange))
+    left = sum(1 for x in strange if not (x.get("explained") or x.get("filed")))
+    shown = ", ".join("%s: %s" % (t, "fail" if (t == fail and not rerun_pass) else "pass") for t in ids if t != drop)
+    with open(os.path.join(d, "SUMMARY.md"), "w") as f:
+        if block:
+            f.write("# visit %d\n\n## Exit\n```\ningame_rows: {%s}\nstrange_open: %d\nsavegame: %s\nexit_met: %s\n```\n"
+                    "\n## Owed\nnone\n" % (n, shown, left if strange_open is None else strange_open, sv,
+                                           str(exit_met).lower()))
+        else:
+            f.write("# visit %d\n\n## Exit\n(pending)\n" % n)
+    return ids
+
+
+def ingame_main():
+    """In-game acceptance: brief, next (a program's exit reading) and launch, offline, through a fake detached_helper
+    and a fake bridge reading. Never touches the real bridge: MATURATION_BRIDGE_IDLE is a stand-in throughout."""
+    before = git_status()
+    root = tempfile.mkdtemp(prefix="maturation_ingame_")
+    keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
+            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG")
+    env_was = {k: os.environ.get(k) for k in keys}
+    try:
+        copy_ingame(root)
+        write_ledger(root)
+        fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
+        idle, ilog = os.path.join(root, "fake_idle.py"), os.path.join(root, "fake_idle.log")
+        with open(fake, "w") as f:
+            f.write(FAKE_DH)
+        with open(idle, "w") as f:
+            f.write(FAKE_IDLE)
+        open(log, "w").close()
+        open(ilog, "w").close()
+        os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(INGAME_CLOCK),
+                          MATURATION_BRIEF_DIR=os.path.join(root, "briefs"), MATURATION_BRIDGE_IDLE=idle,
+                          FAKE_IDLE="NOT", FAKE_IDLE_LOG=ilog)
+        P = "Pyrelands"
+
+        def calls():
+            with open(log) as f:
+                return [json.loads(x) for x in f if x.strip()]
+
+        tt = json.load(open(os.path.join(root, "design/concepts/Pyrelands/version/test_table.json")))
+        live6 = [k for k, t in tt["tests"].items() if str(t.get("kind", "")).startswith("live") and t.get("stage") == "6"]
+
+        # ---- visit 1 owed --------------------------------------------------------------------------------------------
+        chk(lambda: (lambda g: g["owed"] == "run" and g["visit"] == 1 and g["checks"] == live6 and g["testq"] == []
+                     and g["exit"]["state"] == "absent")(M.ingame_facts(root, P)),
+            "Pyrelands at in_game, no visit folder: visit 1 is owed, the %d stage-6 checks named, none with testq"
+            % len(live6))
+        chk(lambda: (lambda nx: nx["launch"].startswith("maturation.py launch Pyrelands --budget-usd")
+                     and "in-game visit 1" in nx["launch"] and "steward_confirms" in nx["hand_steps"]
+                     and "version/in_game/visit_1" in nx["next"])(M.next_step(root, P)),
+            "next names the launch (not \"none at this stage\"), its record folder, and the steward stays a hand step")
+        text = [""]
+
+        def brief():
+            text[0] = M.brief_text(root, P)[0]
+            return text[0].startswith("# In-game acceptance (Stage 6): Pyrelands 0.1.0, visit 1")
+        chk(brief, "the brief at in_game is an in-game acceptance brief")
+        chk(lambda: all(("`%s`" % k) in text[0] and ("`%s`" % tt["tests"][k]["command"]) in text[0] for k in live6),
+            "the brief names every stage-6 check with its exact command, from the mod's own table")
+        chk(lambda: all(w in text[0] for w in ("bridge take --idle-ok --for \"Pyrelands in-game acceptance visit 1\"",
+                                               "bridge release --seat BENCH", "Never a flyer's flight",
+                                               "Never leave a broken game running", "all five DLC",
+                                               "smallest list", "never restore his list")),
+            "the brief carries the bridge rules: idle-ok take, release at stop, no flight, no broken game, DLC, list")
+        chk(lambda: "none of this mod's %d checks carries one" % len(live6) in text[0]
+            and "pipeline_admit.py" in text[0], "the brief says SteveDesktop's queue admits none (no testq block)")
+        chk(lambda: all(w in text[0] for w in ("RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST",
+                                               "RIMMANDRAKE_EXTEND_NO_RAIN_SCENE_WITH_FORCED_WEATHER", "`sc_no_rain`",
+                                               "PF_PROBE_CALLER_NEVER_WET", "PF_HERD_CALLER_ANCHOR_ALWAYS",
+                                               "nk_flamefang_venom", "forced RainyThunderstorm")),
+            "the brief lists what the blind cycle left owed: the rain fix and its scene, both planted misses, lane 1's "
+            "UNSETTLED rows, its Owed text")
+        chk(lambda: "RIMMANDRAKE_PROVE_SELFTEST_HERD_LIVE_OPEN" in text[0]
+            and "RIMMANDRAKE_PROVE_SELFTEST_RAIN_LIVE_CLOSED" not in text[0],
+            "an open ledger item caused by a cycle fault is owed; a closed one is not")
+        chk(lambda: all(w in text[0] for w in ("design/concepts/Pyrelands/version/in_game/visit_1/SUMMARY.md",
+                                               "ingame_rows:", "strange_open:", "savegame:", "exit_met: true|false",
+                                               "diagnose it by experiment", "Never run `maturation.py advance`")),
+            "the brief names the skeleton, the machine-checkable exit block, diagnosis in the sitting, no advance")
+        chk(lambda: M.INGAME_DEFAULT[:50] in text[0], "no stage-6 decision written: the standing default")
+        t2 = json.loads(json.dumps(tt))
+        t2["tests"][live6[0]]["testq"] = {"chain": "selftest"}
+        ttp = os.path.join(root, "design/concepts/Pyrelands/version/test_table.json")
+        with open(ttp, "w") as f:
+            json.dump(t2, f)
+        chk(lambda: M.ingame_facts(root, P)["testq"] == [live6[0]] and "1 of %d of this mod's checks carry one (%s)" % (
+            len(live6), live6[0]) in M.brief_text(root, P)[0], "a check with a testq block is named for SteveDesktop")
+        with open(ttp, "w") as f:
+            json.dump(tt, f)
+
+        # ---- launch --------------------------------------------------------------------------------------------------
+        chk(lambda: M.launch_mod(root, P, 20, ITEM, model="sonnet", bridge=lambda p, s: (True, "free"))[0] == 2
+            and not calls(), "a live driver below opus refuses")
+        chk(lambda: M.launch_mod(root, P, 20, ITEM, model="fable", bridge=lambda p, s: (True, "free"))[0] == 2
+            and not calls(), "fable refuses too (never on a live resource)")
+        chk(lambda: (lambda r: r[0] == 2 and "held by SOMEONE" in r[1] and not calls())(
+            M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (False, "held by SOMEONE"))),
+            "the bridge held by another: launch refuses, naming the holder, and launches nothing")
+        chk(lambda: (lambda r: r[0] == 2 and "NOT TAKEABLE" in r[1] and not calls()
+                     and "bridge idle --for Pyrelands in-game acceptance visit 1 --seat BENCH" in open(ilog).read())(
+            M.launch_mod(root, P, 20, ITEM)),
+            "with no stand-in, launch asks `rimflow bridge idle` (here the fake): NOT TAKEABLE refuses")
+        os.environ["FAKE_IDLE"] = "YES"
+        chk(lambda: M.bridge_idle("x")[0] is True, "bridge_idle reads TAKEABLE rc 0 as takeable")
+        os.environ["FAKE_IDLE"] = "NOT"
+        chk(lambda: M.bridge_idle("x") == (False, "NOT TAKEABLE  driver lock held by BENCH (selftest)"),
+            "bridge_idle reads NOT TAKEABLE rc 1 as not takeable, with its line")
+        asked = []
+
+        def go():
+            r = M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (asked.append((p, s)) or (True, "free")))
+            c = calls()
+            return (r[0] == 0 and r[2] and len(c) == 1 and c[0][c[0].index("--budget-usd") + 1] == "20"
+                    and c[0][c[0].index("--model") + 1] == "opus" and asked == [("Pyrelands in-game acceptance visit 1",
+                                                                                 "BENCH")]
+                    and "# In-game acceptance (Stage 6)" in open(c[0][c[0].index("--brief-file") + 1]).read())
+        chk(go, "the bridge takeable: one launch, the cap, opus, the in-game brief")
+
+        # ---- the exit reading ----------------------------------------------------------------------------------------
+        def reads(kw, state, word=None):
+            write_visit(root, P, 1, **kw)
+            ex = M.ingame_facts(root, P)["exit"]
+            return ex["state"] == state and (word is None or word in " ".join(ex["why"]))
+        chk(lambda: reads({}, "met"), "a complete visit record whose block and files agree reads met")
+        chk(lambda: (lambda nx: "exit met" in nx["next"] and "--to pre_human" in nx["next"]
+                     and nx["launch"].startswith("none") and "steward_confirms" in nx["hand_steps"])(M.next_step(root, P)),
+            "next: exit met is a program reading, the steward confirms the move to pre_human, nothing to launch")
+        chk(lambda: M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (True, "free"))[0] == 2 and len(calls()) == 1,
+            "launch refuses a visit already recorded")
+        chk(lambda: reads(dict(fail=live6[1], rerun_pass=True), "met"),
+            "a FAIL diagnosed and rerun PASS in the sitting: the last row counts, met")
+        broken = (
+            (dict(exit_met=False), "the driver's block says exit_met false", "exit_met false"),
+            (dict(fail=live6[1]), "a check's last row FAILs", live6[1]),
+            (dict(drop=live6[2]), "a check has no row and is left out of the block", live6[2]),
+            (dict(site=False), "a row does not say the site was checked", "site_checked"),
+            (dict(game=None), "a row names no game", "names no game"),
+            (dict(sha=None), "a row names no mod_sha", "mod_sha"),
+            (dict(strange=[{"what": "a pawn walking on lava"}]), "a strange thing neither explained nor filed",
+             "neither explained nor filed"),
+            (dict(strange=[{"what": "odd", "filed": "RIMMANDRAKE_X_Y_Z_Q"}], strange_open=1),
+             "the block's strange_open disagrees with the file", "strange_open 1"),
+            (dict(strange_file=False), "strange.jsonl is missing", "strange.jsonl"),
+            (dict(save=False), "the savegame is not on disk", "not on disk"),
+            (dict(rows_file=False), "rows.jsonl is missing", "rows.jsonl is missing"),
+        )
+        for kw, what, word in broken:
+            chk(lambda kw=kw, word=word: reads(kw, "not_met", word), "%s: not met, and the reading says why" % what)
+        chk(lambda: reads(dict(block=False), "no_exit_block") and M.ingame_facts(root, P)["owed"] == "no exit block"
+            and M.next_step(root, P)["launch"].startswith("none"),
+            "a visit folder whose Exit reads (pending) has no exit block, and next launches nothing")
+        chk(lambda: M.native_to_here("C:\\Users\\Mandrake\\Saves\\a.rws") == "/mnt/c/Users/Mandrake/Saves/a.rws",
+            "a Windows savegame path is read as this machine reads it")
+        shutil.rmtree(os.path.join(root, "design/concepts/Pyrelands/version/in_game"), ignore_errors=True)
+        jp = os.path.join(root, "design/concepts/Pyrelands/journal.md")
+        jsaved = open(jp).read()
+        with open(jp, "w") as f:
+            f.write(M.add_intervention(jsaved, "- CONDUCTOR INTERVENED (stage 6, 2026-11-15 2:30 AM PST, kind hold): "
+                                               "selftest hold. Source: selftest."))
+        chk(lambda: M.ingame_facts(root, P)["owed"] == "blocked"
+            and M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (True, "free"))[0] == 2 and len(calls()) == 1,
+            "a hold on stage 6 blocks: no launch")
+        with open(jp, "w") as f:
+            f.write(M.add_intervention(jsaved, "- CONDUCTOR INTERVENED (stage 6, 2026-11-15 2:31 AM PST, kind "
+                                               "decision): selftest says run the rain scene first. Source: selftest."))
+        chk(lambda: "selftest says run the rain scene first" in M.brief_text(root, P)[0]
+            and M.INGAME_DEFAULT[:50] not in M.brief_text(root, P)[0],
+            "a stage-6 CONDUCTOR INTERVENED line fills the steward's section")
+    finally:
+        for k, v in env_was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(root, ignore_errors=True)
+    ok(git_status() == before, "nothing under design/concepts in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
     a = sys.argv[1:]
-    sys.exit(launch_main() if "--launch" in a else blind_main() if "--blind" in a else main())
+    sys.exit(launch_main() if "--launch" in a else blind_main() if "--blind" in a else ingame_main() if "--ingame" in a
+             else main())
