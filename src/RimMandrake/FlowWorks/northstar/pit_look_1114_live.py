@@ -57,7 +57,12 @@ def hot_tub():
         cell = "%s,%s" % (t.get("x"), t.get("z"))
         line = static("RimMandrake.FlowWorks.RM_Patch_MouseoverDepth", "ProofPitLabel", cell)
         if isinstance(line, str) and line.startswith("line=Pit"):
-            row("hot_tub_readout_" + cell, "Hot tub" in line or "hot tub" in line, line)
+            # a DRY geyser pit is not a tub (TubReadoutAt: an open pool's heated cells only): it must NOT say Hot tub
+            # (Stage 6 visit 1, 2026-11-15: the dry G1/G8 pits read FAIL here while the readout was right)
+            if "Water 0.00 m" in line:
+                row("hot_tub_dry_pit_not_a_tub_" + cell, "ot tub" not in line, line)
+            else:
+                row("hot_tub_readout_" + cell, "Hot tub" in line or "hot tub" in line, line)
 
 
 def pit_edge():

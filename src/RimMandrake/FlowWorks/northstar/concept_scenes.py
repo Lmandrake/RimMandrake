@@ -710,10 +710,15 @@ def _islands(S):
 
 def _walk(S):
     S.dig(_line(O[0] - 1, O[1], 21), 4); S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.pulse(40)
-    a = S.call('jawa/flowworks_engine_state')
+    # Stage 6 visit 1: the draft compared 'stock' and 'cells', keys engine_state never returns, so None == None passed.
+    keys = ('excavatedCellCount', 'superdeepCellCount', 'bodyCount', 'activeFluid')
+    def digest():
+        e = S.call('jawa/flowworks_engine_state')
+        return tuple(e.get(k) for k in keys) + (S.sc(FLUIDID, 'ProofCensus').split('|')[0].strip(),)
+    a = digest()
     S.setting('depthEngineEnabled', False); S.ticks(600); S.setting('depthEngineEnabled', True); S.ticks(600)
-    b = S.call('jawa/flowworks_engine_state')
-    S.row('WALK_toggle_off_on_digest_matches', {k: a.get(k) for k in ('stock', 'cells')} == {k: b.get(k) for k in ('stock', 'cells')}, (a, b))
+    b = digest()
+    S.row('WALK_toggle_off_on_digest_matches', None not in a and a[0] and a == b, (a, b))
 
 
 def _garden(S):

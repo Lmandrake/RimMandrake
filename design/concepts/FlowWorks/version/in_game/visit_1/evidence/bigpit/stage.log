@@ -1,0 +1,12 @@
+reset "{'success': False, 'message': 'No public static ProofResetRect with 1 params.', 'details': {'available': []}, 'operation': {'OperationId': 'op_a420d94d0eba4f1bbddae21d6dda98a7', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, '
+open_sky_before_stage {"ok": true, "rect": [58, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": {"roofOp": {"success": true, "cellsChanged": 0, "cellsFailedVerify": 0}}}
+cleared {"success": true, "destroyed": 237}
+open_sky_after_clear {"ok": true, "rect": [58, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}
+dig_failed_calls 0
+routes {"SculptureGrand": ["spawn_batch ok"], "DoubleBed": ["spawn_batch ok"], "RM_GlowTank": ["spawn_batch ok"], "RM_HoseReel": ["spawn_batch ok"], "Table2x2c": ["spawn_batch ok"], "TableButcher": ["spawn_batch ok"], "HandTailoringBench": ["spawn_batch ok"], "SculptureLarge": ["spawn_batch ok"], "Bed": ["
+labels {"success": false, "added": 7}
+elapsed_s 118.7
+TOTALS Counter({'PASS': 2})
+[bridge split] 118.6 s wall: load 0.0 / ticks 0.4 / reads 2.1 / other 111.5 / outside calls 4.5 s
+[bridge split] WARN 1792 calls of jawa/flowworks_excavation_drive (86.1 s): batch them
+[bridge split] WARN 448 calls of jawa/spawn_batch (21.5 s): batch them

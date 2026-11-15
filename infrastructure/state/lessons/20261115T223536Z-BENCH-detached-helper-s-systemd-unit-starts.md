@@ -1,0 +1,1 @@
+A detached helper's systemd unit starts with no Windows interop: PATH has no /mnt/c dirs and WSL_INTEROP is unset, so python.exe and tasklist.exe 'do not exist' and ./game reads UNMEASURED. Export WSL_INTEROP=/run/WSL/1_interop and add the WindowsApps and System32 dirs to PATH (FlowWorks visit 1, 2026-11-15).

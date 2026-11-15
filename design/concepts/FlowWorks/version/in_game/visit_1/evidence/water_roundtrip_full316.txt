@@ -1,0 +1,5 @@
+before {'readout': 'OK Hole 2 m · Water 1.00 m (2,000 L)', 'census': 'FLUIDID wet 9 | recorded 9 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []'}
+load 12.4 []
+after {'readout': 'OK Hole 2 m · Water 1.00 m (2,000 L)', 'census': 'FLUIDID wet 9 | recorded 9 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []'}
+timeout: failed to execute process: No such file or directory (os error 2)
+python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det/count-errors': [Errno 2] No such file or directory

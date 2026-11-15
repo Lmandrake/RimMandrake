@@ -1,0 +1,1 @@
+jawa/fire_raid defaults dryRun=true: a scene that calls it without dryRun=False fires no raid and its raider rows pass vacuously. Also name no faction on a calm test world (no Pirate faction exists there) (FlowWorks visit 1, 2026-11-15).

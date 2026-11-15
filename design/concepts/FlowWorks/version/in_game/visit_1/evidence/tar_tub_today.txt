@@ -1,0 +1,5 @@
+12,112 line=Pit, 1.0 m tar in 4.0 m (walk speed 6.1%) — Hole 4 m · Water 1.00 m (2,000 L) · Hot tub
+27,112 line=Pit, 1.0 m oil in 4.0 m (walk speed 6.1%) — Hole 4 m · Water 1.00 m (2,000 L) · Hot tub
+42,112 line=Pit, 1.0 m blood in 4.0 m (walk speed 6.1%) — Hole 4 m · Water 1.00 m (2,000 L) · Hot tub
+64,98 line=Pit, 1.0 m water in 4.0 m (walk speed 30%) — Hole 4 m · Water 1.00 m (2,000 L) · Hot tub
+pool spawned=True thingId=SteamGeyser21174 seatNotches=8 vent=13.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Tar bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False

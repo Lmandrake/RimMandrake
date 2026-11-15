@@ -10,6 +10,10 @@ needs a judge's or his eye, and none was changed:
    say the draw offset follows depth: plot_H_depth_ladder PASS).
 4. Station 32 (bleed well): at sheet scale the hose end appears to stop a little short of the tap fitting; a closer capture
    is owed before calling it a gap.
+5. Every non-water geyser pit's depth suffix says 'Water 1.00 m (2,000 L)' while its terrain line says '1.0 m tar' (oil,
+   blood): the suffix names the wrong liquid (evidence/tar_tub_today.txt in visit_1).
+6. owner_look_regressions (held, no bar): 130 OL_no_surface_shadow + 7 OL_labels_fade FAIL on a big pit staged on today's
+   build; the judge predates the shadow-under-the-sheet design (RM_UnderLiquid.ThingShadow), so re-judge or re-pin it.
 Also seen: a small grey round thing on the floor of station 49's 2 m ladder pit; get_cells_info lists no Thing there
 (it does not list pawns), so presumed a wild animal in the pit, unproven.
 Caught and fixed before this save: the two "concealed pit" stations (54, 63) had one plank lid on the centre of a 3x3 pit, so

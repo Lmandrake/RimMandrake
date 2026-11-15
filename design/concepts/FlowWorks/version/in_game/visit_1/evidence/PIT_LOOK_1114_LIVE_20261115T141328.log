@@ -1,0 +1,22 @@
+UNMEASURED body_cover_is_a_look                             needs a zoomed capture judged by eye (see docstring)
+UNMEASURED pour_label_100                                   {'success': False, 'message': 'Unsupported parameter type Int64 (arg 0).', 'operation': {'OperationId': 'op_384e3828048f4bc08027c9aa19f1d389', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused'
+UNMEASURED pour_label_1000                                  {'success': False, 'message': 'Unsupported parameter type Int64 (arg 0).', 'operation': {'OperationId': 'op_e489ff2a6ca94b5a8a3674033d9df2ed', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused'
+UNMEASURED pour_label_2048000                               {'success': False, 'message': 'Unsupported parameter type Int64 (arg 0).', 'operation': {'OperationId': 'op_08bb732e08634fc28564691b9c367a92', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused'
+PASS       pit_walk_readout_154,200                         line=Pit, 4.0 m deep (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+PASS       pit_walk_readout_167,199                         line=Pit, 0.5 m deep (walk speed 100%) � Hole 0.5 m � Water 0.00 m (0 L)
+PASS       pit_walk_readout_187,199                         line=Pit, 4.0 m deep (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+PASS       pit_walk_readout_180,188                         line=Pit, 2.0 m water in 4.0 m � Hole 4 m � Water 2.00 m (4,000 L)
+PASS       hot_tub_readout_36,149                           line=Pit, 2.0 m water in 4.0 m � Hole 4 m � Water 2.00 m (4,000 L) � Hot tub
+FAIL       hot_tub_readout_189,171                          line=Pit, 4.0 m deep (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+FAIL       hot_tub_readout_21,70                            line=Pit, 4.0 m deep (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+PASS       hot_tub_readout_111,230                          line=Pit, 4.0 m water in 4.0 m � Hole 4 m � Water 4.00 m (8,000 L) � Hot tub
+PASS       hot_tub_readout_64,98                            line=Pit, 1.0 m water in 4.0 m (walk speed 30%) � Hole 4 m � Water 1.00 m (2,000 L) � Hot tub
+PASS       hot_tub_readout_12,112                           line=Pit, 1.0 m tar in 4.0 m (walk speed 6.1%) � Hole 4 m � Water 1.00 m (2,000 L) � Hot tub
+PASS       pit_edge_TableButcher;150;200;0                  REFUSED: Cannot hang over a pit edge: part would stand on the ground, part 4.0 m down in the pit.
+PASS       pit_edge_TableButcher;155;200;0                  ACCEPTED
+PASS       pit_edge_TableButcher;150;210;0                  ACCEPTED
+PASS       pit_floor_named_dry                              line=Pit, 4.0 m deep � Sandstone tile (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+PASS       pit_floor_named_sunk                             ['OK set (189, 188) to 1 m of RM_Fluid_Water over 36 squares: poured 72 kL, drained 0 L; it now reads Pit, 1.0 m water in 4.0 m', 'line=Pit, 1.0 m water in 4.0 m � Sandstone tile under the water (walk speed 30%) � Hole 4 m � Water 1.00 m (2,000 L)']
+PASS       pit_floor_back_after_drain                       ['OK drained 72 kL of all RM_Fluid_Water from the pit at (189, 188) (36 squares)', 'line=Pit, 4.0 m deep � Sandstone tile (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)']
+14/20 PASS
+[bridge split] 1.2 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 1.1 / outside calls 0.1 s

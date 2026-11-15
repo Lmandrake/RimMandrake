@@ -1,0 +1,7 @@
+before {'readout': 'OK Hole 2 m · Water 1.00 m (2,000 L)', 'census': 'FLUIDID wet 9 | recorded 9 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []'}
+save {'path': 'C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\FWV1_ROUNDTRIP_140840.rws', 'bytes': 7185148, 'expanded': {'cells': {'ChunkGranite': 393, 'Slate': 1352, 'ChunkSlate': 558, 'ChunkLimestone': 483, 'MineableComponentsIndustrial': 26, 'MineableSt
+load 5.7 ["current map is tile 67034, the save's site is 112579"]
+after {'readout': 'OK Hole 2 m · Water 1.00 m (2,000 L)', 'census': 'FLUIDID wet 9 | recorded 9 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []'}
+fill FILL applied=16 refused=0 notOwned=0 fluid=default
+before ('OK Hole 4 m · Water 1.00 m (2,000 L)', 'FLUIDID wet 25 | recorded 25 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []')
+after ('OK Hole 4 m · Water 1.00 m (2,000 L)', 'FLUIDID wet 25 | recorded 25 | unrecorded 0 | fluids [RM_Fluid_Water] | bodies []')

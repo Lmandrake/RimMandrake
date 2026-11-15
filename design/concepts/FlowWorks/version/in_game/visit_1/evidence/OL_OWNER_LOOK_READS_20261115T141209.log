@@ -1,0 +1,143 @@
+FAIL OL_no_surface_shadow_BP1_0.5m_SculptureGrand shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_DoubleBed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_GlowTank shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_HoseReel shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Table2x2c shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_TableButcher shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_HandTailoringBench shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_SculptureLarge shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Bed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Shelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Dresser shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_ResinSealingJarShelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Bedroll shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Battery shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_PlantPot shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_SculptureSmall shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_DiningChair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Stool shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Armchair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_EndTable shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_StandingLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_TorchLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_Cooler shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_BrineCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_EvaporativeCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP1_0.5m_RM_AncientStasisLocker_Refurbished shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_SculptureGrand shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_SculptureGrand label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_DoubleBed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_RM_GlowTank shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_RM_HoseReel shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Table2x2c shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_TableButcher shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_TableButcher label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_HandTailoringBench shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_HandTailoringBench label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_SculptureLarge shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_SculptureLarge label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_Bed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Shelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Dresser shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_RM_ResinSealingJarShelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_RM_ResinSealingJarShelf label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_Bedroll shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Battery shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_PlantPot shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_SculptureSmall shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_DiningChair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Stool shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Armchair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_EndTable shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_StandingLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_TorchLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_Cooler shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_Cooler label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_RM_BrineCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_labels_fade_BP2_1m_furn_RM_BrineCrock label at full brightness over a drowned thing
+FAIL OL_no_surface_shadow_BP2_1m_RM_EvaporativeCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP2_1m_RM_AncientStasisLocker_Refurbished shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_SculptureGrand shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_DoubleBed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_GlowTank shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_HoseReel shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Table2x2c shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_TableButcher shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_HandTailoringBench shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_SculptureLarge shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Bed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Shelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Dresser shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_ResinSealingJarShelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Bedroll shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Battery shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_PlantPot shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_SculptureSmall shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_DiningChair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Stool shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Armchair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_EndTable shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_StandingLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_TorchLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_Cooler shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_BrineCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_EvaporativeCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP3_2m_RM_AncientStasisLocker_Refurbished shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_SculptureGrand shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_DoubleBed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_GlowTank shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_HoseReel shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Table2x2c shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_TableButcher shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_HandTailoringBench shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_SculptureLarge shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Bed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Shelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Dresser shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_ResinSealingJarShelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Bedroll shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Battery shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_PlantPot shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_SculptureSmall shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_DiningChair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Stool shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Armchair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_EndTable shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_StandingLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_TorchLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_Cooler shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_BrineCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_EvaporativeCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP4_3m_RM_AncientStasisLocker_Refurbished shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_SculptureGrand shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_DoubleBed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_GlowTank shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_HoseReel shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Table2x2c shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_TableButcher shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_HandTailoringBench shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_SculptureLarge shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Bed shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Shelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Dresser shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_ResinSealingJarShelf shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Bedroll shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Battery shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_PlantPot shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_SculptureSmall shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_DiningChair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Stool shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Armchair shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_EndTable shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_StandingLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_TorchLamp shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_Cooler shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_BrineCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_EvaporativeCrock shadow 0.3 is the dry alpha: not seen through the water
+FAIL OL_no_surface_shadow_BP5_brim_RM_AncientStasisLocker_Refurbished shadow 0.3 is the dry alpha: not seen through the water
+UNMEASURED OL_pour_never_no_room acts off (pass --acts to pour on the spare pit)
+BLOCKED OL_label_text_true_depth no reader for the on-screen pit label (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); expected text is pinned offline by PitLabelChecks
+BLOCKED OL_overlays_hidden overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS rope and connector) do not report to the law (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS)
+owner_look_regressions {"PASS": 1036, "FAIL": 137, "UNMEASURED": 1, "BLOCKED": 2}
+[bridge split] 23.3 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 22.3 / outside calls 0.9 s
+[bridge split] WARN 462 calls of jawa/static_call (22.2 s): batch them

@@ -1,0 +1,5882 @@
+[
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureGrand",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_DoubleBed",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_GlowTank",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_HoseReel",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Table2x2c",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_TableButcher",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_HandTailoringBench",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureLarge",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Bed",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Shelf",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Dresser",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Bedroll",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Battery",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_PlantPot",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureSmall",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_DiningChair",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Stool",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Armchair",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_EndTable",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_StandingLamp",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_TorchLamp",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Cooler",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_BrineCrock",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=0.000"
+},
+{
+"row": "OL_corpses_covered_BP0_dry_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=0.000"
+},
+{
+"row": "OL_corpses_covered_BP0_dry_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=0.000"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_SculptureGrand",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_DoubleBed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_GlowTank",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=0.833"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_HoseReel",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "partly above (share 0.833): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Table2x2c",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_TableButcher",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_TableButcher",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_HandTailoringBench",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_SculptureLarge",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Bed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Bed",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Shelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Shelf",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Dresser",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Dresser",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Bedroll",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Bedroll",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Battery",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Battery",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_PlantPot",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_PlantPot",
+"verdict": "PASS",
+"got": "label 0.969"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=0.714"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_SculptureSmall",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "partly above (share 0.714): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=0.714"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_DiningChair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_DiningChair",
+"verdict": "PASS",
+"got": "partly above (share 0.714): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Stool",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Stool",
+"verdict": "PASS",
+"got": "label 0.969"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Armchair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Armchair",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_EndTable",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_EndTable",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_StandingLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "label 0.969"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_TorchLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_Cooler",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_Cooler",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=0.500"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "partly above (share 0.500): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=0.625"
+},
+{
+"row": "OL_no_surface_shadow_BP1_0.5m_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "partly above (share 0.625): label 1.0"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_WoodLog",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Plasteel",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Gold",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Cloth",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Hay",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Silver",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Steel",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MealSimple",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MealFine",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Pemmican",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Beer",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Chocolate",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Neutroamine",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Jade",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_Novel",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=0.667"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_mini_Armchair",
+"verdict": "PASS",
+"got": "partly above (share 0.667): label 1.0"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=0.667"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_mini_EndTable",
+"verdict": "PASS",
+"got": "partly above (share 0.667): label 1.0"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=0.667"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "partly above (share 0.667): label 1.0"
+},
+{
+"row": "OL_corpses_covered_BP1_0.5m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_corpses_covered_BP1_0.5m_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP1_0.5m_corpse_Villager",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_SculptureGrand",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_DoubleBed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_GlowTank",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_HoseReel",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "label 0.877"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Table2x2c",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_TableButcher",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_HandTailoringBench",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_SculptureLarge",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Bed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Bed",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Shelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Shelf",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Dresser",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Dresser",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Bedroll",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Bedroll",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Battery",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Battery",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_PlantPot",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_PlantPot",
+"verdict": "PASS",
+"got": "label 0.817"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_SculptureSmall",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "label 0.907"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_DiningChair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_DiningChair",
+"verdict": "PASS",
+"got": "label 0.907"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Stool",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Stool",
+"verdict": "PASS",
+"got": "label 0.817"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Armchair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Armchair",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_EndTable",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_EndTable",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_StandingLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "label 0.817"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_TorchLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_Cooler",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_Cooler",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "label at full brightness over a drowned thing"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP2_1m_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP2_1m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "label 0.938"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_WoodLog",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Plasteel",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Gold",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Cloth",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Hay",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Silver",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Steel",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MealSimple",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MealFine",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Pemmican",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Beer",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Chocolate",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Neutroamine",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Jade",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_Novel",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_mini_Armchair",
+"verdict": "PASS",
+"got": "label 0.922"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_mini_EndTable",
+"verdict": "PASS",
+"got": "label 0.922"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.922"
+},
+{
+"row": "OL_corpses_covered_BP2_1m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_corpses_covered_BP2_1m_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP2_1m_corpse_Villager",
+"verdict": "PASS",
+"got": "label 0.788"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_SculptureGrand",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_DoubleBed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_GlowTank",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_HoseReel",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "label 0.592"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Table2x2c",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_TableButcher",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_TableButcher",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_HandTailoringBench",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_SculptureLarge",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Bed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Bed",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Shelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Shelf",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Dresser",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Dresser",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Bedroll",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Bedroll",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Battery",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Battery",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_PlantPot",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_PlantPot",
+"verdict": "PASS",
+"got": "label 0.54"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_SculptureSmall",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "label 0.619"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_DiningChair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_DiningChair",
+"verdict": "PASS",
+"got": "label 0.619"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Stool",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Stool",
+"verdict": "PASS",
+"got": "label 0.54"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Armchair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Armchair",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_EndTable",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_EndTable",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_StandingLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "label 0.54"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_TorchLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_Cooler",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_Cooler",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.702"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP3_2m_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP3_2m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "label 0.646"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_WoodLog",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Plasteel",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Gold",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Cloth",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Hay",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Silver",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Steel",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MealSimple",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MealFine",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Pemmican",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Beer",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Chocolate",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Neutroamine",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Jade",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_Novel",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_mini_Armchair",
+"verdict": "PASS",
+"got": "label 0.633"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_mini_EndTable",
+"verdict": "PASS",
+"got": "label 0.633"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.633"
+},
+{
+"row": "OL_corpses_covered_BP3_2m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_corpses_covered_BP3_2m_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP3_2m_corpse_Villager",
+"verdict": "PASS",
+"got": "label 0.515"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_SculptureGrand",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_DoubleBed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_GlowTank",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_HoseReel",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "label 0.35"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Table2x2c",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_TableButcher",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_TableButcher",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_HandTailoringBench",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_SculptureLarge",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Bed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Bed",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Shelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Shelf",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Dresser",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Dresser",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Bedroll",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Bedroll",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Battery",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Battery",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_PlantPot",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_PlantPot",
+"verdict": "PASS",
+"got": "label 0.307"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_SculptureSmall",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "label 0.372"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_DiningChair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_DiningChair",
+"verdict": "PASS",
+"got": "label 0.372"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Stool",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Stool",
+"verdict": "PASS",
+"got": "label 0.307"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Armchair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Armchair",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_EndTable",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_EndTable",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_StandingLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "label 0.307"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_TorchLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_Cooler",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_Cooler",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.441"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP4_3m_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP4_3m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "label 0.394"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_WoodLog",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Plasteel",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Gold",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Cloth",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Hay",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Silver",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Steel",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MealSimple",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MealFine",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Pemmican",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Beer",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Chocolate",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Neutroamine",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Jade",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_Novel",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_mini_Armchair",
+"verdict": "PASS",
+"got": "label 0.383"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_mini_EndTable",
+"verdict": "PASS",
+"got": "label 0.383"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.383"
+},
+{
+"row": "OL_corpses_covered_BP4_3m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_corpses_covered_BP4_3m_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP4_3m_corpse_Villager",
+"verdict": "PASS",
+"got": "label 0.287"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_SculptureGrand",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_DoubleBed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_DoubleBed",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_GlowTank",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_HoseReel",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "label 0.163"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Table2x2c",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Table2x2c",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_TableButcher",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_TableButcher",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_HandTailoringBench",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_SculptureLarge",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Bed",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Bed",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Shelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Shelf",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Dresser",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Dresser",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Bedroll",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Bedroll",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Battery",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Battery",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_PlantPot",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_PlantPot",
+"verdict": "PASS",
+"got": "label 0.136"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_SculptureSmall",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "label 0.178"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_DiningChair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_DiningChair",
+"verdict": "PASS",
+"got": "label 0.178"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Stool",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Stool",
+"verdict": "PASS",
+"got": "label 0.136"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Armchair",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Armchair",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_EndTable",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_EndTable",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_StandingLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_StandingLamp",
+"verdict": "PASS",
+"got": "label 0.136"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_TorchLamp",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_TorchLamp",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_Cooler",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_Cooler",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.229"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_no_surface_shadow_BP5_brim_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "shadow 0.3 is the dry alpha: not seen through the water"
+},
+{
+"row": "OL_labels_fade_BP5_brim_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "label 0.195"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_WoodLog",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Plasteel",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Gold",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Cloth",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Hay",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Silver",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Steel",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Leather_Plain",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MealSimple",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MealFine",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_RawPotatoes",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Meat_Cow",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Pemmican",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Beer",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Chocolate",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Neutroamine",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_ChunkGranite",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Shell_EMP",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Jade",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_Novel",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_mini_Armchair",
+"verdict": "PASS",
+"got": "label 0.186"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_mini_EndTable",
+"verdict": "PASS",
+"got": "label 0.186"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "label 0.186"
+},
+{
+"row": "OL_corpses_covered_BP5_brim_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_corpse_Muffalo",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_corpses_covered_BP5_brim_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_labels_fade_BP5_brim_corpse_Villager",
+"verdict": "PASS",
+"got": "label 0.124"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_SculptureGrand",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_DoubleBed",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_DoubleBed",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_GlowTank",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_HoseReel",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Table2x2c",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Table2x2c",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_TableButcher",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_TableButcher",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_TableButcher",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_HandTailoringBench",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_SculptureLarge",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Bed",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Bed",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Bed",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Shelf",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Shelf",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Shelf",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Dresser",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Dresser",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Dresser",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Bedroll",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Bedroll",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Bedroll",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Battery",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Battery",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Battery",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_PlantPot",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_PlantPot",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_PlantPot",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_SculptureSmall",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_DiningChair",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_DiningChair",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_DiningChair",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Stool",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Stool",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Stool",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Armchair",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Armchair",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Armchair",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_EndTable",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_EndTable",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_EndTable",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_StandingLamp",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_StandingLamp",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_TorchLamp",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_TorchLamp",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_Cooler",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_Cooler",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_Cooler",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_BrineCrock",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "kind=building share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_no_surface_shadow_BP6_tar1.5m_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "tar: no shadow"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_WoodLog",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_WoodLog",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Plasteel",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Plasteel",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Gold",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Gold",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Cloth",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Cloth",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Hay",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Hay",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Silver",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Silver",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Steel",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Steel",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Leather_Plain",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MealSimple",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MealSimple",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MealFine",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MealFine",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_RawPotatoes",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Meat_Cow",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Pemmican",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Pemmican",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Beer",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Beer",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Chocolate",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Chocolate",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Neutroamine",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Neutroamine",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_ChunkGranite",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Shell_EMP",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Jade",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Jade",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_Novel",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_Novel",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "kind=item share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_mini_Armchair",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_mini_Armchair",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_mini_EndTable",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_mini_EndTable",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "kind=minified share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_corpses_covered_BP6_tar1.5m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_corpse_Muffalo",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_corpses_covered_BP6_tar1.5m_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=1.000"
+},
+{
+"row": "OL_opaque_hides_BP6_tar1.5m_corpse_Villager",
+"verdict": "PASS",
+"got": "hidden (share=1.000)"
+},
+{
+"row": "OL_labels_fade_BP6_tar1.5m_corpse_Villager",
+"verdict": "PASS",
+"got": "hidden under tar"
+},
+{
+"row": "OL_one_law_over_fill_corpse_Muffalo",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_corpse_Villager",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Armchair",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Battery",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Bed",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Bedroll",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Cooler",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_DiningChair",
+"verdict": "PASS",
+"got": "1,0.714,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_DoubleBed",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Dresser",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_EndTable",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_PlantPot",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_BrineCrock",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_EvaporativeCrock",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_GlowTank",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "1,0.833,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_RM_ResinSealingJarShelf",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "1,0.714,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Shelf",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_StandingLamp",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Stool",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_Table2x2c",
+"verdict": "PASS",
+"got": "1,0.625,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_TableButcher",
+"verdict": "PASS",
+"got": "1,0.500,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_furn_TorchLamp",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Beer",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Chocolate",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_ChunkGranite",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Cloth",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Gold",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Hay",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Jade",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Leather_Plain",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MealFine",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MealSimple",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Meat_Cow",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Neutroamine",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Novel",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Pemmican",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Plasteel",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_RM_AmberAgedMeat",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_RM_ResinSealedFruit",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_RM_ResinSealedMeat",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_RawPotatoes",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Shell_EMP",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Silver",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_Steel",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_item_WoodLog",
+"verdict": "PASS",
+"got": "1,1.000,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_mini_Armchair",
+"verdict": "PASS",
+"got": "1,0.667,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_mini_EndTable",
+"verdict": "PASS",
+"got": "1,0.667,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_one_law_over_fill_mini_RM_BrineCrock",
+"verdict": "PASS",
+"got": "1,0.667,0.847 2,1.000,0.702 4,1.000,0.441 6,1.000,0.229 8,1.000,0.100"
+},
+{
+"row": "OL_pour_never_no_room",
+"verdict": "UNMEASURED",
+"got": "acts off (pass --acts to pour on the spare pit)"
+},
+{
+"row": "OL_label_text_true_depth",
+"verdict": "BLOCKED",
+"got": "no reader for the on-screen pit label (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); expected text is pinned offline by PitLabelChecks"
+},
+{
+"row": "OL_overlays_hidden",
+"verdict": "BLOCKED",
+"got": "overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS rope and connector) do not report to the law (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS)"
+},
+{
+"row": "OL_screenshot_mode_off",
+"verdict": "PASS",
+"got": "off before and after"
+}
+]

@@ -1,0 +1,5 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_walk_20261115T143224.json 
+[bridge split] 49.9 s wall: load 0.7 / ticks 2.8 / reads 16.3 / other 10.0 / outside calls 20.1 s
+[bridge split] WARN 110 calls of jawa/window_list_close (4.3 s): batch them
+[bridge split] WARN 54 calls of rimworld/get_ui_layout (2.0 s): batch them
+[bridge split] WARN 54 calls of rimworld/click_ui_target (3.2 s): batch them

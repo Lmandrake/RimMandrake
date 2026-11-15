@@ -1,0 +1,5 @@
+open_sky_before_verify {"ok": true, "rect": [58, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}
+UNMEASURED {"row": "label_onscreen_text", "verdict": "UNMEASURED", "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"}
+elapsed_s 1.1
+TOTALS Counter({'PASS': 253, 'UNMEASURED': 1})
+[bridge split] 1.0 s wall: load 0.0 / ticks 0.0 / reads 0.9 / other 0.0 / outside calls 0.1 s
