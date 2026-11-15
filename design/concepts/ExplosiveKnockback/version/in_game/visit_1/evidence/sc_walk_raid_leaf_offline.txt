@@ -1,0 +1,23 @@
+# RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO acceptance, sha 3d1f9ae2ca, 2026-11-15T16:56:10Z, WSL python3
+## base 67d5c3f318: grep -c = 0; --live walk_storeroom_raid printed 'STATIC: PASS (0 findings)' exit 0 (watched)
+## grep -c 'def walk_storeroom_raid' validation.py
+1
+## validation.py --live walk_storeroom_raid (no game reachable)
+REFUSED walk_storeroom_raid: no game reachable over the bridge (RimBridgeError: cannot reach the bridge from WSL, and no amount of retrying will fix it.
+  RimBridge binds Windows loopback; WSL2 is NAT-mode, so 127.0.0.1:5174 has no route from here.
+  This says NOTHING about wheth). Run with python.exe, a game Playing, the bridge held.
+exit=2
+## selftest_explosiveknockback_walk_raid.py
+PASS W0   a sound world passes every row but FRAME_BUDGET (code 1, not PASS: ['FRAME_BUDGET'])
+PASS W1   no game refuses with exit 2 (got 2)
+PASS W2   the release DLL exits 3 (got 3)
+PASS W3   no closed container: preconditions INVALID, the rest UNMEASURED (INVALID)
+PASS W4   dup_on_reload flips ['A_RELOAD_NO_DUP_LOST'] to FAIL (got ['FAIL'])
+PASS W5   gas_at_once flips ['A_GAS_CLUMP_BY_CLUMP', 'B_GAS_CLUMP_BY_CLUMP'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W6   orphan flips ['A_REQUESTS_MATCH_PLAN', 'B_REQUESTS_MATCH_PLAN'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W7   off_throws flips ['C_OFF_IMPACTS_NO_THROWS'] to FAIL (got ['FAIL'])
+PASS W8   cover_stays flips ['A_COVER_BROKEN_ONE_DESCENT', 'B_COVER_BROKEN_ONE_DESCENT'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W9   unjournalled flips ['A_REACHED_ACCOUNTED'] to FAIL (got ['FAIL'])
+PASS W10  --live without a leaf (2) and with no reachable game (2) refuse
+PASS walk_storeroom_raid leaf: 0 failed
+exit=0
