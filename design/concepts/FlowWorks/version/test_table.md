@@ -276,7 +276,7 @@ Generated 2026-11-14T22:07:03-08:00 from `test_table.json` (the record; this is 
 | 2026-11-13#16 | fill_level_legible, inv_looks | OL_OWNER_LOOK_READS (OL_overlays_hidden; blocked on the overlay proof hook) | 6 | approval kept for re-check |
 | 2026-11-13#17 | ways_in_and_out, pit_reads_as_hole | T_PIT_ACCESS (PY_FLOWWORKS_DRAFTED_MOVE_PIT checks only the destination remap; the release ring and the pit's top rows are unchecked) + sc_ways_out | 4-5 and 6 | offline (partly specified) + in-game read |
 | 2026-11-13#18 | - | harness: tier_cut_creature_check.py against proof-scene creatures | 2 | harness staging, no FlowWorks bar |
-| 2026-11-13_dig_interface#1 | canal_reads_as_dug, inv_dig_depth | T_DIG_TIME_ARITHMETIC (specified; his target not set) | 4-5 | offline arithmetic (specified); Problem-or-Divergent is his open call |
+| 2026-11-13_dig_interface#1 | canal_reads_as_dug, inv_dig_depth | T_DIG_TIME_ARITHMETIC (specified; the speed target is 0.2.0 work) | 4-5 | offline arithmetic (specified); next version (FlowWorks 0.2.0 Divergent): the dig speed is a question inside the dig-interface redesign, his card 2026-11-13 10:12 PM PST ("All in the next version") |
 | 2026-11-13_dig_interface#2 | - | none: next version (version/next_version/README.md) | - | next version (FlowWorks 0.2.0 Divergent): the dig-interface redesign, his card 2026-11-13 10:12 PM PST ("All in the next version") |
 | 2026-11-13_evening#1 | inv_geyser_tub | T_GEYSER_TUB (fleck count, size, alpha in bounds; offline) | 4-5 | defect; bar added by his card 2026-11-14 |
 | 2026-11-13_evening#2 | fill_level_legible, inv_looks | T_UNDERLIQUID (things lying flat draw under the sheet) | 4-5 | offline law |

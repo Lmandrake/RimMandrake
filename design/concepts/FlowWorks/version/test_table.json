@@ -937,9 +937,9 @@
     "canal_reads_as_dug",
     "inv_dig_depth"
    ],
-   "test": "T_DIG_TIME_ARITHMETIC (specified; his target not set)",
+   "test": "T_DIG_TIME_ARITHMETIC (specified; the speed target is 0.2.0 work)",
    "stage": "4-5",
-   "kind": "offline arithmetic (specified); Problem-or-Divergent is his open call"
+   "kind": "offline arithmetic (specified); next version (FlowWorks 0.2.0 Divergent): the dig speed is a question inside the dig-interface redesign, his card 2026-11-13 10:12 PM PST (\"All in the next version\")"
   },
   {
    "file": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13_dig_interface.md",

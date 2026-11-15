@@ -251,22 +251,8 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 ### Questions (open)
 
 1. ~~g4~~ settled 2026-11-14 by the Conductor's decision: a test-only proof hook pins the colonist at 64 to 76 kg (Stage 3).
-10. **The leaf settings_scale_and_switch names a "closed guard off" setting, but no such setting exists**
-    (`RM_KnockbackMod.cs` saves 46 settings; none switches the closed-container guard off: `shoveClosedContainers` throws the
-    container whole, `vanillaCratesClosed` covers only vanilla's sealed crates). Either the leaf's word is wrong or a setting is missing; it is bar text, so not edited here.
-11. **One walk row contradicts a bar**: `flying_goods.off_is_the_instant_move` says goods in the air off means an
-    instant move, while the bar says goods are then not thrown at all (`version/bar_lists_map.json`). Stage 6 reports
-    against the 59, but `validation.py` still reads the walk, so the row would report against the bar.
-12. **sc_closed_containers says a container "slid one cell (action slide)"; the shipped code throws it whole** (on his
-    2026-11-12 words, "the whole crate/chest would go flying a bit", item RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE),
-    journaled as action `thrown`, possibly more than one cell. The scene checks "moved exactly one cell away" and reports the
-    action word; Stage 6 may fail it on distance. Which is right for 0.1.0: the bar's one-cell slide, or the throw?
-13. **The same scene asks for "a drawn offset above zero in the thing trace" for each jolt**, but no thing trace exists and
-    a jolt draws nothing (`RM_MapComponent_Knockback.cs` journals `jolt` only). Reported UNMEASURED; building it is a
-    visible behaviour plus an instrument, so it is the Conductor's call whether 0.1.0 owes it.
-14. **sc_settings_sweep switches "fire at half" off, but no Mod Settings field does that**; the same scene's expect says the
-    fire half is a def-patch value proven in sc_blast_kinds. The `fireHalf` lane answers INVALID with that reason, like
-    `closedGuard` (question 10).
+
+Questions 10 to 14 are answered in the history entry of 2026-11-15 11:45 AM PST.
 
 ### 2026-11-14 9:28 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
 
@@ -314,3 +300,22 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 8:34 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 8:34 AM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-15 11:45 AM PST, questions 10 to 14 answered (by BENCH)
+
+Delegated under his Evidence-for-Ask ruling (RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): each takes the
+answer the locked bar, his recorded words or the shipped code already gives; no evidence against it was found.
+
+- This answers question 10: the leaf is right. Steward decision 6 of blind cycle 2 (`version/blind_challenge/cycle_2/SUMMARY.md`)
+  added the setting, built at 587529cee1: `closedContainerGuard`, "Closed containers protect their goods" (`RM_KnockbackMod.cs`).
+- This answers question 11: the walk row yields to its bar (steward decision 8, 587529cee1): off means goods are not thrown,
+  and `validation.py` now reads `off_goods_unthrown`.
+- This answers question 12: he answered it himself, "Throw it, as built" (OWNER:1794721689897638306), and recertified the
+  rule (OWNER:1794748823561950419); sc_closed_containers is re-pinned to "thrown a short way" (`version/bars.md`).
+- This answers question 13: 0.1.0 owes the drawn jolt, and steward decision 6 built it (`RM_MapComponent_Knockback.cs`
+  MapComponentUpdate). The scene's offset row still prints `drawnOffset=UNMEASURED` (`RM_KnockbackProof_StageThree.cs`),
+  because the proof counters are map-wide and per frame; wiring a per-container read is item
+  RIMMANDRAKE_READ_CONTAINER_JOLT_OFFSET_IN_PROOF.
+- This answers question 14: `fireAtHalf`, "Fire throws at half strength", exists (steward decision 6, 587529cee1) and the
+  `fireHalf` lane switches it. Still owed by the steward at the next re-pin: name `closedContainerGuard` and `fireAtHalf` in
+  sc_settings_sweep's action.

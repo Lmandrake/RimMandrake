@@ -290,9 +290,7 @@ Stage change, Stage 3 "reconcile" (2:14 to 2:47 PM PST, rm-builder, detached):
 
 ### Questions for him (none blocks Stage 3)
 
-3. **The dig speed** ("it's slow"): his target is a question inside the 0.2.0 dig-interface design
-   (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his card 2026-11-13 10:12 PM PST put the whole redesign in
-   0.2.0, `version/next_version/README.md`); the dig-time test waits for his target.
+None open; question 3 (the dig speed) is answered in the history entry of 2026-11-15 11:45 AM PST.
 
 ### 2026-11-14 11:49 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
 
@@ -311,3 +309,13 @@ Stage change, Stage 3 "reconcile" (2:14 to 2:47 PM PST, rm-builder, detached):
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 11:49 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 11:49 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-15 11:45 AM PST, question 3 answered (by BENCH)
+
+- This answers question 3 (the dig speed), delegated under his Evidence-for-Ask ruling
+  (RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): Divergent, 0.2.0. His card of 2026-11-13 10:12 PM PST put
+  the whole dig-interface redesign in the next version, *"All in the next version"* (OWNER:1794636834064875208), and
+  `version/next_version/README.md` names the speed target as a question inside that design
+  (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION). No 0.1.0 decider waits on it: T_DIG_TIME_ARITHMETIC only
+  supports canal_reads_as_dug and inv_dig_depth. Held row `2026-11-13_dig_interface#1` in `version/test_table.json` and
+  `.md` now reads 0.2.0 Divergent instead of "his open call"; 0.1.0's bars do not move.
