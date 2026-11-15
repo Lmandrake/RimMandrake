@@ -195,9 +195,9 @@
    "source": [
     "OWNER:1794693278631337978",
     "OWNER:1794721009209581159",
-    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#34",
-    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#36",
-    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md#16"
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md:70",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md:72",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md:25"
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_cords_under_items",
