@@ -135,10 +135,17 @@
     "ref": "run rm-role-designer-1794732140",
     "stage": 5,
     "tokens": 298542
+   },
+   {
+    "at": "2026-11-15T09:06:23Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794732988",
+    "stage": 3,
+    "tokens": 782073
    }
   ],
   "reserve": 60000,
-  "spent": 4981758
+  "spent": 5763831
  },
  "coverage_rounds": [
   {
@@ -309,6 +316,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794732140: stage 5 return"
+  },
+  {
+   "at": "2026-11-15T08:56:43Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "4981758 of 4000000 spent; run rm-role-designer-1794732988 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T08:56:43Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794732988, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-15T09:06:23Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794732988: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -519,12 +544,38 @@
    "stage": 5,
    "summary": "No lock: concept_tree gate refuses on the missing coverage signature alone (showcase set accepted, exam passed at tree cc00c622 / sheet f187df87). The pre-launch coverage judge returned not_covered with 24 sound, edit-cost gaps, all return_to 3, round 1 of 3. Its brief (coverage_judge family) is UNTESTED, so the refusal is advisory and does not force a return, but there is no other route to a signature and stage 5 may not edit the frozen artifacts; the owner can instead pass coverage on his own word (concept_tree.py certify). Returning to stage 3 to fix the whole list in one run (GimmeSomeSlack precedent). No owner question; no mod item filed (step 5 follows the signature). Budget is past cap: 4.68M of 4.0M spent (advisory over_budget); raising it is the Conductor's call.",
    "to": 3
+  },
+  {
+   "at": "2026-11-15T09:06:23Z",
+   "inputs": {
+    "exam": "2b66e0db412cd8c66e33fe5e2930a575da9f603cd638b6060840a455d8120368",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "0a109a6daf5201b45c6205cc5eaf35576c06fa469d04ddc26d85bac5e1f2a8d7",
+    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
+    "tree": "19c93521787f08adc51c4d4fb5447a98b213d1b104092ea4042ab9980ea5cf0e"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": false,
+    "why": "no owner question is proposed: every gap was a scene or text edit"
+   },
+   "run": "rm-role-designer-1794732988",
+   "stage": 3,
+   "summary": "Fixed all 24 gaps of coverage verdict rm-coverage-judge-1794730911 in one run and claimed each in coverage_fixes.json. Two new acceptance scenes (sc_weathered_raid_mark, sc_breach_bias_raid); 17 scenes tightened; sits_on_wall and inv_mark_on_wall now agree from WallPlane/kernel code (front face only, edge-on and far side take no paint, paint climbs onto the top); answer_wall oracle requires all four answers; raider-pressure settings counted (11). after_the_raid drops inv_weathering (now coverage_rest) and keeps 3 new; showcase set accepted, lint PASS. New entry points filed as RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE; assertions on scenes owned by other items noted on them. Budget past cap (4.98M of 4.0M before this run): raising it is the Conductor's call."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

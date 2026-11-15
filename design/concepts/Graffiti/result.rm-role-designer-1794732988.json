@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1794732988",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Fixed all 24 gaps of coverage verdict rm-coverage-judge-1794730911 in one run and claimed each in coverage_fixes.json. Two new acceptance scenes (sc_weathered_raid_mark, sc_breach_bias_raid); 17 scenes tightened; sits_on_wall and inv_mark_on_wall now agree from WallPlane/kernel code (front face only, edge-on and far side take no paint, paint climbs onto the top); answer_wall oracle requires all four answers; raider-pressure settings counted (11). after_the_raid drops inv_weathering (now coverage_rest) and keeps 3 new; showcase set accepted, lint PASS. New entry points filed as RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE; assertions on scenes owned by other items noted on them. Budget past cap (4.98M of 4.0M before this run): raising it is the Conductor's call.",
+ "quick_look": {
+  "offer": false,
+  "why": "no owner question is proposed: every gap was a scene or text edit"
+ }
+}
