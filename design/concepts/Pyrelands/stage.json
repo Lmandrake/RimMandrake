@@ -481,10 +481,52 @@
     "ref": "rm-coverage-judge-1794750987",
     "stage": 5,
     "tokens": 178821
+   },
+   {
+    "at": "2026-11-15T21:54:21Z",
+    "kind": "helper",
+    "ref": "rm-judge Examiner acb2fc4b90d20583a (run bench-pyre-exam-st4-r7-20261115)",
+    "stage": 4,
+    "tokens": 38539
+   },
+   {
+    "at": "2026-11-15T21:54:21Z",
+    "kind": "helper",
+    "ref": "rm-judge Challenger ae68e818cd2467415 (run bench-pyre-exam-st4-r7-20261115)",
+    "stage": 4,
+    "tokens": 35785
+   },
+   {
+    "at": "2026-11-15T21:54:21Z",
+    "kind": "helper",
+    "ref": "rm-judge ReaderA a0a6cefdb8905cb32 (run bench-pyre-exam-st4-r7-20261115)",
+    "stage": 4,
+    "tokens": 45876
+   },
+   {
+    "at": "2026-11-15T21:54:21Z",
+    "kind": "helper",
+    "ref": "rm-judge ReaderB ae5e34c4f2c315238 (run bench-pyre-exam-st4-r7-20261115)",
+    "stage": 4,
+    "tokens": 33245
+   },
+   {
+    "at": "2026-11-15T21:54:22Z",
+    "kind": "helper",
+    "ref": "rm-judge Control a4f78ec3cdccb9529 (run bench-pyre-exam-st4-r7-20261115)",
+    "stage": 4,
+    "tokens": 39299
+   },
+   {
+    "at": "2026-11-15T21:54:39Z",
+    "kind": "stage",
+    "ref": "run bench-pyre-exam-st4-r7-20261115",
+    "stage": 4,
+    "tokens": 192744
    }
   ],
   "reserve": 60000,
-  "spent": 14285245
+  "spent": 14670733
  },
  "coverage_releases": [
   {
@@ -1213,6 +1255,12 @@
    "stage": 4,
    "what": "open",
    "why": "run bench-pyre-exam-st4-r7-20261115, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-15T21:54:39Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-pyre-exam-st4-r7-20261115: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1659,35 +1707,41 @@
    "outcome": "invalidated",
    "stage": 4,
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, floor, owner; back to stage 4 (his new words to take in: OWNER:1794774895716093173)"
+  },
+  {
+   "at": "2026-11-15T21:54:39Z",
+   "inputs": {
+    "exam": "a65757c2436fbac4ede517e5bc3bd2b2816770d5ef9f599393afc0aea302883e",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
+    "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
+    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "9e46f4dbb52985f581b7ae4ed845434513370ee8f3e34d91e1848be937acb8fc"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794774895716093173"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+   },
+   "run": "bench-pyre-exam-st4-r7-20261115",
+   "stage": 4,
+   "summary": "Cold Reader exam retaken on the tree and sheet as fixed for his card 'Fix the 17 gaps, one final look' (OWNER:1794774724955142310; re-pinned 26fe15df8b): 20 frozen scenarios (Examiner acb2fc4b90d20583a e1-e14, Challenger ae68e818cd2467415 c1-c6; 14 rejects), Readers a0a6cefdb8905cb32 and ae5e34c4f2c315238 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a4f78ec3cdccb9529) accepted e2, a three_skies reject both Readers caught, so the set discriminates. exam.json carries it."
   }
  ],
  "runner": "claude",
- "running": {
-  "at": "2026-11-15T21:18:31Z",
-  "inputs": {
-   "exam": "322450fe72b9cadd3e35647c4576b4e25775128372266afc62113dbe2df6ca05",
-   "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-   "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
-   "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-   "scenes": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
-   "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
-   "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21"
-  },
-  "manifest": {
-   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-   "designer_exam.md": "9e46f4dbb52985f581b7ae4ed845434513370ee8f3e34d91e1848be937acb8fc"
-  },
-  "owner_uncited": [
-   "1793766816609436834",
-   "1794611171307640419",
-   "1794774895716093173"
-  ],
-  "reserved": 3940000,
-  "run": "bench-pyre-exam-st4-r7-20261115",
-  "stage": 4
- },
+ "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

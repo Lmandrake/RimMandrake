@@ -1,0 +1,10 @@
+{
+ "run": "bench-pyre-exam-st4-r7-20261115",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam retaken on the tree and sheet as fixed for his card 'Fix the 17 gaps, one final look' (OWNER:1794774724955142310; re-pinned 26fe15df8b): 20 frozen scenarios (Examiner acb2fc4b90d20583a e1-e14, Challenger ae68e818cd2467415 c1-c6; 14 rejects), Readers a0a6cefdb8905cb32 and ae5e34c4f2c315238 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a4f78ec3cdccb9529) accepted e2, a three_skies reject both Readers caught, so the set discriminates. exam.json carries it.",
+ "quick_look": {
+  "offer": false,
+  "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+ }
+}
