@@ -1,0 +1,4 @@
+{"type": "scenario", "scene": "goods_obstacles", "status": "INVALID", "detail": "lane S component would not be thrown (want=0)", "origin": "12,12"}
+{"type": "scenario", "scene": "goods_obstacles_control", "status": "INVALID", "detail": "lane S component would not be thrown (want=0)", "origin": "27,12"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 17778, 'operation': {'OperationId': 'op_8d36c2e87ce549a5a2309720af7e3167', 'Status': 'Completed', 'Success': True, 'DurationMs': 13}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 17778}}"}
+{"type": "run_end", "verdict": "INVALID", "scenes": 2}

@@ -1,0 +1,29 @@
+{"type": "scenario", "scene": "gas_into_pit", "status": "PASS", "detail": "p 12,12->13,12 (1 cells) bursts=22 launches=1 descents=1 inPit=True gasAtColonist=250 gasReg=True [type=launch tick=16879 exp=-242 thing=Human11269 from=12,12 to=13,12 planned=1 cells=1 stop=Pit impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False faction=PlayerColony] shove=True landedOnFirstPitCell=True injuries 1->2", "origin": "12,12", "advance": {"reached": true, "target": 17178, "ticksGame": 17178, "advanced": 300, "halts": [], "path": "jawa/safe_advance", "wallS": 0.7}}
+{"type": "scenario", "scene": "gas_into_pit_off", "status": "FAIL", "detail": "p 27,12->35,15 (8 cells) bursts=0 launches=0 descents=0 inPit=False gasAtColonist=250 gasReg=False", "origin": "27,12", "advance": {"reached": true, "target": 17478, "ticksGame": 17478, "advanced": 300, "halts": [], "path": "jawa/safe_advance", "wallS": 0.7}}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":16878,\"exp\":-242,\"thing\":\"Human11269\",\"def\":\"Human\",\"from\":[12,12],\"centre\":[11,12],\"radius\":1.9,\"force\":1,\"damType\":\"\",\"source\":\"gas\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":-1,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16878,\"exp\":-242,\"at\":[11,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":16879,\"exp\":-242,\"thing\":\"Human11269\",\"def\":\"Human\",\"from\":[12,12],\"to\":[13,12],\"planned\":1,\"cells\":1,\"stop\":\"Pit\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":60.8,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-243,\"at\":[11,13],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-244,\"at\":[12,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-245,\"at\":[11,11],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-246,\"at\":[10,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-247,\"at\":[10,13],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16884,\"exp\":-248,\"at\":[10,11],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":16898,\"exp\":0,\"thing\":\"Human11269\",\"def\":\"Human\",\"at\":[13,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":true}"}
+{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":16898,\"exp\":0,\"thing\":\"Human11269\",\"def\":\"Human\",\"at\":[13,12]}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-249,\"at\":[10,14],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-250,\"at\":[10,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-251,\"at\":[11,10],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-252,\"at\":[10,11],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-253,\"at\":[10,10],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-254,\"at\":[9,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-255,\"at\":[9,13],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-256,\"at\":[9,11],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16914,\"exp\":-257,\"at\":[9,10],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16944,\"exp\":-258,\"at\":[8,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16944,\"exp\":-259,\"at\":[8,13],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16944,\"exp\":-260,\"at\":[8,11],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16944,\"exp\":-261,\"at\":[8,14],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16974,\"exp\":-262,\"at\":[7,12],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "journal", "rec": "{\"type\":\"gas_burst\",\"tick\":16974,\"exp\":-263,\"at\":[7,13],\"source\":\"cauldron_vent_gas\",\"radius\":1.9,\"queued\":0}"}
+{"type": "run_end", "verdict": "FAIL", "scenes": 2}
