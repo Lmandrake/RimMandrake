@@ -1,0 +1,1 @@
+selftest_no_bare_cuts is red on origin/main (29 bare cuts on 2026-11-15, 22 of them in maturation_autonomy.py and maturation_dispatch.py from the day's builders); new pipeline code must store text whole or carry '# cut-ok: why'. Open item RIMMANDRAKE_STORE_TEXT_WHOLE_FINISH_LEFTOVERS; run the lint before publishing any rimflow change.

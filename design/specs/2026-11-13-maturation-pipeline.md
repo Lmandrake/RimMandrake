@@ -352,6 +352,8 @@ What that means, for every agent and program in the pipeline (the tick, the stew
 
 Full text: `design/RimMandrake/standing_rulings.md` §"The pipeline fixes its own defects". Which "Needs Conductor" lines the tick still raises, and which of them it now fixes itself: the prose of item `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`.
 
+**Every hand act is recorded, and one nobody followed up alarms.** The owner, 2026-11-15: "ensure that the wisdom of what it had to fix has been built into the Pipeline itself so that it will do the right thing from now on, NOT merely rely on Conductor/Owner to notice and request an inspection." The census of every Conductor intervention up to that day, each with the lesson and where it is built, is `design/RimMandrake/pipeline_interventions_census_2026-11-15.md`. From then on the tick records each hand act itself (`src/RimMandrake/rimflow/maturation_hands.py`: a ceiling release, a `clear`, a coverage release, a stage run or stage move made by hand, a tick-launched item closed from a window, a settings edit, a gap in the tick). An act is followed up by a ledger item that builds the hand's judgement into the pipeline, or by a census row it repeats (`maturation_hands.py fold`); one left a day with neither raises `OPS_MATURATION_HAND_ACT_UNFOLDED`.
+
 ### The steward and the journal
 
 **[HIS]** "How can we preserve that extremely productive interaction I enjoy when I work with you tightly like I'm doing right now? When we spot things together? Should Conductor (or something like Conductor) be floating over the process more regularly, taking in the status of items, peeking in on live game runs or findings, remembering the 'beyond this one moment' context to recognize problems, etc?"

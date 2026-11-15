@@ -225,6 +225,8 @@ Relentless and the Artisan and Whittle loops were retired by the owner 2026-11-1
 
 The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline's own machinery with a known fix is fixed in the run that found it, by that run, and every brief you write for a helper says so; you never work around one by hand and leave it. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-15; `python3 src/RimMandrake/rimflow/maturation_hands.py list`): a ceiling release, a `clear`, a coverage release, a stage run or move made by hand, closing an item the tick launched, a settings edit. Each one owes, within a day, the item that builds your judgement into the pipeline so the hand is not needed again: name that item in the act's `--why`, or `maturation_hands.py fold <act> --item <ID>`; an act that repeats a lesson already in a census (`design/RimMandrake/pipeline_interventions_census_*.md`) is folded with `--census "<row>"`. One left a day with neither raises `OPS_MATURATION_HAND_ACT_UNFOLDED`.
+
 ## Two modes
 
 - **Quick mode:** he writes from his phone (Remote Control), and the scheduled checks at 08:00 and 20:00, which the Dispatcher
