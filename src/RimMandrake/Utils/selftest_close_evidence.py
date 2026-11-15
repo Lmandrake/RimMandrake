@@ -48,6 +48,16 @@ class chain_blind:
 FAILS = []
 
 
+
+def _distro_from_wslpath():
+    """A systemd unit (the nightly) has no WSL_DISTRO_NAME; `wslpath -w /` names the distro (\\\\wsl.localhost\\<distro>\\)."""
+    try:
+        out = subprocess.run(["wslpath", "-w", "/"], capture_output=True, text=True, timeout=20).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    parts = [p for p in out.split("\\") if p]
+    return parts[1] if len(parts) >= 2 and parts[0].lower() in ("wsl.localhost", "wsl$") else None
+
 def check(cond, msg):
     print(("ok   " if cond else "FAIL ") + msg)
     if not cond:
@@ -535,7 +545,7 @@ def review_z(td, store, repo, sha):
           "F2 dirty at start, clean at end -> not evidence")
 
     # F4: under Windows python.exe the line is shipped to WSL and carries the clone's sha
-    pyexe, distro = shutil.which("python.exe"), os.environ.get("WSL_DISTRO_NAME")
+    pyexe, distro = shutil.which("python.exe"), os.environ.get("WSL_DISTRO_NAME") or _distro_from_wslpath()
     if pyexe and shutil.which("wsl.exe") and distro:
         def w(p):
             return "\\\\wsl.localhost\\%s%s" % (distro, str(p).replace("/", "\\"))
