@@ -21,7 +21,7 @@ Each mod has one **current Design Version**. It is three things, written down an
 - **The bars:** the acceptance criteria the Judge passes or refuses on.
 - **The tests:** offline and live, per the 2026-11-13 ruling that tests are built with the item.
 
-Lifecycle: **Drafting** (free change) → **Locked** (he says "lock it") → **Building** → **Judging** → **Passed**, or **Superseded** (replaced before passing, see 3.5). After the lock, the Judge judges only against the locked bars.
+Lifecycle: **Drafting** (free change) → **Locked** (he says "lock it"; a new mod's first version, 0.1.0, is locked by the pipeline without asking him unless there is evidence against 0.1.0, by his Evidence-for-Ask rule 2026-11-15, `design/RimMandrake/standing_rulings.md`) → **Building** → **Judging** → **Passed**, or **Superseded** (replaced before passing, see 3.5). After the lock, the Judge judges only against the locked bars.
 
 ### 3.2 Every proposed change after the lock is sorted into one of four kinds
 | kind | what it is | where it goes |

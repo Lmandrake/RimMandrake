@@ -235,6 +235,17 @@ logged `--why "delegated: <class>"`, never as his approval, and reaches him in a
 replacing art he kept (except the art-eval pipeline's redraws, shown to him after with a revert — owner card
 2026-10-23 06:42), changing his rulings, outward/paid acts, flyer live tests, certifying a mod's first-touch Designer pass).
 
+## 🔴 The Evidence-for-Ask rule — owner, 2026-11-15
+
+*"For ALL questions and choices from now on, Conductor must have evidence why it does not select the obvious answer
+before it pauses for the human, alright? This is a RimMandrake-wide ruling for all pausing agents."* (It began with a
+new mod's Design Version, asked every time: a new mod is locked at 0.1.0 by the pipeline now.) Any agent that would
+pause for him takes the obvious answer instead and logs it `--per-ruling
+RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`
+(it reaches his daily digest). It pauses only with concrete evidence against the obvious answer, and every ask carries
+that evidence. His own §2 holds above still wait for him, each ask with its evidence. Full text:
+`design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
+
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
 User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.

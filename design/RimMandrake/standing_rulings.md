@@ -641,4 +641,32 @@ The rule is user-level since the same day (*"Semantic Versioning should be a Lod
 - **Judge deferral** of a bar is approved by the Conductor; he sees each one after.
 - **The mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
 - **The Deep Desert Tribes are their own mod with their own Design Version** (card 2026-11-13 ~9:30 PM PST, "Own mod, own version, later", correcting the 4 PM "One mod, Tribes next version"): Pyrelands 0.1.0 is the biome alone and passes first. The Tribes mod (`src/RimUtinni/PyrelandsMechanics`, `mandrake.rut.pyrelandsmechanics`, design `design/concepts/PyrelandsMechanics`) gets its own Design Version 0.1.0, started only after the biome passes, and stays out of test mod lists until then. Design kept as written.
+- **A new mod's first Design Version is 0.1.0, locked by the pipeline without asking him** (§Evidence-for-Ask, below):
+  when its concept tree locks, `maturation_autonomy` writes VERSION.json `locked` 0.1.0, `locked_by: pipeline`, and a
+  delegated record for his digest. It asks him only when it finds evidence against 0.1.0, quoted on the card. His card
+  answers above (Polish moves confirmed with him, current-or-next asked at filing) stand; each such ask carries the
+  evidence against the obvious answer.
 His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.
+
+## Evidence-for-Ask — owner, 2026-11-15
+
+*"You are repeatedly asking me to rule on whether 0.1.0 is appropriate for a new mod. So far it is every single time.
+You must have evidence why 0.1.0 is NOT appropriate to pause to query me from now on. For ALL questions and choices from
+now on, Conductor must have evidence why it does not select the obvious answer before it pauses for the human, alright?
+This is a RimMandrake-wide ruling for all pausing agents. Let's call it the Evidence-for-Ask rule."* (Sun 2026-11-15
+~11:40 AM PST.)
+
+The incident: every new mod's Design Version reached him as an ask, and the answer was 0.1.0 every time.
+
+The rule, for every agent and role that can pause for him:
+- Take the obvious answer instead of pausing. Log it as a delegated call: `--per-ruling
+  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call, and why
+  nothing argues against it>"`. It reaches his daily digest (`delegated_digest.py`). It is ours, never stored as his.
+- Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words), and put
+  that evidence on the ask. An ask without it is not sent.
+- What it does not change: his own holds (`delegation_policy.md` §2, his live walk, the Lock-stage first-touch
+  certification, quotations such as waivers and his words) still wait for him; each ask now carries its evidence.
+- In code: `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0); `designer_stage`
+  accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
+  whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
+  `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
