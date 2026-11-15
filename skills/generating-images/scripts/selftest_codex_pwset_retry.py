@@ -101,9 +101,20 @@ def main() -> int:
            calls == ci.NET_READ_TRIES, f"calls={calls}")
         ok("the not-ready message names the cause (exit code + stderr + attempts)",
            "exit 2" in why and "System error 1722" in why and f"{ci.NET_READ_TRIES} attempts" in why, why)
-        guard_ok, guard_why = ci.ensure_home_sandbox(td / "w0", base=home)
-        ok("the pre-launch guard refuses and carries the cause into its message",
-           guard_ok is False and "System error 1722" in guard_why and "--sync-sandbox" in guard_why, guard_why)
+        # the guard is the Windows codex's; on Archmagi the default side is the Linux codex, which needs none
+        keep_side = os.environ.get("RM_CODEX_SIDE")
+        try:
+            os.environ["RM_CODEX_SIDE"] = "win"
+            guard_ok, guard_why = ci.ensure_home_sandbox(td / "w0", base=home)
+            ok("the pre-launch guard refuses and carries the cause into its message",
+               guard_ok is False and "System error 1722" in guard_why and "--sync-sandbox" in guard_why, guard_why)
+            os.environ["RM_CODEX_SIDE"] = "wsl"
+            wsl_ok, wsl_why = ci.ensure_home_sandbox(td / "w0", base=home)
+            ok("the Linux codex side needs no Windows sandbox state", wsl_ok is True, wsl_why)
+        finally:
+            os.environ.pop("RM_CODEX_SIDE", None)
+            if keep_side is not None:
+                os.environ["RM_CODEX_SIDE"] = keep_side
 
     with tempfile.TemporaryDirectory() as t:
         td = Path(t)
