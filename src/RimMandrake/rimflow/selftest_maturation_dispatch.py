@@ -954,6 +954,17 @@ def ingame_main():
             return (len(filed) == 1 and nc.returncode == 0 and "IN_GAME_ACCEPTANCE" in filed[0][0]
                     and filed[0][3].get("needs") == "game-up" and MD._is_ingame_item(filed[0][0]))
         chk(t_item, "its item is filed once, needs game-up, passes namecheck and reads as an in-game run")
+
+        def t_rule():
+            # the fake filer above never meets rimflow's RUNNER spawn rule: ask the real rule about this very spawn
+            # (file_and_publish: --from ITEM --for RELENTLESS) and the long-name fallback
+            from rimflow import model
+            evs = [{"event": "spawn", "seat": "RUNNER", "for": model.read_name("RELENTLESS"), "needs": "game-up",
+                    "from": MD.ITEM, "name": n}
+                   for n in (filed[0][0], MD.ingame_item_id("X" * 40, 2, set()))]
+            return (model.RUNNER_INGAME_FROM == MD.ITEM and "IN_GAME_VISIT_TWO" in evs[1]["name"]
+                    and all(model._who_refusal(e, None) is None for e in evs))
+        chk(t_rule, "rimflow's RUNNER spawn rule admits the in-game item as file_and_publish spawns it")
         chk(lambda: not MD._is_ingame_item("RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST"),
             "this launcher's own build item is not an in-game run (a bare IN_GAME is not enough)")
         unit = [None]

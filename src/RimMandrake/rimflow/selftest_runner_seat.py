@@ -106,6 +106,29 @@ def runner_withdraw(base):
               % (why, (msg or "NOT REFUSED")[:120]))
 
 
+def pipeline_ingame_spawn():
+    """RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP: the maturation dispatch spawns its in-game visit item as
+    RUNNER, for BENCH, needs game-up, from its own item. That one spawn is admitted; a game-up spawn from any other
+    item, or under any other name, is still refused."""
+    from rimflow import maturation_dispatch as MD
+    src = MD.ITEM
+    name = MD.ingame_item_id("Contagion", 1, set())
+    base = [filed(src)]
+    good = base + [spawn(name, "BENCH", "game-up", src=src)]
+    msg = refusal(good)
+    w = model.replay(good, strict=True) if msg is None else None
+    check(w is not None and w.items[name].needs == "game-up" and w.items[name].owner == "BENCH",
+          "RUNNER spawns the maturation dispatch's in-game visit item (BENCH, needs game-up): %s %s"
+          % (name, (msg or "")[:70]))
+    for bad, why in ((spawn(name, "BENCH", "game-up", src="SOME_ITEM_FIX_IT"), "from another item"),
+                     (spawn("RIMMANDRAKE_DRIVE_CONTAGION_BUILD_STAGE_TWO", "BENCH", "game-up", src=src),
+                      "not an in-game visit name"),
+                     (spawn(name, "OWNER", "game-up", src=src), "for OWNER")):
+        msg = refusal(base + [filed("SOME_ITEM_FIX_IT"), bad])
+        check(msg is not None and "RUNNER spawns only" in msg, "a RUNNER game-up spawn %s is refused: %s"
+              % (why, (msg or "NOT REFUSED")[:70]))
+
+
 def main():
     item = "SOME_ITEM_FIX_IT"
     base = [filed(item), ev(seat="BENCH", event="claim", id=item)]
@@ -132,6 +155,7 @@ def main():
     check(refusal(base + [other]) is not None, "the owning-seat rule still holds for a window seat")
     check(model.shard_path("RUNNER").endswith(os.path.join("events", "RUNNER.jsonl")), "RUNNER has its own shard")
     steward_escalation(base, item)
+    pipeline_ingame_spawn()
     runner_withdraw(base)
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0

@@ -289,6 +289,11 @@ def runner_may_withdraw(item):
 # and nothing else; see RUNNER_SPAWN_TO and `_who_refusal`. FOUNDRY (needs offline) since
 # RETEST_RULE_ONCE_PER_CODE_VERSION: a FlowWorks harness repair is that lane's.
 RUNNER_SPAWN_TO = {"BENCH": "offline", "FOUNDRY": "offline", "OWNER": "owner"}
+# One more, and only this one (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP): the maturation dispatch
+# (maturation_dispatch.ITEM, asserted equal in selftest_maturation_dispatch.py) files each in-game acceptance visit as
+# RUNNER for BENCH with needs game-up, under its ingame_item_id name.
+RUNNER_INGAME_FROM = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
+RUNNER_INGAME_NAME = re.compile(r"^RIMMANDRAKE_DRIVE_[A-Z0-9_]+_IN_GAME_(ACCEPTANCE_)?VISIT_[A-Z_]+$")
 
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
@@ -2024,9 +2029,12 @@ def _who_refusal(ev, item):
     if seat == "RUNNER":
         if verb == "spawn":
             want = RUNNER_SPAWN_TO.get(ev.get("for"))
-            if want is None or (ev.get("needs") or "offline") != want:
+            ingame = (ev.get("for") == "BENCH" and ev.get("needs") == "game-up"
+                      and ev.get("from") == RUNNER_INGAME_FROM and RUNNER_INGAME_NAME.match(ev.get("name") or ""))
+            if not ingame and (want is None or (ev.get("needs") or "offline") != want):
                 return ("RUNNER spawns only for BENCH or FOUNDRY with needs offline or for OWNER with "
-                        "needs owner (the steward's escalations); got --for %s --needs %s"
+                        "needs owner (the steward's escalations), or the maturation dispatch's in-game visit for BENCH "
+                        "with needs game-up; got --for %s --needs %s"
                         % (ev.get("for"), ev.get("needs")))
         return None
     # 🔴 `played` IS THE ONE EXPENSIVE RUNG, ENTERED ONLY BY OWNER DECISION —
