@@ -18,3 +18,24 @@ Proposed root, in one sentence: "Graffiti turns a colony's walls into a record o
 ### a_flagship
 
 Which scene should be Graffiti's face, the first showcase a player sees? (A) A lived-in colony wall: a mockery naming someone, a reply painted over it, a confrontation. (B) A spree corridor: one pawn's break leaving many visibly different punk marks, a skilled piece beside an ugly scrawl. (C) After a raid: the raiders' exit tags troubling the colony until the wall is retaken. The walk would show all three, so you can also answer after it.
+
+## Stage 1, run rm-role-designer-1794721794 (2026-11-14 ~9:50 PM PST): his answers recorded
+
+- a_root (OWNER:1794721657820999692, his words): "(1) mostly, but it should also include Raiders that oppress with left-behind threats and marks for future attacks."
+  Root as recorded folds in his clause. Designer note for stage 2: exit tags (troubling until retaken) are built; a breach lure exists but the colony paints it; no mark raiders leave shapes a LATER attack (inv_raider_future_marks, absent). Argue after the walk.
+- a_live_walk (OWNER:1794721663101232395, by card): (b) an agent walks, brings zoomed shots, keeps the save. Item RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES.
+- a_flagship (OWNER:1794721668326415311, by card): decide after the walk; stays open.
+
+## Stage 2, run rm-role-designer-1794722090 (2026-11-14 21:58 PST): sent
+
+Measured, not asked: c_vandal_signage settled. The shipped vandal_0..vandal_3 are abstract spray tags; the hazard bolt and prohibition sign are gone (GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT is stale). c_proof_home and c_site_settings are script gaps, routed to stage 3.
+
+Claim: a raider mark bears on a future attack when the same faction's next raid acts on it.
+Attack: a raid weeks later is the storyteller's; if the mark changes when or how hard, the player cannot trace it to the wall, and if it only changes where, it may go unnoticed. Marks also weather away in a few weeks, which bounds any threat.
+Picture: (a) their next raid comes at the tagged wall, so he scrubs it, fortifies it, or builds a killbox behind it; (b) a letter and a sooner or larger raid; (c) a letter only.
+Review: rm-judge a1e871e9d2b85d5c6 struck the first draft on two false phrases (marks also weather away; raider marks carry no breach lure); fixed in its own words.
+a_flagship stays deferred to RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES (his card).
+
+### a_raider_next_attack
+
+You added raiders who leave threats and marks for future attacks. Built today: a raid leaving your map paints its marks on your outer walls, and colonists feel 'enemy marks on our walls', a small mood penalty that grows with the number of marks, until someone scrubs them or the paint weathers away (a few weeks). Nothing yet links a mark to the NEXT attack. Which link: (a) aim: while that faction's mark stands, its next raid comes at the marked wall, so you choose between scrubbing it, fortifying there, or building a killbox behind it; (b) pressure: while the mark stands, that faction's next raid comes sooner or larger, announced by a letter; (c) threat only: a letter naming the faction and its promise to return, with no change to the raid itself? We recommend (a): you can watch it work, it gives you a choice, and part of it exists (breaching raids already aim at a wall carrying a colonist-painted warning glyph; raiders' own marks don't carry that lure yet); (b) adds difficulty you cannot trace back to the wall.

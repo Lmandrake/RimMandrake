@@ -39,6 +39,16 @@
     "ITEM:GRAFFITI_STARWARS_RESKIN_NOT_ONE_TERRAN_TAG"
    ],
    "text": "Graffiti is the engine (mandrake.rm.graffiti). SacredGraffiti (mandrake.rm.sacredgraffiti) and GraffitiImperial (mandrake.rsw.graffitiimperial) depend on it and add content; the Star Wars reskin loop and the Sacred Graffiti takeover follow it in a series of three. Mlie.GraffitiMod is superseded (its spree absorbed). Those neighbours own their content; this concept covers the engine and its default marks."
+  },
+  {
+   "id": "s_raider_oppression",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794721657820999692",
+    "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs",
+    "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs"
+   ],
+   "text": "His root amendment: raiders oppress with left-behind threats and marks for future attacks. Built today: exit tags that trouble the colony until the wall is retaken (inv_raid_marks), and a breach lure the COLONY paints (WarningGlyph, designatorEligible) to funnel raiders (inv_breach_bias). Not found: a mark raiders leave that shapes a LATER attack. That gap is stage 2's first argument, after the walk shows what the exit tags already do."
   }
  ],
  "decisions": [
@@ -102,7 +112,7 @@
  "asks": [
   {
    "id": "a_live_walk",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1794718990",
    "source": [
     "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
@@ -122,11 +132,17 @@
     "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
     "verdict": "pass",
     "why": "the owner-requested live walk; names what it settles, asks no prediction, answerable (a)/(b)/(c); proof wording softened to name the two open contradictions"
+   },
+   "answer": {
+    "source": "OWNER:1794721663101232395",
+    "speaker": "owner",
+    "by_card": "(b) Agent walks, brings shots; the save is kept for him to open",
+    "walk_item": "ITEM:RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES"
    }
   },
   {
    "id": "a_root",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1794718990",
    "source": [
     "design/validation_walks/RimMandrake/Graffiti.md"
@@ -148,6 +164,11 @@
     "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
     "verdict": "pass",
     "why": "stage-1 root not yet answered by his words, answerable in a phrase, claims match the inventory, the doubt is left to the walk"
+   },
+   "answer": {
+    "source": "OWNER:1794721657820999692",
+    "speaker": "owner",
+    "words": "(1) mostly, but it should also include Raiders that oppress with left-behind threats and marks for future attacks."
    }
   },
   {
@@ -172,6 +193,39 @@
     "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
     "verdict": "pass",
     "why": "showcase 1 must be his pick, taste not measurement, changes which scene is built; 'and scrubbed' removed (inv_raid_marks says retaking ends it)"
+   },
+   "deferred": {
+    "source": "OWNER:1794721668326415311",
+    "speaker": "owner",
+    "by_card": "Decide after the walk",
+    "until": "ITEM:RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES"
+   }
+  },
+  {
+   "id": "a_raider_next_attack",
+   "status": "sent",
+   "author": "rm-role-designer-1794722090",
+   "source": [
+    "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs",
+    "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs",
+    "src/RimMandrake/Graffiti/Defs/ThoughtDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs"
+   ],
+   "about": [
+    "inv_raider_future_marks",
+    "inv_raid_marks",
+    "inv_breach_bias"
+   ],
+   "owner_cites": [
+    "OWNER:1794721657820999692"
+   ],
+   "offers_removal": false,
+   "decision": "what a raider's left-behind mark does to that faction's next attack (inv_raider_future_marks, opened by his root amendment)",
+   "text": "You added raiders who leave threats and marks for future attacks. Built today: a raid leaving your map paints its marks on your outer walls, and colonists feel 'enemy marks on our walls', a small mood penalty that grows with the number of marks, until someone scrubs them or the paint weathers away (a few weeks). Nothing yet links a mark to the NEXT attack. Which link: (a) aim: while that faction's mark stands, its next raid comes at the marked wall, so you choose between scrubbing it, fortifying there, or building a killbox behind it; (b) pressure: while the mark stands, that faction's next raid comes sooner or larger, announced by a letter; (c) threat only: a letter naming the faction and its promise to return, with no change to the raid itself? We recommend (a): you can watch it work, it gives you a choice, and part of it exists (breaching raids already aim at a wall carrying a colonist-painted warning glyph; raiders' own marks don't carry that lure yet); (b) adds difficulty you cannot trace back to the wall.",
+   "review": {
+    "by": "rm-judge a1e871e9d2b85d5c6 (fresh reviewer)",
+    "verdict": "pass",
+    "why": "first draft struck on two false phrases (marks also weather away; raider marks carry no breach lure), fixed in its words; re-review: claims check against code, open unbuilt decision answerable in a phrase"
    }
   }
  ],
@@ -408,9 +462,11 @@
    "scope": "approved",
    "source": [
     "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
-    "ITEM:GRAFFITI_FRAMEWORK_BUILD_1"
+    "ITEM:GRAFFITI_FRAMEWORK_BUILD_1",
+    "src/RimMandrake/Graffiti/Defs/ThoughtDefs_Graffiti.xml"
    ],
-   "proof_note": "bar raid_mark_troubles_until_retaken in the loop close; V1 live clauses A2 (raid exit) and A4 (going-over) blocked with that proof"
+   "proof_note": "bar raid_mark_troubles_until_retaken in the loop close; V1 live clauses A2 (raid exit) and A4 (going-over) blocked with that proof",
+   "note": "The trouble is RM_Graffiti_EnemyClaim (mood -1/-2/... by count of a hostile faction's standing marks, until scrubbed) and RM_Graffiti_ViewedHostileMark on sight; neither touches a later raid."
   },
   {
    "id": "inv_breach_bias",
@@ -516,6 +572,32 @@
     "ITEM:GRAFFITI_GENERIC_MARKS_1"
    ],
    "proof_note": "bar stands_alone_and_obeys_settings in the loop close"
+  },
+  {
+   "id": "inv_raider_future_marks",
+   "text": "Raiders leave marks that bear on a future attack (a threat promising return, a target sign the next raid of that faction acts on)",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Graffiti/Source/*.cs and Defs/ (2026-11-14, rm-role-designer-1794722090): no IncidentWorker_Raid, RaidStrategy or storyteller hook; RaidExitTagger only paints, BreachBiasHook only reads breachLure marks, which raid-exit marks do not carry",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794721657820999692",
+   "source": [
+    "OWNER:1794721657820999692",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
+   ]
+  },
+  {
+   "id": "inv_weathering",
+   "text": "Paint weathers: a mark fades over the last 40% of its life (RM_GraffitiKernel.WeatherDays: by form, craft and roofed or not; a few weeks outdoors) and is gone; a permanent flag is left for later Luminous Pigments",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs:66"
+   ],
+   "proof": "exercised_unrecorded",
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs"
+   ]
   }
  ],
  "built_reviewed": [
@@ -587,13 +669,16 @@
  "contradictions": [
   {
    "id": "c_vandal_signage",
-   "status": "open",
+   "status": "resolved",
    "source": [
     "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
     "ITEM:GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT",
-    "infrastructure/state/live_proofs/GRAFFITI_NORTHSTAR_GREEN_FULL_1.txt"
+    "infrastructure/state/live_proofs/GRAFFITI_NORTHSTAR_GREEN_FULL_1.txt",
+    "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_0.png"
    ],
-   "text": "The loop's close (2026-11-08, b967d9e9cb) says all 22 bars are proven, including mark_carries_no_earth_signage. GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT (still proposed) and GRAFFITI_NORTHSTAR_GREEN_FULL_1 (BLOCKED, last 2026-11-06, before the landing) say vandal_0 (hazard bolt) and vandal_1 (prohibition sign) fail it. Unsettled: whether the landed art still carries them. Settle by looking at the shipped vandal_0/vandal_1 (a measurement, not a question for him)."
+   "text": "The loop's close (2026-11-08, b967d9e9cb) says all 22 bars are proven, including mark_carries_no_earth_signage. GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT (still proposed) and GRAFFITI_NORTHSTAR_GREEN_FULL_1 (BLOCKED, last 2026-11-06, before the landing) say vandal_0 (hazard bolt) and vandal_1 (prohibition sign) fail it. Unsettled: whether the landed art still carries them. Settle by looking at the shipped vandal_0/vandal_1 (a measurement, not a question for him).",
+   "resolved": true,
+   "resolution": "Measured 2026-11-14 by rm-role-designer-1794722090: the shipped vandal_0..vandal_3 (src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal, landed b967d9e9cb) are all abstract drippy spray tags with no hazard bolt, prohibition sign or other Earth signage. GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT describes art that is gone (stale). Play-zoom legibility stays with the walk."
   },
   {
    "id": "c_proof_home",
@@ -604,7 +689,9 @@
     "ITEM:RIMMANDRAKE_STOP_FILLING_GRAFFITI_REFUSED_AT_ITS_GATE",
     "src/RimMandrake/Graffiti/validation.py"
    ],
-   "text": "The 22 bars were proven in the loop clone (ralph/DONE.md on branch ralph/graffiti, evidence on D:\\ClaudeWork), but the mod's own script claims none of 12 validated must-show lines, so modcheck refuses every Graffiti run and SteveDesktop records INVALID jobs. Proven once by hand is not re-provable by the pipeline: a build item at stage 3, not a question."
+   "text": "The 22 bars were proven in the loop clone (ralph/DONE.md on branch ralph/graffiti, evidence on D:\\ClaudeWork), but the mod's own script claims none of 12 validated must-show lines, so modcheck refuses every Graffiti run and SteveDesktop records INVALID jobs. Proven once by hand is not re-provable by the pipeline: a build item at stage 3, not a question.",
+   "core": false,
+   "routed": "stage 3: a script/build gap, not a design question; owed to the mod's validation.py and northstar_site.py"
   },
   {
    "id": "c_site_settings",
@@ -613,7 +700,9 @@
     "src/RimMandrake/Graffiti/northstar_site.py",
     "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs"
    ],
-   "text": "northstar_site.py preflight checks 6 settings at shipped defaults; the mod has 8 (socialEnabled, socialMessagesEnabled unchecked), so a site with the social layer off passes preflight. Script gap for stage 3."
+   "text": "northstar_site.py preflight checks 6 settings at shipped defaults; the mod has 8 (socialEnabled, socialMessagesEnabled unchecked), so a site with the social layer off passes preflight. Script gap for stage 3.",
+   "core": false,
+   "routed": "stage 3: a script/build gap, not a design question; owed to the mod's validation.py and northstar_site.py"
   }
  ],
  "script_audit": [
@@ -654,5 +743,13 @@
   "Proven once, unprovable after: the 22 bars were proven by hand in a loop clone, while the mod's own script claims none of 12 must-show lines, so every pipeline run is refused and any later change to Graffiti (the Star Wars reskin, a race trait, an engine fix) ships with nothing able to say whether it broke the wall.",
   "It reads as dirt or Earth signage, not punk graffiti: the face of the mod is the art at play zoom; a hazard bolt or prohibition sign, tidy pictograms, or a mark that is mush at 64 px makes it look like a decal pack, and the stat (beauty, skill) disagrees with the picture.",
   "The social layer becomes a tax or noise in a real colony: proven on staged sites over short runs, never in a lived-in colony across weeks, so mood, opinion and grudges may stack into a permanent mood tax, a message stream, or fights from nothing; and personality and visitor rules quietly stop matching when race traits arrive."
- ]
+ ],
+ "root": {
+  "text": "Graffiti turns a colony's walls into a record of its people: punk tags and ideoligion sigils whose quality comes from the painter's art skill; marks about people (mockery, tribute, memorials, insults) that move mood, opinion and now and then a confrontation; and raiders who oppress the colony with threats and marks they leave behind for future attacks; all readable at play zoom in any RimWorld game.",
+  "source": "OWNER:1794721657820999692",
+  "speaker": "owner",
+  "kind": "root",
+  "words": "(1) mostly, but it should also include Raiders that oppress with left-behind threats and marks for future attacks.",
+  "note": "His card answer approved the proposed root 'mostly' and added the raider clause; the clause is folded in with his meaning unchanged."
+ }
 }
