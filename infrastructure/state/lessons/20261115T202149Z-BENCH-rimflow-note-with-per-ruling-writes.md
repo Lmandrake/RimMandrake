@@ -1,0 +1,1 @@
+rimflow note with --per-ruling writes the event to the OWNER.jsonl shard as seat OWNER even with --seat BENCH (measured 2026-11-15, STEVE_LANE_UNSTICK_BRAKED_UNOWNED_EB2A): an agent's plain note must omit --per-ruling or it misattributes to the owner.
