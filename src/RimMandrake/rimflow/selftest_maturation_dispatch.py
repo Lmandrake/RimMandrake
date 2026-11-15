@@ -29,6 +29,8 @@ import maturation as M              # noqa: E402
 import maturation_dispatch as MD    # noqa: E402
 
 FOUR = ("ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack", "Pyrelands")
+SEVEN = ("inv_looks", "canal_reads_as_dug", "fill_level_legible", "pit_reads_as_hole", "covered_pit_springs",
+         "hose_reads_as_hose", "hung_bridge_spans")
 COPY = ("journal.md", "stage.json", "version/VERSION.json", "version/test_table.json", "version/preflight.json",
         "version/stage_record.json")
 CLOCK = 1794718800.0            # 2026-11-14 9:00 PM PST, pinned
@@ -70,7 +72,16 @@ def main():
                     dst = os.path.join(root, "design", "concepts", mod, rel)
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                     shutil.copy(src, dst)
-        fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
+        # pin FlowWorks to the 7-refused state this test was written against: the live table moves as builders land
+        # (the Stage 6 blind reader, 2026-11-14, took it to 0), which must not turn this test red
+        tp = os.path.join(root, "design", "concepts", "FlowWorks", "version", "test_table.json")
+        tt = json.load(open(tp))
+        tt["tests"]["LOOK_BLIND_READER"]["runs_today"] = {"ran": False, "why": "needs captures from Stage 6"}
+        for b in tt["bars"]:
+            b["every_decider_runnable_today"] = b["id"] not in SEVEN
+        with open(tp, "w") as f:
+            json.dump(tt, f)
+        fake, log =os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         with open(fake, "w") as f:
             f.write(FAKE_DH)
         open(log, "w").close()

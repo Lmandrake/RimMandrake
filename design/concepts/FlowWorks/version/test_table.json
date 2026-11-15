@@ -1,7 +1,7 @@
 {
  "mod": "FlowWorks",
  "version": "0.1.0",
- "made": "2026-11-14T14:38:32-08:00",
+ "made": "2026-11-14T21:20:42-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
  "stages": {
   "2": "preflight (a program)",
@@ -3544,14 +3544,22 @@
    "id": "LOOK_BLIND_READER",
    "kind": "look",
    "stage": "6",
-   "file": "(a blind reader agent on the scene captures)",
+   "file": "src/RimMandrake/FlowWorks/northstar/blind_reader.py",
    "observes": "a reader who did not make it names what the captures show (depth order, liquid, hole vs trap, hose vs cord, hung bridge)",
-   "reads": [],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/blind_reader.py",
+    "src/RimMandrake/FlowWorks/northstar/selftest_blind_reader.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
    "why_game": "captures exist only from a running map",
    "runs_today": {
     "ran": false,
-    "why": "needs captures from Stage 6"
-   }
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14 (17 questions, a foil per bar from scenes.json); scorer proven offline by selftest_blind_reader.py (3 mutants red) and the claude -p transport smoke-read on a synthetic picture; needs the Stage 6 captures"
+   },
+   "entry": "read",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/blind_reader.py read --manifest <captures.json> --out <json>  (after the six Stage 6 scenes; manifest from `blind_reader.py template`)",
+   "offline_proof": "python3 src/RimMandrake/FlowWorks/northstar/selftest_blind_reader.py"
   },
   "OL_OWNER_LOOK_READS": {
    "id": "OL_OWNER_LOOK_READS",
@@ -4337,7 +4345,7 @@
     "PY_FLOWWORKS_FLAT_SHADOW"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4431,7 +4439,7 @@
     "PY_FLOWWORKS_FLAT_SHADOW"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4528,7 +4536,7 @@
     "PY_FLOWWORKS_TANK_SHADOW"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4671,7 +4679,7 @@
     "T_PIT_LABEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4699,7 +4707,7 @@
     "PY_SPIKE_FLOAT32_PARITY"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4785,7 +4793,7 @@
     "PY_HOSE_FITTINGS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4854,7 +4862,7 @@
     "PY_FLOWWORKS_SUSPENSION_LINKED"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {

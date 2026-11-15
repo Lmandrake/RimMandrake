@@ -1,12 +1,12 @@
 # FlowWorks 0.1.0: test-and-stage table
 
-Generated 2026-11-14T14:38:32-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
+Generated 2026-11-14T21:20:42-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns match Explosive Knockback's table.
 
 ## Counts (measured)
 
 - bars: 61
 - with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists): 61
-- with every deciding test runnable today: 54
+- with every deciding test runnable today: 61
 - with an offline deciding test, all green today: 49
 - with an offline deciding test that exists (built), green or red: 59
 - with no offline deciding test at all: 2
@@ -42,26 +42,26 @@ Generated 2026-11-14T14:38:32-08:00 from `test_table.json` (the record; this is 
 | `inv_map_controls` | record | 6 | T_MAP_CONTROLS, sc_source_pays | - | all | yes |
 | `inv_quarry` | record | 6 | T_QUARRY, sc_dig_finds | - | all | yes |
 | `inv_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, PY_SETTINGS_REGISTRY, PY_SETTINGS_SEARCH, PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE, sc_walk | - | all | no |
-| `inv_looks` | record | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, T_STYLES, PY_FW_OFFLINE_ART, PY_LIQUID_LOOKS, PY_FLOWWORKS_PIPE_POLE_ART, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, sc_fill_tiers, LOOK_STAGE8, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | some | yes |
+| `inv_looks` | record | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, T_STYLES, PY_FW_OFFLINE_ART, PY_LIQUID_LOOKS, PY_FLOWWORKS_PIPE_POLE_ART, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, sc_fill_tiers, LOOK_STAGE8, T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `inv_prison_no_bed` | record | 6 | T_PRISON, T_PRISON_CARE_OFFLINE, sc_hole_prison | sc_moat_raid, sc_pit_trap_raid | all | yes |
 | `inv_toss_flame` | record | 6 | T_TOSS_FLAME_OFFLINE, sc_toss_flame | sc_moat_raid | all | no |
 | `inv_raider_fetch_fallen` | record | 6 | T_FETCH_FALLEN_OFFLINE, sc_fetch_fallen | sc_pit_trap_raid | all | no |
-| `canal_reads_as_dug` | tree | 6 | T_DIG, PY_FLOWWORKS_REVIEW1022_EXCAVATION, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, sc_dig_and_read, LOOK_BLIND_READER | sc_dig_finds, T_DIG_TIME_ARITHMETIC | some | yes |
+| `canal_reads_as_dug` | tree | 6 | T_DIG, PY_FLOWWORKS_REVIEW1022_EXCAVATION, T_WALL_FACES, PY_FLOWWORKS_FLAT_SHADOW, sc_dig_and_read, LOOK_BLIND_READER | sc_dig_finds, T_DIG_TIME_ARITHMETIC | all | yes |
 | `fill_flows_along_canal` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_fill_front | LOOK_STAGE8 | all | yes |
-| `fill_level_legible` | tree | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, sc_fill_tiers, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, LOOK_STAGE8 | some | yes |
+| `fill_level_legible` | tree | 6 | T_UNDERLIQUID, PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_LIQUID_LOOK_TUNE, PY_FLOWWORKS_TANK_SHADOW, sc_fill_tiers, LOOK_BLIND_READER | OL_OWNER_LOOK_READS, LOOK_STAGE8 | all | yes |
 | `one_still_surface` | tree | 6 | T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, PY_FLOWWORKS_ONE_WATER_NUMBER, PY_FLOWWORKS_FLOOD_HOUR_CADENCE, sc_one_surface | - | all | yes |
 | `source_pays_and_refills` | tree | 6 | T_STOCK, PY_FLOWWORKS_POND_OUTLET_FRACTIONAL, PY_PUMP_DRAW_CONSERVES, sc_source_pays | - | all | yes |
 | `canal_fire_burns_back` | tree | 6 | T_FIRE, PY_FLOWWORKS_FUEL_MOAT, sc_canal_fire | - | all | yes |
 | `slime_holds_the_crossing` | tree | 6 | T_SLIME, sc_slime | LOOK_BLIND_READER | all | yes |
 | `pawn_height_follows_depth` | tree | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | - | all | yes |
-| `pit_reads_as_hole` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_LABEL, sc_pit_reads, LOOK_BLIND_READER | OL_OWNER_LOOK_READS | some | yes |
-| `covered_pit_springs` | tree | 6 | T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_covered_pit, LOOK_BLIND_READER | sc_pit_trap_raid | some | yes |
+| `pit_reads_as_hole` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_LABEL, sc_pit_reads, LOOK_BLIND_READER | OL_OWNER_LOOK_READS | all | yes |
+| `covered_pit_springs` | tree | 6 | T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_covered_pit, LOOK_BLIND_READER | sc_pit_trap_raid | all | yes |
 | `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE | all | yes |
 | `sluice_drains_on_command` | tree | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | sc_moat_raid | all | yes |
-| `hose_reads_as_hose` | tree | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look, LOOK_BLIND_READER | - | some | yes |
+| `hose_reads_as_hose` | tree | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look, LOOK_BLIND_READER | - | all | yes |
 | `one_liquid_network` | tree | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_garden | all | yes |
 | `trench_gives_cover` | tree | 6 | T_TRENCH, sc_trench_cover | sc_pit_trap_raid | all | yes |
-| `hung_bridge_spans` | tree | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hung_bridge, LOOK_BLIND_READER | - | some | yes |
+| `hung_bridge_spans` | tree | 6 | T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hung_bridge, LOOK_BLIND_READER | - | all | yes |
 | `ice_cuts_and_melts` | tree | 6 | T_ICE, sc_ice | - | all | yes |
 | `river_flows_endless` | tree | 6 | T_RIVER, PY_FLOWWORKS_RIVERS, PY_FLOWWORKS_RIVER_COLORS, PY_WEIR_INSTALLED, sc_river | - | all | yes |
 | `moat_raid_sequence` | tree | 6 | sc_moat_raid | T_SWIM, PY_SWIM_SHORE_REACH, T_DOORS, PY_FW_GATE_LIFT, T_PRISON, T_FIRE, PY_FLOWWORKS_FUEL_MOAT, T_BRIDGES, PY_FLOWWORKS_DRAWBRIDGE_POSE, PY_FLOWWORKS_SUSPENSION_LINKED, sc_hole_prison, sc_toss_flame, sc_sluice, LOOK_STAGE8 | all | no |
@@ -197,7 +197,7 @@ Generated 2026-11-14T14:38:32-08:00 from `test_table.json` (the record; this is 
 | `sc_pit_trap_raid` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_garden` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `LOOK_STAGE8` | look | 8 | `(his walk)` | not run: Stage 8 |
-| `LOOK_BLIND_READER` | look | 6 | `(a blind reader agent on the scene captures)` | not run: needs captures from Stage 6 |
+| `LOOK_BLIND_READER` | look | 6 | `src/RimMandrake/FlowWorks/northstar/blind_reader.py` | not run (offline only); entry exists |
 | `OL_OWNER_LOOK_READS` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py` | not run (offline only); entry exists |
 | `sc_geyser_tub` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `T_LIQUID_COATING_OFFLINE` | offline | 4-5 | `src/RimMandrake/FlowWorks/selftest_stage3_owed.py` | RED rc 1, 0.1s |

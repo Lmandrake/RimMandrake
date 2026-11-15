@@ -161,9 +161,13 @@ for s in scn["scenes"]:
         "runs_today": {"ran": False, "entry_exists": ex, "why": "offline only: never the game in this run" + ("" if ex else "; entry function absent")}}
 tests["LOOK_STAGE8"] = {"id": "LOOK_STAGE8", "kind": "look", "stage": "8", "file": "(his walk)",
     "observes": "his walk of the moat showcase save, then the garden and pit-trap faces", "reads": [], "runs_today": {"ran": False, "why": "Stage 8"}}
-tests["LOOK_BLIND_READER"] = {"id": "LOOK_BLIND_READER", "kind": "look", "stage": "6", "file": "(a blind reader agent on the scene captures)",
+BR = FW + "/northstar/blind_reader.py"    # built Stage 3 2026-11-14 (RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT)
+tests["LOOK_BLIND_READER"] = {"id": "LOOK_BLIND_READER", "kind": "look", "stage": "6", "file": BR, "entry": "read",
     "observes": "a reader who did not make it names what the captures show (depth order, liquid, hole vs trap, hose vs cord, hung bridge)",
-    "reads": [], "why_game": "captures exist only from a running map", "runs_today": {"ran": False, "why": "needs captures from Stage 6"}}
+    "reads": [BR, FW + "/northstar/selftest_blind_reader.py", C + "/scenes.json"], "why_game": "captures exist only from a running map",
+    "command": "python3 %s read --manifest <captures.json> --out <json>  (after the six Stage 6 scenes; manifest from `blind_reader.py template`)" % BR,
+    "offline_proof": "python3 " + FW + "/northstar/selftest_blind_reader.py",
+    "runs_today": {"ran": False, "entry_exists": os.path.exists(BR), "why": "UNRUN: needs the Stage 6 captures"}}
 OLR = FW + "/northstar/owner_look_regressions.py"
 tests["OL_OWNER_LOOK_READS"] = {"id": "OL_OWNER_LOOK_READS", "kind": "live_minimal", "stage": "6", "file": OLR,
     "observes": "in-game state reads built early for the held look rows (OL_opaque_hides, OL_goods_covered, OL_buildings_covered, OL_no_surface_shadow, OL_overlays_hidden, OL_corpses_covered, OL_pour_never_no_room ...)",

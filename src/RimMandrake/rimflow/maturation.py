@@ -695,7 +695,9 @@ def _bar_lines(tt, ids):
         out.append("- **%s** (%s, proves at stage %s)" % (b["id"], b.get("kind", "?"), b.get("proves_at", "?")))
         for d in b.get("decides") or []:
             t = tests.get(d) or {}
-            if t.get("runs_today") is True:
+            r = t.get("runs_today")
+            # the table's own runnable rule (make_table.py): ran today, or an in-game entry written and recorded UNRUN
+            if r is True or (isinstance(r, dict) and (r.get("ran") or r.get("entry_exists"))):
                 continue
             out.append("  - decider `%s` (%s, stage %s) does not run today: %s" % (
                 d, t.get("kind", "no entry in the table"), t.get("stage", "?"),
