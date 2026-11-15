@@ -171,6 +171,8 @@ def live(out):
         return text
     def setting(typ, field, *value):
         if value:
+            # live() snapshots every field it sets into `settings` before the first write, and its finally hands them to
+            # restore-check: ok -- restore_scene, which puts each back and reads it back on every exit path
             call('jawa/mod_settings_field', typeName=typ, field=field, action='set', value=str(value[0]))
         return call('jawa/mod_settings_field', typeName=typ, field=field, action='get')['value']
     def flags():
