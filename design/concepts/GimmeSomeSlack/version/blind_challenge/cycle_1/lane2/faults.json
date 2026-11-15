@@ -39,12 +39,13 @@
   "evidence": [
    "lane 1 L1_NO_REPEAT (written blind): two 4-cell generator->lamp runs side by side, 4 cells apart, build seed 6, draw cords whose mean point gap in their own frames is 0.01 cell (shrunk from 8 runs to 2)",
    "the kernel's own CordShape.Table on the same rooms: 31 of 672 pairs under its TooAlikeBelow 0.3, every one at run length 4 (up to 15 of 28 pairs in one room); lengths 6, 9 and 12: none (smallest gap 0.46)",
-   "T_CORE and T_H_NO_TWO_ALIKE_SHORT are green: neither lays a room of equal 4-cell runs side by side"
+   "T_CORE and T_H_NO_TWO_ALIKE_SHORT are green: neither lays a room of equal 4-cell runs side by side",
+   "lane 2 (gss_four): L1_NO_REPEAT could never PASS (its SHRUNK line went into the failure list unconditionally); repaired, the base still fails (gap 0.01)"
   ],
   "would_pass": "L1_NO_REPEAT green: no pair of same-class cords under 0.1 mean gap, and CordShape.Table TooAlike 0, for 2..8 equal runs of 4 cells side by side over build seeds 1..6",
   "smallest_fix": "unknown until the lay of a short routed edge is read; [guess ~50%] its shape seed comes from the edge's own geometry rather than its map position, so identical short runs get identical cords. Mix the edge's cells into the lay seed for short edges, then rerun lane 1",
   "verdict_on_criterion": "sound (the 4-cell class is inside the owner's bar; only under 3 cells is exempt)",
-  "status": "PENDING"
+  "status": "FIXED 0416599c69"
  },
  {
   "id": "RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT",
@@ -54,12 +55,13 @@
   "evidence": [
    "lane 1 L1_CORD_BENDS_TALLY: the bar's named instrument CordShapeAudit.BendTally over 80 random scenes (seeds 6000..6039 open floor, 6500..6539 with walls): 82 unforced of 1381 bends in 728 strands",
    "first rows: junction:37,38|consumer:37,37 turn 98 deg over 0.09 cell, 0.10 from the plug end (a one-cell junction-to-device lead); my coarser independent measure L1_CORD_SHARP_TURN agrees",
-   "T_CORD_GEOMETRY_OFFLINE is green (4513/4513) because it reads the 7 oracle scenes only; RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR closed against those 7"
+   "T_CORD_GEOMETRY_OFFLINE is green (4513/4513) because it reads the 7 oracle scenes only; RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR closed against those 7",
+   "lane 2 (gss_four) at 0416599c69: 82 -> 4 unforced on the same 80 scenes; 1580 -> 92 over 2000 seeded scenes (17821 strands); the 4 left are mid-cord bends on cut leads the fold guard keeps unfaired (fairing them folds the cord where its kept cut-end run meets it: the builder's fold bar)"
   ],
   "would_pass": "L1_CORD_BENDS_TALLY reads unforced 0 over the same 80 seeds (or every remaining row is shown forced by a wall, building, door or socket the audit's Why() misses, which would be an instrument fix)",
   "smallest_fix": "add random scenes to the geometry check (the lane-1 scene maker is reusable), then fix the planner where the unforced rows point, starting with plug-end hooks on one-cell leads",
   "verdict_on_criterion": "sound",
-  "status": "PENDING"
+  "status": "PENDING (82 -> 4; see evidence)"
  },
  {
   "id": "RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK",
@@ -73,7 +75,7 @@
   "would_pass": "L1_CORD_SLACK_RATIO green over seeds 3000..3049",
   "smallest_fix": "[guess ~60%] the cut-routed lay counts the whip tail toward its slack budget, or trims slack to make room for it; aim the cut-routed lay at CordSlacken.Aim with the tail excluded",
   "verdict_on_criterion": "sound",
-  "status": "PENDING"
+  "status": "FIXED 0416599c69"
  },
  {
   "id": "RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE",
@@ -82,12 +84,13 @@
   "criterion": "at least one excursion of a cell or more off the conduit line per edge longer than four cells",
   "evidence": [
    "lane 1 L1_CORD_EXCURSION and L1_CORD_EXCURSION_RATE: 5 of 139 edges of more than four conduit cells never leave their own conduit line by a full cell (lowest 0.56: a 6-cell junction-junction routed+slack edge; 3 cut-routed, 1 routed+slack, 1 hop+slack)",
-   "measured as the distance from the edge's chain polyline through cell centres, the most lenient reading of 'off the conduit line'"
+   "measured as the distance from the edge's chain polyline through cell centres, the most lenient reading of 'off the conduit line'",
+   "lane 2 (gss_four): the check read other nodes' cells as the conduit line (judge_the_judge/refusals.json); repaired, the base fails 2 of 116 long edges, both cut-routed (a cut lead was never slackened)"
   ],
   "would_pass": "L1_CORD_EXCURSION green over seeds 4000..4039",
   "smallest_fix": "enforce CordSlacken.MinExcursion (1.0, already declared) on every edge over CordSlacken.LongChord, cut-routed and hop lays included",
   "verdict_on_criterion": "sound",
-  "status": "PENDING"
+  "status": "FIXED 0416599c69"
  },
  {
   "id": "RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER",
@@ -108,7 +111,8 @@
   "bar": "(instrument) T_GATE",
   "criterion": "a rerun repeats the recorded result",
   "evidence": [
-   "reruns.jsonl: T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept"
+   "reruns.jsonl: T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept",
+   "lane 2 (gss_four): one of five T_CORE runs here read 'slice: a planned build of the live scene held one Build 30.7 ms (bound 30 ms)' (others 17.1-20.6 ms): a single-Build wall-clock bound in SliceGateChecks.Slices, GC and load included; [guess ~60%] the cause of O3's one red (the cycle-1 record did not name the failing check). Not ruled out: a shared build lock (not measured). Smallest fix: the GC-excluded worst the graph-worker gate already uses (WorstNoGcMs), or its one-of-three-attempts rule; not applied (unconfirmed cause)"
   ],
   "would_pass": "T_GATE green on repeated runs, or the O3 red's cause printed",
   "smallest_fix": "keep the nested O3 run's last lines in the GATE_JSON so a red is explainable",
@@ -122,7 +126,8 @@
   "criterion": "sheet: 'No hose, reel or pipe is drawn by this mod'; experience: 'it draws power cords only'; oracle: hoses or reels only",
   "evidence": [
    "GSS draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), owner-sanctioned (pipe poles 'Their own switch', 2026-10-22; leaf settings_switch_cleanly names the pipe-pole switch)",
-   "so the bar's word 'pipe' and 'power cords only' are not true of the shipped design, while the oracle (hose/reel) is"
+   "so the bar's word 'pipe' and 'power cords only' are not true of the shipped design, while the oracle (hose/reel) is",
+   "lane 2 (gss_four): refusal record REFUSAL_GSS_NO_HOSE_IN_GSS_BAR_SAYS_PIPE in judge_the_judge/refusals.json, smallest fix: drop 'pipe' from the experience and the scenario"
   ],
   "would_pass": "the bar's words say what the oracle checks (no hose or reel; FlowWorks pipe-pole spans are drawn by design)",
   "smallest_fix": "the neutral fixer rewords the leaf's experience and sheet line; no code change",

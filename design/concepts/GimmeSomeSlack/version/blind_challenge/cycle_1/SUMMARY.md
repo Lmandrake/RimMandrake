@@ -104,7 +104,7 @@ was removed, skipped or loosened. No bar, criterion, locked file or `test_table.
 ## Exit
 ```
 offline_bars: {no_hose: green, no_hose_in_gss: green}
-problems_open: 4
+problems_open: 1
 exit_met: false
 ```
 Both offline bars are green on the fresh rerun of T_NO_HOSE, before and after the fix. Four Problems stay PENDING (lane-1
@@ -118,3 +118,11 @@ four, or a re-route of those bars to Stage 6, where they prove.
 - The two kernels I did not read in full (CordBuilder 4427 lines, CordShape 1719) were reached only through their outputs.
 
 Spend at the record: about $11.5 of the $20 bound [measured, the session's budget line]. Lane 1 landed ce294c48e1 (00:51 PST).
+
+## Lane 2 follow-up (gss_four, 2026-11-15)
+Judge the judge (`lane2/judge_the_judge/`): the four criteria are sound (feasibility_sweep.py: 2704 of 2704 chord x heading cells have one cord meeting slack,
+stray and bends at once). Two lane-1 checks were wrong and were repaired (refusals.json): L1_CORD_EXCURSION read other nodes' cells as the conduit line,
+L1_NO_REPEAT could never pass. Fix 0416599c69 (parent 0725d4522a), red then green in `lane2/fixes.jsonl`: slack, stray and repeat FIXED; bends 82 -> 4 on the
+judge's 80 scenes, still open. Over 2000 seeded scenes, base -> fix: slack 243 -> 5 of 16740 strands, stray 31 -> 6 of 6070 edges, unforced bends
+1580 -> 92, twins (3-6 cells) 468 -> 1 of 11200 pairs. T_CORE 4510/4510. Lane 1 after the fix: `lane2/lane1_rows_after_fix.jsonl` (FAIL: bends, the judge's
+sharp-turn row, the fallen wire Polish).

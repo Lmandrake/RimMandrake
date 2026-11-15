@@ -10,5 +10,17 @@
   "why": "new: source binding of RM_FallenWireShock's master-switch gates, with two mutants that must read red",
   "before": null,
   "after": "7ae928e7f9ef9c67"
+ },
+ {
+  "path": "design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
+  "why": "repaired, never weakened: L1_CORD_EXCURSION/RATE read the edge's own chain (a regex over the whole key took other nodes' cells); L1_NO_REPEAT's verdict no longer counts its own SHRUNK report line as a failure (it could never pass); every check, seed and threshold kept",
+  "before": "23c4d9a5d316a8a4",
+  "after": "68f6415f395aa327"
+ },
+ {
+  "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
+  "why": "extended: the judge's random bases and seeds (slack, stray off the conduit line, twins, bends as a ratchet at 4); every earlier check kept",
+  "before": "554328666dc79de4",
+  "after": "9202529d91395b1d"
  }
 ]
