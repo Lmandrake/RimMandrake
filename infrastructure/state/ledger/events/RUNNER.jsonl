@@ -7310,3 +7310,5 @@
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","text":"ops_watch: cleared at 2026-11-15T06:13:26Z (maturation.idle_owed_max_min now 0)","ts":"2026-11-15T06:13:34Z","tsn":1794723214626713280}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 72 min (MEASURED), line > 60","ts":"2026-11-15T07:27:07Z","tsn":1794727627268178033}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-15T07:27:12Z","tsn":1794727632091021087}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 72 min (MEASURED), line > 60","ts":"2026-11-15T07:28:22Z","tsn":1794727702921750791}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-15T07:28:27Z","tsn":1794727707655411497}
