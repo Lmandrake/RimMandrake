@@ -1,0 +1,2 @@
+Designer stage 0: a Codex dry pass may already exist at design/RimMandrake/designer_codex_2026-11-09/<Mod>/ (record.json with a UTF-8 BOM, plus ANSWERS_OWNER.md with his card answers); carry its inventory over and re-check it instead of re-reading the mod. designer_stage.py wants inventory search_scope as a STRING: a list reads as missing ('absent needs search_scope').
+home: src/RimMandrake/rimflow/roles/designer_grounding.md
