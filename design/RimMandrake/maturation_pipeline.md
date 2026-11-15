@@ -120,9 +120,12 @@ All in `src/RimMandrake/rimflow/maturation.py`:
     contradiction unresolved. Silence never advances.
   - Step 3: `concept_tree.py lint` passes on `sheet.md`, `tree.json` and `floor.json`; `scenes.json` meets the scene
     contract; the showcase set covers every capability.
-  - Step 4, the Cold Reader exam (`exam.json`): at least 10 frozen scenarios, scored at least 90% right, by two named
+  - Step 4, the Cold Reader exam (`exam.json`): at least 10 frozen scenarios, each distinct and sourced on a leaf or his
+    OWNER event, some written by a named fresh Challenger, scored at least 90% right, by two named
     fresh Readers who are not the tree's author, examiner, challenger or a Designer run; zero "accepts where the core
-    rejects"; and a control Reader, given a copy with one core leaf removed, must miss. Mandrake may waive the exam in his
+    rejects"; and a control Reader, given the copy the program made with one core leaf removed (`designer_stage.py
+    exam-control`, checked to hold the tree's other leaves and name the removed one nowhere), must miss a scenario
+    sourced on that leaf. Mandrake may waive the exam in his
     words (`exam_waived`).
   - Step 5, Lock: `concept_tree.py gate` passes: lint, the root VALIDATED at its hash, and a valid coverage signature.
 - **The coverage judge** (`src/RimMandrake/rimflow/coverage_judge.py`): before every Designer run at step 5, the role
@@ -381,8 +384,9 @@ Found by the skeptical review of 2026-11-15 and confirmed by reading the code (c
    binding those exits is his open decision). His walk to passed needs `OWNER:<tsn>`, his event on the OWNER shard
    that does not refuse the pass; the Designer gate needs state `locked` by `owner`; `--by` must name a seat
    (d5d5339d3b).
-9. **The offline-build gate reads the builder's own flags.** `_table_runnable` does not compare `test_table.json` with
-   the locked bars (no locked bar list exists to compare with). Dispatch's progress is a refused bar resolved by id
+9. **The offline-build gate reads the builder's own flags.** Where the lock's bars are recorded
+   (`version/locked_bars.json`, `maturation.py lock-bars`; the four locked mods since this change), a test table that
+   drops or invents a bar fails the offline build's exit; a bar changes there only on his `OWNER:<tsn>` card. Dispatch's progress is a refused bar resolved by id
    since e85a351a54: a rename or a flag flipped with its checks unchanged is a stop, and a stop lifts only when the
    refused set shrinks.
 10. **Dispatch's ceiling** reserves the run's cap since 780db1ef3e (spent plus cap must fit), at the offline build, the

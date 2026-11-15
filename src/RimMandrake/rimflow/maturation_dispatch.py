@@ -421,7 +421,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
                     str(v) for k, v in (f.get("observed") or {}).items() if k in (f.get("hand_steps") or []))))
             continue
         if ids is None:
-            put("blind", "the test table cannot be read", "the test table cannot be read; no builder launches on it")
+            te = (": %s" % f["table_error"]) if f.get("table_error") else ""
+            put("blind", "the test table cannot be read" + te, "the test table cannot be read%s; no builder launches on "
+                "it" % te)
             continue
         stop = s.get("stopped")
         # a stop lifts only when refused bars were resolved (the set shrank); a renamed id is not a resolution

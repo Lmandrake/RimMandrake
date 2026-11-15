@@ -361,7 +361,8 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None)
                    "it)" % str(dst.get("blocked_on") or "no reason written")[:300])
     elif stt == "locked" or (stg == 5 and locked(mod)):
         _steward(row, "designer_locked", "%s|designer|locked" % ver, "the Design Version is locked: advance it to "
-                 "preflight", "the version is locked; advance %s --to preflight (the lock clause passes)" % mod)
+                 "preflight", "the version is locked; record its bars (`maturation.py lock-bars %s --by BENCH --why ...`, land "
+                 "version/locked_bars.json), then advance %s --to preflight (the lock clause passes)" % (mod, mod))
     elif stg == 5 and not locked(mod):
         row.update(decision="owner", why="the lock is his (Designer stage 5, VERSION.json not locked)",
                    card="Lock %s's Design Version? The Designer stands at stage 5 (Lock); VERSION.json is not locked. "

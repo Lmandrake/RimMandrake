@@ -233,6 +233,7 @@ def main():
            "offline build back to preflight is no road")
 
         next_version_main(root)
+        lock_bars_main(root)
 
         # ---- a good move: Pyrelands, every bar has a check that runs --------------------------------------------
         jtext0 = read(root, "Pyrelands", "journal.md")
@@ -401,6 +402,115 @@ def next_version_main(root):
        "the status page reads the stage from the record (preflight, column 2)")
     with open(vp, "w") as f:
         json.dump(v, f)
+
+
+def lock_bars_main(root):
+    """RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: the lock records its bar ids; the table is compared with them."""
+    mod, card = "GimmeSomeSlack", "OWNER:1794693278631337978"     # his 2026-11-14 card adding a bar to each of four
+    c = os.path.join(root, "design", "concepts", mod, "version")
+    vp, tp = os.path.join(c, "VERSION.json"), os.path.join(c, "test_table.json")
+    v0, t0 = open(vp).read(), open(tp).read()
+    tt = json.loads(t0)
+    ids = [b["id"] for b in tt["bars"]]
+    v = dict(json.loads(v0), state="locked", locked_from_commit="c0ffee", bars_moved_to_next_version=["moved_out"],
+             bars_added_after_lock=[ids[-1]])
+    with open(vp, "w") as f:
+        json.dump(v, f)
+    shown = {"design/concepts/%s/record.json" % mod: {"inventory": [{"id": i} for i in ids[:3]]},
+             "design/concepts/%s/tree.json" % mod: {"leaves": [{"id": i} for i in ids[3:-1]] + [{"id": "moved_out"}]}}
+    show = lambda commit, path: shown.get(path) if commit == "c0ffee" else None     # noqa: E731
+    lb = getattr(M, "lock_bars", None)
+    if lb is None:
+        ok(False, "lock-bars exists (maturation.lock_bars)")
+    else:
+        try:
+            r = lb(root, mod, "BENCH", "selftest", show=show)
+            ok(r["ok"] and r["ids"] == ids, "lock-bars derives the locked bars: required_ids at locked_from_commit, less "
+               "the moved, plus the added after lock (%s)" % r["why"][:80])
+            r2 = lb(root, mod, "BENCH", "selftest", show=show)
+            ok(not r2["ok"] and "already records" in r2["why"], "a second lock-bars with no change is refused")
+            r3 = lb(root, mod, "BENCH", "selftest", add=["invented_bar"], show=show)
+            ok(not r3["ok"] and "OWNER" in r3["why"], "a bar added with no source is refused: only his card adds one")
+            r4 = lb(root, mod, "BENCH", "selftest", add=["invented_bar"], source="OWNER:1", show=show)
+            ok(not r4["ok"], "a bar added citing an OWNER event that does not exist is refused")
+            r5 = lb(root, mod, "BENCH", "selftest", remove=["not_a_bar"], source=card, show=show)
+            ok(not r5["ok"] and "not a locked bar" in r5["why"], "removing a bar that is not locked is refused")
+            # the table equals the locked bars: read exactly as before
+            ok(M._table_runnable(tt, v, M.locked_bars(root, mod, v)[0]) == M._table_runnable(tt, v),
+               "a table holding exactly the locked bars reads as it did with no lock record")
+            # the table drops a bar: refused by the reader, the offline-build clause and the Dispatch facts
+            short = dict(tt, bars=tt["bars"][1:])
+            with open(tp, "w") as f:
+                json.dump(short, f)
+            bad, why = M._table_runnable(short, v, ids)
+            ok(bad is None and "missing %s" % ids[0] in why, "a table missing a locked bar is refused (%s)" % str(why)[:90])
+            rp = os.path.join(c, "stage_record.json")
+            r_was = open(rp).read() if os.path.exists(rp) else None
+            with open(rp, "w") as f:
+                json.dump(dict(M.load(root, mod) or {}, mod=mod, version=v["version"], stage="offline_build"), f)
+            fa = M.build_facts(root, mod)
+            ok("missing %s" % ids[0] in str(fa.get("table_error")) and fa.get("refused_bars") == "UNMEASURED",
+               "the Dispatch facts name the missing bar and read no refused-bar count (%s)" % str(fa.get("table_error"))[:60])
+            ev = M.evaluate(root, mod, "blind_challenge", by="selftest", why="selftest")
+            cl = [x for x in ev["verdict"]["refusals"] if x["clause"] == "every_bar_has_a_check_that_runs"]
+            ok(cl and "missing %s" % ids[0] in str(cl[0].get("observed")),
+               "the offline build's exit refuses a table missing a locked bar")
+            if r_was is None:
+                os.remove(rp)
+            else:
+                with open(rp, "w") as f:
+                    f.write(r_was)
+            inv = dict(tt, bars=tt["bars"] + [dict(tt["bars"][0], id="invented_bar")])
+            bad, why = M._table_runnable(inv, v, ids)
+            ok(bad is None and "not locked invented_bar" in why, "a table inventing a bar is refused (%s)" % str(why)[:90])
+            r6 = lb(root, mod, "BENCH", "selftest: his card added it", add=["invented_bar"], source=card, show=show)
+            ok(r6["ok"] and M._table_runnable(inv, v, M.locked_bars(root, mod, v)[0])[0] is not None,
+               "a bar his card added (OWNER:<tsn>) is recorded, and the table holding it reads again")
+            ok(M.locked_bars(root, mod, dict(v, version="9.9.9"))[0] is None
+               and "records version" in str(M.locked_bars(root, mod, dict(v, version="9.9.9"))[1]),
+               "a record of another version's bars is not this version's (it is re-recorded at the new Lock)")
+            with open(vp, "w") as f:
+                json.dump(dict(v, state="drafting"), f)
+            os.remove(os.path.join(c, "locked_bars.json"))
+            r7 = lb(root, mod, "BENCH", "selftest", show=show)
+            ok(not r7["ok"] and "recorded at Lock" in r7["why"], "an unlocked version has no locked bars to record")
+            ok(M.locked_bars(root, mod, v) == (None, None), "no locked_bars.json: the old shape reads as before")
+        except Exception as e:      # noqa: BLE001
+            ok(False, "lock-bars cases ran (%s: %s)" % (type(e).__name__, e))
+    # the reader alone, on a hand-written record (so the base program, which has no lock-bars, is seen to miss it)
+    with open(vp, "w") as f:
+        json.dump(v, f)
+    with open(os.path.join(c, "locked_bars.json"), "w") as f:
+        json.dump({"schema": 1, "mod": mod, "version": v["version"], "ids": ids}, f)
+    rp = os.path.join(c, "stage_record.json")
+    r_was = open(rp).read() if os.path.exists(rp) else None
+    with open(rp, "w") as f:
+        json.dump(dict(M.load(root, mod) or {}, mod=mod, version=v["version"], stage="offline_build"), f)
+    for label, table, needle in (("drops", dict(tt, bars=tt["bars"][1:]), "missing %s" % ids[0]),
+                                 ("invents", dict(tt, bars=tt["bars"] + [dict(tt["bars"][0], id="invented_bar")]),
+                                  "not locked invented_bar")):
+        with open(tp, "w") as f:
+            json.dump(table, f)
+        try:
+            ev = M.evaluate(root, mod, "blind_challenge", by="selftest", why="selftest")
+            cl = [x for x in ev["verdict"]["refusals"] if x["clause"] == "every_bar_has_a_check_that_runs"]
+            fa = M.build_facts(root, mod)
+            ok(cl and needle in str(cl[0].get("observed")) and needle in str(fa.get("table_error")),
+               "reader: a table that %s a locked bar fails the offline build's exit and the Dispatch facts (%s)" % (
+                   label, str(fa.get("table_error"))[:70]))
+        except Exception as e:      # noqa: BLE001
+            ok(False, "reader: a table that %s a locked bar (%s: %s)" % (label, type(e).__name__, e))
+    if r_was is None:
+        os.remove(rp)
+    else:
+        with open(rp, "w") as f:
+            f.write(r_was)
+    with open(vp, "w") as f:
+        f.write(v0)
+    with open(tp, "w") as f:
+        f.write(t0)
+    if os.path.exists(os.path.join(c, "locked_bars.json")):
+        os.remove(os.path.join(c, "locked_bars.json"))
 
 
 def launch_main():

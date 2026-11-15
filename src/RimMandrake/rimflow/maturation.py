@@ -318,16 +318,41 @@ def add_intervention(text, line):
 
 # ---- the exit tests --------------------------------------------------------------------------------------------------
 
-def _table_runnable(tt, v=None):
+LOCKED_BARS = "version/locked_bars.json"
+
+
+def locked_bars(root, mod, v=None):
+    """-> (ids, None) from version/locked_bars.json, the bar ids recorded at Lock (maturation.py lock-bars); (None, None)
+    when it is absent (a version locked before the record existed reads as before); (None, why) when it is unreadable or
+    is another version's than VERSION.json's."""
+    lb, err = read_json(root, mod, LOCKED_BARS)
+    if lb is None:
+        return None, (None if err == "no file" else "%s: %s" % (LOCKED_BARS, err))
+    ids = lb.get("ids") if isinstance(lb, dict) else None
+    if not isinstance(ids, list) or not ids or not all(isinstance(i, str) and i for i in ids) or len(set(ids)) != len(ids):
+        return None, "%s holds no list of unique bar ids" % LOCKED_BARS
+    if isinstance(v, dict) and lb.get("version") != v.get("version"):
+        return None, ("%s records version %s's bars; VERSION.json names %s: record them with `maturation.py lock-bars "
+                      "%s`" % (LOCKED_BARS, lb.get("version"), v.get("version"), mod))
+    return ids, None
+
+
+def _table_runnable(tt, v=None, locked=None):
     bars = tt.get("bars") if isinstance(tt, dict) else None
     if not isinstance(bars, list) or not bars:
         return None, "the table has no bars list"
-    # RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS (the count half): the table holds the locked version's bars, each once
+    # RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: the table holds the locked version's bars, each once, and when the
+    # lock recorded them (locked_bars.json) exactly those: a table that drops or invents a bar is no table of the version
     ids = [b.get("id") for b in bars if isinstance(b, dict)]
     if len(set(ids)) != len(ids) or None in ids:
         return None, "the table's bar ids are not unique (or one has none)"
-    # VERSION.json's bars_total is not a lock record (the selftest fixtures' history has it differ from the table), so
-    # the count is not compared; deriving the table from the locked bars waits on a locked bar list (left open)
+    if locked is not None:
+        miss, extra = [i for i in locked if i not in ids], [i for i in ids if i not in locked]
+        if miss or extra:
+            return None, ("the table's bars are not the %d locked bars: missing %s, not locked %s; remake the table from "
+                          "the locked bars, or when his card changed them, `maturation.py lock-bars <Mod> --add/--remove "
+                          "<id> --source OWNER:<tsn>`" % (len(locked), ", ".join(miss) or "none",
+                                                           ", ".join(extra) or "none"))
     flags = [b.get("every_decider_runnable_today") for b in bars if isinstance(b, dict)]
     if len(flags) != len(bars) or not all(isinstance(f, bool) for f in flags):
         return None, "a bar lacks a true/false every_decider_runnable_today"
@@ -511,7 +536,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
         elif cur == "offline_build":
             tt, terr = read_json(root, mod, "version/test_table.json")
             tref = rel(mod, "version/test_table.json")
-            res = _table_runnable(tt, v) if tt is not None else (None, terr)
+            lk, lerr = locked_bars(root, mod, v)
+            res = (None, lerr) if lerr else _table_runnable(tt, v, lk) if tt is not None else (None, terr)
             bad, n = res
             walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
             if isinstance(bad, list):
@@ -681,6 +707,70 @@ def commit_move(root, mod, rec, jtext=None, extra=None):
 def _semver(v):
     m = re.match(r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$", str(v or ""))
     return (int(m.group(1)), int(m.group(2)), int(m.group(3)), m.group(4) is None) if m else None
+
+
+def _git_show(root, commit, path):
+    r = subprocess.run(["git", "-C", root, "show", "%s:%s" % (commit, path)], capture_output=True, text=True, timeout=120)
+    if r.returncode:
+        return None
+    try:
+        return json.loads(r.stdout)
+    except ValueError:
+        return None
+
+
+def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None):
+    """RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: record the locked version's bar ids in version/locked_bars.json, the
+    list the test table is compared with. The first record derives them from the lock itself: coverage_judge's
+    required_ids (record.json inventory, then tree.json leaves) at VERSION.json's locked_from_commit, less
+    bars_moved_to_next_version, plus bars_added_after_lock. Any --add/--remove (a bar his card added or moved) cites his
+    event, OWNER:<tsn>; an agent never changes a bar on its own word. -> {"ok", "why", "ids"}."""
+    import concept_tree as CT
+    show = show or (lambda c, p: _git_show(root, c, p))
+    v, verr = read_json(root, mod, "version/VERSION.json")
+    if not isinstance(v, dict):
+        return {"ok": False, "why": "version/VERSION.json: %s" % verr}
+    if not str(v.get("state") or "").startswith("locked"):
+        return {"ok": False, "why": "VERSION.json state is %r: the bars are recorded at Lock" % v.get("state")}
+    add, remove = [x for x in add if x], [x for x in remove if x]
+    if add or remove:
+        m = re.match(r"^OWNER:(\d+)$", str(source or "").strip())
+        ev = CT.owner_events(root, REPO).get(m.group(1)) if m else None
+        if not isinstance(ev, dict) or not str(ev.get("ownerSaid") or ev.get("byCard") or "").strip():
+            return {"ok": False, "why": "--source %r is not one of his OWNER events with his words: a bar is added or "
+                    "removed only on his card" % source}
+    cur, _ = read_json(root, mod, LOCKED_BARS)
+    hist = list(cur.get("history") or []) if isinstance(cur, dict) else []
+    if isinstance(cur, dict) and cur.get("version") == v.get("version") and isinstance(cur.get("ids"), list):
+        ids, how = list(cur["ids"]), "changed by his card"
+        if not add and not remove:
+            return {"ok": False, "why": "%s already records %d bars for %s; a change needs --add/--remove with --source "
+                    "OWNER:<tsn>" % (LOCKED_BARS, len(ids), v.get("version"))}
+    else:
+        c = v.get("locked_from_commit")
+        if not c:
+            return {"ok": False, "why": "VERSION.json has no locked_from_commit to derive the locked bars from"}
+        rec, tree = show(c, rel(mod, "record.json")), show(c, rel(mod, "tree.json"))
+        if not isinstance(tree, dict):
+            return {"ok": False, "why": "tree.json at %s cannot be read" % c}
+        rows = ((rec or {}).get("inventory") or [] if isinstance(rec, dict) else []) + (tree.get("leaves") or [])
+        ids = list(dict.fromkeys(x["id"] for x in rows if isinstance(x, dict) and isinstance(x.get("id"), str)))
+        moved = [x for x in v.get("bars_moved_to_next_version") or [] if isinstance(x, str)]
+        later = [x for x in v.get("bars_added_after_lock") or [] if isinstance(x, str)]
+        how = ("required_ids at locked_from_commit %s (%d), less bars_moved_to_next_version (%d), plus "
+               "bars_added_after_lock (%d)" % (c, len(ids), len(moved), len(later)))
+        ids = [i for i in ids if i not in moved] + [a for a in later if a not in ids]
+    gone = [r for r in remove if r not in ids]
+    if gone:
+        return {"ok": False, "why": "--remove %s: not a locked bar" % ", ".join(gone)}
+    ids = [i for i in ids if i not in remove] + [a for a in add if a not in ids]
+    hist.append({"at": dt.datetime.fromtimestamp(now_ts(), dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                 "by": by, "why": why, "how": how, "source": source, "added": add, "removed": remove,
+                 "count": len(ids)})
+    out = {"schema": 1, "mod": mod, "version": v.get("version"), "locked_from_commit": v.get("locked_from_commit"),
+           "ids": ids, "history": hist}
+    write_text(root, mod, LOCKED_BARS, json.dumps(out, indent=1) + "\n")
+    return {"ok": True, "why": how, "ids": ids}
 
 
 def next_version(root, mod, by, why):
@@ -959,7 +1049,10 @@ def build_facts(root, mod):
     refs = res["verdict"]["refusals"]
     tt, _ = read_json(root, mod, "version/test_table.json")
     v, _ = read_json(root, mod, "version/VERSION.json")
-    bad, n = _table_runnable(tt, v) if tt is not None else (None, None)
+    lk, lerr = locked_bars(root, mod, v)
+    bad, n = (None, lerr) if lerr else _table_runnable(tt, v, lk) if tt is not None else (None, None)
+    if bad is None and n:
+        out["table_error"] = n
     out["bar_fp"] = bar_fingerprints(tt)
     walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
     out.update({
@@ -2412,6 +2505,13 @@ def main(argv=None):
     a.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     a.add_argument("--waits-on")
     a.add_argument("--json", action="store_true")
+    p = sub.add_parser("lock-bars", help="record the locked version's bar ids (version/locked_bars.json)")
+    p.add_argument("mod")
+    p.add_argument("--by", required=True)
+    p.add_argument("--why", required=True)
+    p.add_argument("--add", action="append", default=[], help="a bar his card added (needs --source)")
+    p.add_argument("--remove", action="append", default=[], help="a bar his card moved out (needs --source)")
+    p.add_argument("--source", help="OWNER:<tsn>, his card that changed the bars")
     p = sub.add_parser("next-version")
     p.add_argument("mod")
     p.add_argument("--by", required=True)
@@ -2510,6 +2610,11 @@ def main(argv=None):
         else:
             print_refusal(res)
         return 0 if res["ok"] else 1
+    if o.cmd == "lock-bars":
+        r = lock_bars(root, o.mod, o.by, o.why, o.add, o.remove, o.source)
+        print(("LOCKED BARS %s: %d recorded in %s (%s)" % (o.mod, len(r["ids"]), rel(o.mod, LOCKED_BARS), r["why"]))
+              if r["ok"] else "REFUSED: %s" % r["why"])
+        return 0 if r["ok"] else 2
     if o.cmd == "next-version":
         r = next_version(root, o.mod, o.by, o.why)
         print(("NEXT VERSION %s: %s -> %s, at %s (old record kept as %s)" % (o.mod, r["from"], r["to"], label(r["stage"]),
