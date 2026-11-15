@@ -742,6 +742,7 @@ MODS = {
         "Event impact and mood": "Now",
         "Favour tilts the odds": "NextPulse",
         "Offerings (Nine Faults, the Left Behind)": "Now",
+        "The Sinking (Ishko, at the tar)": "Now",   # SinkingGlue/SinkingPatches read every field at the rite or the raid roll, never at map or world creation
     }, ()),
     "Antiquities": ("AntiquitiesMod.cs", "RimMandrake.Utinni.Antiquities.csproj", {
         "Reading the antiquities": "Now",
@@ -750,6 +751,7 @@ MODS = {
     "CathedralPass": ("CathedralPassMod.cs", "RimMandrake.Utinni.CathedralPass.csproj", {
         "Cathedral mechanoid pass": "Now",
         "Cathedral favours": "NextPulse",   # read in CanFireNowSub: the next offer the blackboard fires
+        "Cathedral descent": "NextPulse",   # CathedralDescent.cs:107 gates the next offer of the way down
     }, ()),
     "DroidRepairJobs": ("DroidRepairJobsMod.cs", "RimMandrake.Utinni.DroidRepairJobs.csproj", {
         "Repair-job payment": "NextPulse",
@@ -762,7 +764,8 @@ MODS = {
         "Fungal distress (mining the Rot's soil)": "Now",
     }, ()),
     "KyberTradePlot": ("KyberTradePlotSettings.cs", "RimMandrake.Utinni.KyberTradePlot.csproj", {
-        "Kyber trade plot content": "NextPulse",
+        "Selling kyber": "NextPulse",    # KyberTrade.Tuning() and the sale postfix read these at the next trade window
+        "The kyber plot": "NextPulse",   # the incident worker and visit gate read the toggle when next rolled
     }, ()),
     "LongHunger": ("LongHungerMod.cs", "LongHunger.csproj", {
         "Whether it surfaces": "NextPulse",

@@ -135,11 +135,6 @@ namespace RimMandrake.Utinni.Rites
             return d;
         }
 
-        public static string[] SinkingSettingNames => new[] {
-            "sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled", "sinkingOwnershipEraseEnabled",
-            "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled", "sinkingValueFloor", "sinkingHoldOffMultiplier",
-            "sinkingNormalHoldOffDays", "sinkingRaidLullDays", "sinkingRaidLullStrength", "sinkingBeastLullDays",
-            "sinkingTrapCount", "sinkingOwnershipExclusions", "sinkingTarRadius" };
 
         public static void ResetFields(string[] names)
         {
@@ -252,7 +247,8 @@ namespace RimMandrake.Utinni.Rites
                 list.GapLine();
             }
 
-            if (Group(list, "The Sinking (Ishko, at the tar)", RimMandrake.Shared.SettingScope.Now, SinkingSettingNames))
+            if (Group(list, "The Sinking (Ishko, at the tar)", RimMandrake.Shared.SettingScope.Now,
+                    new[] { "sinkingEnabled", "sinkingHoldOffEnabled", "sinkingRaidLullEnabled", "sinkingOwnershipEraseEnabled", "sinkingBeastLullEnabled", "sinkingTrapFizzleEnabled", "sinkingValueFloor", "sinkingHoldOffMultiplier", "sinkingNormalHoldOffDays", "sinkingRaidLullDays", "sinkingRaidLullStrength", "sinkingBeastLullDays", "sinkingTrapCount", "sinkingOwnershipExclusions", "sinkingTarRadius" }))
             {
                 list.CheckboxLabeled("The Sinking", ref sinkingEnabled,
                     "Ishko's rite: worshippers give an item to the tar. Off: the rite offers no target and does nothing.");
