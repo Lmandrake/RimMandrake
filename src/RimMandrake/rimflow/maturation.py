@@ -1055,6 +1055,32 @@ def _cmds(fx):
     return out
 
 
+def _side_cmds(fx, side):
+    """-> True when every run of a fixes.jsonl row's red or green side names its command (`cmd` or `command`)."""
+    v = fx.get(side)
+    runs = [r for r in (v if isinstance(v, list) else [v]) if r is not None]
+    return bool(runs) and all(isinstance(r, dict) and any(str(r.get(k) or "").strip() for k in ("cmd", "command"))
+                              for r in runs)
+
+
+LANE1_OK = ("PASS", "INFO")
+
+
+def _planted_caught(r):
+    """A planted_results.jsonl row caught its fault: `caught` true at the top, on any suite/result, or by deciders/lane 1."""
+    if any(r.get(k) is True for k in ("caught", "caught_by_deciders", "caught_by_lane1")):
+        return True
+    for k in ("results", "suites"):
+        v = r.get(k)
+        if isinstance(v, dict) and any(isinstance(x, dict) and x.get("caught") is True for x in v.values()):
+            return True
+    return False
+
+
+def _is_baseline(r):
+    return "baseline" in r or str(r.get("id", "")).lower() == "baseline"
+
+
 def exit_block(summary):
     """-> ({key: value} for the keys found in the SUMMARY.md Exit section, or None when it has no Exit heading)."""
     lines = (summary or "").split("\n")
@@ -1121,7 +1147,13 @@ def read_exit(root, mod, n, tt=None):
     for r in (rr or []) + (_jsonl(os.path.join(d, "lane2", "reruns_after_fix.jsonl")) or []):
         t = r.get("test") or r.get("id")
         if t:
-            reruns[t] = str(r.get("result", "")).upper()
+            v = str(r.get("result", "")).upper()
+            # a PASS counts only with its run: the command rerun and its rc 0 (a bare "result" is the worker's word)
+            if v == "PASS" and not str(r.get("command") or r.get("cmd") or "").strip():
+                v = "PASS with no command"
+            elif v == "PASS" and not (r.get("rc") == 0 and not isinstance(r.get("rc"), bool)):
+                v = "PASS with rc %s (a rerun PASS needs its rc 0)" % r.get("rc", "unrecorded")
+            reruns[t] = v
     tests = (tt or {}).get("tests") or {}
     for b, deciders in bars:
         for t in deciders:
@@ -1165,6 +1197,10 @@ def read_exit(root, mod, n, tt=None):
                               "the failure): rerun it on the parent and the fix as a test whose rc 0 means the fix "
                               "holds (for a test that must catch a planted fault: the catching run, rc 0 when caught)"
                               if inverted else ""))
+            elif not _side_cmds(fx, "red") or not _side_cmds(fx, "green"):
+                why.append("FIXED Problem %s: its fixes.jsonl row names no command for its %s run(s) (an rc with no "
+                           "command cannot be rerun)" % (x.get("id"), " and ".join(
+                               k for k in ("red", "green") if not _side_cmds(fx, k))))
             else:
                 held = sorted({m for c in _cmds(fx) for m in PLACEHOLDER.findall(c)})
                 if held:
@@ -1173,12 +1209,16 @@ def read_exit(root, mod, n, tt=None):
     l1 = _jsonl(os.path.join(d, "lane1", "lane1_rows.jsonl"))
     if l1 is None:
         why.append("lane1/lane1_rows.jsonl is missing")
-    fails = [r.get("id", "?") for r in l1 or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
+    if l1 is not None and not l1:
+        why.append("lane1/lane1_rows.jsonl has no rows (lane 1 judged nothing)")
+    # UNSETTLED (or any verdict but PASS and INFO) is not a pass: it clears the way a FAIL does
+    fails = [r.get("id", "?") for r in l1 or [] if str(r.get("verdict", "")).upper() not in LANE1_OK or "_bad" in r]
     if fails:
         # lane 1 is recorded blind, before the fixes, and stays as recorded: a FAIL there is how a Problem is found. It
         # clears only when lane 1 rerun after the fixes (LANE1_AFTER_FIX) has no FAIL and shows each of those rows PASS.
         after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
-        bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
+        bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() not in LANE1_OK
+                     or "_bad" in r]
         passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
         # a FAIL a Polish fault owns is not passing's; a row that PASSes after the fixes is cleared, not left as Polish
         polish = _polish_rows(faults, sorted((set(fails) - passed) | set(bad_after)))
@@ -1187,18 +1227,29 @@ def read_exit(root, mod, n, tt=None):
         left = [f for f in fails if f not in passed and f not in polish]
         out["checks"]["lane1_fail_cleared_after_fix"] = after is not None and not bad_after and not left
         if after is None:
-            why.append("lane 1 has %d FAIL or unreadable row(s): %s, and no %s shows them PASS after the fixes"
+            why.append("lane 1 has %d FAIL, UNSETTLED or unreadable row(s): %s, and no %s shows them PASS after the fixes"
                        % (len(fails), ", ".join(fails[:8]), LANE1_AFTER_FIX))
         elif bad_after or left:
-            why.append("lane 1 has %d FAIL or unreadable row(s): %s; after the fixes %s still fails %s%s" % (
+            why.append("lane 1 has %d FAIL, UNSETTLED or unreadable row(s): %s; after the fixes %s still fails %s%s" % (
                 len(fails), ", ".join(fails[:8]), LANE1_AFTER_FIX, ", ".join(bad_after[:8]) or "nothing",
                 (" and does not show PASS for %s" % ", ".join(left[:8])) if left else ""))
+    te, terr = read_json(root, mod, base + "/tests_edited.json")
     if not os.path.exists(os.path.join(d, "tests_edited.json")):
         why.append("tests_edited.json is missing (an empty list is written, never left out)")
+    elif not (isinstance(te, list) or (isinstance(te, dict) and isinstance(te.get("edited"), list))):
+        why.append("tests_edited.json is not a list of edits (a list, or {\"edited\": [...]}): %s" % (
+            terr or "it holds %s" % type(te).__name__))
     pr = _jsonl(os.path.join(d, "lane2", "planted_results.jsonl"))
+    planted = [r for r in pr or [] if not _is_baseline(r) and (r.get("id") or r.get("file"))]   # a fault, not a tally
     if not pr or pr[-1].get("tree_clean_after") is not True:
         why.append("lane2/planted_results.jsonl %s" % ("is missing" if pr is None else
                                                        "does not end with tree_clean_after true"))
+    elif any(r.get("tree_clean_after") is False or "_bad" in r for r in pr):
+        why.append("lane2/planted_results.jsonl has a row left the tree not clean (tree_clean_after false) or unreadable")
+    if pr is not None and not planted:
+        why.append("lane2/planted_results.jsonl plants no fault (only a baseline): the tests were never shown to catch one")
+    elif pr is not None and not any(_planted_caught(r) for r in planted):
+        why.append("lane2/planted_results.jsonl: none of its %d planted fault(s) was caught" % len(planted))
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}
@@ -1719,6 +1770,47 @@ def ingame_exit_block(summary):
     return got
 
 
+SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
+EXPLAIN_WORDS = 6
+ITEM_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}$")
+
+
+def _strange_settled(x):
+    """A strange.jsonl entry is settled when `filed` names an item (a rimflow name) or `explained` says why in
+    EXPLAIN_WORDS words at least: "ok" or "yes" is not an explanation (RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES)."""
+    if not isinstance(x, dict) or "_bad" in x:
+        return False
+    if ITEM_RE.match(str(x.get("filed") or "").strip()):
+        return True
+    return len(str(x.get("explained") or "").split()) >= EXPLAIN_WORDS
+
+
+def _site_shown(root, r):
+    """site_checked is backed by a non-empty `site` reading or an `evidence` file on disk (repo-relative or native)."""
+    if isinstance(r.get("site"), dict) and r["site"]:
+        return True
+    ev = r.get("evidence")
+    for e in ev if isinstance(ev, list) else [ev]:
+        if isinstance(e, str) and e.strip():
+            p = native_to_here(e.strip())
+            if os.path.isfile(p if os.path.isabs(p) else os.path.join(root, p)):
+                return True
+    return False
+
+
+def _is_savegame(path):
+    """An .rws file whose first 4 KB hold XML and a <savegame> element."""
+    if not path.lower().endswith(".rws"):
+        return False
+    try:
+        with open(path, "rb") as f:
+            head = f.read(4096)
+    except OSError:
+        return False
+    head = head[3:] if head.startswith(b"\xef\xbb\xbf") else head    # RimWorld writes a UTF-8 BOM
+    return head.lstrip().startswith(b"<") and b"<savegame" in head
+
+
 def read_ingame_exit(root, mod, n, tt=None):
     """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder)
     | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
@@ -1748,10 +1840,12 @@ def read_ingame_exit(root, mod, n, tt=None):
     rows = _jsonl(os.path.join(d, "rows.jsonl"))
     if rows is None:
         why.append("rows.jsonl is missing")
-    last = {}
+    last, earlier = {}, {}
     for r in rows or []:
         t = r.get("test") or r.get("id")
         if t:
+            if t in last and str(last[t].get("verdict", "")).upper() != "PASS":
+                earlier.setdefault(t, []).append(str(last[t].get("verdict", "")).upper() or "no verdict")
             last[t] = r
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
@@ -1765,26 +1859,36 @@ def read_ingame_exit(root, mod, n, tt=None):
             continue
         if v != "PASS":
             why.append("in-game check %s: its last row reads %s" % (t, v or "no verdict"))
+        if earlier.get(t):
+            why.append("in-game check %s: an earlier row reads %s; a later PASS does not hide it (the failure goes "
+                       "down its road back, and a new visit reruns it)" % (t, ", ".join(earlier[t])))
         if r.get("site_checked") is not True:
             why.append("in-game check %s: its row does not say the site was checked first (site_checked)" % t)
+        elif not _site_shown(root, r):
+            why.append("in-game check %s: site_checked true with nothing to show it (a non-empty `site` reading, or an "
+                       "`evidence` file on disk)" % t)
         if str(r.get("game", "")).lower() not in GAMES:
             why.append("in-game check %s: its row names no game (%s)" % (t, " or ".join(GAMES)))
         if not r.get("mod_sha"):
             why.append("in-game check %s: its row names no mod_sha (the build it ran)" % t)
+        elif not SHA_RE.match(str(r.get("mod_sha"))):
+            why.append("in-game check %s: its mod_sha %r is not a commit hash (7 to 40 hex)" % (t, r.get("mod_sha")))
     st = _jsonl(os.path.join(d, "strange.jsonl"))
     if st is None:
         why.append("strange.jsonl is missing (an empty file says nothing strange was seen)")
-    left = [x.get("what", x.get("_bad", "?")) for x in st or []
-            if not (str(x.get("explained") or "").strip() or str(x.get("filed") or "").strip())]
+    left = [x.get("what", x.get("_bad", "?")) for x in st or [] if not _strange_settled(x)]
     out["strange_open"] = len(left)
     if left:
-        why.append("%d strange thing(s) neither explained nor filed: %s" % (len(left), "; ".join(str(x)[:60]
+        why.append("%d strange thing(s) neither explained nor filed (an explanation of %d words at least, or a named "
+                   "item): %s" % (len(left), EXPLAIN_WORDS, "; ".join(str(x)[:60]
                                                                                              for x in left[:3])))
     if st is not None and blk["strange_open"] != len(left):
         why.append("the block says strange_open %d; strange.jsonl leaves %d" % (blk["strange_open"], len(left)))
     sv = blk["savegame"]
     if not os.path.isfile(native_to_here(sv)):
         why.append("the savegame %s is not on disk" % sv)
+    elif not _is_savegame(native_to_here(sv)):
+        why.append("the savegame %s is not a RimWorld save (an .rws file whose head is XML holding <savegame>)" % sv)
     out["state"] = "not_met" if why else "met"
     if not why:
         why.append("%d of %d in-game checks PASS on checked sites; strange things all explained or filed; savegame %s"

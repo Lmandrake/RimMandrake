@@ -418,7 +418,8 @@ def copy_blind(root):
 
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
                 pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True,
-                fix_runs=None, lane1_after=None, record_decider=None, fault_key="class", polish_cites=None):
+                fix_runs=None, lane1_after=None, record_decider=None, fault_key="class", polish_cites=None,
+                lane1_extra=None, lane1_rows=True, edited_text=None, planted=None, rerun_row=None):
     """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
@@ -443,9 +444,12 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
     with open(os.path.join(d, "lane2", "reruns.jsonl"), "w") as f:
         for b in bars:
             for t in b.get("offline_decides") or b.get("decides") or []:
-                f.write(json.dumps({"test": t, "result": "FAIL" if t == rerun_fail else
-                                    "not_rerunnable" if t == record_decider else "PASS",
-                                    "recorded_result": "PASS", "match": t != rerun_fail}) + "\n")
+                row = {"test": t, "command": "python3 selftest_%s.py" % t, "rc": 1 if t == rerun_fail else 0,
+                       "result": "FAIL" if t == rerun_fail else "not_rerunnable" if t == record_decider else "PASS",
+                       "recorded_result": "PASS", "match": t != rerun_fail}
+                if rerun_row and t == rerun_row[0]:
+                    row = {k: v for k, v in dict(row, **rerun_row[1]).items() if v is not None}
+                f.write(json.dumps(row) + "\n")
     faults = [{"id": "RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED", "class": "Problem", "status": "FIXED abc1234"},
               {"id": "RIMMANDRAKE_NOTE_SELFTEST_POLISH_LEFT_ALONE", "class": "Polish", "status": "NOTED_FOR_CONDUCTOR"}]
     if pending_problem:
@@ -461,19 +465,25 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
     with open(os.path.join(d, "lane2", "faults.json"), "w") as f:
         json.dump({"cycle": n, "faults": faults}, f)
     with open(os.path.join(d, "lane2", "fixes.jsonl"), "w") as f:
-        f.write(json.dumps({"fault": faults[0]["id"], "red": {"rc": [fix_red_rc, fix_red_rc]}, "green": {"rc": [0, 0]}}
+        f.write(json.dumps({"fault": faults[0]["id"], "red": {"cmd": "python3 t.py", "rc": [fix_red_rc, fix_red_rc]},
+                            "green": {"cmd": "python3 t.py", "rc": [0, 0]}}
                            if fix_runs is None else dict(fault=faults[0]["id"], **fix_runs)) + "\n")
     if lane1_after is not None:   # lane 1 rerun after the fixes: {id: verdict}
         with open(os.path.join(d, "lane2", "lane1_rows_after_fix.jsonl"), "w") as f:
             f.write("".join(json.dumps({"id": k, "verdict": v}) + "\n" for k, v in lane1_after.items()))
     with open(os.path.join(d, "lane1", "lane1_rows.jsonl"), "w") as f:
-        f.write(json.dumps({"id": "L1_a", "verdict": "PASS"}) + "\n" + json.dumps({"id": "L1_b", "verdict": "UNSETTLED"})
-                + "\n" + (json.dumps({"id": "L1_c", "verdict": "FAIL"}) + "\n" if lane1_fail else ""))
+        if lane1_rows:   # the happy fixture has no UNSETTLED row (RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES)
+            f.write(json.dumps({"id": "L1_a", "verdict": "PASS"}) + "\n" + json.dumps({"id": "L1_b", "verdict": "INFO"})
+                    + "\n" + (json.dumps({"id": "L1_c", "verdict": "FAIL"}) + "\n" if lane1_fail else "")
+                    + (json.dumps({"id": "L1_d", "verdict": lane1_extra}) + "\n" if lane1_extra else ""))
     if edited:
         with open(os.path.join(d, "tests_edited.json"), "w") as f:
-            json.dump({"cycle": n, "edited": []}, f)
+            f.write(edited_text if edited_text is not None else json.dumps({"cycle": n, "edited": []}))
     with open(os.path.join(d, "lane2", "planted_results.jsonl"), "w") as f:
-        f.write(json.dumps({"baseline": True}) + "\n" + json.dumps({"tree_clean_after": tree_clean}) + "\n")
+        rows = planted if planted is not None else [{"id": "PF_A", "planted": True, "caught": True,
+                                                     "tree_clean_after": True}]
+        f.write(json.dumps({"baseline": True}) + "\n" + "".join(json.dumps(r) + "\n" for r in rows)
+                + json.dumps({"tree_clean_after": tree_clean}) + "\n")
 
 
 def blind_main():
@@ -564,6 +574,22 @@ def blind_main():
             (dict(tree_clean=False), "the planted-fault loop did not prove the tree clean", "tree_clean_after"),
             (dict(drop_bar="inv_drilling"), "the block leaves out an offline bar", "inv_drilling"),
             (dict(edited=False), "tests_edited.json is missing", "tests_edited.json"),
+            # RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES: one per loophole
+            (dict(fix_runs=dict(red={"rc": [1]}, green={"rc": [0]})), "a FIXED Problem whose runs name no command",
+             "names no command"),
+            (dict(edited_text="not json at all"), "tests_edited.json is not JSON", "not a list of edits"),
+            (dict(edited_text='{"cycle": 1}'), "tests_edited.json holds no edits list", "not a list of edits"),
+            (dict(planted=[]), "planted_results.jsonl plants no fault", "plants no fault"),
+            (dict(planted=[{"id": "PF_A", "planted": True, "caught": False, "tree_clean_after": True}]),
+             "no planted fault was caught", "was caught"),
+            (dict(planted=[{"id": "PF_A", "caught": True, "tree_clean_after": False}]),
+             "a middle planted row left the tree dirty", "not clean"),
+            (dict(lane1_extra="UNSETTLED"), "lane 1 has an UNSETTLED row", "L1_d"),
+            (dict(lane1_rows=False), "lane 1 has no rows", "no rows"),
+            (dict(rerun_row=("T_CONVERT", {"rc": None})), "a decider's rerun PASS has no rc", "T_CONVERT"),
+            (dict(rerun_row=("T_CONVERT", {"rc": 1})), "a decider's rerun PASS has rc 1", "rc 1"),
+            (dict(rerun_row=("T_CONVERT", {"command": None})), "a decider's rerun PASS names no command",
+             "no command"),
         )
         for kw, what, word in broken:
             write_cycle(root, "FlowWorks", 1, **kw)
@@ -574,8 +600,10 @@ def blind_main():
         runs = dict(red=[{"cmd": "a", "rc": 1}, {"cmd": "b", "rc": 1}], green=[{"cmd": "a", "rc": 0}, {"cmd": "b", "rc": 0}])
         met = (
             (dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
-            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "UNSETTLED", "L1_c": "PASS"}),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "INFO", "L1_c": "PASS"}),
              "a lane-1 FAIL that lane 1 after the fixes shows PASS"),
+            (dict(lane1_extra="UNSETTLED", lane1_after={"L1_a": "PASS", "L1_d": "PASS"}),
+             "a lane-1 UNSETTLED row that lane 1 after the fixes shows PASS"),
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}, polish_cites="L1_c"),
              "a lane-1 FAIL still FAIL after the fixes that a Polish fault names (Polish is not part of passing)"),
         )
@@ -722,7 +750,8 @@ def write_ledger(root):
 
 def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=False, site=True, game="archmagi",
                 sha="abc1234", strange=None, strange_open=None, strange_file=True, save=True, rows_file=True,
-                block=True):
+                block=True, save_text="<?xml version=\"1.0\"?>\n<savegame><meta/></savegame>",
+                site_reading={"biome": "Pyrelands", "colonists_alive": 3}):
     """A visit record in the layout maturation.py reads, every file present, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     ids = [k for k, t in tt["tests"].items() if str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
@@ -732,7 +761,7 @@ def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=Fa
     sv = os.path.join(root, "Saves", "%s_stage6_visit%d.rws" % (mod, n))
     os.makedirs(os.path.dirname(sv), exist_ok=True)
     if save:
-        open(sv, "w").write("<savegame/>")
+        open(sv, "w").write(save_text)
     elif os.path.exists(sv):
         os.remove(sv)
     if rows_file:
@@ -741,15 +770,17 @@ def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=Fa
                 if t == drop:
                     continue
                 row = {"test": t, "verdict": "FAIL" if t == fail else "PASS", "site_checked": site, "game": game,
-                       "mod_sha": sha, "command": tt["tests"][t].get("command"), "evidence": "selftest"}
+                       "mod_sha": sha, "command": tt["tests"][t].get("command"), "evidence": "selftest",
+                       "site": site_reading}
                 f.write(json.dumps({k: v for k, v in row.items() if v is not None}) + "\n")
                 if t == fail and rerun_pass:
                     f.write(json.dumps(dict(row, verdict="PASS")) + "\n")
-    strange = [{"what": "a selftest oddity", "explained": "vanilla does it too"}] if strange is None else strange
+    strange = ([{"what": "a selftest oddity", "explained": "vanilla does it too, seen on an unmodded control map"}]
+               if strange is None else strange)
     if strange_file:
         with open(os.path.join(d, "strange.jsonl"), "w") as f:
             f.write("".join(json.dumps(x) + "\n" for x in strange))
-    left = sum(1 for x in strange if not (x.get("explained") or x.get("filed")))
+    left = sum(1 for x in strange if not M._strange_settled(x))
     shown = ", ".join("%s: %s" % (t, "fail" if (t == fail and not rerun_pass) else "pass") for t in ids if t != drop)
     with open(os.path.join(d, "SUMMARY.md"), "w") as f:
         if block:
@@ -879,8 +910,9 @@ def ingame_main():
             "next: exit met is a program reading, the steward confirms the move to pre_human, nothing to launch")
         chk(lambda: M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (True, "free"))[0] == 2 and len(calls()) == 1,
             "launch refuses a visit already recorded")
-        chk(lambda: reads(dict(fail=live6[1], rerun_pass=True), "met"),
-            "a FAIL diagnosed and rerun PASS in the sitting: the last row counts, met")
+        chk(lambda: reads(dict(fail=live6[1], rerun_pass=True), "not_met", "an earlier row reads FAIL"),
+            "a FAIL rerun PASS in the sitting: the later PASS does not hide the FAIL, not met "
+            "(RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES)")
         broken = (
             (dict(exit_met=False), "the driver's block says exit_met false", "exit_met false"),
             (dict(fail=live6[1]), "a check's last row FAILs", live6[1]),
@@ -895,6 +927,15 @@ def ingame_main():
             (dict(strange_file=False), "strange.jsonl is missing", "strange.jsonl"),
             (dict(save=False), "the savegame is not on disk", "not on disk"),
             (dict(rows_file=False), "rows.jsonl is missing", "rows.jsonl is missing"),
+            # RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES: one per loophole
+            (dict(save_text="just some text"), "the savegame file is not a RimWorld save", "not a RimWorld save"),
+            (dict(strange=[{"what": "odd", "filed": "yes"}]), "a strange thing filed as 'yes', no item named",
+             "neither explained"),
+            (dict(strange=[{"what": "odd", "explained": "ok"}]), "a strange thing explained as 'ok'",
+             "neither explained"),
+            (dict(site_reading=None), "site_checked true with no site reading and no evidence file",
+             "nothing to show it"),
+            (dict(sha="latest"), "a mod_sha that is not a hash", "not a commit hash"),
         )
         for kw, what, word in broken:
             chk(lambda kw=kw, word=word: reads(kw, "not_met", word), "%s: not met, and the reading says why" % what)
