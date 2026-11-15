@@ -530,7 +530,10 @@ GPT_READ_FIX_SHAPES = [   # the hose shapes (B1-B14) moved with the hose to Flow
 # that round's Verse-bound fixes (Verse-free halves: SelfTest/GptPreReleaseChecks.cs). Read by O7 with the list above.
 GPT_PRERELEASE_FIX_SHAPES = [
     ("C2 shock contacts follow a lay change at once", "Aerial/RM_MapComponent_Aerial.cs", "contactsDirty = true;"),
-    ("C2 aerial master gates the shock check", "Aerial/RM_FallenWireShock.cs", "!AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None"),
+    # the master gates GSS's own downed spans only since the blind cycle-1 fix 6d2aeb9c3f (RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER: FlowWorks'
+    # dropped deck cords bite with overhead lines off); the old shape pinned the superseded whole-check gate and held T_GATE red from that fix on
+    ("C2 aerial master gates the shock check", "Aerial/RM_FallenWireShock.cs", "kind == LineKind.DownedSpan && !AerialSettings.enabled"),
+    ("C2 shock reach None gates the shock check", "Aerial/RM_FallenWireShock.cs", "contacts.Count == 0 || AerialSettings.shockReach == ShockReach.None"),
     ("C3 contacts from the grounded part only", "Aerial/RM_FallenWireShock.cs", "AerialMath.GroundPts(l)"),
     ("C6 knockback leaves the wire", "Aerial/RM_FallenWireShock.cs", "AerialMath.KnockbackDir("),
     ("D3 master off: lamps draw vanilla art", "Aerial/ConduitStylePicker.cs", "class Patch_Thing_Graphic_LampMasterOff"),
