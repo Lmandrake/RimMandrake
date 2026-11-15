@@ -9,18 +9,42 @@ Reads every `public static <T> Name(...)` under src/**/*.cs, then every static_c
 (`def proof(m, arg): B.call("jawa/static_call", method=m, args=arg)` called as `proof("M", "")`). A wrapper that
 sanitises its arg (`args=args or "-"`) is safe. Flags only a name with NO zero-parameter overload anywhere in src (so a
 name shared with a 0-param method elsewhere is never a false alarm). Can fail: CASES below must be caught.
+`--rev <sha>` reads the drivers as committed at <sha> (replays a past red: SELFTEST_FIX_STATIC_CALL_EMPTY_ARG_TEGC's
+pit_exposure_raised_ladder_live.py:57 at 08d97b11f4^).
 """
 import ast
 import glob
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-DRIVERS = tuple(sorted(
-    os.path.relpath(f, HERE) for f in glob.glob(os.path.join(HERE, "*.py")) + glob.glob(os.path.join(HERE, "live_probes", "*.py"))
-    if not os.path.basename(f).startswith("selftest_") and "jawa/static_call" in open(f, encoding="utf-8").read()))
+REV = sys.argv[sys.argv.index("--rev") + 1] if "--rev" in sys.argv else None
+
+
+def _git(*a):
+    return subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True, errors="replace", check=True).stdout
+
+
+def driver_sources():
+    """relpath (to HERE) -> source, from the tree, or from commit REV."""
+    if REV is None:
+        files = glob.glob(os.path.join(HERE, "*.py")) + glob.glob(os.path.join(HERE, "live_probes", "*.py"))
+        return {os.path.relpath(f, HERE): open(f, encoding="utf-8").read() for f in files}
+    here = os.path.relpath(HERE, ROOT).replace(os.sep, "/")
+    out = {}
+    for f in _git("ls-tree", "-r", "--name-only", REV, "--", here + "/").split():
+        rel = f[len(here) + 1:]
+        if rel.endswith(".py") and rel.count("/") <= (1 if rel.startswith("live_probes/") else 0):
+            out[rel] = _git("show", "%s:%s" % (REV, f))
+    return out
+
+
+SOURCES = {d: t for d, t in driver_sources().items()
+           if not os.path.basename(d).startswith("selftest_") and "jawa/static_call" in t}
+DRIVERS = tuple(sorted(SOURCES))
 
 
 def cs_param_counts():
@@ -139,7 +163,7 @@ check("control: a 0-param method with args=\"\" passes",
       check_source('B.call("jawa/static_call", type="T", method="Render", args="")\n', counts) == [])
 check("the driver glob found the drivers (not an empty loop)", len(DRIVERS) >= 10, DRIVERS)
 for d in DRIVERS:
-    probs = check_source(open(os.path.join(HERE, d), encoding="utf-8").read(), counts, d)
+    probs = check_source(SOURCES[d], counts, d)
     check("%s: no static_call sends an empty args to a parameterised method" % d, not probs, probs)
 print("selftest_static_call_empty_arg: %s" % ("FAIL" if FAILS else "ok"))
 sys.exit(1 if FAILS else 0)
