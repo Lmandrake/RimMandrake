@@ -149,6 +149,45 @@ def leftover_checks():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def fresh_lock_checks():
+    """RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: an unlocked reader in the dispatch clone (`git status
+    --porcelain` refreshing the index from rm-dispatcher, testq-tick, testq-steward-watch, the metronome; testq-tick's
+    ExecStartPre pull) holds index.lock for well under a second (measured 2026-11-15 10:35 PST, 7 of 3500 50 ms samples
+    over 180 s). publish's clear_leftovers stopped on it at once ("index.lock present (0 s old ...)"), before the add's
+    wait (c77730479f) could run: it now waits it out the same bounded way, and a lock that stays still stops."""
+    import threading
+    import time
+    import ingest as I
+    d = tempfile.mkdtemp(prefix="rf_fresh_")
+    try:
+        subprocess.run(["git", "-C", d, "init", "-q", "-b", "main"], capture_output=True, timeout=60)
+        lock = os.path.join(d, ".git", "index.lock")
+        g = lambda *a: subprocess.run(["git", "-C", d] + list(a), capture_output=True, text=True, timeout=60)
+        old = I.REPO
+        I.REPO = d
+        try:
+            open(lock, "w").close()
+            threading.Timer(1.0, lambda: os.path.exists(lock) and os.remove(lock)).start()
+            t0 = time.time()
+            got = I.clear_leftovers(g, procs=lambda: [])
+            took = time.time() - t0
+            check(not str(got or "").startswith("publish stopped") and "waited" in str(got or "") and took < 5,
+                  "a fresh index.lock another git releases after 1 s: publish waits it out and goes on (%r, %.1f s)"
+                  % (got, took))
+            open(lock, "w").close()
+            t0 = time.time()
+            got = I.clear_leftovers(g, procs=lambda: [])
+            took = time.time() - t0
+            check(str(got or "").startswith("publish stopped") and os.path.exists(lock)
+                  and took <= getattr(I, "FRESH_LOCK_WAIT_S", 10) + 3,
+                  "a fresh index.lock that stays: the wait is bounded (%.1f s) and the publish still stops, the lock left "
+                  "alone (%r)" % (took, got))
+        finally:
+            I.REPO = old
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def publish_checks():
     out, root, disp, sh = publish_sandbox(conflict=False, lint=LINT_REFUSE)
     try:
@@ -1023,6 +1062,7 @@ def main():
     publish_checks()
     publish_prose_checks()
     leftover_checks()
+    fresh_lock_checks()
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

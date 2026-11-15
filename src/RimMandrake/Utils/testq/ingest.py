@@ -809,6 +809,7 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
 
 STALE_LOCK_S = 300
 INDEX_LOCK_TRIES, INDEX_LOCK_WAIT_S = 6, 2     # an add/commit waits up to ~10 s on another git's index.lock
+FRESH_LOCK_WAIT_S = 10      # clear_leftovers waits as long for a fresh index.lock to go before it stops the publish
 
 
 def git_targets_repo(argv, env, cwd, root):
@@ -885,6 +886,20 @@ def clear_leftovers(git, now=None, procs=git_procs_in_repo):
     gd = gd if os.path.isabs(gd) else os.path.join(REPO, gd)
     notes = []
     lock = os.path.join(gd, "index.lock")
+    if os.path.exists(lock) and now is None:       # an injected now is a simulated clock: no real wait
+        # an unlocked reader (`git status` refreshing the index, testq-tick's ExecStartPre pull) holds it for under a
+        # second: wait it out as the add does, or the publish stops on it (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_
+        # THE_CYCLE, measured 2026-11-15)
+        t0 = time.time()
+        while os.path.exists(lock) and time.time() - t0 < FRESH_LOCK_WAIT_S:
+            try:
+                if time.time() - os.path.getmtime(lock) >= STALE_LOCK_S:
+                    break
+            except OSError:
+                break
+            time.sleep(0.25)
+        if not os.path.exists(lock):
+            notes.append("waited %.1f s for another git's index.lock" % (time.time() - t0))
     if os.path.exists(lock):
         try:
             age = (now if now is not None else time.time()) - os.path.getmtime(lock)
