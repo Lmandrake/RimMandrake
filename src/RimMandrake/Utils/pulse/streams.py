@@ -743,7 +743,7 @@ def backfill(days=7, step_h=1.0, path=None, events=None, src=None, now=None):
 HOURS = 168
 ALARM = {"A1": 100, "D1": 10}
 STEVE_COLOR = {"RUNNING": "var(--mustard)", "BUSY": "var(--mustard)", "IDLE": "#4a4036", "IDLE_WAITING": "#6d5a2e",
-               "IDLE_EMPTY": "#4a4036", "EXHAUSTED": "#4a4036", "PAUSED": "var(--dim)", "DOWN": "var(--red)",
+               "IDLE_EMPTY": "#4a4036", "EXHAUSTED": "#4a4036", "IDLE_BY_RULE": "#4a4036", "PAUSED": "var(--dim)", "DOWN": "var(--red)",
                # §6.1 fault states: the unowned clock runs, so they draw red
                "BRAKED": "var(--red)", "QUARANTINE": "var(--red)", "STALE_HEARTBEAT": "var(--red)"}
 ARCH_COLOR = {"DRIVING": "var(--mustard)", "BATCH": "var(--lk)", "UP": "#4a4036", "DOWN": "var(--red)"}

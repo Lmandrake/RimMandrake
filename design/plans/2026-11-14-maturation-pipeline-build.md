@@ -178,7 +178,7 @@ or an empty steward section refuses; a good one passes the cap through.
 The blind challenge (no mod has entered it), in-game acceptance with Dispatch sharing the two games, the pre-human check,
 the pass record. Each gets a slice after one mod has gone through it by hand and its journal says what was boring.
 
-**Waiting on his ruling (spec §8, question 18):** a slice "SteveDesktop as the verdict and regression game": the queue admits only a locked bar's check from a mod past Stages 4 and 5, a job writes one line item's in-game verdict to the mod's record, and a passed version's guards re-run on a change it depends on. Not planned until he answers.
+**Spec §8, decision 18 (his card, 2026-11-14):** the entry rule is built (the queue admits only a locked bar's check from a mod version past Stages 4 and 5: `src/RimMandrake/Utils/testq/pipeline_admit.py`). Still to plan, in the Stage 6 slice: a job that writes one line item's in-game verdict to the mod's record on whichever game is free, with the version-and-list check of spec §4 Stage 6. Re-running a passed version on change is planned only after one version has passed.
 
 ## 5. The open questions that most block automation, ranked
 

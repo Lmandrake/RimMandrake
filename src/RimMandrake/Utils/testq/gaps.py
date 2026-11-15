@@ -386,13 +386,14 @@ def owner_of(pr):
     return {c: best[c][1] for c in sorted(best)}
 
 
-def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=()):
+def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=(), only=None):
     """-> {"rank", "purpose", "pick", "row_items", "dry", "held", "ident", "counts", "flaky", "blind", "text"}.
 
     RECS: finished records (testq records("done")). DRY_OF(chain) -> bool (testq.is_dry over its history).
     "rank" None means nothing may be queued as filler (every chain holds a verdict at its code version, is held for
     a repair, or is DRY): testq reports verdict "exhausted". EXCLUDE: chains never to pick (modcheck refused them
-    this fill). G / PROBER: the git and modcheck answers (selftests pass fakes)."""
+    this fill). ONLY: when set, the chains that may be picked at all (testq: the locked bars' chains, spec 18c).
+    G / PROBER: the git and modcheck answers (selftests pass fakes)."""
     g = g or git
     s0 = settled(mod, recs, world, g, prober)
     runs, ident, moved, st, pr, blind, fails = (s0["runs"], s0["ident"], s0["moved"], s0["st"], s0["pr"], s0["blind"],
@@ -403,7 +404,7 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
     names = [c for c in known if c not in offline] or sorted(st)
     if known:
         names += [c for c in sorted(st) if c not in known and c not in offline]     # modcheck dropped: submit decides
-    names = [c for c in dict.fromkeys(names) if c not in set(exclude)]
+    names = [c for c in dict.fromkeys(names) if c not in set(exclude) and (only is None or c in only)]
     dry = sorted(c for c in names if dry_of(c))
 
     def fresh(c):

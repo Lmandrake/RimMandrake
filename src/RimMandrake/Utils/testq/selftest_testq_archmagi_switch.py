@@ -19,6 +19,7 @@ then testq.py itself on the temp rig of selftest_testq_archmagi.py (fake ssh, lo
 """
 import json
 import os
+os.environ["TESTQ_PIPELINE_ADMIT"] = "open"     # spec 18c gate: these mock mods have no pipeline record (selftest_testq_pipeline_admit.py)
 import shutil
 import sys
 import tempfile
