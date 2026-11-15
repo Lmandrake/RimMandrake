@@ -1,583 +1,541 @@
 {
- "author": "the Designer; tree last written by stage-3 run rm-role-designer-1794600246",
- "examiner": "rm-judge ac9a24437601aa67d (opus, fresh; read only sheet.md and tree.json), run rm-role-designer-1794601435",
- "challenger": "rm-judge a9d409c9ef14c1ad9 (opus, fresh; blind to the other set)",
+ "author": "the Designer; tree last written by stage-3 run rm-role-designer-1794600246, its settings leaf eased by BENCH commit 3c1ea6e655 (owner by card 2026-11-14)",
+ "examiner": "rm-judge a8d725caa1467fe88 (opus, fresh; read only sheet.md and tree.json), run bench-gss-owed-exam-st4-20261114",
+ "challenger": "rm-judge afb9dd94188eaf81d (opus, fresh; blind to the examiner's set)",
  "inputs": {
-  "tree": "5e3aa0d412bb46c241b983d847b4062e574714088d2c8942dc1a7584035e712d",
+  "tree": "e80c7f93fa487266c314df629cadc0944afc5c0200727f4756b50755fdc7c388",
   "sheet": "33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a"
  },
  "scenarios": [
   {
    "id": "e1",
-   "text": "A raid destroys one conduit cell in a powered workshop line. Afterwards a hauler carrying wood walks across the still-live floor cord three cells back from its sparking end, well clear of the end cell itself. The hauler takes an electric shock as it steps on the cord.",
-   "expect": "reject: only the sparking end cell bites; a hauler crossing the live cord a few cells back from its end is not shocked, and the whole cord biting is named as wrong",
+   "text": "A floor conduit cell in a powered workshop run is destroyed by a grenade. A constructor picks up steel, carries it to the blueprint placed on that destroyed cell, and on the way steps onto the sparking loose end beside it; then builds the conduit. The game shows no shock on the constructor.",
+   "expect": "accept: the constructor carrying material to or building the conduit that joins this end is safe, delivery step included",
    "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "e2",
-   "text": "The player lays a conduit run out from a battery bank and stops halfway across the storeroom, leaving it unfinished. The live loose end at the last cell sparks. A colonist hauling a steel stack steps on that end cell and is shocked; a little later a trader's guard walking through the storeroom steps on the same cell and is shocked too.",
-   "expect": "accept: a live loose end of a run the player stopped laying bites like a cut end, and both a colonist on another job and a visitor crossing the sparking end are shocked",
+   "text": "A floor conduit cell is destroyed, leaving a sparking live end. A different constructor, building an unrelated conduit blueprint across the room, is routed across that sparking end cell. The game shows him walk through with no shock and no damage.",
+   "expect": "reject: only the constructor whose job joins this end is exempt; a constructor on some other conduit is shocked like any crosser",
    "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "e3",
-   "text": "A cut floor cord leaves a sparking live end. The player places a conduit blueprint on the gap cell that would rejoin it. A colonist carries steel to that blueprint, stepping onto the sparking end cell to drop it off, and is shocked as he delivers it.",
-   "expect": "reject: safe means carrying material to or building the conduit that joins this end; the pawn delivering steel to the joining blueprint must not be shocked",
+   "text": "The player turns off the overhead-lines master in Mod Settings, leaving the shock setting at All. A hauler then crosses the sparking live end of a cut floor cord. The game shows no shock.",
+   "expect": "reject: turning off overhead lines does not silence floor ends; floor-end shock must not be gated on the aerial master",
    "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "e4",
-   "text": "A chemfuel puddle lies on the floor cell under the sparking live end of a cut floor cord in the fuel shed. The puddle catches fire from the sparks.",
-   "expect": "reject: fuel under the sparking end of a cut floor cord does not ignite; only a live fallen overhead wire lights fuel, and the ignition is not widened to floor ends",
-   "expect_source": "leaf:live_wire_lights_fuel"
-  },
-  {
-   "id": "e5",
-   "text": "A mortar barrage cuts many floor cords at once, so the map's limit on sparking ends leaves one live end drawn without sparks. The player has also switched the overhead-lines master off. A hauler crosses that unsparked live end cell and is shocked.",
-   "expect": "accept: every live end bites however many ends are sparking on the map, even when the sparking-ends limit leaves it unsparked, and turning off overhead lines leaves floor ends biting",
-   "expect_source": "leaf:floor_end_shocks_crossers"
-  },
-  {
-   "id": "e6",
-   "text": "The player sets the shock option in Mod Settings to Only downed lines and returns to the game without restarting. A hauler crosses a live cut floor-cord end and is not shocked; another crosses a live fallen overhead wire and is shocked; a third crosses the live power cord dropped by a collapsed FlowWorks bridge deck and is shocked.",
-   "expect": "accept: under Only downed lines the fallen wire and the dropped deck cord bite and the floor end does not, and the change takes effect without a restart",
+   "text": "On a fresh install the player opens Mod Settings and finds the shock choice set to Only downed lines. He switches it to All and, without restarting, a hauler crossing a live floor-cord end is shocked.",
+   "expect": "reject: the default on a fresh settings file must be All",
    "expect_source": "leaf:shock_reach_setting"
   },
   {
+   "id": "e5",
+   "text": "With the shock setting on Only downed lines, a FlowWorks bridge deck collapses and drops a powered cord. A hauler crosses that dropped cord and is shocked; a second hauler crossing a sparking cut floor-cord end is not shocked.",
+   "expect": "accept: Only downed lines keeps FlowWorks' dropped deck cords biting and spares floor ends",
+   "expect_source": "leaf:shock_reach_setting"
+  },
+  {
+   "id": "e6",
+   "text": "A live overhead span falls after a mast is killed, and a colonist taking the re-string job for a different, distant span is routed across this wire's sparking end. He is not shocked; a hauler crossing the same spot a moment later is.",
+   "expect": "reject: the exemption is keyed on the wire the job targets, not the job type; a re-stringer of a different span is shocked",
+   "expect_source": "leaf:fallen_wire_shocks_crossers"
+  },
+  {
    "id": "e7",
-   "text": "In the Industrial look, a cord between a workbench and a lamp crosses an open patch of floor with no wall, door, building or socket nearby. Most of it loops loosely, but in one cell it folds back on itself in a tight V hairpin before carrying on.",
-   "expect": "reject: a cord must not turn sharper than 90 degrees in one cell on open floor unless a wall, building, door or socket forces it; a hairpin or V on open floor is named as wrong",
-   "expect_source": "leaf:no_unforced_sharp_turn"
+   "text": "A chemfuel puddle sits on the sparking live end cell of a cut floor cord; fallen-wire ignition is on and shock reach is All. Time passes; the puddle never catches fire. Elsewhere a puddle under the sparking end of a live fallen overhead wire bursts into flame.",
+   "expect": "accept: a live fallen wire lights fuel, and the ignition sweep is not widened to floor-cord ends",
+   "expect_source": "leaf:live_wire_lights_fuel"
   },
   {
    "id": "e8",
-   "text": "In the Modern look, the cord from a battery to a sun lamp four cells away runs as a nearly straight line, taut between its two plugs. It has no sharp turns anywhere.",
-   "expect": "reject: avoiding sharp turns does not excuse a taut cord; every cord must lie in broad slack loops visibly much longer than the straight line between its ends",
-   "expect_source": "leaf:cords_lie_slack"
+   "text": "A powered line runs from a generator through conduit to a lamp, and a battery holding charge sits on the far side beyond the lamp. A middle conduit cell is destroyed. The game shows two loose ends with nothing across the gap, and both ends spark.",
+   "expect": "accept: each side still reaches its own power source, so both ends sparking is right",
+   "expect_source": "leaf:cut_live_and_dead_ends"
   },
   {
    "id": "e9",
-   "text": "Pirates capture one of the colony's masts on the edge of the yard. The span from that mast to our nearest mast is taken down and coiled, and a message says so. On the far side of the yard, a span between two masts that both still belong to the colony is also taken down and coiled.",
-   "expect": "reject: only wires between the claimed pole and a pole of a different owner come down; wires between poles of one owner stay up",
-   "expect_source": "leaf:owner_change_coils_wires"
+   "text": "A generator feeds a run of conduit to a lamp, with no other source. A middle cell is destroyed: the near end sparks and the far end lies limp. The player switches the generator off; a minute later the near end is still sparking.",
+   "expect": "reject: an end that has lost its last power source must go dead within a few seconds; an end cut off from all power that sparks is wrong",
+   "expect_source": "leaf:cut_live_and_dead_ends"
   },
   {
    "id": "e10",
-   "text": "The player had a power tap clamped on a neighbour's line in game one and was caught. Without restarting RimWorld he quits to the menu and starts a fresh colony. A few days in, goodwill with a faction in the new game drains steadily, and the dev registry lists the old game's tap.",
-   "expect": "reject: no tap from a previous game in the same session may still be registered or drain goodwill in the next game",
-   "expect_source": "leaf:statics_clear_between_games"
-  },
-  {
-   "id": "e11",
-   "text": "After playing one colony, the player loads a different save in the same session. All of the loaded game's cords draw, its runs show their own looks rather than picks carried over from the first game, and colonists walk straight across ground that was live wire only in the first game.",
-   "expect": "accept: a loaded game carries nothing from the previous one: every cord draws, runs get fresh looks, and pawns walk freely over ground with no wire in this game",
-   "expect_source": "leaf:statics_clear_between_games"
-  },
-  {
-   "id": "e12",
-   "text": "Two separate power nets sit side by side in a barracks, with no conduit linking them, so the power overlay shows them as two grids. A cord is drawn running from a lamp on one net to a battery on the other.",
-   "expect": "reject: the cords tell the truth about the grid; no cord may join two separate power nets",
+   "text": "A water pump is fed by conduit laid in the next cell, not under it. The game draws one cord from the conduit to the pump, entering its footprint on a diagonal and sliding underneath, and also a second short cable at the pump that runs to nothing.",
+   "expect": "reject: no phantom second cable at an adjacent-fed pump",
    "expect_source": "leaf:drawing_true_to_grid"
   },
   {
-   "id": "e13",
-   "text": "The player clamps a power tap on a neighbouring outlander town's line, and power flows one way into the colony. A trader of theirs spots the clamp; from then on goodwill with that town drops a little at a time, steadily. The player removes the clamp and the drain stops.",
-   "expect": "accept: a caught tap drains goodwill steadily with the faction whose line it is, and removing the clamp stops it",
-   "expect_source": "leaf:tap_steals_and_costs_goodwill"
+   "id": "e11",
+   "text": "Three of our powered masts stand in a line, the middle one spanned to both others, and a fourth mast of ours is spanned to the first. Another faction claims the middle mast. The game shows both wires to the middle mast taken down and coiled with a message, while the span between the first and fourth masts also drops.",
+   "expect": "reject: only wires between poles of different owners come down; the same-owner span must stay up and powered",
+   "expect_source": "leaf:owner_change_coils_wires"
   },
   {
-   "id": "e14",
-   "text": "Mid-game the player turns the Gimme Some Slack master switch off in Mod Settings and closes the window without restarting. Vanilla conduit pipes and vanilla lamp art reappear across the base at once.",
-   "expect": "accept: master off restores vanilla conduit and lamp art without a restart",
+   "id": "e12",
+   "text": "The player turns off the FlowWorks pipe-pole switch while the GSS master is on. Pipe poles change back, and the power masts in the yard also lose their styled look and revert to vanilla.",
+   "expect": "reject: the pipe-pole switch has its own scope and leaves power poles alone",
    "expect_source": "leaf:settings_switch_cleanly"
   },
   {
+   "id": "e13",
+   "text": "In one session the player plays a game with a clamped tap on a neighbour's line, quits to menu, and loads a different save that has no tap. Over the next two days, goodwill with that neighbour in the loaded game falls steadily though no tap exists on the map.",
+   "expect": "reject: nothing of one game, no tap included, carries into the next game loaded in the same session",
+   "expect_source": "leaf:statics_clear_between_games"
+  },
+  {
+   "id": "e14",
+   "text": "The player clamps a power tap onto a neighbour's line and power flows one way into the colony. A neighbour pawn sees the clamp; goodwill with that neighbour drops steadily each day, and goodwill with an unrelated third faction drops by the same amount over the same days.",
+   "expect": "reject: the drain must hit only the victim faction; every other faction's goodwill stays unchanged",
+   "expect_source": "leaf:tap_steals_and_costs_goodwill"
+  },
+  {
    "id": "e15",
-   "text": "The Cut wires on owner change switch is on in Mod Settings. Raiders capture a colony mast at the yard's edge. Afterwards the span from that captured mast to our nearest mast is still strung in the air, our net still powers the captured mast, and no message appears.",
-   "expect": "reject: when a pole is claimed by another faction, its wires to poles of a different owner are taken down and coiled with a message; our power must not keep feeding a pole someone else now owns",
-   "expect_source": "leaf:owner_change_coils_wires"
+   "text": "In the Modern look, a conduit 3-way junction sits in the middle of a workshop floor. The game draws a small splitter box on the junction cell, and the three cords at that junction each plug into it.",
+   "expect": "reject: the Modern look draws the long power strip at junctions, never the splitter box",
+   "expect_source": "leaf:strip_at_every_junction"
   },
   {
    "id": "e16",
-   "text": "The player has turned the Cut wires on owner change switch off in Mod Settings. Raiders capture a colony mast. Its spans to our masts stay strung where they were, and no coiling message appears.",
-   "expect": "accept: wire cutting on owner change has its own switch, and with that switch off the feature does not act, so the spans staying up is correct",
-   "expect_source": "leaf:owner_change_coils_wires"
-  },
-  {
-   "id": "e17",
-   "text": "The player clamps a power tap on a neighbouring town's line. One of their caravan guards sees the clamp. Goodwill with that town drops once by a single lump, then holds flat for the rest of the season while the clamp stays on.",
-   "expect": "reject: a caught tap must drain goodwill steadily for as long as it stays clamped; a one-off goodwill hit is named as wrong",
-   "expect_source": "leaf:tap_steals_and_costs_goodwill"
-  },
-  {
-   "id": "e18",
-   "text": "The player clamps a power tap on a neighbouring town's line, and a pawn of theirs is seen spotting the clamp. Goodwill with that town does not change at all, with the clamp still on and still drawing their power, over the following days.",
-   "expect": "reject: a caught tap costs the owning faction goodwill; free power with no consequence once caught is named as wrong",
-   "expect_source": "leaf:tap_steals_and_costs_goodwill"
+   "text": "Conduit runs into a fully enclosed rock pocket that no cord can route around. The cord ends at a plate on the near face of the rock, and reappears from a matching plate on the far face; no part of it is drawn over the rock.",
+   "expect": "accept: an unroutable cord dives under a barrier with a plate on each side and is never drawn across rock",
+   "expect_source": "leaf:cords_meet_walls_at_face"
   },
   {
    "id": "c1",
-   "text": "Shock setting All. A raid destroys a middle conduit cell in a powered workshop run, leaving a sparking live end. Across the room a constructor is assigned to build a different, unrelated conduit blueprint, and the path there runs over the sparking end cell. Because he is a constructor on a conduit job, he walks over the live end and is not shocked. The tester logs this as correct: 'the fixer is safe'.",
-   "expect": "reject: the exemption is keyed on the conduit that joins THIS end (carrying material to or building it); a constructor building some other conduit who crosses the live end must be shocked",
+   "text": "Mod Settings has the most-sparking-ends limit set to 1 and shock reach on All. Two floor runs are each cut, leaving two powered loose ends on the map. Only one of them draws sparks; the other lies still. A hauler's path crosses the end cell that is not sparking and he walks over it with no shock, while another hauler crossing the sparking end is shocked.",
+   "expect": "reject: an end bites while it is live even when the spark limit leaves it unsparked; shock keyed on the drawn spark set is a named false pass",
    "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "c2",
-   "text": "Shock setting All. A floor conduit cell is destroyed and its blueprint for rebuilding is placed. A constructor picks up steel and carries it to that very blueprint, stepping on the sparking live end on the way in; he is shocked while hauling the steel. Later, once the steel is delivered and he starts the build step, standing on the same cell, he is not shocked. The tester accepts this as 'only the actual repair work is protected'.",
-   "expect": "reject: safe means carrying material to OR building the conduit that joins this end; shocking the constructor while he delivers steel to the joining blueprint is the named false pass",
+   "text": "A floor run is cut and its fed end sparks. A constructor assigned to build a conduit blueprint in another room, unrelated to the cut, is routed straight across the sparking end cell and walks on unharmed. A hauler crossing the same cell a minute later is shocked.",
+   "expect": "reject: only the constructor whose job targets the conduit joining this end is safe; a constructor building some other conduit must be shocked (no 'every constructor safe')",
    "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "c3",
-   "text": "Shock setting is changed in Mod Settings to Only downed lines, no restart. A hauler crosses a live floor-cord end and is not shocked; a hauler crossing a live fallen GSS overhead wire is shocked; a hauler crossing the live power cord dropped by a collapsed FlowWorks bridge deck is not shocked, since that cord came from FlowWorks and not from a GSS mast. The tester passes the setting.",
-   "expect": "reject: Only downed lines must keep FlowWorks' dropped bridge-deck cords biting; that cord falling silent is the named false pass",
+   "text": "Shock reach is set to Only downed lines. A hauler crosses a live floor-cord end and is not shocked. A second hauler crosses the live fallen wire under a killed mast and is shocked. A third crosses the powered cord dropped by a collapsed FlowWorks bridge deck and is not shocked.",
+   "expect": "reject: under Only downed lines the FlowWorks dropped deck cord must still bite alongside the fallen wire",
    "expect_source": "leaf:shock_reach_setting"
   },
   {
    "id": "c4",
-   "text": "Shock setting All, maxSparkingEnds set to 1. Two floor runs are cut, leaving two live ends; only one of them is drawn sparking because of the limit. A hauler crosses the drawn-sparking end and is shocked; a second hauler crosses the other live end, which is drawn without sparks, and is not shocked. The tester accepts it on the grounds that the leaf says a 'sparking' floor-cord end shocks.",
-   "expect": "reject: an end bites while it is live even when the most-sparking-ends limit leaves it unsparked; shock keyed on the spark budget's drawn set is a named false pass",
-   "expect_source": "leaf:floor_end_shocks_crossers"
-  },
-  {
-   "id": "c5",
-   "text": "Shock setting All. A chemfuel puddle lies on the live, sparking end cell of a cut floor cord in a powered workshop. After a short wait the puddle catches fire. The tester passes it, reasoning that every sparking end is live wire, and a live sparking end over fuel lights it.",
-   "expect": "reject: fuel ignition is for the sparking end of a live FALLEN wire only; fuel under a cut floor cord's sparking end must not ignite, and widening the ignition sweep to floor ends is a named false pass",
+   "text": "Shock reach is All and the fallen-wire ignition switch is on. A chemfuel puddle lies on the sparking live end cell of a cut floor cord with nothing else burning nearby. After a short wait the puddle catches fire.",
+   "expect": "reject: the ignition sweep is not widened to floor ends; fuel under a cut floor cord's live end must not light",
    "expect_source": "leaf:live_wire_lights_fuel"
   },
   {
+   "id": "c5",
+   "text": "A conduit line has a generator at one end and a charged battery at the other. A middle cell is destroyed. Both loose ends spark, no cord is drawn across the gap. When only the generator is switched off, within a few seconds the generator-side end goes limp and the battery-side end keeps sparking.",
+   "expect": "accept: each end sparks exactly while its side still reaches a source; both sparking with a source on each side is stated as right",
+   "expect_source": "leaf:cut_live_and_dead_ends"
+  },
+  {
    "id": "c6",
-   "text": "Four powered masts of ours: A-B-C in a line with B spanned to both, and D spanned to A. Mast B is handed to another faction with cut wires on owner change on. The spans A-B and B-C are taken down and coiled with a message. The sweep also takes down and coils the D-A span, since it is on the same net that just lost a pole, and the message lists it too. The tester accepts: every affected wire was coiled and announced.",
-   "expect": "reject: only wires between the claimed pole and a pole of a different owner come down; wires between poles of one owner (D-A) stay up, and a sweep that drops same-owner spans is a named false pass",
-   "expect_source": "leaf:owner_change_coils_wires"
+   "text": "Two overhead spans are down. A colonist takes the re-string job for the far span and is routed across the sparking end of the nearer fallen live wire; he walks over it unharmed. The colonist assigned to re-string the nearer wire also reaches it unharmed.",
+   "expect": "reject: the exemption is keyed on the wire the job targets, not on the re-string job type; the colonist re-stringing a different span must be shocked",
+   "expect_source": "leaf:fallen_wire_shocks_crossers"
   },
   {
    "id": "c7",
-   "text": "In one session the player plays game 1, which has a live fallen wire across a path, then quits to the menu and LOADS a different save that holds no fallen wire. In the loaded game no tap is registered and runs take fresh looks, but colonists visibly route around the bare ground where game 1's live wire lay. The tester accepts, since the tap registry and style picks are both clean.",
-   "expect": "reject: nothing of one game carries into the next started or loaded; pawns avoiding ground that was live wire only in the old game is exactly the stale priced-cells failure the leaf names",
-   "expect_source": "leaf:statics_clear_between_games"
+   "text": "The player turns the overhead-lines master switch off in Mod Settings, leaving shock reach on All. A hauler then crosses the sparking live end of a cut floor cord and is not shocked. With the overhead master back on, the same crossing shocks him.",
+   "expect": "reject: turning overhead lines off must not silence floor ends; floor-end shock gated on the aerial master is a named false pass",
+   "expect_source": "leaf:floor_end_shocks_crossers"
   },
   {
    "id": "c8",
-   "text": "A line runs generator - conduit - lamp with a battery on the lamp side. A middle conduit cell is destroyed: two loose ends, no cord across the gap, and both ends spark. The generator is then switched off; within a few seconds the generator-side end goes limp and dead while the battery-side end keeps sparking. The tester accepts.",
-   "expect": "accept: an end sparks while it still reaches a power source, so both spark when each side has its own source, and the end that loses its last source goes dead within a poll while the battery-fed end stays live",
-   "expect_source": "leaf:cut_live_and_dead_ends"
+   "text": "A conduit cell in a powered floor run is destroyed and a rebuild blueprint is placed on it. The constructor assigned to it carries steel to the blueprint, stepping on the sparking end cell on the way, and is shocked. Later, while actually building the frame on that cell, he is not shocked.",
+   "expect": "reject: safety covers carrying material to as well as building the conduit that joins this end; an exemption covering only the building step is a named false pass",
+   "expect_source": "leaf:floor_end_shocks_crossers"
   }
  ],
- "scenarios_hash": "161ab55282b9aefd4d94720331e3a442575bce0867039c6f1b32b96666b2103e",
+ "scenarios_hash": "c97b988140d82b9fc76371f2cece84f74d496554829604883e9dffa17780d6a3",
  "readers": [
-  "rm-judge a006d4caceecdd1fd (opus, fresh)",
-  "rm-judge a65c67a131551d92b (opus, fresh)"
+  "reader a74adb2d944452dde (opus)",
+  "reader ab7877e9e333e7e55 (opus)"
  ],
  "reader_verdicts": {
   "reader1": {
    "e1": {
-    "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "only the end cell bites; a live cord cell a few cells back shocks no one"
-   },
-   "e2": {
     "verdict": "accept",
     "leaf": "floor_end_shocks_crossers",
-    "why": "a run the player stopped laying bites the same way, for colonists and visitors"
+    "why": "Constructor carrying steel to or building the conduit that joins this end is safe."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "A constructor on an unrelated conduit job crossing a live end must be shocked."
    },
    "e3": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "the constructor carrying steel to the blueprint joining this end is safe"
+    "why": "Turning overhead lines off does not silence floor ends; under All the hauler is shocked."
    },
    "e4": {
     "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "fuel under a cut floor cord's sparking end does not catch fire"
+    "leaf": "shock_reach_setting",
+    "why": "Default on a fresh install must be All, not Only downed lines."
    },
    "e5": {
     "verdict": "accept",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "every live end bites regardless of spark limit, and the aerial master off leaves floor ends biting"
+    "leaf": "shock_reach_setting",
+    "why": "Only downed lines keeps dropped deck cords biting and floor ends silent."
    },
    "e6": {
-    "verdict": "accept",
-    "leaf": "shock_reach_setting",
-    "why": "Only downed lines: floor end silent, fallen wire and FlowWorks deck cord bite, no restart"
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "Re-stringer of a different span crossing this live wire must be shocked."
    },
    "e7": {
-    "verdict": "reject",
-    "leaf": "no_unforced_sharp_turn",
-    "why": "a V hairpin on open floor with nothing forcing it is forbidden"
+    "verdict": "accept",
+    "leaf": "live_wire_lights_fuel",
+    "why": "Ignition is not widened to floor ends; live fallen wire lights fuel."
    },
    "e8": {
-    "verdict": "reject",
-    "leaf": "cords_lie_slack",
-    "why": "cords must lie in slack loops, never taut and straight"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Each side has its own source (generator, charged battery), so both ends spark."
    },
    "e9": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "wires between poles of one owner stay up"
+    "leaf": "cut_live_and_dead_ends",
+    "why": "An end cut off from all power must stop sparking within one 250-tick poll."
    },
    "e10": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "an old game's tap must not be registered or drain goodwill in a new game"
+    "leaf": "drawing_true_to_grid",
+    "why": "No phantom second cable at an adjacent-fed pump."
    },
    "e11": {
-    "verdict": "accept",
-    "leaf": "statics_clear_between_games",
-    "why": "loaded game draws all cords, fresh looks, pawns walk freely over old-game wire cells"
+    "verdict": "reject",
+    "leaf": "owner_change_coils_wires",
+    "why": "Wires between poles of one owner stay up; first-fourth span must not drop."
    },
    "e12": {
     "verdict": "reject",
-    "leaf": "drawing_true_to_grid",
-    "why": "no cord may join two separate power nets"
+    "leaf": "settings_switch_cleanly",
+    "why": "Pipe-pole switch must leave power poles alone."
    },
    "e13": {
-    "verdict": "accept",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "one-way power, steady drain on the witnessing faction after sighting, stops on removal"
+    "verdict": "reject",
+    "leaf": "statics_clear_between_games",
+    "why": "No tap from a previous game may carry over and drain goodwill."
    },
    "e14": {
-    "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "master off restores vanilla conduit and lamp art without a restart"
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "Drain must hit only the victim faction; third faction goodwill unchanged."
    },
    "e15": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "with the switch on, the span to our pole must be coiled with a message and stop powering it"
+    "leaf": "strip_at_every_junction",
+    "why": "Modern draws the long power strip; a splitter box at junctions is red."
    },
    "e16": {
     "verdict": "accept",
-    "leaf": "owner_change_coils_wires",
-    "why": "with the switch off the links stay"
-   },
-   "e17": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "a caught tap drains goodwill steadily, not as a one-off hit"
-   },
-   "e18": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "a caught tap must cost goodwill"
+    "leaf": "cords_meet_walls_at_face",
+    "why": "Unroutable cord dives under the barrier with a plate on each face, none drawn over rock."
    },
    "c1": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "a constructor on an unrelated conduit job crossing the live end is shocked"
+    "why": "A live end bites even when the sparking-ends limit leaves it unsparked."
    },
    "c2": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "carrying steel to the joining blueprint is exempt, not only the build step"
+    "why": "Unrelated constructor crossing a live end must be shocked; exemption only for joining conduit."
    },
    "c3": {
     "verdict": "reject",
     "leaf": "shock_reach_setting",
-    "why": "under Only downed lines the FlowWorks dropped deck cord must bite"
+    "why": "Under Only downed lines the FlowWorks dropped deck cord must still shock."
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "a live end bites even when the spark limit leaves it unsparked"
+    "leaf": "live_wire_lights_fuel",
+    "why": "Fuel under a cut floor-cord end must not ignite; ignition is not widened."
    },
    "c5": {
-    "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "fuel under a cut floor cord's live end does not ignite"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Both sides sourced so both spark; generator side loses last source, clears within a poll."
    },
    "c6": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "the D-A span between two of our masts must stay up"
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "Re-stringer of the far span crossing the nearer live wire must be shocked."
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "pawns must not avoid ground that was live wire only in the old game"
+    "leaf": "floor_end_shocks_crossers",
+    "why": "Floor-end shock must not be gated on the overhead master."
    },
    "c8": {
-    "verdict": "accept",
-    "leaf": "cut_live_and_dead_ends",
-    "why": "each end sparks only while it reaches a source; generator side goes dead within seconds, battery side stays live"
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "Carrying steel to the joining blueprint is also safe; only-building exemption is a false pass."
    }
   },
   "reader2": {
    "e1": {
-    "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "only the end cell bites; live cord a few cells back harms no one"
-   },
-   "e2": {
     "verdict": "accept",
     "leaf": "floor_end_shocks_crossers",
-    "why": "loose end of a run the player stopped laying bites colonist and visitor alike"
+    "why": "Constructor carrying steel to the blueprint joining this end is exempt, including the delivery step."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "A constructor building some other conduit who crosses the sparking end must be shocked."
    },
    "e3": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "constructor carrying steel to the joining blueprint is safe"
+    "why": "Turning off the overhead-lines master leaves floor ends biting."
    },
    "e4": {
     "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "fuel under a cut floor cord's sparking end does not ignite"
+    "leaf": "shock_reach_setting",
+    "why": "Default on a fresh install must be All, not Only downed lines."
    },
    "e5": {
     "verdict": "accept",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "every live end bites regardless of spark limit or overhead master"
+    "leaf": "shock_reach_setting",
+    "why": "Under Only downed lines the dropped FlowWorks deck cord bites and the floor end does not."
    },
    "e6": {
-    "verdict": "accept",
-    "leaf": "shock_reach_setting",
-    "why": "Only downed lines: floor end silent, fallen wire and FlowWorks deck cord bite, no restart"
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "A colonist re-stringing a different span who crosses this live end is shocked like anyone else."
    },
    "e7": {
-    "verdict": "reject",
-    "leaf": "no_unforced_sharp_turn",
-    "why": "hairpin V on open floor with nothing forcing it"
+    "verdict": "accept",
+    "leaf": "live_wire_lights_fuel",
+    "why": "Fuel under a cut floor-cord end does not ignite; under a live fallen wire's sparking end it does."
    },
    "e8": {
-    "verdict": "reject",
-    "leaf": "cords_lie_slack",
-    "why": "cords must never be taut or nearly straight"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Far side has its own charged battery, so both ends spark; no cord across the gap."
    },
    "e9": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "span between two masts of one owner must stay up"
+    "leaf": "cut_live_and_dead_ends",
+    "why": "An end losing its last source must go dead within a few seconds (250 ticks), not keep sparking."
    },
    "e10": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "old game's tap must not stay registered or drain goodwill in a new game"
+    "leaf": "drawing_true_to_grid",
+    "why": "Adjacent-fed pump must not draw a second phantom disconnected cable."
    },
    "e11": {
-    "verdict": "accept",
-    "leaf": "statics_clear_between_games",
-    "why": "loaded game draws its cords, fresh looks, pawns walk freely"
+    "verdict": "reject",
+    "leaf": "owner_change_coils_wires",
+    "why": "Wires between poles of one owner stay up; the first-fourth span must not drop."
    },
    "e12": {
     "verdict": "reject",
-    "leaf": "drawing_true_to_grid",
-    "why": "no cord may join two separate power nets"
+    "leaf": "settings_switch_cleanly",
+    "why": "Pipe-pole switch moves pipe poles and leaves power poles alone."
    },
    "e13": {
-    "verdict": "accept",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "one-way theft, steady drain after sighting, stops on removal"
+    "verdict": "reject",
+    "leaf": "statics_clear_between_games",
+    "why": "No tap from the old game may still be registered and draining goodwill in the next game."
    },
    "e14": {
-    "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "master off restores vanilla conduit and lamp art without restart"
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "Drain must hit only the victim faction; every other faction's goodwill unchanged."
    },
    "e15": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "with switch on the cross-owner span must be coiled with a message, not still powering"
+    "leaf": "strip_at_every_junction",
+    "why": "Modern look draws the long power strip; the splitter box in Modern is explicitly a red."
    },
    "e16": {
     "verdict": "accept",
-    "leaf": "owner_change_coils_wires",
-    "why": "with the switch off the links stay"
-   },
-   "e17": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "must drain steadily, not a one-off hit"
-   },
-   "e18": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "a caught tap must cost goodwill"
+    "leaf": "cords_meet_walls_at_face",
+    "why": "Unroutable cord dives under the barrier with a plate on each face, nothing drawn over rock."
    },
    "c1": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "constructor on an unrelated conduit is shocked; exemption is only for the joining conduit"
+    "why": "Every live end bites however many ends spark; limit leaving it unsparked must not stop the shock."
    },
    "c2": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "carrying steel to the joining blueprint is also safe"
+    "why": "Exemption is keyed on the conduit joining this end, not any construction job; unrelated constructor must be shocked."
    },
    "c3": {
     "verdict": "reject",
     "leaf": "shock_reach_setting",
-    "why": "Only downed lines keeps FlowWorks' dropped deck cords biting"
+    "why": "Under Only downed lines the FlowWorks dropped deck cord must still bite."
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "a live end past maxSparkingEnds still bites"
+    "leaf": "live_wire_lights_fuel",
+    "why": "Fuel under a cut floor cord's sparking end must not catch fire; ignition is not widened."
    },
    "c5": {
-    "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "cut floor cord ends do not light fuel; ignition not widened"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Generator-side end loses its last source and goes dead within seconds; battery side stays live."
    },
    "c6": {
     "verdict": "reject",
-    "leaf": "owner_change_coils_wires",
-    "why": "D-A is between two masts of ours and must stay up"
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "Re-stringing the far span does not exempt crossing the nearer live wire; he must be shocked."
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "pawns must not avoid ground with no wire on it in the loaded game"
+    "leaf": "floor_end_shocks_crossers",
+    "why": "Floor-end shock must not be gated on the overhead-lines master."
    },
    "c8": {
-    "verdict": "accept",
-    "leaf": "cut_live_and_dead_ends",
-    "why": "end losing its last source goes dead within seconds; battery side stays live"
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "Constructor carrying steel to the joining blueprint is safe; delivery step must not shock."
    }
   },
   "control": {
    "e1": {
-    "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "only the end cell bites; the rest of the cord harms no one"
-   },
-   "e2": {
     "verdict": "accept",
     "leaf": "floor_end_shocks_crossers",
-    "why": "a stopped run's live loose end bites colonists and visitors alike"
+    "why": "The constructor carrying steel to and rebuilding that conduit cell is explicitly safe."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "A constructor building some other conduit who crosses the sparking end must be shocked."
    },
    "e3": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "carrying material to the joining blueprint is exempt"
+    "why": "Turning off the overhead-lines master leaves floor ends biting; under All the hauler must be shocked."
    },
    "e4": {
     "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "fuel under a cut floor-cord end must not ignite; ignition is not widened"
+    "leaf": "shock_reach_setting",
+    "why": "Fresh install default must be All; a default other than All is red."
    },
    "e5": {
     "verdict": "accept",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "a live end bites even unsparked by the limit and with overhead master off"
+    "leaf": "shock_reach_setting",
+    "why": "Under Only downed lines the dropped deck cord bites and the floor end does not."
    },
    "e6": {
-    "verdict": "accept",
-    "leaf": "shock_reach_setting",
-    "why": "Only downed lines: floor end silent, fallen wire and FlowWorks deck cord bite, no restart"
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "A colonist re-stringing a different span who crosses this live wire must be shocked."
    },
    "e7": {
-    "verdict": "reject",
-    "leaf": "no_unforced_sharp_turn",
-    "why": "unforced V hairpin on open floor"
+    "verdict": "accept",
+    "leaf": "live_wire_lights_fuel",
+    "why": "Fuel under a cut floor cord end does not ignite; under a live fallen wire it does."
    },
    "e8": {
-    "verdict": "reject",
-    "leaf": "cords_lie_slack",
-    "why": "cord drawn taut and straight"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Far side has its own battery, so both ends sparking with no cord across the gap is right."
    },
    "e9": {
-    "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "design is silent on owner-change coiling and its scope; nothing it states is broken"
+    "verdict": "reject",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "An end losing its last source must go dead within a few seconds, not keep sparking a minute."
    },
    "e10": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "old game's tap persists and drains goodwill in a new game"
+    "leaf": "drawing_true_to_grid",
+    "why": "No phantom second disconnected cable at an adjacent-fed pump."
    },
    "e11": {
     "verdict": "accept",
-    "leaf": "statics_clear_between_games",
-    "why": "loaded game shows nothing carried over"
+    "leaf": "drawing_true_to_grid",
+    "why": "No line of the design addresses a faction claiming a mast or forbids these span drops."
    },
    "e12": {
     "verdict": "reject",
-    "leaf": "drawing_true_to_grid",
-    "why": "a cord joins two separate nets"
+    "leaf": "settings_switch_cleanly",
+    "why": "The pipe-pole switch moves pipe poles and must leave power poles alone."
    },
    "e13": {
-    "verdict": "accept",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "one-way theft, steady drain on witness, stops on removal"
+    "verdict": "reject",
+    "leaf": "statics_clear_between_games",
+    "why": "No tap from an old game may stay registered and drain goodwill in the next loaded game."
    },
    "e14": {
-    "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "master off restores vanilla conduit and lamp art without restart"
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "The drain hitting a third faction is forbidden; only the victim's goodwill drains."
    },
    "e15": {
     "verdict": "reject",
-    "leaf": "settings_switch_cleanly",
-    "why": "the cut-wires switch is on yet nothing is cut: a switch that does nothing"
+    "leaf": "strip_at_every_junction",
+    "why": "Modern look must draw the long power strip; a splitter box at junctions is red."
    },
    "e16": {
     "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "switch off, its feature does not act"
-   },
-   "e17": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "a one-off goodwill hit, not a steady drain"
-   },
-   "e18": {
-    "verdict": "reject",
-    "leaf": "tap_steals_and_costs_goodwill",
-    "why": "a caught tap costs no goodwill"
+    "leaf": "cords_meet_walls_at_face",
+    "why": "An unroutable cord dives under a barrier with a plate on each side, nothing drawn over rock."
    },
    "c1": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "a constructor on an unrelated conduit job must be shocked"
+    "why": "Every live end bites however many ends are sparking; spark-budget gating is a named false pass."
    },
    "c2": {
     "verdict": "reject",
     "leaf": "floor_end_shocks_crossers",
-    "why": "the steel delivery to the joining blueprint is exempt too"
+    "why": "A constructor on unrelated conduit crossing the sparking end must be shocked."
    },
    "c3": {
     "verdict": "reject",
     "leaf": "shock_reach_setting",
-    "why": "Only downed lines must keep FlowWorks' dropped deck cord biting"
+    "why": "Under Only downed lines the FlowWorks dropped deck cord must bite."
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "floor_end_shocks_crossers",
-    "why": "every live end bites regardless of the sparking-ends limit"
+    "leaf": "live_wire_lights_fuel",
+    "why": "Fuel under the sparking end of a cut floor cord does not catch fire."
    },
    "c5": {
-    "verdict": "reject",
-    "leaf": "live_wire_lights_fuel",
-    "why": "a cut floor-cord end must not light fuel"
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "Both spark with own sources; the end losing its last source goes dead within seconds."
    },
    "c6": {
-    "verdict": "accept",
-    "leaf": "settings_switch_cleanly",
-    "why": "design is silent on which spans owner-change coiling takes"
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "Re-stringing a different span gives no exemption; crossing this live wire must shock."
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "statics_clear_between_games",
-    "why": "pawns avoid ground that was live wire only in the old game"
+    "leaf": "floor_end_shocks_crossers",
+    "why": "Overhead master off leaves floor ends biting; floor shock must not be gated on it."
    },
    "c8": {
-    "verdict": "accept",
-    "leaf": "cut_live_and_dead_ends",
-    "why": "each end sparks exactly while it has a source; dead within seconds of losing it"
+    "verdict": "reject",
+    "leaf": "floor_end_shocks_crossers",
+    "why": "The constructor carrying steel to the joining blueprint is safe; shocking him is a named false pass."
    }
   }
  },
  "control": {
   "broken_leaf": "owner_change_coils_wires",
   "missed": true,
-  "detail": "Leaf removed from tree and sheet, with its pruning line, 'owner-change wire cutting' in the delegated showcase-2 line and 'cut wires on owner change' in settings_switch_cleanly. Control Reader rm-judge a0bb5dcd2e65c4664 accepted e9 and c6 (a same-owner span cut with the claimed mast's spans), which both real Readers reject. Two earlier controls did NOT miss, so this set was extended and refrozen: rm-judge a5a884e810cc214e2 on floor_end_shocks_crossers (22-scenario set) got all right through shock_reach_setting and the root's fixer rule, which restate it; rm-judge ad7fbd7600800ae4d on owner_change_coils_wires (22-scenario set) rejected e9 and c6 through spans_above_everything. The Examiner then added e15-e18 and the set was refrozen at 26 before Readers C and D saw it."
+  "detail": "Leaf removed from tree and sheet with its pruning line, 'owner-change wire cutting' in the delegated showcase-2 line and 'cut wires on owner change' in settings_switch_cleanly. Control Reader rm-judge a7a026f0208402c65 accepted e11 (a same-owner span cut with the claimed mast's spans), which both real Readers reject; it matched expect on the other 23."
  },
  "score": {
-  "right": 26,
-  "total": 26
+  "right": 24,
+  "total": 24
  },
  "accept_where_reject_core": 0,
- "challenger_misses": [],
- "result": "PASS: 26/26 frozen scenarios matched by both Readers; no Reader accepted an outcome a core line rejects; the control on owner_change_coils_wires discriminates (missed e9, c6).",
- "notes": "Fresh set against the stage-3 tree that closed coverage gaps g1-g5. Probed: floor-end contact is the end cell only (e1), a run the player stopped laying (e2), steel delivery to the joining blueprint safe (e3, c2), floor end does not light fuel (e4, c5), shock ignores the spark budget and the aerial master (e5, c4), Only downed lines incl. FlowWorks deck cords (e6, c3), sharp turn plus slack read (e7, e8), same-owner span survives an owner change (e9, c6, e15, e16), statics on new and loaded games (e10, e11, c7). A first 22-scenario round (Readers rm-judge a083008da90ff2a6b and a294ce5dfee24a773) also scored 22/22 but its controls did not discriminate; it is superseded by this refrozen set and not scored here."
+ "challenger_misses": 0,
+ "result": "PASS: 24/24 frozen scenarios matched by both Readers; no Reader accepted an outcome a core line rejects; the control on owner_change_coils_wires discriminates (missed e11).",
+ "notes": "The one exam the locked 0.1.0 tree still owed (owner by card 2026-11-14 ~9:45 PM PST, OWNER:1794721624157925836): a fresh set against tree e80c7f93 and sheet 33b1cddc, frozen at 24 before any Reader saw it; one control, no rerun. Charged: examiner 41460, challenger 43721, readers 35244 and 48004, control 38364 tokens."
 }
