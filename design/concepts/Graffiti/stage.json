@@ -219,10 +219,52 @@
     "ref": "run rm-role-designer-1794752602",
     "stage": 3,
     "tokens": 295280
+   },
+   {
+    "at": "2026-11-15T14:38:25Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794753189-exam",
+    "stage": 4,
+    "tokens": 54253
+   },
+   {
+    "at": "2026-11-15T14:38:25Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794753189-exam",
+    "stage": 4,
+    "tokens": 32737
+   },
+   {
+    "at": "2026-11-15T14:38:25Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794753189-exam",
+    "stage": 4,
+    "tokens": 53091
+   },
+   {
+    "at": "2026-11-15T14:38:26Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794753189-exam",
+    "stage": 4,
+    "tokens": 54498
+   },
+   {
+    "at": "2026-11-15T14:38:26Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1794753189-exam",
+    "stage": 4,
+    "tokens": 53100
+   },
+   {
+    "at": "2026-11-15T14:42:48Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794753189",
+    "stage": 4,
+    "tokens": 99354
    }
   ],
   "reserve": 60000,
-  "spent": 7733162
+  "spent": 8080195
  },
  "coverage_rounds": [
   {
@@ -519,6 +561,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794752602: stage 3 done"
+  },
+  {
+   "at": "2026-11-15T14:33:17Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "7733162 of 4000000 spent; run rm-role-designer-1794753189 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T14:33:17Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794753189, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-15T14:42:49Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794753189: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -742,12 +802,37 @@
    "run": "rm-role-designer-1794752602",
    "stage": 3,
    "summary": "Stage 3 Write accepted as it stands: Gate A lint PASS; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20 overlap with its staging reason, after_the_raid 3 new, devout_wall 3 new). The return note's 24 round-1 gaps of rm-coverage-judge-1794730911 were fixed at 09:06Z (run rm-role-designer-1794732988); the last verdict on disk, rm-coverage-judge-1794734941, left 2 gaps (inv_player_orders in after_the_raid; the far-side wall case), both reworked and claimed in coverage_fixes.json against that judge (sc_spree_corridor's skilled piece is a script-forced job; sc_wall_closeup gains a south-only cell and far-side control, pending RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL). A fix file against 1794730911 would be refused by coverage_judge.fix_claims as stale, so it was not rewritten. System fault filed: RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS (stage.json pending_decision is never cleared). Budget past cap (7.44M of 4.0M); raising it is the Conductor's call."
+  },
+  {
+   "at": "2026-11-15T14:42:49Z",
+   "inputs": {
+    "exam": "a0d1bb4d4af3f5676af559be2de09308a6302b452ce3a835608d4a502f092721",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
+    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
+    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": false,
+    "why": "no owner question is proposed; the next step is Lock"
+   },
+   "run": "rm-role-designer-1794753189",
+   "stage": 4,
+   "summary": "Stage 4 Exam PASS against the reworked tree (a6eedf87) and unchanged sheet (40637a73): 82/82 frozen scenarios (63 previous kept, e27 rewritten to answer_wall's four sub-cases, 10 new examiner on the far-side lip and pool-pick control and the four answers, 8 challenger; 60 reject cases) matched by both fresh Readers; accept_where_reject_core 0; no challenger miss; control on going_over missed e8 and e19. Helpers charged 247679 tokens; the task is past its cap (7.98M of 4.0M), raising it is the Conductor's call."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

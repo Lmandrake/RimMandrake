@@ -1,0 +1,3 @@
+{"run": "rm-role-designer-1794753189", "stage": 4, "outcome": "done",
+ "summary": "Stage 4 Exam PASS against the reworked tree (a6eedf87) and unchanged sheet (40637a73): 82/82 frozen scenarios (63 previous kept, e27 rewritten to answer_wall's four sub-cases, 10 new examiner on the far-side lip and pool-pick control and the four answers, 8 challenger; 60 reject cases) matched by both fresh Readers; accept_where_reject_core 0; no challenger miss; control on going_over missed e8 and e19. Helpers charged 247679 tokens; the task is past its cap (7.98M of 4.0M), raising it is the Conductor's call.",
+ "quick_look": {"offer": false, "why": "no owner question is proposed; the next step is Lock"}}
