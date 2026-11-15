@@ -868,7 +868,10 @@ def dispatch_pipeline(now, errors):
     except Exception as e:      # noqa: BLE001
         errors.append("dispatch config: %s: %s" % (e.__class__.__name__, str(e)))
         mx = UNM
-    out = [slots_line(rd, pipeline_units(os.path.join(MD.sdir(), "ticks.jsonl")), mx)]
+    # the dispatch clone's distance from origin/main (RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE):
+    # a clone left behind runs old code under every timer, so it leads the list
+    out = [MD.clone_line(rd["clone"])] if isinstance(rd.get("clone"), dict) else []
+    out.append(slots_line(rd, pipeline_units(os.path.join(MD.sdir(), "ticks.jsonl")), mx))
     for mod, r in sorted((rd.get("mods") or {}).items()):
         if r.get("status"):
             out.append("%s: %s (%s min)%s" % (mod, r["status"], r.get("for_min", "?"),

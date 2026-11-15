@@ -542,6 +542,42 @@ def p15_slots():
         shutil.rmtree(t, ignore_errors=True)
 
 
+def p16_clone_line():
+    """RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: the page's "Pipeline now" list leads with the
+    dispatch clone's distance from origin/main, from the tick's reading (behind, and level)."""
+    import importlib.util
+    import time
+    t = tempfile.mkdtemp(prefix="matnow_clone_")
+    old = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    try:
+        os.environ["RM_MATURATION_DISPATCH_DIR"] = t
+        spec = importlib.util.spec_from_file_location("matnow_under_test", PROG)
+        mn = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mn)
+        now = time.time()
+        rd = {"at": now - 30, "at_pac": "now", "mods": {"Foo": {"status": "moving", "for_min": 2}},
+              "clone": {"measured": True, "behind": 7, "ahead": 2, "behind_min": 39.0, "level_pac": "11:41 AM"}}
+        with open(os.path.join(t, "reading.json"), "w") as f:
+            json.dump(rd, f)
+        lines = mn.dispatch_pipeline(now, [])
+        check("16 the page names a dispatch clone behind origin, how far and for how long",
+              bool(lines) and lines[0].startswith("clone: BEHIND origin/main by 7 (ahead 2) for 39.0 min"), repr(lines[:2]))
+        rd["clone"] = {"measured": True, "behind": 0, "ahead": 0, "behind_min": 0.0}
+        with open(os.path.join(t, "reading.json"), "w") as f:
+            json.dump(rd, f)
+        lines = mn.dispatch_pipeline(now, [])
+        check("16 a level clone reads level, and the mod lines follow it",
+              lines[:1] == ["clone: level with origin/main"] and any(x.startswith("Foo: moving") for x in lines),
+              repr(lines[:2]))
+    finally:
+        if old is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = old
+        shutil.rmtree(t, ignore_errors=True)
+
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -564,6 +600,7 @@ def main():
     p13_versionless()
     p14_measured_dollars()
     p15_slots()
+    p16_clone_line()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
