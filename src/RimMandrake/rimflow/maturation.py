@@ -1168,22 +1168,46 @@ def brief_dir():
     return d
 
 
-def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None):
+def resume_text(f, unit):
+    """The section a relaunch after a KILLED run puts at the top of its brief (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_
+    CYCLE_KEPT): the same cycle or visit, begun by a run killed from outside before it finished."""
+    blind = f.get("stage") == "blind_challenge"
+    what = "cycle %s" % f.get("cycle") if blind else "visit %s" % f.get("visit")
+    rec = (f.get("exit") or {}).get("record") or "its record folder"
+    return ["## Resume: this %s was begun by a run that was killed" % what.split()[0], "",
+            "Run `%s` worked on %s and was killed from outside before it finished (an account switch stops every Claude "
+            "process; it wrote no result). This is the SAME %s, not a new one. What it committed and published stands; "
+            "nothing it did not commit exists." % (unit, what, what), "",
+            "- If `%s` exists on origin/main, read its SUMMARY.md and the files beside it first, then continue from the "
+            "first step not recorded there. Do not redo a recorded step%s." % (
+                rec, " (a recorded lane 1 stays as it is: you are past the blind part, so the blind list below no "
+                     "longer binds you)" if blind else ""),
+            "- If it holds nothing recorded, do the whole %s as written below." % what, ""]
+
+
+def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
+               resume=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
     recorded or blocked, or a bridge `rimflow bridge idle` does not call takeable (bridge: a stand-in for bridge_idle);
     otherwise writes the brief and calls detached_helper.py launch --budget-usd <cap>. It launches nothing else and
-    never retries; it never takes the bridge itself (the launched driver does, with --idle-ok)."""
+    never retries; it never takes the bridge itself (the launched driver does, with --idle-ok). resume (a killed run's
+    unit, from the Dispatch step's retry): the cycle or visit that run began may already have a record with no exit
+    block; it is resumed, the brief opening with resume_text."""
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
         return 2, "REFUSED: --item is required (a ledger item filed on origin/main)", None
     text, f = brief_text(root, mod, budget_usd)
+    ok_owed = ("cycle", "run") + (("no exit block",) if resume else ())
+    if resume and f.get("stage") in ("blind_challenge", "in_game"):
+        head, _, rest = text.partition("\n\n")
+        text = "\n".join([head, ""] + resume_text(f, resume)) + "\n" + rest
     if f.get("stage") == "blind_challenge":
         if model not in JUDGE_MODELS:
             return 2, "REFUSED: a blind judge is a judging role; %s is below the floor (opus or fable)" % model, None
-        if f.get("owed") != "cycle":
+        if f.get("owed") not in ok_owed:
             return 2, "REFUSED: %s owes no blind cycle: cycle %s is %s (%s)" % (
                 mod, f.get("cycle"), "recorded" if f.get("owed") != "blocked" else "blocked",
                 "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None
@@ -1191,7 +1215,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if model not in LIVE_MODELS:
             return 2, "REFUSED: a live driver runs on %s (Agent_Policy.md, rm-bridge); not %s" % (
                 " or ".join(LIVE_MODELS), model), None
-        if f.get("owed") != "run":
+        if f.get("owed") not in ok_owed:
             return 2, "REFUSED: %s owes no in-game visit: visit %s is %s (%s)" % (
                 mod, f.get("visit"), "recorded" if f.get("owed") != "blocked" else "blocked",
                 "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None

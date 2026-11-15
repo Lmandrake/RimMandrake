@@ -62,7 +62,11 @@ At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MOD
                 nothing: a Needs Conductor line, never a second automatic cycle
   launch_retry  the launch never started on a transient fault (a git lock, its item not yet on origin/main): not the
                 visit's cycle; the next tick publishes the filed item again and launches it, up to launch_tries (3),
-                then stopped naming the count (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE; in-game alike)
+                then stopped naming the count (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE; in-game alike).
+                A run KILLED from outside before it wrote its result (an account switch SIGTERMs every Claude process:
+                detached_helper.killed) is the same: not the cycle. The tick first finishes it (its finish never ran)
+                and starts its return, waits for the clone to come back, then relaunches the same item, within the same
+                launch_tries; its dollars stay charged to the stage (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)
   held | blocked | blind_off | no_cap | account_hold | slots_full   as for the offline build
 At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST), per advancing mod, one of:
   launch        visit N (the moves into in_game) is owed (no visit_N folder), nothing live or just ended on it, no
@@ -101,6 +105,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation as M          # noqa: E402
 import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
+import detached_helper as DH    # noqa: E402
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -208,6 +213,27 @@ def gather(root, cfg, live=True):
             f["live_units"] = UNM
         out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
                               runs if isinstance(runs, list) else [])
+        out[mod]["killed"] = killed_runs(runs if isinstance(runs, list) else [])
+    return out
+
+
+def killed_runs(runs, read=None, runner=subprocess.run):
+    """-> {unit: {why, state, returned, return_going, kept}} for the ended blind and in-game runs that were KILLED before
+    they wrote a result (detached_helper.killed), read from their run records."""
+    import role_launch as RL
+    read = read or DH.read_record
+    out = {}
+    for r in runs or []:
+        u = r.get("unit")
+        if not u or r.get("live") or not ("BLIND" in str(r.get("item") or "").upper() or _is_ingame_item(r.get("item"))):
+            continue
+        rec = read(u)
+        why = DH.killed(rec, runner) if rec else ""
+        if why:
+            out[u] = {"why": why, "state": rec.get("status"), "returned": bool(rec.get("returned")),
+                      "kept": any(str(x).startswith("KEPT") for x in rec.get("return_steps") or []),
+                      "return_going": (not rec.get("returned") and rec.get("status") == "finished"
+                                       and RL.unit_state(u + "-return", runner=runner) not in DH.DEAD_STATES)}
     return out
 
 
@@ -441,6 +467,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             row["decision"], row["why"] = decision, why
             if need:
                 row["need"] = "%s: %s" % (mod, need)
+        put.row = row
 
         if f.get("stage") == "blind_challenge":
             s.pop("owed_since", None)
@@ -558,13 +585,40 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     return rows, launches
 
 
-def retriable(cfg, x):
+def retriable(cfg, x, killed=None):
     """-> True when a blind or in-game book entry is a launch that NEVER STARTED on a transient fault (a git lock, its
     item not yet on origin/main: maturation_autonomy.transient) with tries left (launch_tries, 3). Such a launch judged
     nothing, so it is not the visit's automatic run; one that started, or failed any other way, is
-    (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE). An older entry without tries reads as its first try."""
-    return (isinstance(x, dict) and bool(x.get("failed")) and not x.get("unit") and x.get("never_started", True)
-            and AUT.transient(x["failed"]) and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+    (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE). An older entry without tries reads as its first try.
+    killed ({unit: ...}, killed_runs): a run that started and was KILLED before it wrote a result is retried the same
+    way (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT); one that ended by itself with no record is not."""
+    if not isinstance(x, dict) or int(x.get("tries") or 1) >= int(cfg.get("launch_tries", 3)):
+        return False
+    if x.get("unit"):
+        return not x.get("failed") and x["unit"] in (killed or {})
+    return bool(x.get("failed")) and x.get("never_started", True) and AUT.transient(x["failed"])
+
+
+def reap_wait(f, retry, put, n, what):
+    """A retry of a KILLED run waits for its clone: -> True (decided, nothing launches) while the run is not finished or
+    its return has not given the clone back. row["reap"] asks the tick to run the missing steps."""
+    k = (f.get("killed") or {}).get((retry or {}).get("unit"))
+    if not k or k.get("returned"):
+        return False
+    u = retry["unit"]
+    if k.get("kept"):
+        put("stopped", "%s %s was killed (%s) and its return KEPT its clone" % (what, n, k["why"]),
+            "%s %s was killed (%s); its return kept the clone, so the relaunch would be refused: detached_helper.py "
+            "return --unit %s (or read what it left), then the next tick relaunches" % (what, n, k["why"], u))
+        return True
+    if k.get("return_going"):
+        put("launch_retry", "%s %s was killed (%s); its return is giving the clone back, then it relaunches" % (
+            what, n, k["why"]))
+        return True
+    put("launch_retry", "%s %s was killed (%s); this tick %s, the next relaunches it" % (
+        what, n, k["why"], "finishes it and starts its return" if k.get("state") != "finished" else "starts its return"))
+    put.row["reap"] = u
+    return True
 
 
 def spent_tries(x):
@@ -575,8 +629,10 @@ def spent_tries(x):
 
 
 def retried(cfg, retry):
-    return (", try %d of %d after a launch that never started on a transient fault" % (
-        int(retry.get("tries") or 1) + 1, int(cfg.get("launch_tries", 3)))) if retry else ""
+    return (", try %d of %d after %s" % (
+        int(retry.get("tries") or 1) + 1, int(cfg.get("launch_tries", 3)),
+        "a run killed before it wrote a result (%s)" % retry["unit"] if retry.get("unit")
+        else "a launch that never started on a transient fault")) if retry else ""
 
 
 def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
@@ -621,17 +677,18 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
             "(maturation.py advance %s --to blind_challenge opens cycle %s)" % (
                 n, "; ".join((ex.get("why") or [])[:3]), summ, mod, (n or 0) + 1))
         return False
-    if owed == "no exit block":
+    mine = [x for x in ours if x.get("cycle") == n]
+    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed")) else None
+    resume = bool(retry and retry.get("unit"))     # a killed judge's half-written cycle is resumed, not unfinished
+    if owed == "no exit block" and not resume:
         put("cycle_unfinished", "nothing is live and %s has no exit block" % summ,
             "blind cycle %s has a record (%s) with no exit block and nothing live on it; nothing launches: the "
             "Conductor reads it" % (n, summ))
         return False
-    if owed != "cycle":
+    if owed != "cycle" and not (resume and owed == "no exit block"):
         put("blind", "the blind challenge's state cannot be read (%s)" % owed,
             "the blind challenge's state cannot be read (%s); nothing launches" % owed)
         return False
-    mine = [x for x in ours if x.get("cycle") == n]
-    retry = mine[-1] if mine and retriable(cfg, mine[-1]) else None
     if mine and not retry:
         x = mine[-1]
         why = ("the automatic launch of cycle %s failed%s: %s" % (n, spent_tries(x), x.get("failed"))
@@ -646,11 +703,14 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
             "it by hand: maturation.py launch %s --budget-usd <cap> --item <ID>" % (
                 n, per, ", ".join(str(x.get("cycle")) for x in ours), mod))
         return False
-    if f.get("blind_runs"):
+    hand = [u for u in f.get("blind_runs") or [] if u not in (f.get("killed") or {})]
+    if hand:
         put("hand_run_seen", "blind run(s) %s worked on cycle %s and wrote no cycle_%s folder" % (
-            ", ".join(f["blind_runs"]), n, n),
+            ", ".join(hand), n, n),
             "blind run(s) %s worked on cycle %s since it opened and wrote no record; nothing launches: the Conductor "
-            "reads what it left" % (", ".join(f["blind_runs"]), n))
+            "reads what it left" % (", ".join(hand), n))
+        return False
+    if reap_wait(f, retry, put, n, "blind cycle"):
         return False
     if not cfg.get("blind_enabled"):
         put("blind_off", "blind_enabled is off in maturation_dispatch.json",
@@ -716,17 +776,18 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and sends "
             "each failed line item down its road back" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
         return False
-    if owed == "no exit block":
+    mine = [x for x in ours if x.get("visit") == n]
+    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed")) else None
+    resume = bool(retry and retry.get("unit"))     # a killed driver's half-written visit is resumed, not unfinished
+    if owed == "no exit block" and not resume:
         put("visit_unfinished", "nothing is live and %s has no exit block" % summ,
             "in-game visit %s has a record (%s) with no exit block and nothing live on it; nothing launches: the "
             "Conductor reads it (and checks the game was left closed or healthy)" % (n, summ))
         return False
-    if owed != "run":
+    if owed != "run" and not (resume and owed == "no exit block"):
         put("blind", "in-game acceptance's state cannot be read (%s)" % owed,
             "in-game acceptance's state cannot be read (%s); nothing launches" % owed)
         return False
-    mine = [x for x in ours if x.get("visit") == n]
-    retry = mine[-1] if mine and retriable(cfg, mine[-1]) else None
     if mine and not retry:
         x = mine[-1]
         why = ("the automatic launch of in-game visit %s failed%s: %s" % (n, spent_tries(x), x.get("failed"))
@@ -739,11 +800,14 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "in-game visit %s is open and its automatic run is spent; launch it by hand: maturation.py launch %s "
             "--budget-usd <cap> --item <ID>" % (n, mod))
         return False
-    if f.get("ingame_runs"):
+    hand = [u for u in f.get("ingame_runs") or [] if u not in (f.get("killed") or {})]
+    if hand:
         put("hand_run_seen", "in-game run(s) %s worked on visit %s and wrote no visit_%s folder" % (
-            ", ".join(f["ingame_runs"]), n, n),
+            ", ".join(hand), n, n),
             "in-game run(s) %s worked on visit %s since it opened and wrote no record; nothing launches: the Conductor "
-            "reads what it left (and checks the game was left closed or healthy)" % (", ".join(f["ingame_runs"]), n))
+            "reads what it left (and checks the game was left closed or healthy)" % (", ".join(hand), n))
+        return False
+    if reap_wait(f, retry, put, n, "in-game visit"):
         return False
     if not cfg.get("ingame_enabled"):
         put("ingame_off", "ingame_enabled is off in maturation_dispatch.json",
@@ -879,7 +943,10 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
                  tries=tries, filed=filed, never_started=not unit)
     lst = s.setdefault(book, [])
     if retry:
-        lst[:] = [x for x in lst if x.get("unit") or any(x.get(k) != v for k, v in where.items())]
+        if retry.get("unit"):
+            entry["killed_before"] = list(retry.get("killed_before") or []) + [retry["unit"]]
+        lst[:] = [x for x in lst if (x.get("unit") and x.get("unit") != retry.get("unit"))
+                  or any(x.get(k) != v for k, v in where.items())]
     lst.append(entry)
     return ok, item, unit, text, entry
 
@@ -888,10 +955,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
     do_file = fx.get("file", file_and_publish)
     do_publish = fx.get("publish", publish_filed)
-    do_launch = fx.get("launch", lambda mod, cap, item: M.launch_mod(
+    do_launch = fx.get("launch", lambda mod, cap, item, **kw: M.launch_mod(
         root, mod, cap, item, seat=cfg.get("seat", "BENCH"),
         model=cfg.get("ingame_model", "opus") if (M.load(root, mod) or {}).get("stage") == "in_game"
-        else cfg.get("model", "opus")))
+        else cfg.get("model", "opus"), **kw))
     known = fx["known"]() if "known" in fx else known_items()
     done = []
     for row in rows:
@@ -911,7 +978,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 cfg, s, row, now, "ingame_auto", {"visit_id": row.get("visit_id"), "visit": row.get("visit")},
                 lambda: ingame_item_id(mod, row.get("visit"), known),
                 lambda it: do_file(it, title, why, needs="game-up"), do_publish,
-                lambda it: do_launch(mod, row["cap"], it))
+                lambda it: do_launch(mod, row["cap"], it, **resume_kw(row)))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
@@ -944,7 +1011,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             ok, item, unit, text, entry = launch_counted(
                 cfg, s, row, now, "blind_auto", {"visit_id": row.get("visit_id"), "cycle": row.get("cycle")},
                 lambda: item, lambda it: do_file(it, title, why), do_publish,
-                lambda it: do_launch(mod, row["cap"], it))
+                lambda it: do_launch(mod, row["cap"], it, **resume_kw(row)))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
@@ -980,6 +1047,29 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             row.update(decision="launch_failed", why=text,
                        need="%s: the launch failed (%s); the step will not retry it on its own" % (mod, text))
     return done
+
+
+def resume_kw(row):
+    """The launch's resume argument for a retry of a KILLED run (its unit), else none."""
+    u = (row.get("retry_of") or {}).get("unit")
+    return {"resume": u} if u else {}
+
+
+def reap_run(unit):
+    """A killed run's finish (never run: its unit vanished) and its return, started as the unit's own ExecStopPost
+    would: -> one line of what happened."""
+    me = os.path.join(HERE, "detached_helper.py")
+    said = []
+    rec = DH.read_record(unit) or {}
+    if rec.get("status") != "finished":
+        r = subprocess.run([sys.executable, me, "finish", "--unit", unit], capture_output=True, text=True, timeout=600,
+                           stdin=subprocess.DEVNULL)
+        said.append("finish exit %d" % r.returncode)
+        rec = DH.read_record(unit) or {}
+    if rec.get("status") == "finished" and not rec.get("returned"):
+        r = subprocess.run(DH.return_argv(rec), capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+        said.append("return started exit %d" % r.returncode)
+    return "reaped %s: %s" % (unit, ", ".join(said) or "nothing owed")
 
 
 def run_stages(r):
@@ -1071,6 +1161,9 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
             if r["mod"] in launches:
                 r.update(decision="would_launch")
         launches = []
+    for r in rows:      # a killed run's missing stop steps, before its retry (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)
+        if r.get("reap"):
+            r["why"] += "; " + ((fx.get("reap") or reap_run)(r["reap"]) if apply else "would reap %s" % r["reap"])
     execute(root, cfg, st, rows, [m for m in launches if not _aut(rows, m)], now, fx)
     AUT.execute(root, cfg, st, rows, [m for m in launches if _aut(rows, m)], now, fx)
     for r in rows:      # a release lets one launch: the launch spends it

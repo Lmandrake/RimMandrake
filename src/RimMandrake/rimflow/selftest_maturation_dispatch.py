@@ -48,6 +48,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 
 import maturation as M              # noqa: E402
 import maturation_dispatch as MD    # noqa: E402
+import detached_helper as DH        # noqa: E402
 
 FOUR = ("ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack", "Pyrelands")
 COPY = ("journal.md", "stage.json", "version/VERSION.json", "version/test_table.json", "version/preflight.json",
@@ -529,12 +530,14 @@ def blind_main():
                 f["last_end"], f["stage_runs"], f["run_usd"] = world["last_end"].get(mod), {}, {}
                 f["box_runs"] = dict(world.get("box_runs", {}).get(mod, {}))
                 f["ended_runs"] = list(world.get("ended", {}).get(mod, []))
+                f["killed"] = dict(world.get("killed", {}).get(mod, {}))
                 out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
             return out
 
         fx = {"autonomy": False, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
-              "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH")}
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
+                                                                  **kw)}
 
         def tick(c, at=0, apply=True):
             return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=BLIND_CLOCK + at, page=False)
@@ -543,7 +546,7 @@ def blind_main():
             shutil.rmtree(sd, ignore_errors=True)
             open(log, "w").close()
             del filed[:]
-            world.update(live={}, last_end={}, runs={}, box_runs={}, ended={})
+            world.update(live={}, last_end={}, runs={}, box_runs={}, ended={}, killed={})
 
         def need(rd, mod):
             return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
@@ -820,6 +823,133 @@ def blind_main():
         ok(g(r2)["decision"] == "launched" and published == [item] and calls == [item, item] and len(filed) == 1,
            "an older record (no tries field, the failed text measured live) retries the same item without a clear (%s)"
            % g(r2)["decision"])
+
+        # ---- RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT: a judge that STARTED and was killed from
+        # outside before it wrote a result (measured 2026-11-15 ~12:00 PM PST: the account switch SIGTERMed two judges,
+        # empty out and err, units gone, finish never ran) is not the cycle: the tick finishes it and starts its return,
+        # waits for the clone, then relaunches the same item within launch_tries; one that ended by itself is still spent
+        reset()
+        del published[:]
+        reaped = []
+        kfx = dict(fx, publish=lambda item: (published.append(item) or True, "publish: PUBLISHED test"),
+                   reap=lambda u: reaped.append(u) or "reaped %s (test)" % u)
+
+        def kill(unit, **kw):
+            k = dict(why="its unit died with no result JSON and its finish never ran", state="running", returned=False,
+                     kept=False, return_going=False)
+            k.update(kw)
+            world["killed"] = {"GimmeSomeSlack": {unit: k}}
+            world["runs"] = {"GimmeSomeSlack": [{"unit": unit, "item": bk()[-1]["item"], "at": BLIND_CLOCK + 5,
+                                                  "live": False}]}
+
+        r0 = rtick(kfx)
+        b0 = bk()
+        u0 = b0[0].get("unit") if b0 else None
+        kill(u0)
+        r1 = rtick(kfx, at=600)
+        ok(g(r0)["decision"] == "launched" and g(r1)["decision"] == "launch_retry" and reaped == [u0]
+           and len(launches()) == 1 and not need(r1, "GimmeSomeSlack"),
+           "a judge killed before it wrote a result (finish never ran): not stopped, the tick finishes it and starts its "
+           "return, nothing launches yet (%s, %s: %s)" % (g(r0)["decision"], g(r1)["decision"], g(r1)["why"][:120]))
+        kill(u0, state="finished", return_going=True)
+        r2 = rtick(kfx, at=660)
+        ok(g(r2)["decision"] == "launch_retry" and reaped == [u0] and len(launches()) == 1,
+           "its return is still giving the clone back: wait, no second reap, no launch (%s)" % g(r2)["decision"])
+        kill(u0, state="finished", returned=True)
+        r3 = rtick(kfx, at=720)
+        b = bk()
+        ok(g(r3)["decision"] == "launched" and len(launches()) == 2 and len(b) == 1 and b[0].get("tries") == 2
+           and b[0].get("item") == b0[0]["item"] and b[0].get("killed_before") == [u0] and published == [b0[0]["item"]]
+           and len(filed) == 1,
+           "the clone back: the same item relaunches as the same cycle, one book entry, try 2 (%s; book %s)" % (
+               g(r3)["decision"], [(x.get("tries"), x.get("killed_before")) for x in b]))
+        a3 = launches()[-1] if launches() else []
+        ok(a3 and "## Resume" in open(a3[a3.index("--brief-file") + 1]).read() and u0 in open(
+            a3[a3.index("--brief-file") + 1]).read(), "the relaunch's brief opens with the Resume section naming the "
+                                                       "killed run")
+        u1 = b[0].get("unit")
+        kill(u1, state="finished", returned=True)
+        r4 = rtick(kfx, at=780)
+        u2 = bk()[0].get("unit")
+        kill(u2, state="finished", returned=True)
+        r5 = rtick(kfx, at=840)
+        ok(g(r4)["decision"] == "launched" and g(r5)["decision"] == "stopped" and len(launches()) == 3
+           and bk()[0].get("tries") == 3 and need(r5, "GimmeSomeSlack"),
+           "killed again and again: launch_tries (3) bound it, then stopped with a Needs Conductor line (%s, %s)" % (
+               g(r4)["decision"], g(r5)["decision"]))
+
+        # the measured case: the killed judge had already published lane 1, so cycle_N has a SUMMARY.md with no exit
+        # block; its relaunch resumes that cycle instead of reading it as unfinished (PAUSED)
+        reset()
+        r0 = rtick(kfx)
+        cdir = os.path.join(root, "design", "concepts", "GimmeSomeSlack", "version", "blind_challenge", "cycle_1")
+        os.makedirs(os.path.join(cdir, "lane1"), exist_ok=True)
+        with open(os.path.join(cdir, "SUMMARY.md"), "w") as fh:
+            fh.write("# cycle 1\n\nLane 1 recorded blind.\n")
+        try:
+            world["runs"] = {"GimmeSomeSlack": [{"unit": bk()[0]["unit"], "item": bk()[0]["item"],
+                                                  "at": BLIND_CLOCK + 5, "live": False}]}
+            r1 = rtick(kfx, at=600)
+            uk = bk()[0]["unit"]
+            kill(uk, state="finished", returned=True)
+            r2 = rtick(kfx, at=660)
+            a2 = launches()[-1]
+            ok(g(r1)["decision"] == "cycle_unfinished" and g(r2)["decision"] == "launched" and len(launches()) == 2
+               and "## Resume" in open(a2[a2.index("--brief-file") + 1]).read(),
+               "a half-written cycle: unfinished while its run reads as having ended by itself, resumed once it reads "
+               "killed (%s, %s: %s)" % (g(r1)["decision"], g(r2)["decision"], g(r2)["why"][:100]))
+            rc, text, _ = M.launch_mod(root, "GimmeSomeSlack", 20, "SOME_ITEM", model="opus")
+            ok(rc == 2 and "owes no blind cycle" in text, "launch_mod without resume still refuses the half-written "
+                                                          "cycle (%s)" % text[:80])
+        finally:
+            shutil.rmtree(cdir, ignore_errors=True)
+
+        reset()
+        r0 = rtick(kfx)
+        world["killed"] = {}
+        world["runs"] = {"GimmeSomeSlack": [{"unit": bk()[0]["unit"], "item": bk()[0]["item"], "at": BLIND_CLOCK + 5,
+                                              "live": False}]}
+        r1 = rtick(kfx, at=600)
+        ok(g(r1)["decision"] == "stopped" and len(launches()) == 1,
+           "a judge that ended by itself and wrote no record still spends the cycle (%s)" % g(r1)["decision"])
+        kill(bk()[0]["unit"], state="finished", kept=True)
+        r2 = rtick(kfx, at=660)
+        ok(g(r2)["decision"] == "stopped" and "KEPT" in g(r2)["why"] and len(launches()) == 1,
+           "a killed judge whose return KEPT its clone: stopped naming the return command (%s)" % g(r2)["why"][:100])
+
+        # detached_helper.killed reads the record: no result JSON and a signal stop or a vanished unit is a kill
+        kd = tempfile.mkdtemp(prefix="selftest_killed_")
+        empty, full = os.path.join(kd, "e.json"), os.path.join(kd, "f.json")
+        open(empty, "w").close()
+        with open(full, "w") as fh:
+            json.dump({"type": "result", "result": "done", "total_cost_usd": 1.0}, fh)
+
+        def rec_(out, **kw):
+            return dict(dict(unit="u-x", out=out, err=os.path.join(kd, "none.err"), at=BLIND_CLOCK), **kw)
+
+        gone = lambda argv, **kw: subprocess.CompletedProcess(argv, 0, "inactive\n", "")   # noqa: E731
+        st_hand = DH.outcome(rec_(empty), {})[0]
+        st_term = DH.outcome(rec_(empty), {"SERVICE_RESULT": "exit-code", "EXIT_CODE": "exited", "EXIT_STATUS": "143"})[0]
+        st_fail = DH.outcome(rec_(empty), {"SERVICE_RESULT": "exit-code", "EXIT_CODE": "exited", "EXIT_STATUS": "1"})[0]
+        st_time = DH.outcome(rec_(empty), {"SERVICE_RESULT": "timeout", "EXIT_CODE": "killed", "EXIT_STATUS": "TERM"})[0]
+        ok(st_hand.startswith("killed") and st_term.startswith("killed") and not st_fail.startswith("killed")
+           and not st_time.startswith("killed"),
+           "finish names a kill: by hand on a vanished unit, or a TERM exit with no result; a failure or its own time "
+           "limit is not (%s | %s | %s | %s)" % (st_hand, st_term, st_fail, st_time))
+        ok(DH.killed(rec_(empty, status="finished", result=st_term)) and DH.killed(rec_(empty, status="running"), gone)
+           and not DH.killed(rec_(full, status="running"), gone) and not DH.killed(rec_(empty, status="finished",
+                                                                                         result=st_fail))
+           and not DH.killed(rec_(empty, status="finished", result=st_time)),
+           "detached_helper.killed: a TERM stop or a dead unit with no result JSON is a kill; a result written, a plain "
+           "failure or a timeout is not")
+        recs = {"u-k": rec_(empty, unit="u-k", status="running"), "u-ok": rec_(full, unit="u-ok", status="running")}
+        kr = MD.killed_runs([{"unit": "u-k", "item": "X_BLIND_CYCLE_TWO", "live": False},
+                             {"unit": "u-ok", "item": "X_BLIND_CYCLE_TWO", "live": False},
+                             {"unit": "u-live", "item": "X_BLIND_CYCLE_TWO", "live": True},
+                             {"unit": "u-b", "item": "X_BUILD_STAGE_THREE", "live": False}], read=recs.get, runner=gone)
+        ok(list(kr) == ["u-k"] and kr["u-k"]["state"] == "running" and not kr["u-k"]["returned"],
+           "killed_runs keeps only the ended blind or in-game runs read as killed (%s)" % sorted(kr))
+        shutil.rmtree(kd, ignore_errors=True)
     finally:
         for k, v in env_was.items():
             if v is None:

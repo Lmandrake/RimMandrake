@@ -70,6 +70,7 @@ SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
 DEAD_STATES = ("inactive", "failed", "not-found")   # a unit in one of these runs nothing; "unknown" is not proof of death
+KILL_STATUSES = ("HUP", "INT", "KILL", "TERM", "129", "130", "137", "143")   # systemd's EXIT_STATUS of a signal stop
 LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its unit yet
 RETURN_WAIT_S = 600    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
 RETURN_POLL_S = 10
@@ -611,7 +612,25 @@ def outcome(rec, env):
                 tail = "no result JSON; stderr tail: " + f.read()
         except OSError:
             tail = "no result JSON, no stderr"
+        if svc != "timeout" and (svc in ("unknown", "signal") or code in ("killed", "dumped") or status in KILL_STATUSES):
+            svc = "killed: " + svc
     return "%s (%s %s)" % (svc, code, status), tokens, " ".join(tail.split())
+
+
+def killed(rec, runner=subprocess.run, now=None):
+    """-> why, or "" : the run was KILLED from outside before claude wrote its result JSON (an account switch SIGTERMs
+    every Claude process, measured 2026-11-15 ~12:00 PM PST: two judge runs, empty out and err files, units gone, finish
+    never run). Either its unit died with finish never run (live_status "dead") or finish recorded a signal stop ("killed:"
+    from outcome). A run that wrote its result, hit its budget, or was stopped at its own time limit was not killed: it
+    ended (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)."""
+    import role_launch as RL
+    if not isinstance(rec, dict) or isinstance(RL.read_result({"out": rec.get("out") or "", "err": rec.get("err")}), dict):
+        return ""
+    if str(rec.get("result") or "").startswith("killed"):
+        return "killed with no result JSON (%s)" % rec["result"]
+    if rec.get("status") in ("launching", "running") and live_status(rec, runner, now) == "dead":
+        return "its unit died with no result JSON and its finish never ran"
+    return ""
 
 
 def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
