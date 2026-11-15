@@ -34,6 +34,12 @@ maturation_now.py reads back to the same stage. --conductor-decision also writes
     python3 src/RimMandrake/rimflow/maturation.py launch MOD --budget-usd X --item ID [--model opus] [--seat BENCH]
             one capped detached builder on an offline-build mod with build work owed (detached_helper.py launch)
 
+At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED): `brief` writes a blind-challenge
+brief for cycle N (N = the record's cycles.total; the cycle_N folder is its record), from the mod's own test table and
+files, its sealed "Steward's decisions" from the journal's intervention lines since the last cycle; `next` reads cycle
+N's exit block and checks it against the record's files (read_exit; FORMAT_NOTES.md), names the launch when no cycle_N
+folder exists, and keeps steward_confirms a hand step; `launch` launches one judge (opus or fable) when cycle N is owed.
+
 What is settled and tested here, and what stays a hand step (the open question named), is the plan's section 3 table.
 This program has no timer and never retries; `launch` is the only way it starts work, through detached_helper.py with
 --budget-usd (no default cap). Its caller on a timer is maturation_dispatch.py (the Dispatch step, its guard rails).
@@ -469,7 +475,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    fix="remake the test table for this Design Version", cost="rerun")
         elif cur in ("blind_challenge", "in_game", "pre_human"):
             hand.append("steward_confirms")
-            what = {"blind_challenge": "the blind judge's verdict (no verdict format exists; the exit is a proposal)",
+            what = {"blind_challenge": "the blind judge's cycle record (maturation.py next reads its exit block; "
+                                       "the exit itself is a proposal)",
                     "in_game": "the in-game rows (no common row format exists across mods)",
                     "pre_human": "the fresh reader's verdict and the walk brief"}[cur]
             clause("steward_confirms", "the steward has read %s and says the stage's exit is met" % what,
@@ -612,7 +619,26 @@ def next_step(root, mod):
     res = evaluate(root, mod, to, by="next", why="what is the next step")
     prog = [r for r in res["verdict"]["refusals"] if r["clause"] not in res["hand_steps"]]
     hand = [r for r in res["verdict"]["refusals"] if r["clause"] in res["hand_steps"]]
-    if prog:
+    blind = blind_facts(root, mod) if cur == "blind_challenge" else None
+    if blind and blind.get("owed") == "blocked":
+        nxt = "NEXT (hand step): the blind challenge is blocked: %s" % "; ".join(blind["blocked"])
+    elif blind and blind.get("owed") == "cycle":
+        nxt = ("NEXT: launch blind cycle %d (maturation.py launch %s --budget-usd <cap> --item <ID>, or the Dispatch "
+               "step); its record goes in %s" % (blind["cycle"], mod, blind["exit"]["record"]))
+    elif blind and blind.get("owed") == "no exit block":
+        nxt = ("NEXT: cycle %d is recorded without an exit block: wait for its run to write one, or (nothing live) the "
+               "Conductor reads %s/SUMMARY.md" % (blind["cycle"], blind["exit"]["record"]))
+    elif blind and blind.get("owed") == "exit met":
+        nxt = ("NEXT (hand step): cycle %d: exit met (a program's reading of its record: %s); the steward reads "
+               "%s/SUMMARY.md and confirms: maturation.py advance %s --to in_game --by <SEAT> --why \"...\" "
+               "--steward-confirms \"...\"" % (blind["cycle"], blind["exit"]["why"][0], blind["exit"]["record"], mod))
+    elif blind:
+        nxt = ("NEXT (hand step): cycle %d: exit not met (%s); the Conductor reads %s/SUMMARY.md and decides: a new "
+               "blind judge (maturation.py advance %s --to blind_challenge%s) or another road" % (
+                   blind["cycle"], "; ".join(blind["exit"]["why"][:3]), blind["exit"]["record"], mod,
+                   " --conductor-decision \"...\": three cycles in this visit" if (blind.get("visit") or 0) >= CYCLE_LIMIT
+                   else ""))
+    elif prog:
         nxt = "NEXT: %s; then maturation.py advance %s --to %s (%s refuses it now: %s)" % (
             prog[0]["smallest_fix"]["what"], mod, to, prog[0]["clause"], prog[0]["observed"])
     elif hand:
@@ -628,8 +654,11 @@ def next_step(root, mod):
             "refusals": [{k: r[k] for k in ("clause", "observed", "would_pass", "smallest_fix")} for r in prog + hand],
             "hand_steps": res["hand_steps"], "cycles": rec.get("cycles"), "spend": spend_by_stage(rec),
             "launch": ("maturation.py launch %s --budget-usd <cap> --item <ID> (or the Dispatch step, "
-                       "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else "none at this stage",
-            "next": nxt}
+                       "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else
+            ("maturation.py launch %s --budget-usd <cap> --item <ID> (blind cycle %d; or the Dispatch step, "
+             "maturation_dispatch.py)" % (mod, blind["cycle"])) if blind and blind.get("owed") == "cycle" else
+            ("none: blind cycle %d is %s" % (blind["cycle"], blind.get("owed"))) if blind else "none at this stage",
+            "blind": blind, "next": nxt}
 
 
 # ---- slice 4: the offline-build brief and its capped launch ---------------------------------------------------------
@@ -705,8 +734,11 @@ def _bar_lines(tt, ids):
     return out
 
 
-def brief_text(root, mod):
-    """-> (the mechanical half of an offline-build brief, build_facts). Never refuses for a blank steward section."""
+def brief_text(root, mod, cap_usd=None):
+    """-> (the mechanical half of an offline-build brief, build_facts). Never refuses for a blank steward section.
+    A mod at the blind challenge gets blind_brief_text instead."""
+    if (load(root, mod) or {}).get("stage") == "blind_challenge":
+        return blind_brief_text(root, mod, cap_usd)
     f = build_facts(root, mod)
     tt, _ = read_json(root, mod, "version/test_table.json")
     jtext = read_text(root, mod, "journal.md") or ""
@@ -764,17 +796,26 @@ def brief_dir():
 
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run):
-    """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod not at the
-    offline build, and one with no build work owed; otherwise writes the brief and calls detached_helper.py launch
+    """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
+    the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
+    opus or a cycle already recorded or blocked; otherwise writes the brief and calls detached_helper.py launch
     --budget-usd <cap>. It launches nothing else and never retries."""
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
         return 2, "REFUSED: --item is required (a ledger item filed on origin/main)", None
-    text, f = brief_text(root, mod)
-    if f.get("stage") != "offline_build":
-        return 2, "REFUSED: %s stands at %s; only an offline build launches from here" % (mod, f.get("stage")), None
-    if f.get("owed") != "build":
+    text, f = brief_text(root, mod, budget_usd)
+    if f.get("stage") == "blind_challenge":
+        if model not in JUDGE_MODELS:
+            return 2, "REFUSED: a blind judge is a judging role; %s is below the floor (opus or fable)" % model, None
+        if f.get("owed") != "cycle":
+            return 2, "REFUSED: %s owes no blind cycle: cycle %s is %s (%s)" % (
+                mod, f.get("cycle"), "recorded" if f.get("owed") != "blocked" else "blocked",
+                "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None
+    elif f.get("stage") != "offline_build":
+        return 2, "REFUSED: %s stands at %s; only an offline build or a blind challenge launches from here" % (
+            mod, f.get("stage")), None
+    elif f.get("owed") != "build":
         return 2, "REFUSED: %s owes no build work (%s)" % (mod, f.get("owed")), None
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
     with open(path, "w", encoding="utf-8") as fh:
@@ -785,6 +826,563 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, out, (m.group(1) if m and not r.returncode else None)
+
+
+# ---- the blind challenge (Stages 4 and 5): brief, exit reading, launch ---------------------------------------------
+#
+# Item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED. Measured 2026-11-14 11:37 PM PST: four mods sat at the
+# blind challenge with nothing running, because `next` said "launch: none at this stage" and `brief` wrote a Stage 3
+# brief; the Conductor wrote four briefs by hand. This half writes what those hand briefs said, per mod, from the mod's
+# own files, and reads the exit the pilot's FORMAT_NOTES.md proposes from the newest cycle record. The exit stays the
+# steward's to confirm (spec Stages 4 and 5, Exit: PROPOSAL); this reading is evidence for that confirmation, never a move.
+
+BLIND_DIR = "version/blind_challenge"
+FORMAT_NOTES = "design/concepts/ExplosiveKnockback/version/blind_challenge/FORMAT_NOTES.md"
+OFFLINE_PROVES = ("2", "4-5")       # FORMAT_NOTES: the offline bars are those proving at stage 2 or 4-5
+JUDGE_MODELS = ("opus", "fable")    # a judging role: Agent_Policy.md forbids a cheaper tier
+BLIND_DEFAULT = ("No Conductor decisions are written for this cycle, so the standing default holds: judge every bar as "
+                 "locked, fix each Problem in place red first, write every bar or criterion you believe wrong up as "
+                 "NOTED_FOR_CONDUCTOR, and build no verdict on it. Nothing here asks you to change a bar, its wording, "
+                 "the Design Version or the stage.")
+EXIT_KEYS = ("offline_bars", "problems_open", "exit_met")
+
+
+def cycle_numbers(root, mod):
+    d = os.path.join(mod_dir(root, mod), BLIND_DIR)
+    out = []
+    for f in os.listdir(d) if os.path.isdir(d) else []:
+        m = re.match(r"cycle_(\d+)$", f)
+        if m and os.path.isdir(os.path.join(d, f)):
+            out.append(int(m.group(1)))
+    return sorted(out)
+
+
+def offline_bars(tt):
+    """-> [(bar id, [deciders])] for the bars that prove offline (proves_at 2 or 4-5)."""
+    out = []
+    for b in (tt or {}).get("bars") or []:
+        if isinstance(b, dict) and str(b.get("proves_at")) in OFFLINE_PROVES:
+            out.append((b.get("id", "?"), list(b.get("offline_decides") or b.get("decides") or [])))
+    return out
+
+
+def _jsonl(path):
+    """-> list of rows, or None when the file is absent. A line that is not JSON is kept as {"_bad": line}."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = [x for x in f.read().splitlines() if x.strip()]
+    except OSError:
+        return None
+    out = []
+    for x in lines:
+        try:
+            out.append(json.loads(x))
+        except ValueError:
+            out.append({"_bad": x[:120]})
+    return out
+
+
+def _rcs(v):
+    v = v.get("rc") if isinstance(v, dict) else None
+    return v if isinstance(v, list) else [v] if v is not None else []
+
+
+def exit_block(summary):
+    """-> ({key: value} for the keys found in the SUMMARY.md Exit section, or None when it has no Exit heading)."""
+    lines = (summary or "").split("\n")
+    start = next((i for i, ln in enumerate(lines) if re.match(r"^##\s+Exit\b", ln)), None)
+    if start is None:
+        return None
+    end = next((j for j in range(start + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
+    sec = "\n".join(lines[start + 1:end])
+    got = {}
+    m = re.search(r"offline_bars\s*[:=]\s*\{([^}]*)\}", sec)
+    if m:
+        got["offline_bars"] = {k: v.lower() for k, v in re.findall(
+            r"[`\"']?([A-Za-z0-9_]+)[`\"']?\s*:\s*[`\"']?(green|red|GREEN|RED)\b", m.group(1))}
+    m = re.search(r"problems_open\s*[:=]\s*`?(\d+)", sec)
+    if m:
+        got["problems_open"] = int(m.group(1))
+    m = re.search(r"exit_met\s*[:=]\s*`?(true|false)\b", sec, re.I)
+    if m:
+        got["exit_met"] = m.group(1).lower() == "true"
+    return got
+
+
+def read_exit(root, mod, n, tt=None):
+    """-> {cycle, state, why[], claimed, checks}: the program's reading of cycle n's exit.
+
+    state: absent (no cycle_n folder) | no_exit_block (no Exit block with the three keys yet: a cycle in progress, or
+    one that ended without writing it) | met | not_met. met needs the judge's block to say exit_met true AND every file
+    check of FORMAT_NOTES to agree: each offline bar green in the block and each of its deciders PASS on the cycle's own
+    rerun (reruns_after_fix.jsonl rows over reruns.jsonl), no Problem whose status is not FIXED, a fixes.jsonl row for
+    each FIXED Problem shown red (an rc non-zero) then green (every rc zero), no FAIL row in lane 1, tests_edited.json
+    present, and the planted-fault results ending tree_clean_after true. Any doubt reads not_met, never met."""
+    if tt is None:
+        tt, _ = read_json(root, mod, "version/test_table.json")
+    base = "%s/cycle_%d" % (BLIND_DIR, n)
+    d = os.path.join(mod_dir(root, mod), base)
+    out = {"cycle": n, "record": rel(mod, base), "why": [], "checks": {}}
+    if not os.path.isdir(d):
+        out["state"] = "absent"
+        return out
+    blk = exit_block(read_text(root, mod, base + "/SUMMARY.md"))
+    out["claimed"] = blk
+    if not blk or not all(k in blk for k in EXIT_KEYS):
+        out["state"] = "no_exit_block"
+        out["why"].append("%s/SUMMARY.md has no Exit block with offline_bars, problems_open and exit_met%s" % (
+            rel(mod, base), "" if blk is None else " (found: %s)" % (", ".join(sorted(blk)) or "none")))
+        return out
+    why = out["why"]
+    if not blk["exit_met"]:
+        why.append("the judge's block says exit_met false")
+    bars = offline_bars(tt)
+    if not bars:
+        why.append("the test table names no offline bar (proves_at 2 or 4-5)")
+    for b, _ in bars:
+        v = blk["offline_bars"].get(b)
+        if v != "green":
+            why.append("offline bar %s reads %s in the block" % (b, v or "nothing (left out)"))
+    reruns = {}
+    rr = _jsonl(os.path.join(d, "lane2", "reruns.jsonl"))
+    if rr is None:
+        why.append("lane2/reruns.jsonl is missing")
+    for r in (rr or []) + (_jsonl(os.path.join(d, "lane2", "reruns_after_fix.jsonl")) or []):
+        t = r.get("test") or r.get("id")
+        if t:
+            reruns[t] = str(r.get("result", "")).upper()
+    for b, deciders in bars:
+        for t in deciders:
+            if reruns.get(t) != "PASS":
+                why.append("decider %s of offline bar %s %s on this cycle's rerun" % (
+                    t, b, ("reads " + reruns[t]) if t in reruns else "has no row"))
+    fj, ferr = read_json(root, mod, base + "/lane2/faults.json")
+    faults = (fj.get("faults") if isinstance(fj, dict) else fj) if fj is not None else None
+    if not isinstance(faults, list):
+        why.append("lane2/faults.json: %s" % (ferr or "no faults list"))
+        faults = []
+    fixes = {}
+    for r in _jsonl(os.path.join(d, "lane2", "fixes.jsonl")) or []:
+        if r.get("fault"):
+            fixes[r["fault"]] = r
+    problems = [x for x in faults if isinstance(x, dict) and str(x.get("class", "")).startswith("Problem")]
+    open_ = [x.get("id", "?") for x in problems if not str(x.get("status", "")).startswith("FIXED")]
+    out["checks"]["problems_open"] = len(open_)
+    if open_:
+        why.append("%d Problem(s) not FIXED: %s" % (len(open_), ", ".join(open_)))
+    if blk["problems_open"] != len(open_):
+        why.append("the block says problems_open %d; faults.json has %d" % (blk["problems_open"], len(open_)))
+    for x in problems:
+        if str(x.get("status", "")).startswith("FIXED"):
+            fx = fixes.get(x.get("id"))
+            red, green = _rcs((fx or {}).get("red")), _rcs((fx or {}).get("green"))
+            if not fx or not any(isinstance(c, int) and c != 0 for c in red) or not green or any(c != 0 for c in green):
+                why.append("FIXED Problem %s has no fixes.jsonl row shown red (an rc non-zero) then green (rc 0)"
+                           % x.get("id"))
+    l1 = _jsonl(os.path.join(d, "lane1", "lane1_rows.jsonl"))
+    if l1 is None:
+        why.append("lane1/lane1_rows.jsonl is missing")
+    fails = [r.get("id", "?") for r in l1 or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
+    if fails:
+        why.append("lane 1 has %d FAIL or unreadable row(s): %s" % (len(fails), ", ".join(fails[:8])))
+    if not os.path.exists(os.path.join(d, "tests_edited.json")):
+        why.append("tests_edited.json is missing (an empty list is written, never left out)")
+    pr = _jsonl(os.path.join(d, "lane2", "planted_results.jsonl"))
+    if not pr or pr[-1].get("tree_clean_after") is not True:
+        why.append("lane2/planted_results.jsonl %s" % ("is missing" if pr is None else
+                                                       "does not end with tree_clean_after true"))
+    out["state"] = "not_met" if why else "met"
+    if not why:
+        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)"
+                   % (len(bars), sum(len(x[1]) for x in bars)))
+    return out
+
+
+def cycle_openings(rec):
+    """-> {cycle number: iso time} for the moves into the blind challenge (cycle k is the k-th in all)."""
+    moves = [m for m in rec.get("moves") or [] if m.get("to") == "blind_challenge"]
+    total = (rec.get("cycles") or {}).get("total", 0) or 0
+    off = total - len(moves)
+    return {i + 1 + off: m.get("at") for i, m in enumerate(moves)}
+
+
+def cycle_open_sha(mod, k):
+    """-> the commit whose stage record first reads cycles.total == k (the advance that opened cycle k), or None."""
+    path = "design/concepts/%s/%s" % (mod, RECORD)
+    r = subprocess.run(["git", "-C", REPO, "log", "--format=%H", "--", path], capture_output=True, text=True,
+                       timeout=60)
+    found = None
+    for sha in r.stdout.split():
+        g = subprocess.run(["git", "-C", REPO, "show", "%s:%s" % (sha, path)], capture_output=True, text=True,
+                           timeout=60)
+        try:
+            t = (json.loads(g.stdout).get("cycles") or {}).get("total")
+        except ValueError:
+            continue
+        if t == k:
+            found = sha
+        elif isinstance(t, int) and t < k:
+            break
+    return found
+
+
+def steward_lines(rec, jtext, n):
+    """The journal's CONDUCTOR INTERVENED lines since the last cycle: for cycle n >= 2 every line dated after cycle n-1
+    opened; for cycle 1 every stage 4+5 line, and any other dated after the stage opened. -> (lines, undated count)."""
+    ivs, _ = MN.parse_interventions(jtext or "", "journal")
+    opens = cycle_openings(rec)
+    since = _ts(opens.get(n - 1)) if n >= 2 else None
+    first = _ts(opens.get(n)) or _ts(rec.get("since"))
+    out, undated = [], 0
+    for iv in ivs:
+        if iv["at"] is None:
+            undated += 1
+            continue
+        if n >= 2 and since is not None:
+            keep = iv["at"] >= since
+        else:
+            keep = iv["stage"] == "4+5" or (first is not None and iv["at"] >= first)
+        if keep:
+            out.append(iv)
+    return out, undated
+
+
+def _ts(v):
+    try:
+        return dt.datetime.fromisoformat(str(v)).timestamp() if v else None
+    except ValueError:
+        return None
+
+
+def blind_facts(root, mod):
+    """-> what the blind challenge owes now: cycle (the cycle number for this visit: cycles.total, else the newest
+    cycle_N folder), visit, exit (read_exit of cycle_N), and owed: "cycle" (no cycle_N folder: a judge is owed) |
+    "no exit block" | "exit met" | "exit not met" | "blocked" (a hold, a version mismatch, a folder past the record)."""
+    rec = load(root, mod)
+    if rec is None:
+        return {"mod": mod, "stage": UNM, "why": "no stage record"}
+    cur = rec["stage"]
+    out = {"mod": mod, "version": rec.get("version"), "stage": cur, "since": rec.get("since")}
+    if cur != "blind_challenge":
+        return out
+    c = rec.get("cycles") or {}
+    total, visit = c.get("total") or 0, c.get("visit") or 0
+    have = cycle_numbers(root, mod)
+    n = total if total >= 1 else (max(have) if have else 1)
+    tt, terr = read_json(root, mod, "version/test_table.json")
+    v, verr = read_json(root, mod, "version/VERSION.json")
+    blocked = []
+    if held(read_text(root, mod, "journal.md"), cur):
+        blocked.append("a Conductor hold stands on stage 4+5 (a kind hold line with no later kind release)")
+    if v is None or v.get("version") != rec.get("version"):
+        blocked.append("the record says version %s; VERSION.json says %s" % (rec.get("version"),
+                                                                          (v or {}).get("version", verr)))
+    if tt is None:
+        blocked.append("version/test_table.json: %s" % terr)
+    past = [k for k in have if k > n]
+    if past:
+        blocked.append("cycle folder(s) %s are past the record's cycle %d" % (past, n))
+    ex = read_exit(root, mod, n, tt)
+    opened = cycle_openings(rec).get(n) or rec.get("since")
+    out.update({"cycle": n, "visit": visit, "total": total, "visit_first": (total - visit + 1) if total and visit
+                else n, "cycles_present": have, "exit": ex, "opened": opened, "blocked": blocked,
+                "offline_bars": [b for b, _ in offline_bars(tt)]})
+    out["owed"] = ("blocked" if blocked else "cycle" if ex["state"] == "absent" else
+                   "no exit block" if ex["state"] == "no_exit_block" else
+                   "exit met" if ex["state"] == "met" else "exit not met")
+    return out
+
+
+def _src_dir(root, mod):
+    d = os.path.join(root, "src", "RimMandrake", mod)
+    return "src/RimMandrake/%s" % mod if os.path.isdir(d) else None
+
+
+def _globbed(root, sdir, rx, limit=None):
+    """Files under sdir whose name matches rx, SelfTest folders left out, as repo paths."""
+    out = []
+    base = os.path.join(root, sdir)
+    for dp, dn, fn in os.walk(base):
+        dn[:] = [x for x in dn if not x.startswith("SelfTest") and x not in ("obj", "bin")]
+        for f in fn:
+            if re.search(rx, f):
+                out.append(os.path.relpath(os.path.join(dp, f), root).replace(os.sep, "/"))
+    out.sort()
+    return out if limit is None else out[:limit], len(out)
+
+
+def _kernel_files(tt, deciders, sdir):
+    files = []
+    for t in deciders:
+        for r in ((tt.get("tests") or {}).get(t) or {}).get("reads") or []:
+            b = os.path.basename(r)
+            if (sdir and r.startswith(sdir + "/") and "/SelfTest" not in r and not b.startswith("selftest_")
+                    and b != "validation.py" and b.endswith((".cs", ".py")) and r not in files):
+                files.append(r)
+    return files
+
+
+def blind_brief_text(root, mod, cap_usd=None):
+    """-> (the mechanical half of a blind-challenge brief, blind_facts). Never refuses; launch_mod does."""
+    f = blind_facts(root, mod)
+    rec = load(root, mod) or {}
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    tt = tt or {}
+    tests = tt.get("tests") or {}
+    n, ver = f.get("cycle", 1), f.get("version", UNM)
+    cdir = "design/concepts/%s/%s/cycle_%d" % (mod, BLIND_DIR, n)
+    sdir = _src_dir(root, mod)
+    bars = offline_bars(tt)
+    when = pac_heading(now_ts())
+    cap = ("$%g" % cap_usd) if cap_usd else "the --budget-usd the launch carries"
+    L = ["# Blind challenge (Stages 4 and 5): %s %s, cycle %d" % (mod, ver, n), "",
+         "Written by `maturation.py brief %s` at %s: the mechanical half, from the mod's own files (item "
+         "RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED; spec §4 Stages 4 and 5)." % (mod, when), "",
+         "You are a helper of the Conductor; this brief carries the owner's authority. You are %s blind judge: you did "
+         "not build this mod%s, and you are told nothing any earlier judge or builder found." % (
+             "the" if n == 1 else "a NEW", "" if n == 1 else " and you did not judge an earlier cycle"), "",
+         "- Offline only: no game, no bridge, no deploy, no ModsConfig change.",
+         "- You start no helpers and no subagents.",
+         "- Work in your own clone, and run `./sync` first.",
+         "- Commit by explicit path. Land with `./publish`; load skill `clone-landing-commits` once, before your first "
+         "commit.",
+         "- Foreground commands only, each with a timeout of 540 s or less.",
+         "- Write progress to your skeleton at least every 8 minutes.", "",
+         "**Spend bound: %s.** The pilot's cycle 1 cost about $9 [measured, FORMAT_NOTES]. If you cannot see your spend, "
+         "stop at 3 hours of wall time. At the bound, record where you are, commit, publish, and report what is owed."
+         % cap, "",
+         "## Precondition (check first; stop if it fails)", "",
+         "```",
+         "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d.get('cycles'))\""
+         % (mod, RECORD), "```", "",
+         "It must print `blind_challenge` with `total` %d (visit %s). Otherwise stop, report \"%s cycle %d not open on "
+         "origin/main\", and do not advance it yourself." % (n, f.get("visit", UNM), mod, n), "",
+         "## The stage (read first, follow exactly)", "",
+         "1. `design/specs/2026-11-13-maturation-pipeline.md`, section \"Stages 4 and 5\": the whole table, the guards on "
+         "fixing in place, and \"After three cycles\". This is cycle %d; the Conductor decides after three in a visit "
+         "(this visit: cycle %s of it)." % (n, f.get("visit", UNM))]
+    own_notes = FORMAT_NOTES.startswith("design/concepts/%s/" % mod)
+    if own_notes:
+        L.append("2. `%s` is the record format, but it names this mod's cycle-1 findings: it is CLOSED to you until "
+                 "lane 1 is committed." % FORMAT_NOTES)
+    else:
+        L.append("2. `%s`: the pilot's record format and its traps. Use the same layout. It is about another mod and "
+                 "carries no %s findings." % (FORMAT_NOTES, mod))
+    if n >= 2:
+        L += ["", "Its rule for you is **\"All once, then changes.\"** You read the changed files and the bars whose "
+              "inputs changed. You are not told what the last judge found. A fault you find late in unchanged material "
+              "is still fixed, and is logged as `miss_of: %d`." % (n - 1)]
+    L += ["", "**Version facts.** %s has **%d bars** in `version/test_table.json`, %d of them offline (`proves_at` %s)."
+          % (ver, len(tt.get("bars") or []), len(bars), " or ".join(OFFLINE_PROVES))]
+
+    # ---- blind list
+    closed = ["`design/concepts/%s/journal.md`" % mod, "`exam.json`", "`version/evidence/`",
+              "`version/gaps_sorted.md` and `version/polish.md`", "`version/test_table.*`"]
+    if sdir:
+        st, _ = [], 0
+        base = os.path.join(root, sdir, "Source")
+        for x in sorted(os.listdir(base)) if os.path.isdir(base) else []:
+            if x.startswith("SelfTest") and os.path.isdir(os.path.join(base, x)):
+                st.append("`%s/Source/%s/`" % (sdir, x))
+        closed += st
+        if os.path.exists(os.path.join(root, sdir, "validation.py")):
+            closed.append("`%s/validation.py`" % sdir)
+    closed += ["any `selftest_*.py`", "any builder report", "the ledger notes on this mod"]
+    if own_notes:
+        closed.append("`%s`" % FORMAT_NOTES)
+    base_sha = None
+    if n >= 2:
+        base_sha = cycle_open_sha(mod, n - 1)
+        closed.insert(0, "anything under `version/blind_challenge/` except `cycle_%d/tests_edited.json`" % (n - 1))
+        closed.append("commit messages after `%s`" % (base_sha[:10] if base_sha else UNM))
+    closed.append("the section \"Steward's decisions\" at the end of this brief")
+    L += ["", "**Stay blind until lane 1 is recorded.** Before then, do not open any of these:"] + \
+         ["- %s" % x for x in closed]
+
+    # ---- what changed (cycle >= 2)
+    outside = sorted({t.get("file") for t in tests.values() if isinstance(t, dict) and t.get("file")
+                      and os.path.isfile(os.path.join(root, str(t["file"])))
+                      and not (sdir and t["file"].startswith(sdir + "/"))
+                      and not t["file"].startswith("design/concepts/%s/" % mod)})
+    if n >= 2:
+        paths = ["design/concepts/%s" % mod] + ([sdir] if sdir else []) + outside
+        L += ["", "## What changed (find it mechanically, without reading why)", ""]
+        if base_sha:
+            L += ["```", "git diff --name-only %s origin/main -- %s | grep -v '/blind_challenge/'" % (
+                base_sha[:10], " ".join(paths)), "```", "",
+                  "`%s` is the advance that opened cycle %d, before its judge ran. Map each changed file to the bars "
+                  "whose inputs it touches, and write that map into SUMMARY.md: those bars are your lane-1 scope. If a "
+                  "locked file changed (`tree.json`, `sheet.md`, `scenes.json`), the bars on the changed lines are in "
+                  "scope too." % (base_sha[:10], n - 1)]
+            g = subprocess.run(["git", "-C", REPO, "diff", "--name-only", base_sha, "HEAD", "--"] + paths,
+                               capture_output=True, text=True, timeout=60)
+            ch = [x for x in g.stdout.split() if "/blind_challenge/" not in x]
+            L += ["", "At brief time (`HEAD` of the writer's clone) it lists %d file(s)%s" % (
+                len(ch), ":" if ch else ".")] + ["- `%s`" % x for x in ch[:40]] + (
+                     ["- ... and %d more" % (len(ch) - 40)] if len(ch) > 40 else [])
+        else:
+            L += ["The advance that opened cycle %d is not found in git (its stage record never read total %d): diff "
+                  "from cycle %d's start time in its SUMMARY.md instead, and say so." % (n - 1, n - 1, n - 1)]
+
+    # ---- lane 1
+    L += ["", "## Lane 1 first: game logic from the bars alone", "",
+          "Write your start time (UTC) in SUMMARY.md before you open anything.", "", "**Inputs allowed:**"]
+    locked = [x for x in ("tree.json", "sheet.md", "plan.md", "version/VERSION.json", "version/bars.md")
+              if os.path.exists(os.path.join(mod_dir(root, mod), x))]
+    L.append("- Bars, under `design/concepts/%s/`: %s. Grep `scenes.json` for a bar id only when an oracle needs its "
+             "numbers." % (mod, ", ".join("`%s`" % x for x in locked)))
+    if sdir:
+        sett, ns = _globbed(root, sdir, r"(Mod|Settings|Tuning|Gate)\.cs$", 8)
+        L.append("- Settings as shipped (defaults and slider ranges): %s%s." % (
+            ", ".join("`%s`" % x for x in sett) or "none found by name (find the ModSettings class)",
+            " and %d more" % (ns - 8) if ns > 8 else ""))
+        per = [x for x in ("Defs", "Patches") if os.path.isdir(os.path.join(root, sdir, x))]
+        if per:
+            L.append("- Per-type values: %s." % ", ".join("`%s/%s/`" % (sdir, x) for x in per))
+    L += ["", "**Where to spend lane 1.** Start with the %d offline bars (`proves_at` %s), and give them most of it; the "
+          "kernels below are the files their deciders read:" % (len(bars), " or ".join(OFFLINE_PROVES))]
+    for b, deciders in bars:
+        k = _kernel_files(tt, deciders, sdir)
+        L.append("- `%s`: %s" % (b, ", ".join("`%s`" % x for x in k) if k else
+                                 "no kernel named by the table: find it from the bar's words, or write one "
+                                 "`not_kernel` row"))
+    if sdir:
+        ks, nk = _globbed(root, sdir, r"(Math|Kernel)\.cs$", 15)
+        L.append("")
+        L.append("After those, spend what is left on stage-6 bars whose logic plainly lives in a kernel (%d `*Math.cs` / "
+                 "`*Kernel.cs` file(s) outside SelfTest%s). Write a bar whose logic is game-side as one `not_kernel` "
+                 "row; do not stretch a kernel to cover it." % (nk, (": " + ", ".join("`%s`" % x for x in ks) +
+                                                                  (", ..." if nk > 15 else "")) if ks else ""))
+    lane1_scratch = "/mnt/d/ClaudeWork/rimmandrake/scratch/%s_blind_c%d_lane1/" % (mod.lower(), n)
+    L += ["", "**Tests to write**, your own, from what the bars promise:",
+          "- fixed cases",
+          "- random cases: record the seed, and shrink a failing case to its smallest form",
+          "- conservation checks (nothing created or lost)",
+          "- the shipped settings swept through their ranges, every switch off included", "",
+          "**How to compile and run.** Compile C# kernels with the per-user Windows dotnet. Stage under `%s`, because "
+          "`dotnet.exe` cannot build from a WSL path. The pilot's `lane1/run_lane1.py` shows the pattern: copy the "
+          "pattern, not its tests." % lane1_scratch, "",
+          "**Rows.** Write `lane1/lane1_rows.jsonl`, one row per line: `id`, `bars`, `kind` (fixed | random | sweep | "
+          "info | not_kernel), `verdict` (PASS | FAIL | INFO | UNSETTLED), `cases`, `detail` (with the seed and the "
+          "shrunk form). A row you cannot decide is UNSETTLED, with its reason. **Commit lane 1 before you open "
+          "anything else.**"]
+
+    # ---- lane 2
+    L += ["", "## Lane 2 second: the challenge", "",
+          "Now open `version/test_table.json` (`tests.*.command`, `runs_today`, `kind`, `partial`, `known_red`; "
+          "`bars.*.proves_at` and `offline_decides`), the code including the game-side callers of every kernel you "
+          "tested (the pilot's two real Problems were both in callers), the journal's open questions and its oddities%s, "
+          "and then the Steward's decisions at the end." % (", and `%s`" % FORMAT_NOTES if own_notes else ""), "",
+          "**Reruns.** Rerun every decider of an offline bar with its recorded command, then as many of the other "
+          "offline tests as the bound allows:"]
+    seen = set()
+    for b, deciders in bars:
+        for t in deciders:
+            if t in seen:
+                continue
+            seen.add(t)
+            x = tests.get(t) or {}
+            r = x.get("runs_today") if isinstance(x.get("runs_today"), dict) else {}
+            L.append("- `%s` (%s): `%s`%s" % (t, b, x.get("command") or "no command recorded", (
+                " — recorded %s" % (r.get("result") or ("rc %s" % r.get("rc")) if r else "")) if r else ""))
+    red_other = []
+    for t, x in sorted(tests.items()):
+        if t in seen or not isinstance(x, dict) or x.get("kind") != "offline":
+            continue
+        r = x.get("runs_today") if isinstance(x.get("runs_today"), dict) else {}
+        if x.get("known_red") or (r and (r.get("ran") is False or str(r.get("result", "PASS")).upper() != "PASS")):
+            red_other.append(t)
+    if red_other:
+        L.append("- Red or unrun as recorded, deciding no offline bar (rerun them; do not count them against the exit): "
+                 "%s." % ", ".join("`%s`" % t for t in red_other))
+    slow = [t for t, x in sorted(tests.items()) if isinstance(x, dict) and isinstance(
+        (x.get("runs_today") or {}).get("seconds") if isinstance(x.get("runs_today"), dict) else None, (int, float))
+        and x["runs_today"]["seconds"] > 300]
+    if slow:
+        L.append("- Slow as recorded (over 300 s): %s. Never run a whole suite in one command; use the recorded "
+                 "`--only` globs." % ", ".join("`%s`" % t for t in slow))
+    L += ["- Write `lane2/reruns.jsonl` with `test`, `result`, `recorded_result`, `last`, `recorded_last` and `match`. "
+          "Compare verdicts first, and accept a prefix of the last line (the recorded one may be cut short or come "
+          "from stderr).", "",
+          "**Planted faults.** List them in `lane2/planted_faults.json` (`id`, `file`, `old`, `new`, `bars`): at least "
+          "two per offline bar's kernel and at least four in game-side callers or patches%s. Run them with "
+          "`lane2/plant_faults.py`, with `WINBUILD_ROOT=/mnt/d/ClaudeWork/rimmandrake/scratch/%s_blind_c%d_mut/`; "
+          "restore on SIGTERM, SIGINT and SIGHUP, and end with `git diff --quiet -- %s`. Write "
+          "`lane2/planted_results.jsonl`, baseline first and `{\"tree_clean_after\": true}` last. A fault is caught only "
+          "when it makes a new failing row, never by a non-zero rc alone." % (
+              ", and two per changed file" if n >= 2 else "", mod.lower(), n, sdir or "design/concepts/%s" % mod), "",
+          "**Watch for this.** An offline test that reads source text, not behaviour, can stay green while the "
+          "behaviour breaks. A planted behaviour fault that survives a green decider is a Problem against the test.", "",
+          "**Faults.** Write each one to `lane2/faults.json` (`{\"faults\": [...]}`) as a refusal record: `id` (a "
+          "rimflow name; `python3 src/RimMandrake/rimflow/cli.py namecheck`), `class` (Problem or Polish), `bar`, "
+          "`criterion`, `evidence[]`, `would_pass`, `smallest_fix`, `verdict_on_criterion`, `status` (PENDING, FIXED "
+          "<sha>, or NOTED_FOR_CONDUCTOR)%s. File each fault as a rimflow item (skill `using-rimflow`, `--why`)." % (
+              ", `miss_of` (%d when the fault is in material unchanged since cycle %d)" % (n - 1, n - 1)
+              if n >= 2 else "")]
+
+    # ---- edits
+    L += ["", "## What you may and may not edit", "",
+          "You **may** fix mod code to fix a Problem, red first: the test fails on the parent sha and passes on the fix "
+          "sha; record both in `lane2/fixes.jsonl` (`fault`, `red` {`on`, `cmd`, `rc`, `line`}, `green` {same}, `sha`). "
+          "You may add tests or extend existing ones; list every test you touch in `tests_edited.json` (write it even "
+          "when empty). Build C# with `python3 src/RimMandrake/Utils/winbuild.py` and your private `WINBUILD_ROOT`; "
+          "never deploy it.", "",
+          "You **may not** edit any bar text or acceptance criterion; edit the locked tree (%s); weaken, skip or delete "
+          "an assertion; change `proves_at` or `decides`; move a bar between versions; or run `maturation.py advance`."
+          % ", ".join("`%s`" % x for x in ("tree.json", "sheet.md", "plan.md", "scenes.json", "record.json",
+                                          "version/VERSION.json", "version/bars.md")), "",
+          "When a fix needs bar text: if the code is wrong, fix the code; if the criterion is wrong but the bar keeps "
+          "its meaning, mark it NOTED_FOR_CONDUCTOR (the steward re-pins it); if the bar's words are wrong, mark it "
+          "NOTED_FOR_CONDUCTOR (the neutral fixer). Build no verdict on a NOTED bar."]
+
+    # ---- output and exit
+    heads = ["Start time"] + (["Changed files to bars"] if n >= 2 else []) + [
+        "Lane 1", "Lane 2 reruns", "Planted", "Faults", "Fixes"] + (["Steward's decisions enacted"]) + [
+        "Tests edited", "Unsettled", "Exit", "Owed"]
+    L += ["", "## Output: skeleton first", "",
+          "Your first write is `%s/SUMMARY.md`, with these headings: %s. Fill it as you go. The rest of `cycle_%d/` "
+          "follows FORMAT_NOTES: `lane1/` (`BlindLane1.cs` or `.py`, `run_lane1.py --kernel <file>`, `lane1_rows.jsonl`), "
+          "`lane2/` (`rerun_offline.py`, `reruns.jsonl`, `planted_faults.json`, `plant_faults.py`, "
+          "`planted_results.jsonl`, `faults.json`, `fixes.jsonl`) and `tests_edited.json`." % (
+              cdir, ", ".join(heads), n), "",
+          "Before each commit run `python3 src/RimMandrake/Utils/code_review_status.py check <path>` on code you changed "
+          "and `python3 src/RimMandrake/Utils/run_selftests.py --only <tests>` on the tests you touched. Commit lane 1, "
+          "then the fixes, then the record; then `./publish`.", "",
+          "## The exit, and who reads it", "",
+          "**The exit condition:** every offline bar (%s) is green on your rerun, and no Problem is left PENDING or "
+          "NOTED_FOR_CONDUCTOR. A Problem FIXED red-first is closed." % (
+              ", ".join("`%s`" % b for b, _ in bars) or "none in the table: say so in Exit"), "",
+          "Write the Exit section as this block, exactly these three keys (a program reads it):", "",
+          "```", "## Exit", "offline_bars: {%s}" % ", ".join("%s: green|red" % b for b, _ in bars),
+          "problems_open: N", "exit_met: true|false", "```", "",
+          "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads that block and checks it against your files "
+          "(each offline bar's deciders PASS in `reruns.jsonl` or `reruns_after_fix.jsonl`, no Problem not FIXED, each "
+          "FIXED one red then green in `fixes.jsonl`, no FAIL row in lane 1, `tests_edited.json` present, "
+          "`planted_results.jsonl` ending `tree_clean_after: true`). That reading is evidence for the steward, not a "
+          "move: the Conductor reads your SUMMARY.md and either advances with `--to in_game --steward-confirms "
+          "\"...\"` or opens the next cycle with `--to blind_challenge`. You run one cycle and stop." % mod, "",
+          "## Report (10 lines or fewer, plain words)", "",
+          "Tag every number [measured] or [guess ~N%%]: lane 1 rows passing of total and how many UNSETTLED; lane 2 "
+          "reruns matching of rerun; planted faults caught of planted; the Problem and Polish counts%s; shas; the tests "
+          "you edited; what you could not settle; whether the exit is met; spend." % (
+              " and how many are `miss_of`" if n >= 2 else "")]
+
+    # ---- steward's decisions
+    lines, undated = steward_lines(rec, read_text(root, mod, "journal.md") or "", n)
+    L += ["", "---", "", "## Steward's decisions (SEALED: read only after lane 1 is committed)", "",
+          "These are the Conductor's decisions as steward, carrying the owner's authority: design inputs, not findings. "
+          "Record each one you act on with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` (that writes "
+          "`infrastructure/state/ledger/events/OWNER.jsonl`: commit and publish it too).", ""]
+    if lines:
+        L.append("From the journal's Conductor interventions %s:" % (
+            "since cycle %d opened" % (n - 1) if n >= 2 else "for stage 4+5, and any other since the stage opened"))
+        L += ["- %s (stage %s, kind %s): %s" % (pac_heading(iv["at"]), iv["stage"], iv["kind"], iv["what"])
+              for iv in lines]
+    else:
+        L.append(BLIND_DEFAULT)
+    if undated:
+        L += ["", "(%d intervention line(s) in the journal carry no date and are not shown.)" % undated]
+    return "\n".join(L) + "\n", f
 
 
 # ---- the command line ------------------------------------------------------------------------------------------------
@@ -889,6 +1487,11 @@ def main(argv=None):
             print("  exit tests passing: %s" % ", ".join(nx["passed"]))
         for r in nx["refusals"]:
             print("  refused %s: %s" % (r["clause"], r["observed"]))
+        b = nx.get("blind")
+        if b and b.get("exit"):
+            print("  blind cycle %s (visit %s, total %s): exit %s: %s" % (b.get("cycle"), b.get("visit"), b.get("total"),
+                                                                       b["exit"]["state"], "; ".join(b["exit"]["why"])
+                                                                       or "no record yet"))
         print("  launch: %s" % nx.get("launch", "none"))
         print(nx["next"])
         return 0

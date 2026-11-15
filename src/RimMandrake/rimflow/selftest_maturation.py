@@ -5,6 +5,10 @@ Item RIMMANDRAKE_BUILD_MATURATION_SPINE_WHILE_DESIGN_STILL_MOVES; plan design/pl
 section 4, slice 1. Written before maturation.py and watched failing on it (the import fails), then passing.
 
     python3 src/RimMandrake/rimflow/selftest_maturation.py           exit 0 when every check prints PASS
+    python3 src/RimMandrake/rimflow/selftest_maturation.py --blind   the blind challenge: brief, next's exit reading,
+                                                                     launch (item
+                                                                     RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED;
+                                                                     watched failing on the base da54e5338e, then passing)
     python3 src/RimMandrake/rimflow/selftest_maturation.py --launch  slice 4 (brief, capped launch) with a fake
                                                                      detached_helper (item
                                                                      RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE;
@@ -294,8 +298,12 @@ def launch_main():
     try:
         copy_mods(root)
         for mod in FOUR + ("PyrelandsMechanics",):
-            shutil.copy(os.path.join(REPO, "design", "concepts", mod, "version", "stage_record.json"),
-                        os.path.join(root, "design", "concepts", mod, "version", "stage_record.json"))
+            # the records at the fixture sha, not the live ones (2026-11-15: all four live records moved to the blind
+            # challenge and turned this test red)
+            data = fixture(mod, "version/stage_record.json")
+            if data is not None:
+                with open(os.path.join(root, "design", "concepts", mod, "version", "stage_record.json"), "wb") as fh:
+                    fh.write(data)
         fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         with open(fake, "w") as f:
             f.write(FAKE_DH)
@@ -362,5 +370,211 @@ def launch_main():
     return 1 if FAILS else 0
 
 
+# ---- the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED) ----------------------------
+#
+# The four mods as they stood at the blind challenge, read from git: Explosive Knockback at visit 2 (cycles 1 and 2 hand
+# launched), FlowWorks, Gimme Some Slack and Pyrelands at visit 1. Written before maturation.py had blind_facts and watched
+# failing on the base da54e5338e (AttributeError), then passing.
+BLIND_SHA = "da54e5338ea493e0cb1575b684791d7136756488"
+BLIND_CLOCK = 1794736800.0      # 2026-11-15 1:20 AM PST, pinned
+ITEM = "RIMMANDRAKE_X_Y_Z_Q"
+
+
+def blind_fixture(mod, rel):
+    r = subprocess.run(["git", "-C", REPO, "show", "%s:design/concepts/%s/%s" % (BLIND_SHA, mod, rel)],
+                       capture_output=True, timeout=60)
+    return r.stdout if r.returncode == 0 else None
+
+
+def copy_blind(root):
+    for mod in FOUR:
+        for rel in COPY + ("version/stage_record.json",):
+            data = blind_fixture(mod, rel)
+            if data is not None:
+                dst = os.path.join(root, "design", "concepts", mod, rel)
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                with open(dst, "wb") as f:
+                    f.write(data)
+
+
+def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
+                pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True):
+    """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
+    tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
+    bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
+    d = os.path.join(root, "design", "concepts", mod, "version", "blind_challenge", "cycle_%d" % n)
+    shutil.rmtree(d, ignore_errors=True)
+    for sub in ("lane1", "lane2"):
+        os.makedirs(os.path.join(d, sub))
+    shown = ", ".join("%s: %s" % (b["id"], "red" if b["id"] == red_bar else "green") for b in bars
+                      if b["id"] != drop_bar)
+    ex = ("offline_bars: {%s}\nproblems_open: %d\nexit_met: %s\n" % (shown, problems_open, str(exit_met).lower())
+          if block else "(pending)\n")
+    with open(os.path.join(d, "SUMMARY.md"), "w") as f:
+        f.write("# cycle %d\n\n## Start time\n2026-11-15T08:00Z\n\n## Exit\n```\n%s```\n\n## Owed\nnone\n" % (n, ex)
+                if block else "# cycle %d\n\n## Exit\n%s\n## Owed\n(pending)\n" % (n, ex))
+    with open(os.path.join(d, "lane2", "reruns.jsonl"), "w") as f:
+        for b in bars:
+            for t in b.get("offline_decides") or b.get("decides") or []:
+                f.write(json.dumps({"test": t, "result": "FAIL" if t == rerun_fail else "PASS",
+                                    "recorded_result": "PASS", "match": t != rerun_fail}) + "\n")
+    faults = [{"id": "RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED", "class": "Problem", "status": "FIXED abc1234"},
+              {"id": "RIMMANDRAKE_NOTE_SELFTEST_POLISH_LEFT_ALONE", "class": "Polish", "status": "NOTED_FOR_CONDUCTOR"}]
+    if pending_problem:
+        faults.append({"id": "RIMMANDRAKE_LEAVE_SELFTEST_PROBLEM_OPEN", "class": "Problem (criterion)",
+                       "status": "NOTED_FOR_CONDUCTOR"})
+    with open(os.path.join(d, "lane2", "faults.json"), "w") as f:
+        json.dump({"cycle": n, "faults": faults}, f)
+    with open(os.path.join(d, "lane2", "fixes.jsonl"), "w") as f:
+        f.write(json.dumps({"fault": faults[0]["id"], "red": {"rc": [fix_red_rc, fix_red_rc]}, "green": {"rc": [0, 0]}}) + "\n")
+    with open(os.path.join(d, "lane1", "lane1_rows.jsonl"), "w") as f:
+        f.write(json.dumps({"id": "L1_a", "verdict": "PASS"}) + "\n" + json.dumps({"id": "L1_b", "verdict": "UNSETTLED"})
+                + "\n" + (json.dumps({"id": "L1_c", "verdict": "FAIL"}) + "\n" if lane1_fail else ""))
+    if edited:
+        with open(os.path.join(d, "tests_edited.json"), "w") as f:
+            json.dump({"cycle": n, "edited": []}, f)
+    with open(os.path.join(d, "lane2", "planted_results.jsonl"), "w") as f:
+        f.write(json.dumps({"baseline": True}) + "\n" + json.dumps({"tree_clean_after": tree_clean}) + "\n")
+
+
+def blind_main():
+    """The blind challenge: brief, next (a program's exit reading) and launch, offline, through a fake detached_helper."""
+    before = git_status()
+    root = tempfile.mkdtemp(prefix="maturation_blind_")
+    env_was = {k: os.environ.get(k) for k in ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR",
+                                              "MATURATION_CLOCK")}
+    try:
+        copy_blind(root)
+        fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
+        with open(fake, "w") as f:
+            f.write(FAKE_DH)
+        open(log, "w").close()
+        os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(BLIND_CLOCK),
+                          MATURATION_BRIEF_DIR=os.path.join(root, "briefs"))
+
+        def calls():
+            with open(log) as f:
+                return [json.loads(x) for x in f if x.strip()]
+
+        # ---- no cycle yet: Gimme Some Slack ------------------------------------------------------------------------
+        g = M.blind_facts(root, "GimmeSomeSlack")
+        ok(g.get("owed") == "cycle" and g.get("cycle") == 1 and (g.get("exit") or {}).get("state") == "absent",
+           "no cycle folder: cycle 1 is owed, the exit reads absent (%s)" % {k: g.get(k) for k in ("owed", "cycle")})
+        nx = M.next_step(root, "GimmeSomeSlack")
+        ok("maturation.py launch GimmeSomeSlack" in nx["launch"] and "steward_confirms" in nx["hand_steps"],
+           "next names the launch, and steward_confirms stays a hand step (%s)" % nx["launch"])
+        text, _ = M.brief_text(root, "GimmeSomeSlack")
+        ok(text.startswith("# Blind challenge (Stages 4 and 5): GimmeSomeSlack 0.1.0, cycle 1")
+           and "Offline build (Stage 3)" not in text, "the brief at the blind challenge is a blind-challenge brief")
+        tt = json.load(open(os.path.join(root, "design/concepts/GimmeSomeSlack/version/test_table.json")))
+        ok(all(b in text for b in ("no_hose", "no_hose_in_gss", "T_NO_HOSE", tt["tests"]["T_NO_HOSE"]["command"])),
+           "the brief names the offline bars, their decider and its recorded command, from the mod's own table")
+        ok("design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/SUMMARY.md" in text
+           and "exit_met: true|false" in text and "problems_open:" in text and "offline_bars:" in text,
+           "the brief names the skeleton path and the machine-checkable exit block")
+        ok("`design/concepts/GimmeSomeSlack/journal.md`" in text and "version/test_table.*" in text
+           and "FORMAT_NOTES.md" in text, "the brief keeps the journal and the test table closed until lane 1")
+        ok("## Steward's decisions (SEALED" in text and M.BLIND_DEFAULT[:60] in text,
+           "no stage 4+5 intervention since the stage opened: the sealed section carries the standing default")
+        jp = os.path.join(root, "design", "concepts", "GimmeSomeSlack", "journal.md")
+        jsaved = open(jp).read()
+        with open(jp, "w") as f:
+            f.write(M.add_intervention(jsaved, "- CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 12:40 AM PST, kind "
+                                               "decision): selftest says judge the hose bar first. Source: selftest."))
+        text, _ = M.brief_text(root, "GimmeSomeSlack")
+        ok("selftest says judge the hose bar first" in text and M.BLIND_DEFAULT[:60] not in text,
+           "a CONDUCTOR INTERVENED line since the stage opened fills the steward's section")
+        rc, out, unit = M.launch_mod(root, "GimmeSomeSlack", 20, ITEM, model="sonnet")
+        ok(rc == 2 and "opus" in out and not calls(), "a judging run below opus refuses (%s)" % out[:80])
+        rc, out, unit = M.launch_mod(root, "GimmeSomeSlack", 20, ITEM)
+        c = calls()
+        ok(rc == 0 and unit and len(c) == 1 and c[0][c[0].index("--budget-usd") + 1] == "20"
+           and c[0][c[0].index("--model") + 1] == "opus", "launch works at the blind challenge: one call, the cap, opus")
+        if c:
+            bf = c[0][c[0].index("--brief-file") + 1]
+            ok("# Blind challenge" in open(bf).read(), "the launched brief is the blind-challenge brief")
+        with open(jp, "w") as f:
+            f.write(M.add_intervention(jsaved, "- CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 12:41 AM PST, kind hold): "
+                                               "selftest hold. Source: selftest."))
+        g = M.blind_facts(root, "GimmeSomeSlack")
+        rc, out, _ = M.launch_mod(root, "GimmeSomeSlack", 20, ITEM)
+        ok(g.get("owed") == "blocked" and rc == 2 and len(calls()) == 1, "a hold on stage 4+5 blocks: no launch")
+        with open(jp, "w") as f:
+            f.write(jsaved)
+
+        # ---- a met cycle and each way of not meeting it: FlowWorks ------------------------------------------------
+        write_cycle(root, "FlowWorks", 1)
+        f = M.blind_facts(root, "FlowWorks")
+        ex = f.get("exit") or {}
+        ok(f.get("owed") == "exit met" and ex.get("state") == "met" and ex.get("cycle") == 1,
+           "a complete record whose block says exit_met true and whose files agree reads met (%s)" % ex.get("why"))
+        nx = M.next_step(root, "FlowWorks")
+        ok("steward_confirms" in nx["hand_steps"] and nx["launch"].startswith("none") and "exit met" in nx["next"],
+           "next: exit met is a program reading, the steward still confirms, nothing to launch (%s)" % nx["next"][:90])
+        rc, out, _ = M.launch_mod(root, "FlowWorks", 20, ITEM)
+        ok(rc == 2 and "cycle 1" in out and len(calls()) == 1, "launch refuses a cycle already recorded (%s)" % out[:80])
+        broken = (
+            (dict(exit_met=False, problems_open=1, red_bar="inv_converters"), "the judge's block says exit_met false",
+             "exit_met false"),
+            (dict(rerun_fail="T_CONVERT"), "a decider of an offline bar FAILs on the rerun", "T_CONVERT"),
+            (dict(pending_problem=True), "a Problem is NOTED_FOR_CONDUCTOR", "RIMMANDRAKE_LEAVE_SELFTEST_PROBLEM_OPEN"),
+            (dict(fix_red_rc=0), "a FIXED Problem was never shown red", "red"),
+            (dict(lane1_fail=True), "lane 1 has a FAIL row", "L1_c"),
+            (dict(tree_clean=False), "the planted-fault loop did not prove the tree clean", "tree_clean_after"),
+            (dict(drop_bar="inv_drilling"), "the block leaves out an offline bar", "inv_drilling"),
+            (dict(edited=False), "tests_edited.json is missing", "tests_edited.json"),
+        )
+        for kw, what, word in broken:
+            write_cycle(root, "FlowWorks", 1, **kw)
+            ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+            ok(ex.get("state") == "not_met" and word in " ".join(ex.get("why") or []),
+               "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:90]))
+        write_cycle(root, "FlowWorks", 1, block=False)
+        f = M.blind_facts(root, "FlowWorks")
+        ok(f.get("owed") == "no exit block" and (f.get("exit") or {}).get("state") == "no_exit_block",
+           "a cycle folder whose Exit still reads (pending) has no exit block (%s)" % f.get("owed"))
+        nx = M.next_step(root, "FlowWorks")
+        ok(nx["launch"].startswith("none"), "next launches nothing on a cycle in progress")
+
+        # ---- cycle 2 reads what changed since cycle 1 opened: Explosive Knockback ---------------------------------
+        write_cycle(root, "ExplosiveKnockback", 1, exit_met=False, problems_open=0, red_bar="inv_proof_scenes")
+        f = M.blind_facts(root, "ExplosiveKnockback")
+        ok(f.get("cycle") == 2 and f.get("owed") == "cycle", "visit 2 with only cycle_1 recorded: cycle 2 is owed (%s)"
+           % {k: f.get(k) for k in ("cycle", "owed")})
+        text, _ = M.brief_text(root, "ExplosiveKnockback")
+        ok("cycle 2" in text.split("\n")[0] and "f5e310809f" in text and "git diff --name-only f5e310809f" in text,
+           "the cycle-2 brief diffs from the advance that opened cycle 1 (f5e310809f), found in git")
+        ok("except `cycle_1/tests_edited.json`" in text and "miss_of" in text and "Changed files to bars" in text,
+           "the cycle-2 brief seals the earlier cycles but shows their tests_edited, and asks for miss_of")
+        ok("FORMAT_NOTES.md" in text and "names this mod's cycle-1 findings" in text,
+           "Explosive Knockback's own FORMAT_NOTES is sealed until lane 1")
+        ok("T_RESTORE" in text, "the brief lists every decider of the offline bars (T_RESTORE included)")
+
+        # ---- offline build is unchanged ------------------------------------------------------------------------------
+        data = fixture("FlowWorks", "version/stage_record.json")
+        with open(os.path.join(root, "design/concepts/FlowWorks/version/stage_record.json"), "wb") as fh:
+            fh.write(data)
+        rec = json.loads(data)
+        tt_old = fixture("FlowWorks", "version/test_table.json")
+        with open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json"), "wb") as fh:
+            fh.write(tt_old)
+        text, f = M.brief_text(root, "FlowWorks")
+        nx = M.next_step(root, "FlowWorks")
+        ok(rec["stage"] == "offline_build" and text.startswith("# Offline build (Stage 3)") and f.get("owed") == "build"
+           and nx["launch"].startswith("maturation.py launch FlowWorks --budget-usd"),
+           "a mod at the offline build gets the same Stage 3 brief and launch line as before")
+    finally:
+        for k, v in env_was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(root, ignore_errors=True)
+    ok(git_status() == before, "nothing under design/concepts in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
-    sys.exit(launch_main() if "--launch" in sys.argv[1:] else main())
+    a = sys.argv[1:]
+    sys.exit(launch_main() if "--launch" in a else blind_main() if "--blind" in a else main())
