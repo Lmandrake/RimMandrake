@@ -23,8 +23,9 @@ Per red item, in due order, one decision:
   stopped       an attempt ended and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
                 the Conductor log, once. There is no automatic reject-and-retry loop (the owner's condition, 2026-11-14).
   night_cap | slots_full | account_hold | disabled   caps: max_launches_per_night, max_live, the Dispatcher's account pick
-  launch        `rimflow start` the item (RUNNER, published), write the brief, detached_helper.py launch it (sonnet when
-                the red selftest proves the fix, opus when an opus_if rule matches; that model's cap)
+  launch        write the brief, detached_helper.py launch it (sonnet when the red selftest proves the fix, opus when an
+                opus_if rule matches; that model's cap). The fixer's first step is `rimflow start <item> --seat BENCH`
+                (RUNNER, this step's filing seat, may not `start`: model.RUNNER_VERBS).
 Reading: <RM_DISPATCHER_STATE>/red_dispatch/reading.json (RM_RED_DISPATCH_DIR overrides). Selftest: selftest_red_dispatch.py.
 """
 import argparse
@@ -264,6 +265,9 @@ Red tests and the night's detail lines (Transient/selftests_nightly.last in /hom
 {detail}
 
 Steps:
+0. Start the item and publish the shard, before anything else:
+   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "detached red fix (red_dispatch.py)"
+   ./publish -m "ledger: {item} start" infrastructure/state/ledger/events/BENCH.jsonl
 1. Run the red test(s) here first: python3 src/RimMandrake/Utils/run_selftests.py --only {only}
    (foreground, with a timeout). If it is GREEN at origin/main, the red is gone: say so with the output in a note and close
    the item (step 4) on HEAD's sha.
@@ -277,24 +281,6 @@ Steps:
    This is the only automatic attempt: nothing retries it, the Conductor reads your note.
 """.format(item=row["item"], said=row.get("said") or "-", detail="\n".join(lines) or "  (no detail read)",
            only=" ".join(os.path.basename(t) for t in tests))
-
-
-def start_and_publish(item, why):
-    """`rimflow start` the item as RUNNER (the build cop's filing seat) under the dispatch clone's ingest lock and publish
-    the RUNNER shard. -> (ok, text). A refused start does not stop the launch; it is said on the row."""
-    import dispatcher as D
-    import maturation_dispatch as MD
-    lk = D.git_lock()
-    if lk is None:
-        return False, "ingest.lock stayed busy; not started"
-    try:
-        ing = MD._ingest()
-        rc, out = ing.rimflow("start", item, "--why", why)
-        if rc:
-            return False, "start refused: %s" % out
-        return True, "started; publish: %s" % ing.publish(1, message="ledger: red_dispatch started %s" % item)
-    finally:
-        lk.close()
 
 
 def launch(item, model, cap, brief, seat):
@@ -328,7 +314,6 @@ def conductor_need(text, now, path=None):
 
 def execute(cfg, st, rows, launches, now, details, fx=None):
     fx = fx or {}
-    do_start = fx.get("start", start_and_publish)
     do_launch = fx.get("launch", launch)
     do_need = fx.get("need", conductor_need)
     night = night_of(now)
@@ -342,18 +327,16 @@ def execute(cfg, st, rows, launches, now, details, fx=None):
                 row["need_failed"] = "%s: %s" % (type(e).__name__, e)
         if row["item"] not in launches:
             continue
-        ok, stext = do_start(row["item"], "delegated: red_dispatch.py; build-cop red, tests %s, %s at USD %g (%s)" % (
-            ", ".join(os.path.basename(t) for t in row["tests"][:3]), row["model"], row["cap"], row["model_why"]))
         rc, text, unit = do_launch(row["item"], row["model"], row["cap"], brief_text(row, details, cfg),
                                    cfg.get("seat", "BENCH"))
         ok_launch = rc == 0 and bool(unit)
         s.pop("cleared_after_attempt", None)
         s.pop("told", None)
         s.setdefault("attempts", []).append({"night": night, "at": now, "unit": unit, "model": row["model"],
-                                             "cap": row["cap"], "start": stext,
+                                             "cap": row["cap"],
                                              "failed": None if ok_launch else (text or "rc %s" % rc)[:400]})
         if ok_launch:
-            row.update(decision="launched", unit=unit, why="%s; %s" % (row["why"], stext))
+            row.update(decision="launched", unit=unit)
         else:
             row.update(decision="launch_failed", why=(text or "rc %s" % rc)[:400])
 

@@ -78,15 +78,11 @@ def open_items(**over):
 
 
 WORLD = {"items": open_items(), "runs": {}, "night": {}}
-CALLS = {"start": [], "launch": [], "need": []}
+CALLS = {"launch": [], "need": []}
 LAUNCH_RC = {"rc": 0}
 
 
 def fx():
-    def start(item, why):
-        CALLS["start"].append(item)
-        return True, "started"
-
     def launch(item, model, cap, brief, seat):
         CALLS["launch"].append((item, model, cap, seat, brief))
         if LAUNCH_RC["rc"]:
@@ -95,7 +91,7 @@ def fx():
 
     def need(text, now):
         CALLS["need"].append(text)
-    return {"facts": lambda: {"reds": reds, **WORLD}, "account": lambda: (True, "ok"), "start": start,
+    return {"facts": lambda: {"reds": reds, **WORLD}, "account": lambda: (True, "ok"),
             "launch": launch, "need": need}
 
 
@@ -108,8 +104,9 @@ rd = RD.tick(CFG, apply=True, fx=fx(), now=NOW)
 dec = {k: v["decision"] for k, v in rd["items"].items()}
 check("max_live 2: two launch, the third waits", dec == {"SELFTEST_FIX_ALPHA_AAAA": "launched", "SELFTEST_FIX_BETA_BBBB":
                                                          "launched", "SELFTEST_FIX_GAMMA_CCCC": "slots_full"}, dec)
-check("each launch was started on the ledger first, then launched",
-      CALLS["start"] == ["SELFTEST_FIX_ALPHA_AAAA", "SELFTEST_FIX_BETA_BBBB"], CALLS["start"])
+check("each brief's first step starts the item as BENCH and publishes the shard (acceptance B's start)",
+      all(c[4].index("cli.py start %s --seat BENCH" % c[0]) < c[4].index("1. Run") and "events/BENCH.jsonl" in c[4]
+          for c in CALLS["launch"]), [c[0] for c in CALLS["launch"]])
 check("sonnet at its cap for one test, opus at its cap for a shared cause, seat BENCH",
       [(c[1], c[2], c[3]) for c in CALLS["launch"]] == [("sonnet", 5, "BENCH"), ("opus", 12, "BENCH")], CALLS["launch"])
 b = CALLS["launch"][0][4]
