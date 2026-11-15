@@ -55,7 +55,7 @@ def main():
         d = run_tmp.prepare("rm-relentless-work-abc-g1")
         ok(os.path.isdir(d) and (os.stat(d).st_mode & 0o777) == 0o700, "prepare makes a 0700 dir")
         open(os.path.join(d, "junk"), "w").close()
-        d2 = run_tmp.prepare("rm-relentless-work-abc-g1")
+        d2 = run_tmp.prepare("rm-relentless-work-abc-g1", runner=fake_systemctl({}))
         ok(d2 == d and os.listdir(d) == [], "prepare again starts empty (a relaunch inherits nothing)")
         try:
             run_tmp.path("../x")
