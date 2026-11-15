@@ -29,6 +29,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   manifest                                 the stage -> packet files table, with hashes
   showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
   turns [--root R]                         every turn that waits on him: waiting_owner, no OWNER event since it closed
+  repin <dir> --source OWNER:<tsn>[@<commit>]... --why W   a LOCKED version changed by his card: re-pin, no reopen
 
 Exit: 0 ok, 1 refused (the reason on stderr), 2 unreadable.
 What this cannot do, said plainly: injecting a packet proves it was supplied, not followed; the record's sources are
@@ -192,25 +193,35 @@ def _feed_of(u):
     return None if u is None else hashlib.sha256(",".join(u).encode("utf-8")).hexdigest()
 
 
+INPUT_FILES = {"root": "record.json", "sheet": "sheet.md", "tree": "tree.json", "scenes": "scenes.json",
+               "floor": "floor.json", "exam": "exam.json"}
+
+
+def input_hash(d, key):
+    """The current hash of one file input (None = absent). tree.json by its tree hash, so the coverage judge's
+    signature (coverage) does not count as a change; record.json by its root only (stage 1 freezes the root)."""
+    if key == "tree":
+        try:
+            tree = CT.load(d)
+            return CT.tree_hash(tree) if isinstance(tree, dict) else sha_file(os.path.join(d, "tree.json"))
+        except FileNotFoundError:
+            return None
+        except ValueError:
+            return sha_file(os.path.join(d, "tree.json"))
+    if key == "root":
+        try:
+            rec = read_json(os.path.join(d, "record.json"))
+            return CT.sha(rec.get("root")) if isinstance(rec, dict) and rec.get("root") is not None else None
+        except Refused:
+            return sha_file(os.path.join(d, "record.json"))
+    return sha_file(os.path.join(d, INPUT_FILES[key]))
+
+
 def inputs(d, st, repo=REPO):
-    """The current hash of every input a stage can depend on (None = absent). tree.json by its tree hash, so the
-    coverage judge's signature (coverage) does not count as a change."""
-    try:
-        tree = CT.load(d)
-        th = CT.tree_hash(tree) if isinstance(tree, dict) else sha_file(os.path.join(d, "tree.json"))
-    except FileNotFoundError:
-        th = None
-    except ValueError:
-        th = sha_file(os.path.join(d, "tree.json"))
-    try:
-        rec = read_json(os.path.join(d, "record.json"))
-        root = CT.sha(rec.get("root")) if isinstance(rec, dict) and rec.get("root") is not None else None
-    except Refused:
-        root = sha_file(os.path.join(d, "record.json"))
-    return {"root": root, "sheet": sha_file(os.path.join(d, "sheet.md")),
-            "tree": th, "scenes": sha_file(os.path.join(d, "scenes.json")),
-            "floor": sha_file(os.path.join(d, "floor.json")), "exam": sha_file(os.path.join(d, "exam.json")),
-            "owner": owner_feed(repo, st.get("item"), d)}
+    """The current hash of every input a stage can depend on (None = absent): input_hash per file, and the owner feed."""
+    out = {k: input_hash(d, k) for k in INPUT_FILES}
+    out["owner"] = owner_feed(repo, st.get("item"), d)
+    return out
 
 
 def stale_stage(d, st, repo=REPO):
@@ -1137,7 +1148,8 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
             raise Refused("LOCKED: changing a locked tree is his word only (an amendment comes back as a new concept)")
         if st.get("status") == "blocked":
             raise Refused("BLOCKED on %s: nothing runs until it ends (clear it with `unblock`)" % st.get("blocked_on"))
-        if isinstance(st.get("park"), dict) and not lift_park(st, d, repo):
+        lift_park(st, d, repo)    # his word since the park, or since the loop crossed its ceiling, lifts it
+        if isinstance(st.get("park"), dict):
             raise Refused("PARKED (%s): %s; nothing opens until his word on %s (he reads %s)" % (
                 st["park"].get("kind"), st["park"].get("why"), st.get("item"), os.path.join(d, PARK_FILE)))
         ceil = loop_ceiling(st)
@@ -1375,9 +1387,43 @@ def standing_park(st, d, repo=REPO, lines=None):
     return park
 
 
+def ceiling_crossed_at(st):
+    """-> epoch of the charge that took the current loop's spend to its ceiling, or None (not reached, or no loop)."""
+    start = loop_start(st)
+    if start is None:
+        return None
+    ceil, tot = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP), 0
+    for at, tokens in sorted((epoch(c.get("at")) or 0, int(c.get("tokens") or 0))
+                             for c in (st.get("budget") or {}).get("charges") or [] if isinstance(c, dict)):
+        if at >= start:
+            tot += tokens
+            if tot >= ceil:
+                return at
+    return None
+
+
+def word_past_ceiling(st, d, repo=REPO):
+    """The loop is past its ceiling with no park written yet, and his word on the item (ownerSaid or byCard) came
+    after it crossed: the park would have been written at the crossing and lifted by that word, so it is lifted now
+    (Pyrelands 2026-11-14: his card came before any open wrote the park, which then waited for another word). -> his
+    latest tsn, or None."""
+    if isinstance(st.get("park"), dict) or not st.get("item") or not loop_ceiling(st):
+        return None
+    at = ceiling_crossed_at(st)
+    lines = CT.owner_lines(repo, clone_of(d)) if at is not None else None
+    words = his_answers(lines, st["item"], at) if lines is not None else []
+    return words[-1] if words else None
+
+
 def lift_park(st, d, repo=REPO):
     """His word arrived: the park moves to `parks`, the loop restarts from now, the concept is ready. -> True when
-    lifted (st changed; the caller writes it)."""
+    lifted (st changed; the caller writes it). A ceiling no park was written for yet lifts the same way when his word
+    came after the loop crossed it (word_past_ceiling)."""
+    tsn = word_past_ceiling(st, d, repo)
+    if tsn:
+        st["park"] = {"kind": "ceiling", "why": loop_ceiling(st), "by": "lift_park: OWNER:%s after the crossing" % tsn,
+                      "at": datetime.datetime.fromtimestamp(ceiling_crossed_at(st), datetime.timezone.utc).strftime(
+                          "%Y-%m-%dT%H:%M:%SZ")}
     if not isinstance(st.get("park"), dict) or standing_park(st, d, repo):
         return False
     park = dict(st.pop("park"), lifted_at=now_iso())
@@ -1634,6 +1680,181 @@ def unblock(d, why):
     st["status"] = "ready"
     hist(st, "unblock", why)
     write_json(state_path(d), st)
+
+
+# ---------------------------------------------------------------- a locked version changed by his card
+
+VERSION_FILE = os.path.join("version", "VERSION.json")
+_HEX = re.compile(r"\b[0-9a-f]{7,40}\b")
+_REPIN_SOURCE = re.compile(r"^OWNER:([0-9]+)(?:@([0-9A-Za-z^~._/-]+))?$")
+
+
+def _git(repo, *a):
+    import subprocess
+    r = subprocess.run(["git", "-C", repo] + list(a), capture_output=True, timeout=120)
+    return r.stdout if r.returncode == 0 else None
+
+
+def ledger_events(repo):
+    """Every parsed event of every ledger shard in the clone's working tree (a bad line spoils itself only)."""
+    out = []
+    evd = os.path.join(repo, os.path.dirname(CT.OWNER_SHARD))
+    for name in sorted(os.listdir(evd)) if os.path.isdir(evd) else []:
+        if not name.endswith(".jsonl"):
+            continue
+        with open(os.path.join(evd, name), encoding="utf-8", errors="replace") as f:
+            for ln in f:
+                try:
+                    ev = json.loads(ln)
+                except ValueError:
+                    continue
+                if isinstance(ev, dict):
+                    out.append(ev)
+    return out
+
+
+def change_tied(ev, commit, repo, events):
+    """His card `ev` made the change `commit` (a full sha) when the commit cites the event (OWNER:<tsn> or its item id
+    in the message), or a ledger event on the card's item names the commit (its sha field, or a 7+ hex prefix in its
+    text): the close or note the change was landed under."""
+    msg = (_git(repo, "log", "-1", "--format=%B", commit) or b"").decode("utf-8", "replace")
+    if re.search(r"OWNER:%s(?![0-9])" % re.escape(str(ev.get("tsn"))), msg) or (ev.get("id") and ev["id"] in msg):
+        return True
+    for e in events:
+        if e.get("id") != ev.get("id"):
+            continue
+        if CT.txt(e.get("sha")) and len(e["sha"]) >= 7 and commit.startswith(e["sha"]):
+            return True
+        for h in _HEX.findall(" ".join(str(e.get(k) or "") for k in ("text", "reason", "why"))):
+            if commit.startswith(h):
+                return True
+    return False
+
+
+def input_changes(d, key, repo, pinned):
+    """-> (commits, why): the commits (oldest first) that moved file input `key` from its pinned hash to the committed
+    one, or (None, why) when that cannot be traced: the pin never appears in the file's git history."""
+    rel = os.path.relpath(os.path.join(d, INPUT_FILES[key]), repo).replace(os.sep, "/")
+    log = _git(repo, "log", "--reverse", "--format=%H", "--", rel)
+    if log is None:
+        return None, "git log of %s failed" % rel
+    import tempfile
+    seen = []                       # (commit, hash after it)
+    with tempfile.TemporaryDirectory(prefix="repin-", dir=os.path.dirname(os.path.abspath(state_path(d)))) as t:
+        for c in log.decode().split():
+            blob = _git(repo, "show", "%s:%s" % (c, rel))
+            p = os.path.join(t, INPUT_FILES[key])
+            if blob is None:
+                if os.path.exists(p):
+                    os.remove(p)
+            else:
+                with open(p, "wb") as f:
+                    f.write(blob)
+            seen.append((c, input_hash(t, key)))
+    at = [i for i, (_, h) in enumerate(seen) if h == pinned]
+    if not at:
+        return None, "the pinned %s (%s) is in no commit of %s: the change cannot be traced" % (
+            key, str(pinned)[:10], rel)
+    return [c for i, (c, h) in enumerate(seen) if i > at[-1] and h != seen[i - 1][1]], ""
+
+
+def repin(d, sources, why, repo=None):
+    """His card changed a LOCKED version (version/VERSION.json state locked): re-pin the accepted results' frozen
+    inputs to the current hashes so the stage machine does not reopen stage 1 to re-argue what he decided. `sources`
+    are "OWNER:<tsn>@<commit>" (his card and the commit that carried it out) or "OWNER:<tsn>" (his word on the item,
+    taken in with no file change). Every source is his word (byCard or ownerSaid) on the OWNER shard; every commit is
+    tied to its card (change_tied); every commit since a stage's pin that moved one of its file inputs is cited; every
+    owner event on the item new since that pin is cited; no change is uncommitted. Refused otherwise, stage.json
+    untouched. -> the re-pinned stages."""
+    repo = repo or clone_of(d) or REPO
+    if not CT.txt(why):
+        raise Refused("a repin says why")
+    st = load_state(d)
+    ver = read_json(os.path.join(d, VERSION_FILE)) or {}
+    if ver.get("state") != "locked":
+        raise Refused("%s is not locked (state %r): an unlocked concept's changed inputs reopen its stages" % (
+            VERSION_FILE, ver.get("state")))
+    if not sources:
+        raise Refused("no source: a locked change cites his OWNER event (OWNER:<tsn>@<commit>)")
+    owner_ev = CT.owner_events(repo, clone_of(d))
+    events = ledger_events(repo)
+    cited, words = {}, set()          # full commit -> tsn; every tsn cited
+    for sv in sources:
+        m = _REPIN_SOURCE.match(str(sv).strip())
+        if not m:
+            raise Refused("source %r is not OWNER:<tsn>[@<commit>]: a locked change is his word only "
+                          "(a Conductor instruction is not his quotation)" % sv)
+        tsn, ref = m.group(1), m.group(2)
+        ev = owner_ev.get(tsn)
+        if not isinstance(ev, dict):
+            raise Refused("OWNER:%s is not on the OWNER shard" % tsn)
+        if not (CT.txt(ev.get("ownerSaid")) or CT.txt(ev.get("byCard"))):
+            raise Refused("OWNER:%s carries no byCard or ownerSaid: it is not his word" % tsn)
+        words.add(tsn)
+        if ref:
+            full = (_git(repo, "rev-parse", "--verify", "%s^{commit}" % ref) or b"").decode().strip()
+            if not full:
+                raise Refused("commit %s does not resolve" % ref)
+            if not change_tied(ev, full, repo, events):
+                raise Refused("commit %s is not tied to OWNER:%s (%s): neither cites the other, and no ledger event on "
+                              "%s names the commit" % (full[:10], tsn, ev.get("id"), ev.get("id")))
+            cited[full] = tsn
+    cur = inputs(d, st, repo)
+    rel = os.path.relpath(d, repo).replace(os.sep, "/")
+    head = os.path.join(d, ".repin-head")
+    os.makedirs(head, exist_ok=True)
+    try:
+        for fn in INPUT_FILES.values():
+            blob = _git(repo, "show", "HEAD:%s/%s" % (rel, fn))
+            if blob is not None:
+                with open(os.path.join(head, fn), "wb") as f:
+                    f.write(blob)
+        committed = {k: input_hash(head, k) for k in INPUT_FILES}
+    finally:
+        import shutil
+        shutil.rmtree(head, ignore_errors=True)
+    used, plan, frozen_now = set(), {}, owner_uncited(repo, st.get("item"), d)
+    for r in sorted(accepted(st), key=lambda r: r["stage"]):
+        changed = [k for k in DEPS[r["stage"]] if r["inputs"].get(k) != cur.get(k)]
+        if not changed:
+            continue
+        for k in changed:
+            if k == "owner":
+                new = sorted(set(frozen_now or []) - set(r.get("owner_uncited") or []))
+                miss = [t for t in new if t not in words]
+                if frozen_now is None or miss:
+                    raise Refused("stage %d: his new words on %s are not cited: %s" % (
+                        r["stage"], st.get("item"), ", ".join("OWNER:" + t for t in miss) or "the shard is unreadable"))
+                continue
+            if cur.get(k) != committed.get(k):
+                raise Refused("stage %d: %s has an uncommitted change; a locked change is the committed one" % (
+                    r["stage"], INPUT_FILES[k]))
+            commits, err = input_changes(d, k, repo, r["inputs"].get(k))
+            if commits is None:
+                raise Refused("stage %d: %s" % (r["stage"], err))
+            miss = [c for c in commits if c not in cited]
+            if miss:
+                raise Refused("stage %d: %s was changed by %s, which no source cites" % (
+                    r["stage"], k, ", ".join(c[:10] for c in miss)))
+            used.update(commits)
+        plan[r["stage"]] = changed
+    if not plan:
+        raise Refused("nothing to re-pin: no accepted stage is stale")
+    idle = [c for c in cited if c not in used]
+    if idle:
+        raise Refused("cited commit(s) %s changed none of the stale inputs: not the change cited" % (
+            ", ".join(c[:10] for c in idle)))
+    at = now_iso()
+    for r in accepted(st):
+        if r["stage"] in plan:
+            r["inputs"] = dict(r["inputs"], **{k: cur.get(k) for k in plan[r["stage"]]})
+            if "owner" in plan[r["stage"]]:
+                r["owner_uncited"] = frozen_now
+            r.setdefault("repinned", []).append({"at": at, "inputs": plan[r["stage"]], "sources": list(sources)})
+    hist(st, "locked_change", "%s; re-pinned %s; sources %s" % (why, "; ".join(
+        "stage %d (%s)" % (s, ", ".join(ks)) for s, ks in sorted(plan.items())), ", ".join(sources)))
+    write_json(state_path(d), st)
+    return sorted(plan)
 
 
 # ---------------------------------------------------------------- scene recovery journal
@@ -1898,6 +2119,11 @@ def main(argv=None):
     x = sub.add_parser("unblock")
     x.add_argument("dir")
     x.add_argument("--why", required=True)
+    x = sub.add_parser("repin", help="a LOCKED version changed by his card: re-pin the accepted stages' inputs")
+    x.add_argument("dir")
+    x.add_argument("--source", action="append", default=[],
+                   help="OWNER:<tsn>@<commit> (his card and the commit carrying it out) or OWNER:<tsn> (his word, no file)")
+    x.add_argument("--why", required=True)
     for name in ("scene-begin", "scene-end", "scene-hold"):
         x = sub.add_parser(name)
         x.add_argument("dir")
@@ -1998,6 +2224,8 @@ def main(argv=None):
             return 1 if errs else 0
         elif a.cmd == "unblock":
             unblock(a.dir, a.why)
+        elif a.cmd == "repin":
+            print("re-pinned stage(s) %s: %s" % (", ".join(map(str, repin(a.dir, a.source, a.why, REPO))), a.dir))
         elif a.cmd == "scene-begin":
             scene_begin(a.dir, a.scene, a.recovery)
         elif a.cmd in ("scene-end", "scene-hold"):
