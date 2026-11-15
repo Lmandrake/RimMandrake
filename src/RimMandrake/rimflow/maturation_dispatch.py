@@ -48,6 +48,23 @@ releases_used), so the next tick pauses at the ceiling again. Another mod's or s
 or a malformed line releases nothing; every ceiling pause names the release command that would lift it.
 delegated_digest.py reads the same file (source "release": mod, stage and who; its page is token-blind, so the dollars
 and the why are listed by `releases`, not printed there).
+The Conductor's hand judgements of 2026-11-13 to 11-15, applied by the tick (census:
+design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturation_hands.py):
+  no stop       a run first seen with 0 refused bars had no build work to resolve and is never judged as a builder; a stop
+                written on an empty refused set lifts itself (RIMMANDRAKE_SKIP_BUILDER_STOP_ON_ZERO_REFUSED_BARS)
+  code retry    a launch that failed on a defect (not a transient fault) records the pipeline code it failed on
+                (pipeline_code: the git tree of src/RimMandrake/rimflow at this clone's HEAD) and is tried again once
+                that code changes, within launch_tries: at Stage 3 the stop lifts, a blind, in-game, steward or fixer
+                entry is retriable (RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES)
+  refund        a blind or in-game run KILLED from outside keeps its dollars charged to the stage; when those dollars
+                alone hold its own retry at the ceiling, the tick gives back what is missing, once per killed run, never
+                while the stage reads DIVERGING, as a release record marked auto (by RUNNER, a delegated call the daily
+                digest reads). Every other release stays the Conductor's (RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING)
+  slow chores   every 30 min: `detached_helper.py backfill-cost --apply`, and finish and return a run on an advancing mod
+                dead 10 min with its finish never run (RIMMANDRAKE_SWEEP_RUN_DOLLARS_AND_DEAD_RUNS_ON_TICK)
+  hand acts     maturation_hands.observe records every hand act on the pipeline; the reading's hand_acts block counts
+                the ones with no follow-up, and one open a day is a Needs Conductor line and the alarm
+                OPS_MATURATION_HAND_ACT_UNFOLDED (RIMMANDRAKE_RECORD_HAND_ACTS_TICK_ONLY_SAW_ITS_OWN)
   slots_full    max_live live runs on advancing mods already (the Conductor's included)
   account_hold  the Dispatcher's account pick holds role launches (its rule's `hold` list): nothing
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
@@ -211,6 +228,10 @@ def gather(root, cfg, live=True):
             f["run_usd"] = {r["unit"]: (r["usd"] if isinstance(r.get("usd"), (int, float)) else
                                         r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
                             for r in runs if r.get("unit")}
+            # for maturation_hands (who launched what) and slow_chores (a dead run whose finish never ran)
+            f["runs_seen"] = [{"unit": r["unit"], "item": r.get("item"), "at": r.get("at"), "end": r.get("end")}
+                              for r in runs if r.get("unit")]
+            f["dead_unfinished"] = [r["unit"] for r in runs if r.get("unit") and not r.get("live") and r.get("end") is None]
         else:
             f["live_units"] = UNM
         out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
@@ -443,14 +464,74 @@ def stage_spent(f, stage, ours):
     return round(sum(spent.values()), 2)
 
 
-def reserve_refused(cfg, f, row, put, cap, stage, ours, s=None, releases=None):
+REFUND_STAGE = {"blind_challenge": "4+5", "in_game": "6"}       # maturation_convergence's stage keys
+
+
+def refund(cfg, s, f, stage, usd, cap, unit):
+    """-> (refund, why not). The Conductor's judgement of 2026-11-15 12:25 PM PST, as a rule: "cycle 3 was killed
+    mid-run by the account switch, not failed ... The mod is converging." A run KILLED from outside before it wrote a
+    result (f["killed"]) bought no judging, yet its dollars stay charged to the stage; when they alone hold its own
+    retry at the ceiling, the tick gives them back once: the amount still missing, never more than that run spent,
+    never twice for one run, and not while the stage reads DIVERGING. Any other release stays the Conductor's hand."""
+    if not unit or unit not in (f.get("killed") or {}):
+        return None, ""
+    if unit in (s.get("refunds") or {}):
+        return None, "; the killed run %s was refunded once already" % unit
+    ceiling, spent = cfg.get("stage_ceiling_usd"), (f.get("run_usd") or {}).get(unit)
+    if not (_usd_ok(spent, True) and _usd_ok(ceiling, True)):
+        return None, ""
+    need = round(usd + cap - ceiling, 2)
+    if need > spent + READ_SLACK:
+        return None, "; the killed run %s spent USD %.2f, less than the USD %.2f missing" % (unit, spent, need)
+    word = (s.get("convergence") or {}).get(REFUND_STAGE.get(stage)) or UNM
+    if word == "DIVERGING":
+        return None, "; no refund of the killed run %s's dollars while the stage reads DIVERGING" % unit
+    return {"unit": unit, "stage": stage, "read_usd": usd, "usd": max(need, 0.01), "spent": spent, "word": word}, ""
+
+
+def book_refunds(st, rows, now, path=None):
+    """Each refund a launch used becomes one release record (marked auto, by RUNNER, a delegated call: the daily
+    digest reads the same file), spent at once; the killed run is marked refunded. -> the record ids."""
+    out = []
+    for r in rows:
+        ref = r.get("refund")
+        if not ref or r.get("decision") != "launched":
+            continue
+        rec = {"ts": dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "mod": r["mod"],
+               "stage": ref["stage"], "by": "RUNNER", "read_usd": round(ref["read_usd"], 2),
+               "release_usd": round(ref["usd"], 2), "auto": True,
+               "why": "delegated: killed-run refund: run %s was killed from outside before it wrote a result (not a "
+                      "failed run); USD %.2f of the USD %.2f charged for it is given back once so the same %s can "
+                      "finish; the stage's convergence reads %s (the Conductor's rule of 2026-11-15, "
+                      "RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING)" % (
+                          ref["unit"], ref["usd"], ref["spent"],
+                          "cycle" if ref["stage"] == "blind_challenge" else "visit", ref["word"])}
+        rec["id"] = "rel-%s" % hashlib.sha1(json.dumps(rec, sort_keys=True).encode()).hexdigest()[:12]
+        with open(path or releases_path(), "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, sort_keys=True) + "\n")
+        s = st["mods"][r["mod"]]
+        s.setdefault("releases_used", {})[rec["id"]] = {"at": now, "stage": ref["stage"], "usd": ref["read_usd"],
+                                                         "unit": r.get("unit")}
+        s.setdefault("refunds", {})[ref["unit"]] = {"at": now, "usd": rec["release_usd"], "release": rec["id"]}
+        r["why"] = "%s; killed-run refund %s (USD %.2f)" % (r.get("why"), rec["id"], rec["release_usd"])
+        out.append(rec["id"])
+    return out
+
+
+def reserve_refused(cfg, f, row, put, cap, stage, ours, s=None, releases=None, killed=None):
     """The ceiling at the blind challenge and in-game acceptance, as at the offline build: True (the row put) when the
     stage's spend plus this run's cap passes stage_ceiling_usd. Read every tick, never stored: raising the ceiling or a
-    Conductor's release (`release`) lifts it, the release once."""
+    Conductor's release (`release`) lifts it, the release once. killed: the killed run this launch retries, if any
+    (refund)."""
     usd = stage_spent(f, stage, ours)
     row["stage_usd"] = usd
     over, rid = ceiling_gate(cfg, s or {}, row["mod"], stage, usd, cap, M.label(stage), releases)
     if over:
+        ref, why_not = refund(cfg, s or {}, f, stage, usd, cap, killed)
+        if ref:
+            row["refund"] = ref
+            return False
+        over += why_not
         put("ceiling", over, "the ceiling, %s; nothing more launches on it until the Conductor reads the spend" % over)
         return True
     if rid:
@@ -535,7 +616,12 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             if book:    # a steward or fixer is not a builder: its own book and cap govern its retries
                 s["last_run"]["autonomy"] = book
             prog, pwhy = progressed(w, ids, f.get("bar_fp"))
-            if not prog and not book:
+            # a run first seen with no refused bars had no build work to resolve: it was no builder (a hand-launched
+            # fix on a mod standing here read "0 -> 0, none resolved", and a stop on an empty set could never lift)
+            idle = was == 0 and not w.get("ids")
+            if idle:
+                s["last_run"]["not_judged"] = "no build work was owed when it started (0 refused bars)"
+            if not prog and not book and not idle:
                 s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and %s" % (w.get("unit"), pwhy)}
         owed = f.get("owed")
         if owed in OWED:
@@ -581,6 +667,22 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             s.pop("stopped")
             row["stop_lifted"], stop = "it judged the %s run %s as a builder" % (
                 autonomy_book(s, lr["unit"]), lr["unit"]), None
+        if (stop and stop.get("ids") == [] and str(stop.get("why")).startswith("run ") and not stop.get("ceiling")
+                and " 0 -> " in str(stop.get("why"))):
+            # written before a run seen with no refused bars stopped being judged as a builder: nothing shrinks an
+            # empty set, so it held the mod for good
+            s.pop("stopped")
+            row["stop_lifted"], stop = "it was written on a run that had no refused bars to resolve", None
+        if (stop and stop.get("launch_failed") and stop.get("code") and cfg.get("_code")
+                and stop["code"] != cfg["_code"] and int(stop.get("tries") or 1) < int(cfg.get("launch_tries", 3))):
+            # the launch failed on a defect, not a transient fault, and the pipeline's code has changed since: one more
+            # try on the same item (the Conductor's hand `clear` after a fix landed, 2026-11-15 12:18 PM PST)
+            s["launch_retry"] = {"item": stop.get("item"), "filed": bool(stop.get("filed")),
+                                 "tries": int(stop.get("tries") or 1), "at": now, "refused": n,
+                                 "failed": stop.get("why")}
+            s.pop("stopped")
+            row["stop_lifted"], stop = "the pipeline's code changed since the failed launch (%s -> %s)" % (
+                str(stop["code"])[:10], str(cfg["_code"])[:10]), None
         # a stop lifts only when refused bars were resolved (the set shrank); a renamed id is not a resolution
         if stop and not (isinstance(ids, list) and isinstance(stop.get("ids"), list)
                          and set(ids) < set(stop["ids"])):
@@ -621,7 +723,25 @@ def retriable(cfg, x, killed=None):
         return False
     if x.get("unit"):
         return not x.get("failed") and x["unit"] in (killed or {})
-    return bool(x.get("failed")) and x.get("never_started", True) and AUT.transient(x["failed"])
+    if not (x.get("failed") and x.get("never_started", True)):
+        return False
+    # a launch that failed on a defect (a rule that refused the spawn, say) is tried again once the pipeline's code
+    # has changed since: the fix may have landed. Before this the Conductor fixed the cause, then cleared by hand.
+    return AUT.transient(x["failed"]) or code_changed(cfg, x)
+
+
+def code_changed(cfg, x):
+    return bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
+
+
+def pipeline_code(root):
+    """-> the git tree id of src/RimMandrake/rimflow at this clone's HEAD (the code the tick is running), or None."""
+    try:
+        r = subprocess.run(["git", "-C", root, "rev-parse", "HEAD:src/RimMandrake/rimflow"], capture_output=True,
+                           text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else None
 
 
 def reap_wait(f, retry, put, n, what):
@@ -657,6 +777,8 @@ def retried(cfg, retry):
     return (", try %d of %d after %s" % (
         int(retry.get("tries") or 1) + 1, int(cfg.get("launch_tries", 3)),
         "a run killed before it wrote a result (%s)" % retry["unit"] if retry.get("unit")
+        else "a failed launch, the pipeline's code having changed since" if code_changed(cfg, retry)
+        and not AUT.transient(str(retry.get("failed") or ""))
         else "a launch that never started on a transient fault")) if retry else ""
 
 
@@ -745,7 +867,8 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
         return False
-    if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto"), s, releases):
+    if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto"), s, releases,
+                       killed=retry["unit"] if resume else None):
         return False
     if not account[0]:
         put("account_hold", account[1])
@@ -843,7 +966,8 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         put("no_cap", "the settings have no positive ingame_cap_usd; no live driver launches without a cap")
         return False
-    if reserve_refused(cfg, f, row, put, cap, "in_game", s.get("ingame_auto"), s, releases):
+    if reserve_refused(cfg, f, row, put, cap, "in_game", s.get("ingame_auto"), s, releases,
+                       killed=retry["unit"] if resume else None):
         return False
     if not account[0]:
         put("account_hold", account[1])
@@ -966,6 +1090,8 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
         ok = rc == 0 and bool(unit)
     entry = dict(where, unit=unit if ok else None, item=item, at=now, cap=row.get("cap"), failed=None if ok else text,
                  tries=tries, filed=filed, never_started=not unit)
+    if not ok and cfg.get("_code"):
+        entry["code"] = cfg["_code"]        # the pipeline code it failed on: retriable() tries again once it changes
     lst = s.setdefault(book, [])
     if retry:
         if retry.get("unit"):
@@ -1089,7 +1215,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         else:
             s.pop("launch_retry", None)
             spent = (" %d times on a transient fault, the last" % tries) if tries > 1 and AUT.transient(text) else ""
-            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed%s: %s" % (spent, text)}
+            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed%s: %s" % (spent, text),
+                            "launch_failed": True, "code": cfg.get("_code"), "tries": tries, "item": item,
+                            "filed": filed}
             row.update(decision="launch_failed", why=text,
                        need="%s: the launch failed%s (%s); the step will not retry it on its own" % (mod, spent, text))
     return done
@@ -1164,6 +1292,41 @@ def record_spend(root, facts, fx=None):
     if paths:
         wrote["_land"] = land_spend(root, paths, fx)
     return wrote
+
+
+CHORES_S = 1800         # the slow chores run this often, not every 60 s tick
+DEAD_WAIT_S = 600       # a dead run is finished by the tick only after this long dead (its own finish may be running)
+
+
+def slow_chores(st, facts, now, fx=None):
+    """Two hand chores of 2026-11-13 to 11-15, done by the tick every CHORES_S: read back the dollars of finished runs
+    that recorded none (`detached_helper.py backfill-cost --apply`), and finish and return a run on an advancing mod
+    whose unit died with its finish never run (`detached_helper.py finish --unit`: it read "running" for good). A
+    killed blind or in-game run is left to its retry path (reap_wait). -> what was said, or None between passes. A
+    chore that fails says so and never costs the tick."""
+    fx = fx or {}
+    c = st.setdefault("chores", {})
+    dead = {u: mod for mod, f in facts.items() for u in (f.get("dead_unfinished") or [])
+            if u not in (f.get("killed") or {})}
+    seen = c.get("dead") or {}
+    c["dead"] = {u: seen.get(u, now) for u in dead}
+    if now - float(c.get("at") or 0) < CHORES_S:
+        return None
+    c["at"] = now
+    said = []
+    try:
+        said.append(str((fx.get("backfill") or (lambda: DH.backfill_cost(apply=True)[1].splitlines()[0]))()))
+    except Exception as e:      # noqa: BLE001
+        said.append("backfill-cost failed: %s: %s" % (e.__class__.__name__, str(e)))
+    for u, since in sorted(c["dead"].items()):
+        if now - since < DEAD_WAIT_S:
+            continue
+        try:
+            said.append(str((fx.get("reap") or reap_run)(u)))
+        except Exception as e:  # noqa: BLE001
+            said.append("finishing dead run %s failed: %s: %s" % (u, e.__class__.__name__, e))
+    c["said"] = said[-8:]
+    return said
 
 
 def reading(cfg, rows, now):
@@ -1285,7 +1448,9 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
     d = sdir()
     st = _read(os.path.join(d, "state.json"), {})
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
+    shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
+    cfg = dict(cfg, _code=(fx["code"]() if "code" in fx else pipeline_code(REPO)))   # the code this tick runs
     facts = fx["facts"]() if "facts" in fx else gather(root, cfg)
     account = fx["account"]() if "account" in fx else account_gate()
     releases = fx["releases"]() if "releases" in fx else read_releases()
@@ -1311,6 +1476,8 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         if r.get("release") and r.get("decision") == "launched":
             st["mods"][r["mod"]].setdefault("releases_used", {})[r["release"]] = {
                 "at": now, "stage": r.get("stage"), "usd": r.get("stage_usd"), "unit": r.get("unit")}
+    if apply:
+        book_refunds(st, rows, now)
     AUT.classify(cfg, st, rows, now)
     if apply and aut:
         AUT.post_cards(rows, st, now, fx)
@@ -1323,9 +1490,19 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         conv(root, rd)
     except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
         rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
+    for mod, c in (rd.get("convergence") or {}).items():    # the next tick's refund rule reads the word per stage
+        if mod in st.get("mods", {}) and isinstance(c, dict):
+            st["mods"][mod]["convergence"] = {k: (v or {}).get("verdict") for k, v in c.items()}
     if apply:
         rd["clone"] = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))())
         rd["spend_rows"] = record_spend(root, facts, fx)
+        if aut:
+            rd["chores"] = slow_chores(st, facts, now, fx)
+        try:        # every hand act on the pipeline, recorded; one left a day with no follow-up alarms
+            import maturation_hands as MH       # noqa: E402
+            MH.observe(root, shipped, st, facts, now, rd, fx.get("hands"))
+        except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
+            rd["hand_acts_error"] = "%s: %s" % (e.__class__.__name__, e)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:
@@ -1339,6 +1516,11 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         rd["page"] = "regenerated" if getattr(r, "returncode", 0) == 0 else "page failed: %s" % (
             (getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))
     return rd
+
+
+HAND_NOTE = ("This is a hand act on the pipeline (id %s): the tick records it, and one with no follow-up within a day "
+             "alarms. Name the item that makes this hand unnecessary in --why, or `maturation_hands.py fold <id> --item "
+             "<ID>` once it is filed.")
 
 
 def main(argv=None):
@@ -1402,6 +1584,7 @@ def main(argv=None):
             o.mod, o.stage, o.usd, o.read_usd, by, rec["id"],
             "" if seen is None or abs(seen - o.read_usd) <= READ_SLACK else
             "; WARNING the last reading shows USD %.2f there, so this release reads stale and frees nothing" % seen))
+        print(HAND_NOTE % rec["id"])
         return 0
     if o.cmd == "releases":
         recs, bad = read_releases()
@@ -1439,6 +1622,7 @@ def main(argv=None):
         print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d never-started blind/in-game launch(es))" % (
             o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
             len(released.get("fixers") or {}), len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
+        print(HAND_NOTE % ("clear-%s-%d" % (o.mod, s["cleared"][-1]["at"])))
         return 0
     return 2
 

@@ -571,6 +571,18 @@
   "why": "RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING: a mod has had no running unit, no pause and no owner stop for 10 minutes (it waits on nothing named); `maturation_dispatch.py status` names it"
  },
  {
+  "key": "maturation.hand_acts_overdue",
+  "op": ">",
+  "value": 0,
+  "alarm": true,
+  "tag": "MATURATION_HAND_ACT",
+  "name": "OPS_MATURATION_HAND_ACT_UNFOLDED",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "RIMMANDRAKE_RECORD_HAND_ACTS_TICK_ONLY_SAW_ITS_OWN (the owner, 2026-11-15: the pipeline must do the right thing itself, \"NOT merely rely on Conductor/Owner to notice and request an inspection\"): a hand act on the Maturation Pipeline (a ceiling release, a clear, a coverage release, a hand-launched stage run, a hand move or close, a settings edit, a gap in the tick) has had no follow-up item and no census row for a day; `python3 src/RimMandrake/rimflow/maturation_hands.py list` names each one, and `fold <id> --item <ID>` closes it once the hand's judgement is built into the pipeline; one fixed id, a repeat reopens it"
+ },
+ {
   "key": "wrapup.debris_standing",
   "op": ">",
   "value": 0,

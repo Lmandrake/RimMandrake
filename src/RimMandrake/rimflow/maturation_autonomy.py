@@ -778,7 +778,11 @@ def _gate(cfg, s, row, live_total, ver):
     if key in done:
         x = done[key]
         tries, most_tries = int(x.get("tries") or 1), int(cfg.get("launch_tries", 3))
-        if not (x.get("failed") and not x.get("unit") and transient(x["failed"]) and tries < most_tries):
+        # a launch that failed on a defect is tried again once the pipeline's code changed since (the fix may have
+        # landed); before this the Conductor cleared it by hand (maturation_dispatch.code_changed)
+        fresh_code = bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
+        if not (x.get("failed") and not x.get("unit") and (transient(x["failed"]) or fresh_code)
+                and tries < most_tries):
             what = ("failed to launch %d times on a transient fault, the last: %s" % (tries, x["failed"])
                     if x.get("failed") and transient(x["failed"]) else "failed to launch: %s" % x["failed"]
                     if x.get("failed") else "ended and the state has not moved")
@@ -887,6 +891,20 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   "..." [--steward-confirms "<what you read and the verdict>"]`, forward one stage or along a drawn road back.
 - Land with `./publish -m "subject" <explicit paths>` (the record, the journal, the ledger shard); a move that is not on
   origin/main did not happen. Close this item with the published sha.
+- Judge the judge first (the Conductor's night rule, 2026-11-15). Before you act on a blind cycle's or a visit's record,
+  sort every reason `maturation.py next` gives for "not met" into one of three and say which in your note:
+  RECORD GAP (the run did it but did not record it in the form the reader wants): redo the demonstration for real (a
+  fix: its test red at the commit before, green at HEAD), never write it from the report.
+  CRITERION FLAW (the check demands what no correct build could give): never loosened by you or by the builder. File
+  it as a named item for a neutral fixer with a refusal record (evidence, would_pass, smallest_fix); if the bar keeps
+  its meaning, the criterion's text is repaired and re-pinned (next rule); if the bar's words are wrong, it is his card.
+  REAL MISS (a Problem left open, a rerun not done): file it down the road back.
+  Then read `tests_edited.json` and the diff of every test the judge touched: an assertion weakened, skipped or
+  deleted is a REAL MISS, filed, and the cycle's verdict does not stand on that test.
+- Re-pin rule (his standing decision, 2026-11-14): a locked file that changed after the lock ONLY in test text, check
+  wording or bookkeeping fields, the bar's meaning unchanged, is re-pinned in `version/bars.md` with a journal line
+  saying what changed and why the meaning is the same. A changed bar (its words, its numbers, what decides it, which
+  version holds it) is never re-pinned by you: that is his card, with the before and after text.
 """ + M.SELF_FIX_RULE + "\n"
 
 
@@ -1057,6 +1075,8 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
     book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
                  "tries": tries, "filed": filed}
+    if not ok and cfg.get("_code"):
+        book[key]["code"] = cfg["_code"]
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met"):
         s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
     if ok:

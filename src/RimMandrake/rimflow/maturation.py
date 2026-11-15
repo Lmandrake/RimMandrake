@@ -639,7 +639,8 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
             c["total"] += 1
     if to == "pre_human":
         rec["pre_human_arrivals"] = rec.get("pre_human_arrivals", 0) + 1
-    move = {"from": cur, "to": to, "at": iso(t), "by": by, "why": why,
+    # the detached or role run that made the move; a move with no unit was made by a hand (maturation_hands.py)
+    move = {"from": cur, "to": to, "at": iso(t), "by": by, "why": why, "unit": os.environ.get("RM_ROLE_UNIT") or None,
             "confirmed": {k: v for k, v in (("steward_confirms", steward), ("conductor_decision", conductor),
                                             ("owner_said", owner)) if v},
             "checks_passed": [p["clause"] for p in res["verdict"]["passed"]]}
@@ -1043,6 +1044,15 @@ SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a de
                  "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
                  "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
                  "§The pipeline fixes its own defects.")
+# The night of 2026-11-14 three judges' records read "not met" for format alone (a missing file, a key spelled another
+# way, a placeholder command) and each cost a reconcile run (one measured 3.0M tokens). The run that wrote the record
+# reads it with the pipeline's own reader before it stops. In the blind judge's and the in-game driver's briefs.
+SELF_CHECK_RULE = ("**Before you stop, read your own record the way the pipeline will:** run `python3 "
+                   "src/RimMandrake/rimflow/maturation.py next %s` and read every reason it gives. A reason about "
+                   "FORM (a missing file, a key it cannot find, a row with no command, a placeholder, a result saved in "
+                   "the wrong folder) is yours to repair now: fix the record's format, never a verdict, a row's "
+                   "result or a bar, and rerun it. A reason about SUBSTANCE (a FAIL, an open Problem, an UNMEASURED "
+                   "row) stays exactly as it is. Paste the reader's last lines into your report.")
 STEWARD_FILE = "version/steward_decisions.md"
 STANDING_DEFAULT = ("No Conductor decisions are written for this run, so the standing default holds: build the missing "
                     "checks for the bars listed above, offline, and nothing else. Do not change a bar, its wording, the "
@@ -1958,6 +1968,7 @@ def blind_brief_text(root, mod, cap_usd=None):
           "move: the Conductor reads your SUMMARY.md and either advances with `--to in_game --steward-confirms "
           "\"...\"` or opens the next cycle with `--to blind_challenge`. You run one cycle and stop." % (
               mod, LANE1_AFTER_FIX), "",
+          SELF_CHECK_RULE % mod, "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: lane 1 rows passing of total and how many UNSETTLED; lane 2 "
           "reruns matching of rerun; planted faults caught of planted; the Problem and Polish counts%s; shas; the tests "
@@ -2511,6 +2522,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "every strange thing explained or filed, and the savegame on disk. That reading is evidence for the steward, "
           "not a move: the Conductor reads your SUMMARY.md and advances with `--to pre_human --steward-confirms "
           "\"...\"`, or sends a line item down its road back. Never run `maturation.py advance`." % mod, "",
+          SELF_CHECK_RULE % mod, "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
           "fixes made in the sitting (shas); strange things seen, explained, filed; the savegame path; the mod list "

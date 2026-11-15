@@ -3827,12 +3827,18 @@ def c_maturation(now, rules, ctx):
                                               first=(rd.get("needs_conductor") or [])[:4])
         out["maturation.paused"] = M(len(rd.get("paused") or []), "mods", first=(rd.get("paused") or [])[:4])
         out["maturation.stalled"] = M(len(rd.get("stalled") or []), "mods", mods=",".join(rd.get("stalled") or []))
+        h = rd.get("hand_acts")         # maturation_hands.observe: hand acts on the pipeline with no follow-up for a day
+        out["maturation.hand_acts_overdue"] = M(
+            h["overdue"], "acts", open=h.get("open"), oldest_h=h.get("oldest_h"), ids=",".join(h.get("ids") or [])
+        ) if isinstance(h, dict) and isinstance(h.get("overdue"), int) else U(
+            "no hand_acts block in %s (%s)" % (p, rd.get("hand_acts_error") or "maturation_hands.observe did not run"))
         c = rd.get("clone") or {}       # the dispatch clone the timers run from, measured by the same tick
         out["maturation.clone_behind_min"] = M(c["behind_min"], "min", behind=c.get("behind"), ahead=c.get("ahead"),
                                                level=c.get("level_pac")) if c.get("measured") else U(
             "the dispatch clone: %s" % (c.get("why") or "no clone reading in %s" % p))
     except Exception as e:  # noqa: BLE001
         out["maturation.clone_behind_min"] = U("%s: %s" % (type(e).__name__, str(e)))
+        out["maturation.hand_acts_overdue"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.idle_owed_max_min"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.needs_conductor"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.paused"] = U("%s: %s" % (type(e).__name__, str(e)))
