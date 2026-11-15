@@ -178,6 +178,25 @@ with tempfile.TemporaryDirectory() as root:
     Q._passes_memo[root] = (at - Q.PASSES_TTL - 1, got)
     check("a long-lived board sees a new result after the window", "LATE_DESIGN_FIRST_TOUCH" in Q.designer_passes(root))
 
+    # RIMMANDRAKE_CERTIFY_FIRST_TOUCH_BY_OWNER_LOCK: his own lock of the Design Version is the certification §2.7 keeps
+    # for him. Graffiti sat under Needs Mandrake after "Lock as 0.1.0 now".
+    def version(name, text):
+        os.makedirs(os.path.join(root, name, "version"), exist_ok=True)
+        with open(os.path.join(root, name, "version", "VERSION.json"), "w") as f:
+            f.write(text)
+    concept("Locked", ["result.run-6.json"], '{"item": "LOCKED_DESIGN_FIRST_TOUCH"}')
+    version("Locked", '{"state": "locked", "locked_by": "owner"}')
+    concept("PipeLocked", ["result.run-7.json"])
+    version("PipeLocked", '{"state": "locked", "locked_by": "pipeline"}')
+    concept("Drafting", ["result.run-8.json"])
+    version("Drafting", '{"state": "draft", "locked_by": "owner"}')
+    concept("BadVer", ["result.run-9.json"])
+    version("BadVer", '{not json')
+    certs = Q.read_certified(root)
+    check("his lock certifies; a pipeline lock, a draft, a garbled VERSION.json and no VERSION.json do not",
+          certs == {"LOCKED_DESIGN_FIRST_TOUCH"})
+    check("an unreadable concepts root certifies nothing (None)", Q.read_certified(os.path.join(root, "no_such")) is None)
+
 ft = {i: ftit(i) for i in ("BARE_DESIGN_FIRST_TOUCH", "DONE_DESIGN_FIRST_TOUCH", "TURN_DESIGN_FIRST_TOUCH", "HELD_DESIGN_FIRST_TOUCH", "SAID_DESIGN_FIRST_TOUCH")}
 ft["OFFLINE_DESIGN_FIRST_TOUCH"] = ftit("OFFLINE_DESIGN_FIRST_TOUCH", "offline")
 ft["PLAIN_OWNER_ASK"] = ftit("PLAIN_OWNER_ASK")
@@ -193,6 +212,19 @@ check("the waiting turn's line is its question", {x["item"]: x["q"] for x in n["
 check("a passless row is named, not lost; his answered row and a tooling hold are not on that list",
       [x["item"] for x in n["awaiting_designer"]] == ["BARE_DESIGN_FIRST_TOUCH"] and [x["item"] for x in n["answered"]] == ["SAID_DESIGN_FIRST_TOUCH"])
 check("the row stays open: needs_you changes no item", ft["BARE_DESIGN_FIRST_TOUCH"].open and ft["BARE_DESIGN_FIRST_TOUCH"].needs == "owner")
+ft["LOCKED_DESIGN_FIRST_TOUCH"] = ftit("LOCKED_DESIGN_FIRST_TOUCH")
+n = Q.needs_you(ft, ftrel, {}, evs, ftturn, passes=ftpass | {"LOCKED_DESIGN_FIRST_TOUCH"}, certs={"LOCKED_DESIGN_FIRST_TOUCH"})
+check("a row his lock certified is off his list and named under certified",
+      "LOCKED_DESIGN_FIRST_TOUCH" not in [x["item"] for x in n["lines"]] and [x["item"] for x in n["certified"]] == ["LOCKED_DESIGN_FIRST_TOUCH"]
+      and "DONE_DESIGN_FIRST_TOUCH" in [x["item"] for x in n["lines"]])
+saved_c = Q.certified_ids
+Q.certified_ids = lambda root=None: None
+try:
+    check("an unread lock (certs None) keeps the row his", Q.is_his(ft["LOCKED_DESIGN_FIRST_TOUCH"], None, passes={"LOCKED_DESIGN_FIRST_TOUCH"}))
+finally:
+    Q.certified_ids = saved_c
+check("a certified id that is not a first-touch row changes nothing", Q.is_his(ft["PLAIN_OWNER_ASK"], None, certs={"PLAIN_OWNER_ASK"}))
+del ft["LOCKED_DESIGN_FIRST_TOUCH"]
 saved = Q.designer_passes
 Q.designer_passes = lambda root=None: None
 try:
@@ -215,7 +247,9 @@ listed = {x["item"] for x in n["lines"] if x["item"].endswith(first_touch_suffix
 real_routed = {i for i, x in real_w.items.items() if i.endswith(first_touch_suffix) and Q.routed(x)}
 check("real books: the concepts root reads", real_passes is not None)
 check("real books: no listed first-touch row lacks a pass or a turn", all(i in real_passes or i in real_turns for i in listed))
-check("real books: every routed first-touch row is on a list", real_routed <= listed | {x["item"] for x in n["awaiting_designer"]} | {x["item"] for x in n["answered"]})
+check("real books: every routed first-touch row is on a list", real_routed <= listed | {x["item"] for x in n["awaiting_designer"]} | {x["item"] for x in n["answered"]} | {x["item"] for x in n["certified"]})
+real_certs = Q.read_certified(os.path.join(Q.REPO, "design", "concepts"))
+check("real books: no listed first-touch row is one his lock already certified", real_certs is not None and not (listed & real_certs))
 print("real books: %d first touches listed, %d awaiting their Designer pass" % (len(listed), len(n["awaiting_designer"])))
 
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))

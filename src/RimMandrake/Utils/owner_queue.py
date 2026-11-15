@@ -18,6 +18,9 @@ A mod's first-touch pass item (<FOLDER>_DESIGN_FIRST_TOUCH, needs=owner) is his 
 there is something to certify: an accepted result in its concept folder, or its waiting turn
 (OWNER_QUEUE_FIX_FIRST_TOUCH_NEEDS_PASS: 43 of 53 rows had no Designer output). Until then the ledger is untouched, the item
 stays open and needs_you() names it under "awaiting_designer". A concepts root that cannot be read keeps every row listed.
+His own lock of the mod's Design Version (version/VERSION.json state locked, locked_by owner) is that certification
+(RIMMANDRAKE_CERTIFY_FIRST_TOUCH_BY_OWNER_LOCK: Graffiti sat under Needs Mandrake after his "Lock as 0.1.0 now"); a
+pipeline lock certifies nothing. needs_you() names such a row under "certified".
 
 The list only names what he has not yet answered (RUNNING_PAGE_FIX_REVIEW_LEFTOVERS): an item leaves it when his own note
 landed after the ledger last routed it to him, because his turn is over and the next move is ours. A later `needs owner`
@@ -48,6 +51,7 @@ HIS_HOLDS = ("owner_call",)
 ACCEPTED_RESULT = re.compile(r"result\.(.+)\.json$")   # designer_stage.close_run's rename; bare result.json is not yet read
 PASSES_TTL = 30     # s: the board asks once per item per refresh; a long-lived board must still see a new result
 _passes_memo = {}
+_certs_memo = {}
 
 
 def hold_of(rs):
@@ -169,6 +173,57 @@ def designer_passes(root=None):
     return got
 
 
+def read_certified(root):
+    """-> {first-touch pass ids whose concept folder holds a Design Version HE locked}, or None when `root` cannot be read.
+    A folder answers for its own pass id and for its stage.json item when that is a first-touch row."""
+    try:
+        names = os.listdir(root)
+    except OSError:
+        return None
+    out = set()
+    for n in names:
+        d = os.path.join(root, n)
+        try:
+            with open(os.path.join(d, "version", "VERSION.json"), encoding="utf-8") as f:
+                v = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(v, dict) or v.get("state") != "locked" or v.get("locked_by") != "owner":
+            continue
+        out.add(first_touch.pass_item_id(n))
+        try:
+            with open(os.path.join(d, "stage.json"), encoding="utf-8") as f:
+                item = json.load(f).get("item")
+        except (OSError, ValueError, AttributeError, TypeError):
+            item = None
+        if isinstance(item, str) and item.endswith(first_touch.SUFFIX):
+            out.add(item)
+    return out
+
+
+def certified_ids(root=None):
+    """read_certified on the same concepts root designer_passes reads, for PASSES_TTL seconds."""
+    try:
+        import designer_stage as DS
+        root = root or DS.concepts_root()
+    except Exception:       # noqa: BLE001  an unread answer keeps the rows listed
+        return None
+    at, got = _certs_memo.get(root, (None, None))
+    if at is None or time.monotonic() - at > PASSES_TTL:
+        got = read_certified(root)
+        _certs_memo[root] = (time.monotonic(), got)
+    return got
+
+
+def certified(it, certs=None):
+    """True for a first-touch pass item whose Design Version he locked. An unread answer is False: it stays his."""
+    iid = getattr(it, "id", None)
+    if not iid or not iid.endswith(first_touch.SUFFIX):
+        return False
+    certs = certified_ids() if certs is None else certs
+    return certs is not None and iid in certs
+
+
 def awaiting_designer(it, passes=None):
     """True for a first-touch pass item with no Designer pass to certify yet. An unread answer is False: it stays his."""
     iid = getattr(it, "id", None)
@@ -178,34 +233,38 @@ def awaiting_designer(it, passes=None):
     return passes is not None and iid not in passes
 
 
-def is_his(it, rs, evs=None, turns=None, passes=None):
+def is_his(it, rs, evs=None, turns=None, passes=None, certs=None):
     """evs: the ledger's events, when the caller has them: without them `answered` cannot be told and stays on the list.
     turns: designer_turns(); an item whose Designer turn waits on him is his whatever the ledger routes.
-    passes: designer_passes(), read here when not given (only for a first-touch row)."""
+    passes: designer_passes(), read here when not given (only for a first-touch row); certs: certified_ids(), likewise."""
     if turns and getattr(it, "id", None) in turns:
         return True
-    return routed(it) and tooling_hold(rs) is None and not answered(it, evs) and not awaiting_designer(it, passes)
+    return routed(it) and tooling_hold(rs) is None and not answered(it, evs) and not awaiting_designer(it, passes) \
+        and not certified(it, certs)
 
 
-def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None):
-    """-> {"count", "lines": [{"item", "q"}], "topics", "answered", "awaiting_designer", "text"}, sorted by item id (stable hashes).
+def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, certs=None):
+    """-> {"count", "lines": [{"item", "q"}], "topics", "answered", "awaiting_designer", "certified", "text"}, sorted by item id (stable hashes).
     turns: designer_turns() (None: not read here; the board and the CLI pass it). A waiting turn's line replaces the
     item's own question, and a turn whose item the ledger does not hold is its own line."""
     questions = load_questions() if questions is None else questions
     turns = turns or {}
     line = lambda iid, it: {"item": iid, "q": (turns.get(iid) or questions.get(iid) or it.title or iid).strip()}  # noqa: E731
-    lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs, passes=passes)
-             or iid in turns]
+    lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs, passes=passes,
+             certs=certs) or iid in turns]
     lines += [{"item": iid, "q": q} for iid, q in sorted(turns.items()) if iid not in items]
     lines.sort(key=lambda x: x["item"])
     gone = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
             and tooling_hold(rel.get(iid)) is None and answered(it, evs)]
     waiting = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
                and tooling_hold(rel.get(iid)) is None and not answered(it, evs) and awaiting_designer(it, passes)]
+    sealed = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
+              and tooling_hold(rel.get(iid)) is None and not answered(it, evs) and not awaiting_designer(it, passes)
+              and certified(it, certs)]
     text = "" if not lines else "%d %s: %s" % (len(lines), "thing" if len(lines) == 1 else "things",
                                                " · ".join(x["q"] for x in lines))
     return {"count": len(lines), "lines": lines, "text": text, "topics": fold(lines), "answered": gone,
-            "awaiting_designer": waiting}
+            "awaiting_designer": waiting, "certified": sealed}
 
 
 def misrouted(items, rel):
@@ -247,6 +306,9 @@ def main():
     print("%d first touches open, waiting on their Designer pass before they are his" % len(n["awaiting_designer"]))
     for x in n["awaiting_designer"]:
         print("awaiting_designer\t%s" % x["item"])
+    print("%d first touches certified by his own version lock (close them)" % len(n["certified"]))
+    for x in n["certified"]:
+        print("certified\t%s" % x["item"])
     return 0
 
 
