@@ -213,7 +213,7 @@ quicktest map, the test hook on):
 | `siege.setting_off_refuses` | master off → CanFireNow false, reason Disabled; control on (hook on) → true |
 | `siege.unshaded_or_unbordered_map_refuses` | hook off on an ineligible map → not eligible, reason named (UNMEASURED on a real shaded neighbour) |
 | `siege.fires_and_spawns_awake_ollathrix` | forced fire → one new siege lord, N>0 `RM_Ollathrix` of the insect faction, none dormant |
-| `siege.spider_spins_a_web_on_an_unexposed_cell` | a spider given a spin job on the production finder's cell: real ticks until one tagged `RM_Webwork_SiegeWeb` stands there, on a cell `ExposedAt` reads false |
+| `siege.spider_spins_a_web_on_an_unexposed_cell` | a spider given a spin job on the production finder's cell: real ticks until one tagged `RM_Webwork_SiegeWeb` stands there, on a cell `ExposedAt` reads false. Site prep: when the finder finds nothing on the site as it stands (a daylit open edge off the shade grid), the proof roofs up to 9 open cells within 3 of the spider, asks the same finder again and unroofs them after (`staged N`; RIMMANDRAKE_STAGE_SHADE_FOR_SIEGE_SPIN_SPIDERS_FOUND_NONE) |
 | `siege.siege_web_slicks_others_not_ollathrix` | a test colonist on siege silk gains `RM_Webwork_Slick`; an ollathrix on it does not |
 | `siege.cut_yield_is_capped_per_siege` | 30 cuts of one siege's webs yield exactly min(cap, 30 × 2); a force-broken web yields 0 |
 | `siege.wrapped_door_shut_until_cut` | wrapped door: PawnCanOpen false; after the wrap is cut, true; an unwrapped control door opens throughout |

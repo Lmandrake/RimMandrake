@@ -127,9 +127,27 @@ namespace RimMandrake.Webwork
             }
         }
 
+        /// <summary>Site prep for ProofSpin (RIMMANDRAKE_STAGE_SHADE_FOR_SIEGE_SPIN_SPIDERS_FOUND_NONE): roofs up to `max`
+        /// open, unroofed, edifice-free cells within 3 of the spider that it can reach, and lists them in `staged` so the
+        /// caller unroofs exactly those. A roof makes InSunlight false, which ScaldExposed needs on and off the shade grid.</summary>
+        private static void StageRoofNear(Pawn spider, List<IntVec3> staged, int max = 9)
+        {
+            Map map = spider.Map;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(spider.Position, 3f, true))
+            {
+                if (staged.Count >= max) break;
+                if (!c.InBounds(map) || map.roofGrid.RoofAt(c) != null || !c.Standable(map) || c.GetEdifice(map) != null
+                    || RM_WebworkSiegeUtility.HasWebAt(map, c) || !spider.CanReach(c, PathEndMode.Touch, Danger.Deadly)) continue;
+                map.roofGrid.SetRoof(c, RoofDefOf.RoofConstructed);
+                staged.Add(c);
+            }
+        }
+
         /// <summary>args "maxTicks" (default 2500). A siege spider is given a spin job on the cell the production finder picks;
-        /// real ticks run until the web stands or the budget ends. "SPIN cell (x,z) | exposed B | ticks T | web B | tagged B |
-        /// spun A->B".</summary>
+        /// real ticks run until the web stands or the budget ends. The site is proved as it stands first; only when the finder
+        /// finds no unexposed cell (a daylit open edge off the shade grid, the design's "nothing to spin") is a small roof
+        /// staged beside the spider, the SAME finder asked again, and the roof removed afterwards (the web stays).
+        /// "SPIN cell (x,z) | exposed B | ticks T | web B | tagged B | spun A->B | staged N".</summary>
         public static string ProofSpin(string args)
         {
             Map map = Map;
@@ -140,19 +158,33 @@ namespace RimMandrake.Webwork
             var siege = (RM_LordJob_WebworkSiege)lord.LordJob;
             Pawn spider = lord.ownedPawns.FirstOrDefault(p => p.Spawned && !p.Downed);
             if (spider == null) return "SPIN noSpider";
-            if (!RM_WebworkSiegeUtility.TryFindSpinCell(spider, siege, out IntVec3 cell)) return "SPIN noCell | spun " + siege.spun;
-            int spun0 = siege.spun;
-            spider.jobs.StartJob(JobMaker.MakeJob(RM_WebworkSiegeDefOf.RM_WebSiegeSpin, cell), JobCondition.InterruptForced);
-            int t = 0;
-            Thing web = null;
-            for (; t < max && web == null; t++)
+            var staged = new List<IntVec3>();
+            try
             {
-                Find.TickManager.DoSingleTick();
-                web = cell.GetFirstThing(map, RM_WebworkSiegeDefOf.RM_Webwork_SiegeWeb);
+                bool found = RM_WebworkSiegeUtility.TryFindSpinCell(spider, siege, out IntVec3 cell);
+                if (!found)
+                {
+                    StageRoofNear(spider, staged);
+                    found = staged.Count > 0 && RM_WebworkSiegeUtility.TryFindSpinCell(spider, siege, out cell);
+                }
+                if (!found) return "SPIN noCell | spun " + siege.spun + " | staged " + staged.Count;
+                int spun0 = siege.spun;
+                spider.jobs.StartJob(JobMaker.MakeJob(RM_WebworkSiegeDefOf.RM_WebSiegeSpin, cell), JobCondition.InterruptForced);
+                int t = 0;
+                Thing web = null;
+                for (; t < max && web == null; t++)
+                {
+                    Find.TickManager.DoSingleTick();
+                    web = cell.GetFirstThing(map, RM_WebworkSiegeDefOf.RM_Webwork_SiegeWeb);
+                }
+                bool tagged = web?.TryGetComp<RM_CompSiegeSilk>()?.siegeId == siege.siegeId;
+                return "SPIN cell (" + cell.x + "," + cell.z + ") | exposed " + RM_Hediff_SunScald.ExposedAt(map, cell) + " | ticks " + t
+                    + " | web " + (web != null) + " | tagged " + tagged + " | spun " + spun0 + "->" + siege.spun + " | staged " + staged.Count;
             }
-            bool tagged = web?.TryGetComp<RM_CompSiegeSilk>()?.siegeId == siege.siegeId;
-            return "SPIN cell (" + cell.x + "," + cell.z + ") | exposed " + RM_Hediff_SunScald.ExposedAt(map, cell) + " | ticks " + t
-                + " | web " + (web != null) + " | tagged " + tagged + " | spun " + spun0 + "->" + siege.spun;
+            finally
+            {
+                foreach (IntVec3 c in staged) map.roofGrid.SetRoof(c, null);
+            }
         }
 
         /// <summary>A test colonist stands on a fresh siege web for 180 ticks; an ollathrix on another for the same.
