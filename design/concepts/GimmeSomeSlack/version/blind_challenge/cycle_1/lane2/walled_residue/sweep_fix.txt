@@ -1,0 +1,9 @@
+SLACK strands 16730 under 0 worst 1.42 :: 
+EXC edges 6070 miss 0 low 1 :: 
+BENDS strands 17804 kinks 3290 badStrands 0 unforced 0 :: 
+REPEAT L3: pairs 5600 under0.1 2 min 0.038 kernelTooAlike 60/5600 lays routed+vary+loop 745, routed+vary+loop+loop 447, routed+vary 179, routed+slack+vary+loop 88, routed+slack+vary+loop+loop 63, routed+slack+vary 24, routed+loop 17, routed+loop+loop 13, routed+unbend+vary+loop 8, routed 7, hop+slack+vary+loop 4, hop+slack+vary+loop+loop 3
+REPEAT L4: pairs 5600 under0.1 2 min 0.088 kernelTooAlike 40/5600 lays routed+vary+loop 700, routed+vary+loop+loop 489, routed+vary 174, routed+loop 44, routed 32, routed+loop+loop 27, routed+slack+vary+loop 26, routed+slack+vary+loop+loop 15, hop+vary+loop 15, hop+slack+vary+loop 14, routed+slack+loop 12, hop+vary+loop+loop 10
+REPEAT L5: pairs 5600 under0.1 2 min 0.031 kernelTooAlike 15/5600 lays routed+vary+loop 689, routed+vary+loop+loop 611, routed+vary 144, routed+slack+vary+loop 42, routed+slack+vary+loop+loop 39, routed+unbend+vary+loop 29, routed+unbend+vary+loop+loop 26, routed+slack+vary 11, routed+unbend+vary 8, routed+loop 1
+REPEAT L6: pairs 5600 under0.1 0 min 0.18 kernelTooAlike 7/5600 lays routed 1463, routed+unbend 87, routed+slack 49, routed+unbend+slack 1
+REPEAT L9: pairs 5600 under0.1 0 min 0.466 kernelTooAlike 0/5600 lays routed 1421, routed+unbend 174, routed+slack 5
+REPEAT L12: pairs 5600 under0.1 0 min 0.58 kernelTooAlike 0/5600 lays routed 1382, routed+unbend 216, routed+slack 2

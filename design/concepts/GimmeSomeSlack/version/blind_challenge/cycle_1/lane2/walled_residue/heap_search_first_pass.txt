@@ -1,0 +1,22 @@
+seed 106139 runs 6 maxLen 14 walls False tip [24.298, 21.2] turn 123: gentle NO, with a coil yes
+seed 106650 runs 6 maxLen 14 walls True tip [19.388, 39.626] turn 148: gentle NO, with a coil yes
+seed 106230 runs 6 maxLen 14 walls False tip [19.003, 4.535] turn 110: gentle yes, with a coil yes
+seed 106761 runs 6 maxLen 14 walls True tip [34.924, 37.139] turn 149: gentle NO, with a coil yes
+seed 106761 runs 6 maxLen 14 walls True tip [33.756, 37.013] turn 149: gentle yes, with a coil yes
+seed 106338 runs 6 maxLen 14 walls False tip [15.352, 19.703] turn 148: gentle yes, with a coil yes
+seed 106857 runs 6 maxLen 14 walls True tip [41.282, 30.03] turn 97: gentle yes, with a coil yes
+seed 106912 runs 6 maxLen 14 walls True tip [19.703, 35.075] turn 148: gentle NO, with a coil yes
+seed 106912 runs 6 maxLen 14 walls True tip [19.703, 35.075] turn 148: gentle NO, with a coil yes
+seed 106933 runs 6 maxLen 14 walls True tip [33.227, 29.338] turn 121: gentle NO, with a coil yes
+seed 107030 runs 6 maxLen 14 walls True tip [39.031, 20.619] turn 121: gentle yes, with a coil yes
+seed 106650 runs 6 maxLen 14 walls False tip [19.388, 39.626] turn 148: gentle NO, with a coil yes
+seed 107223 runs 6 maxLen 14 walls True tip [12.165, 28.549] turn 121: gentle NO, with a coil yes
+seed 106761 runs 6 maxLen 14 walls False tip [34.924, 37.139] turn 149: gentle NO, with a coil yes
+seed 106761 runs 6 maxLen 14 walls False tip [33.756, 37.013] turn 149: gentle yes, with a coil yes
+seed 107309 runs 6 maxLen 14 walls True tip [30.923, 45.036] turn 148: gentle NO, with a coil yes
+seed 106857 runs 6 maxLen 14 walls False tip [41.282, 30.03] turn 97: gentle yes, with a coil yes
+seed 107375 runs 6 maxLen 14 walls True tip [12.976, 32.774] turn 149: gentle NO, with a coil yes
+seed 106912 runs 6 maxLen 14 walls False tip [19.703, 35.075] turn 148: gentle NO, with a coil yes
+seed 106912 runs 6 maxLen 14 walls False tip [19.703, 35.075] turn 148: gentle NO, with a coil yes
+seed 106933 runs 6 maxLen 14 walls False tip [33.227, 29.338] turn 121: gentle NO, with a coil yes
+HEAPSEARCH 21 bends: gentle witness 7, gentle-or-coil witness 21, none 0 (witness length 2.5 cells)

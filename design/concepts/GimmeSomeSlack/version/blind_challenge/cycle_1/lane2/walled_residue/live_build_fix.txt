@@ -1,0 +1,3 @@
+LIVE fresh Build best 670 ms, 377 pieces; lays hop+slack 157, routed+slack 100, hop 84, routed 24, routed+loop 23, routed+loop+loop 10, routed+slack+vary 5, routed+slack+loop 3, hop+slack+loop 2, routed+vary 2, routed+vary+loop+loop 2, hop+slack+vary+loop+loop 1, routed+vary+loop 1, routed+slack+vary+loop 1
+
+

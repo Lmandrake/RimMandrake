@@ -1,0 +1,86 @@
+seed 106563 runs 6 maxLen 14 walls True junction:15,34|terminal:16,34 s0/1 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106094 runs 6 maxLen 14 walls False terminal:14,44|consumer:13,43 s0/1 cut-routed+slack u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106595 runs 6 maxLen 14 walls True junction:26,39|terminal:26,43 s0/3 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1
+seed 106624 runs 6 maxLen 14 walls True terminal:33,32|junction:32,33 s1/3 cut-routed u1 :: unfold=1 smooth=1 final=1 vary=0 unbend=1
+seed 106624 runs 6 maxLen 14 walls True terminal:33,32|junction:32,33 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1 vary=1
+seed 106139 runs 6 maxLen 14 walls False | s0/6 tangle u1 :: 
+seed 106139 runs 6 maxLen 14 walls False | s5/6 tangle u2 :: 
+seed 106641 runs 6 maxLen 14 walls True junction:4,26|stub_wall:10,26 s0/4 routed u2 :: unfold=2 smooth=2 unbend=2
+seed 106149 runs 6 maxLen 14 walls False junction:5,32|terminal:9,32 s0/2 cut-routed u3 :: unfold=3 cutfair=3 smooth=3 final=3 unbend=3 slack=3 vary=3
+seed 106650 runs 6 maxLen 14 walls True | s3/6 tangle u2 :: 
+seed 106701 runs 6 maxLen 14 walls True terminal:5,35|consumer:5,28 s0/1 cut-routed u5 :: unfold=5 cutfair=5 smooth=5 final=5 unbend=5 slack=5 vary=5
+seed 106230 runs 6 maxLen 14 walls False | s4/6 tangle u1 :: 
+seed 106733 runs 6 maxLen 14 walls True terminal:23,7|terminal:24,6 s0/3 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1
+seed 106733 runs 6 maxLen 14 walls True terminal:23,7|terminal:24,6 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 vary=1
+seed 106243 runs 6 maxLen 14 walls False terminal:24,22|junction:28,22 s0/2 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106761 runs 6 maxLen 14 walls True | s0/6 tangle u1 :: 
+seed 106761 runs 6 maxLen 14 walls True | s3/6 tangle u2 :: 
+seed 106768 runs 6 maxLen 14 walls True terminal:4,5|terminal:7,8 s1/2 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106777 runs 6 maxLen 14 walls True junction:13,39|junction:13,39 s0/1 routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106337 runs 6 maxLen 14 walls False terminal:37,5|terminal:38,6 s0/3 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1
+seed 106337 runs 6 maxLen 14 walls False terminal:37,5|terminal:38,6 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=0 vary=0
+seed 106338 runs 6 maxLen 14 walls False | s2/6 tangle u1 :: 
+seed 106838 runs 6 maxLen 14 walls True terminal:32,3|terminal:32,4 s0/2 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106846 runs 6 maxLen 14 walls True terminal:35,20|junction:36,20 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1 vary=1
+seed 106857 runs 6 maxLen 14 walls True | s3/5 tangle u1 :: 
+seed 106872 runs 6 maxLen 14 walls True junction:25,20|junction:25,20 s0/2 routed u1 :: unfold=1 smooth=1 final=1 unbend=1
+seed 106872 runs 6 maxLen 14 walls True junction:25,20|junction:25,20 s1/2 routed u1 :: unfold=1 smooth=1 final=1 slack=1
+seed 106905 runs 6 maxLen 14 walls True junction:26,27|terminal:29,27 s0/3 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1
+seed 106912 runs 6 maxLen 14 walls True | s0/6 tangle u1 :: 
+seed 106912 runs 6 maxLen 14 walls True | s5/6 tangle u1 :: 
+seed 106413 runs 6 maxLen 14 walls False terminal:16,24|consumer:17,23 s0/1 cut-routed u2 :: unfold=2 smooth=2 final=2 unbend=2 slack=2 vary=2
+seed 106926 runs 6 maxLen 14 walls True terminal:31,18|consumer:27,18 s0/1 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106933 runs 6 maxLen 14 walls True | s2/5 tangle u1 :: 
+seed 106447 runs 6 maxLen 14 walls False junction:15,7|junction:15,7 s0/3 routed u1 :: unfold=2 smooth=1 final=1 unbend=1 slack=1
+seed 106959 runs 6 maxLen 14 walls True junction:35,27|source:40,34 s0/1 routed u1 :: unfold=2 smooth=2 final=1 unbend=1 slack=1 vary=1
+seed 106959 runs 6 maxLen 14 walls True consumer:28,42|source:34,42 s0/1 routed u1 :: unfold=2 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106476 runs 6 maxLen 14 walls False terminal:26,18|source:31,23 s0/1 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106481 runs 6 maxLen 14 walls False battery:5,15|terminal:8,17 s0/1 cut-routed u5 :: unfold=4 cutfair=4 smooth=4 final=4 unbend=5 slack=5 vary=5
+seed 106527 runs 6 maxLen 14 walls False junction:23,34|terminal:23,35 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1 vary=1
+seed 106529 runs 6 maxLen 14 walls False terminal:26,15|junction:33,15 s1/2 cut-routed u5 :: unfold=5 cutfair=5 smooth=5 final=5 unbend=5 slack=5 vary=5
+seed 107030 runs 6 maxLen 14 walls True | s3/6 tangle u1 :: 
+seed 107044 runs 6 maxLen 14 walls True terminal:3,22|consumer:4,23 s0/1 cut-routed u2 :: unfold=2 smooth=2 final=2 unbend=2 slack=2 vary=2
+seed 106563 runs 6 maxLen 14 walls False junction:15,34|terminal:16,34 s0/1 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106595 runs 6 maxLen 14 walls False junction:26,39|terminal:26,43 s0/3 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1
+seed 107110 runs 6 maxLen 14 walls True junction:31,20|terminal:31,21 s0/2 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 107116 runs 6 maxLen 14 walls True terminal:33,33|terminal:37,29 s0/1 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106624 runs 6 maxLen 14 walls False terminal:33,32|junction:32,33 s1/3 cut-routed u1 :: unfold=1 smooth=1 final=1 vary=0 unbend=1
+seed 106624 runs 6 maxLen 14 walls False terminal:33,32|junction:32,33 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1 vary=1
+seed 107146 runs 6 maxLen 14 walls True junction:27,21|terminal:29,18 s1/2 cut-routed u1 :: unfold=3 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106650 runs 6 maxLen 14 walls False | s3/6 tangle u2 :: 
+seed 107163 runs 6 maxLen 14 walls True junction:14,7|junction:21,7 s1/3 routed u2 :: unfold=2 smooth=2 final=2 unbend=2 slack=2 vary=2
+seed 107163 runs 6 maxLen 14 walls True junction:14,7|junction:21,7 s2/3 routed u4 :: unfold=4 smooth=4 final=4 unbend=4 slack=4 vary=4
+seed 106698 runs 6 maxLen 14 walls False junction:13,18|consumer:18,24 s0/1 routed u1 :: unfold=2 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 107200 runs 6 maxLen 14 walls True terminal:25,30|stub_wall:24,29 s0/2 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1
+seed 107200 runs 6 maxLen 14 walls True terminal:25,30|stub_wall:24,29 s1/2 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1
+seed 106701 runs 6 maxLen 14 walls False terminal:5,35|consumer:5,28 s0/1 cut-routed u5 :: unfold=5 cutfair=5 smooth=5 final=5 unbend=5 slack=5 vary=5
+seed 107223 runs 6 maxLen 14 walls True | s5/7 tangle u1 :: 
+seed 106733 runs 6 maxLen 14 walls False terminal:23,7|terminal:24,6 s0/3 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1
+seed 106733 runs 6 maxLen 14 walls False terminal:23,7|terminal:24,6 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 vary=1
+seed 107235 runs 6 maxLen 14 walls True terminal:4,26|junction:12,26 s1/2 cut-routed u2 :: unfold=2 cutfair=2 smooth=2 final=2 unbend=2 slack=2 vary=2
+seed 107245 runs 6 maxLen 14 walls True junction:34,39|terminal:38,39 s0/1 cut-routed u2 :: unfold=2 cutfair=2 smooth=2 final=2 unbend=2 slack=2 vary=2
+seed 106761 runs 6 maxLen 14 walls False | s0/6 tangle u1 :: 
+seed 106761 runs 6 maxLen 14 walls False | s3/6 tangle u2 :: 
+seed 106777 runs 6 maxLen 14 walls False junction:13,39|junction:13,39 s0/1 routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 107300 runs 6 maxLen 14 walls True terminal:37,32|terminal:38,33 s0/3 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1
+seed 107300 runs 6 maxLen 14 walls True terminal:37,32|terminal:38,33 s1/3 cut-routed u1 :: unfold=1 smooth=1 final=1 vary=1 unbend=0
+seed 107309 runs 6 maxLen 14 walls True | s2/6 tangle u1 :: 
+seed 107316 runs 6 maxLen 14 walls True junction:28,27|terminal:30,29 s0/1 cut-routed u1 :: unfold=2 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106838 runs 6 maxLen 14 walls False terminal:32,3|terminal:32,4 s0/2 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106846 runs 6 maxLen 14 walls False terminal:35,20|junction:36,20 s2/3 cut-routed u1 :: unfold=1 smooth=1 final=1 slack=1 vary=1
+seed 107352 runs 6 maxLen 14 walls True terminal:3,36|terminal:4,36 s0/1 cut-routed u1 :: unfold=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106857 runs 6 maxLen 14 walls False | s3/5 tangle u1 :: 
+seed 106872 runs 6 maxLen 14 walls False junction:25,20|junction:25,20 s0/2 routed u1 :: unfold=1 smooth=1 final=1 unbend=1
+seed 106872 runs 6 maxLen 14 walls False junction:25,20|junction:25,20 s1/2 routed u1 :: unfold=1 smooth=1 final=1 slack=1
+seed 107375 runs 6 maxLen 14 walls True terminal:12,26|tangle:12,27 s1/3 cut-routed+slack u1 :: unfold=1 smooth=1 final=1 vary=0 unbend=1
+seed 107375 runs 6 maxLen 14 walls True | s0/6 tangle u1 :: 
+seed 107375 runs 6 maxLen 14 walls True | s5/6 tangle u1 :: 
+seed 106905 runs 6 maxLen 14 walls False junction:26,27|terminal:29,27 s0/3 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1
+seed 106912 runs 6 maxLen 14 walls False | s0/6 tangle u1 :: 
+seed 106912 runs 6 maxLen 14 walls False | s5/6 tangle u1 :: 
+seed 106926 runs 6 maxLen 14 walls False terminal:31,18|consumer:27,18 s0/1 cut-routed u1 :: unfold=1 cutfair=1 smooth=1 final=1 unbend=1 slack=1 vary=1
+seed 106933 runs 6 maxLen 14 walls False | s2/5 tangle u1 :: 
+seed 106959 runs 6 maxLen 14 walls False consumer:28,42|source:34,42 s0/1 routed u1 :: unfold=2 smooth=1 final=1 unbend=1 slack=1 vary=1
+RSTAGES badStrands 83 unforced 115 :: cut-routed madeAt unfold 61, tangle madeAt untraced:tangle 28, routed madeAt unfold 19, cut-routed madeAt unbend 5, cut-routed+slack madeAt unfold 2
+
+
