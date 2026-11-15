@@ -1,0 +1,2 @@
+Lifting a Designer ceiling park takes his word (ownerSaid/byCard on an OWNER event naming the concept's item) dated AFTER park.at, and the park is only written by the open that hits the ceiling: open once (it parks and refuses), record his card on the item, cite that tsn in record.json (else the concept reopens at stage 2 on owner input), open again. Seen on GSS 2026-11-14.
+home: src/RimMandrake/rimflow/roles/designer_lock.md
