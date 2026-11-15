@@ -32,6 +32,11 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              dollars lost): out and err are append:, the finish step's line goes to <unit>.finish.log even when handed
              the result file at offset 0, the record and note carry measured dollars; recover_cost reads what survives
              of a written-over file (a total, else the whole modelUsage sum, else UNMEASURED); backfill-cost
+  owed       RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN (2026-11-15: a run fixed 17 Pyrelands gaps, exited 0, its
+             item stayed `proposed`): the brief says claim at start, close or note `LEFT OPEN:` at the end; finish reads
+             the item in the clone and, for a success with the item open and no such note since the run began, puts one
+             plain line in the note, the Conductor log and the record; the status page lists it while the item stays open;
+             a closed item, a LEFT OPEN note, a failed run and an unreadable ledger flag nothing
   scopegone  RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE: a scope systemd already collected reads clean; any
              other kill failure reads FAILED and the stop is still tried
 """
@@ -891,6 +896,63 @@ def test_hook_points_here():
     check("detached_helper.py launch" in src, "hook: the drain refusal names detached_helper.py launch")
 
 
+def test_owed_close():
+    """RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN: a run that ends success with its item still open says so."""
+    foot = DH.FOOTER.format(clone="C", item="SOME_ITEM_TO_BUILD", seat="BENCH", bound_text="b", budget=5)
+    check("cli.py claim SOME_ITEM_TO_BUILD" in foot and "cli.py close SOME_ITEM_TO_BUILD --sha" in foot
+          and DH.LEFT_OPEN in foot, "owed: the brief says claim at start, close or note LEFT OPEN: at the end")
+    ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
+
+    def ended(state, notes, env=None, item="SOME_ITEM_TO_BUILD", unreadable=False):
+        unit, _ = det_clone(item, status="running", path=CLONE)
+        with open(os.path.join(TMP, unit + ".out"), "w") as f:
+            json.dump({"result": "Fixed 17 gaps; PUBLISHED abc.", "usage": {"input_tokens": 1, "output_tokens": 1}}, f)
+        open(os.environ["RM_CONDUCTOR_LOG"], "w").close()
+        calls, run = recorder(out="PUBLISHED abcdef1234567")
+        seen = []
+
+        def reader(clone, it):
+            seen.append((clone, it))
+            return None if unreadable else {"state": state, "notes": notes}
+        DH.finish(unit, now=T0 + 900, env=ok_env if env is None else env, runner=run, item_reader=reader)
+        note = [c[0] for c in non_systemctl(calls) if c[0][2:3] == ["note"]]
+        with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
+            log = f.read()
+        return unit, (note[0][note[0].index("--text") + 1] if note else ""), log, DH.read_record(unit), seen
+
+    line = "item SOME_ITEM_TO_BUILD is still proposed: close it with its published sha or say what is left"
+    unit, nt, log, rec, seen = ended("proposed", [])
+    check(seen == [(CLONE, "SOME_ITEM_TO_BUILD")], "owed: finish reads the item in the run's clone (%s)" % seen)
+    check(("run %s ended success; " % unit) + line in nt, "owed: the note names the open item (%s)" % nt[-160:])
+    check(line in log and ("run %s ended success" % unit) in log, "owed: the Conductor log line names it (%s)" % log[-200:])
+    check(line in (rec.get("owed_close") or ""), "owed: the record carries the line for the status page")
+    for what, args in (("a closed item", ("done", [])),
+                       ("a LEFT OPEN note since the start", ("claimed", [
+                           {"event": "note", "id": "SOME_ITEM_TO_BUILD", "ts": DH.iso(T0 + 60),
+                            "text": "LEFT OPEN: the live test is UNRUN (command in the item)"}])),
+                       ("an unreadable ledger", ("proposed", [], None, "SOME_ITEM_TO_BUILD", True))):
+        _, nt, log, rec, _ = ended(*args)
+        check("is still" not in nt and "is still" not in log and not rec.get("owed_close"),
+              "owed: %s flags nothing (%s)" % (what, nt[-120:]))
+    _, nt, log, rec, _ = ended("proposed", [{"event": "note", "id": "SOME_ITEM_TO_BUILD", "ts": DH.iso(T0 - 3600),
+                                             "text": "LEFT OPEN: an older run's note"}])
+    check(rec.get("owed_close"), "owed: a LEFT OPEN note from before this run does not excuse it")
+    _, nt, log, rec, _ = ended("proposed", [], env={"SERVICE_RESULT": "exit-code", "EXIT_CODE": "exited", "EXIT_STATUS": "1"})
+    check(not rec.get("owed_close") and "is still" not in nt, "owed: a failed run is not flagged as an owed close")
+    _, _, _, rec, _ = ended("proposed", [])
+
+    class It:
+        def __init__(self, state):
+            self.state = state
+    lines = DH.owed_lines([rec, dict(rec, unit="other", owed_close="")], {"SOME_ITEM_TO_BUILD": It("proposed")}, [])
+    check(len(lines) == 1 and line in lines[0], "owed: the status page line stands while the item is open (%s)" % lines)
+    check(DH.owed_lines([rec], {"SOME_ITEM_TO_BUILD": It("done")}, []) == [],
+          "owed: the status page line goes once the item closes")
+    check(DH.owed_lines([rec], {"SOME_ITEM_TO_BUILD": It("claimed")}, [
+        {"event": "note", "id": "SOME_ITEM_TO_BUILD", "ts": DH.iso(T0 + 2000), "text": "LEFT OPEN: the live half"}]) == [],
+        "owed: the status page line goes once a LEFT OPEN note names what is left")
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -903,6 +965,7 @@ def main():
     test_midreturn()
     test_result_kept_whole()
     test_scope_quiet_when_gone()
+    test_owed_close()
     test_hook_points_here()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

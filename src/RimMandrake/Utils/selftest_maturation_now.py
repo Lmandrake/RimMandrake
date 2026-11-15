@@ -577,6 +577,35 @@ def p16_clone_line():
         shutil.rmtree(t, ignore_errors=True)
 
 
+def p17_owed_close():
+    """RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN: a detached run finish flagged (it ended success with its item
+    still open, no LEFT OPEN: note) is a Needs Conductor line on the page while its item stays open."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import detached_helper as DH
+    mn = MN()
+    never = "RIMMANDRAKE_NEVER_FILED_SELFTEST_FIXTURE_ITEM_OWED_CLOSE"     # never on the ledger: reads "absent"
+    rec = {"unit": "rm-detached-fixture-owed", "item": never, "status": "finished", "result": "success (exited 0)",
+           "at": 1794775111.0, "owed_close": "flagged"}
+    was = DH.all_records
+    try:
+        DH.all_records = lambda root=None: [rec, dict(rec, unit="rm-detached-fixture-clean", owed_close="")]
+        lf = mn.live_facts([])
+    finally:
+        DH.all_records = was
+    owed = lf.get("owed") or []
+    check("17 the page's live read lists a run that ended success with its item open",
+          len(owed) == 1 and ("item %s is still absent from the ledger" % never) in owed[0], repr(owed)[:300])
+    t = tempfile.mkdtemp(prefix="matnow_owed_")
+    try:
+        os.makedirs(os.path.join(t, "design", "concepts"))
+        mn.live_facts = lambda mods: {"intake": 0, "intake_why": "", "questions": [], "records": [], "notes": [],
+                                      "errors": [], "owed": ["run U ended success; item X is still proposed: close it"]}
+        d = mn.gather(t, live=True)
+        check("17 a flagged run is a Needs Conductor line",
+              any("item X is still proposed" in x for x in d["needs"]["conductor"]), repr(d["needs"]["conductor"])[:300])
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
 
 def main():
     if not os.path.exists(PROG):
@@ -601,6 +630,7 @@ def main():
     p14_measured_dollars()
     p15_slots()
     p16_clone_line()
+    p17_owed_close()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

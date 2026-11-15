@@ -24,7 +24,11 @@ imperative NEXT on the item as a rimflow note and publish the shard.
 finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
 claude_bounded scope (claude-seat-<seat>-<unit>.scope): claude lives there, outside the unit, so a stopped unit alone left
 it running and billing (DETACHED_STOP_FIX_ORPHAN_KEEPS_BILLING, 2026-11-03: killed at 15:06:59, ran to ~15:13). It writes the outcome as a note
-on the item, publishes the seat's shard from the clone, and appends one line to the Conductor log. Once per run.
+on the item, publishes the seat's shard from the clone, and appends one line to the Conductor log. Once per run. A run
+that ends success with its item still open and no `LEFT OPEN:` note since it began gets one plain OWED line in that note,
+that log line and its record (`owed_close`, which MATURATION_NOW's Needs Conductor lists while the item stays open); it
+closes nothing (RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN, 2026-11-15: a run fixed 17 gaps, exited 0, and its
+item stayed `proposed` until a hand closed it).
 return: the run's last step gives the pool clone <ITEM>.det BACK (RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES, 2026-11-07:
 three finished .det clones, a stopped pipeline's ten and SHOWINGS held 16 of 16 pool places and 67 of 70 GB while little ran).
 It lands the clone's conversation records, publishes the seat shard if the run left it dirty, levels the clone with
@@ -83,6 +87,11 @@ FOOTER = """
 You are a DETACHED helper: you run in your own systemd unit, outside any window, in the clone {clone} (your cwd).
 Ledger item: {item}. Seat: {seat}. {bound_text}; spend bound ${budget}.
 - Work only in that clone. Land code with `./publish -m "subject" <explicit paths>` (never git add -A, never --force).
+- First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run"`.
+- At the end, close it with the sha ./publish printed: `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <sha>
+  --seat {seat} --why "..."` (an operational item also takes `--live`), or, when anything is left, write a note whose
+  text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
+  flagged to the Conductor.
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
   shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`.
@@ -580,6 +589,73 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
                % (unit, item, model, ("%d s" % max_s) if max_s else "none", budget, clone, how, record_path(unit, root), item))
 
 
+LEFT_OPEN = "LEFT OPEN:"    # a run's note saying what it left (RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN)
+READ_ITEM = r"""
+import json, os, sys
+sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
+import model
+item = sys.argv[1]
+evs = model.read()
+it = model.replay(evs).items.get(item)
+print(json.dumps({"state": getattr(it, "state", None),
+                  "notes": [e for e in evs if e.get("id") == item and e.get("event") == "note"]}))
+"""
+
+
+def read_item(clone, item):
+    """-> {"state", "notes"} for the item as the run's clone folds its ledger (the run's own close sits there before
+    any other clone pulls it), or None when that cannot be read."""
+    try:
+        r = subprocess.run([sys.executable, "-c", READ_ITEM, item], cwd=clone, capture_output=True, text=True,
+                           timeout=120, stdin=subprocess.DEVNULL)
+        return json.loads(r.stdout) if r.returncode == 0 else None
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
+
+
+def _epoch(ts):
+    try:
+        import datetime
+        return datetime.datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp()
+    except (TypeError, ValueError):
+        return None
+
+
+def left_open_noted(notes, item, since):
+    """A note on the item, written at or after `since`, whose text starts LEFT OPEN: (a note with no readable time
+    is no excuse: it may be an older run's)."""
+    for e in notes or []:
+        t = _epoch(e.get("ts")) if isinstance(e, dict) else None
+        if (t is not None and t >= since and e.get("id") == item and e.get("event") == "note"
+                and str(e.get("text") or "").strip().upper().startswith(LEFT_OPEN)):
+            return True
+    return False
+
+
+def owed_close(rec, state, notes):
+    """-> the plain line for a run that ended success with its item still open and no LEFT OPEN: note since it
+    began, or "". It closes nothing: only evidence closes an item."""
+    import model
+    if not str(rec.get("result") or "").startswith("success (") or state in model.TERMINAL:
+        return ""
+    if left_open_noted(notes, rec.get("item"), rec.get("at") or 0):
+        return ""
+    return ("run %s ended success; item %s is still %s: close it with its published sha or say what is left "
+            "(a note starting %s)" % (rec.get("unit"), rec.get("item"), state or "absent from the ledger", LEFT_OPEN))
+
+
+def owed_lines(records, items, evs):
+    """The status page's lines: every finished run finish flagged (record `owed_close`) whose item is still open
+    and has no LEFT OPEN: note since, read against today's ledger (`items` {id: item with .state})."""
+    out = []
+    for rec in records or []:
+        if rec.get("owed_close"):
+            line = owed_close(rec, getattr(items.get(rec.get("item")), "state", None), evs)
+            if line:
+                out.append(line)
+    return out
+
+
 def conductor_log_path():
     p = os.environ.get("RM_CONDUCTOR_LOG")
     if p:
@@ -770,7 +846,7 @@ def killed(rec, runner=subprocess.run, now=None):
     return ""
 
 
-def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
+def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_reader=None):
     """The unit's ExecStopPost. -> (exit code, text). Once per run: a second call changes nothing."""
     now = now or time.time()
     env = os.environ if env is None else env
@@ -788,9 +864,19 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not (and TimeoutStopSec=30)
+    owed = ""
     if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
         steps.append("clone gone: no note on the item, nothing published")
     else:
+        if st.startswith("success ("):          # its item still open with nothing said: one plain line, everywhere
+            got = (item_reader or read_item)(clone, item)
+            if isinstance(got, dict):
+                owed = owed_close(dict(rec, result=st), got.get("state"), got.get("notes"))
+                steps.append("item " + (got.get("state") or "absent") + (": OWED" if owed else ""))
+            else:
+                steps.append("item state UNMEASURED (its clone's ledger could not be read)")
+        if owed:
+            text += " OWED: " + owed + "."
         r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
                    cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
         steps.append("note exit %d" % r.returncode)
@@ -801,14 +887,15 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens, USD %s. %s. READ: rimflow show %s."
+        path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens, USD %s. %s. READ: rimflow show %s.%s"
                               % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens, _usd(usd),
-                                 fulltext.clip(tail, 200, rec["out"]) or "-", item), now, log_path)
+                                 fulltext.clip(tail, 200, rec["out"]) or "-", item,
+                                 " OWED: " + owed + "." if owed else ""), now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, steps=steps,
-               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how)
+               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed)
     write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
 

@@ -390,7 +390,8 @@ def held_statements(root, mods):
 def live_facts(mods):
     """-> {"intake": int|UNM, "intake_why", "questions": [{item, q}], "records": [rec]|None, "notes": [ev]|None,
     "errors": [..]}. A record carries "live_state", its unit's state as detached_helper.live_status reads it."""
-    out = {"intake": UNM, "intake_why": "", "questions": None, "records": None, "notes": None, "errors": []}
+    out = {"intake": UNM, "intake_why": "", "questions": None, "records": None, "notes": None, "owed": [], "errors": []}
+    evs = world = None
     sys.path.insert(0, HERE)
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
     try:
@@ -412,6 +413,8 @@ def live_facts(mods):
             rec["live_state"] = DH.live_status(rec) if rec.get("status") in ("running", "launching") else rec.get("status")
             recs.append(rec)
         out["records"] = recs
+        if world is not None:   # a run that ended success and left its item open (RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN)
+            out["owed"] = DH.owed_lines(recs, world.items, evs)
     except Exception as e:      # noqa: BLE001
         out["errors"].append("run records: %s: %s" % (e.__class__.__name__, str(e)))
     return out
@@ -930,7 +933,7 @@ def gather(root, live=True):
         other.append({"name": f, "files": has})
     needs = reactions(mods, now)
     if live:
-        needs["conductor"] += dispatch_needs(now, lf["errors"])
+        needs["conductor"] += dispatch_needs(now, lf["errors"]) + list(lf.get("owed") or [])
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
