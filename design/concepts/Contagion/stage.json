@@ -44,10 +44,17 @@
     "ref": "run rm-role-designer-1794774283",
     "stage": 2,
     "tokens": 507082
+   },
+   {
+    "at": "2026-11-15T20:41:26Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794774716",
+    "stage": 3,
+    "tokens": 993461
    }
   ],
   "reserve": 60000,
-  "spent": 2249634
+  "spent": 3243095
  },
  "history": [
   {
@@ -115,6 +122,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794774283: stage 2 done"
+  },
+  {
+   "at": "2026-11-15T20:32:07Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794774716, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-15T20:41:26Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794774716: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -236,12 +255,36 @@
    "run": "rm-role-designer-1794774283",
    "stage": 2,
    "summary": "Stage 2 done with no ask sent. All ten contradictions resolved: c_local by his certified d_efa_q04/d_one_dash; c_canopy, c_sundash, c_dive, c_bodyprints by delegated Evidence-for-Ask calls (OWNER:1794774451598713765): Burn refuges follow the shared shade geometry, the Bloom quiets the sun dash via the existing weather factor (fix filed RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES), the pre-Burn Dive and Bodyprints stay in 0.1.0 per his 2026-10-16 card. The proof and doc contradictions are stage 3 work."
+  },
+  {
+   "at": "2026-11-15T20:41:26Z",
+   "inputs": {
+    "exam": null,
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "2e7b332764d2380de35dd3075fb4060e707d9968fa95d29c0fa53557c2fd6f29",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "run": "rm-role-designer-1794774716",
+   "stage": 3,
+   "summary": "Stage 3 Write: tree.json (26 leaves, one walk, against the DRAFT north star whose false repulsor 'cleared patch' line was corrected to his certified whole-map warning), sheet.md, plan.md, floor.json (all 23 floor lines applicable), scenes.json (24 script scenes, flagship sc_burn_dash held for review, 5 showcases: burn_dash 10 new, living_map 37, coalescence_harvest 10, genome_bench 6, helix_market 4, all at 0.00 overlap; 15 capabilities in coverage_rest, grown limbs among them per his 0.2.0 move). record.json d_q02_first_demo now carries flagship burn_dash. Filed: RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL (all 24 entry points), and four owed builds: ..._BURN_REFUGE_READS_SHARED_SHADE, ..._BATCH_ODDS_BEFORE_THE_STAB, ..._PREBURN_DIVE_NATIVES_LEAVE_FIRST, ..._BODYPRINTS_SKIN_BEFORE_PRINT. c_open_fixes resolved: the 2026-10-17 fixes are built on origin/main and owe live proof, which the scenes carry."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
