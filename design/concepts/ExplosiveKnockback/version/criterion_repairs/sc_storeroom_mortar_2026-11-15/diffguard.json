@@ -1,0 +1,11 @@
+{
+ "changes": [
+  {
+   "class": "replace",
+   "clause": "sc_storeroom_mortar.expect",
+   "why": "the clause was rewritten; its numbers and controls are kept"
+  }
+ ],
+ "errors": [],
+ "ok": true
+}

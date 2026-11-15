@@ -1,0 +1,50 @@
+{
+ "item": "RIMMANDRAKE_CHALLENGE_KNOCKBACK_BLIND_TWO_FIRST_EXIT_MISSED",
+ "family": "neutral fixer: a scene criterion no correct build could meet (Conductor ruling 2026-11-15 00:05 PST, ExplosiveKnockback journal; blind cycles 1 and 2 INFO L1_goods_wild_ratio_whole_cells)",
+ "sha": "df9c1b6adf9e",
+ "given": {
+  "inputs": [
+   "design/concepts/ExplosiveKnockback/scenes.json",
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+   "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane1/lane1_rows.jsonl",
+   "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/SUMMARY.md",
+   "design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_storeroom_mortar_2026-11-15/calibrate.py",
+   "design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_storeroom_mortar_2026-11-15/calibrate_cap6.txt"
+  ],
+  "criteria": {
+   "sc_storeroom_mortar.expect": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another; each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio between 1.3 and 2.0, and a near-row good with nothing in its way travels more cells before its first contact than the colonist's whole throw"
+  }
+ },
+ "passed": [],
+ "refusals": [
+  {
+   "clause": "sc_storeroom_mortar.expect",
+   "criterion_hash": "bce917dca8b1d635",
+   "evidence": [
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane1/lane1_rows.jsonl",
+    "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/SUMMARY.md",
+    "design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_storeroom_mortar_2026-11-15/calibrate.py",
+    "design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_storeroom_mortar_2026-11-15/calibrate_cap6.txt"
+   ],
+   "observed": "whole cells make a correct build's per-good wild-to-kernel ratio range 1.0 to 2.0: at the shipped cap 6, 8001 of 15001 modelled goods (53.3%) fall outside 1.3 to 2.0 (kernel 1 wild 1, kernel 2 wild 2, kernel 5 wild 6, kernel 6 wild 6) [measured, calibrate.py]; a 5x5 stockpile fails it almost surely",
+   "would_pass": "every good's wild cells inside the whole-cell band that 1.6 times a throw rounding to its kernel cells can round to (round(1.6 x (kernel - 0.5)) to round(1.6 x (kernel + 0.5)), half away from zero, never below the kernel, never past the cap), with at least one good of kernel cells 3 or more under the cap staged (INVALID otherwise)",
+   "smallest_fix": {
+    "what": "replace the ratio clause with the per-good band (text in criteria_new.json); same intent, goods fly about 1.6 times the kernel throw; correct build passes every good, factors 1.0 and 1.25 fail at kernel 3 or more, 2.0 and 2.5 fail at kernel 1 or 2 [measured, calibrate.py, cap 6 and 10]",
+    "attainable": "yes",
+    "cost": "edit"
+   },
+   "criterion_verdict": "unattainable",
+   "criterion_why": "the bar (goods fly about 1.6 times as far, sheet) is sound; the clause tested it per good on rounded cells, which no correct build meets for short throws or at the cap",
+   "new_since": "unfixed:sc_storeroom_mortar.expect"
+  }
+ ],
+ "repair": {
+  "class": "replace",
+  "diffguard": "ok (refusal_contract.py diffguard: replace, numbers and controls kept)",
+  "applied_in": "design/concepts/ExplosiveKnockback/scenes.json",
+  "bar_meaning": "unchanged",
+  "also": "the clause's 'request line' corrected to the move line (item_move), where the code journals kernelCells and wildCells (Conductor ruling 2026-11-15 00:05 PST: wild cells are journaled on the move line)"
+ }
+}

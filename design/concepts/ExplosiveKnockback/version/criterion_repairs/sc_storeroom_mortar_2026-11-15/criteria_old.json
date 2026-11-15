@@ -1,0 +1,3 @@
+{
+ "sc_storeroom_mortar.expect": "each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id despawns at one cell and spawns at another; each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio between 1.3 and 2.0, and a near-row good with nothing in its way travels more cells before its first contact than the colonist's whole throw"
+}

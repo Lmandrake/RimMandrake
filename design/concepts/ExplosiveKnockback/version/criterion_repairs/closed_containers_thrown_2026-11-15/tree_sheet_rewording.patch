@@ -1,0 +1,61 @@
+diff --git a/design/concepts/ExplosiveKnockback/sheet.md b/design/concepts/ExplosiveKnockback/sheet.md
+index f60dfd5689..0b907a1600 100644
+--- a/design/concepts/ExplosiveKnockback/sheet.md
++++ b/design/concepts/ExplosiveKnockback/sheet.md
+@@ -46,7 +46,7 @@
+ - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed
+ - [leaf:frame_time_probe] A per-frame time probe, so the frame budget can be measured
+ - [leaf:walk_storeroom_raid] A raid on a stocked colony on the full list, with a mid-way reload, a repeat and a second order
+-- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working, each to its own off state: goods in the air off, goods unthrown, never the old hop; closed guard off, container goods thrown loose; container shove off, containers stay; sealed crates counted closed off, a crate neither slides nor jolts; heavy knock off, stacks pass; gas chain off, a cloud burns without bursts; fire at half off, fire throws nothing; blast power from damage off, damage is ignored
++- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working, each to its own off state: goods in the air off, goods unthrown, never the old hop; closed guard off, container goods thrown loose; container shove off, containers stay; sealed crates counted closed off, a crate is neither thrown nor jolted; heavy knock off, stacks pass; gas chain off, a cloud burns without bursts; fire at half off, fire throws nothing; blast power from damage off, damage is ignored
+ - [floor:mod_settings] Superb Mod Settings: master switch, strengths and every new part switch off cleanly
+ - [floor:tick_cost] The thrown-thing carrier's own tick cost, measured on the walk
+ 
+@@ -61,7 +61,7 @@
+ ## open
+ 
+ ## delegated
+-- A 1x1 closed container whose own mass plus contents is at or under the 250 kg container mass limit (a Mod Setting, not the 75 kg goods limit) slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
++- A 1x1 closed container whose own mass plus contents is at or under the 250 kg container mass limit (a Mod Setting, not the 75 kg goods limit) is thrown a short way if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
+ - Sealed crates count as closed containers is a Mod Setting, on by default; a crate's goods sit in its own holder, out of any blast's reach, so the switch only decides whether the crate is shoved or jolted (off: neither)
+ - The creature mass limit is 150 kg (60 kg times the old body size 2.5, so a muffalo at 144 flies and a rhino at 180 does not), measured from the game's defs; a corpse is weighed only by the 75 kg goods limit; the grav-ram's own limit is 216 kg
+ - A damage type's normal damage is its own default (Bomb 50, Flame 10), so fire keeps its half and a mortar still throws a colonist 3 cells; the vanilla grenade, mortar and IED all deal 50 and differ by radius; blast power from damage is a Mod Setting, on; gas clump bursts are not scaled by damage
+diff --git a/design/concepts/ExplosiveKnockback/tree.json b/design/concepts/ExplosiveKnockback/tree.json
+index 23420c4193..a33f05fa22 100644
+--- a/design/concepts/ExplosiveKnockback/tree.json
++++ b/design/concepts/ExplosiveKnockback/tree.json
+@@ -371,7 +371,7 @@
+    "bundle": "storage",
+    "scenario_informed_by": [],
+    "needs_instrument": null,
+-   "oracle_proposed": "the weapons lockers' and the tagged panel's contents count unchanged; the free-backed locker and the 75-to-250 kg locker each moved one cell away from the blast (journal container line, action slide); the walled, pawn-backed and pit-backed lockers, the over-mass safe and the 2x2 security crate stayed on their cells and jolted (journal container line, action jolt, and a drawn offset in the trace); the 1x1 sealed crate slid; the crates' contents are claimed by construction (an unspawned holder), not checked; control: the same tagged panel with the tag removed by Stage scatters its goods, and the same goods loose on the floor fly; offline: every storage def on the owner's list classed closed exactly when it hides its contents (showContents false, a sealed crate, or the opt-in tag): Shelf, ShelfSmall and Hopper open, a modded shelf, locker or fridge that draws its contents open, a modded locker that hides them closed, and no opt-in tag on any def that draws its contents",
++   "oracle_proposed": "the weapons lockers' and the tagged panel's contents count unchanged; the free-backed locker and the 75-to-250 kg locker each thrown a short way away from the blast, at least one cell and never past the throw cap (journal container line, action thrown); the walled, pawn-backed and pit-backed lockers, the over-mass safe and the 2x2 security crate stayed on their cells and jolted (journal container line, action jolt, and a drawn offset in the trace); the 1x1 sealed crate thrown a short way; the crates' contents are claimed by construction (an unspawned holder), not checked; control: the same tagged panel with the tag removed by Stage scatters its goods, and the same goods loose on the floor fly; offline: every storage def on the owner's list classed closed exactly when it hides its contents (showContents false, a sealed crate, or the opt-in tag): Shelf, ShelfSmall and Hopper open, a modded shelf, locker or fridge that draws its contents open, a modded locker that hides them closed, and no opt-in tag on any def that draws its contents",
+    "tier_reason": "the throw, the landing and the scatter are runtime (PawnFlyer, map things, the explosion wave); the kernel selftest proves only the path maths",
+    "cannot_show": null,
+    "wall_expect_h": null,
+@@ -382,13 +382,13 @@
+    ],
+    "leaf_kind": "experience",
+    "clause_kind": "change",
+-   "experience": "Goods inside a closed container (storage that hides what it holds: a sealed crate while 'Sealed crates count as closed containers' is on, the default; a modded locker or safe that does not draw its contents; or another mod's hiding container carrying the opt-in tag, such as the Armoury's secret floor panels) stay inside it, and the player sees the container itself shift a cell or jolt: a 1x1 container whose own mass plus contents is at or under the container mass limit (250 kg, a Mod Setting, separate from the 75 kg goods limit) slides one cell if the cell behind it is free, otherwise it jolts. A sealed crate keeps its goods in its own holder, out of every blast's reach whatever the switch says; the switch decides only whether the crate is shoved or jolted as a closed container (off: it neither slides nor jolts). Anything that draws its contents (a shelf, a hopper, a drawing locker or fridge) is open.",
++   "experience": "Goods inside a closed container (storage that hides what it holds: a sealed crate while 'Sealed crates count as closed containers' is on, the default; a modded locker or safe that does not draw its contents; or another mod's hiding container carrying the opt-in tag, such as the Armoury's secret floor panels) stay inside it, and the player sees the container itself thrown a short way or jolt: a 1x1 container whose own mass plus contents is at or under the container mass limit (250 kg, a Mod Setting, separate from the 75 kg goods limit) is thrown a short way if the cell behind it is free, otherwise it jolts. A sealed crate keeps its goods in its own holder, out of every blast's reach whatever the switch says; the switch decides only whether the crate is shoved or jolted as a closed container (off: it is neither thrown nor jolted). Anything that draws its contents (a shelf, a hopper, a drawing locker or fridge) is open.",
+    "scenario": "Beside a grenade blast, four closed 1x1 containers, LWM's Deep Storage weapons lockers (LWM_WeaponsLocker, which hide their contents) holding weapons: one with a free cell behind it, one against a wall, one with a colonist behind it, one with an open pit behind it; a fifth weapons locker filled until its own mass plus contents is between 75 and 250 kg, free cell behind; a Deep Storage safe (LWM_Safe, 500 kg, over the 250 kg container mass limit); a sealed crate (SealedCrate, 1x1) with a free cell behind it; an ancient security crate (AncientSecurityCrate, 2x2, larger than 1x1); and one of the Armoury's secret floor panels, closed only by the opt-in tag, holding goods; read contents and container cells after.",
+    "false_pass": [
+     "closed containers spill their goods",
+     "the container never moves at all",
+-    "a container slides into a pit, a wall or onto a pawn",
+-    "a container larger than 1x1 slides",
++    "a container is thrown into a pit, a wall or onto a pawn",
++    "a container larger than 1x1 is thrown",
+     "a storage def on his list misclassed because only hand-picked examples were checked",
+     "a drawing def (a shelf, a hopper) tagged closed to stage the scene",
+     "the 75 kg goods limit applied to containers, so the 75-to-250 kg locker jolts",
+@@ -705,7 +705,7 @@
+    ],
+    "leaf_kind": "experience",
+    "clause_kind": "change",
+-   "experience": "The player sees every Mod Settings line do what it says: strength and max distance scale the throw, the per-weapon cap scale and other-mod percent apply, each toggle, the creature mass limit, the goods mass limit, the container mass limit and the heavy threshold take effect, and each new part switches off cleanly with the rest still working. Each part's off state, one by one: goods in the air off, loose goods are not thrown at all (never the old hop); the closed guard off, a closed container's goods are thrown like loose goods; the container shove off, closed containers stay put, goods kept; sealed crates counted closed off, a sealed crate neither slides nor jolts; the heavy knock off, heavy stacks pass people; the gas chain off, a lit cloud burns with no burst and no throw; fire at half off, fire and incendiary blasts throw nothing, as shipped; blast power from damage off, a throw ignores the blast's damage, as shipped.",
++   "experience": "The player sees every Mod Settings line do what it says: strength and max distance scale the throw, the per-weapon cap scale and other-mod percent apply, each toggle, the creature mass limit, the goods mass limit, the container mass limit and the heavy threshold take effect, and each new part switches off cleanly with the rest still working. Each part's off state, one by one: goods in the air off, loose goods are not thrown at all (never the old hop); the closed guard off, a closed container's goods are thrown like loose goods; the container shove off, closed containers stay put, goods kept; sealed crates counted closed off, a sealed crate is neither thrown nor jolted; the heavy knock off, heavy stacks pass people; the gas chain off, a lit cloud burns with no burst and no throw; fire at half off, fire and incendiary blasts throw nothing, as shipped; blast power from damage off, a throw ignores the blast's damage, as shipped.",
+    "scenario": "The same bursts (a plain grenade, the grenade with an own maximum of 4, an incendiary shell, a staged Bomb blast at the grenade's radius and twice its damage) over one staged lane of a colonist, an animal, a second animal of 100 to 150 kg, a mech, a downed pawn, loose goods of 50, 65 and 100 kg, a corpse, a closed 1x1 container (LWM's Deep Storage weapons locker, LWM_WeaponsLocker, holding weapons; lwm.deepstorage on the list), a heavy stack, a tagged gas puff lit each run, sandbags, a wall, a closed door, an open pit cell and a belted colonist, run once per setting changed from default, every line on the page among them.",
+    "false_pass": [
+     "a setting saves but changes nothing",

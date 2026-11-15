@@ -382,11 +382,24 @@
    "speaker": "agent",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
-    "OWNER:1794468845275647261"
+    "OWNER:1794468845275647261",
+    "OWNER:1794721689897638306"
    ],
    "date": "2026-11-11",
    "delegated": "tuning of a ruled behaviour",
-   "what": "'Shoved a bit': a closed 1x1 container whose own mass plus contents is at or under the container mass limit (closedContainerMassLimit, 250 kg, a Mod Setting; not the 75 kg goods limit, which weighs loose goods and corpses) slides one cell straight away from the blast if that cell is free and standable, contents inside; anything larger or heavier, or with no free cell, only jolts in place (a short visual shake). A container is never shoved into a pit, through a wall or onto a pawn. Switched off, containers stay put, goods kept."
+   "what": "'Shoved a bit': a closed 1x1 container whose own mass plus contents is at or under the container mass limit (closedContainerMassLimit, 250 kg, a Mod Setting; not the 75 kg goods limit, which weighs loose goods and corpses) is thrown a short way straight away from the blast if that cell is free and standable (his card of 2026-11-14, dc_container_thrown_short_way; this row said it slides one cell), contents inside; anything larger or heavier, or with no free cell, only jolts in place (a short visual shake). A container is never shoved into a pit, through a wall or onto a pawn. Switched off, containers stay put, goods kept."
+  },
+  {
+   "id": "dc_container_thrown_short_way",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794721689897638306",
+    "ITEM:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN"
+   ],
+   "date": "2026-11-14 ~21:47 PST (question card, journal question 12)",
+   "by_card": "Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows",
+   "what": "A closed 1x1 container at or under the container mass limit with a free cell behind it is thrown a short way (as built: ContainerThrowCells, never past the throw cap, never into a pit, a wall or onto a pawn), not slid one cell. sc_closed_containers, sc_settings_sweep and sc_storeroom_bomb_pit follow (2026-11-15). The bar's own words in tree.json (closed_container_holds, settings_scale_and_switch) and sheet.md wait on his re-certification of the tree: his coverage certificate is bound to the tree hash, so the rewording is held as version/criterion_repairs/closed_containers_thrown_2026-11-15/tree_sheet_rewording.patch (item RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING)."
   },
   {
    "id": "dl_modded_strength",

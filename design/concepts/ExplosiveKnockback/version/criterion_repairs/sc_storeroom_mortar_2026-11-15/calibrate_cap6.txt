@@ -1,0 +1,7 @@
+cap 6; bands at 1.6: 1->1-2, 2->2-4, 3->4-6, 4->6-6, 5->6-6, 6->6-6
+factor 1.6 (correct): OLD fails 8001 of 15001 goods (53.3%), e.g. kernel ['1 wild 1', '2 wild 2', '5 wild 6', '6 wild 6']; NEW fails 0
+factor 1.00 (wrong): NEW fails goods with kernel cells [3, 4, 5]
+factor 1.25 (wrong): NEW fails goods with kernel cells [3, 4]
+factor 2.00 (wrong): NEW fails goods with kernel cells [1, 2]
+factor 2.50 (wrong): NEW fails goods with kernel cells [1, 2]
+calibration: PASS

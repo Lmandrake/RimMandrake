@@ -134,9 +134,9 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>One Bomb of 30 at radius 2.9 among closed containers: four LWM weapons lockers (free-, wall-, pawn- and
         /// pit-backed), a fifth filled to 76-249 kg, an LWM safe (500 kg), a 1x1 SealedCrate, a 2x2 AncientSecurityCrate and the
         /// Armoury's tagged secret floor panel holding loose goods. Control (_control): the same goods loose at the same cells,
-        /// and the panel with its opt-in tag removed. The bar's "slide" is read as "moved exactly one cell away from the blast";
-        /// the shipped code journals the move as action thrown (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE), so
-        /// the action word is reported, not judged. The bar's "drawn offset in the thing trace" has no instrument (no trace,
+        /// and the panel with its opt-in tag removed. The bar says "thrown a short way" (owner by card 2026-11-14 ~9:47 PM PST,
+        /// OWNER:1794721689897638306, "Throw it, as built"; it said "slides one cell"): moved at least one cell away from the
+        /// blast, never past the throw cap, journal container line action thrown. The bar's "drawn offset in the thing trace" has no instrument (no trace,
         /// and a jolt draws nothing): reported UNMEASURED.</summary>
         private static string ClosedContainers(Scene s)
         {
@@ -276,9 +276,10 @@ namespace RimMandrake.ExplosiveKnockback
                     int c = b.Spawned ? Cheb(b.Position, sc.starts[k]) : -1;
                     bool away = b.Spawned && Cheb(b.Position, sc.o) > Cheb(sc.starts[k], sc.o);
                     bool held = k == "crate" || (GoodsOn(b).Count == (int)sc.numbers["goods_" + k]);
-                    bool row = c == 1 && away && line.Count == 1 && held;
+                    bool thrown = line.Count == 1 && (string)line[0]["action"] == "thrown";
+                    bool row = c >= 1 && c <= RimMandrakeExplosiveKnockbackSettings.maxThrowCells && away && thrown && held;
                     ok &= row;
-                    rows.Add(k + "=" + (row ? "slid" : "FAIL") + " cells=" + c + " away=" + away + " held=" + held
+                    rows.Add(k + "=" + (row ? "thrown" : "FAIL") + " cells=" + c + " away=" + away + " held=" + held
                         + " action=" + (line.Count > 0 ? (string)line[0]["action"] : "none") + "x" + line.Count);
                 }
                 foreach (string k in new[] { "wall", "pawn", "pit", "safe", "sec" })
