@@ -1,0 +1,1 @@
+Before landing an owner-card edit to a locked concept tree.json or sheet.md, run concept_tree.py gate: his coverage certificate (signed_by owner) is bound to tree_hash and sheet_hash, so his own rewording turns the gate PASS to REFUSED and only he can re-certify (ExplosiveKnockback 2026-11-15).

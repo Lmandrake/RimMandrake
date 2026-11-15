@@ -148,3 +148,17 @@ The two locked-text repairs (decisions 3 and 7) are owed by others and carry no 
 - **Filed, open:** RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST; RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER (FlowWorks).
 - Trap seen once: `run_selftests --only` ran T_KERNEL and T_SETTINGS_SWEEP_OFFLINE in parallel and reported RED, then GREEN on a
   rerun; both stage into the same `ExplosiveKnockbackSelfTest` folder [guess ~75% that the race is the cause].
+
+## Reconcile (2026-11-15 02:15 PST, Conductor night order; not the judge)
+- `maturation.py next` read exit not met on 4 FIXED Problems (lint pins, walk row, kernel decider, six wiring checks): each row
+  ran its check the failing way round (red rc 0, green rc 1). A record gap: redone for real as tests whose rc 0 means the fix
+  holds (`lane2/plant_faults.py --expect-caught`, `lane2/walk_row_check.py`), red at each fix's own parent (ecd0b23322,
+  57e61fef0b) in a scratch clone, green at 587529cee1 / 04bb4c93fa; outputs in `lane2/fix_demos/` [measured].
+- Four more rows (flying-off skip, drawn jolt, dead shove kernel, rim) named a `<parent Source>` placeholder or an
+  uncommitted worktree; rerun with named paths (`fix_demos/jj_*`), red rc 1, green rc 0 [measured]. maturation.py now refuses
+  a placeholder command and names an inverted row; its brief says so (a9851ef3e8).
+- Judge's work checked: no edited test loosens an assertion; offline deciders rerun at HEAD, 15 of 16 PASS, T_SETTINGS_SCREEN
+  then 855/856 and now 856/856 (838685395999) [measured].
+- Owed items above, done: sc_storeroom_mortar's ratio clause repaired by the neutral fixer
+  (`version/criterion_repairs/sc_storeroom_mortar_2026-11-15/`); the container tests follow his "thrown a short way" card;
+  the bar's own words in tree.json and sheet.md wait on his re-certification (RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING).

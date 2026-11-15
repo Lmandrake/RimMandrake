@@ -1,0 +1,1 @@
+A blind-challenge fix row for a fix to a TEST (it must now catch a planted fault) is the catching run itself, rc 0 when caught: ExplosiveKnockback cycle 2 recorded four such rows as the failing-direction check (lint/grep rc 0 = red), which maturation.py read as never shown red. plant_faults.py --expect-caught is the shape.

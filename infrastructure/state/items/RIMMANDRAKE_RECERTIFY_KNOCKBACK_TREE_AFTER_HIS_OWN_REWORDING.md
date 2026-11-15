@@ -23,6 +23,11 @@ The rewording is held as a patch: `design/concepts/ExplosiveKnockback/version/cr
 2. Or: a Divergent change to the certificate rule (an owner-card change to a locked tree carries his certificate the way
    `designer_stage.py repin` carries stage pins) — filed for the next version, his call.
 
+**Also owed when the patch lands:** `exam.json` (the Cold Reader exam of the tree, a locked file) has container scenarios
+whose expected verdicts say a container "slides one cell" (e20, c4, c10, y5, w3, w4, w7, m13, m14, m15, m19, m20, v6, v7,
+v11 name slide or shove) [measured, 2026-11-15 grep]. They match the tree as it stands; once the tree reads "thrown a short
+way" each expect that accepts or demands a one-cell slide is wrong and is re-authored with the exam's own tooling.
+
 ## verify
 Acceptance test: `git apply design/concepts/ExplosiveKnockback/version/criterion_repairs/closed_containers_thrown_2026-11-15/tree_sheet_rewording.patch && python3 src/RimMandrake/rimflow/concept_tree.py gate design/concepts/ExplosiveKnockback | tail -1`
 prints `gate: PASS`, and `grep -c "slides one cell" design/concepts/ExplosiveKnockback/tree.json design/concepts/ExplosiveKnockback/sheet.md` reads 0 for both.
