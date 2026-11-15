@@ -1,0 +1,205 @@
+[
+ {
+  "id": "PF_PROBE_NEVER_FLAGS",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "(Math.Abs(fertility - expected) < 0.001f ? \"True\" : \"False\")",
+  "new": "(Math.Abs(fertility - expected) < 0.001f ? \"True\" : \"True\")",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "PF_PROBE_LIFT_ZERO",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "float lift = wetNow ? wateredFertility - baseFertility : 0f;",
+  "new": "float lift = 0f;",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "PF_PROBE_CALLER_NEVER_WET",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+  "old": "comp != null && comp.IsWatered(c, now), t?.fertility ?? 0f",
+  "new": "false, t?.fertility ?? 0f",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "PF_PROBE_REFUSAL_DROPPED",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": ": !waterOn ? \"the ash field is off (ashWaterFertilityEnabled)\" : null;",
+  "new": ": null;",
+  "bars": [
+   "ash_fertility_probe",
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "PF_TEXT_ENGINEERED_DROPPED",
+  "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+  "old": "savanna, genetically engineered in a forgotten age",
+  "new": "savanna, grown in a forgotten age",
+  "bars": [
+   "biome_text_says_engineered"
+  ]
+ },
+ {
+  "id": "PF_TEXT_ENGINEERED_NEGATED",
+  "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+  "old": "savanna, genetically engineered in a forgotten age",
+  "new": "savanna, never genetically engineered, in a forgotten age",
+  "bars": [
+   "biome_text_says_engineered"
+  ]
+ },
+ {
+  "id": "PF_FIREBREAK_ABOUT_TEXT",
+  "file": "src/RimMandrake/Pyrelands/About/About.xml",
+  "old": "with the plants, weather and creatures that live by the fire.",
+  "new": "with the plants, weather and creatures that live by the fire, and a firebreak line the fire will not cross.",
+  "bars": [
+   "inv_firebreak_firefoam"
+  ]
+ },
+ {
+  "id": "PF_FIREBREAK_KERNEL_CONST",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "public const string DeepAshDefName = \"RM_FE_Ash_Deep\";",
+  "new": "public const string DeepAshDefName = \"RM_FE_Ash_Deep\";\n        public const string FirebreakDefName = \"RM_FE_FirebreakLine\";",
+  "bars": [
+   "inv_firebreak_firefoam"
+  ]
+ },
+ {
+  "id": "PF_BREAKER_DEF_BACK",
+  "file": "src/RimMandrake/Pyrelands/Defs/SandShovel/RM_ShovelSand.xml",
+  "old": "</Defs>",
+  "new": "  <RecipeDef><defName>RM_Make_LightningBreaker</defName><label>make lightning breaker</label></RecipeDef>\n</Defs>",
+  "bars": [
+   "inv_lightning_breaker"
+  ]
+ },
+ {
+  "id": "PF_FULGURITE_CONST_BACK",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
+  "old": "public const int BurnWatchIntervalTicks = 60;",
+  "new": "public const int BurnWatchIntervalTicks = 60;\n        public const string FulguriteDefName = \"RM_Fulgurite\";",
+  "bars": [
+   "inv_lightning_breaker"
+  ]
+ },
+ {
+  "id": "PF_GATE_IGNORES_SHELL",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "return modMaster && (!shellPresent || shellOn);",
+  "new": "return modMaster;",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "PF_WORLDGEN_DEFAULT_ON",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "public static bool biomeGenerationEnabled = false;",
+  "new": "public static bool biomeGenerationEnabled = true;",
+  "bars": [
+   "inv_settings_gate",
+   "inv_biome_self_contained"
+  ]
+ },
+ {
+  "id": "PF_BED_IGNITION_UNGATED",
+  "file": "src/RimMandrake/Pyrelands/Source/CompFurnaceBedIgnition.cs",
+  "old": "if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)",
+  "new": "if (!RM_PyrelandsSettings.furnaceThermalEnabled)",
+  "bars": [
+   "inv_settings_gate",
+   "furnacebeast_warms"
+  ]
+ },
+ {
+  "id": "PF_SCRIBE_DEFAULT_DRIFT",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "Scribe_Values.Look(ref scorchFruitMapCap, \"scorchFruitMapCap\", 40);",
+  "new": "Scribe_Values.Look(ref scorchFruitMapCap, \"scorchFruitMapCap\", 400);",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "PF_ART_TEXPATH_MISSING",
+  "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml",
+  "old": "<texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>",
+  "new": "<texPath>Things/Item/Resource/RM_FE_ScorchFruit_Gone</texPath>",
+  "bars": [
+   "inv_art_and_text"
+  ]
+ },
+ {
+  "id": "PF_TEXT_MIGRATION_PROMISED",
+  "file": "src/RimMandrake/Pyrelands/About/About.xml",
+  "old": "with the plants, weather and creatures that live by the fire.",
+  "new": "with the plants, weather and creatures that live by the fire, and ullai herds that migrate across the world.",
+  "bars": [
+   "inv_art_and_text",
+   "inv_ullai_herd_giant"
+  ]
+ },
+ {
+  "id": "PF_HERD_CALLER_ANCHOR_ALWAYS",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
+  "old": "action = RM_BurnKernel.FollowBurnDecision(anchor.IsValid,",
+  "new": "action = RM_BurnKernel.FollowBurnDecision(true,",
+  "bars": [
+   "ullai_graze_old_burns"
+  ]
+ },
+ {
+  "id": "PF_RAIN_POSTFIX_INVERTED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsNoOrdinaryRain.cs",
+  "old": "if (blackRain != null) __result = blackRain;",
+  "new": "if (blackRain == null) __result = blackRain;",
+  "bars": [
+   "no_ordinary_rain"
+  ]
+ },
+ {
+  "id": "PF_PATCH_ADDS_ORDINARY_RAIN",
+  "file": "src/RimUtinni/UtinniPatches/Patches/AshStorms_Pyrelands.xml",
+  "old": "<RM_VolcanicAsh>3</RM_VolcanicAsh>",
+  "new": "<RainyThunderstorm>3</RainyThunderstorm>",
+  "bars": [
+   "no_ordinary_rain",
+   "inv_weather"
+  ]
+ },
+ {
+  "id": "PF_FERTILITY_CAP_150",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+  "old": "public const float FertilityCap = 2f;",
+  "new": "public const float FertilityCap = 1.5f;",
+  "bars": [
+   "fresh_burn_compounds_with_black_rain"
+  ]
+ },
+ {
+  "id": "PF_BONUS_NEVER_FADES",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "return bonus * (f > 1f ? 1f : f);",
+  "new": "return bonus;",
+  "bars": [
+   "fresh_burn_compounds_with_black_rain"
+  ]
+ },
+ {
+  "id": "PF_HERD_KERNEL_FALLBACK_BACK",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+  "old": "            }\n            return -1;\n        }\n\n        /// <summary>RM_JobGiver_FollowBurn",
+  "new": "            }\n            return ticks.Count > 0 ? 0 : -1;\n        }\n\n        /// <summary>RM_JobGiver_FollowBurn",
+  "bars": [
+   "ullai_graze_old_burns"
+  ]
+ }
+]

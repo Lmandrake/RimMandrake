@@ -62,12 +62,24 @@ def def_rows(src):
     name = pyre.findtext("defName") if pyre is not None else None
     desc = (pyre.findtext("description") or "") if pyre is not None else ""
     lang = glob.glob(os.path.join(src, "Languages", "*", "DefInjected", "BiomeDef", "*.xml"))
+    # extended in lane 2 (planted fault PF_TEXT_ENGINEERED_NEGATED): a negation before the phrase does not count
+    neg = re.search(r"\b(never|not|no|nor|un)\b[^.]{0,30}genetically engineered", desc, re.I)
     rows.append(row("def_biome_text_says_engineered", ["biome_text_says_engineered"], "fixed",
-                    "genetically engineered" in desc.lower() and not lang, 1,
+                    "genetically engineered" in desc.lower() and not neg and not lang, 1,
                     "BiomeDef %s description %s 'genetically engineered'; DefInjected BiomeDef overrides: %d" % (name, "holds" if "genetically engineered" in desc.lower() else "LACKS", len(lang))))
     rows.append(row("def_biome_text_no_migration_promise", ["biome_text_says_engineered", "inv_ullai_herd_giant"], "fixed",
                     "migrat" not in desc.lower(), 1, "the description never promises the cut world migration"))
     wl = [c.tag for c in pyre.find("baseWeatherCommonalities")] if pyre is not None and pyre.find("baseWeatherCommonalities") is not None else []
+    # extended in lane 2 (planted fault PF_PATCH_ADDS_ORDINARY_RAIN): weathers our patches add to the biome's list count too
+    for pp in glob.glob(os.path.join(REPO, "src", "*", "*", "Patches", "*.xml")) + glob.glob(os.path.join(src, "Patches", "*.xml")):
+        try:
+            pr = ET.parse(pp).getroot()
+        except ET.ParseError:
+            continue
+        for op in pr.iter("li"):
+            xp = op.findtext("xpath") or ""
+            if 'RM_Pyrelands"]/baseWeatherCommonalities' in xp and op.find("value") is not None:
+                wl += [c.tag for c in op.find("value")]
     wet = [w for w in wl if w in RAIN_WEATHERS]
     rows.append(row("def_no_ordinary_rain_on_weather_list", ["no_ordinary_rain", "inv_weather"], "fixed", bool(wl) and not wet, len(wl),
                     "weather list %s; vanilla wet weathers on it: %s" % (",".join(wl), wet or "none")))
@@ -105,11 +117,17 @@ def def_rows(src):
                     "Firebreak.xml %s; other 'firebreak' mentions (item-name comments excepted): %s" % ("present" if fbfile else "absent", sorted(set(hits_fb)) or "none")))
     rows.append(row("def_lightning_breaker_stays_excised", ["inv_lightning_breaker"], "fixed", not hits_br, 1,
                     "breaker/fulgurite in shipped files: %s" % (sorted(set(hits_br)) or "none")))
+    # extended in lane 2 (planted fault PF_FERTILITY_CAP_150): the caller's cap must hold the bar's 190% wet fresh scar
+    af_src = open(os.path.join(src, "Source/PyrelandsAshField.cs")).read()
+    cm = re.search(r"public const float FertilityCap = ([\d.]+)f;", af_src)
+    capv = float(cm.group(1)) if cm else 0.0
+    rows.append(row("caller_fertility_cap_holds_190", ["fresh_burn_compounds_with_black_rain", "ash_fertile_when_watered"], "fixed",
+                    capv >= 1.90 - 1e-6, 1, "PyrelandsAshField.FertilityCap %s vs the wet fresh scar 1.40 + 0.50 = 1.90" % (cm.group(1) if cm else "unread")))
     # no ordinary rain: the chooser postfix is compiled and aimed at WeatherDecider.ChooseNextWeather (RAIN_FIX_FORCED_WEATHER_SKIPS_THE_LIST)
     csproj = open(os.path.join(src, "Source/FireEcologyHook.csproj")).read()
     pf = os.path.join(src, "Source/PyrelandsNoOrdinaryRain.cs")
     pt = open(pf).read() if os.path.exists(pf) else ""
-    wired = 'Include="PyrelandsNoOrdinaryRain.cs"' in csproj and '"ChooseNextWeather"' in pt and "RainBecomesBlackRain(" in pt and "__result = blackRain" in pt
+    wired = 'Include="PyrelandsNoOrdinaryRain.cs"' in csproj and '"ChooseNextWeather"' in pt and "RainBecomesBlackRain(" in pt and "if (blackRain != null) __result = blackRain;" in pt
     rows.append(row("rain_chooser_postfix_wired", ["no_ordinary_rain", "inv_weather"], "fixed", wired, 1,
                     "PyrelandsNoOrdinaryRain.cs %s, compiled: %s" % ("present" if pt else "absent", 'Include="PyrelandsNoOrdinaryRain.cs"' in csproj)))
     # sand shovel

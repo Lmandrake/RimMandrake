@@ -1,0 +1,23 @@
+[
+ {
+  "path": "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs",
+  "why": "its spec line pinned HistoryIndexAgo's fallback to the oldest sample (the Problem); spec now -1 when no sample is lag-old, as strict as before; a comment corrected",
+  "before_sha256_16": "e7756010bd5173b9",
+  "after_sha256_16": "736c37d1db42d422",
+  "weakened": false
+ },
+ {
+  "path": "design/concepts/Pyrelands/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
+  "why": "blind judge's own: row forced_or_mutator_rain_becomes_black_rain added; ullai history-ring row reads after the read-side prune (the kernel's documented contract)",
+  "before_sha256_16": "e3fd945c54528ae4",
+  "after_sha256_16": "50d19cfa14b6a879",
+  "weakened": false
+ },
+ {
+  "path": "design/concepts/Pyrelands/version/blind_challenge/cycle_1/lane1/run_lane1.py",
+  "why": "blind judge's own: rain_chooser_postfix_wired, caller_fertility_cap_holds_190, negation check on the engineered text, patch-added weathers counted, .pyc ignored",
+  "before_sha256_16": "6131893b2166a207",
+  "after_sha256_16": "6e914d62fb6a51b4",
+  "weakened": false
+ }
+]

@@ -1,0 +1,105 @@
+[
+ {
+  "id": "RIMMANDRAKE_FIX_HERD_ANCHOR_FALLS_BACK_TO_FRESH_ASH",
+  "class": "Problem",
+  "bar": "ullai_graze_old_burns",
+  "criterion": "tree.json experience: herds drift to where it burned about two days ago, 'not to fresh ash or old grass'; red: 'goes to the fresh one'",
+  "evidence": [
+   "lane1 row herd_anchor_never_fresh_ash FAIL (shrunk: one history sample 2500 ticks old, lag 2 days -> HistoryIndexAgo index 0 -> FollowBurnDecision GoAnchor)",
+   "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs HistoryIndexAgo: 'else the oldest sample'",
+   "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs BurnCenterAgo documented the fallback as 'the freshest black we know of'; RM_PyrelandsGiants.cs JobFor walks the herd to that anchor",
+   "consequence: on every fresh map (opening front) for two days, and after any first burn, wild ullai GotoWander toward the centroid of a burn under two days old, often still burning",
+   "builder fuzz pinned the fallback as spec (PyrelandsFuzz.cs 'if (spec < 0 && ticks.Count > 0) spec = 0')"
+  ],
+  "would_pass": "with every history sample younger than the lag, no anchor is answered and the herd stays on (or drifts to the nearest) ash",
+  "smallest_fix": "HistoryIndexAgo returns -1 when no sample is lag-old; fuzz spec line follows",
+  "verdict_on_criterion": "criterion sound: the bar's words name fresh ash as wrong; the scenario (both pads present) could not see it",
+  "status": "FIXED de0aae4a1b556a6768e3107996e04cb015a01b19"
+ },
+ {
+  "id": "RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST",
+  "class": "Problem",
+  "bar": "no_ordinary_rain",
+  "criterion": "sheet does-not: 'Ordinary rain never falls on a Pyrelands map; its only wet weather is black rain'; red: 'ordinary rain ... is ever chosen'",
+  "evidence": [
+   "RimSage RimWorld/WeatherDecider.cs ChooseNextWeather: a game condition's ForcedWeather is returned before the biome list is read",
+   "RimSage CompCauseGameCondition_ForceWeather.RandomizeSettings and GameCondition_ForceWeather: any WeatherDef with isBad && canOccurAsRandomForcedEvent; Core RainyThunderstorm and FoggyRain are isBad=true with the default canOccurAsRandomForcedEvent=true (Defs/Core/WeatherDefs/Weathers.xml)",
+   "Royalty WeatherController condition causer (Buildings_ConditionCausers.xml; SitePart WeatherController; Scripts_JoinerThreat 'malfunctioning weather control satellite')",
+   "RimSage WeatherDecider.CurrentWeatherCommonality adds tile-mutator commonality after the biome loop; Odyssey WetClimate (TileMutators_Modifiers.xml) adds 10 to Rain, RainyThunderstorm, FoggyRain whatever the biome lists",
+   "no Pyrelands patch or code touched forced weather before this fix (grep ForcedWeather over src/RimMandrake/Pyrelands)"
+  ],
+  "would_pass": "on a Pyrelands map with the gate on, any ordinary rain the decider chooses (forced or mutator) is replaced by RM_FE_BlackRain",
+  "smallest_fix": "Harmony postfix on WeatherDecider.ChooseNextWeather (PyrelandsNoOrdinaryRain.cs) + kernel predicate RM_FireEcoKernel.RainBecomesBlackRain",
+  "verdict_on_criterion": "criterion sound; its scene sc_no_rain (natural choices over a season) cannot see either road: see RIMMANDRAKE_EXTEND_NO_RAIN_SCENE_WITH_FORCED_WEATHER",
+  "status": "FIXED de0aae4a1b556a6768e3107996e04cb015a01b19"
+ },
+ {
+  "id": "RIMMANDRAKE_RECONCILE_DRY_ASH_TEXT_WITH_VERY_FERTILE_BAR",
+  "class": "Polish",
+  "bar": "ash_fertile_when_watered",
+  "criterion": "sheet: 'Ordinary crops treat deep ash as very fertile ground and still benefit from water'; oracle: ~140% beside water, ~70% dry",
+  "evidence": [
+   "owner 2026-11-13 (sheet.md his words): 'Ordinary crops should still just treat it as very fertile ground and benefit from water as before'",
+   "tree oracle and AshField.xml: dry deep ash 0.70 (below vanilla soil 1.0)",
+   "Defs/BiomeDefs/Pyrelands.xml description: 'Dry, the ash barely feeds a crop and the heat stunts it'"
+  ],
+  "would_pass": "the bar's words, its oracle and the shipped text agree on what dry deep ash is",
+  "smallest_fix": "for the neutral fixer: either the bar reads 'very fertile when watered' or the dry number moves; then the description follows",
+  "verdict_on_criterion": "the bar's words and its oracle disagree; no verdict built on it (NOTED)",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_EXTEND_NO_RAIN_SCENE_WITH_FORCED_WEATHER",
+  "class": "Polish",
+  "bar": "no_ordinary_rain",
+  "criterion": "oracle 'no ordinary rain on the list; none chosen over the season'",
+  "evidence": [
+   "the two roads above choose off the list; a natural season on an unmutated tile never meets them",
+   "planted fault PF_RAIN_POSTFIX_INVERTED is caught offline only by lane 1's wiring text check, not by behaviour"
+  ],
+  "would_pass": "sc_no_rain also forces RainyThunderstorm through a GameCondition_ForceWeather on the pad map and reads black rain falling; and (if any Pyrelands tile may carry WetClimate) reads the decider's choice there",
+  "smallest_fix": "steward pins two extra scene cases (scene text is locked)",
+  "verdict_on_criterion": "criterion sound, its scene too weak to decide it; the rain question's answer (journal item 4) is NO: something can choose ordinary rain, so sc_no_rain stays the decider",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_REWORD_ABOUT_FIRE_PAYS_HE_SAID_SOLACE",
+  "class": "Polish",
+  "bar": "inv_art_and_text",
+  "criterion": "record inv_art_and_text: descriptions approved; sheet his words 2026-11-05: 'Reword \"Behind it the fire (offers some solace):\" (rather than pays)'",
+  "evidence": [
+   "src/RimMandrake/Pyrelands/About/About.xml line 16: 'Fire pays. A scorch-fruit pod appears only where flame has just cracked one open...'"
+  ],
+  "would_pass": "About text uses his wording (offers some solace) or he keeps 'pays' for About",
+  "smallest_fix": "one word in About.xml, if his reword was meant to reach About (guess ~60%)",
+  "verdict_on_criterion": "applicability of his reword to About is his; NOTED",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_DROP_DONOR_GRASSLANDS_FROM_PYRE_MAP_LIST",
+  "class": "Polish",
+  "bar": "inv_biome_self_contained",
+  "criterion": "record: 'RM_FE_Pyrelands BiomeDef shipped self-contained (... no donor)'",
+  "evidence": [
+   "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs PyrelandsBiomeDefNames = { \"ZBiome_Grasslands\", \"RM_Pyrelands\" }: burn line, ash field and (since de0aae4a1b) the rain swap treat the donor biome's maps as Pyrelands"
+  ],
+  "would_pass": "only RM_Pyrelands is a Pyrelands map, or the donor entry is kept on purpose and said so",
+  "smallest_fix": "drop ZBiome_Grasslands from the array (check saves made on donor maps first)",
+  "verdict_on_criterion": "criterion sound; impact only with the donor mod loaded",
+  "status": "NOTED_FOR_CONDUCTOR"
+ },
+ {
+  "id": "RIMMANDRAKE_HARDEN_PYRE_DECIDERS_FOUR_PLANTS_SLIPPED_PAST",
+  "class": "Polish",
+  "bar": "biome_text_says_engineered, inv_firebreak_firefoam, inv_lightning_breaker, inv_art_and_text",
+  "criterion": "each offline bar's decider must go red on a fault that breaks the bar",
+  "evidence": [
+   "lane2/planted_results.jsonl: PF_TEXT_ENGINEERED_NEGATED ('never genetically engineered') passes T_DEFS_OFFLINE; PF_FIREBREAK_KERNEL_CONST and PF_FULGURITE_CONST_BACK (cut names back in C#) pass T_CUT_STAYS_CUT; PF_ART_TEXPATH_MISSING passes T_DEFS_OFFLINE (inv_art_and_text's command decider)",
+   "all four are caught by blind lane 1 (def_biome_text_says_engineered with the negation check, def_firebreak_stays_excised, def_lightning_breaker_stays_excised, def_own_texture_paths_resolve)"
+  ],
+  "would_pass": "plant_faults.py --only those four shows caught_by_deciders true",
+  "smallest_fix": "extend T_DEFS_OFFLINE (negation; own texPaths resolve) and T_CUT_STAYS_CUT (C# sources) or adopt the lane-1 rows as deciders",
+  "verdict_on_criterion": "criterion sound; the bars stay green today (the shipped text and tree are right), so this is test strength, not a mod fault",
+  "status": "NOTED_FOR_CONDUCTOR"
+ }
+]
