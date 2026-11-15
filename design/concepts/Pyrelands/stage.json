@@ -2,7 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a refusal: the Designer loop (stage runs and the coverage judge) is held while the Design Version 0.1.0 entry lands; it locks on his word after he reads the entry summary (owner 2026-11-13: \"Yes, we're going to do what you recommend.\"); was ready at stage 4; lift: python3 src/RimMandrake/rimflow/coverage_judge.py release design/concepts/Pyrelands --why \"<why>\"; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -404,10 +404,17 @@
     "ref": "run bench-pyre-owed-exam-st4-20261114",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-15T06:14:43Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794722839",
+    "stage": 5,
+    "tokens": 747059
    }
   ],
   "reserve": 60000,
-  "spent": 12152482
+  "spent": 12899541
  },
  "coverage_releases": [
   {
@@ -461,8 +468,48 @@
    "tokens": 1563744,
    "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-15T06:07:19Z",
+   "error": null,
+   "gaps": 14,
+   "ids": [
+    "ash_fertile_when_watered",
+    "ash_ground_and_blowing_ash",
+    "flamefang_bite_carries_venom",
+    "grass_carpets_and_regreens",
+    "inv_animal_roster",
+    "inv_ash_field",
+    "inv_burn_line_fire_clock",
+    "inv_embergrass_regrow",
+    "inv_firehawk_ember",
+    "inv_firehawk_hunt_rewards",
+    "inv_furnacebeast",
+    "inv_plant_roster",
+    "inv_ruins_scorched",
+    "inv_settings_gate",
+    "inv_ullai_herd_giant",
+    "inv_weather",
+    "populations_are_the_biomes_own",
+    "ruins_stand_blackened",
+    "three_skies"
+   ],
+   "judge": "rm-coverage-judge-1794722839",
+   "late": [],
+   "tags": {
+    "changed": 2,
+    "late": 4,
+    "unfixed": 8
+   },
+   "tokens": 747059,
+   "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-15T06:14:43Z",
+  "why": "released for one more look at round 4; that look was not_covered"
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -901,6 +948,12 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-pyre-owed-exam-st4-20261114: stage 4 done"
+  },
+  {
+   "at": "2026-11-15T06:14:43Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1318,6 +1371,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

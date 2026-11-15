@@ -1,0 +1,453 @@
+{
+ "item": "RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE",
+ "family": "coverage_judge.run (one look after release), on the locked Pyrelands 0.1.0 tree",
+ "ordered_by": "owner by card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016): one exam and one coverage judge pass on the locked tree, no loop",
+ "given": {
+  "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107",
+  "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
+  "judge": "rm-coverage-judge-1794722839",
+  "verdict_file": "design/concepts/Pyrelands/coverage_verdict.json",
+  "tokens": 747059,
+  "calibration": "UNTESTED",
+  "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+  "stopped": "released for one more look at round 4; that look was not_covered"
+ },
+ "passed": [
+  {
+   "what": "Cold Reader exam (stage 4)",
+   "evidence": [
+    "design/concepts/Pyrelands/exam.json"
+   ],
+   "observed": "20/20 frozen scenarios, both fresh Readers agree with every expectation, accept_where_reject_core 0, control on flamefang_bite_carries_venom missed e7; stage 4 accepted by designer_stage close (landed 1ce267f36d)"
+  },
+  {
+   "what": "designer_stage repin of stages 1-3 for his locked changes f71693d77a and 08d917c12a",
+   "evidence": [
+    "design/concepts/Pyrelands/stage.json"
+   ],
+   "observed": "stale_stage (None, []) after the re-pin, stage 4 the open stage"
+  }
+ ],
+ "refusals": [
+  {
+   "clause": "g1",
+   "ids": [
+    "inv_plant_roster",
+    "inv_animal_roster",
+    "inv_ash_field",
+    "inv_burn_line_fire_clock",
+    "inv_firehawk_ember",
+    "populations_are_the_biomes_own"
+   ],
+   "what": "Built, shipping behaviour still has no inventory row, scene or coverage_rest line: colonists step away from fire and eat before fire duty (PyrelandsFireSense), no foreign kind wanders in (PyrelandsForeignArrivals), herd thirst and the natives' slow thirst, wet roots, plants withering under a roof (CompWithersUnderRoof), the RM_FE_Charred plant, the fire-cast and standing-water gensteps, and hawks seeking a burn (JobGiver_RUT_FireHawkSeekBurn). Ash wear and rain wash are now listed under inv_ash_field (PyrelandsAshSand.cs).",
+   "where": "record.json inventory; scenes.json coverage_rest",
+   "evidence": [
+    "record.json:456",
+    "record.json:504",
+    "record.json:535",
+    "record.json:565",
+    "record.json:639",
+    "scenes.json:150",
+    "scenes.json:583"
+   ],
+   "observed": "record.json contains none of PyrelandsFireSense, PyrelandsForeignArrivals, PyrelandsHerdThirst, PyrelandsWetRoots, CompWithersUnderRoof, RM_FE_Charred, JobGiver_RUT_FireHawkSeekBurn, NativesSlowThirst, GenStep_PyrelandsFireCast or StandingWater (grep count 0 for each), but every one is in src/RimMandrake/Pyrelands *.cs or *.xml (1 to 5 files each) [measured]. The roster at record.json:504 says \"donor creatures cut\", yet sc_populations (scenes.json:150) is a census 'on the map' at generation only.",
+   "would_pass": "Every one of those files appears in some inventory row's impl_evidence, or in built_reviewed as not_a_capability with a reason. Each new player-facing part has an acceptance scene that meets the contract (for foreign arrivals: an incident that would bring a donor animal, refused or replaced, with a control on a vanilla map that lets it in), or a coverage_rest entry naming a real scene or leaf. A grep of record.json for each file name returns at least 1.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json: re-run the stage-0 inventory against src/RimMandrake/Pyrelands at HEAD and add the parts to existing rows (inv_burn_line_fire_clock: fire sense; inv_animal_roster: foreign arrivals, thirst, fire-cast genstep; inv_plant_roster: withers under roof, Charred; inv_ash_field: wet roots, standing water; inv_firehawk_ember: seek burn). scenes.json: add a foreign-arrivals scene and coverage_rest lines for the rest."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract makes every impl: present entry a unit, so built behaviour missing from the inventory is silently uncovered.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g2",
+   "ids": [
+    "inv_plant_roster",
+    "inv_embergrass_regrow",
+    "grass_carpets_and_regreens"
+   ],
+   "what": "The native grasses' promise (swift on old dry ash, faster and bursting where watered) has no scene. sc_grass_regreens still only counts regreening and cover.",
+   "where": "scenes.json sc_grass_regreens",
+   "evidence": [
+    "tree.json:127",
+    "tree.json:140",
+    "scenes.json:105",
+    "scenes.json:106",
+    "sheet.md:19"
+   ],
+   "observed": "tree.json:127 promises \"ember grass on old dry ash grows at least at its own vanilla rate, faster on watered ash, with gentle bursts only on watered cells\", and tree.json:140 adds \"Sow ember grass on dry ash last burned more than a week ago and on watered ash; read growth daily and count bursts.\" Yet scenes.json:105's action is still only \"count green cells and capture on days 1, 3 and 7; census grass cover on open ground\".",
+   "would_pass": "sc_grass_regreens (or a new acceptance scene requiring grass_carpets_and_regreens) has an asserted start: two sown ember-grass patches, one on dry deep ash last burned more than 7 days ago (asserted by burn history) and one watered. Its action reads daily growth and counts bursts. It expects dry growth per day at least the vanilla rate, watered growth above dry, and bursts on watered cells only. Its control (the same patches with the native dry-ash growth switch off, or a vanilla grass on the same dry ash) grows at the vanilla or reduced rate and rules out ordinary fertility doing the work.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: extend sc_grass_regreens' start, action, expect and control (or add sc_grass_dry_ash) with the dry and watered sowing and the burst count from tree.json:140."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "An oracle the leaf states but no scene stages is untested.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g3",
+   "ids": [
+    "inv_furnacebeast"
+   ],
+   "what": "Furnace-beast immunity to its own heat, a built Harmony patch, still has no scene.",
+   "where": "scenes.json (no scene); record.json inv_furnacebeast",
+   "evidence": [
+    "record.json:662",
+    "scenes.json:426",
+    "scenes.json:219",
+    "sheet.md:12",
+    "sheet.md:24"
+   ],
+   "observed": "record.json:662 ships \"is immune to its own heat\" (Patch_FurnaceBeastHeatImmunity.cs, a Prefix absorbing the damage [measured]). sc_furnace_bed expects only \"A's grass is alight after about two hours of sleep on average, never at once\" (scenes.json:426), and no scene reads the beast's health. His card at sheet.md:12 folds only 'Banks heat' into warmth and sleep-ignition.",
+   "would_pass": "An acceptance scene (or added rows in sc_furnace_bed) records the beast's health before its bed fire and after the fire burns out on its cell, and expects no burn injury. Its control is a like-sized animal (or the beast with the immunity patch off) in the same fire, which takes burn damage, ruling out the fire never reaching the beast. Alternatively, a record.json decision in his words cuts the immunity and an offline check keeps it absent.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add health reads and a burn-damage control to sc_furnace_bed (the bed fire is already lit there); record.json:662 cites it."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A shipped mechanic with no read can break silently: a beast that burns in its own bed fire would pass every current scene.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g4",
+   "ids": [
+    "inv_animal_roster",
+    "flamefang_bite_carries_venom"
+   ],
+   "what": "The flamefang venom leaf promises it worsens 'until treated or thrown off', and the def ships tending and immunity, but the scene reads only six hours of rising severity.",
+   "where": "scenes.json sc_flamefang_venom",
+   "evidence": [
+    "tree.json:547",
+    "scenes.json:495",
+    "scenes.json:496",
+    "sheet.md:27"
+   ],
+   "observed": "tree.json:547 says \"smouldering worse over the following hours until treated or thrown off\". scenes.json:496 expects only \"RM_FlamefangVenom present after the bite, its severity rising over the hours\". RM_FlamefangVenom.xml has HediffCompProperties_Immunizable with severityPerDayImmune -0.6 and is tendable [measured].",
+   "would_pass": "sc_flamefang_venom adds a tended case: a doctor tends the venom, and its severity rate falls below the untended colonist's over the same hours. It also adds an immunity case: with immunity forced to complete (or the immunity read), severity falls and the hediff goes. Or tree.json:547 drops 'until treated or thrown off' and the sheet says only 'worsening over the hours'.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a tended-versus-untended pair and an immunity read to sc_flamefang_venom; or edit tree.json:547 to drop the clause."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "Every clause the experience text promises needs a read, or the text must not promise it.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g5",
+   "ids": [
+    "inv_weather",
+    "three_skies"
+   ],
+   "what": "Black rain washing ash has no control. The ash patch is read only under black rain, and built ash wears away dry without rain.",
+   "where": "scenes.json sc_three_skies",
+   "evidence": [
+    "scenes.json:285",
+    "scenes.json:288",
+    "scenes.json:290",
+    "scenes.json:292",
+    "tree.json:336"
+   ],
+   "observed": "scenes.json:288 expects \"the ash patch's depth (ProbeAsh depthSum) falls under black rain\". The control (scenes.json:292) rules out only \"fires dying on their own being read as black rain's doing, and a reader that names every dark sky black rain\", nothing about ash. PyrelandsAshSand.cs:21-22 has ash wear 'half of it dry (ash stays ~10 days) and 0.25 x rainRate on top' [measured].",
+   "would_pass": "sc_three_skies lays a second ash patch of equal ProbeAsh depth under clear sky for the same half-day. It expects the black-rain patch's depthSum loss to be clearly greater than the clear-sky patch's (for example at least twice). rules_out names dry wear passing for the wash.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_three_skies: add a clear-sky ash patch to the start and control, and a depth-loss comparison to the expect."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract requires a control that rules out the plausible alternative, and here that alternative is ordinary dry wear.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g6",
+   "ids": [
+    "inv_plant_roster",
+    "populations_are_the_biomes_own"
+   ],
+   "what": "The runtime wild-plant allowlist is never exercised. Seeded intruders only prove the census can see them, so a clean map cannot tell eviction from no leak.",
+   "where": "scenes.json sc_populations",
+   "evidence": [
+    "record.json:456",
+    "scenes.json:153",
+    "scenes.json:155"
+   ],
+   "observed": "record.json:456 ships \"runtime wild-plant allowlist evicts leaking donor flora\". The sc_populations control is \"one donor plant and one donor animal spawned before the census\" and rules out only \"a census that cannot see intruders reporting a clean map\" (scenes.json:155). Nothing toggles wildPlantAllowlistEnabled.",
+   "would_pass": "A scene (or a sc_populations row) makes a donor plant eligible to spawn: patch a donor into the wild-plant pass, or let wild-plant spawning run with a donor in the roster. With the allowlist on, it expects the donor evicted or never spawned. Its control, the same with wildPlantAllowlistEnabled off, shows the donor growing. rules_out names 'no donor ever leaked'.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add an allowlist on/off pair to sc_populations, or a small sc_allowlist scene."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A guard is untested until it is seen rejecting the thing it guards against.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g7",
+   "ids": [
+    "inv_settings_gate"
+   ],
+   "what": "The Baroque Biomes roster toggle (PyrelandsMechanicsGate), which gates every mechanic, is never shown stopping them. coverage_rest rests on a walk whose expect only says switches leave nothing behind.",
+   "where": "scenes.json coverage_rest inv_settings_gate",
+   "evidence": [
+    "record.json:851",
+    "scenes.json:609",
+    "scenes.json:613",
+    "scenes.json:333",
+    "floor.json:34"
+   ],
+   "observed": "record.json:851 says \"the Baroque Biomes roster toggle gates mechanics, not only worldgen\". coverage_rest (scenes.json:613) says \"the walk switches the mechanics off and on mid-game\", and sc_walk's expect is \"switches leave nothing behind\" (scenes.json:333). PyrelandsMechanicsGate.On is tested in 42 places in Source [measured], and no scene turns the gate off.",
+   "would_pass": "A scene, or a walk step named in sc_walk's action and expect, turns the roster toggle off on a Pyrelands map and reads that the burn line, ash laying and bed ignition stop (no new fire, ash depth or bed fire over a window), then on again and reads them resume. The control is the same window with the toggle on.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: name the roster toggle in sc_walk's action and expect (off: no front, no ash laid; on: resumes), or add a short gate scene; point coverage_rest at it."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A master switch over every mechanic is a unit of its own, and 'leaves nothing behind' does not show that it stops anything.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g8",
+   "ids": [
+    "inv_firehawk_hunt_rewards",
+    "inv_settings_gate"
+   ],
+   "what": "New capability inv_firehawk_hunt_rewards (a first-sighting letter, switchable, and the Pristine Firehawk Crestfeather from butchering) has no leaf, scene, showcase, coverage_rest entry or sheet line.",
+   "where": "record.json inv_firehawk_hunt_rewards; tree.json; scenes.json; sheet.md",
+   "evidence": [
+    "record.json:898",
+    "record.json:899",
+    "scenes.json:529",
+    "scenes.json:583",
+    "tree.json:20",
+    "sheet.md:14"
+   ],
+   "observed": "record.json:899: \"one letter names the hawk and the ember it carries and jumps to it, once per game and switchable off in Mod Settings; butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather\", proof 'missing', and its live half firehawk_rewards_live.py UNRUN. No showcase 'exercises' and no coverage_rest 'capability' names it (scenes.json:529-623), no tree leaf cites it, and sheet.md's does list never mentions the letter or the feather.",
+   "would_pass": "tree.json has a leaf (for example firehawk_hunt_rewards) for the letter and the feather. scenes.json has an acceptance scene with entry_point firehawk_rewards_live.py (or validation.py) and an entry_point_item if it is missing. Start: no letter sent this game (asserted). Expect: the first carry-ember sends exactly one letter targeting the hawk, a second carry sends none, and butchering N hunted hawks yields at least one Crestfeather at the built rate. Control: the letter switch off sends no letter, and butchering a non-hawk animal yields no Crestfeather. coverage_rest or a showcase covers the capability, and sheet.md's does list carries a [leaf:...] line for it.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "tree.json: add the leaf (his card 2026-11-14 is the locked_change authority). scenes.json: add sc_firehawk_rewards and a coverage_rest entry. sheet.md: add a does line."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract counts every opened_by_owner, impl-present entry as a unit that must be covered, and this one is covered nowhere.",
+   "new_since": "changed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g9",
+   "ids": [
+    "inv_ullai_herd_giant"
+   ],
+   "what": "His card 2026-11-14 kept vanilla herd migration for ullai, with a new offline check T_ULLAI_HERD_MIGRATES, but the concept records only the cut world-map migration. Nothing in the record, tree, scenes or sheet names the kept behaviour or its check.",
+   "where": "record.json inv_ullai_herd_giant and decisions; sheet.md",
+   "evidence": [
+    "record.json:717",
+    "sheet.md:26",
+    "scenes.json:253"
+   ],
+   "observed": "record.json:717 says only \"The world-map herd migration was built, then cut by his card 2026-10-23 ... the absence is checked offline by T_CUT_STAYS_CUT\". The decisions list has no 2026-11-14 ullai card, and sheet.md:26 says only \"Ullai herds drift to graze where it burned about two days ago\". The test table holds T_ULLAI_HERD_MIGRATES (offline, PASS 2026-11-14 14:28) [measured].",
+   "would_pass": "record.json carries a decision with his OWNER event for 'ullai keep vanilla herd migration'. inv_ullai_herd_giant names the kept vanilla HerdMigration part beside the cut world-map leg. An offline leaf (tier offline, oracle naming selftest_pyrelands_ullai_herd_migration.py) or a coverage_rest entry pointing at it covers the part. The sheet's does list says ullai herds can migrate across the map as vanilla herds do.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json: add the decision and the inventory part. tree.json: add an offline leaf citing T_ULLAI_HERD_MIGRATES. sheet.md: add one does line."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A shipped behaviour he chose to keep must appear in scope and on the sheet, or the concept misdescribes the mod.",
+   "new_since": "changed",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g10",
+   "ids": [
+    "inv_weather",
+    "ash_ground_and_blowing_ash"
+   ],
+   "what": "sc_ash_ground's ash-fall reads have no control. The light is read hourly from noon for half a day, so nightfall alone dims the map, and drift depth rising under ash fall is never compared with ambient clear-weather banking.",
+   "where": "scenes.json sc_ash_ground",
+   "evidence": [
+    "scenes.json:35",
+    "scenes.json:37",
+    "scenes.json:38",
+    "scenes.json:40",
+    "scenes.json:41",
+    "scenes.json:477",
+    "tree.json:63"
+   ],
+   "observed": "Start \"fresh Pyrelands map, clear weather at noon (asserted)\" (scenes.json:35). Action \"force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour\" (scenes.json:37). Expect \"drifts rise and the light falls under ash fall\" (scenes.json:38). The only control is a vanilla arid map expecting \"no deep ash and no blowing ash\" (scenes.json:41). sc_fire_dusts_ash itself names \"ambient blowing ash or ash fall banking loose ash on the pad\" as a rival source (scenes.json:477).",
+   "would_pass": "sc_ash_ground compares ash fall against clear weather over the same clock hours: either two runs from the same save (ash fall forced versus clear held) or a twin region. It expects the ash-fall light level clearly below the clear-weather light level at each matched hour, and ash-fall depth gain clearly above the clear-weather depth gain. rules_out names nightfall and ambient banking.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_ash_ground: add a matched-hour clear-weather run to the control, with light and ProbeAsh compared hour by hour."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "Without a matched control, the expected result follows from the day-night cycle and ambient drift alone.",
+   "new_since": "late",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g11",
+   "ids": [
+    "inv_weather",
+    "three_skies"
+   ],
+   "what": "sc_three_skies never asserts when each sky is captured. Its consecutive half-days from noon put one sky over midnight to noon, so the tree's own false_pass (captures taken at night, so all read dark) is open.",
+   "where": "scenes.json sc_three_skies",
+   "evidence": [
+    "tree.json:350",
+    "tree.json:353",
+    "scenes.json:283",
+    "scenes.json:287"
+   ],
+   "observed": "tree.json:350's scenario says \"Force each weather in turn on the same map at noon\", and its false_pass (tree.json:353) is \"the captures are taken at night so all read dark\". The scene starts \"the same map at noon\" (scenes.json:283) and forces the skies \"in turn, half a day each ... capture each at play zoom\" (scenes.json:287), with no capture hour.",
+   "would_pass": "sc_three_skies' action says each sky is captured at local noon, between 10h and 14h (for example each sky forced from the same noon save, or waits until the next noon), and the start or expect asserts the capture hour for every capture, including the vanilla-rain capture.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_three_skies: add 'each capture at local noon (hour asserted)' to the action and start."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The tree names this false pass, and the scene must close it.",
+   "new_since": "late",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g12",
+   "ids": [
+    "inv_ash_field",
+    "inv_ruins_scorched",
+    "ruins_stand_blackened"
+   ],
+   "what": "Stale loose-ash filth wording survives where the oracles moved to sand-grid depth. The inventory still ships ash 'as loose-ash filth' and ruins with 'loose-ash filth', and the ruins scenario and scene action still say 'read ... filth'.",
+   "where": "record.json inv_ash_field and inv_ruins_scorched; tree.json ruins_stand_blackened; scenes.json sc_ruins",
+   "evidence": [
+    "record.json:535",
+    "record.json:618",
+    "tree.json:220",
+    "scenes.json:172"
+   ],
+   "observed": "record.json:535 \"ambient ash blows like snow and banks as loose-ash filth\". record.json:618 \"deep ash on footprints, loose-ash filth\". tree.json:220 \"read terrain and filth on its footprint\". scenes.json:172 \"read footprint terrain and filth\". The expects now use ProbeAsh, so the oracle part of the earlier g1 is fixed; the wording is not.",
+   "would_pass": "No inventory 'what', leaf scenario or scene action in record.json, tree.json or scenes.json names loose-ash filth or 'filth' as the ash reading. Each says ash depth on the sand grid (ProbeAsh), matching the expects. A grep of those three files for 'loose-ash filth' returns 0.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json:535, record.json:618, tree.json:220 and scenes.json:172: replace the filth wording with 'ash depth on the sand grid (ProbeAsh)'."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A script built from the action text would read a deleted def, and a false statement in the record is to be fixed.",
+   "new_since": "unfixed",
+   "return_to": 3,
+   "problem_or_polish": "Polish",
+   "problem_or_polish_why": "stale wording only: the oracles already read sand-grid depth, so no test or player sees a wrong promise",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g13",
+   "ids": [
+    "ash_fertile_when_watered",
+    "inv_ash_field"
+   ],
+   "what": "The sheet tells the player ordinary crops find deep ash 'very fertile ground', but what the tree tests is 70% fertility on dry ash (below ordinary soil) and 140% only beside water. A player who reads the sheet and sees 'Fertility 70%' on dry ash would find that strange.",
+   "where": "sheet.md leaf:ash_fertile_when_watered; tree.json ash_fertile_when_watered",
+   "evidence": [
+    "sheet.md:11",
+    "sheet.md:17",
+    "tree.json:77",
+    "tree.json:88",
+    "scenes.json:61",
+    "exam.json:30"
+   ],
+   "observed": "sheet.md:17 \"Ordinary crops treat deep ash as very fertile ground and still benefit from water as before\" and tree.json:88 \"finds it very fertile ground\", against tree.json:77 \"about 140% beside water and about 70% dry (his card 2026-11-07, \\\"Keep 70%, sowable\\\")\". His 2026-11-13 words (sheet.md:11) say crops 'benefit from water as before', which reads as keeping 70/140.",
+   "would_pass": "sheet.md:17 and tree.json:88 state what the scene tests, in his two rulings' words: for example 'ordinary crops find deep ash sowable dry (about 70%) and very fertile where watered (about 140%), benefiting from water as before'. Or, if the Designer reads his 2026-11-13 words as raising dry fertility, record.json records that reading and the tree oracle and sc_ash_watered change to match.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "sheet.md:17 and tree.json:88: add the 70% dry and 140% watered numbers to the wording, citing OWNER:1794594151279833849 and his 2026-11-07 card."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet a player reads must say what the tree tests, and 'very fertile' does not describe 70%.",
+   "new_since": "late",
+   "return_to": 3,
+   "problem_or_polish": "Problem",
+   "problem_or_polish_why": "a promise of the locked tree (or his 2026-11-14 card) that no scene or record entry proves, or whose test can false-pass",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  },
+  {
+   "clause": "g14",
+   "ids": [],
+   "what": "The sheet's delegated line says Mod Settings and the art are 'checked by their own scenes'. In fact coverage_rest rests Mod Settings on the walk and the art on his approval of the art sheet; no art scene exists.",
+   "where": "sheet.md delegated",
+   "evidence": [
+    "sheet.md:52",
+    "scenes.json:609",
+    "scenes.json:613",
+    "scenes.json:622"
+   ],
+   "observed": "sheet.md:52 \"The sand shovel, the firefoam sprayer, the fire-rite hook, Mod Settings and the art are checked by their own scenes rather than a showcase\". scenes.json:613 covers inv_settings_gate 'by' the walk, and scenes.json:622 says \"the shipped art rests on his approval of the art sheet ... sc_populations takes no capture\".",
+   "would_pass": "sheet.md:52 matches coverage_rest: the sand shovel, the firefoam sprayer and the fire-rite hook by their own scenes; Mod Settings by the walk's switch-off steps and the floor's mod_settings line; the art by his 2026-10-16 approval of the art sheet, with the sky captures in sc_three_skies.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "sheet.md:52: reword to match scenes.json coverage_rest."
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet must not claim checks the scenes do not make.",
+   "new_since": "late",
+   "return_to": 3,
+   "problem_or_polish": "Polish",
+   "problem_or_polish_why": "a delegated-line inaccuracy about where the proof rests; no player-facing promise changes",
+   "problem_or_polish_by": "agent (helper RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE), not the judge: the Conductor may reclass"
+  }
+ ],
+ "stopped_here": "No rework and no rerun, per the brief. stage.json is left as the program wrote it: stage 5, blocked on REFUSAL_NOTHING_COULD_EVER_PASS (judging stopped after the released look). The refusal is ADVISORY (coverage brief UNTESTED), so the program does not send the Designer back; nothing chains.",
+ "next_owner_or_conductor_choice": "Fixing the 12 Problem gaps edits the locked tree, sheet, scenes and record (smallest_fix of each gap), which is his word only on a locked version (locked_change) or a new version. Or accept 0.1.0 as locked with the gaps on file. Either way, a lock in stage.json needs a covered verdict or his certification."
+}
