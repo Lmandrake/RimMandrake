@@ -121,6 +121,16 @@ def main():
         ok(gone_key in {f["key"] for f in flags if f["rule"] == "silent"},
            "andon: without relentless.retired a gone relentless key is silent", flags)
 
+        # andon: a nightly red group's key gone while the collector reports the night is the group cleared, not silent;
+        # with the collector's own key gone too it is still silent (the instrument may be blind)
+        red = "testing.red_somegroup"
+        lm2 = {red: now - 8 * 3600}
+        flags = ow.andon({"testing.nightly_known_reds": {"m": "MEASURED", "v": 3}}, {}, lm2, rules, now)
+        ok(red not in {f["key"] for f in flags if f["rule"] == "silent"}, "andon: a cleared red group is not silent", flags)
+        flags = ow.andon({}, {}, lm2, rules, now)
+        ok(red in {f["key"] for f in flags if f["rule"] == "silent"},
+           "andon: with the nightly collector gone a red group key is still silent", flags)
+
         # incident.readings: a judged_by point is sane
         status = {"t": now, "alarms": {}, "points": {
             "relentless.blind": {"m": "UNMEASURED", "class": None, "judged_by": ow.RL_RETIRED},

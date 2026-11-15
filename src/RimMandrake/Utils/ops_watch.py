@@ -3945,6 +3945,10 @@ def andon(points, hist, last_measured, rules, now):
     # a retired belt's keys that stopped coming (a churn item no alarm holds) are the retirement, not a blind instrument
     rl_off = num(points.get(RL_RETIRED) or {}) == 1
     gone = {k: (dict(p, judged_by=RL_RETIRED) if rl_off and k.startswith("relentless.") else p) for k, p in gone.items()}
+    # a nightly red group's key exists only while the group is red: gone while its collector still reports the night is
+    # the group cleared (fixed, deleted or parked), not a blind instrument (40 such silent flags, 2026-11-14)
+    if counts_as_measured(points.get("testing.nightly_known_reds") or {}):
+        gone = {k: p for k, p in gone.items() if not k.startswith("testing.red_")}
     def one(k, p):
         v = num(p)
         meas = p.get("m") == "MEASURED" and v is not None
