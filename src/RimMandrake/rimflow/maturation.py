@@ -74,6 +74,9 @@ import refusal_contract as RC   # noqa: E402
 
 UNM = "UNMEASURED"
 RECORD = "version/stage_record.json"
+# his Evidence-for-Ask ruling (2026-11-15): a new mod's first Design Version is 0.1.0 unless recorded evidence says
+# otherwise, and the pipeline locks it itself (locked_by "pipeline", per_ruling this id)
+EVIDENCE_FOR_ASK = "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME"
 PAC = MN.PAC
 
 # (word, maturation_now column, the spec's number, plain name, the words a "Stage now" line uses)
@@ -505,14 +508,21 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                        why_sound="his card of 2026-11-14 says it is asked again at that point")
         elif cur == "designer":
             st = str((v or {}).get("state") or "")
-            # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: "locked" as a word (a date may follow), locked by him
-            lk = bool(re.match(r"^locked(\s|$)", st)) and str((v or {}).get("locked_by") or "") == "owner"
-            clause("locked", "the Design Version is locked on his word (VERSION.json state locked)",
+            # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: "locked" as a word (a date may follow), locked by him, or by the
+            # pipeline under his Evidence-for-Ask ruling (a new mod's 0.1.0 with no recorded evidence against it)
+            by_ = str((v or {}).get("locked_by") or "")
+            lk = bool(re.match(r"^locked(\s|$)", st)) and (by_ == "owner" or (
+                by_ == "pipeline" and (v or {}).get("per_ruling") == EVIDENCE_FOR_ASK))
+            clause("locked", "the Design Version is locked (VERSION.json state locked, by him or by the pipeline "
+                   "under the Evidence-for-Ask ruling)",
                    lk, [rel(mod, "version/VERSION.json")],
-                   observed="VERSION.json state is %s, locked_by %s" % (st or UNM, (v or {}).get("locked_by") or UNM),
-                   would_pass="VERSION.json state reads locked, with his lock words in owner_words",
-                   fix="finish the Designer pass and bring him the lock question", cost="owner",
-                   why_sound="a Design Version is locked on his word (Design Versions ruling, carried)")
+                   observed="VERSION.json state is %s, locked_by %s" % (st or UNM, by_ or UNM),
+                   would_pass="VERSION.json state reads locked, locked_by owner (his words in owner_words) or "
+                              "locked_by pipeline with per_ruling %s" % EVIDENCE_FOR_ASK,
+                   fix="finish the Designer pass; the Dispatch step then locks a new mod at 0.1.0 itself, or asks him "
+                       "with the recorded evidence against 0.1.0", cost="rerun",
+                   why_sound="the Design Versions ruling, and his Evidence-for-Ask ruling of 2026-11-15 (the obvious "
+                             "answer is taken unless evidence says otherwise)")
         elif cur == "preflight":
             pf, perr = read_json(root, mod, "version/preflight.json")
             pref = rel(mod, "version/preflight.json")

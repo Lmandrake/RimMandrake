@@ -15,8 +15,12 @@ every mod exactly one class:
            hold, a settling run, or the Designer's own launcher
   paused   the pipeline stops that mod and says why and what un-pauses it; ops_watch raises ONE alarm with a fixed id
            (OPS_MATURATION_MOD_PAUSED) while any mod is paused, so a repeat reopens it
-  owner    a stop that is genuinely his (his walk, the lock, opening the next version, a Designer turn waiting on him):
-           a ready-to-ask card text goes in the Conductor log once
+  owner    a stop that is genuinely his (his walk, opening the next version, a Designer turn waiting on him, a lock
+           with recorded evidence against 0.1.0): a ready-to-ask card text goes in the Conductor log once, and it
+           quotes the evidence (his Evidence-for-Ask ruling, 2026-11-15)
+A new mod whose concept tree is locked and whose Design Version is not is LOCKED AT 0.1.0 BY THE PIPELINE (autolock:
+locked_by "pipeline", per_ruling M.EVIDENCE_FOR_ASK, one delegated record in his daily digest) unless version_evidence()
+reads recorded evidence that 0.1.0 is wrong; only then does it go to him, with that evidence in the card.
 A steward or fixer run is tried ONCE per state (its key); if it ends and the state has not moved, the mod is PAUSED,
 never retried (the owner's condition, 2026-11-14: "As long as we don't have automated loops rejecting/cycling things,
 we can't get into too much trouble."). A launch that never started on a TRANSIENT fault (a git lock, its item not yet
@@ -25,7 +29,7 @@ PAUSED naming the count and the last fault (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT
 `maturation_dispatch.py clear MOD` releases a mod's never-launched keys and its ended runs outside an open road back. A mod in `wait` with nothing named running, or with no class, for stalled_min
 (10) raises maturation.stalled (OPS_MATURATION_MOD_STALLED).
 
-Never: certify, lock, classify Convergent/Divergent, loosen a bar, take the bridge or a game, launch on a mod with a
+Never: certify, lock (except the autolock above), classify Convergent/Divergent, loosen a bar, take the bridge or a game, launch on a mod with a
 live unit. The steward brief says so, and a steward is opus (judging another agent's work, Agent_Policy.md).
 Selftest: selftest_maturation_autonomy.py.
 """
@@ -244,6 +248,99 @@ def version_locked(root, mod):
     return str((v or {}).get("state") or "").startswith("locked")
 
 
+SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
+
+
+def version_evidence(root, mod):
+    """-> the recorded evidence that 0.1.0 is NOT this mod's Design Version (his Evidence-for-Ask ruling, 2026-11-15:
+    the pipeline takes the obvious answer unless evidence says otherwise). Each entry names its file and quotes it; []
+    means a new mod, and the pipeline locks 0.1.0 itself."""
+    ev = []
+    v, err = M.read_json(root, mod, "version/VERSION.json")
+    if err and err != "no file":
+        ev.append("version/VERSION.json is %s" % err)
+    elif v is not None and not isinstance(v, dict):
+        ev.append("version/VERSION.json is not an object")
+    v = v if isinstance(v, dict) else {}
+    if v.get("version") not in (None, "", "0.1.0"):
+        ev.append("version/VERSION.json names version %r, not 0.1.0" % v.get("version"))
+    state = str(v.get("state") or "")
+    if state and not re.match(r"^(open|locked)\b", state):
+        ev.append("version/VERSION.json state reads %r" % state[:300])
+    rec, _ = M.read_json(root, mod, M.RECORD)
+    rec = rec if isinstance(rec, dict) else {}
+    rv = str(rec.get("version") or "")
+    if SEMVER.match(rv) and rv != "0.1.0":
+        ev.append("%s names version %s" % (M.RECORD, rv))
+    if rec.get("stage") == "passed":
+        ev.append("%s reads stage passed (a version already passed)" % M.RECORD)
+    vd = os.path.join(M.mod_dir(root, mod), "version")
+    for fn in sorted(os.listdir(vd)) if os.path.isdir(vd) else []:
+        m = re.match(r"^stage_record_(.+)\.json$", fn)
+        if m and SEMVER.match(m.group(1)):
+            ev.append("version/%s exists (an earlier Design Version's record)" % fn)
+    r, _ = M.read_json(root, mod, "record.json")
+    if isinstance(r, dict) and r.get("version_objection"):
+        ev.append("record.json version_objection reads %r" % str(r["version_objection"])[:300])
+    return ev
+
+
+def _measure(fn):
+    try:
+        return fn()
+    except Exception:
+        return UNM
+
+
+def autolock_and_land(root, mod, now=None, land=None):
+    """Lock a new mod's Design Version at 0.1.0 as the pipeline (his Evidence-for-Ask ruling), write the delegated
+    record his daily digest reads, and land both in one landing. -> the landing's last line (PUBLISHED <sha>).
+    Numbers are measured or UNMEASURED; no owner_words (they are not his)."""
+    import coverage_judge as CJ
+    now = now or time.time()
+    d = M.mod_dir(root, mod)
+    stj, _ = M.read_json(root, mod, "stage.json")
+    stj = stj if isinstance(stj, dict) else {}
+    tree, _ = M.read_json(root, mod, "tree.json")
+    spent = (stj.get("budget") or {}).get("spent")
+    p = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+    day = time.strftime("%Y-%m-%d", time.localtime(now))
+    why = ("the concept tree is locked and no recorded evidence says 0.1.0 is wrong: a new mod's first Design Version "
+           "is 0.1.0 (his Evidence-for-Ask ruling, 2026-11-15)")
+    v = {"mod": mod, "version": "0.1.0", "state": "locked", "locked_on": day, "locked_by": "pipeline",
+         "per_ruling": M.EVIDENCE_FOR_ASK, "why": why,
+         "bars_total": _measure(lambda: len(CJ.required_ids(d, tree)) if isinstance(tree, dict) else UNM),
+         "bars_met": UNM,
+         "judge_rounds": _measure(lambda: len(CJ.rounds(stj, d))),
+         "tokens_spent": spent if isinstance(spent, int) else UNM,
+         "locked_from_commit": p.stdout.strip() if p.returncode == 0 and p.stdout.strip() else UNM,
+         "measured_from": {"bars_total": "coverage_judge.required_ids(record.json inventory + tree.json leaves)",
+                           "judge_rounds": "coverage_judge.rounds(stage.json)", "tokens_spent": "stage.json budget.spent",
+                           "bars_met": "not measured at the lock: the preflight and judges measure it"},
+         "caveats": ["stage.json `locked` is the concept tree's gate; this file is the Design Version lock",
+                     "locked by the pipeline under his Evidence-for-Ask ruling, not on his card: "
+                     "version_evidence() read no recorded evidence against 0.1.0"]}
+    vrel = "design/concepts/%s/version/VERSION.json" % mod
+    drel = "infrastructure/state/delegated/%s/%s-design-version-0.1.0.json" % (day, mod)
+    dg = {"item": M.EVIDENCE_FOR_ASK, "subject": "%s Design Version 0.1.0" % mod, "class": "design",
+          "decision": "locked 0.1.0 (the pipeline, Evidence-for-Ask ruling: no recorded evidence against it)",
+          "reasons": why, "evidence": vrel, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}
+    for rel, obj in ((vrel, v), (drel, dg)):
+        os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
+        with open(os.path.join(root, rel), "w", encoding="utf-8") as f:
+            json.dump(obj, f, indent=2)
+            f.write("\n")
+    subject = "maturation: the pipeline locks %s's Design Version at 0.1.0 (Evidence-for-Ask ruling)" % mod
+    if land:
+        return land(subject, [vrel, drel])
+    import designer_stage as DS
+    p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=300,
+                       env=dict(os.environ, LAND_REPO=root))
+    if p.returncode:
+        raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+    return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+
+
 # ---- one class per mod -----------------------------------------------------------------------------------------------
 
 def _steward(row, kind, key, why, brief_need):
@@ -262,6 +359,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
+    evidence = fx.get("version_evidence", lambda m: version_evidence(root, m))
     queue = st.setdefault("ingame_queue", {})
     for row in rows:
         mod, f = row["mod"], facts.get(row["mod"]) or {}
@@ -293,7 +391,20 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
-                   fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now)
+                   fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence)
+        if row.get("aut") == "autolock":
+            # the pipeline's lock is an act, not a run: no slot; tried once (transient faults up to launch_tries)
+            x = (s.get("steward") or {}).get(row["steward_key"])
+            if x and not (x.get("failed") and transient(x.get("failed")) and int(x.get("tries") or 1) <
+                          int(cfg.get("launch_tries", 3))):
+                row.update(decision="launch_failed", aut=None,
+                           why="the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
+                               "`maturation_dispatch.py clear %s --why ...` un-pauses it" % (
+                                   mod, str(x.get("failed") or x.get("landed") or "ended")[:300], mod))
+            else:
+                row["retry_of"] = dict(x or {})
+                launches = [m for m in launches if m != mod] + [mod]
+            continue
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             ok, why = _gate(cfg, s, row, live_total, ver)
@@ -376,7 +487,8 @@ def _after_road_backs(s, key):
     return key, after
 
 
-def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None):
+def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
+           fx_evidence=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -400,7 +512,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
     if stage in (UNM, "designer", "intake") or stage is None:
-        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain)
+        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain, evidence=fx_evidence)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
@@ -421,7 +533,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
             row["road_back_after"] = after
 
 
-def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None):
+def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None, evidence=None):
     if dst is None:
         row.update(decision="designer_unreadable", why="design/concepts/%s/stage.json cannot be read" % mod)
         return
@@ -449,19 +561,27 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None)
         # never stage.json's `locked` (the concept tree passed its gate)
         _steward(row, "designer_locked", "%s|designer|locked" % ver, "the Design Version is locked: advance it to "
                  "preflight", "the version is locked; record its bars (`maturation.py lock-bars %s --by BENCH --why ...`, land "
-                 "version/locked_bars.json), then advance %s --to preflight (the lock clause passes)" % (mod, mod))
+                 "version/locked_bars.json). If version/stage_record.json names another version than VERSION.json (a "
+                 "record seeded before the lock reads UNMEASURED), open it with `maturation.py next-version %s --by "
+                 "BENCH --why ...` (it starts at preflight); otherwise advance %s --to preflight (the lock clause "
+                 "passes)" % (mod, mod, mod))
     elif stt == "locked":
-        row.update(decision="owner", why="the lock is his (the Designer's concept tree is locked; version/VERSION.json "
-                   "is absent or not locked)",
-                   card="Lock %s's Design Version? The Designer finished Lock: stage.json reads locked (stage %s), the "
-                        "concept tree passed its gate. version/VERSION.json is absent or not locked, so no Design Version "
-                        "is named yet. On his lock: write version/VERSION.json (state locked, locked_by owner, "
-                        "owner_words), then `maturation.py next-version %s`. Evidence: design/concepts/%s/stage.json, "
-                        "tree.json, coverage_verdict.json, exam.json and record.json." % (mod, stg, mod, mod))
-    elif stg == 5 and not locked(mod):
-        row.update(decision="owner", why="the lock is his (Designer stage 5, VERSION.json not locked)",
-                   card="Lock %s's Design Version? The Designer stands at stage 5 (Lock); VERSION.json is not locked. "
-                        "Evidence: design/concepts/%s/tree.json and record.json." % (mod, mod))
+        # his Evidence-for-Ask ruling (2026-11-15): a new mod's first Design Version is 0.1.0; the pipeline locks it
+        # unless recorded evidence says otherwise, and only then asks him, quoting that evidence
+        ev = (evidence or (lambda m: []))(mod)
+        if not ev:
+            row.update(aut="autolock", decision="autolock", steward_key="%s|designer|autolock" % ver, need=None,
+                       why="the concept tree is locked and no Design Version is: the pipeline locks 0.1.0 (his "
+                           "Evidence-for-Ask ruling, %s); no recorded evidence says 0.1.0 is wrong" % M.EVIDENCE_FOR_ASK)
+        else:
+            q = "; ".join(ev)[:900]
+            row.update(decision="owner", why="the concept tree is locked, and recorded evidence says 0.1.0 may not be "
+                       "its Design Version: %s" % q,
+                       card="Which Design Version is %s? The Designer finished Lock (stage.json reads locked, stage %s). "
+                            "A new mod is locked at 0.1.0 by the pipeline, but recorded evidence says 0.1.0 may be "
+                            "wrong here: %s. On his answer: write version/VERSION.json (state locked, locked_by owner, "
+                            "owner_words), then `maturation.py next-version %s`. Evidence: design/concepts/%s/version/ "
+                            "and record.json." % (mod, stg, q, mod, mod))
     else:
         unit = dunit(mod)
         cc = None if unit or dchain is None else dchain(mod)
@@ -533,7 +653,7 @@ PAUSE_WHY = {
 
 def _klass(cfg, s, row, now, queue):
     dec = row.get("decision")
-    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer")):
+    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "autolock")):
         k, txt = "launch", "moving: %s %s" % (row.get("aut") or "run", row.get("unit") or row.get("item") or "")
     elif dec in WAIT:
         on = row.get("waits_on")
@@ -572,9 +692,13 @@ def _klass(cfg, s, row, now, queue):
 STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
 - You are the Maturation Pipeline's STEWARD for this one state: you do what the Conductor used to do by hand here, with
   his authority for this step only (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM). Read the evidence first; write what you read.
-- Never certify a concept tree, lock a version, classify a change Convergent or Divergent, loosen a bar, change his
-  rulings, or pass his walk. If the state needs one of those, stop and write the ready-to-ask card text (question,
-  options, evidence paths) in your ledger note; the pipeline shows it to him.
+- Never certify a concept tree, lock a version (the Dispatch tick itself locks a new mod at 0.1.0 under his
+  Evidence-for-Ask ruling), classify a change Convergent or Divergent, loosen a bar, change his rulings, or pass his
+  walk. If the state needs one of those, stop and write the ready-to-ask card text (question, options, evidence
+  paths) in your ledger note; the pipeline shows it to him.
+- Evidence-for-Ask (his ruling, 2026-11-15): any other choice you meet, take the obvious answer and log it as a
+  delegated call (`--why "delegated: <class>"`). Write a card only with recorded evidence that the obvious answer is
+  wrong, and the card quotes that evidence.
 - Never take the bridge, start or stop a game, or launch another run yourself: the Dispatch tick launches the next run
   when your move lands. Never open a fourth blind cycle in one visit.
 - A failed or UNMEASURED line is filed as a NAMED item (`rimflow file <NAME> --for BENCH --caused-by %(item)s ...`;
@@ -691,6 +815,14 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         if row["mod"] not in launches or not row.get("aut"):
             continue
         try:
+            if row["aut"] == "autolock":     # the pipeline's own act: no brief, no run, one landing
+                text = fx.get("autolock", autolock_and_land)(root, row["mod"], now=now)
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": M.EVIDENCE_FOR_ASK, "unit": None, "at": now, "failed": None,
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched", why="the pipeline locked %s at 0.1.0 (his Evidence-for-Ask ruling): %s"
+                           % (row["mod"], text))
+                continue
             _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish)
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})

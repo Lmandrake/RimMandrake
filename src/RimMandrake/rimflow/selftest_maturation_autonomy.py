@@ -65,8 +65,14 @@ class World:
         self.published = []
         self.dunits = {}
         self.dchain = {}
+        self.autolocked, self.evidence = [], {}
 
     def fx(self):
+        def autolock(root, mod, now=None):
+            self.autolocked.append(mod)
+            self.locked = True
+            return "PUBLISHED fake-lock"
+
         def launch(mod, cap, item):
             self.launched.append(("stage", mod, item))
             return 0, "DETACHED rm-fake-%d" % len(self.launched), "rm-fake-%d" % len(self.launched)
@@ -95,6 +101,7 @@ class World:
                 "open_items": lambda ids: self.items.get(ids[0], []) if self.items is not None else None,
                 "designer_state": lambda m: self.dstate.get(m), "designer_unit": lambda m: self.dunits.get(m),
                 "designer_chain": lambda m: self.dchain.get(m), "version_locked": lambda m: self.locked,
+                "version_evidence": lambda m: self.evidence.get(m, []), "autolock": autolock,
                 "discovered": lambda: self.found, "seed": seed, "card": self.cards.append,
                 "page": lambda: type("R", (), {"returncode": 0})()}
 
@@ -185,32 +192,145 @@ def launch_retry_checks(root):
     ok(tr and tr("ingest.lock stayed busy; nothing filed") and not tr("LAUNCH FAILED pool full") and not tr(None), "transient(): a lock or an unpublished shard is transient, a full pool is not")
 
 
+AGAINST = "version/VERSION.json state reads 'not started: waits for Pyrelands 0.1.0 to pass'"
+
+
 def designer_lock_checks(root):
     """RIMMANDRAKE_GATE_DESIGNER_LOCKED_ON_VERSION_FILE_NOT_TREE (watched failing on e696f33db1, decision steward): the
-    Designer's stage.json `locked` is the concept tree's gate; only VERSION.json locked is the Design Version lock."""
+    Designer's stage.json `locked` is the concept tree's gate; only VERSION.json locked is the Design Version lock.
+    RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME (owner 2026-11-15, the Evidence-for-Ask rule; watched
+    failing on 6dcc361c54, every lock an OWNER card): a NEW mod's first Design Version is 0.1.0, locked by the pipeline;
+    it reaches him only when recorded evidence says 0.1.0 is wrong, and the card quotes that evidence."""
     import maturation_autonomy as A
+
+    def lane(r, ver, dst, locked, ev=None):
+        try:
+            A._designer_lane(r, "Graffiti", ver, dst, locked, **({"evidence": ev} if ev else {}))
+        except TypeError as e:       # the base has no evidence hook: a FAIL, never a crash
+            r["error"] = str(e)
     r = {}
-    A._designer_lane(r, "Graffiti", "UNMEASURED", {"status": "locked", "stage": 5}, lambda m: False)
-    ok(r.get("decision") == "owner" and "Lock Graffiti's Design Version?" in str(r.get("card")),
-       "designer lock: a locked tree with no VERSION.json lock is an OWNER card, never a steward (read %s)" %
-       r.get("decision"))
+    lane(r, "UNMEASURED", {"status": "locked", "stage": 5}, lambda m: False)
+    ok(r.get("decision") == "autolock" and r.get("aut") == "autolock" and not r.get("card"),
+       "evidence-for-ask 1: a locked tree, no VERSION.json lock and no evidence against 0.1.0: the pipeline locks "
+       "0.1.0 itself, no card (read %s)" % r.get("decision"))
     r = {}
-    A._designer_lane(r, "Graffiti", "0.1.0", {"status": "locked", "stage": 5}, lambda m: True)
+    lane(r, "UNMEASURED", {"status": "locked", "stage": 5}, lambda m: False, ev=lambda m: [AGAINST])
+    ok(r.get("decision") == "owner" and not r.get("aut") and AGAINST in str(r.get("why"))
+       and AGAINST in str(r.get("card")),
+       "evidence-for-ask 2: recorded evidence against 0.1.0 is an OWNER card whose why and text quote it (read %s: %s)"
+       % (r.get("decision"), str(r.get("card") or r.get("error"))[:120]))
+    r = {}
+    lane(r, "0.1.0", {"status": "locked", "stage": 5}, lambda m: True, ev=lambda m: [AGAINST])
     ok(r.get("decision") == "steward" and r.get("steward_kind") == "designer_locked",
-       "designer lock: a locked tree with VERSION.json locked is the steward's advance to preflight")
+       "evidence-for-ask 3: a locked tree with VERSION.json locked is the steward's advance, untouched by the lock")
     r = {}
     A._designer_lane(r, "Graffiti", "0.1.0", {"status": "drafting", "stage": 5}, lambda m: True)
     ok(r.get("decision") == "steward", "designer lock: stage 5 with VERSION.json locked is the steward's advance")
-    # the tick: Graffiti's steward already spent on the old reading; it reads OWNER now, its card written once
+    r = {}
+    lane(r, "UNMEASURED", {"status": "drafting", "stage": 5}, lambda m: False)
+    ok(r.get("decision") == "designer_wait" and not r.get("aut") and not r.get("card"),
+       "evidence-for-ask 4: an unlocked tree (stage 5, drafting) does nothing: the Designer's wait, never an OWNER "
+       "card or a lock (read %s)" % r.get("decision"))
+    # the tick: the lock act runs once, then the locked version is the steward's; a dry pass only says it would
     fresh_state()
     w = World({}, dstate={"Gf": {"status": "locked", "stage": 5, "history": []}}, locked=False)
     w.facts = {"Gf": {"mod": "Gf", "stage": "designer", "live_units": []}}
     rd, g = run(w, ["Gf"], root)
     rd2, g2 = run(w, ["Gf"], root, now=CLOCK + 60)
-    ok(g("Gf").get("klass") == "owner" and g2("Gf").get("klass") == "owner" and not w.launched
-       and len([c for c in w.cards if "Gf" in c]) == 1,
-       "designer lock: the tick reads OWNER, launches nothing, writes the lock card once (read %s, cards %d)" % (
-           g("Gf").get("decision"), len(w.cards)))
+    ok(w.autolocked == ["Gf"] and g("Gf").get("klass") == "launch" and "PUBLISHED" in str(g("Gf").get("why"))
+       and not w.cards and g2("Gf").get("decision") == "launched" and w.launched and w.launched[0][0] == "brief",
+       "evidence-for-ask 1: the tick locks 0.1.0 once (the act lands it), writes no card, then the steward advances "
+       "the locked version (read %s / %s, locks %s, cards %d)" % (g("Gf").get("decision"), g2("Gf").get("decision"),
+                                                                    w.autolocked, len(w.cards)))
+    fresh_state()
+    w = World({}, dstate={"Gf": {"status": "locked", "stage": 5, "history": []}}, locked=False)
+    w.facts = {"Gf": {"mod": "Gf", "stage": "designer", "live_units": []}}
+    rd = MD.tick(root, dict(CFG, advancing=["Gf"]), False, fx=w.fx(), now=CLOCK)
+    ok(rd["mods"]["Gf"].get("decision") == "would_launch" and not w.autolocked,
+       "evidence-for-ask 1: a dry tick writes nothing: it says the lock would run")
+    fresh_state()
+    w = World({}, dstate={"Gf": {"status": "locked", "stage": 5, "history": []}}, locked=False)
+    w.facts = {"Gf": {"mod": "Gf", "stage": "designer", "live_units": []}}
+    w.evidence = {"Gf": [AGAINST]}
+    rd, g = run(w, ["Gf"], root)
+    rd2, g2 = run(w, ["Gf"], root, now=CLOCK + 60)
+    ok(g("Gf").get("klass") == "owner" and g2("Gf").get("klass") == "owner" and not w.autolocked and not w.launched
+       and len([c for c in w.cards if "Gf" in c and AGAINST in c]) == 1,
+       "evidence-for-ask 2: with evidence the tick reads OWNER, locks nothing, writes the card quoting it once "
+       "(read %s, cards %d)" % (g("Gf").get("decision"), len(w.cards)))
+    fresh_state()
+    w = World({}, dstate={"Gf": {"status": "locked", "stage": 5, "history": []}}, locked=True)
+    w.facts = {"Gf": {"mod": "Gf", "stage": "designer", "live_units": []}}
+    rd, g = run(w, ["Gf"], root)
+    ok(not w.autolocked and g("Gf").get("decision") == "launched",
+       "evidence-for-ask 3: an already-locked version is never re-locked; the steward advances it")
+    evidence_and_act_checks()
+
+
+def concept(root, mod, files):
+    c = os.path.join(root, "design", "concepts", mod)
+    for rel, data in files.items():
+        os.makedirs(os.path.dirname(os.path.join(c, rel)), exist_ok=True)
+        with open(os.path.join(c, rel), "w", encoding="utf-8") as f:
+            f.write(data if isinstance(data, str) else json.dumps(data))
+    return c
+
+
+def evidence_and_act_checks():
+    """The evidence reader and the lock act on real files (a temp root; the act's landing is faked)."""
+    import maturation_autonomy as A
+    ve, act = getattr(A, "version_evidence", None), getattr(A, "autolock_and_land", None)
+    ok(callable(ve) and callable(act), "evidence-for-ask: version_evidence() and autolock_and_land() exist")
+    if not (callable(ve) and callable(act)):
+        return
+    tmp = tempfile.mkdtemp(prefix="efa_")
+    try:
+        rec = {"mod": "X", "version": "UNMEASURED", "stage": "designer"}
+        concept(tmp, "New", {"stage.json": {"status": "locked", "stage": 5}, "version/stage_record.json": rec})
+        concept(tmp, "Held", {"version/VERSION.json": {"mod": "Held", "version": "0.1.0",
+                                                       "state": "not started: waits for Pyrelands 0.1.0 to pass"},
+                              "version/stage_record.json": rec})
+        concept(tmp, "Open", {"version/VERSION.json": {"mod": "Open", "version": "0.1.0", "state": "open: admitted"},
+                              "version/stage_record.json": rec})
+        concept(tmp, "Later", {"version/VERSION.json": {"mod": "Later", "version": "0.2.0", "state": "open"},
+                               "version/stage_record_0.1.0.json": rec, "version/stage_record.json": rec})
+        concept(tmp, "Objected", {"record.json": {"version_objection": "this continues RM_Old 1.4, not a new mod"},
+                                  "version/stage_record.json": rec})
+        got = {m: ve(tmp, m) for m in ("New", "Held", "Open", "Later", "Objected")}
+        ok(got["New"] == [] and got["Open"] == [],
+           "evidence-for-ask: a new mod (no VERSION.json, or one still open at 0.1.0) has no evidence against 0.1.0 "
+           "(read %s)" % {m: got[m] for m in ("New", "Open")})
+        ok(any("not started" in x for x in got["Held"]) and any("0.2.0" in x for x in got["Later"])
+           and any("stage_record_0.1.0.json" in x for x in got["Later"])
+           and any("RM_Old 1.4" in x for x in got["Objected"]),
+           "evidence-for-ask: a recorded hold, another version, an earlier version's record and a written objection "
+           "are each quoted as evidence (read %s)" % {m: got[m] for m in ("Held", "Later", "Objected")})
+        c = concept(tmp, "Lockme", {"stage.json": {"status": "locked", "stage": 5,
+                                                   "budget": {"spent": 1234, "charges": []}},
+                                    "tree.json": {"leaves": [{"id": "a"}, {"id": "b"}]},
+                                    "record.json": {"inventory": [{"id": "c"}]},
+                                    "version/stage_record.json": rec})
+        landed = []
+        out = act(tmp, "Lockme", now=CLOCK, land=lambda subj, paths: (landed.append((subj, paths)), "PUBLISHED f00d")[1])
+        v = json.load(open(os.path.join(c, "version", "VERSION.json")))
+        ok(v.get("version") == "0.1.0" and v.get("state") == "locked" and v.get("locked_by") == "pipeline"
+           and v.get("per_ruling") == A.M.EVIDENCE_FOR_ASK and "owner_words" not in v and v.get("tokens_spent") == 1234
+           and v.get("bars_total") == 3 and v.get("bars_met") == "UNMEASURED" and out == "PUBLISHED f00d",
+           "evidence-for-ask: the act writes VERSION.json locked 0.1.0 by the pipeline under the ruling, no owner "
+           "words, numbers measured or UNMEASURED (read %s)" % {k: v.get(k) for k in ("state", "locked_by",
+                                                                                     "tokens_spent", "bars_total")})
+        dg = [p for p in (landed[0][1] if landed else []) if p.startswith("infrastructure/state/delegated/")]
+        ok(len(landed) == 1 and "design/concepts/Lockme/version/VERSION.json" in landed[0][1] and len(dg) == 1,
+           "evidence-for-ask: one landing carries VERSION.json and the digest record (read %s)" % landed)
+        if dg:
+            import delegated_digest as DD
+            r = DD.verdict_read(tmp, os.path.join(tmp, "infrastructure", "state", "delegated"), added={})
+            got = [x[2] for x in r["items"]]
+            ok(len(got) == 1 and got[0].get("decision") and got[0].get("class") == "design"
+               and got[0].get("item") == A.M.EVIDENCE_FOR_ASK,
+               "evidence-for-ask: the lock reaches his daily digest (the digest's own reader reads it: %s)" % got)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def road_back_checks(root):

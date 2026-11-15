@@ -83,12 +83,12 @@ def copy_mods(root):
                     f.write(data)
 
 
-def synthetic(root, state="drafting", locked_by=None):
+def synthetic(root, state="drafting", locked_by=None, **more):
     c = os.path.join(root, "design", "concepts", "SpineTestMod")
     os.makedirs(os.path.join(c, "version"), exist_ok=True)
     with open(os.path.join(c, "version", "VERSION.json"), "w") as f:
         json.dump(dict({"mod": "SpineTestMod", "version": "0.1.0", "state": state},
-                       **({"locked_by": locked_by} if locked_by else {})), f)
+                       **({"locked_by": locked_by} if locked_by else {}), **more), f)
     with open(os.path.join(c, "journal.md"), "w") as f:
         f.write("# Spine test mod: journal\n\n## The mod as it stands\n\n- **Design Version 0.1.0**, drafting.\n"
                 "- **Stage now:** Stage 1 (Designer), drafting the bars.\n- **Waiting on:** nothing.\n\n"
@@ -215,6 +215,17 @@ def main():
         refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "a 'locked-without-owner' state")
         synthetic(root, state="locked")
         refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "a lock with no locked_by owner")
+        # RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME: the pipeline's 0.1.0 lock under his ruling counts;
+        # a bare "pipeline" with no ruling named does not
+        efa = getattr(M, "EVIDENCE_FOR_ASK", "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME")
+        synthetic(root, state="locked", locked_by="pipeline")
+        refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked",
+                "a pipeline lock that names no ruling")
+        synthetic(root, state="locked", locked_by="pipeline", per_ruling=efa)
+        e = M.evaluate(root, "SpineTestMod", "preflight", by="BENCH", why="x")
+        ok("locked" in [p["clause"] for p in e["verdict"]["passed"]],
+           "evidence-for-ask: VERSION.json locked by the pipeline under the Evidence-for-Ask ruling passes the lock "
+           "clause (read %s)" % [r["clause"] for r in e["verdict"]["refusals"]])
         synthetic(root, state="locked", locked_by="owner")
         refused(M.advance(root, "SpineTestMod", "preflight", by="", why="x"), "by", "a move that names no seat")
         r = M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="locked on his word")
