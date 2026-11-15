@@ -1,30 +1,7 @@
-# RimMandrake/GimmeSomeSlack: parked for you (ceiling)
+# RimMandrake/GimmeSomeSlack: locked (stage 5)
 
-the judge-and-rework loop has spent 8517003 tokens since 2026-11-06T08:12:29Z, past its ceiling of 8000000 (2x the cap). Nothing runs on it, no Designer run and no judge, until your word on GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS. Item GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS, stage 3 (Write).
+Locked 2026-11-15T05:55:36Z by run bench-gss-owed-exam-st5-20261114. Item GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS. Stages accepted: 0 Read, 1 Argue the idea, 2 Argue the edge, 3 Write, 4 Exam, 5 Lock.
 
-## QUICK LOOK OFFERED
+Coverage: signed by the coverage judge (CoverageJudge).
 
-Enough code exists (21 built capabilities: invisible_conduit, cord_slack_lay, junction_strips, connectivity_truth, break_ends_live_dead, rebuild_cost, overhead_spans, downed_spans, fallen_wire_shock, wire_down_alert, restring_job, power_theft, four_styles, mod_settings, pipe_pole_switch, gravship_connectivity, owner_change_cut, game_statics_reset, uninstall_clean, no_hose, cords_draw_under_things). A short look in game could settle these 5 gaps at once.
-
-## Settled
-
-- Stages accepted: 0 Read, 1 Argue the idea, 2 Argue the edge.
-- Root: Gimme Some Slack hides the tidy conduit and draws in its place what a scavenger base really looks like: too-long extension cords sprawling across the floor in loose loops and coils, piling against walls, plugging into power strips (or connectors, in the other three looks) at every three- or four-way junction, and sagging overhead lines strung between masts. The mess is honest: it faithfully represents connectivity but not the precise conduit path. Every cord explains a real power connection, nothing is drawn that is not wired, and a cut line lies on the ground sparking where it is live and dead where it is not. Even a huge base with many wires and connectors shows no problematic delay. Around that look ride a few consequences, all built: a clamp on a neighbour's line steals their power with a steady goodwill drain if caught; a live fallen wire shocks whoever touches it; and a colonist re-strings a cut span. A pawn who approaches a sparking line intending to fix it is safe; one who incidentally goes over the sparking end on a different job (or anyone else) gets shocked. Judged first: one room of floor cords meeting at a strip, and one cut that leaves a sparking live end and a dead end, with the drawing true to the grid's connectivity in both.
-- 10 decisions on record, 26 tree leaves, 23 inventory capabilities.
-
-## Refused, and why
-
-The coverage judge (rm-coverage-judge-1794599377) says not covered: I checked all five gaps on file from rm-coverage-judge-1793955968 and all five are fixed. g1: sc_shock and sc_shock_restring now key the fixer exemption on the target wire. g2: he answered (OWNER:1793996551266756043), and the new leaves floor_end_shocks_crossers and shock_reach_setting have scenes sc_floor_end_shock and sc_shock_reach. g3: sc_statics_new_game now takes a load path with a filled-state control. g4: sc_settings now names lamp art, the patch-to-switch map and the power poles left alone. g5: sc_restring stages a grounded wire and reads the jump, and sc_spans has a lamp mast. All 22 record.json inventory units are exercised by the two showcases or by coverage_rest. uninstall_clean is waived in his words (w1). Every tree.json leaf has a script-staged acceptance scene in scenes.json with an asserted start, a control and a restore step, except no_hose_in_gss, which is offline and exempt. No leaf rests on an exploration scene, sheet.md's does-list matches the 26 leaves, exam.json was taken on the current tree hash, and floor.json's tick_cost, memory and save_size lines are carried by sc_rewire_cost and sc_walk. Five gaps remain, all fixable by the Designer at stage 3 with edits. Three are in artifacts changed since that verdict. The new floor-end scene never crosses a live mid-cord cell, so a whole-cord shock passes it. The agent rulings under his shock answer, which the sheet tells the player, have no test: a stopped-laying end, delivering counted as safe, no fuel ignition at floor ends, shock not limited by the spark budget, and FlowWorks deck cords. sc_no_sharp_turn can be passed by taut cords. Two were missed earlier: sc_owner_change has no span between same-owner poles that should stay up, and the statics scene does not read the printed-section and live-wire path-cost statics the reset clears. Unchanged scenes the earlier judge passed stay passed; apart from these two, I found no defect I could quote in them.
-1. sc_floor_end_shock never orders a pawn across a live cord cell other than the end, so a shock applied along the whole live cord passes every case in it. (scenes.json sc_floor_end_shock action; tree.json floor_end_shocks_crossers; ids floor_end_shock, floor_end_shocks_crossers; returns to stage 3)
-2. The agent rulings under his shock answer, which the sheet's delegated line tells the player, are not tested: a live end left by a run the player stopped laying, delivering material to the joining blueprint counted as safe, floor ends not lighting fuel, shock not following the maxSparkingEnds budget, and FlowWorks collapsed-deck cords sitting inside 'Only downed lines' (and silenced by None). (record.json d_shock_reach_agent_detail; sheet.md delegated; scenes.json sc_floor_end_shock, sc_shock_reach, sc_fuel_ignition; ids floor_end_shock, floor_end_shocks_crossers, shock_reach_setting; returns to stage 3)
-3. sc_no_sharp_turn can be passed by taut straight cords, the leaf's own third false pass, because its only guard on the positive side is that strands exist. (scenes.json sc_no_sharp_turn expect; tree.json no_unforced_sharp_turn false_pass; ids no_unforced_sharp_turn; returns to stage 3)
-4. sc_owner_change never stages a span between two poles of one owner that does not touch the handed-over mast, so a sweep that drops every span on any owner change, or every span on that net, passes. (scenes.json sc_owner_change start/expect; tree.json owner_change_coils_wires experience; ids owner_change_cut, owner_change_coils_wires; returns to stage 3)
-5. The statics scene reads only the tap registry and the style picks. The built reset also clears the printed-section statics (section keys and strand names) and the live-wire path costs keyed by map id, and nothing checks either across games. (scenes.json sc_statics_new_game; record.json inventory game_statics_reset; tree.json statics_clear_between_games; ids game_statics_reset, statics_clear_between_games; returns to stage 3)
-
-## Smallest fixes
-
-- The Designer can fix 5 gap(s) at stage 3 without you: 1, 2, 3, 4, 5.
-
-## What you must decide
-
-- Then one note on GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS (your words, or a card): rework it, certify it as it stands, waive a gap, or stop.
+Earlier parks on this concept: 1 (stage.json `parks`).

@@ -1,0 +1,10 @@
+{
+ "run": "bench-gss-owed-exam-st5-20261114",
+ "stage": 5,
+ "outcome": "done",
+ "summary": "Lock recorded on the locked 0.1.0 (version/VERSION.json, his word): the owed exam passed 24/24 (stage 4) and the one owed coverage judge pass signed (rm-coverage-judge-1794721967, covered, 0 gaps); concept_tree.py gate PASS; showcase set accepted, cords_draw_under_things covered by sc_cords_under_items. Owner by card 2026-11-14 (OWNER:1794721624157925836): one exam and one judge pass, no loop.",
+ "quick_look": {
+  "offer": false,
+  "why": "nothing is asked of him: the lock closes on the gate"
+ }
+}
