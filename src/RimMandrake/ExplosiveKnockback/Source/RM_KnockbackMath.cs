@@ -286,10 +286,11 @@ namespace RimMandrake.ExplosiveKnockback
             return !fireAtHalf && source == "damageDef" && IsFireDamage(damageDefName, hediffDefName);
         }
 
-        /// <summary>A fire damage type: Flame, or a type whose injury is a burn.</summary>
+        /// <summary>A fire damage type: Flame, or a type whose injury is a burn: Burn, or Anomaly's ElectricalBurn (its DamageDef
+        /// has ParentName="Flame", so it inherits Flame's patched force 0.5, but its hediff is ElectricalBurn, not Burn).</summary>
         public static bool IsFireDamage(string damageDefName, string hediffDefName)
         {
-            return damageDefName == "Flame" || hediffDefName == "Burn";
+            return damageDefName == "Flame" || hediffDefName == "Burn" || hediffDefName == "ElectricalBurn";
         }
 
         /// <summary>A closed container's planned throw (owner 2026-11-12, "the whole crate/chest would go flying a bit", by card
