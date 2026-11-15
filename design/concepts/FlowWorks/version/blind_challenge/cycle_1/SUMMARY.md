@@ -27,8 +27,8 @@ rides the pulse slider (1.68 to 70 days); a NaN drill reserve pours; the sprinkl
 (vanilla counts 25 at radius 2.9); RM_FlowKernel is the depth engine, not tested here.
 
 
-After lane 2 (`lane2/lane1_rows_after_fix.jsonl`, the fixed kernels; rerun by the reconcile at d80300e83e, same verdicts): 42 PASS, 1 FAIL (the Polish valve row, unfixed),
-5 INFO, 7 UNSETTLED [measured]. Run with `--kernel <old RM_ConversionMath.cs> --kernel <old RM_SheetMath.cs>`, the same
+After lane 2 (`lane2/lane1_rows_after_fix.jsonl`, the fixed kernels, rerun at the valve fix 4b37a37db9): 43 PASS, 0 FAIL,
+5 INFO, 7 UNSETTLED [measured]; with the valve kernel of its parent f2b926f78f the valve row FAILs again [measured]. Run with `--kernel <old RM_ConversionMath.cs> --kernel <old RM_SheetMath.cs>`, the same
 rows give 4 FAIL again [measured]. Two lane-1 tests were edited after lane 2 (`tests_edited.json`).
 
 ## Lane 2 reruns
@@ -70,10 +70,13 @@ see a planted caller. A first batch of 9 caller faults "survived" unseen and was
 - `RIMMANDRAKE_FIX_SHEET_DRY_ISLAND_UNDER_A_STANDING_POOL` (inv_overflow_sheet): a square 0.6 cm up stayed dry under a 3 cm pool.
 - `RIMMANDRAKE_PIN_SPRINKLER_CALLER_TO_A_WORKING_PUMP` (inv_sprinklers): test gap, the caller could drop the pump.
 - `RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE` (inv_drilling): test gap, the regression case was outside T_DRILL's glob.
-- `RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER` (inv_pits, stage 6): brittle source pin.
+- `RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER` (inv_pits, stage 6): brittle source pin. Since 4b37a37db9 the check
+  reads GSS's compiled DLL, not its source: red on a GSS build without the ExternalContacts call and on one with
+  RegisterLiveWireSource's parameter changed, green on one with a new RebuildContacts parameter [measured].
 
 **Polish: 4** (the Polish list, not part of passing):
-- `RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT`: PENDING.
+- `RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT`: FIXED 4b37a37db9 (`MaxCellsFor` now steps up against `UnitsFor`;
+  SelfTest `Sprinkler_max_cells_exact_fit` red on the parent, green on the fix).
 - `RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES`: PENDING.
 - `RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES`: PENDING.
 - `RIMMANDRAKE_CORRECT_SPRINKLER_RADIUS_TEXT_SAYS_TWENTY_FIVE`: FIXED. A false player-facing statement, corrected on sight.
@@ -100,9 +103,8 @@ pipe, pump and net draw, and four stage-6 groups (fire, dig depth, pits, liquid 
 Not checked here: whether `RM_FlowKernel` (the depth engine) conserves; full-file code reviews.
 
 ## Exit
-The sprinkler valve row `spr_units_never_free_and_max_cells_exact` still FAILs after the fixes: it is the Polish item
-`RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT` (one cell short, exact fits only), not part of passing; the Polish
-move is the steward's to confirm. The 8 deciders rerun PASS at d80300e83e (`lane2/reruns_reconcile_head.jsonl`).
+No lane-1 row FAILs after the fixes: the sprinkler valve row was fixed at 4b37a37db9 (it had been left as Polish).
+The 8 deciders rerun PASS at d80300e83e (`lane2/reruns_reconcile_head.jsonl`).
 ```
 offline_bars: {inv_overflow_sheet: green, inv_converters: green, inv_bottles_thirst: green, inv_drilling: green, inv_sprinklers: green}
 problems_open: 0
@@ -116,6 +118,6 @@ Green = every `offline_decides` test of the bar PASSes on the rerun of the lande
 - Code review: every file this cycle changed reads DIRTY under `code_review_status.py`; no full-file review was done.
 - `run_selftests.py --only` was not used on the C# suite (it would run the whole 531 s suite); the touched cases ran
   through `selftest_flowworks_stock.py --only` globs instead.
-- The four Polish items, for the Polish list.
+- The two Polish items still PENDING (crop drown delay in days, machine rates tenfold), for the Polish list.
 - For the steward: `rerun_offline.py` and `plant_faults.py` are generic over a mod's test table; a `--no-build` rerun is
   only valid on an unchanged tree.
