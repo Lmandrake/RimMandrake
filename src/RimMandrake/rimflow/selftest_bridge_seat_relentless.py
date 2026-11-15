@@ -135,27 +135,29 @@ def lock_rows(g):
 # the rig's shared file and driver lock really say. Only the window (transcript, session, helpers, ledger) is simulated.
 RESTART_PROBE = """
 import json
+import os
 import selftest_seat_restart as F
 SR = F.SR
 SR.UNFILED = lambda t: None
 T0 = F.T0
+WIN = int(os.environ.get("PROBE_WINDOW_PID") or 4242)   # the window's pid: a driver lock holds only from inside its tree
 sch, st = F.bsched(), F.fresh()
 tx = F._tx_file("quiet", [{"type": "assistant", "timestamp": SR._iso(T0 - 900),
                            "message": {"role": "assistant", "stop_reason": "end_turn", "content": [{"type": "text", "text": "bye"}]}}])
 SR.transcript_for = lambda sf, cfg: tx
-o = F.obs(sessions=[F.bsess()], request=F.breq(), tx={"last_user_at": None})
+o = F.obs(sessions=[F.bsess(pid=WIN)], request=dict(F.breq(), pid=WIN), tx={"last_user_at": None})
 o["seat_restart"]["bridge"] = SR.bridge_reading
 F.run(sch, st, o, T0 + 1)
 acts = F.run(sch, st, o, T0 + 700)
 holds = [a["why"] for a in acts if a["do"] == "restart_hold"]
 state = F.bstate(st)               # read now: the kill step below moves it on
-recheck = SR.recheck_at_kill("BENCH", sch, dict(st["seat_restart"]["BENCH"]), F.bsess(), paused=lambda: None,
+recheck = SR.recheck_at_kill("BENCH", sch, dict(st["seat_restart"]["BENCH"]), F.bsess(pid=WIN), paused=lambda: None,
                              work=lambda s_, ts: [], shard=lambda s_: None)
 kills = []
 fired = None
 if state != "claimed":     # held at the decision: the kill step gets its own claim, so its recheck is what is read
     st2 = F.fresh()
-    o2 = F.obs(sessions=[F.bsess()], request=F.breq(), tx={"last_user_at": None})
+    o2 = F.obs(sessions=[F.bsess(pid=WIN)], request=dict(F.breq(), pid=WIN), tx={"last_user_at": None})
     F.run(sch, st2, o2, T0 + 1)
     k = [a for a in F.run(sch, st2, o2, T0 + 700) if a["do"] == "restart_kill"]
 else:
@@ -200,8 +202,18 @@ def restart_hold_rows(g):
         check(p.get("state") == "pending" and "restart_kill" not in p.get("dos", [])
               and any("bridge/driver lock held by BENCH" in h for h in p.get("holds", [])),
               "%s still holds at the decision (_pending): %s %s" % (how, p.get("dos"), p.get("holds")))
-        check(p.get("recheck") == ["bridge held by BENCH"], "%s still holds at the kill (recheck_at_kill): %s" % (how, p.get("recheck")))
+        check(len(p.get("recheck") or []) == 1 and p["recheck"][0].startswith("bridge/driver lock held by BENCH"),
+              "%s still holds at the kill (recheck_at_kill): %s" % (how, p.get("recheck")))
         check(p.get("killed") is False, "%s: the kill step does not fire: %s" % (how, p.get("killed")))
+
+    def detached_clears(p, how):
+        """RIMMANDRAKE_FIX_RESTART_HELD_BY_OWN_HELPERS_DRIVER_LOCK (measured 2026-11-15, 34 min held): the seat's own
+        DETACHED run holds the driver lock from outside the window's process tree, and survives the kill."""
+        check(p.get("reading", {}).get("holders") == ["BENCH"], "%s: the restart really reads BENCH: %s" % (how, p.get("reading") or p))
+        check(p.get("state") == "claimed" and "restart_kill" in p.get("dos", []) and not p.get("holds"),
+              "%s holds no restart at the decision (_pending): %s %s" % (how, p.get("dos"), p.get("holds")))
+        check(p.get("recheck") == [], "%s holds no restart at the kill (recheck_at_kill): %s" % (how, p.get("recheck")))
+        check(p.get("killed") is True, "%s: the kill step fires: %s" % (how, p.get("killed")))
 
     rc, out = g.rf("relentless", "bridge", "take", "--idle-ok", "--for", "relentless proving a graffiti")
     check(rc == 0 and g.holder() == "RELENTLESS", "Relentless holds through the real cli: %s" % out[:90])
@@ -214,21 +226,25 @@ def restart_hold_rows(g):
     lock = os.path.join(g.tmp, "DRIVER_LOCK_RESTART.json")
     keep = g.base["RIMFLOW_SHARED_BRIDGE"]
     sleeper = subprocess.Popen(["sleep", "300"])
+    sibling = subprocess.Popen(["sleep", "300"])    # a window the holder is NOT under: a detached run
     try:
-        for who, rule, how in (("relentless", relentless_clears, "a Relentless driver lock alone"),
-                               ("conductor", bench_holds, "the Conductor's driver lock alone")):
+        for who, rule, how, win in (("relentless", relentless_clears, "a Relentless driver lock alone", None),
+                                    ("conductor", bench_holds, "the Conductor's driver lock alone", os.getpid()),
+                                    ("conductor", detached_clears, "the Conductor's detached run's driver lock alone",
+                                     sibling.pid)):
             more = {"RIMFLOW_DRIVER_LOCK": lock, "RM_DRIVER_PID": str(sleeper.pid)}
             rc, out = g.rf(who, "bridge", "take", "--idle-ok", "--for", "restart row", **more)
             check(rc == 0 and os.path.exists(lock), "%s: taken: %s" % (how, out[:90]))
             g.base["RIMFLOW_SHARED_BRIDGE"] = os.path.join(g.tmp, "none.json")   # the lock is the only thing to read
             try:
-                rule(restart_probe(g, RIMFLOW_DRIVER_LOCK=lock), how)
+                rule(restart_probe(g, RIMFLOW_DRIVER_LOCK=lock, **({"PROBE_WINDOW_PID": str(win)} if win else {})), how)
             finally:
                 g.base["RIMFLOW_SHARED_BRIDGE"] = keep
             g.rf(who, "bridge", "release", "--mine", **more)
     finally:
-        sleeper.kill()
-        sleeper.wait()
+        for proc in (sleeper, sibling):
+            proc.kill()
+            proc.wait()
 
 
 def holder_is_not_a_seat(g):

@@ -25,7 +25,8 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
              a Conductor's goodbye restart cannot be cancelled by text at all: _goodbye),
              or by the window's session changing. No ring while pending (ring_hold, bounded). HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
-             driver lock is held by the seat or unreadable, the seat's last game event is transitional, PAUSE, or a
+             driver lock is held by the seat or unreadable (a driver lock whose holder pid is outside the window's
+             process tree - a detached run - does not hold: bridge_hold), the seat's last game event is transitional, PAUSE, or a
              doorbell ring is in flight. Not quiet (idle + last record an ended assistant turn, 30 s old) for 3 ticks
              -> failed: busy.
   claimed    -> restart_kill: ~/.claude/sessions/<pid>.json must name the session and the seat's window name; then
@@ -823,7 +824,9 @@ def helper_names(hs):
 
 
 def bridge_reading(seat):
-    """-> {state: MEASURED|UNMEASURED, holders: [seat...], why}. The cross-clone bridge mirror and the driver lock."""
+    """-> {state: MEASURED|UNMEASURED, holders: [seat...], why, bridge: [seat...], driver: {seat, identity}}. The
+    cross-clone bridge mirror and the driver lock; `bridge` and `driver` keep apart which one a holder came from, so
+    bridge_hold can ask whether a driver lock's holder process is the window's at all."""
     holders = []
     try:
         from rimflow import model
@@ -832,6 +835,7 @@ def bridge_reading(seat):
             holders.append(str(b["holder"]).upper())
     except Exception as e:  # noqa: BLE001 - an unreadable bridge holds the restart
         return {"state": "UNMEASURED", "holders": [], "why": "shared bridge: %s: %s" % (type(e).__name__, e)}
+    out = {"state": "MEASURED", "holders": holders, "bridge": list(holders)}
     try:
         import driver_lock
         p = driver_lock.lock_path()
@@ -839,11 +843,65 @@ def bridge_reading(seat):
             s = driver_lock.status(p)
             if s.get("state") == "HELD":
                 holders.append(str(s.get("seat") or "?").upper())
+                out["driver"] = {"seat": holders[-1], "identity": s.get("identity")}
             elif s.get("state") not in ("FREE", "STALE"):
                 return {"state": "UNMEASURED", "holders": holders, "why": "driver lock: %s" % s.get("state")}
     except Exception as e:  # noqa: BLE001
         return {"state": "UNMEASURED", "holders": holders, "why": "driver lock: %s: %s" % (type(e).__name__, e)}
-    return {"state": "MEASURED", "holders": holders}
+    return out
+
+
+def _proc_ppid(pid):
+    try:
+        import driver_lock
+        return driver_lock._ppid(int(pid))
+    except Exception:  # noqa: BLE001 - unreadable reads None: the caller holds
+        return None
+
+
+def in_window_tree(ident, window_pid, ppid=None):
+    """True: the lock holder's process is the window or under it. False: its ancestry reaches init without passing the
+    window (a detached run: detached_helper.py, parent systemd). None: cannot tell (no pid, another platform or host,
+    an ancestor unreadable or gone) - the caller holds."""
+    import socket
+    ppid = ppid or _proc_ppid
+    if not ident or not window_pid or ident.get("platform") != "wsl" or not str(ident.get("pid") or "").isdigit():
+        return None
+    if ident.get("host") and ident["host"] != socket.gethostname():
+        return None
+    p, win = int(ident["pid"]), int(window_pid)
+    for _ in range(64):
+        if p == win:
+            return True
+        if p <= 1:
+            return False
+        p = ppid(p)
+        if p is None:
+            return None
+    return None
+
+
+def bridge_hold(seat, br, window_pid, ppid=None):
+    """-> the hold reason a bridge reading puts on the seat's restart, or None.
+    RIMMANDRAKE_FIX_RESTART_HELD_BY_OWN_HELPERS_DRIVER_LOCK (measured 2026-11-15: a Conductor held 34 min): the driver
+    lock names a SEAT, but its holder is a process; a detached run of the seat survives the window's kill, so its lock
+    is no reason to hold. The shared bridge by the seat, and a driver lock held by the window or a process under it
+    (in-process subagents share the window's pid), still hold; a holder that cannot be placed holds, UNMEASURED."""
+    if br.get("state") != "MEASURED":
+        return "bridge unreadable (%s)" % br.get("why")
+    if seat not in (br.get("holders") or []):
+        return None
+    d = br.get("driver") or {}
+    if "bridge" not in br or seat in br["bridge"] or d.get("seat") != seat:
+        return "bridge/driver lock held by %s" % seat
+    ident = d.get("identity") or {}
+    inside = in_window_tree(ident, window_pid, ppid)
+    if inside is False:
+        return None
+    if inside is True:
+        return "bridge/driver lock held by %s (holder pid %s is the window's)" % (seat, ident.get("pid"))
+    return "bridge/driver lock held by %s: holder pid %s UNMEASURED against window pid %s (%s)" % (
+        seat, ident.get("pid"), window_pid, ident.get("platform") or "no identity")
 
 
 def game_reading(seat, clone, events_since, now, hold_s):
@@ -2030,11 +2088,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         unpub = ro["shard"](seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)
-    br = ro["bridge"](seat) or {}
-    if br.get("state") != "MEASURED":
-        holds.append("bridge unreadable (%s)" % br.get("why"))
-    elif seat in (br.get("holders") or []):
-        holds.append("bridge/driver lock held by %s" % seat)
+    bh = bridge_hold(seat, ro["bridge"](seat) or {}, cur.get("pid"), ro.get("ppid"))
+    if bh:
+        holds.append(bh)
     g = ro["game"](seat)
     if g and g.get("state") in TRANSITIONAL and now - (g.get("at") or now) < cfg["game_hold_s"]:
         holds.append("game action by %s: %s" % (seat, g["state"]))
@@ -2618,9 +2674,9 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         holds.append("helper inventory UNMEASURED")
     elif any(h.get("alive") for h in hs):
         holds.append("helper(s) alive: %s" % helper_names([h for h in hs if h.get("alive")]))
-    br = bridge_reading(seat)
-    if br.get("state") != "MEASURED" or seat in (br.get("holders") or []):
-        holds.append("bridge %s" % (br.get("why") or "held by %s" % seat))
+    bh = bridge_hold(seat, bridge_reading(seat), sf.get("pid"))
+    if bh:
+        holds.append(bh)
     pz = paused()
     if pz:
         holds.append("PAUSE: %s" % pz)

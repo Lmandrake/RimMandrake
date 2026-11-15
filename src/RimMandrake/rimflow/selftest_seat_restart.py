@@ -584,6 +584,59 @@ def test_rollback_releases_the_seat():
 
 # ---- GPT review 2026-10-28 (foundry_fresh/gpt/review.md): HIGH 1-7, MEDIUM 8-10
 
+def test_driver_lock_detached_holder():
+    """RIMMANDRAKE_FIX_RESTART_HELD_BY_OWN_HELPERS_DRIVER_LOCK: a driver lock the seat's DETACHED run holds (its owner pid
+    outside the window's process tree: detached_helper.py, parent systemd) survives the kill, so it holds nothing; one
+    the window or a process under it holds still holds; a holder whose tree cannot be read holds, saying UNMEASURED."""
+    sch, win = sched(), 4242               # sess() is pid 4242
+    host = __import__("socket").gethostname()
+    tree = {9001: 1500, 1500: 1,           # detached: claude -p under systemd --user, under init
+            9002: 4242,                    # a shell the window started
+            9004: 7000}                    # 7000's parent unreadable
+
+    def drv(pid, platform="wsl", shared=()):
+        return {"state": "MEASURED", "holders": list(shared) + ["FOUNDRY"], "bridge": list(shared),
+                "driver": {"seat": "FOUNDRY", "identity": {"pid": pid, "start": 1, "platform": platform, "host": host}}}
+
+    def tick(br):
+        st, o = fresh(), obs(request=req(), bridge=br)
+        o["seat_restart"]["ppid"] = lambda pid: tree.get(pid)
+        a = to_claim(sch, st, o)
+        why = " | ".join(x.get("why") or "" for x in a if x.get("do") == "restart_hold")
+        return a, st, why
+    a, st, why = tick(drv(9001))
+    check("restart_kill" in dos(a), "driver lock held by the seat's DETACHED run -> no hold (%s; %s)" % (dos(a), why))
+    for label, br in (("the window itself", drv(win)), ("a process under the window", drv(9002)),
+                      ("the shared bridge by the seat, driver detached", drv(9001, shared=("FOUNDRY",)))):
+        a, st, why = tick(br)
+        check("restart_kill" not in dos(a) and state(st) == "pending" and "held by FOUNDRY" in why,
+              "driver lock / bridge held by %s -> held (%s; %s)" % (label, dos(a), why))
+    for label, br in (("a holder whose ancestry is unreadable", drv(9004)), ("a gone holder pid", drv(9003)),
+                      ("a Windows-side holder", drv(9001, platform="nt"))):
+        a, st, why = tick(br)
+        check("restart_kill" not in dos(a) and "UNMEASURED" in why, "%s -> held, UNMEASURED (%s; %s)" % (label, dos(a), why))
+    # the kill-time recheck reads the same thing (recheck_at_kill -> bridge_hold)
+    check(SR.bridge_hold("FOUNDRY", drv(9001), win, lambda p: tree.get(p)) is None,
+          "bridge_hold: detached holder -> None")
+    check("UNMEASURED" in (SR.bridge_hold("FOUNDRY", drv(9001), None, lambda p: tree.get(p)) or ""),
+          "bridge_hold: no window pid -> UNMEASURED hold")
+    check("held by FOUNDRY" in (SR.bridge_hold("FOUNDRY", {"state": "MEASURED", "holders": ["FOUNDRY"]}, win) or ""),
+          "bridge_hold: a reading without provenance -> held as before")
+    # bridge_reading itself carries the provenance bridge_hold needs
+    import driver_lock as DL
+    from rimflow import model as M
+    saved = (DL.lock_path, DL.status, M.read_shared_bridge)
+    ident = {"pid": 9001, "start": 1, "platform": "wsl", "host": host}
+    try:
+        DL.lock_path, M.read_shared_bridge = (lambda: "/nonexistent/DRIVER_LOCK.json"), (lambda: None)
+        DL.status = lambda p: {"state": "HELD", "seat": "foundry", "identity": ident}
+        r = SR.bridge_reading("FOUNDRY")
+    finally:
+        DL.lock_path, DL.status, M.read_shared_bridge = saved
+    check(r.get("holders") == ["FOUNDRY"] and r.get("bridge") == [] and (r.get("driver") or {}).get("identity") == ident,
+          "bridge_reading names the driver lock's holder identity apart from the shared bridge (%s)" % r)
+
+
 def at_kill(sch, st, now=None):
     run(sch, st, obs(request=req()), T0 + 1)
     return run(sch, st, obs(), now or T0 + SR.DEFAULTS["grace_s"] + 5)
