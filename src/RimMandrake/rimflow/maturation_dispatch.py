@@ -1174,6 +1174,11 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
     if apply and aut:
         AUT.post_cards(rows, st, now, fx)
     rd = AUT.annotate(reading(cfg, rows, now), rows)
+    try:    # a DIVERGING stage is a Needs Conductor line; it pauses nothing (maturation_convergence.py)
+        import maturation_convergence as MC     # noqa: E402
+        MC.annotate_reading(root, rd)
+    except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
+        rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
     if apply:
         rd["spend_rows"] = record_spend(root, facts, fx)
         _write(os.path.join(d, "state.json"), st)

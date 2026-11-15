@@ -872,7 +872,39 @@ def gather(root, live=True):
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
-            "errors": lf["errors"]}
+            "errors": lf["errors"], "convergence": convergence(root, lf["errors"])}
+
+
+def convergence(root, errors):
+    """RIMMANDRAKE_MEASURE_MATURATION_CONVERGENCE_PER_ROUND: maturation_convergence.py's reading, or None (in errors)."""
+    try:
+        import maturation_convergence as MC  # noqa: E402
+        return MC.read_all(root)
+    except Exception as e:      # noqa: BLE001
+        errors.append("convergence: %s: %s" % (e.__class__.__name__, str(e)))
+        return None
+
+
+def convergence_md(d):
+    """The Convergence section (markdown lines); the words and the rule are maturation_convergence.py's."""
+    c = d.get("convergence")
+    if not c:
+        return []
+    import maturation_convergence as MC  # noqa: E402
+    return (["## Convergence by round", "", "Per mod and judging stage, read from the records on disk by `%s`: %s. "
+             "A round with no readable record is UNMEASURED, never a number." % (MC.SOURCE, c["rule"]), ""]
+            + MC.markdown(c) + [""])
+
+
+def convergence_html(d):
+    c = d.get("convergence")
+    if not c:
+        return ""
+    import maturation_convergence as MC  # noqa: E402
+    rows = "".join("<tr>%s</tr>" % "".join("<td>%s</td>" % esc(x) for x in r) for r in MC.table_rows(c))
+    return ("<h2>Convergence by round</h2><p class='m'>Per mod and judging stage, read from the records on disk by "
+            "<code>%s</code>: %s. A round with no readable record is UNMEASURED, never a number.</p><table><tr>%s</tr>%s"
+            "</table>" % (esc(MC.SOURCE), esc(c["rule"]), "".join("<th>%s</th>" % esc(h) for h in MC.HEAD), rows))
 
 
 # ---- the picture -------------------------------------------------------------------------------------------------
@@ -1377,7 +1409,8 @@ def build(d, now):
     # summary table
     parts_md += ["## Every mod, one line", "", "| " + " | ".join(HEADS) + " |", "|" + "---|" * len(HEADS)]
     parts_md += ["| " + " | ".join(md_cell(c) for c in r) + " |" for r in summary_rows(d)]
-    parts_md += ["", "## Each mod", ""]
+    parts_md += [""] + convergence_md(d)
+    parts_md += ["## Each mod", ""]
     for m in d["mods"]:
         parts_md += [card(m), ""]
     if d["others"]:
@@ -1409,7 +1442,8 @@ def build(d, now):
                   % (TEXT, FONT, TEXT, CARD, DIM, EDGE, DIM),
                   "<h1>%s</h1>" % title, "<p>%s</p>" % inline_md(measured), needs_html(d), "<p>%s</p>" % top_chips(d),
                   "<p class='m'>%s</p>" % inline_md(lead), picture(d),
-                  "<h2>Every mod, one line</h2>", tbl, "<h2>Each mod</h2>"] + [card(m) for m in d["mods"]]
+                  "<h2>Every mod, one line</h2>", tbl, convergence_html(d), "<h2>Each mod</h2>"] + [
+                      card(m) for m in d["mods"]]
     if others:
         parts_html += ["<h2>Concept folders with no Design Version</h2><ul>%s</ul>" % others]
     parts_html += ["<h2>What this page cannot say</h2><ul>%s</ul>" % cant,
