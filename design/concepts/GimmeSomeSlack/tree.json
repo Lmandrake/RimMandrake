@@ -6,7 +6,13 @@
  "root_ref": "design/validation_walks/RimMandrake/GimmeSomeSlack.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "c1c7124cf298bf8ea24a161f5d0422e0a7cb644c51999d3aa7e46b8d1ce47bc1",
- "coverage": null,
+ "coverage": {
+  "signed_by": "CoverageJudge",
+  "at": "2026-11-15T05:54:32Z",
+  "tree_hash": "e80c7f93fa487266c314df629cadc0944afc5c0200727f4756b50755fdc7c388",
+  "sheet_hash": "33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a",
+  "ledger_item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",

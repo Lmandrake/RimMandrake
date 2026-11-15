@@ -446,10 +446,17 @@
     "ref": "run bench-gss-owed-exam-st4-20261114",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-15T05:54:32Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794721967",
+    "stage": 5,
+    "tokens": 268958
    }
   ],
   "reserve": 60000,
-  "spent": 12768169
+  "spent": 13037127
  },
  "coverage_rounds": [
   {
@@ -480,6 +487,18 @@
    "tokens": 782024,
    "tree": "eb1981b88959b758a00f6984241c719cf574c0fa185a26884940b817b905c1e3",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-15T05:52:47Z",
+   "error": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1794721967",
+   "late": [],
+   "tags": {},
+   "tokens": 268958,
+   "tree": "e80c7f93fa487266c314df629cadc0944afc5c0200727f4756b50755fdc7c388",
+   "verdict": "covered"
   }
  ],
  "coverage_stop": {
