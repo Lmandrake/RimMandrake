@@ -52,7 +52,8 @@ SIGNATURES = (
     ("native_crash_in_load", GAME, r"mono_profiler_init_etw|END OF STACKTRAC|\(function-name not available\)"),
     ("world_start_no_map", GAME, r"readiness .mapData|quicktest world start FAILED"),
     ("game_died", GAME, r"the game loaded as pid \d+ is gone"),
-    ("python_access_violation", GAME, r"Windows fatal exception: access violation"),
+    ("python_access_violation", GAME, r"Windows fatal exception: access violation|Fatal Python error"),
+    ("bridge_frame_corrupt", GAME, r"bridge connection is closed \(an earlier malformed frame"),
 )
 _COMPILED = [(k, c, re.compile(p)) for k, c, p in SIGNATURES]
 
