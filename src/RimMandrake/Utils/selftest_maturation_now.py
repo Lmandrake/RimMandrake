@@ -17,6 +17,9 @@ phone images):
 10 the reaction lists hold only real things (open question, answered one dropped, hold and release, long run, failed run)
 11 what cannot be measured reads UNMEASURED (no run records, no tokens, no dollars, no stage.json), never 0 or blank
 12 the phone images: an overview and one per mod, 1080 px wide, portrait
+13 a folder with a stage record but no VERSION.json is on the map
+14 a run's dollars are the measured cost_usd of its run record (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER)
+15 the slots line names the pipeline's launches apart from the Conductor's (RIMMANDRAKE_SHOW_SLOTS_CONDUCTOR_APART_FROM_MODS)
 
 Points 4, 5 and 7 run on a temp copy of design/concepts and the held-statement folder (--no-live: the ledger is not read).
 Point 6 runs on the live tree twice; a ledger shard or run record that moved between the runs earns one retry.
@@ -462,6 +465,83 @@ def p13_versionless():
         shutil.rmtree(t, ignore_errors=True)
 
 
+def p14_measured_dollars():
+    """RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER: the run record's measured cost_usd is the run's dollars;
+    the record's UNMEASURED stays unmeasured, never 0 and never the cap."""
+    M = MN()
+    t = tempfile.mkdtemp(prefix="mn_spend_")
+    try:
+        out = os.path.join(t, "u.out.json")
+        with open(out, "w") as f:
+            f.write('FINISHED u\n"modelUsage":{}, "result": "I spent about $2 on this"}')
+        usd, said, over = M.read_spend({"out": out, "cost_usd": 4.25, "budget_usd": 3})
+        check("14 a measured cost_usd in the run record is the run's dollars", usd == 4.25, repr(usd))
+        check("14 the run's own word is still read from its result file", said == 2.0, repr(said))
+        check("14 measured dollars over the cap read over", over is True, repr(over))
+        usd, _, over = M.read_spend({"out": out, "cost_usd": 1.5, "budget_usd": 3})
+        check("14 measured dollars under the cap read not over (the run's word does not decide)",
+              usd == 1.5 and over is False, repr((usd, over)))
+        usd, _, _ = M.read_spend({"out": out, "cost_usd": "UNMEASURED", "budget_usd": 3})
+        check("14 a record that says UNMEASURED reads UNMEASURED", usd == M.UNM, repr(usd))
+        with open(out, "w") as f:
+            f.write('{"type": "result", "total_cost_usd": 0.75}')
+        usd, _, _ = M.read_spend({"out": out, "budget_usd": 3})
+        check("14 a record without cost_usd still reads a whole result file", usd == 0.75, repr(usd))
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
+
+def p15_slots():
+    """RIMMANDRAKE_SHOW_SLOTS_CONDUCTOR_APART_FROM_MODS: the pipeline lines open with who holds the launch slots, the
+    pipeline's launches (ticks.jsonl "launched") apart from the Conductor's; an unreadable source reads UNMEASURED."""
+    M = MN()
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import maturation_dispatch as MD  # noqa: E402
+    mx = MD.load_cfg().get("max_live", 2)
+    t = tempfile.mkdtemp(prefix="mn_slots_")
+    old = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = t
+    now = __import__("time").time()
+
+    def plant(mods, ticks):
+        json.dump({"at": now, "at_pac": "now", "mods": mods}, open(os.path.join(t, "reading.json"), "w"))
+        tp = os.path.join(t, "ticks.jsonl")
+        if ticks is None:
+            if os.path.exists(tp):
+                os.remove(tp)
+        else:
+            with open(tp, "w") as f:
+                f.write("".join(json.dumps({"at": now, "launched": [{"mod": m, "unit": u, "item": "X"} for m, u in tk]})
+                                + "\n" for tk in ticks))
+        errs = []
+        got = M.dispatch_pipeline(now, errs)
+        return (got[0] if got else ""), got, errs
+    try:
+        mods = {"Alpha": {"live": ["rm-a1", "rm-a2"], "status": "moving", "for_min": 3},
+                "Beta": {"live": ["rm-conductor-b"]}, "Gamma": {"live": []}}
+        line, got, errs = plant(mods, [[("Alpha", "rm-a1")], [], [("Alpha", "rm-a2"), ("Gamma", "rm-gone")]])
+        check("15 the first pipeline line is the slots line", line.startswith("Slots: 3 live of max_live %s" % mx), line)
+        check("15 it counts the pipeline's launches", "2 launched by the pipeline (Alpha 2)" in line, line)
+        check("15 it names the Conductor's launch by mod and unit", "1 by the Conductor (Beta: rm-conductor-b)" in line, line)
+        check("15 the per-mod lines still follow", any(x.startswith("Alpha: moving") for x in got[1:]), repr(got))
+        line, _, _ = plant(mods, None)
+        check("15 no ticks file: who launched them reads UNMEASURED, never 0",
+              "UNMEASURED" in line and "0 launched" not in line and "3 live" in line, line)
+        line, _, _ = plant(mods, [])
+        check("15 an empty ticks file reads UNMEASURED too", "UNMEASURED" in line and "0 launched" not in line, line)
+        line, _, _ = plant(dict(mods, Delta={"live": "UNMEASURED"}), [[("Alpha", "rm-a1")]])
+        check("15 a mod whose live runs cannot be read makes the live count UNMEASURED",
+              line.startswith("Slots: UNMEASURED") and "Delta" in line, line)
+        line, _, _ = plant({"Alpha": {"live": []}}, [[("Alpha", "rm-a1")]])
+        check("15 no live run: 0 live is a measured 0", line.startswith("Slots: 0 live of max_live"), line)
+    finally:
+        if old is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = old
+        shutil.rmtree(t, ignore_errors=True)
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -482,6 +562,8 @@ def main():
     p11_unmeasured(page_of(REPO))
     p12_phone()
     p13_versionless()
+    p14_measured_dollars()
+    p15_slots()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

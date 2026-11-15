@@ -543,15 +543,23 @@ def stages_named(s):
 
 
 def read_spend(rec):
-    """-> (usd measured|UNM, the run's own dollar word|None, over its cap: True|False|UNM). Reads the run's out file:
-    claude's total_cost_usd when the file still holds it, a max-budget stop, and the run's own "spent about $N"."""
+    """-> (usd measured|UNM, the run's own dollar word|None, over its cap: True|False|UNM). The run record's cost_usd
+    (detached_helper finish measures it from claude's result, RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER;
+    "UNMEASURED" there stays unmeasured), else claude's total_cost_usd when the out file still holds it; a max-budget
+    stop and the run's own "spent about $N" come from the out file."""
     try:
         with open(rec.get("out") or "", encoding="utf-8", errors="replace") as f:
             t = f.read()
     except OSError:
         t = ""
-    m = re.search(r'"total_cost_usd"\s*:\s*([0-9.]+)', t)
-    usd = float(m.group(1)) if m else UNM
+    rc = rec.get("cost_usd")
+    if isinstance(rc, (int, float)) and not isinstance(rc, bool):
+        usd = float(rc)
+    elif rc is not None:
+        usd = UNM
+    else:
+        m = re.search(r'"total_cost_usd"\s*:\s*([0-9.]+)', t)
+        usd = float(m.group(1)) if m else UNM
     w = [x for x in (re.search(r"(?i)(?:spent|spend|cost)\s+(?:was\s+|about\s+|roughly\s+|~)*\$\s?(\d+(?:\.\d+)?)", t),
                      re.search(r"(?i)\$\s?(\d+(?:\.\d+)?)\s+(?:of model spend|of spend|spent|in spend)", t)) if x]
     said = float(min(w, key=lambda x: x.start()).group(1)) if w else None
@@ -796,6 +804,52 @@ def dispatch_needs(now, errors):
     return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in rd.get("needs_conductor") or []]
 
 
+def pipeline_units(path):
+    """-> the units the Dispatch tick launched (every ticks.jsonl line's "launched"), or None when the file cannot be
+    read or holds no tick: who launched a run is then unknown, never "nobody"."""
+    try:
+        f = open(path, encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    units, ticks = set(), 0
+    with f:
+        for ln in f:
+            try:
+                t = json.loads(ln)
+            except ValueError:
+                continue
+            if not isinstance(t, dict):
+                continue
+            ticks += 1
+            for x in t.get("launched") or []:
+                if isinstance(x, dict) and x.get("unit"):
+                    units.add(x["unit"])
+    return units if ticks else None
+
+
+def slots_line(rd, launched, max_live):
+    """Who holds the launch slots (RIMMANDRAKE_SHOW_SLOTS_CONDUCTOR_APART_FROM_MODS). max_live counts every live run on
+    an advancing mod, the Conductor's hand launches included (the owner raised it to 4 rather than exempt them), so
+    the line shows the trade: the pipeline's launches apart from the Conductor's. The live runs are the reading's,
+    the pipeline's are ticks.jsonl's; a run the tick never launched is the Conductor's."""
+    lv = {m: (r or {}).get("live") for m, r in (rd.get("mods") or {}).items()}
+    bad = sorted(m for m, v in lv.items() if not isinstance(v, list))
+    if bad:
+        return "Slots: UNMEASURED live runs of max_live %s (cannot read %s's live runs)" % (max_live, ", ".join(bad))
+    live = [(m, u) for m, v in sorted(lv.items()) for u in v]
+    head = "Slots: %d live of max_live %s (the Conductor's launches count against it)" % (len(live), max_live)
+    if launched is None:
+        return head + ": who launched them UNMEASURED (no readable tick in ticks.jsonl)"
+    pipe = [(m, u) for m, u in live if u in launched]
+    cond = [(m, u) for m, u in live if u not in launched]
+    per = {}
+    for m, _ in pipe:
+        per[m] = per.get(m, 0) + 1
+    return "%s: %d launched by the pipeline (%s), %d by the Conductor (%s)" % (
+        head, len(pipe), ", ".join("%s %d" % (m, n) for m, n in sorted(per.items())) or "none",
+        len(cond), "; ".join("%s: %s" % (m, u) for m, u in cond) or "none")
+
+
 def dispatch_pipeline(now, errors):
     """Per mod, what the Dispatch tick made of it (maturation_autonomy.py, item
     RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING): moving / waiting on <unit> / PAUSED <why> / OWNER
@@ -809,7 +863,12 @@ def dispatch_pipeline(now, errors):
         return []
     if not isinstance(rd, dict) or now - float(rd.get("at") or 0) > 1800:
         return []
-    out = []
+    try:
+        mx = MD.load_cfg().get("max_live", 2)
+    except Exception as e:      # noqa: BLE001
+        errors.append("dispatch config: %s: %s" % (e.__class__.__name__, str(e)))
+        mx = UNM
+    out = [slots_line(rd, pipeline_units(os.path.join(MD.sdir(), "ticks.jsonl")), mx)]
     for mod, r in sorted((rd.get("mods") or {}).items()):
         if r.get("status"):
             out.append("%s: %s (%s min)%s" % (mod, r["status"], r.get("for_min", "?"),
@@ -1376,9 +1435,11 @@ HEADS = ("mod", "Design Version", "stands at", "waits on", "needs you", "last mo
 def unread_lines(d):
     out = ["Any mod's position inside Stages 2 to 8 beyond what its journal's \"Stage now\" line says: those stages are not "
            "built and keep no record of their own yet (spec §6, \"the mod record\").",
-           "Dollars per run: the run's result file loses its first bytes when its finish line is written over it, so "
-           "claude's total_cost_usd is gone; the tokens in the run record are measured, and a run's own \"spent about "
-           "$N\" is shown as its word, not a measurement. A live run's spend is unknown until it ends.",
+           "Dollars per run, for some older runs: until 2026-11-15 a run's finish line was written over the head of its "
+           "result file, so claude's total_cost_usd was lost. Runs since then carry their measured dollars in the run "
+           "record; older ones were read back from what survived (detached_helper.py backfill-cost) and the rest say "
+           "UNMEASURED and count at their cap in the stage ceiling. A run's own \"spent about $N\" is shown as its "
+           "word, not a measurement. A live run's spend is unknown until it ends.",
            "His minutes per stage: nothing records them.",
            "A brief's \"Steward's decisions\" are not kept with the run record; they reach this page only through a "
            "\"CONDUCTOR INTERVENED\" journal line (spec §5).",
