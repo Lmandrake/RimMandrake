@@ -525,22 +525,29 @@
     "tokens": 192744
    },
    {
-    "at": "2026-11-15T21:59:25Z",
+    "at": "2026-11-15T22:13:36Z",
     "kind": "review",
-    "ref": "rm-coverage-judge-1794779751",
+    "ref": "rm-coverage-judge-1794780621",
     "stage": 5,
-    "tokens": 436102
+    "tokens": 381170
    },
    {
-    "at": "2026-11-15T22:00:21Z",
+    "at": "2026-11-15T22:14:24Z",
     "kind": "review",
-    "ref": "rm-coverage-judge-1794779751",
+    "ref": "rm-coverage-judge-1794780621",
     "stage": 5,
-    "tokens": 76508
+    "tokens": 70778
+   },
+   {
+    "at": "2026-11-15T22:15:42Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794780609",
+    "stage": 5,
+    "tokens": 500000
    }
   ],
   "reserve": 60000,
-  "spent": 15183343
+  "spent": 15622681
  },
  "coverage_releases": [
   {
@@ -717,25 +724,24 @@
    "verdict": "not_covered"
   },
   {
-   "at": "2026-11-15T21:55:51Z",
+   "at": "2026-11-15T22:10:21Z",
    "error": null,
    "gaps": 1,
    "ids": [
-    "furnacebeast_warms",
-    "inv_furnacebeast"
+    "inv_art_and_text"
    ],
-   "judge": "rm-coverage-judge-1794779751",
+   "judge": "rm-coverage-judge-1794780621",
    "late": [],
    "tags": {
-    "changed": 1
+    "unfixed": 1
    },
-   "tokens": 512610,
+   "tokens": 451948,
    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21",
    "verdict": "not_covered"
   }
  ],
  "coverage_stop": {
-  "at": "2026-11-15T22:00:23Z",
+  "at": "2026-11-15T22:14:24Z",
   "why": "the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide"
  },
  "history": [
@@ -1298,10 +1304,28 @@
    "why": "run bench-pyre-exam-st4-r7-20261115: stage 4 done"
   },
   {
-   "at": "2026-11-15T22:00:23Z",
+   "at": "2026-11-15T22:10:21Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "14670733 of 4000000 spent; run rm-role-designer-1794780609 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T22:10:21Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794780609, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-15T22:14:24Z",
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-15T22:15:42Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794780609 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1777,6 +1801,15 @@
    "run": "bench-pyre-exam-st4-r7-20261115",
    "stage": 4,
    "summary": "Cold Reader exam retaken on the tree and sheet as fixed for his card 'Fix the 17 gaps, one final look' (OWNER:1794774724955142310; re-pinned 26fe15df8b): 20 frozen scenarios (Examiner acb2fc4b90d20583a e1-e14, Challenger ae68e818cd2467415 c1-c6; 14 rejects), Readers a0a6cefdb8905cb32 and ae5e34c4f2c315238 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a4f78ec3cdccb9529) accepted e2, a three_skies reject both Readers caught, so the set discriminates. exam.json carries it."
+  },
+  {
+   "at": "2026-11-15T22:15:42Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794780609",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
