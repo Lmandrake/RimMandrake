@@ -2,7 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 5; that look was malformed; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -453,10 +453,24 @@
     "ref": "run bench-pyre-exam-st4-20261115",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-15T13:41:58Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794749968",
+    "stage": 5,
+    "tokens": 337382
+   },
+   {
+    "at": "2026-11-15T13:42:52Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794749968",
+    "stage": 5,
+    "tokens": 72408
    }
   ],
   "reserve": 60000,
-  "spent": 13120797
+  "spent": 13530587
  },
  "coverage_releases": [
   {
@@ -551,8 +565,33 @@
    "tokens": 747059,
    "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-15T13:39:28Z",
+   "error": null,
+   "gaps": 5,
+   "ids": [
+    "flamefang_bite_carries_venom",
+    "inv_animal_roster",
+    "inv_ash_field",
+    "inv_burn_line_fire_clock",
+    "inv_furnacebeast",
+    "walk_season_on_the_pyre"
+   ],
+   "judge": "rm-coverage-judge-1794749968",
+   "late": [],
+   "tags": {
+    "unfixed": 5
+   },
+   "tokens": 409790,
+   "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+   "verdict": "malformed"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-15T13:42:52Z",
+  "why": "released for one more look at round 5; that look was malformed"
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1033,6 +1072,12 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-pyre-exam-st4-20261115: stage 4 done"
+  },
+  {
+   "at": "2026-11-15T13:42:52Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 5; that look was malformed; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1467,6 +1512,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

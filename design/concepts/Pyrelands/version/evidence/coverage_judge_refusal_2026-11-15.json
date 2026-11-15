@@ -1,0 +1,209 @@
+{
+ "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
+ "family": "coverage_judge.run (one look after release), delta round 5 on the Pyrelands 0.1.0 tree fixed by his card",
+ "ordered_by": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550); Conductor brief: one judge look after the stage-4 exam is retaken, no second round (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)",
+ "given": {
+  "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+  "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
+  "judge": "rm-coverage-judge-1794749968",
+  "against": "rm-coverage-judge-1794722839",
+  "verdict_file": "design/concepts/Pyrelands/coverage_verdict.json",
+  "verdict": "malformed",
+  "tokens": 409790,
+  "malformed": [
+   "refusal 2 (inv_burn_line_fire_clock): observed quotes no token of its evidence"
+  ],
+  "contract_reasked": [
+   "evidence 'record.json inv_art_and_text' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_ash_field' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_ash_field parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_biome_self_contained' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_burrowers_heat_dome' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_embergrass_regrow' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_firehawk_ember' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_furnacebeast' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_plant_roster' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_ruins_scorched' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_sand_shovel' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_settings_gate' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json inv_weather' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json:194 decision d_ullai_keep_vanilla_herd_migration' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json:525-542 inv_animal_roster' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json:614-625 inv_burn_line_fire_clock' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json:800-814 inv_ullai_herd_giant' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'record.json:994 inv_firehawk_hunt_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json coverage_rest inv_art_and_text' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json coverage_rest inv_sand_shovel' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json sc_firehawk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json sc_ruins' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json sc_walk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:147-161 sc_populations' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:27 sc_ash_ground' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:293-309 sc_three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:301-305 sc_three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:342-356 sc_walk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:437-455 sc_furnace_bed' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:511-524 sc_flamefang_venom' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:52 sc_ash_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:560 sc_foreign_arrivals' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:586 sc_firehawk_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:690-695 coverage_rest' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:707 coverage_rest' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'scenes.json:97 sc_grass_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'sheet.md delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'sheet.md does' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'sheet.md:54 delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'src/RimMandrake/Pyrelands/Source/PyrelandsWetRoots.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'src/RimMandrake/Pyrelands/firehawk_rewards_live.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json ash_ground_and_blowing_ash' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json firehawk_lights_ahead' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json flamefang_bite_carries_venom' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json furnacebeast_warms' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json grass_carpets_and_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json populations_are_the_biomes_own' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json walk_season_on_the_pyre' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json:219 ruins_stand_blackened' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json:566 firehawk_hunt_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+   "evidence 'tree.json:88 ash_fertile_when_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
+  ],
+  "stopped": "released for one more look at round 5; that look was malformed",
+  "reasons": "Fully fixed: g2, g5, g6, g7, g8, g9, g10, g11, g12 (no 'loose-ash filth' left), g13 and g14. Still open: g4 (sc_flamefang_venom's expect has a literal 'X' where the tended colonist's result belongs) and g3 (immunity is read without asserting that A was ever in its fire). g1 is only partly fixed. Its parts_covered_by lines point at scenes that cannot see the mechanism: fire sense and eat-before-duty pass as an absence in sc_walk; wet roots runs in sc_ash_watered with no temperature asserted; the fire-cast top-up is a bare 'at least' count. All five gaps are edit-cost scene fixes with sound criteria."
+ },
+ "passed": [
+  {
+   "what": "Cold Reader exam (stage 4), retaken on the fixed tree",
+   "evidence": [
+    "design/concepts/Pyrelands/exam.json",
+    "design/concepts/Pyrelands/result.bench-pyre-exam-st4-20261115.json"
+   ],
+   "observed": "20/20 frozen scenarios (hash 807b17072f85), both fresh Readers agree with every expectation, accept_where_reject_core 0, control on three_skies missed (accepted e9, c6); stage 4 accepted by designer_stage close"
+  }
+ ],
+ "refusals": [
+  {
+   "clause": "g1",
+   "ids": [
+    "flamefang_bite_carries_venom",
+    "inv_animal_roster"
+   ],
+   "what": "sc_flamefang_venom's expect has a literal placeholder where the tended colonist's result should be, so the 'until treated' half has no expected outcome.",
+   "where": "scenes.json sc_flamefang_venom expect",
+   "observed": "The action now tends one colonist and leaves one untended, but the expect reads \"its severity rising over the hours; X over the same hours; once immunity completes the severity falls\". The 'X' is unfilled, so no result is stated for the tended colonist and nothing compares the two.",
+   "evidence": [
+    "scenes.json:511",
+    "tree.json"
+   ],
+   "would_pass": "The expect states a checkable comparison for the tended colonist, e.g. 'the tended colonist's RM_FlamefangVenom severity rises more slowly than (or falls below) the untended colonist's at every hourly read from the tend onwards', and a script can evaluate it from the hourly severity reads.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_flamefang_venom: replace 'X' with the tended-versus-untended severity expectation that the def's tending ships"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf promises venom that worsens 'until treated or thrown off', so the treated case needs a stated expected result.",
+   "return_to": 3,
+   "new_since": "unfixed",
+   "since": "g4"
+  },
+  {
+   "clause": "g2",
+   "ids": [
+    "inv_burn_line_fire_clock",
+    "walk_season_on_the_pyre"
+   ],
+   "what": "Fire sense and eat-before-fire-duty are 'covered' by sc_walk only as an absence (nobody burned, nobody starved). The walk never shows a colonist in the fire's path or urgently hungry at fire duty, and has no control, so a colony that never came near the front passes.",
+   "where": "scenes.json sc_walk expect/control; record.json inv_burn_line_fire_clock parts_covered_by",
+   "observed": "parts_covered_by says \"two weeks of ordinary play beside the front is where a colonist would burn or starve, and the walk reads it\". The expect only says \"no colonist takes a burn standing in fire and none starves at fire duty\", and the controls (an early reload and the toggle's on day) say nothing about fire sense. Nothing reads RM_PyreStepAwayFromFire or RM_PyreEatBeforeFireDuty firing at all.",
+   "evidence": [
+    "record.json:614",
+    "scenes.json:342"
+   ],
+   "would_pass": "A scene (in the walk or its own) asserts the exposure and reads the mechanism: a colonist standing on a cell the front is about to reach takes RM_PyreStepAwayFromFire and leaves it before Fire attaches, and an urgently hungry undrafted colonist given fire duty eats first. Its control, with the PyrelandsFireSense switch off or on a vanilla map, shows the colonist staying put and catching fire (or going to the fire hungry).",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a staged-exposure step and its switch-off control to sc_walk, or a new sc_fire_sense; point record.json inv_burn_line_fire_clock parts_covered_by at it; file the script part under RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract requires the positive case to show evidence it used the mechanism and a control that rules out the plausible alternative, here 'no colonist was ever exposed'.",
+   "return_to": 3,
+   "new_since": "unfixed",
+   "since": "g1"
+  },
+  {
+   "clause": "g3",
+   "ids": [
+    "inv_ash_field"
+   ],
+   "what": "Wet roots (a crop on watered ash grows as if cooler, dry ash keeps vanilla's heat) is said to be read by sc_ash_watered, but that scene neither asserts nor reads temperature. If the cell is within the crop's growing range, wet roots does nothing and the scene still passes.",
+   "where": "scenes.json sc_ash_watered start/expect; record.json inv_ash_field parts_covered_by",
+   "observed": "record.json inv_ash_field parts_covered_by claims \"a crop growing at the biome's heat at all is the cooler-roots read\". The sc_ash_watered start asserts only terrain and the wet read, and its expect is about fertility (\"about 140% watered and about 70% dry\"). The control expects the switch-off strip to grow \"at the dry strip's rate\", which is only consistent if the dry strip grows at all. In the built source (PyrelandsWetRoots.cs:76-77) wet roots only acts when the cell temperature is above the plant's maxOptimalGrowthTemperature.",
+   "evidence": [
+    "record.json",
+    "scenes.json:52"
+   ],
+   "would_pass": "sc_ash_watered's start asserts that the cell temperature is above the crop's maxOptimalGrowthTemperature, and each day it reads Plant.GrowthRateFactor_Temperature on both strips. Expect: the watered strip's factor is above the dry strip's, and the dry strip's equals vanilla's for that temperature.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_ash_watered: add the temperature assertion to start and the GrowthRateFactor_Temperature read to action and expect"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "Wet roots is a built temperature effect, so the scene claimed to cover it must run where the effect can show and read the factor it changes.",
+   "return_to": 3,
+   "new_since": "unfixed",
+   "since": "g1"
+  },
+  {
+   "clause": "g4",
+   "ids": [
+    "inv_furnacebeast"
+   ],
+   "what": "The furnace-beast's heat immunity is judged by 'A takes no burn injury from its own bed fire', but nothing asserts that the fire reached A's cell while A lay there. A fire that burns out at the patch edge, or a beast that wakes and walks off, passes. The rules_out names this case, but no control rules it out.",
+   "where": "scenes.json sc_furnace_bed expect/control",
+   "observed": "rules_out lists \"A's fire never reaching A passing for the heat immunity\". The control is a muffalo whose bed the test lights itself, which shows fire burns animals but not that A was ever exposed. The built patch (Patch_FurnaceBeastHeatImmunity.cs, cited in record.json inv_furnacebeast) blocks Fire attaching (CanEverAttachFire) and absorbs heat-armour damage, so exposure has to be read to tell immunity from no contact.",
+   "evidence": [
+    "scenes.json:437",
+    "record.json"
+   ],
+   "would_pass": "The poll reads show a Fire on A's own cell (or heat damage dealt to A and absorbed) for at least one poll while A is on it, and A gains no Burn hediff. The muffalo, in fire on its own cell for the same span, gains a Burn hediff.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_furnace_bed: add 'fire on A's cell while A occupies it (asserted per poll)' to action and expect"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "An immunity claim is only shown when the immune body is demonstrably exposed. The scene's own rules_out already admits this.",
+   "return_to": 3,
+   "new_since": "unfixed",
+   "since": "g3"
+  },
+  {
+   "clause": "g5",
+   "ids": [
+    "inv_animal_roster"
+   ],
+   "what": "The fire-cast top-up (GenStep_PyrelandsFireCast: a pair of fire-hawks and eight ashwallows) is read only as 'at least two fire-hawks and eight ashwallows', with no control. A map whose ordinary wild-animal roll already reached those counts passes without the genstep doing anything.",
+   "where": "scenes.json sc_populations expect/control; record.json inv_animal_roster parts_covered_by",
+   "observed": "parts_covered_by assigns \"the fire-cast top-up (sc_populations' hawk and ashwallow counts)\". The expect says \"at least two fire-hawks and eight ashwallows\", and the control only seeds donors and toggles the allowlist.",
+   "evidence": [
+    "record.json:525",
+    "scenes.json:147"
+   ],
+   "would_pass": "sc_populations reads the hawk and ashwallow counts after the vanilla animal genstep and again after GenStep_PyrelandsFireCast (or from the genstep's own added-count), and expects the top-up to fill exactly the shortfall to 2 and 8. A control with the genstep disabled on the same seed shows the pre-top-up counts.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_populations: add the before/after genstep count read, or a genstep-off same-seed control"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A count threshold that a natural roll can meet does not show the top-up mechanism. The contract asks for a control that rules out the alternative.",
+   "return_to": 3,
+   "new_since": "unfixed",
+   "since": "g1"
+  }
+ ],
+ "stopped_here": "No rework and no second look, per the brief. stage.json is left as the program wrote it: stage 5, blocked (judging stopped after the released look). The look came back MALFORMED (refusal contract: refusal 2 (inv_burn_line_fire_clock): observed quotes no token of its evidence), which the program does not count as a not_covered round and does not send the Designer back on."
+}

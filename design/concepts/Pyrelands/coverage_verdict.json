@@ -1,222 +1,570 @@
 {
- "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
- "at": "2026-11-15T06:07:19Z",
+ "against": "rm-coverage-judge-1794722839",
+ "at": "2026-11-15T13:39:28Z",
+ "changed": [
+  "dec:d_fix_twelve_gaps_in_0_1_0",
+  "dec:d_ullai_keep_vanilla_herd_migration",
+  "inv:inv_animal_roster",
+  "inv:inv_ash_field",
+  "inv:inv_biome_self_contained",
+  "inv:inv_burn_line_fire_clock",
+  "inv:inv_burrowers_heat_dome",
+  "inv:inv_firehawk_ember",
+  "inv:inv_firehawk_hunt_rewards",
+  "inv:inv_furnacebeast",
+  "inv:inv_plant_roster",
+  "inv:inv_ruins_scorched",
+  "inv:inv_sand_shovel",
+  "inv:inv_settings_gate",
+  "inv:inv_ullai_herd_giant",
+  "inv:inv_weather",
+  "leaf:ash_fertile_when_watered",
+  "leaf:firehawk_hunt_rewards",
+  "leaf:ruins_stand_blackened",
+  "leaf:ullai_cross_the_map_as_vanilla_herds",
+  "rest:inv_firehawk_hunt_rewards",
+  "rest:inv_settings_gate",
+  "scene:sc_ash_ground",
+  "scene:sc_firehawk",
+  "scene:sc_firehawk_rewards",
+  "scene:sc_flamefang_venom",
+  "scene:sc_foreign_arrivals",
+  "scene:sc_furnace_bed",
+  "scene:sc_grass_regreens",
+  "scene:sc_populations",
+  "scene:sc_ruins",
+  "scene:sc_three_skies",
+  "scene:sc_walk",
+  "sheet:delegated",
+  "sheet:does",
+  "sheet:pruning"
+ ],
  "checklist": [
   {
    "evidence": [
-    "record.json:424",
-    "scenes.json:139",
-    "sheet.md:41",
-    "sheet.md:53",
-    "tree.json:513"
-   ],
-   "id": "inv_biome_self_contained",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_populations",
-     "what": "own terrains, plants, weather and creatures, no donor"
-    },
-    {
-     "ok": true,
-     "scene": "sc_populations",
-     "what": "ships composed in mandrake.rm.biomes"
-    },
-    {
-     "ok": true,
-     "scene": "sc_populations",
-     "what": "mapgen log clean"
-    },
-    {
-     "ok": true,
-     "scene": "biome_text_says_engineered",
-     "what": "de-campaigned generic text (offline leaf, exempt from a scene)"
-    },
-    {
-     "ok": true,
-     "scene": "",
-     "what": "new-world placement switch: outside the promise by his card 2026-11-13 (OWNER:1794594166295378777); its shipped default (off) is checked offline by selftest_pyrelands_site.py, as sheet.md:53 now says, and sheet.md:41 agrees (the earlier verdict's g5 is fixed)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:456",
-    "scenes.json:105",
-    "scenes.json:153",
-    "tree.json:127"
+    "record.json",
+    "scenes.json:147",
+    "scenes.json:342"
    ],
    "id": "inv_plant_roster",
    "parts": [
     {
      "ok": true,
      "scene": "sc_populations",
-     "what": "wild flora is ember grass and quick grass only; scorch-fruit only fire-born"
-    },
-    {
-     "ok": false,
-     "scene": "sc_populations",
-     "what": "runtime wild-plant allowlist evicts leaking donor flora: nothing switches it or exercises it"
+     "what": "ember/quick grass only, donor flora evicted by the runtime allowlist (on/off pair)"
     },
     {
      "ok": true,
      "scene": "sc_grass_regreens",
-     "what": "density enforcer carpets open ground"
+     "what": "tripled density carpets open ground"
     },
     {
-     "ok": false,
-     "scene": "sc_grass_regreens",
-     "what": "native grasses grow swiftly on dry ash, faster and with bursts when watered (his 2026-11-13 words): no scene reads it"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "built but not inventoried: CompWithersUnderRoof, RM_FE_Charred, RM_Pyrelands_NativesSlowThirst"
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "open-sky grass withers under a new roof (CompWithersUnderRoof)"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:483",
-    "tree.json:127",
-    "scenes.json:105"
-   ],
-   "id": "inv_embergrass_regrow",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_grass_regreens",
-     "what": "burned patch at least 25% green on day 3 and 60% on day 7 (control: regrow switch off)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_grass_regreens",
-     "what": "growth on old dry ash at least the vanilla rate, faster on watered ash, bursts only on watered cells"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:504",
-    "scenes.json:150",
-    "scenes.json:496",
-    "tree.json:547"
+    "record.json:525",
+    "scenes.json:560",
+    "scenes.json:147",
+    "scenes.json:511",
+    "scenes.json:342"
    ],
    "id": "inv_animal_roster",
    "parts": [
     {
      "ok": true,
+     "scene": "sc_foreign_arrivals",
+     "what": "no foreign kind wanders in (PyrelandsForeignArrivals), vanilla-map control"
+    },
+    {
+     "ok": false,
      "scene": "sc_populations",
-     "what": "fire-ecology cast census including patch-added keys; donor creatures cut"
+     "what": "fire-cast top-up to two hawks and eight ashwallows (GenStep_PyrelandsFireCast)"
     },
     {
      "ok": true,
-     "scene": "sc_populations",
-     "what": "small grazers outnumber big predators"
+     "scene": "sc_walk",
+     "what": "slow thirst, herds reach water one at a time"
     },
     {
      "ok": true,
      "scene": "sc_flamefang_venom",
-     "what": "a flamefang bite leaves RM_FlamefangVenom that rises; no other bite does"
-    },
-    {
-     "ok": false,
-     "scene": "sc_flamefang_venom",
-     "what": "the venom is treatable and thrown off by immunity ('until treated or thrown off'): tending and immunity are never read"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "built but not inventoried: PyrelandsForeignArrivals (no other kind wanders in), GenStep_PyrelandsFireCast, PyrelandsHerdThirst"
+     "what": "venom through the flamefang's own bite tool"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:535",
-    "scenes.json:37",
-    "scenes.json:61",
-    "scenes.json:83",
-    "sheet.md:17",
-    "tree.json:77"
+    "record.json",
+    "scenes.json:52",
+    "scenes.json:27",
+    "scenes.json:293"
    ],
    "id": "inv_ash_field",
    "parts": [
     {
      "ok": true,
      "scene": "sc_ash_ground",
-     "what": "deep ash almost everywhere, richer ground by water"
+     "what": "deep ash ground, standing-water ring, ash depth banking (ProbeAsh)"
     },
     {
      "ok": true,
-     "scene": "sc_ash_watered",
-     "what": "watered ash about 140%, dry about 70% (control: watered-lift off); the earlier g3 is fixed"
-    },
-    {
-     "ok": true,
-     "scene": "sc_burn_compounds",
-     "what": "fresh-burn bonus compounded by black rain: 190 / 120 / 140, fades by day 6 to 7 (control: bonus off)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ash_ground",
-     "what": "ambient ash blows like snow in clear weather"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ash_ground",
-     "what": "ash banks: the oracles now read sand-grid depth (ProbeAsh), but the inventory still says 'banks as loose-ash filth', a deleted def"
+     "scene": "sc_three_skies",
+     "what": "ash wear and rain wash with a clear-sky control"
     },
     {
      "ok": false,
      "scene": "sc_ash_watered",
-     "what": "the sheet's 'very fertile ground' for ordinary crops against a tested 70% dry fertility"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "built but not inventoried: PyrelandsWetRoots, the standing-water genstep"
+     "what": "wet roots: a crop on watered ash grows at the biome's heat, dry ash keeps vanilla heat (PyrelandsWetRoots)"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:565",
-    "scenes.json:12",
-    "scenes.json:17",
-    "scenes.json:472"
+    "record.json:614",
+    "scenes.json:342"
    ],
    "id": "inv_burn_line_fire_clock",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_burn_line_walks",
-     "what": "the front walks with a scorched trail"
-    },
-    {
-     "ok": true,
-     "scene": "sc_burn_line_walks",
-     "what": "smoulder relight in open grass far from buildings (control: burn line off)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_burn_line_walks",
-     "what": "a fresh map opens with a smouldering front (asserted at the start)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_scorchfruit",
-     "what": "fire-tick scorch-fruit pods"
-    },
-    {
-     "ok": true,
-     "scene": "sc_fire_dusts_ash",
-     "what": "fire-tick ash dusting, now read by ProbeAsh (control: dusting off vs an unburned pad); the g1 oracle is fixed"
+     "scene": "sc_walk (burn_line showcase)",
+     "what": "burn line, relight, opening front"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "built but not inventoried: PyrelandsFireSense (colonists step away from fire and eat before fire duty)"
+     "scene": "sc_walk",
+     "what": "people step off fire cells (PyrelandsFireSense) and eat before fire duty"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "inv_firehawk_ember",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk",
+     "what": "carry and drop ahead of the front, no-hawk control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_firehawk",
+     "what": "far hawk seeks a visible burn (JobGiver_RUT_FireHawkSeekBurn), switch-off control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:147",
+    "scenes.json:560"
+   ],
+   "id": "populations_are_the_biomes_own",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_populations",
+     "what": "census of map against manifest with seeded-intruder control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_populations",
+     "what": "allowlist eviction vs allowlist off"
+    },
+    {
+     "ok": true,
+     "scene": "sc_foreign_arrivals",
+     "what": "no foreign arrivals vs vanilla map"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:97"
+   ],
+   "id": "inv_embergrass_regrow",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens",
+     "what": "burned patch re-greens 25%/60% at days 3/7, regrow-off control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:97",
+    "sheet.md"
+   ],
+   "id": "grass_carpets_and_regreens",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens",
+     "what": "swift on old dry ash, faster and bursting when watered, vanilla grass on the same dry ash as control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens",
+     "what": "carpet and re-greening"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:437"
+   ],
+   "id": "inv_furnacebeast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_bed",
+     "what": "bed ignition after sleep, bare-soil control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_furnace_bed",
+     "what": "immune to its own heat"
+    },
+    {
+     "ok": true,
+     "scene": "sky_and_shelter showcase scenes",
+     "what": "warmth aura, room heating"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:511"
+   ],
+   "id": "flamefang_bite_carries_venom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flamefang_venom",
+     "what": "venom on bite, non-venomous-bite control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_flamefang_venom",
+     "what": "worsens until treated: tended versus untended expectation"
+    },
+    {
+     "ok": true,
+     "scene": "sc_flamefang_venom",
+     "what": "thrown off: severity falls once immunity completes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:27",
+    "scenes.json:293"
+   ],
+   "id": "inv_weather",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ash_ground",
+     "what": "ash fall dims and banks, matched-hour clear-weather control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_three_skies",
+     "what": "cinderfall lightning, black rain fire-out and wash with controls, noon captures"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:301",
+    "scenes.json:305"
+   ],
+   "id": "three_skies",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_three_skies",
+     "what": "captures asserted between 10h and 14h, each sky from a reload of skies_noon"
+    },
+    {
+     "ok": true,
+     "scene": "sc_three_skies",
+     "what": "black-rain wash at least twice the clear-sky patch's dry wear"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:342",
+    "scenes.json:690"
+   ],
+   "id": "inv_settings_gate",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "roster toggle off for a day stops front, ash laying, bed fires; on-day control"
+    },
+    {
+     "ok": true,
+     "scene": "coverage_rest inv_settings_gate",
+     "what": "coverage_rest points at the walk"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:994",
+    "scenes.json:586",
+    "scenes.json:707",
+    "sheet.md:24"
+   ],
+   "id": "inv_firehawk_hunt_rewards",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards",
+     "what": "letter once, switch off, crestfeather yield, non-hawk control (live chains exist in firehawk_rewards_live.py)"
+    },
+    {
+     "ok": true,
+     "scene": "coverage_rest",
+     "what": "coverage_rest line and sheet line"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:194",
+    "record.json:800",
+    "tree.json:587",
+    "sheet.md:28"
+   ],
+   "id": "inv_ullai_herd_giant",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ullai_cross_the_map_as_vanilla_herds (offline)",
+     "what": "kept vanilla herd migration recorded with its offline check"
+    },
+    {
+     "ok": true,
+     "scene": "fire_cast showcase",
+     "what": "drift to two-day-old burns, giant size"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:27"
+   ],
+   "id": "ash_ground_and_blowing_ash",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ash_ground",
+     "what": "noon start asserted, clear-weather matched-hour control for light and drift gain"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "inv_ruins_scorched",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins",
+     "what": "ash depth (ProbeAsh) on footprint and RM_FE_Charred paint, vanilla control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:219",
+    "scenes.json"
+   ],
+   "id": "ruins_stand_blackened",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins",
+     "what": "oracle reads ProbeAsh, no 'loose-ash filth' wording left"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:88",
+    "sheet.md:17",
+    "scenes.json:52"
+   ],
+   "id": "ash_fertile_when_watered",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sheet.md does",
+     "what": "sheet says sowable dry about 70%, very fertile watered about 140%"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ash_watered",
+     "what": "watered vs dry strips, watered-lift switch control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "sheet.md:54"
+   ],
+   "id": "inv_biome_self_contained",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "burn_line showcase / offline site selftest",
+     "what": "self-contained biome, mapgen clean; world switch outside the promise"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "inv_burrowers_heat_dome",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fire_cast showcase",
+     "what": "burrow ahead of front, heat dome"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "inv_sand_shovel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sand_shovel",
+     "what": "dig order yield, covered by its own scene"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:566",
+    "scenes.json:586"
+   ],
+   "id": "firehawk_hunt_rewards",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards",
+     "what": "leaf with oracle, false_pass, red; acceptance scene with control and named live chains"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:587"
+   ],
+   "id": "ullai_cross_the_map_as_vanilla_herds",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "offline selftest",
+     "what": "offline leaf citing T_ULLAI_HERD_MIGRATES with a patch-aware false_pass"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "firehawk_lights_ahead",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk",
+     "what": "carry, drop, fire beyond the front; no-hawk control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:437"
+   ],
+   "id": "furnacebeast_warms",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_bed",
+     "what": "bed ignition after about two hours, never on bare soil"
+    },
+    {
+     "ok": true,
+     "scene": "sky_and_shelter showcase",
+     "what": "warmth status and room heating"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "sheet.md:54"
+   ],
+   "id": "inv_art_and_text",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "coverage_rest",
+     "what": "art rests on his 2026-10-16 approval; sheet delegated line now matches coverage_rest"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:342"
+   ],
+   "id": "walk_season_on_the_pyre",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "digest equality across a mid-front reload, pre-front-save control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_walk",
+     "what": "fire-sense and eat-before-duty reads carried by the walk"
     }
    ]
   },
@@ -247,205 +595,6 @@
      "ok": true,
      "scene": "sc_scorchfruit",
      "what": "plant withers within about a day; the stack rots within about four days"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:618",
-    "scenes.json:172",
-    "scenes.json:173",
-    "tree.json:220"
-   ],
-   "id": "inv_ruins_scorched",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ruins",
-     "what": "blackened ruins on a deep-ash footprint (control: vanilla temperate ruin)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ruins",
-     "what": "ash lying in them (ProbeAsh ashed cells above zero)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ruins",
-     "what": "the inventory says 'loose-ash filth', and the leaf scenario and scene action still say 'read ... filth', a deleted def"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:639",
-    "scenes.json:196",
-    "scenes.json:200"
-   ],
-   "id": "inv_firehawk_ember",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_firehawk",
-     "what": "carries a burning twig and lights a fire ahead of the front (control: no hawk); state read only"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "built but not inventoried: hawks seek a burn or smoke (JobGiver_RUT_FireHawkSeekBurn.cs)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:662",
-    "scenes.json:219",
-    "scenes.json:426",
-    "scenes.json:519",
-    "sheet.md:12",
-    "sheet.md:24"
-   ],
-   "id": "inv_furnacebeast",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_furnace_giant",
-     "what": "a giant: live body size 6 (control: classic restore at 3.2)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace",
-     "what": "warmth status near it, gone when away from it"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace",
-     "what": "heats an enclosed room (control: twin room)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_bed",
-     "what": "sets the grass it sleeps on alight (control: beast asleep on bare soil)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_bed",
-     "what": "banks heat (thermal charge cycle): folded into warmth and sleep-ignition by his card 2026-11-13 (sheet.md:12)"
-    },
-    {
-     "ok": true,
-     "scene": "walk_season_on_the_pyre",
-     "what": "warmth strength slider (floor mod_settings via the walk)"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "immune to its own heat (Patch_FurnaceBeastHeatImmunity): no scene reads the beast's health in fire"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:692",
-    "scenes.json:242",
-    "scenes.json:450"
-   ],
-   "id": "inv_burrowers_heat_dome",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ashwallow",
-     "what": "dives as the front reaches it and comes through unharmed (control: burrow off)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_heat_dome",
-     "what": "dome stance on a heat hit (control: dome off)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:717",
-    "scenes.json:264",
-    "scenes.json:519",
-    "sheet.md:26"
-   ],
-   "id": "inv_ullai_herd_giant",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ullai",
-     "what": "ullai drift to the two-day-old burn (control: no burn history)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_giant",
-     "what": "furnace-beast giant, size ratio over the ullai"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_bed",
-     "what": "low-charge beast walks into the burn and a full one walks away: folded by his card 2026-11-13"
-    },
-    {
-     "ok": true,
-     "scene": "",
-     "what": "world-map herd migration cut by his card 2026-10-23; its absence is checked offline by T_CUT_STAYS_CUT (record.json:717); the earlier g12 is fixed"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "vanilla herd migration of ullai kept by his card 2026-11-14 (offline check T_ULLAI_HERD_MIGRATES): not in the record, tree, scenes or sheet"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:739",
-    "scenes.json:35",
-    "scenes.json:37",
-    "scenes.json:283",
-    "scenes.json:287",
-    "scenes.json:292",
-    "scenes.json:305"
-   ],
-   "id": "inv_weather",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_ash_ground",
-     "what": "ash fall dims the map: read from noon across half a day, so nightfall is not ruled out"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ash_ground",
-     "what": "ash fall banks drifts (ProbeAsh): no control against ambient banking in clear weather"
-    },
-    {
-     "ok": false,
-     "scene": "sc_three_skies",
-     "what": "each sky reads at a glance as its own: capture time never asserted, and consecutive half-days put a sky over midnight"
-    },
-    {
-     "ok": true,
-     "scene": "sc_three_skies",
-     "what": "cinderfall brings lightning, none under ash fall"
-    },
-    {
-     "ok": true,
-     "scene": "sc_three_skies",
-     "what": "black rain puts fires out (clear-sky and vanilla-rain pads)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_three_skies",
-     "what": "black rain washes ash: no control against dry wear"
-    },
-    {
-     "ok": true,
-     "scene": "sc_no_rain",
-     "what": "no ordinary rain (control: vanilla temperate reader)"
     }
    ]
   },
@@ -486,26 +635,6 @@
   },
   {
    "evidence": [
-    "record.json:800",
-    "scenes.json:376",
-    "scenes.json:384"
-   ],
-   "id": "inv_sand_shovel",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_sand_shovel",
-     "what": "5 glass sand a cell, gravel left, a second dig refused"
-    },
-    {
-     "ok": true,
-     "scene": "sc_sand_shovel",
-     "what": "deep ash refuses the order (control); a shovel is required (start)"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "record.json:819"
    ],
    "id": "inv_lightning_breaker",
@@ -539,102 +668,6 @@
   },
   {
    "evidence": [
-    "record.json:851",
-    "scenes.json:609",
-    "scenes.json:333",
-    "floor.json:34",
-    "sheet.md:53"
-   ],
-   "id": "inv_settings_gate",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "walk_season_on_the_pyre",
-     "what": "each mechanic switches off (switch-off controls across the scenes, plus the walk)"
-    },
-    {
-     "ok": true,
-     "scene": "walk_season_on_the_pyre",
-     "what": "tunings and strengths (floor mod_settings line)"
-    },
-    {
-     "ok": true,
-     "scene": "",
-     "what": "world placement toggle ships off: outside the promise by his card; default checked offline (sheet.md:53)"
-    },
-    {
-     "ok": false,
-     "scene": "walk_season_on_the_pyre",
-     "what": "the Baroque Biomes roster toggle (PyrelandsMechanicsGate) gates the mechanics: never shown"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "the fire-hawk first-sighting letter switch (inv_firehawk_hunt_rewards): no scene or leaf"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:872",
-    "scenes.json:616",
-    "scenes.json:622",
-    "tree.json:513"
-   ],
-   "id": "inv_art_and_text",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "",
-     "what": "art set approved by him as a sheet (OWNER:1792122659817386516); coverage_rest now says so honestly (the earlier g11 is fixed)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_three_skies",
-     "what": "sky captures carry the art and reads_as floor lines for the skies"
-    },
-    {
-     "ok": true,
-     "scene": "biome_text_says_engineered",
-     "what": "the biome description says 'genetically engineered' (offline leaf)"
-    },
-    {
-     "ok": true,
-     "scene": "",
-     "what": "descriptions free of the cut migration promise: T_CUT_STAYS_CUT (record.json:717)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:898",
-    "record.json:899",
-    "scenes.json:529",
-    "scenes.json:583",
-    "tree.json:20",
-    "sheet.md:14"
-   ],
-   "id": "inv_firehawk_hunt_rewards",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "",
-     "what": "first sighting of a hawk carrying an ember sends one letter naming the hawk and its ember and jumps to it, once per game"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "the letter can be switched off in Mod Settings"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather, a valuable object of beauty"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "tree.json:25",
     "scenes.json:16",
     "scenes.json:18"
@@ -650,72 +683,6 @@
      "ok": true,
      "scene": "sc_burn_line_walks",
      "what": "relight within the smoulder window in open grass beyond the building margin (control: switch off)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:50",
-    "tree.json:63",
-    "scenes.json:35",
-    "scenes.json:37",
-    "scenes.json:40",
-    "scenes.json:473"
-   ],
-   "id": "ash_ground_and_blowing_ash",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ash_ground",
-     "what": "deep ash on most cells (control: vanilla arid map)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ash_ground",
-     "what": "blowing ash in clear weather"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ash_ground",
-     "what": "ash fall dims the map: the hourly light read from noon over half a day is confounded by nightfall"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ash_ground",
-     "what": "drifts keep banking under ash fall: no control against ambient banking"
-    },
-    {
-     "ok": true,
-     "scene": "sc_fire_dusts_ash",
-     "what": "a fire on deep ash leaves loose ash (ProbeAsh; control: dusting off vs an unburned pad)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:77",
-    "tree.json:88",
-    "scenes.json:61",
-    "scenes.json:64",
-    "sheet.md:17",
-    "exam.json:30"
-   ],
-   "id": "ash_fertile_when_watered",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ash_watered",
-     "what": "the watered strip clearly ahead (control: watered-lift off reads the dry rate)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ash_watered",
-     "what": "about 140% watered and about 70% dry"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ash_watered",
-     "what": "the sheet's 'very fertile ground' for ordinary crops on ash, while the tested dry value is 70%, below ordinary soil"
     }
    ]
   },
@@ -742,33 +709,6 @@
   },
   {
    "evidence": [
-    "tree.json:127",
-    "tree.json:140",
-    "scenes.json:105",
-    "sheet.md:19",
-    "exam.json:91"
-   ],
-   "id": "grass_carpets_and_regreens",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_grass_regreens",
-     "what": "open ground carpeted"
-    },
-    {
-     "ok": true,
-     "scene": "sc_grass_regreens",
-     "what": "at least 25% green on day 3 and 60% on day 7 (control: regrow off)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_grass_regreens",
-     "what": "swift on old dry ash (at least the vanilla rate), faster on watered ash, gentle bursts only on watered cells"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "tree.json:154",
     "scenes.json:129",
     "exam.json:108"
@@ -779,112 +719,6 @@
      "ok": true,
      "scene": "sc_scorchfruit",
      "what": "comes up rapidly in the fresh scar, never on unburned ground; feeds; rots fast"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:181",
-    "scenes.json:150",
-    "scenes.json:153",
-    "record.json:456",
-    "record.json:504"
-   ],
-   "id": "populations_are_the_biomes_own",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_populations",
-     "what": "only own plants and animals on a fresh map (control: seeded intruders reported)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_populations",
-     "what": "grazers outnumber predators; the map generates clean"
-    },
-    {
-     "ok": false,
-     "scene": "sc_populations",
-     "what": "the allowlist evicting leaking donor flora"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "no other kind wanders in later (PyrelandsForeignArrivals): not inventoried, and the census reads only the generated map"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:208",
-    "tree.json:220",
-    "scenes.json:172",
-    "scenes.json:173"
-   ],
-   "id": "ruins_stand_blackened",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ruins",
-     "what": "captures read as burned ruins on a deep-ash footprint (control: vanilla ruin)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ruins",
-     "what": "ash lies in them (ProbeAsh ashed cells above zero)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_ruins",
-     "what": "the scenario and action still say 'read terrain and filth', naming the deleted loose-ash filth"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:232",
-    "scenes.json:196",
-    "exam.json:78"
-   ],
-   "id": "firehawk_lights_ahead",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_firehawk",
-     "what": "carry then drop, and a fire at the drop cell ahead of the front (control: no hawk)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:257",
-    "scenes.json:219",
-    "scenes.json:426",
-    "scenes.json:519",
-    "exam.json:66",
-    "exam.json:126"
-   ],
-   "id": "furnacebeast_warms",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_furnace_giant",
-     "what": "live body size 6, over three times the ullai (control: classic restore)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace",
-     "what": "warmth status beside it, gone ten cells away"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace",
-     "what": "its room hotter than the twin room"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_bed",
-     "what": "sleeping on grass lights it after about two hours, never at once and never on bare soil (control: B on soil)"
     }
    ]
   },
@@ -925,35 +759,6 @@
   },
   {
    "evidence": [
-    "tree.json:336",
-    "tree.json:350",
-    "tree.json:353",
-    "scenes.json:283",
-    "scenes.json:287",
-    "scenes.json:288",
-    "scenes.json:292"
-   ],
-   "id": "three_skies",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_three_skies",
-     "what": "three skies told apart and from vanilla rain: capture time not asserted, so the tree's own false_pass (night captures) is open"
-    },
-    {
-     "ok": true,
-     "scene": "sc_three_skies",
-     "what": "cinderfall brings lightning; black rain puts fires out"
-    },
-    {
-     "ok": false,
-     "scene": "sc_three_skies",
-     "what": "black rain washes loose ash: read by ProbeAsh depthSum now, but no control against dry wear"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "tree.json:363",
     "scenes.json:310",
     "scenes.json:312"
@@ -979,34 +784,6 @@
      "ok": true,
      "scene": "sc_burn_compounds",
      "what": "offline instrument leaf, exempt from a scene; used in sc_burn_compounds' start"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:411",
-    "scenes.json:332",
-    "scenes.json:340",
-    "floor.json:3",
-    "floor.json:12",
-    "floor.json:20"
-   ],
-   "id": "walk_season_on_the_pyre",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "digest equal across a mid-way reload (control: a pre-front save differs); held for his review"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "a second pass and a second order yield fruit; switches leave no leftovers; log clean"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "tick cost, memory and save size measured on the walk (floor lines)"
     }
    ]
   },
@@ -1069,463 +846,289 @@
      "what": "offline leaf, exempt: the loaded description says 'genetically engineered'"
     }
    ]
+  }
+ ],
+ "claims": [
+  {
+   "evidence": "record.json:614-625 (inv_burn_line_fire_clock cites Source/PyrelandsFireSense.cs) and record.json:525-542 (inv_animal_roster cites Patches/RM_Pyrelands_NoForeignArrivals.xml); stage-0 inventory rerun, every tracked Pyrelands .cs/.xml cited, built_evidence unaccounted 0; new scene scenes.json:560 sc_foreign_arrivals with its control",
+   "gap": "g1"
   },
   {
-   "evidence": [
-    "tree.json:537",
-    "tree.json:547",
-    "scenes.json:496",
-    "scenes.json:499",
-    "sheet.md:27",
-    "exam.json:7"
-   ],
-   "id": "flamefang_bite_carries_venom",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_flamefang_venom",
-     "what": "RM_FlamefangVenom after a flamefang bite, rising over the hours"
-    },
-    {
-     "ok": true,
-     "scene": "sc_flamefang_venom",
-     "what": "no other bite gives it (control: a non-venomous predator of like size)"
-    },
-    {
-     "ok": false,
-     "scene": "sc_flamefang_venom",
-     "what": "'until treated or thrown off': tending and immunity are never read"
-    }
-   ]
+   "evidence": "scenes.json:97 sc_grass_regreens: start adds two sown ember-grass patches (dry deep ash burned >7 days ago, and watered) with the burst count; control adds the vanilla grass on the same dry ash",
+   "gap": "g2"
+  },
+  {
+   "evidence": "scenes.json:437-455 sc_furnace_bed: expect A takes no burn injury from its own bed fire (immunity read); control: a muffalo on B's bed takes burn damage",
+   "gap": "g3"
+  },
+  {
+   "evidence": "scenes.json:511-524 sc_flamefang_venom: two venomed colonists, one tended and one untended, read side by side, and severity falling once immunity completes",
+   "gap": "g4"
+  },
+  {
+   "evidence": "scenes.json:293-309 sc_three_skies: start lays two ash patches of equal ProbeAsh depth; control adds the clear-sky ash patch over the same hours (it loses only dry wear) beside the black-rain patch",
+   "gap": "g5"
+  },
+  {
+   "evidence": "scenes.json:147-161 sc_populations: allowlist asserted on from the settings read, a donor plant/animal added, and the same wild-plant day with wildPlantAllowlistEnabled off as the control",
+   "gap": "g6"
+  },
+  {
+   "evidence": "scenes.json:342-356 sc_walk names the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day (front, ash laying, bed fires stop) and the toggle's on day as control; coverage_rest scenes.json:690-695 inv_settings_gate points at it",
+   "gap": "g7"
+  },
+  {
+   "evidence": "tree.json:566 leaf firehawk_hunt_rewards; scenes.json:586 sc_firehawk_rewards (letter once, switch off, crestfeather yield, non-hawk control); coverage_rest scenes.json:707 inv_firehawk_hunt_rewards; sheet.md:24 does line; record.json:994 inv_firehawk_hunt_rewards",
+   "gap": "g8"
+  },
+  {
+   "evidence": "record.json:194 decision (his card 2026-11-14, ullai keep vanilla herd migration); record.json:800-814 inv_ullai_herd_giant cites selftest_pyrelands_ullai_herd_migration.py; tree.json:587-601 offline leaf ullai_cross_the_map_as_vanilla_herds citing T_ULLAI_HERD_MIGRATES; sheet.md:28 does line",
+   "gap": "g9"
+  },
+  {
+   "evidence": "scenes.json:27 sc_ash_ground: start a clear-weather noon save (ashground_noon, hour read); control is the same map's clear-weather run over the same clock hours (dims only with the hour, banks less ash) compared with the ash-fall run",
+   "gap": "g10"
+  },
+  {
+   "evidence": "scenes.json:301 sc_three_skies start: the map at local noon (hour asserted between 10h and 14h), saved as skies_noon; scenes.json:305 action runs each sky from a reload of skies_noon",
+   "gap": "g11"
+  },
+  {
+   "evidence": "the loose-ash filth wording is gone from record.json, tree.json and scenes.json (grep 'loose-ash filth' finds none); tree.json:219 ruins_stand_blackened and the inventory rows read ash depth on the sand grid (ProbeAsh)",
+   "gap": "g12"
+  },
+  {
+   "evidence": "sheet.md:17 and tree.json:88: ordinary crops find deep ash sowable dry (about 70%, his card 2026-11-07) and very fertile where watered (about 140%)",
+   "gap": "g13"
+  },
+  {
+   "evidence": "sheet.md:54 delegated line reworded to match scenes.json coverage_rest: sand shovel, firefoam sprayer and fire-rite hook by their own scenes; Mod Settings by the walk's switch-off steps (the roster toggle among them) and the floor's mod_settings line; the art on his 2026-10-16 approval of the art sheet",
+   "gap": "g14"
   }
  ],
  "contract": {
-  "advisory": true,
   "alarms": [],
   "cached": [],
-  "calibration": "UNTESTED",
-  "counted": true,
+  "counted": false,
   "may_judge": true,
-  "ok": true,
+  "ok": false,
+  "pointer": "refusals.jsonl:111",
   "repair_due": []
  },
+ "contract_reasked": [
+  "evidence 'record.json inv_art_and_text' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_ash_field' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_ash_field parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_biome_self_contained' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_burrowers_heat_dome' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_embergrass_regrow' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_firehawk_ember' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_furnacebeast' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_plant_roster' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_ruins_scorched' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_sand_shovel' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_settings_gate' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json inv_weather' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json:194 decision d_ullai_keep_vanilla_herd_migration' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json:525-542 inv_animal_roster' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json:614-625 inv_burn_line_fire_clock' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json:800-814 inv_ullai_herd_giant' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'record.json:994 inv_firehawk_hunt_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json coverage_rest inv_art_and_text' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json coverage_rest inv_sand_shovel' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json sc_firehawk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json sc_ruins' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json sc_walk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:147-161 sc_populations' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:27 sc_ash_ground' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:293-309 sc_three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:301-305 sc_three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:342-356 sc_walk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:437-455 sc_furnace_bed' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:511-524 sc_flamefang_venom' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:52 sc_ash_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:560 sc_foreign_arrivals' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:586 sc_firehawk_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:690-695 coverage_rest' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:707 coverage_rest' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'scenes.json:97 sc_grass_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'sheet.md delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'sheet.md does' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'sheet.md:54 delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'src/RimMandrake/Pyrelands/Source/PyrelandsWetRoots.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'src/RimMandrake/Pyrelands/firehawk_rewards_live.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json ash_ground_and_blowing_ash' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json firehawk_lights_ahead' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json flamefang_bite_carries_venom' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json furnacebeast_warms' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json grass_carpets_and_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json populations_are_the_biomes_own' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json walk_season_on_the_pyre' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json:219 ruins_stand_blackened' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json:566 firehawk_hunt_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'tree.json:88 ash_fertile_when_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
+ ],
  "gaps": [
   {
    "criterion_verdict": "sound",
-   "criterion_why": "The contract makes every impl: present entry a unit, so built behaviour missing from the inventory is silently uncovered.",
+   "criterion_why": "The leaf promises venom that worsens 'until treated or thrown off', so the treated case needs a stated expected result.",
    "evidence": [
-    "record.json:456",
-    "record.json:504",
-    "record.json:535",
-    "record.json:565",
-    "record.json:639",
-    "scenes.json:150",
-    "scenes.json:583"
+    "scenes.json:511",
+    "tree.json"
    ],
    "gid": "g1",
    "ids": [
-    "inv_plant_roster",
-    "inv_animal_roster",
-    "inv_ash_field",
-    "inv_burn_line_fire_clock",
-    "inv_firehawk_ember",
-    "populations_are_the_biomes_own"
+    "flamefang_bite_carries_venom",
+    "inv_animal_roster"
    ],
    "new_since": "unfixed",
-   "observed": "record.json contains none of PyrelandsFireSense, PyrelandsForeignArrivals, PyrelandsHerdThirst, PyrelandsWetRoots, CompWithersUnderRoof, RM_FE_Charred, JobGiver_RUT_FireHawkSeekBurn, NativesSlowThirst, GenStep_PyrelandsFireCast or StandingWater (grep count 0 for each), but every one is in src/RimMandrake/Pyrelands *.cs or *.xml (1 to 5 files each) [measured]. The roster at record.json:504 says \"donor creatures cut\", yet sc_populations (scenes.json:150) is a census 'on the map' at generation only.",
+   "observed": "The action now tends one colonist and leaves one untended, but the expect reads \"its severity rising over the hours; X over the same hours; once immunity completes the severity falls\". The 'X' is unfilled, so no result is stated for the tended colonist and nothing compares the two.",
    "return_to": 3,
+   "since": "g4",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "record.json: re-run the stage-0 inventory against src/RimMandrake/Pyrelands at HEAD and add the parts to existing rows (inv_burn_line_fire_clock: fire sense; inv_animal_roster: foreign arrivals, thirst, fire-cast genstep; inv_plant_roster: withers under roof, Charred; inv_ash_field: wet roots, standing water; inv_firehawk_ember: seek burn). scenes.json: add a foreign-arrivals scene and coverage_rest lines for the rest."
+    "what": "scenes.json sc_flamefang_venom: replace 'X' with the tended-versus-untended severity expectation that the def's tending ships"
    },
-   "what": "Built, shipping behaviour still has no inventory row, scene or coverage_rest line: colonists step away from fire and eat before fire duty (PyrelandsFireSense), no foreign kind wanders in (PyrelandsForeignArrivals), herd thirst and the natives' slow thirst, wet roots, plants withering under a roof (CompWithersUnderRoof), the RM_FE_Charred plant, the fire-cast and standing-water gensteps, and hawks seeking a burn (JobGiver_RUT_FireHawkSeekBurn). Ash wear and rain wash are now listed under inv_ash_field (PyrelandsAshSand.cs).",
-   "where": "record.json inventory; scenes.json coverage_rest",
-   "would_pass": "Every one of those files appears in some inventory row's impl_evidence, or in built_reviewed as not_a_capability with a reason. Each new player-facing part has an acceptance scene that meets the contract (for foreign arrivals: an incident that would bring a donor animal, refused or replaced, with a control on a vanilla map that lets it in), or a coverage_rest entry naming a real scene or leaf. A grep of record.json for each file name returns at least 1."
+   "what": "sc_flamefang_venom's expect has a literal placeholder where the tended colonist's result should be, so the 'until treated' half has no expected outcome.",
+   "where": "scenes.json sc_flamefang_venom expect",
+   "would_pass": "The expect states a checkable comparison for the tended colonist, e.g. 'the tended colonist's RM_FlamefangVenom severity rises more slowly than (or falls below) the untended colonist's at every hourly read from the tend onwards', and a script can evaluate it from the hourly severity reads."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "An oracle the leaf states but no scene stages is untested.",
+   "criterion_why": "The contract requires the positive case to show evidence it used the mechanism and a control that rules out the plausible alternative, here 'no colonist was ever exposed'.",
    "evidence": [
-    "tree.json:127",
-    "tree.json:140",
-    "scenes.json:105",
-    "scenes.json:106",
-    "sheet.md:19"
+    "record.json:614",
+    "scenes.json:342"
    ],
    "gid": "g2",
    "ids": [
-    "inv_plant_roster",
-    "inv_embergrass_regrow",
-    "grass_carpets_and_regreens"
+    "inv_burn_line_fire_clock",
+    "walk_season_on_the_pyre"
    ],
    "new_since": "unfixed",
-   "observed": "tree.json:127 promises \"ember grass on old dry ash grows at least at its own vanilla rate, faster on watered ash, with gentle bursts only on watered cells\", and tree.json:140 adds \"Sow ember grass on dry ash last burned more than a week ago and on watered ash; read growth daily and count bursts.\" Yet scenes.json:105's action is still only \"count green cells and capture on days 1, 3 and 7; census grass cover on open ground\".",
+   "observed": "parts_covered_by says \"two weeks of ordinary play beside the front is where a colonist would burn or starve, and the walk reads it\". The expect only says \"no colonist takes a burn standing in fire and none starves at fire duty\", and the controls (an early reload and the toggle's on day) say nothing about fire sense. Nothing reads RM_PyreStepAwayFromFire or RM_PyreEatBeforeFireDuty firing at all.",
    "return_to": 3,
+   "since": "g1",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json: extend sc_grass_regreens' start, action, expect and control (or add sc_grass_dry_ash) with the dry and watered sowing and the burst count from tree.json:140."
+    "what": "scenes.json: add a staged-exposure step and its switch-off control to sc_walk, or a new sc_fire_sense; point record.json inv_burn_line_fire_clock parts_covered_by at it; file the script part under RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED"
    },
-   "what": "The native grasses' promise (swift on old dry ash, faster and bursting where watered) has no scene. sc_grass_regreens still only counts regreening and cover.",
-   "where": "scenes.json sc_grass_regreens",
-   "would_pass": "sc_grass_regreens (or a new acceptance scene requiring grass_carpets_and_regreens) has an asserted start: two sown ember-grass patches, one on dry deep ash last burned more than 7 days ago (asserted by burn history) and one watered. Its action reads daily growth and counts bursts. It expects dry growth per day at least the vanilla rate, watered growth above dry, and bursts on watered cells only. Its control (the same patches with the native dry-ash growth switch off, or a vanilla grass on the same dry ash) grows at the vanilla or reduced rate and rules out ordinary fertility doing the work."
+   "what": "Fire sense and eat-before-fire-duty are 'covered' by sc_walk only as an absence (nobody burned, nobody starved). The walk never shows a colonist in the fire's path or urgently hungry at fire duty, and has no control, so a colony that never came near the front passes.",
+   "where": "scenes.json sc_walk expect/control; record.json inv_burn_line_fire_clock parts_covered_by",
+   "would_pass": "A scene (in the walk or its own) asserts the exposure and reads the mechanism: a colonist standing on a cell the front is about to reach takes RM_PyreStepAwayFromFire and leaves it before Fire attaches, and an urgently hungry undrafted colonist given fire duty eats first. Its control, with the PyrelandsFireSense switch off or on a vanilla map, shows the colonist staying put and catching fire (or going to the fire hungry)."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "A shipped mechanic with no read can break silently: a beast that burns in its own bed fire would pass every current scene.",
+   "criterion_why": "Wet roots is a built temperature effect, so the scene claimed to cover it must run where the effect can show and read the factor it changes.",
    "evidence": [
-    "record.json:662",
-    "scenes.json:426",
-    "scenes.json:219",
-    "sheet.md:12",
-    "sheet.md:24"
+    "record.json",
+    "scenes.json:52"
    ],
    "gid": "g3",
+   "ids": [
+    "inv_ash_field"
+   ],
+   "new_since": "unfixed",
+   "observed": "record.json inv_ash_field parts_covered_by claims \"a crop growing at the biome's heat at all is the cooler-roots read\". The sc_ash_watered start asserts only terrain and the wet read, and its expect is about fertility (\"about 140% watered and about 70% dry\"). The control expects the switch-off strip to grow \"at the dry strip's rate\", which is only consistent if the dry strip grows at all. In the built source (PyrelandsWetRoots.cs:76-77) wet roots only acts when the cell temperature is above the plant's maxOptimalGrowthTemperature.",
+   "return_to": 3,
+   "since": "g1",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_ash_watered: add the temperature assertion to start and the GrowthRateFactor_Temperature read to action and expect"
+   },
+   "what": "Wet roots (a crop on watered ash grows as if cooler, dry ash keeps vanilla's heat) is said to be read by sc_ash_watered, but that scene neither asserts nor reads temperature. If the cell is within the crop's growing range, wet roots does nothing and the scene still passes.",
+   "where": "scenes.json sc_ash_watered start/expect; record.json inv_ash_field parts_covered_by",
+   "would_pass": "sc_ash_watered's start asserts that the cell temperature is above the crop's maxOptimalGrowthTemperature, and each day it reads Plant.GrowthRateFactor_Temperature on both strips. Expect: the watered strip's factor is above the dry strip's, and the dry strip's equals vanilla's for that temperature."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An immunity claim is only shown when the immune body is demonstrably exposed. The scene's own rules_out already admits this.",
+   "evidence": [
+    "scenes.json:437",
+    "record.json"
+   ],
+   "gid": "g4",
    "ids": [
     "inv_furnacebeast"
    ],
    "new_since": "unfixed",
-   "observed": "record.json:662 ships \"is immune to its own heat\" (Patch_FurnaceBeastHeatImmunity.cs, a Prefix absorbing the damage [measured]). sc_furnace_bed expects only \"A's grass is alight after about two hours of sleep on average, never at once\" (scenes.json:426), and no scene reads the beast's health. His card at sheet.md:12 folds only 'Banks heat' into warmth and sleep-ignition.",
+   "observed": "rules_out lists \"A's fire never reaching A passing for the heat immunity\". The control is a muffalo whose bed the test lights itself, which shows fire burns animals but not that A was ever exposed. The built patch (Patch_FurnaceBeastHeatImmunity.cs, cited in record.json inv_furnacebeast) blocks Fire attaching (CanEverAttachFire) and absorbs heat-armour damage, so exposure has to be read to tell immunity from no contact.",
    "return_to": 3,
+   "since": "g3",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json: add health reads and a burn-damage control to sc_furnace_bed (the bed fire is already lit there); record.json:662 cites it."
+    "what": "scenes.json sc_furnace_bed: add 'fire on A's cell while A occupies it (asserted per poll)' to action and expect"
    },
-   "what": "Furnace-beast immunity to its own heat, a built Harmony patch, still has no scene.",
-   "where": "scenes.json (no scene); record.json inv_furnacebeast",
-   "would_pass": "An acceptance scene (or added rows in sc_furnace_bed) records the beast's health before its bed fire and after the fire burns out on its cell, and expects no burn injury. Its control is a like-sized animal (or the beast with the immunity patch off) in the same fire, which takes burn damage, ruling out the fire never reaching the beast. Alternatively, a record.json decision in his words cuts the immunity and an offline check keeps it absent."
+   "what": "The furnace-beast's heat immunity is judged by 'A takes no burn injury from its own bed fire', but nothing asserts that the fire reached A's cell while A lay there. A fire that burns out at the patch edge, or a beast that wakes and walks off, passes. The rules_out names this case, but no control rules it out.",
+   "where": "scenes.json sc_furnace_bed expect/control",
+   "would_pass": "The poll reads show a Fire on A's own cell (or heat damage dealt to A and absorbed) for at least one poll while A is on it, and A gains no Burn hediff. The muffalo, in fire on its own cell for the same span, gains a Burn hediff."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "Every clause the experience text promises needs a read, or the text must not promise it.",
+   "criterion_why": "A count threshold that a natural roll can meet does not show the top-up mechanism. The contract asks for a control that rules out the alternative.",
    "evidence": [
-    "tree.json:547",
-    "scenes.json:495",
-    "scenes.json:496",
-    "sheet.md:27"
-   ],
-   "gid": "g4",
-   "ids": [
-    "inv_animal_roster",
-    "flamefang_bite_carries_venom"
-   ],
-   "new_since": "unfixed",
-   "observed": "tree.json:547 says \"smouldering worse over the following hours until treated or thrown off\". scenes.json:496 expects only \"RM_FlamefangVenom present after the bite, its severity rising over the hours\". RM_FlamefangVenom.xml has HediffCompProperties_Immunizable with severityPerDayImmune -0.6 and is tendable [measured].",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: add a tended-versus-untended pair and an immunity read to sc_flamefang_venom; or edit tree.json:547 to drop the clause."
-   },
-   "what": "The flamefang venom leaf promises it worsens 'until treated or thrown off', and the def ships tending and immunity, but the scene reads only six hours of rising severity.",
-   "where": "scenes.json sc_flamefang_venom",
-   "would_pass": "sc_flamefang_venom adds a tended case: a doctor tends the venom, and its severity rate falls below the untended colonist's over the same hours. It also adds an immunity case: with immunity forced to complete (or the immunity read), severity falls and the hediff goes. Or tree.json:547 drops 'until treated or thrown off' and the sheet says only 'worsening over the hours'."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The contract requires a control that rules out the plausible alternative, and here that alternative is ordinary dry wear.",
-   "evidence": [
-    "scenes.json:285",
-    "scenes.json:288",
-    "scenes.json:290",
-    "scenes.json:292",
-    "tree.json:336"
+    "record.json:525",
+    "scenes.json:147"
    ],
    "gid": "g5",
    "ids": [
-    "inv_weather",
-    "three_skies"
+    "inv_animal_roster"
    ],
    "new_since": "unfixed",
-   "observed": "scenes.json:288 expects \"the ash patch's depth (ProbeAsh depthSum) falls under black rain\". The control (scenes.json:292) rules out only \"fires dying on their own being read as black rain's doing, and a reader that names every dark sky black rain\", nothing about ash. PyrelandsAshSand.cs:21-22 has ash wear 'half of it dry (ash stays ~10 days) and 0.25 x rainRate on top' [measured].",
+   "observed": "parts_covered_by assigns \"the fire-cast top-up (sc_populations' hawk and ashwallow counts)\". The expect says \"at least two fire-hawks and eight ashwallows\", and the control only seeds donors and toggles the allowlist.",
    "return_to": 3,
+   "since": "g1",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json sc_three_skies: add a clear-sky ash patch to the start and control, and a depth-loss comparison to the expect."
+    "what": "scenes.json sc_populations: add the before/after genstep count read, or a genstep-off same-seed control"
    },
-   "what": "Black rain washing ash has no control. The ash patch is read only under black rain, and built ash wears away dry without rain.",
-   "where": "scenes.json sc_three_skies",
-   "would_pass": "sc_three_skies lays a second ash patch of equal ProbeAsh depth under clear sky for the same half-day. It expects the black-rain patch's depthSum loss to be clearly greater than the clear-sky patch's (for example at least twice). rules_out names dry wear passing for the wash."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A guard is untested until it is seen rejecting the thing it guards against.",
-   "evidence": [
-    "record.json:456",
-    "scenes.json:153",
-    "scenes.json:155"
-   ],
-   "gid": "g6",
-   "ids": [
-    "inv_plant_roster",
-    "populations_are_the_biomes_own"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json:456 ships \"runtime wild-plant allowlist evicts leaking donor flora\". The sc_populations control is \"one donor plant and one donor animal spawned before the census\" and rules out only \"a census that cannot see intruders reporting a clean map\" (scenes.json:155). Nothing toggles wildPlantAllowlistEnabled.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: add an allowlist on/off pair to sc_populations, or a small sc_allowlist scene."
-   },
-   "what": "The runtime wild-plant allowlist is never exercised. Seeded intruders only prove the census can see them, so a clean map cannot tell eviction from no leak.",
-   "where": "scenes.json sc_populations",
-   "would_pass": "A scene (or a sc_populations row) makes a donor plant eligible to spawn: patch a donor into the wild-plant pass, or let wild-plant spawning run with a donor in the roster. With the allowlist on, it expects the donor evicted or never spawned. Its control, the same with wildPlantAllowlistEnabled off, shows the donor growing. rules_out names 'no donor ever leaked'."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A master switch over every mechanic is a unit of its own, and 'leaves nothing behind' does not show that it stops anything.",
-   "evidence": [
-    "record.json:851",
-    "scenes.json:609",
-    "scenes.json:613",
-    "scenes.json:333",
-    "floor.json:34"
-   ],
-   "gid": "g7",
-   "ids": [
-    "inv_settings_gate"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json:851 says \"the Baroque Biomes roster toggle gates mechanics, not only worldgen\". coverage_rest (scenes.json:613) says \"the walk switches the mechanics off and on mid-game\", and sc_walk's expect is \"switches leave nothing behind\" (scenes.json:333). PyrelandsMechanicsGate.On is tested in 42 places in Source [measured], and no scene turns the gate off.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: name the roster toggle in sc_walk's action and expect (off: no front, no ash laid; on: resumes), or add a short gate scene; point coverage_rest at it."
-   },
-   "what": "The Baroque Biomes roster toggle (PyrelandsMechanicsGate), which gates every mechanic, is never shown stopping them. coverage_rest rests on a walk whose expect only says switches leave nothing behind.",
-   "where": "scenes.json coverage_rest inv_settings_gate",
-   "would_pass": "A scene, or a walk step named in sc_walk's action and expect, turns the roster toggle off on a Pyrelands map and reads that the burn line, ash laying and bed ignition stop (no new fire, ash depth or bed fire over a window), then on again and reads them resume. The control is the same window with the toggle on."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The contract counts every opened_by_owner, impl-present entry as a unit that must be covered, and this one is covered nowhere.",
-   "evidence": [
-    "record.json:898",
-    "record.json:899",
-    "scenes.json:529",
-    "scenes.json:583",
-    "tree.json:20",
-    "sheet.md:14"
-   ],
-   "gid": "g8",
-   "ids": [
-    "inv_firehawk_hunt_rewards",
-    "inv_settings_gate"
-   ],
-   "new_since": "changed",
-   "observed": "record.json:899: \"one letter names the hawk and the ember it carries and jumps to it, once per game and switchable off in Mod Settings; butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather\", proof 'missing', and its live half firehawk_rewards_live.py UNRUN. No showcase 'exercises' and no coverage_rest 'capability' names it (scenes.json:529-623), no tree leaf cites it, and sheet.md's does list never mentions the letter or the feather.",
-   "return_to": 3,
-   "since": "record.json: inv_firehawk_hunt_rewards added 2026-11-14 by his card (commit c2e230f4f5, 'bar inv_firehawk_hunt_rewards added by his card 2026-11-14'), scope opened_by_owner, impl present",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "tree.json: add the leaf (his card 2026-11-14 is the locked_change authority). scenes.json: add sc_firehawk_rewards and a coverage_rest entry. sheet.md: add a does line."
-   },
-   "what": "New capability inv_firehawk_hunt_rewards (a first-sighting letter, switchable, and the Pristine Firehawk Crestfeather from butchering) has no leaf, scene, showcase, coverage_rest entry or sheet line.",
-   "where": "record.json inv_firehawk_hunt_rewards; tree.json; scenes.json; sheet.md",
-   "would_pass": "tree.json has a leaf (for example firehawk_hunt_rewards) for the letter and the feather. scenes.json has an acceptance scene with entry_point firehawk_rewards_live.py (or validation.py) and an entry_point_item if it is missing. Start: no letter sent this game (asserted). Expect: the first carry-ember sends exactly one letter targeting the hawk, a second carry sends none, and butchering N hunted hawks yields at least one Crestfeather at the built rate. Control: the letter switch off sends no letter, and butchering a non-hawk animal yields no Crestfeather. coverage_rest or a showcase covers the capability, and sheet.md's does list carries a [leaf:...] line for it."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A shipped behaviour he chose to keep must appear in scope and on the sheet, or the concept misdescribes the mod.",
-   "evidence": [
-    "record.json:717",
-    "sheet.md:26",
-    "scenes.json:253"
-   ],
-   "gid": "g9",
-   "ids": [
-    "inv_ullai_herd_giant"
-   ],
-   "new_since": "changed",
-   "observed": "record.json:717 says only \"The world-map herd migration was built, then cut by his card 2026-10-23 ... the absence is checked offline by T_CUT_STAYS_CUT\". The decisions list has no 2026-11-14 ullai card, and sheet.md:26 says only \"Ullai herds drift to graze where it burned about two days ago\". The test table holds T_ULLAI_HERD_MIGRATES (offline, PASS 2026-11-14 14:28) [measured].",
-   "return_to": 3,
-   "since": "commit b2dd7ac8da 2026-11-14 'Pyrelands: ullai keep vanilla herd migration, new check T_ULLAI_HERD_MIGRATES (owner card 2026-11-14)', after that verdict; record.json:717 was not updated",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "record.json: add the decision and the inventory part. tree.json: add an offline leaf citing T_ULLAI_HERD_MIGRATES. sheet.md: add one does line."
-   },
-   "what": "His card 2026-11-14 kept vanilla herd migration for ullai, with a new offline check T_ULLAI_HERD_MIGRATES, but the concept records only the cut world-map migration. Nothing in the record, tree, scenes or sheet names the kept behaviour or its check.",
-   "where": "record.json inv_ullai_herd_giant and decisions; sheet.md",
-   "would_pass": "record.json carries a decision with his OWNER event for 'ullai keep vanilla herd migration'. inv_ullai_herd_giant names the kept vanilla HerdMigration part beside the cut world-map leg. An offline leaf (tier offline, oracle naming selftest_pyrelands_ullai_herd_migration.py) or a coverage_rest entry pointing at it covers the part. The sheet's does list says ullai herds can migrate across the map as vanilla herds do."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Without a matched control, the expected result follows from the day-night cycle and ambient drift alone.",
-   "evidence": [
-    "scenes.json:35",
-    "scenes.json:37",
-    "scenes.json:38",
-    "scenes.json:40",
-    "scenes.json:41",
-    "scenes.json:477",
-    "tree.json:63"
-   ],
-   "gid": "g10",
-   "ids": [
-    "inv_weather",
-    "ash_ground_and_blowing_ash"
-   ],
-   "late_why": "That verdict passed 'ash fall dims the map' and failed the drift part only for counting a deleted def. The start (noon), the half-day window and the vanilla-map control were the same then; the noon-to-midnight confound and the missing ambient comparison were there and went unnamed.",
-   "new_since": "late",
-   "observed": "Start \"fresh Pyrelands map, clear weather at noon (asserted)\" (scenes.json:35). Action \"force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour\" (scenes.json:37). Expect \"drifts rise and the light falls under ash fall\" (scenes.json:38). The only control is a vanilla arid map expecting \"no deep ash and no blowing ash\" (scenes.json:41). sc_fire_dusts_ash itself names \"ambient blowing ash or ash fall banking loose ash on the pad\" as a rival source (scenes.json:477).",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json sc_ash_ground: add a matched-hour clear-weather run to the control, with light and ProbeAsh compared hour by hour."
-   },
-   "what": "sc_ash_ground's ash-fall reads have no control. The light is read hourly from noon for half a day, so nightfall alone dims the map, and drift depth rising under ash fall is never compared with ambient clear-weather banking.",
-   "where": "scenes.json sc_ash_ground",
-   "would_pass": "sc_ash_ground compares ash fall against clear weather over the same clock hours: either two runs from the same save (ash fall forced versus clear held) or a twin region. It expects the ash-fall light level clearly below the clear-weather light level at each matched hour, and ash-fall depth gain clearly above the clear-weather depth gain. rules_out names nightfall and ambient banking."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The tree names this false pass, and the scene must close it.",
-   "evidence": [
-    "tree.json:350",
-    "tree.json:353",
-    "scenes.json:283",
-    "scenes.json:287"
-   ],
-   "gid": "g11",
-   "ids": [
-    "inv_weather",
-    "three_skies"
-   ],
-   "late_why": "The start, the half-day-each sequencing and the capture step were the same in that verdict, which passed 'three skies told apart' without checking the capture hour against tree.json:353.",
-   "new_since": "late",
-   "observed": "tree.json:350's scenario says \"Force each weather in turn on the same map at noon\", and its false_pass (tree.json:353) is \"the captures are taken at night so all read dark\". The scene starts \"the same map at noon\" (scenes.json:283) and forces the skies \"in turn, half a day each ... capture each at play zoom\" (scenes.json:287), with no capture hour.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json sc_three_skies: add 'each capture at local noon (hour asserted)' to the action and start."
-   },
-   "what": "sc_three_skies never asserts when each sky is captured. Its consecutive half-days from noon put one sky over midnight to noon, so the tree's own false_pass (captures taken at night, so all read dark) is open.",
-   "where": "scenes.json sc_three_skies",
-   "would_pass": "sc_three_skies' action says each sky is captured at local noon, between 10h and 14h (for example each sky forced from the same noon save, or waits until the next noon), and the start or expect asserts the capture hour for every capture, including the vanilla-rain capture."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A script built from the action text would read a deleted def, and a false statement in the record is to be fixed.",
-   "evidence": [
-    "record.json:535",
-    "record.json:618",
-    "tree.json:220",
-    "scenes.json:172"
-   ],
-   "gid": "g12",
-   "ids": [
-    "inv_ash_field",
-    "inv_ruins_scorched",
-    "ruins_stand_blackened"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json:535 \"ambient ash blows like snow and banks as loose-ash filth\". record.json:618 \"deep ash on footprints, loose-ash filth\". tree.json:220 \"read terrain and filth on its footprint\". scenes.json:172 \"read footprint terrain and filth\". The expects now use ProbeAsh, so the oracle part of the earlier g1 is fixed; the wording is not.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "record.json:535, record.json:618, tree.json:220 and scenes.json:172: replace the filth wording with 'ash depth on the sand grid (ProbeAsh)'."
-   },
-   "what": "Stale loose-ash filth wording survives where the oracles moved to sand-grid depth. The inventory still ships ash 'as loose-ash filth' and ruins with 'loose-ash filth', and the ruins scenario and scene action still say 'read ... filth'.",
-   "where": "record.json inv_ash_field and inv_ruins_scorched; tree.json ruins_stand_blackened; scenes.json sc_ruins",
-   "would_pass": "No inventory 'what', leaf scenario or scene action in record.json, tree.json or scenes.json names loose-ash filth or 'filth' as the ash reading. Each says ash depth on the sand grid (ProbeAsh), matching the expects. A grep of those three files for 'loose-ash filth' returns 0."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The sheet a player reads must say what the tree tests, and 'very fertile' does not describe 70%.",
-   "evidence": [
-    "sheet.md:11",
-    "sheet.md:17",
-    "tree.json:77",
-    "tree.json:88",
-    "scenes.json:61",
-    "exam.json:30"
-   ],
-   "gid": "g13",
-   "ids": [
-    "ash_fertile_when_watered",
-    "inv_ash_field"
-   ],
-   "late_why": "That verdict passed 'very fertile ground that still benefits from water' with the 70% dry oracle in view and did not compare the two.",
-   "new_since": "late",
-   "observed": "sheet.md:17 \"Ordinary crops treat deep ash as very fertile ground and still benefit from water as before\" and tree.json:88 \"finds it very fertile ground\", against tree.json:77 \"about 140% beside water and about 70% dry (his card 2026-11-07, \\\"Keep 70%, sowable\\\")\". His 2026-11-13 words (sheet.md:11) say crops 'benefit from water as before', which reads as keeping 70/140.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "sheet.md:17 and tree.json:88: add the 70% dry and 140% watered numbers to the wording, citing OWNER:1794594151279833849 and his 2026-11-07 card."
-   },
-   "what": "The sheet tells the player ordinary crops find deep ash 'very fertile ground', but what the tree tests is 70% fertility on dry ash (below ordinary soil) and 140% only beside water. A player who reads the sheet and sees 'Fertility 70%' on dry ash would find that strange.",
-   "where": "sheet.md leaf:ash_fertile_when_watered; tree.json ash_fertile_when_watered",
-   "would_pass": "sheet.md:17 and tree.json:88 state what the scene tests, in his two rulings' words: for example 'ordinary crops find deep ash sowable dry (about 70%) and very fertile where watered (about 140%), benefiting from water as before'. Or, if the Designer reads his 2026-11-13 words as raising dry fertility, record.json records that reading and the tree oracle and sc_ash_watered change to match."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The sheet must not claim checks the scenes do not make.",
-   "evidence": [
-    "sheet.md:52",
-    "scenes.json:609",
-    "scenes.json:613",
-    "scenes.json:622"
-   ],
-   "gid": "g14",
-   "ids": [],
-   "late_why": "The line was there in that verdict, which checked the showcase descriptions (g13) but not this line against coverage_rest.",
-   "new_since": "late",
-   "observed": "sheet.md:52 \"The sand shovel, the firefoam sprayer, the fire-rite hook, Mod Settings and the art are checked by their own scenes rather than a showcase\". scenes.json:613 covers inv_settings_gate 'by' the walk, and scenes.json:622 says \"the shipped art rests on his approval of the art sheet ... sc_populations takes no capture\".",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "sheet.md:52: reword to match scenes.json coverage_rest."
-   },
-   "what": "The sheet's delegated line says Mod Settings and the art are 'checked by their own scenes'. In fact coverage_rest rests Mod Settings on the walk and the art on his approval of the art sheet; no art scene exists.",
-   "where": "sheet.md delegated",
-   "would_pass": "sheet.md:52 matches coverage_rest: the sand shovel, the firefoam sprayer and the fire-rite hook by their own scenes; Mod Settings by the walk's switch-off steps and the floor's mod_settings line; the art by his 2026-10-16 approval of the art sheet, with the sky captures in sc_three_skies."
+   "what": "The fire-cast top-up (GenStep_PyrelandsFireCast: a pair of fire-hawks and eight ashwallows) is read only as 'at least two fire-hawks and eight ashwallows', with no control. A map whose ordinary wild-animal roll already reached those counts passes without the genstep doing anything.",
+   "where": "scenes.json sc_populations expect/control; record.json inv_animal_roster parts_covered_by",
+   "would_pass": "sc_populations reads the hawk and ashwallow counts after the vanilla animal genstep and again after GenStep_PyrelandsFireCast (or from the genstep's own added-count), and expects the top-up to fill exactly the shortfall to 2 and 8. A control with the genstep disabled on the same seed shows the pre-top-up counts."
   }
  ],
  "hashes": {
   "dec:d_bar_reworded": "e2e8547d20af51a9",
   "dec:d_blackrain_stop_wipe": "ba9eb5d2975bf78d",
   "dec:d_firebreak_cut": "2d4ddff6c758e430",
+  "dec:d_fix_twelve_gaps_in_0_1_0": "9f71281ad4afab36",
   "dec:d_flagship_burn_line": "7d4ad469db0504da",
   "dec:d_root": "714beb2928c9af52",
   "dec:d_root_ending": "ff0a8ffa994193d4",
   "dec:d_scorchfruit_rapid": "68b490b4dcb6ad6d",
+  "dec:d_ullai_keep_vanilla_herd_migration": "0acb3d67603d85ef",
   "dec:d_worldgen_outside_promise": "509a7f41fac0309b",
   "dec:d_worldswitch_off_by_card": "155807d6caee8247",
   "floor": "5f0ec0dcf8d41641",
-  "inv:inv_animal_roster": "d864e27cd5782d28",
+  "inv:inv_animal_roster": "cc8101e65106a390",
   "inv:inv_art_and_text": "7e8ac332fd2cbb5f",
-  "inv:inv_ash_field": "04aed22d1da7562c",
-  "inv:inv_biome_self_contained": "6b82c2cc5ab392e1",
-  "inv:inv_burn_line_fire_clock": "179929ec669def2c",
-  "inv:inv_burrowers_heat_dome": "dc847f5238c16ff3",
+  "inv:inv_ash_field": "eeeda80c4a424496",
+  "inv:inv_biome_self_contained": "c1f09a5afd84a797",
+  "inv:inv_burn_line_fire_clock": "1edcb6a5fe76a86c",
+  "inv:inv_burrowers_heat_dome": "d87b62c552a3854f",
   "inv:inv_embergrass_regrow": "41f07df9ea43d188",
   "inv:inv_fire_rite_hook": "9923f0b6bcabc14f",
   "inv:inv_firebreak_firefoam": "32594177e114b462",
   "inv:inv_firefoam_sprayer": "ea20dac805186be4",
-  "inv:inv_firehawk_ember": "cd9f02ac82bc6d27",
-  "inv:inv_firehawk_hunt_rewards": "0c69cc6d7dfee989",
-  "inv:inv_furnacebeast": "f32c723563a3720a",
+  "inv:inv_firehawk_ember": "4c27517375771f63",
+  "inv:inv_firehawk_hunt_rewards": "5f222364538ab6d1",
+  "inv:inv_furnacebeast": "ab07dcb07f0cf42c",
   "inv:inv_lightning_breaker": "5ce48acf14492b84",
-  "inv:inv_plant_roster": "3df097cede6ca52f",
-  "inv:inv_ruins_scorched": "103c3ec0dc0cbd13",
-  "inv:inv_sand_shovel": "4859493786c70d03",
+  "inv:inv_plant_roster": "338fa2bec42a76fc",
+  "inv:inv_ruins_scorched": "c88d5c5df2062c3c",
+  "inv:inv_sand_shovel": "e377e31977008bbc",
   "inv:inv_scorchfruit": "ccbf94d3c0f137ad",
-  "inv:inv_settings_gate": "127eb285aca139ca",
-  "inv:inv_ullai_herd_giant": "3ab949f6eb5dd070",
-  "inv:inv_weather": "79f2ca7aadb4f039",
-  "leaf:ash_fertile_when_watered": "9031b819a1edf445",
+  "inv:inv_settings_gate": "60ba2f57c5bb8193",
+  "inv:inv_ullai_herd_giant": "69e1f8484b6bc032",
+  "inv:inv_weather": "d19f1d348e977881",
+  "leaf:ash_fertile_when_watered": "bb70faa62757ecf7",
   "leaf:ash_fertility_probe": "890c12af2f0a1bb1",
   "leaf:ash_ground_and_blowing_ash": "a55037917e6494f2",
   "leaf:ashwallow_dives_unharmed": "ca9c2bb9f572a71c",
@@ -1533,6 +1136,7 @@
   "leaf:burn_line_walks": "7a78b111d0e5f36e",
   "leaf:fire_rite_hook_silent_alone": "bc89169c81044417",
   "leaf:firefoam_sprayer_reaches_the_fruit": "950de19564559a17",
+  "leaf:firehawk_hunt_rewards": "fe920988b6cacf33",
   "leaf:firehawk_lights_ahead": "2b3bae9c48026eb3",
   "leaf:flamefang_bite_carries_venom": "bb56e15f4dd92168",
   "leaf:fresh_burn_compounds_with_black_rain": "fe13c369e10bdbfa",
@@ -1540,62 +1144,69 @@
   "leaf:grass_carpets_and_regreens": "b037d7a0e8c1c664",
   "leaf:no_ordinary_rain": "705a56a75f29fa91",
   "leaf:populations_are_the_biomes_own": "7d1d7c26fab0ccc7",
-  "leaf:ruins_stand_blackened": "b0de49702081f172",
+  "leaf:ruins_stand_blackened": "b596cc54e506fb2c",
   "leaf:sand_shovel_yields_glass_sand": "60d93a4ddff7c56d",
   "leaf:scorchfruit_born_of_fire": "b34df55f3aaf7b61",
   "leaf:three_skies": "c5b84c0b1f1541b2",
+  "leaf:ullai_cross_the_map_as_vanilla_herds": "6fb1463b997e1d40",
   "leaf:ullai_graze_old_burns": "4dc421fa022fbb15",
   "leaf:walk_season_on_the_pyre": "90afbefc595cd43f",
   "record:scope": "f1f8e6025ad8f7c3",
   "rest:inv_art_and_text": "14009bfda3c22260",
   "rest:inv_fire_rite_hook": "132658197d410e1c",
   "rest:inv_firefoam_sprayer": "f0e7d28fc2c0d8ec",
+  "rest:inv_firehawk_hunt_rewards": "a8905dcd9fb300d8",
   "rest:inv_sand_shovel": "966a1e5530c8eaba",
-  "rest:inv_settings_gate": "779dd5bf8f091243",
-  "scene:sc_ash_ground": "77bdfca08bd35ead",
+  "rest:inv_settings_gate": "8f933596e3692b1c",
+  "scene:sc_ash_ground": "4fb7b38e3cf1bed3",
   "scene:sc_ash_watered": "0495236610a90c77",
   "scene:sc_ashwallow": "3ebeb82bf416dab3",
   "scene:sc_burn_compounds": "b51c76a6f0f3596b",
   "scene:sc_burn_line_walks": "d102a23919a53449",
   "scene:sc_fire_dusts_ash": "83ddfcd6c499893e",
   "scene:sc_firefoam_sprayer": "1b75afacc47075d1",
-  "scene:sc_firehawk": "ded43e7575a25a0c",
-  "scene:sc_flamefang_venom": "88d0a12a40b1039a",
+  "scene:sc_firehawk": "39568c3aa38ab795",
+  "scene:sc_firehawk_rewards": "f97d7e81049c440d",
+  "scene:sc_flamefang_venom": "e99fef646b58b555",
+  "scene:sc_foreign_arrivals": "6a447af2e48d5211",
   "scene:sc_furnace": "c4d13b638dea9c9e",
-  "scene:sc_furnace_bed": "05d3407ed9dbd018",
+  "scene:sc_furnace_bed": "25e8d9bc966c7244",
   "scene:sc_furnace_giant": "cea6fcb2b1175840",
-  "scene:sc_grass_regreens": "887b04a73fc546d1",
+  "scene:sc_grass_regreens": "23b449e2b1e1cade",
   "scene:sc_heat_dome": "2a1cc4aa18cc732f",
   "scene:sc_no_rain": "bd25ce0cce868d54",
-  "scene:sc_populations": "7a6725e845c3f556",
+  "scene:sc_populations": "9878b918c78cad1f",
   "scene:sc_rite_hook_alone": "9d10177602fd3a0e",
-  "scene:sc_ruins": "b1c56d5c790982f2",
+  "scene:sc_ruins": "12671d3949d82485",
   "scene:sc_sand_shovel": "fecff4c68b3665a7",
   "scene:sc_scorchfruit": "0597d0a0c312b7eb",
-  "scene:sc_three_skies": "9233ce31bb23221e",
+  "scene:sc_three_skies": "ac590b4b70543118",
   "scene:sc_ullai": "28e19312d3faf8bd",
-  "scene:sc_walk": "ecbca2f78299bead",
+  "scene:sc_walk": "a06e72680b8aa0f8",
   "sheet:": "3e632ce42c2b10bd",
-  "sheet:delegated": "32006b73beda3936",
-  "sheet:does": "76db1f8bdcea0f3d",
+  "sheet:delegated": "731361ae0afd82cf",
+  "sheet:does": "0d6e706038f9dbe7",
   "sheet:does not": "6dfb0c571e26ec57",
   "sheet:his words": "20ee4c80b7dafafb",
   "sheet:open": "35c155548e9dd273",
-  "sheet:pruning": "a439a10eb6c8e0bc",
+  "sheet:pruning": "fa2460d0a2d99eb3",
   "sheet:waived": "e7c919eee065e618",
   "showcase:burn_line": "e0a0d350fc10f08f",
   "showcase:fire_cast": "8723a92760b2c782",
   "showcase:sky_and_shelter": "01b67d788f9fe6cb",
   "tree:rest": "9d64f9382e682c55"
  },
- "judge": "rm-coverage-judge-1794722839",
- "mode": "full",
- "prompt_chars": 4978,
- "reasons": "Round 4, judged against verdict rm-coverage-judge-1794594804 (2026-11-13T18:33Z). No coverage_fixes.json was on file, so every row was redone. The exam inputs match the current sheet (sha256 2935f04b...) and the current tree (canonical hash 3ffd15d1...) [measured]. Of that verdict's 14 gaps, these are fixed: g1's oracles (every ash read is now ProbeAsh on the sand grid), g3 (70% dry and a 120% dry fresh scar everywhere), g5 (the sheet agrees: only the switch's off default is checked, by selftest_pyrelands_site.py), g11 (coverage_rest now says the art rests on his approval), g12 (record.json:717 says the descriptions no longer mention migration, and T_CUT_STAYS_CUT checks it), g13 (the showcase 3 wording matches its scenes) and g14 (the exam was re-run on the current artifacts). Still open: g2 (built behaviour missing from the inventory; grep shows 0 hits in record.json for 10 named files that exist in src), g4 (grass on dry and watered ash), g6 (furnace-beast heat immunity), g7 (venom tending and immunity), g8 (no dry-wear control for black rain's wash), g9 (allowlist), g10 (roster toggle), and g1's residual filth wording. New since that verdict: inv_firehawk_hunt_rewards (his card 2026-11-14) is covered nowhere, and his 2026-11-14 card keeping ullai vanilla herd migration is absent from the concept. That judge missed four gaps: the ash-fall light read confounded by nightfall plus the missing ambient-drift control, the undated sky captures, the sheet's 'very fertile' against 70% dry, and the sheet's 'checked by their own scenes'. Every scene has an asserted start, a control with rules_out and a restore. Every entry point exists in validation.py [measured]. The walk is held for his review, offline leaves are exempt, and the firebreak and lightning breaker are absent and out. All 14 gaps are the Designer's to fix at stage 3, mostly by editing; none needs his answer, and every criterion is sound.",
- "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
+ "judge": "rm-coverage-judge-1794749968",
+ "malformed": [
+  "refusal 2 (inv_burn_line_fire_clock): observed quotes no token of its evidence"
+ ],
+ "mode": "delta",
+ "prompt_chars": 72204,
+ "reasons": "Fully fixed: g2, g5, g6, g7, g8, g9, g10, g11, g12 (no 'loose-ash filth' left), g13 and g14. Still open: g4 (sc_flamefang_venom's expect has a literal 'X' where the tended colonist's result belongs) and g3 (immunity is read without asserting that A was ever in its fire). g1 is only partly fixed. Its parts_covered_by lines point at scenes that cannot see the mechanism: fire sense and eat-before-duty pass as an absence in sc_walk; wet roots runs in sc_ash_watered with no temperature asserted; the fire-cast top-up is a bare 'at least' count. All five gaps are edit-cost scene fixes with sound criteria.",
+ "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
  "signed": false,
- "stopped": "released for one more look at round 4; that look was not_covered",
- "tokens": 747059,
- "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107",
- "verdict": "not_covered"
+ "stopped": "released for one more look at round 5; that look was malformed",
+ "tokens": 409790,
+ "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+ "verdict": "malformed"
 }
