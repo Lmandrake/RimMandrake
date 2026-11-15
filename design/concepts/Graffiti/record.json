@@ -1,0 +1,614 @@
+{
+ "mod": "Graffiti",
+ "packageId": "mandrake.rm.graffiti",
+ "stage": 0,
+ "scope": [
+  {
+   "id": "s_entry",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794718431041161766"
+   ],
+   "text": "Graffiti enters the Maturation Pipeline with a Designer first touch; the mod is built and far along (2026-11-14). A first-touch item GRAFFITI_DESIGN_FIRST_TOUCH is also filed (proposed); first_touch.py reads Graffiti OWED."
+  },
+  {
+   "id": "s_north_star",
+   "speaker": "owner",
+   "source": [
+    "design/validation_walks/RimMandrake/Graffiti.md",
+    "OWNER:1794077413900495526",
+    "OWNER:1794156867388116050"
+   ],
+   "text": "North star VALIDATED: 20 must-show and 2 cannot-show lines, social, art-skill and personality lines added by card 2026-11-07; 'every face-on mark' wording 2026-11-08."
+  },
+  {
+   "id": "s_register",
+   "speaker": "agent",
+   "source": [
+    "design/validation_walks/RimMandrake/Graffiti.md",
+    "ITEM:GRAFFITI_PUNK_IDEOLIGION_SCOPE_1"
+   ],
+   "text": "His three quotes (2026-08-30, 08-31, 09-09, verbatim in the walk): variety, punk/urban register, ideoligion-inspired sigils from the game's own ideoligions; rich Utinni content later."
+  },
+  {
+   "id": "s_neighbours",
+   "speaker": "agent",
+   "source": [
+    "src/RimMandrake/SacredGraffiti/About/About.xml",
+    "src/RimStarWars/GraffitiImperial/About/About.xml",
+    "ITEM:GRAFFITI_STARWARS_RESKIN_NOT_ONE_TERRAN_TAG"
+   ],
+   "text": "Graffiti is the engine (mandrake.rm.graffiti). SacredGraffiti (mandrake.rm.sacredgraffiti) and GraffitiImperial (mandrake.rsw.graffitiimperial) depend on it and add content; the Star Wars reskin loop and the Sacred Graffiti takeover follow it in a series of three. Mlie.GraffitiMod is superseded (its spree absorbed). Those neighbours own their content; this concept covers the engine and its default marks."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "d_art_skill",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794072694044656395",
+   "date": "2026-11-07",
+   "what": "The painter's art skill sets the mark's beauty and mood effect; slander can anger and please at once."
+  },
+  {
+   "id": "d_rereads",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794077413900495526",
+   "date": "2026-11-07",
+   "what": "Mood repeats at most daily, opinion once (by card); north star validated at 20+2."
+  },
+  {
+   "id": "d_wall_loss",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794069857392075931",
+   "date": "2026-11-07",
+   "what": "Paint dies with its wall (by card)."
+  },
+  {
+   "id": "d_contrast_D",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794067751337277608",
+   "date": "2026-11-07",
+   "what": "Contrast sheet option D: marks bolder inside the face and climbing onto the wall top."
+  },
+  {
+   "id": "d_his_look",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794108433652543271",
+   "date": "2026-11-08",
+   "what": "His look at six curated shots: mockery reads; ordinary wall-art mood trimmed to about +2..+3 capped; scrawl vs tally not sure, re-show on a lived-in wall."
+  },
+  {
+   "id": "d_provably_ok",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794129302147000692",
+   "date": "2026-11-08",
+   "what": "Done means provably OK with re-checkable evidence per bar; no judge approval needed."
+  },
+  {
+   "id": "d_face_on",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794156867388116050",
+   "date": "2026-11-08",
+   "what": "mark_reads_at_play_zoom applies to every face-on mark (by card)."
+  }
+ ],
+ "asks": [
+  {
+   "id": "a_live_walk",
+   "status": "draft",
+   "author": "Designer (agent)",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "about": [
+    "inv_mark_art_set",
+    "inv_social_layer",
+    "inv_viewer_mood"
+   ],
+   "decision": "walk what is built before adding design",
+   "text": "Graffiti is built and its 22 bars were proven on 2026-11-08. Before any new design, a live walk of a lived-in colony save: several weeks of play on ordinary walls, spree, recreation, a raid and a trader, with the shipped vandal_0/vandal_1 on a wall at play zoom. It would show whether the social layer stays occasional (failure mode 3), settle c_vandal_signage, and re-show scrawl vs tally on a lived-in wall, which he asked for (d_his_look)."
+  },
+  {
+   "id": "a_flagship",
+   "status": "draft",
+   "author": "Designer (agent)",
+   "source": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "about": [
+    "inv_social_layer",
+    "inv_mark_art_set",
+    "inv_raid_marks"
+   ],
+   "decision": "which showcase is Graffiti's face (showcase 1 must be his pick)",
+   "text": "Which scene is Graffiti's face? A. A lived-in colony wall: a mockery naming someone, a reply painted over it, a confrontation. B. A spree corridor: one pawn's break leaving many visibly different punk marks, a skilled piece beside an ugly scrawl. C. After a raid: the raiders' exit tags troubling the colony until the wall is retaken and scrubbed."
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_mark_on_wall",
+   "what": "A mark is a filth-class thing on the floor cell beside a wall, recording the wall side and drawn offset onto the wall face and facing it (no linked-atlas crop); nothing paints a wall seen edge-on",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+    "src/RimMandrake/Graffiti/Source/WallPlane.cs",
+    "src/RimMandrake/Graffiti/Source/WallInspectPatch.cs",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "src/RimMandrake/Graffiti/validation.py",
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/Graffiti/",
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:GRAFFITI_WALL_LINKED_CROP_1",
+    "ITEM:GRAFFITI_LINKED_MARK_FIX_1"
+   ],
+   "proof_note": "bars mark_actually_appears, mark_sits_on_the_wall, mark_reads_at_play_zoom proven in the loop close at b967d9e9cb (2026-11-08); no Graffiti source change since. GRAFFITI_WALLFACE_BUILD_NO_NEW_THING_CLASS (built) still owes live levels"
+  },
+  {
+   "id": "inv_mark_art_set",
+   "what": "The mark art: punk/urban default marks (Vandal, Scratches, TallyMarks, WarningGlyph, throw-ups and the loop's set), several variants each via Graphic_Random, no real-world lettering or Earth signage",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Textures",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:GRAFFITI_VANDAL_ART_REGEN_1",
+    "ITEM:GRAFFITI_VARIANT_COUNTS_1",
+    "ITEM:GRAFFITI_WARNGLYPH_INUNIVERSE_1",
+    "ITEM:GRAFFITI_GENERIC_MARKS_1"
+   ],
+   "proof_note": "loop close claims marks_visibly_various, mark_register_is_punk_urban, mark_carries_no_earth_signage, never_real_world_english, never_reads_as_dirt proven; see contradiction c_vandal_signage"
+  },
+  {
+   "id": "inv_beauty_and_craft",
+   "what": "Art skill goes into the mark: the painter's skill sets its beauty (ugly scrawl harms a room and mood, a skilled piece improves both), and the picture's ugliness is visible",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/StatPart_GraffitiCraft.cs",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "OWNER:1794072694044656395"
+   ],
+   "proof_note": "bars art_skill_goes_into_the_art, mark_ugliness_is_visible in the loop close"
+  },
+  {
+   "id": "inv_ideo_sigils",
+   "what": "Ideoligion sigils: a tier-A sigil (frame plus the colony ideo's icon, tinted) and 27 meme-gated glyphs; marks have form and category (Glyph/Code etc.)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_GraffitiMemeGlyphs.xml",
+    "src/RimMandrake/Graffiti/Source/GraffitiForm.cs",
+    "src/RimMandrake/Graffiti/Source/GraffitiCategory.cs",
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+    "src/RimMandrake/Graffiti/sigil_coverage.py"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt",
+    "src/RimMandrake/Graffiti/sigil_coverage.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_PUNK_IDEOLIGION_SCOPE_1",
+    "ITEM:GRAFFITI_SIGIL_COVERAGE_CHECK_1",
+    "ITEM:GRAFFITI_RULING_CONFORMANCE_1"
+   ],
+   "proof_note": "live clause A3 (sigil) belongs to GRAFFITI_V1_LIVE_PROOF_1, BLOCKED on a SITE snag at a70b78a8af90; not among the loop's 22 bars. GRAFFITI_SIGILMATS_FIX_OFF_THREAD_FIRST_GAME (open): sigil materials built off the main thread on a first new game, 18 red errors"
+  },
+  {
+   "id": "inv_spree",
+   "what": "The painting-spree mental break (absorbed from Mlie.GraffitiMod, which it supersedes): a pawn paints mark after mark for the break's length",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/MentalState_GraffitiSpree.cs",
+    "src/RimMandrake/Graffiti/Source/JobGiver_GraffitiPaintingSpree.cs",
+    "src/RimMandrake/Graffiti/Defs/MentalStateDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Defs/ThinkTreeDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py",
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FRAMEWORK_BUILD_1",
+    "ITEM:GRAFFITI_SPREE_MINOR_FINDINGS_1",
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "loop selftests 7/7 green on the landed tree; mark_actually_appears covers the spree path"
+  },
+  {
+   "id": "inv_joy_and_idle_tag",
+   "what": "Painting as recreation and idle tagging, with a small mood buff for the maker",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/JoyGiver_PaintGraffiti.cs",
+    "src/RimMandrake/Graffiti/Source/JobGiver_IdleTag.cs",
+    "src/RimMandrake/Graffiti/Source/JobDriver_PaintGraffiti.cs",
+    "src/RimMandrake/Graffiti/Defs/JoyGiverDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "bar making_a_mark_is_its_own_fun in the loop close"
+  },
+  {
+   "id": "inv_player_orders",
+   "what": "Player orders: a designator that paints a chosen mark on a chosen cell, and a scrub designator, worked by two WorkGivers",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/Designator_PaintGraffitiMark.cs",
+    "src/RimMandrake/Graffiti/Source/Designator_ScrubGraffiti.cs",
+    "src/RimMandrake/Graffiti/Source/WorkGiver_PaintGraffitiDesignated.cs",
+    "src/RimMandrake/Graffiti/Source/WorkGiver_ScrubGraffitiDesignated.cs",
+    "src/RimMandrake/Graffiti/Source/MapComponent_GraffitiOrders.cs",
+    "src/RimMandrake/Graffiti/Defs/DesignationDefs_Graffiti.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_NORTHSTAR_WIRED_1",
+    "src/RimMandrake/Graffiti/"
+   ],
+   "proof_note": "live clause A7 (designator choice) BLOCKED with the V1 proof; GRAFFITI_DESIGNATOR_MARK_CHOICE_1 built, owes A1 L2"
+  },
+  {
+   "id": "inv_viewer_mood",
+   "what": "Viewers' mood from marks they see (walk past, in sight, same room); the same mark moves mood at most daily and opinion once",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/ThoughtWorker_ViewedGraffitiMark.cs",
+    "src/RimMandrake/Graffiti/Source/ThoughtDescriptionPatch.cs",
+    "src/RimMandrake/Graffiti/Defs/ThoughtDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Source/GraffitiSocial.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "OWNER:1794077413900495526"
+   ],
+   "proof_note": "bars rereads_affect_at_most_daily, stories_not_a_tax in the loop close; his look trimmed free wall-art mood to about +2..+3 (OWNER:1794108433652543271)"
+  },
+  {
+   "id": "inv_social_layer",
+   "what": "Marks between people: mockery naming someone, tribute, memorial from a grieving pawn, faction insult; grudges; pawns answer the wall (scrub, deface/cross-out, reply, confront the painter); fights only with people and a reason",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/GraffitiSocial.cs",
+    "src/RimMandrake/Graffiti/Source/JobDrivers_AnswerMark.cs",
+    "src/RimMandrake/Graffiti/Defs/SocialDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_GraffitiSocial.xml",
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiSocialProof.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "OWNER:1794108433652543271"
+   ],
+   "proof_note": "bars mockery_changes_regard, tribute_and_memorial_mean_it, pawns_answer_the_wall, fights_have_people_and_reasons in the loop close; caveat named at close: confront over painted-out work unseen"
+  },
+  {
+   "id": "inv_visitors",
+   "what": "Visitors read an insult to their faction; goodwill change capped per visit so one trader never recharges the same wall",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/GraffitiSocial.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "bar visitors_read_without_recharging in the loop close"
+  },
+  {
+   "id": "inv_raid_marks",
+   "what": "Raiders tag walls on their way out (exit tagger on Lord.GotoToil), going-over (a mark painted over another), a raid's standing mark troubles the colony until the wall is retaken",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs",
+    "src/RimMandrake/Graffiti/Source/GraffitiPool.cs",
+    "src/RimMandrake/Graffiti/Source/GraffitiJobUtility.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md",
+    "infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:GRAFFITI_FRAMEWORK_BUILD_1"
+   ],
+   "proof_note": "bar raid_mark_troubles_until_retaken in the loop close; V1 live clauses A2 (raid exit) and A4 (going-over) blocked with that proof"
+  },
+  {
+   "id": "inv_breach_bias",
+   "what": "Taunt funneling: raiders bias toward breaching at a warning/taunt mark (breachLure)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml"
+   ],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FRAMEWORK_BUILD_1",
+    "ITEM:GRAFFITI_RULING_CONFORMANCE_1"
+   ],
+   "proof_note": "ruled to ship in v1 (framework item §spec); no north-star bar and no live clause measures it that I found"
+  },
+  {
+   "id": "inv_scrub_protection",
+   "what": "Devotional marks are not auto-cleaned unless ordered; own vandal marks also protected; a control mark is cleaned",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/AutoCleanProtection.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_RULING_CONFORMANCE_1"
+   ],
+   "proof_note": "live clause A6 BLOCKED: 'a mark vanished during the wait' with cleaning priority 0 (SITE attribution)"
+  },
+  {
+   "id": "inv_temperament",
+   "what": "Personality: psychopaths feel nothing, sensitive pawns feel more both ways, clean freaks take extra debuffs and can break into compulsive graffiti cleaning",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/GraffitiTemperament.cs",
+    "src/RimMandrake/Graffiti/Source/GraffitiCompulsiveClean.cs",
+    "src/RimMandrake/Graffiti/Defs/TemperamentDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Defs/MentalStateDefs_Graffiti.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "bar each_takes_it_like_themselves in the loop close; GRAFFITI_TEMPER_RETHINK_RACES_BRING_TRAITS open for later race traits"
+  },
+  {
+   "id": "inv_wall_loss",
+   "what": "Paint dies with its wall",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/WallLossPatch.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "approved",
+   "source": [
+    "OWNER:1794069857392075931",
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "ruled by card 2026-11-07; not a north-star bar; ralph/DONE.md (loop clone) not read, so a loop proof may exist unrecorded here"
+  },
+  {
+   "id": "inv_settings",
+   "what": "Mod settings: painting on/off, paint interval, viewer reaction, breach bias, raid exit tagging, auto-clean protection, social layer, social messages (8)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
+   ],
+   "proof_note": "bar stands_alone_and_obeys_settings in the loop close; see contradiction c_site_settings"
+  },
+  {
+   "id": "inv_standalone",
+   "what": "Works alone: RM tier, generic to any RimWorld game, without an ideoligion, survives saving; campaign marks live in neighbours",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Graffiti/About/About.xml"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "scope": "approved",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:GRAFFITI_GENERIC_MARKS_1"
+   ],
+   "proof_note": "bar stands_alone_and_obeys_settings in the loop close"
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "src/RimMandrake/Graffiti",
+   "covered_by": "inv_mark_on_wall"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+   "covered_by": "inv_social_layer"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_FRAMEWORK_BUILD_1",
+   "covered_by": "inv_spree"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_GENERIC_MARKS_1",
+   "covered_by": "inv_standalone"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_LINKED_MARK_FIX_1",
+   "covered_by": "inv_mark_on_wall"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_NORTHSTAR_WIRED_1",
+   "not_a_capability": "rewrote the proof script validation.py and added northstar_site.py (test harness, audited in script_audit)"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_PUNK_IDEOLIGION_SCOPE_1",
+   "covered_by": "inv_ideo_sigils"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_RULING_CONFORMANCE_1",
+   "covered_by": "inv_scrub_protection"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_SIGIL_COVERAGE_CHECK_1",
+   "covered_by": "inv_ideo_sigils"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_SPREE_MINOR_FINDINGS_1",
+   "covered_by": "inv_spree"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_VANDAL_ART_REGEN_1",
+   "covered_by": "inv_mark_art_set"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_VARIANT_COUNTS_1",
+   "covered_by": "inv_mark_art_set"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_WALL_LINKED_CROP_1",
+   "covered_by": "inv_mark_on_wall"
+  },
+  {
+   "ref": "ITEM:GRAFFITI_WARNGLYPH_INUNIVERSE_1",
+   "covered_by": "inv_mark_art_set"
+  },
+  {
+   "ref": "infrastructure/state/live_proofs/GRAFFITI_NORTHSTAR_GREEN_FULL_1.txt",
+   "covered_by": "inv_mark_art_set"
+  },
+  {
+   "ref": "infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt",
+   "covered_by": "inv_ideo_sigils"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_vandal_signage",
+   "status": "open",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT",
+    "infrastructure/state/live_proofs/GRAFFITI_NORTHSTAR_GREEN_FULL_1.txt"
+   ],
+   "text": "The loop's close (2026-11-08, b967d9e9cb) says all 22 bars are proven, including mark_carries_no_earth_signage. GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT (still proposed) and GRAFFITI_NORTHSTAR_GREEN_FULL_1 (BLOCKED, last 2026-11-06, before the landing) say vandal_0 (hazard bolt) and vandal_1 (prohibition sign) fail it. Unsettled: whether the landed art still carries them. Settle by looking at the shipped vandal_0/vandal_1 (a measurement, not a question for him)."
+  },
+  {
+   "id": "c_proof_home",
+   "status": "open",
+   "source": [
+    "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST",
+    "ITEM:RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+    "ITEM:RIMMANDRAKE_STOP_FILLING_GRAFFITI_REFUSED_AT_ITS_GATE",
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "text": "The 22 bars were proven in the loop clone (ralph/DONE.md on branch ralph/graffiti, evidence on D:\\ClaudeWork), but the mod's own script claims none of 12 validated must-show lines, so modcheck refuses every Graffiti run and SteveDesktop records INVALID jobs. Proven once by hand is not re-provable by the pipeline: a build item at stage 3, not a question."
+  },
+  {
+   "id": "c_site_settings",
+   "status": "open",
+   "source": [
+    "src/RimMandrake/Graffiti/northstar_site.py",
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs"
+   ],
+   "text": "northstar_site.py preflight checks 6 settings at shipped defaults; the mod has 8 (socialEnabled, socialMessagesEnabled unchecked), so a site with the social layer off passes preflight. Script gap for stage 3."
+  }
+ ],
+ "script_audit": [
+  {
+   "script": "src/RimMandrake/Graffiti/validation.py",
+   "scenes": "placed-mark galleries per def set, painter lanes, spree and joy paint, toggles",
+   "start": "partial: carves a site and places runs; no assertion of wall material, light or prior filth beyond the run",
+   "control": "present for never_reads_as_dirt (Filth_Dirt placed beside each run); absent for social, raid and settings rows",
+   "restore": "absent: chain state is restored for compat rows only; no scene-begin/scene-end recovery",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "scenes": "A1-A8: read, raid exit, sigil, going-over, hostile thought, scrub, designator choice, soft-Ideology load",
+   "start": "present: each clause rebuilds its own 20x12 walled site at map centre",
+   "control": "present in A6 (enemy Vandal control is cleaned while own and Devotional are not); absent elsewhere (A2 raid exit has no no-raid control, A4 no un-overpainted control)",
+   "restore": "absent",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/Graffiti/northstar_full.py",
+   "scenes": "the full and small rungs of the north-star driver",
+   "start": "preflight via northstar_site.py (map size, DLC, settings, weather)",
+   "control": "absent",
+   "restore": "absent",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/Graffiti/northstar_site.py",
+   "scenes": "site preconditions",
+   "start": "misses the two social settings (c_site_settings)",
+   "control": "n/a",
+   "restore": "n/a",
+   "hold": "n/a"
+  }
+ ],
+ "failure_modes": [
+  "Proven once, unprovable after: the 22 bars were proven by hand in a loop clone, while the mod's own script claims none of 12 must-show lines, so every pipeline run is refused and any later change to Graffiti (the Star Wars reskin, a race trait, an engine fix) ships with nothing able to say whether it broke the wall.",
+  "It reads as dirt or Earth signage, not punk graffiti: the face of the mod is the art at play zoom; a hazard bolt or prohibition sign, tidy pictograms, or a mark that is mush at 64 px makes it look like a decal pack, and the stat (beauty, skill) disagrees with the picture.",
+  "The social layer becomes a tax or noise in a real colony: proven on staged sites over short runs, never in a lived-in colony across weeks, so mood, opinion and grudges may stack into a permanent mood tax, a message stream, or fights from nothing; and personality and visitor rules quietly stop matching when race traits arrive."
+ ]
+}
