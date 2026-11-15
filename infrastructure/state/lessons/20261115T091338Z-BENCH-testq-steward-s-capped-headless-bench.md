@@ -1,0 +1,1 @@
+The testq steward's capped headless BENCH sessions end with their claimed item still 'doing' (lease released, claim not), so each one reopens wrapup.debris_standing; clear with rimflow reclaim <ID>, then wrapup.py sweep. The steward prompt should reclaim or block its item before exiting.
