@@ -32,14 +32,14 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::ground_deep_ash",
    "start": [
-    "fresh Pyrelands map, clear weather at noon (asserted, hour read); a save made there (ashground_noon)"
+    "fresh Pyrelands map on a seed and tile that rolls at least one standing-water body (asserted: the terrain census counts water cells above 0 before any other read; a map with none is regenerated on the next seed, never passed), clear weather at noon (asserted, hour read); a save made there (ashground_noon)"
    ],
-   "action": "census the terrain; capture open ground; where the map rolled water, read its shore ring; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour; reload ashground_noon, hold clear weather for the same half-day and read ProbeAsh and light at the same clock hours",
-   "expect": "deep ash on most cells, soil and gravel only in pockets, a mud and rich-soil ring round any standing water (a map with none is correct); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain",
+   "action": "census the terrain; capture open ground; where the map rolled water, read its shore ring; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour; reload ashground_noon, hold clear weather for the same half-day and read ProbeAsh and light at the same clock hours; at local noon (hour asserted between 10h and 14h) take a capture pair at play zoom of ten ash-laden cells carrying ember grass (ProbeAsh depth above 0 asserted on each): one as they lie, one after their sand-grid depth is cleared (ClearAsh)",
+   "expect": "deep ash on at least 0.85 of open-land cells (validation.py DEEP_ASH_MIN, bar pyre_ground_deep_ash), soil and gravel only in pockets, and every standing-water body ringed: the land cells next to its shore read mud or rich soil (GenStep_PyrelandsStandingWater's ring); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain; in the capture pair, the as-they-lie capture shows the ash cover on the ground (PyrelandsAshCover, SectionLayer_PyrelandsAsh) and the ash dust on the plants (PyrelandsAshDust), and a judge shown the pair unlabelled names which is which",
    "control": {
-    "case": "the same map's clear-weather run from ashground_noon over the same clock hours; the forced ash fall from ashground_noon again with ash-fall accumulation (ashfallAccumulationEnabled) off; the clear-weather half-day again with ambient ash (ambientAshEnabled) off, and a vanilla arid shrubland quicktest map read by the same census and capture",
-    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; with accumulation off the ash fall banks no more ProbeAsh depth than the clear-weather run; with ambient ash off no ash blows and none banks; the vanilla map shows no deep ash and no blowing ash",
-    "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome"
+    "case": "the same map's clear-weather run from ashground_noon over the same clock hours; the forced ash fall from ashground_noon again with ash-fall accumulation (ashfallAccumulationEnabled) off; the clear-weather half-day again with ambient ash (ambientAshEnabled) off, and a vanilla arid shrubland quicktest map read by the same census and capture; the same seed and tile regenerated with the roster toggle (PyrelandsMechanicsGate) off, so GenStep_PyrelandsStandingWater and GenStep_PyrelandsGreenRing return before they act; for the drawing, the same ten cells with their sand-grid depth cleared in the second capture of the pair",
+    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; with accumulation off the ash fall banks no more ProbeAsh depth than the clear-weather run; with ambient ash off no ash blows and none banks; the vanilla map shows no deep ash and no blowing ash, and its shores read vanilla shore terrain with no mud and rich-soil ring; the toggle-off map rolls no mud and rich-soil ring; the depth-cleared capture shows no ash cover and no plant dust",
+    "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome, and vanilla shore terrain passing for the standing-water ring, and an ash look drawn whatever the depth (a map-wide tint) passing for the ash cover and dust"
    },
    "restore": "destroy the vanilla control map; on the Pyrelands map remove the loose ash laid by the forced ash fall and restore the weather chooser",
    "hold": "immediate",
@@ -128,6 +128,32 @@
    "live_command": "modcheck run Pyrelands --chains embergrass_regrow"
   },
   {
+   "id": "sc_roof_withers",
+   "kind": "acceptance",
+   "requirement": [
+    "grass_carpets_and_regreens"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::roof_withers",
+   "entry_point_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "start": [
+    "fresh Pyrelands map, the roster toggle (PyrelandsMechanicsGate) on (asserted from the settings read), weather locked Clear and no fire within 20 cells of the pads (asserted: fire count 0 there)",
+    "two 5x5 patches of mature ember grass on deep ash, 3 cells apart, plant count and each plant's hit points recorded; a roof built over patch A only (asserted: every A cell Roofed, no B cell Roofed)"
+   ],
+   "action": "read each patch's live ember-grass count, each plant's hit points and its inspect line every game hour for two days; then stage the same pair again with the roster toggle (PyrelandsMechanicsGate) off and read it the same way",
+   "expect": "the roofed ember grass withers under the roof (CompWithersUnderRoof): its plants lose hit points each hour, show the RM_WithersUnderRoof inspect line and are gone within about a day (all gone by hour 36); the unroofed patch keeps every plant; no fire touched either patch at any read; log clean",
+   "control": {
+    "case": "the unroofed patch B beside it over the same hours; and the same roofed and unroofed pair with the roster toggle (PyrelandsMechanicsGate) off",
+    "expect": "patch B keeps its plants; with the toggle off neither patch loses a plant over the two days (vanilla kills nothing under a roof)",
+    "rules_out": "grass killed by the build, by fire or by the heat passing for the roof withering, and a wither that is not CompWithersUnderRoof's doing"
+   },
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (none), remove the test roof, restore the roster toggle and unlock the weather",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains roof_withers"
+  },
+  {
    "id": "sc_scorchfruit",
    "kind": "acceptance",
    "requirement": [
@@ -178,6 +204,33 @@
    "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
    "live_run": "UNRUN",
    "live_command": "modcheck run Pyrelands --chains plant_census"
+  },
+  {
+   "id": "sc_herd_thirst",
+   "kind": "acceptance",
+   "requirement": [
+    "populations_are_the_biomes_own"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::herd_thirst",
+   "entry_point_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "start": [
+    "fresh Pyrelands map on the composed list with FlowWorks active (asserted: the RM_Thirst need resolves), the roster toggle (PyrelandsMechanicsGate) on, MapComponent_PyrelandsHerdThirst present (asserted)",
+    "every wild herd's RM_Thirst level recorded at the first read, animal by animal and herd by herd",
+    "a native herd (4 RM_Ullai, asserted to carry RM_ThirstGrassWateredExtension) and a vanilla herd animal group (4 Muffalo, asserted to carry RM_Thirst and no such extension) spawned at equal distance from one water body, each with its RM_Thirst level set equal; colony vitals and pending incidents recorded"
+   ],
+   "action": "read every test animal's RM_Thirst level each game hour for three days; over seven game days read each wild herd's arrivals within 2 cells of water by the hour; record vitals and incidents again at the end",
+   "expect": "the ullai's RM_Thirst falls at most a third as fast as the muffalo's under the same water access (the patch sets about 0.05 a day); the wild herds start at different RM_Thirst levels herd by herd, near-equal within a herd; no two herds are at the water in the same hour over the seven days (a window with no arrival reads UNMEASURED, never PASS); no native dehydrates; vitals and incidents unchanged; log clean",
+   "control": {
+    "case": "the muffalo group, a vanilla herd animal with the same water access; and a same-seed fresh map with the roster toggle (PyrelandsMechanicsGate) off, where MapComponent_PyrelandsHerdThirst returns before it staggers the herds' starting thirst",
+    "expect": "the muffalo's RM_Thirst falls at FlowWorks' ordinary rate; on the toggle-off map the wild herds start at one shared level and their water visits overlap",
+    "rules_out": "a herd that never got thirsty passing for the slow thirst, and herds that drink apart by chance passing for the staggered visits"
+   },
+   "restore": "despawn the test ullai and muffalo; the maps are disposable quicktest maps and are destroyed after",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains herd_thirst"
   },
   {
    "id": "sc_ruins",
@@ -335,18 +388,22 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::no_ordinary_rain",
    "start": [
-    "the Pyrelands map; weather chooser running normally"
+    "the Pyrelands map; weather chooser running normally",
+    "a weather-forcing game condition available to the scene: GameCondition_ForceWeather (the weather controller's) with its forced weather set to Rain (asserted: the condition's weather reads Rain)"
    ],
-   "action": "read the biome's weather list and the weathers chosen over a compressed season",
-   "expect": "no ordinary rain listed or chosen",
+   "action": "read the biome's weather list and the weathers chosen over a compressed season; then start that GameCondition_ForceWeather with forced weather Rain on the map and read the current weather once the weather has changed, and again an hour later",
+   "expect": "no ordinary rain listed or chosen; under the forced-Rain condition the weather the map gets is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain)",
    "control": {
-    "case": "the same reader on a vanilla temperate map",
-    "expect": "reports ordinary rain chosen",
-    "rules_out": "a weather reader that never sees rain at all"
+    "case": "the same reader on a vanilla temperate map; the same forced-Rain GameCondition_ForceWeather on the vanilla temperate map",
+    "expect": "reports ordinary rain chosen; there the forced condition yields Rain",
+    "rules_out": "a weather reader that never sees rain at all, and a forced-weather check that never asked for Rain"
    },
    "restore": "the compressed season cannot be put back cell by cell: the scene runs on a disposable quicktest map made for it, saved at scene-begin, and destroyed at the end; nothing else is touched",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains no_ordinary_rain"
   },
   {
    "id": "sc_walk",
@@ -540,15 +597,18 @@
     "no fire anywhere on the pad (asserted: fire count 0)",
     "burrow switch and dome switch on"
    ],
-   "action": "strike the ashwallow once with a Burn hit (heat category, lights nothing); read ProbeDome 5 ticks after, 60 ticks after, and once the hold has run out",
-   "expect": "not domed before; domed (RM_Burrowed, job RM_Burrow) within 5 ticks of the hit; the dome graphic drawn at +60; surfaced again after the hold with no fire near",
+   "action": "strike the ashwallow once with a Burn hit (heat category, lights nothing); read ProbeDome 5 ticks after, 60 ticks after, and once the hold has run out; at +60, with the pawn on screen at play zoom, read ProbeDome's bodyGraphic and capture the domed ashwallow; once it has surfaced, read bodyGraphic again and capture it standing",
+   "expect": "not domed before; domed (RM_Burrowed, job RM_Burrow) within 5 ticks of the hit; at +60 the body draws the dome sprite: ProbeDome's bodyGraphic reads the race's domeTexPath (Things/Pawn/Animal/Pyrelands/Ashwallow/AshwallowDome) while domed and the standing Ashwallow body after it surfaces, and the two paths differ; a judge shown the two captures unlabelled tells the domed one from the standing one; surfaced again after the hold with no fire near",
    "control": {
     "case": "the same animal and the same Burn hit with the dome switch (burrowDomeOnHeatHit) off",
     "expect": "no RM_Burrowed and no RM_Burrow job after the hit",
     "rules_out": "a dome sprite drawn all the time, or an ordinary lie-down or flee reaction to being hurt passing for the dome stance"
    },
    "restore": "despawn the ashwallow, restore the dome and burrow switches; the pad was never lit",
-   "hold": "immediate"
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains heat_dome"
   },
   {
    "id": "sc_fire_dusts_ash",
@@ -610,17 +670,21 @@
    "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
    "start": [
     "the giant switch (furnaceBeastGiant) on at load (asserted from the settings read)",
-    "a furnace-beast and an ullai spawned on a cleared pad"
+    "a furnace-beast and an ullai spawned on a cleared pad",
+    "the roster read returns at least the nine native kinds of inv_animal_roster (asserted: a roster that reads fewer is a blind instrument, not a pass)"
    ],
-   "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size, and both pawns' body sizes",
-   "expect": "live body size 6 and the giant draw sizes, the beast more than three times the ullai's 1.8",
+   "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size; read the same for every RM_Pyrelands roster kind (the biome's resolved wild animals, the patch-added cast included, read through biome_probe, never the BiomeDef XML); read both pawns' body sizes",
+   "expect": "live body size 6 and the giant draw sizes; the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs; the beast more than three times the ullai's 1.8",
    "control": {
     "case": "RM_PyrelandsGiants' classic restore invoked with the giant switch (furnaceBeastGiant) off (static call, no reload)",
     "expect": "live body size back to the classic 3.2 and the classic draw sizes",
     "rules_out": "a size read that only echoes the XML file, rather than the game's live def that the switch changes"
    },
    "restore": "re-run the giant patch with the switch on so the live defs read giant again, despawn both pawns",
-   "hold": "immediate"
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains ullai_and_giant"
   },
   {
    "id": "sc_foreign_arrivals",

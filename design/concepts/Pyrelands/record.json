@@ -500,10 +500,11 @@
    ],
    "parts_covered_by": {
     "by": [
+     "sc_roof_withers",
      "sc_walk",
      "sc_populations"
     ],
-    "why": "parts: grass withering under a new roof (sc_walk raises one), the wild-plant allowlist (sc_populations' on/off pair)"
+    "why": "parts: grass withering under a new roof (sc_roof_withers: a roofed patch against the unroofed one beside it, and both with the roster toggle off; sc_walk raises a room in play), the wild-plant allowlist (sc_populations' on/off pair)"
    }
   },
   {
@@ -568,10 +569,11 @@
     "by": [
      "sc_foreign_arrivals",
      "sc_populations",
+     "sc_herd_thirst",
      "sc_walk",
      "sc_flamefang_venom"
     ],
-    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts against a same-seed map with the genstep's gate off), the slow thirst and one-at-a-time water visits (sc_walk), the venom bite tool (sc_flamefang_venom)"
+    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts against a same-seed map with the genstep's gate off), the slow thirst and one-at-a-time water visits (sc_herd_thirst: the ullai against a vanilla muffalo with the same water, and the herds' staggered starts against a toggle-off map; sc_walk in play), the venom bite tool (sc_flamefang_venom)"
    }
   },
   {
@@ -613,7 +615,7 @@
      "sc_ash_ground",
      "sc_three_skies"
     ],
-    "why": "parts: wet roots (sc_ash_watered: the strips held above the crop's maxOptimalGrowthTemperature and each strip's Plant.GrowthRateFactor_Temperature read daily is the cooler-roots read, its control the watered-lift switch, the same gate), the standing-water ring (sc_ash_ground), ash depth and its drawing (sc_ash_ground, sc_three_skies)"
+    "why": "parts: wet roots (sc_ash_watered: the strips held above the crop's maxOptimalGrowthTemperature and each strip's Plant.GrowthRateFactor_Temperature read daily is the cooler-roots read, its control the watered-lift switch, the same gate), the standing-water ring (sc_ash_ground, on a map asserted to hold water, against vanilla shores and a toggle-off map), ash depth (sc_ash_ground, sc_three_skies) and its drawing as ground cover and plant dust (sc_ash_ground's noon capture pair against the same cells with their depth cleared)"
    }
   },
   {
@@ -807,7 +809,7 @@
    "source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
    ],
-   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_burrowers_dive; heat_dome has no walk bar; dome sprite is the standing body until art lands",
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_burrowers_dive; heat_dome has no walk bar; the dome sprite is its own art (AshwallowDome_north/south/east, drawn on the body and wired by domeTexPath 2026-10-15, adf45e2103), drawn while RM_Burrowed holds",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
    ]
@@ -869,7 +871,14 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_ashfall_darkens_drifts, pyre_cinderfall_distinct, pyre_blackrain_reads, pyre_cannot_ordinary_rain. cinderfall/blackrain rows compare def fields, not what he sees",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_three_skies",
+     "sc_no_rain"
+    ],
+    "why": "parts: the three skies, their drawing and their effects (sc_three_skies), no ordinary rain on the list or chosen, and a game condition's forced Rain turned to black rain (sc_no_rain, against the same condition yielding Rain on a vanilla map)"
+   }
   },
   {
    "id": "inv_firebreak_firefoam",

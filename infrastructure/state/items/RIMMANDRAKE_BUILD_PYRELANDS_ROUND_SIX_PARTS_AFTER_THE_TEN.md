@@ -18,6 +18,12 @@ The table below is the work list (scene, entry point, owed parts, gap). It is fi
 | sc_walk | walk_season | the Mod enabled master (pyrelandsEnabled) off a day then on: front, ProbeAsh, bed fires | g4 |
 | sc_scorchfruit | scorchfruit_fire_born | a second fresh burn with scorchFruitEnabled off reads 0 fruit | g4 |
 | sc_ash_ground | ground_deep_ash | ash fall again with ashfallAccumulationEnabled off; clear half-day with ambientAshEnabled off | g4 |
+| sc_roof_withers | validation.py::roof_withers (NEW chain) | whole scene: roofed and unroofed ember-grass patches read hourly for 2 days, again with PyrelandsMechanicsGate off | g5 |
+| sc_herd_thirst | validation.py::herd_thirst (NEW chain) | whole scene: needs FlowWorks; RM_Thirst hourly on 4 ullai vs 4 muffalo, wild herds' starting levels, 7-day water arrivals by herd, toggle-off same-seed map | g5 |
+| sc_ash_ground | ground_deep_ash | seed/tile asserted to roll water (regenerate on none); shore ring read; toggle-off regeneration; vanilla shore read; noon capture pair as-they-lie vs ClearAsh | g6, g7 |
+| sc_no_rain | no_ordinary_rain | a GameCondition_ForceWeather forced to Rain on the Pyrelands map and on the vanilla control; read the weather after the change and an hour later | g8 |
+| sc_heat_dome | heat_dome | ProbeDome bodyGraphic at +60 and after surfacing; two captures at play zoom for a judge | g9 |
+| sc_furnace_giant | ullai_and_giant | body and draw size of every resolved roster kind (biome_probe), margin asserted | g10 |
 
 ## Acceptance test
 

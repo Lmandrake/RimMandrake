@@ -198,7 +198,7 @@ def g8(c):
     t = words(s.get("start"), s.get("action"), s.get("expect"))
     need("GameCondition_ForceWeather" in t and "PyrelandsNoOrdinaryRain" in t, "sc_no_rain does not force Rain through a game condition", e)
     need("yields Rain" in words(s.get("control")), "sc_no_rain control does not show the same condition yields Rain on vanilla", e)
-    need("forced" in words(c.leaves["no_ordinary_rain"].get("scenario")).lower(), "leaf no_ordinary_rain scenario omits forced weather", e)
+    need("force rain" in words(c.leaves["no_ordinary_rain"].get("scenario")).lower(), "leaf no_ordinary_rain scenario omits forced weather", e)
     return e
 
 
@@ -207,10 +207,13 @@ def g9(c):
     s = c.scene("sc_heat_dome")
     ex = words(s.get("expect"))
     need("the dome graphic drawn at +60" not in ex, "sc_heat_dome still accepts 'the dome graphic drawn'", e)
-    need("graphic path" in ex and "differ" in ex, "sc_heat_dome does not require the domed and standing graphic paths to differ", e)
+    need("bodyGraphic" in ex and "AshwallowDome" in ex and "differ" in ex,
+         "sc_heat_dome does not require the domed body graphic (AshwallowDome) to differ from the standing one", e)
     need("capture" in words(s.get("action")), "sc_heat_dome takes no capture of the domed animal", e)
-    art = s.get("owed_art_item")
-    need(bool(art) and c.item_exists(art), "sc_heat_dome names no filed dome-art build item (owed_art_item)", e)
+    tex = os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "Pyrelands", "Ashwallow")
+    need(all(os.path.exists(os.path.join(tex, "AshwallowDome_%s.png" % f)) for f in ("north", "south", "east")),
+         "the dome sprite AshwallowDome_* the scene reads is not on disk", e)
+    need("dome sprite is the standing body" not in words(c.rec), "record.json still says the dome sprite is the standing body", e)
     return e
 
 

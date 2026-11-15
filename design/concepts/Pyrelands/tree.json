@@ -254,7 +254,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
+   "oracle_proposed": "live RM_FurnaceBeast body size 6, at least twice every other roster kind's, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -361,7 +361,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "no ordinary rain on the list; none chosen over the season",
+   "oracle_proposed": "no ordinary rain on the list; none chosen over the season; a game condition forcing Rain brings black rain, not Rain",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": "ordinary rain falling on a Pyrelands map",
    "wall_expect_h": null,
@@ -373,9 +373,10 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player never sees ordinary rain fall on a Pyrelands map; its only wet weather is black rain.",
-   "scenario": "Read the biome's weather commonalities and the weathers chosen over a compressed season.",
+   "scenario": "Read the biome's weather commonalities and the weathers chosen over a compressed season. Then force Rain through a weather-forcing game condition and read the weather the map gets.",
    "false_pass": [
-    "the season ran with weather forced off"
+    "the season ran with weather forced off",
+    "the forced-weather case asks for a weather that is not Rain"
    ],
    "red": "ordinary rain is on the biome's weather list or is ever chosen",
    "tier_proposed": "quicktest",
