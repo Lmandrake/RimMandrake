@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "mod": "ExplosiveKnockback",
+  "version": "0.1.0",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-14T12:45:00-08:00",
+  "since_from": "the earliest journal heading naming it: Stage 3 (\"reconcile\") done offline (rm-builder, detached, offline only)",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Stage 3 (\"reconcile\") done as far as it goes offline, 2026-11-14 12:45 PST. Preflight re-run:",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 97196907,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/ExplosiveKnockback/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 184111,
+      "usd": 6.3,
+      "usd_from": "the run's own words",
+      "wall_s": 1565,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794558096 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 2414644,
+      "usd": 9.2,
+      "usd_from": "the run's own words",
+      "wall_s": 1995,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794592461 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 1112400,
+      "usd": 3.1,
+      "usd_from": "the run's own words",
+      "wall_s": 720,
+      "cap_usd": 20.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794599583 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer",
+        "preflight"
+      ],
+      "tokens": 1645334,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1214,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794683669 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
+      "kind": "measured"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 3668301,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1881,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794687322 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
+      "kind": "measured"
+    }
+  ]
+}

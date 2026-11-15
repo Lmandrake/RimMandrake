@@ -102,7 +102,7 @@ Which of the allowed lower stages is "the lowest that can show it" is judgment: 
 | intake | Refused while no mod's record has reached his walk [HIS, card 2026-11-14, decision 8]. | After that, `--owner-said` is required: how waiting mods enter is "asked of him again at that point". |
 | designer | `VERSION.json` state is locked and its version is the record's [CARRIED, Design Versions: locked on his word]. | none |
 | preflight | A preflight record exists for this version. | If it refuses: `--steward-confirms` saying why the refusals left are offline-build work, not a spec fault. No common preflight program exists yet, and the throwaway ones do not mark which refusals are build work (spec build order item 3). |
-| offline build | Every bar in the test table has every deciding test runnable today (`every_decider_runnable_today`), and the table is for this version [HIS by agreement, the lock rule item 3]. | "Every offline check passes" and "the builder's list of what it could not test" are shown, not enforced: both are [PROPOSAL] in the spec's Stage 3 exit row. |
+| offline build | Every bar in the test table has every deciding test runnable today (`every_decider_runnable_today`), and the table is for this version [HIS by agreement, the lock rule item 3]. | "Every offline check passes" and "the builder's list of what it could not test" are shown, not enforced: both are [PROPOSAL] in the spec's Stage 3 exit row. A bar flagged not runnable that his Stage 8 look (`LOOK_STAGE8`) helps decide needs `--steward-confirms` that its other checks run: the throwaway table scripts disagree on whether that look counts (Pyrelands' leaves it out, Gimme Some Slack's counts it as never runnable). |
 | blind challenge, first time | At least one cycle ran. | `--steward-confirms` naming the blind judge's run and verdict: the exit ("every offline bar green, the judge found no Problem") is [PROPOSAL], and no verdict file format exists yet. |
 | blind challenge, a 4th cycle | Refused without `--conductor-decision`, which is written as a `CONDUCTOR INTERVENED (stage 4+5, ..., kind decision)` line [HIS, 2026-11-13: "a fourth judge never starts on its own"]. | The decision itself is the Conductor's. Whether a road back from in-game acceptance restarts the count is not ruled; the spine counts per visit and keeps a total. |
 | in-game acceptance | none | `--steward-confirms`: no common row format for in-game verdicts exists across mods. |
@@ -184,8 +184,9 @@ the pass record. Each gets a slice after one mod has gone through it by hand and
    mod has entered it, so nothing after offline build can be tested by a program.
 2. **A common preflight that tags refusals as build work or spec faults** (spec build order item 3): until it exists the
    preflight exit needs the steward's word.
-3. **Whether every offline check must pass to leave offline build** ([PROPOSAL] in the Stage 3 exit row): today the gate
-   is only "every check runs".
+3. **What "every bar has a check that runs" means for one table schema** ([PROPOSAL] in the Stage 3 exit row for
+   "passes"): whether every offline check must also pass, and whether his Stage 8 look counts as a check that must run.
+   One common `make_test_table` would settle the second; today it is a hand step.
 4. **Does a road back from in-game acceptance reset the three-cycle count?** Not ruled; the spine counts per visit.
 5. **What counts as a release candidate** (open question 13): the spine counts arrivals at the pre-human check only.
 6. **Dispatch's sharing of the two games** between mods at in-game acceptance: not designed.

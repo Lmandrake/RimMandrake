@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "mod": "PyrelandsMechanics",
+  "version": "0.1.0",
+  "stage": "intake",
+  "stage_label": "ideas waiting (Intake)",
+  "since": "UNMEASURED",
+  "since_from": "no dated journal heading names it",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "version file (no journal yet)",
+    "stage_line": "held at intake: not started: waits for Pyrelands 0.1.0 to pass; stays out of test mod lists until then",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 4193729,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/PyrelandsMechanics/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "mod": "GimmeSomeSlack",
+  "version": "0.1.0",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-14T12:40:00-08:00",
+  "since_from": "the earliest journal heading naming it: Stage 3 (reconcile) begins; batch 1: lock re-pinned, FlowWorks tier, preflight def hole",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Stage 3 done 2026-11-14 3:40 PM PST, offline only. Preflight: 0 refusals (2 before this run:",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 12561376,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/GimmeSomeSlack/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer",
+        "preflight"
+      ],
+      "tokens": 1995920,
+      "usd": 5.6,
+      "usd_from": "the run's own words",
+      "wall_s": 1504,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-gimmesomeslack-offli-1794684282 (item RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 4076314,
+      "usd": 10.7,
+      "usd_from": "the run's own words",
+      "wall_s": 2872,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-gimmesomeslack-offli-1794687332 (item RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 4719108,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 4333,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-slacken-gss-short-leads-unde-1794696278 (item RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR)",
+      "kind": "measured"
+    }
+  ]
+}

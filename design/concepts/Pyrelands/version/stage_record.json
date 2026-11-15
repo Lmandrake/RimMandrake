@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "mod": "Pyrelands",
+  "version": "0.1.0",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-14T12:40:00-08:00",
+  "since_from": "the earliest journal heading naming it: Stage 3 (offline build, as reconcile) done by hand (rm-builder, detached, offline only)",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Stage 3 (\"reconcile\") done offline 2026-11-14 12:40 PST. Preflight re-run 2026-11-14 14:32:",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 11949013,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/Pyrelands/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer",
+        "preflight"
+      ],
+      "tokens": 1764761,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1136,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794684315 (item RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 2846344,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1596,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794687328 (item RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured"
+    }
+  ]
+}
