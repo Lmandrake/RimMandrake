@@ -33,6 +33,7 @@ namespace RimMandrake.ExplosiveKnockback
             public Func<Scene, string> verdict;
             public Action restore;
             public Dictionary<string, IntVec3> atBlast;     // spared_states: each thing's cell just after the blast (visit 1)
+            public Dictionary<string, IntVec3> preBlast;    // spared_states: each thing's cell on the blast's tick, before it
         }
 
         private static readonly Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
@@ -1902,7 +1903,8 @@ namespace RimMandrake.ExplosiveKnockback
                         Item(s, "pitstack", "Steel", 10, O(s, -2, 1));
                         Pawn carrier = Colonist(s, "carrier", O(s, 0, 1), drafted: false);
                         Pawn carried = Colonist(s, "carried", O(s, 0, 2), drafted: false);
-                        carrier.carryTracker.TryStartCarry(carried);
+                        carried.health.AddHediff(HediffDefOf.Anesthetic);   // the scene's "carrying a downed pawn" (visit 1)
+                        carrier.carryTracker.TryStartCarry(carried, 1, reserve: false);   // the count overload despawns it (SplitOff)
                         Thing bed = Build("Bed", O(s, 1, -2), "WoodLog");
                         Pawn sleeper = Colonist(s, "sleeper", bed.Position, drafted: false);
                         sleeper.jobs.StartJob(JobMaker.MakeJob(JobDefOf.LayDown, bed), JobCondition.InterruptForced);
@@ -1916,38 +1918,60 @@ namespace RimMandrake.ExplosiveKnockback
                         // blast, so the carry starts in the blast's own action; each spared thing's cell is read 8 ticks after it
                         // (atBlast), since a skipped animal wanders and a woken sleeper gets up before the 300-tick verdict
                         var atBlast = new Dictionary<string, IntVec3>();
-                        // the carry is re-pinned every tick from +55 to +64 and read on each tick of the blast's spread (+60 to +64)
+                        // the carry is re-pinned every tick from +55 to +64 and read on each tick of the blast's spread (+60 to +64);
+                        // from +55 to +68 the spared pawns' own walking is stopped (pather.StopDead), and each spared thing's cell
+                        // just before the blast (+60) is compared with its cell at +68: the blast's effect alone
                         s.numbers["carryingAtBlast"] = 1;
-                        for (int d = 55; d <= 64; d++)
+                        var before = new Dictionary<string, IntVec3>();
+                        string[] spared = { "big", "pit", "pitstack", "carrier", "sleeper", "corpse" };
+                        for (int d = 55; d <= 68; d++)
                         {
                             int dd = d;
                             RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + dd, () =>
                             {
-                                if (carrier.carryTracker.CarriedThing != carried && carried.Spawned)
+                                foreach (string k in spared)
                                 {
-                                    carrier.carryTracker.TryStartCarry(carried);
+                                    if (s.things[k] is Pawn sp && sp.Spawned && k != "sleeper")
+                                    {
+                                        sp.pather?.StopDead();
+                                    }
                                 }
-                                if (dd >= 60 && carrier.Spawned && carrier.carryTracker.CarriedThing != carried)
+                                if (dd < 60 && sleeper.Spawned && !sleeper.InBed() && !bed.Destroyed)   // it got up once in 3 runs (visit 1)
+                                {
+                                    sleeper.jobs.StartJob(JobMaker.MakeJob(JobDefOf.LayDown, bed), JobCondition.InterruptForced);
+                                }
+                                if (dd <= 64 && carrier.carryTracker.CarriedThing != carried && carried.Spawned)
+                                {
+                                    carrier.carryTracker.TryStartCarry(carried, 1, reserve: false);   // the count overload despawns it (SplitOff)
+                                }
+                                if (dd >= 60 && dd <= 64 && carrier.Spawned && carrier.carryTracker.CarriedThing != carried)
                                 {
                                     s.numbers["carryingAtBlast"] = 0;
                                 }
                                 if (dd == 60)
                                 {
+                                    foreach (string k in spared)
+                                    {
+                                        if (s.things[k].Spawned)
+                                        {
+                                            before[k] = s.things[k].Position;
+                                        }
+                                    }
                                     Blast(s.o, 2.9f);
+                                }
+                                if (dd == 68)
+                                {
+                                    foreach (string k in spared)
+                                    {
+                                        if (s.things[k].Spawned)
+                                        {
+                                            atBlast[k] = s.things[k].Position;
+                                        }
+                                    }
                                 }
                             }));
                         }
-                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 68, () =>
-                        {
-                            foreach (string k in new[] { "big", "pit", "pitstack", "carrier", "sleeper", "corpse" })
-                            {
-                                Thing t = s.things[k];
-                                if (t.Spawned)
-                                {
-                                    atBlast[k] = t.Position;
-                                }
-                            }
-                        }));
+                        s.preBlast = before;
                         s.atBlast = atBlast;
                     }
                     s.verdict = sc =>
@@ -1968,7 +1992,8 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             Thing t = sc.things[kv.Key];
                             bool skip = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == kv.Value);
-                            bool stayed = sc.atBlast != null && sc.atBlast.TryGetValue(kv.Key, out IntVec3 atBlast) ? atBlast == sc.starts[kv.Key] : kv.Key == "carrier";
+                            bool stayed = sc.atBlast != null && sc.atBlast.TryGetValue(kv.Key, out IntVec3 atBlast)
+                                ? sc.preBlast != null && sc.preBlast.TryGetValue(kv.Key, out IntVec3 pre) && atBlast == pre : kv.Key == "carrier";
                             ok &= skip && stayed && ForThing(sc, "launch", t).Count == 0;
                             sb.Append(kv.Key).Append(skip ? " " + kv.Value : " NO " + kv.Value).Append(stayed ? "" : " MOVED").Append("; ");
                         }
@@ -2042,8 +2067,23 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "the colonist's current job is not a haul of the stack";
                         }
-                        // one cell from the planned landing O(4,0): three cells out it cannot arrive inside a ~25-tick flight (visit 1)
-                        Pawn w = Colonist(s, "w", O(s, 4, 1), drafted: true);
+                        // one cell from the planned landing O(4,0), a colonist of at least 4.4 cells/s, ordered there now: three cells
+                        // out, or ordered at the launch line, it cannot arrive inside a ~17-tick flight (visit 1, 2026-11-15)
+                        Pawn w = null;
+                        for (int i = 0; i < 8; i++)
+                        {
+                            w = Colonist(s, "w", O(s, 4, 1), drafted: true);
+                            if (w.GetStatValue(StatDefOf.MoveSpeed) >= 4.4f)
+                            {
+                                break;
+                            }
+                            w.Destroy();
+                        }
+                        if (w.Destroyed)
+                        {
+                            return "no colonist of move speed 4.4 in 8 tries";
+                        }
+                        w.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, O(s, 4, 0)));
                         Pawn tp = Colonist(s, "tp", O(s, -4, 4), drafted: true);
                         Map m0 = Map;
                         for (int d = 1; d <= 900; d++)
@@ -2062,7 +2102,10 @@ namespace RimMandrake.ExplosiveKnockback
                                     s.numbers["plannedX"] = to.x;
                                     s.numbers["plannedZ"] = to.z;
                                     s.numbers["launchTick"] = dd;
-                                    w.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, to));
+                                    if (to != O(s, 4, 0))   // re-ordering restarts the walker's step: it then arrives on the landing tick
+                                    {
+                                        w.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, to));
+                                    }
                                 }
                                 if (!p.Spawned && p.ParentHolder is PawnFlyer f && f.def == RM_KnockbackDefOf.RM_PawnFlyer_Knockback && s.numbers.ContainsKey("plannedX"))
                                 {
@@ -2094,6 +2137,10 @@ namespace RimMandrake.ExplosiveKnockback
                                     IntVec3 c = tp.Position + new IntVec3(3, 0, 0);
                                     tp.DeSpawn();
                                     GenSpawn.Spawn(tp, c, m0);
+                                    if (tp.drafter != null)
+                                    {
+                                        tp.drafter.Drafted = true;   // respawned undrafted, it hauled the dropped stack itself (visit 1)
+                                    }
                                 }
                                 if (dd >= 4 && dd <= 7 && (!tp.Spawned || tp.ParentHolder is PawnFlyer))
                                 {

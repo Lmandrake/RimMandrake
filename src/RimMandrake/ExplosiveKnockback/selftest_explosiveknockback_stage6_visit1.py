@@ -6,9 +6,18 @@ scene read it wrong. Read from the C# source, since the scenes only run in a gam
      animal wandered and a woken sleeper got up: "MOVED" with the right skip line and no launch)
   S2 spared_states starts the carry inside the blast's own scheduled action and is INVALID when the carrier is not carrying
      at the blast (an undrafted carrier with no job had dropped its pawn in the 60 ticks before it)
-  A1 pawn_arc's walker starts one cell from the planned landing (three cells away it cannot arrive inside a ~25-tick flight)
+  A1 pawn_arc's walker is a colonist of 4.4 cells/s one cell from the planned landing, ordered there at staging and not
+     re-ordered at the launch line (three cells away, or re-ordered, it arrives on or after the landing tick)
+  A2 pawn_arc re-drafts its teleport control after the debug respawn: respawned undrafted it hauled the colonist's dropped
+     stack itself, so the thrown colonist found it reserved and went to other work (rehaul=False)
   W1 the sweep's flyingGoods lane owns C (corpses): flyingGoods off skips corpses with flying_off
      (RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED), so C changing there is its own outcome, not drift
+  J1 MOD: a colonist thrown mid-haul goes back to that haul on landing. HaulToCell is not suspendable, so MakeFlyer's
+     captured queue is empty and the stack is dropped at takeoff; vanilla's landing override then re-hauled it on 1 of 3
+     runs (2026-11-15). The haul is remembered before MakeFlyer (RememberHaul) and re-issued on landing, its reservations
+     asked first (a pawn that took the dropped stack mid-flight keeps it); with it, 3 of 3 (bar pawn_flight_arc, "the
+     pawn go back to what it was doing")
+  S3 spared_states carries the downed pawn with the count overload: TryStartCarry(thing) cannot take a spawned pawn
   W2 the sweep's gas-goods stack lies inside the seeded cloud (radius 1 at O(-5,-5)), so a burst always reaches it; two
      cells out it was reached on 13 of 18 lanes and the default lane's "still" read as drift on the rest
 
@@ -48,8 +57,9 @@ def main():
           and "carrier was not carrying" in sp,
           "spared_states starts the carry in the blast's scheduled action and is INVALID when the carrier is not carrying")
     pa = case(proof, "pawn_arc")
-    check("A1", re.search(r'Colonist\(s, "w", O\(s, 4, 1\)', pa) is not None,
+    check("A1", re.search(r'Colonist\(s, "w", O\(s, 4, 1\)', pa) is not None and "if (to != O(s, 4, 0))" in pa,
           "pawn_arc's walker starts one cell from the planned landing O(4,0)")
+    check("A2", "tp.drafter.Drafted = true" in pa, "pawn_arc re-drafts the teleport control after its respawn")
     fg = re.search(r'\["flyingGoods"\] = Lane\(([^\n]*)\),', three)
     check("W1", fg is not None and '"C"' in fg.group(1) and 'obs["C"].StartsWith("skip:flying_off")' in three,
           "the flyingGoods lane owns C and checks the corpse's flying_off skip")
@@ -58,6 +68,14 @@ def main():
     inside = bool(gg and seed) and max(abs(int(gg.group(1)) - int(seed.group(1))),
                                        abs(int(gg.group(2)) - int(seed.group(2)))) <= int(seed.group(3))
     check("W2", inside, "the sweep's gas-goods stack lies inside the seeded cloud")
+    fl = open(os.path.join(src, "RM_PawnFlyerPatches.cs"), encoding="utf-8").read()
+    mc = open(os.path.join(src, "RM_MapComponent_Knockback.cs"), encoding="utf-8").read()
+    rem = mc.find("RememberHaul(p)")
+    check("J1", "static void RememberHaul(" in fl and 0 <= rem < mc.find("PawnFlyer.MakeFlyer(") and "JobMaker.MakeJob(orig.def" in fl
+          and "p.CanReserve(target)" in fl and fl.find("p.CanReserve(target)") < fl.find("jobs.StartJob(haul"),
+          "the haul is remembered before MakeFlyer and re-issued on landing, its reservations asked before StartJob")
+    check("S3", re.search(r"TryStartCarry\(carried, 1", sp) is not None and re.search(r"TryStartCarry\(carried\)", sp) is None,
+          "spared_states carries the downed pawn with TryStartCarry(thing, count)")
     print("%s stage6 visit1 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))
     return 0 if not fails else 1
 

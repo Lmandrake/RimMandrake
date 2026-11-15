@@ -1017,6 +1017,7 @@ namespace RimMandrake.ExplosiveKnockback
             ThingDef def = RM_KnockbackDefOf.RM_PawnFlyer_Knockback;
             int lo = Mathf.Max(0, RimMandrakeExplosiveKnockbackSettings.landingStunMin);
             def.pawnFlyer.stunDurationTicksRange = new IntRange(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.landingStunMax));
+            RM_Patch_PawnFlyer_KnockbackLanding.RememberHaul(p);    // back to its haul after landing (bar pawn_flight_arc)
             PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: true);
             if (flyer == null)
             {
