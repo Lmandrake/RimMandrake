@@ -70,7 +70,8 @@ def static_checks():
             seen_rm += len(re.findall(r"<defName>RM_Khorrak<|>RM_Khorrak<|<RM_Khorrak[ >]", txt))
             for m in dead.finditer(txt):
                 stale.append("%s: %s" % (os.path.relpath(os.path.join(root, f), SRC), m.group(0)))
-    check("sanity probe: the src walk sees RM_Khorrak", seen_rm >= 5, seen_rm)
+    # 4 since ee7c219b70 retired the RUT_ twin biome that rostered it: the ThingDef, the PawnKindDef and its race, Long Shade's roster
+    check("sanity probe: the src walk sees RM_Khorrak", seen_rm >= 4, seen_rm)
     check("no def/type use of the retired RSW_Khorrak / RSW metal eater remains", not stale, stale[:5])
 
     proj = read(CBS, "RM_CreatureBehaviors.csproj")
