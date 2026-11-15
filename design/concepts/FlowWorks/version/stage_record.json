@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-14T23:49:31-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-15T03:42:04-08:00",
   "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
@@ -34,6 +34,22 @@
         "every_bar_has_a_check_that_runs",
         "table_version",
         "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-15T03:42:04-08:00",
+      "by": "CONDUCTOR",
+      "why": "Blind challenge cycle 1 exit met by the program's reading after a neutral reconcile (18b41519f3) and the sprinkler exact-fit fix (4b37a37db9); night order of 2026-11-15",
+      "confirmed": {
+        "steward_confirms": "Read the judge's report, the neutral fixer's and the sprinkler fixer's: 5 offline bars green (8 deciders rerun PASS), all 6 Problems fixed and shown red on the parent and green on the fix by the fixer's own runs, the one remaining lane-1 FAIL (sprinkler one cell short on an exact fit) was fixed instead of moved to Polish (lane 1 now 43 PASS, 0 FAIL), the judge's two loosened blind tests were both right, the pit-cover check now reads the compiled signature. Owed to Stage 6: 7 UNSETTLED game-side rows, the three planted faults no offline test caught, the overflow sheet shipped off until live acceptance."
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "steward_confirms"
       ]
     }
   ],
