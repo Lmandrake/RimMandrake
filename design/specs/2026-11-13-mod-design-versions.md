@@ -1,6 +1,6 @@
 # Mod Design Versions: a target that holds still long enough to pass
 
-**Status: DRAFT for Mandrake's review, 2026-11-13. Not a ruling. Nothing here is built.**
+**Status: DRAFT for Mandrake's review, 2026-11-13. Not a ruling, except the numbering, which he ruled (`design/RimMandrake/standing_rulings.md`, "Mod Design Versions use Semantic Versioning").** Built: the version folder (`VERSION.json`, `vision.md`, `bars.md`, `polish.md`, `next_version/`) for the four locked mods, read by `maturation.py`, `designer_stage.py` and `maturation_now.py`. Not built: the pass record. (Corrected 2026-11-15: this line said "Nothing here is built".)
 
 ## 1. His words (verbatim, 2026-11-13, typed to the Conductor)
 
