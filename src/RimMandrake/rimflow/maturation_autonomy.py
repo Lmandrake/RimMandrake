@@ -218,6 +218,12 @@ def designer_chain(mod, now):
     day = RL.day_of(now)
     n = sum(v for k, v in (rs.get("chain_day") or {}).items() if isinstance(v, int) and str(k).startswith(day + " ")
             and os.path.basename(os.path.normpath(str(k).split(" ", 1)[1])) == mod)
+    # past the cap a stage not chained today still chains (role_launch.chain_ask: the cap brakes loops, not forward
+    # stages), so the cap holds a concept only once the Dispatcher has refused it today (chain_cap_said)
+    said = any(str(k).startswith(day + " ") and os.path.basename(os.path.normpath(str(k).split(" ", 1)[1])) == mod
+               for k in rs.get("chain_cap_said") or [])
+    if n >= cap and not said and n < 2 * cap:
+        return None
     return n, cap
 
 

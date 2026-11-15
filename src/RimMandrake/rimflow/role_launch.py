@@ -2146,7 +2146,17 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
     cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
-    if counts.get(key, 0) >= cap:
+    # The cap brakes loops, not progress (RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP: on 2026-11-15
+    # Graffiti met it at stage 3 and the Conductor pressed stages 3, 4 and 5 by hand): a stage this concept has not
+    # been chained at today is forward progress and is chained past the cap, up to twice the cap; a stage chained
+    # before is a return, and past the cap that is the loop the alarm names.
+    stages = {k: list(v) for k, v in (rs.get("chain_stages_day") or {}).items() if k.startswith(day + " ")}
+    # (the stage history must cover every chained run of the day: counts with no history, as on the day this landed,
+    # prove nothing about progress and keep the plain cap)
+    forward = (counts.get(key, 0) >= cap and stage is not None and str(stage) not in stages.get(key, [])
+               and len(stages.get(key, [])) == counts.get(key, 0) and counts.get(key, 0) < 2 * cap)
+    rs["chain_stages_day"] = stages
+    if counts.get(key, 0) >= cap and not forward:
         said = [k for k in rs.get("chain_cap_said") or [] if str(k).startswith(day + " ")]
         rs["chain_day"] = counts
         if key in said:
@@ -2165,8 +2175,11 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     if isinstance(pending, dict) and pending.get("concept") == concept:
         return None                               # already asked for: the pending request runs this stage
     counts[key] = counts.get(key, 0) + 1
+    stages.setdefault(key, []).append(str(stage))
     req = {"at": now, "by": "Dispatcher", "mode": mode, "concept": concept, "chained_from": chained_from,
-           "why": "chain: %s, stage %s ready" % (cause, stage)}
+           "why": "chain: %s, stage %s ready%s" % (cause, stage, (
+               "; delegated: past the daily chain cap of %d on forward progress (stage %s not chained today, run %d "
+               "of at most %d)" % (cap, stage, counts[key], 2 * cap)) if forward else "")}
     if cfg.get("runner"):
         req["runner"] = cfg["runner"]
     if reasons:

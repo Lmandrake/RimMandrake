@@ -139,6 +139,30 @@ def test_daily_cap():
           "the cap is per concept")
 
 
+def test_cap_brakes_loops_not_forward_stages():
+    """RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP: on 2026-11-15 Graffiti met the cap of 8 at stage 3 and
+    the Conductor pressed stages 3, 4 and 5 by hand. A stage not chained today is forward progress, not a loop."""
+    rs = {}
+    cfg = dict(RL.ROLE_DEFAULTS, **dict(designer_row(), chain_max_per_day=2))
+    for i in range(2):
+        harvest(rs, {"stage": i + 1, "status": "ready"}, unit="u%d" % i, cfg=cfg)
+        rs.pop("run_now", None)
+    acts = harvest(rs, {"stage": 3, "status": "ready"}, unit="u3", cfg=cfg)
+    req = rs.pop("run_now", None)
+    check(req is not None and not [a for a in acts if a["do"] == "alarm"] and "past the daily chain cap" in req["why"],
+          "at the cap, a stage not chained today is chained (forward progress) and says so: %r" % (req,))
+    acts = harvest(rs, {"stage": 3, "status": "ready"}, unit="u4", cfg=cfg)
+    check("run_now" not in rs and [a.get("kind") for a in acts if a["do"] == "alarm"] == ["role:Designer:chain_cap"],
+          "the same stage again past the cap is a loop: not chained, one alarm")
+    rs2 = {}
+    for i in range(4):
+        harvest(rs2, {"stage": i + 1, "status": "ready"}, unit="v%d" % i, cfg=cfg)
+        rs2.pop("run_now", None)
+    acts = harvest(rs2, {"stage": 5, "status": "ready"}, unit="v9", cfg=cfg)
+    check("run_now" not in rs2 and [a.get("kind") for a in acts if a["do"] == "alarm"] == ["role:Designer:chain_cap"],
+          "twice the cap is the backstop: even a new stage is not chained past it")
+
+
 def sweep_decide(rows, roles_state=None, cfg_over=None, now=None):
     """One Dispatcher decide over a Designer-shaped role (disabled, chain_stages) whose concepts reader returns rows
     (concept, stage.json, pending-since epoch or None). -> (state, acts, opened concepts)."""
@@ -314,7 +338,7 @@ def sweep_with(fn, rows, extra):
 
 
 def main():
-    for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap,
+    for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap, test_cap_brakes_loops_not_forward_stages,
               test_orphan_sweep, test_rejected_sweep, test_parked_record):
         t()
     print("selftest_designer_chain: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
