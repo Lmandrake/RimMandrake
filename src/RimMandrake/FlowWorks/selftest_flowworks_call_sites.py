@@ -250,7 +250,7 @@ SITES = [
          "D3: the crop timer kills the plant"),
     Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"private void Effects\(\)"], [r"SoakApi\( map , soakCells , IrrigateTicks \)"],
          "D3: soaked water irrigates"),
-    Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"public long Offer\("], [r"TellOverflowOnce\( origin , from , fluid \)"],
+    Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"public long Offer\([^)]*\bbool force\)"], [r"TellOverflowOnce\( origin , from , fluid \)"],
          "the first spill on a map says so"),
     Site("OVF3", "Sheet/RM_SheetPatches.cs", [r"public static void Postfix\("], [r"RM_MapComponent_Sheet\.PathCostAt\( __instance\.map , c \)"],
          "the path grid adds the wading cost"),
