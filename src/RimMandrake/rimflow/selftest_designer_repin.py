@@ -29,6 +29,7 @@ import designer_stage as DS  # noqa: E402
 
 REPO = DS.REPO
 SRC = "design/concepts/Pyrelands"
+STATE_AT = "249d86c35e"   # stage.json and VERSION.json as the 2026-11-14 refusal found them (the live ones move on)
 FILES = ("record.json", "tree.json", "sheet.md", "scenes.json", "floor.json", "exam.json")
 ITEM = "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS"
 ADVANCE = "RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT"
@@ -85,9 +86,9 @@ def fixture():
     git(root, "config", "user.email", "selftest@example.invalid")
     git(root, "config", "user.name", "selftest")
     with open(os.path.join(d, "stage.json"), "wb") as f:
-        f.write(real("HEAD", SRC + "/stage.json"))
+        f.write(real(STATE_AT, SRC + "/stage.json"))
     with open(os.path.join(d, "version", "VERSION.json"), "wb") as f:
-        f.write(real("HEAD", SRC + "/version/VERSION.json"))
+        f.write(real(STATE_AT, SRC + "/version/VERSION.json"))
     with open(os.path.join(root, CT.OWNER_SHARD), "w", encoding="utf-8") as f:
         f.writelines(owner_lines())
     shas = {}
