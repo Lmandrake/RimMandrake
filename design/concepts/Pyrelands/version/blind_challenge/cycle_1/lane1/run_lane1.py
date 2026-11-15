@@ -88,7 +88,7 @@ def def_rows(src):
     # firebreak and lightning breaker stay excised (shipped files, not the mod's own selftests)
     hits_fb, hits_br = [], []
     for p in glob.glob(os.path.join(src, "**", "*"), recursive=True):
-        if os.path.isdir(p) or "/SelfTest/" in p or p.endswith((".py", ".dll", ".png", ".pdb", ".srchash")) or "/obj/" in p or "/bin/" in p:
+        if os.path.isdir(p) or "/SelfTest/" in p or p.endswith((".py", ".pyc", ".dll", ".png", ".pdb", ".srchash")) or "/__pycache__/" in p or "/obj/" in p or "/bin/" in p:
             continue
         try:
             t = open(p, encoding="utf-8", errors="replace").read()
@@ -105,6 +105,13 @@ def def_rows(src):
                     "Firebreak.xml %s; other 'firebreak' mentions (item-name comments excepted): %s" % ("present" if fbfile else "absent", sorted(set(hits_fb)) or "none")))
     rows.append(row("def_lightning_breaker_stays_excised", ["inv_lightning_breaker"], "fixed", not hits_br, 1,
                     "breaker/fulgurite in shipped files: %s" % (sorted(set(hits_br)) or "none")))
+    # no ordinary rain: the chooser postfix is compiled and aimed at WeatherDecider.ChooseNextWeather (RAIN_FIX_FORCED_WEATHER_SKIPS_THE_LIST)
+    csproj = open(os.path.join(src, "Source/FireEcologyHook.csproj")).read()
+    pf = os.path.join(src, "Source/PyrelandsNoOrdinaryRain.cs")
+    pt = open(pf).read() if os.path.exists(pf) else ""
+    wired = 'Include="PyrelandsNoOrdinaryRain.cs"' in csproj and '"ChooseNextWeather"' in pt and "RainBecomesBlackRain(" in pt and "__result = blackRain" in pt
+    rows.append(row("rain_chooser_postfix_wired", ["no_ordinary_rain", "inv_weather"], "fixed", wired, 1,
+                    "PyrelandsNoOrdinaryRain.cs %s, compiled: %s" % ("present" if pt else "absent", 'Include="PyrelandsNoOrdinaryRain.cs"' in csproj)))
     # sand shovel
     sand = dd.get(("TerrainDef", "RM_FE_Ground_Sand"), (None,))[0]
     ext = sand.find("modExtensions/li") if sand is not None else None

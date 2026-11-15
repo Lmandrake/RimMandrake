@@ -403,7 +403,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 int idx = RM_BurnKernel.HistoryIndexAgo(ticks, now, ago);
                 int spec = -1;
                 for (int i = 0; i < ticks.Count; i++) if (ticks[i] <= now - ago) spec = i;
-                if (spec < 0 && ticks.Count > 0) spec = 0;
+                // HERD_ANCHOR_FIX_FALLS_BACK_TO_FRESH_ASH: no sample old enough is no anchor (the old spec fell back to the oldest)
                 Check(idx == spec, $"history lookup {idx}, spec {spec}");
                 // rite
                 Check(RM_BurnKernel.RiteRoll(true, 0.32f, 0.33f) && !RM_BurnKernel.RiteRoll(true, 0.33f, 0.33f) && !RM_BurnKernel.RiteRoll(false, 0f, 1f), "RiteRoll boundary");
@@ -684,8 +684,8 @@ namespace RimMandrake.Pyrelands.Fuzz
                     int fb_at = RM_BurnKernel.HistoryIndexAgo(fb_hTicks, fb_now, fb_lag);
                     Check(fb_at >= 0 && fb_hCells[fb_at] == 1, $"after the backdate the {fb_lag}-tick-old anchor is burn {(fb_at >= 0 ? fb_hCells[fb_at] : -1)}, not the old burn A");
                     Check(fb_hCells[fb_hCells.Count - 1] == 2, "the fresh burn B was not recorded after the backdate");
-                    // without the backdate both burns are minutes old and the fallback (the oldest sample) is still A: the drive's
-                    // discriminating read is the backdated one, where B is also present and NOT chosen
+                    // without the backdate both burns are minutes old and there is no anchor at all (no sample is lag-old): the
+                    // drive's discriminating read is the backdated one, where B is also present and NOT chosen
                     float fb_herdToA = 50f + (float)(r.NextDouble() * 80.0);
                     Check(RM_BurnKernel.FollowBurnDecision(true, true, fb_herdToA, fb_settle, fb_rad) == RM_FollowBurnAction.GoAnchor, "a herd 50+ cells from the anchor stayed");
                 }

@@ -128,7 +128,7 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Where the burn was about <paramref name="ticksAgo"/> ago: the newest sample at least that
-        /// old, else the oldest sample kept (the freshest black we know of), else Invalid. Samples past
+        /// old, else Invalid (a burn younger than that is never the answer: HERD_ANCHOR_FIX_FALLS_BACK_TO_FRESH_ASH). Samples past
         /// BurnHistoryKeepTicks are pruned first (BURN_HISTORY_FIX_ANCHOR_NEVER_AGES), so a long-fireless map answers Invalid.</summary>
         public IntVec3 BurnCenterAgo(int ticksAgo)
         {

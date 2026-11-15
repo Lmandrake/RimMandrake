@@ -51,7 +51,7 @@ static class BlindLane1
     static int Main()
     {
         Fertility(); Probe(); Sweeps(); BurnLine(); AshGround(); Fruit(); Hawk(); Rewards(); Furnace(); Burrow(); Ullai();
-        Allowlist(); Ruins(); NotKernelRows();
+        Allowlist(); Ruins(); Rain(); NotKernelRows();
         foreach (var l in Out) Console.WriteLine(l);
         return fails > 0 ? 1 : 0;
     }
@@ -689,6 +689,23 @@ static class BlindLane1
             && !RM_FireEcoKernel.IsScorchableRuin(false, false, true, true) && !RM_FireEcoKernel.IsScorchableRuin(true, false, false, false)
             && RM_FireEcoKernel.RuinScorchLays(false, "RM_FE_Ground_Soil") && !RM_FireEcoKernel.RuinScorchLays(true, "RM_FE_Ground_Soil") && !RM_FireEcoKernel.RuinScorchLays(false, RM_FireEcoKernel.DeepAshDefName);
         Row("ruin_subjects_and_footprint", bars, "fixed", r, 7, "unowned destroyable artificial buildings only; deep ash laid on any non-water footprint not already ash");
+    }
+
+    // ================================================================ no_ordinary_rain (added in lane 2, cycle 1: RAIN_FIX_FORCED_WEATHER_SKIPS_THE_LIST)
+    static void Rain()
+    {
+        var bars = B("no_ordinary_rain", "inv_weather");
+        // vanilla's forced-weather pick (isBad && canOccurAsRandomForcedEvent: RainyThunderstorm, FoggyRain) and Odyssey's WetClimate
+        // mutator (Rain, RainyThunderstorm, FoggyRain) choose off the biome list; on a Pyrelands map every one must become black rain
+        string[] offList = { "Rain", "FoggyRain", "RainyThunderstorm", "TorrentialRain" };
+        string[] keep = { "RM_FE_BlackRain", "DryThunderstorm", "Fog", "BloodRain", "ToxRain", "SnowHard", "Clear", "RM_FE_Weather_AshFall", null };
+        bool ok = offList.All(w => RM_FireEcoKernel.RainBecomesBlackRain(w, true, true))
+            && keep.All(w => !RM_FireEcoKernel.RainBecomesBlackRain(w, true, true))
+            && offList.All(w => !RM_FireEcoKernel.RainBecomesBlackRain(w, false, true))
+            && offList.All(w => !RM_FireEcoKernel.RainBecomesBlackRain(w, true, false))
+            && RM_FireEcoKernel.BlackRainDefName == "RM_FE_BlackRain";
+        Row("forced_or_mutator_rain_becomes_black_rain", bars, "fixed", ok, offList.Length * 3 + keep.Length,
+            "on a Pyrelands map with the gate on, Rain/FoggyRain/RainyThunderstorm/TorrentialRain become black rain; black rain, dry storms, fog, blood/tox rain, snow stay; other maps and gate off untouched");
     }
 
     static void NotKernelRows()

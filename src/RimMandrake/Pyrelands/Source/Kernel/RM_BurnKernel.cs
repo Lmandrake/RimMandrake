@@ -75,7 +75,10 @@ namespace RimMandrake.Pyrelands
             return dropped;
         }
 
-        /// <summary>Index of the newest sample at least ticksAgo old, else the oldest sample, else -1.</summary>
+        /// <summary>Index of the newest sample at least ticksAgo old, else -1. HERD_ANCHOR_FIX_FALLS_BACK_TO_FRESH_ASH: it used to
+        /// fall back to the oldest sample, so on a map whose every burn was younger than the lag (the first two days of every fresh
+        /// map, the opening front) the ullai anchor was a burn an hour old and the herd walked into fresh ash (bar
+        /// ullai_graze_old_burns: "not to fresh ash"). No sample old enough now answers no anchor: the herd stays on ash.</summary>
         public static int HistoryIndexAgo(IList<int> ticks, int now, int ticksAgo)
         {
             int cutoff = now - ticksAgo;
@@ -86,7 +89,7 @@ namespace RimMandrake.Pyrelands
                     return i;
                 }
             }
-            return ticks.Count > 0 ? 0 : -1;
+            return -1;
         }
 
         /// <summary>RM_JobGiver_FollowBurn's decision once its chance roll has passed (PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER): with a burn

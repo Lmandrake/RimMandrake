@@ -196,6 +196,20 @@ namespace RimMandrake.Pyrelands
             clear = clearWeight - ashDrift;
         }
 
+        /// <summary>RAIN_FIX_FORCED_WEATHER_SKIPS_THE_LIST (bar no_ordinary_rain): the vanilla wet weathers that are ordinary rain. The
+        /// biome's list holds none, but two vanilla roads choose a weather off that list: a game condition's forced weather (Royalty's
+        /// weather controller picks any isBad weather, RainyThunderstorm and FoggyRain among them) and a tile mutator's commonality
+        /// (Odyssey's WetClimate adds Rain, RainyThunderstorm and FoggyRain). Anomaly's blood rain and toxic rain are not ordinary.</summary>
+        public static readonly string[] OrdinaryRainDefNames = { "Rain", "FoggyRain", "RainyThunderstorm", "TorrentialRain" };
+        public const string BlackRainDefName = "RM_FE_BlackRain";
+
+        /// <summary>Does the weather the decider just chose become black rain? Only an ordinary rain, only on a Pyrelands map, only
+        /// with the mechanics gate on (Mod enabled, Baroque Biomes toggle); every other choice stands.</summary>
+        public static bool RainBecomesBlackRain(string chosenDefName, bool pyrelandsMap, bool gateOn)
+        {
+            return gateOn && pyrelandsMap && chosenDefName != null && Array.IndexOf(OrdinaryRainDefNames, chosenDefName) >= 0;
+        }
+
         /// <summary>RM_PyrelandsSettings.MechanicsOn: this mod's own master switch AND, when the Baroque Biomes shell is loaded, its
         /// "Pyrelands" roster toggle (biome_mod_unification_spec.md §5 arm 2). No shell (the standalone mod) = the master alone.</summary>
         public static bool MechanicsOn(bool modMaster, bool shellPresent, bool shellOn)
