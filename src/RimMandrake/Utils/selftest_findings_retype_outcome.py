@@ -9,7 +9,8 @@ queue_dir()), publishes the table into a temp dir and asks findings_fold.no_outc
   R1 the instances: STEVE_LANE_SYNC_REFUSED_5E2C71 (retyped RESOLVED_LANE_HEALTHY) and the three steve-targeted FlowWorks
      FAILs of 2026-11-05 (routed by decide) have an outcome;
   R2 the class: every finding whose name carries a later retype out of the finding types reads with an outcome;
-  R3 the class: every finding whose signature a decision names reads with an outcome;
+  R3 the class: every finding whose signature a decision names, dated at or before that decision, reads with an outcome
+     (a later repeat is the fold's relapse rule's: news once its item is built, validated or terminal);
   R0 the instrument sees: >10000 events, >100 findings, >100 done records, else exit 2 (a blind 0 is not a pass).
 Replay an instance with `--drop-retype NAME` (its retypes withheld) or `--drop-decide NAME` (the decisions on its
 signature withheld): R1 must fail (exit 1).
@@ -75,8 +76,14 @@ def main(argv):
     retyped = {n for n in alarmed if last.get(n) not in rules["finding_types"]}
     _, t0 = fold(rules, done)
     sig = lambda n: (t0["raw"].get(n) or {}).get("sig")  # noqa: E731
-    decided_sigs = {d.get("sig") for d in ff.read_decisions(ff.decisions_path(rules))}
-    decided = {n for n in alarmed if sig(n) and sig(n) in decided_sigs}
+    dec_ts = {}
+    for d in ff.read_decisions(ff.decisions_path(rules)):
+        dec_ts[d.get("sig")] = max(dec_ts.get(d.get("sig"), ""), d.get("ts") or "")
+    at = lambda n: (t0["raw"].get(n) or {}).get("at") or ""  # noqa: E731
+    # a finding AFTER its decision is the fold's relapse rule's call (RELAPSE_FLOW_FIX_DIED_TWICE): covered while the item it
+    # was routed into stands proposed/ready/doing, news again once that item is built, validated or terminal
+    decided = {n for n in alarmed if sig(n) and sig(n) in dec_ts and at(n) <= dec_ts[sig(n)]}
+    repeats = {n for n in alarmed if sig(n) and sig(n) in dec_ts and at(n) > dec_ts[sig(n)]}
     keep = lambda e: True  # noqa: E731
     keep_dec = lambda d: True  # noqa: E731
     if drop_rt:
@@ -98,8 +105,8 @@ def main(argv):
     bad = sorted(decided & u)
     if bad:
         fails.append("R3 %d decided findings read untriaged: %s" % (len(bad), bad[:5]))
-    print("events %d findings %d done %d retyped %d decided %d untriaged %d%s" % (
-        len(EVENTS), len(alarm), len(done), len(retyped), len(decided), len(u),
+    print("events %d findings %d done %d retyped %d decided %d (+%d later repeats, %d of them news) untriaged %d%s" % (
+        len(EVENTS), len(alarm), len(done), len(retyped), len(decided), len(repeats), len(repeats & u), len(u),
         "".join(" %s=%s" % (k, v) for k, v in (("drop-retype", drop_rt), ("drop-decide", drop_dc)) if v)))
     for f in fails:
         print("FAIL", f)
