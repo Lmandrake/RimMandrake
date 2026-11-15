@@ -111,6 +111,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(plantedScenes > 0 && plantedCaught == plantedScenes, $"planted taut builder refused on {plantedCaught}/{plantedScenes} scenes");
             M2cSite();
             RandomBases();
+            TwinLeads();
         }
 
         // ------------------------------------------------------------------ random bases (GSS blind challenge cycle 1, gss_four 2026-11-15)
@@ -285,6 +286,60 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 }
             Check(pairs > 600 && twins == 0, $"random bases: no two equal runs side by side draw one cord (mean point gap under 0.1 cell): {twins} of {pairs} pairs, closest {minGap:0.000}");
             Console.WriteLine($"geometry: random bases {slackN} strands slack-read, {excN} long edges, bends {tally.Unforced} unforced of {tally.Bends}, twins {twins} of {pairs} (closest {minGap:0.000})");
+        }
+
+        /// <summary>Eight equal runs of length <paramref name="L"/>, generator to consumer, three cells apart, the rows in <paramref name="rows"/> only.</summary>
+        private static CordWorld EqualRuns(int L, IEnumerable<int> rows)
+        {
+            var w = new CordWorld(L + 12, 40);
+            foreach (int r in rows)
+            {
+                int z = 4 + r * 4;
+                for (int x = 5; x < 5 + L; x++) w.SetConduit(new Cell(x, z));
+                var g = new MachineInfo { Id = "g" + r, DefName = "G", Kind = MachineKind.Source, X0 = 4, Z0 = z }; g.Hookups.Add(new Cell(5, z));
+                var l = new MachineInfo { Id = "l" + r, DefName = "L", Kind = MachineKind.Consumer, X0 = 5 + L, Z0 = z }; l.Hookups.Add(new Cell(4 + L, z));
+                w.Machines.Add(g); w.Machines.Add(l); w.SetBlocked(new Cell(4, z), BlockKind.Device); w.SetBlocked(new Cell(5 + L, z), BlockKind.Device);
+            }
+            return w;
+        }
+
+        /// <summary>
+        /// cords_never_repeat across pieces (RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX): the six rooms of equal short leads the walled_residue sweep
+        /// found twinned before the twin pass (diag.py repeat 1000 --base at a264e7b55d: L3 seeds 122/141, L4 65/140, L5 176/189, gaps 0.031-0.098), each now
+        /// parted; and the pass is a pure function of the base pieces: a builder that drops the twin's partner row and brings it back draws what a cold build
+        /// draws, and the lone lead gets its base lay back.
+        /// </summary>
+        private static void TwinLeads()
+        {
+            Func<Cell, bool> live = c => true;
+            var all = Enumerable.Range(0, 8).ToList();
+            double minGap = double.MaxValue; int twins = 0, relaid = 0;
+            foreach ((int L, int seed) in new[] { (3, 122), (3, 141), (4, 65), (4, 140), (5, 176), (5, 189) })
+            {
+                var b = new CordBuilder();
+                List<LaidPiece> ps = b.Build(EqualRuns(L, all), new BuildOptions { Seed = (ulong)seed }, live)
+                    .Where(p => p.EndA != null && p.Strands.Count > 0 && p.Strands[0].Pts != null && p.Strands[0].Pts.Count >= 2).ToList();
+                relaid += b.LastTwinRelays;
+                List<double[]> fr = ps.Select(p => Frame(p.Strands[0].Pts)).ToList();
+                for (int i = 0; i < fr.Count; i++)
+                    for (int j = i + 1; j < fr.Count; j++) { double gp = Gap(fr[i], fr[j]); minGap = Math.Min(minGap, gp); if (gp < 0.1) twins++; }
+            }
+            Check(twins == 0 && relaid >= 6, $"twin leads: the six rooms that twinned draw no two leads under 0.1 cell apart: {twins} twins, closest {minGap:0.000}, {relaid} leads laid again (6+ expected)");
+            // L5 seed 189 twinned rows 3 and 5 (source:5,16 / source:5,24)
+            string Sig(IEnumerable<LaidPiece> ps) => string.Join(";", ps.Where(p => p.EndA != null).Select(p => p.Key + "=" + p.GeometryHash().ToString("x16")).OrderBy(x => x, StringComparer.Ordinal));
+            var opt = new BuildOptions { Seed = 189 };
+            var without = all.Where(r => r != 5).ToList();
+            var inc = new CordBuilder();
+            List<LaidPiece> lone = inc.Build(EqualRuns(5, without), opt, live);
+            int loneRelays = inc.LastTwinRelays;
+            List<LaidPiece> both = inc.Build(EqualRuns(5, all), opt, live);
+            int bothRelays = inc.LastTwinRelays;
+            List<LaidPiece> again = inc.Build(EqualRuns(5, without), opt, live);
+            string cold = Sig(new CordBuilder().Build(EqualRuns(5, all), opt, live)), coldLone = Sig(new CordBuilder().Build(EqualRuns(5, without), opt, live));
+            Check(bothRelays > 0 && Sig(both) == cold, $"twin leads: a builder that adds the twin's partner draws what a cold build draws ({bothRelays} laid again; equal {Sig(both) == cold})");
+            Check(loneRelays == 0 && inc.LastTwinRelays == 0 && Sig(again) == Sig(lone) && Sig(again) == coldLone,
+                  $"twin leads: with the partner gone the lead keeps its base lay, cold and incremental alike (relays {loneRelays}/{inc.LastTwinRelays}; equal {Sig(again) == Sig(lone)}/{Sig(again) == coldLone})");
+            Console.WriteLine($"geometry: twin leads, six rooms closest {minGap:0.000}, {relaid} leads laid again");
         }
 
         /// <summary>The M2c junction-battery lead, from its lab capture when one exists.</summary>

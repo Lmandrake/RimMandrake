@@ -50,6 +50,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class CordStrand
     {
+        /// <summary>This strand drawn along <paramref name="pts"/> (the twin pass's ~twin shape), its other fields shared.</summary>
+        internal CordStrand With(List<V2> pts) { var s = (CordStrand)MemberwiseClone(); s.Pts = pts; s.Lay += "+twin"; return s; }
         internal List<V2> Pts;
         /// <summary>0..1 texture phase so parallel cords do not show the same wear.</summary>
         public double S0;
@@ -126,6 +128,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal string NetTokA, NetTokB;
         internal ulong SigMemo;
         internal bool SigMemoSet;
+        /// <summary>Its first strand went through the short-lead vary passes (cords_never_repeat), so <see cref="CordBuilder"/>'s twin pass may draw it as
+        /// one of its ~twin shapes; and that strand's <see cref="CordShape.Sample"/>, made once per piece object.</summary>
+        internal bool Varied;
+        internal double[] ShapeMemo;
+        /// <summary>A varied first strand's ~twin shapes (entry t-1 from the "~twin" + t vary streams, null where that shape had more lay faults than the
+        /// lead's own), drawn with the lead so the twin pass lays nothing; and the twin pieces made of them, once per piece object.</summary>
+        internal List<V2>[] TwinPts;
+        internal LaidPiece[] TwinAlts;
+
+        /// <summary>This piece with its first strand drawn as <see cref="TwinPts"/>[<paramref name="ti"/>]: everything else shared, its own key, its memos unset.</summary>
+        internal LaidPiece TwinOf(int ti)
+        {
+            var a = (LaidPiece)MemberwiseClone();
+            a.Strands = new List<CordStrand>(Strands);
+            a.Strands[0] = Strands[0].With(TwinPts[ti]);
+            a.Key = Key + "~twin" + (ti + 1);
+            a.SigMemoSet = false;
+            a.SigMemo = 0;
+            a.ReachBox = null;
+            a.NetTokA = a.NetTokB = null;
+            a.Varied = false;
+            a.ShapeMemo = null;
+            a.TwinPts = null;
+            a.TwinAlts = null;
+            return a;
+        }
 
         public ulong GeometryHash()
         {
@@ -593,6 +621,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             var wantNow = new HashSet<string>();
             var queue = new List<LayJob>();
+            // the pieces laid or kept under this Build's key (a deferred edge's previous piece is not one): the twin pass's
+            laidBy.Clear();
             long layUntil = opt.LayBudgetMs > 0 ? t0 + (long)(opt.LayBudgetMs * System.Diagnostics.Stopwatch.Frequency / 1000.0) : long.MaxValue;
             // GPT deep review 2026-10-22 #11: a diving piece's corridor is the whole map; hash it ONCE per Build, not once per
             // cached diving edge (D x map cells). The world is only read during a Build, so the memo is exact.
@@ -623,6 +653,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (hit)
                 {
                     next[fk] = old;
+                    laidBy.Add(old);
                     outp.Add(old);
                     shownNext[ekey] = old;
                     LastReused++;
@@ -632,6 +663,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     // laid by the worker under this very key against a world whose corridor still matches: a cache hit
                     next[fk] = got;
+                    laidBy.Add(got);
                     outp.Add(got);
                     shownNext[ekey] = got;
                     LastPlanned++;
@@ -660,10 +692,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 lp.LaySig = sig;
                 lp.CorridorHash = Corridor(lp);
                 next[fk] = lp;
+                laidBy.Add(lp);
                 outp.Add(lp);
                 shownNext[ekey] = lp;
                 LastPlanned++;
             }
+            // on a complete Build only: while edges are still pending a class is short of members, and the complete Build is what a cold one draws
+            if (opt.Lay.FairBends && LastPending == 0)
+            {
+                if (twinDone && SameRefs(outp, twinIn))
+                {
+                    // every edge kept its piece: last Build's replacements, allocating nothing (an all-reused Build's 32 KB bound)
+                    foreach (var kv in twinOut) outp[kv.Key] = kv.Value;
+                    LastTwinRelays = twinOut.Count;
+                }
+                else
+                {
+                    twinIn.Clear();
+                    twinIn.AddRange(outp);
+                    twinOut.Clear();
+                    PartTwins(opt, outp);
+                    twinDone = true;
+                    (twinMemo, twinNext) = (twinNext, twinMemo);
+                    twinNext.Clear();
+                }
+            }
+            else { LastTwinRelays = 0; twinDone = false; }
             (shown, shownNext) = (shownNext, shown);
             if (opt.AsyncLay) StartLays(w, g, opt, wantNow, queue);
             long t3 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -750,6 +804,133 @@ namespace RimMandrake.GimmeSomeSlack.Core
             long t5 = System.Diagnostics.Stopwatch.GetTimestamp();
             PhInputsMs = Ms(t0, t1); PhReduceMs = Ms(t1, t2); PhEdgesMs = Ms(t2, t3); PhNodesMs = Ms(t3, t4); PhReachMs = Ms(t4, t5); PhKeyMs = Ms(0, tKey); PhCorridorMs = Ms(0, tCorr);
             return outp;
+        }
+
+        /// <summary>Below this <see cref="CordShape.Distance"/> (cells) two cords of one length class are twins to the pass below: over the bar's 0.1 (the
+        /// blind sweep reads its own 40-point frame), with margin.</summary>
+        internal const double TwinApart = 0.15;
+        /// <summary>The ~twin shapes a varied lead draws with its own, for the twin pass to choose among.</summary>
+        internal const int TwinTries = 2;
+        /// <summary>Pieces the last Build's twin pass drew as a ~twin shape (a probe count).</summary>
+        public int LastTwinRelays;
+        /// <summary>The twin pass's output per length class, memoised on the class's base pieces (by reference, in key order): the last Build's, and this one's.</summary>
+        private Dictionary<string, (LaidPiece[] bases, LaidPiece[] outs)> twinMemo = new Dictionary<string, (LaidPiece[], LaidPiece[])>(),
+                                                                          twinNext = new Dictionary<string, (LaidPiece[], LaidPiece[])>();
+
+        /// <summary>The fast path's inputs (this Build's edge pieces before the pass) and the replacements the pass made, by index; the laid set.</summary>
+        private readonly List<LaidPiece> twinIn = new List<LaidPiece>();
+        private readonly List<KeyValuePair<int, LaidPiece>> twinOut = new List<KeyValuePair<int, LaidPiece>>();
+        private readonly HashSet<LaidPiece> laidBy = new HashSet<LaidPiece>();
+        private bool twinDone;
+
+        private static bool SameRefs(IList<LaidPiece> a, IList<LaidPiece> b)
+        {
+            if (a.Count != b.Count) return false;
+            for (int i = 0; i < a.Count; i++) if (!ReferenceEquals(a[i], b[i])) return false;
+            return true;
+        }
+
+        /// <summary>A first strand's sample (made once per piece object) with its centroid and far-end x. The mean point gap is at least the gap between
+        /// the two centroids over the same four ways, so a grid of settled centroids <see cref="TwinApart"/> wide finds every pair that could be twins.</summary>
+        private sealed class TwinShape { public double[] S; public double Cx, Cz, Span; }
+        private static TwinShape ShapeOf(LaidPiece p)
+        {
+            if (p.ShapeMemo == null) p.ShapeMemo = CordShape.Sample(p.Strands[0].Pts);
+            double[] s = p.ShapeMemo;
+            int n = s.Length / 2;
+            double cx = 0, cz = 0;
+            for (int i = 0; i < n; i++) { cx += s[2 * i]; cz += s[2 * i + 1]; }
+            return new TwinShape { S = s, Cx = cx / n, Cz = Math.Abs(cz / n), Span = s[2 * (n - 1)] };
+        }
+        private sealed class TwinGrid
+        {
+            private readonly Dictionary<long, List<TwinShape>> cells = new Dictionary<long, List<TwinShape>>();
+            private static long Cell(double x, double z) => ((long)Math.Floor(x / TwinApart) << 32) ^ (uint)(int)Math.Floor(z / TwinApart);
+            private void Put(long k, TwinShape s) { if (!cells.TryGetValue(k, out var l)) cells[k] = l = new List<TwinShape>(); l.Add(s); }
+            public void Add(TwinShape s)
+            {
+                long a = Cell(s.Cx, s.Cz), b = Cell(s.Span - s.Cx, s.Cz);
+                Put(a, s);
+                if (b != a) Put(b, s);
+            }
+            /// <summary>The smallest <see cref="CordShape.Distance"/> to a settled shape, under <see cref="TwinApart"/>; else MaxValue.</summary>
+            public double Nearest(TwinShape s)
+            {
+                double m = double.MaxValue;
+                int ix = (int)Math.Floor(s.Cx / TwinApart), iz = (int)Math.Floor(s.Cz / TwinApart);
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dz = -1; dz <= 1; dz++)
+                        if (cells.TryGetValue(((long)(ix + dx) << 32) ^ (uint)(iz + dz), out var l))
+                            foreach (TwinShape o in l)
+                            {
+                                double d = CordShape.Distance(s.S, o.S);
+                                if (d < TwinApart) m = Math.Min(m, d);
+                            }
+                return m;
+            }
+        }
+
+        /// <summary>
+        /// cords_never_repeat across pieces (blind cycle 1, walled_residue: equal short leads side by side still twinned in 6 of 33600 pairs, each lead's vary
+        /// shape drawn from its own key's stream, blind to its neighbours). Per length class (<see cref="CordShape.Table"/>'s), the leads that were not varied
+        /// settle first, then each varied lead in key order: one under <see cref="TwinApart"/> of a settled lead takes the first of its ~twin shapes
+        /// (<see cref="LaidPiece.TwinPts"/>, drawn with the lead, no more lay faults than its own) that parts from them all, else the farthest. The pass
+        /// lays nothing and reads only the base pieces, so a pair that parts gets its base lay back and a complete incremental Build equals a cold one; the
+        /// twin piece carries its own key (base key + "~twin" + t, after the '#', so the mix colour holds) and is a new piece object, so a section's key and
+        /// geometry signature re-prints it. The cache keeps the base.
+        /// </summary>
+        private void PartTwins(BuildOptions opt, List<LaidPiece> outp)
+        {
+            LastTwinRelays = 0;
+            var byClass = new SortedDictionary<int, List<int>>();
+            for (int i = 0; i < outp.Count; i++)
+            {
+                LaidPiece p = outp[i];
+                if (p.EndA == null || p.Strands.Count == 0 || !laidBy.Contains(p)) continue;
+                List<V2> pts = p.Strands[0].Pts;
+                if (pts == null || pts.Count < 4 || p.PathLen < 2) continue;
+                int k = (int)Math.Round(p.PathLen / CordShape.ClassWidth) * CordShape.ClassWidth;
+                if (!byClass.TryGetValue(k, out List<int> l)) byClass[k] = l = new List<int>();
+                l.Add(i);
+            }
+            foreach (var kv in byClass)
+            {
+                List<int> ix = kv.Value;
+                if (ix.Count < 2 || !ix.Any(i => outp[i].Varied)) continue;
+                ix.Sort((a, b) => string.CompareOrdinal(outp[a].Key, outp[b].Key));
+                LaidPiece[] bases = ix.Select(i => outp[i]).ToArray();
+                string mk = opt.Seed + "|" + kv.Key + "|" + string.Join("\n", bases.Select(p => p.Key));
+                if (!twinMemo.TryGetValue(mk, out var memo) || !SameRefs(memo.bases, bases))
+                {
+                    var outs = (LaidPiece[])bases.Clone();
+                    var settled = new TwinGrid();
+                    foreach (LaidPiece p in bases) if (!p.Varied) settled.Add(ShapeOf(p));
+                    for (int k = 0; k < bases.Length; k++)
+                    {
+                        LaidPiece b = bases[k];
+                        if (!b.Varied) continue;
+                        TwinShape bs = ShapeOf(b);
+                        double bestD = settled.Nearest(bs);
+                        int bestT = -1;
+                        TwinShape bestS = bs;
+                        for (int ti = 0; ti < TwinTries && bestD < TwinApart && b.TwinPts != null; ti++)
+                        {
+                            if (b.TwinPts[ti] == null) continue;
+                            b.TwinAlts ??= new LaidPiece[TwinTries];
+                            LaidPiece alt = b.TwinAlts[ti] ??= b.TwinOf(ti);
+                            TwinShape s = ShapeOf(alt);
+                            double d = settled.Nearest(s);
+                            if (d > bestD) { bestD = d; bestT = ti; bestS = s; }
+                        }
+                        settled.Add(bestS);
+                        if (bestT >= 0) outs[k] = b.TwinAlts[bestT];
+                    }
+                    memo = (bases, outs);
+                }
+                twinNext[mk] = memo;
+                for (int k = 0; k < ix.Count; k++)
+                    if (!ReferenceEquals(memo.outs[k], bases[k])) { outp[ix[k]] = memo.outs[k]; twinOut.Add(new KeyValuePair<int, LaidPiece>(ix[k], memo.outs[k])); LastTwinRelays++; }
+            }
         }
 
         /// <summary>One cord edge's graph-only key parts (round 2): PartA + live flags + PartB + options = the cache key.</summary>
@@ -1214,20 +1395,24 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             int f = 0;
             List<V2> line = null;
-            for (int si = 0; si < p.Strands.Count; si++)
+            for (int si = 0; si < p.Strands.Count; si++) f += StrandFaults(w, e, p, p.Strands[si], si, ref line);
+            return f;
+        }
+
+        /// <summary><see cref="LayFaults"/> of one strand (<paramref name="si"/> its index; <paramref name="line"/> the edge's conduit line, read once).</summary>
+        private static int StrandFaults(CordWorld w, CordEdge e, LaidPiece p, CordStrand s, int si, ref List<V2> line)
+        {
+            int f = 0;
+            if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) return 0;
+            foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(s.Pts, s.Ties))
+                if (CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, b) == "unforced") f++;
+            if (s.OverFace || s.DiveA || s.DiveB) return f;
+            double ch = V2.Dist(s.Pts[0], s.Pts[s.Pts.Count - 1]);
+            if (ch >= 2 && Geo.Length(s.Pts) < CordSlacken.Bar * ch) f++;
+            if (si == 0)
             {
-                CordStrand s = p.Strands[si];
-                if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) continue;
-                foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(s.Pts, s.Ties))
-                    if (CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, b) == "unforced") f++;
-                if (s.OverFace || s.DiveA || s.DiveB) continue;
-                double ch = V2.Dist(s.Pts[0], s.Pts[s.Pts.Count - 1]);
-                if (ch >= 2 && Geo.Length(s.Pts) < CordSlacken.Bar * ch) f++;
-                if (si == 0)
-                {
-                    line = line ?? ConduitLine(e);
-                    if (line != null && line.Count >= 6 && CordSlacken.Excursion(s.Pts, line) < CordSlacken.MinExcursion) f++;
-                }
+                line = line ?? ConduitLine(e);
+                if (line != null && line.Count >= 6 && CordSlacken.Excursion(s.Pts, line) < CordSlacken.MinExcursion) f++;
             }
             return f;
         }
@@ -1433,6 +1618,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         double most = 1.25 * (L + prm.MaxExtra) + VaryLoopAllowance;
                         int si = piece.Strands.IndexOf(s);
                         double va = VaryPin(na, opt, isLive), vb = VaryPin(nb, opt, isLive);
+                        List<V2> pre = s.Pts;
                         List<V2> varied = CordSlacken.Slacken(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties, slackSide, 0, 0, line,
                                                               CordRng.Of(opt.Seed, "vary", key, si), maxAudits: CordSlacken.VaryAudits);
                         if (varied != null && Geo.Length(varied) <= most) { s.Pts = varied; s.Lay += "+vary"; }
@@ -1442,14 +1628,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         List<V2> looped2 = looped == null ? null : CordSlacken.VaryLoop(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties,
                                                               CordRng.Of(opt.Seed, "varyloop2", key, si), CordSlacken.VaryLoop2P, most);
                         if (looped2 != null) { s.Pts = looped2; s.Lay += "+loop"; }
+                        StepTrace?.Invoke("vary", piece.EndA, piece.EndB, s.Pts);
+                        // the first strand's ~twin shapes, the same passes from the same lay on other streams, for the twin pass to choose among (PartTwins)
+                        if (si == 0)
+                        {
+                            piece.Varied = true;
+                            piece.TwinPts = new List<V2>[TwinTries];
+                            int own = StrandFaults(w, e, piece, s, 0, ref line);
+                            for (int t = 0; t < TwinTries; t++)
+                            {
+                                string tk = key + "~twin" + (t + 1);
+                                List<V2> Q = pre;
+                                List<V2> qv = CordSlacken.Slacken(w, Q, va, vb, piece.EndA, piece.EndB, off, s.Ties, slackSide, 0, 0, line,
+                                                                  CordRng.Of(opt.Seed, "vary", tk, 0), maxAudits: CordSlacken.VaryAudits);
+                                if (qv != null && Geo.Length(qv) <= most) Q = qv;
+                                List<V2> q1 = CordSlacken.VaryLoop(w, Q, va, vb, piece.EndA, piece.EndB, off, s.Ties, CordRng.Of(opt.Seed, "varyloop", tk, 0), CordSlacken.VaryLoopP, most);
+                                if (q1 != null) Q = q1;
+                                List<V2> q2 = q1 == null ? null : CordSlacken.VaryLoop(w, Q, va, vb, piece.EndA, piece.EndB, off, s.Ties, CordRng.Of(opt.Seed, "varyloop2", tk, 0), CordSlacken.VaryLoop2P, most);
+                                if (q2 != null) Q = q2;
+                                if (Q.Count >= 4 && !ReferenceEquals(Q, pre) && StrandFaults(w, e, piece, s.With(Q), 0, ref line) <= own) piece.TwinPts[t] = Q;
+                            }
+                        }
                     }
-                    StepTrace?.Invoke("vary", piece.EndA, piece.EndB, s.Pts);
+                    StepTrace?.Invoke(piece.TwinPts != null && ReferenceEquals(s, piece.Strands[0]) ? "twin" : "vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
                 foreach (V2 p in s.Pts) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
+            // and the twin shapes, so a change under one re-lays the lead (a twin piece is only ever its base's)
+            if (piece.TwinPts != null)
+                foreach (List<V2> q in piece.TwinPts)
+                    if (q != null) foreach (V2 p in q) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
             if (x0 > x1) { x0 = x1 = e.PA.X; z0 = z1 = e.PA.Z; }
             piece.CX0 = Math.Max(0, (int)Math.Floor(x0) - 3);
             piece.CZ0 = Math.Max(0, (int)Math.Floor(z0) - 3);
