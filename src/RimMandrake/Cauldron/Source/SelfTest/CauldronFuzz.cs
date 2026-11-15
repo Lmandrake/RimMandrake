@@ -660,6 +660,55 @@ namespace RimMandrake.Cauldron.SelfTest
             return RunFamily("gas", n, baseSeed, s => GenGas(new Random(s), 10 + new Random(s ^ 77).Next(40)), RunGas);
         }
 
+        // The flame front of RM_VentGasFront on the production cells: lit counts per scan for a cloud with no surviving Fires.
+        private static List<int> FrontBurn(RM_VentGasCells c, int spark, int max, out int frontLeft, out bool tagKept)
+        {
+            var f = new RM_VentGasFront<string>();
+            bool kept = true;
+            Func<int, string, bool> ignite = (j, tag) =>
+            {
+                if (!RM_VentGasKernel.Ignites(true, c.Density[j])) return false;
+                c.Burn(j); f.Mark(j, tag); kept &= tag == "spark"; return true;
+            };
+            var perScan = new List<int> { ignite(spark, "spark") ? 1 : 0 };   // the spark: the scene's (or a dev action's) Ignite
+            for (int scan = 0; scan < 60 && f.Count > 0; scan++) perScan.Add(f.Step(c, 0, max, ignite));
+            frontLeft = f.Count; tagKept = kept;
+            return perScan;
+        }
+
+        private static RM_VentGasCells RadiusTwoCloud(int w, int cx, int cz, int amount)
+        {
+            var c = new RM_VentGasCells(w, w);
+            for (int dz = -2; dz <= 2; dz++) for (int dx = -2; dx <= 2; dx++) if (dx * dx + dz * dz <= 4) c.Add((cz + dz) * w + cx + dx, amount);
+            return c;
+        }
+
+        private static void FrontChecks()
+        {
+            var c = RadiusTwoCloud(15, 7, 7, 250);
+            Check(c.NonZero == 13, $"radius-2 cloud is 13 cells (got {c.NonZero})");
+            var scans = FrontBurn(c, 7 * 15 + 7, RM_VentGasKernel.MaxIgnitionsPerScan, out int left, out bool tag);
+            int burnt = scans.Sum(), ticks = scans.Count(n => n > 0);
+            Check(burnt == 13 && c.NonZero == 0, $"the spark burns the whole cloud with no live Fire (burnt {burnt}, left {c.NonZero}, per scan {string.Join(",", scans)})");
+            Check(burnt >= 3 && ticks >= 2 && scans[1] > 0 && scans[1] < 13, $"the cloud burns outward over scans, not all at once (per scan {string.Join(",", scans)})");
+            Check(left == 0 && tag, "the front empties once the cloud is burnt, and the instigator travels with it");
+            // a corner spark: the front reaches the far side of the cloud
+            c = RadiusTwoCloud(15, 7, 7, 250);
+            scans = FrontBurn(c, 5 * 15 + 7, RM_VentGasKernel.MaxIgnitionsPerScan, out left, out tag);
+            Check(scans.Sum() == 13 && scans.Count(n => n > 0) >= 4, $"an edge spark burns across the cloud (per scan {string.Join(",", scans)})");
+            // the per-scan cap: a capped cloud still burns out, never more than the cap in one scan
+            c = RadiusTwoCloud(15, 7, 7, 250);
+            scans = FrontBurn(c, 7 * 15 + 7, 3, out left, out tag);
+            Check(scans.Sum() == 13 && scans.Skip(1).All(n => n <= 3) && left == 0, $"a capped front still burns the cloud out (per scan {string.Join(",", scans)})");
+            // a thin gap stops the flame: two thick cells three apart with a sub-threshold cell between never chain
+            var gap = new RM_VentGasCells(5, 1); gap.Add(0, 250); gap.Add(1, 250); gap.Add(2, RM_VentGasKernel.IgniteMin - 1); gap.Add(3, 250);
+            scans = FrontBurn(gap, 0, RM_VentGasKernel.MaxIgnitionsPerScan, out left, out tag);
+            Check(scans.Sum() == 2 && gap.Density[3] == 250 && gap.Density[2] == RM_VentGasKernel.IgniteMin - 1 && left == 0, $"thin gas does not carry the flame (per scan {string.Join(",", scans)})");
+            // a spark on thin gas lights nothing
+            var thin = new RM_VentGasCells(3, 3); thin.Add(4, RM_VentGasKernel.IgniteMin - 1);
+            Check(FrontBurn(thin, 4, 40, out left, out tag).Sum() == 0 && left == 0, "a spark on thin gas lights nothing");
+        }
+
         private static void GasUnits()
         {
             int a = 100, b = 0; Check(RM_VentGasKernel.TryDiffuse(ref a, ref b) && a == 50 && b == 50, "TryDiffuse halves the difference");
@@ -698,6 +747,9 @@ namespace RimMandrake.Cauldron.SelfTest
             Check(!corner.Drift(0, 1, i => i != 1 && i != 3, null) && corner.Density[4] == 0 && corner.Density[0] == 100, "diagonal drift through a sealed corner");
             Check(!corner.Drift(0, 1, i => i != 1, null) && corner.Density[4] == 0, "diagonal drift past one wall side");
             Check(corner.Drift(0, 1, i => true, null) && corner.Density[4] == 25 && corner.Density[0] == 75, "open diagonal drift still moves a quarter");
+            // RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN: a spark in a thick radius-2 cloud burns the whole cloud with
+            // NO live Fire at all (vanilla puts out a fuel-less Fire before the next scan), outward over several scans.
+            FrontChecks();
             // CAULDRON_GAS_FIX_INT_WRAP_LATENT: a huge Add clamps to 255, never wraps negative to 0.
             var big = new RM_VentGasCells(2, 1); big.Add(0, 10);
             int bo = big.Add(0, int.MaxValue);

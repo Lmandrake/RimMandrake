@@ -13,6 +13,7 @@
 // SelfTest/CauldronFuzz.cs compiles this file alone, so it must stay free of Verse/RimWorld/UnityEngine.
 // Every number marked PROVISIONAL is a first-guess tuning value (owner, 2026-10-03: ship it, mark it, tune it live).
 using System;
+using System.Collections.Generic;
 
 namespace RimMandrake.Cauldron
 {
@@ -313,5 +314,49 @@ namespace RimMandrake.Cauldron
             cz = sz / (double)total;
             return total;
         }
+    }
+    // The burning cloud's flame front. A cell that burns passes its flame to its 3x3 at the NEXT burn scan, whether or not
+    // the Fire it set is still alive: that Fire sits on whatever is under the gas, and vanilla Fire.DoComplexCalcs destroys
+    // a fire with no fuel (bare ground, stone) on its first 150-tick check, which can fall before the next 30-tick scan. With
+    // only live Fires as sparks, a spark on fuel-less ground burnt one clump and stopped (5 of 17 live runs of ExplosiveKnockback's
+    // gas_chain, 2026-11-15, RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN). Each cell passes its flame once; the
+    // tag (the instigator) travels with it. Not saved: after a load the live Fires carry the cloud on.
+    public sealed class RM_VentGasFront<T>
+    {
+        private List<int> next = new List<int>(), now = new List<int>();
+        private List<T> nextTag = new List<T>(), nowTag = new List<T>();
+
+        public int Count => next.Count;
+
+        // A cell that just burned.
+        public void Mark(int i, T tag) { next.Add(i); nextTag.Add(tag); }
+
+        public void Clear() { next.Clear(); nextTag.Clear(); }
+
+        // One scan: every cell marked since the last scan offers `ignite` each cell of its 3x3 (itself first), until
+        // `lit` reaches `max`. `ignite` burns a cell if it is thick enough and returns true (and Marks it, so the cells lit
+        // now spread at the next scan, never this one). Marked cells the cap did not reach wait for the next scan, so a
+        // capped cloud still burns out. Returns the new lit count.
+        public int Step(RM_VentGasCells cells, int lit, int max, Func<int, T, bool> ignite)
+        {
+            List<int> ti = now; now = next; next = ti; next.Clear();
+            List<T> tt = nowTag; nowTag = nextTag; nextTag = tt; nextTag.Clear();
+            int k = 0;
+            for (; k < now.Count && lit < max; k++)
+            {
+                for (int n = 0; n < 9 && lit < max; n++)
+                {
+                    int j = n == 0 ? now[k] : cells.Neighbour(now[k], Adj9X[n], Adj9Z[n]);
+                    if (j >= 0 && ignite(j, nowTag[k])) lit++;
+                }
+            }
+            // the cell the cap stopped inside may still have unlit neighbours: it waits with the rest
+            for (int r = lit >= max && k > 0 ? k - 1 : k; r < now.Count; r++) { next.Add(now[r]); nextTag.Add(nowTag[r]); }
+            now.Clear(); nowTag.Clear();
+            return lit;
+        }
+
+        private static readonly int[] Adj9X = { 0, 0, 1, 0, -1, 1, 1, -1, -1 };
+        private static readonly int[] Adj9Z = { 0, 1, 0, -1, 0, -1, 1, 1, -1 };
     }
 }

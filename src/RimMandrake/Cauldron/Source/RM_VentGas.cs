@@ -25,7 +25,9 @@ namespace RimMandrake.Cauldron
     // BURNING. Every 30 ticks, every Fire on the map looks at its own cell and its 8 neighbours; a cell at least
     // IgniteMin thick burns: its vent gas is consumed, vanilla ToxGas is added there (ToxFromBurn), and a Fire is set in
     // it carrying the SAME instigator, so the vexxiss fire warden (RM_CompVexxissBehaviour) goes for whoever lit the
-    // first spark. The new fires are Fires too, so a cloud burns outward from the spark over a few scans.
+    // first spark. The new fires are Fires too, so a cloud burns outward from the spark over a few scans. A burnt cell is
+    // also a spark itself at the next scan (RM_VentGasFront), so a cloud over bare ground, where vanilla puts a fuel-less
+    // Fire out on its first check, still burns through.
     //
     // Maps without vents never get gas: the grid stays empty and every sweep is skipped (NonZero == 0).
     // ════════════════════════════════════════════════════════════════════
@@ -37,6 +39,8 @@ namespace RimMandrake.Cauldron
         private readonly int[] order = { 0, 1, 2, 3 };
         private System.Func<int, bool> canMoveTo;
         private System.Action<int> dirty;
+        private readonly RM_VentGasFront<Thing> front = new RM_VentGasFront<Thing>();
+        private System.Func<int, Thing, bool> igniteIndex;
 
         // Read by validation.py through the vent's inspect string; also the dev readout.
         public int IgnitionsTotal;
@@ -133,7 +137,11 @@ namespace RimMandrake.Cauldron
 
         public override void MapComponentTick()
         {
-            if (cells.NonZero == 0) return;
+            if (cells.NonZero == 0)
+            {
+                if (front.Count > 0) front.Clear();   // nothing left to light: a stale front must not light the next cloud
+                return;
+            }
             int area = map.Area;
             List<IntVec3> random = map.cellsInRandomOrder.GetAll();
             // PROVISIONAL: half vanilla's sweep rate (vanilla diffuses area/32 and dissipates area/64 cells a tick) — the
@@ -173,10 +181,15 @@ namespace RimMandrake.Cauldron
         {
             if (!RM_CauldronSettings.ventGasIgnites) return;
             List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
-            if (fires == null || fires.Count == 0) return;
+            if ((fires == null || fires.Count == 0) && front.Count == 0) return;
             firesTmp.Clear();
-            for (int k = 0; k < fires.Count; k++) if (fires[k] is Fire f && f.Spawned) firesTmp.Add(f);
+            for (int k = 0; fires != null && k < fires.Count; k++) if (fires[k] is Fire f && f.Spawned) firesTmp.Add(f);
             int lit = 0;
+            if (front.Count > 0)
+            {
+                if (igniteIndex == null) igniteIndex = (i, inst) => Ignite(CellIndicesUtility.IndexToCell(i, map.Size.x), inst);
+                lit = front.Step(cells, lit, RM_VentGasKernel.MaxIgnitionsPerScan, igniteIndex);
+            }
             for (int k = 0; k < firesTmp.Count && lit < RM_VentGasKernel.MaxIgnitionsPerScan; k++)
             {
                 Fire f = firesTmp[k];
@@ -197,6 +210,7 @@ namespace RimMandrake.Cauldron
             if (!RM_VentGasKernel.Ignites(RM_CauldronSettings.ventGasIgnites, cells.Density[i])) return false;
             int burned = cells.Burn(i);
             dirty(i);
+            front.Mark(i, instigator);
             IgnitionsTotal++;
             int tox = RM_VentGasKernel.ToxFromBurn(burned, RM_CauldronSettings.ventGasToxicSmoke && ModsConfig.BiotechActive);
             if (tox > 0)
@@ -239,6 +253,7 @@ namespace RimMandrake.Cauldron
             byte[] d = cells.Density;
             for (int i = 0; i < d.Length; i++) if (d[i] != 0) dirty(i);
             cells.Clear();
+            front.Clear();
         }
 
         public override void ExposeData()
