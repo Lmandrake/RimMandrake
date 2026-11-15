@@ -51,6 +51,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return "the reel refused the deploy order: " + why;
             }
+            dest = (IntVec3)AccessTools.Field(ct, "pendingAt").GetValue(comp);   // the order's own target (ResolveTarget may move it)
             Pawn p = Colonist(s, "p", O(s, -4, 0), drafted: false);
             if (!p.jobs.TryTakeOrderedJob(JobMaker.MakeJob(carryJob, reel, dest), JobTag.Misc))
             {
