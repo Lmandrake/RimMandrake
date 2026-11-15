@@ -4578,11 +4578,27 @@ namespace JawaBench.BridgeTools
                                 "factions they name are not in this world.",
                                 new { refused, wouldCreate = plan.Count, settlementsNow = before });
 
+                // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c04.F1): every row's tile is checked against what will
+                // still stand after the clear (kept player/mapped settlements, other map-capable objects) and against the
+                // plan's own duplicates BEFORE anything is destroyed; the dry run reports the same numbers.
+                Func<WorldObject, bool> survives = o => !(clearExisting && o is Settlement so &&
+                                                         !((playerFac != null && so.Faction == playerFac) || so.HasMap));
+                var occupied = plan.Where(q => Find.WorldObjects.ObjectsAt(new PlanetTile(q.Tile, grid.Surface))
+                                                   .Any(o => o.def.canHaveMap && survives(o)))
+                                   .Select(q => (object)new { tile = q.Tile, name = q.Name }).ToList();
+                var dupTiles = plan.GroupBy(q => q.Tile).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                if (apply && clearExisting && (occupied.Count > 0 || dupTiles.Count > 0))
+                    return Fail("REFUSING before clearing: " + occupied.Count + " row(s) land on a tile a map-capable world object " +
+                                "will still hold after the clear, and " + dupTiles.Count + " tile(s) are named by more than one row. " +
+                                "Nothing was removed or created.",
+                                new { occupied = occupied.Take(25).ToList(), duplicateTiles = dupTiles.Take(25).ToList(), settlementsNow = before });
+
                 if (!apply)
                     return new
                     {
                         success = true, dryRun = true, rows = csv.Rows.Count,
-                        wouldCreate = plan.Count, wouldRemove = clearExisting ? clearable : 0,
+                        wouldCreate = plan.Count - occupied.Count, wouldSkipOccupied = occupied.Count, duplicateTiles = dupTiles,
+                        wouldRemove = clearExisting ? clearable : 0,
                         wouldKeepPlayerOwned = clearExisting ? before - clearable : 0,
                         settlementsNow = before,
                         factions = plan.Select(q => q.Faction.def.defName).Distinct().ToList(),
