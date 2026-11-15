@@ -178,6 +178,8 @@ or an empty steward section refuses; a good one passes the cap through.
 The blind challenge (no mod has entered it), in-game acceptance with Dispatch sharing the two games, the pre-human check,
 the pass record. Each gets a slice after one mod has gone through it by hand and its journal says what was boring.
 
+**Waiting on his ruling (spec §8, question 18):** a slice "SteveDesktop as the verdict and regression game": the queue admits only a locked bar's check from a mod past Stages 4 and 5, a job writes one line item's in-game verdict to the mod's record, and a passed version's guards re-run on a change it depends on. Not planned until he answers.
+
 ## 5. The open questions that most block automation, ranked
 
 1. **The blind challenge's verdict format and inputs** (spec Stages 4 and 5 "Order" and "Exit" rows are [PROPOSAL]): no

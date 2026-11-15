@@ -26,7 +26,7 @@ Words used here:
 - **Line item**: one bar together with the one test that decides it. It has an id, the files it reads, and a stored verdict. [CARRIED: `design/RimMandrake/validation_map_and_rules.md`, "Words used throughout".]
 - **Blind judge**: a fresh agent that did not do the work and is not told what an earlier judge found.
 - **Offline**: without a running game. **In-game**: through a running RimWorld.
-- **The two games**: the RimWorld on Archmagi (his machine) and the RimWorld on SteveDesktop (the second machine, which runs the queue of scripted game tests).
+- **The two games**: the RimWorld on Archmagi (his machine) and the RimWorld on SteveDesktop (the second machine, which runs the test queue: scripted game tests, unattended, nobody watching). [PROPOSAL] SteveDesktop gives the scripted verdict on each in-game bar and later guards the passed versions; Archmagi is kept for exploring, screenshots and his walk (§4 Stage 6, "Which game runs what"; §8, question 18).
 - **RimFlow**: the ticket ledger. It stays. It is not the pipeline.
 
 ---
@@ -264,6 +264,19 @@ For a mod that is already built (all five current mods), Stage 3 is not "build".
 
 The fastest methods: the 13-mod minimal list loads in 22 seconds; the full list takes about 15 minutes. A test uses the full list only when it says why. **[CARRIED]** (his ruling 2026-11-12). A flyer's flight is never tested live without him. **[CARRIED]**
 
+#### Which game runs what
+
+**[PROPOSAL]** from the Conductor, written here on his "Yes" of 2026-11-14 (about 4:25 PM PST) as a proposal for him to rule on, not a ruling (§8, question 18).
+
+| work | game | why |
+|---|---|---|
+| The scripted verdict on each locked in-game bar | SteveDesktop, unattended, through its test queue | A script decides the bar; nobody needs to watch, and his machine stays free. |
+| Exploring beyond the bars; screenshots looking for strange things | Archmagi | An agent must look, and the looking tools run there. |
+| The labelled savegame and his live walk (Stage 8) | Archmagi | He sits at that machine. |
+| Re-running a passed version's bars when something it depends on changes | SteveDesktop (§6, "After a version passes") | The same scripts, no one watching. |
+
+**Entry rule.** Only a test that came through this pipeline's offline stages (a locked bar's in-game check, written in Stage 3 and through Stages 4 and 5) may be queued on SteveDesktop. This is the same admission check as the "can-it-run check before admission" filed under `RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED`; the pipeline adds one condition to that check and does not design a second one. The plain consequence: most of the queue's filler traffic (tests the filler picks for mods with no locked version) stops. What is lost: SteveDesktop's broad, early warning that a mod nobody is advancing has broken, and the use of its otherwise idle hours. What is kept: every test of an advancing mod, every guard job of a passed version, and lane hours no longer spent on runs nobody is waiting for.
+
 ### Stage 7: Pre-human check
 
 | | | mark |
@@ -309,6 +322,7 @@ Nothing changes in what Operations watches. **[PROPOSAL]** One thing is added to
 - Dispatch holds a short list of **advancing mods**. Everything else waits at intake or rests. **[HIS, by card 2026-11-14]** The list is the four (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands), and Dispatch adds no mod to it until one of them reaches Stage 8 (§8, decision 8).
 - For each advancing mod it asks one question: what does this mod's current stage need right now? A game, an offline builder, a blind judge, or him.
 - The two games are the narrow point. A mod at Stage 6 waits for a game; a mod at Stage 8 waits for him and for the game on his machine. Offline stages never wait for a game.
+- **[PROPOSAL]** (§8, question 18) The two games do different work. Dispatch sends a Stage 6 mod's scripted bar verdicts to SteveDesktop's test queue and its exploring and screenshots to Archmagi; Stage 8 is Archmagi only. The queue admits only tests that came through the offline stages (§4 Stage 6, "Which game runs what"), so Dispatch, not the queue's filler, decides what SteveDesktop runs.
 - Inside a stage, the work is still tickets in RimFlow. The stage's worker picks among that mod's tickets. Nobody picks among all tickets of all mods.
 - Work that belongs to no mod (tools, infrastructure) stays ticket work as today. A tool ticket that blocks an advancing mod takes that mod's urgency. (Open question "Tickets that belong to no mod".)
 
@@ -353,6 +367,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 - **Tickets stay in RimFlow.** A ticket is a piece of work inside a mod's current stage. [HIS: "This isn't a ticket tracking system I'm describing, that's RimFlow".]
 - **A Problem fix stays in the version.** A Polish idea goes to the Polish list. A Divergent change goes to the next version and enters at Stage 1. [CARRIED: his rulings and cards of 2026-11-13.]
 - **A PATCH** (a small correction after a pass, the third number of the version) re-tests only its touched line items and takes the light path. [CARRIED for the meaning of PATCH; the light path is the open question "The light path".]
+- **After a version passes**, SteveDesktop's guard jobs become its regression net: a passed version's in-game bars are re-run on SteveDesktop when something they depend on changes (a file a line item reads, a mod it loads with, the game itself), not on a blind schedule. A guard that fails becomes a line item on that mod like any other. [PROPOSAL: §8, question 18. It extends the Design Versions draft's "passed tests become regression tests", itself not yet ruled.]
 
 **What is tracked on each mod**, in one record beside its version file. **[PROPOSAL]**
 
@@ -459,7 +474,7 @@ All **[PROPOSAL]** except where marked. Nothing is deleted by this document.
 
 ## 8. Questions for him
 
-Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. On 2026-11-14 he agreed the lock rule, which is now the answer to question 6, and answered questions 8 and 12 by card. Questions 7, 9 to 11 and 13 to 17 are still open; they can wait until the pilot has shown something.
+Six questions blocked the pilot. He answered all six on the evening of 2026-11-13, four by card and two typed (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`), and each answer is written into the sections above. On 2026-11-14 he agreed the lock rule, which is now the answer to question 6, and answered questions 8 and 12 by card. Questions 7, 9 to 11 and 13 to 18 are still open; they can wait until the pilot has shown something, except 18, which decides what SteveDesktop runs meanwhile.
 
 ### Decided, 2026-11-13 (question 6 re-answered, questions 8 and 12 answered, 2026-11-14)
 
@@ -532,6 +547,23 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 
 **17. The deletion list in section 7.** Confirm, change or strike each line.
 
+**18. Where does SteveDesktop sit?** Asked by him on 2026-11-14 (about 4:25 PM PST); the three points are the Conductor's, written in on his "Yes" as a proposal (§4 Stage 6, "Which game runs what"; §5 Dispatch; §6). Three questions, one card each. The build costs are this writer's guesses, not measured.
+
+- **18a. Does SteveDesktop give the scripted verdict for each locked in-game bar, with Archmagi kept for the exploring agent, the screenshots and his walk?**
+  - *Yes:* his machine is free for him and for looking; the verdicts run unattended and in parallel with exploring. Against: SteveDesktop's game must carry the same deployed version and mod list as the one he walks, or a pass there proves nothing about Archmagi; and it has the higher share of runs that die before judging anything (the census under `RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED`).
+  - *No, either game may give a verdict:* Dispatch takes whichever game is free. Against: verdicts and exploring compete for Archmagi, and his sittings wait.
+  - Cost to build: a queue job that runs one line item's in-game check and writes its verdict to that mod's record, plus deploying the version to SteveDesktop first. Moderate: the queue, its runner and deployment exist; the line-item verdict job and the mod record do not.
+- **18b. After a version passes, do the queue's guard jobs re-run its bars when something it depends on changes, instead of on a schedule?**
+  - *Yes:* a regression is caught when it is caused, and nothing re-runs that nothing touched. Against: it needs a true list of what each line item depends on; a missing dependency is a regression nobody re-runs.
+  - *No, a schedule:* simple and blind to the dependency list. Against: lane hours spent on unchanged versions, and a regression waits for the next turn.
+  - Cost to build: the largest of the three. Line items already name the files they read; the missing part is noticing that a change touches one, for files, mod lists and game updates alike, and queuing that version's guards.
+- **18c. May only tests that came through the pipeline's offline stages be queued on SteveDesktop?**
+  - *Yes:* every run is one somebody is waiting for and whose test was challenged blind; most of today's filler traffic stops. Lost: the broad early warning on mods nobody is advancing, and the use of idle hours.
+  - *Yes, with one exception:* also admit a plain "does the full list still load" check as an Operations job, so a broken mod outside the pipeline is still noticed.
+  - *No:* the filler keeps filling. Against: the queue keeps spending lane hours on tests no stage asked for.
+  - Cost to build: small. One added condition in the admission check that `RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED` asked for (the test is a locked bar's check and its mod is past Stages 4 and 5), and the filler switched off or narrowed to the exception.
+- **Recommendation:** yes to 18a; yes to 18c with the load-check exception; 18b yes, built only after one version has passed, since until then there is nothing to guard.
+
 ---
 
 ## 9. The pilot: Explosive Knockback, by hand
@@ -580,6 +612,9 @@ At every stage change the steward writes three things in the journal: what the s
 
 - The count of mod ideas that sit inside tickets and are not first-touch items: UNMEASURED. No marker says "this ticket is a mod idea".
 - What a stage change costs the Conductor as steward: UNMEASURED until the pilot.
+- What Stage 6 does when SteveDesktop is down: wait for it, or move the scripted verdicts to Archmagi's game, where they compete with exploring and with his sittings. Not designed.
+- Whether a SteveDesktop verdict alone can pass a bar. Rule 1 lets a mechanism bar close on a script's verdict, but nobody looks at that game, so a site checked by script is the only check that it was a fair test. Whether a look bar ever passes there, or only on Archmagi, is not settled.
+- Flyers. A flyer's flight is never tested live without him [CARRIED], so a flight bar never runs on SteveDesktop unattended. Whether rule 11's paused read of the flight state may run there is not settled.
 - His minutes per look: UNMEASURED.
 - The Explosive Knockback judge-round count has three answers on disk and in today's notes: 12 by its version record, 13 judge-review charges in its stage record, 19 in the Conductor's sitting note. Not reconciled.
 - Whether "Artisan-inspired" should mean more than is taken here. What this draft takes from Artisan (the loop method of 2026-11-07): his words are frozen and everything else belongs to the agents; the work unit is a whole piece, not a ticket; the finish line is something he would be shown; a fresh judge reads every claim. What it does not take: one unattended agent looping alone. Artisan's own record says zero acceptances as of 2026-11-07, so nothing here leans on it as proven.
