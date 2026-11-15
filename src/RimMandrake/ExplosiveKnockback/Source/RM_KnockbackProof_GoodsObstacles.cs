@@ -30,9 +30,7 @@ namespace RimMandrake.ExplosiveKnockback
         private static string GoodsObstacles(Scene s)
         {
             bool control = s.name.EndsWith("_control");
-            s.restore = FlightRestore(s);
-            RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
-            RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;
+            // flyingGoods and goodsRebound are on, and restored, from Build's goods_obstacles case (RM_KnockbackProof.cs)
             for (int i = 0; i < ObstacleLanes.Length; i++)
             {
                 string k = ObstacleLanes[i];

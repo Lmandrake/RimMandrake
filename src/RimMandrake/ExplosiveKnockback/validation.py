@@ -646,7 +646,7 @@ class _Walk:
         self.judge_plan(tag, recs)
 
     def control(self):
-        self.kp("Settings", "enabled=False")
+        """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
         before = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
         cells, recs, ok_all, _m = self.mortars("C")
         after = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
@@ -691,6 +691,8 @@ class _Walk:
                 self.kp("Settings", "reset")
                 if self.a.raid_points > 0:                  # B and the control C face the same raid
                     self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
+                if tag == "C":
+                    self.kp("Settings", "enabled=False")
                 fn()
         finally:
             self.kp("Plant", "reset")

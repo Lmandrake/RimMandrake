@@ -2399,6 +2399,10 @@ namespace RimMandrake.ExplosiveKnockback
                     return SettingsSweep(s);
                 case "goods_obstacles":
                 case "goods_obstacles_control":
+                    // the pokes sit here, beside the restore that undoes them, in the file whose Stage catch and Verdict run it
+                    s.restore = FlightRestore(s);
+                    RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;
+                    RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;
                     return GoodsObstacles(s);
                 case "storeroom_bomb_pit":
                 case "storeroom_bomb_pit_control":

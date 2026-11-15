@@ -51,7 +51,10 @@ def main():
     names = set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
     for lane in LANES:
         check("N1", lane in names, "%s is in RM_KnockbackProof.SceneNames" % lane)
-        check("N2", re.search(r'case "%s":(\s*case "\w+":)*\s*return GoodsObstacles\(s\);' % lane, proof) is not None,
+        # the case may arm the scene first (its restore and pokes sit there, in the file whose Stage catch and Verdict run
+        # restores: blind cycle 3, RIMMANDRAKE_RESTORE_KNOCKBACK_PROOF_POKES_LEAKED_AFTER_CLOSE); nothing else may sit between
+        check("N2", re.search(r'case "%s":(\s*case "\w+":)*(\s*//[^\n]*|\s*s\.restore = FlightRestore\(s\);|'
+                              r'\s*RimMandrakeExplosiveKnockbackSettings\.\w+ = \w+;)*\s*return GoodsObstacles\(s\);' % lane, proof) is not None,
               "Build sends %s to GoodsObstacles" % lane)
     check("N3", ('Include="%s"' % FILE) in csproj, "the csproj compiles " + FILE)
     check("N4", own.startswith("#if RM_PROOFS") and own.rstrip().endswith("#endif"), FILE + " is proof-build only")
@@ -78,10 +81,15 @@ def main():
         check("G1", needle in body or needle in own, what + " (" + needle + ")")
     check("G2", len(re.findall(r"Blast\(O\(s, 0, ", body)) == 1 and "LaneZ" in body,
           "one grenade per lane, each at its own lane origin")
-    r = body.find("s.restore = FlightRestore(s)")
-    first_poke = min([i for i in (body.find("RimMandrakeExplosiveKnockbackSettings.flyingGoods ="),
-                                  body.find("RimMandrakeExplosiveKnockbackSettings.goodsRebound =")) if i >= 0] or [-1])
-    check("R1", r >= 0 and (first_poke < 0 or r < first_poke), "s.restore = FlightRestore(s) comes before any setting poke")
+    # the arming lives in Build's goods_obstacles case (blind cycle 3): there the restore comes first and pokes both
+    # settings the scene needs; GoodsObstacles itself pokes no setting at all (a poke there has no restore beside it)
+    cm = re.search(r'case "goods_obstacles":\s*case "goods_obstacles_control":(.*?)return GoodsObstacles\(s\);', proof, re.S)
+    arm = cm.group(1) if cm else ""
+    r = arm.find("s.restore = FlightRestore(s)")
+    pokes = [arm.find("RimMandrakeExplosiveKnockbackSettings.flyingGoods = true;"), arm.find("RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;")]
+    check("R1", r >= 0 and all(p > r for p in pokes), "s.restore = FlightRestore(s) comes before the flyingGoods and goodsRebound pokes in Build's case")
+    check("R2", re.search(r"RimMandrakeExplosiveKnockbackSettings\.\w+\s*(=(?!=)|\+=|-=)", body) is None,
+          "GoodsObstacles itself writes no setting")
 
     try:
         t = json.load(open(TABLE, encoding="utf-8"))

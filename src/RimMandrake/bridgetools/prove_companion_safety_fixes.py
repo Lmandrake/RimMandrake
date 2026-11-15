@@ -68,6 +68,7 @@ def main():
     # public static field on a non-ModSettings type, set to its current value, reaches the check and changes nothing.
     r = call("jawa/mod_settings_field", typeName="Verse.DebugSettings", action="get", field="godMode")
     cur = str(r.get("value", "False")).lower()
+    # restore-check: ok writes godMode's own current value to a non-ModSettings type the bridge must refuse: nothing changes either way
     r = call("jawa/mod_settings_field", typeName="Verse.DebugSettings", action="set", field="godMode", value=cur)
     row("settings_set_non_modsettings_refused", "PASS" if r.get("success") is False and "does not derive" in json.dumps(r) else "FAIL", r)
 
