@@ -49,6 +49,7 @@ OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his 
                 "passed": "the version passed; opening the next version is decided with him (spec §3.8)"}
 STEWARD_STAGES = {"preflight", "pre_human"}     # stages whose whole step is the steward's: run it, then advance
 CHAIN_AFTER = ("coverage_release", "coverage_stop", "lock")
+ROAD_BACK_STAGES = ("offline_build", "blind_challenge", "in_game")
 
 
 def _h(x):
@@ -251,13 +252,18 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                        "design/concepts/%s --why ...` (one more look, on his word) un-pauses it" % (
                            cs.get("at"), str(cs.get("why") or "no reason written")[:300], mod))
             launches = [m for m in launches if m != mod]
+        elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
+                _road_back(s, row, open_items, now, moved=True):
+            # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
+            # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
+            launches = [m for m in launches if m != mod]
         elif dec in WAIT or dec in LAUNCH:
             pass
         elif (st.get("seed_refused") or {}).get(mod):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
-                   fx.get("designer_chain", lambda m: designer_chain(m, now)))
+                   fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now)
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             ok, why = _gate(cfg, s, row, live_total, ver)
@@ -277,7 +283,70 @@ def classify(cfg, st, rows, now):
     return rows
 
 
-def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None):
+def _road_back_ids(s, rb):
+    """-> the steward items whose filings make up this road back: the run that opened it and every steward run on the
+    same state (version, stage, decision, cycle or visit: the first four fields of its key). A second steward on the
+    same cycle replaces s["road_back"], so its sibling's open items are found here, never dropped."""
+    book = s.get("steward") or {}
+    opener = next((k for k, v in book.items() if isinstance(v, dict) and v.get("item") == rb.get("caused_by")), None)
+    ids = [rb.get("caused_by")]
+    if opener:
+        pre = opener.split("|")[:4]
+        ids += [v.get("item") for k, v in sorted(book.items()) if isinstance(v, dict) and v.get("item")
+                and k.split("|")[:4] == pre and v.get("item") not in ids]
+    return ids
+
+
+def _road_back(s, row, open_items, now=None, moved=False):
+    """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
+    unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
+    is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
+    With no open item it returns False, and the road back closes (is popped) when a tick saw it hold items (its fixers
+    closed them) or when the mod has moved (moved: a next cycle or visit is owed, so the steward's landing is in this
+    clone). Then the steward runs it covers are marked road_back_closed, so the state they read is a new state
+    (_after_road_backs). An empty road back on an unmoved mod stays open: the clone's ledger may not hold the steward's
+    filings yet; a steward that filed nothing stays spent."""
+    rb = s.get("road_back")
+    if not rb:
+        return False
+    ids = _road_back_ids(s, rb)
+    items = open_items(ids)
+    if items is None:
+        row.update(decision="blind", why="the ledger cannot be read for the road-back items")
+        return True
+    if items:
+        rb["had_items"] = True      # a tick saw it hold items: its closing is a new state
+        fixed = s.setdefault("fixers", {})
+        todo = [x for x in items if x["id"] not in fixed]
+        if todo:
+            row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
+                       why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
+                           todo[0]["id"], len(items), " or ".join(ids)))
+        else:
+            row.update(decision="fixer_spent", why="every open road-back item (%s) has had its one fixer run and "
+                       "is still open" % ", ".join(x["id"] for x in items))
+        return True
+    if not (rb.get("had_items") or moved):
+        return False
+    s.pop("road_back", None)        # every road-back item closed: the mod moves on (visit N+1 when it arrives)
+    for v in (s.get("steward") or {}).values() if rb.get("had_items") else ():
+        if isinstance(v, dict) and v.get("item") in ids:
+            v.setdefault("road_back_closed", now)
+    row["road_back_closed"] = rb["caused_by"]
+    return False
+
+
+def _after_road_backs(s, key):
+    """-> (key, [items]): a steward key whose run opened a road back now closed names a new state (its fixers ran and
+    closed what it filed), so the key grows `|after:<item>` once per closed road back. Unmarked keys are unchanged."""
+    book, after = s.get("steward") or {}, []
+    while isinstance(book.get(key), dict) and book[key].get("road_back_closed"):
+        after.append(book[key].get("item"))
+        key = "%s|after:%s" % (key, book[key].get("item"))
+    return key, after
+
+
+def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -290,28 +359,11 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "(coverage_judge.py release <dir> --why ..., then run). Never a second look." % (
                      lc.get("at"), str(lc.get("why"))[:300]))
         return
-    rb = s.get("road_back")
-    if rb and stage in ("offline_build", "blind_challenge", "in_game") and stage != rb.get("from"):
-        # the steward moved the mod down its road back: its filed items are fixed before the mod moves on
-        items = open_items([rb["caused_by"]])
-        if items is None:
-            row.update(decision="blind", why="the ledger cannot be read for the road-back items")
-            return
-        if items:
-            fixed = s.setdefault("fixers", {})
-            todo = [x for x in items if x["id"] not in fixed]
-            if todo:
-                row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
-                           why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
-                               todo[0]["id"], len(items), rb["caused_by"]))
-            else:
-                row.update(decision="fixer_spent", why="every open road-back item (%s) has had its one fixer run and "
-                           "is still open" % ", ".join(x["id"] for x in items))
-            return
-        s.pop("road_back", None)        # every road-back item closed: the mod moves on (visit N+1 when it arrives)
-        row["road_back_closed"] = rb["caused_by"]
-        if dec == "stopped":
-            s.pop("stopped", None)
+    # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
+    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now):
+        return
+    if row.get("road_back_closed") and dec == "stopped":
+        s.pop("stopped", None)
     if stage in OWNER_STAGES:
         row.update(decision="owner", why=OWNER_STAGES[stage],
                    card="%s %s stands at %s. %s. Evidence: design/concepts/%s/journal.md and %s." % (
@@ -332,8 +384,11 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        "2026-11-13 brings the Conductor in (maturation.py advance %s --to blind_challenge "
                        "--conductor-decision \"...\" un-pauses it)" % mod)
             return
-        _steward(row, dec, "%s|%s|%s|%s|%s" % (ver, stage, dec, n, _h(row.get("refused_ids") or row.get("why"))),
-                 row.get("why"), row.get("need") or row.get("why"))
+        key, after = _after_road_backs(s, "%s|%s|%s|%s|%s" % (ver, stage, dec, n, _h(row.get("refused_ids") or
+                                                                                      row.get("why"))))
+        _steward(row, dec, key, row.get("why"), row.get("need") or row.get("why"))
+        if after:
+            row["road_back_after"] = after
 
 
 def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None):
@@ -510,6 +565,11 @@ def steward_brief(root, mod, row):
         "hand_step": "Only hand steps remain (%s): read what each asks and pass --steward-confirms if it holds; if it "
                      "does not, file the gap as a named item caused by this item." % ", ".join(row.get("hand_steps") or []),
     }.get(kind, row.get("steward_need") or row.get("why"))
+    if row.get("road_back_after"):
+        task = ("%s\n\nThis state was read before: the road back %s opened is CLOSED (every item it filed is closed, each "
+                "through its fixer run). File nothing already filed; read whether the fixes owe a new blind judge or "
+                "visit, and if they do, advance (--to blind_challenge for a blind cycle) so a judge who did not see the "
+                "fixes judges them." % (task, " then ".join(str(x) for x in row["road_back_after"])))
     return "\n".join([
         "# Maturation steward run: %s, %s (%s)" % (mod, M.label(row.get("stage")) if row.get("stage") in M.WORDS
                                                    else row.get("stage"), kind),

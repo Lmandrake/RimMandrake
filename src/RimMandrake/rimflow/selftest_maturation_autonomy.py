@@ -107,6 +107,73 @@ def fresh_state():
             os.remove(os.path.join(d, f))
 
 
+def road_back_checks(root):
+    """RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM (acceptance test folded in, watched failing on
+    e696f33db1): a blind_challenge -> blind_challenge road back gives each open item its fixer before the next cycle
+    launches; its closing makes the state new for the steward (the key grows |after:<item>), once; a second steward on
+    the same cycle keeps the first one's items; an empty road back on an unmoved mod waits for the clone's ledger."""
+    import maturation_autonomy as A
+    cfg = dict(CFG)
+    facts = {"M": {"version": "0.1.0", "live_units": []}}
+    why = "1 Problem(s) not FIXED: RIMMANDRAKE_PAIR_X"
+
+    def res(st, dec, items, stage="blind_challenge"):
+        rows = [{"mod": "M", "stage": stage, "decision": dec, "cycle": 1 if dec.startswith("exit") else 2, "why": why}]
+        fx = {"open_items": lambda ids: [x for i in ids for x in items.get(i, [])], "designer_state": lambda m: {},
+              "version_locked": lambda m: True}
+        rows, launches = A.resolve(root, cfg, st, facts, rows, ["M"] if dec in A.LAUNCH else [], CLOCK, fx)
+        return rows[0], launches
+
+    for dec in ("launch", "would_launch"):
+        st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "blind_challenge"}}}}
+        r, la = res(st, dec, {"ROUTE_X": [{"id": "FIX_ME"}]})
+        ok(r.get("fix_item") == "FIX_ME" and r.get("aut") == "fixer" and la == ["M"],
+           "road back: a %s row with an open road-back item gets its fixer first (read %s, %s)" % (
+               dec, r.get("decision"), r.get("fix_item")))
+    st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "blind_challenge"}}}}
+    st["mods"]["M"]["fixers"] = {"FIX_ME": {"item": "FIX_ME"}}
+    r, la = res(st, "launch", {"ROUTE_X": [{"id": "FIX_ME"}]})
+    ok(r.get("decision") == "fixer_spent" and la == [], "road back: a spent fixer on a still-open item holds the "
+       "launch (read %s, launches %s)" % (r.get("decision"), la))
+    st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "blind_challenge"}}}}
+    r, la = res(st, "launch", {})
+    ok(r.get("decision") == "launch" and la == ["M"] and not st["mods"]["M"].get("road_back"),
+       "road back: every item closed, the next cycle launches and the road back is popped")
+    # the unmoved mod (GimmeSomeSlack, 2026-11-15): the steward held at exit_not_met, its items get fixers
+    k1 = "0.1.0|blind_challenge|exit_not_met|1|%s" % A._h(why)
+    st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "blind_challenge"},
+                         "steward": {k1: {"item": "ROUTE_X", "unit": "u1"}}}}}
+    r, _ = res(st, "exit_not_met", {"ROUTE_X": [{"id": "FIX_ME"}]})
+    ok(r.get("fix_item") == "FIX_ME", "road back: an unmoved exit_not_met mod's open item gets its fixer (read %s)" %
+       r.get("decision"))
+    r, _ = res(st, "exit_not_met", {})
+    ok(r.get("aut") == "steward" and r.get("steward_key") == k1 + "|after:ROUTE_X"
+       and r.get("road_back_after") == ["ROUTE_X"] and not st["mods"]["M"].get("road_back"),
+       "road back: its items closed, the steward reads a new state (key %s)" % r.get("steward_key"))
+    brief = A.steward_brief(root, "M", dict(r, steward_kind="exit_not_met"))
+    ok("ROUTE_X opened is CLOSED" in brief, "road back: the second steward's brief says the road back closed")
+    st["mods"]["M"]["steward"][r["steward_key"]] = {"item": "ROUTE_X_RUN_TWO", "unit": "u2"}
+    r, _ = res(st, "exit_not_met", {})
+    ok(r.get("decision") == "steward_spent", "road back: that second steward ended unmoved, filing nothing: spent, "
+       "never a third (read %s)" % r.get("decision"))
+    # a second steward on the same cycle replaced road_back: the first one's open item still gets its fixer
+    k2 = "0.1.0|blind_challenge|exit_not_met|1|deadbeef"
+    st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X_RUN_TWO", "from": "blind_challenge"},
+                         "steward": {k1: {"item": "ROUTE_X"}, k2: {"item": "ROUTE_X_RUN_TWO"}}}}}
+    r, la = res(st, "launch", {"ROUTE_X": [{"id": "PAIR_TWIN"}]})
+    ok(r.get("fix_item") == "PAIR_TWIN", "road back: a sibling steward's open item on the same cycle gets its fixer "
+       "(read %s)" % r.get("decision"))
+    # the clone's ledger lags: an empty road back on an unmoved mod stays open, then its items get fixers
+    st = {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "blind_challenge"},
+                         "steward": {k1: {"item": "ROUTE_X", "unit": "u1"}}}}}
+    r, _ = res(st, "exit_not_met", {})
+    ok(r.get("decision") == "steward_spent" and st["mods"]["M"].get("road_back") and not
+       st["mods"]["M"]["steward"][k1].get("road_back_closed"),
+       "road back: empty on an unmoved mod (filings not yet in the clone): spent, the road back kept, nothing marked")
+    r, _ = res(st, "exit_not_met", {"ROUTE_X": [{"id": "FIX_LATE"}]})
+    ok(r.get("fix_item") == "FIX_LATE", "road back: the late filings get their fixer")
+
+
 def main():
     if os.environ.get("MAT_AUT_BASE_DIR"):
         print("against the base dispatcher in %s" % os.path.dirname(MD.__file__))
@@ -300,6 +367,7 @@ def main():
         routes = json.load(open(os.path.join(HERE, "alarm_routes.json")))
         rs = routes.get("routes", routes) if isinstance(routes, dict) else routes
         ok("maturation.stalled" in json.dumps(rs), "alarm_routes.json routes maturation.stalled")
+        road_back_checks(root)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
