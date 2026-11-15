@@ -107,13 +107,13 @@ offline_bars: {no_hose: green, no_hose_in_gss: green}
 problems_open: 1
 exit_met: false
 ```
-Read from the files at ffe1a381b8 (gss_last, 2026-11-15): both offline bars green (T_NO_HOSE PASS on the rerun after the fixes, `lane2/reruns_after_fix.jsonl`).
-Of the eight Problems in `lane2/faults.json`, seven are FIXED, each red then green in `lane2/fixes.jsonl`. One is open:
-RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES. Over 2000 seeded scenes the bars' own oracles still read 115 unforced bends,
-7 strands under 1.4, 7 edges with no full-cell stray and 6 twin pairs, and none of these is shown forced. Lane 1 after the fixes
-(`lane2/lane1_rows_after_fix.jsonl`) has two FAIL rows, each owned by a Polish fault: L1_FALLEN_LAY_GROUND
-(RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER) and L1_CORD_SHARP_TURN (RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL, for
-the Conductor). The exit is not met.
+Read from the files at a264e7b55d (walled_residue, 2026-11-15): both offline bars green (T_NO_HOSE PASS; proof_all --offline-gate rc 0).
+Of the nine Problems in `lane2/faults.json`, eight are FIXED, each red then green in `lane2/fixes.jsonl`. One is open:
+RIMMANDRAKE_PART_GSS_TWIN_LEADS_EACH_DRAWN_ALONE. Equal short leads side by side still twin in 6 of 33600 pairs (L3-L5) over the 2000-scene sweep.
+The walled residue it was split from now reads 0 unforced bends, 0 strands under 1.4 and 0 edges with no full-cell stray (115/7/7 before).
+Lane 1 after this fix (`lane2/lane1_rows_after_walled.jsonl`: 37 PASS) has the same two FAIL rows, each owned by a Polish fault:
+L1_FALLEN_LAY_GROUND (RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER) and L1_CORD_SHARP_TURN (RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL,
+for the Conductor). The exit is not met.
 
 ## Owed
 - The four PENDING Problems (items above, each with its acceptance test).
@@ -153,3 +153,14 @@ sharp-turn row, the fallen wire Polish).
 - The DLL was rebuilt at landing (8f1338a19a, with its .srchash) and not deployed. Live checks are UNRUN; the commands are the scenes in
   `src/RimMandrake/GimmeSomeSlack/validation.py` (Stage 6).
 
+## Lane 2 follow-up (walled_residue, 2026-11-15)
+The 2000-scene residue, ruled group by group in `lane2/walled_residue/README.md` (table before and after). Fix a264e7b55d, DLL rebuilt with its
+.srchash, not deployed:
+- **Bends 115 -> 0, slack 7 -> 0, stray 7 -> 0.** A stage trace charged 87 bends to the first sprawl, where SmoothBends refuses every window. The fix is
+  LayEdge: it draws a faulted piece again from fresh streams of its key and keeps the draw with the fewest bar faults (a clean piece is unchanged).
+  For the 28 heap-port hooks, a bounded search over each port's heap ground found a way out at every port. The kernel's redrawn cables now escape
+  gently, then by a coil (330 degrees or more), then try the next port. 'fell' centreline strands take the slack lobe.
+- **Twins 6 pairs: open** (RIMMANDRAKE_PART_GSS_TWIN_LEADS_EACH_DRAWN_ALONE). Independent per-piece draws cannot rule out a collision; the fix is a
+  cross-piece pass. No group was unsatisfiable and no bar was ruled wrong, so no owner card is owed.
+- T_CORE 4507/4508 and --geometry 4518/4519. Each run failed one timing check. The graph-worker fault check is also red on the base, in 2 of 2 runs
+  (RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES). T_GATE rc 0. The live lattice build takes 670 ms, against about 690 before.
