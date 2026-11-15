@@ -3,7 +3,7 @@
 Written only from the root paragraph he approved (`record.json` root, OWNER:1793950669508519029), `sheet.md` and his quoted words there (including his 2026-11-13 grass ruling and card). No sentence is inferred. Convergent and Divergent are measured against this text.
 
 1. The Pyrelands are a genetically engineered grass savanna that has burned for millennia and is burning still.
-2. Almost all the ground is deep ash, very fertile for ordinary crops and more so with water, and a lot of free-flying ash blows across it like snow.
+2. Almost all the ground is deep ash, quite fertile wherever water reaches it (ordinary crops find it sowable dry, about 70%, and very fertile watered, about 140%: the root he approved, his card 2026-11-07 "Keep 70%, sowable", and gap g13's fix that his card 2026-11-15 "Fix all 12 in 0.1.0" took), and a lot of free-flying ash blows across it like snow.
 3. A line of grass fire walks the map with a scorched trail behind it and never goes out for long.
 4. The biome's own grasses grow swiftly even on dry-looking ash, faster and with a gentle burst where watered, so a burn is largely green again within about a week.
 5. Behind the front the fire offers some solace: scorch-fruit comes up rapidly in the fresh scar and rots fast, fresh burns grow crops faster for a few days, and black rain adds to that bonus instead of washing it away.

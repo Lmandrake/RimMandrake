@@ -287,7 +287,10 @@ so the Conductor takes it. These are Conductor decisions, not his.
   was not run and is owed at the next Stage 6.
 - Dry-ash text: the biome description said dry ash "barely feeds a crop". The locked leaf `ash_fertile_when_watered`
   says sowable dry (about 70%), very fertile watered, and "must not read as ash being barren" (his card 2026-11-07:
-  "Keep 70%, sowable"). The text was fixed to match the bar, and the bar did not move
+  "Keep 70%, sowable"). That number became his locked bar when his card 2026-11-15 "Fix all 12 in 0.1.0" took the
+  11-14 judge's g13 fix (70% dry, 140% watered); the judge read his 2026-11-13 "benefit from water as before" as keeping
+  70/140. The biome description and `version/vision.md` item 2 ("very fertile for ordinary crops", which went further
+  than the root he approved: "quite fertile wherever water reaches it") were fixed to match. The bar did not move
   (`RIMMANDRAKE_RECONCILE_DRY_ASH_TEXT_WITH_VERY_FERTILE_BAR`).
 - Round-6 gaps (rm-coverage-judge-1794750987) are sorted in `version/gaps_sorted.md` "Round 6". Of the 18, 14 are
   PROBLEM, 3 CORRECTION, 1 POLISH (`version/polish.md`, proposed) and 0 NEXT VERSION. Judging stays stopped
