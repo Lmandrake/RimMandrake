@@ -1,0 +1,612 @@
+{
+ "author": "rm-role-designer-1794729618 (stage-3 run that wrote tree, sheet, scenes and floor)",
+ "examiner": "rm-judge ac8f3d846d91d6f2f (opus, fresh; read only sheet.md and tree.json)",
+ "challenger": "rm-judge a1d3f239fcb540137 (opus, fresh; blind to the examiner's set)",
+ "inputs": {
+  "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38",
+  "sheet": "f187df87b171f81511c09cb4d9836f7de6b5b01a2c5a316b07fdfcbe73c0fdd5"
+ },
+ "scenarios": [
+  {
+   "id": "e1",
+   "text": "A colonist who follows a well-known ideoligion finishes painting a sigil on a corridor wall. The sigil sits inside a halo frame and shows that ideoligion's own icon, drawn in plain white. The ideoligion's colour is a deep red, and nothing on the sigil shows red.",
+   "expect": "reject: the icon is the ideoligion's but untinted, which the leaf lists as a false pass; the sigil must carry the icon in the ideoligion's colour",
+   "expect_source": "leaf:ideo_sigil"
+  },
+  {
+   "id": "e2",
+   "text": "A colonist with art skill 16 paints a mockery of a rival on the dining room wall. Next time the rival passes, their needs tab shows one thought, 'Mixed feelings about a mural', worth -1, and no other thought from the mark.",
+   "expect": "reject: the mockery's beauty and anger are merged into one net thought; the target must hold an anger thought and a beauty thought at once",
+   "expect_source": "leaf:art_skill"
+  },
+  {
+   "id": "e3",
+   "text": "A colonist with art skill 16 paints a mockery of a rival on the dining room wall. When the rival walks past, their needs tab shows two thoughts from the same mark: an angry thought about being mocked and a separate small positive thought about the beautiful piece.",
+   "expect": "accept: a skilled slanderous piece both angers its target and pleases by its beauty, held as two thoughts at once",
+   "expect_source": "leaf:art_skill"
+  },
+  {
+   "id": "e4",
+   "text": "An ordinary colonist and a psychopath walk past the same ugly scrawl together. The ordinary colonist gets a -3 mood thought from it. The psychopath gets a -1 thought from the same scrawl.",
+   "expect": "reject: a psychopath must feel nothing from any mark; a smaller thought instead of none is the leaf's false pass",
+   "expect_source": "leaf:temperament"
+  },
+  {
+   "id": "e5",
+   "text": "Pirate faction A left exit tags on the colony's outer walls, and a letter arrived naming faction A that jumps the camera to one of its tags. Colonists scrub every one of A's tags. A's next raid still arrives with noticeably more raiders than an unmarked faction's raid at the same storyteller points.",
+   "expect": "reject: the pressure must lift once the last mark is gone; pressure lingering after the last mark is a listed false pass",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e6",
+   "text": "A letter names pirate faction A, and clicking it jumps the camera to A's tag on the east wall. Nobody scrubs it, and the tag slowly fades until it disappears. A's raid before the tag faded was larger than faction B's at the same points, though it came at the usual time; A's next raid after the fade is the same size as B's.",
+   "expect": "accept: a standing mark makes the raid sooner or larger (larger is allowed), and a mark weathered away lifts the push just as scrubbing does",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e7",
+   "text": "A trader caravan from an outlander union stays two days. Its route passes a wall carrying an insult to that union four times. The faction's goodwill drops by a few points on each of the four passes.",
+   "expect": "reject: goodwill must drop once per visit and never again from that wall; dropping on every pass is the leaf's false pass",
+   "expect_source": "leaf:visitors"
+  },
+  {
+   "id": "e8",
+   "text": "An enemy raider paints a throw-up on a wall cell that already carries a colonist's tag. Afterwards the colonist's tag outlines still show around and through the throw-up, and inspecting the cell lists two marks.",
+   "expect": "reject: going over must leave the colonist's tag gone; two marks stacked on one cell is the leaf's red",
+   "expect_source": "leaf:going_over"
+  },
+  {
+   "id": "e9",
+   "text": "At normal play zoom every vandal mark reads as abstract scribbles. Zooming far in on one variant of the vandal scrawl, the player can clearly read the word TARTE in its lettering.",
+   "expect": "reject: no legible English or third-party tag may appear in any mark; English that shows only when zoomed in is a listed false pass",
+   "expect_source": "leaf:no_english"
+  },
+  {
+   "id": "e10",
+   "text": "A colonist paints a mockery of a feud rival. The rival is drafted and holding a doorway during a siege. The rival drops the position, walks across the base and starts a social fight with the painter.",
+   "expect": "reject: a fight must never break a pawn's restrictions; a drafted pawn leaving to fight is the leaf's false pass and red",
+   "expect_source": "leaf:fights_reasons"
+  },
+  {
+   "id": "e11",
+   "text": "One wall holds the colony's own vandal mark, an enemy faction's devotional sigil and an enemy vandal mark. A cleaner with no orders scrubs only the enemy vandal mark and leaves the other two. When the player then orders those two cleaned, the cleaner scrubs both.",
+   "expect": "accept: cleaners leave devotional marks and the colony's own marks unless ordered, clean the hostile vandal mark, and clean the protected ones when ordered",
+   "expect_source": "leaf:scrub_protection"
+  },
+  {
+   "id": "e12",
+   "text": "A colonist walks past the same mockery mark every hour for two in-game days. Their opinion of the painter dropped once, on the first pass, and moved no further. Their needs tab shows one thought from that mark, renewed once on the second day, never two copies at once.",
+   "expect": "accept: the same mark moves mood at most once per day and opinion only once, on the first read",
+   "expect_source": "leaf:rereads_daily"
+  },
+  {
+   "id": "e13",
+   "text": "Bob paints a mockery naming Alice. When Alice sees it she gets a hurt thought and her opinion of Bob drops. Carla, Alice's rival, gets an amused thought, while Dave, who has no tie to either, gets no social thought from it.",
+   "expect": "accept: a mockery names someone, hurts that person, amuses the right others and changes regard of the painter; different people getting different thoughts is what the leaf wants",
+   "expect_source": "leaf:mockery"
+  },
+  {
+   "id": "e14",
+   "text": "Two identical tags are painted on the same day, one on an outdoor wall and one inside a roofed room. Both stay fully opaque for most of their life; the outdoor one starts fading first and is gone days before the indoor one, which then fades over the final stretch of its life and disappears.",
+   "expect": "accept: paint stays solid until the last 40 percent of its life, then fades and disappears, sooner outdoors than under a roof",
+   "expect_source": "leaf:weathering_bounds_marks"
+  },
+  {
+   "id": "c1",
+   "text": "Faction A's raid leaves exit tags on the east wall. A letter arrives naming faction A, and clicking it jumps the camera to one of A's standing throw-ups. A's next raid and faction B's next raid (B left no marks) are then triggered at the same storyteller points, and both arrive with the same raid points and the same timing.",
+   "expect": "reject: a letter with no change to the raid; a standing mark must make that faction's next raid sooner or larger than the unmarked faction's",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "c2",
+   "text": "A colonist with art skill 16 paints a mockery of a feud rival in the dining room. The rival walks past and their needs tab shows one thought, 'Mocked on the wall, but well painted', worth +1. Room beauty went up and the other viewers got a positive beauty thought.",
+   "expect": "reject: the mockery's beauty and anger are folded into one net thought; the target must hold an anger thought and a beauty thought at the same time",
+   "expect_source": "leaf:art_skill"
+  },
+  {
+   "id": "c3",
+   "text": "Four viewers pass the same ugly vandal scrawl and the same skilled piece. The ordinary viewer gets -3 and +3, the sensitive one -5 and +5, the clean freak -6. The psychopath's needs tab shows a 'Saw graffiti' thought at -1 for the scrawl and +1 for the piece, smaller than anyone else's.",
+   "expect": "reject: the psychopath must hold no mark thought at all, and a smaller thought is the named false pass",
+   "expect_source": "leaf:temperament"
+  },
+  {
+   "id": "c4",
+   "text": "After a raid by a hostile tribe, the wall holds an enemy vandal scrawl and an enemy devotional sigil in that tribe's ideoligion icon. A colonist with cleaning enabled and no specific orders scrubs both away within the hour, and the colony's own tag beside them is left alone.",
+   "expect": "reject: cleaners must leave devotional marks alone unless ordered, and an auto-clean that wipes a devotional sigil is the red build",
+   "expect_source": "leaf:scrub_protection"
+  },
+  {
+   "id": "c5",
+   "text": "A colonist's Tag_A sits on a wall cell. An enemy then paints ThrowUp_A on the same cell, and on screen only the throw-up is visible because it is drawn over the tag. Inspecting the cell lists two graffiti marks, the throw-up and the colonist's tag under it.",
+   "expect": "reject: going-over must remove the colonist's tag; stacking two marks on the cell with the tag surviving underneath is the named false pass and red",
+   "expect_source": "leaf:going_over"
+  },
+  {
+   "id": "c6",
+   "text": "A colonist walks past a mockery of themselves every hour for two days. Their hurt mood thought appears on the first pass and refreshes once on day two, never stacking. On the social tab their opinion of the painter drops -5 on day one and another -5 on day two.",
+   "expect": "reject: opinion may change only once, on the first read; opinion moving again on a later pass is the named false pass",
+   "expect_source": "leaf:rereads_daily"
+  },
+  {
+   "id": "c7",
+   "text": "A mockery names a colonist who is restricted to the hospital area. Seeing the mark, the subject leaves the zone, walks across the base to its painter and starts a social fight. No unrelated pawns are involved, and the fight log names the mockery as its reason.",
+   "expect": "reject: a fight must never break a pawn's restrictions; a restricted pawn leaving its area to fight is the named false pass even with the right people and reason",
+   "expect_source": "leaf:fights_reasons"
+  },
+  {
+   "id": "c8",
+   "text": "One wall holds a colonist's own ugly vandal scrawl at Beauty -15 next to a hostile raider's vandal scrawl. A colonist with cleaning enabled and no orders scrubs the raider's scrawl and walks off, leaving the colony's ugly scrawl in place. The player then orders that scrawl cleaned and it is scrubbed.",
+   "expect": "accept: cleaners leave the colony's own vandal marks unless ordered and still clean the hostile vandal mark, and an ordered clean removes it",
+   "expect_source": "leaf:scrub_protection"
+  }
+ ],
+ "scenarios_hash": "f898248d9ecb3b166d30bb28d1dd43417c74862d522ff3b108b1aafb9ca7572e",
+ "readers": [
+  "reader a4097db783b754009 (opus)",
+  "reader a223adf4021b3e84a (opus)"
+ ],
+ "reader_verdicts": {
+  "reader1": {
+   "e1": {
+    "verdict": "reject",
+    "leaf": "ideo_sigil",
+    "why": "The icon is the ideoligion's but untinted, a listed false_pass; the sigil must carry the icon in its colour."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "A skilled mockery collapsing anger and beauty into one net thought is a listed false_pass; the target must hold both at once."
+   },
+   "e3": {
+    "verdict": "accept",
+    "leaf": "art_skill",
+    "why": "The target holds a separate anger thought and beauty thought from one skilled slander, as the oracle requires."
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "A psychopath getting a smaller thought instead of none is a listed false_pass."
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "Pressure lingering after the last mark is scrubbed is a listed false_pass; the push must lift."
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "Letter names A and points at its mark, the raid is larger (sooner or larger allowed) while the mark stands, and weathering away the last mark lifts it."
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "visitors",
+    "why": "Goodwill dropping on every pass during one visit is a listed false_pass and the red."
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "Both marks stacking on the cell with the tag still visible is a listed false_pass and the red."
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "no_english",
+    "why": "The TARTE tag surviving in one variant, English showing only when zoomed in, are listed false_passes."
+   },
+   "e10": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A drafted pawn leaving its post to fight is a listed false_pass and the red."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "Unordered cleaner spares own and devotional marks, cleans the hostile vandal control, and cleans both when ordered, matching the oracle."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "rereads_daily",
+    "why": "Opinion moved once and the mood thought refreshed at most daily without stacking."
+   },
+   "e13": {
+    "verdict": "accept",
+    "leaf": "mockery",
+    "why": "The mockery names Alice, hurts her and lowers her opinion of Bob, amuses her rival, and does not give everyone the same thought."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "Marks stay opaque until the last stretch of life and the outdoor one goes sooner than the roofed one."
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "A standing mark that changes nothing about the faction's next raid is the red."
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "The target gets one net thought blending mockery and beauty, a listed false_pass."
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath holds a smaller thought instead of none, a listed false_pass."
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "An unordered cleaner wiping a devotional sigil is the red."
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "The colonist's tag surviving under the throw-up with two marks on the cell is a listed false_pass."
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "Opinion moving again on day two violates opinion changing only once, a listed false_pass."
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A restricted pawn leaving its zone to fight is a listed false_pass, even with a proper reason."
+   },
+   "c8": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "The colony's own vandal mark is left unless ordered while the hostile one is cleaned, and the ordered clean is done."
+   }
+  },
+  "reader2": {
+   "e1": {
+    "verdict": "reject",
+    "leaf": "ideo_sigil",
+    "why": "The icon is the ideoligion's but untinted, which is a listed false_pass; the sigil must carry the icon in its colour."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "A skilled mockery collapsing into one net mixed thought is the false_pass 'a mockery's beauty cancels its anger into one net thought'."
+   },
+   "e3": {
+    "verdict": "accept",
+    "leaf": "art_skill",
+    "why": "The target holds an anger thought and a beauty thought at once, exactly as the oracle requires."
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "A psychopath getting a smaller thought instead of none is a listed false_pass."
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "Pressure lingering after the last mark is scrubbed is a listed false_pass."
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "A larger raid (not necessarily sooner) while the mark stands, a letter pointing at the mark, and the push lifting once it weathers away all match the leaf."
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "visitors",
+    "why": "Goodwill dropping on every pass is a listed false_pass and the red case."
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "Both marks stacking and the colonist's tag surviving under the throw-up are listed false_passes."
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "no_english",
+    "why": "The TARTE tag surviving in one variant, even only when zoomed in, is a listed false_pass and the red case."
+   },
+   "e10": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A drafted pawn leaving its post to fight is a listed false_pass and the red case."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "Unordered cleaning spares own and devotional marks and cleans the hostile vandal mark, and ordered cleaning removes both, matching the oracle."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "rereads_daily",
+    "why": "Opinion moved once and the mood thought refreshed at most once per day without stacking."
+   },
+   "e13": {
+    "verdict": "accept",
+    "leaf": "mockery",
+    "why": "The mockery names Alice, hurts her and lowers her opinion of Bob, amuses her rival and leaves an unrelated pawn unmoved, so not everyone gets the same thought."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "Fully opaque until late life, fading over the final stretch, and gone sooner outdoors than under a roof match the leaf."
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "A letter with a standing mark but no change to the next raid is a listed false_pass and the red case."
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "The target gets one net +1 thought, where the leaf requires an anger thought and a beauty thought at once, not a cancelled net thought."
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath holds a smaller thought instead of none, a listed false_pass."
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "Auto-clean wiping a devotional sigil without orders is the red case."
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "Two marks stacked on one cell with the tag surviving underneath is the red case, even though only the throw-up is drawn."
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "Opinion moving again on day two breaks 'opinion changed once' and is the false_pass 'opinion keeps moving'."
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A restricted pawn leaving its area to fight is a listed false_pass."
+   },
+   "c8": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "The colony's own vandal mark is left alone unless ordered while the hostile scrawl is cleaned, and ordering it cleaned works."
+   }
+  },
+  "control_visitors": {
+   "e1": {
+    "verdict": "reject",
+    "leaf": "ideo_sigil",
+    "why": "The sigil carries the ideoligion's icon but untinted, which is the leaf's false_pass 'the icon is the ideo's but untinted'."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "A single net -1 thought is the false_pass 'a mockery's beauty cancels its anger into one net thought'; the target must hold anger and beauty at once."
+   },
+   "e3": {
+    "verdict": "accept",
+    "leaf": "art_skill",
+    "why": "A skilled mockery giving its target both an anger thought and a separate beauty thought is exactly the leaf's experience."
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "A psychopath getting a smaller thought instead of none is the leaf's false_pass."
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "Pressure persisting after every A tag is scrubbed is the false_pass 'the pressure lingers after the last mark is gone'."
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "The letter names A and points at its mark, the raid is larger (sooner or larger is allowed), and the push lifts once the last mark weathers away."
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "The same mark moves regard on every pass instead of once, which is the leaf's red 'each pass stacks ... a new opinion change'; faction goodwill is not named, so this rests on reading goodwill as regard."
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "Two marks stacked on one cell with the colonist's tag surviving is the leaf's red and both false_pass lines."
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "no_english",
+    "why": "A legible TARTE tag seen when zoomed in is the false_pass 'English shows only when zoomed in' and the leaf's red donor tag."
+   },
+   "e10": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A drafted pawn leaving its post to fight is the false_pass 'a drafted or restricted pawn leaves to fight'."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "Unordered cleaning takes only the hostile vandal mark and ordered cleaning takes the protected two, matching the leaf."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "rereads_daily",
+    "why": "Opinion moved once and the mood thought refreshed at most daily without stacking, as the leaf requires."
+   },
+   "e13": {
+    "verdict": "accept",
+    "leaf": "mockery",
+    "why": "The mockery names its subject, hurts her, lowers her opinion of the painter, amuses the rival and leaves an unrelated pawn alone."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "Marks stay opaque until late in life, then fade and vanish, with the outdoor one going sooner than the roofed one."
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "A standing mark that leaves the next raid unchanged in points and timing is the leaf's red and the false_pass 'a letter with no change to the raid'."
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "One net +1 thought for the target is the false_pass 'a mockery's beauty cancels its anger into one net thought'."
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath holding a smaller thought instead of none is the leaf's false_pass."
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "An unordered cleaner wiping a devotional sigil is the leaf's red 'auto-clean wipes devotional marks'."
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "The cell lists two marks with the tag surviving underneath, which is the false_pass 'the colonist's tag survives under it' and the red of stacking."
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "Opinion moving again on day two is the false_pass 'opinion keeps moving each pass'; opinion may change only once."
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A restricted pawn leaving its area to fight breaks the leaf's 'never breaks a pawn's restrictions'."
+   },
+   "c8": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "The colony's own vandal mark is left until ordered while the hostile one is cleaned, matching the leaf."
+   }
+  },
+  "control_going_over": {
+   "e1": {
+    "verdict": "reject",
+    "leaf": "ideo_sigil",
+    "why": "The icon is the ideoligion's but untinted, which is a named false_pass; the sigil must carry the icon in its colour."
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "A mockery's beauty cancelling its anger into one net thought is a named false_pass; a skilled slander must anger and please at once."
+   },
+   "e3": {
+    "verdict": "accept",
+    "leaf": "art_skill",
+    "why": "A skilled slanderous piece both angers its target and pleases by its beauty, exactly the experience line."
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath getting a smaller thought instead of none is a named false_pass."
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "The pressure lingering after the last mark is gone is a named false_pass; scrubbing every tag must lift the push."
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "A letter names the faction and points at the mark, the raid while it stood was larger (sooner or larger is allowed), and the push lifted once the last mark weathered away."
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "visitors",
+    "why": "Goodwill dropping on every pass is a named false_pass; it must drop once per visit."
+   },
+   "e8": {
+    "verdict": "accept",
+    "leaf": "reads_at_play_zoom",
+    "why": "No leaf governs how overlapping marks on one cell layer or list, so the design does not forbid this outcome."
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "no_english",
+    "why": "The TARTE tag surviving in one variant and English showing only when zoomed in are both named false_passes."
+   },
+   "e10": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A drafted pawn leaving its post to fight is a named false_pass and the red line."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "Cleaners leave devotional and the colony's own marks unless ordered, clean the hostile vandal mark, and clean the others when ordered."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "rereads_daily",
+    "why": "Mood moves at most daily without stacking and opinion changes only once, on the first read."
+   },
+   "e13": {
+    "verdict": "accept",
+    "leaf": "mockery",
+    "why": "The mockery names someone, hurts them, amuses the right other, moves opinion of the painter, and does not give everyone the same thought."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "Fading comes late in life rather than at placement, and the outdoor mark goes sooner than the roofed one."
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "A letter with no change to the raid is a named false_pass; a standing mark must make the next raid sooner or larger."
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "The target's anger and the beauty are merged into one net thought, a named false_pass."
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath gets smaller thoughts instead of none, a named false_pass."
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "Auto-clean wiping a devotional mark without orders is the red line."
+   },
+   "c5": {
+    "verdict": "accept",
+    "leaf": "reads_at_play_zoom",
+    "why": "No leaf governs how overlapping marks on one cell are drawn or listed, so the design does not forbid this outcome."
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "Opinion moving again on day two is a named false_pass; opinion may change only once."
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "A restricted pawn leaving its zone to fight is a named false_pass, even with a reason."
+   },
+   "c8": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "The colony's own vandal mark is left until ordered while the hostile vandal mark is cleaned, as the experience line says."
+   }
+  }
+ },
+ "control": {
+  "broken_leaf": "going_over",
+  "missed": true,
+  "detail": "Leaf going_over removed from tree and sheet with its pruning line and the 'going-over' word in the kept-capabilities line. Control Reader rm-judge a07f7b48cf336afe3 accepted e8 and c5 (a raider's throw-up stacked over a surviving colonist tag), which both real Readers reject; it matched expect on the other 20.",
+  "earlier_control": "A first control with visitors removed (rm-judge a10d1a2872a7a3122, every trader/goodwill/visit word stripped, walk_lived_in rewritten) did NOT miss: it rejected e7 (goodwill recharged on each pass) by reading goodwill as opinion under rereads_daily, so visitors is partly redundant with rereads_daily for this scenario. Reported, not hidden; the scenarios were not changed."
+ },
+ "score": {
+  "right": 22,
+  "total": 22
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
+ "result": "PASS: 22/22 frozen scenarios matched by both Readers; no Reader accepted an outcome a core line rejects; the control on going_over discriminates (missed e8 and c5).",
+ "notes": "Frozen at 22 (14 examiner, 8 challenger) before any Reader saw them; no rescoring. Challenger misses: none (both Readers matched all 8). Charged: examiner 42174, challenger 41075, readers 43178 and 43323, controls 43628 and 34339 tokens."
+}

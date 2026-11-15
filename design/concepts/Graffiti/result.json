@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794730323",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam PASS against tree cc00c622 and sheet f187df87: 22 frozen scenarios (14 examiner, 8 challenger), both fresh Readers matched all 22, accept_where_reject_core 0, no challenger misses. Control on going_over missed e8 and c5. A first control on visitors did not miss (its reader read trader goodwill as opinion under rereads_daily); recorded in exam.json, scenarios unchanged."
+}
