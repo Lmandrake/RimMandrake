@@ -18,8 +18,8 @@ OFF = {
  "T_CENSUS": dict(stage="4-5", file=M + "/selftest_explosiveknockback_storage_census.py", observes="every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open)", reads=[MC, "src/RimMandrake (every storage ThingDef)"]),
  "T_SCRIPT": dict(stage="2", file=M + "/selftest_explosiveknockback_script.py", observes="validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session)", reads=[M + "/validation.py", PROOF, MOD, "design/validation_walks/RimMandrake/ExplosiveKnockback.md"]),
  "T_PROOFGATE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_proofgate.py", observes="the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer", reads=[M + "/Assemblies/RimMandrakeExplosiveKnockback.dll", M + "/proof_build_gate.py", PROOF]),
- "T_RESTORE": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_proof_restore_check.py", observes="every proof scene restores what it staged even when it throws", reads=[PROOF], known_red="RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"),
- "T_SETTINGS_SCREEN": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_settings_screens.py", observes="the Mod Settings screen: every setting grouped, resettable, scopes as audited", reads=[MOD], known_red="RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"),
+ "T_RESTORE": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_proof_restore_check.py", observes="every proof scene restores what it staged even when it throws", reads=[PROOF]),  # its known_red item closed at 587529cee1
+ "T_SETTINGS_SCREEN": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_settings_screens.py", observes="the Mod Settings screen: every setting grouped, resettable, scopes as audited", reads=[MOD]),  # its known_red item closed at 8386853959
  "T_FW_COVER": dict(stage="4-5", file="src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py", observes="FlowWorks: a pit cover breaks on every fall, before the descent", reads=["src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs", "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs"]),
  # ---- specified, not built (Stage 3 builds them, failing first) ----
  "T_SETTINGS_SWEEP_OFFLINE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_settings_sweep.py", new=False, item="RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING",
@@ -219,7 +219,10 @@ def main():
         "gas_into_pit": R + "gas_into_pit,gas_into_pit_off --ticks 300   (proof build, minimal list + FlowWorks + the Cauldron and its 3 dependencies)",
         "walk_storeroom_raid": 'python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z [--save NAME]   (proof build, the full list, a staged throwaway colony)',  # RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO
         "goods_obstacles": R + "goods_obstacles,goods_obstacles_control --ticks 600   (proof build, minimal list)",
+        # RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST (5298951585 wrote this row into the table by hand)
+        "storeroom_bomb_pit": R + "storeroom_bomb_pit,storeroom_bomb_pit_control --ticks 900   (proof build, minimal list + FlowWorks and LWM's Deep Storage)",
     }
+    OWN_FILE = {"storeroom_bomb_pit": M + "/Source/RM_KnockbackProof_StoreroomBombPit.cs"}  # a scene in its own proof file, with its control lane
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     for tid, t in OFF.items():
         t = dict(t, id=tid, kind="offline", command="python3 " + t["file"].split(" ")[0])
@@ -238,6 +241,9 @@ def main():
             command=CMD[meth] if meth in CMD else ("python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes %s --ticks %d   (proof build, minimal list)" % (meth, TICKS.get(meth, 300))) if not full else "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live %s   (full list)" % meth,
             why_game=WHY_GAME.get(sid, "UNSTATED"), why_full_list=FULL.get(sid), entry_exists=exists, partial=PARTIAL.get(meth) if exists else None, item=s.get("entry_point_item"),
             runs_today=dict(ran=False, why="live: this pilot is offline only; entry %s in the proof code" % ("EXISTS" if exists else "ABSENT")))
+        if meth in OWN_FILE:
+            tests[sid]["reads"].insert(2, OWN_FILE[meth])
+            tests[sid]["runs_today"]["why"] += " (%s, with its control lane)" % OWN_FILE[meth].rsplit("/", 1)[1]
     for nm, bl in OLD.items():
         ex = nm in names
         tests["P_" + nm] = dict(id="P_" + nm, kind="live_minimal", stage="6", file=PROOF, entry=nm, observes="older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict(\"%s\")" % nm,

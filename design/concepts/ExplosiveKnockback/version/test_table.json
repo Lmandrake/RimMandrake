@@ -1,7 +1,7 @@
 {
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
- "made": "2026-11-15T08:55:49-08:00",
+ "made": "2026-11-15T15:12:28-08:00",
  "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -111,9 +111,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.02,
-    "last": "explosive knockback kernel: 174/174 passed",
-    "at": "2026-11-15T08:55:49-08:00",
+    "seconds": 1.23,
+    "last": "explosive knockback kernel: 180/180 passed",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -132,9 +132,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.75,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.23s total -> OK",
-    "at": "2026-11-15T08:55:49-08:00",
+    "seconds": 2.64,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.35s total -> OK",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -154,9 +154,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.58,
+    "seconds": 1.7,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -174,9 +174,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 31.91,
+    "seconds": 34.81,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -194,9 +194,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.48,
+    "seconds": 9.65,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -216,9 +216,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.18,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.42,
+    "seconds": 4.44,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -250,17 +250,16 @@
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
    ],
-   "known_red": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
    "id": "T_RESTORE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 5.46,
-    "last": "<unknown>:2342: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
-    "at": "2026-11-15T08:55:49-08:00",
-    "result": "KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"
+    "rc": 0,
+    "seconds": 6.52,
+    "last": "<unknown>:2344: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
+    "at": "2026-11-15T15:12:28-08:00",
+    "result": "PASS"
    }
   },
   "T_SETTINGS_SCREEN": {
@@ -270,16 +269,15 @@
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
    ],
-   "known_red": "RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT",
    "id": "T_SETTINGS_SCREEN",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 1.8,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -297,9 +295,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.05,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -322,9 +320,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.94,
+    "seconds": 1.12,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 4/4 switch faults caught | PASS",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -344,9 +342,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.78,
+    "seconds": 0.84,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -367,7 +365,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback gas clumps: PASS (0 faults, 6/6 planted faults caught)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -388,9 +386,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.0,
-    "last": "explosive knockback kernel: 174/174 passed",
-    "at": "2026-11-15T08:55:49-08:00",
+    "seconds": 1.07,
+    "last": "explosive knockback kernel: 180/180 passed",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -414,7 +412,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -434,9 +432,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.19,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-15T08:55:49-08:00",
+    "at": "2026-11-15T15:12:28-08:00",
     "result": "PASS"
    }
   },
@@ -2626,7 +2624,7 @@
     "T_PROOFGATE",
     "T_RESTORE"
    ],
-   "offline_green_today": false,
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
