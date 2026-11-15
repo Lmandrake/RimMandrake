@@ -631,8 +631,9 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
                  "copy included: an exam failing its gate makes the judge skip), then give it ONE coverage-judge look "
                  "(coverage_judge.py release <dir> --why ..., then run; when stage.json holds coverage_release_granted, "
-                 "the judge applies that grant itself once its items close: release nothing by hand). Never a second "
-                 "look." % (
+                 "the judge applies that grant itself once its `after` items close: release nothing by hand, and close "
+                 "an `after` item whose notes say its work landed, with its published sha, after checking that sha is "
+                 "on origin/main). Never a second look." % (
                      lc.get("at"), str(lc.get("why"))[:300]))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage

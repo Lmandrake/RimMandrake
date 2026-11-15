@@ -601,7 +601,9 @@ def main():
         rd, g = run(w, ["P"], root)
         ok(g("P").get("klass") == "launch" and any("RETAKE_P_EXAM_AFTER_LOCKED_CHANGE" in x[1] for x in w.launched),
            "wait 1: a locked change with no look after it launches the chain (re-pin, exam retake, one look)")
-        ds2 = dict(ds, history=ds["history"] + [{"at": "2026-11-15T15:00:00Z", "what": "coverage_release"}])
+        ok(any("close an `after` item" in b and "origin/main" in b for b in w.briefs),
+           "wait 1: the chain brief closes a landed `after` item of a granted look (a fixer that left its ticket open)")
+        ds2 =dict(ds, history=ds["history"] + [{"at": "2026-11-15T15:00:00Z", "what": "coverage_release"}])
         fresh_state()
         w = World({"P": offline("P", "build", refused=["b1"])}, dstate={"P": ds2})
         rd, g = run(w, ["P"], root)
