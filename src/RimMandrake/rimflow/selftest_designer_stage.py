@@ -460,6 +460,20 @@ def main():
         ok3, errs3 = run_cycle(d, repo, "run23")
         check("stage 5: done with a failing gate is refused", ok and ok2 and not ok3
               and any("gate:" in e for e in errs3), (errs, errs2, errs3))
+        # RIMMANDRAKE_LAND_JUDGE_SIGNATURE_BEFORE_LOCK_GATE_READS_IT: the Dispatcher closes from its own clone a concept the
+        # Designer wrote in another; the judge signs concept=<path in the concept's clone>, so the gate reads that clone
+        # (Graffiti 2026-11-15: two covered Lock runs refused "no coverage signature on the ledger")
+        seen = []
+        CT.gate = lambda dd, rr=None, ff=None: (seen.append(rr) or ([] if CT.concept_rel(dd, rr) == "design/concepts/Foo"
+                                                                     else ["no coverage signature on the ledger"]), [])
+        DS.open_run(d, "run22x", repo=repo.root)
+        result(d, "done")
+        errs = DS.result_errors(DS.read_json(os.path.join(d, "result.json")), d, DS.load_state(d),
+                                repo=os.path.join(tmp, "dispatch-clone"))
+        DS.abort_run(d, "run22x")
+        check("stage 5: closed from another clone, the gate reads the concept's own clone",
+              seen and os.path.realpath(seen[-1]) == os.path.realpath(repo.root)
+              and not any("gate:" in e for e in errs), (seen, errs))
         CT.gate = lambda dd, rr=None, ff=None: ([], [])
         put(d, "record.json", dict(rec, inventory=rec["inventory"] + [inv(id="rope", what="a rope")]))
         ok, errs = run_cycle(d, repo, "run23b")

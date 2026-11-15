@@ -1055,7 +1055,8 @@ def result_errors(res, d, st, repo=REPO):
     elif stage == 4:
         errs += exam_errors(read_json(os.path.join(d, "exam.json")), d, st, repo)
     elif stage == 5:
-        gate_errs, _ = CT.gate(d, repo)
+        # the judge signs concept=<its path in the concept's own clone>: the Dispatcher closing from its clone reads that one
+        gate_errs, _ = CT.gate(d, clone_of(d) or repo)
         errs += ["gate: %s" % e for e in gate_errs]
         # the lock refuses while a capability is exercised by no showcase and no scene (record.json can move after
         # stage 3: an inventory line added since then is caught here)
