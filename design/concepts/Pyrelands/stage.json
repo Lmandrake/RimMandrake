@@ -2,7 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 5; that look was malformed; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 6; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -467,10 +467,24 @@
     "ref": "rm-coverage-judge-1794749968",
     "stage": 5,
     "tokens": 72408
+   },
+   {
+    "at": "2026-11-15T14:02:59Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794750987",
+    "stage": 5,
+    "tokens": 575837
+   },
+   {
+    "at": "2026-11-15T14:05:35Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794750987",
+    "stage": 5,
+    "tokens": 178821
    }
   ],
   "reserve": 60000,
-  "spent": 13530587
+  "spent": 14285245
  },
  "coverage_releases": [
   {
@@ -482,6 +496,11 @@
    "at": "2026-11-15T13:32:24Z",
    "rounds_at": 4,
    "why": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550): the 12 Problem gaps plus g12/g14 applied in 91a7c61989, claimed in coverage_fixes.json; one judge look after the stage-4 exam is retaken on the new tree (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+  },
+  {
+   "at": "2026-11-15T13:56:22Z",
+   "rounds_at": 5,
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550): the round-5 look's 5 open gaps applied in 75a13036d3, claimed in coverage_fixes.json; the round-5 look was lost to one malformed row, fixed in 03e2a1a241 (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
   }
  ],
  "coverage_rounds": [
@@ -586,11 +605,54 @@
    "tokens": 409790,
    "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
    "verdict": "malformed"
+  },
+  {
+   "at": "2026-11-15T13:56:27Z",
+   "error": null,
+   "gaps": 18,
+   "ids": [
+    "ash_ground_and_blowing_ash",
+    "ashwallow_dives_unharmed",
+    "burn_line_walks",
+    "firehawk_hunt_rewards",
+    "fresh_burn_compounds_with_black_rain",
+    "furnacebeast_warms",
+    "grass_carpets_and_regreens",
+    "inv_animal_roster",
+    "inv_art_and_text",
+    "inv_ash_field",
+    "inv_biome_self_contained",
+    "inv_burrowers_heat_dome",
+    "inv_firehawk_ember",
+    "inv_firehawk_hunt_rewards",
+    "inv_furnacebeast",
+    "inv_plant_roster",
+    "inv_settings_gate",
+    "inv_ullai_herd_giant",
+    "inv_weather",
+    "no_ordinary_rain",
+    "ullai_cross_the_map_as_vanilla_herds",
+    "walk_season_on_the_pyre"
+   ],
+   "judge": "rm-coverage-judge-1794750987",
+   "late": [
+    "inv_burrowers_heat_dome",
+    "ashwallow_dives_unharmed",
+    "furnacebeast_warms",
+    "burn_line_walks"
+   ],
+   "tags": {
+    "late": 3,
+    "unfixed": 15
+   },
+   "tokens": 754658,
+   "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+   "verdict": "not_covered"
   }
  ],
  "coverage_stop": {
-  "at": "2026-11-15T13:42:52Z",
-  "why": "released for one more look at round 5; that look was malformed"
+  "at": "2026-11-15T14:05:35Z",
+  "why": "released for one more look at round 6; that look was not_covered"
  },
  "history": [
   {
@@ -1084,6 +1146,18 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card 2026-11-15 'Fix all 12 in 0.1.0': the round-5 coverage judge's 5 open gaps (the unfixed remainder of the 12 Problem gaps) applied in 75a13036d3; re-pinned stage 3 (scenes); stage 4 (scenes); sources OWNER:1794748469904049550@75a13036d3"
+  },
+  {
+   "at": "2026-11-15T13:56:22Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550): the round-5 look's 5 open gaps applied in 75a13036d3, claimed in coverage_fixes.json; the round-5 look was lost to one malformed row, fixed in 03e2a1a241 (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+  },
+  {
+   "at": "2026-11-15T14:05:35Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 6; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",

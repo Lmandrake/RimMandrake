@@ -1,0 +1,513 @@
+{
+ "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
+ "family": "coverage_judge.run (one look after release), full round 6 on the Pyrelands 0.1.0 tree (the round-5 look was malformed, so no delta prior)",
+ "ordered_by": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550); Conductor brief for RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL: release ONE look (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)",
+ "given": {
+  "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+  "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
+  "judge": "rm-coverage-judge-1794750987",
+  "mode": "full",
+  "verdict": "not_covered",
+  "tokens": 754658,
+  "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+  "contract_reasked": [
+   "coverage: given inputs in no passed or refused evidence: exam.json"
+  ],
+  "late": [
+   "inv_burrowers_heat_dome",
+   "ashwallow_dives_unharmed",
+   "furnacebeast_warms",
+   "burn_line_walks"
+  ],
+  "stopped": "released for one more look at round 6; that look was not_covered"
+ },
+ "verdict_file": "design/concepts/Pyrelands/coverage_verdict.json",
+ "note": "copied field for field from coverage_verdict.json by script; nothing in the judge's records is edited",
+ "reasons": "Round 6, first verdict on this concept: not covered, with 18 gaps. Every leaf has a script-staged acceptance scene with an asserted start, a control and a restore step, or is an offline leaf the contract exempts. No leaf rests on an exploration or mock scene. The exam (exam.json) scored 20/20, and its control reader missed the dropped three_skies leaf, so the sheet is readable for what it states. The gaps lie in what the sheet, tree and scenes leave out or check too loosely.\n\n1. Shipped parts no scene exercises: the furnace hide and hide bank; the acoustic payload, mutator ports and generic text; the fire-hawk's fuel targeting; the no-rain guard under forced weather; the ash cover and plant-dust drawing; most Mod Settings switches and tunings; and art made after his approval.\n2. Parts tested only in the walk, with no control: roof withering and slow thirst.\n3. Expects that are vague or can pass with nothing there: the standing-water ring, deep ash given as 'most', grass density, a dome sprite that is the standing body, the giant compared with the ullai only, and the crestfeather's value and the letter's wording.\n4. The flagship's lead scene takes no capture and ends at once, so he is never shown it.\n5. sc_burn_compounds lacks the audit's vitals guard over its 7-day wait.\n6. The ullai migration is not checked against the mod's own C# herd filter.\n7. The sheet and tree omit behaviours the scenes test.\n8. A fourth showcase candidate meets the stop rule.\n\nAll 18 can be fixed by the Designer at stage 3, by editing scenes.json, tree.json and sheet.md. If the tree is held as locked 0.1.0, the edit goes through a locked_change card, as d_fix_twelve_gaps_in_0_1_0 did.",
+ "refusals": [
+  {
+   "clause": "g1",
+   "what": "The furnace-beast's hide (RM_FurnaceHide) and the furnace-hide heat bank (RM_FurnaceHideBank) are built and ship, and no scene, leaf, exam scenario or sheet line covers them",
+   "where": "record.json inv_furnacebeast; scenes.json showcase sky_and_shelter; tree.json; sheet.md; exam.json",
+   "ids": [
+    "inv_furnacebeast"
+   ],
+   "evidence": [
+    "record.json:742",
+    "record.json:755-756",
+    "scenes.json:679-691",
+    "tree.json:253-280",
+    "sheet.md:25",
+    "exam.json:71-81"
+   ],
+   "observed": "inv_furnacebeast says 'its hide is a leather (RM_FurnaceHide), and a furnace-hide heat bank built from it gives warmth back slowly with no fuel or power (RM_FurnaceHideBank, the biome's gift to the ship)'. The showcase sky_and_shelter lists inv_furnacebeast in 'exercises', but its scenes (sc_furnace, sc_furnace_bed) and sc_furnace_giant read only warmth, room heat, bed fire and size. The sheet's furnacebeast line names neither the hide nor the bank, and exam.json's furnace scenarios e11/e12 cover only size, warmth, the room and sleep-ignition.",
+   "would_pass": "A tree leaf (e.g. furnace_hide_bank_warms), a sheet line and an acceptance scene. In the scene, butchering a furnace-beast yields RM_FurnaceHide. A RM_FurnaceHideBank built from it in a closed room raises that room's temperature over hours with no fuel or power connected, against a twin room with no bank (the control).",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the leaf to tree.json, a scene sc_furnace_hide_bank to scenes.json (its entry point filed as a build item), and a sheet.md does-line; or list the part in coverage_rest with a named check"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "Every built inventory part must be exercised by a contract scene or a named check, and this part has neither.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g2",
+   "what": "The acoustic-scanner payload, the ported pyroclastic world mutators and the de-campaigned generic text in inv_biome_self_contained have no scene or check",
+   "where": "record.json inv_biome_self_contained; scenes.json showcase burn_line; tree.json biome_text_says_engineered",
+   "ids": [
+    "inv_biome_self_contained"
+   ],
+   "evidence": [
+    "record.json:436",
+    "record.json:449-450",
+    "scenes.json:641-663",
+    "tree.json:509-532"
+   ],
+   "observed": "The entry ships 'the acoustic-scanner payload every biome of ours carries, FindMod-guarded (RM_AcousticPayload_Pyrelands)', 'ports the donor's pyroclastic world mutators ... (RM_RetiredMutatorPorts_Pyrelands)' and 'de-campaigned generic text'. Showcase burn_line claims inv_biome_self_contained, but its scenes census plants and animals and read the log. biome_text_says_engineered checks only the word 'engineered'.",
+   "would_pass": "Three named checks: (a) with the scanner mod present the payload patch applies to RM_Pyrelands, and with it absent the log stays clean; (b) each ported mutator def resolves, and the canon save's mutator tiles load without a missing-def error; (c) a grep of the biome's Defs and Languages text finds no campaign (RSW_/RUT_ or canon) names. Each is a scene, an offline leaf or a coverage_rest row.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add offline leaves or coverage_rest rows for the payload, the mutator ports and the generic-text check (scenes.json coverage_rest, tree.json)"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A showcase's 'exercises' must name capabilities really used in play, and no scene in it uses these parts.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g3",
+   "what": "The fire-hawk's choice of drop target (the largest easily found fuel, RM_FireHawkKernel and MapComponent_RM_FireHawkFuel) is shipped and untested",
+   "where": "record.json inv_firehawk_ember; scenes.json sc_firehawk",
+   "ids": [
+    "inv_firehawk_ember"
+   ],
+   "evidence": [
+    "record.json:708",
+    "record.json:733-738",
+    "scenes.json:201-227"
+   ],
+   "observed": "inv_firehawk_ember: 'takes the ember to the largest easily found fuel on the map'. sc_firehawk expects only 'a fire at the drop cell beyond the front' and the far hawk's RM_FireHawkSeekBurn. parts_covered_by covers only 'a far hawk drawn to a visible burn'.",
+   "would_pass": "sc_firehawk (or a new scene) stages two unburned grass patches ahead of the front at equal distance, one clearly larger, and reads that the drop cell lies in the larger patch. The control is the same layout with the patch sizes swapped, where the drop follows the swap. Flight is read as state only.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "extend sc_firehawk's start, expect and control in scenes.json, and add the part to its owed_parts_item"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A shipped behaviour of a capability that a showcase claims must be exercised, with its mechanism told apart from the alternatives.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g4",
+   "what": "Mod Settings coverage rests on 'switch the other mechanics off and on' without naming a switch or reading an effect, so most switches and tunings, and the cross-biome default, are unchecked",
+   "where": "scenes.json coverage_rest inv_settings_gate; sc_walk; floor.json mod_settings",
+   "ids": [
+    "inv_settings_gate",
+    "inv_furnacebeast",
+    "walk_season_on_the_pyre"
+   ],
+   "evidence": [
+    "record.json:947",
+    "scenes.json:719-726",
+    "scenes.json:357-358",
+    "floor.json:34-36",
+    "sheet.md:37"
+   ],
+   "observed": "record.json counts '~47 static switches/tunings'. coverage_rest says the walk will 'switch the other mechanics off and on' and that 'the floor's mod_settings line checks every toggle', but floor.json's mod_settings is only {\"status\": \"applicable\"}. No scene turns off the scorch-fruit, ruins, ambient-ash, ash-fall accumulation, growth-stage, fire-clock, ullai, sand-shovel or furnace-thermal switches. No scene reads the warmth-strength or yield tunings, or checks that the cross-biome switches ship off and labelled unsupported.",
+   "would_pass": "A table, in scenes.json coverage_rest or a leaf, lists every Scribe'd setting in RM_PyrelandsMod.cs. For each it names the scene or offline selftest that reads (a) that its default equals the shipped behaviour and (b) that its off state stops the mechanic with no leftovers. The cross-biome switches must default off with an 'unsupported' label. A script can diff the table against the settings file and find no setting unlisted.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "replace the inv_settings_gate coverage_rest 'why' with a per-switch map to the existing scene controls plus an offline settings selftest for the rest, and give floor.json mod_settings an 'establishes' line"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The project rule 'every mechanic switches off cleanly' can be checked per switch, and a batch check with no names cannot show which switch failed.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g5",
+   "what": "Grass withering under a roof, and the cast's slow thirst and one-at-a-time water visits, are tested only inside sc_walk, with no control that rules out another cause",
+   "where": "scenes.json sc_walk; record.json inv_plant_roster and inv_animal_roster parts_covered_by",
+   "ids": [
+    "inv_plant_roster",
+    "inv_animal_roster"
+   ],
+   "evidence": [
+    "record.json:470",
+    "record.json:495-501",
+    "record.json:526",
+    "record.json:561-569",
+    "scenes.json:357-363"
+   ],
+   "observed": "sc_walk expects 'the grass under the new roof withers within days' and 'herds reach the water one at a time and none dehydrates'. Its only controls are 'a reload from a save made before the front lit' and 'the roster toggle's on day'. Nothing rules out grass dying under the build or in the fire, or a herd that never got thirsty passing for the slow thirst.",
+   "would_pass": "A scene with an asserted start for each part. Roof: ember grass under a new roof against the same grass unroofed beside it, read daily; the roofed patch withers and the unroofed one does not, and with CompWithersUnderRoof off neither withers. Thirst: a native herd and a vanilla herd animal get the same water access, and the native's thirst need falls clearly slower; with RM_Pyrelands_NativesSlowThirst and PyrelandsHerdThirst off, the water visits overlap.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add two acceptance scenes to scenes.json with those controls (or extend sc_grass_regreens and sc_populations), and file their entry points"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract requires each tested part's control to rule out the plausible alternative, and the walk's controls address other claims.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g6",
+   "what": "sc_ash_ground can pass its standing-water ring with no water on the map, has no control against vanilla shores, and accepts 'most cells' of deep ash where the sheet promises almost all",
+   "where": "scenes.json sc_ash_ground; tree.json ash_ground_and_blowing_ash",
+   "ids": [
+    "inv_ash_field",
+    "ash_ground_and_blowing_ash"
+   ],
+   "evidence": [
+    "scenes.json:35-43",
+    "tree.json:50",
+    "tree.json:62",
+    "sheet.md:16",
+    "record.json:598"
+   ],
+   "observed": "sc_ash_ground expects 'a mud and rich-soil ring round any standing water (a map with none is correct)' and 'deep ash on most cells'. Its control is a vanilla shrubland census for ash, not for shores. The sheet says 'almost all deep ash', and record.json gives the bar pyre_ground_deep_ash as 'PROVISIONAL 0.85; measured 0.840'.",
+   "would_pass": "The scene asserts at least one standing-water body (a seed or tile known to roll one) and reads the ring cells as mud or rich soil. On the same map with GenStep_PyrelandsStandingWater off, no such ring appears. The expect states the deep-ash share as a number tied to the bar (at least the bar's value).",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "edit sc_ash_ground's start, expect and control in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A part that passes when absent is not exercised, and 'most' cannot reject a map the sheet would call wrong.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g7",
+   "what": "Ash drawn as ground cover and as dust on plants (PyrelandsAshCover, PyrelandsAshDust) has no expectation or control in any scene",
+   "where": "record.json inv_ash_field parts_covered_by; scenes.json sc_ash_ground, sc_three_skies",
+   "ids": [
+    "inv_ash_field"
+   ],
+   "evidence": [
+    "record.json:573",
+    "record.json:604-611",
+    "scenes.json:37-43",
+    "scenes.json:309-315"
+   ],
+   "observed": "inv_ash_field ships ash 'drawn as ground cover and as dust on the plants it lies on'. parts_covered_by assigns 'ash depth and its drawing' to sc_ash_ground and sc_three_skies, but neither scene's expect mentions the cover or the plant dust. sc_three_skies' captures are judged on the sky.",
+   "would_pass": "A capture pair at noon. Ash-laden cells and plants with ProbeAsh depth above 0 show the ash cover and plant dust; the same cells with ambientAshEnabled off (or the depth cleared) show none. A judge names which capture is which.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the capture pair, with its expect and control, to sc_ash_ground in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A visual part that ships needs an expect a judge can fail.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g8",
+   "what": "No scene checks that a game condition's forced weather never brings ordinary rain (PyrelandsNoOrdinaryRain)",
+   "where": "scenes.json sc_no_rain; tree.json no_ordinary_rain",
+   "ids": [
+    "inv_weather",
+    "no_ordinary_rain"
+   ],
+   "evidence": [
+    "record.json:832",
+    "scenes.json:323-344",
+    "tree.json:374-375"
+   ],
+   "observed": "inv_weather ships 'a game condition's forced weather never brings ordinary rain (PyrelandsNoOrdinaryRain)'. sc_no_rain only reads 'the biome's weather list and the weathers chosen over a compressed season', with the 'weather chooser running normally'.",
+   "would_pass": "sc_no_rain also starts a weather-forcing game condition that asks for Rain (e.g. GameCondition_ForceWeather or a weather controller) on the Pyrelands map, and reads a current weather that is not Rain. The same condition on the vanilla temperate control map yields Rain.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "extend sc_no_rain's action, expect and control in scenes.json, and the leaf's scenario in tree.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A cannot-show leaf is only as strong as the routes it closes, and this route is built and unread.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g9",
+   "what": "The heat-dome scene accepts 'the dome graphic drawn' although record.json says the dome sprite is the standing body, so the stance the leaf promises the player can be neither seen nor failed",
+   "where": "scenes.json sc_heat_dome; tree.json ashwallow_dives_unharmed",
+   "ids": [
+    "inv_burrowers_heat_dome",
+    "ashwallow_dives_unharmed"
+   ],
+   "evidence": [
+    "record.json:795",
+    "record.json:992",
+    "scenes.json:508",
+    "tree.json:296",
+    "tree.json:301"
+   ],
+   "observed": "record.json says 'dome sprite is the standing body until art lands', and inv_art_and_text lists 'ashwallow dome sprite' as an open follow-up. sc_heat_dome expects 'the dome graphic drawn at +60'. The leaf says 'it curls into its dome stance', and its false_pass names 'the dome sprite is drawn all the time'.",
+   "would_pass": "sc_heat_dome reads the drawn graphic path while domed and while standing, and requires the two to differ (this fails today until the dome art lands, which is filed as its build item). It also takes a capture of the domed animal that a judge can tell apart from the standing one.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "edit sc_heat_dome's expect in scenes.json and name the dome-art build item as its owed part"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A visual promise needs an expect that the current placeholder fails.",
+   "return_to": 3,
+   "new_since": "late"
+  },
+  {
+   "clause": "g10",
+   "what": "The giant is compared with the ullai only, though the leaf promises the furnace-beast stands far larger than any other animal on the map",
+   "where": "scenes.json sc_furnace_giant; tree.json furnacebeast_warms",
+   "ids": [
+    "furnacebeast_warms"
+   ],
+   "evidence": [
+    "tree.json:269-270",
+    "scenes.json:579-581",
+    "record.json:526",
+    "exam.json:71-81"
+   ],
+   "observed": "The leaf says 'standing far larger than any other animal on the map', and its scenario says 'against the other animals'. sc_furnace_giant expects only 'the beast more than three times the ullai's 1.8'. The roster also holds the emberscythe, sytheclaw, barbslinger and flamefang. exam.json e12 has the readers accept 'The beast towers over every other animal on the map', a claim no scene measures.",
+   "would_pass": "sc_furnace_giant reads the live body size and draw size of every RM_Pyrelands roster kind and asserts that the furnace-beast's exceeds each by a stated margin.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "extend sc_furnace_giant's action and expect in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf's size claim is relative to every animal, and one comparison cannot test it.",
+   "return_to": 3,
+   "new_since": "late"
+  },
+  {
+   "clause": "g11",
+   "what": "The hunt-reward scene does not read that the letter names the hawk and the ember, nor that the crestfeather is valuable and beautiful, though the exam accepts both as the promise",
+   "where": "scenes.json sc_firehawk_rewards; tree.json firehawk_hunt_rewards; exam.json e2",
+   "ids": [
+    "inv_firehawk_hunt_rewards",
+    "firehawk_hunt_rewards"
+   ],
+   "evidence": [
+    "record.json:996",
+    "tree.json:573",
+    "scenes.json:627-632",
+    "exam.json:16-20"
+   ],
+   "observed": "The leaf promises 'one letter that names the hawk and the ember' and 'a Pristine Firehawk Crestfeather, a valuable object of beauty'. exam.json e2 accepts a crestfeather 'which sells high and raises room beauty'. sc_firehawk_rewards expects only 'exactly one letter ... targeting the hawk' and the 35% yield.",
+   "would_pass": "The scene reads the letter's label and text and finds the hawk's and the ember's labels in them. It also reads the live crestfeather def's MarketValue and Beauty against stated floors (e.g. a value above the hawk's own, Beauty above 0).",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the two reads to sc_firehawk_rewards' expect in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "These are the words that make the reward a reason to hunt, and each is a cheap state read.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g12",
+   "what": "Art and text shipped after his 2026-10-16 art-sheet approval (the crestfeather item, the furnace-hide bank), and the open art follow-ups, rest on that approval and on no judge",
+   "where": "scenes.json coverage_rest inv_art_and_text; record.json inv_art_and_text",
+   "ids": [
+    "inv_art_and_text"
+   ],
+   "evidence": [
+    "record.json:968-993",
+    "scenes.json:727-735",
+    "record.json:996-1004",
+    "record.json:755-756"
+   ],
+   "observed": "coverage_rest: 'the shipped art rests on his approval of the art sheet (OWNER:1792122659817386516, 2026-10-16)'. The crestfeather was added by ITEM RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY (his 2026-11-14 card), and the hide bank is listed in inv_furnacebeast. The proof_note keeps 'open follow-ups: grass lifecycle states, kept-art judge digest, ashwallow dome sprite'. The crestfeather def borrows ThrumboHorn art as a placeholder (src RM_PristineFirehawkCrestfeather.xml:21,47).",
+   "would_pass": "The coverage_rest row names, for each texture or description added after 2026-10-16 and for each open follow-up, either an art-eval judge verdict (under the delegated art judge brief) or a build item for its missing art. A script finds no shipped texPath outside the approved sheet without one.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the post-approval art list and its judge or build items to the inv_art_and_text coverage_rest row in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "An approval covers only what it saw, and art made later needs its own judge.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g13",
+   "what": "The flagship showcase's lead scene takes no capture and ends at once, though the leaf's oracle names 'captures of the front' and marks it as his part, so he is never shown the face he picked",
+   "where": "scenes.json sc_burn_line_walks, showcase burn_line; tree.json burn_line_walks",
+   "ids": [
+    "burn_line_walks"
+   ],
+   "evidence": [
+    "tree.json:25",
+    "tree.json:44",
+    "scenes.json:15-23",
+    "scenes.json:641-663",
+    "exam.json:83-87"
+   ],
+   "observed": "The oracle ends '... in open grass beyond the building margin; captures of the front', and owner_part is 'yes: the burn line walking across deep ash with its scorched trail'. sc_burn_line_walks' action is 'watch the front for a game day', its expect names no capture, and its hold is 'immediate'. Every other scene of showcase burn_line is also 'immediate'. The only burn-line exam scenario, e13, tests the relight, not the look.",
+   "would_pass": "sc_burn_line_walks captures the front and its black trail at play zoom each game hour (capture hour asserted), and either holds owner_review or keeps a savegame of the walking front for his review. A judge confirms the captures show a walking line, not scattered fire.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "edit sc_burn_line_walks' action, expect and hold in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A showcase is what he judges as the mod's face, and a scene with no capture and no hold gives him nothing to judge.",
+   "return_to": 3,
+   "new_since": "late"
+  },
+  {
+   "clause": "g14",
+   "what": "sc_burn_compounds runs seven game days with no colony-vitals and incident guard, which the script audit asked of fresh_burn_bonus",
+   "where": "scenes.json sc_burn_compounds; record.json script_audit",
+   "ids": [
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   "evidence": [
+    "record.json:1151-1155",
+    "scenes.json:86-90",
+    "scenes.json:108-111",
+    "scenes.json:11-14"
+   ],
+   "observed": "The script_audit row for 'embergrass_regrow / fresh_burn_bonus / burn_line' lacks 'assert colony vitals and map events before and after'. sc_grass_regreens and sc_burn_line_walks carry it ('vitals and incident guard', 'colony vitals and pending incidents recorded'). sc_burn_compounds' start has only the three pads.",
+   "would_pass": "sc_burn_compounds' start records colony vitals and pending incidents, and its expect asserts them unchanged across the 7-day wait (no raid, no death, no fire off the pads).",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the guard to sc_burn_compounds' start and expect in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "He calls warping ahead in time 'EXTREMELY risky', so a long wait without a guard can be green for the wrong reason.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g15",
+   "what": "The grass-carpet claim has no number and no control, so the leaf's own false_pass (cells the density enforcer just filled for the test) is not ruled out",
+   "where": "scenes.json sc_grass_regreens; tree.json grass_carpets_and_regreens; record.json inv_plant_roster",
+   "ids": [
+    "inv_plant_roster",
+    "grass_carpets_and_regreens"
+   ],
+   "evidence": [
+    "tree.json:127",
+    "tree.json:143",
+    "scenes.json:113-119",
+    "record.json:470",
+    "exam.json:36"
+   ],
+   "observed": "The oracle says 'cover census shows dense grass on open cells', and sc_grass_regreens expects 'dense cover on open ground'. Its controls address only regrowth and the vanilla grass growth rate. The false_pass 'the cover census counts grass on cells the density enforcer just filled for the test' has no rules_out. exam.json e5 has the readers accept 'carpeted thick ... with no wide bare-dirt stretches' with no threshold to check it against.",
+   "would_pass": "The census runs on a fresh map before any test action, reads a stated share of open cells with grass (at least a number tied to bar pyre_grass_chokes_ground), and records the density enforcer's fills in the window. The control is a same-seed map with the enforcer off, which reads a lower share.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "edit sc_grass_regreens' start, expect and control in scenes.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A false_pass the tree names must be ruled out by the scene that accepts the leaf.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g16",
+   "what": "The kept vanilla herd migration is never checked against the mod's own herd-migration filter, and the cut world-map migration's absence has no leaf, scene or coverage_rest row",
+   "where": "tree.json ullai_cross_the_map_as_vanilla_herds; scenes.json sc_foreign_arrivals; record.json inv_ullai_herd_giant; exam.json e14/c2",
+   "ids": [
+    "inv_ullai_herd_giant",
+    "ullai_cross_the_map_as_vanilla_herds"
+   ],
+   "evidence": [
+    "tree.json:587",
+    "tree.json:598-601",
+    "record.json:526",
+    "record.json:802",
+    "scenes.json:602-603",
+    "exam.json:89-105"
+   ],
+   "observed": "The leaf's oracle reads the XML, the PawnKindDef and 'no patch disabling it', but inv_animal_roster ships a C# filter by which 'vanilla's any-animal fallbacks for herd migration ... are closed (PyrelandsForeignArrivals)'. sc_foreign_arrivals expects only that 'any herd migration ... that fires brings only the biome's own kinds'. exam.json e14 accepts a live ullai migration and c2 probes only a parent-def flag, so the exam never exercises the C# filter. The leaf must not read as 'the world-map migration he cut coming back', but that absence is 'checked offline by T_CUT_STAYS_CUT (version/test_table.json, specified)', which is not in this concept's scenes or tree.",
+   "would_pass": "sc_foreign_arrivals asserts that IncidentWorker_HerdMigration.CanFireNow is true on the Pyrelands map and that an executed migration brings RM_Ullai (or a stated native herd kind). The ullai leaf's oracle, or a coverage_rest row, names T_CUT_STAYS_CUT with its command.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "extend sc_foreign_arrivals' expect and the ullai leaf's oracle (or coverage_rest) in scenes.json and tree.json"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "A preserve leaf must hold against the mod's own code that touches the same incident, not only against its XML.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g17",
+   "what": "The sheet and tree do not say what several scenes test: fire sense and eat-before-fire-duty, wet roots, the fire-hawk's seek-burn, the fire-cast top-up, roof withering and slow thirst; the exam therefore never probes them",
+   "where": "sheet.md; tree.json; scenes.json sc_fire_sense, sc_ash_watered, sc_firehawk, sc_populations, sc_walk; exam.json",
+   "ids": [],
+   "evidence": [
+    "sheet.md:14-39",
+    "scenes.json:371-396",
+    "scenes.json:65",
+    "scenes.json:215",
+    "scenes.json:163",
+    "scenes.json:358",
+    "tree.json:424",
+    "exam.json:9-130"
+   ],
+   "observed": "sc_fire_sense cites requirement 'walk_season_on_the_pyre', whose experience (tree.json:424) never mentions a person stepping away from fire or eating before fire duty. sc_ash_watered reads 'GrowthRateFactor_Temperature' (wet roots), which neither ash_fertile_when_watered nor its sheet line ('benefiting from water as before') states. sc_firehawk tests 'RM_FireHawkSeekBurn', sc_populations tests 'fire-hawks = max(2, ...)', and sc_walk tests roof withering and herd water visits. No sheet line names any of these, and none of exam.json's 20 scenarios (e1-e14, c1-c6) touches them, because the readers were given only the sheet and tree.",
+   "would_pass": "Every expect clause in scenes.json traces to a sentence in the experience of a tree leaf (the scene's requirement) and to a sheet.md does-line, so a fresh reader of the sheet can name each behaviour the scenes accept, and the exam can be given scenarios on them.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the behaviours to the matching leaves' experience text in tree.json (or to new leaves) and to sheet.md does-lines; repoint sc_fire_sense's requirement to the leaf that states it"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The intent of a scene is the requirement it cites, and the sheet a player reads must say what the tree tests.",
+   "return_to": 3,
+   "new_since": "unfixed"
+  },
+  {
+   "clause": "g18",
+   "what": "The showcase set stops at three while a fourth candidate would newly exercise three capabilities left in coverage_rest",
+   "where": "scenes.json showcases and coverage_rest; sheet.md delegated",
+   "ids": [],
+   "evidence": [
+    "scenes.json:640-693",
+    "scenes.json:695-742",
+    "sheet.md:53-54",
+    "record.json:1189"
+   ],
+   "observed": "coverage_rest holds inv_firefoam_sprayer, inv_sand_shovel and inv_firehawk_hunt_rewards, each with a 'cheaper direct check' why. A 'solace of the fire' showcase (sc_firefoam_sprayer, sc_sand_shovel, sc_firehawk_rewards) would newly exercise all three while sharing only inv_scorchfruit (1 of 4 = 0.25, at max_overlap), which meets min_new_after_first 3. The contract says 'Add showcases until no candidate would newly exercise at least min_new_after_first'. record.json's failure mode 2 names this solace ('scorch-fruit, fresh-burn fertility and glass sand') as what the biome must read as.",
+   "would_pass": "Either a fourth showcase in scenes.json exercising inv_firefoam_sprayer, inv_sand_shovel and inv_firehawk_hunt_rewards (with overlap_why for any shared capability), with the sheet's delegated line updated; or a recorded reason, accepted by designer_stage.py showcases, why no such candidate exists.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "add the showcase to scenes.json and a sentence to sheet.md's delegated section"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract states the stop rule mechanically, and this candidate meets its numbers (UNMEASURED first guesses, but the rule in force).",
+   "return_to": 3,
+   "new_since": "unfixed"
+  }
+ ],
+ "contract": {
+  "ok": true,
+  "counted": true,
+  "calibration": "UNTESTED"
+ },
+ "alarms": [
+  {
+   "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+   "subject": "item:BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
+   "why": "clause inv_furnacebeast, inv_firehawk_ember, inv_settings_gate, inv_plant_roster, inv_animal_roster, inv_ash_field, ash_ground_and_blowing_ash, inv_weather, grass_carpets_and_regreens, inv_ullai_herd_giant, rest refused 3 times: criteria repair due"
+  },
+  {
+   "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+   "subject": "family:coverage_judge",
+   "why": "refused all of its last 8 verdicts across 4 items"
+  }
+ ]
+}
