@@ -405,6 +405,54 @@ def main():
            and rd2["mods"]["FlowWorks"]["decision"] == "stopped" and rd["needs_conductor"],
            "a failed launch gets a Needs Conductor line and no automatic retry")
 
+        # ---- a Stage 3 launch that never started on a transient fault retries itself (owner, 2026-11-15: the pipeline
+        # fixes its own defects; item RIMMANDRAKE_RETRY_STAGE_THREE_LAUNCH_TRANSIENT_FAULT_NOT_STOPPED). Before, a git
+        # lock while filing stopped the mod for good and wrote a Needs Conductor line a hand had to `clear`.
+        def t3(fx_, at=0):
+            return MD.tick(root, one, True, fx=dict(fx_, facts=lambda: facts_for(one)), now=CLOCK + at, page=False)
+
+        def d3(rd_):
+            return rd_["mods"]["FlowWorks"]["decision"]
+
+        def file_flaky(n_fail):
+            calls = []
+
+            def file_(item, title, why):
+                calls.append(item)
+                if len(calls) <= n_fail:
+                    return False, "ingest.lock stayed busy; nothing filed"
+                return fx["file"](item, title, why)
+            return file_, calls
+
+        reset()
+        f1, c1 = file_flaky(1)
+        r1, r2 = t3(dict(fx, file=f1)), t3(dict(fx, file=f1), at=600)
+        st1 = json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
+        ok(d3(r1) == "launch_retry" and not r1["needs_conductor"] and d3(r2) == "launched" and len(launches()) == 1
+           and not st1.get("stopped"),
+           "a Stage 3 filing that hit a lock retries on the next tick, no stop, no Needs Conductor line (%s, %s, %s)"
+           % (d3(r1), d3(r2), r1["needs_conductor"]))
+        reset()
+        pubs, lc = [], []
+
+        def launch_once_unpublished(mod, cap_, item, **kw):
+            lc.append(item)
+            if len(lc) == 1:
+                return 1, "refused: %s is not on origin/main" % item, None
+            return fx["launch"](mod, cap_, item)
+        fx_b = dict(fx, launch=launch_once_unpublished, publish=lambda item: (pubs.append(item) or True, "published"))
+        r1, r2 = t3(fx_b), t3(fx_b, at=600)
+        ok(d3(r1) == "launch_retry" and d3(r2) == "launched" and len(filed) == 1 and pubs == [filed[0][0]]
+           and lc == [filed[0][0]] * 2 and r2["mods"]["FlowWorks"].get("item") == filed[0][0],
+           "a Stage 3 launch refused as not yet on origin retries the SAME item, published again, never re-filed "
+           "(filed %s, published %s, launched %s)" % ([x[0] for x in filed], pubs, lc))
+        reset()
+        f9, _ = file_flaky(99)
+        rs = [t3(dict(fx, file=f9), at=600 * i) for i in range(4)]
+        ok([d3(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"] and not launches()
+           and rs[2]["needs_conductor"],
+           "a transient fault that outlasts launch_tries stops with a Needs Conductor line (%s)" % [d3(x) for x in rs])
+
         # ---- the idle reading and its Operations family ---------------------------------------------------------------
         reset()
         gss = dict(base, advancing=["GimmeSomeSlack"])

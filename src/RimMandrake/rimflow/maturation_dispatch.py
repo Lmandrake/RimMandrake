@@ -27,7 +27,8 @@ Per mod on the advancing list, in order, one decision:
   live          a detached run is live on the mod (maturation_now maps runs to mods by item id): nothing; the run is
                 watched, and its refused count when first seen is kept
   stopped       the last run on the mod ended and the count of refused bars did NOT fall, or the mod's dollars at the
-                stage passed stage_ceiling_usd, or a launch failed: nothing, and one "Needs Conductor" line. It stays
+                stage passed stage_ceiling_usd, or a launch failed (one that never started on a transient fault is
+                launch_retry instead, the same item, up to launch_tries): nothing, and one "Needs Conductor" line. It stays
                 stopped while the refused set is the one it stopped on (never a second automatic try at the same
                 refusals); `clear` or a change to the refused set by someone else lifts it
   held | blocked a Conductor hold or another non-build refusal (a version mismatch): nothing
@@ -1026,7 +1027,20 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                            need="%s: the blind launch failed%s (%s); the step will not retry it on its own" % (
                                mod, spent_tries(entry), text))
             continue
-        ok, text = do_file(item, title, why) if item else (False, "no free item name")
+        # a Stage 3 launch that never started on a transient fault (a git lock, its item not yet on origin/main) retries
+        # the same item on the next tick, up to launch_tries, like the blind and in-game launches
+        # (RIMMANDRAKE_RETRY_STAGE_THREE_LAUNCH_TRANSIENT_FAULT_NOT_STOPPED)
+        retry = s.get("launch_retry") if isinstance(s.get("launch_retry"), dict) else {}
+        if retry.get("refused") != row["refused"]:
+            retry = {}
+        tries = int(retry.get("tries") or 0) + 1
+        if retry.get("item") and retry.get("filed"):
+            item, filed = retry["item"], True
+            ok, text = do_publish(item)
+            text = "retry %d of %s, filed earlier; %s" % (tries, item, text)
+        else:
+            ok, text = do_file(item, title, why) if item else (False, "no free item name")
+            filed = ok
         if ok:
             rc, text2, unit = do_launch(mod, cfg["cap_usd"], item)
             text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
@@ -1040,13 +1054,21 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True,
                           "fp": row.get("bar_fp")}
             s.pop("owed_since", None)
+            s.pop("launch_retry", None)
             row.update(decision="launched", unit=unit, item=item, why=text)
             known.add(item) if isinstance(known, set) else None
             done.append(row)
+        elif not unit and AUT.transient(text) and tries < int(cfg.get("launch_tries", 3)):
+            s["launch_retry"] = {"item": item, "filed": filed, "tries": tries, "at": now, "refused": row["refused"],
+                                 "failed": text}
+            row.update(decision="launch_retry", why="the Stage 3 launch never started on a transient fault (try %d of "
+                       "%d), the next tick tries it again: %s" % (tries, int(cfg.get("launch_tries", 3)), text))
         else:
-            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed: %s" % text}
+            s.pop("launch_retry", None)
+            spent = (" %d times on a transient fault, the last" % tries) if tries > 1 and AUT.transient(text) else ""
+            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed%s: %s" % (spent, text)}
             row.update(decision="launch_failed", why=text,
-                       need="%s: the launch failed (%s); the step will not retry it on its own" % (mod, text))
+                       need="%s: the launch failed%s (%s); the step will not retry it on its own" % (mod, spent, text))
     return done
 
 
