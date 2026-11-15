@@ -497,8 +497,8 @@
     "why": "Answered from his recorded words under the Evidence-for-Ask rule; design detail is delegated (delegation_policy.md section 1); no evidence the obvious answer is wrong."
    },
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
-   "answer": "d_efa_q07",
-   "answer_source": "CONDUCTOR:1794771848243200767"
+   "answer": "d_limbs_next_version",
+   "answer_source": "OWNER:1794772416196929336"
   },
   {
    "id": "q08",

@@ -15,3 +15,4 @@ His words: "I would like to move the grown limb work to the next version, not th
 - q02: first demonstration A; the review stops on a colony-wide lockdown with no purposeful dash.
 - d_efa_q04, d_efa_q05, d_efa_q08: certified, recorded as his rulings.
 - d_efa_q07: deleted. The grown-limb work moves to 0.2.0; the five limbs and limb removal are scope `later`.
+- Inbound reference fixed (BENCH helper, 2026-11-15 ~12:25 PM PST): ask q07 answered `d_efa_q07`, a decision this note deleted; it now reads `d_limbs_next_version` with source OWNER:1794772416196929336 (his note above, by reference).
