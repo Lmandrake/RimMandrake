@@ -403,6 +403,13 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
     print("\ndeploy plan")
     print("  from : %s" % dll)
     print("  to   : %s" % target)
+    # x.B9: anything else in the deploy dir loads beside the companion; say so rather than never looking
+    try:
+        others = sorted(n for n in os.listdir(DEPLOY_DIR) if n != DLL_NAME)
+    except OSError:
+        others = []
+    if others:
+        print("  also in the deploy dir (not touched by this deploy): %s" % ", ".join(others))
     if not exists:
         print("  state: not deployed yet")
     elif same:

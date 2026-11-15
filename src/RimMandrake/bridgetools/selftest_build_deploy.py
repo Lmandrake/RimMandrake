@@ -5,7 +5,8 @@ Offline: a temp GAME_ROOT/DEPLOY_DIR, the game-process and bridge-hold probes st
   identical bytes copy nothing; a failed replace leaves the old DLL byte-identical and no temp file behind;
   a readback mismatch exits non-zero and never says "deployed"; a running game or a foreign bridge hold refuses
   before any byte is written, and --ignore-bridge-hold passes the hold; the bytes written are the verified bytes.
-BUILD_PY=<path> runs it against another copy of build.py (how it was watched failing on the base).
+BUILD_PY=<path> runs it against another copy of build.py placed in THIS directory (build.py finds the repo from
+its own path); that is how it was watched failing on the base: 6 of 8 checks FAIL there.
 """
 import contextlib
 import importlib.util
@@ -134,6 +135,11 @@ def main():
         reset()
         code, out = run(B, dll)
         check(code is None and open(target, "rb").read() == new, "deploys_the_built_bytes", (code, out[-200:]))
+
+        # 7. a stale sibling in the deploy dir is named in the plan (x.B9)
+        open(os.path.join(B.DEPLOY_DIR, "JawaBench.Old.dll"), "wb").write(b"MZ stale")
+        code, out = run(B, dll, apply_it=False)
+        check("JawaBench.Old.dll" in out, "plan_names_stale_siblings", out[-200:])
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("build deploy: %d failure(s)" % len(fails))
