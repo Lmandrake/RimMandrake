@@ -1,0 +1,1148 @@
+{
+ "chains": [
+  {
+   "name": "plot_B_fill_tiers",
+   "components": [
+    {
+     "name": "partial_fill_two_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 87,
+         "w": 6,
+         "h": 1
+        },
+        "cellCount": 6,
+        "cellsScanned": 6,
+        "rows": [
+         {
+          "x": 116,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 117,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 118,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 119,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 120,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 121,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 60000,
+        "excavatedInRect": 6,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_1ad9fe3b7e224feba00ac49d1c6f3fc8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 93,
+         "w": 6,
+         "h": 1
+        },
+        "cellCount": 6,
+        "cellsScanned": 6,
+        "rows": [
+         {
+          "x": 116,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 117,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 118,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 119,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 120,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 121,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 180000,
+        "excavatedInRect": 6,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_d9e91167705b41deb428aa0bd0a5301d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\partial_fill_two_look_1794775476995_1__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "canal_partial_fill_distinct"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "fill_tier_four_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 84,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 84,
+          "d": 5,
+          "dEff": 5,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_80f8dec84de949b9bcba0c826ea23410",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 87,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 87,
+          "d": 5,
+          "dEff": 5,
+          "dl": 10000,
+          "waterM": 0.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 10000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_056dc398453c49afb3dc551626a73f23",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 90,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 90,
+          "d": 5,
+          "dEff": 5,
+          "dl": 20000,
+          "waterM": 1.0,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_df2c57f838a44b7c90268be84f094a91",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 93,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 93,
+          "d": 5,
+          "dEff": 5,
+          "dl": 30000,
+          "waterM": 1.5,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 30000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_4e1da3517c904f7196a5ed04882ce524",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 96,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 96,
+          "d": 5,
+          "dEff": 5,
+          "dl": 40000,
+          "waterM": 2.0,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 40000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 30,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_6b2432efdc2545879b31c4cf3e5f1e88",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fill_tier_four_look_1794775478120_2__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "fill_tier_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "fill_tier_under_quarter_metre_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "execution": "ran",
+     "detail": "UNMEASURED: not on this map: no bridge tool sets a fill under one notch (0.5 m): excavation_drive's setFill is whole notches, so the under-25 cm look of fill_tier_legible cannot be staged yet",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "fill_tier_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "depth_and_fill_joint_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 127,
+         "z": 87
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_09eab933d6074a54a6e455068275778e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 127,
+         "z": 87
+        },
+        "depth": 2,
+        "waterSet": true,
+        "waterM": 1.0,
+        "waterDl": 20000,
+        "bodyCells": 1,
+        "bodyDl": 20000,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_70ee307cafe8491b8faf142232744214",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 129,
+         "z": 87
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_ba5c49a22cea4a96a547a2b1c2615aca",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 129,
+         "z": 87
+        },
+        "depth": 4,
+        "waterSet": true,
+        "waterM": 1.0,
+        "waterDl": 20000,
+        "bodyCells": 1,
+        "bodyDl": 20000,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_fb176ba6b19a49f2ac9a35d94204b346",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 131,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_7a460f50f06a44ddba1bf15d20c0373c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 131,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": true,
+        "waterM": 1.0,
+        "waterDl": 20000,
+        "bodyCells": 1,
+        "bodyDl": 20000,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_915a82a21a224da6bdfba911f40c4ded",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 133,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_448ae3a308304dd0a13c20165f285890",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 133,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": true,
+        "waterM": 0.5,
+        "waterDl": 10000,
+        "bodyCells": 1,
+        "bodyDl": 10000,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_74cf1ae0be604e86960259b2549ccc9b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 135,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_b29ffc15b8be4e278b7c0cc21461e821",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 36
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 135,
+         "z": 87
+        },
+        "depth": 8,
+        "waterSet": true,
+        "waterM": 2.0,
+        "waterDl": 40000,
+        "bodyCells": 1,
+        "bodyDl": 40000,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_b5fe57f0ca7c417fa2631d856a6d3859",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 135,
+         "z": 87,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 135,
+          "z": 87,
+          "d": 8,
+          "dEff": 8,
+          "dl": 40000,
+          "waterM": 2.0,
+          "fluid": "RM_Fluid_Water",
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 40000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 35,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_1acf0d65a3d745f28b28aa64bd6e2192",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\depth_and_fill_joint_look_1794775479827_3__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "depth_and_fill_jointly_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\\Transient\\modcheck\\surprises\\20261115T124423\\FlowWorksExtensions_plot_B_fill_tiers_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 5.728,
+    "body": 11.625,
+    "teardown": 0.984
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "UNMEASURED",
+  "rows": [
+   {
+    "row": "plot_B_fill_tiers/partial_fill_two_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_B_fill_tiers/fill_tier_four_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_B_fill_tiers/fill_tier_under_quarter_metre_look",
+    "verdict": "UNMEASURED",
+    "class": "other",
+    "grade": "UNMEASURED",
+    "notes": []
+   },
+   {
+    "row": "plot_B_fill_tiers/depth_and_fill_joint_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 3,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 1
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": false,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 4.0,
+  "ready_s": 6.0,
+  "verified": true
+ },
+ "wall_s": 39.3,
+ "chains_run": [
+  "plot_B_fill_tiers"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "466c630146fb3fd1dcde429fafb07bf8709c58516b394c3ddc6a97e826582de0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "e364f764eb17a9cb083eaa69863d9e37668a07e76505a789afe21ed86c9d22bc",
+  "assembly_sha256": "010b2d458ec69f85141ea66871b6b9c2891f79543f5e0c117703105007c3bb41",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

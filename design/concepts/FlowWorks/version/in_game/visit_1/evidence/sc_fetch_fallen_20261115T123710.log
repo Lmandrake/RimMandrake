@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_fetch_fallen_20261115T123710.json AssertionError("rows not all PASS: [('scene_fetch_fallen_staging', 'UNMEASURED')]")
+[bridge split] 15.3 s wall: load 0.4 / ticks 0.0 / reads 2.9 / other 1.5 / outside calls 10.5 s

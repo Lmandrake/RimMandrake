@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_toss_flame_20261115T123645.json AssertionError("rows not all PASS: [('TOSS_picked_square_lights_first', 'FAIL'), ('TOSS_control_water_twin_stays_dark', 'FAIL')]")
+[bridge split] 17.7 s wall: load 0.4 / ticks 1.1 / reads 3.0 / other 2.4 / outside calls 10.8 s

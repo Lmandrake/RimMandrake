@@ -1,0 +1,12 @@
+== section posts
+SB_drag_6_timber_builds            PASS       {"read": "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"}
+SB_path_crosses_on_deck            PASS       {"read": "PATH found=True cells=10 decked=6", "walls": true}
+SB_load_over_rating_whole_span_falls PASS       {"empty": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg", "before": "SPAN tier=timber load=623.3 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 623 / 600 kg", "inspect_line": "Load", "after": "SPAN tie
+SB_drag_9_timber_refused           PASS       {"read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 9). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."}
+SB_rails_off_some_fall             PASS       {"read": "KNOCK trials=20 fell=4 railed=False edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_rails_on_nobody_falls           PASS       {"rails": "RAILS on=True railed=4", "read": "KNOCK trials=20 fell=0 railed=True edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_anchor_lost_swings_from_that_end PASS       {"read": "SWING 141,152@4187 142,152@4207 143,152@4227 144,152@4247", "lane": [[141, 4187], [142, 4207], [143, 4227], [144, 4247]], "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "destroy": {"success": true, "message": "Destroyed 1 thing(s) across 1 cell(s).", "destroyed
+SB_vanilla_bridge_refused_over_dug PASS       {"read": "VANILLA accepted=False reason=Use a suspension bridge over dug ground"}
+SB_settings_off_no_button_never_breaks UNMEASURED {"owed": true, "why": "OWED: toggle suspensionBridgesBuildable / suspensionWeightCollapse via jawa/mod_settings_field on RimMandrake.FlowWorks.Pits.RM_SuspensionSettings and re-run LOAD; not scripted yet"}
+suspension bridge proof: 9 rows, 0 FAIL -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_hung_bridge_20261115T130742.json
+[bridge split] 49.0 s wall: load 0.0 / ticks 1.4 / reads 1.1 / other 4.7 / outside calls 41.7 s

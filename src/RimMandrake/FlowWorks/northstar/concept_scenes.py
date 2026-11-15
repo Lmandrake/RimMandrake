@@ -498,6 +498,7 @@ def _fill_front(S):
     S.dig(a + b, 4)                                            # D2 = four half-metre notches
     S.row('FF_start_dry', all(v in (0, None) for v in S.dl(a + b)) and None not in S.dl(a + b), S.dl(a + b))
     seen = []
+    S.dig([(O[0] - 1, O[1]), (O[0] - 1, O[1] + 4)], 4)          # the head cell is dug too: a fill needs an excavated cell
     S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.fill([(O[0] - 1, O[1] + 4)], 2.0, TAR)
     for _ in range(12):
         S.pulse(1); seen.append((S.dl(a), S.dl(b)))
@@ -512,7 +513,7 @@ def _fill_front(S):
 def _one_surface(S):
     canal = _line(O[0], O[1], 10)
     pit = [(O[0] + 10 + i, O[1] + j) for i in range(3) for j in range(-1, 2)]
-    S.dig(canal, 2); S.dig(pit, 8)
+    S.dig(canal, 2); S.dig(pit, 8); S.dig([(O[0] - 1, O[1])], 4)   # the head cell is dug: a fill needs an excavated cell
     S.fill([(O[0] - 1, O[1])], 1.5, WATER)
     S.pulse(30); S.ticks(5000)                                 # two game hours
     lv = S.sc(NSP, 'ProofLevelSurface', '%d,%d,%d,%d' % (O[0], O[1] - 1, 13, 3))
@@ -549,7 +550,7 @@ def _pawn_height(S):
     for i, c in enumerate(pads):
         S.walk(col, c, 400); got.append(kv(S.sc(EXC, 'ProofPawnSink', col)).get('sink'))
     S.row('PH_offset_follows_depth', all(g is not None for g in got) and [float(g) for g in got] == sorted(float(g) for g in got), got)
-    S.fill(pads, 2.0, WATER); S.walk(col, pads[-1], 1500)
+    S.fill(pads[1:], 2.0, WATER); S.walk(col, pads[-1], 1500)   # pads[0] is undug ground: a fill needs an excavated cell
     sw = S.sc(NSP, 'ProofReadout', '%d,%d' % pads[-1])
     S.row('PH_swims_and_tires_at_2m', 'swim' in sw.lower(), sw)
     S.walk(col, (O[0], O[1] - 3), 400)
@@ -573,7 +574,7 @@ def _trench_cover(S):
     trench = _line(O[0], O[1], 6); pit = [(O[0] + 8 + i, O[1] + j) for i in range(2) for j in range(2)]
     S.dig(trench, 4); S.dig(pit, 8)
     col = S.pawn('Colonist', trench[2], 'player')
-    S.call('jawa/fire_raid', points=400, faction='Pirate', strategy='ImmediateAttack')
+    S.call('jawa/fire_raid', points=400, dryRun=False, strategy='ImmediateAttack')
     S.ticks(2500)
     cov = S.sc(EXC, 'ProofCover', '%d,%d' % trench[2])
     S.row('TR_trench_pawn_covered', 'covered=True' in cov, cov)
@@ -603,7 +604,7 @@ def _moat_raid(S):
     S.call('jawa/spawn_batch', ops='RM_Sluice:%d,%d' % (O[0] + 20, O[1]))
     S.call('jawa/spawn_batch', ops='RM_LiquidTank:%d,%d' % (O[0] + 5, O[1] + 4))
     S.sc(NSP, 'ProofTank', '%d,%d;Store;RM_Liquid_Chemfuel;400' % (O[0] + 5, O[1] + 4))
-    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack')
+    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack')
     S.ticks(3000)
     swim = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,20,2' % O, includeHealth=True)
     S.row('MOAT_raiders_swim', bool(swim.get('pawns')), swim.get('pawns'))
@@ -617,7 +618,7 @@ def _moat_raid(S):
     S.again()                                                  # control: the drawbridge lowered, nobody swims
     S.dig(moat, 8); S.fill(moat, 2.0, WATER)
     S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d' % (O[0] + 10, O[1]))
-    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack'); S.ticks(3000)
+    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack'); S.ticks(3000)
     S.row('MOAT_control_bridge_down_no_swim', 'swim' not in S.sc(NSP, 'ProofReadout', '%d,%d' % moat[10]).lower(), 'bridge down')
 
 
@@ -656,8 +657,8 @@ def _pit_trap(S, fall=True):
     S.call('jawa/spawn_batch', ops=';'.join('RM_Spikes:%d,%d' % c for c in pit))
     if fall:
         S.sc(EXC, 'ProofCover', '%d,%d;cover' % pit[4])
-    S.call('jawa/set_plants', ops='%d,%d,4,2' % (O[0] - 1, O[1] - 3), density=1.0, growth=1.0)
-    S.call('jawa/fire_raid', points=700, faction='Pirate', strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0] + 1, O[1] - 20))
+    S.call('jawa/set_plants', ops='Plant_Grass:%d,%d,4,2' % (O[0] - 1, O[1] - 3), density=1.0, growth=1.0)
+    S.call('jawa/fire_raid', points=700, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0] + 1, O[1] - 20))
     S.ticks(4000)
     return pit
 
@@ -692,7 +693,7 @@ def _islands(S):
     S.dig(span, 8); S.fill(span, 2.0, WATER)
     S.call('jawa/spawn_batch', ops='RM_SuspensionBridge:%d,%d' % span[0])
     S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d;RM_DrawbridgeGate:%d,%d' % (span[0] + span[-1]))
-    S.call('jawa/fire_raid', points=900, faction='Pirate', strategy='ImmediateAttack', spawnCenter='%d,%d' % span[8])
+    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % span[8])
     S.ticks(5000)
     on = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,16,1' % O).get('pawns') or []
     gates = S.call('jawa/list_things', defName='RM_DrawbridgeGate', rect='%d,%d,17,1' % (O[0] - 1, O[1])).get('things') or []
@@ -700,7 +701,7 @@ def _islands(S):
 
 
 def _walk(S):
-    S.dig(_line(O[0], O[1], 20), 4); S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.pulse(40)
+    S.dig(_line(O[0] - 1, O[1], 21), 4); S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.pulse(40)
     a = S.call('jawa/flowworks_engine_state')
     S.setting('depthEngineEnabled', False); S.ticks(600); S.setting('depthEngineEnabled', True); S.ticks(600)
     b = S.call('jawa/flowworks_engine_state')
@@ -710,7 +711,7 @@ def _walk(S):
 def _garden(S):
     # The canal wetting rows left 0.1.0 with the wetting bars (owner by card 2026-11-14, OWNER:1794721673433243094); the
     # garden keeps its field and pumped network. _wetting and scene_wetting stay for FlowWorks 0.2.0.
-    S.call('jawa/set_plants', ops='%d,%d,12,5' % (O[0], O[1] - 3), density=1.0, growth=0.1)
+    S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,12,5' % (O[0], O[1] - 3), density=1.0, growth=0.1)
     S.call('jawa/spawn_batch', ops='RM_LiquidDrill:%d,%d;RM_LiquidPump:%d,%d;RM_SprinklerHead:%d,%d;RM_LiquidTank:%d,%d;RM_PipeFaucet:%d,%d'
            % (O[0] + 14, O[1], O[0] + 15, O[1], O[0] + 14, O[1] - 3, O[0] + 16, O[1] + 2, O[0] + 17, O[1] + 2))
     S.ticks(60000)

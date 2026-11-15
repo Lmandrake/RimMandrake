@@ -1,0 +1,6 @@
+site save calm: CLEAN load 4.2s ready 6.2s 
+extensions: {'PASS': 1, 'FAIL': 1} in 33.9s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_one_network_20261115T125135.json
+[modcheck] chain machinery_pipes START 20:51:56Z
+[modcheck] SETTING RESTORE FAILED RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.universalPipesEnabled -> 'True': {'success': False, 'message': "REFUSED: 'RimMandrake.FlowWorks.Machinery.RM_MachinerySettings' does not derive from Verse.ModSettings; set writes only a mod's settings class (list and get still read any type).", 'operation': {'OperationId': 'op_d818cf4a1045426e9d324d7ad1b3e3f9', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 802}}
+[modcheck] chain machinery_pipes END 13s PASS=1 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=6.5s body=5.6s teardown=1.0s
+[bridge split] 34.0 s wall: load 0.0 / ticks 0.7 / reads 3.6 / other 7.9 / outside calls 21.8 s

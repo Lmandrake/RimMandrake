@@ -1,0 +1,16 @@
+extensions: {'PASS': 22, 'UNMEASURED': 3} in 65.4s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_river__ext_rivers_20261115T131035.json
+[modcheck] chain current START 21:10:51Z
+[modcheck] chain current END 8s PASS=5 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.8s body=1.1s teardown=1.0s
+[modcheck] chain swept START 21:10:59Z
+[modcheck] chain swept END 17s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.4s body=10.9s teardown=1.0s
+[modcheck] chain taken_by_land START 21:11:16Z
+[modcheck] chain taken_by_land END 7s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.4s body=0.8s teardown=1.0s
+[modcheck] chain works START 21:11:24Z
+[modcheck] chain works END 10s PASS=13 FAIL=0 UNMEASURED=1 NOT_RUN=0 hold=5.4s body=3.2s teardown=1.0s
+[modcheck] chain placer START 21:11:33Z
+[modcheck] chain placer END 8s PASS=2 FAIL=0 UNMEASURED=2 NOT_RUN=0 hold=5.4s body=2.0s teardown=0.9s
+[bridge split] 65.5 s wall: load 0.0 / ticks 0.8 / reads 8.1 / other 28.3 / outside calls 28.3 s
+[bridge split] WARN 158 calls of jawa/time_clock (6.0 s): batch them
+[bridge split] WARN 97 calls of jawa/list_pawns (4.8 s): batch them
+[bridge split] WARN 92 calls of jawa/pawn_need (3.5 s): batch them
+[bridge split] WARN 90 calls of jawa/debug_settings (4.0 s): batch them

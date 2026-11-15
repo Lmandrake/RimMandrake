@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_ice_20261115T123553.json AssertionError("rows not all PASS: [('ICE_cut_leaves_crushed_ice', 'FAIL'), ('ICE_melts_back_into_pond', 'PASS')]")
+[bridge split] 31.1 s wall: load 0.4 / ticks 13.7 / reads 2.8 / other 3.1 / outside calls 11.1 s

@@ -898,10 +898,20 @@ def plot_B_fill_tiers(t):
             for f, r in enumerate(runs):
                 _expect_state(t, r[:1], fill=f, what="tier F=%d" % f)
             _frame(t, x0 + 3, z0 + 2, 6, 3 * FILL_TIERS - 2)
-        with _unmeasured_if(t, "no bridge tool sets a fill under one notch (0.5 m): excavation_drive's setFill is whole notches, "
-                               "so the under-25 cm look of fill_tier_legible cannot be staged yet",
-                            "fill_tier_under_quarter_metre_look", shows=["fill_tier_legible"]):
-            pass
+        with t.component("fill_tier_under_quarter_metre_look", shows=["fill_tier_legible"]):
+            # a sixth run holding 0.2 m: RM_FluidIdentityProof.ProofFillWithFluid takes METRES and stores decilitres, so a
+            # sub-notch fill IS stageable (Stage 6 visit 1, 2026-11-15; it read UNMEASURED "no bridge tool" before)
+            sub = _line(x0 + 3, z0 + 2 + 3 * FILL_TIERS, 6)
+            _dig_run(t, sub, FILL_TIER_DEPTH)
+            for x, z in sub:
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof",
+                                  method="ProofFillWithFluid", args="%d,%d,0.2,RM_Fluid_Water" % (x, z))
+                if t._guard():
+                    _expect(str((r or {}).get("result", "")).startswith("FILLED"), "sub-notch fill (%d,%d): %r" % (x, z, r))
+            if t._guard():
+                w = _water(t, sub)
+                _expect(all(0 < v < 0.5 for v in w), "sub-notch run water %r levels, not in (0, 0.5) (under 25 cm)" % w)
+            _frame(t, x0 + 3, z0 + 2, 6, 3 * FILL_TIERS + 1)
         with t.component("depth_and_fill_joint_look", shows=["depth_and_fill_jointly_legible"]):
             # the bar's grid, in metres: 1 m of water in 1, 2 and 4 m holes, and 4 m holes holding 0.5, 1 and 2 m (the 4 m
             # hole with 1 m is shared). A notch is 0.5 m: pads are (hole D, fill F) = (2,2) (4,2) (8,2) (8,1) (8,4).

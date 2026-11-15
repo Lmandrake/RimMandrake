@@ -1,0 +1,6 @@
+site save calm: CLEAN load 4.3s ready 5.2s 
+extensions: {'PASS': 3} in 72.7s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_slime_20261115T124628.json
+[modcheck] chain slime_slip START 20:46:53Z
+[modcheck] chain slime_slip END 49s PASS=3 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=2.9s body=44.5s teardown=1.0s
+[bridge split] 72.9 s wall: load 0.0 / ticks 0.0 / reads 0.7 / other 43.1 / outside calls 29.0 s
+[bridge split] WARN 87 calls of jawa/time_clock (1.3 s): batch them

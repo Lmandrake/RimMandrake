@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_geyser_tub_20261115T123813.json AssertionError("rows not all PASS: [('TUB_reads_hot_tub', 'FAIL'), ('TUB_pawn_soaks_bonus', 'FAIL')]")
+[bridge split] 30.1 s wall: load 0.4 / ticks 13.4 / reads 2.8 / other 2.5 / outside calls 11.0 s

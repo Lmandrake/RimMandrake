@@ -1,0 +1,1290 @@
+{
+ "chains": [
+  {
+   "name": "plot_H_depth_ladder",
+   "components": [
+    {
+     "name": "depth_ladder_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 116,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 116,
+          "z": 159,
+          "d": 0,
+          "dEff": 0,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": false,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 0,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_af1bc4835073460499fe93d2316fabb5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 118,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 118,
+          "z": 159,
+          "d": 1,
+          "dEff": 1,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_ef54471a00de40b2be0696037e65a434",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 120,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 120,
+          "z": 159,
+          "d": 2,
+          "dEff": 2,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_93199ca364e7493ab5d47d9de617ff45",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 122,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 122,
+          "z": 159,
+          "d": 3,
+          "dEff": 3,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_c05dd454e4434c09936b52744c464c45",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 124,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 124,
+          "z": 159,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_87e8328a4dd94fbb812ee161d4c3a52f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 126,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 126,
+          "z": 159,
+          "d": 8,
+          "dEff": 8,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_a04379d8c2c440e699704f9f771e265e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 128,
+         "z": 159,
+         "w": 1,
+         "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+         {
+          "x": 128,
+          "z": 159,
+          "d": 16,
+          "dEff": 16,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 36,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_138ed918c5ac458eaaecb481d96ab253",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\depth_ladder_look_1794775298463_1__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pit_depth_ladder_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pawn_height_ladder_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (118,159) after 302 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 118,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 302,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 44,
+        "waitedSeconds": 4.4,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 118,
+           "z": 159
+          },
+          "start": {
+           "x": 113,
+           "z": 160
+          },
+          "end": {
+           "x": 118,
+           "z": 159
+          },
+          "arrived": true,
+          "moved": true,
+          "distanceBefore": 5.1,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 305,
+        "operation": {
+         "OperationId": "op_2641ef58a5b4461a8ae2751b1adc992d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5088
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 305
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(200) [watched] -> 200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 200,
+        "requested": 200
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (124,159) after 304 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 124,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 304,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 44,
+        "waitedSeconds": 4.4,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 124,
+           "z": 159
+          },
+          "start": {
+           "x": 118,
+           "z": 159
+          },
+          "end": {
+           "x": 124,
+           "z": 159
+          },
+          "arrived": true,
+          "moved": true,
+          "distanceBefore": 6.0,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 810,
+        "operation": {
+         "OperationId": "op_1da819cba95d4394b5ccb01c0c6df710",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5120
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 810
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(300) [watched] -> 300 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 300,
+        "requested": 300
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21175",
+          "name": "Blackheart",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 126,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 1110,
+        "operation": {
+         "OperationId": "op_1a5d2ef0d3e040408fbe61d45c050a9b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1110
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21178",
+          "name": "Mowa",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 128,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 1110,
+        "operation": {
+         "OperationId": "op_4c19491aeb6743c8b4a42306d8bb205b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1110
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d1_1794775306227_2__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d4_1794775313734_3__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_height_ladder_diptych_1794775314.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d8_1794775314970_4__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d16_1794775315555_5__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_height_deep_diptych_1794775316.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pawn_height_ladder_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pawn_lowers_deeper",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (120,159) after 302 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 120,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 302,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 49,
+        "waitedSeconds": 4.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 120,
+           "z": 159
+          },
+          "start": {
+           "x": 124,
+           "z": 159
+          },
+          "end": {
+           "x": 124,
+           "z": 159
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 4.0,
+          "distanceAfter": 4.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 120,
+           "z": 159
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1412,
+        "operation": {
+         "OperationId": "op_1eabe0a55c354c0094fd4e70c76d198b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 4954
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1412
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(200) [watched] -> 200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 200,
+        "requested": 200
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (122,159) after 303 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 122,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 303,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 50,
+        "waitedSeconds": 5.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 122,
+           "z": 159
+          },
+          "start": {
+           "x": 120,
+           "z": 159
+          },
+          "end": {
+           "x": 122,
+           "z": 159
+          },
+          "arrived": true,
+          "moved": true,
+          "distanceBefore": 2.0,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 1915,
+        "operation": {
+         "OperationId": "op_3c41362dc3494c329cd1efb493b78fbe",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5052
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1915
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(200) [watched] -> 200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 200,
+        "requested": 200
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d2_1794775322342_6__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d3_1794775329069_7__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_lowers_diptych_1794775329.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pawn_lowers_on_deeper_cell"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pawn_rises_shallower",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (122,159) after 304 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 122,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 304,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 50,
+        "waitedSeconds": 5.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 122,
+           "z": 159
+          },
+          "start": {
+           "x": 122,
+           "z": 159
+          },
+          "end": {
+           "x": 122,
+           "z": 159
+          },
+          "arrived": true,
+          "moved": false,
+          "distanceBefore": 0.0,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 2419,
+        "operation": {
+         "OperationId": "op_24ab1f2e037c40cd8c3610c5af1d152e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5064
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2419
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(200) [watched] -> 200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 200,
+        "requested": 200
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (118,159) after 302 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 118,
+         "z": 159
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 302,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 50,
+        "waitedSeconds": 5.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Jec",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 118,
+           "z": 159
+          },
+          "start": {
+           "x": 122,
+           "z": 159
+          },
+          "end": {
+           "x": 118,
+           "z": 159
+          },
+          "arrived": true,
+          "moved": true,
+          "distanceBefore": 4.0,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 2922,
+        "operation": {
+         "OperationId": "op_f8ca0182777e4a88b0d46b741ac420f4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5054
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2922
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(300) [watched] -> 300 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 300,
+        "requested": 300
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d3b_1794775336023_8__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_d1b_1794775342655_9__cell_rect.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\H_rises_diptych_1794775343.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pawn_rises_on_shallower_cell"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 3220,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21169"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21175"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21178"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\\Transient\\modcheck\\surprises\\20261115T124127\\FlowWorksExtensions_plot_H_depth_ladder_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 6.043,
+    "body": 50.205,
+    "teardown": 0.604
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "plot_H_depth_ladder/depth_ladder_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_H_depth_ladder/pawn_height_ladder_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_H_depth_ladder/pawn_lowers_deeper",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_H_depth_ladder/pawn_rises_shallower",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 4,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 4.0,
+  "ready_s": 5.9,
+  "verified": true
+ },
+ "wall_s": 77.7,
+ "chains_run": [
+  "plot_H_depth_ladder"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "466c630146fb3fd1dcde429fafb07bf8709c58516b394c3ddc6a97e826582de0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "e364f764eb17a9cb083eaa69863d9e37668a07e76505a789afe21ed86c9d22bc",
+  "assembly_sha256": "010b2d458ec69f85141ea66871b6b9c2891f79543f5e0c117703105007c3bb41",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

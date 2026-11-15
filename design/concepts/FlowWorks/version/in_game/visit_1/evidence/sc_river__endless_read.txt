@@ -1,0 +1,8 @@
+{
+ "105,135": "OK Endless (about 1 m deep)",
+ "inspect 105,135": "{'success': True, 'message': 'NOTHING MATCHED. 34785 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the ids, the defName and the rect before concluding the thing is absent.', 'matched': 0, 'examined': 34785, 'threw': 0, 'things': [], 'ticksGame': 6296, 'operation': {'OperationId': 'op_baf5f3d1e2a641afb40d108002415b39', 'Status': 'Completed', 'Success': True, 'Duration",
+ "100,130": "OK Endless (about 1 m deep)",
+ "inspect 100,130": "{'success': True, 'message': 'NOTHING MATCHED. 34785 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the ids, the defName and the rect before concluding the thing is absent.', 'matched': 0, 'examined': 34785, 'threw': 0, 'things': [], 'ticksGame': 6296, 'operation': {'OperationId': 'op_62466262b0394272a1e8c90942dfaa53', 'Status': 'Completed', 'Success': True, 'Duration",
+ "38,5": "OK Endless (about 2 m deep)",
+ "inspect 38,5": "{'success': True, 'message': 'NOTHING MATCHED. 34785 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the ids, the defName and the rect before concluding the thing is absent.', 'matched': 0, 'examined': 34785, 'threw': 0, 'things': [], 'ticksGame': 6296, 'operation': {'OperationId': 'op_1fd4df07ec854721a2703010deec0008', 'Status': 'Completed', 'Success': True, 'Duration"
+}

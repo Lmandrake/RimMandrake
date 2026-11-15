@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_islands_20261115T123726.json AssertionError("rows not all PASS: [('scene_islands_staging', 'UNMEASURED')]")
+[bridge split] 16.2 s wall: load 0.4 / ticks 0.0 / reads 2.8 / other 2.3 / outside calls 10.7 s

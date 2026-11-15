@@ -1,0 +1,17 @@
+====================================================================================================
+R3. Swept off the map edge, then walks home
+  staged factions (game read): {'Human139340': 'PlayerColony', 'Human139343': 'PlayerColony', 'Human139352': 'PlayerColony', 'Human139355': 'PlayerColony', 'Human139359': 'PlayerColony', 'Human139363': 'PlayerColony'}
+  6 colonists staged on edge river cells [(35, 0), (145, 249), (28, 0), (137, 249), (32, 0), (141, 249)]; pending 0
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\R3_p00.png
+  after 250 ticks: pending 3, still on map: 3 of 6
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\R3_swept.png
+  R3.a    MATCHES    pending 0 -> 3 after 250 ticks (6 colonists staged)
+  R3.b    MATCHES    walk-home call: SWEPT pending=0
+  after return, Human139340: faction PlayerColony (staged as PlayerColony), position {'x': 177, 'z': 0}
+  after return, Human139352: faction PlayerColony (staged as PlayerColony), position {'x': 0, 'z': 160}
+  after return, Human139359: faction PlayerColony (staged as PlayerColony), position {'x': 249, 'z': 14}
+  R3.c    MATCHES    washed away ['Human139340', 'Human139352', 'Human139359']; back on the map after return: ['Human139340', 'Human139352', 'Human139359']
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\R3_home.png
+  R3.d    UNMEASURED the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)
+index: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\index.html
+[bridge split] 13.9 s wall: load 0.0 / ticks 0.3 / reads 0.7 / other 1.5 / outside calls 11.4 s

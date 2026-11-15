@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_one_surface_20261115T123049.json AssertionError("rows not all PASS: [('ONE_level_every_cell', 'FAIL'), ('ONE_control_sluice_splits', 'FAIL')]")
+[bridge split] 15.7 s wall: load 0.4 / ticks 2.0 / reads 1.8 / other 0.6 / outside calls 10.9 s

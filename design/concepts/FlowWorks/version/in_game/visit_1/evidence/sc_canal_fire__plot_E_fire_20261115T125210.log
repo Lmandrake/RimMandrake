@@ -1,0 +1,7 @@
+site save calm: CLEAN load 4.4s ready 6.3s 
+extensions: {'PASS': 1} in 53.0s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_canal_fire__plot_E_fire_20261115T125210.json
+[modcheck] chain plot_E_fire START 20:52:32Z
+[modcheck] chain plot_E_fire END 32s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=6.0s body=24.6s teardown=1.1s
+[bridge split] 53.1 s wall: load 0.0 / ticks 5.0 / reads 5.1 / other 15.9 / outside calls 27.1 s
+[bridge split] WARN 77 calls of jawa/time_clock (3.1 s): batch them
+[bridge split] WARN 54 calls of jawa/pawn_need (2.3 s): batch them

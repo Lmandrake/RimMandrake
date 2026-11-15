@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_coating_wash_20261115T123843.json AssertionError("rows not all PASS: [('COAT_named_condition', 'FAIL'), ('COAT_water_washes_it', 'PASS')]")
+[bridge split] 42.7 s wall: load 0.4 / ticks 0.0 / reads 3.1 / other 28.6 / outside calls 10.6 s

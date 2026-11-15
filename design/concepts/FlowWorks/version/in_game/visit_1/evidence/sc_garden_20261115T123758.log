@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_garden_20261115T123758.json AssertionError("rows not all PASS: [('scene_garden_staging', 'UNMEASURED')]")
+[bridge split] 13.5 s wall: load 0.3 / ticks 0.0 / reads 1.4 / other 0.3 / outside calls 11.5 s

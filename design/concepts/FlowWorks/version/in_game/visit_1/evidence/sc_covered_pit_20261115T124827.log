@@ -1,0 +1,6 @@
+site save calm: CLEAN load 4.1s ready 6.0s 
+extensions: {'PASS': 2} in 37.1s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_covered_pit_20261115T124827.json
+[modcheck] chain pit_cover_fall START 20:48:49Z
+[modcheck] chain pit_cover_fall END 16s PASS=2 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.8s body=8.9s teardown=1.0s
+[bridge split] 37.2 s wall: load 0.0 / ticks 1.1 / reads 3.8 / other 9.5 / outside calls 22.8 s
+[bridge split] WARN 70 calls of jawa/time_clock (2.7 s): batch them

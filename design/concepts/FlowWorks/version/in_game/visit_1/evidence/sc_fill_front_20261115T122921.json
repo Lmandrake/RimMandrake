@@ -1,0 +1,3342 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1794774562.4189951,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e8859060860c49dea2f57867c9292a27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 28
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_70893ce812304598a60a4d42cdc1afcb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_258a7ffb5c56460484d1158e554e474e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c057dcbe691846c1baf74e3ca6fc6a64",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e5efd69047544b6bb2cd9b121d9577bf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_33482ad27991457f8547ce576bc3a384",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_89fc1bab3bbd4fba90a3b344bfab5ab6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_10af6fa7490e4f108e86f21a2adece6b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_cffc2c405335406d9caa0e38f72aa1ad",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5d028c7d4c27469b80c7eb229e3f5a0a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b9f4042155744796acbb8be1504003d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c4bfeae9b2694bdca13a12cb47c5d3cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c14b55d642444bbf8ca535a7b2d4bb79",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_90018ffb2466411aac43b36c2ec5610f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f8abb525d94c4b71bfec594dcbe831e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_55042e03fd704885bc1ae73bf45fc4bd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_43bd1e219a6e4f5cbe16d771f09acf0a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d307e58b5f1c4a57980521661a243162",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_87d17b0d17bf4a248f8fc0daf725b50f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3fb222573e4a41509eef2c7fa9404759",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d8c4a8a87a8d42e09c2b0ddae2e5123a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c2e43b3beeab46f0a0c63210bf60233f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e62ab427244349d28bdf69ec8e124652",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_58f66de24def475e8d0f17ca1ffcbe7f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "w": 12,
+        "h": 5
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 60,
+          "w": 12,
+          "h": 5
+        },
+        "cellCount": 60,
+        "cellsScanned": 60,
+        "rows": [
+          {
+            "x": 60,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 60,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 62,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 66,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 65,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 69,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 24,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 24,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7dd9d98c289848708a22568a791a945d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "w": 12,
+        "h": 5
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 60,
+          "w": 12,
+          "h": 5
+        },
+        "cellCount": 60,
+        "cellsScanned": 60,
+        "rows": [
+          {
+            "x": 60,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 60,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 62,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 66,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 65,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 69,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 24,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 24,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2437f56c6b7041ffaf29c7c23439f12b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "w": 12,
+        "h": 5
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 60,
+          "w": 12,
+          "h": 5
+        },
+        "cellCount": 60,
+        "cellsScanned": 60,
+        "rows": [
+          {
+            "x": 60,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 60,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 60,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 62,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 61,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 65,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 66,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 69,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 62,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 61,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 62,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 63,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 64,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Gravel"
+          },
+          {
+            "x": 65,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 66,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 67,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Soil"
+          },
+          {
+            "x": 68,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 69,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 70,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 71,
+            "z": 63,
+            "d": 0,
+            "dEff": 0,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": false,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "Sand"
+          },
+          {
+            "x": 60,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 61,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 62,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 63,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 64,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 65,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 66,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 67,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 68,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 69,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 70,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          },
+          {
+            "x": 71,
+            "z": 64,
+            "d": 4,
+            "dEff": 4,
+            "dl": 0,
+            "waterM": 0.0,
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_Channel_Superdeep"
+          }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 24,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 24,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_cc46913dbe9a48e9b82598b471f64b85",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "59,60,2,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "REFUSED: (59, 0, 60) not excavated or holds another fluid (none)",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ea167ae984b74c938e9603c104d556ba",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-15T20:29:22Z",
+    "problems": [],
+    "load_s": 4.6,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-15T20:29:28Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 6.6,
+    "verified": true
+  },
+  "scene": "scene_fill_front",
+  "rows": [
+    {
+      "id": "FF_start_dry",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
+    },
+    {
+      "id": "scene_fill_front_staging",
+      "status": "UNMEASURED",
+      "kind": "HARNESS",
+      "detail": "AssertionError('fill (59, 60) with RM_Fluid_Water: REFUSED: (59, 0, 60) not excavated or holds another fluid (none)')"
+    }
+  ],
+  "status": "FAIL",
+  "error": "AssertionError(\"rows not all PASS: [('FF_start_dry', 'PASS'), ('scene_fill_front_staging', 'UNMEASURED')]\")",
+  "finished": 1794774577.7502012
+}

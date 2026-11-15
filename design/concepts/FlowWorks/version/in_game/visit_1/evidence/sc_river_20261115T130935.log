@@ -1,0 +1,16 @@
+====================================================================================================
+R1. The river carries whoever stands in it
+  R1.a    MATCHES    mod grid: current=3824 fast=974 edge=2850
+  colonist Human139334 staged at (105, 135) in WaterMovingShallow
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\R1_p00.png
+  step 1 (+60 ticks): colonist at (105, 135)
+  step 2 (+60 ticks): colonist at (104, 134)
+  step 3 (+60 ticks): colonist at (103, 133)
+  step 4 (+60 ticks): colonist at (102, 132)
+  step 5 (+60 ticks): colonist at (101, 131)
+  step 6 (+60 ticks): colonist at (100, 130)
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\R1_p06.png
+  R1.b    MATCHES    moved 10 squares: [(105, 135), (105, 135), (104, 134), (103, 133), (102, 132), (101, 131), (100, 130)]
+  R1.c    MATCHES    fast-lane shove test: MOVED 3 from 38,5 to 38,2 lane=2
+index: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\Transient\fw_scenes\live\rivers\index.html
+[bridge split] 14.4 s wall: load 0.0 / ticks 1.0 / reads 0.3 / other 1.1 / outside calls 12.1 s
