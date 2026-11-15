@@ -2885,14 +2885,40 @@ def venom_rises(series, min_rise=0.02):
     return True, "%.3f -> %.3f" % (vals[0], vals[-1])
 
 
+# The bite rows HURT their own test colonist on purpose: the vitals latch's default kinds stop on that very bite ("hurt",
+# and "downed" from the bleeding over six hours), which read the row UNMEASURED before it could ask (visit 1, 2026-11-15).
+# Every other kind still stops the advance (death included). Used only by the flamefang_venom chain.
+BITE_STOP_ON = "death,colonist_hostile,hostile_arrival,threat_structure,modal_stuck,colony_loss,starving,mental," \
+               "clock_discontinuity,specimen_lost,coverage,cancel"
+
+
+def _bite_wait(t, n):
+    """_wait for the bite rows: governed safe_advance chunks with BITE_STOP_ON, then the site re-asserted."""
+    if not _live(t) or t.upstream_failed:
+        return _wait(t, n)
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    if not clockgate.has_safe_advance(t.session):
+        return _wait(t, n)
+    left = n
+    while left > 0:
+        step = min(left, clockgate.SAFE_CHUNK_MAX)
+        clockgate.advance_chunk(t.session, step, stop_on=BITE_STOP_ON)
+        left -= step
+    _on_site(t)
+
+
 def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000):
     """Spawn `biter_kind` beside `victim`, manhunter, and run ticks until the victim carries `hediff` (or any injury
-    when hediff is None). Kills the biter at once after, so later readings are not more bites. -> victim row or None."""
+    when hediff is None). Kills the biter at once after, so later readings are not more bites. -> victim row or None.
+    The victim is DRAFTED first: undrafted, a fresh colonist FleeAndCowers at the flamefang's own pace to the map edge and
+    is never bitten (visit 1, 2026-11-15: 6000 ticks, no injury at all, read as a venom FAIL; drafted, bitten in 60)."""
+    if _live(t):
+        _ok(t.bridge_call("jawa/set_draft", pawnId=victim, drafted=True), "set_draft(%s)" % victim)
     bid = _spawn_wild(t, biter_kind, x + 1, z)
     t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
     row = None
     for _ in range(max_ticks // 250):
-        _wait(t, 250)
+        _bite_wait(t, 250)
         row = _pawn_row(t, victim, health=True)
         hs = ((row or {}).get("health") or {}).get("hediffs") or []
         if (hediff and _has_hediff(row, hediff)) or (not hediff and hs):
@@ -2917,13 +2943,15 @@ def flamefang_venom(t):
         row = _bite_until(t, cid, "RM_Flamefang", x, z, hediff=VENOM)
         if _live(t):
             _note(t, "colonist health after the flamefang", (row or {}).get("health"))
+            if not any(h for h in (((row or {}).get("health") or {}).get("hediffs") or []) if "Heatstroke" not in str(h)):
+                _unmeasured(t, "the RM_Flamefang never bit in 6000 ticks (no injury at all), so the venom could not be asked")
             if not _has_hediff(row, VENOM):
                 _fail("no %s after 6000 ticks beside a manhunting RM_Flamefang" % VENOM)
     with _comp(t, "venom_rises_untreated"):
         series = []
         for _ in range(VENOM_HOURS + 1):
             series.append(hediff_severity(_pawn_row(t, cid, health=True), VENOM))
-            _wait(t, 2500)
+            _bite_wait(t, 2500)
         if _live(t):
             _note(t, "venom severity each hour", series)
             ok, why = venom_rises(series)
