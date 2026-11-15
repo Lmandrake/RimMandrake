@@ -3137,15 +3137,44 @@ WALK_DAYS = 7          # each half of the two-week walk
 WALK_SAVE = "pyre_walk"
 
 
+WALK_CREATURES = ("RM_FurnaceBeast", "RM_Ullai")
+# Probe fields a correct reload does not keep: `now` is the tick the probe ran, and the burn line's `burning`/`center`
+# are a cache the next 60-tick watch rebuilds (0 and `invalid` at load; visit_1 findings §RIMMANDRAKE_FIX_WALK_DIGEST_
+# COMPARES_A_TICK_STAMP, measured 2026-11-15).
+WALK_UNSAVED_FIELDS = ("now", "burning", "center")
+
+
+def strip_probe_fields(line, drop=WALK_UNSAVED_FIELDS):
+    """A `k=v;k=v` probe line without the `drop` keys, order kept. Pure."""
+    return ";".join(f for f in str(line or "").split(";") if f and f.split("=", 1)[0] not in drop)
+
+
+def pawn_kind_counts(rows, kinds):
+    """Living pawns per kindDef in `kinds` from list_pawns rows (0 when absent). Pure."""
+    out = dict((k, 0) for k in kinds)
+    for p in rows or []:
+        k = p.get("kindDef")
+        if k in out and not p.get("dead"):
+            out[k] += 1
+    return out
+
+
 def walk_digest(t):
-    """The walk's state digest: counts that a correct save/reload keeps. -> dict, {} offline."""
+    """The walk's state digest: counts that a correct save/reload keeps. -> dict, {} offline. Creatures come from
+    list_pawns: list_things defName=RM_Ullai counts 0 with six ullai on the map (measured 2026-11-15)."""
     d = {}
-    for k in ("Fire", FRUIT_PLANT, "RM_FE_ScorchFruitYield", "RM_FurnaceBeast", "RM_Ullai"):
+    for k in ("Fire", FRUIT_PLANT, "RM_FE_ScorchFruitYield"):
         d[k] = _count(t, k)
+    r = t.bridge_call("jawa/list_pawns", limit=1000)
+    if _live(t):
+        _ok(r, "list_pawns")
+        if r.get("truncated"):
+            _fail("walk digest creature census truncated: %r" % r.get("message"))
+        d.update(pawn_kind_counts(r.get("pawns"), WALK_CREATURES))
     r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="ProbeRegrowth")
-    d["regrowth"] = str((r or {}).get("result", ""))[:400]
+    d["regrowth"] = strip_probe_fields((r or {}).get("result", ""))[:400]
     r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeBurnHistory", args="0")
-    d["burnHistory"] = str((r or {}).get("result", ""))[:400]
+    d["burnHistory"] = strip_probe_fields((r or {}).get("result", ""))[:400]
     return d if _live(t) else {}
 
 
