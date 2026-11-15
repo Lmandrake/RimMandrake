@@ -130,7 +130,7 @@ def main():
                       and r["record"]["would_pass"] == good_gap()["would_pass"] for r in rows), rows[-1:])
 
             # An observed text far past any old cut is stored whole (new evidence content, so no repeat-cache hit).
-            long_obs = "leaf_wall " + "x" * 5000
+            long_obs = "leaf_wall: a wall stops a thrown item, no scene " + "x" * 5000   # 2+ words of its evidence
             with open(os.path.join(d, "scenes.json"), "w") as f:
                 json.dump({"scenes": [{"id": "sc_throw", "asserts": "steel lands three cells out"}]}, f)
             os.remove(os.path.join(d, CJ.VERDICT_FILE))

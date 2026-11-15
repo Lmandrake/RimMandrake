@@ -65,6 +65,9 @@ def malformed(root):
         ("a clause left unjudged (coverage)", "neither passed nor refused"): lambda v: v.update(passed=[]),
         ("a given input in no evidence (coverage)", "in no passed or refused"): lambda v: v["passed"][0].update(evidence=[]),
         ("a clause both passed and refused", "both passed and refused"): lambda v: v["passed"].append({"clause": "C1", "evidence": []}),
+        # RIMMANDRAKE_CHECK_PASSED_CONTRACT_EVIDENCE
+        ("a passed row citing lines outside its file", "lines outside"): lambda v: v["passed"][0].update(evidence=["player.log:400"]),
+        ("observed sharing one word with its evidence", "too little"): lambda v: v["refusals"][0].update(observed="the pawn is wrong somehow"),
     }
     for (name, why), mut in cases.items():
         v = good()
@@ -80,10 +83,25 @@ def malformed(root):
     check("new_since: unfixed:<clause> accepted", RC.check(v, g, prior=1) == [], RC.check(v, g, prior=1))
     v["refusals"][0]["new_since"] = "maybe"
     check("new_since: an unknown tag refused", bool(RC.check(v, g, prior=1)))
+    v["refusals"][0]["new_since"] = "first"
+    check("new_since: 'first' refused after the first refusal", any("'first'" in e for e in RC.check(v, g, prior=1)),
+          RC.check(v, g, prior=1))
+    g2 = dict(g, sha="abc123")
+    check("sha: the given sha accepted", RC.check(good(), g2) == [], RC.check(good(), g2))
+    check("sha: a verdict on another sha than the given one refused",
+          any("not the given sha" in e for e in RC.check(good(sha="def456"), g2)), RC.check(good(sha="def456"), g2))
 
 
 def store_and_counts(root, ops):
     g = given(root)
+    allpass = good(item="ITEM_ALLPASS")
+    allpass["refusals"] = []
+    allpass["passed"].append({"clause": "C1", "evidence": ["scene.log:2"]})
+    rp = RC.submit(allpass, g, now=1793999000)
+    row = RC._row_at(rp.get("pointer")) if rp.get("pointer") else None
+    check("an all-pass verdict is stored whole (RIMMANDRAKE_CHECK_PASSED_CONTRACT_EVIDENCE)",
+          rp["ok"] and isinstance(row, dict) and row.get("kind") == "pass" and row.get("verdict") == allpass,
+          (rp, row))
     bad = good(item="ITEM_M")
     bad["refusals"][0]["would_pass"] = "insufficient"
     r1 = RC.submit(bad, g, now=1794000000)

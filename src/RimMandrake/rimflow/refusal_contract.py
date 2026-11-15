@@ -237,6 +237,33 @@ def _passed(verdict):
     return out
 
 
+OBSERVED_SHARED = 2   # observed must share this many distinct content words (3+ letters) with its evidence lines
+
+
+def _ev_texts(where, evs, inputs, given, errs, seen_ev):
+    """Check each evidence ref (an input, its lines inside the file) -> the cited texts. Refusals and passes alike."""
+    texts = []
+    for ev in evs:
+        ref, a, b = _split(ev)
+        if ref not in inputs and ev in inputs:
+            ref, a, b = ev, None, None
+        if ref not in inputs:
+            errs.append("%s: evidence %r is not one of the inputs the judge was given" % (where, ev))
+            continue
+        seen_ev.add(ref)
+        txt = _text_of(ref, given)
+        if txt is None:
+            continue
+        if a is not None:
+            lines = txt.splitlines()
+            if not 1 <= a <= b <= len(lines):
+                errs.append("%s: evidence %r names lines outside %s (%d lines)" % (where, ev, ref, len(lines)))
+                continue
+            txt = "\n".join(lines[a - 1:b])
+        texts.append(txt)
+    return texts
+
+
 def check(verdict, given=None, prior=0):
     """-> the list of reasons `verdict` is malformed (empty = well formed). Pure: reads only the given inputs.
     `prior` is the item's earlier counted refusals: after the first, every refusal must say what is new since."""
@@ -249,6 +276,9 @@ def check(verdict, given=None, prior=0):
             errs.append("verdict: no %s" % k)
     if not isinstance(given, dict) or not given.get("criteria") or not given.get("inputs"):
         return errs + ["verdict: no given criteria and inputs to check it against (the launcher writes `given`)"]
+    if str(given.get("sha") or "").strip() and str(verdict.get("sha") or "") != str(given["sha"]):
+        # RIMMANDRAKE_CHECK_PASSED_CONTRACT_EVIDENCE: the verdict judges the sha the launcher gave, no other
+        errs.append("verdict: sha %r is not the given sha %r" % (verdict.get("sha"), given["sha"]))
     crit = {str(k): v for k, v in given["criteria"].items()}
     inputs = _inputs(given)
     refs = verdict.get("refusals")
@@ -273,29 +303,13 @@ def check(verdict, given=None, prior=0):
             elif rec.get("criterion_hash") and rec["criterion_hash"] != criterion_hash(crit[c]):
                 errs.append("%s: criterion_hash %s is not the hash of the clause's text (%s)"
                             % (where, rec["criterion_hash"], criterion_hash(crit[c])))
-        texts = []
-        for ev in _evidence(rec):
-            ref, a, b = _split(ev)
-            if ref not in inputs and ev in inputs:
-                ref, a, b = ev, None, None
-            if ref not in inputs:
-                errs.append("%s: evidence %r is not one of the inputs the judge was given" % (where, ev))
-                continue
-            seen_ev.add(ref)
-            txt = _text_of(ref, given)
-            if txt is None:
-                continue
-            if a is not None:
-                lines = txt.splitlines()
-                if not 1 <= a <= b <= len(lines):
-                    errs.append("%s: evidence %r names lines outside %s (%d lines)" % (where, ev, ref, len(lines)))
-                    continue
-                txt = "\n".join(lines[a - 1:b])
-            texts.append(txt)
+        texts = _ev_texts(where, _evidence(rec), inputs, given, errs, seen_ev)
         if texts and rec.get("observed"):
             have = set(_words(" ".join(texts)))
-            if not [w for w in _words(rec["observed"]) if len(w) >= 3 and w not in STOP and w in have]:
-                errs.append("%s: observed quotes no token of its evidence" % where)
+            shared = {w for w in _words(rec["observed"]) if len(w) >= 3 and w not in STOP and w in have}
+            if len(shared) < OBSERVED_SHARED:
+                errs.append("%s: observed quotes %s of its evidence (%d distinct words shared, %d needed)" % (
+                    where, "no token" if not shared else "too little", len(shared), OBSERVED_SHARED))
         if rec.get("would_pass") and len(_content(rec["would_pass"])) < MIN_WORDS:
             errs.append("%s: would_pass says nothing checkable (%r)" % (where, rec["would_pass"]))
         elif c in crit and rec.get("would_pass"):
@@ -319,6 +333,8 @@ def check(verdict, given=None, prior=0):
         ns = str(rec.get("new_since") or "")
         if prior and not ns:
             errs.append("%s: new_since is required after the item's first refusal" % where)
+        elif prior and ns == "first":
+            errs.append("%s: new_since 'first' after the item's first refusal (%d counted before)" % (where, prior))
         elif ns and ns not in ("first", "late") and not (ns.split(":", 1)[0] in NEW_SINCE and ns.split(":", 1)[1:]
                                                          and ns.split(":", 1)[1].strip()):
             errs.append("%s: new_since %r is not unfixed:<clause>, changed:<input>, regression:<clause> or late"
@@ -327,12 +343,8 @@ def check(verdict, given=None, prior=0):
     for p in passed:
         if p["clause"] not in crit:
             errs.append("passed: %r is not in the criterion set" % p["clause"])
-        for ev in p["evidence"]:
-            ref = _split(ev)[0] if _split(ev)[0] in inputs else ev
-            if ref in inputs:
-                seen_ev.add(ref)
-            else:
-                errs.append("passed %s: evidence %r is not one of the given inputs" % (p["clause"], ev))
+        # RIMMANDRAKE_CHECK_PASSED_CONTRACT_EVIDENCE: a pass's evidence is checked as a refusal's is (lines in bounds)
+        _ev_texts("passed %s" % p["clause"], p["evidence"], inputs, given, errs, seen_ev)
     both = sorted(set(clauses) & {p["clause"] for p in passed})
     if both:
         errs.append("clauses both passed and refused: %s" % ", ".join(both))
@@ -490,6 +502,8 @@ def submit(verdict, given=None, now=None):
             ptr = _store(dict(stored, kind="refusal", key=key, record=rec))
             c["cache"][key] = {"item": item, "clause": rec["clause"], "sha": sha, "pointer": ptr, "at": iso(now)}
             fresh.append(rec)
+        if not verdict["refusals"]:
+            res["pointer"] = _store(dict(stored, kind="pass", verdict=verdict, given=given))   # an all-pass, kept whole
         if fresh or not verdict["refusals"]:
             res["counted"] = True
             it["verdicts"] += 1

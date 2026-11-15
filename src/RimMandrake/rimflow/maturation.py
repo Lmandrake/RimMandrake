@@ -443,7 +443,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             pf, perr = read_json(root, mod, "version/preflight.json")
             pref = rel(mod, "version/preflight.json")
             clause("preflight_record", "a preflight record exists for this Design Version",
-                   pf is not None and str(pf.get("version")) == str(rec.get("version")), [req_ref],
+                   pf is not None and str(pf.get("version")) == str(rec.get("version")), [req_ref, rec_ref],
                    observed="the request moves from preflight; version/preflight.json: %s"
                    % (perr or "for version %s" % pf.get("version")),
                    would_pass="version/preflight.json written by a preflight run for version %s" % rec.get("version"),
