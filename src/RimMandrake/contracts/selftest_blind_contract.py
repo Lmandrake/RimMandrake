@@ -142,6 +142,7 @@ BASE = {
     "art_install": {"t": T0, "why": "delegated: art", "seat": "BENCH", "sha": "12ab" * 16,
                     "rel": "Mods/X/Textures/RM_Tikkit.png"},
     "leftovers": {"t": T0, "kind": "save", "archive": "/mnt/d/ClaudeWork/backups/leftovers/a.zip"},
+    "release": {"t": T0, "mod": "FlowWorks", "stage": "in_game", "by": "BENCH"},
 }
 STATUS = {s: {"state": "measured", "fault": "none", "malformed": 0, "all_time": 1} for s in BL.SOURCES}
 FIELDS = [(s, f) for s in BL.SOURCES for f in BL.RAW_FIELDS[s] if f != "t"]
@@ -387,7 +388,8 @@ def main():
     base = digest_page([dict(BASE[s], source=s) for s in BL.SOURCES])
     vals = [h["value"] for h in getattr(base, "handles", {}).values()]   # shas ride in the handle map, never raw
     check(all(x in base for x in ("PIPE_ELBOW_FIX_SEAM_JOGS", "RM_Chittik", "sha E", "git E",
-                                  "marks RM_Bloodlurk archived", "art_install RM_Tikkit installed"))
+                                  "marks RM_Bloodlurk archived", "art_install RM_Tikkit installed",
+                                  "release FlowWorks at in_game by BENCH"))
           and any(v.startswith("abcdef123456") for v in vals) and any(v.startswith("abababababab") for v in vals)
           and "abcdef123456" not in base and "abababababab" not in base,
           "instrument: the clean base records render their closed fields (the planted fields are visible slots)")

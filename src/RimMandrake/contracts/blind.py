@@ -156,9 +156,9 @@ Seat = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "
 State = Literal["proposed", "ready", "doing", "built", "validated", "done", "dropped", "superseded"]
 Needs = Literal["offline", "deploy", "game-up", "bridge", "harvest", "owner"]
 DigestClass = Literal["technical", "scope", "design", "art", "cosmetic", "art geometric correction", "art marks",
-                      "bridge idle", "leftovers", "unclassified"]
+                      "bridge idle", "leftovers", "ceiling release", "unclassified"]
 POLICY_CLASSES = tuple(sorted(DigestClass.__args__[:-1], key=len, reverse=True))   # longest first: `art marks` > `art`
-Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers"]
+Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release"]
 SOURCES = Source.__args__
 Decision = Literal["ACCEPT", "REGEN", "ESCALATE", "HOLD_ERROR", "HOLD_INPUT", "REDO", "KEEP", "REJECT", "PASS",
                    "FAIL", "PICK", "OTHER"]
@@ -169,6 +169,10 @@ By = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RU
 MarkAction = Literal["archived", "restored", "installed_over_keep", "x_removed", "banned", "unbanned", "ban_hit",
                      "installed"]
 LeftKind = Literal["save", "setting", "clone", "other"]
+# a maturation ceiling release (maturation_dispatch.py release; RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB):
+# the stage is closed, the mod one of the advancing list (_mod_domain). Its dollars and its why never reach the page
+# (token-blind: blind_core refuses a money word); the Conductor reads them with `maturation_dispatch.py releases`
+ReleaseStage = Literal["offline_build", "blind_challenge", "in_game"]
 SourceState = Literal["measured", "unmeasured"]
 SourceFault = Literal["none", "absent", "unreadable", "git_failed", "import_failed", "error"]
 SectionTitle = Literal["NEXT", "IN PROGRESS", "BLOCKED", "WAITING ON A WINDOW", "NOT THIS TARGET", "BUILT", "PROPOSED",
@@ -204,6 +208,8 @@ class DigestRecord(_Closed):
     by: Optional[By] = None
     sha: Optional[Sha] = None
     kind: Optional[LeftKind] = None
+    mod: Optional[str] = None                # checked against _mod_domain() at projection and again at render
+    stage: Optional[ReleaseStage] = None
     evidence: tuple[Evidence, ...] = Field(default=(), max_length=4)
 
 
@@ -272,6 +278,7 @@ RAW_FIELDS = {
     "marks": ("t", "type", "reason", "rel"),             # art-ledger digests and event ids: never read, never shown
     "art_install": ("t", "why", "seat", "rel"),
     "leftovers": ("t", "kind", "archive"),
+    "release": ("t", "mod", "stage", "by"),
 }
 
 
@@ -467,6 +474,19 @@ def _record(src, raw, verbs, ids, resolved):
         f["kind"] = k if k in LeftKind.__args__ else "other"
         f["by"] = "leftovers"
         ev([r.get("archive")])
+    elif src == "release":
+        f["cls"] = "ceiling release"
+        m, sg = r.get("mod"), r.get("stage")
+        if isinstance(m, str) and m in _mod_domain():
+            f["mod"] = m
+        else:
+            dropped += int(m not in (None, ""))
+        if isinstance(sg, str) and sg in ReleaseStage.__args__:
+            f["stage"] = sg
+        else:
+            dropped += int(sg not in (None, ""))
+        f["by"] = _by(r.get("by"))
+        dropped += _refused(r.get("by"), f["by"])
     return {k: v for k, v in f.items() if v is not None}, False, dropped
 
 
@@ -860,7 +880,7 @@ recommended decide yes how many whose The This Withheld ask block cut items ledg
 Narrow narrow Changes changes change per target generalization verdict latest reverted None be
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
-              "leftover deletions")
+              "leftover deletions", "ceiling releases")
 _SRC_LABEL = dict(zip(SOURCES, SRC_LABELS))
 _VERB_DOMAIN = []
 
@@ -869,6 +889,23 @@ def _verb_domain():
     if not _VERB_DOMAIN:
         _VERB_DOMAIN.append(tuple(sorted(_verbs() | {"other"})))
     return _VERB_DOMAIN[0]
+
+
+_MOD_DOMAIN = []
+
+
+def _mod_domain():
+    """The mods a ceiling release may name: maturation_dispatch.json's advancing list (release refuses any other)."""
+    if not _MOD_DOMAIN:
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        try:
+            import json
+            with open(os.path.join(root, "rimflow", "maturation_dispatch.json"), encoding="utf-8") as fh:
+                mods = json.load(fh).get("advancing") or []
+        except (OSError, ValueError):
+            mods = []
+        _MOD_DOMAIN.append(tuple(sorted(m for m in mods if isinstance(m, str) and re.fullmatch(r"[A-Za-z]{2,40}", m))))
+    return _MOD_DOMAIN[0]
 
 
 _AGENT_TARGETS = []
@@ -896,7 +933,7 @@ def _page(ids):
     enums = (Source.__args__, DigestClass.__args__, Decision.__args__, Pick.__args__, MarkAction.__args__,
              JudgeFamily.__args__, By.__args__, LeftKind.__args__, SourceFault.__args__, Seat.__args__,
              State.__args__, Needs.__args__, Kind.__args__, SectionTitle.__args__, NoteCategory.__args__, SRC_LABELS,
-             _verb_domain(), _agent_target_domain())
+             _verb_domain(), _agent_target_domain(), ReleaseStage.__args__, _mod_domain())
     if ids is None:
         return C.Page(TEMPLATE_VOCAB, enums)
     return C.Page(TEMPLATE_VOCAB, enums, item_ok=lambda i: _id_ok(i, ids),
@@ -930,6 +967,12 @@ def _rec_line(P, r):
     if r.kind:
         P.lit(" ")
         P.enum(r.kind, LeftKind.__args__)
+    if r.mod:
+        P.lit(" ")
+        P.enum(r.mod, _mod_domain())
+    if r.stage:
+        P.lit(" at ")
+        P.enum(r.stage, ReleaseStage.__args__)
     if r.judge:
         P.lit(" judge ")
         for k, j in enumerate(r.judge):

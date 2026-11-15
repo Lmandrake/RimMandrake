@@ -170,7 +170,9 @@ Once a day, before the Conductor's first scheduled check, a program writes
 since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
 by a program, `src/RimMandrake/rimflow/delegated_digest.py` (the Conductor's scheduled pre-step; token-blind by
 allow-list), from the ledger (`why` starting `delegated:`), `git log --grep '^Delegated:'`, the judge records in
-`infrastructure/state/delegated/`, the art ledger's delegated installs and marks, and the leftovers acts log; a zero-line digest is checked
+`infrastructure/state/delegated/`, the art ledger's delegated installs and marks, the leftovers acts log, and the maturation ceiling releases
+(`maturation_dispatch.py release`, class `ceiling release`: mod, stage and who; the spend is listed by
+`maturation_dispatch.py releases`, never on the token-blind page); a zero-line digest is checked
 against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
 a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and redraw a ban discarded (§2.3, class
 `art marks`; `art.py marks-digest` lists them), each bridge take, deploy and

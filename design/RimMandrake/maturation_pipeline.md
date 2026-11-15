@@ -305,7 +305,11 @@ A `hold` blocks every advance until a later `release`.
     nothing live on it. After a run ends, the next starts only if the count of refused bars fell. It stops on a mod, with
     one "Needs Conductor" line, when the count did not fall, when the mod's dollars at the stage pass
     `stage_ceiling_usd` (100, by his card of 2026-11-15), or when a launch failed; it never retries the same refusals.
-    `maturation_dispatch.py clear <Mod> --why "..."` is the Conductor's lift.
+    `maturation_dispatch.py clear <Mod> --why "..."` is the Conductor's lift. A ceiling pause at any of the three
+    automatic stages names its own lift, `maturation_dispatch.py release <Mod> --stage <stage> --read-usd <spend>
+    --usd <dollars> --why "..."`: one more launch on that mod at that stage, then it pauses at the next ceiling. The
+    Conductor releases without asking, told after (owner, by card 2026-11-15); `releases` lists each with its spend,
+    and each reaches the daily digest as a `ceiling release` line (mod, stage, who; the page is token-blind).
   - At the blind challenge: one judge per visit (section 4). At in-game acceptance: one driver per owed visit (section 4), on since
     2026-11-15 about 13:30 UTC.
   - At most `max_live` 2 live runs on advancing mods, the Conductor's own included; the Dispatcher's account hold stops it.

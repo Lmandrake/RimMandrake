@@ -310,7 +310,10 @@ def test_build_window_and_state():
         bad({"out": "/x/y.txt"}, "non-md out")
         bad({"out": 5}, "non-str out")
         bad({"extra": 1}, "unknown key")
-        bad({"sources": {s: "measured" for s in D.SOURCES[:-1]}}, "missing source")
+        bad({"sources": {s: "measured" for s in D.SOURCES if s != "ledger"}}, "missing source")
+        # a source added after digests were recorded (LATER_SOURCES: the ceiling releases) may be absent from an older one
+        D._check_entry("2026-10-27", dict(good, sources={s: "measured" for s in D.SOURCES if s not in D.LATER_SOURCES}))
+        check(True, "_check_entry accepts an older entry without the later sources %s" % (D.LATER_SOURCES,))
         bad({"sources": dict({s: "measured" for s in D.SOURCES}, ledger="bogus")}, "bad source state")
         bad({"sources": dict({s: "measured" for s in D.SOURCES}, zzz="measured")}, "extra source")
         bad({"seen": {"nosuch": []}}, "unknown seen source")

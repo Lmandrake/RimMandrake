@@ -8,6 +8,14 @@ runs, PAUSED or OWNER; the "Needs Conductor" wording below names decide()'s read
 
     python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py      exit 0 when every check prints PASS
     python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py --ingame   in-game acceptance only (ingame_main)
+    python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py --release  the ceiling release command and digest only
+
+Ceiling releases (RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB), written with the code and watched failing on
+the base (no `releases` fx, no `release` verb, no digest source): no record pauses and names the release command; a
+record for that mod, stage and amount launches once and spends itself, and the mod re-pauses at the next ceiling;
+another mod's, another stage's, a spent, a stale or a too-small record and malformed lines release nothing; the
+release verb writes who, spend, amount and why and refuses the rest; the digest shows mod, stage and who (token-blind:
+no dollars, no why), and `releases` lists the spend, amount and why.
 
 What it proves: one builder launches for a mod with build-work refusals and nothing live on it, and nothing launches
 when a run is live on it, when the last run did not reduce its refusals (and never again at the same refusals), when the
@@ -285,6 +293,63 @@ def main():
                      page=False)
         ok(rd["mods"]["FlowWorks"]["decision"] == "launched", "USD 45 spent plus a USD 15 cap fits the 60 ceiling: it "
            "launches (%s)" % rd["mods"]["FlowWorks"]["decision"])
+
+        # ---- a ceiling release, at the offline build (RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB) -----------
+        c60 = dict(one, stage_ceiling_usd=60, cap_usd=15)
+
+        def rel(**k):
+            r = {"id": "rel-test-a", "ts": "2026-11-15T19:00:00Z", "mod": "FlowWorks", "stage": "offline_build",
+                 "by": "BENCH", "read_usd": 50.0, "release_usd": 5.0, "why": "selftest"}
+            r.update(k)
+            return r
+
+        def rtick(recs, bad=0, spent=50.0, used=None):
+            reset()
+            world.update(stage_runs={"FlowWorks": {"u1": spent}})
+            if used:
+                os.makedirs(sd, exist_ok=True)
+                with open(os.path.join(sd, "state.json"), "w") as fh:
+                    json.dump({"mods": {"FlowWorks": {"releases_used": used}}}, fh)
+            return rtick_again(recs, bad)
+
+        def rtick_again(recs, bad=0):
+            return MD.tick(root, c60, True, fx=dict(fx, facts=lambda: facts_for(c60), releases=lambda: (list(recs), bad)),
+                           now=CLOCK, page=False)
+
+        def fw(rd):
+            r = rd["mods"]["FlowWorks"]
+            return "%s: %s" % (r["decision"], r.get("why"))
+
+        cmd = "maturation_dispatch.py release FlowWorks --stage offline_build --read-usd 50.00 --usd 5 --why"
+        rd = rtick([])
+        ok(not launches() and fw(rd).startswith("stopped") and cmd in fw(rd), "no release record: USD 50 + a USD 15 cap "
+           "past 60 stays paused, and the pause names the release command (%s)" % fw(rd))
+        rd = rtick_again([rel()])
+        used = json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"].get("releases_used") or {}
+        ok(len(launches()) == 1 and fw(rd).startswith("launched") and "rel-test-a" in used,
+           "a release for this mod, stage and amount (USD 5, read at USD 50) lifts the ceiling stop: one launch, the "
+           "release spent (%s; used %s)" % (fw(rd)[:40], sorted(used)))
+        rd = rtick([rel()], spent=65.0, used={"rel-test-a": {"at": CLOCK}})
+        ok(not launches() and fw(rd).startswith("stopped") and "its release is spent" in fw(rd)
+           and "--read-usd 65.00 --usd 20 " in fw(rd), "the released run's USD 15 spent (65): the spent release frees "
+           "nothing and the mod re-pauses at the next ceiling, naming the next release (%s)" % fw(rd))
+        for r, what, says in ((rel(mod="ExplosiveKnockback"), "a release for another mod", cmd),
+                              (rel(stage="blind_challenge"), "a release for another stage", cmd),
+                              (rel(read_usd=40.0), "a release that read another spend (USD 40)", "the spend is now USD 50.00"),
+                              (rel(release_usd=2.0), "a release smaller than the cap needs (USD 2)", "does not cover")):
+            rd = rtick([r])
+            ok(not launches() and fw(rd).startswith("stopped") and says in fw(rd), "%s: still paused (%s)" % (what, fw(rd)))
+        rd = rtick([], bad=2)
+        ok(not launches() and "2 malformed release line(s) ignored" in fw(rd), "malformed release lines: still paused, and "
+           "the pause counts them (%s)" % fw(rd))
+        rp = os.path.join(root, "releases_fixture.jsonl")
+        with open(rp, "w") as fh:
+            fh.write("\n".join([json.dumps(rel()), "{not json", json.dumps(dict(rel(), why="")),
+                                 json.dumps(dict(rel(), release_usd=-5)), json.dumps(dict(rel(), stage="bogus")),
+                                 json.dumps(dict(rel(), read_usd=True)), json.dumps(["a list"]), ""]) + "\n")
+        recs, bad = MD.read_releases(rp)
+        ok(len(recs) == 1 and bad == 6 and MD.read_releases(os.path.join(root, "absent.jsonl")) == ([], 0),
+           "read_releases: one whole record, six malformed lines counted, no file is no release (%d, %d)" % (len(recs), bad))
         none_launched(dict(base, advancing=["ExplosiveKnockback", "FlowWorks"], max_live=2),
                       "Explosive Knockback's live runs cannot be read (occupancy unknown)", "slots_unknown",
                       unreadable={"ExplosiveKnockback"})
@@ -359,6 +424,60 @@ def main():
 BLIND_SHA = "da54e5338ea493e0cb1575b684791d7136756488"
 BLIND_CLOCK = 1794736800.0      # 2026-11-15 1:20 AM PST, pinned
 FW_JUDGE_AT = 1794729034.9711447    # the hand-launched FlowWorks judge's start (rm-detached-...-1794729034)
+
+
+def release_main():
+    """The release command and the digest's reading of it (RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB)."""
+    import datetime as dt
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))      # the digest's contracts package
+    import delegated_digest as DD
+    before = git_status()
+    sd = tempfile.mkdtemp(prefix="maturation_release_")
+    path = os.path.join(sd, "releases.jsonl")
+    env = dict(os.environ, RM_MATURATION_DISPATCH_DIR=sd)
+    try:
+        def run(*a, **e):
+            r = subprocess.run([sys.executable, os.path.join(HERE, "maturation_dispatch.py"), "release"] + list(a),
+                               capture_output=True, text=True, timeout=120, env=dict(env, **e))
+            return r.returncode, (r.stdout + r.stderr).strip()
+
+        rc, out = run("FlowWorks", "--stage", "in_game", "--read-usd", "40", "--usd", "30", "--why", "selftest release",
+                      "--by", "BENCH")
+        recs, bad = MD.read_releases(path)
+        ok(rc == 0 and out.startswith("RELEASED FlowWorks") and len(recs) == 1 and not bad
+           and (recs[0]["by"], recs[0]["read_usd"], recs[0]["release_usd"], recs[0]["why"]) == ("BENCH", 40, 30,
+                                                                                               "selftest release"),
+           "release writes one whole record: who, the spend read, the amount, why (%s)" % out[:90])
+        args = ["--stage", "in_game", "--read-usd", "40", "--usd", "30", "--why", "x", "--by", "BENCH"]
+        for a, what, e in ((["NotAMod"] + args, "a mod off the advancing list", {}),
+                           (["FlowWorks"] + args[:4] + ["--usd", "0"] + args[6:], "a zero release", {}),
+                           (["FlowWorks", "--stage", "nowhere"] + args[2:], "an unknown stage", {}),
+                           (["FlowWorks"] + args[:-2], "no seat and no --by", {"AGENT_SEAT": "", "RIMFLOW_SEAT": ""})):
+            rc, out = run(*a, **e)
+            ok(rc != 0 and len(MD.read_releases(path)[0]) == 1, "release refuses %s, writing nothing (%s)" % (what, out[-60:]))
+        with open(path, "a") as fh:
+            fh.write("{not json\n")
+        rr = DD.release_read(path)
+        ok(rr["state"] == "measured" and len(rr["items"]) == 1 and rr["malformed"] == 1,
+           "the digest reads the release file: one record, one malformed line counted (%s)" % {k: rr[k] for k in
+                                                                                             ("state", "malformed")})
+        ab = DD.release_read(os.path.join(sd, "none.jsonl"))
+        ok(ab["state"] == "measured" and not ab["items"], "no release file yet: measured and empty, not UNMEASURED")
+        cut = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=1)
+        text, seen = DD.build(cut.strftime("%Y-%m-%d"), None, cut, {"release": rr})
+        ok("release FlowWorks at in_game by BENCH" in text and "selftest release" not in text
+           and len(seen["release"]) == 1, "the daily digest shows the release: mod, stage, who; never its why text "
+           "or its dollars, the page being token-blind (%s)" % [x for x in text.splitlines() if "FlowWorks" in x][:1])
+        lst = subprocess.run([sys.executable, os.path.join(HERE, "maturation_dispatch.py"), "releases"],
+                             capture_output=True, text=True, timeout=120, env=env)
+        ok(lst.returncode == 0 and "FlowWorks" in lst.stdout and "read USD 40.00" in lst.stdout
+           and "released USD 30" in lst.stdout and "selftest release" in lst.stdout and "1 malformed" in lst.stdout,
+           "`releases` lists each release with its spend, amount and why for the Conductor (%s)" % lst.stdout[:120])
+    finally:
+        shutil.rmtree(sd, ignore_errors=True)
+    ok(git_status() == before, "nothing in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
 
 
 def blind_main():
@@ -530,6 +649,20 @@ def blind_main():
         # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the ceiling holds at the blind challenge too, cap reserved
         rd = none(dict(gss, stage_ceiling_usd=60, blind_cap_usd=20), "USD 45 spent at the blind challenge plus a USD 20 "
                   "cap passes the 60 ceiling", "ceiling", box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
+        ok("release GimmeSomeSlack --stage blind_challenge --read-usd 45.00 --usd 5 --why" in rd["mods"]["GimmeSomeSlack"]
+           ["why"], "the blind ceiling pause names its release command (%s)" % rd["mods"]["GimmeSomeSlack"]["why"])
+        # RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: a release is per stage
+        c60 = dict(gss, stage_ceiling_usd=60, blind_cap_usd=20)
+        for stage, want in (("offline_build", "ceiling"), ("blind_challenge", "launched")):
+            reset()
+            world.update(box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
+            brel = {"id": "rel-b-" + stage, "ts": "2026-11-15T19:00:00Z", "mod": "GimmeSomeSlack", "stage": stage,
+                    "by": "BENCH", "read_usd": 45.0, "release_usd": 5.0, "why": "selftest"}
+            rd = MD.tick(root, c60, True, fx=dict(fx, facts=lambda: facts_for(c60), releases=lambda: ([brel], 0)),
+                         now=BLIND_CLOCK, page=False)
+            dec = rd["mods"]["GimmeSomeSlack"]["decision"]
+            ok(dec == want and len(launches()) == (1 if want == "launched" else 0), "a USD 5 release at the %s: the "
+               "blind challenge %s (%s)" % (stage, "launches once" if want == "launched" else "stays paused", dec))
         # a finished blind run and a finished in-game run each write one spend row, once
         reset()
         landed = []
@@ -977,6 +1110,9 @@ def ingame_main():
 if __name__ == "__main__":
     if "--ingame" in sys.argv[1:]:
         sys.exit(ingame_main())
+    if "--release" in sys.argv[1:]:
+        sys.exit(release_main())
     rc = main()
+    rc = release_main() or rc
     rc = blind_main() or rc
     sys.exit(ingame_main() or rc)

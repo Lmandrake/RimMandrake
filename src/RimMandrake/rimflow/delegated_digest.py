@@ -28,6 +28,11 @@ Sources (each read whole; the window is decided centrally, below):
                records with an upper bound like every source (never marks_digest's prose); identity = event id.
   art_install  the art ledger's other `delegated:` live installs; identity = event id (else ts+sha+rel).
   leftovers    D:\\ClaudeWork\\backups\\leftovers\\acts.jsonl; identity = the line's sha1.
+  release      the maturation ceiling releases (maturation_dispatch.py release; the owner by card 2026-11-15: each
+               reaches this digest with the spend): <dispatcher state>/maturation/releases.jsonl: mod, stage, by.
+               The spend, the dollars released and the why stay off the page (token-blind: a money word is refused);
+               `maturation_dispatch.py releases` lists them. Identity = the line's sha1. No file in a readable
+               folder is measured and empty (no release yet).
 
 The window (review gpt_review_digest_2026-10-27 findings 2, 4-8): state at
 D:\\ClaudeWork\\rimmandrake\\delegated_digest\\state.json (scratch, never the repo) holds, per digest date, its
@@ -74,12 +79,15 @@ STATE = os.path.join(SCRATCH, "state.json")
 DRY_DIR = os.path.join(SCRATCH, "dry")
 ERRORS = os.path.join(SCRATCH, "errors.log")
 LEFTOVERS = "/mnt/d/ClaudeWork/backups/leftovers/acts.jsonl"
+RELEASES = os.path.join(os.environ.get("RM_MATURATION_DISPATCH_DIR") or os.path.join(
+    os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"), "maturation"), "releases.jsonl")
 STATE_SCHEMA = "rimflow.delegated-digest-state/2"
 # `delegated:` is the rule (delegation_policy.md §3); the 29 Oct backlog triage wrote `delegated backlog triage:` and 20
 # calls never reached a digest (DIGEST_GAPS_FIX_TWENTY_CALLS_WENT_MISSING). Both are read; blind.class_of classes the second.
 DELEGATED_PREFIXES = ("delegated:", "delegated backlog triage")
 SKIP_VERBS = {"lease", "renew", "release"}    # lease bookkeeping a claim already shows
-SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers")
+SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release")
+LATER_SOURCES = ("release",)     # added after digests were recorded: an older state entry may lack them
 FAILED_TEXT = ("# Delegated digest %s NOT BUILT\n\nThe program failed; the error is in Operations' log. The Conductor "
                "started anyway. The next digest carries every record this one would have.\n")
 
@@ -315,12 +323,38 @@ def leftovers_read(path=LEFTOVERS):
     return r
 
 
-def gather(events, root=ROOT, ddir=DELEGATED_DIR, leftovers=LEFTOVERS, added=None, commits=None, art_events=None):
+def release_read(path=RELEASES):
+    if not os.path.exists(path):
+        return _read() if os.path.isdir(os.path.dirname(path)) else _read("unmeasured", "absent")
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            lines = fh.read().splitlines()
+    except OSError:
+        return _read("unmeasured", "unreadable")
+    r = _read()
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
+            raw = json.loads(line)
+        except ValueError:
+            raw = None
+        t = utc(raw.get("ts")) if isinstance(raw, dict) else None
+        if t is None:
+            r["malformed"] += 1
+            continue
+        r["items"].append(("R" + _h(line.strip()), t, dict({"source": "release", "t": t}, **{
+            k: raw.get(k) for k in ("mod", "stage", "by")})))
+    return r
+
+
+def gather(events, root=ROOT, ddir=DELEGATED_DIR, leftovers=LEFTOVERS, added=None, commits=None, art_events=None,
+           releases=RELEASES):
     """Every source read; each injectable for the selftest. events None = the ledger did not read."""
     marks, inst = art_reads(art_events)
     return {"ledger": ledger_read(events), "verdict": verdict_read(root, ddir, added),
             "commit": commit_read(root, commits), "marks": marks, "art_install": inst,
-            "leftovers": leftovers_read(leftovers)}
+            "leftovers": leftovers_read(leftovers), "release": release_read(releases)}
 
 
 # -------------------------------------------------------------------------------------------------- state -----
@@ -371,7 +405,8 @@ def _check_entry(date, e):
     if "out" in e and not (isinstance(e["out"], str) and os.path.isabs(e["out"]) and e["out"].endswith(".md")):
         raise ValueError("state entry %s: out is not an absolute .md path" % date)
     src = e["sources"]
-    if not (isinstance(src, dict) and set(src) == set(SOURCES) and all(v in SOURCE_STATES for v in src.values())):
+    if not (isinstance(src, dict) and set(SOURCES) - set(LATER_SOURCES) <= set(src) <= set(SOURCES)
+            and all(v in SOURCE_STATES for v in src.values())):
         raise ValueError("state entry %s: sources must map every source to %s" % (date, "/".join(SOURCE_STATES)))
     seen = e["seen"]
     if not isinstance(seen, dict) or any(k not in SOURCES for k in seen):
