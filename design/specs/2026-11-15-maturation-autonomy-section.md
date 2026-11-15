@@ -53,7 +53,7 @@ Designer concepts (a `stage.json` under `design/concepts/`) are discovered and s
 | every exit test passes | launch (steward advances) |
 | locked change with no look after it (stage.json) | launch (steward chain: re-pin, exam retake, one coverage look) |
 
-Counts: launch 13, wait 1 (plus the two "wait, else paused"), paused 5, owner 4 — no row is a Conductor hand step.
+Counts over the 21 rows: launch 12 (the visit launch can first wait on the game, any launch on a slot), wait-else-paused 2, paused 4, owner 3 (the designer row can instead wait on the Designer launcher). No row is a Conductor hand step.
 
 ## Not done here
 
