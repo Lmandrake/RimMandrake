@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-15T05:00:52Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794718558",
+    "stage": 0,
+    "tokens": 621258
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 621258
  },
  "history": [
   {
@@ -12,14 +20,59 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000)"
+  },
+  {
+   "at": "2026-11-15T04:56:06Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1794718558, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-15T05:00:53Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1794718558: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
  "mod": "Graffiti",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-15T05:00:53Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_grounding.md": "93ae18170f31b2bf96b7033e46ab50221db5c669d0c1a324a902c933a8fc6cb6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "a lived-in colony save: ordinary walls after weeks of play, a spree corridor, a raid's exit tags, a trader visit, and the shipped vandal_0/vandal_1 at play zoom",
+    "settles": [
+     "c_vandal_signage",
+     "a_live_walk",
+     "d_his_look"
+    ]
+   },
+   "run": "rm-role-designer-1794718558",
+   "stage": 0,
+   "summary": "Stage 0 read: 17 inventory capabilities, all built (impl present), 12 proven current by the 2026-11-08 loop close, 3 stale on the blocked V1 live proof (sigils, player orders, scrub protection), 2 with no recorded proof (breach bias, paint dies with wall). Every built-evidence line accounted for. Three open contradictions: vandal signage art status, proof living in a loop clone rather than the mod script, and the site preflight missing two social settings. A live walk of a lived-in colony is drafted as the first step of stage 1."
+  }
+ ],
+ "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }

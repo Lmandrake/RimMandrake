@@ -1,0 +1,15 @@
+{
+ "run": "rm-role-designer-1794718558",
+ "stage": 0,
+ "outcome": "done",
+ "summary": "Stage 0 read: 17 inventory capabilities, all built (impl present), 12 proven current by the 2026-11-08 loop close, 3 stale on the blocked V1 live proof (sigils, player orders, scrub protection), 2 with no recorded proof (breach bias, paint dies with wall). Every built-evidence line accounted for. Three open contradictions: vandal signage art status, proof living in a loop clone rather than the mod script, and the site preflight missing two social settings. A live walk of a lived-in colony is drafted as the first step of stage 1.",
+ "quick_look": {
+  "offer": true,
+  "settles": [
+   "c_vandal_signage",
+   "a_live_walk",
+   "d_his_look"
+  ],
+  "scene": "a lived-in colony save: ordinary walls after weeks of play, a spree corridor, a raid's exit tags, a trader visit, and the shipped vandal_0/vandal_1 at play zoom"
+ }
+}
