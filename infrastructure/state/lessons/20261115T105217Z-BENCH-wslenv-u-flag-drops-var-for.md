@@ -1,0 +1,2 @@
+From WSL, 'WSLENV=MODCHECK_KEEP_MODLIST/u' did NOT deliver the variable to python.exe (WindowsApps alias) on Archmagi 2026-11-15; plain 'WSLENV=MODCHECK_KEEP_MODLIST' did (measured with python.exe -c print(os.environ.get(...))). The cost: modcheck run silently took the non-keep path, swapped ModsConfig to MINIMAL and its finally restored FULL (316 mods) onto disk. Pass env to python.exe as 'env WSLENV=A:B A=1 B=1 python.exe ...' (testq.py does it this way) and check the effect, not the command.
+item: WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE

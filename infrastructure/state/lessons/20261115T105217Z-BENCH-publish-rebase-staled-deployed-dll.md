@@ -1,0 +1,2 @@
+./publish rebases the clone onto origin/main, so a committed DLL another seat rebuilt (FlowWorks 4af5596066, 2026-11-15) lands in your clone AFTER you deployed: the game copy is then stale and modcheck's own deploy fails on the locked file, or a DLL-identity proof (pump_outflow_live) refuses. After any ./publish during a live sitting, re-run the deploy dry run for the mods under test before trusting 'VERIFIED in sync' from earlier.
+item: WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE
