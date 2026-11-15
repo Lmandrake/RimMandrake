@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -154,6 +153,12 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794775427: stage 4 blocked"
+  },
+  {
+   "at": "2026-11-15T23:55:56Z",
+   "stage": 4,
+   "what": "unblock",
+   "why": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS fixed at be1d652b2e: the exam's helpers now run under the Designer run's own allowance (slot_rules.json role_runs) (was blocked on RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -333,6 +338,6 @@
  "running": null,
  "schema": 1,
  "stage": 4,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
