@@ -1,0 +1,10 @@
+{
+ "run": "bench-pyre-exam-st4-20261115",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam retaken on the tree and sheet as fixed by his card 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550, 91a7c61989): 20 frozen scenarios (Examiner a9a641ceb8479c818 e1-e14, Challenger ad7d09ca4f5010812 c1-c6; 13 rejects), Readers a475d113cbb05c45b and a773a17ac06718886 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on a tree with three_skies stripped (abd49deeecb68f260) accepted e9 and c6, so the set discriminates. exam.json carries it.",
+ "quick_look": {
+  "offer": false,
+  "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+ }
+}

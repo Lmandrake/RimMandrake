@@ -411,16 +411,63 @@
     "ref": "rm-coverage-judge-1794722839",
     "stage": 5,
     "tokens": 747059
+   },
+   {
+    "at": "2026-11-15T13:36:50Z",
+    "kind": "helper",
+    "ref": "exam st4 2026-11-15 examiner:a9a641ceb8479c818",
+    "stage": 5,
+    "tokens": 48778
+   },
+   {
+    "at": "2026-11-15T13:36:50Z",
+    "kind": "helper",
+    "ref": "exam st4 2026-11-15 challenger:ad7d09ca4f5010812",
+    "stage": 5,
+    "tokens": 32756
+   },
+   {
+    "at": "2026-11-15T13:36:50Z",
+    "kind": "helper",
+    "ref": "exam st4 2026-11-15 readerA:a475d113cbb05c45b",
+    "stage": 5,
+    "tokens": 46771
+   },
+   {
+    "at": "2026-11-15T13:36:50Z",
+    "kind": "helper",
+    "ref": "exam st4 2026-11-15 readerB:a773a17ac06718886",
+    "stage": 5,
+    "tokens": 46158
+   },
+   {
+    "at": "2026-11-15T13:36:50Z",
+    "kind": "helper",
+    "ref": "exam st4 2026-11-15 control:abd49deeecb68f260",
+    "stage": 5,
+    "tokens": 46793
+   },
+   {
+    "at": "2026-11-15T13:37:22Z",
+    "kind": "stage",
+    "ref": "run bench-pyre-exam-st4-20261115",
+    "stage": 4,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 12899541
+  "spent": 13120797
  },
  "coverage_releases": [
   {
    "at": "2026-11-15T06:01:06Z",
    "rounds_at": 3,
    "why": "his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016): one exam and one coverage judge pass on the locked 0.1.0 tree, no loop; the OWNER HOLD for the lock is spent (VERSION.json locked)"
+  },
+  {
+   "at": "2026-11-15T13:32:24Z",
+   "rounds_at": 4,
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550): the 12 Problem gaps plus g12/g14 applied in 91a7c61989, claimed in coverage_fixes.json; one judge look after the stage-4 exam is retaken on the new tree (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
   }
  ],
  "coverage_rounds": [
@@ -506,10 +553,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-15T06:14:43Z",
-  "why": "released for one more look at round 4; that look was not_covered"
- },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -960,6 +1003,36 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card 2026-11-15 'Fix all 12 in 0.1.0': the coverage judge's 12 Problem gaps (plus g12/g14 false wording) applied by RIMMANDRAKE_APPLY_PYRELANDS_JUDGE_EDITS_ALL_TWENTY_ATTAINABLE; re-pinned stage 3 (sheet, tree, scenes); stage 4 (sheet, tree, scenes); sources OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
+  },
+  {
+   "at": "2026-11-15T13:32:24Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550): the 12 Problem gaps plus g12/g14 applied in 91a7c61989, claimed in coverage_fixes.json; one judge look after the stage-4 exam is retaken on the new tree (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+  },
+  {
+   "at": "2026-11-15T13:36:55Z",
+   "stage": 4,
+   "what": "invalidated",
+   "why": "inputs changed since stage 4 was accepted: exam; back to stage 4"
+  },
+  {
+   "at": "2026-11-15T13:36:55Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "13120797 of 4000000 spent; run bench-pyre-exam-st4-20261115 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T13:36:55Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-pyre-exam-st4-20261115, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-15T13:37:23Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-pyre-exam-st4-20261115: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1355,9 +1428,15 @@
    "summary": "Stage 3 rewritten after the stage-5 run's edits reopened it. Gate A lint passes; scenes.json showcases accepted (burn_line 7, fire_cast 3, sky_and_shelter 3, every unit covered). Worldgen: sheet floor:worldgen reads no worldgen of our own, the vanilla new-world switch outside the promise and shipped off and labelled unsupported per his card 2026-11-13 (OWNER:1794594166295378777, built e36d2374af), now cited on the sheet and recorded as d_worldswitch_off_by_card; floor.json worldgen stays applicable. The 2026-11-13 coverage verdict is advisory (uncalibrated brief) and does not send this run back."
   },
   {
-   "at": "2026-11-15T06:06:46Z",
+   "at": "2026-11-15T13:36:55Z",
+   "outcome": "invalidated",
+   "stage": 4,
+   "why": "inputs changed since stage 4 was accepted: exam; back to stage 4"
+  },
+  {
+   "at": "2026-11-15T13:37:22Z",
    "inputs": {
-    "exam": "4e1d8e877a629908d3c8f77fde63a3b1a62f7be9e97a753fae0dc867907a1282",
+    "exam": "322450fe72b9cadd3e35647c4576b4e25775128372266afc62113dbe2df6ca05",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
@@ -1377,30 +1456,17 @@
    ],
    "quick_look": {
     "offer": false,
-    "why": "nothing is asked of him: the exam closes on its own score"
+    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
    },
-   "repinned": [
-    {
-     "at": "2026-11-15T13:23:41Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
-     ]
-    }
-   ],
-   "run": "bench-pyre-owed-exam-st4-20261114",
+   "run": "bench-pyre-exam-st4-20261115",
    "stage": 4,
-   "summary": "Cold Reader exam on the locked 0.1.0 tree (3ffd15d1) and sheet (2935f04b), his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016, one exam and one coverage judge pass, no loop): 20/20 frozen scenarios (14 Examiner, 6 Challenger; 13 reject cases) matched by two fresh Readers, accept_where_reject_core 0, no Challenger miss; control on flamefang_bite_carries_venom missed e7. Stages 1-3 re-pinned by designer_stage repin for his locked changes (f71693d77a, 08d917c12a)."
+   "summary": "Cold Reader exam retaken on the tree and sheet as fixed by his card 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550, 91a7c61989): 20 frozen scenarios (Examiner a9a641ceb8479c818 e1-e14, Challenger ad7d09ca4f5010812 c1-c6; 13 rejects), Readers a475d113cbb05c45b and a773a17ac06718886 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on a tree with three_skies stripped (abd49deeecb68f260) accepted e9 and c6, so the set discriminates. exam.json carries it."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
