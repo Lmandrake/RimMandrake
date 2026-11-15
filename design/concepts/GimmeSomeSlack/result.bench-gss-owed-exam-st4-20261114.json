@@ -1,0 +1,10 @@
+{
+ "run": "bench-gss-owed-exam-st4-20261114",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam on the locked 0.1.0 tree (e80c7f93) and sheet (33b1cddc): 24/24 frozen scenarios matched by two fresh Readers, accept_where_reject_core 0, control on owner_change_coils_wires missed e11. One exam, no rerun (owner by card 2026-11-14).",
+ "quick_look": {
+  "offer": false,
+  "why": "nothing is asked of him: the exam closes on its own score"
+ }
+}

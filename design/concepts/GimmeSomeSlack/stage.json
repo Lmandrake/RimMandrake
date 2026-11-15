@@ -404,10 +404,52 @@
     "ref": "run bench-gss-owed-exam-st3-20261114",
     "stage": 3,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-15T05:50:27Z",
+    "kind": "helper",
+    "ref": "rm-judge a8d725caa1467fe88 examiner (opus)",
+    "stage": 4,
+    "tokens": 41460
+   },
+   {
+    "at": "2026-11-15T05:50:27Z",
+    "kind": "helper",
+    "ref": "rm-judge afb9dd94188eaf81d challenger (opus)",
+    "stage": 4,
+    "tokens": 43721
+   },
+   {
+    "at": "2026-11-15T05:52:02Z",
+    "kind": "helper",
+    "ref": "reader a74adb2d944452dde (opus)",
+    "stage": 4,
+    "tokens": 35244
+   },
+   {
+    "at": "2026-11-15T05:52:02Z",
+    "kind": "helper",
+    "ref": "reader ab7877e9e333e7e55 (opus)",
+    "stage": 4,
+    "tokens": 48004
+   },
+   {
+    "at": "2026-11-15T05:52:02Z",
+    "kind": "helper",
+    "ref": "control reader a7a026f0208402c65 (opus)",
+    "stage": 4,
+    "tokens": 38364
+   },
+   {
+    "at": "2026-11-15T05:52:10Z",
+    "kind": "stage",
+    "ref": "run bench-gss-owed-exam-st4-20261114",
+    "stage": 4,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 12561376
+  "spent": 12768169
  },
  "coverage_rounds": [
   {
@@ -960,6 +1002,24 @@
    "stage": 4,
    "what": "close",
    "why": "run bench-gss-owed-exam-st3-20261114: stage 3 done"
+  },
+  {
+   "at": "2026-11-15T05:48:41Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "12561376 of 4000000 spent; run bench-gss-owed-exam-st4-20261114 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T05:48:41Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-gss-owed-exam-st4-20261114, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-15T05:52:10Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-gss-owed-exam-st4-20261114: stage 4 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1392,12 +1452,39 @@
    "run": "bench-gss-owed-exam-st3-20261114",
    "stage": 3,
    "summary": "Stage 3 reopened only because scenes.json gained sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14: 'the cords bar gets a scene') and tree.json carries the owner-eased settings_switch_cleanly text (3c1ea6e655). No leaf, sheet line or floor line edited here; Gate A lint, scenes and floor are the program's checks."
+  },
+  {
+   "at": "2026-11-15T05:52:10Z",
+   "inputs": {
+    "exam": "49e16a0ef95ff6d461c1e2b3f810f9103bef47f46d1cd80e295399336d86dfaa",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "9e9d499f8e711213ce063a8f7a2be11a520cb57934e83f778472ff1a2f229b4f",
+    "sheet": "33b1cddc183d184ca4e68fdf603440e64fc2422a4cf79c8dc6590c770b6de57a",
+    "tree": "e80c7f93fa487266c314df629cadc0944afc5c0200727f4756b50755fdc7c388"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "nothing is asked of him: the exam closes on its own score"
+   },
+   "run": "bench-gss-owed-exam-st4-20261114",
+   "stage": 4,
+   "summary": "Cold Reader exam on the locked 0.1.0 tree (e80c7f93) and sheet (33b1cddc): 24/24 frozen scenarios matched by two fresh Readers, accept_where_reject_core 0, control on owner_change_coils_wires missed e11. One exam, no rerun (owner by card 2026-11-14)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
