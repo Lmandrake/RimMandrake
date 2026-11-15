@@ -349,6 +349,10 @@ namespace JawaBench.BridgeTools
                             "grounded until something launches it. Use it with 'hold' or 'start'.");
 
             var targets = new List<Pawn>();
+            // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c10.F1): the maintain window holds aloft ONLY the pawns
+            // this call left flying without a refusal; it used to re-assert flight on every grounded target, a pawn
+            // whose start was refused (CanEverFly false) and a landed one included.
+            var maintained = new List<Pawn>();
             var rowsBefore = new List<object>();
             var actionRows = new List<object>();
             var startTicks = -1;
@@ -454,6 +458,7 @@ namespace JawaBench.BridgeTools
                         stateBefore = FlightStateName(beforeRaw),
                         stateAfter = FlightStateName(FlightStateRaw(t)),
                     });
+                    if (refused == null && t != null && FlightStateRaw(t) == FlightStateFlying) maintained.Add(p);
                 }
 
                 if (maintainTicks > 0)
@@ -492,7 +497,7 @@ namespace JawaBench.BridgeTools
             var ticksNow = startTicks;
             var reasserts = 0;
             var polls = 0;
-            var flyingLowWater = targets.Count;
+            var flyingLowWater = maintained.Count;
             var timedOut = false;
             try
             {
@@ -509,7 +514,7 @@ namespace JawaBench.BridgeTools
                     {
                         var flyingNow = 0;
                         var re = 0;
-                        foreach (var p in targets)
+                        foreach (var p in maintained)
                         {
                             if (p == null || p.Dead || !p.Spawned) continue;
                             var t = p.flight;
@@ -581,6 +586,7 @@ namespace JawaBench.BridgeTools
                 count = targets.Count,
                 ticksElapsed = ticksNow - startTicks,
                 maintainTicks,
+                maintainedCount = maintained.Count,
                 polls,
                 reasserts,
                 // 🔴 The integrity number. Less than count means the window was

@@ -174,8 +174,10 @@ namespace JawaBench.BridgeTools
 
                 // TransportersInGroup is null until loading has been initiated; TryLaunch
                 // logs an error and returns in that case, which would read as a silent no-op.
+                // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c10.F5): InitiateLoading is a write (it forms a loading
+                // group on an existing pod), so a dry run never calls it and reports groupId -1 for an ungrouped pod.
                 int groupId = transporter.groupID;
-                if (groupId < 0)
+                if (groupId < 0 && !dryRun)
                 {
                     groupId = TransporterUtility.InitiateLoading(new List<CompTransporter> { transporter });
                 }

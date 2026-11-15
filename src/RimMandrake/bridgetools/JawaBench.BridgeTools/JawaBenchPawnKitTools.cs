@@ -726,6 +726,13 @@ namespace JawaBench.BridgeTools
                     bool partRescued = false;
                     if (found.Spawned)
                     {
+                        // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c06.F5): ask the container first, so a refusal
+                        // never splits and despawns a stack; a remainder goes back where it came from, not the void.
+                        int canAccept = p.inventory.innerContainer.GetCountCanAccept(found, true);
+                        if (canAccept < requested)
+                            return Fail("REFUSED before splitting: " + p.LabelShortCap + "'s inventory accepts " + canAccept + " of " + requested + " " + found.def.defName + "; nothing was moved.");
+                        var origMap = found.Map;
+                        var origPos = found.Position;
                         var part = found.SplitOff(requested);
                         if (part.Spawned) part.DeSpawn(DestroyMode.Vanish);
                         moved = p.inventory.innerContainer.TryAdd(part, part.stackCount, true);
@@ -737,9 +744,9 @@ namespace JawaBench.BridgeTools
                         // no holder. p.MapHeld/p.PositionHeld cover the off-map
                         // case too; if there's genuinely no map at all, destroy the
                         // orphan and say so rather than silently losing it.
-                        if (moved <= 0 && !part.Destroyed && part.holdingOwner == null)
+                        if (!part.Destroyed && part.holdingOwner == null && !part.Spawned)
                         {
-                            var rescueMap = p.MapHeld;
+                            var rescueMap = origMap ?? p.MapHeld;
                             // Fixed 2026-09-03 (opus code review): TryPlaceThing's bool return
                             // was discarded - if it found no valid nearby cell (e.g. every cell
                             // around p.PositionHeld blocked), `part` stayed unspawned, unheld and
@@ -747,7 +754,7 @@ namespace JawaBench.BridgeTools
                             // still said "the container refused it" as if it were findable
                             // somewhere. Check the return; destroy-and-say-so is the fallback.
                             partRescued = rescueMap != null
-                                && GenPlace.TryPlaceThing(part, p.PositionHeld, rescueMap, ThingPlaceMode.Near);
+                                && GenPlace.TryPlaceThing(part, origMap != null ? origPos : p.PositionHeld, rescueMap, ThingPlaceMode.Near);
                             if (!partRescued)
                             {
                                 part.Destroy(DestroyMode.Vanish);

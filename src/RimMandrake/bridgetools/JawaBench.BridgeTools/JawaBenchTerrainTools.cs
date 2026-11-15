@@ -241,7 +241,12 @@ namespace JawaBench.BridgeTools
                 "is what the cell reads. Without it a flooded, iced or substructured cell keeps " +
                 "showing the overlay and is counted in cellsFailedVerify. Test-site prep passes true.",
                 DefaultValue = false)]
-            bool clearOverlays = false)
+            bool clearOverlays = false,
+            [ToolParameter(Description =
+                "Map.uniqueID to paint (default -1 = the current map), as the batch terrain read takes it: a " +
+                "restore captured on one map must name it, or it paints whichever map is current.",
+                DefaultValue = -1)]
+            int mapId = -1)
         {
             if (string.IsNullOrWhiteSpace(ops))
                 return Fail("ops is required, e.g. 'Sand:10,20,3,4;Gravel:14,20,2,2'.");
@@ -269,9 +274,11 @@ namespace JawaBench.BridgeTools
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
-                var map = Find.CurrentMap;
+                // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT x.X3): the write takes the map the read took
+                var map = mapId < 0 ? Find.CurrentMap : Find.Maps.FirstOrDefault(m => m.uniqueID == mapId);
                 if (map == null)
-                    return Fail("No current map. Load a game first.");
+                    return Fail(mapId < 0 ? "No current map. Load a game first."
+                        : "No loaded map with uniqueID " + mapId + ". Maps: [" + string.Join(", ", Find.Maps.Select(m => m.uniqueID)) + "].");
 
                 var grid = map.terrainGrid;
                 var size = map.Size;
@@ -1403,7 +1410,17 @@ namespace JawaBench.BridgeTools
                             // this one to THIN vegetation to a target coverage. Both
                             // Description and the clearFirst parameter say so, and
                             // `cleared` reports the real number either way.
-                            if (clearFirst || clearOnly)
+                            // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c03.F3): a cell the plant can never grow on,
+                            // even with its plants wiped (terrain, temperature, a non-plant blocker), keeps its plants;
+                            // the rejection below still records it. Clearing it destroyed vegetation and replanted nothing.
+                            bool unsupportable = false;
+                            if (clearFirst && !clearOnly)
+                            {
+                                var pre = plantDef.CanEverPlantAt(cell, map, out Thing preBlocker,
+                                    canWipePlantsExceptTree: true, checkMapTemperature: true, writeNoReason: false);
+                                unsupportable = !pre.Accepted && preBlocker?.def?.plant == null;
+                            }
+                            if ((clearFirst || clearOnly) && !unsupportable)
                             {
                                 var here = map.thingGrid.ThingsListAtFast(cell).ToList();
                                 foreach (var t in here)

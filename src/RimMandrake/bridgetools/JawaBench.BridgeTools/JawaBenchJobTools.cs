@@ -804,6 +804,12 @@ namespace JawaBench.BridgeTools
                 var clearedCells = 0;
                 if (clearAreaFirst)
                 {
+                    // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c07.F8): bounds are checked before the clear, so a
+                    // bad rect never wipes the area and then paints only part of the replacement.
+                    var oob = parsed.Where(op => op.X < 0 || op.Z < 0 || op.X + op.W > map.Size.x || op.Z + op.H > map.Size.z).ToList();
+                    if (oob.Count > 0)
+                        return Fail("REFUSED before clearing: " + oob.Count + " rect(s) reach outside the map (" + map.Size.x + "x" + map.Size.z + "); nothing was cleared.",
+                            new { outOfBoundsRects = oob.Take(10).Select(op => op.X + "," + op.Z + "," + op.W + "," + op.H).ToList() });
                     var wasTrue = target.ActiveCells.ToList();
                     foreach (var c in wasTrue) target[c] = false;
                     clearedCells = wasTrue.Count;
