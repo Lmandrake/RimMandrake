@@ -67,18 +67,22 @@ def main():
     json.dump({"mods": ["A", "B"]}, open(wf, "w"))
     check(C.read_wired(wf) == ["A", "B"], "read_wired reads the mods in order")
     check(C.read_wired(os.path.join(tmp, "absent.json")) == [], "an absent wired file reads empty")
-    real_wired, saved = C.WIRED, os.environ.pop("TESTQ_FILL_MODS", None)
+    real_wired, saved, real_pm = C.WIRED, os.environ.pop("TESTQ_FILL_MODS", None), C.pipeline_mods
     try:
         C.WIRED = wf
         C.read_wired.__defaults__ = (wf,)
+        C.pipeline_mods = lambda: []        # the real tree's past-blind mods are selftest_testq_blocks.py's
         check(C.fill_mods() == ["A", "B"], "without TESTQ_FILL_MODS the filler walks wired_mods.json")
+        C.pipeline_mods = lambda: ["B", "P"]
+        check(C.fill_mods() == ["A", "B", "P"], "a past-blind mod with testq blocks is walked too, once, after the wires")
         os.environ["TESTQ_FILL_MODS"] = "X Y"
         check(C.fill_mods() == ["X", "Y"], "TESTQ_FILL_MODS overrides the wired file")
         os.environ.pop("TESTQ_FILL_MODS")
+        C.pipeline_mods = lambda: []
         C.read_wired.__defaults__ = (os.path.join(tmp, "absent.json"),)
         check(C.fill_mods() == ["FlowWorks"], "no env and no wired file falls back to FlowWorks")
     finally:
-        C.WIRED = real_wired
+        C.WIRED, C.pipeline_mods = real_wired, real_pm
         C.read_wired.__defaults__ = (real_wired,)
         if saved is not None:
             os.environ["TESTQ_FILL_MODS"] = saved

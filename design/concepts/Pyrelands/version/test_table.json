@@ -473,6 +473,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "burn_line"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ash_ground": {
@@ -494,6 +500,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ground_deep_ash"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ash_watered": {
@@ -515,6 +527,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ash_fertility_watered"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_burn_compounds": {
@@ -536,6 +554,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "fresh_burn_bonus"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_grass_regreens": {
@@ -557,6 +581,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "embergrass_regrow"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_scorchfruit": {
@@ -578,6 +608,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "scorchfruit_fire_born"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_populations": {
@@ -599,6 +635,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "plant_census"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ruins": {
@@ -620,6 +662,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ruins"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_firehawk": {
@@ -641,6 +689,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "firehawk"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_furnace": {
@@ -662,6 +716,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "furnace_warmth"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ashwallow": {
@@ -683,6 +743,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "burrowers"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ullai": {
@@ -725,6 +791,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "cinderfall"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_no_rain": {
@@ -746,6 +818,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "no_ordinary_rain"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_walk": {
@@ -788,6 +866,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "firefoam_sprayer"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_sand_shovel": {
@@ -809,6 +893,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "sand_shovel"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_rite_hook_alone": {
@@ -830,6 +920,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "rite_hook_alone"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_furnace_bed": {
@@ -851,6 +947,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "furnace_sleep"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_heat_dome": {
@@ -872,6 +974,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "heat_dome"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_fire_dusts_ash": {
@@ -893,6 +1001,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "fire_tick_effects"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_flamefang_venom": {
@@ -914,6 +1028,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "flamefang_venom"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_furnace_giant": {
@@ -935,6 +1055,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ullai_and_giant"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_startup_and_def_wiring": {
@@ -954,6 +1080,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "startup_and_def_wiring"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_mapgen_log": {
@@ -973,6 +1105,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "mapgen_log"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_grass_cover": {
@@ -992,6 +1130,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "grass_cover"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_animal_census": {
@@ -1011,6 +1155,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "animal_census"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_ambient_ash_drift": {
@@ -1030,6 +1180,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ambient_ash_drift"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_opening_front": {
@@ -1049,6 +1205,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "opening_front"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_scorchfruit_produces": {
@@ -1068,6 +1230,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "scorchfruit_produces"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_scorchfruit_spoils": {
@@ -1087,6 +1255,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "scorchfruit_spoils"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_furnace_room": {
@@ -1106,6 +1280,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "furnace_room"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_ashfall_weather_accumulation": {
@@ -1125,6 +1305,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ashfall_weather_accumulation"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_ashfall_drifts": {
@@ -1144,6 +1330,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "ashfall_drifts"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_blackrain": {
@@ -1163,6 +1355,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "testq": {
+    "chains": [
+     "blackrain"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "P_firefoam_aim": {
@@ -1218,6 +1416,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   },
+   "testq": {
+    "chains": [
+     "firehawk_first_sighting_letter"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "firehawk_crestfeather_yield": {
@@ -1237,6 +1441,12 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   },
+   "testq": {
+    "chains": [
+     "firehawk_crestfeather_yield"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "RECORD_ART_SHEET": {

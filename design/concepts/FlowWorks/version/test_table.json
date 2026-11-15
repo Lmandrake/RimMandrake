@@ -2945,6 +2945,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "plot_H_depth_ladder"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_dig_finds": {
@@ -2965,6 +2971,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "dig_finds"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_fill_front": {
@@ -3005,6 +3017,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "plot_B_fill_tiers"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_one_surface": {
@@ -3065,6 +3083,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "core_live_rows"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_slime": {
@@ -3085,6 +3109,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "slime_slip"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_pawn_height": {
@@ -3125,6 +3155,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "plot_G_pit"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_covered_pit": {
@@ -3145,6 +3181,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "pit_cover_fall"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ways_out": {
@@ -3185,6 +3227,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "flow_doors"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_hose_look": {
@@ -3225,6 +3273,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "machinery_pipes"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_trench_cover": {
@@ -3265,6 +3319,12 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "chains": [
+     "suspension_bridges_and_covers"
+    ],
+    "by": "testq_blocks.py"
    }
   },
   "sc_ice": {

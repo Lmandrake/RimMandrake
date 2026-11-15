@@ -161,11 +161,26 @@ def read_wired(path=WIRED):
 
 
 def fill_mods():
-    """-> the mods the tick's filler walks: TESTQ_FILL_MODS when set, else wired_mods.json, else FlowWorks."""
+    """-> the mods the tick's filler walks: TESTQ_FILL_MODS when set, else wired_mods.json (else FlowWorks) plus every
+    mod the pipeline record shows past the blind challenge with a chain in its testq blocks (pipeline_mods): under 18c
+    only those can be admitted, so one reaching Stage 6 is filled without anyone wiring it by hand."""
     env = os.environ.get("TESTQ_FILL_MODS")
     if env is not None and env.strip():
         return env.split()
-    return read_wired() or ["FlowWorks"]
+    mods = read_wired() or ["FlowWorks"]
+    return mods + [m for m in pipeline_mods() if m not in mods]
+
+
+def pipeline_mods():
+    """-> sorted mods pipeline_admit.qualifying() counts past blind whose testq blocks name a chain; [] when unreadable
+    (the wired list still walks) or when the selftest switch has opened admission."""
+    try:
+        import pipeline_admit as PA
+        if PA.open_for_selftest():
+            return []
+        return sorted(m for m, e in PA.qualifying().items() if e.get("chains"))
+    except Exception:  # noqa: BLE001 - a broken record must not stop the wired fill
+        return []
 
 
 def last_filled_mod():
