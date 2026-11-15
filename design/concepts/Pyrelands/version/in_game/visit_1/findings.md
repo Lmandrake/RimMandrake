@@ -27,6 +27,9 @@ hand (`scripts/three_skies.py`, `evidence/three_skies.json`): cinderfall lit fir
 a 30x30 patch's depthSum 283 under ash fall, 315 after 2,500 ticks of black rain (still blending), 161 after 5,000. The
 fires clause fails (item above). Acceptance test: the two chains carry one row per clause, and each row fails on a def
 with the clause's mechanism removed.
+Built (RIMMANDRAKE_ROW_SKY_CLAUSES_ONCE_READ_BY_HAND): rows `cinderfall_lightning`, `blackrain_washes_ash`, `blackrain_fires_out` in
+`src/RimMandrake/Pyrelands/validation.py`; offline proof `selftest_pyrelands_site.py` `test_sky_clauses_2026_11_15`. Live rows UNRUN
+(the chains `cinderfall` and `blackrain`, game up on the pyrelands tier).
 
 ## RIMMANDRAKE_FIX_RUINS_CHECK_COUNTS_CHARRED_FLOORS_AS_MISSES (HARNESS; check judged wrong, row UNMEASURED)
 

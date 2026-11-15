@@ -1599,22 +1599,227 @@ def _weather_pair(t, name, other, fields):
     t.screenshot()
 
 
+# ---- sc_three_skies clauses (RIMMANDRAKE_ROW_SKY_CLAUSES_ONCE_READ_BY_HAND; visit 1 read them by hand, three_skies.py)
+# One row per clause. Each row first reads the def that carries the clause's mechanism (sky_clause_defs, pure, proven
+# offline against the shipped XML and a mutant per clause), then the live effect (a pure verdict per clause).
+CINDERFALL, ASHFALL, BLACKRAIN = "RM_FE_Weather_Cinderfall", "RM_FE_Weather_AshFall", "RM_FE_BlackRain"
+STRIKE_EVENT = "WeatherEvent_LightningStrike"   # GenExplosion Flame at the strike cell: the storm's only fire-starter
+DOUSE_FIELDS = ("blackRainDousingEnabled", "blackRainDousing")   # Patch_FireTick_BlackRainDouses: vanilla rain alone loses to grass
+SKY_SETTLE_TICKS = 4500     # a locked weather blended in (visit 1: the first reads after a switch carried the last sky)
+SKY_WINDOWS, SKY_WINDOW_TICKS = 10, 1000
+WASH_TICKS, WASH_DEPTH, WASH_MIN_SHARE = 2500, 0.5, 0.10
+FIRE_PAD_OUT = (PAD_PROBE[0], PAD_PROBE[1] - 30)   # the fires-out pad, off the wash patch at PAD_PROBE
+FIRE_OUT_POLLS, FIRE_OUT_STEP = 12, 250
+
+
+def sky_defs_from_xml(texts):
+    """Pure. WeatherDef XML texts -> {defName: {"rainRate": float, "events": [eventClass, ...]}}."""
+    import xml.etree.ElementTree as ET
+    out = {}
+    for text in texts:
+        for wd in ET.fromstring(text).iter("WeatherDef"):
+            name = (wd.findtext("defName") or "").strip()
+            try:
+                rate = float(wd.findtext("rainRate") or 0)
+            except ValueError:
+                rate = None
+            out[name] = {"rainRate": rate,
+                         "events": [(li.findtext("eventClass") or "").strip() for li in wd.findall("eventMakers/li")]}
+    return out
+
+
+def sky_defs_from_live(fields):
+    """Pure. _get_defs reply ({defName: {field: value}}) -> the sky_defs_from_xml shape. An eventMakers field the bridge
+    did not serialise reads events None (unread), never an empty list."""
+    out = {}
+    for name, f in (fields or {}).items():
+        ev = f.get("eventMakers")
+        try:
+            rate = float(f.get("rainRate"))
+        except (TypeError, ValueError):
+            rate = None
+        out[name] = {"rainRate": rate,
+                     "events": None if ev is None else sorted(set(re.findall(r"WeatherEvent_\w+", json.dumps(ev))))}
+    return out
+
+
+def sky_clause_defs(defs, settings=None, douse_def=BLACKRAIN):
+    """Pure. -> {clause: (ok, why)}; ok None = the def could not be read. Each clause's mechanism, and nothing more:
+    lightning   cinderfall makes WeatherEvent_LightningStrike and ash fall makes none
+    ash_wash    black rain's rainRate > 0 (RM_FireEcoKernel.OutdoorSandWear washes 0.25 x rainRate a visit)
+    fires_out   the dousing hook keys on black rain's defName (`douse_def`, RM_FireEcoKernel.BlackRainDefName) and
+                `settings` (DOUSE_FIELDS) have it on with an Extinguish > 0: vanilla rain alone loses to an ember-grass fire
+                (visit 1, RIMMANDRAKE_FIX_BLACK_RAIN_LOSES_TO_EMBER_GRASS_FIRE)"""
+    c, a, b = (defs.get(n) or {} for n in (CINDERFALL, ASHFALL, BLACKRAIN))
+    out = {}
+    if c.get("events") is None or a.get("events") is None:
+        out["lightning"] = (None, "eventMakers unread: %r / %r" % (c.get("events"), a.get("events")))
+    else:
+        out["lightning"] = (STRIKE_EVENT in c["events"] and STRIKE_EVENT not in a["events"],
+                            "cinderfall %r, ash fall %r" % (c["events"], a["events"]))
+    rate = b.get("rainRate")
+    out["ash_wash"] = (None if rate is None else rate > 0, "black rain rainRate %r" % rate)
+    on, amount = ((settings or {}).get(f) for f in DOUSE_FIELDS)
+    why = "dousing hook keys on %r, %s=%r, %s=%r" % (douse_def, DOUSE_FIELDS[0], on, DOUSE_FIELDS[1], amount)
+    try:
+        amount = float(amount)
+    except (TypeError, ValueError):
+        amount = None
+    if on is None or amount is None:
+        out["fires_out"] = (None, why)
+    else:
+        out["fires_out"] = (douse_def == BLACKRAIN and str(on).lower() == "true" and amount > 0, why)
+    return out
+
+
+def lightning_verdict(cinder, ashfall):
+    """Pure. New fires per window under each settled sky -> (ok, why): some under cinderfall, none under ash fall."""
+    if not cinder or not ashfall or None in cinder or None in ashfall:
+        return False, "unread windows: cinderfall %r, ash fall %r" % (cinder, ashfall)
+    ok = sum(cinder) > 0 and sum(ashfall) == 0
+    return ok, "fires per %d ticks: cinderfall %r (total %d), ash fall %r (total %d)" % (
+        SKY_WINDOW_TICKS, cinder, sum(cinder), ashfall, sum(ashfall))
+
+
+def wash_verdict(clear, rain, min_share=WASH_MIN_SHARE):
+    """Pure. (depthSum before, after) on the same patch over the same ticks, under clear sky and under black rain ->
+    (ok, why): black rain takes at least twice the clear sky's loss, and at least `min_share` of the patch."""
+    if None in tuple(clear) + tuple(rain) or not rain[0]:
+        return False, "unread or bare patch: clear %r, rain %r" % (clear, rain)
+    lc, lr = clear[0] - clear[1], rain[0] - rain[1]
+    ok = lr >= 2 * max(lc, 0.0) and lr >= min_share * rain[0]
+    return ok, "depthSum loss: clear %.2f (%r), black rain %.2f (%r); needs >= 2x clear and >= %.0f%% of %.2f" % (
+        lc, clear, lr, rain, 100 * min_share, rain[0])
+
+
+def fires_out_verdict(clear, rain):
+    """Pure. Fire counts on the same pad at the same ticks after ignition -> (ok, why): some read has the black-rain pad
+    out while the clear-sky pad still burns."""
+    if not clear or not rain or len(clear) != len(rain) or None in clear or None in rain:
+        return False, "unread series: clear %r, rain %r" % (clear, rain)
+    at = [i for i, (c, r) in enumerate(zip(clear, rain)) if r == 0 and c > 0]
+    return bool(at), "fires every %d ticks: clear %r, black rain %r; black rain out while clear burns at %r" % (
+        FIRE_OUT_STEP, clear, rain, [(i + 1) * FIRE_OUT_STEP for i in at])
+
+
+def _sky_def_leg(t, clause):
+    if not _live(t):
+        return
+    names = ";".join("WeatherDef/%s" % n for n in (CINDERFALL, ASHFALL, BLACKRAIN))
+    settings = {}
+    for f in DOUSE_FIELDS:
+        r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f)
+        settings[f] = (r or {}).get("value") if (r or {}).get("success") else None
+    ok, why = sky_clause_defs(sky_defs_from_live(_get_defs(t, names, "rainRate,eventMakers")), settings)[clause]
+    _note(t, "%s mechanism on the live def" % clause, why)
+    if ok is False:
+        _fail("the def no longer carries the %s mechanism: %s" % (clause, why))
+
+
+def _sky(t, weather):
+    """Lock `weather`, let it blend in, put out whatever the switch left burning."""
+    t.bridge_call("jawa/weather_set", weather=weather, lockWeather=True)
+    _wait(t, SKY_SETTLE_TICKS)
+    _extinguish(t)
+
+
+def _fire_windows(t):
+    seen = []
+    for _ in range(SKY_WINDOWS):
+        _wait(t, SKY_WINDOW_TICKS)
+        n = _count(t, "Fire")
+        seen.append(n)
+        if n:
+            _extinguish(t)
+    return seen
+
+
+def _sky_lightning(t):
+    _independent(t)
+    with _comp(t, "cinderfall_lightning", beyond_toggle=True):
+        _sky_def_leg(t, "lightning")
+        _isolate(t)     # no burn line, fire hawk or furnace beast lights a fire the count would read as a strike
+        got = {}
+        for w in (ASHFALL, CINDERFALL):
+            _sky(t, w)
+            got[w] = _fire_windows(t)
+        if _live(t):
+            ok, why = lightning_verdict(got[CINDERFALL], got[ASHFALL])
+            _note(t, "lightning: new fires per window under each sky", why)
+            if not ok:
+                _fail(why)
+
+
+def _depth(t, rect):
+    return _ash(t, rect).get("depthSum") if _live(t) else None
+
+
+def _sky_wash(t):
+    _independent(t)
+    with _comp(t, "blackrain_washes_ash", beyond_toggle=True):
+        _sky_def_leg(t, "ash_wash")
+        _extinguish(t)
+        rect = _rs(_rect(t, size=30))
+        got = {}
+        for w in ("Clear", BLACKRAIN):
+            _sky(t, w)
+            t.bridge_call("jawa/static_call", type=ASH_SAND, method="LayAsh", args="%s|%s" % (rect, WASH_DEPTH))
+            a = _depth(t, rect)
+            _wait(t, WASH_TICKS)
+            got[w] = (a, _depth(t, rect))
+        if _live(t):
+            ok, why = wash_verdict(got["Clear"], got[BLACKRAIN])
+            _note(t, "ash wash on %s over %d ticks" % (rect, WASH_TICKS), why)
+            if not ok:
+                _fail(why)
+
+
+def _sky_fires_out(t):
+    _independent(t)
+    with _comp(t, "blackrain_fires_out", toggle="blackRainDousingEnabled"):
+        _sky_def_leg(t, "fires_out")
+        _pad(t, FIRE_PAD_OUT)
+        rect = _rect(t, size=8)
+        got = {}
+        for w in ("Clear", BLACKRAIN):
+            _sky(t, w)
+            t.clear_area(size=16)
+            t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=DEEP_ASH, width=8, height=8, layer="top")
+            _firebreak(t, rect)
+            _plants(t, "RM_FE_Plant_EmberGrass", rect)
+            _fire(t, rect)
+            got[w] = []
+            for _ in range(FIRE_OUT_POLLS):
+                _wait(t, FIRE_OUT_STEP)
+                got[w].append(_count(t, "Fire", _rs(_rect(t, size=16))) if _live(t) else None)
+            _extinguish(t)
+        _pad(t, PAD_PROBE)
+        if _live(t):
+            ok, why = fires_out_verdict(got["Clear"], got[BLACKRAIN])
+            _note(t, "fires out on an 8x8 ember-grass pad", why)
+            if not ok:
+                _fail(why)
+
+
 @suite.chain("cinderfall")
-@_teardown(weather=True)
+@_teardown(fire=True, weather=True)
 def cinderfall(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "cinderfall_distinct", shows=["pyre_cinderfall_distinct"]):
         _weather_pair(t, "RM_FE_Weather_Cinderfall", "RM_FE_Weather_AshFall",
                       ("overlayClasses", "skyColorsDay", "skyColorsNightMid", "windSpeedFactor"))
+    _sky_lightning(t)
 
 
 @suite.chain("blackrain")
-@_teardown(weather=True)
+@_teardown(fire=True, weather=True)
 def blackrain(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "blackrain_reads", shows=["pyre_blackrain_reads"]):
         _weather_pair(t, "RM_FE_BlackRain", "Rain",
                       ("overlayClasses", "skyColorsDay", "skyColorsNightMid"))
+    _sky_wash(t)
+    _sky_fires_out(t)
 
 
 SMOOTH_MAX_TICK_US = 50000.0    # a colony tick this long is a visible hitch at normal speed

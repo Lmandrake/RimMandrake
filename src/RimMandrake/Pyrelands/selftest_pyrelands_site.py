@@ -1738,6 +1738,89 @@ def test_old_save_row_skips_a_fixture_born_lit_2026_11_15():
           "old_save_opening_verdict(" in chain.split('"opening_front", shows')[0], chain[:200])
 
 
+def test_sky_clauses_2026_11_15():
+    """RIMMANDRAKE_ROW_SKY_CLAUSES_ONCE_READ_BY_HAND: the cinderfall/blackrain chains carry one row per sc_three_skies
+    clause, and each row fails on a def with that clause's mechanism removed (and only that row)."""
+    v = _load_validation("pyre_validation_sky")
+    wd = os.path.join(HERE, "Defs", "WeatherDefs")
+    texts = {n: open(os.path.join(wd, n), encoding="utf-8").read() for n in ("Cinderfall.xml", "AshFall.xml", "BlackRain.xml")}
+    rows = {"cinderfall": ["cinderfall_distinct", "cinderfall_lightning"],
+            "blackrain": ["blackrain_reads", "blackrain_washes_ash", "blackrain_fires_out"]}
+    for name, fn in v.suite.chains:
+        if name in rows:
+            import modcheck.suite as MS
+            probe = MS._DeclarationProbe()
+            fn(probe)
+            got = [c.name for c in probe.components if c.name != "teardown"]
+            check("chain %s carries one row per clause" % name, got == rows[name], got)
+    src = open(os.path.join(HERE, "Source", "RM_PyrelandsMod.cs"), encoding="utf-8").read()
+    kern = open(os.path.join(HERE, "Source", "Kernel", "RM_FireEcoKernel.cs"), encoding="utf-8").read()
+
+    def shipped_douse(src, kern):
+        on = re.search(r"static bool blackRainDousingEnabled\s*=\s*(\w+);", src)
+        amt = re.search(r"static float blackRainDousing\s*=\s*(\w+);", src)
+        amt = amt and amt.group(1)
+        if amt and not re.match(r"[\d.]+f?$", amt):   # a named constant: its literal
+            m = re.search(r"const float %s\s*=\s*([\d.]+)f?;" % amt, src)
+            amt = m and m.group(1)
+        name = re.search(r'const string BlackRainDefName\s*=\s*"(\w+)"', kern)
+        return ({"blackRainDousingEnabled": on and on.group(1), "blackRainDousing": amt and amt.rstrip("f")},
+                name and name.group(1))
+
+    def clauses(texts=texts, src=src, kern=kern):
+        settings, douse_def = shipped_douse(src, kern)
+        return v.sky_clause_defs(v.sky_defs_from_xml(texts.values()), settings, douse_def)
+
+    shipped = clauses()
+    for clause, (ok, why) in sorted(shipped.items()):
+        check("clause %s holds on the shipped defs" % clause, ok is True, why)
+    strike = "<eventClass>WeatherEvent_LightningStrike</eventClass>"
+    ash_strike = texts["AshFall.xml"].replace("</WeatherDef>", "<eventMakers><li><averageInterval>640</averageInterval>"
+                                              "<eventClass>WeatherEvent_LightningStrike</eventClass></li></eventMakers></WeatherDef>", 1)
+    mutants = {
+        "lightning": {"texts": dict(texts, **{"Cinderfall.xml": texts["Cinderfall.xml"].replace(
+            strike, "<eventClass>WeatherEvent_LightningFlash</eventClass>")})},
+        "lightning (ash fall strikes too)": {"texts": dict(texts, **{"AshFall.xml": ash_strike})},
+        "ash_wash": {"texts": dict(texts, **{"BlackRain.xml": re.sub(r"<rainRate>[^<]*</rainRate>", "<rainRate>0</rainRate>",
+                                                                     texts["BlackRain.xml"])})},
+        "fires_out (dousing off)": {"src": src.replace("static bool blackRainDousingEnabled = true;",
+                                                       "static bool blackRainDousingEnabled = false;")},
+        "fires_out (dousing 0)": {"src": re.sub(r"const float BlackRainDousingDefault = [\d.]+f;", "const float BlackRainDousingDefault = 0f;", src)},
+        "fires_out (hook keys another def)": {"kern": kern.replace('BlackRainDefName = "RM_FE_BlackRain"', 'BlackRainDefName = "Rain"')},
+    }
+    for label, kw in mutants.items():
+        clause = label.split(" ")[0]
+        check("mutant %s is a real edit" % label, any(kw[k] != {"texts": texts, "src": src, "kern": kern}[k] for k in kw))
+        changed = sorted(k for k, (ok, _w) in clauses(**kw).items() if ok is not True)
+        check("mutant %s fails its clause and only it" % label, changed == [clause], changed)
+    live = v.sky_defs_from_live({v.CINDERFALL: {"rainRate": 0, "eventMakers": [{"eventClass": "RimWorld.WeatherEvent_LightningStrike"}]},
+                                 v.ASHFALL: {"rainRate": 0, "eventMakers": []}, v.BLACKRAIN: {"rainRate": 1.1, "eventMakers": None}})
+    got = v.sky_clause_defs(live, {"blackRainDousingEnabled": "True", "blackRainDousing": "40"})
+    check("live def read: a serialised strike counts, rainRate and the dousing settings read",
+          got["lightning"][0] is True and got["ash_wash"][0] is True and got["fires_out"][0] is True, got)
+    got = v.sky_clause_defs(v.sky_defs_from_live({v.CINDERFALL: {"rainRate": 0}, v.ASHFALL: {"rainRate": 0}, v.BLACKRAIN: {}}),
+                            {"blackRainDousingEnabled": None, "blackRainDousing": None})
+    check("live def read: unserialised eventMakers, rainRate and unread settings are unread (None), never a fail or a pass",
+          got["lightning"][0] is None and got["ash_wash"][0] is None and got["fires_out"][0] is None, got)
+    # live verdicts, fed visit 1's hand-read numbers (evidence/three_skies.json, rain_fire.json) and the mechanism removed
+    cinder, ash = [0, 0, 12, 0, 0, 3, 4, 17, 0, 4], [0] * 10
+    check("lightning passes on visit 1's settled windows", v.lightning_verdict(cinder, ash)[0])
+    check("lightning fails with no strike under cinderfall", not v.lightning_verdict([0] * 10, ash)[0])
+    check("lightning fails with strikes under ash fall", not v.lightning_verdict(cinder, [3] + [0] * 9)[0])
+    check("lightning fails on an unread window", not v.lightning_verdict(cinder[:9] + [None], ash)[0])
+    check("wash passes on visit 1's black-rain loss over a dry-wear clear", v.wash_verdict((450.0, 449.0), (315.027, 161.088))[0])
+    check("wash fails with black rain no wetter than clear", not v.wash_verdict((450.0, 449.0), (450.0, 449.0))[0])
+    check("wash fails when black rain takes less than twice clear's loss", not v.wash_verdict((450.0, 380.0), (450.0, 330.0))[0])
+    check("wash fails on a bare or unread patch", not v.wash_verdict((450.0, 449.0), (0.0, 0.0))[0]
+          and not v.wash_verdict((None, 1.0), (450.0, 100.0))[0])
+    rf = [64, 64, 64, 64, 64, 64, 64, 26, 0, 0, 0, 0]
+    check("fires_out fails on visit 1's pads (both out at 2,250)", not v.fires_out_verdict(rf, rf)[0])
+    check("fires_out passes when black rain is out while clear burns",
+          v.fires_out_verdict([64] * 8 + [26, 0, 0, 0], [64, 40, 10, 0] + [0] * 8)[0])
+    check("fires_out fails on an unread or short series", not v.fires_out_verdict(rf, rf[:-1])[0]
+          and not v.fires_out_verdict(rf, rf[:-1] + [None])[0])
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -1747,7 +1830,7 @@ def main():
               test_heat_guard_2026_10_15,
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
               test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15,
-              test_old_save_row_skips_a_fixture_born_lit_2026_11_15):
+              test_old_save_row_skips_a_fixture_born_lit_2026_11_15, test_sky_clauses_2026_11_15):
         try:
             t()
         except Exception as ex:
