@@ -145,8 +145,8 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/mod_settings_field",
             Description = "Read or write ANY public field (static OR instance) on a mod's " +
-                "ModSettings-derived class by TYPE NAME and field name (set REFUSES a type that does not derive " +
-                "from ModSettings, and refuses under the CAMPAIGN profile; list/get read any type). BRIDGE_STATIC_SETTINGS_" +
+                "ModSettings-derived class by TYPE NAME and field name (set REFUSES a type that is neither ModSettings-derived " +
+                "nor a static *Settings class of a running mod's assembly, and refuses under the CAMPAIGN profile; list/get read any type). BRIDGE_STATIC_SETTINGS_" +
                 "FIELDS_1: rimworld/update_mod_settings only resolves INSTANCE fields and " +
                 "refuses public static ones - most of our own mods' settings classes declare " +
                 "static fields, which that tool cannot touch at all. This tool tries the field " +
@@ -246,9 +246,13 @@ namespace JawaBench.BridgeTools
                 {
                     // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F1): the type resolver takes ANY loaded type, so
                     // set wrote any public static field in the AppDomain - a debug-invoke bypass of the campaign gate.
-                    if (!typeof(ModSettings).IsAssignableFrom(settingsType))
+                    Assembly asm = settingsType.Assembly;
+                    bool modAsmWithSettings = LoadedModManager.RunningMods.Any(m => m.assemblies?.loadedAssemblies?.Contains(asm) == true)
+                        && asm.GetTypes().Any(t => typeof(ModSettings).IsAssignableFrom(t));
+                    if (!JawaBenchSafetyCore.SettingsTypeWritable(typeof(ModSettings).IsAssignableFrom(settingsType),
+                            settingsType.IsAbstract && settingsType.IsSealed, modAsmWithSettings, settingsType.FullName))
                     {
-                        return Fail("REFUSED: '" + typeName + "' does not derive from Verse.ModSettings; set writes only a mod's settings class (list and get still read any type).");
+                        return Fail("REFUSED: '" + typeName + "' is neither a Verse.ModSettings class nor a static *Settings class of a running mod's assembly; set writes only a mod's settings (list and get still read any type).");
                     }
                     string why, declared;
                     if (JawaBenchCompanionSafety.Effective(out why, out declared) != JawaBenchSafetyCore.Test)

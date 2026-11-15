@@ -37,6 +37,14 @@ namespace JawaBench.BridgeTools
             // campaign - the tracker missing a load must not run a canonical world under TEST; "" (new game) keeps test.
             check(S.Effective(camp, t0, null, out var why3u, "sampler off") == S.Campaign && why3u.Contains("unknown") && why3u.Contains("sampler off"), "unknown_save_with_campaign_list_is_campaign", why3u);
             check(S.Effective(camp, t0, "", out _) == S.Test, "new_game_empty_save_keeps_test");
+            // RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE: set still writes a mod's STATIC settings class (FlowWorks'
+            // RM_MachinerySettings, Scribed from its ModSettings) - the c01.F1 gate refused it, so no machinery toggle could be staged.
+            check(S.SettingsTypeWritable(true, false, false, "AnyModSettings"), "settings_modsettings_subclass_writable");
+            check(S.SettingsTypeWritable(false, true, true, "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"), "settings_static_class_in_mod_assembly_writable");
+            check(!S.SettingsTypeWritable(false, true, false, "Verse.SomeSettings"), "settings_static_class_outside_mod_assembly_refused");
+            check(!S.SettingsTypeWritable(false, false, true, "RimMandrake.FlowWorks.SomeSettings"), "settings_instance_non_modsettings_refused");
+            check(!S.SettingsTypeWritable(false, true, true, "RimMandrake.FlowWorks.RM_FlowKernel"), "settings_static_non_settings_name_refused");
+            check(!S.SettingsTypeWritable(false, true, true, null), "settings_null_name_refused");
             check(S.Effective(tst, t0, null, out _) == S.Test, "unknown_save_without_campaign_list_keeps_test");
             var bad = S.ProfileFile.Parse("{\"profile\": gm", t0);
             check(S.Effective(bad, t0, null, out var why4) == S.Campaign && why4.Contains("invalid"), "invalid_profile_file_is_campaign", why4);

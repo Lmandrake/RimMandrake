@@ -32,6 +32,13 @@ namespace JawaBench.BridgeTools
     internal static class JawaBenchSafetyCore
     {
         internal const string Campaign = "campaign", Test = "test";
+
+        /// <summary>jawa/mod_settings_field set: the types it may write. A ModSettings subclass, or a STATIC class named
+        /// *Settings in an assembly a running mod loaded that also declares a ModSettings subclass (FlowWorks'
+        /// RM_MachinerySettings, Scribed from its ModSettings). Any other static field in the AppDomain stays refused (GPT c01.F1).</summary>
+        internal static bool SettingsTypeWritable(bool derivesModSettings, bool isStaticClass, bool inModAssemblyWithSettings, string typeName)
+            => derivesModSettings
+               || (isStaticClass && inModAssemblyWithSettings && typeName != null && typeName.EndsWith("Settings", StringComparison.Ordinal));
         internal const string HandshakeTool = "jawa/companion_handshake";
         internal const string ProfileFileName = "companion_profile.json";
 
