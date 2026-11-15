@@ -701,7 +701,10 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
         if after:
             row["road_back_after"] = after
         return
-    if dec in STEWARD_ON:
+    # a blind cycle's record with no exit block and nothing live: the night of 2026-11-14 each one got a reconcile run
+    # by hand. One steward completes the record from its files or says what judging is missing. An unfinished in-game
+    # visit stays a hand: the game it left needs a look, and a steward never takes the bridge.
+    if dec in STEWARD_ON or (dec == "cycle_unfinished" and stage == "blind_challenge"):
         n = row.get("visit") if stage == "in_game" else row.get("cycle") if stage == "blind_challenge" else None
         if dec == "exit_not_met" and stage == "blind_challenge" and (f.get("visit") or 0) >= M.CYCLE_LIMIT:
             row.update(decision="cycle_limit", why="three blind cycles in this visit ended not met; his rule of "
@@ -964,6 +967,15 @@ def steward_brief(root, mod, row):
                        "design/concepts/%s` passes and `coverage_judge.py status design/concepts/%s` no longer reads "
                        "\"the exam does not pass\"; land exam.json and exam_control/ with ./publish." % (
                            row.get("steward_need") or row.get("why"), mod, mod, mod),
+        "cycle_unfinished": "The blind cycle's record has no Exit block and nothing is live on it, so no program can "
+                            "read whether it was met. Read the record folder (SUMMARY.md, lane1, lane2, "
+                            "tests_edited.json) and `maturation.py next`. If the judging is all there and only its "
+                            "form is missing (no Exit block, a row with no command, a result in the wrong folder), "
+                            "that is a RECORD GAP: complete the record from the files, redoing any red-then-green "
+                            "demonstration for real, and never write a verdict the files do not hold. If the lanes are "
+                            "not all there (the judge stopped before it finished judging), do not judge in its place: "
+                            "write in your note exactly which lanes and rows are missing and stop; the Conductor "
+                            "decides between resuming this cycle and opening the next.",
         "builder_stalled": "An offline builder ended and resolved NONE of the refused bars, so nothing more is built "
                            "on this mod until someone knows why. Find out; do not build the checks yourself. Read the "
                            "builder's item to its end (`rimflow show <item>`), its result file, what it published "
@@ -1022,6 +1034,8 @@ def item_name(row, known):
             "exam_retake": "RIMMANDRAKE_RETAKE_%s_EXAM_FAILING_ITS_GATE" % mod,
             "designer_locked": "RIMMANDRAKE_ADVANCE_%s_LOCKED_VERSION_TO_PREFLIGHT" % mod,
             "stage": "RIMMANDRAKE_STEWARD_%s_%s_STAGE" % (mod, str(row.get("stage")).upper()),
+            "builder_stalled": "RIMMANDRAKE_TRIAGE_%s_BUILDER_RESOLVED_NOTHING" % mod,
+            "cycle_unfinished": "RIMMANDRAKE_COMPLETE_%s_CYCLE_%s_RECORD_NO_EXIT" % (mod, n),
             }.get(kind, "RIMMANDRAKE_STEWARD_%s_HAND_STEP" % mod)
     while len(base) > 56:
         base = base.rsplit("_", 1)[0]

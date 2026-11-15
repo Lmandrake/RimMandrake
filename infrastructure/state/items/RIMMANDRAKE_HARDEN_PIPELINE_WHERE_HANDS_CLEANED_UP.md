@@ -34,21 +34,31 @@ autonomy layer (`maturation_autonomy.py`) still write as "Needs Conductor", or a
   offline-build mod, so Graffiti's preflight steward got "stopped, 33 -> 33". It now judges only builders, and a stop
   that was already written that way lifts itself on the next tick. The reading's `stop_lifted` shows the lift.
 
+- **launch_failed, not transient**: SELF-FIXES NOW (c269d7039e, RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES). The
+  failed launch records the pipeline code it failed on and is tried again once that code changes, within launch_tries.
+  A launch that fails three times, or on code that never changes, still needs a hand.
+- **stopped: a builder run ended and resolved none of its refused bars**: SELF-FIXES NOW (9eac6686d3,
+  RIMMANDRAKE_TRIAGE_STALLED_BUILDER_GRAFFITI_WAITED_ON_HELPERS). One steward run reads the builder's run and files
+  the cause as named items that fixers build; the stop lifts when a refused bar is resolved. Never a second builder at
+  the same refusals, never a second steward for the same stall: then it is a hand's. A run first seen with no refused
+  bars writes no stop at all (c269d7039e, RIMMANDRAKE_SKIP_BUILDER_STOP_ON_ZERO_REFUSED_BARS).
+- **ceiling, when a killed run's dollars are what holds its own retry**: SELF-FIXES NOW (c269d7039e,
+  RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING). Those dollars come back once, as an automatic release his
+  daily digest reads, unless the stage reads DIVERGING.
+- **designer_chain_cap, on a stage not chained that day**: SELF-FIXES NOW (2bcce1d526,
+  RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP). The cap brakes loops; forward stages chain up to twice it.
+- **cycle_unfinished** (a blind cycle's record with no exit block, nothing live): SELF-FIXES NOW
+  (RIMMANDRAKE_COMPLETE_UNFINISHED_BLIND_CYCLE_RECORD_BY_STEWARD). One steward run completes the record from its
+  files (a record gap), or says exactly which lanes are missing; then it is a hand's.
+
 ### Still needs a hand
 
-- **ceiling** (the stage's dollars plus the next cap pass stage_ceiling_usd): STILL NEEDS A HAND. It is a spend
-  bar, and the owner's rule is that money past a ceiling is released by `maturation_dispatch.py release`. A
-  program lifting it would change a bar.
-- **launch_failed, not transient** (or a transient fault that outlasted launch_tries): STILL NEEDS A HAND. The cause
-  varies, the fix is unknown in general, and the text is on the line. Self-fix route: once a failure text proves
-  transient, the run that proved it adds it to `maturation_autonomy.TRANSIENT`, with a test.
-- **stopped: a builder run ended and the refused count did not fall**: STILL NEEDS A HAND. A builder that made no progress
-  has an unknown cause by definition. The owner's condition is never a second automatic try at the same refusals.
+- **ceiling, any other case** (the stage's dollars plus the next cap pass stage_ceiling_usd): STILL NEEDS A HAND. It
+  is a spend bar he set by card; money past it is released by `maturation_dispatch.py release`, the Conductor's call.
 - **blind (run records, test table or a stage's state unreadable)**: STILL NEEDS A HAND. The cause is a broken file
   or a blind instrument, and which one it is takes reading. Writing past it would launch on a blind reading.
-- **cycle_unfinished / visit_unfinished** (a record with no exit block, nothing live): STILL NEEDS A HAND. Whether the
-  dead run is resumed or redone depends on what it left, and an in-game visit also needs a check that the game was
-  left clean.
+- **visit_unfinished** (an in-game visit's record with no exit block, nothing live): STILL NEEDS A HAND. The game the
+  dead run left needs a look, and a steward never takes the bridge.
 - **hand_run_seen** (a hand-launched run worked here and wrote no record): STILL NEEDS A HAND. It is a person's
   run, and what it left is theirs to read.
 - **auto_spent** (the visit's automatic run is spent): STILL NEEDS A HAND. The owner set one automatic run per visit.
@@ -62,8 +72,8 @@ autonomy layer (`maturation_autonomy.py`) still write as "Needs Conductor", or a
   item.
 - **a killed run whose return KEPT its clone**: STILL NEEDS A HAND. The kept clone may hold unpublished work, and
   returning it would throw that away. A program cannot tell work worth keeping.
-- **designer_blocked / designer_unreadable / designer_chain_cap / seed_refused**: STILL NEEDS A HAND. The Designer
-  stays the owner's, and its daily chain cap is a spend bar.
+- **designer_blocked / designer_unreadable / seed_refused**, and **designer_chain_cap** on a stage already chained that
+  day or past twice the cap: STILL NEEDS A HAND. The Designer stays the owner's, and a return past the cap is a loop.
 - **held / blocked** (a Conductor hold, a non-build refusal): not a defect. The hold is the Conductor's own act.
 
 ## children
@@ -74,3 +84,10 @@ autonomy layer (`maturation_autonomy.py`) still write as "Needs Conductor", or a
   cone.
 - RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP: fixed, see its close sha. The next tick lifts Graffiti's
   live false stop.
+
+## every hand act is now recorded
+
+RIMMANDRAKE_BUILD_CONDUCTOR_INTERVENTIONS_INTO_PIPELINE_ITSELF (census
+`design/RimMandrake/pipeline_interventions_census_2026-11-15.md`): the tick records each hand act on the pipeline
+(`maturation_hands.py list`); one with no follow-up item or census row for a day raises
+OPS_MATURATION_HAND_ACT_UNFOLDED.

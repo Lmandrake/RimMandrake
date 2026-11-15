@@ -487,6 +487,37 @@ def stalled_main():
     ok("ends when your turn ends" in DH.FOOTER and "foreground" in DH.FOOTER,
        "stalled 6: every detached run is told it ends with its turn and that helpers run in the foreground "
        "(Graffiti's builder ended 'waiting for the helpers to report', 2026-11-15)")
+    # a blind cycle whose record has no exit block: the night's reconcile, as a steward run
+    col = M.COL["blind_challenge"]
+    fb = {"A": {"mod": "A", "stage": "blind_challenge", "version": "0.1.0", "cycle": 2, "visit": 1, "visit_first": 1,
+                "exit": {"record": "design/concepts/A/version/blind_challenge/cycle_2"}, "live_units": [],
+                "last_end": NOW - 900, "owed": "no exit block", "blind_runs": [], "killed": {},
+                "box_runs": {col: {}}, "run_usd": {}}}
+    stb = {}
+    rows, launches = MD.decide(CFG, stb, fb, NOW)
+    ok(row_of(rows)["decision"] == "cycle_unfinished", "stalled 9 (setup): decide reads the cycle as unfinished",
+       row_of(rows)["decision"])
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), stb, fb, rows, launches,
+                                 NOW, fx)
+    r9 = row_of(rows)
+    ok(r9.get("aut") == "steward" and r9.get("steward_kind") == "cycle_unfinished" and launches == ["A"],
+       "stalled 9: a blind cycle record with no exit block gets one steward run, not a pause",
+       {k: r9.get(k) for k in ("decision", "aut", "steward_kind")})
+    b9 = AUT.steward_brief(REPO, "A", dict(r9, stage="blind_challenge")) if r9.get("steward_kind") else ""
+    ok("RECORD GAP" in b9 and "never write a verdict the files do not hold" in b9 and "lanes are not all there" in b9,
+       "stalled 10: its brief completes the record from the files only, and stops when the judging itself is missing",
+       b9[-600:])
+    fi = {"A": dict(fb["A"], stage="in_game", owed="no exit block", visit=1, ingame_live=[], ingame_runs=[])}
+    sti = {}
+    rows, launches = MD.decide(CFG, sti, fi, NOW, bridge=lambda p: (True, "free"))
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), sti, fi, rows, launches,
+                                 NOW, fx)
+    ok(row_of(rows).get("steward_kind") != "cycle_unfinished" and not launches,
+       "stalled 11 (control): an unfinished in-game visit stays a hand (the game it left needs a look)",
+       row_of(rows).get("decision"))
+    name = AUT.item_name({"mod": "A", "steward_kind": "builder_stalled", "stage": "offline_build"}, set())
+    ok(name == "RIMMANDRAKE_TRIAGE_A_BUILDER_RESOLVED_NOTHING",
+       "stalled 8: its item is named for what it does (the first live one was filed as ..._HAND_STEP)", name)
     src = inspect.getsource(AUT._execute_one)
     ok('"builder_stalled"' in src, "stalled 7: what the stalled-builder steward files is a road back, so fixers run it")
 
