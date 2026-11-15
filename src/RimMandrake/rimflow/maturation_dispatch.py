@@ -1281,12 +1281,20 @@ def main(argv=None):
             for k, x in list((s.get(book) or {}).items()):
                 if AUT.releasable(s, k, x):
                     released.setdefault(book, {})[k] = s[book].pop(k)
+        # so is a blind or in-game launch that never started (refused at the spawn, say): it judged nothing, and left
+        # in its book it stops the next tick again (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP); a run that
+        # started stays the visit's automatic run
+        for book in ("blind_auto", "ingame_auto"):
+            gone = [x for x in s.get(book) or [] if isinstance(x, dict) and x.get("failed") and not x.get("unit")]
+            if gone:
+                s[book] = [x for x in s[book] if not any(x is g for g in gone)]
+                released[book] = gone
         s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was, "released": released})
         st.setdefault("mods", {})[o.mod] = s
         _write(p, st)
-        print("CLEARED %s (was: %s; released %d steward, %d fixer key(s))" % (
+        print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d never-started blind/in-game launch(es))" % (
             o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
-            len(released.get("fixers") or {})))
+            len(released.get("fixers") or {}), len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
         return 0
     return 2
 

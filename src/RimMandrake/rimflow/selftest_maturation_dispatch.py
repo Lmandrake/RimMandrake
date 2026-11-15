@@ -1203,6 +1203,25 @@ def ingame_main():
             return dec(r1) == "launch_failed" and dec(r2) == "stopped" and len(launches()) == 1
         chk(t_fail, "a failed in-game launch spends the visit's one automatic run: never retried")
 
+        # RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP: a launch refused at the spawn never started; the
+        # Conductor's clear releases it and the next tick launches the visit; a run that started is never released
+        def t_clear():
+            reset()
+            refused = "spawn refused: RUNNER spawns only for BENCH ...; got --for BENCH --needs game-up"
+            fr = dict(fx, file=lambda item, title, why, **kw: (False, refused))
+            r1 = MD.tick(root, on, True, fx=dict(fr, facts=lambda: facts_for(on)), now=T0, page=False)
+            r2 = tick(on, at=600)
+            c = MD.main(["clear", "Pyrelands", "--why", "selftest"])
+            r3 = tick(on, at=1200)
+            p = os.path.join(sd, "state.json")
+            b = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
+            MD.main(["clear", "Pyrelands", "--why", "selftest"])
+            kept = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
+            return (dec(r1) == "launch_failed" and dec(r2) == "stopped" and c == 0 and dec(r3) == "launched"
+                    and len(launches()) == 1 and len(b) == 1 and b[0].get("unit") and kept == b)
+        chk(t_clear, "an in-game launch refused at the spawn: the Conductor's clear releases it and the next tick "
+                     "launches; a started run survives a clear")
+
         # RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient publish
         # fault retries the same item, up to launch_tries; three in a row stop it naming the count
         lock = "publish: publish stopped: index.lock present (0 s old, under 300 s: another git may be running)"
