@@ -19,6 +19,8 @@ scene read it wrong. Read from the C# source, since the scenes only run in a gam
      pawn go back to what it was doing")
   S4 spared_states' sleeper starts tired (rest 0.05): a rested colonist got up before the blast (INVALID 2 of 6)
   M1 mass_and_power's guard counts injuries only: a hot afternoon gave a colonist Heatstroke, read as a leaked injury
+  F1 pit_goods_fetch reflects LoweredLadderAt on RimMandrake.FlowWorks.RM_ClimbJoins, where FlowWorks defines it; on
+     RM_CliffMask it is absent and the scene was INVALID on every load
   S3 spared_states carries the downed pawn with the count overload: TryStartCarry(thing) cannot take a spawned pawn
   W2 the sweep's gas-goods stack lies inside the seeded cloud (radius 1 at O(-5,-5)), so a burst always reaches it; two
      cells out it was reached on 13 of 18 lanes and the default lane's "still" read as drift on the rest
@@ -79,6 +81,9 @@ def main():
     check("S4", "sleeper.needs.rest.CurLevel = 0.05f" in sp, "spared_states' sleeper starts tired")
     check("M1", 'Count(h => h is Hediff_Injury || h is Hediff_MissingPart) - (int)sc.numbers["hediffs_"' in proof,
           "mass_and_power's leak guard counts injuries, not every hediff")
+    check("F1", '"RimMandrake.FlowWorks.RM_ClimbJoins"), "LoweredLadderAt"' in proof
+          and '"RimMandrake.FlowWorks.RM_CliffMask"), "LoweredLadderAt"' not in proof,
+          "pit_goods_fetch reflects LoweredLadderAt on RM_ClimbJoins")
     check("S3", re.search(r"TryStartCarry\(carried, 1", sp) is not None and re.search(r"TryStartCarry\(carried\)", sp) is None,
           "spared_states carries the downed pawn with TryStartCarry(thing, count)")
     print("%s stage6 visit1 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))

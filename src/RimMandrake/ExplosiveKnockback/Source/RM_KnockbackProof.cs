@@ -2188,10 +2188,10 @@ namespace RimMandrake.ExplosiveKnockback
                             return "FlowWorks not loaded / dig failed";
                         }
                         ThingDef ld = DefDatabase<ThingDef>.GetNamedSilentFail("RM_LadderPortable");
-                        var lowered = AccessTools.Method(AccessTools.TypeByName("RimMandrake.FlowWorks.RM_CliffMask"), "LoweredLadderAt", new[] { typeof(Map), typeof(IntVec3) });
+                        var lowered = AccessTools.Method(AccessTools.TypeByName("RimMandrake.FlowWorks.RM_ClimbJoins"), "LoweredLadderAt", new[] { typeof(Map), typeof(IntVec3) });
                         if (ld == null || lowered == null)
                         {
-                            return "the FlowWorks ladder def or RM_CliffMask.LoweredLadderAt is not loaded";
+                            return "the FlowWorks ladder def or RM_ClimbJoins.LoweredLadderAt is not loaded";
                         }
                         Thing Ladder(IntVec3 rim, IntVec3 edge)
                         {
