@@ -58,10 +58,59 @@
     "ref": "run rm-role-designer-1794729618",
     "stage": 3,
     "tokens": 1040294
+   },
+   {
+    "at": "2026-11-15T08:16:17Z",
+    "kind": "helper",
+    "ref": "examiner-ac8f3d846d91d6f2f",
+    "stage": 4,
+    "tokens": 42174
+   },
+   {
+    "at": "2026-11-15T08:16:18Z",
+    "kind": "helper",
+    "ref": "challenger-a1d3f239fcb540137",
+    "stage": 4,
+    "tokens": 41075
+   },
+   {
+    "at": "2026-11-15T08:16:18Z",
+    "kind": "helper",
+    "ref": "reader-a4097db783b754009",
+    "stage": 4,
+    "tokens": 43178
+   },
+   {
+    "at": "2026-11-15T08:16:18Z",
+    "kind": "helper",
+    "ref": "reader-a223adf4021b3e84a",
+    "stage": 4,
+    "tokens": 43323
+   },
+   {
+    "at": "2026-11-15T08:16:18Z",
+    "kind": "helper",
+    "ref": "control-a10d1a2872a7a3122",
+    "stage": 4,
+    "tokens": 43628
+   },
+   {
+    "at": "2026-11-15T08:16:18Z",
+    "kind": "helper",
+    "ref": "control-a07f7b48cf336afe3",
+    "stage": 4,
+    "tokens": 34339
+   },
+   {
+    "at": "2026-11-15T08:19:16Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794730323",
+    "stage": 4,
+    "tokens": 160900
    }
   ],
   "reserve": 60000,
-  "spent": 3099764
+  "spent": 3508381
  },
  "history": [
   {
@@ -141,6 +190,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794729618: stage 3 done"
+  },
+  {
+   "at": "2026-11-15T08:12:10Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794730323, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-15T08:19:16Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794730323: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -297,12 +358,33 @@
    "run": "rm-role-designer-1794729618",
    "stage": 3,
    "summary": "Stage 3 written: sheet.md, tree.json (28 leaves covering all 22 validated north-star lines plus the raider pressure he picked by card, built capabilities kept under their nearest line, one walk leaf), plan.md, scenes.json (28 script-staged scenes; 4 greedy showcases led by his spree-corridor pick; breach bias, settings and standing-alone in coverage_rest) and floor.json (motion and biome_scope not applicable). Missing entry points are filed: RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE (existing, twelve scenes), RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES, RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL, and the start-assertion gap RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT (its acceptance test watched failing on the base). Breach bias proof stays missing: today's script only writes and reads back its switch."
+  },
+  {
+   "at": "2026-11-15T08:19:16Z",
+   "inputs": {
+    "exam": "2b66e0db412cd8c66e33fe5e2930a575da9f603cd638b6060840a455d8120368",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "2bb9abd17f83f4b820cc7aa3680266f43bc518f393915142380cfacca0c2204f",
+    "sheet": "f187df87b171f81511c09cb4d9836f7de6b5b01a2c5a316b07fdfcbe73c0fdd5",
+    "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38"
+   },
+   "manifest": {
+    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
+    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1794730323",
+   "stage": 4,
+   "summary": "Cold Reader exam PASS against tree cc00c622 and sheet f187df87: 22 frozen scenarios (14 examiner, 8 challenger), both fresh Readers matched all 22, accept_where_reject_core 0, no challenger misses. Control on going_over missed e8 and c5. A first control on visitors did not miss (its reader read trader goodwill as opinion under rereads_daily); recorded in exam.json, scenarios unchanged."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
