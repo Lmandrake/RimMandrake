@@ -306,7 +306,7 @@ def main():
             {"id": "flood_ok", "leaf_kind": "experience", "tier_proposed": "quicktest"}],
             "floor": {"off": []}}
         put(d, "tree.json", tree)
-        put(d, "sheet.md", "# Foo\n")
+        put(d, "sheet.md", "# Foo\n- [leaf:climb_out] a pawn climbs out by the ladder only\n- flood_ok: floods drain\n")
         CT.lint = lambda dd, rr=None, ff=None: ([], [])
         good = {"id": "climb", "kind": "acceptance", "requirement": ["climb_out"], "staged_by": "script",
                 "entry_point": "src/Foo/validation.py::scene_ladder_climb",
@@ -393,14 +393,18 @@ def main():
               "=== designer_exam.md" in text and "Cold Reader" in text and "LOG-SENTINEL-TEXT" not in text
               and "=== designer_dialogue.md" not in text, "")
         cur = DS.inputs(d, DS.load_state(d), repo.root)
-        scen = [{"id": "s%d" % i, "text": "t", "expect": "reject: wall", "expect_source": "climb_out"}
-                for i in range(10)]
-        exam = {"author": "rm-role-designer-1", "examiner": "agent:ade4a89b3cdad9f61", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
+        scen = [{"id": "s%d" % i, "text": "a pawn in pit %d tries the wall" % i, "expect": "reject: wall",
+                 "expect_source": "climb_out", "by": "challenger" if i >= 8 else "examiner"} for i in range(10)]
+        if hasattr(DS, "exam_control"):         # the base program has no control maker: its exam reads as before
+            DS.exam_control(d, "climb_out")
+        cur = DS.inputs(d, DS.load_state(d), repo.root)
+        exam = {"author": "rm-role-designer-1", "examiner": "agent:ade4a89b3cdad9f61",
+                "challenger": "agent:a0123456789abcdef", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
                 "scenarios": scen, "scenarios_hash": CT.sha(scen),
                 "readers": ["agent:a973694af5dc4757a", "agent:acddc523961c33401"],
                 "score": {"right": 10, "total": 10},
                 "accept_where_reject_core": 0, "challenger_misses": [],
-                "control": {"broken_leaf": "climb_out", "missed": True}}
+                "control": {"broken_leaf": "climb_out", "missed": True, "missed_ids": ["s0", "s3"]}}
         put(d, "exam.json", exam)
         result(d, "done")
         ok, errs = DS.close_run(d, "run13", 1000, repo=repo.root)
@@ -444,6 +448,8 @@ def main():
         ok2, _ = run_cycle(d, repo, "run18")       # stage 3 again
         check("after the correction the stages rerun in order (2, 3)", ok and ok2 and DS.load_state(d)["stage"] == 4,
               errs)
+        if hasattr(DS, "exam_control"):
+            DS.exam_control(d, "climb_out")
         put(d, "exam.json", dict(exam, inputs=DS.inputs(d, DS.load_state(d), repo.root)))
         ok, errs = run_cycle(d, repo, "run19")
         check("stage 4 done with a fresh exam -> stage 5", ok and DS.load_state(d)["stage"] == 5, errs)
@@ -918,6 +924,71 @@ def refusals_exam(tmp, d, repo, exam):
     refuses("exam: a control with no missed field is refused", ex(control={"broken_leaf": "climb_out"}), "did not miss")
     refuses("exam: a control breaking a leaf the tree lacks is refused",
             ex(control={"broken_leaf": "no_such_leaf", "missed": True}), "not a leaf of the tree")
+    # RIMMANDRAKE_RUN_DESIGNER_EXAM_BY_LAUNCHER: the scenarios, the Challenger and the control are checked, not taken
+    sc = exam["scenarios"]
+
+    def scen(new):
+        return ex(scenarios=new, scenarios_hash=CT.sha(new))
+    refuses("exam: two scenarios with the same text are refused",
+            scen(sc[:1] + [dict(sc[1], text="A  pawn in PIT 0 tries the wall")] + sc[2:]), "same text")
+    refuses("exam: two scenarios with the same id are refused", scen(sc[:1] + [dict(sc[1], id="s0")] + sc[2:]), "same id")
+    refuses("exam: a scenario with no text is refused", scen([dict(sc[0], text=" ")] + sc[1:]), "needs an id and its text")
+    refuses("exam: an expect_source naming no leaf is refused",
+            scen([dict(sc[0], expect_source="leaf:no_such_leaf")] + sc[1:]), "neither a leaf of the tree")
+    refuses("exam: an expect_source citing an OWNER event he never made is refused",
+            scen([dict(sc[0], expect_source="OWNER:999")] + sc[1:]), "nor one of his OWNER events")
+    check("exam: a leaf:-prefixed expect_source on a real leaf passes",
+          scen([dict(sc[0], expect_source="leaf:climb_out")] + sc[1:]) == [],
+          scen([dict(sc[0], expect_source="leaf:climb_out")] + sc[1:]))
+    refuses("exam: an exam with no Challenger is refused", ex(challenger=None), "no challenger named")
+    refuses("exam: a Challenger who is the examiner is refused", ex(challenger=exam["examiner"]),
+            "challenger is the examiner")
+    refuses("exam: an exam with no Challenger scenario is refused",
+            scen([{k: v for k, v in x.items() if k != "by"} for x in sc]), "no scenario is the Challenger's")
+    refuses("exam: a challenger miss on an Examiner scenario is refused",
+            ex(challenger_misses=[{"id": "s0", "accounted": "leaf fixed"}]), "not one of the Challenger's")
+    check("exam: an accounted miss on a Challenger scenario passes",
+          ex(challenger_misses=[{"id": "s9", "accounted": "leaf fixed"}]) == [],
+          ex(challenger_misses=[{"id": "s9", "accounted": "leaf fixed"}]))
+    refuses("exam: a control that names no missed scenario is refused",
+            ex(control={"broken_leaf": "climb_out", "missed": True}), "missed_ids")
+    refuses("exam: a control miss naming no scenario is refused",
+            ex(control={"broken_leaf": "climb_out", "missed": True, "missed_ids": ["s77"]}), "missed_ids")
+    alt = [dict(sc[0], expect_source="flood_ok")] + sc[1:]
+    refuses("exam: a control whose only miss is not sourced on the removed leaf is refused",
+            ex(scenarios=alt, scenarios_hash=CT.sha(alt),
+               control={"broken_leaf": "climb_out", "missed": True, "missed_ids": ["s0"]}), "not the removal's")
+    cdir = os.path.join(d, "exam_control")
+    gone = cdir + ".away"
+    if os.path.isdir(cdir):
+        os.rename(cdir, gone)
+    refuses("exam: a control with no copy made by the program is refused", ex(), "exam-control")
+    if os.path.isdir(gone):
+        os.rename(gone, cdir)
+        real = json.load(open(os.path.join(d, "tree.json")))
+        ctree = open(os.path.join(cdir, "tree.json")).read()
+        put(cdir, "tree.json", real)
+        refuses("exam: a control copy that still holds the leaf is refused", ex(), "not the tree's minus 'climb_out'")
+        put(cdir, "tree.json", dict(json.loads(ctree), advisory=["keep climb_out in mind"]))
+        refuses("exam: a control copy whose tree still names the leaf is refused", ex(), "tree still names 'climb_out'")
+        with open(os.path.join(cdir, "tree.json"), "w") as f:
+            f.write(ctree)
+        csheet = open(os.path.join(cdir, "sheet.md")).read()
+        with open(os.path.join(cdir, "sheet.md"), "a") as f:
+            f.write("- climb_out: put back by hand\n")
+        refuses("exam: a control copy whose sheet still names the leaf is refused", ex(), "sheet.md still names")
+        with open(os.path.join(cdir, "sheet.md"), "w") as f:
+            f.write(csheet)
+        check("exam: the program's control copy has no line naming the leaf and keeps the rest",
+              "climb_out" not in csheet and "flood_ok" in csheet, csheet)
+        check("refusal table: the restored control copy is clean again", ex() == [], ex())
+    try:
+        DS.exam_control(d, "no_such_leaf")
+        check("exam-control refuses a leaf the tree lacks", False, "no refusal")
+    except AttributeError as e:
+        check("exam-control refuses a leaf the tree lacks", False, "no exam_control: %s" % e)
+    except DS.Refused as e:
+        check("exam-control refuses a leaf the tree lacks", "not a leaf" in str(e), str(e))
     dn = os.path.join(tmp, "notree")
     os.makedirs(dn)
     refuses("exam: a control cannot be checked against a missing tree.json, so it is refused",

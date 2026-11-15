@@ -906,6 +906,102 @@ def reader_errors(ex, st):
     return errs
 
 
+# designer_exam.md step 5, made by the program (RIMMANDRAKE_RUN_DESIGNER_EXAM_BY_LAUNCHER): `exam-control` writes the
+# control Reader's copy, the tree and sheet with one leaf and every line naming it removed, and the gate reads that copy
+# rather than a self-reported "removed".
+CONTROL_DIR = "exam_control"
+
+
+def _names_leaf(lid):
+    return re.compile(r"(?<![\w-])%s(?![\w-])" % re.escape(lid))
+
+
+def _leaf_ids(tree):
+    leaves = tree.get("leaves") if isinstance(tree, dict) else None
+    return [x["id"] for x in (leaves if isinstance(leaves, list) else []) if isinstance(x, dict)
+            and isinstance(x.get("id"), str)]
+
+
+def _scrub(v, rx):
+    """v with every list entry that names the leaf dropped and every other mention of it blanked out."""
+    if isinstance(v, dict):
+        return {k: _scrub(x, rx) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_scrub(x, rx) for x in v if not (isinstance(x, str) and rx.search(x))]
+    return rx.sub("(removed)", v) if isinstance(v, str) else v
+
+
+def exam_control(d, leaf):
+    """Write the control copy for `leaf`: CONTROL_DIR/tree.json (the leaf gone, coverage dropped, every other mention of
+    its id blanked) and CONTROL_DIR/sheet.md (every line naming it gone), and CONTROL_DIR/copy.json recording which leaf,
+    from which tree. Paraphrases of its rule are the Designer's to strip after (designer_exam.md); the gate refuses a copy
+    that still names the id. -> the copy.json record."""
+    try:
+        tree = CT.load(d)
+    except (FileNotFoundError, ValueError) as e:
+        raise Refused("exam-control: tree.json cannot be read (%s)" % e)
+    if leaf not in _leaf_ids(tree):
+        raise Refused("exam-control: %r is not a leaf of the tree" % leaf)
+    rx = _names_leaf(leaf)
+    bad = {k: v for k, v in tree.items() if k != "coverage"}
+    bad["leaves"] = [x for x in bad["leaves"] if not (isinstance(x, dict) and x.get("id") == leaf)]
+    bad = _scrub(bad, rx)
+    try:
+        with open(os.path.join(d, "sheet.md"), encoding="utf-8") as f:
+            sheet = [ln for ln in f.read().splitlines() if not rx.search(ln)]
+    except OSError:
+        sheet = []
+    out = os.path.join(d, CONTROL_DIR)
+    os.makedirs(out, exist_ok=True)
+    with open(os.path.join(out, "tree.json"), "w", encoding="utf-8") as f:
+        json.dump(bad, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    with open(os.path.join(out, "sheet.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(sheet) + "\n")
+    rec = {"leaf": leaf, "base_tree": input_hash(d, "tree"), "by": "designer_stage.py exam-control",
+           "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    with open(os.path.join(out, "copy.json"), "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1)
+        f.write("\n")
+    return rec
+
+
+def control_copy_errors(d, leaf, ids):
+    """The control copy on disk is the current tree with `leaf` removed and named nowhere, or the reasons it is not."""
+    how = "make it with `designer_stage.py exam-control %s --leaf %s` and rerun the control Reader on it" % (d, leaf)
+    rec = read_json(os.path.join(d, CONTROL_DIR, "copy.json"))
+    if not isinstance(rec, dict) or rec.get("leaf") != leaf:
+        return ["exam: no control copy with %r removed (%s/copy.json); %s" % (leaf, CONTROL_DIR, how)]
+    errs = []
+    if rec.get("base_tree") != input_hash(d, "tree"):
+        errs.append("exam: the control copy was made from another tree than the current one; %s" % how)
+    try:
+        bad = CT.load(os.path.join(d, CONTROL_DIR))
+    except (FileNotFoundError, ValueError):
+        return errs + ["exam: the control copy %s/tree.json cannot be read; %s" % (CONTROL_DIR, how)]
+    if sorted(_leaf_ids(bad)) != sorted(i for i in ids if i != leaf):
+        errs.append("exam: the control copy's leaves are not the tree's minus %r (it removed %s, added %s); %s" % (
+            leaf, sorted(set(ids) - set(_leaf_ids(bad)) - {leaf}) or "nothing else",
+            sorted(set(_leaf_ids(bad)) - set(ids)) or "nothing", how))
+    rx = _names_leaf(leaf)
+    if rx.search(CT.canon(bad)):
+        errs.append("exam: the control copy's tree still names %r; %s" % (leaf, how))
+    try:
+        with open(os.path.join(d, CONTROL_DIR, "sheet.md"), encoding="utf-8") as f:
+            if rx.search(f.read()):
+                errs.append("exam: the control copy's sheet.md still names %r; %s" % (leaf, how))
+    except OSError:
+        errs.append("exam: the control copy has no sheet.md; %s" % how)
+    return errs
+
+
+def _source_ok(src, ids, owner_ev):
+    src = CT.txt(src)
+    if src.startswith("OWNER:"):
+        return src[len("OWNER:"):] in owner_ev
+    return (src[len("leaf:"):] if src.startswith("leaf:") else src) in ids
+
+
 def exam_errors(ex, d, st, repo=REPO):
     try:
         tree = CT.load(d)
@@ -922,9 +1018,27 @@ def exam_errors(ex, d, st, repo=REPO):
         sc = sc if isinstance(sc, list) else []
     if ex.get("scenarios_hash") != CT.sha(sc):
         errs.append("exam: scenarios_hash does not match the scenarios (frozen before the readers saw them)")
+    ids = _leaf_ids(tree)
+    owner_ev = None
+    seen_id, seen_text = {}, {}
     for i, s in enumerate(sc):
         if not isinstance(s, dict) or not CT.txt(s.get("expect")) or not CT.txt(s.get("expect_source")):
             errs.append("exam: scenario %d needs expect and expect_source (a leaf id or OWNER:<tsn>)" % i)
+            continue
+        if not CT.txt(s.get("id")) or not CT.txt(s.get("text")):
+            errs.append("exam: scenario %d needs an id and its text" % i)
+            continue
+        norm = " ".join(CT.txt(s["text"]).casefold().split())
+        for key, seen, what in ((CT.txt(s["id"]), seen_id, "id"), (norm, seen_text, "text")):
+            if key in seen:
+                errs.append("exam: scenario %d has the same %s as scenario %d; every scenario is a different "
+                            "situation" % (i, what, seen[key]))
+            seen.setdefault(key, i)
+        if CT.txt(s["expect_source"]).startswith("OWNER:") and owner_ev is None:
+            owner_ev = CT.owner_events(repo, clone_of(d))
+        if not _source_ok(s["expect_source"], ids, owner_ev or {}):
+            errs.append("exam: scenario %s's expect_source %r is neither a leaf of the tree nor one of his OWNER "
+                        "events" % (s["id"], s["expect_source"]))
     cur = inputs(d, st, repo)
     fr = ex.get("inputs") if isinstance(ex.get("inputs"), dict) else {}
     for k in ("tree", "sheet"):
@@ -944,9 +1058,23 @@ def exam_errors(ex, d, st, repo=REPO):
     if not CT.txt(ex.get("examiner")) or ex.get("examiner") == ex.get("author"):
         errs.append("exam: the examiner is not the tree's author")
     errs += reader_errors(ex, st)
+    # designer_exam.md step 3: a Challenger, a fresh agent, wrote scenarios that joined the set before the freeze
+    ch = CT.txt(ex.get("challenger"))
+    mine = {CT.txt(s.get("id")) for s in sc if isinstance(s, dict) and s.get("by") == "challenger"}
+    if not ch:
+        errs.append("exam: no challenger named; a fresh Challenger writes the scenarios most likely to make a Reader "
+                    "accept what a core line rejects")
+    else:
+        for role in ("author", "examiner"):
+            if CT.txt(ex.get(role)) and (same_agent(ch, ex[role]) or same_agent(ex[role], ch)):
+                errs.append("exam: the challenger is the %s; the Challenger is a fresh agent" % role)
+    if not mine:
+        errs.append('exam: no scenario is the Challenger\'s (mark them "by": "challenger" before the freeze)')
     for m in lst(ex.get("challenger_misses")):
         if not isinstance(m, dict) or not CT.txt(m.get("accounted")):
             errs.append("exam: every challenger miss is accounted for")
+        elif CT.txt(m.get("id")) not in mine:
+            errs.append("exam: challenger miss %r is not one of the Challenger's scenarios" % m.get("id"))
     # designer_exam.md step 5: a Reader on a copy with a core leaf removed must MISS, or the scenarios do not
     # discriminate (EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED: four controls never missed and the gate still passed)
     ctl = ex.get("control")
@@ -961,6 +1089,17 @@ def exam_errors(ex, d, st, repo=REPO):
         if ctl.get("missed") is not True:
             errs.append("exam: the control Reader did not miss (missed must be true): the scenarios do not "
                         "discriminate; write scenarios the broken tree gets wrong and refreeze")
+        else:
+            by_id = {CT.txt(s.get("id")): s for s in sc if isinstance(s, dict)}
+            miss = [x for x in lst(ctl.get("missed_ids")) if CT.txt(x)]
+            if not miss or any(x not in by_id for x in miss):
+                errs.append("exam: control missed_ids must name the scenarios the control Reader got wrong (read %r)"
+                            % ctl.get("missed_ids"))
+            elif not any(_source_ok(by_id[x].get("expect_source"), [ctl["broken_leaf"]], {}) for x in miss):
+                errs.append("exam: no control miss is a scenario sourced on %r; a miss elsewhere is not the removal's"
+                            % ctl["broken_leaf"])
+        if ctl.get("broken_leaf") in ids:
+            errs += control_copy_errors(d, ctl["broken_leaf"], ids)
     return errs
 
 
@@ -2162,6 +2301,9 @@ def main(argv=None):
     x.add_argument("--ref", required=True)
     for name in ("check", "status"):
         sub.add_parser(name).add_argument("dir")
+    x = sub.add_parser("exam-control", help="write the Stage 4 control copy: the tree and sheet with one leaf removed")
+    x.add_argument("dir")
+    x.add_argument("--leaf", required=True)
     x = sub.add_parser("land", help="land the concept's stage.json and result files on origin/main (close does it)")
     x.add_argument("dir")
     x.add_argument("--run", default="catch-up")
@@ -2255,6 +2397,10 @@ def main(argv=None):
             return 1 if errs else 0
         elif a.cmd == "status":
             print(json.dumps(status(a.dir), indent=1))
+        elif a.cmd == "exam-control":
+            rec = exam_control(a.dir, a.leaf)
+            print("control copy in %s: %s removed (%s)" % (os.path.join(a.dir, CONTROL_DIR), rec["leaf"],
+                                                           json.dumps(rec)))
         elif a.cmd == "showcases":
             try:
                 tree = CT.load(a.dir)
