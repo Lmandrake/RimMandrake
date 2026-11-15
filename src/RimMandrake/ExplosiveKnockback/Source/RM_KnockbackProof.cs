@@ -2187,19 +2187,23 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "FlowWorks not loaded / dig failed";
                         }
+                        // The control is a fixed RM_Ladder: FlowWorks never counts a portable ladder raised
+                        // (RM_CompLadder.EffectivelyRaised = raised && !Props.portable && ...), so a raised portable one left
+                        // the control pit open (RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER).
                         ThingDef ld = DefDatabase<ThingDef>.GetNamedSilentFail("RM_LadderPortable");
+                        ThingDef fixedLd = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Ladder");
                         var lowered = AccessTools.Method(AccessTools.TypeByName("RimMandrake.FlowWorks.RM_ClimbJoins"), "LoweredLadderAt", new[] { typeof(Map), typeof(IntVec3) });
-                        if (ld == null || lowered == null)
+                        if (ld == null || fixedLd == null || lowered == null)
                         {
-                            return "the FlowWorks ladder def or RM_ClimbJoins.LoweredLadderAt is not loaded";
+                            return "the FlowWorks ladder defs or RM_ClimbJoins.LoweredLadderAt is not loaded";
                         }
-                        Thing Ladder(IntVec3 rim, IntVec3 edge)
+                        Thing Ladder(ThingDef def, IntVec3 rim, IntVec3 edge)
                         {
                             foreach (IntVec3 at in new[] { rim, edge })
                             {
                                 foreach (Rot4 r in new[] { Rot4.East, Rot4.West, Rot4.North, Rot4.South })
                                 {
-                                    Thing l = GenSpawn.Spawn(ThingMaker.MakeThing(ld, ld.MadeFromStuff ? GenStuff.DefaultStuffFor(ld) : null), at, Map, r);
+                                    Thing l = GenSpawn.Spawn(ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null), at, Map, r);
                                     l.SetFactionDirect(Faction.OfPlayer);
                                     if ((bool)lowered.Invoke(null, new object[] { Map, rim }) || (bool)lowered.Invoke(null, new object[] { Map, edge }))
                                     {
@@ -2210,19 +2214,24 @@ namespace RimMandrake.ExplosiveKnockback
                             }
                             return null;
                         }
-                        Thing lad = Ladder(O(s, 1, 0), O(s, 2, 0));
-                        Thing ctl = Ladder(O(s, -6, 0), O(s, -5, 0));
+                        Thing lad = Ladder(ld, O(s, 1, 0), O(s, 2, 0));
+                        Thing ctl = Ladder(fixedLd, O(s, -6, 0), O(s, -5, 0));
                         if (lad == null || ctl == null)
                         {
-                            return "no placement of RM_LadderPortable reads as a lowered ladder at the pit rim";
+                            return "no placement of RM_LadderPortable / RM_Ladder reads as a lowered ladder at the pit rim";
                         }
                         ThingComp comp = ((ThingWithComps)ctl).AllComps.FirstOrDefault(c => c.GetType().Name == "RM_CompLadder");
-                        if (comp == null)
+                        var setRaised = comp == null ? null : AccessTools.Method(comp.GetType(), "SetRaised", new[] { typeof(bool) });
+                        if (setRaised == null)
                         {
-                            return "the control ladder has no RM_CompLadder";
+                            return "the control ladder has no RM_CompLadder.SetRaised";
                         }
-                        Traverse.Create(comp).Field("raised").SetValue(true);
-                        Traverse.Create(comp).Field("wantRaised").SetValue(true);
+                        // SetRaised, not a field write: it also clears reachability and bumps the climb masks.
+                        setRaised.Invoke(comp, new object[] { true });
+                        if ((bool)lowered.Invoke(null, new object[] { Map, O(s, -6, 0) }) || (bool)lowered.Invoke(null, new object[] { Map, O(s, -5, 0) }))
+                        {
+                            return "the raised control ladder still reads lowered (FlowWorks' ladders can be raised and lowered setting off?)";
+                        }
                         Item(s, "st", "Steel", 20, O(s, 3, 0));
                         Item(s, "cst", "Steel", 20, O(s, -4, 0));
                         Pawn dead = Colonist(s, "dead", O(s, 3, 1), drafted: false);

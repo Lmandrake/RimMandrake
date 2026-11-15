@@ -21,6 +21,10 @@ scene read it wrong. Read from the C# source, since the scenes only run in a gam
   M1 mass_and_power's guard counts injuries only: a hot afternoon gave a colonist Heatstroke, read as a leaked injury
   F1 pit_goods_fetch reflects LoweredLadderAt on RimMandrake.FlowWorks.RM_ClimbJoins, where FlowWorks defines it; on
      RM_CliffMask it is absent and the scene was INVALID on every load
+  F2 pit_goods_fetch's raised-ladder control is a fixed RM_Ladder raised through SetRaised, and staging refuses if it
+     still reads lowered: the control was an RM_LadderPortable, which FlowWorks never counts raised
+     (EffectivelyRaised = raised && !Props.portable && ...), so its pit stayed open and its stack was hauled out
+     (sc_pit_fetch FAIL, 2026-11-15; RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER)
   S3 spared_states carries the downed pawn with the count overload: TryStartCarry(thing) cannot take a spawned pawn
   W2 the sweep's gas-goods stack lies inside the seeded cloud (radius 1 at O(-5,-5)), so a burst always reaches it; two
      cells out it was reached on 13 of 18 lanes and the default lane's "still" read as drift on the rest
@@ -84,6 +88,12 @@ def main():
     check("F1", '"RimMandrake.FlowWorks.RM_ClimbJoins"), "LoweredLadderAt"' in proof
           and '"RimMandrake.FlowWorks.RM_CliffMask"), "LoweredLadderAt"' not in proof,
           "pit_goods_fetch reflects LoweredLadderAt on RM_ClimbJoins")
+    fw = os.path.join(HERE, "..", "FlowWorks", "Source", "Superdeep", "RM_LadderUtility.cs")
+    portable_never_raised = os.path.exists(fw) and "raised && !Props.portable" in open(fw, encoding="utf-8").read()
+    fetch = proof[proof.find('case "pit_goods_fetch":'):proof.find('case "mass_and_power":')]
+    check("F2", portable_never_raised and 'GetNamedSilentFail("RM_Ladder")' in fetch and '"SetRaised"' in fetch
+          and 'Traverse.Create(comp).Field("raised")' not in fetch and "the raised control ladder still reads lowered" in fetch,
+          "pit_goods_fetch's control is a fixed RM_Ladder raised by SetRaised and checked closed (a portable one never reads raised)")
     check("S3", re.search(r"TryStartCarry\(carried, 1", sp) is not None and re.search(r"TryStartCarry\(carried\)", sp) is None,
           "spared_states carries the downed pawn with TryStartCarry(thing, count)")
     print("%s stage6 visit1 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))
