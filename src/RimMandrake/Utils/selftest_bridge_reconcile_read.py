@@ -399,6 +399,41 @@ case("CLI: no bridge to ask: --auto reports it and exits 1 with the marker kept"
 C.resolve_endpoint = real_endpoint
 clear()
 
+# 12 RIMMANDRAKE_FAIL_CLIENT_CLOSED_ON_UNREADABLE p1.F4: a marker is settled only by the journal of the game it went to
+HERE = "%s:%s" % (C.DEFAULT_HOST, C.DEFAULT_PORT)
+for cid, endpoint, settles in (("e1", "%s:%s" % (C.DEFAULT_HOST, C.DEFAULT_PORT + 1), False),   # another instance's port
+                               ("e2", "192.0.2.7:%s" % C.DEFAULT_PORT, False),                    # another machine
+                               ("e3", HERE, True), ("e4", "localhost:%s" % C.DEFAULT_PORT, True)):
+    clear()
+    marker(cid, "rimworld/step_game_ticks", endpoint=endpoint)
+    err = Fake([op(STEP, "Completed")]).attempt()
+    if settles:
+        case("a marker sent to %s settles from the journal of %s" % (endpoint, HERE),
+             err is None and last_reconciled().get("cid") == cid, (err, last_reconciled()))
+    else:
+        case("a marker sent to %s is not settled by the journal of %s: refused, both named" % (endpoint, HERE),
+             err and cid in err and endpoint in err and [r["cid"] for r in C.outstanding_indeterminate()] == [cid], err)
+clear()
+
+# 13 p1.F6: absent from a journal that has rolled past the call is UNMEASURED, not moot
+FULL_AFTER = [op(WORK, "Completed", "2026-11-06T12:%02d:%02d.0+00:00" % (30 + i // 60, i % 60)) for i in range(C.JOURNAL_LIMIT)]
+FULL_AFTER.reverse()                                                    # newest first, as the bridge answers
+marker("f1", "rimworld/step_game_ticks")
+err = Fake(FULL_AFTER).attempt()
+case("a full journal whose oldest row began after the call: absent is UNMEASURED, refused, not moot",
+     err and "f1" in err and "UNMEASURED" in err and [r["cid"] for r in C.outstanding_indeterminate()] == ["f1"], err)
+clear()
+marker("f2", "rimworld/step_game_ticks")
+err = Fake(FULL_AFTER[:-1] + [op(WORK, "Completed", "2026-11-06T12:20:00.0+00:00")]).attempt()
+case("a full journal reaching back past the call: absent is moot", err is None and last_reconciled().get("cid") == "f2"
+     and last_reconciled().get("as") == "moot", (err, last_reconciled()))
+clear()
+marker("f3", "rimworld/step_game_ticks")
+err = Fake([]).attempt()
+case("an empty journal (this read itself should be a row) is UNMEASURED, refused, not moot",
+     err and "f3" in err and "UNMEASURED" in err, err)
+clear()
+
 ok = all(GOOD)
 print("%s: %d/%d" % ("PASS" if ok else "FAIL", sum(GOOD), len(GOOD)))
 sys.exit(0 if ok else 1)

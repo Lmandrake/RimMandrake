@@ -92,7 +92,9 @@ _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / 
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import calendar
+import functools
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -446,8 +448,17 @@ def outstanding_indeterminate():
     seen = set()
     try:
         names = sorted(os.listdir(_inflight_dir()))
-    except OSError:
+    except (FileNotFoundError, NotADirectoryError):
+        names = []                                   # never made (or a file in its path): no marker can be in it
+    except OSError as ex:
+        # p1.F3 (RIMMANDRAKE_FAIL_CLIENT_CLOSED_ON_UNREADABLE): an unlistable directory hid every marker in it. It reads
+        # as one marker of unknown outcome, so a mutation refuses and --reconcile names the directory and the error.
         names = []
+        why = "the in-flight marker directory could not be listed (%s: %s)" % (type(ex).__name__, ex)
+        rec = {"cid": "bridge_inflight", "tool": "(every marker in %s)" % _inflight_dir(), "status": "UNREADABLE marker",
+               "error": why, "left_why": why}
+        out.append(rec)
+        seen.add(rec["cid"])
     for n in names:
         if not n.endswith(".json"):
             continue
@@ -609,7 +620,10 @@ def reconcile_auto(starts=None):
 # writer may still retry, so it refuses, and so does anything the read cannot prove:
 #   an operation begun since the call is still running -> refuse: it may yet apply
 #   the call's operation ended                          -> record what the bridge says (journal_verdict)
-#   nothing begun since the call runs, and no row for it -> "moot": it never arrived, or ended long before the ring rolled
+#   nothing begun since the call runs, and no row for it -> "moot": it never arrived. Only when the read reaches back to
+#                                                           the call (fewer rows than the ring holds, or the oldest row is
+#                                                           older); a full ring that starts after it -> refuse, UNMEASURED
+#   the marker names another endpoint than the one read  -> refuse: another game's journal cannot answer for it
 #   no answer, or a reply this code cannot parse         -> refuse (--journal-probe proves the parser on the live bridge)
 JOURNAL_TOOL = "rimbridge/list_operations"
 JOURNAL_LIMIT = 1000                           # the journal's own size: a smaller read could miss a running operation
@@ -694,16 +708,32 @@ def journal_verdict(op):
     return "partial"
 
 
-def _journal_settle(rec, ops):
-    """(verdict, note) for one marker against the journal, or (None, why it still refuses)."""
+def _same_endpoint(a, b):
+    """Do two "host:port" endpoints name one game? The port must match; the hosts match as text or as this machine."""
+    ha, _, pa = str(a).rpartition(":")
+    hb, _, pb = str(b).rpartition(":")
+    return pa == pb and (ha.lower() == hb.lower() or (_local_host(ha) and _local_host(hb)))
+
+
+def _journal_settle(rec, ops, endpoint=None):
+    """(verdict, note) for one marker against the journal of the game at `endpoint` ("host:port"), or (None, why it
+    still refuses). RIMMANDRAKE_FAIL_CLIENT_CLOSED_ON_UNREADABLE: a marker the call recorded at another endpoint is not
+    answered by this journal (p1.F4), and absence is "moot" only from a journal that reaches back to the call (p1.F6)."""
+    if rec.get("status") == "UNREADABLE marker" and rec.get("left_why"):
+        return None, rec["left_why"]                     # the in-flight directory itself could not be listed
     if rec.get("cid") in _ACTIVE or rec.get("cid") in _UNRESOLVED or rec.get("status") == "UNREADABLE marker":
         return None, "this process holds it or its marker is unreadable"
     if rec.get("os") not in (None, os.name) or _pid_alive(rec.get("pid") or 0, rec.get("pid_start")):
         return None, "its writer (pid %s, %s) is alive or on another OS and could still retry it" % (
             rec.get("pid"), rec.get("script"))
+    if endpoint and rec.get("endpoint") and not _same_endpoint(rec["endpoint"], endpoint):
+        return None, "its call went to %s, and this journal is %s's: another game's journal cannot answer for it" % (
+            rec["endpoint"], endpoint)
     t = _iso_epoch(rec.get("t"))
     if t is None:
         return None, "its marker has no readable time"
+    if not ops:
+        return None, "UNMEASURED: the journal answered 0 rows, and this read itself should be one"
     since = [o for o in ops if o["started"] >= t - GAME_START_SLACK_S and not o["capability"].startswith(JOURNAL_SKIP)]
     running = [o for o in since if o["status"] in OP_LIVE]
     if running:
@@ -713,6 +743,10 @@ def _journal_settle(rec, ops):
         op = min(mine, key=lambda o: o["started"])       # later mutations were refused, so the first one since is this call
         return journal_verdict(op), "journal read (%s %s): operation %s %s %s, success=%s, writer pid %s (%s) gone" % (
             rec.get("tool"), rec.get("t"), op["id"], op["capability"], op["status"], op["success"], rec.get("pid"), rec.get("script"))
+    oldest = min(o["started"] for o in ops)
+    if len(ops) >= JOURNAL_LIMIT and oldest >= t - GAME_START_SLACK_S:
+        return None, ("UNMEASURED: no operation of it among %d rows, but the journal is full and its oldest row began %s, "
+                      "after the call: its row may have rolled off, so absent is not moot" % (len(ops), _ev_stamp(oldest)))
     return "moot", "journal read (%s %s): no operation of it among %d rows and none running since the call, writer pid %s (%s) gone" % (
         rec.get("tool"), rec.get("t"), len(ops), rec.get("pid"), rec.get("script"))
 
@@ -728,10 +762,10 @@ def reconcile_read(client):
     except Exception as ex:  # noqa: BLE001 - any failure of this read must end in the refusal it could have lifted, never a new crash
         why = "the bridge journal could not be read (%s: %s)" % (type(ex).__name__, str(ex))
         print("[rimbridge_client] reconcile: %s" % why, file=sys.stderr)
-        return [], [dict(r, left_why=why) for r in pend]
+        return [], [dict(r, left_why=r.get("left_why") or why) for r in pend]
     settled, left = [], []
     for rec in pend:
-        verdict, note = _journal_settle(rec, ops)
+        verdict, note = _journal_settle(rec, ops, endpoint="%s:%s" % (client.host, client.port))
         if verdict is None:
             left.append(dict(rec, left_why=note))
             continue
@@ -878,13 +912,41 @@ class DriverHeldError(RimBridgeError):
 
 
 CROSS_ENV = "RM_BRIDGE_CROSS_WHY"       # a deliberate crossing: the reason, recorded on the call's evidence row
-_LOOPBACK = ("127.0.0.1", "localhost", "::1")
+
+
+@functools.lru_cache(maxsize=64)
+def _local_host(host):
+    """Is `host` this machine's game? Every spelling of loopback (any case, a trailing dot, 127/8, ::1, an IPv4-mapped
+    loopback, 0.0.0.0), this machine's own name, and a name that does not resolve (it cannot be shown to be another
+    machine) are; an address, or a name resolving only to addresses, off this machine is not. RIMMANDRAKE_FAIL_CLIENT_
+    CLOSED_ON_UNREADABLE p1.F2: an exact-case tuple read 'LOCALHOST' as another machine and never asked the lock."""
+    h = str(host or "").strip().lower().rstrip(".")
+    if h.startswith("[") and h.endswith("]"):
+        h = h[1:-1]
+    if not h or h == "localhost" or h.endswith(".localhost"):
+        return True
+    try:
+        ip = ipaddress.ip_address(h.split("%", 1)[0])
+    except ValueError:
+        ip = None
+    if ip is not None:
+        ip = getattr(ip, "ipv4_mapped", None) or ip
+        return ip.is_loopback or ip.is_unspecified
+    if h in (socket.gethostname().lower(), socket.getfqdn().lower()):
+        return True
+    try:
+        addrs = {ai[4][0] for ai in socket.getaddrinfo(h, None)}
+    except (OSError, UnicodeError):
+        return True
+    return not addrs or any(_local_host(a) for a in addrs)
 
 
 def _driver_crossing(host):
     """The holder's refusal text if a mutation here would cross him, else None. Only this machine's game: the lock
-    file is this machine's. The guard lives next door in rimflow; a client copied without it says so and goes on."""
-    if host not in _LOOPBACK:
+    file is this machine's. The guard lives next door in rimflow; a guard that cannot be imported or raises is a lock
+    this process cannot read, so it refuses with the error named (p1.F2; CROSS_ENV still crosses on purpose). What
+    host_guard.crossing() itself decides about an unreadable lock FILE stays its own call (it errs toward allowing)."""
+    if not _local_host(host):
         return None
     try:
         rimflow_dir = str(_rm_pl.Path(__file__).resolve().parents[1] / "rimflow")
@@ -892,9 +954,10 @@ def _driver_crossing(host):
             sys.path.append(rimflow_dir)
         import host_guard
         return host_guard.crossing()
-    except Exception as ex:
-        print("[rimbridge_client] driver lock not checked: %s" % ex, file=sys.stderr)
-        return None
+    except Exception as ex:  # noqa: BLE001 - a guard that cannot run must refuse, never allow by default
+        why = "the driver lock could not be checked (%s: %s)" % (type(ex).__name__, ex)
+        print("[rimbridge_client] %s: refusing mutations" % why, file=sys.stderr)
+        return why
 
 
 class UnknownParameterError(RimBridgeError):
@@ -1428,7 +1491,9 @@ class RimBridge:
         finally:
             if clamp is not None:
                 self._set_call_timeout(full)
-        ok_success = out.get("success") if isinstance(out, dict) else None
+        # p1.F8: the success a tool answers sits inside the MCP content text; the outer dict alone read "ok" for it
+        reply = _reply_dict(out)[0]
+        ok_success = reply.get("success") if isinstance(reply, dict) else None
         _evidence(dict({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
                         "success": ok_success, "outcome": "reply_fail" if ok_success is False else "ok",
                         "timeout": False, "transport": "ok"}, **_stall_fields(t0)))
@@ -1655,6 +1720,10 @@ def _main(argv=None):
                 rb.static_reads = bool(args.read_only_static)
                 out = rb.call(args.call, json.loads(args.params))
                 print(json.dumps(out, indent=2))
+                reply = _reply_dict(out)[0]
+                if isinstance(reply, dict) and reply.get("success") is False:   # p1.F8: a refusal must not exit 0
+                    print("bridge reply: %s answered success:false" % args.call, file=sys.stderr)
+                    return 1
             if not args.list_tools and not args.call:
                 print(json.dumps({"welcome": rb.welcome}, indent=2))
     except RimBridgeError as ex:
