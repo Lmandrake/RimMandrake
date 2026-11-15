@@ -2,7 +2,12 @@
  "mod": "Contagion",
  "packageId": "mandrake.rm.contagion",
  "stage": 0,
- "root": null,
+ "root": {
+  "text": "Contagion is a red-lidded biome where the sky and the body lead. The colony lives under a standing Bloom that slowly changes whoever works out in it; when the sky clears, the Burn makes the open deadly, and a prepared colonist gets one purposeful dash between refuges, at a cost. Expeditions for genome samples, prints and tissue are the reasons to take those risks, and a gestation batch that misses the wanted part still brings other matched or sellable tissue, with the odds clear before committing. Nothing here is finished, including your colonists.",
+  "source": "OWNER:1794772416196929336",
+  "speaker": "owner",
+  "answers": "a_root"
+ },
  "scope": [
   {
    "id": "s_entry",
@@ -131,51 +136,55 @@
   },
   {
    "id": "d_efa_q04",
-   "kind": "delegated",
-   "speaker": "conductor",
+   "kind": "ruling",
+   "speaker": "owner",
    "source": [
-    "CONDUCTOR:1794771807335476081",
+    "OWNER:1794772416196929336",
     "OWNER:1794364405453876478"
    ],
    "date": "2026-11-15",
-   "what": "Colonists within one dash of a planned refuge shelter inside the natural tell lead; a distant work party may have to improvise; switching the Repulsor gives an honest warning, before it starts, that its Burn covers the whole map and everyone in the open. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "what": "Colonists within one dash of a planned refuge shelter inside the natural tell lead; a distant work party may have to improvise; switching the Repulsor gives an honest warning, before it starts, that its Burn covers the whole map and everyone in the open. Certified by him 2026-11-15.",
    "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card rules one dash at a cost and that prolonged outdoor work stays dangerous; the whole-map Burn is built and not offered for removal."
   },
   {
    "id": "d_efa_q05",
-   "kind": "delegated",
-   "speaker": "conductor",
+   "kind": "ruling",
+   "speaker": "owner",
    "source": [
-    "CONDUCTOR:1794771842429293067",
+    "OWNER:1794772416196929336",
     "OWNER:1794364405453876478"
    ],
    "date": "2026-11-15",
-   "what": "A readable early health state on the worker and one noticeable transition when exposure turns into active change, without a letter for every small exposure; the first warning and the treatment it calls for are judged together. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "what": "A readable early health state on the worker and one noticeable transition when exposure turns into active change, without a letter for every small exposure; the first warning and the treatment it calls for are judged together. Certified by him 2026-11-15.",
    "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card has the Bloom change people slowly, with the odds clear before committing; the Sunbeam arrest is already ruled."
   },
   {
-   "id": "d_efa_q07",
-   "kind": "delegated",
-   "speaker": "conductor",
+   "id": "d_efa_q08",
+   "kind": "ruling",
+   "speaker": "owner",
    "source": [
-    "CONDUCTOR:1794771848243200767",
+    "OWNER:1794772416196929336",
     "OWNER:1794364405453876478"
    ],
    "date": "2026-11-15",
-   "what": "A grown limb forces a real reassignment away from skilled hand work plus a food burden, never making the colonist useless; shown by one ordinary day before the surgery against one after. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
-   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; the limbs' lasting costs (clumsy hands, weight, hunger) are built and his card puts a cost on every gain; only the size is open, and numbers are delegated design."
+   "what": "Waiting for another Coalescence stage puts more pressure on reaching the site and on the workers who go out to recover the tissue, not a threat unrelated to the creature; emissions stay bounded; shown as the same colony at two stages. Certified by him 2026-11-15.",
+   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card puts weather and body first, with trips out as the reasons to risk them; no word of his on the Coalescence exists (owner_rulings --grep coalescence: 0 rulings)."
   },
   {
-   "id": "d_efa_q08",
-   "kind": "delegated",
-   "speaker": "conductor",
-   "source": [
-    "CONDUCTOR:1794771853877273515",
-    "OWNER:1794364405453876478"
-   ],
+   "id": "d_q02_first_demo",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794772416196929336",
    "date": "2026-11-15",
-   "what": "Waiting for another Coalescence stage puts more pressure on reaching the site and on the workers who go out to recover the tissue, not a threat unrelated to the creature; emissions stay bounded; shown as the same colony at two stages. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
-   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card puts weather and body first, with trips out as the reasons to risk them; no word of his on the Coalescence exists (owner_rulings --grep coalescence: 0 rulings)."
+   "what": "The first demonstration is A: warning signs, shelter through a Burn, one prepared dash, the touched worker treated. The review stops if the Burn gives only a colony-wide lockdown with no purposeful dash."
+  },
+  {
+   "id": "d_limbs_next_version",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794772416196929336",
+   "date": "2026-11-15",
+   "what": "The grown-limb work (what a grown limb costs, its tuning and testing) is not in Design Version 0.1.0. It moves to 0.2.0 as a Divergent item with its acceptance test. The limbs stay built; 0.1.0 does not design or judge their costs."
   }
  ],
  "asks": [
@@ -204,7 +213,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1794752036",
-   "status": "sent",
+   "status": "answered",
    "history": [
     {
      "text": "Proposed root, built from your experience line (\"A mutation engine under a red lid, where nothing is finished, including you. When the sky clears, run.\") and your 2026-11-10 card (weather and body lead; one dash at a cost; a miss still brings other tissue): \"Contagion is a red-lidded biome where the sky and the body lead. The colony lives under a standing Bloom that slowly changes whoever works out in it; when the sky clears, the Burn makes the open deadly, and a prepared colonist gets one purposeful dash between refuges, at a cost. Trips out for genome samples, prints and tissue are the reasons to take those risks, and a trip that misses the wanted part still brings home other useful tissue. Nothing here is finished, including your colonists.\" The strongest case against it: the Coalescence and the Helix contracts appear only as reasons to go out, so if you see the Coalescence as a threat that leads alongside the sky, this root under-weights it. Which is it: (a) approve as written, (b) approve with your edit, or (c) something else should lead, and what?",
@@ -219,7 +228,9 @@
     "by": "gpt_consult (Codex, fresh reviewer, round 2)",
     "verdict": "pass",
     "why": "Requests the root-text approval required to end stage 1; preserves his weather/body, one-dash and tissue rulings; offers no removal, asks no measurable prediction, and separates the absent anticipatory Dive from built reactive behaviour."
-   }
+   },
+   "answer": "(a) approved as written",
+   "answer_source": "OWNER:1794772416196929336"
   },
   {
    "id": "a_live_walk",
@@ -314,7 +325,7 @@
    "owner_cites": [],
    "offers_removal": false,
    "author": "Codex Contagion dry run",
-   "status": "draft",
+   "status": "answered",
    "ask_first": true,
    "review": {
     "status": "pending",
@@ -323,7 +334,9 @@
     "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
     "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
    },
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "First demonstration A: warning signs, shelter through a Burn, one prepared dash, the touched worker treated; the review stops if the Burn gives only a colony-wide lockdown with no purposeful dash.",
+   "answer_source": "OWNER:1794772416196929336"
   },
   {
    "id": "q03",
@@ -836,9 +849,12 @@
    ],
    "proof": "missing",
    "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Pillar Arm: heavy melee/stun, reduced manipulation, slower movement and hunger/beauty costs; own directional body art",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "lash",
@@ -849,9 +865,12 @@
    ],
    "proof": "missing",
    "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Lash: rapid stun melee with clumsy work, social-fight and beauty costs; twitching directional body art",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "eyeburst",
@@ -862,9 +881,12 @@
    ],
    "proof": "missing",
    "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Eyeburst: eye efficiency and aim with pain, rest, break-threshold and beauty costs; inherited bionic-eye art",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "caudal_spring",
@@ -875,9 +897,12 @@
    ],
    "proof": "missing",
    "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Caudal Spring: spine replacement, jump ability and lasting mobility/pain/cold costs; placeholder tentacle art",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "bellows",
@@ -888,9 +913,12 @@
    ],
    "proof": "missing",
    "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Bellows: lung efficiency, toxin resistance and blind smoke ability with hunger/bleeding/beauty costs; no body render node",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "limb_removal",
@@ -901,9 +929,12 @@
    ],
    "proof": "missing",
    "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794772416196929336"
+   ]
   },
   {
    "id": "draftprints",
