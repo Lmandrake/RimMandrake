@@ -1,0 +1,3 @@
+FAIL K-23 switch off zeroes Anomaly's ElectricalBurn (ParentName Flame, hediff ElectricalBurn) 
+explosive knockback kernel: 179/180 passed
+

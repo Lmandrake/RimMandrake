@@ -1,0 +1,41 @@
+[
+ {
+  "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+  "why": "G1 extended: another type's 'Type not found' and a proof-type error are not release; require_proof_build exits 3 on release and returns a real answer (PF_GATE_RELEASE_OR, PF_GATE_NO_EXIT had passed)",
+  "before": {
+   "sha": "f0863c4a49",
+   "blob": "60fe3e37b01d085ad0d041bde801b5f3b68d55dd"
+  },
+  "after": {
+   "sha": "f181d3b6ea",
+   "blob": "6b26921d4e3c5410035fac06df54d14a82b6c62a"
+  },
+  "weakened": false
+ },
+ {
+  "path": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
+  "why": "section 7 added: storeroom_pit_proof.py's waived snapshot/restore run from the real source against a fake bridge, plus two in-memory mutants (PF_SPP_* had passed); no assertion removed",
+  "before": {
+   "sha": "f0863c4a49",
+   "blob": "24adfc48b5e20527112b2271df62251625e46976"
+  },
+  "after": {
+   "sha": "f181d3b6ea",
+   "blob": "4bc6a19141fb82cb0eee49f1c90897f97754e7bf"
+  },
+  "weakened": false
+ },
+ {
+  "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+  "why": "K-23 added: the fire-at-half switch over Flame, Burn, ElectricalBurn, switch on, projectile/weapon/unpatched sources and non-fire types; no assertion removed",
+  "before": {
+   "sha": "f0863c4a49",
+   "blob": "a456c9321273b29581276ed2d8ca418562ebcd3b"
+  },
+  "after": {
+   "sha": "7450887f29",
+   "blob": "c2c3e1348d1ad82f89ffc364fe05789b14eeee51"
+  },
+  "weakened": false
+ }
+]

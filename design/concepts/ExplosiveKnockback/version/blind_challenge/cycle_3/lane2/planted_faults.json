@@ -1,0 +1,485 @@
+[
+ {
+  "id": "PF_MATH_CONTAINER_LIMIT_EXCLUSIVE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (!oneByOne || mass > containerMassLimit)",
+  "new": "if (!oneByOne || mass >= containerMassLimit)",
+  "bars": [
+   "closed_container_holds",
+   "inv_kernel",
+   "inv_container_shove"
+  ]
+ },
+ {
+  "id": "PF_MATH_CONTAINER_ANY_SIZE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (!oneByOne || mass > containerMassLimit)",
+  "new": "if (mass > containerMassLimit)",
+  "bars": [
+   "closed_container_holds",
+   "inv_kernel"
+  ]
+ },
+ {
+  "id": "PF_MATH_JOLT_UNNORMALISED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "ox = a * dx / m;",
+  "new": "ox = a * dx;",
+  "bars": [
+   "closed_container_holds",
+   "inv_kernel"
+  ]
+ },
+ {
+  "id": "PF_MATH_JOLT_NO_DECAY",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "float a = amplitude * left * wave;",
+  "new": "float a = amplitude * wave;",
+  "bars": [
+   "closed_container_holds",
+   "inv_kernel"
+  ]
+ },
+ {
+  "id": "PF_MATH_GOODS_HELD_IGNORES_OPEN_SWITCH",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return onStorage && (closed || openStorageProtects);",
+  "new": "return onStorage && closed;",
+  "bars": [
+   "inv_kernel",
+   "open_shelf_scatters",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_MATH_CELLS_FLOOR",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "int cells = (int)Math.Round(raw, MidpointRounding.AwayFromZero);",
+  "new": "int cells = (int)Math.Floor(raw);",
+  "bars": [
+   "inv_kernel",
+   "people_thrown_three_cells"
+  ]
+ },
+ {
+  "id": "PF_MOD_FIRE_HALF_DEFAULT_OFF",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "public static bool fireAtHalf = true;",
+  "new": "public static bool fireAtHalf = false;",
+  "bars": [
+   "settings_scale_and_switch",
+   "inv_settings",
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_MOD_GUARD_RESET_OFF",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "RimMandrakeExplosiveKnockbackSettings.closedContainerGuard = true;",
+  "new": "RimMandrakeExplosiveKnockbackSettings.closedContainerGuard = false;",
+  "bars": [
+   "settings_scale_and_switch",
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_MOD_GUARD_SCRIBE_DEFAULT_OFF",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "Scribe_Values.Look(ref closedContainerGuard, \"closedContainerGuard\", true);",
+  "new": "Scribe_Values.Look(ref closedContainerGuard, \"closedContainerGuard\", false);",
+  "bars": [
+   "settings_scale_and_switch",
+   "inv_settings"
+  ]
+ },
+ {
+  "id": "PF_MOD_FIRE_HALF_NOT_DRAWN",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "list.CheckboxLabeled(\"Fire throws at half strength\", ref fireAtHalf,",
+  "new": "list.Label(\"Fire throws at half strength\"); if (false) list.CheckboxLabeled(\"\", ref fireAtHalf,",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_MAP_GUARD_IGNORED_FOR_HOLD",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "bool closed = RimMandrakeExplosiveKnockbackSettings.closedContainerGuard && RM_KnockbackCompat.IsClosedContainer(ed);",
+  "new": "bool closed = RM_KnockbackCompat.IsClosedContainer(ed);",
+  "bars": [
+   "settings_scale_and_switch",
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_MAP_RIM_WILD_LIFTS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "if (kernelCells <= 0 || cells <= 0)",
+  "new": "if (cells <= 0)",
+  "bars": [
+   "inv_too_weak_skip",
+   "every_good_moves"
+  ]
+ },
+ {
+  "id": "PF_MAP_NO_DRAWN_JOLT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "                StartJolt(b, dx, dz);\n",
+  "new": "",
+  "bars": [
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_MAP_FLYING_OFF_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "if (kind != KbKind.Pawn && !RimMandrakeExplosiveKnockbackSettings.flyingGoods)",
+  "new": "if (false && kind != KbKind.Pawn && !RimMandrakeExplosiveKnockbackSettings.flyingGoods)",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_MAP_CONTAINER_INTO_PITS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "s.intoPits = false; // an open pit is a wall for a container's path",
+  "new": "s.intoPits = true; // an open pit is a wall for a container's path",
+  "bars": [
+   "closed_container_holds",
+   "thrown_into_pit_falls"
+  ]
+ },
+ {
+  "id": "PF_MAP_NO_REMEMBER_HAUL",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "            RM_Patch_PawnFlyer_KnockbackLanding.RememberHaul(p);    // back to its haul after landing (bar pawn_flight_arc)\n",
+  "new": "",
+  "bars": [
+   "pawn_flight_arc"
+  ]
+ },
+ {
+  "id": "PF_MAP_GUARD_OFF_GOODS_RIDE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "if (h != b && h.def.category == ThingCategory.Item && RimMandrakeExplosiveKnockbackSettings.closedContainerGuard)",
+  "new": "if (h != b && h.def.category == ThingCategory.Item)",
+  "bars": [
+   "settings_scale_and_switch",
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_MAP_ITEM_WILL_IGNORE_FLYING_OFF",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "|| !RimMandrakeExplosiveKnockbackSettings.flyingGoods\n",
+  "new": "\n",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_DW_FIRE_OFF_NOT_ZERO",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "                c.force = 0f;\n",
+  "new": "                c.force *= 1f;\n",
+  "bars": [
+   "settings_scale_and_switch",
+   "every_harmful_blast_throws"
+  ]
+ },
+ {
+  "id": "PF_DW_FIRE_SWITCHES_PROJECTILE_TUNING",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "c.source == \"damageDef\" && IsFire(def)",
+  "new": "IsFire(def)",
+  "bars": [
+   "settings_scale_and_switch",
+   "per_weapon_tuning"
+  ]
+ },
+ {
+  "id": "PF_DW_ISFIRE_FLAME_ONLY",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "def == DamageDefOf.Flame || def.hediff?.defName == \"Burn\"",
+  "new": "def == DamageDefOf.Flame",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_FLYER_NO_RESUME",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+  "old": "                Resume(__state.pawn, __state.resume);\n",
+  "new": "",
+  "bars": [
+   "pawn_flight_arc"
+  ]
+ },
+ {
+  "id": "PF_FLYER_NO_RESERVE_ASK",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+  "old": "bool stackFree = held == target || p.CanReserve(target)",
+  "new": "bool stackFree = true",
+  "bars": [
+   "pawn_flight_arc"
+  ]
+ },
+ {
+  "id": "PF_PATCH_FLAME_FULL",
+  "file": "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+  "old": "<force>0.5</force>",
+  "new": "<force>1.0</force>",
+  "bars": [
+   "every_harmful_blast_throws",
+   "per_weapon_tuning"
+  ]
+ },
+ {
+  "id": "PF_PATCH_BOMB_WEAK",
+  "file": "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+  "old": "<force>1.0</force>",
+  "new": "<force>0.9</force>",
+  "bars": [
+   "people_thrown_three_cells",
+   "every_harmful_blast_throws"
+  ]
+ },
+ {
+  "id": "PF_PROOF_FLYOFF_SKIP_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "bool ok = skipped && noMove && neverAir",
+  "new": "bool ok = noMove && neverAir",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_PROOF_PIT_DESCENT_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "bool fell = landed && desc.Count == 1 && inPit;",
+  "new": "bool fell = landed && inPit;",
+  "bars": [
+   "inv_proof_scenes",
+   "thrown_into_pit_falls"
+  ]
+ },
+ {
+  "id": "PF_GO_WALL_POSITION_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_GoodsObstacles.cs",
+  "old": "ok = rest && flew && tt.Position == plan;",
+  "new": "ok = rest && flew;",
+  "bars": [
+   "inv_proof_scenes",
+   "goods_arc_spin_rebound"
+  ]
+ },
+ {
+  "id": "PF_GO_WATER_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_GoodsObstacles.cs",
+  "old": "ok = flew && dry && visible && inWater == 0 && tt.Position",
+  "new": "ok = flew && dry && visible && tt.Position",
+  "bars": [
+   "inv_proof_scenes",
+   "doors_and_deep_water_stop"
+  ]
+ },
+ {
+  "id": "PF_ST3_CONTAINER_ZERO_CELLS_OK",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+  "old": "bool row = c >= 1 && c <= RimMandrakeExplosiveKnockbackSettings.maxThrowCells",
+  "new": "bool row = c >= 0 && c <= RimMandrakeExplosiveKnockbackSettings.maxThrowCells",
+  "bars": [
+   "inv_proof_scenes",
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_ST3_JOLT_ACTION_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+  "old": "bool jolt = line.Count == 1 && (string)line[0][\"action\"] == \"jolt\";",
+  "new": "bool jolt = line.Count == 1;",
+  "bars": [
+   "inv_proof_scenes",
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_ST3_FIREHALF_LANE_NOOP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+  "old": "[\"fireHalf\"] = Lane(new[] { \"fireAtHalf=False\" }),",
+  "new": "[\"fireHalf\"] = Lane(new[] { \"fireAtHalf=True\" }),",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_SB_BOX_ACTION_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StoreroomBombPit.cs",
+  "old": "cl.Count == 1 && (string)cl[0][\"action\"] == \"thrown\" && box.Position.z",
+  "new": "cl.Count == 1 && box.Position.z",
+  "bars": [
+   "inv_proof_scenes",
+   "walk_storeroom_raid"
+  ]
+ },
+ {
+  "id": "PF_SB_CONTENTS_HP_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StoreroomBombPit.cs",
+  "old": "&& Hp(sc.things[k]) == sc.numbers[k + \"Hp\"] && ForThing",
+  "new": "&& ForThing",
+  "bars": [
+   "inv_proof_scenes",
+   "closed_container_holds"
+  ]
+ },
+ {
+  "id": "PF_GATE_RELEASE_OR",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "return \"Type not found\" in text and \"RM_KnockbackProof\" in text",
+  "new": "return \"Type not found\" in text or \"RM_KnockbackProof\" in text",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_GATE_NO_EXIT",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "        raise SystemExit(EXIT)\n",
+  "new": "        pass\n",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_RUNNER_NO_LOOP",
+  "file": "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+  "old": "    for _ in range(max(1, tries)):\n",
+  "new": "    for _ in range(1):\n",
+  "bars": [
+   "inv_proof_scenes",
+   "pit_goods_fetched"
+  ]
+ },
+ {
+  "id": "PF_RUNNER_REACHED_ALWAYS",
+  "file": "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+  "old": "return {\"reached\": left <= 0,",
+  "new": "return {\"reached\": True,",
+  "bars": [
+   "inv_proof_scenes",
+   "pit_goods_fetched"
+  ]
+ },
+ {
+  "id": "PF_SPP_RESTORE_SWALLOWED",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/storeroom_pit_proof.py",
+  "old": "            bad.append(f)\n",
+  "new": "            pass\n",
+  "bars": [
+   "inv_proof_scenes",
+   "walk_storeroom_raid"
+  ]
+ },
+ {
+  "id": "PF_SPP_PARTIAL_SNAPSHOT",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/storeroom_pit_proof.py",
+  "old": "        if not g.get(\"success\", True) or g.get(\"value\") is None:\n            return None\n",
+  "new": "        if not g.get(\"success\", True) or g.get(\"value\") is None:\n            continue\n",
+  "bars": [
+   "inv_proof_scenes",
+   "walk_storeroom_raid"
+  ]
+ },
+ {
+  "id": "PF_VAL_FLYOFF_ROW_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+  "old": "    (\"goods_fly_off\", \"flying_goods\", \"off_goods_unthrown\", \"flyingGoods\"),\n",
+  "new": "",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_VAL_CONTAINER_ROW_SETTING",
+  "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+  "old": "\"closed_container_thrown_whole_contents_inside_unhurt\", \"shoveClosedContainers\"),",
+  "new": "\"closed_container_thrown_whole_contents_inside_unhurt\", None),",
+  "bars": [
+   "closed_container_holds",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_LINT_FLAME_PIN_LOOSE",
+  "file": "src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+  "old": "PINNED_FORCE = {\"Flame\": 0.5,",
+  "new": "PINNED_FORCE = {\"Flame\": 1.0,",
+  "bars": [
+   "every_harmful_blast_throws"
+  ]
+ },
+ {
+  "id": "PF_LINT_PIN_COUNT_LOOSE",
+  "file": "src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+  "old": "        if len(vals) != 1:\n",
+  "new": "        if len(vals) > 1:\n",
+  "bars": [
+   "every_harmful_blast_throws"
+  ]
+ },
+ {
+  "id": "PF_MOD_FIRE_HALF_CHECKBOX_REMOVED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "                list.CheckboxLabeled(\"Fire throws at half strength\", ref fireAtHalf,\n                    \"On (the default): fire and incendiary blasts throw at half a bomb's push. Off: fire throws nothing.\");\n",
+  "new": "",
+  "bars": [
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_KERNEL_FIRE_ELECTRICAL_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": " || hediffDefName == \"ElectricalBurn\";",
+  "new": ";",
+  "bars": [
+   "settings_scale_and_switch",
+   "inv_kernel"
+  ],
+  "added": "after fix bace1c29cc"
+ },
+ {
+  "id": "PF_KERNEL_FIRE_SOURCE_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return !fireAtHalf && source == \"damageDef\" && IsFireDamage",
+  "new": "return !fireAtHalf && IsFireDamage",
+  "bars": [
+   "settings_scale_and_switch",
+   "per_weapon_tuning",
+   "inv_kernel"
+  ],
+  "added": "after fix bace1c29cc"
+ },
+ {
+  "id": "PF_KERNEL_FIRE_BURN_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return damageDefName == \"Flame\" || hediffDefName == \"Burn\" ||",
+  "new": "return damageDefName == \"Flame\" ||",
+  "bars": [
+   "settings_scale_and_switch",
+   "inv_kernel"
+  ],
+  "added": "after fix bace1c29cc"
+ },
+ {
+  "id": "PF_DW_FIRE_SWITCH_READS_TRUE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "RM_KnockbackMath.FireSwitchedOff(RimMandrakeExplosiveKnockbackSettings.fireAtHalf,",
+  "new": "RM_KnockbackMath.FireSwitchedOff(true,",
+  "bars": [
+   "settings_scale_and_switch"
+  ],
+  "added": "after fix bace1c29cc"
+ }
+]

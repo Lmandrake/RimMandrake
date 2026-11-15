@@ -1,0 +1,96 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR",
+   "class": "Problem",
+   "bar": "settings_scale_and_switch",
+   "criterion": "sheet.md: \"fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)\"; the patch and the caller both name Anomaly's ElectricalBurn as fire",
+   "evidence": [
+    "Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName=\"Flame\"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)",
+    "RM_Knockback_DamageDefs.xml patches Flame force 0.5; its comment: 'Anomaly's ElectricalBurn through ParentName'",
+    "RM_Patch_DamageWorker_ExplosionKnockback.IsFire at f0863c4a49: def == Flame || hediff == Burn, so an ElectricalBurn blast kept 0.5 with the switch off",
+    "planted PF_DW_ISFIRE_FLAME_ONLY, PF_DW_FIRE_SWITCHES_PROJECTILE_TUNING missed by every offline suite; the live fireHalf lane reads only DamageDefOf.Flame's force",
+    "vanilla has no ElectricalBurn explosion; a mod's is the case (the mod throws other mods' explosions by design)"
+   ],
+   "would_pass": "with fireAtHalf off, every damage type carrying the Flame patch's force through inheritance resolves to force 0, and projectile/weapon tuning stays",
+   "smallest_fix": "the switch decision in the kernel (FireSwitchedOff / IsFireDamage, ElectricalBurn named) and T_KERNEL K-23 over the vanilla fire family",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED bace1c29cc",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN",
+   "class": "Problem",
+   "bar": "inv_proof_scenes",
+   "criterion": "inv_proof_scenes: the live scenes and the runner that drives them; T_PROOFGATE G1 claims the gate reads release vs proof answers",
+   "evidence": [
+    "planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)",
+    "G1 fed three answers; none named the proof type in an error or another type's 'Type not found', and require_proof_build was never called"
+   ],
+   "would_pass": "T_PROOFGATE red on each planted gate fault",
+   "smallest_fix": "two more G1 answers and a require_proof_build exit/return check",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED f181d3b6ea",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST",
+   "class": "Problem",
+   "bar": "inv_proof_scenes",
+   "criterion": "T_RESTORE (decider of inv_proof_scenes): a live proof undoes every Mod Settings poke on every exit path, putting back the value it found",
+   "evidence": [
+    "storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust",
+    "planted PF_SPP_PARTIAL_SNAPSHOT (an unreadable field skipped, so never restored) and PF_SPP_RESTORE_SWALLOWED (a failed write unreported) stayed green in T_RESTORE and S_JOURNAL_JOLT"
+   ],
+   "would_pass": "T_RESTORE red on each",
+   "smallest_fix": "T_RESTORE section 7: run the two functions from the real source against a fake bridge, with two in-memory mutants",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED f181d3b6ea",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN",
+   "class": "Polish",
+   "bar": "inv_proof_scenes",
+   "criterion": "the proof scenes' live verdicts check what their scenes promise",
+   "evidence": [
+    "PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP: missed offline",
+    "each weakens a verdict, not the mod: a correct mod still passes; only a broken mod plus a weakened check would slip, and the live run decides these bars at Stage 6"
+   ],
+   "would_pass": "a mock-verdict harness feeding each scene's verdict a wrong journal",
+   "smallest_fix": "extend validation.py --mock with one wrong-journal case per scene",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING (filed)",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME",
+   "class": "Polish",
+   "bar": "pawn_flight_arc",
+   "criterion": "a colonist thrown mid-haul goes back to its haul",
+   "evidence": [
+    "RM_PawnFlyerPatches.cs: static Dictionary<Pawn,Job> Hauling, set at every launch, removed only at a knockback landing; never cleared on load, not saved",
+    "a pawn that dies mid-flight keeps its entry; a save mid-flight loses the resume (read, not run)"
+   ],
+   "would_pass": "entries dropped on game load and on a flight that never lands",
+   "smallest_fix": "clear Hauling in a GameComponent's FinalizeInit, or key it by thingIDNumber",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING (filed)",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED",
+   "class": "Polish",
+   "bar": "closed_container_holds",
+   "criterion": "JoltOffset's own doc: a decaying shake (no bar requires decay)",
+   "evidence": [
+    "planted PF_MATH_JOLT_NO_DECAY passed T_KERNEL and lane 1 (fx_jolt_bounded tests only the bound)"
+   ],
+   "would_pass": "a K check that a late tick's offset is smaller than an early one's",
+   "smallest_fix": "one T_KERNEL check",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING (filed)",
+   "miss_of": 0
+  }
+ ]
+}
