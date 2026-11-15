@@ -128,6 +128,11 @@ def _rho(a, b):
     return 1 - 6.0 * sum((ra[x] - rb[x]) ** 2 for x in a) / (n * (n * n - 1))
 
 
+DENY = ("/home", "/mnt", "/tmp", "/root")   # the reader may Read none of these (claude_reader)
+PICS_ROOT = "/var/tmp"                       # where the picture copies live: outside every DENY root
+KEEP_IN = ("/home/", "/mnt/")                # the manifest and the result file must live under one of these
+
+
 FOIL_RHO = 0.5   # an order foil passes on "cannot tell" or a reading below this agreement: the order is no longer read
 
 
@@ -218,7 +223,8 @@ def leaks(prompt, manifest):
         t = spec.get("truth")
         q = BY_ID.get(qid) or {}
         # a label truth made only of option words is in every prompt by design; an order truth is a run of numbers
-        if isinstance(t, list) and len(t) > 1 and not set(map(_norm, t)) <= set(map(_norm, q.get("options") or [])):
+        if (isinstance(t, list) and len(t) > 1 and all(isinstance(x, (str, int)) for x in t)
+                and not set(map(_norm, t)) <= set(map(_norm, q.get("options") or []))):
             if re.search(r"\s*,\s*".join(re.escape(str(x)) for x in t), prompt):
                 out.append(qid + ".truth")
         for k in ("label", "defName", "depths", "fills"):
@@ -247,13 +253,14 @@ def _native(p):
 
 
 def claude_reader(prompt, pics_dir, model="opus", timeout=900):
-    """One fresh `claude -p` reader, cwd an empty temp dir holding only the picture copies. Its tool set is Read alone
-    (--tools), no MCP, dontAsk (anything not allowed is refused), and a Read of /home or /mnt is denied outright (deny
-    beats an allow from the user's settings), so the answer key in this repo and the manifest are out of its reach.
-    User settings still load: they carry the environment the CLI's account comes from. -> its stdout."""
+    """One fresh `claude -p` reader, cwd an empty dir under PICS_ROOT holding only the picture copies. Its tool set is
+    Read alone (--tools), no MCP, dontAsk (anything not allowed is refused), and a Read of /home, /mnt, /tmp or /root is
+    denied outright (deny beats the user settings' bare Read allow), so this repo's answer key, the manifest and any
+    result file (main refuses either outside /home or /mnt) are out of its reach. User settings still load: they carry
+    the environment the CLI's account comes from. Rules use //path, the absolute form. -> its stdout."""
     cmd = ["claude", "-p", prompt, "--model", model, "--tools", "Read", "--strict-mcp-config",
-           "--permission-mode", "dontAsk", "--allowedTools", "Read(%s/**)" % pics_dir,
-           "--disallowedTools", "Read(/home/**)", "Read(/mnt/**)", "Read(//home/**)", "Read(//mnt/**)",
+           "--permission-mode", "dontAsk", "--allowedTools", "Read(/%s/**)" % pics_dir,
+           "--disallowedTools", *["Read(%s%s/**)" % (sl, d) for d in DENY for sl in ("/", "//")],
            "--no-session-persistence", "--output-format", "text"]
     r = subprocess.run(cmd, cwd=pics_dir, capture_output=True, text=True, timeout=timeout)
     if r.returncode != 0:
@@ -275,8 +282,8 @@ def run(manifest, reader, seed=None):
                all(os.path.exists(p) for p in manifest[q["id"]]["images"])]
     rng.shuffle(asked_q)
     reply, answers, nid_of = None, None, {}
-    # under /tmp, never $TMPDIR: a seat TMPDIR lies under /home, which claude_reader denies the reader
-    with tempfile.TemporaryDirectory(prefix="blind_reader_", dir="/tmp") as pics_dir:
+    # under PICS_ROOT, never $TMPDIR: a seat TMPDIR lies under /home, which claude_reader denies the reader
+    with tempfile.TemporaryDirectory(prefix="blind_reader_", dir=PICS_ROOT) as pics_dir:
         alias, asked = {}, []
         for i, q in enumerate(asked_q, 1):
             spec = manifest[q["id"]]
@@ -337,6 +344,9 @@ def main(argv=None):
     if a.cmd == "plan":
         print(prompt_for([("Q%d" % i, q, "N", ["picture_NN.png"]) for i, q in enumerate(QUESTIONS, 1)])[0])
         return 0
+    for f in (a.manifest, a.out):
+        if not os.path.realpath(f).startswith(KEEP_IN):
+            raise SystemExit("REFUSED: %s is outside %s, where the reader could Read the truth" % (f, " or ".join(KEEP_IN)))
     man = json.load(open(a.manifest)).get("questions") or {}
     res = run(man, lambda p, d: claude_reader(p, d, model=a.model), seed=a.seed)
     json.dump(res, open(a.out, "w"), indent=1)

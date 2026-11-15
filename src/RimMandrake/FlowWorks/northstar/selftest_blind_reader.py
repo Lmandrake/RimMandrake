@@ -106,8 +106,8 @@ def _checks(ok):
         ok("foil" not in pr and "control" not in pr, "no foil mark in the prompt")
         ok(not re.search(r"3\s*,\s*1\s*,\s*5\s*,\s*2\s*,\s*4", pr), "no order truth in the prompt")
         ok(tmp not in pr and "/home/" not in pr, "the prompt names picture copies, never the captures' paths")
-        ok(seen["pics_dir"].startswith("/tmp/") and not os.path.exists(seen["pics_dir"]),
-           "pictures copied to a /tmp dir that is gone after the run")
+        ok(seen["pics_dir"].startswith(br.PICS_ROOT + "/") and not os.path.exists(seen["pics_dir"]),
+           "pictures copied to a PICS_ROOT dir that is gone after the run")
         ok(br.CANT in pr, "the reader is offered 'cannot tell'")
         r2, seen2 = fake(m, "truth")
         br.run(cp(m), r2, seed=8)
@@ -144,7 +144,7 @@ def _checks(ok):
            "a non-object entry or a string images value -> UNMEASURED, no crash")
         m5 = cp(m)
         m5["dig_depth_order_foil"]["truth"] = ["3", "1", "5", "2", "4"]
-        res = br.run(m5, fake(m5, "position")[0], seed=7)
+        res = br.run(m5, fake(m5, "position", override={"dig_depth_order_foil": [3, 1, 5, 2, 4]})[0], seed=7)
         ok(res["bars"]["canal_reads_as_dug"] != "PASS", "a string-typed order truth never lets the foil pass")
         res = br.run(cp(m), fake(m, "truth", override={"fill_order": [1, "2", 3, 4, None]})[0], seed=7)
         ok(res["bars"]["fill_level_legible"] == "UNMEASURED", "a mixed-type order answer -> UNMEASURED, no crash")
@@ -165,6 +165,17 @@ def _checks(ok):
         finally:
             br.prompt_for = orig
         ok(br.leaks("Q1: hose_flat_foil", {}), "a question id in the prompt is a leak")
+        m7 = cp(m)
+        m7["fill_order"]["truth"] = [[1, 2], 3, 4, 5]
+        m7["fill_liquids"]["truth"] = [{"a": 1}, "oil"]
+        res = br.run(m7, fake(m, "truth")[0], seed=7)
+        ok(res["bars"]["fill_level_legible"] == "UNMEASURED", "a nested or dict truth -> UNMEASURED, no crash")
+        for bad in ("/tmp/captures.json", "/var/tmp/x.json"):
+            try:
+                br.main(["read", "--manifest", bad, "--out", os.path.join(tmp, "r.json")])
+                ok(False, "a manifest at %s is refused" % bad)
+            except SystemExit as e:
+                ok("REFUSED" in str(e), "a manifest at %s is refused" % bad)
         ok(not br.leaks(br.prompt_for([("Q1", br.BY_ID["fill_liquids"], 4, ["/tmp/x/picture_01.png"])],
                                       __import__("random").Random(1))[0], cp(m)),
            "a label truth made of option words is not a false leak")
@@ -174,13 +185,15 @@ def _checks(ok):
         br.subprocess.run = lambda cmd, **kw: (calls.update(cmd=cmd, **kw),
                                                type("R", (), {"returncode": 0, "stdout": "{}", "stderr": ""})())[1]
         try:
-            br.claude_reader("p", "/tmp/blind_reader_x")
+            br.claude_reader("p", "/var/tmp/blind_reader_x")
         finally:
             br.subprocess.run = orig_run
         c = calls.get("cmd") or []
         ok(c[c.index("--tools") + 1] == "Read" and c[c.index("--permission-mode") + 1] == "dontAsk"
-           and "Read(/home/**)" in c and "Read(/mnt/**)" in c and "--strict-mcp-config" in c
-           and calls.get("cwd") == "/tmp/blind_reader_x", "the reader is sandboxed: Read only, dontAsk, /home and /mnt denied")
+           and all("Read(//%s/**)" % d.strip("/") in c for d in ("/home", "/mnt", "/tmp", "/root"))
+           and "Read(//var/tmp/blind_reader_x/**)" in c and "--strict-mcp-config" in c
+           and calls.get("cwd") == "/var/tmp/blind_reader_x",
+           "the reader is sandboxed: Read only, dontAsk, its dir allowed absolutely, /home /mnt /tmp /root denied")
 
     ok(br.parse_reply('x {"a": 1} y {"b": [1, 2]}') == {"b": [1, 2]}, "parse_reply takes the last JSON object")
     if os.name != "nt":
