@@ -4,7 +4,7 @@ state dir. Item RIMMANDRAKE_BUILD_CONDUCTOR_INTERVENTIONS_INTO_PIPELINE_ITSELF (
 design/RimMandrake/pipeline_interventions_census_2026-11-15.md). Written before the code and watched failing on the base.
 
     python3 src/RimMandrake/rimflow/selftest_maturation_hands.py            exit 0 when every check prints PASS
-    python3 src/RimMandrake/rimflow/selftest_maturation_hands.py --only stop|retry|refund|briefs|acts|chores
+    python3 src/RimMandrake/rimflow/selftest_maturation_hands.py --only stalled|stop|retry|refund|briefs|acts|chores
 
 What it proves, one section per child item:
   stop     a run first seen with no refused bars is never judged as a builder; a stop already written on an empty set
@@ -20,6 +20,9 @@ What it proves, one section per child item:
            work, a hand move, a hand close, a settings edit, a gap in the tick); one whose reason names a ledger item is
            folded; one with no follow-up after a day is overdue, with a Needs Conductor line; `fold` refuses an unknown
            item and an unknown census row; ops_watch reads the count and its rule has a fixed alarm name
+  stalled  a builder that resolved none of its refused bars gets one steward run that finds out why (it stopped early, the
+           work is not a builder's, a pipeline defect, too big for one run) and files it, never a second one for the same
+           stall, never on a ceiling stop; every detached run is told it ends with its turn
   chores   the tick reads back run dollars every 30 minutes and finishes a run dead for 10 minutes or more whose
            finish never ran; a killed blind or in-game run is left to its retry path; a failing chore is reported
 """
@@ -429,7 +432,66 @@ def chores_main():
     ok("failed" in str(out), "chores 5: a chore that fails is reported and never costs the tick", out)
 
 
-SECTIONS = (("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
+# ---- stalled ----------------------------------------------------------------------------------------------------------
+
+def stalled_main():
+    import detached_helper as DH
+    fx = {"open_items": lambda ids: [], "designer_state": lambda m: {}, "version_locked": lambda m: True,
+          "version_evidence": lambda m: None, "designer_unit": lambda m: None, "designer_chain": lambda m: None,
+          "exam_gate": lambda m: None}
+
+    def stalled(st, launches_book=True):
+        f = offline(["a", "b"], live=["rm-builder"])
+        f["A"]["version"] = "0.1.0"
+        MD.decide(CFG, st, f, NOW)
+        if launches_book:
+            st["mods"]["A"]["launches"] = [{"unit": "rm-builder", "item": "RIMMANDRAKE_AUTOBUILD_A_TWO_BARS_LEFT",
+                                            "stage": "offline_build"}]
+        f = offline(["a", "b"], last_end=NOW - 600)
+        f["A"]["version"] = "0.1.0"
+        rows, launches = MD.decide(CFG, st, f, NOW + 60)
+        return f, AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f, rows, launches,
+                              NOW + 60, fx)
+
+    st = {}
+    f, (rows, launches) = stalled(st)
+    r = row_of(rows)
+    ok(r.get("aut") == "steward" and r.get("steward_kind") == "builder_stalled" and launches == ["A"],
+       "stalled 1: a builder that resolved none of its refused bars gets one steward run that finds out why, not a "
+       "pause", {k: r.get(k) for k in ("decision", "aut", "steward_kind", "why")})
+    ok("RIMMANDRAKE_AUTOBUILD_A_TWO_BARS_LEFT" in str(r.get("steward_need")) and "rm-builder" in str(r.get("steward_need")),
+       "stalled 2: the steward is told the builder's unit and item", r.get("steward_need"))
+    brief = AUT.steward_brief(REPO, "A", dict(r, stage="offline_build")) if r.get("steward_kind") else ""
+    ok(all(w in brief for w in ("STOPPED EARLY", "WRONG KIND OF WORK", "PIPELINE DEFECT", "TOO BIG"))
+       and "never run `maturation_dispatch.py clear`" in brief.lower().replace("never run", "never run"),
+       "stalled 3: its brief names the four causes and forbids clearing the stop", brief[-900:])
+    st["mods"]["A"].setdefault("steward", {})[r.get("steward_key")] = {"item": "X", "unit": "rm-s", "at": NOW,
+                                                                         "failed": None, "tries": 1}
+    f2 = offline(["a", "b"], last_end=NOW - 900)
+    f2["A"]["version"] = "0.1.0"
+    rows, launches = MD.decide(CFG, st, f2, NOW + 600)
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f2, rows, launches,
+                                 NOW + 600, fx)
+    ok(row_of(rows)["decision"] == "steward_spent" and not launches,
+       "stalled 4 (control): the same stall never gets a second steward run", row_of(rows)["decision"])
+
+    st = {"mods": {"A": {"stopped": {"ids": ["a"], "at": NOW, "why": "USD 99.00 spent, at the ceiling",
+                                     "ceiling": True}}}}
+    f3 = offline(["a"])
+    f3["A"].update(version="0.1.0", stage_runs={"rm-old": 99.0})
+    rows, launches = MD.decide(CFG, st, f3, NOW)
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f3, rows, launches, NOW, fx)
+    ok(row_of(rows).get("steward_kind") != "builder_stalled" and not launches,
+       "stalled 5 (control): a ceiling stop gets no such steward", row_of(rows).get("decision"))
+
+    ok("ends when your turn ends" in DH.FOOTER and "foreground" in DH.FOOTER,
+       "stalled 6: every detached run is told it ends with its turn and that helpers run in the foreground "
+       "(Graffiti's builder ended 'waiting for the helpers to report', 2026-11-15)")
+    src = inspect.getsource(AUT._execute_one)
+    ok('"builder_stalled"' in src, "stalled 7: what the stalled-builder steward files is a road back, so fixers run it")
+
+
+SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main))
 
 if __name__ == "__main__":

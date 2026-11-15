@@ -678,6 +678,23 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "do %s as the spec says (design/specs/2026-11-13-maturation-pipeline.md) and advance with "
                  "--steward-confirms naming what you read" % M.label(stage))
         return
+    stop = s.get("stopped") or {}
+    if (dec == "stopped" and stage == "offline_build" and str(stop.get("why")).startswith("run ")
+            and not stop.get("ceiling") and not stop.get("launch_failed")):
+        # a builder ended and resolved none of its refused bars: the cause is unknown until someone reads the run, so
+        # one steward reads it and files what it finds (RIMMANDRAKE_TRIAGE_STALLED_BUILDER_GRAFFITI_WAITED_ON_HELPERS).
+        # Never a second builder at the same refusals: the stop lifts only when a refused bar is resolved.
+        unit = (s.get("last_run") or {}).get("unit")
+        item = next((x.get("item") for x in s.get("launches") or [] if x.get("unit") == unit), None)
+        key, after = _after_road_backs(s, "%s|offline_build|builder_stalled|%s" % (ver, _h([unit, stop.get("ids")])))
+        _steward(row, "builder_stalled", key, stop.get("why"),
+                 "builder run %s (item %s; its result file is <dispatcher state>/detached/%s.out.json, its end line is "
+                 "in the Conductor log) ended and %s refused bars stand: %s" % (
+                     unit, item or "not launched by the tick: find it with `detached_helper.py status --all`", unit,
+                     len(stop.get("ids") or []), ", ".join((stop.get("ids") or [])[:40])))
+        if after:
+            row["road_back_after"] = after
+        return
     if dec in STEWARD_ON:
         n = row.get("visit") if stage == "in_game" else row.get("cycle") if stage == "blind_challenge" else None
         if dec == "exit_not_met" and stage == "blind_challenge" and (f.get("visit") or 0) >= M.CYCLE_LIMIT:
@@ -941,6 +958,22 @@ def steward_brief(root, mod, row):
                        "design/concepts/%s` passes and `coverage_judge.py status design/concepts/%s` no longer reads "
                        "\"the exam does not pass\"; land exam.json and exam_control/ with ./publish." % (
                            row.get("steward_need") or row.get("why"), mod, mod, mod),
+        "builder_stalled": "An offline builder ended and resolved NONE of the refused bars, so nothing more is built "
+                           "on this mod until someone knows why. Find out; do not build the checks yourself. Read the "
+                           "builder's item to its end (`rimflow show <item>`), its result file, what it published "
+                           "(`git log origin/main --grep <item>`) and the bundle its end line names. Say which of "
+                           "these it was, with the evidence, in your note:\n"
+                           "- STOPPED EARLY: its last words wait on helpers or a background command, or its bound ran "
+                           "out with work unlanded (a headless run ends with its turn; what it left running died). "
+                           "File the bars it did not reach as named items of about six bars each, each with the "
+                           "command that shows its bars refused now, caused by this item: one fixer builds each.\n"
+                           "- WRONG KIND OF WORK: the bars are refused for something no builder can build (a hand "
+                           "step, his decision, a check only the live game can run). File or card each as what it is.\n"
+                           "- PIPELINE DEFECT: the table, the reader or a tool refused correct work. The self-fix rule "
+                           "below: file it, fix it, tests first.\n"
+                           "- TOO BIG for one run: split it into named items as under STOPPED EARLY.\n"
+                           "Never run `maturation_dispatch.py clear` and never launch a builder: the stop lifts by "
+                           "itself when a refused bar is resolved, and the tick runs one fixer per item you file.",
         "hand_step": "Only hand steps remain (%s): read what each asks and pass --steward-confirms if it holds; if it "
                      "does not, file the gap as a named item caused by this item." % ", ".join(row.get("hand_steps") or []),
     }.get(kind, row.get("steward_need") or row.get("why"))
@@ -1077,7 +1110,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
                  "tries": tries, "filed": filed}
     if not ok and cfg.get("_code"):
         book[key]["code"] = cfg["_code"]
-    if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met"):
+    if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met", "builder_stalled"):
         s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)

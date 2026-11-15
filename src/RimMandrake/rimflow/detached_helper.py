@@ -95,6 +95,9 @@ Ledger item: {item}. Seat: {seat}. {bound_text}; spend bound ${budget}.
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
   shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`.
+- This run ends when your turn ends: a helper or command still running in the background then is killed and its work
+  is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
+  "waiting" for anything.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
 """
 
