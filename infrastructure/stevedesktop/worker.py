@@ -874,9 +874,9 @@ class Attempt:
             return self.fail("REFUSED", "LOAD", refused_line(tail))
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
-        m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
+        m = last_pid_line(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
         if not m:
-            kept = re.search(r"already running \(pid \d+\)", tail)
+            kept = last_pid_line(r"already running \(pid \d+\)", tail)
             wedged = kept and self.kept_game_wedged()
             overgrown = kept and not wedged and self.kept_game_overgrown(tail)
             if wedged or overgrown:
@@ -899,7 +899,7 @@ class Attempt:
                 rc, tail = self.sh(cmd, timeout=900)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload failed, %s: %s" % (why, tail))
-                m = re.search(r"started pid (\d+)", tail)
+                m = last_pid_line(r"started pid (\d+)", tail)
                 if not m:
                     return self.fail("INVALID", "LOAD", "restarted the game, %s, but load did not report a fresh "
                                      "process: %s" % (why, tail[-200:]))
@@ -934,7 +934,7 @@ class Attempt:
                 rc, tail = self.sh(cmd, timeout=900)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload after the marker restart failed: " + tail)
-                m = re.search(r"started pid (\d+)", tail)
+                m = last_pid_line(r"started pid (\d+)", tail)
                 if not m:
                     return self.fail("INVALID", "LOAD", "restarted the game for stale bridge marker(s) %s, but load "
                                      "did not report a fresh process: %s" % (" ".join(stale), tail[-200:]))
@@ -944,7 +944,7 @@ class Attempt:
                 cleared = set(self.res.get("moot_markers") or [])
                 S.dump({c: self.aid for c in self.res["bounced_for_markers"] if c not in cleared},
                        p("marker_bounces.json"))
-        alive = m or re.search(r"already running \(pid (\d+)\)", tail)
+        alive = m or last_pid_line(r"already running \(pid (\d+)\)", tail)
         self.game_pid = alive.group(1) if alive else None
         return True
 
@@ -1486,6 +1486,23 @@ def parse_markers(text):
         f = line.split()
         if len(f) >= 2 and re.fullmatch(r"[0-9a-f]{16}", f[0]) and re.fullmatch(r"\d{4}-\S+Z", f[1]):
             found.append((f[0], f[1]))
+    return found
+
+
+CMD_ECHO_RE = re.compile(r"^\S+Z \$ .*$", re.M)  # the "<utc> $ <cmd>" line say() writes before sh() runs a command
+
+
+def last_pid_line(rx, text):
+    """The last match of rx in the output of the LAST command in a phase's tail, else None. sh() returns worker.log's
+    last lines, so a second load's tail can still hold the first load's "started pid" (RIMMANDRAKE_DIAGNOSE_HAR_CTOR_
+    TOKEN_ZERO: the stale-load restart kept the dead pid, and game_gone() called the worker's own restart GAME_DIED;
+    J20261114T231058Z-a9d923.a1, a GREEN 5/5 run). Output longer than the tail has no echo line in it: all of it is
+    the last command's."""
+    text = text or ""
+    echoes = list(CMD_ECHO_RE.finditer(text))
+    found = None
+    for found in re.finditer(rx, text[echoes[-1].end():] if echoes else text):
+        pass
     return found
 
 

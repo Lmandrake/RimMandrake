@@ -266,7 +266,20 @@ def main():
         check(os.path.exists(sdowns) and len(open(sdowns).readlines()) == 1
               and os.path.exists(os.path.join(adir, "modcheck.stale_load.log")),
               "the restart stopped the game once and kept the refused run's log")
-        rc, o = w(["start"], job(), MOCK_MODE="stale", TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_2"))
+        # RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO: both loads print "started pid", and the second load's worker.log tail
+        # still holds the first one's line, so the dead pid was kept and the worker's own restart read as GAME_DIED
+        # (J20261114T231058Z-a9d923.a1: modcheck GREEN 5/5 -> INVALID GAME_DIED; 6 of 10 GAME_DIED attempts 11-14)
+        pflag = os.path.join(tmp, "stale_pid_once")
+        os.remove(os.path.join(home, "mock_stale_once"))      # case 3a spent the mock's one stale refusal
+        twice = ("if [ -f %s ]; then echo started pid $((5100+2)); else touch %s; echo started pid $((5100+1)); fi"
+                 % (pflag, pflag))
+        rc, o = w(["start"], job(), MOCK_MODE="stale-once", TESTQ_CMD_LOAD=twice, TESTQ_CMD_DOWN="true",
+                  TESTQ_CMD_STATUS="echo 'running pid=5102 session=1'")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and res.get("harness_cause") == "stale_load",
+              "a stale-load restart's fresh pid is the one game_gone() checks, not the first load's: %s %s"
+              % (res.get("outcome"), res.get("note")))
+        rc, o = w(["start"], job(), MOCK_MODE="stale",TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_2"))
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS"
               and res.get("harness_cause") == "stale_load"
