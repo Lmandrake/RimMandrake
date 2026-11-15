@@ -954,6 +954,12 @@
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-15T13:23:41Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0': the coverage judge's 12 Problem gaps (plus g12/g14 false wording) applied by RIMMANDRAKE_APPLY_PYRELANDS_JUDGE_EDITS_ALL_TWENTY_ATTAINABLE; re-pinned stage 3 (sheet, tree, scenes); stage 4 (sheet, tree, scenes); sources OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1303,9 +1309,9 @@
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b0d4bf5386106ab28f81e6a9a6e611da02c5a30118f17178d4dc8829af251269",
-    "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
-    "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107"
+    "scenes": "0ad953a1ec1b1693c6a9b7fe3371512db7ddd511a85601bc6752bf07e7395378",
+    "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
+    "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -1331,6 +1337,17 @@
       "OWNER:1794611171307640419",
       "OWNER:1794721773574845016"
      ]
+    },
+    {
+     "at": "2026-11-15T13:23:41Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
+     ]
     }
    ],
    "run": "rm-role-designer-1794596464",
@@ -1344,9 +1361,9 @@
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b0d4bf5386106ab28f81e6a9a6e611da02c5a30118f17178d4dc8829af251269",
-    "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
-    "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107"
+    "scenes": "0ad953a1ec1b1693c6a9b7fe3371512db7ddd511a85601bc6752bf07e7395378",
+    "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
+    "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -1362,6 +1379,19 @@
     "offer": false,
     "why": "nothing is asked of him: the exam closes on its own score"
    },
+   "repinned": [
+    {
+     "at": "2026-11-15T13:23:41Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
+     ]
+    }
+   ],
    "run": "bench-pyre-owed-exam-st4-20261114",
    "stage": 4,
    "summary": "Cold Reader exam on the locked 0.1.0 tree (3ffd15d1) and sheet (2935f04b), his card 2026-11-14 ~9:45 PM PST (OWNER:1794721773574845016, one exam and one coverage judge pass, no loop): 20/20 frozen scenarios (14 Examiner, 6 Challenger; 13 reject cases) matched by two fresh Readers, accept_where_reject_core 0, no Challenger miss; control on flamefang_bite_carries_venom missed e7. Stages 1-3 re-pinned by designer_stage repin for his locked changes (f71693d77a, 08d917c12a)."
