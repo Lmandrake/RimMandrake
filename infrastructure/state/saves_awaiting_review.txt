@@ -2,3 +2,8 @@
 # saves_prune.py never deletes a save listed here, nor the canonical start save, nor any CANONICAL_* save.
 # Owner, 2026-10-18: "We need only save canonical saves plus those awaiting review."
 # Add a line when you hand him a save to LOOK at; delete the line when he has ruled on it.
+# 2026-11-15 cleanup pass: Showing_ saves whose item is still open (built/validated), kept until the item closes.
+Showing_GRAFFITI_SIGIL_FRAMES_ART_1.rws
+Showing_PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE.rws
+Showing_REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH.rws
+Showing_SCRUB_WIND_BUILD_LEAN_ON_PURPOSE.rws
