@@ -14,7 +14,12 @@ real GAP and so a verdict: nothing a rerun at the same code can change. A reader
 ("no <driver> result at the current mod hash") is the harness's: the driver, not the code, decides whether it reads.
 """
 import hashlib
+import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import invalid_class as IC  # noqa: E402
 
 CAUSES = (("canary", r"canary red"),
           ("site_hold", r"could not hold the site quiet"),
@@ -133,6 +138,12 @@ def job_cause(res):
     if stale_load(res):         # its own repair item, not the catch-all "modcheck exit 1, no sheet" (4E52E202)
         return "HARNESS: stale_load, the running load is not the composed list%s" % (
             ", which the worker could not restart away" if stale_load(res) == "unrepaired" else "")
+    # RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED: a known fault files under ONE stable name. The note
+    # is a log tail, so hashing its head split "the game would not start" into five items and merged five faults
+    # into the catch-all below.
+    known = IC.cause_key(res)
+    if known:
+        return known
     m = re.match(r"modcheck exit (\S+) and no sheet JSON", note)
     if m:
         err = re.search(r"\b[A-Z]\w*Error\b", note)

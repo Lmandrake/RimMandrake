@@ -55,6 +55,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import fault_monitor as FM  # noqa: E402
+import invalid_class as IC  # noqa: E402
 import retest as R  # noqa: E402
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
@@ -228,7 +229,9 @@ def spawned_for(base, att):
 ITEMS_REL = os.path.join("infrastructure", "state", "items")
 REPAIR_PREFIX = "HARNESS_REPAIR_"
 #: the class a cause kind most likely belongs to; the builder confirms it before anything else (## classify)
-CLASS_PRIOR = {"site_hold": "SITE", "surprise": "SITE", "selftest_not_run": "MOD", "canary": "ENVIRONMENT"}
+CLASS_PRIOR = {"site_hold": "SITE", "surprise": "SITE", "selftest_not_run": "MOD", "canary": "ENVIRONMENT",
+               # invalid_class's stable keys: a TEST fault is the mod's own test, a GAME fault the host or game
+               "TEST": "MOD", "DELIVERY": "HARNESS", "GAME": "ENVIRONMENT"}
 
 
 def items_dir():
@@ -280,6 +283,22 @@ def rerun_line(job):
     return " ".join(out)
 
 
+def test_author_lines(job, cause):
+    """A TEST-class fault goes back to whoever wrote the test: -> prose lines naming the last commit to the mod's
+    validation walk and validation.py (git records the commit, not the seat; the subject usually names the item or
+    loop). [] for any other class, or when git cannot tell."""
+    if IC.class_of_cause(cause) != IC.TEST:
+        return []
+    import repeat_guard as G
+    paths = [p for p in G.relevant(job.get("mod") or "", IC.TEST, REPO)
+             if p.endswith(".md") or os.path.isdir(os.path.join(REPO, p)) and "/Utils/" not in p]
+    out = G.git("log", "-1", "--format=%h %ad %s", "--date=short", "--", *paths) if paths else None
+    if not out:
+        return ["- the test's author: unknown (git log of %s read nothing)" % (", ".join(paths) or "no path")]
+    return ["- the test was last written by commit %s (git log of %s): route the fix to that item or seat, not to "
+            "the harness" % (out[:160], ", ".join(paths))]
+
+
 def repair_prose(name, job, res, cause, env_read):
     """TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS: what a repair item builds and how it passes, written at filing, so no
     builder invents what "fixed" means (the cheapest invention silences the check)."""
@@ -298,6 +317,9 @@ def repair_prose(name, job, res, cause, env_read):
         "- chains held without a verdict: %s" % (", ".join("`%s`" % c for c in held) or "the whole job (no sheet)"),
         "- runner note: %s" % (res.get("note") or "")[:300].replace("\n", " "),
         "- read the sighting: `python3 src/RimMandrake/Utils/testq/testq.py show %s`" % job["id"],
+        ] + test_author_lines(job, cause) + [
+        "- the filler will not run this selection again until a relevant path changes or this item closes "
+        "(testq/repeat_guard.py)."][:1 if IC.class_of_cause(cause) in IC.OWNED else 0] + [
         "- later sightings land as `seen again in testq <attempt>` notes on this item: re-run those jobs too.", "",
         "## classify", "",
         "Decide the class FIRST, from the sighting, before changing any code. Prior from the cause kind `%s`: %s." % (
@@ -346,7 +368,13 @@ def repair(job, res, cause, rec=None):
     if spawned_for(base, att):      # a retry of this attempt, even if its repair has closed since
         return None
     w, env_read = env_window(rec or {"job": job, "result": res})
-    if w:
+    # RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED: a broken test or delivery fault is code, never the
+    # host's doing. Fault windows ran back to back from 2026-11-08 on, so this exemption filed no repair for 76
+    # sightings and no hold ever formed: the filler re-ran the same selections into the same faults.
+    if w and IC.class_of_cause(cause) in IC.OWNED:
+        env_read = "inside fault window %s, but a %s fault is not the host's: filed" % (
+            w.get("id"), IC.class_of_cause(cause))
+    elif w:
         T.log("ingest %s: cause %s ran inside fault window %s: ENVIRONMENT, no repair filed" % (att, base, w.get("id")))
         return None
     try:

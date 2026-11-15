@@ -429,6 +429,11 @@ def main(argv=None):
             except (targeting.TargetError, RuntimeError) as ex:
                 print("REFUSED: %s" % ex)
                 return 2
+            if args.preview:    # the visual floor is offline: refuse here, not after a deploy and a load on the lane
+                why = runner.refusal(runner.visual_floor(suite, runner.northstar_for(mod)[1]))
+                if why:
+                    print("REFUSED: %s" % why)
+                    return 2
             for line in targeting.preview(sel):     # the exact plan, per chain, before anything launches
                 print(line)
             import json as _json                    # machine line: the worker marks planned rows that never ran NOT_RUN

@@ -687,6 +687,36 @@ def ladder_blind(inc):
         str(inc.get("error") or "").startswith("ledger unreadable: ")
 
 
+INVALID_SHARE_MIN_JOBS = 8     # fewer finished jobs in 24 h make a share an ESTIMATE: one death would read 50 %
+
+
+def invalid_class_mod():
+    """testq/invalid_class.py, loaded by path: putting testq/ on sys.path would shadow modules named like its own."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("testq_invalid_class", str(HERE / "testq" / "invalid_class.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def invalid_share(d24):
+    """RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED: the share of the last 24 h of Steve-lane jobs that
+    died INVALID, split by whose fault (invalid_class: TEST, DELIVERY, GAME, UNKNOWN). Owner 2026-11-14: "So much
+    waste. And it just keeps happening." The streak alarm saw none of it: deaths came between passes."""
+    try:
+        IC = invalid_class_mod()
+    except Exception as e:  # noqa: BLE001 - an instrument that errors says so, never 0
+        return U("testq/invalid_class.py would not load: %s" % e)
+    s = IC.share(d24)
+    if not s["jobs"]:
+        return U("no Steve-lane job finished in 24 h")
+    x = dict(jobs=s["jobs"], invalid=s["invalid"], **{k.lower(): v for k, v in sorted(s["by_class"].items())})
+    if s["jobs"] < INVALID_SHARE_MIN_JOBS:
+        return E(s["share"], "only %d job(s) in 24 h (< %d): too few for a share" % (s["jobs"], INVALID_SHARE_MIN_JOBS),
+                 "share of jobs INVALID, 24 h", **x)
+    return M(s["share"], "share of jobs INVALID, 24 h", **x)
+
+
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
@@ -782,6 +812,7 @@ def c_steve(now, rules, ctx):
     out["steve.invalid_24h"] = M(sum(1 for d in d24 if (d.get("result") or {}).get("outcome") == "INVALID"),
                                  "INVALID jobs, 24 h")
     out["steve.last_done_age_min"] = M(round((now - last[0]) / 60.0, 1), "min since the last job finished")
+    out["steve.invalid_share_24h"] = invalid_share(d24)
     def may_be_in_run(b):
         """Could unseen record `b` sit inside the run? Only a record no older than the run can break it; an older
         bad record leaves a run of readable INVALIDs certain, and must not turn the alarm off (it needs MEASURED)."""

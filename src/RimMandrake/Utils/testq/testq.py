@@ -1058,7 +1058,10 @@ def published(sha):
 
 # modcheck targeting's own refusals (targeting.TargetError): the run on the worker would refuse the same selection
 # as BLOCKED_SELECTION after spending a runner slot. A mod modcheck cannot find (RuntimeError) is not one of them.
-SELECTION_REFUSALS = ("unknown row", "unknown chain", "is offline", "catalogue is incomplete", "empty selection")
+SELECTION_REFUSALS = ("unknown row", "unknown chain", "is offline", "catalogue is incomplete", "empty selection",
+                      # modcheck's visual floor, offline (runner.refusal): Graffiti reached SteveDesktop 3 times on
+                      # 2026-11-13/14 only to be refused there (RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED)
+                      "must-show lines no component claims", "ids absent from the validated checklist")
 
 
 def preview(mod, sel):
@@ -1225,6 +1228,10 @@ def cmd_submit(a):
     if stale:
         print("REFUSED: %s" % stale)
         return 2
+    again = None if S.is_proofs(job) or (getattr(a, "retest_why", None) or "").strip() else repeat_refusal(a.mod, sel)
+    if again:
+        print("REFUSED: %s; --retest-why REASON overrides" % again)
+        return 2
     asked = job["timeout_s"]
     job["timeout_s"], driver_need, size_warn = sized_timeout(asked, pv["drivers"])
     if not a.no_sha_check and not published(a.sha):
@@ -1304,6 +1311,34 @@ def pilot_stop(mod):
     except Exception as e:      # noqa: BLE001
         log("pilot rule could not read %s: %s" % (mod, e))
         return {}
+
+
+def repeat_holds(mod, chains, recs=None):
+    """-> {chain: reason}: chains whose last run the test or the delivery machinery killed, with nothing relevant
+    changed since (repeat_guard.py). An unreadable ledger only drops the "its repair item closed" release."""
+    import repeat_guard
+    try:
+        import gaps
+        items = gaps.ledger()[2].items
+    except Exception:  # noqa: BLE001
+        items = None
+    try:
+        return repeat_guard.hold(mod, chains, records("done") if recs is None else recs, items)
+    except Exception as e:  # noqa: BLE001 - a guard that crashes must not stop the lane; it says so in the log
+        log("repeat guard could not read %s: %s" % (mod, e))
+        return {}
+
+
+def repeat_refusal(mod, sel):
+    """-> why a submit of SEL would re-run a selection whose last run died of a TEST/DELIVERY fault unchanged, or None.
+    Refused only when EVERY chain it names is held: a job that also runs fresh chains earns its slot."""
+    chains = sel.get("chains") or []
+    if not chains or sel.get("rows"):
+        return None
+    held = repeat_holds(mod, chains)
+    if len(held) < len(chains):
+        return None
+    return held[sorted(held)[0]] + ("" if len(held) == 1 else " (and %d more chain(s) like it)" % (len(held) - 1))
 
 
 def already_tested(a, sel, pv):
@@ -1739,11 +1774,17 @@ def fill_rank(mod, n, now, today=None, exclude=()):
     today = today or time.strftime("%Y-%m-%d", time.localtime(now))
     recs = records("done")
     hist = chain_history(mod, recs)
-    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=exclude)
+    repeat = repeat_holds(mod, None, recs)
+    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=set(exclude) | set(repeat))
     plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "held", "ident", "counts", "flaky", "blind",
                               "why")}
+    plan["repeat_hold"] = repeat
     if g["rank"]:
         return dict(plan, verdict="pick", pick=g["pick"], text="would queue %s" % g["text"])
+    if repeat:
+        first = sorted(repeat)[0]
+        return dict(plan, verdict="exhausted", pick=[], text="%s: %d chain(s) held, not re-run unchanged (%s); %s; "
+                    "no fill" % (mod, len(repeat), repeat[first], g["text"]))
     if not hist and not g["counts"]["never_run"] and g["blind"]:
         return dict(plan, verdict="nohist", pick=[], text="no chain history for %s yet and %s; no fill"
                     % (mod, "; ".join(g["blind"])))
