@@ -1,0 +1,1 @@
+A blind fix-in-place that adds a Mod Setting turns T_STAGE3_SCENES-style 'every saved setting is named in the sweep scene' guards red, and the fixer may not edit scene text: ship a constant and route the slider to the Conductor, or have the brief say which. (Knockback blind cycle 1, 2026-11-14)

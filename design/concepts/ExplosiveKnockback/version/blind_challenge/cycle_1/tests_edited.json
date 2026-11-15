@@ -1,0 +1,29 @@
+{
+ "cycle": 1,
+ "note": "shown to the next blind judge; none of these loosens a check",
+ "edited": [
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "owner": "builder (live proof scenes)",
+   "what": "3 goods expectations (sc items line ~395, WantCells, the steel/comp/heavy lane) now WildCells(..., GoodsThrowWild) instead of ThrowCells: the expected cells follow the bar's wild throw; pawns untouched",
+   "before": "82cd0a7779d3",
+   "after": "659243b1642f",
+   "run": "UNRUN (live, Stage 6); compiles in the proof build (winbuild -p:RmProofs=true, 0 errors)"
+  },
+  {
+   "path": "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
+   "owner": "blind (this cycle)",
+   "what": "(a) before lane 1 was recorded: L1_twice_damage_strictly_farther_below_cap re-scoped from every throw to throws of 2+ cells (the rim case is INFO); (b) after lane 1 was recorded: L1_sweep_rebound_keep_slider_chain_ends at keep 100 accepts the carrier's MaxBounces (read from RM_ThingFlyer_Knockback.cs) instead of the kernel alone; its lane-1 FAIL stays in SUMMARY.md",
+   "before": "bbad998788 version",
+   "after": "278b9d921a19"
+  }
+ ],
+ "added": [
+  "lane1 rows L1_goods_fly_wild, L1_gas_goods_cap_ignores_weapon_scale",
+  "lane2/check_fix_wiring.py",
+  "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py (runs both; nightly)"
+ ],
+ "tried_and_reverted": [
+  "selftest_explosiveknockback_settings_sweep.py GAME_SIDE += goodsThrowWild, with the goodsThrowWild Mod Setting; reverted with the setting before landing"
+ ]
+}
