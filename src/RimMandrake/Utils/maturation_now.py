@@ -73,6 +73,9 @@ UNM = "UNMEASURED"
 
 # The map (spec §3; stage numbers are his; Stages 4 and 5 are one stage, tests first, his card 2026-11-13).
 COLUMNS = ("intake", "1", "2", "3", "4+5", "6", "7", "8", "passed")
+# the stage record's words (maturation.STAGES) -> columns; kept here so this reader never imports maturation
+RECORD_COL = {"intake": "intake", "designer": "1", "preflight": "2", "offline_build": "3", "blind_challenge": "4+5",
+              "in_game": "6", "pre_human": "7", "his_walk": "8", "passed": "passed"}
 COL_NUM = {"intake": "IN", "1": "1", "2": "2", "3": "3", "4+5": "4+5", "6": "6", "7": "7", "8": "8", "passed": "✓"}
 COL_NAME = {"intake": "Intake", "1": "Designer", "2": "Preflight", "3": "Offline build", "4+5": "Tests first",
             "6": "In-game", "7": "Pre-human", "8": "His walk", "passed": "Passed"}
@@ -270,7 +273,14 @@ def read_mod(root, folder, names):
     # where it stands on the map
     m["journal"] = jtext is not None
     m["at_door"], m["held"] = False, False
-    if j.get("stage"):
+    rec, _ = read_json(os.path.join(c, "version", "stage_record.json"))
+    rcol = RECORD_COL.get(str((rec or {}).get("stage"))) if isinstance(rec, dict) else None
+    if rcol:
+        # RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: the stage record is the stage; the journal line is its echo
+        m["column"], m["at_door"] = rcol, bool(rec.get("at_door"))
+        m["stage_text"] = j.get("stage") or "%s (the stage record)" % rec.get("stage")
+        m["stage_from"] = "stage record (version/stage_record.json)"
+    elif j.get("stage"):
         col, door = stage_from_text(j["stage"])
         m["column"], m["at_door"] = col or UNM, door
         m["stage_text"], m["stage_from"] = j["stage"], "journal"

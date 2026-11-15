@@ -13,6 +13,7 @@ a builder on the maturation pipeline even as we develop its components together 
     python3 src/RimMandrake/rimflow/maturation.py next MOD [--json]   the current stage's exit tests, its hand steps, one NEXT
     python3 src/RimMandrake/rimflow/maturation.py advance MOD --to STAGE --by SEAT --why "..."
             [--steward-confirms "..."] [--conductor-decision "..."] [--owner-said "..."] [--waits-on "..."] [--json]
+    python3 src/RimMandrake/rimflow/maturation.py next-version MOD --by SEAT --why "..."   the record of VERSION.json's new version
     python3 src/RimMandrake/rimflow/maturation.py spend MOD --stage STAGE --tokens N [--usd X] [--wall-s S] --source RUN
             [--estimate]
         --root DIR   read and write design/concepts under DIR instead of this repo (the selftest's temp tree)
@@ -586,9 +587,97 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         entry.append("- Was, \"Waiting on\": %s" % (old_wait or "none"))
         entry.append("- Record: `%s`." % RECORD)
         jtext = jtext.rstrip("\n") + "\n\n" + "\n".join(entry) + "\n"
-        write_text(root, mod, "journal.md", jtext)
-    write_text(root, mod, RECORD, dump(rec))
+    commit_move(root, mod, rec, jtext)
     return res
+
+
+def _mod_lock(root, mod):
+    import fcntl
+    os.makedirs(mod_dir(root, mod), exist_ok=True)
+    f = open(os.path.join(mod_dir(root, mod), ".stage_move.lock"), "w")
+    fcntl.flock(f, fcntl.LOCK_EX)
+    return f
+
+
+def commit_move(root, mod, rec, jtext=None, extra=None):
+    """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: one move is one locked write. Under the mod's lock the record is
+    written first (a failed record write leaves no journal line), then the journal and any extra {path: text}; a later
+    write that fails puts every file already written back as it was and raises."""
+    lk = _mod_lock(root, mod)
+    try:
+        todo = [(RECORD, dump(rec))] + ([("journal.md", jtext)] if jtext is not None else []) + sorted(
+            (extra or {}).items())
+        done = []
+        try:
+            for p, text in todo:
+                was = read_text(root, mod, p)
+                write_text(root, mod, p, text)
+                done.append((p, was))
+        except Exception:
+            for p, was in reversed(done):
+                if was is None:
+                    try:
+                        os.remove(os.path.join(mod_dir(root, mod), p))
+                    except OSError:
+                        pass
+                else:
+                    write_text(root, mod, p, was)
+            raise
+    finally:
+        lk.close()
+
+
+def _semver(v):
+    m = re.match(r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$", str(v or ""))
+    return (int(m.group(1)), int(m.group(2)), int(m.group(3)), m.group(4) is None) if m else None
+
+
+def next_version(root, mod, by, why):
+    """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: open the record of the version VERSION.json now names. Allowed when the
+    record's version has passed, or VERSION.json names a newer version (the Designer opened it; locked or not). The old
+    record is kept as version/stage_record_<version>.json; the new one starts at the Designer, or at preflight when
+    VERSION.json is already locked (Stage 1's exit). -> {"ok", "why", "from", "to", "stage"}."""
+    rec = load(root, mod)
+    if rec is None:
+        return {"ok": False, "why": "%s has no stage record; seed it first" % mod}
+    v, verr = read_json(root, mod, "version/VERSION.json")
+    if not isinstance(v, dict):
+        return {"ok": False, "why": "version/VERSION.json: %s" % verr}
+    old, new = rec.get("version"), v.get("version")
+    a, b = _semver(old), _semver(new)
+    if b is None:
+        return {"ok": False, "why": "VERSION.json names no semantic version (%r)" % new}
+    if a is not None and b <= a:
+        return {"ok": False, "why": "VERSION.json says %s, not newer than the record's %s: the Designer opens the next "
+                "version in VERSION.json first" % (new, old)}
+    if rec.get("stage") != "passed" and a is not None and b[:3] == a[:3]:
+        return {"ok": False, "why": "the record's %s has not passed" % old}
+    if not CT_txt(why):
+        return {"ok": False, "why": "a version move says why"}
+    t = now_ts()
+    stage = "preflight" if str(v.get("state", "")).startswith("locked") else "designer"
+    keep = "version/stage_record_%s.json" % re.sub(r"[^0-9A-Za-z.-]", "_", str(old))
+    nrec = {"schema": 1, "mod": mod, "version": new, "stage": stage, "stage_label": label(stage), "since": iso(t),
+            "since_from": "next-version by %s" % by, "at_door": False,
+            "seeded": {"at": iso(t), "by": "maturation.py next-version", "from_version": old, "previous": keep},
+            "cycles": {"visit": 0, "total": 0}, "pre_human_arrivals": 0, "spend": [],
+            "moves": [{"from": "%s at %s" % (old, rec.get("stage")), "to": stage, "at": iso(t), "by": by, "why": why,
+                       "version_from": old, "version_to": new}]}
+    jtext = read_text(root, mod, "journal.md")
+    if jtext is not None:
+        when = pac_heading(t)
+        jtext, was = replace_bullet(jtext, "Stage now", "- **Stage now:** %s, since %s (`%s`)." % (LINE[stage], when,
+                                                                                                    RECORD))
+        jtext = jtext.rstrip("\n") + "\n\n" + "\n".join([
+            "### %s, version change: %s to %s (by %s)" % (when, old, new, by), "", "- Why: %s" % why,
+            "- The %s record (at %s) is kept as `%s`." % (old, label(rec.get("stage")), keep),
+            "- Was, \"Stage now\": %s" % (was or "none"), "- Record: `%s`." % RECORD]) + "\n"
+    commit_move(root, mod, nrec, jtext, extra={keep: dump(rec)})
+    return {"ok": True, "why": why, "from": old, "to": new, "stage": stage, "kept": rel(mod, keep)}
+
+
+def CT_txt(x):
+    return isinstance(x, str) and bool(x.strip())
 
 
 # ---- spend -----------------------------------------------------------------------------------------------------------
@@ -2263,6 +2352,10 @@ def main(argv=None):
     a.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     a.add_argument("--waits-on")
     a.add_argument("--json", action="store_true")
+    p = sub.add_parser("next-version")
+    p.add_argument("mod")
+    p.add_argument("--by", required=True)
+    p.add_argument("--why", required=True)
     p = sub.add_parser("spend")
     p.add_argument("mod")
     p.add_argument("--stage", required=True, choices=WORDS)
@@ -2357,6 +2450,12 @@ def main(argv=None):
         else:
             print_refusal(res)
         return 0 if res["ok"] else 1
+    if o.cmd == "next-version":
+        r = next_version(root, o.mod, o.by, o.why)
+        print(("NEXT VERSION %s: %s -> %s, at %s (old record kept as %s)" % (o.mod, r["from"], r["to"], label(r["stage"]),
+                                                                           r["kept"])) if r["ok"] else
+              "REFUSED: %s" % r["why"])
+        return 0 if r["ok"] else 2
     if o.cmd == "spend":
         add_spend(root, o.mod, o.stage, o.tokens, o.usd, o.wall_s, o.source, o.estimate)
         print("SPEND %s %s: %d tokens recorded" % (o.mod, label(o.stage), o.tokens))

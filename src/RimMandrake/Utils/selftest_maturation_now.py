@@ -177,6 +177,16 @@ def p5_planted_changes():
         txt2 = re.sub(r"(\*\*Stage now:\*\*).*", r"\1 Stage 7, pre-human check (planted by the selftest).", txt, count=1)
         check("5 the planted stage line took", txt2 != txt)
         open(j, "w").write(txt2)
+        # RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: the stage record is the stage; a journal line alone does not move it
+        rp = os.path.join(t, "design", "concepts", "ExplosiveKnockback", "version", "stage_record.json")
+        if os.path.exists(rp):
+            mid = mod_of(data_of(t), "ExplosiveKnockback")
+            check("5 a planted journal line alone does not move a mod with a stage record",
+                  mid is not None and mid["column"] == ek["column"] and "stage record" in mid.get("stage_from", ""),
+                  "column %r from %r" % ((mid or {}).get("column"), (mid or {}).get("stage_from")))
+            rec = json.load(open(rp))
+            rec["stage"] = "pre_human"
+            json.dump(rec, open(rp, "w"))
         os.makedirs(os.path.join(t, "design", "concepts", "PlantedMod", "version"))
         json.dump({"mod": "PlantedMod", "version": "0.3.0", "state": "locked"},
                   open(os.path.join(t, "design", "concepts", "PlantedMod", "version", "VERSION.json"), "w"))

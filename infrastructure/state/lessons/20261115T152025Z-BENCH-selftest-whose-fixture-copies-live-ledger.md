@@ -1,0 +1,1 @@
+A selftest whose fixture copies live ledger events by item id goes red when a later event lands on that item (selftest_designer_repin, OWNER:1794748469904049550, 2026-11-15): pin such a fixture to a tsn cutoff.

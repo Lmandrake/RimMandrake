@@ -225,6 +225,8 @@ def main():
         ok(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x")["ok"] is False,
            "offline build back to preflight is no road")
 
+        next_version_main(root)
+
         # ---- a good move: Pyrelands, every bar has a check that runs --------------------------------------------
         jtext0 = read(root, "Pyrelands", "journal.md")
         old_stage = MN.parse_journal(jtext0)["stage"]
@@ -263,6 +265,42 @@ def main():
         ivs, bad_iv = MN.parse_interventions(read(root, "Pyrelands", "journal.md"), "journal")
         ok(any(i["stage"] == "4+5" and i["kind"] == "decision" and "one more cycle" in i["what"] for i in ivs)
            and not bad_iv, "the decision is an intervention line maturation_now parses")
+
+        # RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: a failed record write leaves no journal line
+        jbefore, rbefore = read(root, "Pyrelands", "journal.md"), read(root, "Pyrelands", M.RECORD)
+        real_write = M.write_text
+
+        def failing(r, m, p, text):
+            if p == M.RECORD:
+                raise OSError("disk full (selftest)")
+            return real_write(r, m, p, text)
+        M.write_text = failing
+        try:
+            M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="a write that fails", conductor="selftest: one more")
+            raised = False
+        except OSError:
+            raised = True
+        finally:
+            M.write_text = real_write
+        ok(raised and read(root, "Pyrelands", "journal.md") == jbefore and read(root, "Pyrelands", M.RECORD) == rbefore,
+           "a failed record write raises and leaves the journal and the record as they were")
+        calls_ = []
+
+        def failing_j(r, m, p, text):
+            calls_.append(p)
+            if p == "journal.md":
+                raise OSError("journal write failed (selftest)")
+            return real_write(r, m, p, text)
+        M.write_text = failing_j
+        try:
+            M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="a journal write that fails", conductor="selftest: one more")
+        except OSError:
+            pass
+        finally:
+            M.write_text = real_write
+        ok(read(root, "Pyrelands", M.RECORD) == rbefore and read(root, "Pyrelands", "journal.md") == jbefore
+           and calls_[:2] == [M.RECORD, "journal.md"],
+           "the record is written first; a failed journal write puts the record back (%s)" % calls_[:3])
 
         # hand steps on the later stages
         refused(M.advance(root, "Pyrelands", "in_game", by="BENCH", why="x"), "steward_confirms",
@@ -315,6 +353,31 @@ with open(os.environ["FAKE_DH_LOG"], "a") as f:
 n = len(open(os.environ["FAKE_DH_LOG"]).readlines())
 print("DETACHED rm-detached-bench-fake-%d" % n)
 """
+
+
+def next_version_main(root):
+    """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: next-version moves a passed or newly versioned mod to a new record."""
+    mod = "GimmeSomeSlack"
+    vp = os.path.join(root, "design", "concepts", mod, "version", "VERSION.json")
+    v = json.load(open(vp))
+    old = M.load(root, mod)
+    r = M.next_version(root, mod, "BENCH", "selftest")
+    ok(not r["ok"] and "not newer" in r["why"], "next-version refuses while VERSION.json names the record's version (%s)"
+       % r["why"][:80])
+    v2 = dict(v, version="9.9.9", state="locked 2026-11-15")
+    with open(vp, "w") as f:
+        json.dump(v2, f)
+    r = M.next_version(root, mod, "BENCH", "selftest: the Designer locked 9.9.9")
+    rec = M.load(root, mod)
+    kept = read(root, mod, "version/stage_record_%s.json" % old["version"])
+    ok(r["ok"] and rec["version"] == "9.9.9" and rec["stage"] == "preflight" and rec["cycles"]["total"] == 0
+       and json.loads(kept) == old, "a locked new version: a new record at preflight, the old one kept whole (%s)" % r)
+    ok("version change: %s to 9.9.9" % old["version"] in (read(root, mod, "journal.md") or ""),
+       "the journal says the version moved")
+    ok(MN.read_mod(root, mod, MN.designer_names())["column"] == "2",
+       "the status page reads the stage from the record (preflight, column 2)")
+    with open(vp, "w") as f:
+        json.dump(v, f)
 
 
 def launch_main():
