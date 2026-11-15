@@ -249,7 +249,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if owed == "hand step":
             put("hand_step", "only hand steps are left: %s" % ", ".join(f.get("hand_steps") or []),
                 "hand step %s (%s)" % (", ".join(f.get("hand_steps") or []), "; ".join(
-                    str(v)[:160] for k, v in (f.get("observed") or {}).items() if k in (f.get("hand_steps") or []))))
+                    str(v) for k, v in (f.get("observed") or {}).items() if k in (f.get("hand_steps") or []))))
             continue
         if ids is None:
             put("blind", "the test table cannot be read", "the test table cannot be read; no builder launches on it")
@@ -313,9 +313,9 @@ def file_and_publish(item, title, why):
         rc, out = ing.rimflow("spawn", "--from", ITEM, "--for", "RELENTLESS", "--needs", "offline", "--name", item,
                               "--title", title, "--why", why)
         if rc:
-            return False, "spawn refused: %s" % out[-400:]
+            return False, "spawn refused: %s" % out
         pub = ing.publish(1, message="ledger: maturation dispatch filed %s" % item)
-        return True, "filed %s; publish: %s" % (item, str(pub)[-200:])
+        return True, "filed %s; publish: %s" % (item, str(pub))
     finally:
         lk.close()
 
@@ -354,13 +354,13 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                                                  "stage": "offline_build"})
             s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True}
             s.pop("owed_since", None)
-            row.update(decision="launched", unit=unit, item=item, why=text[:400])
+            row.update(decision="launched", unit=unit, item=item, why=text)
             known.add(item) if isinstance(known, set) else None
             done.append(row)
         else:
-            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed: %s" % text[:300]}
-            row.update(decision="launch_failed", why=text[:400],
-                       need="%s: the launch failed (%s); the step will not retry it on its own" % (mod, text[:200]))
+            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed: %s" % text}
+            row.update(decision="launch_failed", why=text,
+                       need="%s: the launch failed (%s); the step will not retry it on its own" % (mod, text))
     return done
 
 
@@ -409,7 +409,7 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
             REPO, "src", "RimMandrake", "Utils", "maturation_now.py")], capture_output=True, text=True, timeout=600))
         r = regen()
         rd["page"] = "regenerated" if getattr(r, "returncode", 0) == 0 else "page failed: %s" % (
-            (getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))[-300:]
+            (getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))
     return rd
 
 

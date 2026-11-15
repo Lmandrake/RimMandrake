@@ -165,14 +165,14 @@ def _since(hist, col):
     named = [(t, h) for t, h in hist if col in MN.stages_named(h)]
     if named:
         t, h = min(named, key=lambda x: x[0])
-        return t.isoformat(timespec="seconds"), "the earliest journal heading naming it: %s" % h[:120]
+        return t.isoformat(timespec="seconds"), "the earliest journal heading naming it: %s" % h
     i = WORDS.index(WORD_OF_COL[col]) if col in WORD_OF_COL else 0
     if i > 0:
         prev = COL[WORDS[i - 1]]
         named = [(t, h) for t, h in hist if prev in MN.stages_named(h)]
         if named:
             t, h = max(named, key=lambda x: x[0])
-            return t.isoformat(timespec="seconds"), "the end of the stage before it, journal heading: %s" % h[:120]
+            return t.isoformat(timespec="seconds"), "the end of the stage before it, journal heading: %s" % h
     return UNM, "no dated journal heading names it"
 
 
@@ -614,7 +614,7 @@ def next_step(root, mod):
     hand = [r for r in res["verdict"]["refusals"] if r["clause"] in res["hand_steps"]]
     if prog:
         nxt = "NEXT: %s; then maturation.py advance %s --to %s (%s refuses it now: %s)" % (
-            prog[0]["smallest_fix"]["what"], mod, to, prog[0]["clause"], prog[0]["observed"][:300])
+            prog[0]["smallest_fix"]["what"], mod, to, prog[0]["clause"], prog[0]["observed"])
     elif hand:
         flag = {"steward_confirms": "--steward-confirms", "walk_bars_confirmed": "--steward-confirms",
                 "owner_said": "--owner-said",
@@ -888,7 +888,7 @@ def main(argv=None):
         if nx.get("passed"):
             print("  exit tests passing: %s" % ", ".join(nx["passed"]))
         for r in nx["refusals"]:
-            print("  refused %s: %s" % (r["clause"], r["observed"][:400]))
+            print("  refused %s: %s" % (r["clause"], r["observed"]))
         print("  launch: %s" % nx.get("launch", "none"))
         print(nx["next"])
         return 0

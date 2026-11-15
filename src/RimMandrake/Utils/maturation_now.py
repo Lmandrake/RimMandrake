@@ -383,7 +383,7 @@ def live_facts(mods):
         out["intake"] = len(n["awaiting_designer"])
         out["questions"] = n["lines"]
     except Exception as e:      # noqa: BLE001  a ledger it cannot read leaves these fields UNMEASURED, named
-        out["errors"].append("ledger: %s: %s" % (e.__class__.__name__, str(e)[:160]))
+        out["errors"].append("ledger: %s: %s" % (e.__class__.__name__, str(e)))
     try:
         import detached_helper as DH  # noqa: E402
         recs = []
@@ -393,7 +393,7 @@ def live_facts(mods):
             recs.append(rec)
         out["records"] = recs
     except Exception as e:      # noqa: BLE001
-        out["errors"].append("run records: %s: %s" % (e.__class__.__name__, str(e)[:160]))
+        out["errors"].append("run records: %s: %s" % (e.__class__.__name__, str(e)))
     return out
 
 
@@ -766,7 +766,7 @@ def dispatch_needs(now, errors):
         import maturation_dispatch as MD  # noqa: E402
         rd, _ = read_json(os.path.join(MD.sdir(), "reading.json"))
     except Exception as e:      # noqa: BLE001
-        errors.append("dispatch step reading: %s: %s" % (e.__class__.__name__, str(e)[:160]))
+        errors.append("dispatch step reading: %s: %s" % (e.__class__.__name__, str(e)))
         return []
     if not isinstance(rd, dict):
         return ["The Dispatch step (maturation_dispatch.py) has no reading yet: nothing launches offline builders"]
