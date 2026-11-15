@@ -58,6 +58,25 @@ def main():
     check(st == "PASS", "the scene passes when every row passes (%s)" % st)
     st, _ = validation.scene_verdict("sc_cords_under_items", rows[:-1], want=list(scene_rows.UNDER_ROWS))
     check(st == "UNMEASURED", "a missing row (the pit) leaves the scene unmeasured (%s)" % st)
+    # the scenes.json entry (written 2026-11-14 for his card "the cords bar gets a scene"): contract-valid, its own rows decide it
+    import json
+    repo = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+    concept = os.path.join(repo, "design", "concepts", "GimmeSomeSlack")
+    sys.path.insert(0, os.path.join(repo, "src", "RimMandrake", "rimflow"))
+    import concept_tree  # noqa: E402
+    import designer_stage  # noqa: E402
+    scn = json.load(open(os.path.join(concept, "scenes.json"), encoding="utf-8"))
+    mine = [s for s in scn["scenes"] if s.get("id") == "sc_cords_under_items"]
+    check(len(mine) == 1, "scenes.json holds sc_cords_under_items once (%d)" % len(mine))
+    errs = designer_stage.scene_errors(scn, concept_tree.load(concept), repo)
+    check(not errs, "scenes.json with the entry meets the scene contract against the tree (%s)" % "; ".join(errs))
+    check(designer_stage.entry_point_exists(repo, (mine or [{}])[0].get("entry_point")), "its entry point is in validation.py")
+    check(validation.scene_rows_for("sc_cords_under_items") == list(scene_rows.UNDER_ROWS),
+          "its verdict reads UNDER_ROWS only, not every drawing_true_to_grid row")
+    check(any(c.get("capability") == "cords_draw_under_things" and "sc_cords_under_items" in c.get("by", [])
+              for c in scn.get("coverage_rest") or []), "coverage_rest covers cords_draw_under_things by it")
+    bad = dict(mine[0], control={"case": "x"}) if mine else {}
+    check(bool(designer_stage.scene_errors({"scenes": [bad]}, None, repo)), "planted: the entry without a full control is refused")
     print("FAIL" if fails else "PASS")
     return 1 if fails else 0
 

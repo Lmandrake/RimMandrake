@@ -2253,12 +2253,17 @@ SCENE_EXTRA_ROWS = {   # scenes with no requirement leaf, or rows the leaf map d
     "sc_shock_restring": ["SC_splicer_spared_bystander_shocked", "M15e_restring_is_a_colonist_job"],
     "sc_removal_consequence": ["M9*"],
 }
+# scenes decided by their own rows only, not every row of their requirement leaf (a northstar/scene_rows list name)
+SCENE_OWN_ROWS = {"sc_cords_under_items": "UNDER_ROWS"}
 
 
 def scene_rows_for(sid, scenes=None, row_leaves=None):
     """The row ids (a trailing * is a prefix) that decide scene `sid`."""
     import json as _json
     sys.path.insert(0, os.path.join(HERE, "northstar"))
+    if sid in SCENE_OWN_ROWS:
+        import scene_rows
+        return list(getattr(scene_rows, SCENE_OWN_ROWS[sid]))
     if row_leaves is None:
         import proof_leaves
         row_leaves = proof_leaves.ROW_LEAVES
@@ -2301,15 +2306,12 @@ def scene_conduit_invisible(B, V, rows):
     return _scene_row("sc_conduit_invisible", B, V, rows)
 
 def scene_cords_under_items(B, V, rows):
-    """sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14; scene owed Stage 3, not in the locked scenes.json):
-    decided by its own rows, northstar/scene_rows.UNDER_ROWS, which proof_all's scenes block stages (scene_rows.cords_under_items).
+    """scenes.json sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14: "the cords bar gets a scene"):
+    decided by its own rows, northstar/scene_rows.UNDER_ROWS (SCENE_OWN_ROWS), which proof_all's scenes block stages (scene_rows.cords_under_items).
     UNRUN until Stage 6: python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\proof_all.py --live --no-shots (tier
     gimmesomeslack_flowworks for its pit row), then validation.py --scenes-from <proof result json>."""
     sys.path.insert(0, os.path.join(HERE, "northstar"))
-    import scene_rows
-    status, detail = scene_verdict("sc_cords_under_items", rows, want=list(scene_rows.UNDER_ROWS))
-    V.row(rows, "SCENE_sc_cords_under_items", status, "MOD" if status in ("PASS", "FAIL") else "HARNESS", detail)
-    return status
+    return _scene_row("sc_cords_under_items", B, V, rows)
 
 def scene_cords_slack(B, V, rows):
     """scenes.json sc_cords_slack: its rows of the one dense live proof decide it (scene_verdict)."""
@@ -2422,12 +2424,6 @@ def scenes_from(path):
         status, detail = scene_verdict(sc["id"], rows)
         bad += status != "PASS"
         print("%-24s %-10s %s" % (sc["id"], status, ", ".join("%s=%s" % (k, "/".join(v)) for k, v in detail["rows"].items())))
-    sys.path.insert(0, os.path.join(HERE, "northstar"))
-    import scene_rows   # scenes owed after the lock, decided by their own rows (not in the locked scenes.json)
-    for sid, want in (("sc_cords_under_items", scene_rows.UNDER_ROWS),):
-        status, detail = scene_verdict(sid, rows, want=list(want))
-        bad += status != "PASS"
-        print("%-24s %-10s %s" % (sid, status, ", ".join("%s=%s" % (k, "/".join(v)) for k, v in detail["rows"].items())))
     return 1 if bad else 0
 
 

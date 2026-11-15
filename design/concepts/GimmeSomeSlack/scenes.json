@@ -186,6 +186,37 @@
    "hold": "immediate"
   },
   {
+   "id": "sc_cords_under_items",
+   "kind": "acceptance",
+   "requirement": [
+    "drawing_true_to_grid"
+   ],
+   "bar": "cords_draw_under_things",
+   "source": [
+    "OWNER:1794693278631337978",
+    "OWNER:1794721009209581159",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#34",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md#36",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md#16"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_cords_under_items",
+   "start": [
+    "quicktest colony, the scene rect cleared and dry, floored (asserted by the probe rebuild before any read)",
+    "a battery-fed floor conduit run with a battery standing on its first cell, a stack of 75 steel and a bed lying across it, and a three-way junction with 40 steel on the joint (asserted: under: reads a cord, and the junction cell a piece, on each of those cells)",
+    "for the pit row only: tier gimmesomeslack_flowworks, a FlowWorks pit dug over a conduit run, a battery on its floor, the pit filled"
+   ],
+   "action": "read the probe's under:x,z at the battery, steel stack, bed and junction cells (scene_rows.cords_under_items), and at the battery's cell in the filled pit",
+   "expect": "on every such cell the cord (the junction piece on the joint) draws beneath what stands on it: its altitude below the thing's and its render queue no later than the thing's (scene_rows.under_verdict PASS on SC_under_battery_dry, SC_under_item_stack_dry, SC_under_furniture_dry, SC_under_junction_piece_dry, SC_under_liquid_pit); in the pit the battery also draws above the cord under the liquid",
+   "control": {
+    "case": "planted under: readings (northstar/selftest_gss_cords_under_items.py): a cord drawn above a steel stack, a battery queued before the strand, a junction piece queued after the steel, a cell with no cord",
+    "expect": "the first three FAIL by name (drawnUnderCord lists the thing); a cell with no cord or no piece is UNMEASURED, never a pass",
+    "rules_out": "a read that passes any cell holding a cord and a thing whatever their draw order, or passes a cell because no cord is drawn there at all"
+   },
+   "restore": "destroy every thing on the scene rect (jawa/destroy_batch, categories All) and restore terrain from the snapshot recorded at scene-begin; for the pit row, refill the pit cells to the recorded terrain",
+   "hold": "immediate"
+  },
+  {
    "id": "sc_cut_ends",
    "kind": "acceptance",
    "requirement": [
@@ -715,6 +746,14 @@
     "shock_reach_setting"
    ],
    "why": "a three-way switch read across two crossings, not a play moment"
+  },
+  {
+   "capability": "cords_draw_under_things",
+   "by": [
+    "sc_cords_under_items",
+    "drawing_true_to_grid"
+   ],
+   "why": "a draw-order read at five cells, no play moment a showcase would be built round; its own scene decides it. Added after the lock by his card 2026-11-14 (OWNER:1794721009209581159: the cords bar gets a scene)"
   }
  ]
 }
