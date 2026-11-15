@@ -1397,13 +1397,65 @@ def test_ash_control_and_herd_drive_2026_10_14():
           and giants.count("JobFor(") >= 3 and "RM_BurnKernel.FollowBurnDecision(" in giants)
     herd = src.split("def herd_follows_drive")[1].split("\ndef ")[0]
     check("the herd row is a drive now, not the UNMEASURED stub", "no drive yet" not in src and "BackdateBurnHistory" in herd)
-    check("the herd row steps one short window, never two days", "_wait(t, HERD_STEP_TICKS)" in herd and "HERD_LAG_TICKS)" not in
-          "".join(ln for ln in herd.splitlines() if "_wait(" in ln) and v.HERD_STEP_TICKS <= 5000)
+    check("the herd row steps one short window, never two days", "HERD_LAG_TICKS)" not in
+          "".join(ln for ln in herd.splitlines() if "_wait(" in ln) and v.HERD_STEP_MAX_TICKS < v.HERD_LAG_TICKS)
     check("the ullai chain tears down its fires and settings", "@_teardown(fire=True)\ndef ullai_and_giant" in src)
 
     hook = open(os.path.join(HERE, "Source", "FireEcologyHook.cs"), encoding="utf-8").read()
     check("the scorch-fruit roll set is per map, never a static HashSet (a reload re-issues fire ids)",
           "static readonly HashSet<int> rolledFires" not in hook and "RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)" in hook)
+
+
+def test_herd_window_from_measured_pace_2026_11_15():
+    """RIMMANDRAKE_PACE_HERD_WINDOW_FROM_MEASURED_SAND_SPEED (Pyrelands visit 1, 2026-11-15): the motion step was a fixed
+    2,500 ticks on the premise "Walk urgency covers ~100 cells in it"; measured ~19 cells per 1,000 ticks on deep ash (Odyssey
+    sand depth) and the row read UNMEASURED while the herd walked to A. The window now comes from the ullai's own pace,
+    measured on the site, and the row still fails on a herd whose giver goes to B."""
+    v = _load_validation("pyre_validation_herd_pace")
+    A, B, start = v.PAD_HERD_OLD, v.PAD_HERD_NEW, v.HERD_SPAWN
+    a0 = v._dist(start, A)
+    before = dict(("u%d" % i, (start[0] + i, start[1])) for i in range(10))
+    walked = dict(("u%d" % i, (x, z - 19.0)) for i, (x, z) in enumerate(before.values()))
+    walked["u0"] = before["u0"]                        # no reachable cell: never moved
+    walked["u1"] = (before["u1"][0] + 3, before["u1"][1])   # a short shade dash
+    pace, why = v.herd_pace(before, walked, 1000)
+    check("herd_pace is the median walker's cells per tick (19 cells / 1000 ticks)", pace is not None and abs(pace - 0.019) < 1e-9, why)
+    check("herd_pace refuses a herd that never moved (None, never a guessed pace)", v.herd_pace(before, before, 1000)[0] is None)
+    check("herd_pace refuses unread positions", v.herd_pace(before, {}, 1000)[0] is None
+          and v.herd_pace({}, {}, 1000)[0] is None)
+    check("herd_pace ignores a pawn read at only one end", v.herd_pace(dict(before, gone=(0, 0)), walked, 1000)[0] == pace)
+    w, why = v.herd_window(a0, 0.019)
+    need = v.HERD_MIN_CLOSE * a0 / 0.019
+    check("the measured sand pace gives a window that covers min_close with the margin",
+          w is not None and w >= need * v.HERD_PACE_MARGIN and w <= v.HERD_STEP_MAX_TICKS, (w, need, why))
+    check("the old 2,500-tick step was too short at the measured pace", w > 2500, w)
+    check("a faster pace gives a shorter window", v.herd_window(a0, 0.04)[0] < w)
+    check("an unread or zero pace gives no window", v.herd_window(a0, None)[0] is None and v.herd_window(a0, 0.0)[0] is None)
+    check("a pace too slow for the cap gives no window (never a clipped one)", v.herd_window(a0, 0.001)[0] is None)
+    check("the window is never two days", v.HERD_STEP_MAX_TICKS < v.HERD_LAG_TICKS)
+
+    def walk(target, ticks, pace=0.019, share=0.7):
+        """The centroid after `ticks` when `share` of the herd walks at `pace` straight at `target` (the rest held back)."""
+        d = v._dist(start, target)
+        step = min(d, pace * ticks) * share
+        return (start[0] + (target[0] - start[0]) * step / d, start[1] + (target[1] - start[1]) * step / d)
+    check("a herd walking to A at the measured pace passes in the paced window (7 of 10 walking)",
+          v.herd_verdict(start, walk(A, w), A, B)[0], v.herd_verdict(start, walk(A, w), A, B)[1])
+    check("the same herd failed the old 2,500-tick window (the visit-1 misread, reproduced)",
+          not v.herd_verdict(start, walk(A, 2500), A, B)[0])
+    check("a herd whose giver goes to B fails in the paced window", not v.herd_verdict(start, walk(B, w), A, B)[0],
+          v.herd_verdict(start, walk(B, w), A, B)[1])
+    check("a herd that stood still through the paced window fails", not v.herd_verdict(start, start, A, B)[0])
+
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    herd = src.split("def herd_follows_drive")[1].split("\ndef ")[0]
+    check("the drive measures the pace on the site before it sizes the window",
+          "herd_pace(" in herd and "herd_window(" in herd
+          and herd.index("_wait(t, HERD_PACE_SAMPLE_TICKS)") < herd.index("herd_pace(") < herd.index("herd_window("))
+    check("the motion wait is the paced window, not a constant", "_wait(t, HERD_STEP_TICKS)" not in herd
+          and "HERD_STEP_TICKS" not in src)
+    check("no pace or no window is a verdict, never a fallback step",
+          herd.count("_fail(") + herd.count("_unmeasured(") >= 8 and "the ullai pace" in herd)
 
 
 def test_furnace_heat_and_sleep_2026_11_08():
@@ -1657,7 +1709,8 @@ def main():
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
-              test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15,
+              test_ash_control_and_herd_drive_2026_10_14, test_herd_window_from_measured_pace_2026_11_15,
+              test_heat_guard_2026_10_15,
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
               test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15):
         try:

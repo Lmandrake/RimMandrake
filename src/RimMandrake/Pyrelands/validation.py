@@ -115,7 +115,10 @@ HERD_SIZE = 10
 HERD_RACE = "RM_Ullai"
 HERD_LAG_TICKS = 2 * 60000      # RM_FollowBurnExtension.lagDays 2 (Defs/ThingDefs_Races/RM_Ullai.xml)
 HERD_HISTORY_INTERVAL = 2500    # MapComponent_BurnLine.BurnHistoryIntervalTicks
-HERD_STEP_TICKS = 2500          # the one short step the herd walks (Walk urgency covers ~100 cells in it)
+HERD_PACE_SAMPLE_TICKS = 1000   # the herd's first stretch, read per ullai: its pace on deep ash, measured on the site
+HERD_PACE_MARGIN = 2.0          # the centroid lags the walkers: one with no reachable cell, a RM_ShadeDash at noon (visit 1)
+HERD_STEP_MAX_TICKS = 15000     # the paced window's ceiling (a quarter day); a pace that needs more is a verdict, never a clip
+HERD_STEP_ROUND = 250           # the window is rounded up to this
 HERD_MIN_CLOSE = 0.3            # share of its start distance to A the herd centroid must close in that step
 HERD_ANCHOR_TOL = 8             # cells: the recorded centroid of an 8x8 burn sits inside it
 BURN_LINE = "RimMandrake.Pyrelands.MapComponent_BurnLine"
@@ -2493,6 +2496,51 @@ def herd_verdict(start, end, a, b, min_close=HERD_MIN_CLOSE):
     return True, why
 
 
+def herd_pace(before, after, ticks):
+    """RIMMANDRAKE_PACE_HERD_WINDOW_FROM_MEASURED_SAND_SPEED: one ullai's pace on the site, in cells per tick: the median
+    straight-line displacement over `ticks` of every ullai read at both ends ({id: (x, z)}). The median is the walker's
+    pace when a few are held back (no reachable cell) or dash for shade. -> (pace or None, why); None when nothing was read
+    at both ends or no ullai moved, never a guessed pace. Visit 1 (2026-11-15) measured ~19 cells per 1,000 ticks on deep ash
+    (Odyssey sand depth since 2026-11-08); the old fixed step assumed ~100 cells per 2,500."""
+    both = sorted(k for k in before if k in after)
+    if not both or not ticks:
+        return None, "ullai read at both ends of the pace sample: %d of %d" % (len(both), len(before))
+    d = sorted(_dist(before[k], after[k]) for k in both)
+    n = len(d)
+    med = d[n // 2] if n % 2 else (d[n // 2 - 1] + d[n // 2]) / 2.0
+    why = "%d ullai over %d ticks: cells moved %s, median %.1f" % (n, ticks, [round(x, 1) for x in d], med)
+    if med <= 0:
+        return None, why + " (no ullai walked)"
+    return med / float(ticks), why + " -> %.4f cells/tick" % (med / float(ticks))
+
+
+def herd_window(a0, pace, min_close=HERD_MIN_CLOSE, margin=HERD_PACE_MARGIN, cap=HERD_STEP_MAX_TICKS):
+    """The motion window in ticks: closing min_close of a0 (the centroid's start distance to A) at the measured `pace`,
+    times the margin, rounded up to HERD_STEP_ROUND. -> (ticks or None, why); None for an unread or zero pace, and for a
+    pace too slow to close within `cap` (never a clipped window)."""
+    if not pace or pace <= 0:
+        return None, "no measured pace (%r)" % (pace,)
+    need = min_close * a0 / pace
+    w = int(-(-need * margin // HERD_STEP_ROUND) * HERD_STEP_ROUND)
+    why = "close %.0f%% of %.1f cells at %.4f cells/tick: %.0f ticks x %.1f margin -> %d" % (
+        100 * min_close, a0, pace, need, margin, w)
+    if w > cap:
+        return None, why + " > the %d-tick ceiling" % cap
+    return w, why
+
+
+def _herd_positions(t, ids):
+    """{id: (x, z)} of the spawned herd, from one site_state read (every spawned pawn on the map)."""
+    r = t.bridge_call("jawa/site_state")
+    if not _live(t):
+        return {}
+    want, out = set(ids), {}
+    for p in ((r or {}).get("pawns") or []):
+        if p.get("id") in want and p.get("x") is not None and p.get("z") is not None:
+            out[p["id"]] = (float(p["x"]), float(p["z"]))
+    return out
+
+
 def _burn_history(t, ticks_ago=HERD_LAG_TICKS):
     r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeBurnHistory", args=str(ticks_ago))
     if not _live(t):
@@ -2558,7 +2606,9 @@ def herd_follows_drive(t):
         BackdateBurnHistory), burn B recorded fresh; BurnCenterAgo(2 days) must answer A, with B in the history too.
       2 decision (MEASURED): RM_JobGiver_FollowBurn.ProbeHerd reads the giver's own decision for every wild ullai with the
         chance roll set aside: all far from A must go to A; issue=true starts those jobs.
-      3 motion (MEASURED): one short step (HERD_STEP_TICKS); the herd centroid closes on A (herd_verdict).
+      3 motion (MEASURED): the herd's first HERD_PACE_SAMPLE_TICKS give one ullai's pace on deep ash (herd_pace); the
+        window is sized from it (herd_window, RIMMANDRAKE_PACE_HERD_WINDOW_FROM_MEASURED_SAND_SPEED: a fixed 2,500 ticks
+        assumed ~100 cells, the sand walks ~48); the herd centroid closes on A over the window (herd_verdict).
       4 cadence (INFERRED): the giver's chance roll (chancePerCheck 0.04 a think) is skipped; that the herd reaches A by
         itself within two days is inferred from 1-3 plus that cadence, never stepped."""
     if not _live(t):
@@ -2582,8 +2632,7 @@ def herd_follows_drive(t):
             _fail("BurnCenterAgo(2 days) is %r, not burn A %r (burn B %r is the newest sample %r)"
                   % (h.get("ago"), PAD_HERD_OLD, PAD_HERD_NEW, h.get("newest")))
         hx, hz = HERD_SPAWN
-        for i in range(HERD_SIZE):
-            _spawn_wild(t, HERD_RACE, hx + (i % 5) - 2, hz + (i // 5) * 2 - 1)
+        ids = [_spawn_wild(t, HERD_RACE, hx + (i % 5) - 2, hz + (i // 5) * 2 - 1) for i in range(HERD_SIZE)]
         d = _probe_herd(t, issue=True)
         _note(t, "the giver's decision per wild ullai (chance roll set aside) and the jobs it started", d)
         n = int(d.get("n", 0))
@@ -2597,12 +2646,27 @@ def herd_follows_drive(t):
         if int(d.get("issued", 0)) < 0.8 * n:
             _fail("the giver found a target cell for only %s of %d: %r" % (d.get("issued"), n, d))
         start = (float(d["cx"]), float(d["cz"]))
-        _wait(t, HERD_STEP_TICKS)
+        p0 = _herd_positions(t, ids)
+        _wait(t, HERD_PACE_SAMPLE_TICKS)
+        p1 = _herd_positions(t, ids)
+        if not _live(t):
+            return
+        if len(p0) < HERD_SIZE // 2 or len(p1) < HERD_SIZE // 2:
+            _unmeasured(t, "the ullai pace: site_state read %d then %d of %d spawned ullai" % (len(p0), len(p1), HERD_SIZE))
+        pace, pwhy = herd_pace(p0, p1, HERD_PACE_SAMPLE_TICKS)
+        if pace is None:
+            _fail("the ullai pace on deep ash is unmeasurable with jobs issued to A: " + pwhy)
+        window, wwhy = herd_window(_dist(start, PAD_HERD_OLD), pace)
+        _note(t, "the ullai pace on deep ash, measured on the site, and the motion window it sizes",
+              {"pace": pwhy, "window": wwhy})
+        if window is None:
+            _fail("the ullai pace on deep ash is too slow for the herd to close on A: %s; %s" % (pwhy, wwhy))
+        _wait(t, max(0, window - HERD_PACE_SAMPLE_TICKS))
         e = _probe_herd(t, issue=False)
         end = (float(e.get("cx", -1)), float(e.get("cz", -1))) if int(e.get("n", 0)) > 0 else None
         ok, why = herd_verdict(start, end, PAD_HERD_OLD, PAD_HERD_NEW)
-        _note(t, "herd motion over %d ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two "
-                 "days; never stepped)" % HERD_STEP_TICKS, {"start": d, "end": e, "verdict": why})
+        _note(t, "herd motion over the paced %d ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced "
+                 "within two days; never stepped)" % window, {"start": d, "end": e, "pace": pwhy, "verdict": why})
         if not ok:
             _fail("the herd did not close on the two-day-old burn: " + why)
         t.screenshot()
