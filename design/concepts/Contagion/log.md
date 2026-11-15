@@ -16,3 +16,12 @@ His words: "I would like to move the grown limb work to the next version, not th
 - d_efa_q04, d_efa_q05, d_efa_q08: certified, recorded as his rulings.
 - d_efa_q07: deleted. The grown-limb work moves to 0.2.0; the five limbs and limb removal are scope `later`.
 - Inbound reference fixed (BENCH helper, 2026-11-15 ~12:25 PM PST): ask q07 answered `d_efa_q07`, a decision this note deleted; it now reads `d_limbs_next_version` with source OWNER:1794772416196929336 (his note above, by reference).
+
+## 2026-11-15 ~12:35 PM PST, run rm-role-designer-1794774283, stage 2: no ask sent
+
+Every contradiction settled from his words and the source, under the Evidence-for-Ask rule (logged OWNER:1794774451598713765, per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME):
+- c_local: settled by his certified d_efa_q04 and d_one_dash (whole-map Burn stays; the dash is one crossing between refuges at a cost).
+- c_canopy -> d_burn_refuge_is_geometry: a refuge is what the shared shade geometry calls shade (his 2026-10-19 geometry ruling).
+- c_sundash -> d_bloom_quiets_sundash: the sun-escape trigger reads the weather factor heat already reads; fix filed RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES.
+- c_dive, c_bodyprints -> d_dive_bodyprints_stay: both stay in 0.1.0 per his 2026-10-16 card.
+- c_proof, c_readability, c_coalescence_reach, c_open_fixes, c_docs: proof and doc work for stage 3, not design.

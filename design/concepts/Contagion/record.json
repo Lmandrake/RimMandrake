@@ -185,6 +185,49 @@
    "source": "OWNER:1794772416196929336",
    "date": "2026-11-15",
    "what": "The grown-limb work (what a grown limb costs, its tuning and testing) is not in Design Version 0.1.0. It moves to 0.2.0 as a Divergent item with its acceptance test. The limbs stay built; 0.1.0 does not design or judge their costs."
+  },
+  {
+   "kind": "delegated",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "date": "2026-11-15",
+   "run": "rm-role-designer-1794774283",
+   "id": "d_burn_refuge_is_geometry",
+   "source": [
+    "OWNER:1794774451598713765",
+    "OWNER:1792410159931371546",
+    "src/RimMandrake/Contagion/Source/RM_ContagionSkyExtension.cs:95"
+   ],
+   "what": "A Burn refuge is whatever the shared shade geometry (RM_MapComponent_ShadeGrid) calls shade: a roof, canopy shade a tree actually casts, water. The Burn's own exact-cell tree test is replaced, not kept beside it. Why nothing argues against: his ruling (shade is a pure function of geometry, no biome-specific sun)."
+  },
+  {
+   "kind": "delegated",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "date": "2026-11-15",
+   "run": "rm-role-designer-1794774283",
+   "id": "d_bloom_quiets_sundash",
+   "source": [
+    "OWNER:1794774451598713765",
+    "ITEM:CONTAGION_SUNDASH_DECIDE_UNDER_THE_BLOOM",
+    "ITEM:RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHop.cs"
+   ],
+   "what": "Under the standing Bloom natives do not sun-dash: the sun-escape trigger reads the same weather-scaled exposure sun heat already reads (sunExposureFactor on the WeatherDef, every biome). Between Burns the only flight from the light is the Dive before a Burn, so who flees what stays readable."
+  },
+  {
+   "kind": "delegated",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "date": "2026-11-15",
+   "run": "rm-role-designer-1794774283",
+   "id": "d_dive_bodyprints_stay",
+   "source": [
+    "OWNER:1794774451598713765",
+    "OWNER:1792162786418789127",
+    "ITEM:CONTAGION_GPT_ENRICHMENT_1"
+   ],
+   "what": "The anticipatory pre-Burn Dive and the phased Bodyprints are current Design Version 0.1.0 work (owed builds), per his card 2026-10-16 'keep both in'. He moved only the grown limbs out of 0.1.0, by name."
   }
  ],
  "asks": [
@@ -1764,7 +1807,14 @@
    "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
    "status": "unresolved_build_gap",
    "text": "Pre-Burn anticipatory Dive remains promised; current pressure damages then orders a reactive dive. Draftprint Part 1 historical pass is not completion of all enrichment parts.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": true,
+   "resolved": true,
+   "resolution": "Resolved, delegated (d_dive_bodyprints_stay): the pre-Burn Dive stays in 0.1.0 as an owed build; it is one of the warning signs demonstration A leads with.",
+   "resolved_by": [
+    "d_dive_bodyprints_stay"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_bodyprints",
@@ -1772,7 +1822,14 @@
    "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
    "status": "unresolved_build_gap",
    "text": "Phased bodyprints, physical reabsorption and final corpse-print scans absent across src C#/XML. Slime and mulch are readable remains but not the promised sequence.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": false,
+   "resolved": true,
+   "resolution": "Resolved, delegated (d_dive_bodyprints_stay): the phased Bodyprints stay in 0.1.0 as an owed build; not a core leaf of demonstration A.",
+   "resolved_by": [
+    "d_dive_bodyprints_stay"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_canopy",
@@ -1780,7 +1837,14 @@
    "source": "src/RimMandrake/Contagion/Source/RM_ContagionSkyExtension.cs:95",
    "status": "unresolved_integration",
    "text": "Burn uses a tree only at the pawn's exact cell. Visible canopy and shared Sun and Shade geometry are not used; Rawshade living canopy is designed, not built.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": true,
+   "resolved": true,
+   "resolution": "Resolved, delegated (d_burn_refuge_is_geometry): a Burn refuge is what the shared shade geometry calls shade, not a tree on the exact cell. Owed build in 0.1.0.",
+   "resolved_by": [
+    "d_burn_refuge_is_geometry"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_local",
@@ -1788,7 +1852,16 @@
    "source": "design/validation_walks/RimMandrake/Contagion.md",
    "status": "resolved_as_agent_guess_conflict",
    "text": "Walk's local cleared patch is explicitly a guess; code forces a whole-map condition. No owner radius ruling located. Ask about honest consequences/communication, not removing the built map effect.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": true,
+   "resolved": true,
+   "resolution": "Resolved by his certified decisions d_efa_q04 and d_one_dash: the Burn stays whole-map; the dash is one purposeful crossing or brief rescue between refuges during a Burn, and its cost is Burn harm plus stronger Contagion-touched exposure; the Repulsor warns honestly before it starts. Stage 3 scenes the dash (d_q02_first_demo) and the review stops on a lockdown with no purposeful dash.",
+   "resolved_by": [
+    "d_efa_q04",
+    "d_one_dash",
+    "d_q02_first_demo"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_proof",
@@ -1796,7 +1869,11 @@
    "source": "infrastructure/state/ledger/events/BENCH.jsonl",
    "status": "unresolved_proof",
    "text": "Nov 6 native-harm verification FAIL; broad run/classification pass and closed first-script history do not establish native harm accepted.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": false,
+   "resolved": true,
+   "resolution": "Not a design question: native Burn harm is a does-line (the open is deadly to natives too, except the armored and leakers); its proof is a stage 3 scene and floor line, and the 2026-11-06 FAIL must be re-measured there.",
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_docs",
@@ -1804,7 +1881,11 @@
    "source": "src/RimMandrake/Contagion/About/About.xml",
    "status": "historical_prose",
    "text": "About/walk contain stale no-dependency/worldgen/unbuilt/live-owed assertions; current project references EnvironmentalHazards and compiles substantial mechanics. Do not restate old comments as current truth.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": false,
+   "resolved": true,
+   "resolution": "Not a design question: stale About/walk text is a correction owed before the Lock; stage 3's plan names it.",
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_readability",
@@ -1812,7 +1893,11 @@
    "source": "ITEM:CONTAGION_REVIEW_STAGE_JUDGE_LOOKS_FIRST",
    "status": "unresolved_proof",
    "text": "Actual tell motion, sky change, stage sprites, cast density and all limb facings remain visual review work; no acceptance inferred from textures on disk.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "core": false,
+   "resolved": true,
+   "resolution": "Not a design question: the looks are stage 3 showcase scenes judged by a judge agent first (CONTAGION_REVIEW_STAGE_JUDGE_LOOKS_FIRST).",
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_sundash",
@@ -1822,7 +1907,14 @@
     "ITEM:CONTAGION_SUNDASH_DECIDE_UNDER_THE_BLOOM",
     "OWNER:1792410159931371546"
    ],
-   "text": "Under the standing Bloom (no Burn) CreatureBehaviors' sun escape still sends Unfinished dashing for shade, because RM_Contagion carries RM_SunHeatExtension; the fiction says the sky is covered until the Burn. His geometry ruling forbids a biome-specific sun, so the open question is whether weather cover reduces Direct Sun everywhere, not a Contagion exception."
+   "text": "Under the standing Bloom (no Burn) CreatureBehaviors' sun escape still sends Unfinished dashing for shade, because RM_Contagion carries RM_SunHeatExtension; the fiction says the sky is covered until the Burn. His geometry ruling forbids a biome-specific sun, so the open question is whether weather cover reduces Direct Sun everywhere, not a Contagion exception.",
+   "core": true,
+   "resolved": true,
+   "resolution": "Resolved, delegated (d_bloom_quiets_sundash): the weather factor already scales sun heat; only the sun-escape trigger ignores it. Fix filed RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES.",
+   "resolved_by": [
+    "d_bloom_quiets_sundash"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_coalescence_reach",
@@ -1831,7 +1923,14 @@
    "source": [
     "ITEM:COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE"
    ],
-   "text": "The 2026-10-23 sweep read the Coalescence stuck at Stage 1 (6 of 6 Unfinished never reached the ring); the item sits at verify since 2026-11-07, so absorption is not shown current."
+   "text": "The 2026-10-23 sweep read the Coalescence stuck at Stage 1 (6 of 6 Unfinished never reached the ring); the item sits at verify since 2026-11-07, so absorption is not shown current.",
+   "core": false,
+   "resolved": true,
+   "resolution": "Design settled by d_efa_q08; whether absorption works today is proof, scened at stage 3 after COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE's verify.",
+   "resolved_by": [
+    "d_efa_q08"
+   ],
+   "resolved_in": "rm-role-designer-1794774283"
   },
   {
    "id": "c_open_fixes",
@@ -1846,7 +1945,11 @@
     "ITEM:CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS",
     "ITEM:CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK"
    ],
-   "text": "Seven review-filed fix items (2026-10-17/30) are still open on the ledger, while the Codex read of the source (2026-11-09) describes inject interruption and moving-host reach checks and a normal-ticking Wombpod sac as built. Either the fixes landed without closing their items or the read is wrong; stage 3 must know which before scening inject or the Wombpod."
+   "text": "Seven review-filed fix items (2026-10-17/30) are still open on the ledger, while the Codex read of the source (2026-11-09) describes inject interruption and moving-host reach checks and a normal-ticking Wombpod sac as built. Either the fixes landed without closing their items or the read is wrong; stage 3 must know which before scening inject or the Wombpod.",
+   "core": false,
+   "resolved": true,
+   "resolution": "Not a design question: stage 3 reads the seven fix items against src before scening inject or the Wombpod, and closes or re-measures each.",
+   "resolved_in": "rm-role-designer-1794774283"
   }
  ],
  "script_audit": [
