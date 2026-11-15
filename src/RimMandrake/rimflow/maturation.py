@@ -944,6 +944,23 @@ def _rcs(v):
 PLACEHOLDER = re.compile(r"<[A-Za-z][\w .,/-]*>")
 
 
+def fault_class(x):
+    """-> a faults.json record's class: `class`, or `cls` (FlowWorks cycle 1 wrote it so); '' when neither is set."""
+    return str(x.get("class") or x.get("cls") or "")
+
+
+def _polish_rows(faults, ids):
+    """-> {lane-1 row id: Polish fault id} for each row of ids that a Polish fault names in its `evidence`."""
+    out = {}
+    for x in faults:
+        if isinstance(x, dict) and fault_class(x).startswith("Polish"):
+            ev = " ".join(str(e) for e in (x.get("evidence") if isinstance(x.get("evidence"), list) else [x.get("evidence")]))
+            for i in ids:
+                if i not in out and re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(str(i)), ev):
+                    out[i] = x.get("id", "?")
+    return out
+
+
 def _cmds(fx):
     """-> every command string of a fixes.jsonl row's red and green runs (`cmd`, or the older `command`)."""
     out = []
@@ -986,7 +1003,9 @@ def read_exit(root, mod, n, tt=None):
     rerun (reruns_after_fix.jsonl rows over reruns.jsonl), no Problem whose status is not FIXED, a fixes.jsonl row for
     each FIXED Problem shown red (an rc non-zero) then green (every rc zero), no FAIL row in lane 1, tests_edited.json
     present, and the planted-fault results ending tree_clean_after true. A lane-1 FAIL (recorded blind, before the
-    fixes) clears only when LANE1_AFTER_FIX has no FAIL and shows it PASS. Any doubt reads not_met, never met."""
+    fixes) clears only when LANE1_AFTER_FIX has no FAIL and shows it PASS, or when a Polish fault names that row in its
+    evidence (Polish is not part of passing; the reading prints each such row for the steward to confirm). Every fault
+    must carry a class, Problem or Polish: an unclassed one could hide an open Problem. Any doubt reads not_met."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
     base = "%s/cycle_%d" % (BLIND_DIR, n)
@@ -1039,7 +1058,12 @@ def read_exit(root, mod, n, tt=None):
     for r in _jsonl(os.path.join(d, "lane2", "fixes.jsonl")) or []:
         if r.get("fault"):
             fixes[r["fault"]] = r
-    problems = [x for x in faults if isinstance(x, dict) and str(x.get("class", "")).startswith("Problem")]
+    unclassed = [x.get("id", "?") if isinstance(x, dict) else repr(x)[:40] for x in faults
+                 if not (isinstance(x, dict) and re.match(r"(Problem|Polish)", fault_class(x)))]
+    if unclassed:
+        why.append("%d fault(s) in lane2/faults.json have no class Problem or Polish: %s (an unclassed fault is never "
+                   "counted, so it could hide an open Problem)" % (len(unclassed), ", ".join(unclassed[:8])))
+    problems = [x for x in faults if isinstance(x, dict) and fault_class(x).startswith("Problem")]
     open_ = [x.get("id", "?") for x in problems if not str(x.get("status", "")).startswith("FIXED")]
     out["checks"]["problems_open"] = len(open_)
     if open_:
@@ -1073,7 +1097,10 @@ def read_exit(root, mod, n, tt=None):
         after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
         bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
         passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
-        left = [f for f in fails if f not in passed]
+        polish = _polish_rows(faults, sorted(set(fails) | set(bad_after)))   # a FAIL a Polish fault owns is not passing's
+        out["checks"]["lane1_fail_left_as_polish"] = polish
+        bad_after = [f for f in bad_after if f not in polish]
+        left = [f for f in fails if f not in passed and f not in polish]
         out["checks"]["lane1_fail_cleared_after_fix"] = after is not None and not bad_after and not left
         if after is None:
             why.append("lane 1 has %d FAIL or unreadable row(s): %s, and no %s shows them PASS after the fixes"
@@ -1090,8 +1117,11 @@ def read_exit(root, mod, n, tt=None):
                                                        "does not end with tree_clean_after true"))
     out["state"] = "not_met" if why else "met"
     if not why:
-        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)"
-                   % (len(bars), sum(len(x[1]) for x in bars)))
+        pol = out["checks"].get("lane1_fail_left_as_polish") or {}
+        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)%s"
+                   % (len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
+                      "steward confirms the move): %s" % ", ".join("%s (%s)" % kv for kv in sorted(pol.items()))
+                      if pol else ""))
     return out
 
 
@@ -1432,7 +1462,8 @@ def blind_brief_text(root, mod, cap_usd=None):
           "to a test that must now catch a planted fault, the command is the catching run (rc 0 when caught, "
           "non-zero when missed), never a check whose rc 0 is the failure. Run each command for real at both shas; a `cmd` holding a placeholder like `<parent>` is not a "
           "rerunnable record, so name the path. Leave `lane1/lane1_rows.jsonl` as recorded, blind; after the fixes, "
-          "rerun lane 1 into `%s`: a lane-1 FAIL clears only when that file has no FAIL and shows it PASS. "
+          "rerun lane 1 into `%s`: a lane-1 FAIL clears only when that file has no FAIL and shows it PASS, or when you "
+          "class it Polish and that fault's `evidence` names the row id (Polish is not part of passing). "
           "You may add tests or extend existing ones; list every test you touch in `tests_edited.json` (write it even "
           "when empty). Build C# with `python3 src/RimMandrake/Utils/winbuild.py` and your private `WINBUILD_ROOT`; "
           "never deploy it." % LANE1_AFTER_FIX, "",
@@ -1755,7 +1786,7 @@ def ingame_debts(root, mod, tt=None):
         bars = _split_bars(x.get("bar") or x.get("bars"))
         e = {"id": x.get("id"), "bars": bars, "checks": _stage6_of_bars(tt, bars), "status": x.get("status"),
              "fix": x.get("smallest_fix") or ""}
-        cls = str(x.get("class", ""))
+        cls = fault_class(x)
         if cls.startswith("Problem") and str(x.get("status", "")).startswith("FIXED") and e["checks"]:
             out["fixed_problems"].append(e)
         elif cls.startswith("Polish") and re.search(r"scene|live|stage 6", "%s %s" % (x.get("id"), e["fix"]), re.I):

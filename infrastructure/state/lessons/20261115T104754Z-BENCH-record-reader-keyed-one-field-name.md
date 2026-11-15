@@ -1,0 +1,2 @@
+A record reader keyed on one field name reads a record that used a synonym as empty and skips its checks silently: maturation.py read faults.json 'class' while FlowWorks blind cycle 1 wrote 'cls', so it counted 0 Problems and never checked the six fix rows (they were prose commands, three inverted). Refuse an unclassified record by name; never let a missing key read as 'nothing to check'.
+item: RIMMANDRAKE_CHALLENGE_FLOWWORKS_BLIND_CYCLE_ONE_FIFTY_SEVEN_BARS

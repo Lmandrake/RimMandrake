@@ -27,7 +27,7 @@ rides the pulse slider (1.68 to 70 days); a NaN drill reserve pours; the sprinkl
 (vanilla counts 25 at radius 2.9); RM_FlowKernel is the depth engine, not tested here.
 
 
-After lane 2 (`lane1/lane1_rows_after_fix.jsonl`, the fixed kernels): 42 PASS, 1 FAIL (the Polish valve row, unfixed),
+After lane 2 (`lane2/lane1_rows_after_fix.jsonl`, the fixed kernels; rerun by the reconcile at d80300e83e, same verdicts): 42 PASS, 1 FAIL (the Polish valve row, unfixed),
 5 INFO, 7 UNSETTLED [measured]. Run with `--kernel <old RM_ConversionMath.cs> --kernel <old RM_SheetMath.cs>`, the same
 rows give 4 FAIL again [measured]. Two lane-1 tests were edited after lane 2 (`tests_edited.json`).
 
@@ -80,12 +80,13 @@ see a planted caller. A first batch of 9 caller faults "survived" unseen and was
 
 ## Fixes
 `lane2/fixes.jsonl`. Fix commit **`a34a529cc2`** (published; `./publish` then committed the rebuilt mod DLL as
-`4af5596066`, its landing step; nothing was deployed). Red first, every one:
-- converter rate and sheet dry island: the new case FAILs on the old kernel (rc 1), passes on the fix (rc 0);
-- the three pins: the new case FAILs with its fault planted (rc 1), passes on the shipped code (rc 0). These are test-gap
-  Problems, so the parent code was already right;
+`4af5596066`, its landing step; nothing was deployed). Every row was rerun red then green for real by the reconcile
+(2026-11-15, scratch clone at d80300e83e; outputs in `lane2/fix_demos/`), each cmd a test whose rc 0 means the fix holds:
+- converter rate and sheet dry island: the new case on the parent's kernel (bf8f5c7365) rc 1, on the fix rc 0;
+- the three pins (test-gap Problems, so the parent code was already right): `plant_faults.py --fault <id> --expect-caught`
+  with FlowWorks Source at the parent rc 1 (missed by every builder decider), at the fix rc 0 (caught by the new case);
 - the T_PIT_COVER re-pin was landed first by another seat (`cf6efc3055`, 00:04 PST, during this cycle); this judge's
-  identical edit was dropped for it at landing.
+  identical edit was dropped for it at landing. T_PIT_COVER with the check at its parent rc 1, at HEAD rc 0.
 
 ## Tests edited
 `tests_edited.json`: new `SelfTest/BlindCycle1Checks.cs` (5 cases, each named inside its bar's recorded glob), its
@@ -99,6 +100,9 @@ pipe, pump and net draw, and four stage-6 groups (fire, dig depth, pits, liquid 
 Not checked here: whether `RM_FlowKernel` (the depth engine) conserves; full-file code reviews.
 
 ## Exit
+The sprinkler valve row `spr_units_never_free_and_max_cells_exact` still FAILs after the fixes: it is the Polish item
+`RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT` (one cell short, exact fits only), not part of passing; the Polish
+move is the steward's to confirm. The 8 deciders rerun PASS at d80300e83e (`lane2/reruns_reconcile_head.jsonl`).
 ```
 offline_bars: {inv_overflow_sheet: green, inv_converters: green, inv_bottles_thirst: green, inv_drilling: green, inv_sprinklers: green}
 problems_open: 0

@@ -1,0 +1,42 @@
+# cmd (in a scratch clone at d80300e83e, tree: M  src/RimMandrake/FlowWorks/Source/SelfTest/DeckCollapseLinesChecks.cs ): python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Beneath*,DeckCollapse*,FallRail*,LidWalker*,PitCover*,PitCoverLook*,PitDeck*,SpikePierce*,Spikes*,SuperdeepTrap*
+# rc 1, 71 s, 2026-11-15T02:43:24-08:00
+ok    SpikePierce_vanilla_trap_rule_damage_x_0015
+ok    SpikePierce_descent_passes_the_penetration
+ok    SuperdeepTrap_IsHeldAt_builds_no_closure
+ok    PitDeck_many_id_minima_scan_stays_near_linear
+ok    PitDeck_lead_and_cell_list_are_unchanged
+ok    PitDeck_the_trigger_uses_the_early_exit
+ok    PitCover_rests_on_two_banks
+ok    Beneath_who_goes_under_a_new_lid
+ok    Beneath_leaves_only_into_an_open_pit_square
+ok    Beneath_trapped_when_no_open_neighbour
+ok    Beneath_wired_at_the_call_sites
+ok    LidWalker_drawn_at_ground_not_sunk
+ok    PitCoverLook_lid_in_open_pit_shows_art
+ok    PitCoverLook_reprint_only_on_open_close
+ok    PitCoverLook_occluder_piece_uv_matches_lid
+ok    PitCoverLook_production_wiring
+ok    Spikes_never_over_the_wall_any_neighbours
+ok    Spikes_fill_the_open_floor_at_the_art_density
+ok    Spikes_cell_rows_same_size_and_density
+ok    Spikes_north_cell_keeps_density
+ok    Spikes_submerge_fast
+ok    Spikes_variant_from_texture_name
+ok    Spikes_parity_fixture_matches_python
+ok    DeckCollapse_cord_drops_one_live_fallen_wire_and_the_net_splits_once
+ok    DeckCollapse_repeat_teardown_is_idempotent
+ok    DeckCollapse_unpowered_or_disconnected_cord_shocks_nobody
+ok    DeckCollapse_hose_across_a_collapsed_deck_is_reeled_in
+ok    DeckCollapse_every_collapse_path_clears_through_ClearDeckTop
+FAIL  DeckCollapse_GSS_shock_seam_is_soft_and_load_safe
+        missing: public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)
+
+41/42 passed
+
+hose suites (moved from Gimme Some Slack's SelfTest):
+hose: 0/0 assertions passed (moved from Gimme Some Slack: 0; new: 0)
+--only Beneath*,DeckCollapse*,FallRail*,LidWalker*,PitCover*,PitCoverLook*,PitDeck*,SpikePierce*,Spikes*,SuperdeepTrap*: 42 case(s) and 0 hose suite(s) ran, 1322 filtered out
+
+FAILING CHECKS (rc 1):
+  FAIL  DeckCollapse_GSS_shock_seam_is_soft_and_load_safe
+  missing: public static void RebuildContacts(RM_MapComponent_Aerial aerial, Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)

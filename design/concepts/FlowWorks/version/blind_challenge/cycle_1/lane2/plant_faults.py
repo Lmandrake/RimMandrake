@@ -3,6 +3,7 @@
     python3 plant_faults.py --baseline            # unplanted: record the failing cases each suite already shows
     python3 plant_faults.py --fault ID [--fault ID ...]
     python3 plant_faults.py --final               # prove git diff --quiet -- src/RimMandrake/FlowWorks, rebuild clean
+    python3 plant_faults.py --fault ID --expect-caught   # a fix demo: rc 0 iff a builder decider catches it; records nothing
 One fault per call fits the 540 s foreground limit when it needs a C# rebuild (~3.5 min). Every fault restages and rebuilds once
 (the first decider), then the other deciders run --no-build on that stage: a source-text check reads the STAGED copy,
 so a --no-build run without a restage never sees a planted caller. "Caught" = a NEW failing case / row versus the baseline, never a bare non-zero rc.
@@ -100,6 +101,8 @@ def main():
     ap.add_argument("--baseline", action="store_true")
     ap.add_argument("--fault", action="append", default=[])
     ap.add_argument("--final", action="store_true")
+    ap.add_argument("--expect-caught", action="store_true",
+                    help="one fault; exit 0 iff a builder decider (not lane 1) newly fails; planted_results.jsonl untouched")
     a = ap.parse_args()
     env = dict(os.environ)
     env.setdefault("WINBUILD_ROOT", "/mnt/d/ClaudeWork/rimmandrake/scratch/fw_blind_mut/")
@@ -119,6 +122,8 @@ def main():
             f.write(json.dumps(dict(id="tree_clean_after", tree_clean_after=rc == 0, clean_rebuild_rc=rb)) + "\n")
         print("TREE CLEAN" if rc == 0 else "TREE DIRTY", "rebuild rc", rb)
         sys.exit(rc)
+    if a.expect_caught and len(a.fault) != 1:
+        sys.exit("--expect-caught takes exactly one --fault")
     base = baseline()
     if base is None:
         sys.exit("run --baseline first")
@@ -150,6 +155,10 @@ def main():
         row = dict(id=fid, file=f["file"], bars=f["bars"], rebuilt=build, caught=bool(newly), caught_by=caught_by,
                    caught_by_builder=[k for k in caught_by if k != "LANE1"], caught_by_lane1="LANE1" in newly, new_failing=newly,
                    build_failed=bf, suites=res)
+        if a.expect_caught:
+            print(fid, "CAUGHT by %s: %s" % (",".join(row["caught_by_builder"]), {k: newly[k] for k in row["caught_by_builder"]})
+                  if row["caught_by_builder"] else "MISSED by every builder decider", ("BUILD FAILED " + ",".join(bf)) if bf else "")
+            sys.exit(0 if row["caught_by_builder"] and not bf else 1)
         with open(OUT, "a") as fh:
             fh.write(json.dumps(row) + "\n")
         print(fid, "CAUGHT by " + ",".join(caught_by) if newly else "SURVIVED", ("BUILD FAILED " + ",".join(bf)) if bf else "")

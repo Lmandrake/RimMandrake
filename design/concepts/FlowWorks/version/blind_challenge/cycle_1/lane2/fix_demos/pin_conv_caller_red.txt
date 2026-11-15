@@ -1,0 +1,3 @@
+# cmd (in a scratch clone at d80300e83e, tree: M  src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs M  src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs M  src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs M  src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj M  src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs M  src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerSettings.cs ): python3 design/concepts/FlowWorks/version/blind_challenge/cycle_1/lane2/plant_faults.py --fault CALLER_CONV_DROPS_CLIPPED --expect-caught
+# rc 1, 90 s, 2026-11-15T02:30:43-08:00
+CALLER_CONV_DROPS_CLIPPED MISSED by every builder decider 

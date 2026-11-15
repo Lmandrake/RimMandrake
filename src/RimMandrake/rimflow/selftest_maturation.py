@@ -403,7 +403,7 @@ def copy_blind(root):
 
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
                 pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True,
-                fix_runs=None, lane1_after=None, record_decider=None):
+                fix_runs=None, lane1_after=None, record_decider=None, fault_key="class", polish_cites=None):
     """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
@@ -436,6 +436,13 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
     if pending_problem:
         faults.append({"id": "RIMMANDRAKE_LEAVE_SELFTEST_PROBLEM_OPEN", "class": "Problem (criterion)",
                        "status": "NOTED_FOR_CONDUCTOR"})
+    if polish_cites:   # the Polish fault names a lane-1 row in its evidence
+        faults[1]["evidence"] = ["lane1 %s FAIL: one cell short on an exact fit" % polish_cites]
+    if fault_key != "class":   # FlowWorks cycle 1 wrote `cls`; None drops the class altogether
+        for x in faults:
+            c = x.pop("class")
+            if fault_key:
+                x[fault_key] = c
     with open(os.path.join(d, "lane2", "faults.json"), "w") as f:
         json.dump({"cycle": n, "faults": faults}, f)
     with open(os.path.join(d, "lane2", "fixes.jsonl"), "w") as f:
@@ -554,11 +561,15 @@ def blind_main():
             (dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "UNSETTLED", "L1_c": "PASS"}),
              "a lane-1 FAIL that lane 1 after the fixes shows PASS"),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}, polish_cites="L1_c"),
+             "a lane-1 FAIL still FAIL after the fixes that a Polish fault names (Polish is not part of passing)"),
         )
         for kw, what in met:
             write_cycle(root, "FlowWorks", 1, **kw)
             ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
-            ok(ex.get("state") == "met", "%s reads met (%s)" % (what, (ex.get("why") or ["-"])[0][:120]))
+            ok(ex.get("state") == "met" and (not kw.get("polish_cites") or "Polish" in (ex.get("why") or [""])[0]
+                                             and "L1_c" in (ex.get("why") or [""])[0]),
+               "%s reads met (%s)" % (what, (ex.get("why") or ["-"])[-1][-120:]))
         tt_saved = open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")).read()
         broken = (
             (dict(fix_runs=dict(runs, red=[{"cmd": "a", "rc": 0}])), "a list-of-runs fix never shown red", "red"),
@@ -571,6 +582,10 @@ def blind_main():
             (dict(lane1_fail=True, lane1_after={"L1_c": "PASS", "L1_d": "FAIL"}),
              "a new FAIL in the after-fix rerun", "still fails L1_d"),
             (dict(record_decider="T_CONVERT"), "a record decider with no command", "record with no command"),
+            (dict(fault_key="cls", fix_red_rc=0), "faults written with `cls`: a FIXED Problem never shown red", "red"),
+            (dict(fault_key=None), "faults with no class at all", "no class Problem or Polish"),
+            (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}, polish_cites="L1_cc"),
+             "a Polish fault naming another row does not clear a lane-1 FAIL", "still fails L1_c"),
             (dict(fix_runs=dict(red={"cmd": "lint planted copy", "rc": 0}, green={"cmd": "lint planted copy", "rc": 1})),
              "a fix row in the failing direction (red rc 0, green rc 1)", "inverted"),
             (dict(fix_runs=dict(red={"command": "t.py --source <parent Source>", "rc": 1},
