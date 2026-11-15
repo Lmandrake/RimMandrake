@@ -254,6 +254,20 @@ def p7_disagreement():
         m = mod_of(d, "GimmeSomeSlack")
         check("7 locked version, blocked stage.json: the page says they disagree",
               m is not None and m["disagree"] and "disagree" in card_of(page, "Gimme Some Slack").lower())
+        # RIMMANDRAKE_READ_LOCKED_CHANGE_AS_REEXAM_NOT_DISAGREEMENT: his card changed the locked version, the re-pin
+        # voided stage 4's exam, the Designer retakes it. Both files are right (Pyrelands, 2026-11-15).
+        s["stage"], s["status"] = 4, "ready"
+        s.setdefault("history", []).append({"at": "2026-11-15T21:06:06Z", "what": "locked_change", "why": "his card"})
+        json.dump(s, open(sj, "w"))
+        m = mod_of(data_of(t), "GimmeSomeSlack")
+        check("7 a locked change back in the Designer is not a disagreement", m is not None and not m["disagree"],
+              "got %r" % (m or {}).get("disagree"))
+        s["history"].append({"at": "2026-11-15T22:00:00Z", "what": "lock", "why": "the Designer locked it again"})
+        json.dump(s, open(sj, "w"))
+        m = mod_of(data_of(t), "GimmeSomeSlack")
+        check("7 a Designer lock after the locked change, then not locked: they disagree again",
+              m is not None and m["disagree"], "got %r" % (m or {}).get("disagree"))
+        s["history"] = [h for h in s["history"] if h.get("what") not in ("locked_change", "lock")]
         s["status"], v["version"] = "locked", "0.2.0"
         json.dump(s, open(sj, "w")), json.dump(v, open(vj, "w"))
         tt = os.path.join(c, "version", "test_table.json")

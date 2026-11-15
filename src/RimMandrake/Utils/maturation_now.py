@@ -337,7 +337,11 @@ def disagreements(m, v, s, tt, j):
     out = []
     if s is not None and v:
         vs, ss = str(v.get("state") or ""), str(s.get("status") or "")
-        if vs.startswith("locked") and ss != "locked":
+        # RIMMANDRAKE_READ_LOCKED_CHANGE_AS_REEXAM_NOT_DISAGREEMENT: his card changed the locked version
+        # (designer_stage.repin's locked_change) and the Designer is retaking what it voided; a later Lock ends that
+        hs = [h.get("what") for h in s.get("history") or [] if isinstance(h, dict)]
+        reexam = "locked_change" in hs and "lock" not in hs[len(hs) - hs[::-1].index("locked_change"):]
+        if vs.startswith("locked") and ss != "locked" and not reexam:
             out.append("VERSION.json says locked; stage.json still says %s at Designer step %s (%s)"
                        % (ss or UNM, s.get("stage"), m.get("designer_step_name", UNM)))
         if ss == "locked" and v.get("state") and not vs.startswith("locked"):
