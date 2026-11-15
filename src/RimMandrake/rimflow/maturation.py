@@ -541,16 +541,26 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
     rec = load(root, mod)
     cur, t = rec["stage"], now_ts()
     when = pac_heading(t)
+    uncounted = None
     if to == "blind_challenge":
         c = rec.setdefault("cycles", {"visit": 0, "total": 0})
-        c["visit"] = c["visit"] + 1 if cur == "blind_challenge" else 1
-        c["total"] += 1
+        k = c.get("total") or 0
+        if cur == "blind_challenge" and k >= 1 and not os.path.isdir(os.path.join(mod_dir(root, mod), BLIND_DIR,
+                                                                                  "cycle_%d" % k)):
+            # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: the counter counts judge runs; cycle k has no record yet
+            uncounted = "cycle %d has no record (no judge ran it), so the cycle counter stays at %d" % (k, k)
+        else:
+            c["visit"] = c["visit"] + 1 if cur == "blind_challenge" else 1
+            c["total"] += 1
     if to == "pre_human":
         rec["pre_human_arrivals"] = rec.get("pre_human_arrivals", 0) + 1
     move = {"from": cur, "to": to, "at": iso(t), "by": by, "why": why,
             "confirmed": {k: v for k, v in (("steward_confirms", steward), ("conductor_decision", conductor),
                                             ("owner_said", owner)) if v},
             "checks_passed": [p["clause"] for p in res["verdict"]["passed"]]}
+    if uncounted:
+        move["cycle_not_counted"] = uncounted
+        res["cycle_not_counted"] = uncounted
     rec.setdefault("moves", []).append(move)
     rec["stage"], rec["stage_label"], rec["since"], rec["since_from"] = to, label(to), iso(t), "advance by %s" % by
     rec["at_door"] = False
@@ -1250,6 +1260,15 @@ def read_exit(root, mod, n, tt=None):
         why.append("lane2/planted_results.jsonl plants no fault (only a baseline): the tests were never shown to catch one")
     elif pr is not None and not any(_planted_caught(r) for r in planted):
         why.append("lane2/planted_results.jsonl: none of its %d planted fault(s) was caught" % len(planted))
+    fixed = [x.get("id", "?") for x in problems if str(x.get("status", "")).startswith("FIXED")]
+    out["checks"]["fixed_this_cycle"] = fixed
+    if fixed and not why:
+        # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: his road back (spec s4 Stages 4 and 5): fix it, "then send it back
+        # to just before Stage 4 again for a new blind judgement pass". A cycle's own fixes never pass its exit.
+        out["checks"]["judge_owed"] = True
+        why.append("a new blind judge is owed: %d Problem(s) were FIXED in this cycle (%s), and a fixed mod goes back "
+                   "to a new blind judgement pass (advance --to blind_challenge opens cycle %d; file nothing new)" % (
+                       len(fixed), ", ".join(fixed[:6]), n + 1))
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}

@@ -241,16 +241,25 @@ def main():
         ok(MN.read_mod(root, "Pyrelands", names)["column"] == "4+5", "the status page places Pyrelands at Stages 4 and 5")
         ok(old_stage.split(".")[0][:40] in jt, "the replaced Stage now line is kept in the history entry")
 
+        # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: the counter counts judge runs; no record of cycle 1 yet, no count
+        res = M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="a self-move with no judge run")
+        rec = M.load(root, "Pyrelands")
+        ok(res["ok"] and rec["cycles"] == {"visit": 1, "total": 1} and rec["moves"][-1].get("cycle_not_counted"),
+           "a blind-to-blind move before any judge recorded cycle 1 does not raise the counter (%s)" % rec["cycles"])
+        bdir = os.path.join(root, "design/concepts/Pyrelands/version/blind_challenge")
         # cycles: two more blind judges, then a 4th needs the Conductor's decision
         for n in (2, 3):
-            ok(M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="fault fixed in place")["ok"],
-               "cycle %d: a new blind judge" % n)
+            os.makedirs(os.path.join(bdir, "cycle_%d" % (n - 1)), exist_ok=True)   # the judge of cycle n-1 recorded it
+            ok(M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="fault fixed in place")["ok"]
+               and M.load(root, "Pyrelands")["cycles"]["total"] == n, "cycle %d: a new blind judge" % n)
+        os.makedirs(os.path.join(bdir, "cycle_3"), exist_ok=True)
         refused(M.advance(root, "Pyrelands", "blind_challenge", by="BENCH", why="again"), "fourth_cycle",
                 "a 4th blind cycle without the Conductor")
         res = M.advance(root, "Pyrelands", "blind_challenge", by="CONDUCTOR", why="one more",
                         conductor="allow one more cycle: the third fix touched only the ember test")
         ok(res["ok"] and M.load(root, "Pyrelands")["cycles"] == {"visit": 4, "total": 4},
            "with the Conductor's decision a 4th cycle runs")
+        shutil.rmtree(bdir, ignore_errors=True)
         ivs, bad_iv = MN.parse_interventions(read(root, "Pyrelands", "journal.md"), "journal")
         ok(any(i["stage"] == "4+5" and i["kind"] == "decision" and "one more cycle" in i["what"] for i in ivs)
            and not bad_iv, "the decision is an intervention line maturation_now parses")
@@ -419,7 +428,7 @@ def copy_blind(root):
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
                 pending_problem=False, fix_red_rc=1, lane1_fail=False, tree_clean=True, block=True, edited=True,
                 fix_runs=None, lane1_after=None, record_decider=None, fault_key="class", polish_cites=None,
-                lane1_extra=None, lane1_rows=True, edited_text=None, planted=None, rerun_row=None):
+                lane1_extra=None, lane1_rows=True, edited_text=None, planted=None, rerun_row=None, fixed=False):
     """A cycle record in the FORMAT_NOTES layout, every file a program reads, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     bars = [b for b in tt["bars"] if str(b.get("proves_at")) in ("2", "4-5")]
@@ -450,8 +459,12 @@ def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop
                 if rerun_row and t == rerun_row[0]:
                     row = {k: v for k, v in dict(row, **rerun_row[1]).items() if v is not None}
                 f.write(json.dumps(row) + "\n")
+    # a FIXED Problem only when the case is about a fix: a cycle's own fixes owe a new blind judge (never met)
+    fixed = fixed or fix_runs is not None or fix_red_rc != 1
     faults = [{"id": "RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED", "class": "Problem", "status": "FIXED abc1234"},
               {"id": "RIMMANDRAKE_NOTE_SELFTEST_POLISH_LEFT_ALONE", "class": "Polish", "status": "NOTED_FOR_CONDUCTOR"}]
+    if not fixed:
+        faults[0] = {"id": "RIMMANDRAKE_NOTE_SELFTEST_SECOND_POLISH", "class": "Polish", "status": "NOTED_FOR_CONDUCTOR"}
     if pending_problem:
         faults.append({"id": "RIMMANDRAKE_LEAVE_SELFTEST_PROBLEM_OPEN", "class": "Problem (criterion)",
                        "status": "NOTED_FOR_CONDUCTOR"})
@@ -598,8 +611,16 @@ def blind_main():
                "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:90]))
         # a fix shown as a list of runs (Pyrelands cycle 1 wrote it so); a lane-1 FAIL cleared by lane 1 after the fixes
         runs = dict(red=[{"cmd": "a", "rc": 1}, {"cmd": "b", "rc": 1}], green=[{"cmd": "a", "rc": 0}, {"cmd": "b", "rc": 0}])
+        # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: a cycle whose Problems were FIXED owes a new judge, never met
+        for kw, what in ((dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
+                         (dict(fixed=True), "a FIXED Problem shown red then green")):
+            write_cycle(root, "FlowWorks", 1, **kw)
+            g = M.blind_facts(root, "FlowWorks")
+            ex = g.get("exit") or {}
+            ok(ex.get("state") == "not_met" and ex.get("checks", {}).get("judge_owed") is True
+               and "new blind judge is owed" in " ".join(ex.get("why") or []) and g.get("owed") == "exit not met",
+               "%s: a new blind judge is owed, not met (%s)" % (what, (ex.get("why") or ["-"])[0][:100]))
         met = (
-            (dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_b": "INFO", "L1_c": "PASS"}),
              "a lane-1 FAIL that lane 1 after the fixes shows PASS"),
             (dict(lane1_extra="UNSETTLED", lane1_after={"L1_a": "PASS", "L1_d": "PASS"}),
