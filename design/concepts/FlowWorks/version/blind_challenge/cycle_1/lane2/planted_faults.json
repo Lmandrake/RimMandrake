@@ -1,0 +1,258 @@
+[
+ {
+  "id": "SHEET_FLUX_CREATES_WATER",
+  "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+  "old": "s.Dl[fx.From] -= fx.Dl;",
+  "new": "s.Dl[fx.From] -= fx.Dl - 1;",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "SHEET_CROP_ONE_PULSE_LATE",
+  "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+  "old": "if (s.Stand[c] >= p.CropKillPulses) rep?.CropDrowning.Add",
+  "new": "if (s.Stand[c] > p.CropKillPulses) rep?.CropDrowning.Add",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "SHEET_FREEZES_AT_ZERO",
+  "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+  "old": "if (fr.NeverFreezes || w.TempDeciC[c] >= fr.FreezeDeciC) continue;",
+  "new": "if (fr.NeverFreezes || w.TempDeciC[c] > fr.FreezeDeciC) continue;",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "SHEET_SOAK_UNCOUNTED",
+  "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+  "old": "if (take > 0) { s.Dl[c] -= take; s.Soaked += take; rep?.Soaked.Add",
+  "new": "if (take > 0) { s.Dl[c] -= take; rep?.Soaked.Add",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "FLOOD_LEDGER_LOSE_KEEPS",
+  "file": "src/RimMandrake/FlowWorks/Source/RM_FloodReleaseMath.cs",
+  "old": "public long Lose() => Move(Remaining, ref Lost);",
+  "new": "public long Lose() => Move(Remaining - 1, ref Lost);",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "CONV_CAP_DOUBLE_BURST",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+  "old": "return Math.Min(accrued, Math.Max(inputUnits, perTick));",
+  "new": "return Math.Min(accrued, 2 * Math.Max(inputUnits, perTick));",
+  "bars": [
+   "inv_converters"
+  ]
+ },
+ {
+  "id": "CONV_ROTATION_REPEATS",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+  "old": "int i = ((last < 0 ? -1 : last) + k) % n;",
+  "new": "int i = ((last < 0 ? -1 : last) + k - 1 + n) % n;",
+  "bars": [
+   "inv_converters"
+  ]
+ },
+ {
+  "id": "CONV_BATCH_IGNORES_ROOM",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+  "old": "n = Math.Min(n, outputRoom / outputUnits);",
+  "new": "n = Math.Min(n, outputRoom / outputUnits + 1);",
+  "bars": [
+   "inv_converters"
+  ]
+ },
+ {
+  "id": "THIRST_FALL_SLOWER",
+  "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+  "old": "public const float BaseFallPerDay = 0.8f;",
+  "new": "public const float BaseFallPerDay = 0.6f;",
+  "bars": [
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "THIRST_LAST_RESORT_ANYTIME",
+  "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+  "old": "return lastResortAllowed && Desperate(level);",
+  "new": "return lastResortAllowed || Desperate(level);",
+  "bars": [
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "BOTTLE_UNSTYLED_SWALLOWS",
+  "file": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerStyleMath.cs",
+  "old": "if (otherLook == null)\n            {\n                return true;",
+  "new": "if (otherLook == null || thisLook == null)\n            {\n                return true;",
+  "bars": [
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "THIRST_RESERVE_IGNORED",
+  "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+  "old": "if (!potable || reserveUnits <= 0)",
+  "new": "if (true || reserveUnits <= 0)",
+  "bars": [
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "DRILL_DRY_SURVEY_POURS",
+  "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+  "old": "if (!s.hasYield) return Block.NoSubsurface;",
+  "new": "if (!s.hasYield && s.reserve <= 0f) return Block.NoSubsurface;",
+  "bars": [
+   "inv_drilling"
+  ]
+ },
+ {
+  "id": "DRILL_ZERO_RESERVE_PLACES",
+  "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+  "old": "return reserve <= 0f ? Verdict.Spent : Verdict.Allowed;",
+  "new": "return reserve < 0f ? Verdict.Spent : Verdict.Allowed;",
+  "bars": [
+   "inv_drilling"
+  ]
+ },
+ {
+  "id": "DRILL_CHARGES_WHOLE_LEVEL",
+  "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+  "old": "return (float)((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+  "new": "return (float)System.Math.Ceiling((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+  "bars": [
+   "inv_drilling"
+  ],
+  "note": "first plant used Math without using System and did not compile (row kept, build_failed); re-planted with System.Math"
+ },
+ {
+  "id": "SPR_NO_PUMP_NEEDED",
+  "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+  "old": "if (!pressure) return RM_SprinklerState.NoPressure;",
+  "new": "if (!pressure && !hasLiquid) return RM_SprinklerState.NoPressure;",
+  "bars": [
+   "inv_sprinklers"
+  ]
+ },
+ {
+  "id": "SPR_HALF_PAID_PULSE",
+  "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+  "old": "if (available < need) return RM_SprinklerState.Dry;",
+  "new": "if (available < need / 2) return RM_SprinklerState.Dry;",
+  "bars": [
+   "inv_sprinklers"
+  ]
+ },
+ {
+  "id": "SPR_VALVE_FARTHEST_FIRST",
+  "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+  "old": "want.Sort((a, b) => a.Dist != b.Dist ? a.Dist.CompareTo(b.Dist)",
+  "new": "want.Sort((a, b) => a.Dist != b.Dist ? b.Dist.CompareTo(a.Dist)",
+  "bars": [
+   "inv_sprinklers"
+  ]
+ },
+ {
+  "id": "CALLER_CONV_DROPS_CLIPPED",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+  "old": "accrued += clipped;   // CAP_EATS_CHANGE",
+  "new": "accrued += 0f;   // CAP_EATS_CHANGE",
+  "bars": [
+   "inv_converters"
+  ]
+ },
+ {
+  "id": "CALLER_CONV_IGNORES_RESERVE",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+  "old": "Thirst.RM_DrinkReserve.Spendable(parent, liquid), room);",
+  "new": "int.MaxValue / 2, room);",
+  "bars": [
+   "inv_converters",
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "CALLER_SPR_SPRAYS_WITHOUT_PUMP",
+  "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+  "old": "bool pressure = enabled && switchOn && HasPressure(head);",
+  "new": "bool pressure = enabled && switchOn;",
+  "bars": [
+   "inv_sprinklers"
+  ]
+ },
+ {
+  "id": "CALLER_SPR_IGNORES_RESERVE",
+  "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+  "old": "held = Thirst.RM_DrinkReserve.Spendable(head, l);",
+  "new": "held = parts.Find(p => p.Key == pick).Value;",
+  "bars": [
+   "inv_sprinklers",
+   "inv_bottles_thirst"
+  ]
+ },
+ {
+  "id": "CALLER_DRILL_SKIPS_PLACEMENT",
+  "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+  "old": "switch (RM_DrillSurveyMath.Placement(survey.Surveyed, survey.HasYield, survey.ReserveRemaining))",
+  "new": "switch (RM_DrillSurveyMath.Placement(false, survey.HasYield, survey.ReserveRemaining))",
+  "bars": [
+   "inv_drilling"
+  ]
+ },
+ {
+  "id": "SETTING_CROP_DELAY_HALVED",
+  "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+  "old": "public static int cropDrownPulses = 1680;",
+  "new": "public static int cropDrownPulses = 840;",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "SETTING_SHEET_CAP_DOUBLED",
+  "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+  "old": "public static int sheetCapCm = 50;",
+  "new": "public static int sheetCapCm = 100;",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "CALLER_SHEET_CROP_IGNORES_SETTING",
+  "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+  "old": "prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);",
+  "new": "prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses / 2);",
+  "bars": [
+   "inv_overflow_sheet"
+  ]
+ },
+ {
+  "id": "DEF_STILL_RATE_TENFOLD",
+  "file": "src/RimMandrake/FlowWorks/Defs/Machinery/RM_LiquidStills.xml",
+  "old": "<inputLitresPerDay>6000</inputLitresPerDay>",
+  "new": "<inputLitresPerDay>60000</inputLitresPerDay>",
+  "bars": [
+   "inv_converters"
+  ]
+ },
+ {
+  "id": "SANITY_CALLER_TEXT_SEEN",
+  "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+  "old": "accrued = RM_ConversionMath.AccruedAfterPick(accrued, cand.Select(c => c.capped).ToList(), pick);",
+  "new": "accrued = RM_ConversionMath.AccruedAfterPick(accrued, cand.Select(c => c.capped).ToList(), -1);",
+  "bars": [
+   "inv_converters"
+  ],
+  "note": "instrument probe: GptEdge1016Checks pins this line by regex, so a run that sees the planted tree must go red"
+ }
+]

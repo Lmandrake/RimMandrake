@@ -1,0 +1,140 @@
+[
+ {
+  "id": "RIMMANDRAKE_FIX_CONVERTER_RATE_REMAINDER_EATEN_BY_THE_CAP",
+  "cls": "Problem",
+  "bar": "inv_converters",
+  "criterion": "Machines that change liquids run at their stated rate; converterRateMultiplier (0.1..5) scales the rate (Mod Settings: a number that is the experience works as labelled)",
+  "evidence": [
+   "lane1 conv_random_conserves_and_keeps_rate FAIL: seed 4242 run 4, inputUnits 182, income 371.1 a tick: ate 262,080 of about 267,207 in 3 days",
+   "lane1 conv_rate_loss_when_income_beats_a_batch FAIL: worst 50% of the rate (batch 199, income 397.9 a tick)",
+   "CompLiquidConverter.CompTickRare runs exactly that loop (CapAccrued -> Batches -> ClippedIncome -> AccruedAfterPick -> -= spend -> += clipped)",
+   "shipped defs: Detox Works Repaired with toxic water's 400 L detox at the slider's 2x runs 4,000 of 6,667 units a tick (40% short); Desal Plant Kludged at 2x 20% short; at 1x no shipped pair loses",
+   "red: new SelfTest Converter_rate_setting_delivers_its_rate FAIL on the old kernel ('Detox Works at 2x ate 960000 units in a day, want about 1600000')"
+  ],
+  "would_pass": "a converter whose income beats a batch runs within one batch of income x days, and an idle week still bursts at most one tick's income plus one batch",
+  "smallest_fix": "RM_ConversionMath.CapAccrued: cap at perTick + inputUnits when perTick > inputUnits (else inputUnits), so the part-batch remainder carries",
+  "verdict_on_criterion": "criterion sound",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_PIN_CONVERTER_CALLER_KEEPS_CLIPPED_INCOME",
+  "cls": "Problem",
+  "bar": "inv_converters",
+  "criterion": "T_CONVERT can fail when the converter's caller breaks the rate rule",
+  "evidence": [
+   "planted CALLER_CONV_DROPS_CLIPPED (accrued += clipped -> += 0f in CompLiquidConverter) survived T_CONVERT and lane 1 (rebuilt; the probe SANITY_CALLER_TEXT_SEEN on the same file was caught, so the instrument saw the plant)"
+  ],
+  "would_pass": "a T_CONVERT case red when the caller drops the clipped income",
+  "smallest_fix": "SelfTest case Converter_caller_keeps_clipped_income (source law: the caller is Verse-bound); red with the fault planted, green on the shipped caller",
+  "verdict_on_criterion": "criterion sound; offline only a source law is possible, the behaviour is Stage 6's",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_FIX_SHEET_DRY_ISLAND_UNDER_A_STANDING_POOL",
+  "cls": "Problem",
+  "bar": "inv_overflow_sheet",
+  "criterion": "Overspill stands over open ground as a sheet; D8 sheets lie level (one surface over the micro-relief)",
+  "evidence": [
+   "lane1 sheet_walled_yard_lies_level FAIL: 3 cm over a closed 25-square yard, 400 pulses, cell 36 (relief +119 dL) dry for good, neighbours' surface 604 dL: water stands 2.4 cm above its ground beside it",
+   "cause: Sweep's flux diff/5 = 97 dL < MinReceiveDl 100, and Level never adds a dry square",
+   "red: new SelfTest Sheet_dry_square_under_a_pool_is_wetted FAIL on the old kernel (24 of 25 wet)"
+  ],
+  "would_pass": "every square of a closed 3 cm pool is wet and the surface spread is <= 1 dL, nothing lost",
+  "smallest_fix": "RM_SheetMath.Sweep: a dry receiver with diff/2 >= its minimum gets that minimum (still f <= diff/2, no overshoot)",
+  "verdict_on_criterion": "criterion sound",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_PIN_SPRINKLER_CALLER_TO_A_WORKING_PUMP",
+  "cls": "Problem",
+  "bar": "inv_sprinklers",
+  "criterion": "Sprinkler heads need a pump on the network; T_SPRINKLER can fail when that need is dropped",
+  "evidence": [
+   "planted CALLER_SPR_SPRAYS_WITHOUT_PUMP (pressure = enabled && switchOn, no HasPressure) survived T_SPRINKLER and lane 1"
+  ],
+  "would_pass": "a T_SPRINKLER case red when the caller stops asking for a pump",
+  "smallest_fix": "SelfTest case Sprinkler_caller_asks_for_a_pump (source law on RM_Sprinkle.Decide and HasPressure)",
+  "verdict_on_criterion": "criterion sound; a live row still owes the behaviour",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE",
+  "cls": "Problem",
+  "bar": "inv_drilling",
+  "criterion": "T_DRILL can fail when a drill is charged for liquid that never landed",
+  "evidence": [
+   "planted DRILL_CHARGES_WHOLE_LEVEL (SpentUnits rounds up to a whole level) survived T_DRILL; caught only by lane 1",
+   "the regression case GptA1024_drill_spends_only_what_landed exists but is outside T_DRILL's recorded glob (CoverFloor*,DrillSurvey*,DrillWhyNot*)"
+  ],
+  "would_pass": "a case inside the T_DRILL glob red on the whole-level charge",
+  "smallest_fix": "SelfTest case DrillSurvey_charge_is_only_what_landed (behaviour, random conservation, seed 13); the test table's glob is unchanged",
+  "verdict_on_criterion": "criterion sound",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER",
+  "cls": "Problem",
+  "bar": "inv_pits",
+  "criterion": "T_PIT_COVER (decides stage-6 bars inv_pits, covered_pit_springs) is green when the behaviour is",
+  "evidence": [
+   "rerun: T_PIT_COVER FAIL, recorded PASS: DeckCollapse_GSS_shock_seam_is_soft_and_load_safe 'missing: public static void RebuildContacts(...List<IntVec3> tips)'",
+   "Gimme Some Slack 63ac285403 (2026-11-14) added an optional HashSet<int> dropped; the source-text pin named the whole old signature"
+  ],
+  "would_pass": "the pin follows the four parameters FlowWorks relies on",
+  "smallest_fix": "re-pin the signature prefix and the ExternalContacts call",
+  "verdict_on_criterion": "criterion sound; the check was a brittle source pin",
+  "status": "FIXED cf6efc3055 (landed by another seat at 00:04 PST while this cycle ran; this judge's identical re-pin was dropped for it)"
+ },
+ {
+  "id": "RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT",
+  "cls": "Polish",
+  "bar": "inv_sprinklers",
+  "criterion": "the thirst valve waters as many cells as the budget pays for",
+  "evidence": [
+   "lane1 spr_units_never_free_and_max_cells_exact FAIL: MaxCellsFor(7 units, 0.1 L, 10) = 6 though 7 cells cost exactly 7 (float 0.1f x 10 = 1.0000000149)"
+  ],
+  "would_pass": "MaxCellsFor is the largest n with UnitsFor(n) <= units across the slider",
+  "smallest_fix": "after the floor, step n up while UnitsFor(n + 1) <= units",
+  "verdict_on_criterion": "criterion sound; one cell, exact fits only",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_CORRECT_SPRINKLER_RADIUS_TEXT_SAYS_TWENTY_FIVE",
+  "cls": "Polish",
+  "bar": "inv_sprinklers",
+  "criterion": "player text says what the head does",
+  "evidence": [
+   "the settings label said 'default 2.9: about 29 squares watered' and the kernel comment '29 cells'; RM_Sprinkle.Covered uses GenRadial.RadialCellsAround, which counts distance <= 2.9: 25 cells (RimSage, Verse/GenRadial.cs)"
+  ],
+  "would_pass": "the label and comment say 25",
+  "smallest_fix": "text only",
+  "verdict_on_criterion": "criterion sound",
+  "status": "FIXED a34a529cc2"
+ },
+ {
+  "id": "RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES",
+  "cls": "Polish",
+  "bar": "inv_overflow_sheet",
+  "criterion": "crops die under standing overflow after a week",
+  "evidence": [
+   "cropDrownPulses ships 1680 = 7 days at the shipped 250-tick pulse; it is stored in pulses, so moving the pulse slider (60..2500) silently makes it 1.68..70 days (lane1 INFO sheet_crop_delay_rides_the_pulse_slider)"
+  ],
+  "would_pass": "the delay in days survives a pulse-slider change",
+  "smallest_fix": "store the delay in ticks or days; derive pulses at use",
+  "verdict_on_criterion": "criterion sound; defaults meet it",
+  "status": "PENDING"
+ },
+ {
+  "id": "RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES",
+  "cls": "Polish",
+  "bar": "inv_converters",
+  "criterion": "a planted def change is seen by a test",
+  "evidence": [
+   "planted DEF_STILL_RATE_TENFOLD (RM_LiquidStills.xml 6000 -> 60000 L a day) survived every decider; the rates are marked PROVISIONAL and no bar states them"
+  ],
+  "would_pass": "a test pins each machine's shipped rate, or the rates are tuned and then pinned",
+  "smallest_fix": "a def-snapshot test once rates are tuned",
+  "verdict_on_criterion": "no bar pins a rate; not a Problem",
+  "status": "PENDING"
+ }
+]

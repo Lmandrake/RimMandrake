@@ -479,7 +479,7 @@ static class BlindLane1
                 for (int t = 0; t < 240 * days; t++)
                 {
                     ConvTick(ref acc, per, inU, outU, ref input, ref room, ref made, ref eaten); cases++;
-                    if (acc < -1e-3f) return (false, cases, "budget negative " + acc + " (run " + run + ")");
+                    if (acc < -1e-4f * inU - 1e-3f) return (false, cases, "budget negative " + acc + " (run " + run + "), past the kernel's 1e-4 batch slack");
                 }
                 double want = perDay * tier * mult * days;
                 if (eaten > want + 1 || eaten < want - inU - Math.Max(1, want * 1e-4)) return (false, cases,
@@ -494,7 +494,7 @@ static class BlindLane1
             {
                 float per = p10 / 10f; float acc = 0; int input = int.MaxValue / 2, room = -1; long made = 0, eaten = 0;
                 for (int t = 0; t < 240; t++) ConvTick(ref acc, per, inU, 1, ref input, ref room, ref made, ref eaten);
-                double loss = 1 - eaten / (per * 240.0);
+                double loss = (per * 240.0 - eaten - inU) / (per * 240.0);   // a day may end holding less than one batch: not a loss
                 if (loss > worst) { worst = loss; at = "inputUnits " + inU + ", income " + per + " a rare tick: runs " + eaten + " of " + (per * 240) + " units a day"; }
             }
             Row("conv_rate_loss_when_income_beats_a_batch", CONV, "sweep", worst > 0.02 ? "FAIL" : "PASS", 200 * 570,

@@ -1,0 +1,32 @@
+[
+ {
+  "path": "src/RimMandrake/FlowWorks/Source/SelfTest/BlindCycle1Checks.cs",
+  "why": "new: five cases added (Converter_rate_setting_delivers_its_rate, Converter_caller_keeps_clipped_income, Sheet_dry_square_under_a_pool_is_wetted, Sprinkler_caller_asks_for_a_pump, DrillSurvey_charge_is_only_what_landed)",
+  "before": null,
+  "after": "ce0d0a17c9ae1eb4cb19128953d235218519e07f"
+ },
+ {
+  "path": "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+  "why": "registers BlindCycle1Checks.Run(Case); no assertion changed",
+  "before": "06d22a689554e33cb3abcc5af8251730726e10cf",
+  "after": "9b614e75afe6b10a4ee38091890602888827d3b8"
+ },
+ {
+  "path": "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+  "why": "compiles BlindCycle1Checks.cs",
+  "before": "58c7ae167452e7d723840b68c5b56a2291404b31",
+  "after": "7b2961563d052f73efb0e550f1b8a9bf65a36364"
+ },
+ {
+  "path": "src/RimMandrake/FlowWorks/Source/SelfTest/DeckCollapseLinesChecks.cs",
+  "why": "NOT edited by this judge in the end: another seat's cf6efc3055 re-pinned the GSS RebuildContacts signature first (listed because it changed under T_PIT_COVER during the cycle)",
+  "before": "0520bb412d08d92b8bb19f3a4675bf335d6e096f",
+  "after": "0818ed6877149b21fb7c75e4bc3bddcccb40a4ec"
+ },
+ {
+  "path": "design/concepts/FlowWorks/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
+  "why": "the judge's own lane-1 test, after lane 2: (1) conv budget-negative tolerance follows the kernel's deliberate 1e-4 batch slack (-0.0016 units tripped -1e-3); (2) conv rate-loss metric allows the part-batch a one-day window ends holding. Both rows still FAIL on the old kernel (--kernel), PASS on the fix",
+  "before": "d8f61625788d360af25cc2b34292b3e9d01d418b",
+  "after": "17d2a9d9e2dee636e3ff4b71a44558c1d97d778c"
+ }
+]
