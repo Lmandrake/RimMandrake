@@ -165,6 +165,44 @@ def units():
           rt and rt["route"] == "role" and rt["reader"] == "Conductor" and rt.get("cause") == "refusals", rt)
 
 
+def loopholes(root):
+    """RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: scenes.json edited mid-judge, a failed runner, the caps after a release."""
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_loopholes")
+
+    class Editing(Judge):
+        def __call__(self, argv, cwd, env, timeout):
+            with open(os.path.join(self.d, "scenes.json"), "a") as f:
+                f.write("\n")
+            return super().__call__(argv, cwd, env, timeout)
+    d = concept(os.path.join(root, "loop_scenes"))
+    j = Editing([answer("covered", [], 1000)])
+    j.d = d
+    rec, _ = CJ.run(d, os.path.join(root, "loop_scenes"), j, now=1794300000)
+    check("scenes.json edited while the judge reads it: a covered verdict is not signed",
+          not rec.get("signed") and "scenes.json" in str(rec.get("error")), (rec.get("signed"), rec.get("error")))
+
+    class Failing(Judge):
+        def __call__(self, argv, cwd, env, timeout):
+            return 1, super().__call__(argv, cwd, env, timeout)[1]
+    d = concept(os.path.join(root, "loop_exit"))
+    rec, _ = CJ.run(d, os.path.join(root, "loop_exit"), Failing([answer("covered", [], 1000)]), now=1794300100)
+    check("a well-formed covered verdict from a runner that exited 1 is not taken or signed",
+          not rec.get("signed") and rec.get("verdict") != "covered" and "exited 1" in str(rec.get("error")),
+          (rec.get("verdict"), rec.get("signed"), rec.get("error")))
+
+    st = {"coverage_releases": [{"rounds_at": 1}],
+          "coverage_rounds": [{"judge": "j0", "verdict": "not_covered", "tokens": 1}] +
+                             [{"judge": "j%d" % i, "verdict": "covered", "tokens": 1} for i in range(1, 1 + CJ.JUDGE_RUNS_MAX)]}
+    why = CJ.stop_reason(st)
+    check("after a release the run cap still binds, counted from the release (%d covered looks)" % CJ.JUDGE_RUNS_MAX,
+          bool(why) and "since the release" in why, why)
+    st = {"coverage_releases": [{"rounds_at": 0}],
+          "coverage_rounds": [{"judge": "j%d" % i, "verdict": "malformed", "tokens": 1} for i in range(CJ.MALFORMED_LIMIT)]
+          + [{"judge": "jc", "verdict": "covered", "tokens": 1}]}
+    check("after a release the malformed cap still binds while the last look reads covered",
+          bool(CJ.stop_reason(st)), CJ.stop_reason(st))
+
+
 def main():
     CJ.CONTRACT = False   # bare gaps test another rule; the refusal record is selftest_coverage_refusal_record
     CJ.delta_plan = lambda d, prior, read=None: None   # the full judge's loop; the delta re-judge is selftest_coverage_delta
@@ -190,6 +228,7 @@ def main():
             healthy(root)
             legacy(root, rounds)
             units()
+            loopholes(root)
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors = saved
         for k, v in env.items():

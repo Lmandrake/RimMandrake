@@ -411,17 +411,24 @@ def stop_reason(st, d=None):
         if after and after[-1].get("verdict") != "covered":
             return "released for one more look at round %d; that look was %s" % (
                 len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict")
-        return None
+        # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
+        return _caps(after, " since the release")
     nc = sum(1 for r in rs if r.get("verdict") == "not_covered")
-    bad = sum(1 for r in rs if r.get("verdict") == "malformed")
-    if bad >= MALFORMED_LIMIT:
-        return "%d malformed verdicts (limit %d): the coverage brief FAILED its refusal contract" % (bad, MALFORMED_LIMIT)
     if nc >= NOT_COVERED_LIMIT:
         return "%d not_covered verdicts (limit %d)" % (nc, NOT_COVERED_LIMIT)
+    return _caps(rs, "")
+
+
+def _caps(rs, since):
+    """The run, spend and malformed caps over rounds rs -> why judging stops, or None."""
+    bad = sum(1 for r in rs if r.get("verdict") == "malformed")
+    if bad >= MALFORMED_LIMIT:
+        return "%d malformed verdicts%s (limit %d): the coverage brief FAILED its refusal contract" % (
+            bad, since, MALFORMED_LIMIT)
     if len(rs) >= JUDGE_RUNS_MAX:
-        return "%d judge runs (limit %d)" % (len(rs), JUDGE_RUNS_MAX)
+        return "%d judge runs%s (limit %d)" % (len(rs), since, JUDGE_RUNS_MAX)
     if spend(rs) >= JUDGE_SPEND_MAX:
-        return "judge spend %d tokens (limit %d, 4x the p90)" % (spend(rs), JUDGE_SPEND_MAX)
+        return "judge spend %d tokens%s (limit %d, 4x the p90)" % (spend(rs), since, JUDGE_SPEND_MAX)
     return None
 
 
@@ -694,6 +701,23 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         + RECORD_TEXT)
 
 
+def fresh_key(d, tree):
+    """-> (tree hash, sheet hash, {input file: sha256}) of every concept file the judge reads (INPUT_FILES; the tree by
+    its hash without the signature stamp). RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: scenes.json edited mid-judge used
+    to leave the signature standing."""
+    import hashlib
+    files = {}
+    for fn in INPUT_FILES:
+        if fn == "tree.json":
+            continue
+        try:
+            with open(os.path.join(d, fn), "rb") as f:
+                files[fn] = hashlib.sha256(f.read()).hexdigest()
+        except OSError:
+            files[fn] = None
+    return CT.tree_hash(tree), CT.sheet_hash(d), files
+
+
 def default_runner(argv, cwd, env, timeout):
     """-> (exit code, stdout). The judge is a plain `claude -p` in the concept's clone."""
     r = subprocess.run(argv, cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout)
@@ -763,7 +787,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     if what != "judge":
         return None, "%s: %s" % (what, why)
     tree = CT.load(d)
-    before = (CT.tree_hash(tree), CT.sheet_hash(d))
+    before = fresh_key(d, tree)
     st0 = DS.load_state(d)
     earlier = earlier_gaps(st0, d)
     prior = prior_verdict(d)
@@ -782,7 +806,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
     argv = [CLAUDE, "-p", text] + tail
     rec = {"judge": unit, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),
-           "tree": before[0], "sheet": before[1], "verdict": None, "signed": False, "hashes": hashes,
+           "tree": before[0], "sheet": before[1], "inputs": before[2], "verdict": None, "signed": False, "hashes": hashes,
            "mode": "full" if dp is None else "delta", "prompt_chars": len(text)}
     if dp is not None:
         rec.update(against=dp["against"], claims=dp["claims"], changed=dp["changed"])
@@ -818,6 +842,10 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             so.get("verdict") in ("covered", "not_covered") and isinstance(so.get("checklist"), list)))
         if not ok:
             rec["error"] = "no well-formed verdict (exit %s)" % code
+        elif code != 0:
+            # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: a runner that failed is not trusted for its verdict, however well formed
+            rec["error"] = "the judge's runner exited %s: its verdict is not taken" % code
+            ok = False
         return code, so if ok else None, res.get("session_id")
 
     started = time.monotonic()
@@ -920,8 +948,10 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     if rec["verdict"] == "covered":
         if missing:
             rec["error"] = "a covered verdict with no row for %s is not a covered verdict: not signed" % ", ".join(missing)
-        elif (CT.tree_hash(tree2), CT.sheet_hash(d)) != before:
-            rec["error"] = "the tree or sheet changed while the judge read it: not signed"
+        elif fresh_key(d, tree2) != before:
+            moved = [fn for fn, h in before[2].items() if fresh_key(d, tree2)[2].get(fn) != h]
+            rec["error"] = "the %s changed while the judge read it: not signed" % (
+                ", ".join(moved) if moved else "tree or sheet")
         elif rec.get("gaps"):
             rec["error"] = "a covered verdict that lists gaps is not a covered verdict: not signed"
         else:
