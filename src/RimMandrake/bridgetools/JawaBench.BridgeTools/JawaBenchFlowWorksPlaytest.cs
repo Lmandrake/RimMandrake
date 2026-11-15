@@ -96,6 +96,9 @@ namespace JawaBench.BridgeTools
                 Map map = Find.CurrentMap;
                 if (map == null) return Fail("No current map.");
                 if (ResolveExcavationComponent(map, out Type _, out string err) == null) return Fail(err);
+                // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c09.F1): never two per-frame playtest drivers on one game
+                if (gRun != null && gRun.state == "running")
+                    return Fail("A GSS playtest run is active: " + gRun.id + ". Collect or abort it before starting a FlowWorks playtest.");
                 if (pRun != null && pRun.state == "running")
                 {
                     if (!force) return Fail("A playtest run is active: " + pRun.id + ". Pass force=true to abort it.");

@@ -180,7 +180,10 @@ namespace JawaBench.BridgeTools
                         if (fromTo.Length == 2 && int.TryParse(fromTo[0].Trim(), out a) && int.TryParse(fromTo[1].Trim(), out b))
                         {
                             if (b < a) { int t = a; a = b; b = t; }
-                            for (int i = a; i <= b; i++) ids.Add(i);
+                            // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c01.F8): a main-thread loop, so bounded; and a
+                            // long counter, because int i <= int.MaxValue wraps and never ends
+                            if ((long)b - a + 1 > 100000) refused.Add(new { value = range, reason = "range spans more than 100000 ids" });
+                            else for (long i = a; i <= b; i++) ids.Add((int)i);
                         }
                         else refused.Add(new { value = range, reason = "not a 'from-to' range" });
                     }

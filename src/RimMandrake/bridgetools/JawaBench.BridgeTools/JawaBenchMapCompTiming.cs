@@ -34,6 +34,7 @@ namespace JawaBench.BridgeTools
         internal const string HarmonyId = "mandrake.jawabench.mapcomptiming";
         internal static readonly Dictionary<Type, long[]> Acc = new Dictionary<Type, long[]>(); // calls, total, max (Stopwatch ticks)
         internal static volatile bool Armed;
+        internal static int Busy;      // one session at a time: the timers and counters are shared statics (GPT c02.F2)
         internal static int MainThreadId = -1;
         internal static int Depth;
         internal static long Foreign;
@@ -110,6 +111,10 @@ namespace JawaBench.BridgeTools
             var failures = new List<string>();
             int patched = 0, startTick = 0;
             var sw = Stopwatch.StartNew();
+            // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c02.F2): a second session would reset the first one's
+            // counters and unpatch its timers by the shared Harmony id
+            if (Interlocked.CompareExchange(ref JawaBenchMapCompTimer.Busy, 1, 0) != 0)
+                return Fail("A map component timing session is already running; one at a time (the timers are shared).");
             try
             {
                 object setup = await ctx.MainThread.InvokeAsync(() =>
@@ -153,7 +158,7 @@ namespace JawaBench.BridgeTools
                 while (true)
                 {
                     await Task.Delay(250, cancellationToken).ConfigureAwait(false);
-                    int now = await ctx.MainThread.InvokeAsync(() => Find.TickManager?.TicksGame ?? startTick);
+                    int now = await ctx.MainThread.InvokeAsync(() => Find.TickManager?.TicksGame ?? startTick, cancellationToken);   // GPT c02.F3
                     if (now - startTick >= ticks || sw.Elapsed.TotalSeconds >= maxSeconds) break;
                 }
 
@@ -226,7 +231,8 @@ namespace JawaBench.BridgeTools
                 JawaBenchMapCompTimer.Armed = false;
                 JawaBenchMapCompTimer.Target = null;
                 try { await ctx.MainThread.InvokeAsync(() => { new Harmony(JawaBenchMapCompTimer.HarmonyId).UnpatchAll(JawaBenchMapCompTimer.HarmonyId); return 0; }); }
-                catch { }
+                catch (Exception e) { try { Log.Warning("[JawaBench] map_comp_timing could not unpatch its timers: " + e.GetType().Name + ": " + e.Message); } catch { } }
+                Interlocked.Exchange(ref JawaBenchMapCompTimer.Busy, 0);
             }
         }
     }

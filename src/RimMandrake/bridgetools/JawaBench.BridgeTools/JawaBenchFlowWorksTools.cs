@@ -490,6 +490,10 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "How many times to call the engine's FillIn() on this cell AFTER any deepen/fill (raises D by one each; the fill-in designator's own path). 0 = none.", DefaultValue = 0)]
             int fillInLevels = 0)
         {
+            // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c09.F2): both loops run on the main thread and Deepen clamps
+            // the depth, so a huge count only freezes the game. 64 is far past any real depth.
+            if (deepenLevels < 0 || deepenLevels > 64 || fillInLevels < 0 || fillInLevels > 64)
+                return Fail("deepenLevels and fillInLevels must each be 0..64 (got " + deepenLevels + ", " + fillInLevels + ").");
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 Map map = Find.CurrentMap;

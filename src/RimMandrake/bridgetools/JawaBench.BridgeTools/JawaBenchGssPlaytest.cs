@@ -90,6 +90,9 @@ namespace JawaBench.BridgeTools
                 if (map == null) return Fail("No current map.");
                 if (GenTypes.GetTypeInAnyAssembly("RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph") == null)
                     return Fail("Gimme Some Slack (mandrake.rm.gimmesomeslack) is not loaded.");
+                // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c09.F1): never two per-frame playtest drivers on one game
+                if (pRun != null && pRun.state == "running")
+                    return Fail("A FlowWorks playtest run is active: " + pRun.id + ". Collect or abort it before starting a GSS playtest.");
                 if (gRun != null && gRun.state == "running")
                 {
                     if (!force) return Fail("A GSS playtest run is active: " + gRun.id + ". Pass force=true to abort it.");

@@ -242,14 +242,17 @@ namespace JawaBench.BridgeTools
                 return null;
             });
             if (err != null) return err;
+            // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c06.F10): wait on and answer from THIS call's run; SA.Cur
+            // is replaced by the next advance, whose state and numbers this reply used to report as its own.
+            var run = SA.Cur;
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            while (SA.Cur.State == "running" && sw.ElapsedMilliseconds < timeoutMs)
+            while (run.State == "running" && sw.ElapsedMilliseconds < timeoutMs)
                 await Task.Delay(100, cancellationToken).ConfigureAwait(false);
             int waited = timeoutMs;     // captured on purpose (see above)
             bool wantFs = frameSamples, wantRaw = raw;
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
-                var r = SA.Cur;
+                var r = run;
                 if (waited < 0) return null;
                 var trig = VT.Latch.Since(r.StartSeq);
                 return new
