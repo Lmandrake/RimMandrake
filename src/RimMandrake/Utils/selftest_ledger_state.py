@@ -134,6 +134,9 @@ with open(os.path.join(TMP, "events", "BENCH.jsonl"), "a") as fh:
 os.environ.update(env(B))
 sys.path.insert(0, HERE)
 import ledger_state  # noqa: E402
+import owner_queue  # noqa: E402
+# the test ledger's owner-pending is its own items only: the live Designer concept folders are drifting real state
+owner_queue.designer_turns = lambda root=None: {}
 import handoff  # noqa: E402
 
 MON = ledger_state.local(time.time())[5:8]        # "11-": the notes are stamped today, so no month is wired in
