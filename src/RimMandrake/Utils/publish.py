@@ -591,7 +591,8 @@ def tree_checks(top, changed):
     """Owner by card 2026-11-12 ~8:25 PM PST: publish runs the fast whole-tree checks and refuses on red, naming it
     (validation_map_and_rules.md rule 10). The list is TREE_CHECKS; a repo without it (a test fixture) runs nothing.
     `changed`: the paths the local commits touch; only skip_when_only paths -> nothing runs. A check that times out
-    warns: it measured nothing, so it refuses nothing. -> None, or raises Refuse naming each red check and its fix."""
+    warns: it measured nothing, so it refuses nothing. A sparse clone runs them on a full checkout of HEAD
+    (full_head_tree). -> None, or raises Refuse naming each red check and its fix."""
     cfg_path = os.path.join(top, TREE_CHECKS)
     if not os.path.isfile(cfg_path):
         return None
@@ -602,6 +603,55 @@ def tree_checks(top, changed):
     cfg = json.load(open(cfg_path, encoding="utf-8"))
     if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
         return None
+    if is_sparse(top):
+        with full_head_tree(top) as full:
+            return _run_tree_checks(full, cfg)
+    return _run_tree_checks(top, cfg)
+
+
+def is_sparse(top):
+    """True when some tracked file is not checked out (skip-worktree: a sparse clone, scratch_clone.py's default)."""
+    r = run(top, "ls-files", "-t", check=False)
+    return any(ln.startswith("S ") for ln in (r.stdout or "").splitlines())
+
+
+CHECKTREE_PREFIX = "rm-treecheck-"
+CHECKTREE_STALE_S = 3600
+
+
+@contextlib.contextmanager
+def full_head_tree(top):
+    """A sparse clone cannot run the whole-tree checks: the files they read are not checked out, so they went red
+    blind (lessons 2026-11-15 194926Z/195130Z) or green blind. Yield a full checkout of HEAD instead: a throwaway
+    `git clone --shared` inside this clone's git dir (no objects copied, ~15 s for the whole tree on ext4), removed
+    after. It holds the commit being pushed, so a violation in it refuses exactly as in a full clone. A leftover from a
+    killed run (older than an hour) is removed first."""
+    import shutil
+    import tempfile
+    gitdir = out(top, "rev-parse", "--absolute-git-dir")
+    for n in os.listdir(gitdir):
+        p = os.path.join(gitdir, n)
+        if n.startswith(CHECKTREE_PREFIX) and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
+            shutil.rmtree(p, ignore_errors=True)
+    head = out(top, "rev-parse", "HEAD")
+    tmp = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
+    try:
+        t0 = time.monotonic()
+        for a in (["clone", "-q", "--shared", "--no-checkout", top, tmp],
+                  ["-C", tmp, "checkout", "-q", "--detach", head]):
+            r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
+                               timeout=GIT_TIMEOUT_S)
+            if r.returncode:
+                raise Refuse("sparse clone: the full checkout of HEAD for the tree checks failed: git %s: %s"
+                             % (a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
+        print("tree checks: sparse clone, running them on a full checkout of HEAD %s (%.1f s)"
+              % (head[:12], time.monotonic() - t0), flush=True)
+        yield tmp
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _run_tree_checks(top, cfg):
     limit = cfg.get("timeout_s", 60)
 
     def one(c):

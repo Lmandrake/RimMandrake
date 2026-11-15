@@ -34,7 +34,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
   Before it pushes it runs the fast whole-tree checks listed in `src/RimMandrake/Utils/publish_tree_checks.json`, in
   parallel (about 13 s measured 2026-11-12), and refuses on a red, naming the check, its FAIL line and the fix (owner by card 2026-11-12;
   `validation_map_and_rules.md` rule 10). A ledger- or lesson-only publish skips them; a check that times out warns.
-  `RM_PUBLISH_SKIP_TREE_CHECKS="<why>"` bypasses them once, out loud.
+  In a sparse clone (`scratch_clone.py`'s default) they run on a throwaway full checkout of HEAD (`git clone --shared`
+  in the clone's git dir, about 20 s more), so a sparse clone publishes with no bypass and no un-sparsing.
+  `RM_PUBLISH_SKIP_TREE_CHECKS="<why>"` bypasses them once, out loud; a sparse clone is not a reason.
 - `land.sh` (`src/RimMandrake/Utils/land.sh`; `/home/mandrake/.seat-tmp/land.sh` is a one-line wrapper) publishes ONE
   commit or explicit paths by plumbing, retries a lost push race, then runs `./sync --no-fetch` itself. `LAND_REPO`
   defaults to the clone the cwd is in. stdout is exactly `PUBLISHED <sha>`; pass it to `rimflow close --sha`.
