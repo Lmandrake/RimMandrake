@@ -1312,3 +1312,311 @@ def scene_temperament(t):
             raise ExpectationFailed("MISSING TOOL: no probe reads MentalBreakWorker_GraffitiCleaning.BreakCanOccur for a pawn "
                                     "(jawa/pawn_force_mental_break calls TryDoMentalBreak, which skips it), so 'only neat 2 can break this way' "
                                     "is unread; filed as %s" % BREAK_GATE_ITEM)
+
+
+# ------------------------------------- settings, breach bias, ideoligion reload (scenes.json sc_settings, sc_breach_bias_raid; H1_IDEO_RELOAD)
+
+GLYPH_DEF = "RM_Graffiti_WarningGlyph"           # breachLure true (Defs/ThingDefs_Graffiti.xml:160,184): BreachBiasHook's lure
+BREACH_STRATEGY = "ImmediateAttackBreaching"     # vanilla RaidStrategyDef (named as a def by RUT_EmpireRungs.xml:93)
+BREACH_PICK_ITEM = "RIMMANDRAKE_PROBE_GRAFFITI_BREACH_PICK_HOOK_NEVER_READ_LIVE"
+IDEO_REMOVE_ITEM = "RIMMANDRAKE_PROBE_GRAFFITI_IDEO_REMOVAL_NO_TOOL_DELETES_ONE"
+VARIANT_ITEM = "RIMMANDRAKE_PROBE_GRAFFITI_MARK_VARIANT_SAVED_BUT_UNREAD"
+RELOAD_SAVE = "RM_GraffitiSceneReload"           # a disposable save (never a canonical world save)
+_MARK_LINE = re.compile(r"^\((-?\d+), 0, (-?\d+)\) (\S+) craft (\S+) beauty \S+ by (.+?) about (.+?)(?: DEFACED| WEATHER\d+| FIT[\d.]+"
+                        r"| LASTWORD)* side (-?\d+) room ")
+
+
+def _mark_rows(t):
+    """{(x, z): {def, craft, by, about, side}} for every mark standing, off RM_GraffitiSocialProof.Marks (RM_GraffitiSocialProof.cs:177)."""
+    text, _ = _static(t, SOCIAL_PROOF, "Marks")
+    out = {}
+    for ln in text.splitlines():
+        m = _MARK_LINE.match(ln)
+        if m:
+            out[(int(m.group(1)), int(m.group(2)))] = dict(zip(("def", "craft", "by", "about", "side"), m.groups()[2:]))
+        elif ln.strip() and t._guard():
+            raise ExpectationFailed("RM_GraffitiSocialProof.Marks line this scene cannot parse: %r" % ln)
+    return out
+
+
+def _classic(t, arg=""):
+    """RM_GraffitiSocialProof.Classic (RM_GraffitiSocialProof.cs:238): 'on' is the save's no-ideoligion flag, as GraffitiJobUtility.IdeoOf
+    reads it. -> True/False as the game reads it after the call."""
+    text, _ = _static(t, SOCIAL_PROOF, "Classic", arg)
+    if t._guard() and text not in ("CLASSIC True", "CLASSIC False"):
+        raise ExpectationFailed("RM_GraffitiSocialProof.Classic(%r) answered %r" % (arg, text))
+    return text == "CLASSIC True"
+
+
+def _reload(t, name=RELOAD_SAVE):
+    """Save the running game under `name` and load it back (rimworld/save_game, rimworld/load_game_ready: Scarlands/validation.py:1056).
+    A map that does not come back fails the component."""
+    import time
+    if not t._guard():
+        return
+    t.bridge_call("rimworld/save_game", saveName=name)
+    time.sleep(3.0)
+    t.bridge_call("rimworld/load_game_ready", saveName=name)
+    for _ in range(40):
+        mi = t.bridge_call("jawa/map_info")
+        if isinstance(mi, dict) and mi.get("success") is not False and mi.get("size"):
+            return
+        time.sleep(1.0)
+    raise ExpectationFailed("save %r did not load back to a map within 40 s" % name)
+
+
+def _graffiti_errors(t):
+    """Error lines naming this mod's marks or a dead reference, drained from the game log (jawa/drain_log errorsOnly)."""
+    r = t.bridge_call("jawa/drain_log", limit=500, errorsOnly=True) or {}
+    if t._guard() and r.get("success") is False:
+        raise ExpectationFailed("jawa/drain_log unreadable: %r" % r)
+    msgs = [str(m.get("text", "")) for m in r.get("messages") or []]
+    return [m for m in msgs if "rmMark" in m or "Graffiti" in m or "Filth_Mark" in m or "Could not resolve reference" in m]
+
+
+def _breach_pick(t, why):
+    """The building BreachingGrid.FindBuildingToBreach returns now (BreachBiasHook.cs:31 postfixes it), and a breaching lord's current
+    target. -> (x, z, line). No probe reads either: until BREACH_PICK_ITEM lands this is the scene's MISSING TOOL."""
+    if not t._guard():
+        return None, None, ""
+    raise ExpectationFailed("MISSING TOOL: no probe reads BreachingGrid.FindBuildingToBreach or a breaching lord's current target (no "
+                            "Graffiti probe, no jawa/lord_* reader), so %s is unread; filed as %s" % (why, BREACH_PICK_ITEM))
+
+
+@suite.chain("scene_breach_bias_raid")
+def scene_breach_bias_raid(t):
+    """sc_breach_bias_raid (stands_alone_settings; inv_breach_bias through coverage_rest): a colonist-painted RM_Graffiti_WarningGlyph on
+    wall W, not vanilla's breach pick, draws FindBuildingToBreach and a breaching raid's first target to W while breachBiasEnabled is on;
+    off, the pick is vanilla's. Control: W with the glyph removed, bias on, picks vanilla's building. Restore: the runner destroys the
+    quicktest map. Every pick read waits on BREACH_PICK_ITEM's probe (_breach_pick)."""
+    x, z = t.anchor
+    wall = (x + 6, z)                                 # W: the east wall's middle; the glyph stands on the floor cell outside it
+    glyph = {}
+    with t.component("site_ready_breach_bias_raid"):
+        _site_start(t)
+        r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="breachBiasEnabled")
+        if t._guard() and str((r or {}).get("value")).lower() != "true":
+            raise ExpectationFailed("breachBiasEnabled reads %r, not its shipped true (RM_GraffitiMod.cs:44)" % ((r or {}).get("value"),))
+        _prep_site(t, 40)
+        _walls(t, _box(x - 6, z - 4, x + 6, z + 4), door=(x, z + 4))
+        t.bridge_call("jawa/map_commit")
+        _cast(t, "Recruit", "GrfLure//10")
+        _settle_painter(t, "GrfLure")
+        _no_cleaning(t)
+        mid, m = _order_mark(t, "GrfLure", GLYPH_DEF, "", wall[0] + 1, wall[1])
+        if t._guard():
+            glyph.update(id=mid, x=m["x"], z=m["z"])
+            t._current.detail = "glyph %s at (%d,%d) beside W %s" % (mid, m["x"], m["z"], wall)
+        _hold_at(t, "GrfLure", x, z)                  # inside the box, off the lure
+
+    with t.component("glyph_wall_is_not_vanilla_pick"):
+        t.set_setting(SETTINGS, {"breachBiasEnabled": False})
+        vx, vz, line = _breach_pick(t, "vanilla's pick with bias off")
+        t.set_setting(SETTINGS, {"breachBiasEnabled": True})
+        if t._guard() and (vx, vz) == wall:
+            raise ExpectationFailed("SITE: vanilla already picks W %s, so the lure proves nothing; re-stage W: %s" % (wall, line))
+
+    with t.component("bias_on_pick_is_glyph_wall", toggle="breachBiasEnabled"):
+        px, pz, line = _breach_pick(t, "the pick with bias on")
+        if t._guard() and (px, pz) != wall:
+            raise ExpectationFailed("bias on, FindBuildingToBreach picks (%d,%d), not W %s: %s" % (px, pz, wall, line))
+
+    with t.component("breaching_raid_first_target_is_glyph_wall", toggle="breachBiasEnabled"):
+        r = t.bridge_call("jawa/fire_raid", strategy=BREACH_STRATEGY, dryRun=False)
+        if t._guard() and not (r or {}).get("success"):
+            raise ExpectationFailed("jawa/fire_raid(strategy=%s) did not fire: %r" % (BREACH_STRATEGY, r))
+        t.wait_ticks(600)                             # the lord's breach toil sets its first target
+        px, pz, line = _breach_pick(t, "the breaching lord's first target")
+        if t._guard() and (px, pz) != wall:
+            raise ExpectationFailed("the breaching raid's first target is (%d,%d), not W %s: %s" % (px, pz, wall, line))
+
+    with t.component("bias_off_pick_is_vanilla", toggle="breachBiasEnabled"):
+        t.set_setting(SETTINGS, {"breachBiasEnabled": False})
+        px, pz, line = _breach_pick(t, "the pick with bias off")
+        t.set_setting(SETTINGS, {"breachBiasEnabled": True})
+        if t._guard() and (px, pz) == wall:
+            raise ExpectationFailed("bias off, the pick is still W %s: the switch does not stop its own behaviour: %s" % (wall, line))
+
+    with t.component("control_no_glyph_pick_is_vanilla"):
+        t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (glyph.get("x", wall[0] + 1), glyph.get("z", wall[1])), categories="All")
+        if t._guard() and _all_marks(t, "%d,%d,1,1" % (wall[0] + 1, wall[1])):
+            raise ExpectationFailed("the glyph beside W still stands after destroy_batch")
+        px, pz, line = _breach_pick(t, "the pick with the glyph gone, bias on")
+        if t._guard() and (px, pz) == wall:
+            raise ExpectationFailed("with no glyph W %s is still picked: W was chosen for a reason other than the lure: %s" % (wall, line))
+
+
+def _spree_marks(t):
+    """paintingEnabled's behaviour: RM_GraffitiProof's A1 spree (SpreeStart, 3000 ticks, SpreeRead: RM_GraffitiProof.cs:145,156)."""
+    started, _ = _static(t, PROOF, "SpreeStart")
+    pid = _probe_fields(started).get("pawn")
+    with _own_spree([pid]):
+        t.wait_ticks(3000)
+    text, _ = _static(t, PROOF, "SpreeRead")
+    return int(_probe_fields(text).get("marks") or 0), "%s; %s" % (started, text)
+
+
+def _viewer_thought(t):
+    """viewerReactionEnabled's behaviour: RM_GraffitiProof.HostileThought (RM_GraffitiProof.cs:294), its worker active 1 or 0."""
+    text, _ = _static(t, PROOF, "HostileThought")
+    return int(_probe_fields(text).get("worker") == "True"), text
+
+
+def _exit_tags(t):
+    """raidExitTaggingEnabled's behaviour: one A2 raid exit (RM_GraffitiProof.cs:172,219), its raiders' marks."""
+    started, _ = _static(t, PROOF, "RaidStart")
+    text, _ = _static(t, PROOF, "RaidExit")
+    return int(_probe_fields(text).get("after") or 0), "%s; %s" % (started, text)
+
+
+def _protected(t):
+    """autoCleanProtectionEnabled's behaviour: CleanSetup, the 600-tick wait, CleanRead (RM_GraffitiProof.cs:319,340): 1 when the
+    colony's own mark is NOT offered to unforced cleaning (RM_GraffitiKernel.ProtectsFromAutoClean)."""
+    _static(t, PROOF, "CleanSetup")
+    t.wait_ticks(600)
+    text, _ = _static(t, PROOF, "CleanRead")
+    return int(_probe_fields(text).get("unforcedOwn") == "False"), text
+
+
+def _claim_after_raid(t):
+    """socialEnabled's behaviour: a raid exit's tags give the colony RM_Graffiti_EnemyClaim (GraffitiSocial.cs:198)."""
+    n, line = _exit_tags(t)
+    stage = _claim_stage(t)
+    return int(stage is not None), "EnemyClaim stage %r after %s" % (stage, line)
+
+
+def _said_after_raid(t):
+    """socialMessagesEnabled's behaviour: the 'left their mark' letter a raid exit sends (GraffitiSocial.cs:795), counted by
+    RM_GraffitiSocialProof.Said. Waits out RaidMessageDue's 5000-tick spacing (GraffitiSocial.cs:299) first."""
+    t.wait_ticks(5100)
+    before, _ = _static(t, SOCIAL_PROOF, "Said", "1")
+    n, line = _exit_tags(t)
+    after, _ = _static(t, SOCIAL_PROOF, "Said", "1")
+    count = lambda s: int((s.split() + ["0", "0"])[1]) if s.startswith("SAID ") else 0
+    return count(after) - count(before), "messages %d -> %d after %s" % (count(before), count(after), line)
+
+
+# each switch's own behaviour, as (setting, measure); ordered so the raid letter's spacing is never spent before its own pair
+SWITCHES = [("socialMessagesEnabled", _said_after_raid), ("paintingEnabled", _spree_marks), ("viewerReactionEnabled", _viewer_thought),
+            ("raidExitTaggingEnabled", _exit_tags), ("autoCleanProtectionEnabled", _protected), ("socialEnabled", _claim_after_raid)]
+
+
+@suite.chain("scene_settings_each_switch")
+def scene_settings_each_switch(t):
+    """sc_settings (stands_alone_settings, inv_settings, inv_standalone): marks painted with ideoligions off keep def, craft, wall side and
+    subject across a save and reload; then each switch off stops only its own behaviour and, back on (the control), it returns.
+    paintIntervalTicks is a number, not a switch: preflight holds it at its shipped value. breachBiasEnabled's behaviour is
+    sc_breach_bias_raid's reader (_breach_pick); the raider-pressure switch is PRESSURE_ITEM's. Restore: the runner destroys the quicktest
+    map; the classic flag is set back."""
+    x, z = t.anchor
+    cells = [(x - 4, z - 1), (x + 4, z - 1)]
+    before = {}
+    with t.component("site_ready_settings"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 8, z, 17)
+        t.bridge_call("jawa/map_commit")
+        if not _classic(t, "on") and t._guard():
+            raise ExpectationFailed("RM_GraffitiSocialProof.Classic('on') left the no-ideoligion flag off")
+        for nick in ("GrfSetA", "GrfSetB"):
+            _cast(t, "Recruit", "%s//10" % nick)
+            _settle_painter(t, nick)
+        _no_cleaning(t)
+
+    with t.component("mark_painted_ideoligions_off"):
+        _order_mark(t, "GrfSetA", VANDAL_DEF, "GrfSetB", *cells[0])     # about a colonist: a subject to carry over
+        _order_mark(t, "GrfSetB", VANDAL_DEF, "", *cells[1])
+        if t._guard():
+            rows = _mark_rows(t)
+            before.update({c: rows.get(c) for c in cells})
+            if not all(before.values()):
+                raise ExpectationFailed("ordered marks not all standing: %s" % before)
+            if not _classic(t):
+                raise ExpectationFailed("the no-ideoligion flag was off while the marks were painted")
+            t._current.detail = "%s" % before
+
+    with t.component("marks_equal_after_reload"):
+        _reload(t)
+        if t._guard():
+            rows = _mark_rows(t)
+            off = {c: (before[c], rows.get(c)) for c in cells if rows.get(c) != before[c]}
+            if off:
+                raise ExpectationFailed("mark fields (before, after) changed across the reload: %s" % off)
+            t._current.detail = "def, craft, by, about and side equal at %s" % cells
+
+    for field, measure in SWITCHES:
+        with t.component("switch_%s_off_stops_it" % field, toggle=field):
+            t.set_setting(SETTINGS, {field: False})
+            n, line = measure(t)
+            if t._guard():
+                if n:
+                    raise ExpectationFailed("%s off, its behaviour still ran (%d): %s" % (field, n, line))
+                t._current.detail = line
+        with t.component("control_%s_on_returns_it" % field, toggle=field):
+            t.set_setting(SETTINGS, {field: True})
+            n, line = measure(t)
+            if t._guard():
+                if n <= 0:
+                    raise ExpectationFailed("%s back on, its behaviour did not return: %s" % (field, line))
+                t._current.detail = line
+
+    with t.component("marks_variant_equal_after_reload"):
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: no probe reads Filth_Mark.variant (scribed as rmMarkVariant, Filth_Mark.cs:304; "
+                                    "RM_GraffitiSocialProof.Marks leaves it out), so 'variant equal before and after reload' is unread; "
+                                    "filed as %s" % VARIANT_ITEM)
+
+    with t.component("switch_breachBiasEnabled_off_stops_it", toggle="breachBiasEnabled"):
+        _breach_pick(t, "breach bias's own behaviour (sc_breach_bias_raid)")
+
+    with t.component("switch_raider_pressure_off_stops_it"):
+        if t._guard():
+            _need_pressure("the raider-pressure switch, its sooner-or-larger mode and push size")
+
+
+@suite.chain("scene_ideo_removed_save_reload")
+def scene_ideo_removed_save_reload(t):
+    """H1_IDEO_RELOAD (inv_standalone, stands_alone_settings): a mark records its maker's ideoligion (rmMarkMakerIdeo, Filth_Mark.cs:297);
+    after the colony's ideoligion is removed, a save reloads with 0 Graffiti reference errors (held walk defect #1). Control: the mark
+    still stands after the reload with its def and maker, so the error count reads a world that holds the mark. Removing an ideoligion
+    waits on IDEO_REMOVE_ITEM. Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    cell = (x, z - 1)
+    before = {}
+    with t.component("site_ready_ideo_reload"):
+        _site_start(t)
+        if _classic(t) and t._guard():
+            raise ExpectationFailed("the no-ideoligion flag is on: the mark would record no ideoligion to lose")
+        _prep_site(t, 40)
+        _wall_run(t, x - 8, z, 17)
+        t.bridge_call("jawa/map_commit")
+        _cast(t, "Recruit", "GrfIdeo//10")
+        _settle_painter(t, "GrfIdeo")
+        _no_cleaning(t)
+        _order_mark(t, "GrfIdeo", VANDAL_DEF, "", *cell)
+        if t._guard():
+            before.update(_mark_rows(t).get(cell) or {})
+            if not before:
+                raise ExpectationFailed("RM_GraffitiSocialProof.Marks lists no mark at %s after the order" % (cell,))
+            t._current.detail = "%s" % before
+
+    with t.component("colony_ideo_removed"):
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: no bridge tool or probe removes an ideoligion from Find.IdeoManager (jawa/ideo_* create, "
+                                    "assign and edit; only start flow calls RemoveUnusedStartingIdeos), so the held walk defect cannot be "
+                                    "staged; filed as %s" % IDEO_REMOVE_ITEM)
+
+    errors = []
+    with t.component("save_reloads_zero_graffiti_reference_errors"):
+        _graffiti_errors(t)                                  # drain what the staging logged: only the reload's lines count
+        _reload(t)
+        errors = _graffiti_errors(t) if t._guard() else []
+        if errors:
+            raise ExpectationFailed("%d Graffiti reference error(s) on reload: %s" % (len(errors), errors[:5]))
+
+    with t.component("control_mark_survives_reload"):
+        if t._guard():
+            after = _mark_rows(t).get(cell)
+            if not after or after["def"] != before.get("def") or after["by"] != before.get("by"):
+                raise ExpectationFailed("the mark at %s (before %s) reads %s after the reload" % (cell, before, after))
+            t._current.detail = "%s" % after

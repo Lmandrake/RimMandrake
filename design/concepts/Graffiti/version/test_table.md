@@ -1,14 +1,14 @@
 # Graffiti 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:04:31Z. A bar passes when every deciding test passes.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:28:31Z. A bar passes when every deciding test passes.
 
 ## Counts
 
 - bars: 47 (locked: 47)
 - tests: 46 (12 built offline, 1 new offline, 32 live, 1 look)
-- scene entries present: 16, absent: 14
+- scene entries present: 18, absent: 12
 - built offline green today: 11, red: 1
-- bars with every decider runnable today: 26
+- bars with every decider runnable today: 30
 - known red: P_A9 = RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
 
 ## Bars
@@ -26,12 +26,12 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:04:31Z. A bar passes
 | inv_social_layer | 6 | sc_mockery, sc_answer_wall, sc_tribute_memorial, sc_fights | T_FUZZ, T_MSG_COUNTERS_RESET | - | no |
 | inv_visitors | 6 | sc_visitors | - | - | no |
 | inv_raid_marks | 6 | sc_raid_exit, sc_going_over, sc_raid_retaken, T_RAID_TAG_BUILT_WALL_ONLY | - | 2 | yes |
-| inv_breach_bias | 6 | sc_breach_bias_raid, sc_breach_toggle | T_FUZZ | - | no |
+| inv_breach_bias | 6 | sc_breach_bias_raid, sc_breach_toggle | T_FUZZ | - | yes |
 | inv_scrub_protection | 6 | sc_scrub_protection | T_FUZZ | - | yes |
 | inv_temperament | 6 | sc_temperament | - | - | yes |
 | inv_wall_loss | 6 | sc_wall_loss | - | - | no |
-| inv_settings | 6 | sc_settings, T_SETTINGS_SCREENS | T_LINT, T_SHIP_CHECK, sc_breach_toggle | - | no |
-| inv_standalone | 6 | sc_settings, H1_IDEO_RELOAD | T_SHIP_CHECK | 1 | no |
+| inv_settings | 6 | sc_settings, T_SETTINGS_SCREENS | T_LINT, T_SHIP_CHECK, sc_breach_toggle | - | yes |
+| inv_standalone | 6 | sc_settings, H1_IDEO_RELOAD | T_SHIP_CHECK | 1 | yes |
 | inv_raider_future_marks | 6 | sc_raider_pressure | - | - | yes |
 | inv_weathering | 6 | sc_weathered_raid_mark, T_WEATHER_OFFLINE | - | - | yes |
 | mark_appears | 6 | sc_spree_wall | sc_spree_corridor, T_FRESH_QT, T_SPREE_SURPRISE, T_FUZZ | - | yes |
@@ -57,7 +57,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:04:31Z. A bar passes
 | visitors | 6 | sc_visitors | - | - | no |
 | fights_reasons | 6 | sc_fights | - | - | no |
 | temperament | 6 | sc_temperament | - | - | yes |
-| stands_alone_settings | 6 | sc_settings, sc_breach_toggle, sc_breach_bias_raid | H1_IDEO_RELOAD, T_SETTINGS_SCREENS | 1 | no |
+| stands_alone_settings | 6 | sc_settings, sc_breach_toggle, sc_breach_bias_raid | H1_IDEO_RELOAD, T_SETTINGS_SCREENS | 1 | yes |
 | stories_not_tax | 6 | sc_lived_in_soak | sc_rereads, T_MSG_COUNTERS_RESET | 3, 4, 6 | no |
 | paint_dies_with_wall | 6 | sc_wall_loss | - | - | no |
 | weathering_bounds_marks | 6 | T_WEATHER_OFFLINE, sc_weathered_raid_mark | - | - | yes |
@@ -103,15 +103,15 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:04:31Z. A bar passes
 | sc_visitors | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_visitors | entry absent | - |
 | sc_fights | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_fights | entry absent | - |
 | sc_temperament | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_temperament | entry present | - |
-| sc_settings | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_settings_each_switch | entry absent | - |
+| sc_settings | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_settings_each_switch | entry present | - |
 | sc_breach_toggle | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::breach_bias_toggle_flips | entry present | - |
 | sc_wall_loss | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_wall_loss | entry absent | - |
 | sc_lived_in_soak | live_full | 6 | src/RimMandrake/Graffiti/validation.py::scene_lived_in_soak | entry absent | - |
 | sc_walk | live_full | 6 | src/RimMandrake/Graffiti/validation.py::scene_walk_lived_in | entry absent | - |
 | sc_weathered_raid_mark | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_weathered_raid_mark | entry present | - |
-| sc_breach_bias_raid | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_breach_bias_raid | entry absent | - |
+| sc_breach_bias_raid | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_breach_bias_raid | entry present | - |
 | P_A9 | live_minimal | 6 | src/RimMandrake/Graffiti/graffiti_v1_live_proof.py::A9 | entry present (known red) | - |
-| H1_IDEO_RELOAD | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_ideo_removed_save_reload | entry absent | RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST |
+| H1_IDEO_RELOAD | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_ideo_removed_save_reload | entry present | RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST |
 | LOOK_STAGE8 | look | 8 | - | Stage 8: the owner's own walk | - |
 
 ## Held statements placed

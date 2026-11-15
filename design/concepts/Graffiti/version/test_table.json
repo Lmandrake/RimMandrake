@@ -1,7 +1,7 @@
 {
  "mod": "Graffiti",
  "version": "0.1.0",
- "made": "2026-11-15T23:04:31Z",
+ "made": "2026-11-15T23:28:31Z",
  "made_by": "design/concepts/Graffiti/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
  "stages": {
   "4-5": "offline (blind)",
@@ -124,9 +124,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.5,
-    "last": "graffiti fuzz: 136890 cases, 137238 steps, 1.47s total -> OK",
-    "at": "2026-11-15T23:02:27Z",
+    "seconds": 3.1,
+    "last": "graffiti fuzz: 136890 cases, 137238 steps, 1.61s total -> OK",
+    "at": "2026-11-15T23:26:47Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fuzz.txt",
     "result": "PASS"
    }
@@ -154,9 +154,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 23.8,
+    "seconds": 24.8,
     "last": "Graffiti lint planted-defect selftest: 14/14 ok",
-    "at": "2026-11-15T23:02:51Z",
+    "at": "2026-11-15T23:27:12Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_lint.txt",
     "result": "PASS"
    }
@@ -184,9 +184,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 33.0,
+    "seconds": 29.2,
     "last": "RESULT: PASS (0 finding(s))",
-    "at": "2026-11-15T23:03:24Z",
+    "at": "2026-11-15T23:27:41Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/sigil_coverage.txt",
     "result": "PASS"
    }
@@ -212,9 +212,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.9,
+    "seconds": 2.0,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-15T23:03:26Z",
+    "at": "2026-11-15T23:27:43Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_settings_screens.txt",
     "mod_rows": {
      "tag": "Graffiti:",
@@ -246,9 +246,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 52.0,
+    "seconds": 35.5,
     "last": "Drift found. Re-run with --apply to deploy.",
-    "at": "2026-11-15T23:04:17Z",
+    "at": "2026-11-15T23:28:19Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/ship_check.txt",
     "result": "FAIL"
    }
@@ -272,9 +272,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.6,
-    "last": "[modcheck] chain scene_temperament END 0s PASS=0 FAIL=1 UNMEASURED=7 NOT_RUN=0 hold=0.0s body=0.0s teardown=0.0s",
-    "at": "2026-11-15T23:04:19Z",
+    "seconds": 1.5,
+    "last": "[modcheck] chain scene_ideo_removed_save_reload END 0s PASS=0 FAIL=1 UNMEASURED=3 NOT_RUN=0 hold=0.0s body=0.0s teardown=0.0s",
+    "at": "2026-11-15T23:28:20Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_full_list_mode.txt",
     "result": "PASS"
    }
@@ -298,9 +298,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.2,
     "last": "selftest_graffiti_fresh_quicktest: PASS",
-    "at": "2026-11-15T23:04:19Z",
+    "at": "2026-11-15T23:28:20Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fresh_quicktest.txt",
     "result": "PASS"
    }
@@ -326,7 +326,7 @@
     "rc": 0,
     "seconds": 0.2,
     "last": "selftest graffiti play zoom: PASS (0 failure(s))",
-    "at": "2026-11-15T23:04:19Z",
+    "at": "2026-11-15T23:28:20Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_play_zoom.txt",
     "result": "PASS"
    }
@@ -352,7 +352,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "selftest graffiti spree surprise: PASS",
-    "at": "2026-11-15T23:04:19Z",
+    "at": "2026-11-15T23:28:20Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_spree_surprise.txt",
     "result": "PASS"
    }
@@ -376,9 +376,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.0,
+    "seconds": 0.8,
     "last": "PASS selftest_graffiti_v1_live",
-    "at": "2026-11-15T23:04:20Z",
+    "at": "2026-11-15T23:28:21Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_v1_live.txt",
     "result": "PASS"
    }
@@ -406,9 +406,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.8,
+    "seconds": 1.5,
     "last": "T_WEATHER_OFFLINE: PASS (kernel weather family green; permanent rule green)",
-    "at": "2026-11-15T23:04:22Z",
+    "at": "2026-11-15T23:28:23Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_weather.txt",
     "result": "PASS"
    }
@@ -436,9 +436,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.4,
+    "seconds": 8.7,
     "last": "T_RAID_TAG_BUILT_WALL_ONLY: PASS - raid tags reach built walls only (watch: fixed copy green, 4 mutants red)",
-    "at": "2026-11-15T23:04:31Z",
+    "at": "2026-11-15T23:28:31Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_raid_tag_wall.txt",
     "result": "PASS"
    }
@@ -1148,7 +1148,7 @@
    "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "why_game_from_leaf": "stands_alone_settings",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
    "hold": "immediate",
    "new": false,
@@ -1159,7 +1159,7 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
+    "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
    }
   },
@@ -1322,7 +1322,7 @@
    "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "why_game_from_leaf": "stands_alone_settings",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
    "hold": "immediate",
    "new": false,
@@ -1333,7 +1333,7 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
+    "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
    }
   },
@@ -1383,7 +1383,7 @@
    "why_game": "Scribe reference resolution on save and load is engine behaviour over a live world's ideoligion list; no offline model of Scribe_References exists to decide it",
    "why_game_from_leaf": null,
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST",
    "new": true,
    "defs": [],
@@ -1395,7 +1395,7 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
+    "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
    }
   },
@@ -1640,7 +1640,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1709,7 +1709,7 @@
     "T_SETTINGS_SCREENS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -1729,8 +1729,8 @@
    ],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_raider_future_marks",
@@ -2183,7 +2183,7 @@
    ],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
