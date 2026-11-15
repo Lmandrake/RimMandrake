@@ -74,6 +74,9 @@ FIXTURE_SHA = "f5d809fb03a59ccca0f72da4a509cfb15b01fd64"
 # The ceiling these checks were written against, pinned so they pass with any shipped stage_ceiling_usd (item
 # RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: the shipped 60 -> 100 turned a ceiling check red).
 FIXTURE_CEILING = 60
+# Likewise the live-run cap: the slots_full check puts two runs live and pins max_live to match, so it holds at any shipped max_live
+# (2 -> 4 on 2026-11-15 by the owner's card).
+FIXTURE_MAX_LIVE = 2
 
 
 def load_cfg():
@@ -1187,7 +1190,7 @@ def ingame_main():
                 world["account"] = (True, "test account KEEP")
             reset()
             world["live"]["ExplosiveKnockback"] = ["a", "b"]
-            c = dict(on, advancing=["Pyrelands", "ExplosiveKnockback"])
+            c = dict(on, advancing=["Pyrelands", "ExplosiveKnockback"], max_live=FIXTURE_MAX_LIVE)
             out.append(dec(tick(c)) == "slots_full" and not launches())
             reset()
             out.append(dec(tick(on, apply=False)) == "would_launch" and not launches())
