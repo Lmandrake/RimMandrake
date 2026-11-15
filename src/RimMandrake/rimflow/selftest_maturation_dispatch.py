@@ -62,6 +62,15 @@ print("DETACHED rm-detached-bench-fake-%d" % n)
 # (2026-11-14: FlowWorks 7 -> 0 and Explosive Knockback 12 -> 1 refused bars turned both maturation selftests red).
 FIXTURE_SHA = "f5d809fb03a59ccca0f72da4a509cfb15b01fd64"
 
+# The ceiling these checks were written against, pinned so they pass with any shipped stage_ceiling_usd (item
+# RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: the shipped 60 -> 100 turned a ceiling check red).
+FIXTURE_CEILING = 60
+
+
+def load_cfg():
+    """-> the shipped settings with the fixture ceiling."""
+    return dict(MD.load_cfg(), stage_ceiling_usd=FIXTURE_CEILING)
+
 
 def fixture(mod, rel):
     """-> the bytes of design/concepts/<mod>/<rel> at FIXTURE_SHA, or None when it was absent there."""
@@ -137,7 +146,7 @@ def main():
             del filed[:]
             world.update(live={}, stage_runs={}, last_end={})
 
-        base = MD.load_cfg()
+        base = load_cfg()
         cfg = dict(base, advancing=list(FOUR) + ["Graffiti", "PyrelandsMechanics"])
         world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
 
@@ -413,7 +422,7 @@ def blind_main():
         def need(rd, mod):
             return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
 
-        base = MD.load_cfg()
+        base = load_cfg()
         ok(base.get("blind_enabled") is True and isinstance(base.get("blind_cap_usd"), (int, float))
            and base["blind_cap_usd"] > 0 and base.get("blind_auto_cycles_per_visit") == M.CYCLE_LIMIT,
            "the settings: blind launches on, a positive cap, automatic cycles per visit = his CYCLE_LIMIT (%s, %s, %s)" % (
@@ -765,7 +774,7 @@ def ingame_main():
         def dec(rd, mod="Pyrelands"):
             return rd["mods"][mod]["decision"]
 
-        base = MD.load_cfg()
+        base = load_cfg()
         # ingame_enabled shipped false and was set true 2026-11-15 by the Conductor once the first visit (Pyrelands)
         # had run by hand, as the settings' _ingame_doc says; the pin is now "a bool", and the off case is built
         # explicitly below rather than read from the shipped file.

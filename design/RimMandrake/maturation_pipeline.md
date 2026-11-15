@@ -304,7 +304,7 @@ A `hold` blocks every advance until a later `release`.
   - At the offline build it launches one capped builder (Opus, `cap_usd` 15) when the mod has build work owed and
     nothing live on it. After a run ends, the next starts only if the count of refused bars fell. It stops on a mod, with
     one "Needs Conductor" line, when the count did not fall, when the mod's dollars at the stage pass
-    `stage_ceiling_usd` 60, or when a launch failed; it never retries the same refusals.
+    `stage_ceiling_usd` (100, by his card of 2026-11-15), or when a launch failed; it never retries the same refusals.
     `maturation_dispatch.py clear <Mod> --why "..."` is the Conductor's lift.
   - At the blind challenge: one judge per visit (section 4). At in-game acceptance: one driver per owed visit (section 4), on since
     2026-11-15 about 13:30 UTC.

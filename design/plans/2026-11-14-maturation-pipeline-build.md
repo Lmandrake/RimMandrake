@@ -179,7 +179,7 @@ dispatch clone; settings `maturation_dispatch.json`) decides per advancing mod: 
 item is spawned under RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE as RUNNER, the way ops_watch files,
 and published first) when the mod stands at the offline build, its refusals are build work, and no detached run is live
 on it. Guard rails: one live builder per mod, at most 2 live on advancing mods (the Conductor's own included); after a
-run ends the next starts only if the count of refused bars fell, otherwise, or past USD 60 measured at the stage, or on
+run ends the next starts only if the count of refused bars fell, otherwise, or past `stage_ceiling_usd` measured at the stage, or on
 a failed launch, it stops on that mod with one "Needs Conductor" line and never tries the same refusals again
 (`maturation_dispatch.py clear <Mod> --why` is the Conductor's lift); a hold, a version mismatch, a hand step or any
 other stage but the blind challenge (one judge per visit, row above) launches nothing; every exit test passing writes "ready to advance". It never judges, rejects, sends a mod
