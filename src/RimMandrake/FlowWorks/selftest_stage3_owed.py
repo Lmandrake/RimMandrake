@@ -18,7 +18,7 @@ of each is a scene in northstar/concept_scenes.py, run at Stage 6.
                                            a wetted cell holds no liquid and costs no wading         (code absent)
   wetness_probe   T_WETNESS_PROBE_OFFLINE  a static_call probe reads a cell's wetting for the live scene (code absent)
   toss_flame      T_TOSS_FLAME_OFFLINE     an order: a colonist walks to the rim and tosses a flame onto the picked
-                                           square                                                    (code absent)
+                                           square                                                    (code present)
   fetch_fallen    T_FETCH_FALLEN_OFFLINE   raiders climb into a pit to bring out a comrade held there (ladder jobs
                                            exist for trenches; the fetch itself is absent)
   coating         T_LIQUID_COATING_OFFLINE a pawn out of a staining liquid carries a named condition that plain water
@@ -94,6 +94,23 @@ def toss_flame(cs, xml):
         ("a JobDef for the toss-flame order", re.search(r"<defName>RM_\w*Toss\w*Flame\w*</defName>", xml)),
         ("its JobDriver walks to the rim and lights the picked square", _any(cs, r"class JobDriver_\w*Toss\w*[\s\S]*?(FireUtility\.TryStartFireIn|TryIgnite)")),
         ("the player can give it: a float-menu or gizmo offers it", _any(cs, r"(FloatMenuOption|Command_Target)[\s\S]{0,400}?Toss")),
+        # RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: the three laws above match loose text; these pin the
+        # behaviour in RM_TossFlame.cs (each has an undo mutant in TOSS_MUTANTS)
+        ("the JobDef runs JobDriver_TossFlame and the code binds it",
+         re.search(r"<defName>RM_TossFlame</defName>\s*<driverClass>RimMandrake\.FlowWorks\.JobDriver_TossFlame</driverClass>", xml)
+         and _any(cs, r"public static JobDef RM_TossFlame;")),
+        ("the toss lights a burnable canal or pond through the liquid-fire engine",
+         _any(cs, r"public static bool Toss\([\s\S]{0,600}?ex\.LiquidFire\.IgniteNow\(map, ex, c\)")),
+        ("a burnable spill on open ground lights too", _any(cs, r"public static bool Toss\([\s\S]{0,800}?sheet\.TryLight\(c\)")),
+        ("dry burnable ground falls back to a vanilla fire",
+         _any(cs, r"public static bool Toss\([\s\S]{0,1000}?FireUtility\.TryStartFireIn\(c, map, TossFireSize, pawn\)")),
+        ("it is thrown from the rim: dry standable ground outside the dug squares, in sight of the target",
+         _any(cs, r"static bool IsRim\([\s\S]{0,300}?c\.Standable\(map\)[\s\S]{0,200}?!ex\.IsExcavated\(c\)")
+         and _any(cs, r"public static bool FindRim\([\s\S]{0,900}?IsRim\(map, ex, c\) && GenSight\.LineOfSight\(c, target, map\)")),
+        ("the driver walks to the rim, then tosses", _any(cs, r"RM_TossFlame\.FindRim\(pawn, target, out IntVec3 rim\)[\s\S]{0,900}?RM_TossFlame\.Toss\(pawn, ")),
+        ("the menu offers it only where something will catch, and only with its setting on",
+         _any(cs, r"AppliesInt\(FloatMenuContext context\) => RimMandrakeFlowWorksSettings\.tossFlameOrderEnabled")
+         and _any(cs, r"if \(p == null \|\| !RM_TossFlame\.CanLight\(context\.map, c\)\) yield break;")),
     ]
 
 
@@ -139,6 +156,19 @@ COAT_MUTANTS = {
 }
 
 
+TOSS_FILE = SRC / "RM_TossFlame.cs"
+TOSS_MUTANTS = {
+    "canal never lit": (TOSS_FILE, "ex.LiquidFire.IgniteNow(map, ex, c)", "false"),
+    "spill never lit": (TOSS_FILE, "sheet.TryLight(c)", "false"),
+    "no ground fire": (TOSS_FILE, "FireUtility.TryStartFireIn(c, map, TossFireSize, pawn)", "false"),
+    "thrown from inside the pit": (TOSS_FILE, "!ex.IsExcavated(c)", "true"),
+    "no line of sight": (TOSS_FILE, "&& GenSight.LineOfSight(c, target, map)", ""),
+    "driver never tosses": (TOSS_FILE, "RM_TossFlame.Toss(pawn, ", "RM_TossFlame.CanLight(Map, "),
+    "setting ignored": (TOSS_FILE, "=> RimMandrakeFlowWorksSettings.tossFlameOrderEnabled", "=> true"),
+    "offered everywhere": (TOSS_FILE, "|| !RM_TossFlame.CanLight(context.map, c)", ""),
+}
+
+
 SECTIONS = {"prison_care": prison_care, "wetting": wetting, "wetness_probe": wetness_probe, "toss_flame": toss_flame,
             "fetch_fallen": fetch_fallen, "coating": coating}
 
@@ -179,6 +209,17 @@ def main():
                 if not [w for w, ok in prison_care({**cs, p: raw.replace(old, new)}, xml) if not ok]:
                     faults.append("prison_care mutant %r stayed green (blind law)" % m)
             print("  %d undo mutants checked" % len(PRISON_MUTANTS))
+        if name == "toss_flame" and not [f for f in faults if f.startswith("toss_flame:")]:
+            for m, (p, old, new) in TOSS_MUTANTS.items():
+                if old not in cs[p]:
+                    faults.append("toss_flame mutant %r: its text is not in the source (the law moved)" % m)
+                    continue
+                if not [w for w, ok in toss_flame({**cs, p: cs[p].replace(old, new)}, xml) if not ok]:
+                    faults.append("toss_flame mutant %r stayed green (blind law)" % m)
+            bad = xml.replace("<driverClass>RimMandrake.FlowWorks.JobDriver_TossFlame</driverClass>", "<driverClass>JobDriver_Wait</driverClass>")
+            if bad == xml or not [w for w, ok in toss_flame(cs, bad) if not ok]:
+                faults.append("toss_flame mutant wrong driver stayed green (blind law)")
+            print("  %d undo mutants checked" % (len(TOSS_MUTANTS) + 1))
         if name == "coating" and not [f for f in faults if f.startswith("coating:")]:
             for m, (p, old, new) in COAT_MUTANTS.items():
                 if old not in cs[p]:

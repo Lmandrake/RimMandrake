@@ -148,6 +148,7 @@
     <Compile Include="RM_FuelFireMath.cs" />
     <Compile Include="RM_ExcavationSanityMath.cs" />
     <Compile Include="RM_LiquidFire.cs" />
+    <Compile Include="RM_TossFlame.cs" />
     <Compile Include="RM_FillEffectMath.cs" />
     <Compile Include="RM_RelativeRulesMath.cs" />
     <Compile Include="RM_FallRailMath.cs" />

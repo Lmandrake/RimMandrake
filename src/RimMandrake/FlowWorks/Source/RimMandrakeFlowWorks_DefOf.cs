@@ -29,6 +29,9 @@ namespace RimMandrake.FlowWorks
 		public static ThingDef RM_Shovel;
 		public static JobDef RM_CaptureDown;
 
+		/// <summary>RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: toss a flame from the rim (RM_TossFlame.cs).</summary>
+		public static JobDef RM_TossFlame;
+
 		/// <summary>PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: the held pawn's pin during capture down — a wait that never swings.</summary>
 		public static JobDef RM_CaptureDownPinned;
 

@@ -83,6 +83,8 @@ namespace RimMandrake.FlowWorks
         // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §5.6, D3 defaulted, veto-able): ONE rate for every burning
         // square, canal or pond, 0.5 m a day; front speed and source reach are PROVISIONAL.
         public static bool canalFireEnabled = true;
+        // RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: the "toss a flame" order (RM_TossFlame.cs).
+        public static bool tossFlameOrderEnabled = true;
         // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).
         public static bool liquidHeatPushEnabled = true;
         // FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: fixes a vanilla water-body count bug when water changes type.
@@ -550,6 +552,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", true);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", true);
             Scribe_Values.Look(ref canalFireEnabled, "canalFireEnabled", true);
+            Scribe_Values.Look(ref tossFlameOrderEnabled, "tossFlameOrderEnabled", true);
             Scribe_Values.Look(ref liquidHeatPushEnabled, "liquidHeatPushEnabled", true);
             Scribe_Values.Look(ref waterBodyTypeFlipFixEnabled, "waterBodyTypeFlipFixEnabled", true);
             Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
@@ -785,7 +788,7 @@ namespace RimMandrake.FlowWorks
             .Declare("pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
-            .Declare("canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
+            .Declare("canalFireEnabled", "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
                      "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
                      "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
             .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
@@ -826,6 +829,7 @@ namespace RimMandrake.FlowWorks
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
             .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
+            .Name("tossFlameOrderEnabled", "Colonists can toss a flame onto a square")
             .Name("chemfuelInfernoEnabled", "Chemfuel and propane burn like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
@@ -1430,14 +1434,18 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
-            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
+            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
               + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
               + "fire; anyone trapped down a burning pit always does. Off: liquid never burns.");
-            using (Dependent(list, "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
+            using (Dependent(list, "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
             {
+                list.CheckboxLabeled("Colonists can toss a flame onto a square", ref tossFlameOrderEnabled,
+                    "Right-click a channel, pond or spill of something that burns with a colonist selected: they walk to "
+                  + "dry ground at its edge, within about five squares, and toss a flame onto it. Off: no such order; "
+                  + "liquid lights only from a fire or blast that reaches it.");
                 list.Label("Burning liquid goes down " + RM_Volume.FormatMetres(1) + " every " + burnDaysPerNotch.ToString("F1")
                     + " day(s), in a pit or a pond alike");
                 burnDaysPerNotch = list.Slider(burnDaysPerNotch, 0.1f, 5f);

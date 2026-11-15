@@ -631,12 +631,20 @@ def _moat_raid(S):
 
 
 def _toss(S, target, rid, want_fire=True):
-    """The toss-flame order (inv_toss_flame; no such order exists in the mod today, so the lit row is red)."""
+    """The toss-flame order (RM_TossFlame.cs): the colonist walks to the rim and tosses. A lit canal or pond carries the
+    liquid-fire engine's own flame, not a vanilla Fire, and chemfuel can burn out within the wait, so the row polls the
+    engine's cell report (burning=True) and a vanilla Fire on the square every 60 ticks and keeps the first sight."""
     col = S.pawn('Colonist', (target[0], target[1] + 4), 'player')
     r = S.call('jawa/ordered_job', pawnId=col, jobDef='RM_TossFlame', targetAX=target[0], targetAZ=target[1])
-    S.ticks(1200)
-    fire = S.call('jawa/list_things', defName='Fire', rect='%d,%d,1,1' % target)
-    S.row(rid, r.get('success') is not False and bool(fire.get('things')) == want_fire, (r, fire.get('things')))
+    lit, seen = False, None
+    for _ in range(20):
+        S.ticks(60)
+        seen = (S.sc('RimMandrake.FlowWorks.RM_LiquidFireProof', 'ProofCell', '%d,%d' % target),
+                S.call('jawa/list_things', defName='Fire', rect='%d,%d,1,1' % target).get('things'))
+        if 'burning=True' in seen[0] or seen[1]:
+            lit = True
+            break
+    S.row(rid, r.get('success') is not False and lit == want_fire, (r, seen))
     return col
 
 

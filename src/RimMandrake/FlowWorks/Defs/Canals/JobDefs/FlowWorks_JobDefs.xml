@@ -50,4 +50,12 @@
     <suspendable>false</suspendable>
   </JobDef>
 
+  <!-- RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: walk to the rim and toss a flame onto the picked square. -->
+  <JobDef>
+    <defName>RM_TossFlame</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_TossFlame</driverClass>
+    <reportString>tossing a flame.</reportString>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+
 </Defs>
