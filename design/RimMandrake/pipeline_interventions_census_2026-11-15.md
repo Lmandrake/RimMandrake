@@ -41,7 +41,7 @@ A row with an open ledger item names it.
 | Fix a known defect before spending a judge on the mod | 1 (asked 11-15 11:56 AM) | Unchecked | Promised to check | A judge look on a mod with an open road back is wasted | ALREADY BUILT `76c578b59e` (an open road back gets its fixers first) |
 | The Designer fixes gaps it can fix alone | 2 (Graffiti gaps g1, g18; Pyrelands 17 gaps, 12:38 PM 11-15) | Parked on the second refusal | Launched the fix run by hand | A refusal with an attainable fix is work, not a stop | ALREADY BUILT `f9436a1fee`, `5f21e51e44` (a stopped mod's fix tickets get one fixer each). The no-park branch is UNRUN live |
 | A failing exam was skipped in silence | 1 (Pyrelands, 11-15 5:25 AM) | The coverage judge skipped; nothing said why | Decided one exam retake | A locked tree that changed owes its exam again | ALREADY BUILT `5f21e51e44` (`exam_retake` steward) |
-| A builder that resolved nothing: read the run before anything else | 1 (Graffiti, 2:07 PM 11-15: the 33-bar builder ended "Waiting for the helpers to report", USD 7.15, nothing landed; found while this census was built, before a hand touched it) | Paused: "never a second automatic try" | Would have read the run and filed the cause | The cause is unknown only until someone reads the run: it stopped early, the work is not a builder's, a pipeline defect, or too big for one run | BUILT NOW `9eac6686d3` (`RIMMANDRAKE_TRIAGE_STALLED_BUILDER_GRAFFITI_WAITED_ON_HELPERS`): one steward run reads the builder's run and files the cause as named items that fixers build; never a second steward for the same stall, never a `clear`. Every detached run's brief now says the run ends with its turn. RUN LIVE: the tick launched it on Graffiti at 2:16 PM PST |
+| A builder that resolved nothing: read the run before anything else | 1 (Graffiti, 2:07 PM 11-15: the 33-bar builder ended "Waiting for the helpers to report", USD 7.15, nothing landed; found while this census was built, before a hand touched it) | Paused: "never a second automatic try" | Would have read the run and filed the cause | The cause is unknown only until someone reads the run: it stopped early, the work is not a builder's, a pipeline defect, or too big for one run | BUILT NOW `9eac6686d3` (`RIMMANDRAKE_TRIAGE_STALLED_BUILDER_GRAFFITI_WAITED_ON_HELPERS`): one steward run reads the builder's run and files the cause as named items that fixers build; never a second steward for the same stall, never a `clear`. Every detached run's brief now says the run ends with its turn. RUN LIVE: the tick launched it on Graffiti at 2:16 PM PST; it read the run, ruled STOPPED EARLY, filed the 33 bars as six fixer items (USD 1.58), and the tick had the first fixer running at 2:27 PM PST, with no hand |
 | A new mod's Design Version asked every time | 1 (Graffiti, 11-15 8:02 AM) | Carded him | Carded him | A new mod is 0.1.0 | ALREADY BUILT `6321db9aac`, `ca5dbe81f4` |
 | The next mod admitted by hand | 1 (Contagion, 11-15 6:01 AM) | Intake closed until one full pass | Admitted it on his words | His order is the admission | ALREADY BUILT `b38ed346e9`, `f2c998c131` |
 
@@ -84,6 +84,22 @@ A row with an open ledger item names it.
 | A Designer run left files in the bench clone that blocked publishing | 1 | Open: `RIMMANDRAKE_LAND_DESIGNER_OWNER_SHARD_ITEMS_WITH_HARVEST` |
 | The Designer asked for gaps a later judge had superseded | 1 | Open: `RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS` |
 | The tick ran over its beat and its publish was cut | 1 | Open: `RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT` |
+
+## Not built, and why, in one place
+
+- **His, by the short list** (`delegation_policy.md` section 2), so CANNOT BE BUILT: adding, easing or moving a bar and
+  calling a change Convergent or Divergent; the coverage release word; whether a non-converging judge's gaps belong
+  to this version; how his certificate is proven; any release past his USD 100 ceiling other than a killed run's own
+  dollars; the caps and switches in `maturation_dispatch.json`; SteveDesktop's CPU.
+- **Unknowable by a program**: what an unrelated-named run is editing before it publishes; whether a kept clone's
+  unpublished work is worth keeping; what a dead in-game run left in the live game.
+- **Open items this census did not build**, each already filed: `RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS`,
+  `RIMMANDRAKE_CARRY_OWNER_CERTIFICATE_THROUGH_HIS_OWN_CARD_EDIT`, `RIMMANDRAKE_DRAIN_LIVE_RUNS_BEFORE_ACCOUNT_SWITCH_NOT_AFTER`
+  (`claude-account` is outside this repository), `RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS`,
+  `RIMMANDRAKE_LAND_DESIGNER_OWNER_SHARD_ITEMS_WITH_HARVEST`, `RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS`,
+  `RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT`, `RIMMANDRAKE_SCOPE_HEAP_GROWTH_TO_ONE_GAME_SIX_LOADS`.
+- **NEEDS OWNER RULING**: none. The one candidate, the Designer's daily chain cap, was taken as the obvious answer
+  under Evidence-for-Ask and is in his digest as a delegated call.
 
 ## The "Needs Conductor" kinds, after this census
 
