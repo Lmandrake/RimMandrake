@@ -1,0 +1,1 @@
+maturation_dispatch.py clear printed 'CLEARED (was: not stopped)' and left the mod PAUSED before 79a4ef9107; a tool's un-pause is verified on the next reading.json, never on its own printout. And waitfor.py line has no --from-end: new lines only is the default.

@@ -1,0 +1,1 @@
+A Conductor log watch (waitfor.py in the background) holds the context-backstop restart forever: re-arming it after every match kept the window past 200k tokens for over an hour (DISPATCHER ESCALATION restart:BENCH:hard_no_boundary, 2026-11-15 10:32 PST). Arm it only while a result is needed within minutes; past ~150k tokens hand off instead of re-arming.

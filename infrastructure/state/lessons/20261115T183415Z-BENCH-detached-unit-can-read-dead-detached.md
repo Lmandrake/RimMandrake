@@ -1,0 +1,1 @@
+A detached unit can read DEAD in detached_helper.py status with its work done and its item closed (finish never ran): run detached_helper.py finish --unit <unit> and read the item before relaunching anything. Seen twice 2026-11-15 (GSS residue run, pit-fetch control run).

@@ -1,0 +1,1 @@
+detached_helper.py launch refuses an item whose file event is not on origin/main, and defaults to a USD 15 bound: commit infrastructure/state/ledger/events/BENCH.jsonl and ./publish before launching a just-filed item, and pass --budget-usd for a batch (eleven items did not fit in 15).
