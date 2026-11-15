@@ -343,6 +343,8 @@ Transient/biome_ffar/sheets_state.json
 
 # runtime state, never committed: the modlist swap marker and lockfiles
 deployed/config/ModsConfig.swap-active.json
+# maturation.py _mod_lock flock file, one per mod dir (RIMMANDRAKE_IGNORE_STAGE_MOVE_LOCK_LEFT_BY_EVERY_MOVE)
+design/concepts/*/.stage_move.lock
 infrastructure/state/**/*.lock
 
 # art_eval shadow sheets copy replaced kept art out of the art store by sha (shadow.py); derived, never committed

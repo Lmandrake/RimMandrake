@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-15T08:16:19-08:00",
+  "since": "2026-11-15T14:33:13-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 2,
-    "total": 2
+    "visit": 3,
+    "total": 3
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -48,6 +48,24 @@
       "confirmed": {
         "steward_confirms": "read cycle_1/SUMMARY.md Exit block and lane2/faults.json: 13 of 14 faults FIXED or Polish/noted, 1 Problem open (twin leads); DEFER acceptance PASS, RUN_ROAD_BACK acceptance PASS in /home/mandrake/rm/dispatch at ca5dbe81f4; verdict: open cycle 2 down the road back",
         "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward run two: blind cycle 1 not met on one open Problem (twin short leads, 6 of 33600 pairs), now RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX on the road back; both pipeline faults that made run one hold have landed (d4e28fabbf deferred Stage-6 rows, 76c578b59e road-back fixers before the next cycle), so cycle 2 opens and the tick fixes the twin first"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T14:33:13-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: cycle 2 fixed 3 Problems red-first (RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT, RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE, RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED); a judge who did not see the fixes owes cycle 3; nothing new filed",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-t-1794781945",
+      "confirmed": {
+        "steward_confirms": "read cycle_2/SUMMARY.md, tests_edited.json and the diffs of its 3 tests: no assertion weakened, skipped or deleted (SliceGateChecks loop guard 60->600, 120 s bound and assertion kept; census RESET row added; no_hose WORD adds pipe, mutant M7). Sole not-met reason = new blind judge owed after fixes: REAL MISS (re-judgement not done), no RECORD GAP, no CRITERION FLAW in the reader. Verdict: open cycle 3, file nothing."
       },
       "checks_passed": [
         "order",
