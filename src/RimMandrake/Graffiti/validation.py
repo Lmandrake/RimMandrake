@@ -619,9 +619,9 @@ def _claim_stage(t, settle=300):
     return stages[0] if stages else None
 
 
-def _raid_start(t, comp):
-    """The scenes' shared start: Graffiti loaded, the site preflight clean, social reactions on, then one A2 raid exit.
-    -> (raid faction name, {id: mark} of the exit tags it left)."""
+def _site_start(t):
+    """Every scene's shared start: Graffiti loaded (RM_GraffitiProof.Loaded), the site preflight clean (northstar_site.preflight), and
+    socialEnabled at its shipped true."""
     import importlib.util          # Graffiti's own northstar_site.py, by path: a bare import can find Pyrelands' (modcheck/biome_site.py:66)
     spec = importlib.util.spec_from_file_location("graffiti_northstar_site", os.path.join(_HERE, "northstar_site.py"))
     northstar_site = importlib.util.module_from_spec(spec)
@@ -639,6 +639,11 @@ def _raid_start(t, comp):
     if t._guard() and str((r or {}).get("value")).lower() != "true":
         raise ExpectationFailed("socialEnabled reads %r, not its shipped true (RM_GraffitiMod.cs:47); EnemyClaim is off without it "
                                 "(the site's social pair is %s's to check)" % ((r or {}).get("value"), SITE_SETTINGS_ITEM))
+
+
+def _raid_start(t, comp):
+    """The raid scenes' start: _site_start, then one A2 raid exit. -> (raid faction name, {id: mark} of the exit tags it left)."""
+    _site_start(t)
     rect = _whole_map(t)
     before = _all_marks(t, rect)
     started, _ = _static(t, PROOF, "RaidStart")
@@ -823,3 +828,487 @@ def scene_raider_pressure(t):
             _need_pressure("A against B in %s mode with both marks scrubbed" % mode)
     with t.component("control_pressure_off_equal_raids"):
         _need_pressure("A against B with the pressure switch off (equal raids, no letter)")
+
+
+# ------------------------------------------------- own fun, rereads, temperament (scenes.json: sc_own_fun, sc_rereads, sc_temperament)
+# Cast through the mod's own social hands (RM_GraffitiSocialProof.cs): Recruit/Cast "Nick/Trait:degree/art" (:47, :68), Befriend (:31),
+# Order "painter/def/about/x,z" (:192), Temper (:127), Marks (:177), Ledger "trace" (:269: every read and reread GraffitiSocial.Reads traces,
+# GraffitiSocial.cs:452, with its tick); RM_GraffitiStage.Who (RM_GraffitiStage.cs:653) for each colonist's joy and job.
+
+PAINT_JOB = "RM_PaintGraffitiJob"            # what JoyGiver_PaintGraffiti (JoyGiverDefs_Graffiti.xml:8) and JobGiver_IdleTag.cs:20 both give
+MOCKERY_DEF = "RM_Graffiti_Mockery"          # ThingDefs_GraffitiSocial.xml:7, meaning Mockery
+MAKER_THOUGHT = "RM_Graffiti_LeftMyMark"     # the painter's own thought for a mark about nobody (GraffitiSocial.cs:779)
+CLEAN_BREAK = "RM_GraffitiCompulsiveCleaningBreak"          # MentalStateDefs_Graffiti.xml:46
+CLEAN_STATE = "RM_GraffitiCompulsiveCleaningState"
+READ_AGAIN_TICKS = 60000                     # RM_GraffitiKernel.ReadAgainTicks (RM_GraffitiKernel.cs:767)
+SIGHT_RADIUS_SQ = 49                         # RM_GraffitiKernel.SightRadiusSq (RM_GraffitiKernel.cs:764)
+BREAK_GATE_ITEM = "RIMMANDRAKE_PROBE_GRAFFITI_CLEAN_BREAK_GATE_FORCE_SKIPS_IT"
+
+
+def _thought_stages():
+    """{ThoughtDef: [baseMoodEffect per stage]} for this mod's ThoughtDefs, read from Defs/ at import (never a number typed here)."""
+    import xml.etree.ElementTree as ET
+    out = {}
+    ddir = os.path.join(_HERE, "Defs")
+    for fn in sorted(os.listdir(ddir)) if os.path.isdir(ddir) else []:
+        if fn.startswith("ThoughtDefs") and fn.endswith(".xml"):
+            for d in ET.parse(os.path.join(ddir, fn)).getroot():
+                st = d.find("stages")
+                if d.findtext("defName") and st is not None:
+                    out[d.findtext("defName")] = [float(s.findtext("baseMoodEffect") or 0) for s in st]
+    return out
+
+
+THOUGHT_STAGES = _thought_stages()
+
+
+def _cast(t, method, spec):
+    """RM_GraffitiSocialProof.Recruit or .Cast -> (nick, [trait specs]) read off the probe's own answer, never off `spec`."""
+    text, _ = _static(t, SOCIAL_PROOF, method, spec)
+    if not t._guard():
+        return spec.split("/")[0], []
+    m = re.match(r"(\S+) \[([^\]]*)\]", text)
+    if not m:
+        raise ExpectationFailed("%s(%r) answered %r" % (method, spec, text))
+    return m.group(1), [x for x in m.group(2).split(",") if x]
+
+
+def _temper(t, nick):
+    """RM_GraffitiSocialProof.Temper -> {numb, bad, good, fine, ugly, neat, urge, joy, ...} as the table reads this colonist."""
+    text, _ = _static(t, SOCIAL_PROOF, "Temper", nick)
+    w = text.split()[1:]
+    return dict(zip(w[0::2], w[1::2]))
+
+
+def _who(t):
+    """RM_GraffitiStage.Who -> {nick: {joy, job, give, can, ...}}."""
+    text, _ = _static(t, STAGE, "Who")
+    out = {}
+    for row in text[len("WHO "):].split(" || ") if text.startswith("WHO ") else []:
+        parts = row.split()
+        if parts:
+            out[parts[0]] = dict(p.split("=", 1) for p in parts[1:] if "=" in p)
+    return out
+
+
+def _joy(who, nick):
+    try:
+        return float(who[nick]["joy"])
+    except (KeyError, ValueError):
+        raise ExpectationFailed("RM_GraffitiStage.Who has no joy for %s: %r" % (nick, who.get(nick)))
+
+
+def _hold_at(t, nick, x, z, ticks=900):
+    """Draft this colonist and walk it to (x, z), where a drafted pawn waits: a viewer that must not wander off its spot."""
+    t.bridge_call("jawa/set_draft", pawnId=nick, drafted=True)
+    t.bridge_call("jawa/order_pawn", pawnId=nick, x=x, z=z, waitTicks=0)
+    t.wait_ticks(ticks)
+
+
+def _walls(t, cells, door=None):
+    ops = ["Wall:%d,%d" % c for c in cells if c != door] + (["Door:%d,%d" % door] if door else [])
+    t.bridge_call("jawa/spawn_batch", ops=";".join(ops), stuff="Steel")
+
+
+def _box(x0, z0, x1, z1):
+    """The perimeter cells of the rectangle (x0, z0)..(x1, z1), inclusive."""
+    return sorted({(x, z) for x in range(x0, x1 + 1) for z in (z0, z1)} | {(x, z) for z in range(z0, z1 + 1) for x in (x0, x1)})
+
+
+def _order_mark(t, painter, defn, about, x, z, budget=6000, step=500):
+    """The player orders `painter` to paint `defn` about `about` at floor cell (x, z) (RM_GraffitiSocialProof.Order); the clock runs until
+    a mark stands there. -> (thing id, mark)."""
+    _static(t, SOCIAL_PROOF, "Order", "%s/%s/%s/%d,%d" % (painter, defn, about, x, z))
+    waited = 0
+    while waited < budget and t._guard():
+        t.wait_ticks(step)
+        waited += step
+        got = _all_marks(t, "%d,%d,1,1" % (x, z))
+        if got:
+            return sorted(got.items())[0]
+    if not t._guard():
+        return None, None
+    raise ExpectationFailed("%s ordered to paint %s about %r at (%d,%d): no mark there after %d ticks" % (painter, defn, about, x, z, budget))
+
+
+def _marks_by(t, nick):
+    """Lines of RM_GraffitiSocialProof.Marks whose maker is `nick`."""
+    text, _ = _static(t, SOCIAL_PROOF, "Marks")
+    return [ln for ln in text.splitlines() if (" by %s about " % nick) in ln]
+
+
+def _graffiti_thoughts(t, nick):
+    """[{def, moodOffset, stage}] of this mod's MOOD thoughts on `nick` (jawa/pawn_thoughts)."""
+    r = t.bridge_call("jawa/pawn_thoughts", pawn=nick) or {}
+    if t._guard() and not r.get("success", False):
+        raise ExpectationFailed("jawa/pawn_thoughts %s unreadable: %r" % (nick, r))
+    return [x for x in r.get("thoughts") or [] if str(x.get("def", "")).startswith("RM_Graffiti_")]
+
+
+_READ_RE = re.compile(r"^\s*\.\s+(\d+) (\S+) (reads|rereads) (\S+)@\((-?\d+), -?\d+, (-?\d+)\)")
+_OPINION_RE = re.compile(r"^  opinion of (\S+) ([+-][\d.]+) (.*) \(age (\d+)\)$")
+
+
+def _ledger(t):
+    """RM_GraffitiSocialProof.Ledger("trace"), which also empties the trace ring (60 lines, GraffitiSocial.cs:1070): read it at least as
+    often as 60 reads could happen. -> (reads [(tick, nick, kind, def, x, z)], {nick: [ledger lines under that colonist]})."""
+    text, _ = _static(t, SOCIAL_PROOF, "Ledger", "trace")
+    reads, per, cur = [], {}, None
+    for ln in text.splitlines():
+        m = _READ_RE.match(ln)
+        if m:
+            reads.append((int(m.group(1)), m.group(2), m.group(3), m.group(4), int(m.group(5)), int(m.group(6))))
+        elif ln and not ln.startswith(" ") and " [" in ln:
+            cur = ln.split(" ", 1)[0]
+            per[cur] = []
+        elif cur and (ln.startswith("  mood ") or ln.startswith("  opinion of ")):
+            per[cur].append(ln)
+        elif not ln.startswith("  "):
+            cur = None
+    return reads, per
+
+
+@suite.chain("scene_own_fun")
+def scene_own_fun(t):
+    """sc_own_fun (own_fun, inv_joy_and_idle_tag): a colonist low on joy picks the paint joy job, its joy rises and it gets the maker's
+    thought; a second colonist, joy not low, idles into JobGiver_IdleTag and tags the wall. Control: painting switched off, neither paints.
+    Restore: the runner destroys the quicktest map; the setting is put back here. Which giver handed a job out is not readable (Who says what
+    the joy giver WOULD give now, not who gave the running job): the joy colonist's job is read as recreation by its low joy at the start,
+    the idle colonist's as the idle tag by its joy being not low when it is seen painting."""
+    x, z = t.anchor
+    fun, idle = "GrfFun", "GrfIdle"
+    rect = "%d,%d,15,6" % (x - 7, z - 3)
+
+    def joys(lvl_fun, lvl_idle):
+        for nick, lvl in ((fun, lvl_fun), (idle, lvl_idle)):
+            t.bridge_call("jawa/pawn_need", pawn=nick, action="need", need="Joy", level=lvl)
+        return _who(t) if t._guard() else {}
+
+    with t.component("site_ready_own_fun"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 6, z + 1, 13)
+        t.bridge_call("jawa/map_commit")                 # fixture write (walls/terrain), never marks
+        for nick in (fun, idle):
+            _cast(t, "Recruit", "%s//8" % nick)
+            _settle_painter(t, nick)
+        _no_cleaning(t)
+        who = joys(0.2, 0.9)
+        if t._guard():
+            jf, ji = _joy(who, fun), _joy(who, idle)
+            if not (jf < 0.3 and ji >= 0.5):
+                raise ExpectationFailed("joy set 0.2/0.9 reads %s=%.2f %s=%.2f (needs < 0.3 and not low)" % (fun, jf, idle, ji))
+            urge = [_temper(t, n).get("urge") for n in (fun, idle)]
+            if any(u in (None, "0.00") for u in urge):
+                raise ExpectationFailed("a colonist has no paint urge (Temper urge %s): GraffitiTemperament.Urge is 0, it can never paint" % urge)
+            t._current.detail = "joy %s=%.2f %s=%.2f, urge %s" % (fun, jf, idle, ji, urge)
+
+    seen, joy0 = {}, {}
+    with t.component("own_fun_runs"):
+        waited = 0
+        while waited < 30000 and t._guard() and not (fun in seen and idle in seen and _marks_by(t, fun) and _marks_by(t, idle)):
+            t.wait_ticks(500)
+            waited += 500
+            who = _who(t)
+            for nick in (fun, idle):
+                if nick not in seen and (who.get(nick) or {}).get("job") == PAINT_JOB:
+                    seen[nick] = (waited, _joy(who, nick))
+            if idle not in seen and _joy(who, idle) < 0.5:          # keep the idle hand's joy not low: its tag must not be recreation
+                t.bridge_call("jawa/pawn_need", pawn=idle, action="need", need="Joy", level=0.9)
+        t.wait_ticks(1500)                                           # let the last job finish and the maker thought land
+        if t._guard():
+            t._current.detail = "seen on %s (ticks, joy): %s after %d ticks" % (PAINT_JOB, seen, waited)
+
+    with t.component("joy_paint_job_runs_and_joy_rises"):
+        if t._guard():
+            if fun not in seen:
+                raise ExpectationFailed("%s (joy < 0.3) never seen on %s in 30000 ticks: the joy giver was not chosen" % (fun, PAINT_JOB))
+            after = _joy(_who(t), fun)
+            mine = _marks_by(t, fun)
+            if after <= seen[fun][1] or not mine:
+                raise ExpectationFailed("%s on the paint job at joy %.2f: joy now %.2f, marks by it %d" % (fun, seen[fun][1], after, len(mine)))
+            t._current.detail = "joy %.2f -> %.2f; %s" % (seen[fun][1], after, mine[0])
+
+    with t.component("maker_thought_appears"):
+        if t._guard():
+            th = [x for x in _graffiti_thoughts(t, fun) if x.get("def") == MAKER_THOUGHT]
+            if not th:
+                raise ExpectationFailed("%s painted but holds no %s: its thoughts %s" % (fun, MAKER_THOUGHT, _graffiti_thoughts(t, fun)))
+            t._current.detail = "%s %+.1f" % (MAKER_THOUGHT, float(th[0].get("moodOffset") or 0))
+
+    with t.component("idle_hand_tags_the_wall"):
+        if t._guard():
+            mine = _marks_by(t, idle)
+            if idle not in seen or not mine:
+                raise ExpectationFailed("%s (joy kept >= 0.5) seen painting %s, marks by it %d: JobGiver_IdleTag gave no tag" % (idle, seen.get(idle), len(mine)))
+            if seen[idle][1] < 0.3:
+                raise ExpectationFailed("%s was seen painting at joy %.2f: that is recreation, not an idle tag" % (idle, seen[idle][1]))
+            t._current.detail = "%s at joy %.2f: %s" % (idle, seen[idle][1], mine[0])
+
+    with t.component("control_painting_off_no_paint", toggle="paintingEnabled"):
+        try:
+            t.set_setting(SETTINGS, {"paintingEnabled": False})
+            before = {n: len(_marks_by(t, n)) for n in (fun, idle)}
+            joys(0.2, 0.9)
+            jobs, gives, waited = set(), set(), 0
+            while waited < 15000 and t._guard():
+                t.wait_ticks(500)
+                waited += 500
+                who = _who(t)
+                for nick in (fun, idle):
+                    jobs.add((nick, (who.get(nick) or {}).get("job")))
+                gives.add((who.get(fun) or {}).get("give"))
+            if t._guard():
+                after = {n: len(_marks_by(t, n)) for n in (fun, idle)}
+                painted = [j for j in jobs if j[1] == PAINT_JOB]
+                if painted or after != before or gives - {"null"}:
+                    raise ExpectationFailed("painting off: on %s %s, marks %s -> %s, joy giver offers %s" % (PAINT_JOB, painted, before, after, gives))
+                t._current.detail = "15000 ticks off: jobs seen %s" % sorted({j[1] for j in jobs}, key=str)
+        finally:
+            t.set_setting(SETTINGS, {"paintingEnabled": True})
+
+
+@suite.chain("scene_rereads")
+def scene_rereads(t):
+    """sc_rereads (rereads_daily): a walker passing one mockery hourly for two days rereads it at most once a day (READ_AGAIN_TICKS), and its
+    opinion off the mark is made once and never renewed; a viewer who only sees the mark across the open yard and one shut in a room with a
+    mark it never walks past each read theirs. Control: a second, different mark on the route gives its own first read; a viewer behind
+    the route wall, within sight radius of the mockery, reads nothing. Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    walker, painter, subject = "GrfWalk", "GrfBrush", "GrfButt"
+    yard, roomed, walled = "GrfYard", "GrfRoom", "GrfWall"
+    m1, m2, m3 = (x - 4, z - 1), (x + 4, z - 1), (x + 13, z + 3)     # mockery and plain mark on the route; a mockery in the closed room
+    ids, reads, opinions0, held = {}, [], {}, set()
+
+    def poll():
+        got, per = _ledger(t)
+        reads.extend(got)
+        held.update(n for n, lines in per.items() if lines)
+        return got, per
+
+    with t.component("site_ready_rereads"):
+        _site_start(t)
+        _prep_site(t, 60)
+        _walls(t, [(i, z) for i in range(x - 10, x + 11)])                          # the route wall; marks on its south face
+        _walls(t, [c for c in _box(x - 7, z, x - 1, z + 6) if c[1] != z], door=(x - 4, z + 6))                # the walled-off control's room, behind the route wall
+        _walls(t, _box(x + 12, z + 2, x + 18, z + 8), door=(x + 15, z + 8))         # the closed room with its own mark
+        t.bridge_call("jawa/map_commit")
+        for nick in (walker, painter, subject, yard, roomed, walled):
+            _cast(t, "Recruit", "%s//%s" % (nick, 12 if nick == painter else ""))
+            _settle_painter(t, nick)
+        _no_cleaning(t)
+        for v in (walker, yard, roomed, walled):          # they care about the subject, so a mockery of it moves them
+            _static(t, SOCIAL_PROOF, "Befriend", "%s/%s" % (v, subject))
+        _hold_at(t, walled, x - 4, z + 2)                 # 3 cells from m1, the route wall between
+        _hold_at(t, roomed, x + 16, z + 6)
+        _hold_at(t, yard, x - 4, z - 7)                   # 6 cells from m1 across the open yard; m2 is 10 away, out of sight radius
+        _hold_at(t, walker, x - 14, z - 2)                # the route's west end, out of sight of both marks while they are painted
+        for key, (cx, cz), defn in (("m1", m1, MOCKERY_DEF), ("m2", m2, VANDAL_DEF), ("m3", m3, MOCKERY_DEF)):
+            ids[key] = _order_mark(t, painter, defn, subject if defn == MOCKERY_DEF else "", cx, cz)[0]
+        t.bridge_call("jawa/set_draft", pawnId=painter, drafted=True)
+        t.bridge_call("jawa/order_pawn", pawnId=painter, x=x + 25, z=z - 12, waitTicks=0)     # the painter away from every mark
+        if t._guard():
+            dist = (m1[0] - (x - 4)) ** 2 + (m1[1] - (z + 2)) ** 2
+            if dist > SIGHT_RADIUS_SQ:
+                raise ExpectationFailed("SITE: the walled-off viewer is out of sight radius of m1 (%d > %d)" % (dist, SIGHT_RADIUS_SQ))
+            poll()                                         # reads while the marks went up count too (the yard and the room see them painted)
+            if any(r[1] == walker for r in reads):
+                raise ExpectationFailed("SITE: the walker read a mark before its walk: %s" % [r for r in reads if r[1] == walker])
+            t._current.detail = "marks %s" % ids
+
+    with t.component("walk_route_two_days"):
+        ends = [(x - 8, z - 2), (x + 8, z - 2)]
+        for leg in range(48):
+            if not t._guard():
+                break
+            ex, ez = ends[leg % 2]
+            t.bridge_call("jawa/order_pawn", pawnId=walker, x=ex, z=ez, waitTicks=0)
+            t.wait_ticks(2500)
+            got, per = poll()
+            if not opinions0 and any(r[1] == walker and (r[4], r[5]) == m1 for r in got):
+                opinions0 = {o.group(1) + " " + o.group(3): int(o.group(4))
+                             for o in (_OPINION_RE.match(ln) for ln in per.get(walker, [])) if o}
+        if t._guard():
+            t._current.detail = "%d read line(s) in 48 legs" % len(reads)
+
+    def at(nick, cell):
+        return [r for r in reads if r[1] == nick and (r[4], r[5]) == cell]
+
+    with t.component("reread_at_most_once_a_day"):
+        if t._guard():
+            r1 = at(walker, m1)
+            ticks = [r[0] for r in r1]
+            gaps = [b - a for a, b in zip(ticks, ticks[1:])]
+            kinds = [r[2] for r in r1]
+            if len(r1) < 2 or kinds[0] != "reads" or "reads" in kinds[1:]:
+                raise ExpectationFailed("walker's reads of the mockery over two days: %s (want one first read, then rereads)" % r1)
+            if any(g < READ_AGAIN_TICKS for g in gaps):
+                raise ExpectationFailed("walker reread the mockery %s ticks apart (at most once per %d): %s" % (gaps, READ_AGAIN_TICKS, ticks))
+            t._current.detail = "reads at %s, gaps %s" % (ticks, gaps)
+
+    with t.component("opinion_changes_once"):
+        if t._guard():
+            _, per = poll()
+            now = {o.group(1) + " " + o.group(3): int(o.group(4)) for o in (_OPINION_RE.match(ln) for ln in per.get(walker, [])) if o}
+            if not opinions0:
+                raise ExpectationFailed("walker's first read of the mockery left no opinion off the walls: ledger %s" % per.get(walker))
+            renewed = {k: (opinions0[k], now[k]) for k in opinions0 if k in now and now[k] <= opinions0[k]}
+            new = sorted(set(now) - set(opinions0))
+            if renewed or new:
+                raise ExpectationFailed("walker's opinions changed after the first read: renewed (age then, now) %s, new %s" % (renewed, new))
+            t._current.detail = "opinions (age at first read -> now, None = expired): %s" % {k: (opinions0[k], now.get(k)) for k in opinions0}
+
+    with t.component("in_sight_viewer_gains_thought"):
+        if t._guard():
+            if not at(yard, m1):
+                raise ExpectationFailed("the yard viewer, 6 cells from the mockery in the open, never read it: its reads %s"
+                                        % [r for r in reads if r[1] == yard])
+            if yard not in held:
+                raise ExpectationFailed("the yard viewer read the mockery but holds no thought off the walls")
+
+    with t.component("same_room_viewer_gains_thought"):
+        if t._guard():
+            if not at(roomed, m3):
+                raise ExpectationFailed("the viewer shut in the room never read the mark in it: its reads %s" % [r for r in reads if r[1] == roomed])
+            if roomed not in held:
+                raise ExpectationFailed("the roomed viewer read its mark but holds no thought off the walls")
+
+    with t.component("control_second_mark_own_first_read"):
+        if t._guard():
+            r2 = at(walker, m2)
+            if not r2 or r2[0][2] != "reads":
+                raise ExpectationFailed("the second mark on the route gave the walker no first read of its own: %s (a cap hiding reads?)" % r2)
+
+    with t.component("control_walled_viewer_no_thought"):
+        if t._guard():
+            mine = [r for r in reads if r[1] == walled]
+            if mine or walled in held:
+                raise ExpectationFailed("the viewer behind the route wall read %s (held a thought off the walls at some poll: %s): a thought "
+                                        "without sight" % (mine, walled in held))
+
+
+@suite.chain("scene_temperament")
+def scene_temperament(t):
+    """sc_temperament (temperament, inv_temperament): four viewers before a good and a bad mark. The psychopath feels nothing; the sensitive
+    (Nerves -2, volatile: GraffitiTemperament rows bad/good/craft 1.5) takes both larger; the clean freak (Neurotic 2: neat 2) gets the Mess
+    debuff and, its mood lowered past the minor threshold, the compulsive cleaning break scrubs a mark. Control: the ordinary viewer's
+    offsets equal the def values. Restore: the runner destroys the quicktest map. "Sensitive" and "clean freak" are the personality pass's
+    vanilla anchors (design/RimMandrake/graffiti_personality_pass_2026-11-07.md:13)."""
+    x, z = t.anchor
+    cast = {"GrfPlain": "Industriousness:1", "GrfPsycho": "Psychopath", "GrfSens": "Nerves:-2", "GrfNeat": "Neurotic:2"}
+    want = {"GrfPlain": {"numb": "False", "fine": "1", "ugly": "1", "neat": "0"}, "GrfPsycho": {"numb": "True"},
+            "GrfSens": {"numb": "False", "fine": "1.5", "ugly": "1.5"}, "GrfNeat": {"numb": "False", "neat": "2"}}
+    spots = {"GrfPlain": (x - 1, z - 3), "GrfPsycho": (x + 1, z - 3), "GrfSens": (x, z - 2), "GrfNeat": (x, z - 4)}
+    good, bad = (x - 4, z), (x + 4, z)
+    marks, thoughts = {}, {}
+    with t.component("site_ready_temperament"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 8, z + 1, 17)
+        t.bridge_call("jawa/map_commit")
+        t.bridge_call("jawa/paint_area", area="home", ops="%d,%d,17,8" % (x - 8, z - 6), value=True)   # the cleaning break's reach
+        for nick, traits in sorted(cast.items()):
+            got, tr = _cast(t, "Recruit", "%s/%s/" % (nick, traits))
+            if t._guard() and tr != [traits.replace(":0", "")]:
+                raise ExpectationFailed("%s cast as %s, the game reads its traits %s" % (nick, traits, tr))
+            tm = _temper(t, nick)
+            off = {k: (v, tm.get(k)) for k, v in want[nick].items() if tm.get(k) != v}
+            if t._guard() and off:
+                raise ExpectationFailed("%s's temperament (want, read): %s -- Temper %s" % (nick, off, tm))
+            _settle_painter(t, nick)
+            _hold_at(t, nick, *spots[nick])
+        for nick, art in (("GrfFine", 20), ("GrfClumsy", 1)):
+            _cast(t, "Recruit", "%s//%d" % (nick, art))
+            _settle_painter(t, nick)
+        _no_cleaning(t)
+        for key, painter, cell in (("good", "GrfFine", good), ("bad", "GrfClumsy", bad)):
+            mid, m = _order_mark(t, painter, VANDAL_DEF, "", *cell)
+            if t._guard():
+                craft, line = _craft_at(t, *cell)
+                marks[key] = (mid, craft, line)
+        for painter in ("GrfFine", "GrfClumsy"):
+            t.bridge_call("jawa/set_draft", pawnId=painter, drafted=True)
+            t.bridge_call("jawa/order_pawn", pawnId=painter, x=x + 20, z=z - 12, waitTicks=0)
+        if t._guard():
+            gc, bc = marks["good"][1], marks["bad"][1]
+            if gc < 3 or bc > 1:          # CraftStage (RM_GraffitiKernel.cs:1059): good+ is fine art, poor or worse is ugly
+                raise ExpectationFailed("SITE: the crafts came out good=%s bad=%s (want good or better, poor or worse); re-stage: %s"
+                                        % (CRAFTS[gc], CRAFTS[bc], [marks[k][2] for k in marks]))
+            t._current.detail = "good %s, bad %s" % (CRAFTS[gc], CRAFTS[bc])
+
+    with t.component("viewers_pass_both_marks"):
+        t.wait_ticks(2500)
+        for nick in cast:
+            thoughts[nick] = {x["def"]: x for x in _graffiti_thoughts(t, nick)} if t._guard() else {}
+        if t._guard():
+            t._current.detail = "; ".join("%s %s" % (n, {d: round(float(v.get("moodOffset") or 0), 2) for d, v in th.items()})
+                                          for n, th in sorted(thoughts.items()))
+
+    def want_offset(defn, stage, factor):
+        st = THOUGHT_STAGES.get(defn) or []
+        if not st:
+            raise ExpectationFailed("no stages for %s in Defs/ThoughtDefs*.xml" % defn)
+        return st[max(0, min(int(stage or 0), len(st) - 1))] * factor
+
+    def offsets(nick, factor, defs=("RM_Graffiti_FineArt", "RM_Graffiti_UglyMark")):
+        rows = []
+        for d in defs:
+            th = thoughts[nick].get(d)
+            if th is None:
+                raise ExpectationFailed("%s holds no %s; its thoughts %s" % (nick, d, sorted(thoughts[nick])))
+            got, exp = float(th.get("moodOffset") or 0), want_offset(d, th.get("stage"), factor)
+            rows.append((d, got, exp))
+        bad_rows = [r for r in rows if abs(r[1] - r[2]) > 0.05]
+        if bad_rows:
+            raise ExpectationFailed("%s offsets (def, read, expected) off by more than 0.05: %s" % (nick, bad_rows))
+        return rows
+
+    with t.component("control_ordinary_offsets_equal_defs"):
+        if t._guard():
+            t._current.detail = "%s" % offsets("GrfPlain", 1.0)
+
+    with t.component("psychopath_feels_nothing"):
+        if t._guard() and thoughts["GrfPsycho"]:
+            raise ExpectationFailed("the psychopath holds %s off the walls" % sorted(thoughts["GrfPsycho"]))
+
+    with t.component("sensitive_larger_both_ways"):
+        if t._guard():
+            t._current.detail = "%s" % offsets("GrfSens", 1.5)
+
+    with t.component("clean_freak_extra_debuff"):
+        if t._guard():
+            mess = thoughts["GrfNeat"].get("RM_Graffiti_Mess")
+            if mess is None or int(mess.get("stage") or 0) != 1:
+                raise ExpectationFailed("the clean freak (neat 2) holds no Mess at stage 1 (filth all over the walls): %s" % thoughts["GrfNeat"])
+            if float(mess.get("moodOffset") or 0) >= 0:
+                raise ExpectationFailed("the clean freak's Mess is not a debuff: %r" % mess)
+            t._current.detail = "Mess %+.1f; Ugly %s" % (float(mess["moodOffset"]), thoughts["GrfNeat"].get("RM_Graffiti_UglyMark"))
+
+    with t.component("clean_freak_cleaning_break"):
+        if t._guard():
+            th = t.bridge_call("jawa/pawn_break_thresholds", pawn="GrfNeat") or {}
+            if not th.get("success"):
+                raise ExpectationFailed("jawa/pawn_break_thresholds unreadable: %r" % th)
+            t.bridge_call("jawa/pawn_need", pawn="GrfNeat", action="need", need="Mood", level=max(0.0, float(th["thresholdMinor"]) - 0.05))
+            th = t.bridge_call("jawa/pawn_break_thresholds", pawn="GrfNeat") or {}
+            if float(th.get("marginToMinor", 1)) >= 0:
+                raise ExpectationFailed("the clean freak's mood did not fall past its minor threshold: %r" % th)
+            t.bridge_call("jawa/set_draft", pawnId="GrfNeat", drafted=False)
+            before = _all_marks(t, _whole_map(t))
+            r = t.bridge_call("jawa/pawn_force_mental_break", pawn="GrfNeat", breakDef=CLEAN_BREAK)
+            if not ((r or {}).get("started") and (r or {}).get("mentalStateAfter") == CLEAN_STATE):
+                raise ExpectationFailed("the cleaning break did not start %s: %r" % (CLEAN_STATE, r))
+            waited, gone = 0, []
+            while waited < 6000 and not gone and t._guard():
+                t.wait_ticks(500)
+                waited += 500
+                gone = sorted(set(before) - set(_all_marks(t, _whole_map(t))))
+            if not gone:
+                raise ExpectationFailed("the clean freak in %s scrubbed no mark in %d ticks" % (CLEAN_STATE, waited))
+            t._current.detail = "mood margin %.2f; scrubbed %s in %d ticks" % (float(th["marginToMinor"]), gone, waited)
+
+    with t.component("cleaning_break_open_only_to_clean_freaks"):
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: no probe reads MentalBreakWorker_GraffitiCleaning.BreakCanOccur for a pawn "
+                                    "(jawa/pawn_force_mental_break calls TryDoMentalBreak, which skips it), so 'only neat 2 can break this way' "
+                                    "is unread; filed as %s" % BREAK_GATE_ITEM)

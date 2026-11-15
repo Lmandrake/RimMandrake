@@ -1,14 +1,14 @@
 # Graffiti 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes when every deciding test passes.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T23:04:31Z. A bar passes when every deciding test passes.
 
 ## Counts
 
 - bars: 47 (locked: 47)
 - tests: 46 (12 built offline, 1 new offline, 32 live, 1 look)
-- scene entries present: 13, absent: 17
+- scene entries present: 16, absent: 14
 - built offline green today: 11, red: 1
-- bars with every decider runnable today: 20
+- bars with every decider runnable today: 26
 - known red: P_A9 = RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
 
 ## Bars
@@ -20,15 +20,15 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes
 | inv_beauty_and_craft | 6 | sc_beauty_pair, sc_art_skill | sc_spree_corridor, LOOK_STAGE8 | 5 | no |
 | inv_ideo_sigils | 6 | sc_sigil, T_SIGIL_COVERAGE | T_LINT, T_FUZZ | - | yes |
 | inv_spree | 6 | sc_spree_wall | sc_spree_corridor, T_SPREE_SURPRISE | - | yes |
-| inv_joy_and_idle_tag | 6 | sc_own_fun | - | - | no |
+| inv_joy_and_idle_tag | 6 | sc_own_fun | - | - | yes |
 | inv_player_orders | 6 | sc_player_orders | - | - | yes |
-| inv_viewer_mood | 6 | sc_rereads, sc_hostile_thought | sc_beauty_pair, T_LINT | - | no |
+| inv_viewer_mood | 6 | sc_rereads, sc_hostile_thought | sc_beauty_pair, T_LINT | - | yes |
 | inv_social_layer | 6 | sc_mockery, sc_answer_wall, sc_tribute_memorial, sc_fights | T_FUZZ, T_MSG_COUNTERS_RESET | - | no |
 | inv_visitors | 6 | sc_visitors | - | - | no |
 | inv_raid_marks | 6 | sc_raid_exit, sc_going_over, sc_raid_retaken, T_RAID_TAG_BUILT_WALL_ONLY | - | 2 | yes |
 | inv_breach_bias | 6 | sc_breach_bias_raid, sc_breach_toggle | T_FUZZ | - | no |
 | inv_scrub_protection | 6 | sc_scrub_protection | T_FUZZ | - | yes |
-| inv_temperament | 6 | sc_temperament | - | - | no |
+| inv_temperament | 6 | sc_temperament | - | - | yes |
 | inv_wall_loss | 6 | sc_wall_loss | - | - | no |
 | inv_settings | 6 | sc_settings, T_SETTINGS_SCREENS | T_LINT, T_SHIP_CHECK, sc_breach_toggle | - | no |
 | inv_standalone | 6 | sc_settings, H1_IDEO_RELOAD | T_SHIP_CHECK | 1 | no |
@@ -44,8 +44,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes
 | not_dirt | 6 | sc_gallery | LOOK_STAGE8 | - | yes |
 | ugliness_visible | 6 | sc_beauty_pair | sc_spree_corridor, sc_walk, LOOK_STAGE8 | 5 | yes |
 | art_skill | 6 | sc_art_skill | sc_spree_corridor, T_FUZZ | - | no |
-| own_fun | 6 | sc_own_fun | - | - | no |
-| rereads_daily | 6 | sc_rereads | sc_lived_in_soak | - | no |
+| own_fun | 6 | sc_own_fun | - | - | yes |
+| rereads_daily | 6 | sc_rereads | sc_lived_in_soak | - | yes |
 | mockery | 6 | sc_mockery | T_FUZZ, sc_lived_in_soak | 3 | no |
 | tribute_memorial | 6 | sc_tribute_memorial | T_FUZZ | - | no |
 | answer_wall | 6 | sc_answer_wall | - | - | no |
@@ -56,7 +56,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes
 | raider_pressure | 6 | sc_raider_pressure | - | - | yes |
 | visitors | 6 | sc_visitors | - | - | no |
 | fights_reasons | 6 | sc_fights | - | - | no |
-| temperament | 6 | sc_temperament | - | - | no |
+| temperament | 6 | sc_temperament | - | - | yes |
 | stands_alone_settings | 6 | sc_settings, sc_breach_toggle, sc_breach_bias_raid | H1_IDEO_RELOAD, T_SETTINGS_SCREENS | 1 | no |
 | stories_not_tax | 6 | sc_lived_in_soak | sc_rereads, T_MSG_COUNTERS_RESET | 3, 4, 6 | no |
 | paint_dies_with_wall | 6 | sc_wall_loss | - | - | no |
@@ -87,8 +87,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes
 | sc_gallery | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::gallery | entry present | - |
 | sc_beauty_pair | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::beauty_pair | entry present | - |
 | sc_art_skill | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_art_skill | entry absent | - |
-| sc_own_fun | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_own_fun | entry absent | - |
-| sc_rereads | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_rereads | entry absent | - |
+| sc_own_fun | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_own_fun | entry present | - |
+| sc_rereads | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_rereads | entry present | - |
 | sc_mockery | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_mockery | entry absent | - |
 | sc_tribute_memorial | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_tribute_memorial | entry absent | - |
 | sc_answer_wall | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_answer_wall | entry absent | - |
@@ -102,7 +102,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-15T22:38:47Z. A bar passes
 | sc_raider_pressure | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_raider_pressure | entry present | - |
 | sc_visitors | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_visitors | entry absent | - |
 | sc_fights | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_fights | entry absent | - |
-| sc_temperament | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_temperament | entry absent | - |
+| sc_temperament | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_temperament | entry present | - |
 | sc_settings | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_settings_each_switch | entry absent | - |
 | sc_breach_toggle | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::breach_bias_toggle_flips | entry present | - |
 | sc_wall_loss | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_wall_loss | entry absent | - |
