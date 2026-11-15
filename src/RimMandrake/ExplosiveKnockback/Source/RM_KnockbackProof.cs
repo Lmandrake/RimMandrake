@@ -65,6 +65,9 @@ namespace RimMandrake.ExplosiveKnockback
             // 2026-11-15 Stage 6 visit 1 road back (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD): sc_gas_shove_into_pit
             // and its control lane. NOT YET RUN LIVE.
             "gas_into_pit", "gas_into_pit_off",
+            // 2026-11-15 sc_goods_obstacles, named by the test table and never built (RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT;
+            // RM_KnockbackProof_GoodsObstacles.cs): door, sandbags and deep water lanes, with the obstacle-free control. NOT YET RUN LIVE.
+            "goods_obstacles", "goods_obstacles_control",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -2392,6 +2395,9 @@ namespace RimMandrake.ExplosiveKnockback
                 case "settings_sweep":
                 case "settings_sweep_after":
                     return SettingsSweep(s);
+                case "goods_obstacles":
+                case "goods_obstacles_control":
+                    return GoodsObstacles(s);
             }
             if (s.name.StartsWith("settings_sweep_"))   // one lane per SweepLanes key
             {

@@ -1,16 +1,16 @@
 # Explosive Knockback 0.1.0: test-and-stage table
 
-Generated 2026-11-14T21:20:27-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes.
+Generated 2026-11-15T08:55:49-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes.
 
 ## Counts (measured)
 
 - bars: 59
-- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists in the proof code): 58
-- with every deciding test runnable today: 58
-- with an offline deciding test, all green today: 41
+- with at least one test runnable today (an offline test that ran, or an in-game scene whose entry exists in the proof code): 59
+- with every deciding test runnable today: 59
+- with an offline deciding test, all green today: 43
 - decided offline only (no game needed): 2
-- in-game scenes: 56, entry exists 53, absent 3
-- offline tests: 16 built (ran today: 14 PASS, 2 known red), 0 specified for Stage 3
+- in-game scenes: 56, entry exists 55, absent 1
+- offline tests: 16 built (ran today: 15 PASS, 1 known red), 0 specified for Stage 3
 
 ## Bars
 
@@ -44,7 +44,7 @@ Generated 2026-11-14T21:20:27-08:00 from `test_table.json` (the record; this is 
 | `settings_scale_and_switch` | tree | 6 | T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREEN, sc_settings_sweep, sc_settings_off | T_SCRIPT, T_STAGE3_SCENES, P_goods_fly_off | all |
 | `barrage_frame_budget` | tree | 6 | sc_barrage_perf | sc_frame_probe_check, T_STAGE3_SCENES, T_KERNEL | all |
 | `frame_time_probe` | tree | 6 | sc_frame_probe_check | T_STAGE3_SCENES, T_KERNEL | all |
-| `walk_storeroom_raid` | tree | 8 | sc_walk_raid, LOOK_STAGE8 | sc_storeroom_bomb_pit | none |
+| `walk_storeroom_raid` | tree | 8 | sc_walk_raid, LOOK_STAGE8 | sc_storeroom_bomb_pit | all |
 | `inv_kernel` | record | 4-5 | T_KERNEL, T_FUZZ | T_LINT | all |
 | `inv_hook` | record | 6 | sc_mortar_throw | sc_blast_kinds, T_ONLY_EXPLOSIONS_STATIC | all |
 | `inv_pawn_flyer` | record | 6 | T_LINT, sc_pawn_arc, sc_wall_stop | - | all |
@@ -80,22 +80,22 @@ Generated 2026-11-14T21:20:27-08:00 from `test_table.json` (the record; this is 
 
 | test | stage | kind | file :: entry | runs today | observes |
 |---|---|---|---|---|---|
-| `T_KERNEL` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.05s | K-01..K-20 kernel checks: throw cells, falloff, mass scale, path walk (walls, doors, water, sandbags, pits), dedupe, recovery window, shield debit, rebound, cre |
-| `T_FUZZ` | 4-5 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py` | PASS rc=0 2.42s | 42001 seeded random cases of the kernel against independent oracles (distance, line, grid walk, cap, lookup, guards) |
-| `T_LINT` | 2 | offline | `src/RimMandrake/Utils/lint_explosiveknockback_defs.py` | PASS rc=0 1.56s | defs and patches against the C#: every RM_KnockbackExtension field and range, the damage-def patches, the flyer def, reset-to-defaults inside sliders, kernel Ve |
-| `T_LINT_PLANTED` | 2 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_lint.py` | PASS rc=0 34.7s | the lint goes red on 20 planted defects and stays clean on the real mod |
-| `T_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py` | PASS rc=0 8.79s | every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open) |
-| `T_SCRIPT` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py` | PASS rc=0 0.24s | validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session) |
-| `T_PROOFGATE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py` | PASS rc=0 3.91s | the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer |
-| `T_RESTORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_proof_restore_check.py` | KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS rc=1 5.94s | every proof scene restores what it staged even when it throws |
-| `T_SETTINGS_SCREEN` | 4-5 | offline | `src/RimMandrake/Utils/selftest_settings_screens.py` | KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT rc=1 1.85s | the Mod Settings screen: every setting grouped, resettable, scopes as audited |
-| `T_FW_COVER` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py` | PASS rc=0 0.05s | FlowWorks: a pit cover breaks on every fall, before the descent |
-| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py` | PASS rc=0 1.07s | sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a  |
-| `T_GAS_TAG_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py` | PASS rc=0 0.87s | every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our |
+| `T_KERNEL` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.02s | K-01..K-20 kernel checks: throw cells, falloff, mass scale, path walk (walls, doors, water, sandbags, pits), dedupe, recovery window, shield debit, rebound, cre |
+| `T_FUZZ` | 4-5 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py` | PASS rc=0 2.75s | 42001 seeded random cases of the kernel against independent oracles (distance, line, grid walk, cap, lookup, guards) |
+| `T_LINT` | 2 | offline | `src/RimMandrake/Utils/lint_explosiveknockback_defs.py` | PASS rc=0 1.58s | defs and patches against the C#: every RM_KnockbackExtension field and range, the damage-def patches, the flyer def, reset-to-defaults inside sliders, kernel Ve |
+| `T_LINT_PLANTED` | 2 | offline | `src/RimMandrake/Utils/selftest_explosiveknockback_lint.py` | PASS rc=0 31.91s | the lint goes red on 20 planted defects and stays clean on the real mod |
+| `T_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py` | PASS rc=0 7.48s | every storage def is closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper, Cold Storage open) |
+| `T_SCRIPT` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py` | PASS rc=0 0.17s | validation.py STATIC (walk coverage, csproj, scene and toggle names, settings saved and reset) and --mock (every proof scene stages through a fake session) |
+| `T_PROOFGATE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py` | PASS rc=0 3.42s | the release DLL carries no proof code, a proof build carries all of it, the gate reads the bridge's answer |
+| `T_RESTORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_proof_restore_check.py` | KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS rc=1 5.46s | every proof scene restores what it staged even when it throws |
+| `T_SETTINGS_SCREEN` | 4-5 | offline | `src/RimMandrake/Utils/selftest_settings_screens.py` | PASS rc=0 1.7s | the Mod Settings screen: every setting grouped, resettable, scopes as audited |
+| `T_FW_COVER` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py` | PASS rc=0 0.04s | FlowWorks: a pit cover breaks on every fall, before the descent |
+| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py` | PASS rc=0 0.94s | sc_settings_sweep's lane as kernel inputs, run once at default and once per kernel-side setting; each changes only its own outcomes with the scene's numbers; a  |
+| `T_GAS_TAG_CENSUS` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py` | PASS rc=0 0.78s | every flammable gas source of ours (Gas ThingDefs, our gas grids, the Cauldron's vent gas) carries the opt-in flammable tag, and nothing else does (the leaf our |
 | `T_GAS_CLUMP_ORDER` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py` | PASS rc=0 0.02s | the clump plan of a lit cloud as pure logic: one burst per clump cell, ordered by distance from the lit edge, a fire not touching the cloud lights nothing, good |
-| `T_HEAVY_KNOCK_RULE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.05s | the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes |
+| `T_HEAVY_KNOCK_RULE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.0s | the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes |
 | `T_STAGE3_SCENES` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py` | PASS rc=0 0.02s | the five Stage 3 scenes (hose drop, closed containers, settings sweep, frame probe, barrage) and their control lanes are named and routed, carry their start ass |
-| `T_ONLY_EXPLOSIONS_STATIC` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py` | PASS rc=0 0.15s | the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched) |
+| `T_ONLY_EXPLOSIONS_STATIC` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py` | PASS rc=0 0.17s | the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched) |
 | `sc_storeroom_bomb_pit` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: storeroom_bomb_pit | live: this pilot is offline only; entry ABSENT in the proof code | the colonist one cell east of the impact is carried through the air straight away from it, stops dead at the east wall two cells on with a wall hit, and lands a |
 | `sc_mortar_throw` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: calibration | live: this pilot is offline only; entry EXISTS in the proof code | the colonist lands 3 cells out along the blast ray, alive and stunned; one launch line, journal reason thrown, carried by RM_PawnFlyer_Knockback |
 | `sc_over_sandbags` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: over_sandbags | live: this pilot is offline only; entry EXISTS in the proof code | both colonists land 3 cells out, past the line, on standable ground; journal stop Distance |
@@ -113,7 +113,7 @@ Generated 2026-11-14T21:20:27-08:00 from `test_table.json` (the record; this is 
 | `sc_storeroom_mortar` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: goods_fly_wild | live: this pilot is offline only; entry EXISTS in the proof code | each thrown thing's height rises above zero mid-path and its rotation changes; at least one rebounds off the wall with speed near 0.7 of before; no thing id des |
 | `sc_all_fly_no_cap` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: all_fly_no_cap | live: this pilot is offline only; entry EXISTS in the proof code | stacks reached is over 60 (INVALID otherwise; a thing reached is one inside the radius whose kernel throw is at least one cell; a rim thing whose throw rounds t |
 | `sc_open_storage` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: open_storage | live: this pilot is offline only; entry EXISTS in the proof code | every good on the open furniture moved; no in_storage line |
-| `sc_closed_containers` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: closed_containers | live: this pilot is offline only; entry EXISTS in the proof code | the weapons lockers' and the tagged panel's contents unchanged, the panel's goods still on its cell (with it, if it slid); the free-backed locker and the 76-to- |
+| `sc_closed_containers` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: closed_containers | live: this pilot is offline only; entry EXISTS in the proof code | the weapons lockers' and the tagged panel's contents unchanged, the panel's goods still on its cell (with it, if it was thrown); the free-backed locker and the  |
 | `sc_heavy_knock` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: heavy_knock | live: this pilot is offline only; entry EXISTS in the proof code | steel: 2 to 5 blunt and a stagger on the colonist, the stack stops on the colonist's cell; cloth: passes, no damage |
 | `sc_blast_kinds` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: blast_kinds | live: this pilot is offline only; entry EXISTS in the proof code | the Flame lane's journal strength percent is exactly 50 and the Bomb-swapped lane's exactly 100, and the Flame lane's throw cells are about half the swapped lan |
 | `sc_only_explosions` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: only_explosions | live: this pilot is offline only; entry EXISTS in the proof code | melee and bullet: no request line, no move |
@@ -128,9 +128,9 @@ Generated 2026-11-14T21:20:27-08:00 from `test_table.json` (the record; this is 
 | `sc_frame_probe_check` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: frame_probe_selfcheck | live: this pilot is offline only; entry EXISTS in the proof code | one row per frame, rows per second near the frame rate; the sleeping frame shows as a row of at least 100 ms; rows carry the count of things in the air |
 | `sc_barrage_perf` | 6 | live_full | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: barrage_perf | live: this pilot is offline only; entry EXISTS in the proof code | the worst frame across both events is at most 50 ms |
 | `sc_walk_raid` | 6 | live_full | `src/RimMandrake/ExplosiveKnockback/validation.py` :: walk_storeroom_raid | live: this pilot is offline only; entry EXISTS in the proof code | mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on  |
-| `sc_gas_shove_into_pit` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: gas_into_pit | live: entry written 2026-11-15 with its control lane gas_into_pit_off (offline check selftest_explosiveknockback_gas_into_pit.py); UNRUN live | the one-cell shove puts the colonist into the open pit, one descent, no blast injuries: a shove is not a throw, but it is force, and a pawn forced onto an open  |
+| `sc_gas_shove_into_pit` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: gas_into_pit | live: this pilot is offline only; entry EXISTS in the proof code | the one-cell shove puts the colonist into the open pit, one descent, no blast injuries: a shove is not a throw, but it is force, and a pawn forced onto an open  |
 | `sc_killed_thrown` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: killed_by_blast | live: this pilot is offline only; entry EXISTS in the proof code | at least one colonist is killed by the blast, and every colonist it kills is thrown as a corpse away from the impact, with height above zero mid-flight and no d |
-| `sc_goods_obstacles` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: goods_obstacles | live: this pilot is offline only; entry ABSENT in the proof code | lane D's stack rebounds off the door keeping about 0.7 of its speed and the door is closed after; lane S's stack passes over the sandbags and lands beyond them; |
+| `sc_goods_obstacles` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: goods_obstacles | live: this pilot is offline only; entry EXISTS in the proof code | lane D's stack rebounds off the door keeping about 0.7 of its speed and the door is closed after; lane S's stack passes over the sandbags and lands beyond them; |
 | `P_heavy_skip` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: heavy_skip | live: this pilot is offline only; entry EXISTS in the proof code | older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict("heavy_skip") |
 | `P_emp_no_throw` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: emp_no_throw | live: this pilot is offline only; entry EXISTS in the proof code | older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict("emp_no_throw") |
 | `P_fire_half` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: fire_half | live: this pilot is offline only; entry EXISTS in the proof code | older proof scene (validation.py SCENES): see RM_KnockbackProof.Verdict("fire_half") |
