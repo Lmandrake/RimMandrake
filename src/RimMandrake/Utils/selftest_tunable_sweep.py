@@ -35,6 +35,8 @@ def fixture():
     open(os.path.join(d, "selftest_ranged.py"), "w").write(READ + "sys.exit(0 if c['cap'] > 0 and c['rate'] > 0 else 1)\n")
     open(os.path.join(d, "selftest_basered.py"), "w").write(READ + "sys.exit(1)\n")
     open(os.path.join(d, "selftest_pair.py"), "w").write(READ + "sys.exit(0 if c['pair']['hi'] - c['pair']['lo'] == 9 else 1)\n")
+    open(os.path.join(d, "knobs.py"), "w").write("import json\nCAP = json.load(open('cfg.json'))['cap']\n")
+    open(os.path.join(d, "selftest_viamod.py"), "w").write("import knobs\n")
     g("add", ".")
     g("commit", "-qm", "fx")
     return d
@@ -47,6 +49,8 @@ def main():
        and TS.mutated(2.5) == 3.75, "mutation: int doubles (or +1 below 2), a fraction goes halfway to 1, a float x1.5")
     d = fixture()
     rep = TS.sweep(d, "cfg.json", jobs=2, timeout=60, log=lambda s: None)
+    ok(TS.readers(d, "cfg.json") == sorted(["selftest_pinned.py", "selftest_ranged.py", "selftest_basered.py", "selftest_pair.py"])
+       and "selftest_viamod.py" in TS.readers(d, "cfg.json", deep=True), "--deep adds a selftest that imports a module naming the config")
     ok(rep["leaves"] == 4 and rep["tests"] == 4, "it finds the 4 leaves and the 4 readers (%s, %s)" % (rep["leaves"], rep["tests"]))
     ok(rep["pinned"].get("selftest_pinned.py") == ["cap"], "the pinned reader is named with its one leaf: %s" % rep["pinned"])
     ok("selftest_ranged.py" not in rep["pinned"], "a range-checking reader is clean")

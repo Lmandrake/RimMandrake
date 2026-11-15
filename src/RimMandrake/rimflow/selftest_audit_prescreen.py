@@ -20,9 +20,9 @@ SHIPPED = ap.load_rules()
 ok("shipped audit_prescreen_rules.json is sane: calibration_every >= 2, positive thresholds, window 1..max",
    SHIPPED["calibration_every"] >= 2 and SHIPPED["many_files_threshold"] >= 1 and SHIPPED["short_claim_seconds"] > 0
    and 0 < SHIPPED["fallback_window_days"] <= SHIPPED["max_window_days"]
-   and all(w > 0 for w in SHIPPED["weights"].values()), True)
+   and all(w > 0 for w in SHIPPED["weights"].values()) and SHIPPED["min_sample"] >= 1 and 0 < SHIPPED["prior_rate"] < 1, True)
 R = dict(SHIPPED, calibration_every=5, many_files_threshold=25, short_claim_seconds=300, fallback_window_days=1,
-         max_window_days=7)
+         max_window_days=7, min_sample=20, prior_rate=0.1)
 T0 = "2026-10-27T10:00:00Z"
 since = ap._epoch("2026-10-20T00:00:00Z")
 

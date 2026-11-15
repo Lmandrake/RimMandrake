@@ -10,7 +10,8 @@ caused by the change alone. Selftests pin fixtures; at most one deliberate "ship
 The scratch copy is a `git clone --shared` of HEAD in /tmp plus this tree's uncommitted edits to tracked files. Every
 numeric leaf (keys starting "_" skipped) is mutated at once (int n -> 2n, or n+1 below 2; a fraction in (0, 1)
 halfway to 1; another float x1.5); the readers
-(default: every selftest_*.py naming the config's file name) run on the base and on the mutated copy. A test red only
+(default: every selftest_*.py naming the config's file name;
+--deep adds every selftest importing a module that names it) run on the base and on the mutated copy. A test red only
 when mutated is bisected down to the leaves that alone turn it red. A test red on the base is reported, not judged.
 Prints one line per red reader and `RESULT: CLEAN|PINNED n`; exit 0 clean, 1 pinned, 2 usage.
 """
@@ -18,6 +19,7 @@ import argparse
 import concurrent.futures
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -71,11 +73,21 @@ def scratch_copy(repo):
     return tmp, tmp + "/r"
 
 
-def readers(root, cfg_rel):
-    name = os.path.basename(cfg_rel)
-    r = subprocess.run(["git", "-C", root, "grep", "-l", "-F", os.path.splitext(name)[0], "--", "*selftest_*.py"],
-                       capture_output=True, text=True, timeout=120)
-    return sorted(p for p in r.stdout.split() if p)
+def readers(root, cfg_rel, deep=False):
+    """Selftests naming the config's stem; with `deep`, also every selftest importing a module that names it."""
+    stem = os.path.splitext(os.path.basename(cfg_rel))[0]
+
+    def grep(*args):
+        r = subprocess.run(["git", "-C", root, "grep", *args], capture_output=True, text=True, timeout=120)
+        return [p for p in r.stdout.split() if p]
+    out = set(grep("-l", "-F", stem, "--", "*selftest_*.py"))
+    if deep:
+        mods = sorted({os.path.splitext(os.path.basename(p))[0] for p in grep("-l", "-F", stem, "--", "*.py")
+                       if not os.path.basename(p).startswith("selftest_")})
+        if mods:
+            pat = r"^\s*(import|from)\s.*\b(%s)\b" % "|".join(re.escape(m) for m in mods)
+            out |= set(grep("-l", "-E", pat, "--", "*selftest_*.py"))
+    return sorted(out)
 
 
 def run_tests(root, tests, jobs, timeout):
@@ -91,13 +103,13 @@ def run_tests(root, tests, jobs, timeout):
         return dict(ex.map(one, tests))
 
 
-def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print):
+def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print, deep=False):
     tmp, root = scratch_copy(repo)
     cfg_path = os.path.join(root, cfg_rel)
     raw = open(cfg_path, encoding="utf-8").read()
     cfg = json.loads(raw)
     every = [p for p, _v in leaves(cfg)]
-    tests = tests or readers(root, cfg_rel)
+    tests = tests or readers(root, cfg_rel, deep)
 
     def with_leaves(ps, ts):
         with open(cfg_path, "w", encoding="utf-8") as f:
@@ -124,8 +136,12 @@ def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print):
         rep = {"config": cfg_rel, "leaves": len(every), "tests": len(tests),
                "base_red": sorted(t for t in tests if base[t] is False),
                "base_timeout": sorted(t for t in tests if base[t] is None),
-               "mut_timeout": sorted(t for t, v in mut.items() if v is None), "pinned": {}}
+               "mut_timeout": sorted(t for t, v in mut.items() if v is None), "pinned": {}, "flaky": []}
         for t in sorted(t for t, v in mut.items() if v is False):
+            if with_leaves(every, [t])[t] is not False:      # red beside others, green alone: a shared-path race
+                rep["flaky"].append(t)
+                log("FLAKY %s (red only when run in parallel: not judged)" % t)
+                continue
             rep["pinned"][t] = ["/".join(map(str, c)) if c and not isinstance(c[0], tuple)
                                 else " + ".join("/".join(map(str, x)) for x in c) for c in culprits(t, every)]
             log("PINNED %s <- %s" % (t, ", ".join(rep["pinned"][t])))
@@ -146,6 +162,7 @@ def main(argv=None):
     ap.add_argument("--jobs", type=int, default=6)
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--repo", default=".")
+    ap.add_argument("--deep", action="store_true", help="also the selftests importing a module that names the config")
     a = ap.parse_args(argv)
     repo = subprocess.run(["git", "-C", a.repo, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=60)
     if repo.returncode:
@@ -153,12 +170,12 @@ def main(argv=None):
         return 2
     repo = repo.stdout.strip()
     cfg_rel = os.path.relpath(os.path.abspath(a.config), repo)
-    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout)
+    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout, deep=a.deep)
     if a.out:
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(rep, f, indent=2)
-    print("%s: %d leaves, %d readers, %d base red, %d timeout" % (cfg_rel, rep["leaves"], rep["tests"],
-          len(rep["base_red"]), len(rep["base_timeout"]) + len(rep["mut_timeout"])))
+    print("%s: %d leaves, %d readers, %d base red, %d timeout, %d flaky" % (cfg_rel, rep["leaves"], rep["tests"],
+          len(rep["base_red"]), len(rep["base_timeout"]) + len(rep["mut_timeout"]), len(rep["flaky"])))
     print("RESULT: %s" % ("PINNED %d" % len(rep["pinned"]) if rep["pinned"] else "CLEAN"))
     return 1 if rep["pinned"] else 0
 
