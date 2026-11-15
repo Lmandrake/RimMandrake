@@ -1,0 +1,2 @@
+HugeThings trunk blockers are realized under a work budget: on a crowded map (quicktest RM_TheRot, ~2500 giants, ~550 pending cells) a newly staged full-grown RM_Nogtyl had its footprint taken within 250-500 ticks but realized only 8/17 cells at +600 ticks, with the doorway approach cell still open; 14/17 by +1100. A seal read before realized == claimed minus protected cells measures the queue, not the mod. Read DebugPlantState realized/pending first.
+item: RIMMANDRAKE_ALLOW_HUGETHINGS_TRUNKS_TO_SEAL_DOORS

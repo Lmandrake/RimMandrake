@@ -6,6 +6,16 @@ A root enclosed by its growing contact and existing walls must be unreachable by
 vanilla root-touch, while the inside cutter can reach the owned trunk. Preserve
 exact door/item/pawn identities, settings and the guarded scene-begin snapshot.
 The old/current production planner comparison supplies the matched offline RED.
+
+Test Pilot sitting 2026-11-14 (D:\\ClaudeWork\\rimmandrake\\conductor\\ht_door_20261114\\FINDINGS.md), quicktest map:
+- MEASURED: S/W/E doors seal at growth >= 0.25; inside and outside CutPlant cutters reopen them at 0.30; a north-side
+  giant never seals (contact grows north of the root). The mod is not why this script fails.
+- Realization is work-budgeted: on a crowded map the doorway cell stayed pending 600 ticks after staging (8/17 realized).
+  Read DebugPlantState realized/pending before judging a seal.
+- Ruled out: save_uncompress.expand_fresh as the source of after9's NUL bytes (5 native saves + 4 expansions clean on
+  Archmagi). The source stays unknown.
+- Above growth 0.40 a CutPlant designation is refused (vanilla, harvestable tree), and this giver ignores HarvestPlant:
+  RIMMANDRAKE_LET_TRAPPED_COLONISTS_CHOP_OUT_PAST_SAPLING_SIZE.
 """
 import argparse
 import hashlib
