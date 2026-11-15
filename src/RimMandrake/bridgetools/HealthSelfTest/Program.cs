@@ -80,6 +80,17 @@ namespace JawaBench.BridgeTools
                 return hi <= 16.7 && h.MaxMs == 20000 && h.SlowCount[4] == 1 && h.SlowMs[4] == 20000;
             });
             Check("json_carries_bucket_version_and_edges", () => { var h = new H.FrameHist(); h.Add(3); var j = h.Json(); return j.Contains("\"bucketVersion\":\"fh-v1\"") && j.Contains("\"edgesMs\":[1,2,4") && j.Contains("\"p99RangeMs\""); });
+            // RIMMANDRAKE_FIX_FRAMEHIST_JSON_SLOW_ARRAY: Contains() above could not see that "slow":[ was never closed;
+            // a real parser can. Both the empty and the populated shape must parse, and the slow array must be an array.
+            Check("json_parses_with_a_real_parser", () =>
+            {
+                var h = new H.FrameHist(); for (int i = 0; i < 50; i++) h.Add(16); h.Add(20000);
+                using (var d = System.Text.Json.JsonDocument.Parse(h.Json()))
+                using (var e = System.Text.Json.JsonDocument.Parse(new H.FrameHist().Json()))
+                    return d.RootElement.GetProperty("slow").ValueKind == System.Text.Json.JsonValueKind.Array
+                        && d.RootElement.GetProperty("p99RangeMs").GetArrayLength() == 2
+                        && e.RootElement.GetProperty("status").GetString() == "unavailable";
+            });
             Check("ring_merges_windows_since", () =>
             {
                 var r = new H.HistRing(3);

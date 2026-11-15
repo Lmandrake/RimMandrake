@@ -249,6 +249,7 @@ namespace JawaBench.BridgeTools
                 for (int i = 0; i < Slow.Length; i++)
                     sb.Append(i == 0 ? "" : ",").Append("{\"atLeastMs\":").Append(F(Slow[i])).Append(",\"count\":").Append(I(SlowCount[i]))
                       .Append(",\"totalMs\":").Append(F(SlowMs[i])).Append('}');
+                sb.Append(']');
                 foreach (var q in new[] { 0.5, 0.99 })
                 {
                     QuantileRange(q, out var lo, out var hi);
