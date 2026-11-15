@@ -2739,10 +2739,13 @@ def phase_X(L, args):
                 wall = float(k4.get("sink")) / FEET_TO_HEAD
             except (TypeError, ValueError):
                 wall = None
-            L.row("X4_pit_wall_over_head", _sink_ok(k4, 4) and wall is not None and wall >= 1.2 - 1e-6
+            # X4 follows the pit sink he confirmed 2026-11-13 ~9:50 PM PST (pitSinkPerLevel 0.05 per half metre): the D=4
+            # occupant is drawn 4 x SINK_PER_LEVEL down and the proof's wall-over-crown ratio agrees with that sink. His
+            # card of 2026-11-14 (OWNER:1794721678572743709) retired the older wall-height rule this row used to hold.
+            L.row("X4_pit_wall_over_head", _sink_ok(k4, 4) and wall is not None
                   and abs(float(k4.get("wallOverHead") or 0) - wall) < 1e-3, "MOD",
-                  "colonist on D=4 drawn %s cells down; wall over crown %s x a person's height (owner: walls 20%% above "
-                  "the head, >= 1.2)" % (k4.get("sink"), k4.get("wallOverHead")))
+                  "colonist on D=4 drawn %s cells down (pit sink %s per half metre x 4); wall over crown %s x a person's "
+                  "height, which must agree with the sink" % (k4.get("sink"), SINK_PER_LEVEL, k4.get("wallOverHead")))
         B.call("jawa/set_pawn_faction", pawn=col, faction="none")
         _vc().sweep_non_colonists(B)
 
@@ -3116,6 +3119,7 @@ class MockBridge(object):
         "pond_sheds_squares": ["E3b_recession_shipped"],
         "lake_floor_on_site": ["S3_classification"],      # the site's deepBedsEnabled pin is lost: painted ponds get a P11 shelf   # the pre-POND_DEPTH whole-square recession is back on a still pond
         "budget_ignored": ["E3_budget_exhaustion"],
+        "wall_ratio_off": ["X4_pit_wall_over_head"],      # the proof's wall-over-crown ratio disagrees with the drawn sink
         "roof_ignored": ["E6_rain_fills_unroofed"],
         "sink_toggle_ignored": ["E5n_sinks_off"],
         "engine_toggle_ignored": ["E4_engine_off"],
@@ -3913,7 +3917,7 @@ class MockBridge(object):
                     sink = max(0.0, sink - SINK_PER_LEVEL * f)
                 res = "SINK id=%s cell=%d,%d depth=%d waterDl=%d fluid=%s sink=%.3f drawDz=%.3f moving=False wallOverHead=%.3f" % (
                     args, c[0], c[1], d, o.W.get(c, f * level_water.U), (o.fluid.get(c, "RM_Fluid_Water") if f else "none"), sink, -sink,
-                    SINK_PER_LEVEL * min(d, cap) / FEET_TO_HEAD)
+                    SINK_PER_LEVEL * min(d, cap) / FEET_TO_HEAD * (1.5 if "wall_ratio_off" in self.faults else 1.0))
         elif method == "ProofLadder":
             x, z, op = args.split(",")
             c = (int(x), int(z))

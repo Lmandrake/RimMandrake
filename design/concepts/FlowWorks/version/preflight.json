@@ -2,25 +2,21 @@
  "mod": "FlowWorks",
  "version": "0.1.0",
  "program": "preflight_fw.py (throwaway, advance row 3; copy in version/advance_scripts/)",
- "at": "2026-11-14T14:38:50-08:00",
+ "at": "2026-11-14T22:07:46-08:00",
  "dump": {
   "path": "a copy of game_paths.DEF_DUMP at /tmp/fw_pilot/defs.sqlite",
-  "provenance": {
-   "builder": "measure/dumpdb.py",
-   "captured_utc": "2026-11-12T08:10:06Z",
-   "defs_total": "59262"
-  }
+  "provenance": {}
  },
- "seconds": 0.26,
+ "seconds": 0.22,
  "verdict": "refuse",
- "refusals": 7,
+ "refusals": 4,
  "checks": [
   {
    "id": "C1_bars_complete",
    "what": "the table holds exactly the locked bars (record inventory + tree leaves)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "61 locked, 61 in table",
+   "evidence": "57 locked, 57 in table",
    "seconds": 0.0
   },
   {
@@ -28,7 +24,7 @@
    "what": "every bar names at least one deciding test, and every named test is defined",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "61 bars",
+   "evidence": "57 bars",
    "seconds": 0.0
   },
   {
@@ -36,7 +32,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "120 tests",
+   "evidence": "117 tests",
    "seconds": 0.0
   },
   {
@@ -44,7 +40,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "117 built tests",
+   "evidence": "115 built tests",
    "seconds": 0.0
   },
   {
@@ -52,7 +48,7 @@
    "what": "every file a test reads exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "286 reads",
+   "evidence": "282 reads",
    "seconds": 0.0
   },
   {
@@ -60,13 +56,6 @@
    "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
    "verdict": "refuse",
    "refusals": [
-    {
-     "line": "PY_VALIDATION_V2_OFFLINE",
-     "evidence": "red today (rc 1): X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner: walls 20% above the head, >= 1.2) | X4_pit_wall_over_head  FAIL    ",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
-    },
     {
      "line": "T_FETCH_FALLEN_OFFLINE",
      "evidence": "red today (rc 1): RED 2: fetch_fallen: a raider job to fetch a comrade held in a pit; fetch_fallen: its target is a pawn of the raider's own faction held in a pit",
@@ -87,23 +76,9 @@
      "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
      "route": "Stage 3",
      "would_pass": "rc 0"
-    },
-    {
-     "line": "T_WETNESS_PROBE_OFFLINE",
-     "evidence": "red today (rc 1): RED 1: wetness_probe: a static_call probe reads one cell's wetting (\"x,z\" -> \"WETTING ... wetted=b\")",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
-    },
-    {
-     "line": "T_WETTING_OFFLINE",
-     "evidence": "red today (rc 1): RED 3: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: \"Two squares away from the canal\"); wetting: a wetted cell is never standing water",
-     "smallest_fix": "fix the code or the test (a red test is a Stage 3 line)",
-     "route": "Stage 3",
-     "would_pass": "rc 0"
     }
    ],
-   "evidence": "113 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
+   "evidence": "110 deciding tests; built: runs (his card 2026-11-13). Live scenes judged by entry existence only (offline run)",
    "seconds": 0.0
   },
   {
@@ -111,7 +86,7 @@
    "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "32 in-game tests",
+   "evidence": "31 in-game tests",
    "seconds": 0.0
   },
   {
@@ -128,15 +103,15 @@
     }
    ],
    "evidence": "103 held rows in the files, 103 placed",
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C9_defs_real",
    "what": "every RM_/RUT_/RSW_ name in the scenes and the table exists in the def dump or the repo (C# class names accepted)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "11 names checked against 52793 defs/classes (dump defs.sqlite)",
-   "seconds": 0.183
+   "evidence": "9 names checked against 5684 defs/classes (dump ABSENT)",
+   "seconds": 0.141
   },
   {
    "id": "C10_mods_real",
@@ -144,7 +119,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 packageIds named",
-   "seconds": 0.004
+   "seconds": 0.003
   },
   {
    "id": "C11_settings_fields_real",
@@ -152,7 +127,7 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "0 settings fields named",
-   "seconds": 0.032
+   "seconds": 0.033
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -160,14 +135,14 @@
    "verdict": "pass",
    "refusals": [],
    "evidence": "8 pinned files (stage.json is state, not a bar: exempt)",
-   "seconds": 0.008
+   "seconds": 0.009
   },
   {
    "id": "C13_scenes_prove_a_leaf",
    "what": "every scene names the leaves it proves",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "28 scenes",
+   "evidence": "27 scenes",
    "seconds": 0.0
   },
   {
@@ -175,8 +150,8 @@
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "7155 items known",
-   "seconds": 0.034
+   "evidence": "7192 items known",
+   "seconds": 0.033
   },
   {
    "id": "C15_tiers_consistent",

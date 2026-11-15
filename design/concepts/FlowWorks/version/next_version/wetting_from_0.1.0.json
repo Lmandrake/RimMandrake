@@ -1,0 +1,267 @@
+{
+ "moved_on": "2026-11-14",
+ "by": "owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094): 'Move wetting to 0.2.0: the wetting bars leave 0.1.0 by his word and arrive in 0.2.0 with the thin film'",
+ "from": "FlowWorks 0.1.0 (design/concepts/FlowWorks/tree.json, record.json, scenes.json, version/test_table.json)",
+ "tree_leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "wetness_probe",
+   "oracle_proposed": "wetness probe per cell: wetted to distance 2 and not 3; plant water need met; wetting falls under fast growth; flood level falls over drinking plants",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "canal_wets_two_squares",
+   "root": [
+    "canal_holds_only_the_channel"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees ground within two squares of a filled canal wetted, by the same technique Stillsand uses for spilled water on sand, and crops there have water; fast-growing plants use the wetting up until the canal reapplies it, and plants under standing flood water drink it, lowering the flood.",
+   "scenario": "A field of crops either side of a filled D2 canal on dry sand, and a twin field beside a dry canal; then the canal drained for a week; then a shallow flood over part of the field.",
+   "false_pass": [
+    "every cell of the map is wetted",
+    "wetting shows but plants get no water",
+    "wetting never runs out"
+   ],
+   "red": "crops two squares from a full canal are as dry as crops beside a dry canal",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "wetness_probe",
+   "oracle_proposed": "wetted cells' liquid read zero; no wading cost on them",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "wetted ground that is standing water",
+   "wall_expect_h": null,
+   "id": "wetting_is_not_flood",
+   "root": [
+    "never_liquid_on_open_ground"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees wetted ground drawn or behaving as standing water: wetting is not flood water, though a flood also wets what it passes.",
+   "scenario": "The canal_wets_two_squares field.",
+   "false_pass": [
+    "wetting is a thin flood sheet"
+   ],
+   "red": "wetted cells hold liquid litres that a pawn wades through",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the probe answers on a hand-wetted cell and on a dry cell differently; refuses when wetting is off",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "wetness_probe",
+   "root": [
+    "canal_holds_only_the_channel"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The tester reads, per cell, the wetting level, its cause (canal, flood or none) and the water a plant drew today.",
+   "scenario": "Build a bridge read that returns, for a rectangle of cells, wetting level, cause and per-plant water drawn; refuse with a reason when the wetting system is absent.",
+   "false_pass": [
+    "the probe returns a constant for every cell"
+   ],
+   "red": "the probe is missing, so no wetting claim can be measured",
+   "tier_proposed": "offline",
+   "owner_part": "no",
+   "by": "concept"
+  }
+ ],
+ "record_inventory": [
+  {
+   "id": "inv_irrigation",
+   "what": "Plants near a filled canal act watered (his 2026-09-16 experience text); ruling 36 cut only the visible sign",
+   "impl": "unknown",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+    "src/RimMandrake/FlowWorks/Source/Swale/RM_Swale.cs"
+   ],
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "design/RimMandrake/flowworks_mod_definition.md:118"
+   ],
+   "speaker": "agent",
+   "note": "What exists: overflow soak irrigates via Explosive Growth when loaded (sheetIrrigates), and the swale walks fertility. Canal-side watering itself: not found in a grep of Source for 'irrigat'; spec section 4 and 11 say UNBUILT here, solved in CrackedLands. See contradiction c_irrigation.",
+   "scope_source": "OWNER:1793794389686592719",
+   "text": "Ground within two squares of a filled canal is wetted (Stillsand's spilled-water technique); plants there have water and use it up; plants also drink standing flood water"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "sc_wetting",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_wetting",
+   "start": [
+    "crops either side of a full D2 canal on dry sand; a twin field by a dry canal (asserted by the wetness probe)"
+   ],
+   "action": "grow 5 days; drain the canal a week; flood part of the field",
+   "expect": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
+   "control": {
+    "case": "the dry-canal twin",
+    "expect": "no wetting, crops dry",
+    "rules_out": "wetting from rain rather than the canal"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "canal_wets_two_squares",
+    "wetting_is_not_flood"
+   ],
+   "entry_point_item": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP"
+  }
+ ],
+ "table_bars": [
+  {
+   "id": "inv_irrigation",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "canal_wets_two_squares",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [
+    "sc_garden"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "wetting_is_not_flood",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_WETTING_OFFLINE",
+    "sc_wetting"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WETTING_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "wetness_probe",
+   "source": "tree.json",
+   "kind": "instrument",
+   "proves_at": "4-5",
+   "decides": [
+    "T_WETNESS_PROBE_OFFLINE"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WETNESS_PROBE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  }
+ ],
+ "table_tests": {
+  "T_WETTING_OFFLINE": {
+   "id": "T_WETTING_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+   "observes": "cells within two squares of a filled canal read wetted, the third does not; a wetted cell holds no liquid and costs no wading; fast growth spends wetting; plants drink a flood down",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
+   ],
+   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.2,
+    "tail": "RED 3: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: \"Two squares away from the canal\"); wetting: a wetted cell is never standing water: the wetting class writes no liquid",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetting"
+  },
+  "T_WETNESS_PROBE_OFFLINE": {
+   "id": "T_WETNESS_PROBE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+   "observes": "the wetness probe answers differently on a hand-wetted and a dry cell, and refuses when wetting is off",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
+   ],
+   "owed_under": "with T_WETTING_OFFLINE",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "tail": "RED 1: wetness_probe: a static_call probe reads one cell's wetting (\"x,z\" -> \"WETTING ... wetted=b\")",
+    "at": "2026-11-14T14:38:16-08:00"
+   },
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetness_probe"
+  },
+  "sc_wetting": {
+   "id": "sc_wetting",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_wetting",
+   "observes": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_wetting --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   }
+  }
+ }
+}

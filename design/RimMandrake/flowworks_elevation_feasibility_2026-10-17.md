@@ -181,8 +181,8 @@ Three ceilings, each measured from the code or arithmetic:
    Past about 8 m a cell costs more than a week of one digger, and storage per labour falls below a third of a 2 m
    cell's. That is a natural ceiling without any rule. **Tuning decision (owner's):** keep the quadratic curve (deep
    is a megaproject) or make each notch past 2 m cost a flat amount (deep is merely big).
-3. **Pictures saturate.** A 2 m relative drop already hides a standing person (his "walls 20% over the head" visual
-   rule, `RM_PitDrawMath`); the wall face north band is 0.5 cell at a 2 m drop. A deeper drop can grow the face to
+3. **Pictures saturate.** The pawn sink is 0.05 cells per half metre (`RM_PitDrawMath`, owner confirmed
+   2026-11-13); the wall face north band is 0.5 cell at a 2 m drop. A deeper drop can grow the face to
    about 0.8 cell before it covers the cell to its north. Floors give about four tellable shades. So a player can dig
    16 depths but see about 4 floor bands and every drop's wall; the readout gives the exact metres.
 

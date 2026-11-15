@@ -43,7 +43,7 @@ The ladder every trial climbs:
 | Per-body fluid type | yes (item `[F]`) | **no** — `ActiveFluid` is ONE `FluidDef` per map, defaulting to water, with no UI; the bridge setter `jawa/flowworks_set_active_fluid` changes the whole map's fluid, never one body's |
 | Ignition / burning canals | yes | partial — `LiquidIgnition.cs` exists; `liquidIgnitionEnabled` **defaults true since 2026-10-15** (owner card) |
 | Superdeep capture, ladder | yes | **yes** — `Building_SuperdeepPit` (inherits `Building_OpenPit` despawn-into-container), `RM_Ladder` |
-| Pawn draw offset by depth, walls 20% over head | yes (third card round) | **no** |
+| Pawn draw offset by depth | yes (third card round) | **no** |
 | Superdeep cover (terrain-mimic) | yes | building-pit only (`Building_TerrainMimicCover`) |
 | Sluice / SecurityGrateDoor | yes (`FLOWWORKS_DOOR_FAMILY_1`) | **no** — zero hits for `Sluice`/`SecurityGrate` |
 | Per-cell spikes | yes | building-pit fitting only (`RM_OpenPit_Spiked`) |

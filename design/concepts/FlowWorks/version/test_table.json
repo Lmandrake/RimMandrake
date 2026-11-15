@@ -1,7 +1,7 @@
 {
  "mod": "FlowWorks",
  "version": "0.1.0",
- "made": "2026-11-14T21:26:38-08:00",
+ "made": "2026-11-14T22:07:03-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway /tmp/fw_pilot/make_table.py, copy in version/advance_scripts/)",
  "stages": {
   "2": "preflight (a program)",
@@ -2846,52 +2846,11 @@
    "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 58.3,
-    "tail": "X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner: walls 20% above the head, >= 1.2) | X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0.200 cells down; wall over crown 0.200 x a person's height (owner",
-    "at": "2026-11-14T14:24:08-08:00"
+    "rc": 0,
+    "seconds": 52.5,
+    "tail": "O-LIVE-NEG PASS   clean mock run green (63 rows, 4890 ticks); all 61 faults turned their rows red",
+    "at": "2026-11-14T22:07:03-08:00"
    }
-  },
-  "T_WETTING_OFFLINE": {
-   "id": "T_WETTING_OFFLINE",
-   "kind": "offline",
-   "stage": "4-5",
-   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
-   "observes": "cells within two squares of a filled canal read wetted, the third does not; a wetted cell holds no liquid and costs no wading; fast growth spends wetting; plants drink a flood down",
-   "reads": [
-    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
-    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
-    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
-   ],
-   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
-   "runs_today": {
-    "ran": true,
-    "rc": 1,
-    "seconds": 0.2,
-    "tail": "RED 3: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: \"Two squares away from the canal\"); wetting: a wetted cell is never standing water: the wetting class writes no liquid",
-    "at": "2026-11-14T14:38:16-08:00"
-   },
-   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetting"
-  },
-  "T_WETNESS_PROBE_OFFLINE": {
-   "id": "T_WETNESS_PROBE_OFFLINE",
-   "kind": "offline",
-   "stage": "4-5",
-   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
-   "observes": "the wetness probe answers differently on a hand-wetted and a dry cell, and refuses when wetting is off",
-   "reads": [
-    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
-    "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
-   ],
-   "owed_under": "with T_WETTING_OFFLINE",
-   "runs_today": {
-    "ran": true,
-    "rc": 1,
-    "seconds": 0.1,
-    "tail": "RED 1: wetness_probe: a static_call probe reads one cell's wetting (\"x,z\" -> \"WETTING ... wetted=b\")",
-    "at": "2026-11-14T14:38:16-08:00"
-   },
-   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetness_probe"
   },
   "T_TOSS_FLAME_OFFLINE": {
    "id": "T_TOSS_FLAME_OFFLINE",
@@ -3408,26 +3367,6 @@
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    }
   },
-  "sc_wetting": {
-   "id": "sc_wetting",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-   "entry": "scene_wetting",
-   "observes": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
-   "reads": [
-    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-    "design/concepts/FlowWorks/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_wetting --out <json>  (bridge held; minimal list + FlowWorks)",
-   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
-   "owed_under": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP",
-   "runs_today": {
-    "ran": false,
-    "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
-   }
-  },
   "sc_fetch_fallen": {
    "id": "sc_fetch_fallen",
    "kind": "live_minimal",
@@ -3514,7 +3453,7 @@
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
    "entry": "scene_garden",
-   "observes": "wetted rows and sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
+   "observes": "sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
@@ -3782,26 +3721,6 @@
     "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": true,
-   "any_test_runnable_today": true
-  },
-  {
-   "id": "inv_irrigation",
-   "source": "record.json",
-   "kind": "inventory",
-   "proves_at": "6",
-   "decides": [
-    "T_WETTING_OFFLINE",
-    "sc_wetting"
-   ],
-   "supports": [
-    "sc_garden"
-   ],
-   "held": [],
-   "offline_decides": [
-    "T_WETTING_OFFLINE"
-   ],
-   "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
@@ -4255,7 +4174,7 @@
     "PY_FLOWWORKS_NORTHSTAR",
     "PY_VALIDATION_V2_OFFLINE"
    ],
-   "offline_green_today": false,
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
@@ -4980,26 +4899,6 @@
    "any_test_runnable_today": true
   },
   {
-   "id": "canal_wets_two_squares",
-   "source": "tree.json",
-   "kind": "experience",
-   "proves_at": "6",
-   "decides": [
-    "T_WETTING_OFFLINE",
-    "sc_wetting"
-   ],
-   "supports": [
-    "sc_garden"
-   ],
-   "held": [],
-   "offline_decides": [
-    "T_WETTING_OFFLINE"
-   ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": true,
-   "any_test_runnable_today": true
-  },
-  {
    "id": "raiders_fetch_their_fallen",
    "source": "tree.json",
    "kind": "experience",
@@ -5148,41 +5047,6 @@
     "PY_HOSE_FITTINGS"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": true,
-   "any_test_runnable_today": true
-  },
-  {
-   "id": "wetting_is_not_flood",
-   "source": "tree.json",
-   "kind": "experience",
-   "proves_at": "6",
-   "decides": [
-    "T_WETTING_OFFLINE",
-    "sc_wetting"
-   ],
-   "supports": [],
-   "held": [],
-   "offline_decides": [
-    "T_WETTING_OFFLINE"
-   ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": true,
-   "any_test_runnable_today": true
-  },
-  {
-   "id": "wetness_probe",
-   "source": "tree.json",
-   "kind": "instrument",
-   "proves_at": "4-5",
-   "decides": [
-    "T_WETNESS_PROBE_OFFLINE"
-   ],
-   "supports": [],
-   "held": [],
-   "offline_decides": [
-    "T_WETNESS_PROBE_OFFLINE"
-   ],
-   "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },

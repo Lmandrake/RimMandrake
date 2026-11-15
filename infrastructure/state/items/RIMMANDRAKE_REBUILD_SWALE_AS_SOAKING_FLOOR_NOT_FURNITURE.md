@@ -18,7 +18,7 @@ Related items:
 - `RIMMANDRAKE_REPAINT_SWALE_AS_FLOOR_TILE` (art only, filed 2026-11-13). Its art becomes this item's floor texture.
 - `SWALE_CANAL_ART_REFERENCE_1` and `CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1` (both blocked).
 
-Design Version class: PROPOSED Convergent-Problem (current FlowWorks 0.1.0). This is an owner call.
+Design Version class: Divergent, FlowWorks 0.2.0: owner by card 2026-11-14 ~9:47 PM PST, *"Next version, 0.2.0; 0.1.0's bars do not move"* (OWNER:1794721683744408896; `design/concepts/FlowWorks/version/next_version/README.md`).
 
 Build effort: medium.
 

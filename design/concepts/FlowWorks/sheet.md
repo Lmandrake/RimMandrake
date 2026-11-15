@@ -12,7 +12,6 @@
 - [leaf:toss_flame_from_rim] A colonist walks to the rim and tosses a flame onto the square you pick. By card 2026-11-05, owed
 - [leaf:raiders_fetch_their_fallen] Raiders chop wood for a ladder to fetch comrades who fell in a pit, and leave them when driven off. His pit-trap scene, owed
 - [leaf:island_bridges_trap_and_fail] Raised drawbridges trap raiders on a long bridge; a destroyed winch drops one and they escape; the defence still counts. His island scene
-- [leaf:canal_wets_two_squares] Ground two squares from a filled canal is wetted, crops there have water, fast growth uses it up, plants drink flood water down. OWNER:1793794389686592719, owed
 - [leaf:canal_reads_as_dug] A dug canal reads as a channel cut into the ground at every depth, and digging takes hours
 - [leaf:fill_flows_along_canal] Liquid flows along the canal at its own speed, tar behind water, and stays in the channel
 - [leaf:fill_level_legible] How full a canal is, and with what, reads at play zoom; half a metre of water is silty
@@ -37,7 +36,6 @@
 
 ## does not
 - [leaf:no_liquid_on_open_ground] Canal liquid never stands on undug ground without a flood, a canal never reads as gravel, dug ground never as a building
-- [leaf:wetting_is_not_flood] Wetted ground is never standing water. OWNER:1793794389686592719
 - [leaf:no_full_source_after_draw] A pond never looks full right after a moat drew heavily from it
 - [leaf:no_snared_standing] A pawn caught in a pit is never drawn standing at ground level
 - [leaf:no_impossible_plumbing] No hose across impassable ground, no tank joining two pipe runs, no other mod's pipe carrying without an adapter
@@ -47,10 +45,10 @@
 ## waived
 
 ## open
-- The north star has no line yet for wetting, the bed-less prison or the toss-a-flame order; their leaves root at the nearest existing line until an agent adds those bars
+- The north star has no line yet for the bed-less prison or the toss-a-flame order; their leaves root at the nearest existing line until an agent adds those bars
 
 ## delegated
-- Showcases 2 and 3: the garden and workshop (wetting, sprinklers, hoses, bottles, well, converter) is my pick for the second face, as the most new ground; your pit-trap raid is the third
+- Showcases 2 and 3: the garden and workshop (sprinklers, hoses, bottles, well, converter) is my pick for the second face, as the most new ground; your pit-trap raid is the third
 - Rivers, slime, quarry finds, map-maker taps and Mod Settings are checked by their own scenes rather than a showcase
 - The island-bridge raid stays a scene, not a showcase: its bridges and drawbridges are already in the moat
 - The drawbridge's look is the FlowWorks Drawbridge concept's; here a drawbridge only has to rise, trap and fall
@@ -61,7 +59,6 @@
 - toss_flame_from_rim: his card 2026-11-05; the match from above in his moat scene
 - raiders_fetch_their_fallen: his pit-trap scene OWNER:1793794392567351532
 - island_bridges_trap_and_fail: his island scene OWNER:1793794392567351532
-- canal_wets_two_squares: his words OWNER:1793794389686592719 and ruling 36 in the walk
 - canal_reads_as_dug: north star canal_reads_as_dug_channel; a canal that reads as gravel failed the walk before
 - fill_flows_along_canal: north star canal_fill_front_watchable; the walk experience says flows at its viscosity
 - fill_level_legible: north star fill_tier_legible; partial fill is in his experience text
@@ -81,7 +78,6 @@
 - ice_cuts_and_melts: north star ice_cuts_to_crushed_ice_that_melts
 - river_flows_endless: north star limitless_body_marked; rivers are built and ship
 - no_liquid_on_open_ground: north star never_liquid_on_open_ground and never_gravel_path
-- wetting_is_not_flood: his words, this isn't the same as flood water
 - no_full_source_after_draw: north star never_full_reservoir_after_heavy_draw
 - no_snared_standing: north star never_snared_standing
 - no_impossible_plumbing: north star never_hose_across_impassable and never_tank_bridges_pipe_runs

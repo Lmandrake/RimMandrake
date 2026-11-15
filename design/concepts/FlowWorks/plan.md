@@ -1,6 +1,6 @@
 # FlowWorks: plan (Designer stage 3, run rm-role-designer-1793863469, 2026-11-05)
 
-Reads with `sheet.md` (what he reads), `tree.json` (31 leaves), `scenes.json` (28 scenes, 3 showcases) and
+Reads with `sheet.md` (what he reads), `tree.json` (28 leaves; 31 at the lock, three wetting leaves since moved to 0.2.0), `scenes.json` (28 scenes, 3 showcases) and
 `floor.json`. Writes no code: every missing part is a filed item below.
 
 ## Structure
@@ -10,26 +10,26 @@ Reads with `sheet.md` (what he reads), `tree.json` (31 leaves), `scenes.json` (2
   and spikes, ways in and out, sluice, hoses, the liquid network, trench cover, hung bridges, ice, rivers. Each has an
   acceptance scene; most reuse a staging function that already exists (`extensions.py`, `validation_v2.py`,
   `live_session.py`, `suspension_bridge_proof.py`, `river_scenes_walk.py`).
-- **Owed by his words (5 leaves):** `drained_hole_is_a_prison`, `toss_flame_from_rim`, `canal_wets_two_squares`
-  (+ `wetting_is_not_flood`), `raiders_fetch_their_fallen`. They are new mechanics, so they are build items, not scenes.
+- **Owed by his words (3 leaves):** `drained_hole_is_a_prison`, `toss_flame_from_rim`, `raiders_fetch_their_fallen`.
+  They are new mechanics, so they are build items, not scenes. The two wetting leaves (`canal_wets_two_squares`,
+  `wetting_is_not_flood`) and their instrument `wetness_probe` left 0.1.0 for 0.2.0 by his card 2026-11-14
+  (OWNER:1794721673433243094; `version/next_version/README.md`).
 - **The flagship (`moat_raid_sequence`)** joins swim, sluice, pit, prison, pump and fire in his order. It needs the
   owed prison and toss-flame mechanics first.
 - **His other scenes.** The pit-trap raid is showcase 3 (interaction scene `sc_pit_trap_raid`). The island bridges
   raid is an acceptance scene (`sc_islands`), not a showcase: its bridges and drawbridges are already in the moat.
-- **Instrument:** `wetness_probe`, needed by both wetting leaves. Nothing reads wetting today.
 - **Walk:** `walk_moat_season` on his full list: reload from a save made mid-swim, repeat the fill, run the actions in
-  a second order, master switch off and on, a wetted garden running throughout.
+  a second order, master switch off and on, the garden running throughout.
 
 ## Order
 
-1. `FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST` (instrument first).
-2. `FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL`: the per-leaf acceptance entry points in
+1. `FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL`: the per-leaf acceptance entry points in
    `src/RimMandrake/FlowWorks/northstar/concept_scenes.py`, plus the missing start assertions, controls and snapshot
    restores on the reused functions (the stage-0 audit: 86 of 175 scenes lack a discriminating control; 96 restore only
    partly). Each scene's control in `scenes.json` says what it must rule out.
-3. The owed mechanics, in any order: `FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED`, `FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM`,
-   `FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP`, `FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN`.
-4. `FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED`: `sc_moat_raid`, `sc_islands`, `sc_pit_trap_raid`, `sc_garden`,
+2. The owed mechanics, in any order: `FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED`, `FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM`,
+   `FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN`.
+3. `FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED`: `sc_moat_raid`, `sc_islands`, `sc_pit_trap_raid`, `sc_garden`,
    `sc_walk`. The moat and pit-trap showcases are held for his review (`hold: owner_review`).
 
 ## Showcases (`designer_stage.py showcases`: accepted)
@@ -37,7 +37,7 @@ Reads with `sheet.md` (what he reads), `tree.json` (31 leaves), `scenes.json` (2
 | # | showcase | new | overlap | why it is here |
 |---|---|---|---|---|
 | 1 | moat | 13 | 0 | his flagship pick (decision `d_scene_moat`) |
-| 2 | garden | 7 | 0.12 (the pumped network) | wetting, flood drinking, sprinklers, hoses, bottles, well, converter: the most new ground |
+| 2 | garden | 7 | 0.12 (the pumped network) | flood drinking, sprinklers, hoses, bottles, well, converter: the most new ground (counts at the lock, with `inv_irrigation`, since moved to 0.2.0) |
 | 3 | pit_trap | 3 | 0.40 (pit, prison) | his second scene; ladders, the raider rescue, trench cover. The overlap is his staging |
 
 Left to cheaper checks (`coverage_rest`): rivers (`sc_river`), slime (`sc_slime`), quarry finds (`sc_dig_finds`),
@@ -50,8 +50,8 @@ named.
 
 - **Built is not proven** (`c_proof_stale`): no live row has a result at the current mod hash. Every reused function
   is rerun inside its new scene; none is trusted by its old result.
-- **Roots for the owed leaves.** The north star has no wetting, bed-less prison or toss-flame line, so those leaves
-  root at the nearest existing line (`canal_holds_only_the_channel`, `pit_trapped_reads_as_trapped`,
+- **Roots for the owed leaves.** The north star has no bed-less prison or toss-flame line, so those leaves
+  root at the nearest existing line (`pit_trapped_reads_as_trapped`,
   `canal_burning_reads_as_burning_liquid`). Adding bars is allowed to agents, but it changes the validated hash, so it
   is the next north-star edit's job, not this stage's.
 - **Breadth** (failure mode 3): only the walk sees every system at once on the full list. `tick_cost` is applicable on
@@ -63,8 +63,8 @@ named.
 
 ## Designs considered for the garden showcase
 
-1. **Garden and workshop** (picked): one farm uses canal wetting, sprinklers, a hose to a tank, bottles and a faucet,
-   fed from a drilled well. Seven new capabilities, one shared.
+1. **Garden and workshop** (picked): one farm uses sprinklers, a hose to a tank, bottles and a faucet, fed from a
+   drilled well (its canal wetting left for 0.2.0 by his card 2026-11-14).
 2. A river works (weir, ferry, levee, quarry by the river): three or four new, and contrived together.
 3. Folding wetting into the moat map: no new showcase, but it hides irrigation behind the raid, where he would not
    judge it.

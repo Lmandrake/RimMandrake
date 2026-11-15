@@ -1223,8 +1223,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(dz, 0f, "negative lift draws shut");
             });
 
-            // ── PIT_DEPTH_DRAW_OFFSET_1: pawns sink with D; D=4 lip is 1.2x a person (owner's 20 %) ──
-            Case("PitDraw_sink_is_monotonic_in_depth_and_superdeep_clears_head_by_20pct", () =>
+            // ── PIT_DEPTH_DRAW_OFFSET_1: pawns sink with D at the shipped 0.05 per half metre (owner, 2026-11-13) ──
+            Case("PitDraw_sink_is_monotonic_in_depth_and_follows_the_pit_sink", () =>
             {
                 float k = RM_PitDrawMath.DefaultSinkPerLevel;
                 for (int d = 0; d < RM_PitDrawMath.SinkCapLevels; d++)
@@ -1232,8 +1232,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitDrawMath.SinkFor(0, k), 0f, "surface: no sink");
                 Assert(RM_PitDrawMath.SinkCapLevels == 8, "the sink cap is 4 m (SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR)");
                 AssertClose(RM_PitDrawMath.SinkFor(9, k), RM_PitDrawMath.SinkFor(8, k), "clamped at 4 m");
-                Assert(RM_PitDrawMath.WallOverHeadRatio(4, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) >= 1.2f - 1e-4f, "D=4 wall >= 1.2x head");
-                Assert(RM_PitDrawMath.WallOverHeadRatio(3, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) < 1f, "D=3 does not bury a person");
+                AssertClose(k, 0.05f, "the default sink is the shipped pitSinkPerLevel, 0.05 per half metre");
+                AssertClose(RM_PitDrawMath.SinkFor(4, k), 0.2f, "D=4 (2 m) draws 0.2 cells down");
+                AssertClose(RM_PitDrawMath.WallOverHeadRatio(4, k, RM_PitDrawMath.HumanlikeFeetToHeadTop),
+                    RM_PitDrawMath.SinkFor(4, k) / RM_PitDrawMath.HumanlikeFeetToHeadTop, "wall over crown agrees with the sink");
                 AssertClose(RM_PitDrawMath.SinkFor(4, 0f), 0f, "per-level 0 is the off dial");
             });
             Case("PitDraw_StepProgress_projects_onto_the_step", () =>

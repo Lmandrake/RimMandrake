@@ -499,29 +499,6 @@
    "entry_point_item": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM"
   },
   {
-   "id": "sc_wetting",
-   "kind": "acceptance",
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_wetting",
-   "start": [
-    "crops either side of a full D2 canal on dry sand; a twin field by a dry canal (asserted by the wetness probe)"
-   ],
-   "action": "grow 5 days; drain the canal a week; flood part of the field",
-   "expect": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
-   "control": {
-    "case": "the dry-canal twin",
-    "expect": "no wetting, crops dry",
-    "rules_out": "wetting from rain rather than the canal"
-   },
-   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
-   "hold": "immediate",
-   "requirement": [
-    "canal_wets_two_squares",
-    "wetting_is_not_flood"
-   ],
-   "entry_point_item": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP"
-  },
-  {
    "id": "sc_fetch_fallen",
    "kind": "acceptance",
    "staged_by": "script",
@@ -573,7 +550,7 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_walk_moat_season",
    "start": [
-    "his full mod list; the flagship map with a wetted garden (asserted)"
+    "his full mod list; the flagship map with its garden (asserted)"
    ],
    "action": "fill, save mid-swim, reload, toggle off and on, repeat the fill, run the second order",
    "expect": "state digests match across the reload; the pond pays again; no leftovers; log clean",
@@ -621,20 +598,19 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_garden",
    "start": [
-    "a field by a filled canal, sprinklers on a pumped pipe from a drilled well, a hose to a tank, a faucet and bottles, a liquid converter on the network (asserted)",
+    "a field beside sprinklers on a pumped pipe from a drilled well, a hose to a tank, a faucet and bottles, a liquid converter on the network (asserted)",
     "colonists with the thirst need"
    ],
    "action": "run 5 days; flood one corner",
-   "expect": "wetted rows and sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
+   "expect": "sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
    "control": {
     "case": "the pump unpowered",
-    "expect": "sprinklers, hose and faucet stop; the canal rows stay wetted",
-    "rules_out": "the canal's wetting coming from the sprinklers"
+    "expect": "sprinklers, hose and faucet stop",
+    "rules_out": "the rows and the tank filling from something other than the pumped network"
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
    "hold": "owner_review",
    "features": [
-    "canal_wets_two_squares",
     "one_liquid_network",
     "hose_reads_as_hose"
    ],
@@ -673,11 +649,9 @@
   {
    "id": "garden",
    "scenes": [
-    "sc_garden",
-    "sc_wetting"
+    "sc_garden"
    ],
    "exercises": [
-    "inv_irrigation",
     "inv_overflow_sheet",
     "inv_sprinklers",
     "inv_hoses",

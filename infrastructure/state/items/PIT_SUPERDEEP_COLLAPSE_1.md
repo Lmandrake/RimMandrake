@@ -467,8 +467,7 @@ and raised the requirement instead**. Verbatim:
 
 > *"All depths must be visually legible and differentiable graphically. The pawn should
 > visibly rise up and lower down as they move over the depths. They should be low enough
-> that it is visually clear how they could not possibly climb out (the walls are higher
-> than their head by 20%)"*
+> that it is visually clear how they could not possibly climb out …"*
 
 Three separate requirements, all new:
 
@@ -484,20 +483,18 @@ Three separate requirements, all new:
      screenshot — that `pit_occupant_below_floor` "may need no custom pawn draw at all".
      He has now ruled that there IS one. That note was marked UNCERTAIN and is retracted,
      not left standing.
-3. 🔑 **The only number he has given here, and it is testable:** in a superdeep cell the
-   walls stand **higher than the occupant's head by 20%**, so it is visually obvious they
-   could not climb out. This is a **visual rule only** (owner, by card, 2026-10-17): the art
-   and the pawn's sink offset carry it. (The morning's "the pit stays 2 m" was reversed by card the same day: colonists
+3. 🔑 **The sink is a number he confirmed:** 0.05 cells per half metre of depth
+   (`pitSinkPerLevel`, 2026-11-13 ~9:50 PM PST; his card 2026-11-14 kept it). A draw rule only
+   (owner, by card, 2026-10-17): the art and the pawn's sink offset carry it. (The morning's "the pit stays 2 m" was reversed by card the same day: colonists
    dig to 8 m by default, and the 2 m-keyed rules become relative; `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`.) Measurable
-   from a screenshot, which makes it an unusually strong `must show` line.
+   from a state read of the sink.
 
    Depth names, in metres (2026-10-17): D0 = surface, D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m,
    D4 = pit 2 m. Code names Shallow, Mid, Deep, Superdeep stay.
 
 🔑 Together these answer what the spec called the single largest new visual risk. The
 collapse removes the container that hid the occupant, so a spawned pawn on terrain would
-otherwise look exactly like the original defect; a depth-varying draw offset plus walls
-20% over head height is the fix, and it came from him.
+otherwise look exactly like the original defect; a depth-varying draw offset is the fix, and it came from him.
 
 ### The six new bars — all six approved, two with wording he added
 

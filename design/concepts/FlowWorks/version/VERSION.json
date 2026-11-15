@@ -5,14 +5,14 @@
  "locked_on": "2026-11-13",
  "locked_by": "owner",
  "owner_words": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)",
- "bars_total": 61,
- "bars_met": 59,
+ "bars_total": 57,
+ "bars_met": 55,
  "judge_rounds": 1,
  "tokens_spent": 3729543,
  "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
  "measured_from": {
-  "bars_total": "coverage_judge.required_ids(): record.json inventory (30) + tree.json leaves (31) = 61; 59 at the lock (28 + 31) and his card of 2026-11-14 (OWNER:1794693278631337978) added inv_geyser_tub and inv_liquid_coating (journal.md interventions); version/test_table.json holds the same 61",
-  "bars_met": "tree.json coverage: the 59 bars of the lock signed covered by the Arbiter 2026-11-05T09:03:46Z at tree_hash 572198fed9 and sheet_hash 68f9946f8e; the 2 bars added 2026-11-14 were never judged, so 59 of 61",
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (29) + tree.json leaves (28) = 57; 59 at the lock (28 + 31), his card of 2026-11-14 (OWNER:1794693278631337978) added inv_geyser_tub and inv_liquid_coating (61), and his card of 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094) moved inv_irrigation, canal_wets_two_squares, wetting_is_not_flood and wetness_probe to 0.2.0 (journal.md interventions); version/test_table.json holds the same 57",
+  "bars_met": "tree.json coverage: the Arbiter signed the 59 bars of the lock covered 2026-11-05T09:03:46Z at tree_hash 572198fed9 and sheet_hash 68f9946f8e; 55 of those are still bars (the 4 wetting bars left), and the 2 bars added 2026-11-14 were never judged, so 55 of 57. The signature names the lock's hashes, not today's (version/bars.md)",
   "judge_rounds": "one coverage signature (the Arbiter's, tree.json coverage); coverage_judge.rounds() reads 0 because that signing predates round recording and carried no charge",
   "tokens_spent": "stage.json budget.spent (cap 500000); every Designer stage run, helper, review and judge charge on this concept",
   "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
@@ -23,5 +23,11 @@
  "bars_added_after_lock": [
   "inv_geyser_tub",
   "inv_liquid_coating"
+ ],
+ "bars_moved_to_next_version": [
+  "inv_irrigation",
+  "canal_wets_two_squares",
+  "wetting_is_not_flood",
+  "wetness_probe"
  ]
 }

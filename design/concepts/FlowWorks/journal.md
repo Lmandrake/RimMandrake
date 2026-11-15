@@ -15,17 +15,18 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Stage now:** Stage 3 "reconcile" done as far as offline work can take it, 2026-11-14 2:45 PM PST: every bar has a
   check that runs (offline) or exists (in-game, UNRUN); five bars' offline checks are red because their behaviour is not
   built, one is red on his call (history, Stage 3). Stage 1 by hand 11:50 PST; Stage 2 by a throwaway program.
-- **Bars:** 61 = 30 inventory rows of `record.json` + 31 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
-  lock, and his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (interventions below).
+- **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
+  lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
+  PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
 - **Judge corrections open:** none. FlowWorks has no `coverage_verdict.json` and no `coverage_fixes.json`; the Arbiter
   signed the 59-row checklist covered on 2026-11-05 (`tree.json` coverage). So the pilot's "six corrections" step is
   empty here.
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** builds for four absent behaviours (wetting and its probe, the toss-flame order, raiders fetching their
-  fallen, the liquid coating), each now with its acceptance test on its item; and his answers to the questions at the
-  end. Preflight: refuse, 7 refusals (`version/preflight.json`, 2026-11-14 2:40 PM PST; 48 when Stage 3 began).
+- **Waiting on:** builds for three absent behaviours (the toss-flame order, raiders fetching their fallen, the liquid
+  coating), each now with its acceptance test on its item. Wetting and its probe are 0.2.0 work since his card of
+  2026-11-14. Open question for him: dig speed (end), which waits on the 0.2.0 dig-interface design. Preflight: refuse, 7 refusals (`version/preflight.json`, 2026-11-14 2:40 PM PST; 48 when Stage 3 began).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -36,7 +37,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
    hole holds them as prisoners, and chemfuel pumped in from above is lit by a colonist tossing a flame from the rim.
 5. A pit reads as a hole with deep walls; ladders, climbing gear and jumps are the only ways in and out; raiders make a
    ladder to fetch comrades who fell in.
-6. Ground within two squares of a filled canal is wetted, so plants there have water; wetted ground is never standing water.
+6. (Moved: canal-side wetting left 0.1.0 for 0.2.0 by his card 2026-11-14, OWNER:1794721673433243094.)
 7. Pipes, pumps, tanks and hoses are one network moving the same real litres from the same supply.
 8. Every feature has superb Mod Settings; no worldgen, no multiplayer.
 
@@ -62,14 +63,14 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 
 ### Oddities (things a reader would otherwise get wrong)
 
-1. **Three bar vocabularies.** The 59 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings,
+1. **Three bar vocabularies.** The 57 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings,
    tick_cost, worldgen, multiplayer) and the 22 lines of `floor.json` are floor lines every mod meets, not among the 59.
-   The older north-star bars in `northstar/` and the walk doc are a third list, not reconciled with the 59.
+   The older north-star bars in `northstar/` and the walk doc are a third list, not reconciled with the 57.
 2. **The inventory's `proof` field reads `stale` (20), `missing` (7) or `exercised_unrecorded` (1)**: it records
    proof-run freshness on 2026-11-05, not whether a test exists.
 3. **Three inventory rows are `impl: absent`** at the lock: `inv_prison_no_bed`, `inv_toss_flame`,
-   `inv_raider_fetch_fallen`, and `inv_irrigation` is `unknown`. Their leaves (`drained_hole_is_a_prison`,
-   `toss_flame_from_rim`, `raiders_fetch_their_fallen`, `canal_wets_two_squares`) are owed code, not owed tests.
+   `inv_raider_fetch_fallen`. Their leaves (`drained_hole_is_a_prison`, `toss_flame_from_rim`,
+   `raiders_fetch_their_fallen`) are owed code, not owed tests. (`inv_irrigation`, `unknown` at the lock, left for 0.2.0.)
 4. **`stage.json` is the only locked file that moved since the lock** (blob `3af342069` → `34f93a515`; state, not a bar).
    The seven bar files are byte-identical to `version/bars.md`. `stage.json` reads `locked` since 2026-11-14 (it read
    an OWNER HOLD pending the lock until then; intervention of 2:28 PM PST). [measured 2026-11-14]
@@ -91,6 +92,9 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:05 PM PST, kind bar-added): bar `inv_liquid_coating` added to 0.1.0: "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off." Checked at Stage 4-5 by `T_LIQUID_COATING_OFFLINE` and at Stage 6 by scene `sc_coating_wash`, both owed Stage 3 (no coating condition exists in the code; item `RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS`), the scene UNRUN; looked at Stage 8. Its 3 held rows now name it; `record.json` re-pinned in `version/bars.md`. Source: owner by card 2026-11-14 (OWNER:1794693278631337978).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:16 PM PST, kind release): the 12:15 hold on Stage 3 is released; the look-fix builder in FlowWorks water code ended 12:54 PM PST with six fixes on origin/main, so Stage 3 "reconcile" starts now on detached run RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT. Source: ledger notes on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (2026-11-14T20:53Z, 20:54Z) and the Conductor's Stage 3 brief.
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 2:28 PM PST, kind decision): `stage.json` and `VERSION.json` made to agree with the truth, by the steward's standing decision in the Stage 3 brief. What was wrong: `stage.json` still read status `blocked` on the 2026-11-13 OWNER HOLD "pending the lock", a day after the lock landed on his word; `VERSION.json` said 59 bars and carried a caveat about the older CONCEPT_LOCK block, while the table and the lock record hold 61 since his card of 2026-11-14. Now `stage.json` reads `locked` (as Explosive Knockback's), and `VERSION.json` reads 61 bars, 59 of them met by the Arbiter's 2026-11-05 signing and the 2 added bars never judged. No bar file changed, so nothing re-pinned. Source: detached run RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT, batch 2.
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind decision): deferral by his card: bars `inv_irrigation`, `canal_wets_two_squares`, `wetting_is_not_flood` and `wetness_probe` left 0.1.0 for 0.2.0 (61 to 57 bars), with test `T_WETTING_OFFLINE`, `T_WETNESS_PROBE_OFFLINE` and scene `sc_wetting`; `sc_garden` lost its wetting feature, rows and control clause; build items `FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP` and `FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST` aimed at 0.2.0. Objects kept in `version/next_version/wetting_from_0.1.0.json`. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): check X4 in `validation_v2.py` rewritten to follow the pit sink of 0.05 per half metre (drawn 4 x 0.05 down at D=4, the wall ratio agreeing with it), a new mock fault `wall_ratio_off` seen turning it red; the C# case `PitDraw_sink_is_monotonic_in_depth_and_follows_the_pit_sink` and `RM_PitDrawMath.DefaultSinkPerLevel` (0.3 to 0.05) follow too; the retired wall-height number is deleted from the north star (`pit_trapped_reads_as_trapped`, re-validated by his card), the pit item, `human_review.py` J04 and seven design docs. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721678572743709).
+- CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): `version/bars.md` re-pinned for tree.json, sheet.md, scenes.json, record.json and plan.md after the wetting move; tree hash now `5b90f4e381`, sheet hash `16533ac4f2`. The Arbiter's coverage signature names the lock's hashes, so `concept_tree.py gate` refuses on hash; nothing in Stage 3 reads that gate. Source: this journal's deferral line above.
 
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
@@ -196,9 +200,9 @@ Batch 1, the four red offline deciders (preflight 48 → 45 refusals):
 - `PY_VALIDATION_V2_OFFLINE`, two test faults fixed and one left for him. O2 compared a number (`digLabourMultiplier` 4.0)
   through the bool census and read None: numbers in that table now compare with `site_spec`. O8 allowed one non-literal
   bridge call and the file has two pure pass-throughs: both are named now. Each was watched failing on a planted fault.
-  **Left red, his call:** the negative control's X4 row wants a standing colonist's crown 1.2 heads below the rim at 4 m
-  ("owner: walls 20% above the head"), but on 2026-11-13 ~9:50 PM PST he confirmed `pitSinkPerLevel` 0.05, which draws
-  him 0.2 down. Two of his words disagree; making X4 pass means loosening a check, which is his. Question below.
+  **Left red, his call:** the negative control's X4 row held an older wall-height number that disagreed with the
+  `pitSinkPerLevel` 0.05 he confirmed 2026-11-13 ~9:50 PM PST (0.2 cells down at 4 levels). Making X4 pass meant
+  loosening a check, which is his; he answered by card 2026-11-14 (question 6, history below).
 
 Batch 2, table work (preflight 45 → 23 refusals):
 
@@ -278,18 +282,18 @@ Stage change, Stage 3 "reconcile" (2:14 to 2:47 PM PST, rm-builder, detached):
 
 - 2026-11-14 9:25 PM PST, Stage 3 offline build (detached, RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT): built the Stage 6 look `LOOK_BLIND_READER` as `src/RimMandrake/FlowWorks/northstar/blind_reader.py` (18 closed questions, a foil per bar from scenes.json, a fresh sandboxed `claude -p` reader; UNRUN until the Stage 6 captures) with `selftest_blind_reader.py` (6 mutants red; a fresh Opus review's 8 defects fixed); test table remade, bars not runnable 7 -> 0.
 
+- 2026-11-14 ~9:43 to 9:47 PM PST, his answers by card to questions 5, 6 and 7 (ledger notes on
+  RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT):
+  - 5, wetting: *"Move wetting to 0.2.0: the wetting bars leave 0.1.0 by his word and arrive in 0.2.0 with the thin
+    film"* (OWNER:1794721673433243094). Four bars moved; interventions above; `version/next_version/README.md`.
+  - 6, pit sink: *"Keep 0.05, retire the 20% rule; the old check (X4 in validation_v2.py) is rewritten to follow 0.05"*
+    (OWNER:1794721678572743709). X4 rewritten and green; the old number deleted where it stood (interventions above).
+  - 7, swale: *"Next version, 0.2.0; 0.1.0's bars do not move"* (OWNER:1794721683744408896). Divergent, entry in
+    `version/next_version/README.md` pointing at RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE.
+  Enacted by detached run RIMMANDRAKE_ENACT_FLOWWORKS_THREE_CARDS_WETTING_SINK_SWALE (offline only).
+
 ### Questions for him (none blocks Stage 3)
 
 3. **The dig speed** ("it's slow"): his target is a question inside the 0.2.0 dig-interface design
    (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION; his card 2026-11-13 10:12 PM PST put the whole redesign in
    0.2.0, `version/next_version/README.md`); the dig-time test waits for his target.
-5. **Wetting in 0.1.0, or only the thin film?** Bar `wetting_is_not_flood` says wetted ground is never standing water;
-   your ruling of 2026-11-14 12:01 PM PST says "ALL game wetness should now migrate to a thin film", placed as next
-   version. Building a separate wetted state now may be work the next version removes. Build it for 0.1.0 as the bar
-   says, or move the wetting bars to 0.2.0 with the film?
-6. **Pit walls over the head.** A check (X4 in `validation_v2.py`) wants a standing colonist drawn 1.2 heads below the
-   rim at 4 m ("walls 20% above the head"); on 2026-11-13 ~9:50 PM PST you confirmed the pit sink at 0.05 per half metre,
-   which draws him 0.2 down. Is the 20% rule retired (the check then follows 0.05), or should the wall picture rise to
-   make it true?
-7. **The swale as a soaking floor** (your row 4 of 2026-11-14): no 0.1.0 bar names the swale. A Problem fixed now (a new
-   bar), or the next version?

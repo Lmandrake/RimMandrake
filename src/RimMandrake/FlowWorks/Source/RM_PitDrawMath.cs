@@ -8,8 +8,7 @@ namespace RimMandrake.FlowWorks
 	/// discipline as RM_PitTrapMath).
 	///
 	/// Owner, 2026-10-02: <i>"The pawn should visibly rise up and lower down as they move
-	/// over the depths. They should be low enough that it is visually clear how they could
-	/// not possibly climb out (the walls are higher than their head by 20%)"</i>.
+	/// over the depths."</i>
 	///
 	/// RimWorld's oblique view draws "lower" as further south on screen (vanilla's own
 	/// flying lift is +0.6 z in Pawn_DrawTracker.FlyingOffset), so a pawn on a cell of
@@ -17,11 +16,10 @@ namespace RimMandrake.FlowWorks
 	/// position. Between two cells the sink is interpolated by how far the tween has
 	/// travelled, so the pawn rises and lowers smoothly rather than stepping.
 	///
-	/// PROVISIONAL (owner has not set a number beyond the 20 %): 0.3 cells per level, so a
-	/// 2 m (D 4) floor sits 1.2 cells below the lip and the 4 m cap (D 8) 2.4. A humanlike reads about
-	/// <see cref="HumanlikeFeetToHeadTop"/> = 1.0 cell feet-to-crown (PROVISIONAL, measure
-	/// from a live frame), so at D = 4 the wall stands 1.2 × head height — his 20 %.
-	/// Larger bodies poke further up; the 20 % bar is stated for a person.
+	/// The sink is 0.05 cells per level (half metre), the shipped pitSinkPerLevel he confirmed
+	/// 2026-11-13 ~9:50 PM PST, so a 2 m (D 4) occupant is drawn 0.2 cells down and the 4 m cap
+	/// (D 8) 0.4. A humanlike reads about <see cref="HumanlikeFeetToHeadTop"/> = 1.0 cell
+	/// feet-to-crown (PROVISIONAL, measure from a live frame).
 	/// </summary>
 	public static class RM_PitDrawMath
 	{
@@ -31,8 +29,8 @@ namespace RimMandrake.FlowWorks
 		/// 4 m; <see cref="ClampSinkToLip"/> still keeps the sprite inside the pit opening.</summary>
 		public const int SinkCapLevels = 8;
 
-		/// <summary>PROVISIONAL: cells of southward draw offset per level of depth.</summary>
-		public const float DefaultSinkPerLevel = 0.3f;
+		/// <summary>Cells of southward draw offset per level of depth: the shipped pitSinkPerLevel default.</summary>
+		public const float DefaultSinkPerLevel = 0.05f;
 
 		/// <summary>PROVISIONAL: a humanlike's on-screen height, feet to crown, in cells.</summary>
 		public const float HumanlikeFeetToHeadTop = 1.0f;
@@ -301,7 +299,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The wall above an occupant's crown as a ratio of their height: the lip is
-		/// D × sink above the floor. 1.2 is the owner's 20 % bar.</summary>
+		/// D × sink above the floor.</summary>
 		public static float WallOverHeadRatio(int depth, float sinkPerLevel, float feetToHeadTop)
 		{
 			if (!(feetToHeadTop > 0f))

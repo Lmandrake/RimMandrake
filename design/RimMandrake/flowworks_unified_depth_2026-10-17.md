@@ -63,7 +63,7 @@ wets all ten at 4.5 cm, not four full cells. **Scene S5 is redrawn with these le
 Alternatives considered and not taken (§8): **B** a finer 0.1 m step; **C** abstract "levels" with no metres; **D**
 keep fullness pictures and only fix the numbers.
 
-**Decided (§10):** the owner ruled the scheme (A), the lake floor ceiling (to 125 m; the floor shape was re-ruled later the same day, R11, §5.2), "20% over the head" as a visual rule only, and the new art (yes, seen by him before it
+**Decided (§10):** the owner ruled the scheme (A), the lake floor ceiling (to 125 m; the floor shape was re-ruled later the same day, R11, §5.2), and the new art (yes, seen by him before it
 ships). **Defaulted, veto-able:** one burn rate; delete the pond-volume multiplier; restate the two north-star bars in
 metres and have him re-validate them; redraw S5 with both a deep gravity canal and a pump.
 
@@ -111,7 +111,6 @@ chain and makes everything else obey it.
 | **8** = lake "abyss" | `RM_Volume.AbyssBedLevels` (`.cs:148`), dry bed picture | 4 m. Restate in metres. |
 | **2** = notches in "a natural square" for heat | `RM_LiquidHeatMath.NaturalCellLevels` (`.cs:39`) | wrong for a 2 m or 10 m square; read the square's real water depth. |
 | **1.46 m vs 1.41 m** | `liquid_litres_2026-10-16.md` measured a cell at 1.46 m; 1,000 L per notch implies 1.41 m | settle by definition: **a square is 2 m² (1.41 m a side)**. The 3% gap is below the error of the "deep water is 2 m" assumption. |
-| **2 m pit vs walls 20% above the head** | `PIT_SUPERDEEP_COLLAPSE_1` (2026-09-17): *"the walls are higher than their head by 20%"*; a 1.75 m human ⇒ 2.1 m; the pit is 2 m | **Ruled (D5): "20% over the head" is a visual rule only**, carried by the pit's art and the pawn's sink offset. (D5's "the pit stays 2 m" was reversed the same day: dig to 8 m by default.) |
 
 ### 2.3 Pictures
 
@@ -256,7 +255,7 @@ law, not the shipped one.
 | `design/RimMandrake/natural_bodies_as_canals_design_2026-10-11.md` | the 5-unit level and `UnitsPerLevel = 5` removed, old-code §8.1 deleted; §9.6 constants table → metres, cap per D2 |
 | `design/RimMandrake/liquid_litres_2026-10-16.md` | add the `SquareAreaM2` definition; "level" → notch in prose |
 | `design/RimMandrake/pond_depth_design_2026-10-16.md` | §4 stages in metres; "ankle-deep" → knee-deep |
-| `design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md`, `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`, `design/RimMandrake/pit_superdeep_collapse_spec.md` | D 0..4 named in metres; the 2 m against 20%-over-head line (D5) |
+| `design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md`, `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`, `design/RimMandrake/pit_superdeep_collapse_spec.md` | D 0..4 named in metres |
 | `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` | climb steps in metres (0.5 m easy, 1 m slow) |
 | `design/RimMandrake/flowworks_northstar_interrogation_2026-10-02.md`, `design/RimMandrake/flowworks_northstar_script_plan_2026-10-02.md`, `design/RimMandrake/flowworks_map_controls_design_2026-10-16.md`, `infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md` | delete the 5:1 budget |
 | `design/validation_walks/RimMandrake/FlowWorks.md` | the `## north star` bars `fill_tier_legible` and `depth_and_fill_jointly_legible` say "trace, half, brimming": restate in metres. **This is the owner's hash-bound section; he re-validates it.** |
@@ -320,7 +319,7 @@ decilitres; `flowworks_level_surface_2026-10-17.md`).
 |---|---|---|
 | D1 | scheme | **A**: litres true, metres shown, 0.5 m notch (1,000 L per square); "four" = the 2 m dig; "five" deleted everywhere |
 | D2 | lake floor cap | settable to 125 m. Its 20 m default / 50 m large-lake numbers were **replaced** later the same day by R11 (floors per lake and biome roughness; 50 m only for mountainous/deep biomes) |
-| D5 | pit height | his wall-height rule (walls 20% above the head) is a **visual rule only**. The morning's "the deepest pit stays 2 m" was **REVERSED** the same day by his own question: colonists dig to 8 m by default, setting 2 to 20 m (by card) |
+| D5 | pit height | The morning's "the deepest pit stays 2 m" was **REVERSED** the same day by his own question: colonists dig to 8 m by default, setting 2 to 20 m (by card) |
 | art | wall band on wet canals (§4.2), darker deep-lake colours (§4.1) | **yes, but he sees it before it ships**: a review sheet or an in-game shot first (cosmetic permission gate) |
 
 **Defaulted to this spec's recommendation, veto-able** (he did not rule these; each stands until he says otherwise):

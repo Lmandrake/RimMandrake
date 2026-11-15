@@ -614,32 +614,6 @@
   {
    "bundle": null,
    "scenario_informed_by": [],
-   "needs_instrument": "wetness_probe",
-   "oracle_proposed": "wetness probe per cell: wetted to distance 2 and not 3; plant water need met; wetting falls under fast growth; flood level falls over drinking plants",
-   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "canal_wets_two_squares",
-   "root": [
-    "canal_holds_only_the_channel"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "change",
-   "experience": "The player sees ground within two squares of a filled canal wetted, by the same technique Stillsand uses for spilled water on sand, and crops there have water; fast-growing plants use the wetting up until the canal reapplies it, and plants under standing flood water drink it, lowering the flood.",
-   "scenario": "A field of crops either side of a filled D2 canal on dry sand, and a twin field beside a dry canal; then the canal drained for a week; then a shallow flood over part of the field.",
-   "false_pass": [
-    "every cell of the map is wetted",
-    "wetting shows but plants get no water",
-    "wetting never runs out"
-   ],
-   "red": "crops two squares from a full canal are as dry as crops beside a dry canal",
-   "tier_proposed": "quicktest",
-   "owner_part": "no",
-   "by": "concept"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
    "needs_instrument": null,
    "oracle_proposed": "raider job sequence: chop, carry, ladder placed into the pit, climb down to a fallen; under fire, retreat with fallen left; capture",
    "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
@@ -785,54 +759,6 @@
    ],
    "red": "the hose crosses the wall cell, or the two runs share one network through the tank",
    "tier_proposed": "quicktest",
-   "owner_part": "no",
-   "by": "concept"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": "wetness_probe",
-   "oracle_proposed": "wetted cells' liquid read zero; no wading cost on them",
-   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
-   "cannot_show": "wetted ground that is standing water",
-   "wall_expect_h": null,
-   "id": "wetting_is_not_flood",
-   "root": [
-    "never_liquid_on_open_ground"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "change",
-   "experience": "The player never sees wetted ground drawn or behaving as standing water: wetting is not flood water, though a flood also wets what it passes.",
-   "scenario": "The canal_wets_two_squares field.",
-   "false_pass": [
-    "wetting is a thin flood sheet"
-   ],
-   "red": "wetted cells hold liquid litres that a pawn wades through",
-   "tier_proposed": "quicktest",
-   "owner_part": "no",
-   "by": "concept"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "the probe answers on a hand-wetted cell and on a dry cell differently; refuses when wetting is off",
-   "tier_reason": null,
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "wetness_probe",
-   "root": [
-    "canal_holds_only_the_channel"
-   ],
-   "leaf_kind": "instrument",
-   "clause_kind": "change",
-   "experience": "The tester reads, per cell, the wetting level, its cause (canal, flood or none) and the water a plant drew today.",
-   "scenario": "Build a bridge read that returns, for a rectangle of cells, wetting level, cause and per-plant water drawn; refuse with a reason when the wetting system is absent.",
-   "false_pass": [
-    "the probe returns a constant for every cell"
-   ],
-   "red": "the probe is missing, so no wetting claim can be measured",
-   "tier_proposed": "offline",
    "owner_part": "no",
    "by": "concept"
   },

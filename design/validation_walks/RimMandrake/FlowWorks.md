@@ -58,8 +58,8 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 
 ## north star
 state: VALIDATED
-validated-hash: a038d71b2055240d6cfd2242234d71168c65ff6b808dba5993a116e1af8e6812
-validated-by: BY CARD: North star: add the two orphan bars → Add both lines as drafted (Recommended)
+validated-hash: d11b172d8faccb2b62e21a0c8eddc66af6cb89afa6949cc3db18eaf9c2a5a2c0
+validated-by: BY CARD: Pit sink 0.05 per half metre against the older 'walls 20% above the head' check: which stands? → Keep 0.05, retire the 20% rule; the old check (X4 in validation_v2.py) is rewritten to follow 0.05
 
 The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
@@ -129,8 +129,7 @@ The pit, 2026-09-13 and 2026-09-15, on seeing the shipped trap:
 
 > *"All depths must be visually legible and differentiable graphically. The pawn should
 > visibly rise up and lower down as they move over the depths. They should be low enough
-> that it is visually clear how they could not possibly climb out (the walls are higher
-> than their head by 20%)"*
+> that it is visually clear how they could not possibly climb out …"*
 
 2026-09-17, on spikes and the camera:
 
@@ -231,8 +230,8 @@ holds.
       the hole, not standing on top of it.
 - [ ] `pit_occupied_distinguishable` — occupied and empty superdeep cells are
       distinguishable at a glance, with no tooltip and no click.
-- [ ] `pit_trapped_reads_as_trapped` — the walls around a superdeep occupant rise visibly
-      above the top of their head, by about a fifth of their height, so climbing out reads
+- [ ] `pit_trapped_reads_as_trapped` — a superdeep occupant is drawn sunk by the pit sink
+      (0.05 of a cell per half metre of depth) inside the pit's walls, so climbing out reads
       as impossible.
 
 **The cover**
@@ -406,7 +405,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `pit_reads_at_size` | Pits walk bar, strengthened from "fills its own footprint" to "one excavated place" |
 | `pit_occupant_below_floor` | Pits walk bar; absorbs the Pits walk's `pitcell_occupant_visible` (same claim) |
 | `pit_occupied_distinguishable` | Pits walk bar, "sprung pits" re-subjected to superdeep cells |
-| `pit_trapped_reads_as_trapped` | pit card round 3, worded against the walls by his choice; the depth ruling's *"the walls are higher than their head by 20%"* |
+| `pit_trapped_reads_as_trapped` | pit card round 3, worded against the walls by his choice; the sink is his 0.05 per half metre (confirmed 2026-11-13; his card 2026-11-14 retired the older wall-height number) |
 | `pit_covered_invisible` | `design/Jawa/covered_pit_traps_spec.md` §3, 2026-08-30 |
 | `pit_covered_seam_at_max_zoom` | *"a slight seam/discoloration at high zoom for the player's own eye"* |
 | `ladder_state_legible` | *"A ladder nearby can be pulled up or lowered"*; half of the Pits walk's `pitcell_gate_state_legible` |

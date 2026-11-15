@@ -188,9 +188,7 @@
   {
    "id": "ask_irrigation",
    "status": "answered",
-   "about": [
-    "inv_irrigation"
-   ],
+   "about": [],
    "source": [
     "design/validation_walks/RimMandrake/FlowWorks.md:101",
     "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs:32",
@@ -206,7 +204,8 @@
     "verdict": "pass",
     "why": "Pass on the radius only: whether canals water crops is already answered (his 09-16 words, ruling 1, ruling 36). Reworded to ask only the reach."
    },
-   "answer": "OWNER:1793794389686592719"
+   "answer": "OWNER:1793794389686592719",
+   "moved": "inv_irrigation left 0.1.0 for FlowWorks 0.2.0 by his card 2026-11-14 (OWNER:1794721673433243094); the row is in version/next_version/wetting_from_0.1.0.json"
   },
   {
    "id": "ask_prisoner_click",
@@ -387,25 +386,6 @@
     "src/RimMandrake/FlowWorks/northstar/sheet_overflow_proof.py"
    ],
    "note": "canal_overflow SAVE_LOAD_CONTINUES_IDENTICAL failed 7x (FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES, open)"
-  },
-  {
-   "id": "inv_irrigation",
-   "what": "Plants near a filled canal act watered (his 2026-09-16 experience text); ruling 36 cut only the visible sign",
-   "impl": "unknown",
-   "impl_evidence": [
-    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
-    "src/RimMandrake/FlowWorks/Source/Swale/RM_Swale.cs"
-   ],
-   "proof": "missing",
-   "scope": "opened_by_owner",
-   "source": [
-    "design/validation_walks/RimMandrake/FlowWorks.md",
-    "design/RimMandrake/flowworks_mod_definition.md:118"
-   ],
-   "speaker": "agent",
-   "note": "What exists: overflow soak irrigates via Explosive Growth when loaded (sheetIrrigates), and the swale walks fertility. Canal-side watering itself: not found in a grep of Source for 'irrigat'; spec section 4 and 11 say UNBUILT here, solved in CrackedLands. See contradiction c_irrigation.",
-   "scope_source": "OWNER:1793794389686592719",
-   "text": "Ground within two squares of a filled canal is wetted (Stillsand's spilled-water technique); plants there have water and use it up; plants also drink standing flood water"
   },
   {
    "id": "inv_liquid_roster",
@@ -973,7 +953,7 @@
    ],
    "core": false,
    "resolved": true,
-   "resolution": "Owed: two-square wetting from a filled canal, shared with Stillsand's spilled-water technique (d_wetting)."
+   "resolution": "Two-square wetting from a filled canal (d_wetting) left 0.1.0 for FlowWorks 0.2.0, where it arrives with the thin film: owner by card 2026-11-14 (OWNER:1794721673433243094); version/next_version/README.md."
   },
   {
    "id": "c_spec_stale",

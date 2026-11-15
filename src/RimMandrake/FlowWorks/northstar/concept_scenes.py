@@ -708,7 +708,9 @@ def _walk(S):
 
 
 def _garden(S):
-    _wetting(S)
+    # The canal wetting rows left 0.1.0 with the wetting bars (owner by card 2026-11-14, OWNER:1794721673433243094); the
+    # garden keeps its field and pumped network. _wetting and scene_wetting stay for FlowWorks 0.2.0.
+    S.call('jawa/set_plants', ops='%d,%d,12,5' % (O[0], O[1] - 3), density=1.0, growth=0.1)
     S.call('jawa/spawn_batch', ops='RM_LiquidDrill:%d,%d;RM_LiquidPump:%d,%d;RM_SprinklerHead:%d,%d;RM_LiquidTank:%d,%d;RM_PipeFaucet:%d,%d'
            % (O[0] + 14, O[1], O[0] + 15, O[1], O[0] + 14, O[1] - 3, O[0] + 16, O[1] + 2, O[0] + 17, O[1] + 2))
     S.ticks(60000)

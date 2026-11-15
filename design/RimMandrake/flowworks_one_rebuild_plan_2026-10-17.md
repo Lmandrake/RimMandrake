@@ -28,7 +28,7 @@ including selftests, with no live game time unless the row says so. Sources: `fl
 | R13 | **Limitless bodies are marked** in the readout: *"Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."* Narrows ruling 35 (2026-09-17) | owner said, same item |
 
 **Reversed by R5:** the morning's D5, *"the deepest pit stays 2 m"* (unified-depth spec §10). He reopened it himself the
-same day by asking how deep players should dig. The walls-20%-over-the-head rule stays a visual rule only.
+same day by asking how deep players should dig.
 
 ## 1. Work packages, in order
 
