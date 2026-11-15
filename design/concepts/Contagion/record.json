@@ -1,0 +1,1960 @@
+{
+ "mod": "Contagion",
+ "packageId": "mandrake.rm.contagion",
+ "stage": 0,
+ "root": null,
+ "scope": [
+  {
+   "id": "s_entry",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794751191425385200"
+   ],
+   "text": "Contagion enters the Maturation Pipeline as the next most mature biome mod, with a Designer first touch (2026-11-15). Design Version 0.1.0."
+  },
+  {
+   "id": "s_experience",
+   "speaker": "agent",
+   "source": [
+    "design/RimMandrake/biome_experiences_2026-10-20.md:10",
+    "design/validation_walks/RimMandrake/Contagion.md"
+   ],
+   "text": "The experience line he picked by card 2026-10-20 (no ledger event carries it; the record is this file): \"A mutation engine under a red lid, where nothing is finished, including you. When the sky clears, run.\""
+  },
+  {
+   "id": "s_spine_dash_tissue",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794364405453876478",
+    "design/RimMandrake/designer_codex_2026-11-09/Contagion/ANSWERS_OWNER.md"
+   ],
+   "text": "By card 2026-11-10 on the Codex dry pass: weather and body lead; clear skies allow one dash at a cost; a return trip without the wanted part still brings other useful tissue."
+  },
+  {
+   "id": "s_bedazzle",
+   "speaker": "agent",
+   "source": [
+    "ITEM:CONTAGION_BEDAZZLE_SITTING_1",
+    "ITEM:CONTAGION_MECHANICS_BUILD_1",
+    "ITEM:CONTAGION_RULED_CONTENT_1"
+   ],
+   "text": "The 2026-09-27 sitting (\"Approved, this looks great!\") ruled IN the Burn/Bloom and tells, the Coalescence, Cloud Repulsor (and gravship variant), Sunbeam with arrest, the five grown limbs, the English grotesque naming register and a full RM_ cast replacing donor art. Its OWNER events carry no tsn, so the items are the cited record."
+  },
+  {
+   "id": "s_dive_bodyprints",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792162786418789127"
+   ],
+   "text": "By card 2026-10-16: the Contagion list approved, \"keep both in (Dive and Bodyprints stay in THIS sprint)\"."
+  },
+  {
+   "id": "s_mulch",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792111464689406295"
+   ],
+   "text": "By card 2026-10-16: Contagion mulch scope is plain fertilizer only."
+  },
+  {
+   "id": "s_geometry_sun",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792410159931371546"
+   ],
+   "text": "On CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID, 2026-10-19: shade is a pure function of geometry, \"no biome-specific heat, no biome-specific sun\"."
+  },
+  {
+   "id": "s_peaks",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792854123560140414",
+    "OWNER:1792854166330506552"
+   ],
+   "text": "By card 2026-10-24: Contagion-stained mountains are a world-map LOOK only (\"they weep\"); what a weeping peak does is wired later, not until he asks. A world-look neighbour, not this mod's map play."
+  },
+  {
+   "id": "s_titan",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792619044663650704"
+   ],
+   "text": "By card 2026-10-21: the Titan passage pool takes sea/juvenile kinds per his notes; the Contagion homes no giant yet (CONTAGION_TITAN_POPULATE_PLAGUE_OF_SMALLS, needs him at this biome's roster sitting)."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "d_spine",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794364405453876478",
+   "date": "2026-11-10",
+   "what": "Weather and body lead: the Burn and lasting mutations are the spine; expeditions are the reasons to risk them."
+  },
+  {
+   "id": "d_one_dash",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794364405453876478",
+   "date": "2026-11-10",
+   "what": "One dash, at a cost: one purposeful crossing or brief rescue between refuges; prolonged outdoor work under the Burn stays dangerous."
+  },
+  {
+   "id": "d_other_tissue",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794364405453876478",
+   "date": "2026-11-10",
+   "what": "A gestation batch without the wanted part still brings other matched or sellable tissue, with the odds clear before committing (in the existing UI)."
+  },
+  {
+   "id": "d_mulch_plain",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1792111464689406295",
+   "date": "2026-10-16",
+   "what": "Mulch is plain fertilizer only."
+  },
+  {
+   "id": "d_carry_codex",
+   "kind": "method",
+   "speaker": "agent",
+   "source": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "what": "The inventory carries the Codex dry pass of 2026-11-09 (83 capabilities), re-checked against src on 2026-11-15: one Contagion commit since (9fe1f933f0, ship gift and Helix stock); the four absent capabilities are still absent. proof stays stale everywhere: no live fingerprint was matched this run."
+  },
+  {
+   "id": "d_walk_first",
+   "kind": "method",
+   "speaker": "agent",
+   "source": "src/RimMandrake/rimflow/roles/designer.md",
+   "what": "Most of the mod is built (impl present), so stage 1 opens with a live-walk proposal (a_live_walk) before any design question; the Codex bank's answered asks (q01, q03, q06) are closed by his 2026-11-10 card and not re-asked."
+  }
+ ],
+ "asks": [
+  {
+   "id": "a_root",
+   "title": "The root sentence",
+   "text": "Proposed root for the Contagion tree, built only from your experience line (\"A mutation engine under a red lid, where nothing is finished, including you. When the sky clears, run.\") and your 2026-11-10 card: \"Contagion is a red-lidded biome where the sky and the body lead. The colony lives under a standing Bloom that slowly changes whoever works out in it; when the sky clears, the Burn makes the open deadly, and a prepared colonist gets one purposeful dash between refuges, at a cost. Expeditions for genome samples, prints and tissue are the reasons to take those risks, and a gestation batch that misses the wanted part still brings other matched or sellable tissue, with the odds clear before committing. Nothing here is finished, including your colonists.\" The strongest case against it: as built, the Burn clears the whole map at once, so \"one dash between refuges\" may play as a colony-wide lockdown rather than a dash; the root keeps your promise and the walk (offered with this turn) shows whether the built Burn delivers it. Which: (a) approve as written, or (b) approve with your edit?",
+   "picture": "A colonist hauling in the Bloom picks up a first change; the gawpsacks sink and the rattlegropes shake (the built tells), the colony shelters; one prepared hauler makes a single crossing to the gestation pen under the Burn and comes back scarred, with tissue. (Natives today take damage first and then run for shelter; the promised anticipatory Dive is not built.)",
+   "decision": "the root text of the Contagion tree (stage 1 ends only on his approval of it)",
+   "about": [
+    "bloom",
+    "burn_clock",
+    "burn_pressure_dive",
+    "visible_tells",
+    "touched_exposure",
+    "gestation",
+    "draftprints"
+   ],
+   "owner_cites": [
+    "OWNER:1794364405453876478"
+   ],
+   "proposed_root": "Contagion is a red-lidded biome where the sky and the body lead. The colony lives under a standing Bloom that slowly changes whoever works out in it; when the sky clears, the Burn makes the open deadly, and a prepared colonist gets one purposeful dash between refuges, at a cost. Expeditions for genome samples, prints and tissue are the reasons to take those risks, and a gestation batch that misses the wanted part still brings other matched or sellable tissue, with the odds clear before committing. Nothing here is finished, including your colonists.",
+   "source": [
+    "design/RimMandrake/biome_experiences_2026-10-20.md:10",
+    "design/RimMandrake/designer_codex_2026-11-09/Contagion/ANSWERS_OWNER.md"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1794752036",
+   "status": "sent",
+   "history": [
+    {
+     "text": "Proposed root, built from your experience line (\"A mutation engine under a red lid, where nothing is finished, including you. When the sky clears, run.\") and your 2026-11-10 card (weather and body lead; one dash at a cost; a miss still brings other tissue): \"Contagion is a red-lidded biome where the sky and the body lead. The colony lives under a standing Bloom that slowly changes whoever works out in it; when the sky clears, the Burn makes the open deadly, and a prepared colonist gets one purposeful dash between refuges, at a cost. Trips out for genome samples, prints and tissue are the reasons to take those risks, and a trip that misses the wanted part still brings home other useful tissue. Nothing here is finished, including your colonists.\" The strongest case against it: the Coalescence and the Helix contracts appear only as reasons to go out, so if you see the Coalescence as a threat that leads alongside the sky, this root under-weights it. Which is it: (a) approve as written, (b) approve with your edit, or (c) something else should lead, and what?",
+     "review": {
+      "by": "gpt_consult (Codex, fresh reviewer, round 1)",
+      "verdict": "struck",
+      "why": "Asking whether the Coalescence should co-lead reopens his weather-and-body ruling; return-trip wording diverged from his card."
+     }
+    }
+   ],
+   "review": {
+    "by": "gpt_consult (Codex, fresh reviewer, round 2)",
+    "verdict": "pass",
+    "why": "Requests the root-text approval required to end stage 1; preserves his weather/body, one-dash and tissue rulings; offers no removal, asks no measurable prediction, and separates the absent anticipatory Dive from built reactive behaviour."
+   }
+  },
+  {
+   "id": "a_live_walk",
+   "status": "struck",
+   "author": "rm-role-designer-1794752036",
+   "source": [
+    "src/RimMandrake/Contagion/prep_site.py",
+    "infrastructure/state/live_proofs/CONTAGION_SITE_BUILD_SKY_STAYS_CALM.txt",
+    "src/RimMandrake/Contagion/validation.py"
+   ],
+   "about": [
+    "bloom",
+    "burn_clock",
+    "burn_pressure_dive",
+    "visible_tells",
+    "repulsor",
+    "coalescence_growth",
+    "coalescence_payoff",
+    "gestation",
+    "sunbeam_arrest",
+    "touched_exposure"
+   ],
+   "decision": "whether the first move is a live walk of what is built, and who watches it",
+   "text": "Contagion is largely built (Bloom and Burn, tells, the Repulsor, the Coalescence, the genome loop, the five limbs, the Sunbeam arrest, Contagion-touched), and its suite reads 98 rows PASS and none FAIL, but every row is a state read and none of the looks is proven. Before any new design: a staged walk on the saved Contagion site (prep_site.py, site v3), paused for you, showing the standing Bloom; a Repulsor-forced Burn with a UV-shy native and a Scaldhide in the open; a placed Coalescence absorbing Unfinished and then collapsing under the Burn; a colonist with a Monstrous grown limb in four facings; and a touched colonist treated with the Sunbeam. It would settle whether the sky change and tells read (c_readability), whether natives really take the Burn (c_proof), and whether the whole-map Burn feels right against \"one dash, at a cost\" (c_local). Which do you prefer: (a) you watch it live, paused, with each scene staged for you; or (b) a judge agent walks it first and shows you single images of what held and what failed?",
+   "quick_look": {
+    "offer": true,
+    "settles": [
+     "c_readability",
+     "c_proof",
+     "c_local",
+     "c_sundash"
+    ],
+    "scene": "saved Contagion site v3, paused: Bloom, forced Burn with natives, a Coalescence collapse, a limb in four facings, a Sunbeam treatment"
+   },
+   "review": {
+    "by": "gpt_consult (Codex, fresh reviewer, round 1)",
+    "verdict": "struck",
+    "why": "Proposing the walk is right, but choosing who watches changes no implementation; the walk goes as the turn's quick-look offer instead of an ask."
+   }
+  },
+  {
+   "id": "q01",
+   "title": "What the root has to get right",
+   "text": "What feels wrong or missing in that story and the proposed root, given your chosen sentence about being unfinished and running when the sky clears?",
+   "picture": "After a trip under the red storm, a colonist comes home with a scan and useful tissue, but starts changing. Later the cloud opens and the colony rushes between shelters.",
+   "decision": "F1/F2: a list of grotesque creatures and mechanics could still miss why the place is worth entering and frightening to inhabit.",
+   "why": "F1/F2: a list of grotesque creatures and mechanics could still miss why the place is worth entering and frightening to inhabit.",
+   "guess": "The weather and bodily cost lead; expeditions give the player a reason to accept that danger. I recommend making those the through-line.",
+   "tree_changes": "If the costly expedition leads, reorder the root and connect its success to lasting bodily consequences. If living under the sky clock leads, begin with ordinary colony work repeatedly interrupted by the sky. If unfinished life itself leads, begin with its visible cycles. All built branches remain covered. A correction changes dependent claims; silence approves nothing.",
+   "about": [
+    "bloom",
+    "burn_pressure_dive",
+    "touched_exposure",
+    "gestation",
+    "draftprints"
+   ],
+   "source": "design/RimMandrake/biome_experiences_2026-10-20.md:10",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "answered",
+   "ask_first": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_spine",
+   "answer_source": "OWNER:1794364405453876478"
+  },
+  {
+   "id": "q02",
+   "title": "The first demonstration",
+   "text": "Which demonstration would you put first, and what single failure in it would make you stop the review?",
+   "picture": "A: ordinary workers notice the tells and shelter through a Burn, followed by a touched patient being treated. B: a genome expedition ends with a matched natural part being installed. C: a dangerous scan fills a Helix contract. D: a growing Coalescence is deliberately caught by a forced Burn. These are separate candidate demonstrations.",
+   "decision": "F1/F2/F3: the owner-chosen experience is on record, but a flagship pick and concrete rejection case are not.",
+   "why": "F1/F2/F3: the owner-chosen experience is on record, but a flagship pick and concrete rejection case are not.",
+   "guess": "A first: show that the sky is dangerous and that what happens to people matters. I recommend B and C as distinct later scenes, with D proving its own threat and payoff.",
+   "tree_changes": "The pick binds showcase 1 only after a real owner decision. The stated failure becomes a candidate acceptance requirement. Other capabilities retain separate scenes; later showcases must add different functionality, and ordinary checks cover the remainder. Root approval alone never becomes a flagship pick.",
+   "about": [
+    "visible_tells",
+    "burn_pressure_dive",
+    "sunbeam_arrest",
+    "natural_match",
+    "helix_contracts",
+    "coalescence_payoff"
+   ],
+   "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "draft",
+   "ask_first": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "q03",
+   "title": "What a useful Burn lets you attempt",
+   "text": "What should a well-prepared traveller be able to get done between those shelters before the light becomes too costly?",
+   "picture": "A prepared colonist has a roofed refuge on each side of a red clearing. During the Bloom a predator and the fog make crossing dangerous. The Burn clears the shot and drives UV-shy creatures inward, while Scaldhides remain outside and the traveller takes exposure.",
+   "decision": "F1: the older sheet calls the Burn a travel window while your chosen line says run. Both can be true, but a harmless sunny interval or an unusable trap would miss the tension.",
+   "why": "F1: the older sheet calls the Burn a travel window while your chosen line says run. Both can be true, but a harmless sunny interval or an unusable trap would miss the tension.",
+   "guess": "One purposeful dash or a brief rescue, paid for by exposure, rather than routine safe outdoor work. I recommend a crossing that is clearly worse for an unprepared traveller.",
+   "tree_changes": "A brief dash needs measured distance, shelters, injury and mutation exposure in one crossing scene. A rescue needs a carrying case and enough time for the return. A longer sortie needs a longer exposure-budget demonstration. An emergency-only picture changes how the root describes the tactical window while retaining the lifted fog and existing weapon behavior.",
+   "about": [
+    "burn_pressure_dive",
+    "bloom",
+    "touched_exposure",
+    "fauna_scaldhide"
+   ],
+   "source": "design/Jawa/worldbuilding/biomes/the_contagion.md",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "answered",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_one_dash",
+   "answer_source": "OWNER:1794364405453876478"
+  },
+  {
+   "id": "q04",
+   "title": "Enough warning to make a decision",
+   "text": "When the sky opens, which people should reasonably have reached safety, and what should the distant work party know before the colony starts its own Burn?",
+   "picture": "A forty-colonist settlement is spread between a workshop, a near field and a distant work party. Gawpsacks sink and Rattlegropes shake. A natural Burn follows; the current lead is about twenty seconds at normal speed. In a separate case, a warmed Repulsor starts a whole-map Burn without that natural tell sequence.",
+   "decision": "F1/F3: a cue can exist without giving a useful choice, and forced whole-map weather can surprise people far from the machine.",
+   "why": "F1/F3: a cue can exist without giving a useful choice, and forced whole-map weather can surprise people far from the machine.",
+   "guess": "People near a planned refuge can shelter; a remote expedition may have to improvise. I recommend an honest indication that switching the Repulsor affects everyone on the map.",
+   "tree_changes": "Near-refuge safety sets a warning-window case with ordinary walking. Recall of the distant party requires longer lead or a planned remote refuge and a demonstration. A clear device-state explanation adds an interface requirement; a pre-activation warning adds a distinct forced-Burn scene. No automatic rescue or immunity is inferred.",
+   "about": [
+    "visible_tells",
+    "burn_clock",
+    "repulsor",
+    "repulsor_ship"
+   ],
+   "source": "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "draft",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "q05",
+   "title": "The warning before the body changes",
+   "text": "Before the first new body part or harmful change appears, what should make you decide this worker needs treatment now?",
+   "picture": "A worker spends time outside in the Bloom and then goes indoors. The current build keeps the touched condition; later it can grow another mutation. A Sunbeam stops that progression, leaves existing changes and gives no future protection, as already ruled.",
+   "decision": "F2/F3: hidden accumulation can turn the ruled danger into a surprise punishment. A health entry alone may not be enough in a large colony.",
+   "why": "F2/F3: hidden accumulation can turn the ruled danger into a surprise punishment. A health entry alone may not be enough in a large colony.",
+   "guess": "A readable early health state and a noticeable transition to active change, without repeated letters for every tiny exposure. I recommend judging the first warning and the next action together.",
+   "tree_changes": "If the health panel is sufficient, require an intelligible progression state and no extra alert. If a visible symptom matters, define it through a labelled mock before visual acceptance. If an alert matters, bind a threshold and repetition rule. Existing exposure, arrest, persistence and reinfection behavior are not being offered for removal.",
+   "about": [
+    "touched_exposure",
+    "mutation_deck",
+    "sunbeam_arrest"
+   ],
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "draft",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "q06",
+   "title": "An expedition that earns its wait",
+   "text": "What has to come home from that trip for it to feel like progress worth another expedition?",
+   "picture": "A colonist needs a natural leg. The team injects that colonist's genome into a Bloody Mess and comes back four days later. The host dies producing a matched batch of ordinary organs and limbs, but this batch has no leg. This is the current random batch, not a proposed targeted-growth machine.",
+   "decision": "F2: the one-use host is already ruled, but useful output and the cost of reaching and returning to it need a player-facing bar.",
+   "why": "F2: the one-use host is already ruled, but useful output and the cost of reaching and returning to it need a player-facing bar.",
+   "guess": "Other genuinely useful or sellable matched tissue can make a failed leg roll worthwhile, provided the risk and return trip are readable. I recommend judging the whole expedition rather than the instant batch spawn.",
+   "tree_changes": "A useful mixed haul needs a representative batch and a clear use or sale after return. Progress toward this patient's specific recovery needs a defined route beyond hoping at the next host; any added route must be argued separately. A very harsh lottery needs that cost signalled before commitment. The one-use host, normal mixed batch and sellable output remain built coverage.",
+   "about": [
+    "genome_extract",
+    "genome_inject",
+    "gestation",
+    "natural_match",
+    "wombpod_hatch"
+   ],
+   "source": "ITEM:CONTAGION_GENOME_ORGAN_GROWING_1",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "answered",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_other_tissue",
+   "answer_source": "OWNER:1794364405453876478"
+  },
+  {
+   "id": "q07",
+   "title": "A bargain you notice after surgery",
+   "text": "What ordinary task should make you feel the price of that better fighter, and how disruptive should that price be during the following day?",
+   "picture": "A brawler fitted with a Pillar Arm wins a fight that a natural arm would have lost, then returns to an ordinary day of work and meals. Its clumsy manipulation, weight and extra hunger are already built. All five unusual limbs are built; removing one releases an Unfinished.",
+   "decision": "F2/F3: a positive stat and a negative stat can coexist while the limb still plays as a free upgrade. The lasting costs are promised; their felt size remains provisional.",
+   "why": "F2/F3: a positive stat and a negative stat can coexist while the limb still plays as a free upgrade. The lasting costs are promised; their felt size remains provisional.",
+   "guess": "It should force a real reassignment away from skilled hand work, plus a food burden, without making the pawn useless. I recommend comparing one unchanged day before surgery with one after.",
+   "tree_changes": "A changed work role makes work completion and reassignment the acceptance example. A resource burden makes food and walking costs part of it. Frequent disruption needs an appropriate event case for the affected limb. The gain remains; tune and prove the lasting cost. No new requirement is derived for every stat, and no limb is offered for removal.",
+   "about": [
+    "pillar_arm",
+    "lash",
+    "eyeburst",
+    "caudal_spring",
+    "bellows",
+    "limb_removal"
+   ],
+   "source": "design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "draft",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "q08",
+   "title": "The reason to stop a Coalescence growing",
+   "text": "What should make waiting for one more stage a difficult choice for a colony that can already handle the current attackers?",
+   "picture": "A Coalescence grows through a long Bloom. More Unfinished walk into it; it sends mad ones out. The colony could start the Repulsor now, or wait for a larger collapse and more tissue. Its emitted manhunter count is currently capped, so a higher stage can become merely a better payout behind the same defense.",
+   "decision": "F1/F2: staged mass and a sample formula can pass while the giant never changes a decision. The cost of waiting needs to be concrete.",
+   "why": "F1/F2: staged mass and a sample formula can pass while the giant never changes a decision. The cost of waiting needs to be concrete.",
+   "guess": "More pressure on access to the site and on the workers who must recover the tissue, rather than a consequence unrelated to the creature. I recommend showing the same colony at two stages.",
+   "tree_changes": "If stronger attacks are the pressure, demonstrate the changed threat at the same defense. If access is the pressure, show the threatened route and recovery trip. If waiting is meant to be a reward for containing it, require meaningful containment and retain bounded emissions. The growth, absorption, Burn collapse and payout remain independent promises.",
+   "about": [
+    "coalescence_growth",
+    "coalescence_threat",
+    "coalescence_payoff",
+    "repulsor"
+   ],
+   "source": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "Codex Contagion dry run",
+   "status": "draft",
+   "ask_first": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "verdict": null,
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+   },
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  }
+ ],
+ "inventory": [
+  {
+   "id": "biome_roster",
+   "source": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Historical content/bans closed; current post-patch def state and disease dependencies not measured.",
+   "scope": "not_opened",
+   "what": "Owned biome, terrain selection, explicit animal/plant densities, disease table and zero forage; campaign painting is separate.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "bloom",
+   "source": "src/RimMandrake/Contagion/Defs/WeatherDefs/RM_ContagionWeathers.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/WeatherDefs/RM_ContagionWeathers.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Red storm weather, rain/thunder/fog, movement penalty and ranged accuracy x0.4; wet vanilla lulls also occur.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "burn_clock",
+   "source": "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Historical suite results exist; forward tick jumps test deadlines, not an elapsed season.",
+   "scope": "not_opened",
+   "what": "Saved natural Burn schedule, frequency scaling, tells window, map-local forced condition and long-Bloom clock.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "burn_pressure_dive",
+   "source": "src/RimMandrake/Contagion/Source/RM_GameCondition_ContagionBurn.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_GameCondition_ContagionBurn.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Live proof command filed (row burn_forced.burn_hurts_native_spares_armored); its 2026-11-06 verification read FAIL and the item still sits at verify. Oct 30 dive/control passed at 6f61f5cf22e2; native damage has Nov 6 FAIL at 553ac949d812. No current success inferred.",
+   "scope": "not_opened",
+   "proof_evidence": [
+    "infrastructure/state/ledger/events/BENCH.jsonl",
+    "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+    "infrastructure/state/live_proofs/CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING.txt"
+   ],
+   "what": "Burn damage to UV-shy natives, visitor dose, armored/leaker classification and sprint to reachable roof/tree-cell/water shelter; bounded rotating candidate windows and diagnostic counters.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "visible_tells",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionTellRender.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_ContagionTellRender.cs"
+   ],
+   "proof": "missing",
+   "proof_note": "Static wiring and offline motion arithmetic are present; no in-game recognition/motion/audio acceptance located.",
+   "scope": "not_opened",
+   "what": "Gawpsack body sink/rise and rattlegrope shake, red puffs and vanilla LeavesRustle sound before a natural Burn.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "repulsor",
+   "source": "src/RimMandrake/Contagion/Source/CompCloudRepulsor.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/CompCloudRepulsor.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Historical condition/state tests; actual sky appearance, control warning and forty-colonist consequence unaccepted.",
+   "scope": "not_opened",
+   "what": "Powered warmup, violet beam and sustained whole-map Burn on the Contagion; ordinary clear-sky condition on other surface maps; lapses after lost power.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "repulsor_ship",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_CloudRepulsor.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_CloudRepulsor.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Gravship hardpoint variant uses the same powered repulsor comp. Its deck placement was re-checked by BIOME_SHIP_CONTRIBUTIONS_1 (9fe1f933f0).",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "sunbeam_weapon",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "uv chain injects damage directly; it does not prove equipping/aiming/firing the weapon.",
+   "scope": "not_opened",
+   "what": "UV projector burst/projectile/scarring injury and native damage multiplier; a landed damaging hit can arrest progression.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "touched_exposure",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Contact and toggle arms are scripted; no complete sky/contact/reload/medical player journey located.",
+   "scope": "approved",
+   "scope_source": "OWNER:1792114303556704085",
+   "what": "Open Bloom exposure, stronger Burn exposure and adjacent Unfinished/Coalescence contact feed saved Contagion-touched progression; humanlike flesh only; contact acts off-biome too.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "mutation_deck",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_ContagionTouched.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_ContagionTouched.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Offline kernel checks cannot prove actual mutation deck costs or the 50/50 experience in play.",
+   "scope": "not_opened",
+   "what": "Data-driven weighted split between harmful and mixed mutations, gene/hediff cards, nonduplicate eligibility, part selection, cap, progression tips and mutation letters; no automatic reversal.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "sunbeam_arrest",
+   "source": "src/RimMandrake/Contagion/Source/RM_SunbeamArrest.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_SunbeamArrest.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Direct-hit harness exists but off arm has recorded UNMEASURED; real treatment job not accepted.",
+   "scope": "approved",
+   "scope_source": "OWNER:1792108482178656968",
+   "what": "Right-click hold-the-lens treatment with reservation, reach and completion checks; stops current progression, preserves mutations and permits re-exposure; treatment burns.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "unfinished_budding",
+   "source": "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Historical spawner checks and fake-game regressions; ecology under natural sky cycle not demonstrated.",
+   "scope": "not_opened",
+   "what": "Bloody Mess periodically buds a neutral Unfinished with nearby population cap and saved spawn deadline; no Burn/Bloom gate in comp.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "unfinished_variation",
+   "source": "src/RimMandrake/Contagion/Source/CompRandomizeUnfinished.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/CompRandomizeUnfinished.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Past limb/lifespan state tests; vivid individual variation and lifecycle not visually accepted.",
+   "scope": "not_opened",
+   "what": "Spawn-once rolls of external nonvital limb sites, rare Monstrous buff, short lethal unraveling; no reroll on load, no stable ambient roster entry.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "unfinished_mulch",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionMulch.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_ContagionMulch.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Script checks disappearance and mulch; this does not cover phased Bodyprints.",
+   "scope": "not_opened",
+   "what": "Unfinished death dissolves into slime and drops sterile mulch; no persistent ordinary corpse.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "coalescence_formation",
+   "source": "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "One stationary organism may form after long Bloom outside home area; requires Burns enabled; placement clears plants and announces threat.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "coalescence_growth",
+   "source": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Old stuck-stage diagnosis drove fixes; source now has reachable-ring search and atomic arrival eating. No current runtime fingerprint.",
+   "scope": "not_opened",
+   "what": "Saved mass, passive growth, staged graphics, explicit walk-to-ring absorption and on-arrival consumption; own emitted manhunters excluded; inspect and diagnostic counts.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "coalescence_threat",
+   "source": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Emission driven by script; strength and incentive to wait for growth are provisional.",
+   "scope": "not_opened",
+   "what": "Stage-dependent manhunter emission with map-wide count cap.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "coalescence_payoff",
+   "source": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Script drives placed organism and forced Burn; no natural formation-to-payoff play acceptance.",
+   "scope": "not_opened",
+   "what": "Any active Burn collapses organism into Monstrous samples plus mulch; combat destruction gives less mulch and no samples.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "genome_extract",
+   "source": "src/RimMandrake/Contagion/Source/Recipe_ExtractGenomeSample.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/Recipe_ExtractGenomeSample.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Actual extraction job fixture exists in genome chain; historical build close is not current proof.",
+   "scope": "not_opened",
+   "what": "Medical extraction costs blood loss and creates a nonstacking donor-labelled genome sample.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "genome_inject",
+   "source": "src/RimMandrake/Contagion/Source/JobDriver_RM_InjectGenomeSample.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/JobDriver_RM_InjectGenomeSample.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Old cancellation/reach/off-switch defects already fixed at 11555ca8cd44; do not refile from old item titles.",
+   "scope": "not_opened",
+   "what": "Carry sample to existing Bloody Mess and complete injection toil; eligibility, setting, interruption and moving-host reach checked; Monstrous samples selected first.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "gestation",
+   "source": "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Suite accelerates severity and checks batch; no proof of four-day expedition, caravan completion or reload-on-deadline.",
+   "scope": "not_opened",
+   "what": "Saved donor and grade, four-day gestation and consumable host; normal output 2–4 random natural organs/arms/legs, Monstrous output one of five limbs; disabled limbs fall back to ordinary batch.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "birth_safety",
+   "source": "src/RimMandrake/Contagion/Source/DeathActionWorker_RM_GenomeHostBurst.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/DeathActionWorker_RM_GenomeHostBurst.cs"
+   ],
+   "proof": "missing",
+   "proof_note": "Owner card preserved in source; no live birth-versus-combat explosion control located.",
+   "scope": "not_opened",
+   "what": "Bloody Mess acid death explosion is suppressed only during gestation birth; other deaths use EnvironmentalHazards explosion.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "natural_match",
+   "source": "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Build/def patch evidence exists; live matched/mismatched/failing install surgeries not established.",
+   "scope": "not_opened",
+   "what": "Donor identity on ordinary organs and grown natural arm/leg items; patched vanilla natural-organ install recipes and custom limb recipes give matched patient mood, no mismatch penalty.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "pillar_arm",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
+   "scope": "not_opened",
+   "what": "Pillar Arm: heavy melee/stun, reduced manipulation, slower movement and hunger/beauty costs; own directional body art",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "lash",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
+   "scope": "not_opened",
+   "what": "Lash: rapid stun melee with clumsy work, social-fight and beauty costs; twitching directional body art",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "eyeburst",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
+   "scope": "not_opened",
+   "what": "Eyeburst: eye efficiency and aim with pain, rest, break-threshold and beauty costs; inherited bionic-eye art",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "caudal_spring",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
+   "scope": "not_opened",
+   "what": "Caudal Spring: spine replacement, jump ability and lasting mobility/pain/cold costs; placeholder tentacle art",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "bellows",
+   "source": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Items, recipes, effects and abilities built; actual surgery, price in daily use and four facings not accepted.",
+   "scope": "not_opened",
+   "what": "Bellows: lung efficiency, toxin resistance and blind smoke ability with hunger/bleeding/beauty costs; no body render node",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "limb_removal",
+   "source": "src/RimMandrake/Contagion/Source/HediffComp_UnfinishedEmerge.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/HediffComp_UnfinishedEmerge.cs"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "draftprints",
+   "source": "src/RimMandrake/Contagion/Source/CompDraftprint.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/CompDraftprint.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Enrichment Part 1 verified Oct 7 at fb10ce3fce56; that event does not establish Parts 2/3 or present runtime.",
+   "scope": "not_opened",
+   "proof_evidence": [
+    "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+   ],
+   "what": "Once-only scan of living Unfinished records rolled limbs, Monstrous status, extreme stat and failure; completed touch-range job may provoke; saved item label, inspect and market value.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "helix_contracts",
+   "source": "src/RimMandrake/Contagion/Source/QuestNode_RM_HelixDraftprintContract.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/QuestNode_RM_HelixDraftprintContract.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Historical Draftprint verification; real contract availability, matching/nonmatching and reward loop not traced live.",
+   "scope": "not_opened",
+   "what": "Quest asks for combinations; matching print is transmitted/consumed for silver and optional device via drop pod; only offered with a Contagion home.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "helix_trade",
+   "source": "src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Own trader defined; franchise-free quest and campaign-faction caravan availability need separate proof.",
+   "scope": "not_opened",
+   "what": "Curator caravan sells devices and buys appropriate goods; campaign patch owns actual Helix faction trader attachment. Since 2026-11-09 (9fe1f933f0) the curators stock the ship gift.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "zhool_haze",
+   "source": "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Off arm recorded UNMEASURED from wandering zhool; script has location-aware positive observation, not a world/ecology proof.",
+   "scope": "not_opened",
+   "what": "Budgeted visible red haze and plant conversion to Halfmade Tree/Lashgrass/Bleedleaf in owned biomes, special-plant immunity, growth retention, independent look/conversion toggles and crop opt-in.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "zhool_render",
+   "source": "src/RimMandrake/Contagion/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Multi-part veined bell/twitching tendrils, custom body and life-stage scaling; VEF floating/fission when present.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "bulloo",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionBulloos.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionBulloos.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Blistered bulloo custom body, acid death burst, VEF floating and fission when loaded; zero MeatAmount, light leather declared.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_bloody_mess",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Bloody Mess: crawling host/scavenger with budding and acid death coupling",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_gawpsack",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Gawpsack: grounded floater and sky tell",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_blisterfloat",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Blisterfloat: gas-sac sower with flight/leave-map wiring",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_scorchpod",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Scorchpod: leaker exemption and acid death explosion",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_bloodlurk",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Bloodlurk: pool-margin carnivorous predator",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_meltgut",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Meltgut: very large slow scavenger; named digestive story is not bespoke digestion code",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_sparkleech",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Sparkleech: flyer; feeding fiction exceeds generic race/tools in this file",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_sparkleech_grub",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Sparkleech grub: grounded smaller race; no transform comp declared",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_scaldhide",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Scaldhide: armored Burn-exempt carnivore",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_doublemaw",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Doublemaw: fast two-jawed omnivore; no bespoke infection comp declared",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_gnashling",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Gnashling: small pack carnivore/omnivore presentation and melee tools",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_contagion_ikee",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Contagion ikee: distinct internal RM_ContagionIkee identifier and eye-creature",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_peeper",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Peeper: docile eye-studded browser",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_eyestinger",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Eyestinger: heavy ambusher with native melee tooling",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_fleshsop",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Fleshsop: durable retaliating pack weapon screen; no custom coordinated screen AI found",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_skinflap",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Skinflap: numerous flying goo-bud; slime death",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_gorekite",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Gorekite: larger predatory flyer; slime death",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_danglemaw",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Danglemaw: slow high-damage mobile lurker; true sessile tree ambush is separate work",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_crispling",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Crispling: armored Burn-exempt scavenger goo-bud",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_sloshbelly",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Sloshbelly: goo-bud cistern presentation; no milk/water-output comp declared",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "fauna_ogleknot",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Owned race/kind/art wiring built; historical cast/port closures do not certify every described ecological special.",
+   "scope": "not_opened",
+   "what": "Ogleknot: distinct eye-knot critter and slime death",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flight",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "No flyer live test performed; owner-attended/state evidence still needed.",
+   "scope": "not_opened",
+   "what": "Flight stats and race flags for Blisterfloat, Sparkleech, Skinflap and Gorekite; Skinflap/Sparkleech frame sets present; Gawpsack is a grounded floater.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_eyebark",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Eyebark canopy tree and wood harvest",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_lashgrass",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Lashgrass ground cover",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_bleedleaf",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Bleedleaf inedible shrub",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_gorestalk",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Gorestalk inedible columns",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_rattlegrope",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Rattlegrope custom shaking plant",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_sapblister",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Sapblister harvests nonfood red sap item; repellent/sealant use not built here",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_bloody_fist",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Bloody Fist harvests nonfood seed-fist item; usable fertilizer action not declared here",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_halfmade_tree",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Halfmade Tree with variant art and wood harvest",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_halfmade_blighted",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Blighted Halfmade Tree variant",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_meatvine",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Meatvine inedible cover",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_toothmoss",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Toothmoss inedible cover",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "flora_wombpod",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
+   ],
+   "proof": "stale",
+   "proof_note": "Flora port/build closed historically; current harvest/appearance and growth-cycle experience not accepted.",
+   "scope": "not_opened",
+   "what": "Wombpod harvests hatching host sac",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "rustpuff_roster",
+   "source": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Guarded RustPuff roster row; actual plant and spore behavior owned by TheRot.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "wombpod_hatch",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_WombpodSac.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_WombpodSac.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Old tickerType Never issue already fixed; no current hatch-to-gestation proof.",
+   "scope": "not_opened",
+   "what": "Normal-ticking sac hatches Bloody Mess after three days; existing host loop reused.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "mulched_soil",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_ContagionMulch.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_ContagionMulch.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Drop test exists; construction/yield/removal comparison absent.",
+   "scope": "approved",
+   "scope_source": "OWNER:1792111464689406295",
+   "what": "Sterile mulch item builds fertile soil at three mulch per cell; no raw/sunned states or infection.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "wrecks",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Buildings/RM_ContagionWrecks.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs_Buildings/RM_ContagionWrecks.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Eroded wreck/shell fragments, own art and Wreckage family deconstruction/weathering, local-map scatter binding.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "scanner_payload",
+   "source": "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Acoustic Scanner opt-in payload: Coalescence, pods, wreckage and hidden-cave readings; owner is AcousticScanner.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "creep_defs",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_DyingCreep.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_DyingCreep.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Dying/Dead Creep moved into this package; actual Forge die-off event owned by EnvironmentalHazards/TheForge.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "legacy_flora_terrain",
+   "source": "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml"
+   ],
+   "proof": "missing",
+   "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
+   "scope": "not_opened",
+   "what": "Retained unrostered donor-port plant defs and owned alien-sand terrains; includes a legacy berries-yielding TentacularPlant, not a roster food source.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "settings",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionMod.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_ContagionMod.cs"
+   ],
+   "proof": "stale",
+   "proof_note": "Default/roundtrip suite exists; does not demonstrate every feature's all-off or mid-job behavior.",
+   "scope": "not_opened",
+   "what": "Saved feature toggles and experience multipliers; searchable collapsible grouped screen, scope labels and reset via shared SettingsKit.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "proof_tooling",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/validation.py"
+   ],
+   "proof": "stale",
+   "proof_note": "At admission (2026-11-15, ITEM:RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME) testq read 16/18 jobs done, 98 PASS / 0 FAIL / 23 UNMEASURED rows, selftests 6/6 green; rows are state reads on a retiled quicktest or the saved site v3, not play. Saved-site A1/A2 pass Nov 3 at f94139e204de; broad suite pass/classification Nov 6 does not erase named native-damage failure.",
+   "scope": "not_opened",
+   "what": "Suite, plan, preflight, saved-site v3 builder, fake-game regressions, kernel fuzz and design-art checksum checker; tooling is not gameplay acceptance.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/CONTAGION_SITE_BUILD_SKY_STAYS_CALM.txt"
+   ]
+  },
+  {
+   "id": "legacy_placement_worker",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs"
+   ],
+   "proof": "missing",
+   "proof_note": "Invented placement ranges; no worldgen run or promise added.",
+   "scope": "out",
+   "what": "Biome scoring worker and rarity setting remain built in source; alternative-planet generation is outside project scope.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "preburn_dive",
+   "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source, Defs and Patches (C#/XML), plus src/**/*.cs and src/**/*.xml in the Codex pass",
+   "search_note": "grep -ril of Bodyprint, Zhooliza, ZhoolIza, Rawshade, PreBurn over C#/XML, 2026-11-15: 0 files; Codex searched src/**/*.cs and src/**/*.xml 2026-11-09.",
+   "proof": "missing",
+   "scope": "approved",
+   "what": "Authored anticipatory map-wide Dive, including distinctive movement and counter-movement of sun lovers; current sprint-to-shelter happens after damage during Burn.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "bodyprints",
+   "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source, Defs and Patches (C#/XML), plus src/**/*.cs and src/**/*.xml in the Codex pass",
+   "search_note": "grep -ril of Bodyprint, Zhooliza, ZhoolIza, Rawshade, PreBurn over C#/XML, 2026-11-15: 0 files; Codex searched src/**/*.cs and src/**/*.xml 2026-11-09.",
+   "proof": "missing",
+   "scope": "approved",
+   "what": "Corpse -> collapsed skin -> persistent anatomical print, physical Bloody Mess consumption, final print sampling and ridge husks; instant slime death is not these phases.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "rawshade",
+   "source": "ITEM:RAWSHADE_BUILD_SKIRT_COMES_DOWN",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source, Defs and Patches (C#/XML), plus src/**/*.cs and src/**/*.xml in the Codex pass",
+   "search_note": "grep -ril of Bodyprint, Zhooliza, ZhoolIza, Rawshade, PreBurn over C#/XML, 2026-11-15: 0 files; Codex searched src/**/*.cs and src/**/*.xml 2026-11-09.",
+   "proof": "missing",
+   "scope": "not_opened",
+   "what": "Delegated designed false-shelter creature and living-canopy predicate, with filed build checklist; not implemented in source.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "zhooliza",
+   "source": "OWNER:1792850998917276023",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source, Defs and Patches (C#/XML), plus src/**/*.cs and src/**/*.xml in the Codex pass",
+   "search_note": "grep -ril of Bodyprint, Zhooliza, ZhoolIza, Rawshade, PreBurn over C#/XML, 2026-11-15: 0 files; Codex searched src/**/*.cs and src/**/*.xml 2026-11-09.",
+   "proof": "missing",
+   "scope": "approved",
+   "scope_source": "OWNER:1792850998917276023",
+   "what": "Owner-commissioned new smaller Zhool'Iza and its two whole-body graphic variants; not implemented.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "src/RimMandrake/Contagion",
+   "covered_by": "biome_roster"
+  },
+  {
+   "ref": "ITEM:CONTAGION_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+   "not_a_capability": "a finding: GPT art opinions on unkept rows, routed to the art ledger; no behaviour"
+  },
+  {
+   "ref": "ITEM:CONTAGION_BEDAZZLE_SITTING_1",
+   "not_a_capability": "the 2026-09-27 design sitting whose rulings (naming register, cast, mechanics) the inventory and scope carry; not itself a capability"
+  },
+  {
+   "ref": "ITEM:CONTAGION_BIOME_PLACEMENT_1",
+   "covered_by": "legacy_placement_worker"
+  },
+  {
+   "ref": "ITEM:CONTAGION_DESCS_CORRECT_GPT_REWRITES",
+   "not_a_capability": "description text corrections across the cast defs; the creatures are their fauna_* entries"
+  },
+  {
+   "ref": "ITEM:CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME",
+   "covered_by": "burn_pressure_dive"
+  },
+  {
+   "ref": "ITEM:CONTAGION_FINAL_BAN_SWEEP_1",
+   "covered_by": "biome_roster"
+  },
+  {
+   "ref": "ITEM:CONTAGION_FIRST_SCRIPT_1",
+   "covered_by": "proof_tooling"
+  },
+  {
+   "ref": "ITEM:CONTAGION_FLORA_PORT_1",
+   "covered_by": "flora_eyebark"
+  },
+  {
+   "ref": "ITEM:CONTAGION_FLYER_WIRING_1",
+   "covered_by": "flight"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1",
+   "covered_by": "natural_match"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GENOME_ORGAN_GROWING_1",
+   "covered_by": "gestation"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
+   "covered_by": "draftprints"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GROWN_LIMBS_ART_1",
+   "covered_by": "pillar_arm"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GROWN_LIMBS_BUILD_1",
+   "covered_by": "pillar_arm"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GROWN_LIMBS_DESIGN_1",
+   "covered_by": "pillar_arm"
+  },
+  {
+   "ref": "ITEM:CONTAGION_GROWN_LIMBS_REST_1",
+   "covered_by": "eyeburst"
+  },
+  {
+   "ref": "ITEM:CONTAGION_IKEE_NAME_COLLISION_1",
+   "covered_by": "fauna_contagion_ikee"
+  },
+  {
+   "ref": "ITEM:CONTAGION_INJECT_FIX_IGNORES_OFF_SWITCH",
+   "covered_by": "genome_inject"
+  },
+  {
+   "ref": "ITEM:CONTAGION_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+   "covered_by": "proof_tooling"
+  },
+  {
+   "ref": "ITEM:CONTAGION_MONSTROUS_FIX_HP_BONUS_NOTHING",
+   "covered_by": "unfinished_variation"
+  },
+  {
+   "ref": "ITEM:CONTAGION_NEW_SPECIES_FLORA_1",
+   "covered_by": "fauna_skinflap"
+  },
+  {
+   "ref": "ITEM:CONTAGION_RM_MOD_BUILD_1",
+   "covered_by": "biome_roster"
+  },
+  {
+   "ref": "ITEM:CONTAGION_SITE_BUILD_SKY_STAYS_CALM",
+   "covered_by": "proof_tooling"
+  },
+  {
+   "ref": "ITEM:CONTAGION_SITE_FIX_RETILE_LEAVES_THEROT",
+   "covered_by": "proof_tooling"
+  },
+  {
+   "ref": "ITEM:CONTAGION_UNFINISHED_SPAWNER_1",
+   "covered_by": "unfinished_budding"
+  },
+  {
+   "ref": "ITEM:CONTAGION_UNRAVEL_FIX_CURED_BY_SERUM",
+   "covered_by": "unfinished_variation"
+  },
+  {
+   "ref": "infrastructure/state/live_proofs/CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING.txt",
+   "covered_by": "burn_pressure_dive"
+  },
+  {
+   "ref": "infrastructure/state/live_proofs/CONTAGION_SITE_BUILD_SKY_STAYS_CALM.txt",
+   "covered_by": "proof_tooling"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_dive",
+   "speaker": "agent",
+   "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
+   "status": "unresolved_build_gap",
+   "text": "Pre-Burn anticipatory Dive remains promised; current pressure damages then orders a reactive dive. Draftprint Part 1 historical pass is not completion of all enrichment parts.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_bodyprints",
+   "speaker": "agent",
+   "source": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
+   "status": "unresolved_build_gap",
+   "text": "Phased bodyprints, physical reabsorption and final corpse-print scans absent across src C#/XML. Slime and mulch are readable remains but not the promised sequence.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_canopy",
+   "speaker": "agent",
+   "source": "src/RimMandrake/Contagion/Source/RM_ContagionSkyExtension.cs:95",
+   "status": "unresolved_integration",
+   "text": "Burn uses a tree only at the pawn's exact cell. Visible canopy and shared Sun and Shade geometry are not used; Rawshade living canopy is designed, not built.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_local",
+   "speaker": "agent",
+   "source": "design/validation_walks/RimMandrake/Contagion.md",
+   "status": "resolved_as_agent_guess_conflict",
+   "text": "Walk's local cleared patch is explicitly a guess; code forces a whole-map condition. No owner radius ruling located. Ask about honest consequences/communication, not removing the built map effect.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_proof",
+   "speaker": "agent",
+   "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+   "status": "unresolved_proof",
+   "text": "Nov 6 native-harm verification FAIL; broad run/classification pass and closed first-script history do not establish native harm accepted.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_docs",
+   "speaker": "agent",
+   "source": "src/RimMandrake/Contagion/About/About.xml",
+   "status": "historical_prose",
+   "text": "About/walk contain stale no-dependency/worldgen/unbuilt/live-owed assertions; current project references EnvironmentalHazards and compiles substantial mechanics. Do not restate old comments as current truth.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_readability",
+   "speaker": "agent",
+   "source": "ITEM:CONTAGION_REVIEW_STAGE_JUDGE_LOOKS_FIRST",
+   "status": "unresolved_proof",
+   "text": "Actual tell motion, sky change, stage sprites, cast density and all limb facings remain visual review work; no acceptance inferred from textures on disk.",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "c_sundash",
+   "speaker": "agent",
+   "status": "unresolved",
+   "source": [
+    "ITEM:CONTAGION_SUNDASH_DECIDE_UNDER_THE_BLOOM",
+    "OWNER:1792410159931371546"
+   ],
+   "text": "Under the standing Bloom (no Burn) CreatureBehaviors' sun escape still sends Unfinished dashing for shade, because RM_Contagion carries RM_SunHeatExtension; the fiction says the sky is covered until the Burn. His geometry ruling forbids a biome-specific sun, so the open question is whether weather cover reduces Direct Sun everywhere, not a Contagion exception."
+  },
+  {
+   "id": "c_coalescence_reach",
+   "speaker": "agent",
+   "status": "unresolved",
+   "source": [
+    "ITEM:COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE"
+   ],
+   "text": "The 2026-10-23 sweep read the Coalescence stuck at Stage 1 (6 of 6 Unfinished never reached the ring); the item sits at verify since 2026-11-07, so absorption is not shown current."
+  },
+  {
+   "id": "c_open_fixes",
+   "speaker": "agent",
+   "status": "unresolved",
+   "source": [
+    "ITEM:CONTAGION_INJECT_FIX_CANCEL_STILL_STABS",
+    "ITEM:CONTAGION_INJECT_FIX_HOST_WANDERS_OFF",
+    "ITEM:CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES",
+    "ITEM:CONTAGION_SINKERS_FIX_RESET_AFTER_LOAD",
+    "ITEM:CONTAGION_CLAWS_FIX_ABSTRACT_VERB",
+    "ITEM:CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS",
+    "ITEM:CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK"
+   ],
+   "text": "Seven review-filed fix items (2026-10-17/30) are still open on the ledger, while the Codex read of the source (2026-11-09) describes inject interruption and moving-host reach checks and a normal-ticking Wombpod sac as built. Either the fixes landed without closing their items or the read is wrong; stage 3 must know which before scening inject or the Wombpod."
+  }
+ ],
+ "script_audit": [
+  {
+   "id": "a_defs",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::defs_chain / settings_chain / generated roundtrip chains",
+   "start": "Def resolution, roster, Helix trader and tell wiring, organ comp patches, defaults and setting read/write checks.",
+   "control": "Readback/missing-field rejection; not a discriminating visual or gameplay control.",
+   "restore": "No map scene; settings reset to shipped values. No hold or scene journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Readback predicates do not show availability, UI recognition or behavior of all feature toggles."
+  },
+  {
+   "id": "a_repulsor",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::repulsor_clear",
+   "start": "Checks stock biome and condition baseline; spawns powered fixture after off arm.",
+   "control": "Setting off and power-off lapse versus powered/warmed condition; weather read recorded, beam look not judged.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Actual clear weather, beam appearance, ship mounting and forced-Burn warning need their own use scene."
+  },
+  {
+   "id": "a_spawner",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::spawner",
+   "start": "Prepared pad and host, then jumped deadline.",
+   "control": "Toggle off versus buds, rolled hediffs and lifespan; lethal severity used to cause death/mulch.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Clock/severity edits do not show long-lived ecology, pre-Burn budding discipline or staged Bodyprints."
+  },
+  {
+   "id": "a_site",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::site / site_restore / _need_contagion",
+   "start": "Reads start biome and tile; asserts off-biome control before retile and re-reads target biome.",
+   "control": "A retile that fails yields UNMEASURED; restore verifies return biome.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Surgery and sky tests on soil pads do not prove authored mountain terrain/canopy experience."
+  },
+  {
+   "id": "a_burn_forced",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::burn_forced",
+   "start": "Reads no active Burn; asserts roof/open fixtures and living pawn positions; powered Repulsor starts condition.",
+   "control": "No-Burn job samples versus Burn sprint, roofed visitor, armored native, zero damage, burn off and device off.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Strong state controls exist, but they do not prove useful cue lead, safe actual crossing, a pre-Burn mass Dive, moving body visibility or player understanding."
+  },
+  {
+   "id": "a_burn_natural",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::burn_natural",
+   "start": "Biome/condition baseline, frequency chosen, forward deadlines.",
+   "control": "Off schedule and slow-frequency absence versus fast-frequency arrival.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "time_set_ticks simulates no intervening travel, weather or ecology; tells sequence and natural full-Bloom story unobserved."
+  },
+  {
+   "id": "a_uv_touched",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::uv / touched",
+   "start": "Native/visitor fixtures; near/far contact under shared sky; touched condition asserted before hit.",
+   "control": "Native damage multiplier setting versus visitor; touched toggle; contact near exceeds far; arrest disabled versus landed hit, with new injury evidence.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "No weapon firing, hold-lens job, actual mutation onset/deck harms, residual mutations after arrest, reinfection or save/reload continuity acceptance."
+  },
+  {
+   "id": "a_haze",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::zhool_haze",
+   "start": "Asserts grass baseline, no existing Lashgrass and live zhool; positive arm tracks presence in core.",
+   "control": "Off conversion versus accelerated positive replacement; counts lost grass against new Lashgrass.",
+   "restore": "Settings restored to shipped defaults in finally; conditions ended, fixtures destroyed, targeted retile undone; whole suite restores start biome and quiet-site statics. Original pad terrain/plants/roofs and removed wildlife are not snapshotted/restored. No scene-begin/end/hold journal.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Wandering can invalidate off arm; tree/shrub/crop exceptions and long-term front at natural rate not demonstrated."
+  },
+  {
+   "id": "a_coalescence",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::coalescence",
+   "start": "Placed mass-zero organism, passive clock settings and spawned candidate Unfinished.",
+   "control": "Disabled absorption versus mass/stage increase plus diagnostics; growth/emission; forced Burn payout.",
+   "restore": "Same destructive pad cleanup; no recovery snapshot or owner-review hold.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "No natural formation/home exclusion control, continuous visual identity, meaningful stage threat or ordinary harvesting journey. Hand placement is a fixture, not proof of natural formation."
+  },
+  {
+   "id": "a_genome",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::genome / _monstrous_components",
+   "start": "Bed/patient readiness, actual extraction bill and completed injection read; item-ID baselines.",
+   "control": "Normal batch versus Monstrous one-limb and limbs-off fallback; changed ids prevent prior batch passing.",
+   "restore": "Same destructive cleanup; _stable resets settings. No journal or owner-review hold.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Severity forced to complete: four-day time, host care, interrupted transport, output placement failure, real install/mismatch bonus and limb removal not exercised."
+  },
+  {
+   "id": "a_missing_scenes",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::Draftprints / Bodyprints / limbs / tells / scanner / wrecks",
+   "start": "No authored scene-contract entry points located for complete player journeys.",
+   "control": "Offline/static checks and historical Part 1 verification are not acceptance controls.",
+   "restore": "No recovery or hold data for these capabilities.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Stage 3 should plan missing scripted scenes and recovery work after dialogue; no build items filed in this dry run."
+  },
+  {
+   "id": "a_tooling",
+   "source": "src/RimMandrake/Contagion/validation.py",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::prep_site.py / site_spec.py / preflight_contagion.py / selftest families / Tools/render_c_creature_design_check.py",
+   "start": "Saved v3 site guards map, native life and no Burn; fake bridge and pure kernels test predicates and failure detection.",
+   "control": "Fake healthy/broken cases and checksum/design consistency do not observe the real player experience.",
+   "restore": "Site build/reload is tooling; no live run made here.",
+   "hold": "No explicit owner_review hold or scene recovery journal in audited suite.",
+   "gap": "Saved flat 25C test site intentionally omits mountain/sun/real colony pressures; no first-touch pass inferred."
+  }
+ ],
+ "neighbours": [
+  {
+   "id": "n_compose",
+   "source": "src/RimMandrake/Contagion/northstar_plan.py",
+   "owner": "BiomesShell / Baroque Biomes composition",
+   "text": "Runtime package is mandrake.rm.biomes, not dev folder About package. Tests and MayRequire must use actual composed identities."
+  },
+  {
+   "id": "n_hazards",
+   "source": "src/RimMandrake/Contagion/Source/RM_Contagion.csproj",
+   "owner": "EnvironmentalHazards",
+   "text": "Hard assembly dependency supplies scaled acid explosion, stage-scaled render subworker and scripted creep die-off. Birth uses a wrapper, not duplicated explosion code."
+  },
+  {
+   "id": "n_sun",
+   "source": "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHop.cs",
+   "owner": "CreatureBehaviors / Sun and Shade",
+   "text": "Existing Direct Sun escape and shade service can compete with Coalescence walking and Burn dive. Burn still uses its exact-cell roof/water/tree predicate. Existing sundash item is an integration decision, not permission for another sun."
+  },
+  {
+   "id": "n_settings",
+   "source": "src/RimMandrake/Contagion/Source/RM_Contagion.csproj",
+   "owner": "_Shared/SettingsKit",
+   "text": "Linked search/reset/scope presentation already used; no new settings framework needed."
+  },
+  {
+   "id": "n_vef",
+   "source": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionBulloos.xml",
+   "owner": "VEF",
+   "text": "Optional guarded floating and fission retained for bulloo/zhool; do not confuse permanent floating with short flight stat or new code owed in this mod."
+  },
+  {
+   "id": "n_rot",
+   "source": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
+   "owner": "TheRot",
+   "text": "RustPuff is a guarded roster dependency; Shambles moved to TheRot. Neither is an absent Contagion creature to rebuild."
+  },
+  {
+   "id": "n_forge",
+   "source": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_DyingCreep.xml",
+   "owner": "TheForge / EnvironmentalHazards",
+   "text": "Creep defs reside here, while the border die-off mechanic belongs to Forge. Package location is not feature ownership."
+  },
+  {
+   "id": "n_wreck",
+   "source": "src/RimMandrake/Contagion/Defs/MapGeneration/RM_ContagionWreckField.xml",
+   "owner": "Wreckage",
+   "text": "Common family loot/weathering/deconstruction and local-map scatter consume this biome's eroded children. No planet generator proposed."
+  },
+  {
+   "id": "n_scan",
+   "source": "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml",
+   "owner": "AcousticScanner",
+   "text": "FindMod-guarded payload registers strings/targets with the existing scanner; this biome does not own another scanner."
+  },
+  {
+   "id": "n_campaign",
+   "source": "infrastructure/state/items/closed/OCULAR_OVERDRIVE_SITE_1.md",
+   "owner": "Campaign Utinni layer",
+   "text": "Helix faction attachment, Spire and Ashfall Research Base plot/dungeon are distinct ownership. No generic mod question asks the owner to re-design their campaign role."
+  },
+  {
+   "id": "n_vanilla",
+   "source": "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs",
+   "owner": "Vanilla RimWorld",
+   "text": "Natural body-part restoration already supports the matched-arm/leg loop. Ordinary surgery, hediff parts/verbs, CompHatcher, quest parts and force-weather provide existing mechanisms; do not invent replacements."
+  }
+ ],
+ "failure_modes": [
+  "The sky clock does not make a decision: the Bloom, the tells and the Burn are not readable ahead of time, the Burn hurts first and natives dive after (the promised pre-Burn Dive is absent), and the Bloom-time sun escape blurs who is fleeing what, so \"When the sky clears, run\" is a colour change instead of a rush for shelter with one costly dash. Sources: c_dive, c_sundash, c_readability; OWNER:1794364405453876478.",
+  "The body bargain collapses: mutation, grown limbs and matched organs read as a free upgrade or an opaque lottery, a gestation that misses the wanted part brings home nothing worth the trip (against his \"other useful tissue\"), or the loop breaks in play (inject cancelled still spends the sample, the host wanders off, the Coalescence never reaches Stage 2). Sources: d_other_tissue, c_open_fixes, c_coalescence_reach; ITEM:CONTAGION_GENOME_ORGAN_GROWING_1.",
+  "Green by counters, empty in play: 98 PASS rows are state reads on a retiled quicktest or a saved site, while the looks (Burn sky, tells, Coalescence stages, limbs in four facings, cast at density) are UNCOVERED and native Burn harm read FAIL on 2026-11-06; the mod can reach his walk proven and still feel as if nothing happens. Sources: c_proof, c_readability; src/RimMandrake/Contagion/validation.py; ITEM:CONTAGION_REVIEW_STAGE_JUDGE_LOOKS_FIRST."
+ ]
+}
