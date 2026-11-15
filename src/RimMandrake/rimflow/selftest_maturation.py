@@ -857,7 +857,7 @@ def write_ledger(root):
 
 def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=False, site=True, game="archmagi",
                 sha="abc1234", strange=None, strange_open=None, strange_file=True, save=True, rows_file=True,
-                block=True, save_text="<?xml version=\"1.0\"?>\n<savegame><meta/></savegame>",
+                block=True, sha2=None, save_text="<?xml version=\"1.0\"?>\n<savegame><meta/></savegame>",
                 site_reading={"biome": "Pyrelands", "colonists_alive": 3}):
     """A visit record in the layout maturation.py reads, every file present, with one thing broken on request."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
@@ -877,7 +877,7 @@ def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=Fa
                 if t == drop:
                     continue
                 row = {"test": t, "verdict": "FAIL" if t == fail else "PASS", "site_checked": site, "game": game,
-                       "mod_sha": sha, "command": tt["tests"][t].get("command"), "evidence": "selftest",
+                       "mod_sha": sha2 if (sha2 and t == ids[-1]) else sha, "command": tt["tests"][t].get("command"), "evidence": "selftest",
                        "site": site_reading}
                 f.write(json.dumps({k: v for k, v in row.items() if v is not None}) + "\n")
                 if t == fail and rerun_pass:
@@ -1043,6 +1043,7 @@ def ingame_main():
             (dict(site_reading=None), "site_checked true with no site reading and no evidence file",
              "nothing to show it"),
             (dict(sha="latest"), "a mod_sha that is not a hash", "not a commit hash"),
+            (dict(sha2="def5678"), "rows on two builds (RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD)", "more than one build"),
         )
         for kw, what, word in broken:
             chk(lambda kw=kw, word=word: reads(kw, "not_met", word), "%s: not met, and the reading says why" % what)

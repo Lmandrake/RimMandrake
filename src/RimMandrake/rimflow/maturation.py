@@ -2012,6 +2012,13 @@ def read_ingame_exit(root, mod, n, tt=None):
             why.append("in-game check %s: its row names no mod_sha (the build it ran)" % t)
         elif not SHA_RE.match(str(r.get("mod_sha"))):
             why.append("in-game check %s: its mod_sha %r is not a commit hash (7 to 40 hex)" % (t, r.get("mod_sha")))
+    # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD (the part that needs no ruling): one visit judges ONE build, so every
+    # row's mod_sha names the same commit (a short hash agrees with a long one it starts)
+    shas = sorted({str(r.get("mod_sha")) for r in rows or [] if SHA_RE.match(str(r.get("mod_sha") or ""))}, key=len)
+    one = all(b.startswith(a) for i, a in enumerate(shas) for b in shas[i + 1:])
+    if not one:
+        why.append("the rows name more than one build (mod_sha %s): one visit judges one build" % ", ".join(shas))
+    out["build"] = shas[-1] if shas and one else None
     st = _jsonl(os.path.join(d, "strange.jsonl"))
     if st is None:
         why.append("strange.jsonl is missing (an empty file says nothing strange was seen)")
