@@ -322,3 +322,25 @@ so the Conductor takes it. These are Conductor decisions, not his.
 - Not released now, on purpose: Pyrelands sits at Offline build with its exit tests green, so a release before the fixes
   would let the maturation steward advance it to Blind challenge with the 17 gaps open. Until the re-pin, judging stays
   stopped and maturation stays paused on the coverage stop.
+
+### 2026-11-15 1:08 PM PST, the 17 round-6 gaps fixed, ONE re-pin (BENCH helper, his card OWNER:1794774724955142310)
+- RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS fixed g1, g2 and g4-g18 in 6a4318a295, 6d8f7fe94c, 4a7b2faf61 and
+  5b463ff0f9; `coverage_fixes.json` (c45f0b13aa) holds 18 claims against rm-coverage-judge-1794750987, g3 out in his
+  words. T_ROUND6_GAPS (`src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py`) read 17 of 17 gap checks FAIL on
+  7c9f5784b1 and passes 18 of 18 now (the gates included: concept_tree lint, scene_errors, showcase_check).
+- One `designer_stage.py repin` re-pinned stages 2 and 3 (26fe15df8b); the history ends with a `locked_change` at
+  21:06:06Z, newer than the 14:05:35Z coverage_stop; `chain_owed` reads true. Not released, not judged.
+- No tree leaf was added (each would be a new locked bar): the fixes extend five leaves' experience text
+  (walk_season_on_the_pyre, ash_fertile_when_watered, firehawk_lights_ahead, populations_are_the_biomes_own,
+  grass_carpets_and_regreens) and furnacebeast_warms (the furnace-hide heat bank, the giant's margin), add three scenes
+  (sc_furnace_hide_bank, sc_roof_withers, sc_herd_thirst) and a fourth showcase (fire_solace).
+- For the chain's exam retake: the exam on file (`exam.json`, 292b94bca8) still fails the 677d7dfdb4 gate (no
+  `"by": "challenger"` scenario, no `exam_control/copy.json`, control `missed_ids` unset). Retake it per
+  `src/RimMandrake/rimflow/roles/designer_exam.md` in full: `designer_stage.py exam-control <dir> --leaf <id>`, the
+  control Reader on that copy, Challenger-marked scenarios. The sheet now states behaviours the old exam never probed
+  (fire sense and eat-before-duty, wet roots, the far hawk's seek-burn, the fire-cast top-up, roof withering, slow
+  thirst, the hide bank), so the retake can give them scenarios.
+- False text corrected on the way: record.json said the ashwallow dome sprite is the standing body; AshwallowDome_* is
+  its own art since adf45e2103 (2026-10-15).
+- Owed: RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN (script parts; every new or extended live read UNRUN,
+  commands in scenes.json), RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET, RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN.

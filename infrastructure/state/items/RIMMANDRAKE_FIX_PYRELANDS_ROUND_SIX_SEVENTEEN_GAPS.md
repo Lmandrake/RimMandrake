@@ -60,5 +60,7 @@ No new tree leaf (each would be a new locked bar): every gap folds into existing
 - [x] g1, g2, g4: 6a4318a295 (new offline test T_SELF_CONTAINED_OFFLINE, 8 of 8 mutants red)
 - [x] g5, g6, g7, g8, g9, g10: 6d8f7fe94c (record.json's "dome sprite is the standing body" was false and is corrected)
 - [x] g11-g16: 4a7b2faf61 (art items RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET and RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN filed with acceptance tests)
-- [x] g17, g18: this commit; T_ROUND6_GAPS 18 of 18 PASS; showcases accepted (4: fire_solace, overlap 0.25 inv_scorchfruit with overlap_why)
-- [ ] coverage_fixes.json (18 claims), then ONE re-pin
+- [x] g17, g18: 5b463ff0f9; T_ROUND6_GAPS 18 of 18 PASS; showcases accepted (4: fire_solace, overlap 0.25 inv_scorchfruit with overlap_why)
+- [x] coverage_fixes.json, 18 claims: c45f0b13aa
+- [x] ONE re-pin, stages 2-3: 26fe15df8b; locked_change 21:06:06Z after the 14:05:35Z coverage_stop; chain_owed true; dry tick: the Pyrelands row waits on this run (not paused)
+- exam retake note for the chain steward: design/concepts/Pyrelands/journal.md, 1:08 PM PST entry
