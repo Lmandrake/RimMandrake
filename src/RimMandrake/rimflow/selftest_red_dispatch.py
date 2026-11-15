@@ -201,15 +201,25 @@ check("a failed launch stops the item (one Needs Conductor line), the next item 
 # ---- acceptance test (B): started_check over fake ledger events ------------------------------------------------------
 st = {"items": {"SELFTEST_FIX_ALPHA_AAAA": {"attempts": [{"night": "x"}]}, "SELFTEST_FIX_BETA_BBBB": {"attempts": [{}]},
                 "SELFTEST_FIX_GAMMA_CCCC": {}}}
-evs = [{"event": "spawn", "id": "SELFTEST_FIX_ALPHA_AAAA", "seat": "RUNNER", "ts": "2026-11-14T12:00:00Z"},
-       {"event": "start", "id": "SELFTEST_FIX_ALPHA_AAAA", "seat": "RUNNER", "ts": "2026-11-14T13:00:00Z"},
-       {"event": "spawn", "id": "SELFTEST_FIX_BETA_BBBB", "seat": "RUNNER", "ts": "2026-11-14T12:00:00Z"},
+evs = [{"event": "spawn", "name": "SELFTEST_FIX_ALPHA_AAAA", "seat": "RUNNER", "ts": "2026-11-14T12:00:00Z"},
+       {"event": "start", "id": "SELFTEST_FIX_ALPHA_AAAA", "seat": "CONDUCTOR", "ts": "2026-11-14T13:00:00Z",
+        "role_unit": "rm-detached-bench-selftest-fix-alpha-aaaa-1"},
+       {"event": "spawn", "name": "SELFTEST_FIX_BETA_BBBB", "seat": "RUNNER", "ts": "2026-11-14T12:00:00Z"},
        {"event": "start", "id": "SELFTEST_FIX_BETA_BBBB", "seat": "CONDUCTOR", "ts": "2026-11-14T13:00:00Z"},
        {"event": "start", "id": "SELFTEST_FIX_BETA_BBBB", "seat": "BENCH", "ts": "2026-11-16T13:00:00Z"}]
 rc, lines = RD.started_check(24, events=evs, st=st)
-check("started_check: a builder start within 24 h passes; a Conductor start or a late one does not",
+check("started_check: a detached fixer's start (written CONDUCTOR, role_unit rm-detached-*) within 24 h passes; "
+      "the Conductor window's own start or a late one does not",
       rc == 1 and lines[0].startswith("PASS  SELFTEST_FIX_ALPHA") and lines[1].startswith("FAIL  SELFTEST_FIX_BETA")
       and "1 of 2" in lines[-1], lines)
+rc, lines = RD.started_check(24, events=evs, st=dict(st, live_since=RD.dt.datetime(2026, 11, 14, 12, 30, tzinfo=RD.dt.timezone.utc).timestamp()))
+check("started_check: items filed before the step went live are listed, not counted; none counted is UNMEASURED",
+      rc == 2 and lines[0].startswith("BEFORE  SELFTEST_FIX_ALPHA") and "UNMEASURED" in lines[-1], lines)
+check("builder_start: OWNER never, a bare CONDUCTOR window never, a detached unit and another seat yes",
+      [RD.builder_start(e) for e in ({"seat": "OWNER", "role_unit": "rm-detached-x"}, {"seat": "CONDUCTOR"},
+                                     {"seat": "CONDUCTOR", "role_unit": "rm-conductor-window"},
+                                     {"seat": "CONDUCTOR", "role_unit": "rm-detached-x"}, {"seat": "STEVE"})]
+      == [False, False, False, True, True])
 rc, lines = RD.started_check(24, events=evs, st={"items": {}})
 check("started_check with no launches is UNMEASURED (rc 2), never a pass", rc == 2, lines)
 

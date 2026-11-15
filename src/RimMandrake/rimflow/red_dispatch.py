@@ -9,8 +9,8 @@ was "first in relentless pool_order", and Relentless was retired 2026-11-13; no 
     python3 src/RimMandrake/rimflow/red_dispatch.py status             the last reading, one line per red item
     python3 src/RimMandrake/rimflow/red_dispatch.py clear ITEM --why "..."   the Conductor lifts a stop (one more try)
     python3 src/RimMandrake/rimflow/red_dispatch.py started [--hours 24]
-            acceptance test (B): every red item this step launched on has a `start` by a seat other than OWNER or
-            CONDUCTOR within --hours of its alarm filing; exit 1 names the ones without
+            acceptance test (B): every red item this step launched on has a `start` by a builder (a detached unit's
+            role_unit; never OWNER or the Conductor's window) within --hours of its alarm filing; exit 1 names the rest
 
 Runs on rm-red-dispatch.timer (every 10 min, from the dispatch clone). Settings: red_dispatch.json beside this file.
 Input: the build cop's OPEN NIGHTLY_RED alarms (ops_watch alarms.json: item and tests), the ledger (state, blocked), the
@@ -368,6 +368,7 @@ def tick(cfg, apply, fx=None, now=None):
         execute(cfg, st, rows, launches, now, facts.get("night"), fx)
     rd = reading(rows, now, night_of(now))
     if apply:
+        st.setdefault("live_since", now)     # acceptance B counts only items filed after this step went live
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:
@@ -378,9 +379,23 @@ def tick(cfg, apply, fx=None, now=None):
 
 # ---- acceptance test (B) --------------------------------------------------------------------------------------------
 
-def started_check(hours=24, now=None, events=None, st=None):
-    """-> (rc, lines). Every item this step launched on has a `start` event by a seat other than OWNER or CONDUCTOR, at
-    most `hours` after its alarm was filed (the ledger's file/spawn ts). rc 0 when all do, 1 naming the rest, 2 blind."""
+def builder_start(e):
+    """Is this start event a builder's, not a hand step? A BENCH event is written on disk as CONDUCTOR
+    (model.write_name), so a detached fixer's start reads seat CONDUCTOR; its role_unit (rm-detached-...) is what tells it
+    from the Conductor's window. OWNER never counts; any other seat (RUNNER aside, which cannot start) does."""
+    seat = str(e.get("seat")).upper()
+    if seat == "OWNER":
+        return False
+    if seat in ("CONDUCTOR", "BENCH"):
+        return str(e.get("role_unit") or "").startswith("rm-detached-")
+    return True
+
+
+def started_check(hours=24, now=None, events=None, st=None, since=None):
+    """-> (rc, lines). Every item this step launched on has a builder's `start` event (builder_start), at
+    most `hours` after its alarm was filed (the ledger's file/spawn ts). Items filed before `since` (default the state's
+    live_since, the first applied tick) predate this step and are listed, not counted. rc 0 when all counted do, 1
+    naming the rest, 2 blind (nothing counted)."""
     import model as LM
     now = now or time.time()
     st = st if st is not None else _read(os.path.join(sdir(), "state.json"), {})
@@ -390,23 +405,31 @@ def started_check(hours=24, now=None, events=None, st=None):
     evs = events if events is not None else LM.read()
     filed, starts = {}, {}
     for e in evs:
-        i = e.get("id")
+        i = e.get("name") if e.get("event") == "spawn" else e.get("id")     # a spawn names its item in `name`
         if i not in ours:
             continue
         t = LM.epoch(e.get("ts")) if e.get("ts") else None
         if e.get("event") in ("file", "spawn") and i not in filed:
             filed[i] = t
-        elif e.get("event") == "start" and str(e.get("seat")).upper() not in ("OWNER", "CONDUCTOR"):
-            starts.setdefault(i, []).append((t, e.get("seat")))
-    bad, lines = [], []
+        elif e.get("event") == "start" and builder_start(e):
+            starts.setdefault(i, []).append((t, e.get("role_unit") or e.get("seat")))
+    since = since if since is not None else st.get("live_since")
+    bad, lines, counted = [], [], 0
     for i in sorted(ours):
         f0 = filed.get(i)
+        if since is not None and f0 is not None and f0 < since:
+            lines.append("BEFORE  %s  filed before this step went live (%s); not counted" % (i, pac(since)))
+            continue
+        counted += 1
         ok = [s for s in starts.get(i, []) if f0 is not None and s[0] is not None and s[0] - f0 <= hours * 3600]
         lines.append("%s  %s  %s" % ("PASS" if ok else "FAIL", i, ("start by %s %.1f h after filing" % (
             ok[0][1], (ok[0][0] - f0) / 3600.0)) if ok else "no start by a builder seat within %g h" % hours))
         if not ok:
             bad.append(i)
-    lines.append("%d of %d launched red items started within %g h" % (len(ours) - len(bad), len(ours), hours))
+    lines.append("%d of %d launched red items filed since this step went live started within %g h" % (
+        counted - len(bad), counted, hours))
+    if not counted:
+        return 2, lines + ["UNMEASURED: no launched item was filed after the step went live yet"]
     return (1 if bad else 0), lines
 
 
