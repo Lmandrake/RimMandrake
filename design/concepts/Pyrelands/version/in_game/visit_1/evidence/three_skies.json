@@ -1,0 +1,49 @@
+{
+ "fires_per_1000_RM_FE_Weather_AshFall": [
+  3,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "fires_per_1000_RM_FE_Weather_Cinderfall": [
+  0,
+  0,
+  12,
+  0,
+  0,
+  3,
+  4,
+  17,
+  0,
+  4
+ ],
+ "ash_patch_ashfall_then_blackrain": [
+  "cells=900;ashed=900;deep=807;depthSum=283.244;max=0.529;ashMap=True;runs=True;sandRate=0.953;weather=RM_FE_Weather_AshFall;wearReplaced=6460982",
+  "cells=900;ashed=900;deep=900;depthSum=315.027;max=0.612;ashMap=True;runs=True;sandRate=0.450;weather=RM_FE_BlackRain;wearReplaced=6460982",
+  "cells=900;ashed=648;deep=357;depthSum=161.088;max=0.586;ashMap=True;runs=True;sandRate=0.000;weather=RM_FE_BlackRain;wearReplaced=6497768"
+ ],
+ "fires_after_ignition_RM_FE_BlackRain": [
+  63,
+  69,
+  76,
+  82,
+  91,
+  87,
+  87
+ ],
+ "fires_after_ignition_Clear": [
+  58,
+  44,
+  34,
+  18,
+  13,
+  10,
+  8
+ ]
+}

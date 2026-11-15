@@ -1,0 +1,1399 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-11-15T11:44:40Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_deep_ash",
+    "pyre_ash_fertile_when_watered",
+    "pyre_fresh_burn_feeds_the_field",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [
+    {
+      "id": "pyre_plant_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [plant_distribution_correct=PASS]",
+      "evidenceFull": "plant_distribution_correct=PASS",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "plant_distribution_correct=PASS"
+    },
+    {
+      "id": "pyre_animal_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_mapgen_log_clean",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_ground_deep_ash",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_ash_fertile_when_watered",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_fresh_burn_feeds_the_field",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_grass_chokes_ground",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_embergrass_regrows",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_burn_line_present",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [burn_line_present=PASS]",
+      "evidenceFull": "burn_line_present=PASS",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "burn_line_present=PASS"
+    },
+    {
+      "id": "pyre_scorchfruit_fire_born",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [scorchfruit_fire_born=PASS]",
+      "evidenceFull": "scorchfruit_fire_born=PASS",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "scorchfruit_fire_born=PASS"
+    },
+    {
+      "id": "pyre_scorchfruit_produces",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_spoils_fast",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_ruins_scorched",
+      "status": "FAIL",
+      "evidence": "ruins_scorched=FAIL [{'execution': 'ran', 'detail': \"ExpectationFailed: ruin footprints are 83% deep ash, want >= 90%: {'RM_FE_Ash_Deep': 75, 'AncientConcrete': 6, 'TileLimestone': 9}\", 'evidence': [{'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'Wall19602', 'def': 'Wall', 'label']",
+      "evidenceFull": "ruins_scorched=FAIL [{'execution': 'ran', 'detail': \"ExpectationFailed: ruin footprints are 83% deep ash, want >= 90%: {'RM_FE_Ash_Deep': 75, 'AncientConcrete': 6, 'TileLimestone': 9}\", 'evidence': [{'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'Wall19602', 'def': 'Wall', 'label': 'Marble wall (77%)', 'x': 130, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 277, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19603', 'def': 'Wall', 'label': 'Marble wall (45%)', 'x': 130, 'z': 154, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 162, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19604', 'def': 'Wall', 'label': 'Marble wall (72%)', 'x': 130, 'z': 155, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 260, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19605', 'def': 'Wall', 'label': 'Marble wall (60%)', 'x': 130, 'z': 156, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 216, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19606', 'def': 'Wall', 'label': 'Marble wall (63%)', 'x': 130, 'z': 157, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 228, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19607', 'def': 'Wall', 'label': 'Marble wall (69%)', 'x': 130, 'z': 159, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 248, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19608', 'def': 'Wall', 'label': 'Marble wall (72%)', 'x': 131, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 258, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19609', 'def': 'Wall', 'label': 'Marble wall (61%)', 'x': 132, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 220, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19610', 'def': 'Wall', 'label': 'Marble wall (48%)', 'x': 133, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 171, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19611', 'def': 'Wall', 'label': 'Marble wall (74%)', 'x': 134, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 265, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19612', 'def': 'Wall', 'label': 'Bone wall (49%)', 'x': 134, 'z': 158, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 81, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19613', 'def': 'Wall', 'label': 'Bone wall (47%)', 'x': 135, 'z': 159, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 78, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19614', 'def': 'Wall', 'label': 'Marble wall (42%)', 'x': 136, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 151, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19615', 'def': 'Wall', 'label': 'Bone wall (73%)', 'x': 136, 'z': 159, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 120, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19616', 'def': 'Wall', 'label': 'Marble wall (65%)', 'x': 137, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 233, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19617', 'def': 'Wall', 'label': 'Bone wall (65%)', 'x': 137, 'z': 159, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 107, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19618', 'def': 'Wall', 'label': 'Marble wall (62%)', 'x': 138, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 225, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19619', 'def': 'Wall', 'label': 'Marble wall (68%)', 'x': 139, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 246, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19620', 'def': 'Wall', 'label': 'Marble wall (64%)', 'x': 140, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 230, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19621', 'def': 'Wall', 'label': 'Marble wall (79%)', 'x': 141, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 286, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19622', 'def': 'Wall', 'label': 'Marble wall (61%)', 'x': 141, 'z': 158, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 218, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19623', 'def': 'Wall', 'label': 'Marble wall (46%)', 'x': 141, 'z': 159, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 166, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19624', 'def': 'Wall', 'label': 'Marble wall (49%)', 'x': 142, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 178, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19625', 'def': 'Wall', 'label': 'Marble wall (59%)', 'x': 142, 'z': 154, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 212, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19626', 'def': 'Wall', 'label': 'Marble wall (62%)', 'x': 142, 'z': 156, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 222, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19627', 'def': 'Wall', 'label': 'Marble wall (47%)', 'x': 143, 'z': 154, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 170, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19628', 'def': 'Wall', 'label': 'Marble wall (40%)', 'x': 143, 'z': 155, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 145, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19629', 'def': 'Wall', 'label': 'Marble wall (36%)', 'x': 143, 'z': 156, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 130, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Column19630', 'def': 'Column', 'label': 'Fungal column (47%)', 'x': 132, 'z': 156, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 41, 'maxHitPoints': 88, 'stuff': 'RM_MushroomLog'}, {'id': 'Door19632', 'def': 'Door', 'label': 'Marble door (48%)', 'x': 135, 'z': 153, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 93, 'maxHitPoints': 192, 'stuff': 'BlocksMarble'}, {'id': 'Urn19633', 'def': 'Urn', 'label': 'Slate urn (75%)', 'x': 141, 'z': 154, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 39, 'maxHitPoints': 52, 'stuff': 'BlocksSlate'}, {'id': 'Urn19634', 'def': 'Urn', 'label': 'Slate urn (37%)', 'x': 141, 'z': 157, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 19, 'maxHitPoints': 52, 'stuff': 'BlocksSlate'}, {'id': 'Wall19636', 'def': 'Wall', 'label': 'Marble wall (79%)', 'x': 130, 'z': 164, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 285, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19637', 'def': 'Wall', 'label': 'Marble wall (42%)', 'x': 130, 'z': 163, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 152, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19638', 'def': 'Wall', 'label': 'Marble wall (45%)', 'x': 130, 'z': 162, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 163, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19639', 'def': 'Wall', 'label': 'Marble wall (76%)', 'x': 130, 'z': 161, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 274, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19640', 'def': 'Wall', 'label': 'Bone wall (58%)', 'x': 132, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 96, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19641', 'def': 'Wall', 'label': 'Bone wall (48%)', 'x': 133, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 80, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19642', 'def': 'Wall', 'label': 'Bone wall (70%)', 'x': 135, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 116, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19643', 'def': 'Wall', 'label': 'Marble wall (79%)', 'x': 136, 'z': 166, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 284, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19644', 'def': 'Wall', 'label': 'Bone wall (52%)', 'x': 136, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 85, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19645', 'def': 'Wall', 'label': 'Bone wall (59%)', 'x': 137, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 97, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19646', 'def': 'Wall', 'label': 'Fungal wall (41%)', 'x': 139, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 68, 'maxHitPoints': 165, 'stuff': 'RM_MushroomLog'}, {'id': 'Wall19647', 'def': 'Wall', 'label': 'Marble wall (42%)', 'x': 141, 'z': 160, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 150, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19648', 'def': 'Wall', 'label': 'Marble wall (80%)', 'x': 142, 'z': 162, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 287, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19649', 'def': 'Wall', 'label': 'Marble wall (71%)', 'x': 142, 'z': 161, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 255, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Wall19650', 'def': 'Wall', 'label': 'Marble wall (56%)', 'x': 143, 'z': 163, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 203, 'maxHitPoints': 360, 'stuff': 'BlocksMarble'}, {'id': 'Column19651', 'def': 'Column', 'label': 'Fungal column (69%)', 'x': 132, 'z': 163, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 61, 'maxHitPoints': 88, 'stuff': 'RM_MushroomLog'}, {'id': 'Door19653', 'def': 'Door', 'label': 'Marble door (77%)', 'x': 135, 'z': 166, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 148, 'maxHitPoints': 192, 'stuff': 'BlocksMarble'}, {'id': 'Urn19654', 'def': 'Urn', 'label': 'Slate urn (65%)', 'x': 141, 'z': 162, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 34, 'maxHitPoints': 52, 'stuff': 'BlocksSlate'}, {'id': 'Wall19655', 'def': 'Wall', 'label': 'Bone wall (79%)', 'x': 233, 'z': 139, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 131, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Column19656', 'def': 'Column', 'label': 'Marble column (69%)', 'x': 226, 'z': 141, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 132, 'maxHitPoints': 192, 'stuff': 'BlocksMarble'}, {'id': 'Door19658', 'def': 'Door', 'label': 'Bone door (57%)', 'x': 233, 'z': 140, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 50, 'maxHitPoints': 88, 'stuff': 'RM_Bones'}, {'id': 'Wall19659', 'def': 'Wall', 'label': 'Bone wall (55%)', 'x': 224, 'z': 143, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 90, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19660', 'def': 'Wall', 'label': 'Bone wall (54%)', 'x': 225, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 89, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19661', 'def': 'Wall', 'label': 'Bone wall (78%)', 'x': 225, 'z': 144, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 129, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19662', 'def': 'Wall', 'label': 'Bone wall (73%)', 'x': 226, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 120, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19663', 'def': 'Wall', 'label': 'Bone wall (44%)', 'x': 228, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 72, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19664', 'def': 'Wall', 'label': 'Bone wall (47%)', 'x': 229, 'z': 146, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 78, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19665', 'def': 'Wall', 'label': 'Bone wall (37%)', 'x': 229, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 61, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19666', 'def': 'Wall', 'label': 'Bone wall (50%)', 'x': 230, 'z': 146, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 82, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19667', 'def': 'Wall', 'label': 'Bone wall (35%)', 'x': 231, 'z': 146, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 58, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19668', 'def': 'Wall', 'label': 'Bone wall (41%)', 'x': 232, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 67, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19669', 'def': 'Wall', 'label': 'Bone wall (53%)', 'x': 233, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 87, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Wall19670', 'def': 'Wall', 'label': 'Bone wall (52%)', 'x': 233, 'z': 144, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 86, 'maxHitPoints': 165, 'stuff': 'RM_Bones'}, {'id': 'Column19671', 'def': 'Column', 'label': 'Marble column (39%)', 'x': 226, 'z': 142, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 75, 'maxHitPoints': 192, 'stuff': 'BlocksMarble'}, {'id': 'Urn19672', 'def': 'Urn', 'label': 'Steel urn (68%)', 'x': 225, 'z': 143, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 27, 'maxHitPoints': 40, 'stuff': 'Steel'}, {'id': 'Door19673', 'def': 'Door', 'label': 'Bone door (61%)', 'x': 233, 'z': 143, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 54, 'maxHitPoints': 88, 'stuff': 'RM_Bones'}, {'id': 'Urn19674', 'def': 'Urn', 'label': 'Limestone urn (74%)', 'x': 230, 'z': 145, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 46, 'maxHitPoints': 62, 'stuff': 'BlocksLimestone'}, {'id': 'Wall19675', 'def': 'Wall', 'label': 'Crystalline wall (76%)', 'x': 205, 'z': 10, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 413, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19676', 'def': 'Wall', 'label': 'Crystalline wall (42%)', 'x': 205, 'z': 11, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 227, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Door19677', 'def': 'Door', 'label': 'Crystalline door (44%)', 'x': 206, 'z': 12, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 129, 'maxHitPoints': 290, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19678', 'def': 'Wall', 'label': 'Crystalline wall (51%)', 'x': 207, 'z': 12, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 275, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19679', 'def': 'Wall', 'label': 'Crystalline wall (57%)', 'x': 208, 'z': 10, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 307, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Door19680', 'def': 'Door', 'label': 'Crystalline door (36%)', 'x': 208, 'z': 11, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 105, 'maxHitPoints': 290, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19681', 'def': 'Wall', 'label': 'Crystalline wall (64%)', 'x': 208, 'z': 12, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 344, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19682', 'def': 'Wall', 'label': 'Crystalline wall (75%)', 'x': 211, 'z': 10, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 403, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19683', 'def': 'Wall', 'label': 'Crystalline wall (74%)', 'x': 211, 'z': 11, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 401, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19684', 'def': 'Wall', 'label': 'Crystalline wall (41%)', 'x': 211, 'z': 14, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 219, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19685', 'def': 'Wall', 'label': 'Crystalline wall (71%)', 'x': 213, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 384, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'Wall19686', 'def': 'Wall', 'label': 'Crystalline wall (67%)', 'x': 214, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 360, 'maxHitPoints': 540, 'stuff': 'RSW_ResourceBlueCrystal'}, {'id': 'AncientFence19687', 'def': 'AncientFence', 'label': 'Ancient fence (34%)', 'x': 205, 'z': 12, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 17, 'maxHitPoints': 50}, {'id': 'AncientFence19688', 'def': 'AncientFence', 'label': 'Ancient fence (40%)', 'x': 205, 'z': 13, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 20, 'maxHitPoints': 50}, {'id': 'AncientFence19689', 'def': 'AncientFence', 'label': 'Ancient fence (58%)', 'x': 205, 'z': 14, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 29, 'maxHitPoints': 50}, {'id': 'AncientFence19690', 'def': 'AncientFence', 'label': 'Ancient fence (38%)', 'x': 205, 'z': 15, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 19, 'maxHitPoints': 50}, {'id': 'AncientFence19691', 'def': 'AncientFence', 'label': 'Ancient fence (62%)', 'x': 205, 'z': 16, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 31, 'maxHitPoints': 50}, {'id': 'AncientFence19692', 'def': 'AncientFence', 'label': 'Ancient fence (44%)', 'x': 205, 'z': 17, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 22, 'maxHitPoints': 50}, {'id': 'AncientFence19693', 'def': 'AncientFence', 'label': 'Ancient fence (78%)', 'x': 205, 'z': 18, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 39, 'maxHitPoints': 50}, {'id': 'AncientFence19694', 'def': 'AncientFence', 'label': 'Ancient fence (46%)', 'x': 205, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 23, 'maxHitPoints': 50}, {'id': 'AncientFence19695', 'def': 'AncientFence', 'label': 'Ancient fence (78%)', 'x': 206, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 39, 'maxHitPoints': 50}, {'id': 'AncientFence19696', 'def': 'AncientFence', 'label': 'Ancient fence (44%)', 'x': 207, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 22, 'maxHitPoints': 50}, {'id': 'AncientFence19697', 'def': 'AncientFence', 'label': 'Ancient fence (64%)', 'x': 208, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 32, 'maxHitPoints': 50}, {'id': 'AncientFence19698', 'def': 'AncientFence', 'label': 'Ancient fence (66%)', 'x': 209, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 33, 'maxHitPoints': 50}, {'id': 'AncientFence19699', 'def': 'AncientFence', 'label': 'Ancient fence (52%)', 'x': 210, 'z': 19, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 26, 'maxHitPoints': 50}, {'id': 'AncientRustedEngineBlock74322', 'def': 'AncientRustedEngineBlock', 'label': 'Ancient engine block (39%)', 'x': 160, 'z': 155, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 138, 'maxHitPoints': 350}, {'id': 'AncientRustedEngineBlock74358', 'def': 'AncientRustedEngineBlock', 'label': 'Ancient engine block (51%)', 'x': 190, 'z': 128, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 177, 'maxHitPoints': 350}, {'id': 'AncientMechDropBeacon74360', 'def': 'AncientMechDropBeacon', 'label': 'Ancient mech drop beacon (70%)', 'x': 194, 'z': 40, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 35, 'maxHitPoints': 50}, {'id': 'AncientShipBeacon74452', 'def': 'AncientShipBeacon', 'label': 'Ancient nav beacon (60%)', 'x': 197, 'z': 110, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 30, 'maxHitPoints': 50}, {'id': 'AncientShipBeacon74453', 'def': 'AncientShipBeacon', 'label': 'Ancient nav beacon (54%)', 'x': 210, 'z': 123, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 27, 'maxHitPoints': 50}, {'id': 'AncientShipBeacon74454', 'def': 'AncientShipBeacon', 'label': 'Ancient nav beacon (46%)', 'x': 210, 'z': 110, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 23, 'maxHitPoints': 50}, {'id': 'AncientFence74455', 'def': 'AncientFence', 'label': 'Ancient fence (70%)', 'x': 36, 'z': 172, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 35, 'maxHitPoints': 50}, {'id': 'AncientFence74456', 'def': 'AncientFence', 'label': 'Ancient fence (70%)', 'x': 35, 'z': 172, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 35, 'maxHitPoints': 50}, {'id': 'AncientFence74457', 'def': 'AncientFence', 'label': 'Ancient fence (62%)', 'x': 34, 'z': 172, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 31, 'maxHitPoints': 50}, {'id': 'AncientFence74458', 'def': 'AncientFence', 'label': 'Ancient fence (48%)', 'x': 33, 'z': 172, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 24, 'maxHitPoints': 50}, {'id': 'AncientFence74459', 'def': 'AncientFence', 'label': 'Ancient fence (34%)', 'x': 31, 'z': 172, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 17, 'maxHitPoints': 50}, {'id': 'AncientFence74460', 'def': 'AncientFence', 'label': 'Ancient fence (36%)', 'x': 31, 'z': 171, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 18, 'maxHitPoints': 50}, {'id': 'AncientFence74461', 'def': 'AncientFence', 'label': 'Ancient fence (68%)', 'x': 31, 'z': 170, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 34, 'maxHitPoints': 50}, {'id': 'AncientFence74462', 'def': 'AncientFence', 'label': 'Ancient fence (70%)', 'x': 31, 'z': 168, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 35, 'maxHitPoints': 50}, {'id': 'AncientFence74463', 'def': 'AncientFence', 'label': 'Ancient fence (54%)', 'x': 31, 'z': 167, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 27, 'maxHitPoints': 50}, {'id': 'AncientFence74464', 'def': 'AncientFence', 'label': 'Ancient fence (66%)', 'x': 203, 'z': 112, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 33, 'maxHitPoints': 50}, {'id': 'AncientFence74465', 'def': 'AncientFence', 'label': 'Ancient fence (72%)', 'x': 204, 'z': 112, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 36, 'maxHitPoints': 50}, {'id': 'AncientFence74466', 'def': 'AncientFence', 'label': 'Ancient fence (38%)', 'x': 205, 'z': 112, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 19, 'maxHitPoints': 50}, {'id': 'AncientFence74467', 'def': 'AncientFence', 'label': 'Ancient fence (66%)', 'x': 206, 'z': 112, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 33, 'maxHitPoints': 50}, {'id': 'AncientFence74468', 'def': 'AncientFence', 'label': 'Ancient fence (38%)', 'x': 208, 'z': 112, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 19, 'maxHitPoints': 50}, {'id': 'AncientFence74469', 'def': 'AncientFence', 'label': 'Ancient fence (46%)', 'x': 208, 'z': 113, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 23, 'maxHitPoints': 50}, {'id': 'AncientFence74470', 'def': 'AncientFence', 'label': 'Ancient fence (40%)', 'x': 208, 'z': 114, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 20, 'maxHitPoints': 50}, {'id': 'AncientFence74471', 'def': 'AncientFence', 'label': 'Ancient fence (38%)', 'x': 208, 'z': 116, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 19, 'maxHitPoints': 50}, {'id': 'AncientRazorWire74472', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (47%)', 'x': 46, 'z': 183, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 14, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74473', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (47%)', 'x': 46, 'z': 182, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 14, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74474', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (47%)', 'x': 46, 'z': 181, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 14, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74475', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (43%)', 'x': 46, 'z': 180, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 13, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74476', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (50%)', 'x': 46, 'z': 179, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 15, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74477', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (57%)', 'x': 47, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 17, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74478', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (57%)', 'x': 48, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 17, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74479', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (57%)', 'x': 50, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 17, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74480', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (40%)', 'x': 51, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 12, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74481', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (73%)', 'x': 52, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 22, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74482', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (47%)', 'x': 53, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 14, 'maxHitPoints': 30}, {'id': 'AncientRazorWire74483', 'def': 'AncientRazorWire', 'label': 'Ancient razor wire (37%)', 'x': 54, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 11, 'maxHitPoints': 30}, {'id': 'AncientSecurityTurret74496', 'def': 'AncientSecurityTurret', 'label': 'Ancient security turret (61%)', 'x': 205, 'z': 191, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 61, 'maxHitPoints': 100}, {'id': 'AncientSecurityTurret74501', 'def': 'AncientSecurityTurret', 'label': 'Ancient security turret (46%)', 'x': 202, 'z': 191, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 46, 'maxHitPoints': 100}, {'id': 'AncientSecurityTurret74505', 'def': 'AncientSecurityTurret', 'label': 'Ancient security turret (59%)', 'x': 203, 'z': 194, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 59, 'maxHitPoints': 100}, {'id': 'AncientSecurityTurret74516', 'def': 'AncientSecurityTurret', 'label': 'Ancient security turret (76%)', 'x': 203, 'z': 192, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 76, 'maxHitPoints': 100}, {'id': 'Sarcophagus19635', 'def': 'Sarcophagus', 'label': 'Sandstone sarcophagus (normal 69%)', 'x': 139, 'z': 155, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 241, 'maxHitPoints': 350, 'stuff': 'BlocksSandstone', 'quality': 'Normal'}, {'id': 'Sarcophagus19657', 'def': 'Sarcophagus', 'label': 'Fungal sarcophagus (normal 59%)', 'x': 230, 'z': 141, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 81, 'maxHitPoints': 138, 'stuff': 'RM_MushroomLog', 'quality': 'Normal'}, {'id': 'AncientPipelineSection74484', 'def': 'AncientPipelineSection', 'label': 'Ancient pipeline section (80%)', 'x': 196, 'z': 120, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 319, 'maxHitPoints': 400}, {'id': 'AncientPipelineSection74489', 'def': 'AncientPipelineSection', 'label': 'Ancient pipeline section (69%)', 'x': 110, 'z': 88, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 276, 'maxHitPoints': 400}, {'id': 'AncientLargeRustedEngineBlock74523', 'def': 'AncientLargeRustedEngineBlock', 'label': 'Ancient macro-engine block (53%)', 'x': 72, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 318, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerClaw74544', 'def': 'AncientWarwalkerClaw', 'label': 'Ancient warwalker claw (69%)', 'x': 72, 'z': 177, 'spawned': True, 'rot': 3, 'stackCount': 1, 'hitPoints': 1378, 'maxHitPoints': 2000}, {'id': 'AncientLargeRustedEngineBlock74554', 'def': 'AncientLargeRustedEngineBlock', 'label': 'Ancient macro-engine block (42%)', 'x': 56, 'z': 186, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 255, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerClaw74556', 'def': 'AncientWarwalkerClaw', 'label': 'Ancient warwalker claw (63%)', 'x': 73, 'z': 193, 'spawned': True, 'rot': 2, 'stackCount': 1, 'hitPoints': 1256, 'maxHitPoints': 2000}, {'id': 'AncientLargeRustedEngineBlock74557', 'def': 'AncientLargeRustedEngineBlock', 'label': 'Ancient macro-engine block (36%)', 'x': 52, 'z': 198, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 215, 'maxHitPoints': 600}, {'id': 'AncientLargeRustedEngineBlock74558', 'def': 'AncientLargeRustedEngineBlock', 'label': 'Ancient macro-engine block (42%)', 'x': 67, 'z': 192, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 251, 'maxHitPoints': 600}, {'id': 'SteleLarge19631', 'def': 'SteleLarge', 'label': 'Limestone large stele (64%)', 'x': 136, 'z': 155, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 198, 'maxHitPoints': 310, 'stuff': 'BlocksLimestone'}, {'id': 'SteleLarge19652', 'def': 'SteleLarge', 'label': 'Limestone large stele (48%)', 'x': 136, 'z': 163, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 150, 'maxHitPoints': 310, 'stuff': 'BlocksLimestone'}, {'id': 'AncientGenerator19700', 'def': 'AncientGenerator', 'label': 'Ancient generator (80%)', 'x': 208, 'z': 15, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 199, 'maxHitPoints': 250}, {'id': 'RM_LiquidTank19702', 'def': 'RM_LiquidTank', 'label': 'Liquid tank (42%)', 'x': 197, 'z': 144, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 92, 'maxHitPoints': 220}, {'id': 'SteamGeyser74285', 'def': 'SteamGeyser', 'label': 'Steam geyser', 'x': 48, 'z': 111, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': -1, 'maxHitPoints': -1}, {'id': 'SteamGeyser74286', 'def': 'SteamGeyser', 'label': 'Steam geyser', 'x': 176, 'z': 226, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': -1, 'maxHitPoints': -1}, {'id': 'SteamGeyser74287', 'def': 'SteamGeyser', 'label': 'Steam geyser', 'x': 121, 'z': 67, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': -1, 'maxHitPoints': -1}, {'id': 'SteamGeyser74288', 'def': 'SteamGeyser', 'label': 'Steam geyser', 'x': 208, 'z': 231, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': -1, 'maxHitPoints': -1}, {'id': 'SteamGeyser74289', 'def': 'SteamGeyser', 'label': 'Steam geyser', 'x': 51, 'z': 225, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': -1, 'maxHitPoints': -1}, {'id': 'AncientWarwalkerFoot74519', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (62%)', 'x': 75, 'z': 189, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 369, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerFoot74525', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (78%)', 'x': 56, 'z': 190, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 469, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerFoot74528', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (44%)', 'x': 64, 'z': 191, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 264, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerFoot74529', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (61%)', 'x': 63, 'z': 178, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 364, 'maxHitPoints': 600}, {'id': 'AncientWarwalkerFoot74531', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (45%)', 'x': 58, 'z': 179, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 268, 'maxHitPoints': 600}, {'id': 'AncientTankTrap74536', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (76%)', 'x': 60, 'z': 185, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 380, 'maxHitPoints': 500}, {'id': 'AncientTankTrap74537', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (72%)', 'x': 56, 'z': 187, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 361, 'maxHitPoints': 500}, {'id': 'AncientTankTrap74538', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (52%)', 'x': 57, 'z': 195, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 261, 'maxHitPoints': 500}, {'id': 'AncientWarwalkerFoot74540', 'def': 'AncientWarwalkerFoot', 'label': 'Ancient warwalker foot (42%)', 'x': 75, 'z': 196, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 251, 'maxHitPoints': 600}, {'id': 'AncientTankTrap74545', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (48%)', 'x': 69, 'z': 196, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 238, 'maxHitPoints': 500}, {'id': 'AncientTankTrap74547', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (53%)', 'x': 72, 'z': 195, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 263, 'maxHitPoints': 500}, {'id': 'AncientTankTrap74552', 'def': 'AncientTankTrap', 'label': 'Ancient tank trap (47%)', 'x': 67, 'z': 185, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 234, 'maxHitPoints': 500}, {'id': 'RM_PumpingStation_Wrecked19701', 'def': 'RM_PumpingStation_Wrecked', 'label': 'Wrecked pumping station (55%)', 'x': 199, 'z': 142, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 166, 'maxHitPoints': 300}, {'id': 'AncientMegaCannonTripod74510', 'def': 'AncientMegaCannonTripod', 'label': 'Ancient mega-cannon platform (56%)', 'x': 204, 'z': 189, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 672, 'maxHitPoints': 1200}, {'id': 'AncientWarwalkerLeg74534', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (44%)', 'x': 61, 'z': 194, 'spawned': True, 'rot': 1, 'stackCount': 1, 'hitPoints': 887, 'maxHitPoints': 2000}, {'id': 'AncientWarwalkerLeg74535', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (54%)', 'x': 59, 'z': 196, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 1082, 'maxHitPoints': 2000}, {'id': 'AncientWarwalkerLeg74541', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (45%)', 'x': 56, 'z': 180, 'spawned': True, 'rot': 2, 'stackCount': 1, 'hitPoints': 907, 'maxHitPoints': 2000}, {'id': 'AncientWarwalkerLeg74549', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (36%)', 'x': 71, 'z': 181, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 710, 'maxHitPoints': 2000}, {'id': 'AncientWarwalkerLeg74551', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (38%)', 'x': 69, 'z': 189, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 758, 'maxHitPoints': 2000}, {'id': 'AncientWarwalkerLeg74560', 'def': 'AncientWarwalkerLeg', 'label': 'Ancient warwalker leg (53%)', 'x': 63, 'z': 180, 'spawned': True, 'rot': 3, 'stackCount': 1, 'hitPoints': 1056, 'maxHitPoints': 2000}, {'id': 'AncientTank74290', 'def': 'AncientTank', 'label': 'Ancient ruined tank (43%)', 'x': 157, 'z': 164, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 864, 'maxHitPoints': 2000}, {'id': 'AncientRustedJeep74330', 'def': 'AncientRustedJeep', 'label': 'Ancient troop carrier (73%)', 'x': 190, 'z': 125, 'spawned': True, 'rot': 3, 'stackCount': 1, 'hitPoints': 1319, 'maxHitPoints': 1800}, {'id': 'AncientAPC74561', 'def': 'AncientAPC', 'label': 'Ancient ruined APC (50%)', 'x': 59, 'z': 183, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 991, 'maxHitPoints': 2000}, {'id': 'AncientWarspiderRemains74421', 'def': 'AncientWarspiderRemains', 'label': 'Ancient warspider remains (52%)', 'x': 116, 'z': 18, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 2071, 'maxHitPoints': 4000}], 'scanned': 176, 'countReturned': 176, 'countMatched': 176, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 0, 'perDef': {'Wall': 66, 'Column': 4, 'Door': 6, 'Urn': 5, 'AncientFence': 30, 'AncientRustedEngineBlock': 2, 'AncientMechDropBeacon': 1, 'AncientShipBeacon': 3, 'AncientRazorWire': 12, 'AncientSecurityTurret': 4, 'Sarcophagus': 2, 'AncientPipelineSection': 2, 'AncientLargeRustedEngineBlock': 4, 'AncientWarwalkerClaw': 2, 'SteleLarge': 2, 'AncientGenerator': 1, 'RM_LiquidTank': 1, 'SteamGeyser': 5, 'AncientWarwalkerFoot': 6, 'AncientTankTrap': 6, 'RM_PumpingStation_Wrecked': 1, 'AncientMegaCannonTripod': 1, 'AncientWarwalkerLeg': 6, 'AncientTank': 1, 'AncientRustedJeep': 1, 'AncientAPC': 1, 'AncientWarspiderRemains': 1}, 'ticksGame': 374001, 'message': '176 of 176 matching thing(s) returned, 176 examined.', 'operation': {'OperationId': 'op_035d066c636c478a87ce6da3c96ccb0e', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'unowned artificial buildings (ruins)', 'result': {'n': 171, 'complete': True, 'defs': ['AncientAPC', 'AncientFence', 'AncientGenerator', 'AncientLargeRustedEngineBlock', 'AncientMechDropBeacon', 'AncientMegaCannonTripod', 'AncientPipelineSection', 'AncientRazorWire', 'AncientRustedEngineBlock', 'AncientRustedJeep', 'AncientSecurityTurret', 'AncientShipBeacon', 'AncientTank', 'AncientTankTrap', 'AncientWarspiderRemains', 'AncientWarwalkerClaw', 'AncientWarwalkerFoot', 'AncientWarwalkerLeg', 'Column', 'Door']}}, {'call': 'bridge_call jawa/map_info', 'result': {'success': True, 'tile': 178, 'tileValid': True, 'mapId': 1, 'sizeX': 250, 'sizeZ': 250, 'cellCount': 62500, 'tileInfo': {'biome': 'RM_Pyrelands', 'hilliness': 'Flat', 'hillinessInt': 1, 'elevation': 257.0, 'rainfall': 0.0, 'swampiness': 0.0, 'temperature': 50.0, 'pollution': 0.0, 'waterCovered': False, 'isSurfaceTile': True}, 'mapBiome': 'RM_Pyrelands', 'mapBiomeLabel': 'the Pyrelands', 'outdoorTempNow': 52.8239174, 'latitude': -1.13836487e-08, 'longitude': -16.3034286, 'season': 'PermanentSummer', 'mapParent': {'defName': 'Settlement', 'label': 'Northstar Pyrelands', 'faction': 'PlayerColony', 'factionName': 'Northstar Pyrelands'}, 'playerSettlementsOnThisTile': 1, 'ticksGame': 374001, 'operation': {'OperationId': 'op_f8775c52149a4e78bf6ca31df583eb55', 'Status': 'Completed', 'Success': True, 'DurationMs': 45}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls', 'result': [('Wall', 130, 153), ('Wall', 139, 153), ('Wall', 130, 162), ('Column', 226, 141), ('Urn', 230, 145), ('AncientFence', 205, 16), ('AncientFence', 34, 172), ('AncientRazorWire', 46, 181), ('AncientPipelineSection', 110, 88), ('AncientTankTrap', 56, 187)]}, {'call': 'bridge_call jawa/get_terrain_batch', 'result': {'success': True, 'message': 'Read 90 cell(s) as 3 distinct terrain(s) in 39 run(s).', 'layer': 'top', 'ops': 'RM_FE_Ash_Deep:204,15,1,1;AncientConcrete:205,15,2,1;RM_FE_Ash_Deep:204,16,1,1;AncientConcrete:205,16,2,1;RM_FE_Ash_Deep:204,17,1,1;AncientConcrete:205,17,2,1;RM_FE_Ash_Deep:109,87,3,1;RM_FE_Ash_Deep:109,88,3,1;RM_FE_Ash_Deep:109,89,3,1;RM_FE_Ash_Deep:225,140,2,1;TileLimestone:227,140,1,1;TileLimestone:225,141,1,1;RM_FE_Ash_Deep:226,141,1,1;TileLimestone:227,141,1,1;RM_FE_Ash_Deep:225,142,1,1;TileLimestone:226,142,2,1;TileLimestone:229,144,3,1;RM_FE_Ash_Deep:229,145,1,1;TileLimestone:230,145,1,1;RM_FE_Ash_Deep:231,145,1,1;RM_FE_Ash_Deep:229,146,3,1;RM_FE_Ash_Deep:129,152,3,1;RM_FE_Ash_Deep:138,152,3,1;RM_FE_Ash_Deep:129,153,3,1;RM_FE_Ash_Deep:138,153,3,1;RM_FE_Ash_Deep:129,154,3,1;RM_FE_Ash_Deep:138,154,3,1;RM_FE_Ash_Deep:129,161,3,1;RM_FE_Ash_Deep:129,162,3,1;RM_FE_Ash_Deep:129,163,3,1;RM_FE_Ash_Deep:33,171,3,1;RM_FE_Ash_Deep:33,172,3,1;RM_FE_Ash_Deep:33,173,3,1;RM_FE_Ash_Deep:45,180,3,1;RM_FE_Ash_Deep:45,181,3,1;RM_FE_Ash_Deep:45,182,3,1;RM_FE_Ash_Deep:55,186,3,1;RM_FE_Ash_Deep:55,187,3,1;RM_FE_Ash_Deep:55,188,3,1', 'cellsRequested': 90, 'cellsRead': 90, 'cellsOutOfBounds': 0, 'cellsNullTerrain': 0, 'distinctTerrains': ['AncientConcrete', 'RM_FE_Ash_Deep', 'TileLimestone'], 'mapSize': {'x': 250, 'z': 250}, 'mapId': 1, 'ticksGame': 374001, 'operation': {'OperationId': 'op_1ef7b7b0601442489fcc80a2a001a309', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=4;deep=0;depthSum=0.989;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_c7b75c3246fc4234914063ba67194fa5', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=6;deep=0;depthSum=1.483;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_9bffb1f73bfa43068885068e27948a39', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=3;deep=1;depthSum=0.744;max=0.250;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_b46c16bc69bc442eafa21c2b87f6d8a9', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=5;deep=1;depthSum=1.239;max=0.250;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_1cbd77a9fb0d47a7981b8ac9ebecc202', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=3;deep=0;depthSum=0.742;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_dd1b6e0708e74447965eabd77ecb1cce', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=8;deep=0;depthSum=1.978;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_51ac7ce0818044fca30e3808c7a380b2', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=7;deep=0;depthSum=1.731;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_30ff3b54a5be4c458554bc7382990c16', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=6;deep=0;depthSum=1.483;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_bae870215cea41f88d6040bf56e5f445', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=6;deep=0;depthSum=1.483;max=0.247;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_1add260c63bf4f58aa1aa1ddaae54696', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'bridge_call jawa/static_call', 'result': {'success': True, 'method': 'System.String ProbeAsh(System.String)', 'result': 'cells=9;ashed=5;deep=1;depthSum=1.239;max=0.250;ashMap=True;runs=True;sandRate=0.000;weather=Clear;wearReplaced=11170173', 'thingArgs': [], 'ticksGame': 374001, 'operation': {'OperationId': 'op_49a22970a2944cd291649a5cb67b53e9', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 374001}}}, {'call': 'ruin footprint terrain + ash on the ground (3x3 at 10 sampled ruin buildings)', 'result': {'terrain': {'RM_FE_Ash_Deep': 75, 'AncientConcrete': 6, 'TileLimestone': 9}, 'deepAshFraction': 0.833, 'ruinsWithAsh': 10}}], 'freshness': 'fresh'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "FAIL",
+      "state_evidence": "ruins_scorched=FAIL [{'execution': 'ran', 'detail': \"ExpectationFailed: ruin footprints are 83% deep ash, want >= 90%: {'RM_FE_Ash_Deep': 75, 'AncientConcrete': 6, 'TileLimestone': 9}\", 'evidence': [{'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'Wall19602', 'def': 'Wall', 'label']"
+    },
+    {
+      "id": "pyre_firehawk_carries_ember",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_warmth",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_heats_room",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_burrowers_dive",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_ashfall_darkens_drifts",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_cinderfall_distinct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_blackrain_reads",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "pyre_cannot_ordinary_rain",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)'}]"
+    },
+    {
+      "id": "opening_front.opening_front_old_save_inert",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: a loaded save past its window lit (or still owes) an opening front: {'done': 'True', 'lit': '5', 'litTick': '372539', 'origin': '25,98', 'mapAge': '121861', 'now': '494361', 'scarLaid': 'False', 'scarCentre': 'invalid', 'scarSide': 'none', 'scarRadius': '0.0', 'scarCells': '0', 'b",
+      "evidenceFull": "ExpectationFailed: a loaded save past its window lit (or still owes) an opening front: {'done': 'True', 'lit': '5', 'litTick': '372539', 'origin': '25,98', 'mapAge': '121861', 'now': '494361', 'scarLaid': 'False', 'scarCentre': 'invalid', 'scarSide': 'none', 'scarRadius': '0.0', 'scarCells': '0', 'bare': '0', 'sprouts': '0', 'pods': '0', 'ash': '0', 'arcCandidates': '0', 'arcLit': 'True'}"
+    },
+    {
+      "id": "opening_front.opening_front",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "soaked_map_stays_smooth.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "furnace_sleep.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "heat_dome.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "heat_dome.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "sand_shovel.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "sand_shovel.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "flamefang_venom.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "flamefang_venom.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "flamefang_venom.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "walk_season.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "walk_season.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firehawk_crestfeather_yield.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    },
+    {
+      "id": "firehawk_mapwide_carry.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "560 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=374001 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 374001 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "17 active, sha256 b8d4046477dc4502 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "compat": [],
+  "config": "current",
+  "config_list": null,
+  "chains_selected": [
+    "plant_census",
+    "ruins",
+    "burn_line",
+    "opening_front",
+    "scorchfruit_fire_born"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "animal_census",
+    "grass_cover",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "fresh_burn_bonus",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "soaked_map_stays_smooth",
+    "no_ordinary_rain",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "furnace_sleep",
+    "burrowers",
+    "heat_dome",
+    "embergrass_regrow",
+    "ullai_and_giant",
+    "gpt_hunt_plausible",
+    "sand_shovel",
+    "flamefang_venom",
+    "rite_hook_alone",
+    "firefoam_sprayer",
+    "walk_season",
+    "firehawk_first_sighting_letter",
+    "firehawk_crestfeather_yield",
+    "firehawk_mapwide_carry"
+  ],
+  "bar_text": {
+    "pyre_plant_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild plant on a fresh Pyrelands map is ember grass, quick grass or scorch-fruit; no other wild plant species grows there."
+    },
+    "pyre_animal_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild animal on a fresh Pyrelands map belongs to the biome's fire-ecology cast, no other kind wanders in, and the small common grazers outnumber the big predators."
+    },
+    "pyre_mapgen_log_clean": {
+      "polarity": "must",
+      "text": "generating a fresh Pyrelands map raises no error message on screen."
+    },
+    "pyre_ground_deep_ash": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map is almost all deep ash; only small pockets of unburned soil and gravel remain, and standing water is ringed with richer ground."
+    },
+    "pyre_ash_fertile_when_watered": {
+      "polarity": "must",
+      "text": "a crop on deep ash beside a watered channel grows clearly faster than the same crop on dry ash."
+    },
+    "pyre_fresh_burn_feeds_the_field": {
+      "polarity": "must",
+      "text": "ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away."
+    },
+    "pyre_grass_chokes_ground": {
+      "polarity": "must",
+      "text": "open ground is carpeted densely in grass; there are no bare-dirt expanses where grass should carry the ground."
+    },
+    "pyre_embergrass_regrows": {
+      "polarity": "must",
+      "text": "a burned patch of grass is visibly re-greening within a few days and largely green again within about a week, at the biome's own heat."
+    },
+    "pyre_burn_line_present": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map shows an active line of fire somewhere, with a visibly scorched trail behind its advancing front."
+    },
+    "pyre_scorchfruit_fire_born": {
+      "polarity": "must",
+      "text": "scorch-fruit appears only on freshly burned ground, never as ordinary wild growth on unburned land."
+    },
+    "pyre_scorchfruit_produces": {
+      "polarity": "must",
+      "text": "a ripe scorch-fruit plant yields edible fruit that a colonist can harvest, and eating it raises a hungry colonist's food meter."
+    },
+    "pyre_scorchfruit_spoils_fast": {
+      "polarity": "must",
+      "text": "unrefrigerated, harvested scorch-fruit rots within about four days, and a ripe unharvested plant withers within about a day."
+    },
+    "pyre_ruins_scorched": {
+      "polarity": "must",
+      "text": "ruins on a fresh Pyrelands map stand blackened and fire-scarred, not pristine."
+    },
+    "pyre_firehawk_carries_ember": {
+      "polarity": "must",
+      "text": "a fire-hawk picks up a burning twig and a new fire starts where it drops it, ahead of the existing blaze."
+    },
+    "pyre_furnacebeast_warmth": {
+      "polarity": "must",
+      "text": "a pawn standing in the open near a furnace-beast shows a readable warmth status that disappears after it walks away."
+    },
+    "pyre_furnacebeast_heats_room": {
+      "polarity": "must",
+      "text": "an enclosed room holding a furnace-beast becomes clearly hotter than a comparable room without one."
+    },
+    "pyre_burrowers_dive": {
+      "polarity": "must",
+      "text": "when fire reaches a burrowing grazer it shows a readable burrowed status and comes through unharmed once the fire has passed."
+    },
+    "pyre_ashfall_darkens_drifts": {
+      "polarity": "must",
+      "text": "ash fall dims the map and lays visible loose-ash drifts that keep accumulating while it lasts."
+    },
+    "pyre_cinderfall_distinct": {
+      "polarity": "must",
+      "text": "cinderfall is recognisable at a glance as its own weather, not ash fall renamed."
+    },
+    "pyre_blackrain_reads": {
+      "polarity": "must",
+      "text": "black rain falls visibly dark, plainly different from ordinary blue-grey rain."
+    },
+    "pyre_cannot_ordinary_rain": {
+      "polarity": "cannot",
+      "text": "ordinary rain falling on a Pyrelands map; its only wet weather is black rain."
+    }
+  },
+  "bar_text_source": "design\\validation_walks\\RimMandrake\\Pyrelands.md (hash 1a7028c5ef0a0588255ef19a9b09ad305c64faad821c8e7371ce9466d3820673)",
+  "components": [
+    {
+      "chain": "plant_census",
+      "name": "plant_distribution_correct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1794743085.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1794743085.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/plant_distribution_correct_1794743085.png"
+        }
+      ]
+    },
+    {
+      "chain": "ruins",
+      "name": "ruins_scorched",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: ruin footprints are 83% deep ash, want >= 90%: {'RM_FE_Ash_Deep': 75, 'AncientConcrete': 6, 'TileLimestone': 9}",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "burn_line_present",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1794743358.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1794743358.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burn_line_present_1794743358.png"
+        }
+      ]
+    },
+    {
+      "chain": "opening_front",
+      "name": "opening_front_old_save_inert",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: a loaded save past its window lit (or still owes) an opening front: {'done': 'True', 'lit': '5', 'litTick': '372539', 'origin': '25,98', 'mapAge': '121861', 'now': '494361', 'scarLaid': 'False', 'scarCentre': 'invalid', 'scarSide': 'none', 'scarRadius': '0.0', 'scarCells': '0', 'bare': '0', 'sprouts': '0', 'pods': '0', 'ash': '0', 'arcCandidates': '0', 'arcLit': 'True'}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "opening_front",
+      "name": "opening_front",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "scorchfruit_fire_born",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1794743392863_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1794743392863_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorchfruit_fire_born_1794743392863_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "soaked_map_stays_smooth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_sleep",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_crestfeather_yield",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_mapwide_carry",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born,ruins,burn_line,opening_front)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 0,
+    "FAIL": 2,
+    "UNMEASURED": 57
+  },
+  "all_green": false,
+  "timing": {
+    "n": 790,
+    "total_ms": 313168.692,
+    "mean_ms": 396.4161,
+    "p50_ms": 49.9798,
+    "p95_ms": 3274.0556,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 20,
+        "mean_ms": 55.2821,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 94,
+        "mean_ms": 16.0873,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 44,
+        "mean_ms": 49.1035,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.6048,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.2396,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 49.9793,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 11,
+        "mean_ms": 49.458,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 20,
+        "mean_ms": 49.8813,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 16.8575,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 20,
+        "mean_ms": 49.8758,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 50.0375,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 49.9189,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 49.9481,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 50.1279,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 105,
+        "mean_ms": 50.9692,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 49.336,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 5,
+        "mean_ms": 56.5128,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 46.8423,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 249,
+        "mean_ms": 50.2788,
+        "errors": 0
+      },
+      "jawa/pawn_health": {
+        "n": 42,
+        "mean_ms": 49.8718,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 1,
+        "mean_ms": 49.8283,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 4,
+        "mean_ms": 50.0355,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 3,
+        "mean_ms": 51.063,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 2,
+        "mean_ms": 16.4806,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 2,
+        "mean_ms": 329.3766,
+        "errors": 0
+      },
+      "rimworld/list_colonists": {
+        "n": 10,
+        "mean_ms": 16.6886,
+        "errors": 0
+      },
+      "jawa/get_terrain_batch": {
+        "n": 1,
+        "mean_ms": 50.0365,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 37,
+        "mean_ms": 54.2768,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 7,
+        "mean_ms": 170.9046,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 67,
+        "mean_ms": 4057.8816,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 12,
+        "mean_ms": 637.5636,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 1,
+        "mean_ms": 50.0865,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 1,
+        "mean_ms": 50.089,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 1,
+        "mean_ms": 607.9306,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "8061d6a5f16c3d4fe82ebbd75b358dc886a3a16962f46fee0c9aaa6b82b4d37f"
+}

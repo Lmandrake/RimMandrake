@@ -1,0 +1,25 @@
+{
+ "game": "archmagi",
+ "activeMods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.flowworks",
+  "mandrake.rm.luminouspigment",
+  "mandrake.rm.biomes",
+  "mandrake.rm.patches",
+  "mandrake.rm.weathersuite",
+  "mandrake.rsw.swbestiary",
+  "mandrake.rut.patches",
+  "mandrake.rut.pyrelandsmechanics"
+ ],
+ "count": 17,
+ "gameBuild": "1.6.4871 rev590",
+ "read": "2026-11-15 from ModsConfig.xml"
+}

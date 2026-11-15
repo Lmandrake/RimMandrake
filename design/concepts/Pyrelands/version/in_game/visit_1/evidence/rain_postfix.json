@@ -1,0 +1,21 @@
+{
+ "swap": "{'success': True, 'before': {'storytellerDef': 'Tutor', 'difficultyDef': 'Rough', 'threatScale': 0.0}, 'after': {'storytellerDef': 'Phoebe', 'difficultyDef': 'Rough', 'threatScale': 0.0}, 'notifyDefChangedCalled': True, 'difficultyValuesCopied': False, 'note': 'Notify_DefChanged() re-initialized sto",
+ "RainyThunderstorm": {
+  "set_after": "RainyThunderstorm",
+  "lockedTo": "RainyThunderstorm",
+  "rolled": "RM_FE_BlackRain"
+ },
+ "Rain": {
+  "set_after": "Rain",
+  "lockedTo": "Rain",
+  "rolled": "RM_FE_BlackRain"
+ },
+ "FoggyRain": {
+  "set_after": "FoggyRain",
+  "lockedTo": "FoggyRain",
+  "rolled": "RM_FE_BlackRain"
+ },
+ "unlocked_40": {
+  "Clear": 40
+ }
+}

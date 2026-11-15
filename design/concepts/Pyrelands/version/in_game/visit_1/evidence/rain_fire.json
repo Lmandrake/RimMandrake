@@ -1,0 +1,34 @@
+{
+ "RM_FE_BlackRain": {
+  "planted": 64,
+  "started": 64,
+  "fires_every_250": [
+   64,
+   64,
+   64,
+   64,
+   64,
+   64,
+   64,
+   26,
+   0
+  ],
+  "map_info": {}
+ },
+ "Clear": {
+  "planted": 64,
+  "started": 64,
+  "fires_every_250": [
+   64,
+   64,
+   64,
+   64,
+   64,
+   64,
+   64,
+   14,
+   0
+  ],
+  "map_info": {}
+ }
+}

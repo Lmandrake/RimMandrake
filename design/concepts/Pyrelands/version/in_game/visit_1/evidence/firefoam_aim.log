@@ -1,0 +1,2 @@
+PASS: FIREFOAM fire True | cell True | validFire True | validCell True | hitFire True | hitCell True | control fire False cell False | verb Verb_Shoot range 9.9
+[bridge split] 0.2 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.1 s

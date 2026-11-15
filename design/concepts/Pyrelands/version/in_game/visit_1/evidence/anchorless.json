@@ -1,0 +1,215 @@
+{
+ "front": "done=True;lit=5;litTick=372539;origin=14,167;mapAge=1501;now=374001;scarLaid=False;scarCentre=invalid;scarSide=none;scarRadius=0.0;scarCells=0;bare=0;sprouts=0;pods=0;ash=0;arcCandidates=0;arcLit=True",
+ "hist": "now=374001;samples=1;oldestTick=372599;newestTick=372599;newest=14,167;ago=invalid;burning=13;center=13,166",
+ "pocket": [
+  25,
+  163
+ ],
+ "frontCentroid": [
+  13.8,
+  166.6
+ ],
+ "issue": "n=8;cx=27.5;cz=165.0;anchor=invalid;stay=0;goAnchor=0;goAsh=8;noCell=0;issued=8",
+ "trace": [
+  {
+   "tick": 250,
+   "pos": [
+    [
+     30,
+     160,
+     "GotoWander"
+    ],
+    [
+     31,
+     160,
+     "GotoWander"
+    ],
+    [
+     24,
+     162,
+     "GotoWander"
+    ],
+    [
+     25,
+     160,
+     "GotoWander"
+    ],
+    [
+     30,
+     163,
+     "GotoWander"
+    ],
+    [
+     25,
+     170,
+     "GotoWander"
+    ],
+    [
+     32,
+     162,
+     "GotoWander"
+    ],
+    [
+     28,
+     170,
+     "GotoWander"
+    ]
+   ],
+   "onOrBesideFire": 0,
+   "fires": 17
+  },
+  {
+   "tick": 500,
+   "pos": [
+    [
+     31,
+     156,
+     "GotoWander"
+    ],
+    [
+     32,
+     155,
+     "GotoWander"
+    ],
+    [
+     19,
+     159,
+     "GotoWander"
+    ],
+    [
+     20,
+     155,
+     "GotoWander"
+    ],
+    [
+     35,
+     158,
+     "GotoWander"
+    ],
+    [
+     25,
+     175,
+     "GotoWander"
+    ],
+    [
+     37,
+     157,
+     "GotoWander"
+    ],
+    [
+     28,
+     165,
+     "GotoWander"
+    ]
+   ],
+   "onOrBesideFire": 0,
+   "fires": 15
+  },
+  {
+   "tick": 750,
+   "pos": [
+    [
+     35,
+     156,
+     "Wait_Wander"
+    ],
+    [
+     32,
+     150,
+     "GotoWander"
+    ],
+    [
+     18,
+     157,
+     "GotoWander"
+    ],
+    [
+     15,
+     150,
+     "GotoWander"
+    ],
+    [
+     40,
+     153,
+     "GotoWander"
+    ],
+    [
+     25,
+     180,
+     "GotoWander"
+    ],
+    [
+     42,
+     152,
+     "GotoWander"
+    ],
+    [
+     28,
+     160,
+     "Wait_Wander"
+    ]
+   ],
+   "onOrBesideFire": 0,
+   "fires": 18
+  },
+  {
+   "tick": 1000,
+   "pos": [
+    [
+     34,
+     156,
+     "GotoWander"
+    ],
+    [
+     32,
+     145,
+     "GotoWander"
+    ],
+    [
+     21,
+     155,
+     "Wait_Wander"
+    ],
+    [
+     10,
+     145,
+     "GotoWander"
+    ],
+    [
+     45,
+     149,
+     "GotoWander"
+    ],
+    [
+     26,
+     183,
+     "GotoWander"
+    ],
+    [
+     47,
+     149,
+     "GotoWander"
+    ],
+    [
+     28,
+     160,
+     "GotoWander"
+    ]
+   ],
+   "onOrBesideFire": 0,
+   "fires": 19
+  }
+ ],
+ "hediffs": [
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [
+   "Gunshot"
+  ]
+ ]
+}
