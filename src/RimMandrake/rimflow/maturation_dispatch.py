@@ -46,6 +46,9 @@ At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MOD
   stopped | auto_spent | hand_run_seen   the visit's automatic cycle ended with no record or failed to launch, or was
                 already spent (blind_auto_cycles_per_visit, 1), or a hand-launched blind run worked on the cycle and wrote
                 nothing: a Needs Conductor line, never a second automatic cycle
+  launch_retry  the launch never started on a transient fault (a git lock, its item not yet on origin/main): not the
+                visit's cycle; the next tick publishes the filed item again and launches it, up to launch_tries (3),
+                then stopped naming the count (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE; in-game alike)
   held | blocked | blind_off | no_cap | account_hold | slots_full   as for the offline build
 At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST), per advancing mod, one of:
   launch        visit N (the moves into in_game) is owed (no visit_N folder), nothing live or just ended on it, no
@@ -461,6 +464,27 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
     return rows, launches
 
 
+def retriable(cfg, x):
+    """-> True when a blind or in-game book entry is a launch that NEVER STARTED on a transient fault (a git lock, its
+    item not yet on origin/main: maturation_autonomy.transient) with tries left (launch_tries, 3). Such a launch judged
+    nothing, so it is not the visit's automatic run; one that started, or failed any other way, is
+    (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE). An older entry without tries reads as its first try."""
+    return (isinstance(x, dict) and bool(x.get("failed")) and not x.get("unit") and x.get("never_started", True)
+            and AUT.transient(x["failed"]) and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+
+
+def spent_tries(x):
+    """-> ' N times on a transient fault, the last' for an entry whose transient tries ran out, else ''."""
+    if x.get("failed") and not x.get("unit") and AUT.transient(x["failed"]):
+        return " %d times on a transient fault, the last" % int(x.get("tries") or 1)
+    return ""
+
+
+def retried(cfg, retry):
+    return (", try %d of %d after a launch that never started on a transient fault" % (
+        int(retry.get("tries") or 1) + 1, int(cfg.get("launch_tries", 3)))) if retry else ""
+
+
 def decide_blind(cfg, s, f, row, put, now, account, live_total):
     """One decision for an advancing mod at the blind challenge -> True to launch its judge. The owner's condition, 2026-11-14
     ~9 PM PST: "As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble."
@@ -513,14 +537,15 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total):
             "the blind challenge's state cannot be read (%s); nothing launches" % owed)
         return False
     mine = [x for x in ours if x.get("cycle") == n]
-    if mine:
+    retry = mine[-1] if mine and retriable(cfg, mine[-1]) else None
+    if mine and not retry:
         x = mine[-1]
-        why = ("the automatic launch of cycle %s failed: %s" % (n, x.get("failed")) if x.get("failed") else
-               "the automatic cycle %s (%s) ended and wrote no record" % (n, x.get("unit")))
+        why = ("the automatic launch of cycle %s failed%s: %s" % (n, spent_tries(x), x.get("failed"))
+               if x.get("failed") else "the automatic cycle %s (%s) ended and wrote no record" % (n, x.get("unit")))
         put("stopped", why, "stopped, %s; never a second automatic try" % why)
         return False
     per = int(cfg.get("blind_auto_cycles_per_visit", 1))
-    if len(ours) >= per:
+    if len([x for x in ours if x is not retry]) >= per:
         put("auto_spent", "the visit's %d automatic cycle(s) are spent (cycle %s)" % (
             per, ", ".join(str(x.get("cycle")) for x in ours)),
             "blind cycle %s is open; the Dispatch step runs %d automatic cycle(s) per visit (cycle %s was), so launch "
@@ -549,8 +574,10 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total):
     if no_slot(cfg, live_total, put):
         return False
     row.update(cap=cap, visit_id=vid)
-    put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle (%s)" % (
-        n, account[1]))
+    if retry:
+        row["retry_of"] = dict(retry)
+    put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle%s (%s)" % (
+        n, retried(cfg, retry), account[1]))
     return True
 
 
@@ -605,14 +632,15 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "in-game acceptance's state cannot be read (%s); nothing launches" % owed)
         return False
     mine = [x for x in ours if x.get("visit") == n]
-    if mine:
+    retry = mine[-1] if mine and retriable(cfg, mine[-1]) else None
+    if mine and not retry:
         x = mine[-1]
-        why = ("the automatic launch of in-game visit %s failed: %s" % (n, x.get("failed")) if x.get("failed") else
-               "the automatic in-game visit %s (%s) ended and wrote no record" % (n, x.get("unit")))
+        why = ("the automatic launch of in-game visit %s failed%s: %s" % (n, spent_tries(x), x.get("failed"))
+               if x.get("failed") else "the automatic in-game visit %s (%s) ended and wrote no record" % (n, x.get("unit")))
         put("stopped", why, "stopped, %s; never a second automatic try" % why)
         return False
     per = int(cfg.get("ingame_auto_runs_per_visit", 1))
-    if len(ours) >= per:
+    if len([x for x in ours if x is not retry]) >= per:
         put("auto_spent", "the visit's %d automatic run(s) are spent" % per,
             "in-game visit %s is open and its automatic run is spent; launch it by hand: maturation.py launch %s "
             "--budget-usd <cap> --item <ID>" % (n, mod))
@@ -649,8 +677,10 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         put("bridge_held", "the bridge is not takeable: %s" % why)
         return False
     row.update(cap=cap, visit_id=vid)
-    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run, bridge %s (%s)" % (
-        n, why, account[1]))
+    if retry:
+        row["retry_of"] = dict(retry)
+    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, bridge %s (%s)" % (
+        n, retried(cfg, retry), why, account[1]))
     return True
 
 
@@ -732,9 +762,38 @@ def known_items():
     return HC.known_items()
 
 
+def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish, launch):
+    """The blind and in-game act: file the item (or, retrying a launch that never started after it was filed, publish
+    it again and reuse it), launch, and write ONE book entry for the cycle or visit (a retry replaces its never-started
+    entry, so a retry never counts as a second run). -> (ok, item, unit, text, entry)."""
+    retry = row.get("retry_of") or {}
+    tries = int(retry.get("tries") or 1) + 1 if retry else 1
+    if retry.get("item") and retry.get("filed", str(retry.get("failed") or "").startswith("filed ")):
+        item, filed = retry["item"], True
+        ok, text = do_publish(item)
+        text = "retry %d of %s, filed earlier; %s" % (tries, item, text)
+    else:
+        item = new_item()
+        ok, text = do_file(item) if item else (False, "no free item name")
+        filed = ok
+    unit = None
+    if ok:
+        rc, text2, unit = launch(item)
+        text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
+        ok = rc == 0 and bool(unit)
+    entry = dict(where, unit=unit if ok else None, item=item, at=now, cap=row.get("cap"), failed=None if ok else text,
+                 tries=tries, filed=filed, never_started=not unit)
+    lst = s.setdefault(book, [])
+    if retry:
+        lst[:] = [x for x in lst if x.get("unit") or any(x.get(k) != v for k, v in where.items())]
+    lst.append(entry)
+    return ok, item, unit, text, entry
+
+
 def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
     do_file = fx.get("file", file_and_publish)
+    do_publish = fx.get("publish", publish_filed)
     do_launch = fx.get("launch", lambda mod, cap, item: M.launch_mod(
         root, mod, cap, item, seat=cfg.get("seat", "BENCH"),
         model=cfg.get("ingame_model", "opus") if (M.load(root, mod) or {}).get("stage") == "in_game"
@@ -747,29 +806,30 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         mod, s = row["mod"], st["mods"][row["mod"]]
         blind = row.get("stage") == "blind_challenge"
         if row.get("stage") == "in_game":
-            item = ingame_item_id(mod, row.get("visit"), known)
             title = ("%s Stage 6: in-game acceptance visit %s, one live driver on the bridge (launched by the Dispatch "
                      "step)" % (mod, row.get("visit")))
             why = ("delegated: maturation_dispatch.py; in-game visit %s is owed (no visit_%s folder), nothing live or "
                    "recorded on it, no other live-game driver, the bridge takeable, measured %s" % (
                        row.get("visit"), row.get("visit"), pac(now)))
-            ok, text = do_file(item, title, why, needs="game-up") if item else (False, "no free item name")
-            unit = None
-            if ok:
-                rc, text2, unit = do_launch(mod, row["cap"], item)
-                text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
-                ok = rc == 0 and bool(unit)
-            # launched or failed, it is the visit's automatic run: never a second try (the owner's condition)
-            s.setdefault("ingame_auto", []).append({"visit_id": row.get("visit_id"), "visit": row.get("visit"),
-                                                    "unit": unit if ok else None, "item": item, "at": now,
-                                                    "cap": row.get("cap"), "failed": None if ok else text})
+            # launched or failed, it is the visit's automatic run (the owner's condition), unless it never started on a
+            # transient fault: then the next tick tries the same item again, up to launch_tries
+            ok, item, unit, text, entry = launch_counted(
+                cfg, s, row, now, "ingame_auto", {"visit_id": row.get("visit_id"), "visit": row.get("visit")},
+                lambda: ingame_item_id(mod, row.get("visit"), known),
+                lambda it: do_file(it, title, why, needs="game-up"), do_publish,
+                lambda it: do_launch(mod, row["cap"], it))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
                 done.append(row)
+            elif retriable(cfg, entry):
+                row.update(decision="launch_retry", why="the in-game launch never started on a transient fault (try %d "
+                           "of %d), the next tick tries it again: %s" % (entry["tries"], int(cfg.get("launch_tries", 3)),
+                                                                         text))
             else:
                 row.update(decision="launch_failed", why=text,
-                           need="%s: the in-game launch failed (%s); the step will not retry it on its own" % (mod, text))
+                           need="%s: the in-game launch failed%s (%s); the step will not retry it on its own" % (
+                               mod, spent_tries(entry), text))
             continue
         if blind:
             item = blind_item_id(mod, row.get("cycle"), known)
@@ -784,26 +844,33 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                      % (mod, row["refused"]))
             why = ("delegated: maturation_dispatch.py; maturation.py refuses %d bars as build work (%s), nothing live on "
                    "it, measured %s" % (row["refused"], ", ".join(row["refused_ids"][:12]), pac(now)))
-        ok, text = do_file(item, title, why) if item else (False, "no free item name")
-        if ok:
-            rc, text2, unit = do_launch(mod, row["cap"] if blind else cfg["cap_usd"], item)
-            text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
-            ok = rc == 0 and bool(unit)
-        else:
-            unit = None
         if blind:
-            # launched or failed, it is the visit's automatic cycle: never a second try (the owner's condition)
-            s.setdefault("blind_auto", []).append({"visit_id": row.get("visit_id"), "cycle": row.get("cycle"),
-                                                   "unit": unit if ok else None, "item": item, "at": now,
-                                                   "cap": row.get("cap"), "failed": None if ok else text})
+            # launched or failed, it is the visit's automatic cycle (the owner's condition), unless it never started on
+            # a transient fault: then the next tick tries the same item again, up to launch_tries
+            ok, item, unit, text, entry = launch_counted(
+                cfg, s, row, now, "blind_auto", {"visit_id": row.get("visit_id"), "cycle": row.get("cycle")},
+                lambda: item, lambda it: do_file(it, title, why), do_publish,
+                lambda it: do_launch(mod, row["cap"], it))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
                 done.append(row)
+            elif retriable(cfg, entry):
+                row.update(decision="launch_retry", why="the blind launch never started on a transient fault (try %d "
+                           "of %d), the next tick tries it again: %s" % (entry["tries"], int(cfg.get("launch_tries", 3)),
+                                                                         text))
             else:
                 row.update(decision="launch_failed", why=text,
-                           need="%s: the blind launch failed (%s); the step will not retry it on its own" % (mod, text))
+                           need="%s: the blind launch failed%s (%s); the step will not retry it on its own" % (
+                               mod, spent_tries(entry), text))
             continue
+        ok, text = do_file(item, title, why) if item else (False, "no free item name")
+        if ok:
+            rc, text2, unit = do_launch(mod, cfg["cap_usd"], item)
+            text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
+            ok = rc == 0 and bool(unit)
+        else:
+            unit = None
         if ok:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "refused": row["refused"],
                                                  "ids": row["refused_ids"], "cap": cfg["cap_usd"],

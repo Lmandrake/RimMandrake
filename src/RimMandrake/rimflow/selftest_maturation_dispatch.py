@@ -17,7 +17,8 @@ a failed launch is not retried; a mod ready to advance and one owing a hand step
 reading fires on a planted idle mod and ops_watch's maturation family reads it (stale is UNMEASURED); the alarm target
 is in ops_watch_rules.json; nothing in the repo is written. The blind challenge (blind_main): one automatic judge for
 a mod whose cycle is owed with nothing live, never a second in the visit (live, settling, ended without a record, exit
-not met, exit met, the Conductor's next cycle, a failed launch), nothing on a hand-launched cycle that is live, just
+not met, exit met, the Conductor's next cycle, a failed launch; a launch that never started on a
+transient git fault retries the same item, three times at most), nothing on a hand-launched cycle that is live, just
 ended, ended with no exit block or with nothing written, nothing off the list, on a hold, with blind launches off, with
 no cap, on an account hold or with the slots full. In-game acceptance (ingame_main): nothing as shipped
 (ingame_enabled false, the bridge not even asked); on, one live driver for an owed visit on a takeable bridge, never a
@@ -564,6 +565,112 @@ def blind_main():
         ok(len(launches()) == 1 and rd["mods"]["GimmeSomeSlack"]["decision"] == "launch_failed"
            and rd2["mods"]["GimmeSomeSlack"]["decision"] == "stopped",
            "a failed blind launch spends the visit's one automatic cycle: never retried")
+
+        # ---- RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient
+        # publish fault (measured 2026-11-15: an index.lock at publish, then "not on origin/main") is not a cycle: the
+        # next tick publishes again and launches the same item, up to launch_tries; any other failure spends (above)
+        lock = "publish: publish stopped: index.lock present (0 s old, under 300 s: another git may be running)"
+        refuse = "REFUSED: %s is not on origin/main; publish infrastructure/state/ledger/events/RUNNER.jsonl first"
+        published = []
+
+        def flaky(fails):
+            """-> (calls, launch): the launch fails with fails[k] (a text, or None to launch for real) on call k."""
+            calls = []
+
+            def launch(mod, cap_, item):
+                calls.append(item)
+                why = fails[len(calls) - 1] if len(calls) <= len(fails) else None
+                return (2, why % item if "%s" in why else why, None) if why else fx["launch"](mod, cap_, item)
+            return calls, launch
+
+        def fxr(launch, file_fails=0):
+            tries = []
+
+            def file_(item, title, why):
+                tries.append(item)
+                if len(tries) <= file_fails:
+                    return False, "ingest.lock stayed busy; nothing filed"
+                filed.append((item, title, why))
+                return True, "filed %s; %s" % (item, lock)
+            return dict(fx, launch=launch, file=file_,
+                        publish=lambda item: (published.append(item) or True, "publish: PUBLISHED test"))
+
+        def rtick(fx_, at=0):
+            return MD.tick(root, gss, True, fx=dict(fx_, facts=lambda: facts_for(gss)), now=BLIND_CLOCK + at, page=False)
+
+        def bk():
+            return json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"].get("blind_auto") or []
+
+        def g(rd_):
+            return rd_["mods"]["GimmeSomeSlack"]
+
+        reset()
+        del published[:]
+        calls, fl = flaky([refuse])
+        f1 = fxr(fl)
+        r1, r2 = rtick(f1), rtick(f1, at=60)
+        b = bk()
+        ok(g(r1)["decision"] == "launch_retry" and g(r2)["decision"] == "launched" and len(launches()) == 1
+           and len(filed) == 1 and published == [filed[0][0]] and calls == [filed[0][0]] * 2 and len(b) == 1
+           and b[0].get("unit") and b[0].get("tries") == 2,
+           "a blind launch that never started on a git lock (filed, publish stopped, not on origin/main): the next tick "
+           "publishes again and launches the same item, one cycle in the book (%s, %s; filed %d, book %s)" % (
+               g(r1)["decision"], g(r2)["decision"], len(filed), [(x.get("tries"), bool(x.get("unit"))) for x in b]))
+        world["live"]["GimmeSomeSlack"] = [b[0]["unit"]] if b and b[0].get("unit") else []
+        ok(g(rtick(f1, at=120))["decision"] == "live" and len(launches()) == 1, "the retried judge is live: nothing more")
+        world["live"] = {}
+
+        reset()
+        del published[:]
+        calls, fl = flaky([refuse] * 9)
+        f3 = fxr(fl)
+        rs = [rtick(f3, at=60 * k) for k in range(4)]
+        b = bk()
+        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"]
+           and "3 times" in g(rs[3])["why"] and need(rs[3], "GimmeSomeSlack") and len(calls) == 3 and not launches()
+           and len(filed) == 1 and len(b) == 1 and b[0].get("tries") == 3,
+           "three transient faults in a row: stopped (PAUSED) naming the count, a Needs Conductor line, no fourth try "
+           "(%s; %s)" % ([g(x)["decision"] for x in rs], g(rs[3])["why"][:90]))
+
+        reset()
+        calls, fl = flaky([refuse, "LAUNCH FAILED rm-detached-bench-fake: pool full"])
+        f4 = fxr(fl)
+        rs = [rtick(f4, at=60 * k) for k in range(3)]
+        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_failed", "stopped"] and not launches()
+           and len(calls) == 2, "a transient fault, then a real launch failure: the real one spends the cycle (%s)"
+           % [g(x)["decision"] for x in rs])
+
+        reset()
+        del published[:]
+        calls, fl = flaky([])
+        f5 = fxr(fl, file_fails=1)
+        r1, r2 = rtick(f5), rtick(f5, at=60)
+        ok(g(r1)["decision"] == "launch_retry" and g(r2)["decision"] == "launched" and len(filed) == 1
+           and not published and len(launches()) == 1,
+           "the ingest lock busy at filing (nothing filed): the next tick files and launches (%s, %s)" % (
+               g(r1)["decision"], g(r2)["decision"]))
+
+        # the live record as it stood 2026-11-15 10:25 PST (no tries, no filed field) retries without a clear
+        reset()
+        del published[:]
+        calls, fl = flaky([refuse])
+        f6 = fxr(fl)
+        rtick(f6)
+        p = os.path.join(sd, "state.json")
+        st = json.load(open(p))
+        x = st["mods"]["GimmeSomeSlack"]["blind_auto"][0]
+        item = x["item"]
+        for k in ("tries", "filed", "never_started"):
+            x.pop(k, None)
+        x["failed"] = ("filed %s; publish: publish stopped: index.lock present (0 s old, under 300 s: another git may be "
+                       "running); refused: %s is not on origin/main; publish infrastructure/state/ledger/events/"
+                       "RUNNER.jsonl first" % (item, item))
+        with open(p, "w") as f:
+            json.dump(st, f)
+        r2 = rtick(f6, at=60)
+        ok(g(r2)["decision"] == "launched" and published == [item] and calls == [item, item] and len(filed) == 1,
+           "an older record (no tries field, the failed text measured live) retries the same item without a clear (%s)"
+           % g(r2)["decision"])
     finally:
         for k, v in env_was.items():
             if v is None:
@@ -805,6 +912,47 @@ def ingame_main():
             r2 = tick(on, at=600)
             return dec(r1) == "launch_failed" and dec(r2) == "stopped" and len(launches()) == 1
         chk(t_fail, "a failed in-game launch spends the visit's one automatic run: never retried")
+
+        # RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient publish
+        # fault retries the same item, up to launch_tries; three in a row stop it naming the count
+        lock = "publish: publish stopped: index.lock present (0 s old, under 300 s: another git may be running)"
+        refuse = "REFUSED: %s is not on origin/main; publish infrastructure/state/ledger/events/RUNNER.jsonl first"
+        published = []
+
+        def fxr(n_fail):
+            calls = []
+
+            def launch(mod, cap_, item):
+                calls.append(item)
+                return (2, refuse % item, None) if len(calls) <= n_fail else fx["launch"](mod, cap_, item)
+            return calls, dict(fx, launch=launch,
+                               file=lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True,
+                                                                    "filed %s; %s" % (item, lock)),
+                               publish=lambda item: (published.append(item) or True, "publish: PUBLISHED test"))
+
+        def rtick(fx_, at=0):
+            return MD.tick(root, on, True, fx=dict(fx_, facts=lambda: facts_for(on)), now=T0 + at, page=False)
+
+        def t_retry():
+            reset()
+            del published[:]
+            calls, f1 = fxr(1)
+            r1, r2 = rtick(f1), rtick(f1, at=60)
+            b = json.load(open(os.path.join(sd, "state.json")))["mods"]["Pyrelands"]["ingame_auto"]
+            return (dec(r1) == "launch_retry" and dec(r2) == "launched" and len(launches()) == 1 and len(filed) == 1
+                    and filed[0][3].get("needs") == "game-up" and published == [filed[0][0]]
+                    and calls == [filed[0][0]] * 2 and len(b) == 1 and b[0].get("unit") and b[0].get("tries") == 2)
+        chk(t_retry, "an in-game launch that never started on a git lock: the next tick publishes again and launches "
+                     "the same item, one run in the book")
+
+        def t_retry_spent():
+            reset()
+            calls, f3 = fxr(9)
+            rs = [rtick(f3, at=60 * k) for k in range(4)]
+            return ([dec(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"]
+                    and "3 times" in rs[3]["mods"]["Pyrelands"]["why"] and len(calls) == 3 and not launches()
+                    and len(filed) == 1)
+        chk(t_retry_spent, "three transient in-game launch faults in a row: stopped naming the count, no fourth try")
     finally:
         for k, v in env_was.items():
             if v is None:
