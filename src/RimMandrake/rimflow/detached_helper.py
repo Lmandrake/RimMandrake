@@ -9,6 +9,7 @@ one runs. A detached run lives in its own transient systemd unit and survives th
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
+  python3 src/RimMandrake/rimflow/detached_helper.py backfill-cost [--apply]   (dollars of runs finished before cost_usd)
 
 launch: the item must be on the ledger, and FILED ON origin/main: the helper's clone is made from origin/main, so an item whose
 file event sits in an unpublished shard (OWNER.jsonl from --owner-said, say) is one the helper's `rimflow note` refuses for
@@ -323,8 +324,15 @@ def stop_scope(seat, unit, runner=subprocess.run):
     Not the RM_ROLE_UNIT marker scan: finish itself runs with the unit's environment and would carry the marker."""
     import role_launch as RL
     scope = scope_name(seat, unit)
-    said = [RL._stop_call(runner, ["systemctl", "--user", "kill", "--signal=SIGKILL", scope], 20),
-            RL._stop_call(runner, ["systemctl", "--user", "stop", "--no-block", scope], 20)]
+
+    def gone(line):
+        return " exit " in line and bool(RL.NOT_FOUND_RX.search(line))
+    kill = RL._stop_call(runner, ["systemctl", "--user", "kill", "--signal=SIGKILL", scope], 20)
+    if gone(kill):      # the clean finish: claude left its scope and systemd collected it (every run read as an error)
+        return "scope %s: already gone (claude left it and systemd collected it)" % scope
+    said = [kill, RL._stop_call(runner, ["systemctl", "--user", "stop", "--no-block", scope], 20)]
+    said = ["%s: already gone" % s.split(" exit ")[0] if gone(s) else
+            s if s.endswith(" ok") else "FAILED " + s for s in said]
     return "scope %s: %s; now %s" % (scope, "; ".join(said), RL.unit_state(scope, runner=runner))
 
 
@@ -490,7 +498,10 @@ def launch_argv(rec, msg, claude):
     cmd = [bounded, "-p", msg, "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
-            "-p", "StandardOutput=file:" + rec["out"], "-p", "StandardError=file:" + rec["err"],
+            # append:, never file: — file: hands every ExecStopPost the file at offset 0 and finish's line overwrote the
+            # head of claude's JSON (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER); finish also moves its own
+            # output off these files (keep_off_result), so the JSON stays whole and alone
+            "-p", "StandardOutput=append:" + rec["out"], "-p", "StandardError=append:" + rec["err"],
             "-p", "ExecStopPost=" + finish,
             "-p", "ExecStopPost=" + wrapup,     # the census of what it left (wrapup.py), after finish recorded it
             "-p", "ExecStopPost=" + back,       # last: the pool clone goes back, bundled (return_clone)
@@ -617,6 +628,132 @@ def outcome(rec, env):
     return "%s (%s %s)" % (svc, code, status), tokens, " ".join(tail.split())
 
 
+def _num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def _model_sum(mu):
+    """-> the sum of every model's costUSD, or None when any model has none (one model's figure is not the run's)."""
+    if not isinstance(mu, dict) or not mu:
+        return None
+    cs = [m.get("costUSD") if isinstance(m, dict) else None for m in mu.values()]
+    return round(sum(cs), 6) if all(_num(c) for c in cs) else None
+
+
+def result_cost(res):
+    """-> (dollars or None, how) from claude's result JSON: total_cost_usd, else the sum of modelUsage costUSD (the two
+    were equal on all 10 whole result files of 2026-11-15). None is UNMEASURED, never 0."""
+    if not isinstance(res, dict):
+        return None, "no result JSON"
+    if _num(res.get("total_cost_usd")):
+        return float(res["total_cost_usd"]), "total_cost_usd"
+    s = _model_sum(res.get("modelUsage"))
+    if s is not None:
+        return s, "sum of modelUsage costUSD"
+    return None, "no dollars in the result JSON"
+
+
+_TOTAL_RX = re.compile(r'"total_cost_usd"\s*:\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)')
+_MODELS_RX = re.compile(r'"modelUsage"\s*:\s*(?=\{)')
+
+
+def recover_cost(text):
+    """-> (dollars or None, how) from a result file's text, whole or with its head written over (the finish line landed
+    at offset 0 before RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER). Only a key outside any JSON string counts
+    (one quoted inside the result text reads \\"total_cost_usd\\" and does not match); a lone surviving costUSD is not the
+    run's total."""
+    text = text or ""
+    try:
+        res, _ = json.JSONDecoder().raw_decode(text.lstrip())
+    except ValueError:
+        res = None
+    if isinstance(res, dict):
+        usd, how = result_cost(res)
+        return (usd, how) if usd is not None else (None, "UNMEASURED: " + how)
+    totals = _TOTAL_RX.findall(text)
+    if totals:
+        return float(totals[-1]), "total_cost_usd in the surviving tail"
+    for m in reversed(list(_MODELS_RX.finditer(text))):
+        try:
+            mu, _ = json.JSONDecoder().raw_decode(text, m.end())
+        except ValueError:
+            continue
+        s = _model_sum(mu)
+        if s is not None:
+            return s, "sum of modelUsage costUSD in the surviving tail"
+    return None, "UNMEASURED: the result file's dollars were written over" if text.strip() else "UNMEASURED: empty result file"
+
+
+def measured_cost(rec):
+    """-> (dollars or None, how) read from the run's result file now."""
+    try:
+        with open(rec["out"], encoding="utf-8", errors="replace") as f:
+            return recover_cost(f.read())
+    except (OSError, KeyError, TypeError):
+        return None, "UNMEASURED: no result file"
+
+
+def _usd(v):
+    return "UNMEASURED" if not _num(v) else "%.2f" % v
+
+
+def finish_log_path(unit, root=None):
+    """Where finish's own line goes: never the result file (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER)."""
+    return os.path.join(runs_dir(root), unit + ".finish.log")
+
+
+def keep_off_result(unit, root=None):
+    """Point this process's stdout and stderr at the run's finish log when they are its result or error file. A unit
+    launched before the append: change hands finish those files at offset 0, so its print overwrote claude's JSON.
+    -> the fds moved. Never raises."""
+    rec = read_record(unit, root) or {}
+    ids = set()
+    for k in ("out", "err"):
+        try:
+            st = os.stat(rec[k])
+            ids.add((st.st_dev, st.st_ino))
+        except (OSError, KeyError, TypeError):
+            pass
+    moved = []
+    for fd, stream in ((1, sys.stdout), (2, sys.stderr)):
+        try:
+            st = os.fstat(fd)
+            if (st.st_dev, st.st_ino) not in ids:
+                continue
+            stream.flush()
+            log = os.open(finish_log_path(unit, root), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+            os.dup2(log, fd)
+            os.close(log)
+            moved.append(fd)
+        except (OSError, ValueError, AttributeError):
+            pass
+    return moved
+
+
+def backfill_cost(apply=False, root=None, now=None):
+    """Finished runs recorded before finish kept the dollars: read them back from what survives of each result file.
+    What cannot be read is marked UNMEASURED, never guessed. -> (0, summary)."""
+    now = now or time.time()
+    counts, lines = {}, []
+    for rec in all_records(root):
+        if rec.get("status") != "finished" or "cost_usd" in rec:
+            continue
+        if now - (rec.get("ended") or 0) < 3600:    # its return step may still be writing this record
+            counts["skipped"] = counts.get("skipped", 0) + 1
+            continue
+        usd, how = measured_cost(rec)
+        key = "measured" if usd is not None else "UNMEASURED"
+        counts[key] = counts.get(key, 0) + 1
+        lines.append("%s  %s  %s" % (rec["unit"], _usd(usd), how))
+        if apply:
+            rec.update(cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how + " (backfilled %s)" % iso(now))
+            write_record(rec, root)
+    head = "backfill-cost %s: %d measured, %d UNMEASURED, %d ended under an hour ago (left)" % (
+        "APPLIED" if apply else "dry run (--apply writes)", counts.get("measured", 0), counts.get("UNMEASURED", 0),
+        counts.get("skipped", 0))
+    return 0, "\n".join([head] + lines)
+
+
 def killed(rec, runner=subprocess.run, now=None):
     """-> why, or "" : the run was KILLED from outside before claude wrote its result JSON (an account switch SIGTERMs
     every Claude process, measured 2026-11-15 ~12:00 PM PST: two judge runs, empty out and err files, units gone, finish
@@ -643,9 +780,10 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
     if rec.get("status") == "finished":
         return 0, "already finished %s" % unit
     st, tokens, tail = outcome(rec, env)
+    usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
     took = int(now - rec["at"])
-    text = ("DETACHED run %s ended %s after %d s, %s tokens (model %s). Result: %s. Output %s; clone %s."
-            % (unit, st, took, "UNMEASURED" if tokens is None else tokens, rec["model"], tail or "-",
+    text = ("DETACHED run %s ended %s after %d s, %s tokens, USD %s (model %s). Result: %s. Output %s; clone %s."
+            % (unit, st, took, "UNMEASURED" if tokens is None else tokens, _usd(usd), rec["model"], tail or "-",
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -663,13 +801,14 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens. %s. READ: rimflow show %s."
-                              % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens,
+        path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens, USD %s. %s. READ: rimflow show %s."
+                              % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens, _usd(usd),
                                  fulltext.clip(tail, 200, rec["out"]) or "-", item), now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
-    rec.update(status="finished", ended=now, result=st, tokens=tokens, steps=steps)
+    rec.update(status="finished", ended=now, result=st, tokens=tokens, steps=steps,
+               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how)
     write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
 
@@ -712,6 +851,9 @@ def main(argv=None):
                    help="do not publish the seat shard from the clone (its dirty lines ride in the bundle instead)")
     s = sub.add_parser("status")
     s.add_argument("--all", action="store_true")
+    c = sub.add_parser("backfill-cost", help="finished runs without cost_usd: read the dollars back from what survives "
+                                             "of each result file, UNMEASURED where nothing does")
+    c.add_argument("--apply", action="store_true")
     args = ap.parse_args(argv)
     if args.cmd == "launch":
         brief = args.brief
@@ -721,7 +863,10 @@ def main(argv=None):
         rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model, args.max_s, args.budget_usd,
                           clone=args.clone)
     elif args.cmd == "finish":
+        keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)
+    elif args.cmd == "backfill-cost":
+        rc, text = backfill_cost(apply=args.apply)
     elif args.cmd == "return":
         os.chdir("/")           # the unit's working directory is the clone; a process sitting in it would keep it
         if bool(args.unit) == bool(args.all):

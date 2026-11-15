@@ -28,6 +28,12 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              'running') and one whose return kept it are REFUSED before any sync or unit, naming the command that passes;
              a dead run reads 'dead', never 'running', in status and never blocks a return; the ExecStopPost steps run
              when the clone is gone (WorkingDirectory=-), and finish records a run whose clone is gone
+  whole      RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER (2026-11-15: 238 of 248 result files began "FINISHED",
+             dollars lost): out and err are append:, the finish step's line goes to <unit>.finish.log even when handed
+             the result file at offset 0, the record and note carry measured dollars; recover_cost reads what survives
+             of a written-over file (a total, else the whole modelUsage sum, else UNMEASURED); backfill-cost
+  scopegone  RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE: a scope systemd already collected reads clean; any
+             other kill failure reads FAILED and the stop is still tried
 """
 import json
 import os
@@ -740,6 +746,144 @@ def _test_midreturn():
     ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
 
 
+def _claude_json(total=1.25, models=(("claude-opus", 1.0), ("claude-haiku", 0.25)), result="Built it."):
+    """A claude -p result in the key order measured 2026-11-15 (total_cost_usd near the head, result near the end)."""
+    d = {"duration_api_ms": 1, "stop_reason": "end_turn", "session_id": "s"}
+    if total is not None:
+        d["total_cost_usd"] = total
+    d["usage"] = {"input_tokens": 10, "output_tokens": 5, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}
+    if models is not None:
+        d["modelUsage"] = {m: {"inputTokens": 1, "costUSD": c} for m, c in models}
+    d.update(is_error=False, subtype="success", result=result, type="result", uuid="u")
+    return json.dumps(d)
+
+
+def _overwrite_head(text, head):
+    """What systemd's StandardOutput=file: did: a later writer starts at offset 0 and writes over the first bytes."""
+    return head + text[len(head):] if len(head) < len(text) else head
+
+
+def test_result_kept_whole():
+    """RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER (measured 2026-11-15: 238 of 248 result files began
+    "FINISHED rm-detached-...", total_cost_usd gone)."""
+    calls, run = recorder()
+    DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "opus", 600, 15, now=T0 + 3, runner=run, known=KNOWN, clone=CLONE)
+    argv = calls[0][0]
+    unit = argv[argv.index("--unit") + 1]
+    rec = DH.read_record(unit)
+    check(not any(a.startswith(("StandardOutput=file:", "StandardError=file:")) for a in argv)
+          and "StandardOutput=append:" + rec["out"] in argv and "StandardError=append:" + rec["err"] in argv,
+          "whole: the unit's out and err are opened append:, never file: (a later writer cannot overwrite the head)")
+    # the finish step's own line: run main's finish path in a child whose stdout and stderr are the result file opened
+    # at offset 0 without O_APPEND, exactly as systemd's file: hands it to every ExecStopPost
+    body = _claude_json()
+    with open(rec["out"], "w") as f:
+        f.write(body)
+    child = ("import sys; sys.path.insert(0, %r); import detached_helper as DH\n"
+             "DH.finish = lambda unit, **k: (0, 'FINISHED %%s: scope gone; note exit 0; ' %% unit + 'x' * 400)\n"
+             "sys.exit(DH.main(['finish', '--unit', %r]))\n" % (HERE, unit))
+    fd = os.open(rec["out"], os.O_WRONLY)
+    try:
+        p = subprocess.run([sys.executable, "-c", child], stdout=fd, stderr=fd, stdin=subprocess.DEVNULL, timeout=60,
+                           env=dict(os.environ))
+    finally:
+        os.close(fd)
+    with open(rec["out"]) as f:
+        after = f.read()
+    try:
+        whole = json.loads(after) == json.loads(body)
+    except ValueError:
+        whole = False
+    check(p.returncode == 0 and whole, "whole: the finish line never lands in the result file (it begins %r)" % after[:40])
+    try:
+        with open(DH.finish_log_path(unit)) as f:
+            flog = f.read()
+    except (AttributeError, OSError):
+        flog = ""
+    check("FINISHED " + unit in flog, "whole: the finish line goes to the run's own finish log instead")
+    # the record carries the measured dollars and tokens, read before anything else touches the file
+    fcalls, frun = recorder(out="PUBLISHED abcdef1234567")
+    DH.finish(unit, now=T0 + 900, env={"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"},
+              runner=frun)
+    r2 = DH.read_record(unit)
+    check(r2.get("cost_usd") == 1.25 and isinstance(r2.get("tokens"), int),
+          "cost: finish records claude's total_cost_usd and the tokens (%s, %s)" % (r2.get("cost_usd"), r2.get("tokens")))
+    nt = non_systemctl(fcalls)[0][0]
+    nt = nt[nt.index("--text") + 1]
+    check("USD 1.25" in nt, "cost: the note says the measured dollars (%s)" % nt[:120])
+    # the pure readers
+    check(DH.result_cost(json.loads(_claude_json(total=None))) == (1.25, "sum of modelUsage costUSD"),
+          "cost: no total_cost_usd -> the sum of modelUsage costUSD (equal on the 10 whole files of 2026-11-15)")
+    check(DH.result_cost(json.loads(_claude_json(total=None, models=None)))[0] is None
+          and DH.result_cost(None)[0] is None and DH.result_cost({"total_cost_usd": True})[0] is None,
+          "cost: no dollars in the result -> None (UNMEASURED), never 0")
+    head = "FINISHED %s: scope ...; publish 88d758f130\n" % unit
+    lost_total = _overwrite_head(_claude_json(), head[:120])
+    check(DH.recover_cost(lost_total) == (1.25, "sum of modelUsage costUSD in the surviving tail"),
+          "recover: total overwritten, modelUsage whole -> its sum (%s)" % (DH.recover_cost(lost_total),))
+    lost_all = _overwrite_head(_claude_json(), head + "y" * (_claude_json().index('"is_error"') - len(head)))
+    check(DH.recover_cost(lost_all)[0] is None and "UNMEASURED" in DH.recover_cost(lost_all)[1],
+          "recover: total and modelUsage overwritten -> UNMEASURED, never one model's costUSD as the total")
+    tail_total = 'FINISHED x\n', '"session_id":"s","total_cost_usd":2.5,"usage":{}}'
+    check(DH.recover_cost("".join(tail_total)) == (2.5, "total_cost_usd in the surviving tail"),
+          "recover: total_cost_usd survives -> it")
+    sneaky = _overwrite_head(_claude_json(total=None, models=None, result='I saw "total_cost_usd": 9.0 here'), head[:60])
+    check(DH.recover_cost(sneaky)[0] is None, "recover: a total_cost_usd quoted inside the result text is not a measurement")
+    check(DH.recover_cost(_claude_json()) == (1.25, "total_cost_usd"), "recover: a whole file -> its total")
+    # the backfill of runs finished before this: what survives is read back, the rest marked UNMEASURED, nothing guessed
+    broot = os.path.join(TMP, "backfill")
+    old = {"lost_total": lost_total, "lost_all": lost_all, "empty": ""}
+    for name, body in list(old.items()) + [("recent", lost_total)]:
+        out = os.path.join(broot, name + ".out.json")
+        os.makedirs(broot, exist_ok=True)
+        with open(out, "w") as f:
+            f.write(body)
+        DH.write_record({"unit": name, "status": "finished", "out": out,
+                         "ended": T0 + (9000 if name == "recent" else 0)}, root=broot)
+    rc, said = DH.backfill_cost(root=broot, now=T0 + 9100)
+    check(rc == 0 and "1 measured, 2 UNMEASURED, 1 ended under an hour ago" in said
+          and "cost_usd" not in DH.read_record("lost_total", root=broot),
+          "backfill: a dry run counts and writes nothing (%s)" % said.splitlines()[0])
+    DH.backfill_cost(apply=True, root=broot, now=T0 + 9100)
+    got = {n: DH.read_record(n, root=broot).get("cost_usd") for n in list(old) + ["recent"]}
+    check(got == {"lost_total": 1.25, "lost_all": "UNMEASURED", "empty": "UNMEASURED", "recent": None},
+          "backfill: --apply writes the recovered dollars and UNMEASURED, and leaves a run that just ended (%s)" % got)
+
+
+def scope_runner(kill_out, kill_rc=1, stop_out="", stop_rc=5, state="inactive"):
+    said = []
+
+    def run(argv, **kw):
+        said.append(argv)
+        if argv[:3] == ["systemctl", "--user", "kill"]:
+            return R(kill_rc, kill_out)
+        if argv[:3] == ["systemctl", "--user", "stop"]:
+            return R(stop_rc, stop_out)
+        if argv[:3] == ["systemctl", "--user", "show"]:
+            return R(0, state)
+        return R(0, "")
+    return said, run
+
+
+def test_scope_quiet_when_gone():
+    """RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE: claude left its scope and systemd collected it, so a clean
+    finish read 'kill ... exit 1: Failed to kill unit ...: Unit ... not loaded.; stop ... exit 5' on every run."""
+    sc = "claude-seat-BENCH-u.scope"
+    _, run = scope_runner("Failed to kill unit %s: Unit %s not loaded." % (sc, sc), 1,
+                          "Failed to stop %s: Unit %s not loaded." % (sc, sc), 5)
+    line = DH.stop_scope("BENCH", "u", run)
+    check("already gone" in line and "Failed" not in line and "exit" not in line and "FAILED" not in line,
+          "scope: a scope systemd no longer has reads clean (%s)" % line)
+    said, run = scope_runner("Failed to kill unit %s: Access denied" % sc, 1, "", 0, "active")
+    line = DH.stop_scope("BENCH", "u", run)
+    check("FAILED" in line and "Access denied" in line and any(a[:3] == ["systemctl", "--user", "stop"] for a in said),
+          "scope: a kill that fails any other way stays loud, and the stop is still tried (%s)" % line[:90])
+    said, run = scope_runner("", 0, "", 0, "inactive")
+    line = DH.stop_scope("BENCH", "u", run)
+    check("FAILED" not in line and "kill" in line and "inactive" in line,
+          "scope: a scope that was still there is killed and said so (%s)" % line[:90])
+
+
 def test_hook_points_here():
     hook = os.path.join(HERE, "..", "..", "..", ".claude", "hooks", "block_agent_over_slots.py")
     with open(hook, encoding="utf-8") as f:
@@ -757,6 +901,8 @@ def main():
     test_return_real_git()
     test_origin()
     test_midreturn()
+    test_result_kept_whole()
+    test_scope_quiet_when_gone()
     test_hook_points_here()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
