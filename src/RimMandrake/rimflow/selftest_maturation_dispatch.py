@@ -77,11 +77,16 @@ FIXTURE_CEILING = 60
 # Likewise the live-run cap: the slots_full check puts two runs live and pins max_live to match, so it holds at any shipped max_live
 # (2 -> 4 on 2026-11-15 by the owner's card).
 FIXTURE_MAX_LIVE = 2
+# And every other number the owner tunes, as shipped 2026-11-15 (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS: tunable_sweep.py
+# found these checks red on a doubled cap_usd, settle_s, idle_alarm_min, blind_cap_usd, cycles or runs per visit).
+FIXTURE_NUMBERS = {"cap_usd": 15, "settle_s": 180, "idle_alarm_min": 60, "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3,
+                   "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 8, "fix_cap_usd": 10,
+                   "steward_max_per_version": 12, "stalled_min": 10}
 
 
 def load_cfg():
-    """-> the shipped settings with the fixture ceiling."""
-    return dict(MD.load_cfg(), stage_ceiling_usd=FIXTURE_CEILING)
+    """-> the shipped settings with the fixture numbers (the shipped ones are range-checked where they are read)."""
+    return dict(MD.load_cfg(), stage_ceiling_usd=FIXTURE_CEILING, **FIXTURE_NUMBERS)
 
 
 def fixture(mod, rel):
@@ -752,11 +757,12 @@ def blind_main():
         def need(rd, mod):
             return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
 
-        base = load_cfg()
-        ok(base.get("blind_enabled") is True and isinstance(base.get("blind_cap_usd"), (int, float))
-           and base["blind_cap_usd"] > 0 and base.get("blind_auto_cycles_per_visit") == M.CYCLE_LIMIT,
-           "the settings: blind launches on, a positive cap, automatic cycles per visit = his CYCLE_LIMIT (%s, %s, %s)" % (
-               base.get("blind_enabled"), base.get("blind_cap_usd"), base.get("blind_auto_cycles_per_visit")))
+        real, base = MD.load_cfg(), load_cfg()
+        ok(real.get("blind_enabled") is True and isinstance(real.get("blind_cap_usd"), (int, float))
+           and real["blind_cap_usd"] > 0 and isinstance(real.get("blind_auto_cycles_per_visit"), int)
+           and 1 <= real["blind_auto_cycles_per_visit"] <= M.CYCLE_LIMIT,
+           "the settings: blind launches on, a positive cap, automatic cycles per visit within his CYCLE_LIMIT (%s, %s, %s)" % (
+               real.get("blind_enabled"), real.get("blind_cap_usd"), real.get("blind_auto_cycles_per_visit")))
         gss = dict(base, advancing=["GimmeSomeSlack"], blind_auto_cycles_per_visit=1)   # the spent-visit mechanism, at 1
         cap = "%g" % base.get("blind_cap_usd", 0)
 
@@ -1245,16 +1251,16 @@ def ingame_main():
         def dec(rd, mod="Pyrelands"):
             return rd["mods"][mod]["decision"]
 
-        base = load_cfg()
+        real, base = MD.load_cfg(), load_cfg()
         # ingame_enabled shipped false and was set true 2026-11-15 by the Conductor once the first visit (Pyrelands)
         # had run by hand, as the settings' _ingame_doc says; the pin is now "a bool", and the off case is built
         # explicitly below rather than read from the shipped file.
-        chk(lambda: isinstance(base.get("ingame_enabled"), bool) and isinstance(base.get("ingame_cap_usd"), (int, float))
-            and base["ingame_cap_usd"] > 0 and base.get("ingame_auto_runs_per_visit") == 1
-            and base.get("ingame_model") == "opus",
-            "the settings as shipped: in-game launches a bool (the Conductor ran the first by hand), a positive cap, one "
-            "automatic run per visit, opus (%s, %s, %s)" % (base.get("ingame_enabled"), base.get("ingame_cap_usd"),
-                                                           base.get("ingame_auto_runs_per_visit")))
+        chk(lambda: isinstance(real.get("ingame_enabled"), bool) and isinstance(real.get("ingame_cap_usd"), (int, float))
+            and real["ingame_cap_usd"] > 0 and isinstance(real.get("ingame_auto_runs_per_visit"), int)
+            and real["ingame_auto_runs_per_visit"] >= 1 and real.get("ingame_model") == "opus",
+            "the settings as shipped: in-game launches a bool (the Conductor ran the first by hand), a positive cap, at "
+            "least one automatic run per visit, opus (%s, %s, %s)" % (real.get("ingame_enabled"), real.get("ingame_cap_usd"),
+                                                                     real.get("ingame_auto_runs_per_visit")))
         off = dict(base, advancing=["Pyrelands"], ingame_enabled=False)
         on = dict(off, ingame_enabled=True)
         cap = "%g" % base.get("ingame_cap_usd", 0)

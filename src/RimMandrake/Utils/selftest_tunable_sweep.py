@@ -43,8 +43,8 @@ def fixture():
 def main():
     ok(TS.leaves({"_doc": 3, "a": [1, {"b": 2.5}], "t": True, "s": "x"}) == [(("a", 0), 1), (("a", 1, "b"), 2.5)],
        "leaves: numbers only, '_' keys and booleans skipped, list indices in the path")
-    ok(TS.mutated(4) == 8 and TS.mutated(1) == 2 and TS.mutated(0) == 1 and TS.mutated(0.5) == 0.75,
-       "mutation: int doubles (or +1 below 2), float x1.5")
+    ok(TS.mutated(4) == 8 and TS.mutated(1) == 2 and TS.mutated(0) == 1 and TS.mutated(0.85) == 0.925
+       and TS.mutated(2.5) == 3.75, "mutation: int doubles (or +1 below 2), a fraction goes halfway to 1, a float x1.5")
     d = fixture()
     rep = TS.sweep(d, "cfg.json", jobs=2, timeout=60, log=lambda s: None)
     ok(rep["leaves"] == 4 and rep["tests"] == 4, "it finds the 4 leaves and the 4 readers (%s, %s)" % (rep["leaves"], rep["tests"]))

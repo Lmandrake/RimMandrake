@@ -8,7 +8,8 @@ caused by the change alone. Selftests pin fixtures; at most one deliberate "ship
     tunable_sweep.py <config.json> [--tests T ...] [--out report.json] [--jobs N] [--timeout S]
 
 The scratch copy is a `git clone --shared` of HEAD in /tmp plus this tree's uncommitted edits to tracked files. Every
-numeric leaf (keys starting "_" skipped) is mutated at once (int n -> 2n, or n+1 below 2; float x1.5); the readers
+numeric leaf (keys starting "_" skipped) is mutated at once (int n -> 2n, or n+1 below 2; a fraction in (0, 1)
+halfway to 1; another float x1.5); the readers
 (default: every selftest_*.py naming the config's file name) run on the base and on the mutated copy. A test red only
 when mutated is bisected down to the leaves that alone turn it red. A test red on the base is reported, not judged.
 Prints one line per red reader and `RESULT: CLEAN|PINNED n`; exit 0 clean, 1 pinned, 2 usage.
@@ -37,6 +38,8 @@ def leaves(o, path=()):
 def mutated(v):
     if isinstance(v, int):
         return v * 2 if v >= 2 else v + 1
+    if 0 < v < 1:
+        return round((v + 1) / 2, 6)           # a fraction stays a fraction: halfway to 1
     return round(v * 1.5, 6) if v else 0.5
 
 

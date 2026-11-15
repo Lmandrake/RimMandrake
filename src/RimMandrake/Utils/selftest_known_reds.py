@@ -107,6 +107,13 @@ check("owner-ruled add still needs an open item", "open item" in (K.add_refusal(
 check("add passes at the threshold", K.add_refusal(A, "OPEN_ITEM", ns, OPEN, 3) is None)
 pol = K.policy()
 check("the threshold and age limit come from testing_policy.json, sane (>= 1 night, a positive age)", pol[0] >= 1 and pol[1] > 0, pol)
+# The owner tunes these in testing_policy.json: the shipped ones are range-checked here and at the cop's deadline; the cases
+# below run on the numbers shipped 2026-11-15 (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS, found by tunable_sweep.py).
+import testing_policy as TP  # noqa: E402  (known_reds imports it per call)
+REAL_PARAM = TP.param
+PINNED_POLICY = {"selftest.known_red_after_nights": 3, "selftest.red_fix_deadline_h": 72}
+TP.param = lambda name, policy=None, path=None: (PINNED_POLICY[name] if name in PINNED_POLICY and policy is None
+                                                  and path is None else REAL_PARAM(name, policy, path))
 
 # ---- the CLI's add refuses on the real path, and writes nothing
 K.ledger_open = lambda: set(OPEN)
@@ -215,9 +222,10 @@ check("cop: reds with one cause are one group; a generic line stands alone",
 check("cop: a group's key is stable and a valid alarm key", gs[0]["key"] == K.groups([B, A], {
     A: ("CRASH", ["OSError: [Errno 28] No space left on device: 'zz'"]), B: ("FAIL", ["OSError: [Errno 28] No space left on device"])})[0]["key"]
       and re.fullmatch(r"testing\.red_[a-z]{6}", gs[0]["key"]), gs[0]["key"])
-H = K.red_deadline_h()
-check("cop: the deadline comes from testing_policy.json, at least the nights it takes to park a red",
-      H >= 24 * K.policy()[0], H)
+H = float(REAL_PARAM("selftest.red_fix_deadline_h"))
+check("cop: the shipped deadline in testing_policy.json is at least the nights it takes to park a red",
+      H >= 24 * int(REAL_PARAM("selftest.known_red_after_nights")), H)
+check("cop: the deadline is read from the policy", K.red_deadline_h() == PINNED_POLICY["selftest.red_fix_deadline_h"])
 
 # ---- BUILD COP end to end, through the real rules and the real alarm step
 reset()
