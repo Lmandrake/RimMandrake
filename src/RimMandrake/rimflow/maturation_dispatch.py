@@ -1331,7 +1331,7 @@ def slow_chores(st, facts, now, fx=None):
 
 def reading(cfg, rows, now):
     owed = [r for r in rows if r.get("stage") == "offline_build" and r.get("owed") in OWED and not r.get("live")
-            and r.get("decision") not in ("launched",)]
+            and r.get("decision") not in ("launched",) and r.get("klass") not in ("paused", "owner")]
     mx = max([r.get("idle_min") or 0 for r in owed] or [0])
     over = [r["mod"] for r in owed if (r.get("idle_min") or 0) > cfg.get("idle_alarm_min", 60)]
     return {"schema": 1, "at": now, "at_pac": pac(now), "enabled": bool(cfg.get("enabled")),

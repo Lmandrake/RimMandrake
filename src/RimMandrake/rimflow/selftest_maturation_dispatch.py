@@ -524,8 +524,18 @@ def main():
         world["clone"] = (3, 0)
         rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK, page=False)
         world["clone"] = (0, 0)
-        ok(rd["idle_owed_max_min"] == 120 and rd["idle_owed_mods"] == ["GimmeSomeSlack"],
-           "a planted idle mod (owed 2 h, nothing on it) reads 120 min idle (%s)" % rd["idle_owed_max_min"])
+        ok(rd["mods"]["GimmeSomeSlack"].get("klass") == "paused" and rd["idle_owed_max_min"] == 0
+           and rd["idle_owed_mods"] == [],
+           "a paused mod (only a hand step is left, the steward is off) is not idle owed (%s)" % rd["idle_owed_max_min"])
+        # a genuinely idle mod (klass wait, nothing on it) alarms: put its reading where ops_watch reads it
+        idle = MD.reading(gss, [{"mod": "GimmeSomeSlack", "stage": "offline_build", "owed": "ready to advance",
+                                 "live": [], "decision": "queued", "klass": "wait", "idle_min": 120}], CLOCK)
+        ok(idle["idle_owed_max_min"] == 120 and idle["idle_owed_mods"] == ["GimmeSomeSlack"],
+           "a planted idle mod (owed 2 h, nothing on it) reads 120 min idle (%s)" % idle["idle_owed_max_min"])
+        rp = os.path.join(MD.sdir(), "reading.json")
+        cur = json.load(open(rp))
+        cur.update({k: idle[k] for k in ("idle_owed_max_min", "idle_owed_mods", "idle_alarm_min")})
+        json.dump(cur, open(rp, "w"))
         import ops_watch as OW
         got = OW.c_maturation(CLOCK + 60, {}, {})["maturation.idle_owed_max_min"]
         ok(got.get("v") == 120 and got.get("m") == "MEASURED", "ops_watch's maturation family reads it (%s)" % got)
@@ -555,8 +565,8 @@ def main():
         ok(got.get("m") == "UNMEASURED", "a clone the tick cannot read is UNMEASURED, never 0 (%s)" % got)
         reset()
         rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK, page=False)
-        ok(rd["idle_owed_max_min"] > 60, "a mod first seen owed counts its idle time from its stage's since (%s min)"
-           % rd["idle_owed_max_min"])
+        ok(rd["idle_owed_max_min"] == 0 and rd["mods"]["GimmeSomeSlack"].get("klass") == "paused",
+           "a mod first seen owed but paused (hand step, steward off) is not idle owed (%s min)" % rd["idle_owed_max_min"])
     finally:
         for k, v in env_was.items():
             if v is None:

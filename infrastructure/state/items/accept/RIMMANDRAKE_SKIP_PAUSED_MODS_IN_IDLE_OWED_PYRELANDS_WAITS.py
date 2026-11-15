@@ -6,6 +6,9 @@ cases = [
   ([row('P', 'paused', 'coverage_stop', 250)], [], 0),                                     # only paused -> 0
   ([], [], 0),                                                                             # empty
   ([row('Q', 'launch', 'x', 30)], [], 30),                                                 # under line
+  ([row('P', 'owner', 'waiting_owner', 245), row('Q', 'launch', 'x', 90)], ['Q'], 90),     # owner wait excluded, real idle kept
+  ([row('P', 'owner', 'waiting_owner', 245)], [], 0),                                      # only owner wait -> 0
+  ([row('P', 'owner', 'w', 245), row('S', 'paused', 'c', 250), row('Q', 'launch', 'x', 61)], ['Q'], 61),  # both skipped, idle alarms
   ([row('R', None, 'x', 70)], ['R'], 70),                                                  # klass absent still counts
 ]
 bad = 0
