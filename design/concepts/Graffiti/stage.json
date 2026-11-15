@@ -282,10 +282,17 @@
     "ref": "run rm-role-designer-1794754884",
     "stage": 5,
     "tokens": 204575
+   },
+   {
+    "at": "2026-11-15T15:11:19Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794755317",
+    "stage": 5,
+    "tokens": 249669
    }
   ],
   "reserve": 60000,
-  "spent": 8973495
+  "spent": 9223164
  },
  "coverage_rounds": [
   {
@@ -648,6 +655,24 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794754884 result rejected: gate: no coverage signature on the ledger"
+  },
+  {
+   "at": "2026-11-15T15:08:44Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "8973495 of 4000000 spent; run rm-role-designer-1794755317 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T15:08:44Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794755317, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-15T15:11:19Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794755317: stage 5 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -914,12 +939,33 @@
    "why": [
     "gate: no coverage signature on the ledger"
    ]
+  },
+  {
+   "at": "2026-11-15T15:11:19Z",
+   "inputs": {
+    "exam": "a0d1bb4d4af3f5676af559be2de09308a6302b452ce3a835608d4a502f092721",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
+    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
+    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1794755317",
+   "stage": 5,
+   "summary": "Lock retry after 9eb814c040 (Lock gate reads the concept's own clone; on origin/main). Coverage judge rm-coverage-judge-1794753924 signed tree a6eedf87 / sheet 40637a73 (covered, 0 gaps; rounds 24, 2, 0); the signature is on the BENCH ledger shard locally and on origin/main. concept_tree gate PASS in this clone; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20, after_the_raid 3 new, devout_wall 3 new). Mod item RIMMANDRAKE_FINISH_GRAFFITI_AGAINST_TREE_BUILT_BEFORE_IT (kind mod) is filed with ## verify citing design/concepts/Graffiti/tree.json and the accepted hash. Frozen artifacts unchanged. Still owed, not counted by the judge: record.json inv_mark_on_wall proof 'current' overstates the far-side clause until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands. Budget past cap (8.97M of 4.0M); raising it is the Conductor's call."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
