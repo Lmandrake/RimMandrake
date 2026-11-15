@@ -409,6 +409,10 @@ def stop_reason(st, d=None):
     if rel:
         after = rs[int(rel[-1].get("rounds_at") or 0):]
         if after and after[-1].get("verdict") != "covered":
+            if rel[-1].get("final"):
+                return ("the final look (granted %s, after %s) at round %d was %s: the owner's to decide" % (
+                    rel[-1].get("granted_at"), ", ".join(rel[-1].get("after") or []) or "nothing",
+                    len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict"))
             return "released for one more look at round %d; that look was %s" % (
                 len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict")
         # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
@@ -455,8 +459,36 @@ def hold(d, why, now=None):
         "verdicts": [r.get("verdict") for r in rs], "late": sum(len(r.get("late") or []) for r in rs)})
 
 
-def release(d, why, now=None):
-    """One more look, said with a reason: the block lifts and the next judge run counts as the last before a stop."""
+def item_states(ids):
+    """-> {id: ledger state, or None when never filed}, folded by model.replay over every shard."""
+    import model
+    w = model.replay(model.read())
+    return {i: getattr(w.items.get(i), "state", None) for i in ids}
+
+
+def grant_waits(st, item_state=None):
+    """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE -> what the standing granted release still waits on ([] when due), or
+    None when no grant stands. Due: every item it names is closed, and a locked_change (the re-pin) was written after
+    the grant in the concept's history."""
+    import model
+    g = st.get("coverage_release_granted")
+    if not isinstance(g, dict):
+        return None
+    after = [x for x in g.get("after") or [] if x]
+    states = (item_state or item_states)(after) if after else {}
+    waits = ["%s (%s)" % (i, states.get(i) or "never filed") for i in after if states.get(i) not in model.TERMINAL]
+    hs = [h for h in st.get("history") or [] if isinstance(h, dict)]
+    at = max((n for n, h in enumerate(hs) if h.get("what") == "coverage_release_granted"), default=-1)
+    if not any(h.get("what") == "locked_change" for h in hs[at + 1:]):
+        waits.append("the re-pin (a locked_change after the grant at %s: designer_stage.py repin)" % g.get("at"))
+    return waits
+
+
+def release(d, why, now=None, after=None, item_state=None):
+    """One more look, said with a reason: the block lifts and the next judge run counts as the last before a stop.
+    With `after` (item ids), the release is GRANTED now and takes effect later (RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE,
+    "fix first, then exactly one more look"): the grant is recorded and the stop stands. A later plain release (the
+    locked-change chain's) applies it once grant_waits is empty, as one final look; before that it is refused."""
     import refusal_contract as RC
     if not CT.txt(why):
         raise DS.Refused("a release says why")
@@ -464,7 +496,32 @@ def release(d, why, now=None):
     if DS.standing_park(st, d):
         raise DS.Refused("parked for him (%s): only his word on %s lifts a park, not a release" % (
             st["park"].get("kind"), st.get("item")))
-    st.setdefault("coverage_releases", []).append({"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))})
+    g = st.get("coverage_release_granted")
+    if after:
+        after = list(dict.fromkeys(a.strip() for a in after if a and a.strip()))
+        if isinstance(g, dict):
+            raise DS.Refused("a granted release already stands (at %s, after %s): it is the one look" % (
+                g.get("at"), ", ".join(g.get("after") or [])))
+        if not st.get("coverage_stop"):
+            raise DS.Refused("judging is not stopped on %s: a release after fixes is granted on a stop" %
+                             os.path.basename(os.path.abspath(d)))
+        states = (item_state or item_states)(after)
+        unfiled = [a for a in after if not states.get(a)]
+        if unfiled:
+            raise DS.Refused("a grant waits on filed items; never filed: %s" % ", ".join(unfiled))
+        st["coverage_release_granted"] = {"at": DS.now_iso(), "why": why, "after": after}
+        DS.hist(st, "coverage_release_granted", "%s (takes effect after %s close and the re-pin lands)" % (
+            why, ", ".join(after)))
+        DS.write_json(DS.state_path(d), st)
+        return st
+    rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))}
+    if isinstance(g, dict):
+        waits = grant_waits(st, item_state)
+        if waits:
+            raise DS.Refused("the release granted at %s waits on: %s" % (g.get("at"), "; ".join(waits)))
+        rec.update(granted_at=g.get("at"), granted_why=g.get("why"), after=list(g.get("after") or []), final=True)
+        st.pop("coverage_release_granted", None)
+    st.setdefault("coverage_releases", []).append(rec)
     st.pop("coverage_stop", None)
     if st.get("status") == "blocked" and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID):
         st["status"] = "ready"
@@ -1006,6 +1063,8 @@ def main(argv=None):
     rl = sub.add_parser("release", help="one more judge look on a stopped concept")
     rl.add_argument("dir")
     rl.add_argument("--why", required=True)
+    rl.add_argument("--after", action="append", default=[], metavar="ITEM",
+                    help="grant the look now, taking effect after ITEM closes and the re-pin lands (repeatable)")
     a = ap.parse_args(argv)
     d = os.path.abspath(a.dir)
     if a.cmd == "status":
@@ -1014,11 +1073,17 @@ def main(argv=None):
         return 2 if what == "error" else 0
     if a.cmd == "release":
         try:
-            st = release(d, a.why)
+            st = release(d, a.why, after=a.after)
         except (DS.Refused, OSError, ValueError) as e:
             print("coverage_judge: release refused: %s" % e)
             return 2
-        print("coverage_judge: released %s for one more look (status %s)" % (os.path.basename(d), st.get("status")))
+        if a.after:
+            print("coverage_judge: granted %s one final look, after %s close and the re-pin lands (status %s)" % (
+                os.path.basename(d), ", ".join(a.after), st.get("status")))
+            return 0
+        print("coverage_judge: released %s for one %slook (status %s)" % (
+            os.path.basename(d), "final " if (st.get("coverage_releases") or [{}])[-1].get("final") else "more ",
+            st.get("status")))
         return 0
     what, why = plan(d)
     if what == "error":

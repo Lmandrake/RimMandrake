@@ -7,7 +7,8 @@ three hours, gaps 19,14,11,6,9,7,6,4,4) through a fake judge that answers each i
 shows judging stopping at the third: the concept blocked on REFUSAL_NOTHING_COULD_EVER_PASS, one alarm row and one told
 row however often it trips, the Designer's run kept from starting (exit 3), and six verdicts never paid for. Then: a
 healthy concept (two not_covered, then covered) still signs with no alarm; EK's own nine legacy charges stop it with no
-judge run; a release grants exactly one more look; the spend cap; the program's late tags; the alarm's route.
+judge run; a release grants exactly one more look; a release granted after named fixes waits for them and the re-pin,
+then is one final look; the spend cap; the program's late tags; the alarm's route.
 The claude call, the signature and the exam are stubbed; every write goes to a temp dir."""
 import json
 import os
@@ -112,6 +113,68 @@ def release(d, judge, root, ops, rounds):
     check("the trip after a release tells again (second told row)", len(told_rows(ops)) == 2, told_rows(ops))
     rec, _ = CJ.run(d, os.path.join(root, "ek"), judge, now=1794101000)
     check("and no look after that", judge.calls == 4 and rec.get("stopped"))
+
+
+def granted(root, rounds):
+    """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE: "fix first, then exactly one more look" as data. A release granted
+    now with --after waits on its items closing and the re-pin landing, then counts as one final look."""
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted")
+    d = concept(os.path.join(root, "granted"))
+    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
+    for i in range(3):
+        CJ.run(d, os.path.join(root, "granted"), judge, now=1794400000 + 1200 * i)
+    check("granted: three not_covered stop judging", DS.load_state(d).get("status") == "blocked" and judge.calls == 3)
+    states = {"FIX_A": "proposed"}
+    saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
+    try:
+        try:
+            CJ.release(d, "one final look after a ticket never filed", after=["NOPE_NEVER_FILED"])
+            check("granted: a grant naming an item never filed is refused", False)
+        except DS.Refused as e:
+            check("granted: a grant naming an item never filed is refused", "NOPE_NEVER_FILED" in str(e), str(e))
+        rc = CJ.main(["release", d, "--why", "per d_x: one final look after FIX_A and its re-pin", "--after", "FIX_A"])
+        st = DS.load_state(d)
+        g = st.get("coverage_release_granted") or {}
+        check("granted: `release --after` records the grant and the stop stands (no look yet)",
+              rc == 0 and g.get("after") == ["FIX_A"] and st["status"] == "blocked" and st.get("coverage_stop")
+              and st["history"][-1]["what"] == "coverage_release_granted" and RC.open_alarms()
+              and CJ.plan(d, os.path.join(root, "granted"))[0] == "stopped", (rc, g, st.get("status")))
+        try:
+            CJ.release(d, "a second grant", after=["FIX_A"])
+            check("granted: a second grant while one stands is refused", False)
+        except DS.Refused as e:
+            check("granted: a second grant while one stands is refused", "stands" in str(e), str(e))
+        try:
+            CJ.release(d, "the chain's release")
+            check("granted: a release while FIX_A is open is refused, naming it", False)
+        except DS.Refused as e:
+            check("granted: a release while FIX_A is open is refused, naming it", "FIX_A" in str(e), str(e))
+        states["FIX_A"] = "done"
+        try:
+            CJ.release(d, "the chain's release")
+            check("granted: FIX_A closed but no re-pin since the grant: refused, naming the re-pin", False)
+        except DS.Refused as e:
+            check("granted: FIX_A closed but no re-pin since the grant: refused, naming the re-pin",
+                  "re-pin" in str(e), str(e))
+        st = DS.load_state(d)
+        DS.hist(st, "locked_change", "fixed FIX_A; re-pinned stage 3 (scenes)")
+        DS.write_json(DS.state_path(d), st)
+        st = CJ.release(d, "the chain's release after the re-pin")
+        rel = (st.get("coverage_releases") or [{}])[-1]
+        check("granted: closed + re-pinned -> the grant applies as one final release; block and alarm lift",
+              rel.get("final") is True and rel.get("after") == ["FIX_A"] and rel.get("granted_at") == g.get("at")
+              and "coverage_release_granted" not in st and st["status"] == "ready" and not RC.open_alarms(),
+              (rel, st.get("status")))
+        judge.script[:] = [answer("not_covered", rounds[3]["gaps"], rounds[3]["tokens"])]
+        rec, _ = CJ.run(d, os.path.join(root, "granted"), judge, now=1794500000)
+        st = DS.load_state(d)
+        check("granted: the final look is judged once; not covering stops it, the stop naming the final look",
+              judge.calls == 4 and rec.get("stopped") and st["status"] == "blocked"
+              and "final look" in (st.get("coverage_stop") or {}).get("why", ""), (judge.calls, st.get("coverage_stop")))
+        rec, _ = CJ.run(d, os.path.join(root, "granted"), judge, now=1794501000)
+        check("granted: and no look after the final one", judge.calls == 4 and rec.get("stopped"))
+    finally:
+        CJ.item_states = saved
 
 
 def healthy(root):
@@ -225,6 +288,7 @@ def main():
                               RM_DISPATCHER_STATE=os.path.join(root, "dispatcher"))
             d, judge = ek_replay(root, rounds, ops)
             release(d, judge, root, ops, rounds)
+            granted(root, rounds)
             healthy(root)
             legacy(root, rounds)
             units()
