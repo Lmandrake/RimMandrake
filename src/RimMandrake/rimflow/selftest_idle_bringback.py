@@ -45,7 +45,10 @@ import seat_restart as SR  # noqa: E402
 
 SEAT = "FOUNDRY"
 FAILS = []
-REAL = D.load_schedule()
+SHIPPED = D.load_schedule()
+REAL = json.loads(json.dumps(SHIPPED))
+# the owner tunes these; the cases run on pinned numbers, the shipped ones are range-checked in test_schedule
+REAL.update(idle_bringback_after_min=30, fresh_take_s=900, tick_s=120, handoff_s=600)
 # a worker seat of the old FOUNDRY shape: the live schedule has none since it retired (owner by card 2026-11-02)
 REAL["seats"].setdefault(SEAT, {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"})
 REAL["seat_restart"]["seats"].setdefault(SEAT, {"backstop": True, "backstop_ctx_tokens": 110000, "backstop_busy": True, "backstop_hard_tokens": 200000, "backstop_hard_alarm_s": 3600, "backstop_idle_s": 1800, "grace_s": 20, "quiet_s": 20, "helper_stale_s": 1800})
@@ -402,9 +405,10 @@ def test_first_prompt():
 
 
 def test_schedule():
-    check(REAL.get("idle_bringback_after_min") == 30, "dispatcher_schedule.json: idle_bringback_after_min 30")
-    check(REAL.get("fresh_take_s") == 900, "dispatcher_schedule.json: fresh_take_s 900")
-    check(SR.bb_rule(REAL) == (1800, 900), "the rule reads it")
+    lim, fresh = SHIPPED.get("idle_bringback_after_min"), SHIPPED.get("fresh_take_s")
+    check(isinstance(lim, int) and lim > 0 and isinstance(fresh, int) and fresh > 0,
+          "dispatcher_schedule.json: idle_bringback_after_min and fresh_take_s are positive (%r, %r)" % (lim, fresh))
+    check(SR.bb_rule(SHIPPED) == (lim * 60, fresh), "the rule reads them")
     try:
         SR.bb_rule({"idle_bringback_after_min": "30"})
         check(False, "a malformed limit is refused")

@@ -4,7 +4,8 @@
     python3 src/RimMandrake/rimflow/selftest_focus_cap.py
 
 The planted fault runs on the real path: cli.py as a subprocess on a throwaway ledger, a schedule copied from the real
-dispatcher_schedule.json so the number under test is the shipped one. N+1 ready items and N started: `next` offers no new
+dispatcher_schedule.json, its numbers pinned (per_seat 8, waits_max 2: the owner tunes the shipped ones, range-checked
+once). N+1 ready items and N started: `next` offers no new
 item; a dated wait frees one place; a third wait is refused; an expired wait counts again. The cap is also reached the way
 workers reach it, by non-peek `next` reservations of filed items. Relentless reads the same key on its live staffing path.
 A bare `claim <ID>` with no token from `next` is held to the same cap (CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR).
@@ -22,6 +23,7 @@ from rimflow import model, priority, relentless  # noqa: E402
 CLI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cli.py")
 REAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
 FAILS = []
+PINNED = {"per_seat": 8, "waits_max": 2}
 
 
 def check(ok, msg):
@@ -39,7 +41,7 @@ class Sandbox(object):
         with open(REAL) as f:
             c = json.load(f)["focus_cap"]
         # The shipped list is empty since FOUNDRY retired (2026-11-02); the cap's mechanism is tested on BENCH.
-        c.update(dict({"seats": ["BENCH"]}, **over))
+        c.update(dict({"seats": ["BENCH"]}, **dict(PINNED, **over)))
         self.cap = c
         with open(self.sched, "w") as f:
             json.dump({"focus_cap": c}, f)
@@ -71,8 +73,12 @@ def offered(out):
 
 def planted_overflow():
     x = Sandbox()
+    with open(REAL) as f:
+        real = json.load(f)["focus_cap"]
+    check(isinstance(real.get("per_seat"), int) and real["per_seat"] >= 1 and isinstance(real.get("waits_max"), int)
+          and real["waits_max"] >= 1, "the shipped schedule holds sane numbers: per_seat %s, waits_max %s"
+          % (real.get("per_seat"), real.get("waits_max")))
     n, waits = x.cap["per_seat"], x.cap["waits_max"]
-    check(n >= 1 and waits == 2, "the shipped schedule holds the number: per_seat %d, waits_max %d" % (n, waits))
     focus = ["PLANT%s_FIX_STILL_OPEN" % "ABCDEFGHIJ"[k] for k in range(n + 1)]
     for i in focus[:n - 1]:
         x.item(i, start=True)

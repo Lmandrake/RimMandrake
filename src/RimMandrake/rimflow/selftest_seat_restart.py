@@ -1036,8 +1036,9 @@ def test_e6_the_deadline_is_the_one_written_at_the_kill():
 def test_v1_foundry_grace_is_30_s():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
-    check(SR.config(live).get("BENCH", {}).get("grace_s") == 20,
-          "V1 the live schedule gives BENCH a 20 s restart grace (%s)" % SR.config(live).get("BENCH", {}).get("grace_s"))
+    g = SR.config(live).get("BENCH", {}).get("grace_s")
+    check(isinstance(g, (int, float)) and 0 < g < 600,
+          "V1 the live schedule gives BENCH a short restart grace, under 10 min (%s; the owner tunes it)" % g)
 
 
 def _tx_file(name, recs):
@@ -1432,7 +1433,8 @@ def test_g5_live_schedule_has_the_conductor_entry():
     check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "claude-fable-5-2"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
-    check(c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s; grace_s never times a goodbye)" % c.get("goodbye_quiet_s"))
+    check(isinstance(c.get("goodbye_quiet_s"), (int, float)) and 0 <= c["goodbye_quiet_s"] < 600,
+          "G5 BENCH goodbye fires within minutes (%s; shipped 0 = instantly; grace_s never times a goodbye)" % c.get("goodbye_quiet_s"))
     check(c.get("backstop") is not True or ((c.get("backstop_human_idle_s") or 0) >= 7200
                                             and (c.get("backstop_idle_s") or 0) >= 1800),
           "G5 a BENCH backstop waits >= 2 h without a human message and >= 30 min idle (%s / %s)"
@@ -2104,10 +2106,14 @@ def test_j8_request_stores_the_transcript_it_read():
 
 
 
+CONDUCTOR_LIMITS = {"backstop": True, "backstop_ctx_tokens": 110000, "backstop_busy": True, "backstop_hard_tokens": 200000,
+                    "backstop_hard_alarm_s": 3600, "backstop_idle_s": 1800, "grace_s": 20, "quiet_s": 20,
+                    "helper_stale_s": 1800, "backstop_human_idle_s": 14_400, "goodbye_quiet_s": 0}
+
+
 def _conductor_like_foundry():
-    """BENCH's limits, read from the live schedule, on the test seat."""
-    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
-        raw = json.load(f)["seat_restart"]["seats"]["BENCH"]
+    """BENCH's limits as shipped 2026-11-01 (the owner tunes the live file; the cases run on these), on the test seat."""
+    raw = CONDUCTOR_LIMITS
     keys = ("grace_s", "quiet_s", "goodbye_quiet_s", "backstop", "backstop_ctx_tokens", "backstop_busy", "backstop_hard_tokens",
             "backstop_hard_alarm_s", "backstop_idle_s", "backstop_human_idle_s", "helper_stale_s")
     return bsched(**{k: raw[k] for k in keys})
@@ -2118,13 +2124,13 @@ def test_conductor_backstop_foundry_limits():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         seats = json.load(f)["seat_restart"]["seats"]
     b = seats["BENCH"]
-    f_ = {"backstop": True, "backstop_ctx_tokens": 110000, "backstop_busy": True, "backstop_hard_tokens": 200000, "backstop_hard_alarm_s": 3600, "backstop_idle_s": 1800, "grace_s": 20, "quiet_s": 20, "helper_stale_s": 1800}      # FOUNDRY's limits as the owner matched them; the seat itself retired 2026-11-02
-    same = ("backstop", "backstop_ctx_tokens", "backstop_busy", "backstop_hard_tokens", "backstop_hard_alarm_s",
-            "backstop_idle_s", "grace_s", "quiet_s", "helper_stale_s")
-    check({k: b.get(k) for k in same} == {k: f_.get(k) for k in same}, "CB live: BENCH has every one of the limits he matched (%s)"
-          % {k: (b.get(k), f_.get(k)) for k in same if b.get(k) != f_.get(k)})
-    check(b.get("backstop_human_idle_s") == 14_400 and b.get("goodbye_quiet_s") == 0,
-          "CB live: his human-idle gate and his instant goodbye stand")
+    # he matched FOUNDRY's limits (CONDUCTOR_LIMITS, the seat retired 2026-11-02) and tunes them since: the live file
+    # keeps every key, switched on, with numbers that make sense; the cases below run on the pinned copy
+    nums = [k for k, v in CONDUCTOR_LIMITS.items() if not isinstance(v, bool)]
+    bad = {k: b.get(k) for k in nums if not isinstance(b.get(k), (int, float)) or isinstance(b.get(k), bool) or b.get(k) < 0}
+    check(not bad and b.get("backstop") is True and b.get("backstop_busy") is True
+          and b["backstop_ctx_tokens"] < b["backstop_hard_tokens"] and b["backstop_human_idle_s"] >= 7200,
+          "CB live: BENCH has every limit he matched, soft under hard, human idle >= 2 h (%s)" % bad)
     check("mid-conversation" in b.get("_why_backstop", ""), "CB live: the schedule states the hard line outruns human idle")
     sch = _conductor_like_foundry()
     recent = (T0 - 600, {}, 10, 100)

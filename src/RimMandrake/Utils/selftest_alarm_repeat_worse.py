@@ -216,8 +216,19 @@ def test_rule_rows():
     ok(not OW.step_crossed(1, 9, ">", None), "a row with no step never breaks on value")
 
 
+def shipped_sch():
+    return json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text())
+
+
+def pinned_repeat(sch):
+    """The owner tunes the 6 h repeat limit and the x2 step; the cases run on those numbers, on the shipped rows."""
+    return {"alarm_every_s": 21600,
+            "alarm_worse": [dict(r, factor=2) if isinstance(r, dict) and "factor" in r else r for r in sch["alarm_worse"]]}
+
+
 def dsch(**kw):
-    sch = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text())
+    sch = shipped_sch()
+    sch.update(pinned_repeat(sch))
     sch.update(ledger_notes=True, alarm_item="X_Y", publish=False, incident={"enabled": False},
                no_handoff={"conductor_log": str(TMP / "d_log.md")})
     sch.update(kw)
@@ -235,7 +246,12 @@ def test_dispatcher_breaks_on_worse():
     sch, st, notes, root = dsch(), {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, [], str(TMP / "d")
     os.makedirs(root, exist_ok=True)
     every = sch["alarm_every_s"]
-    ok(every == 21600 and any(r["match"] == "long_helper:*" for r in sch["alarm_worse"]), "the real schedule's 6 h and its stated step")
+    real = shipped_sch()
+    ok(isinstance(real.get("alarm_every_s"), (int, float)) and real["alarm_every_s"] > 0
+       and any(r["match"] == "long_helper:*" for r in real["alarm_worse"])
+       and all(r.get("factor", 2) > 1 for r in real["alarm_worse"] if isinstance(r, dict)),
+       "the real schedule states a repeat limit > 0 and a long_helper step, every factor > 1")
+    ok(every == 21600, "the cases run on the pinned 6 h")
     acts = []
     def act(**k):
         acts.append(k)
@@ -318,9 +334,8 @@ def test_every_stated_step_stays():
 def test_real_emitters_break_on_worse():
     """dead, seat_declined and idle_full_queue: the real decide emits the impact, the real schedule's row and 6 h decide."""
     import selftest_dispatcher as SD
-    real = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text())
     base = dict(ledger_notes=True, alarm_item="X_Y", publish=False, incident={"enabled": False},
-                alarm_every_s=real["alarm_every_s"], alarm_worse=real["alarm_worse"])
+                **pinned_repeat(shipped_sch()))
     root = str(TMP / "emit")
     os.makedirs(root, exist_ok=True)
     # dead: the impact is how long the seat has been dead

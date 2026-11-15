@@ -29,7 +29,11 @@ import seat_restart as SR  # noqa: E402
 
 FAILS = []
 SHIPPED = json.loads((HERE.parent / "rimflow/dispatcher_schedule.json").read_text(encoding="utf-8"))
-LIM = RR.limits(SHIPPED)
+REAL_LIM = RR.limits(SHIPPED)          # the owner tunes these: range-checked below, and the timer must follow pass_s
+# the cases run on the numbers shipped 2026-11-01, pinned
+PINNED = dict(SHIPPED, restart_reconcile_s=600, restart_reconcile_held_s=3900, restart_reconcile_hold_fresh_s=480,
+              restart_reconcile_pass_s=120, restart_reconcile_slack_s=60, restart_reconcile_lookback_s=86400)
+LIM = RR.limits(PINNED)
 RECORD = [json.loads(x) for x in (HERE / "testdata/restart_goodbyes_2026-11-01.jsonl").read_text(encoding="utf-8").splitlines()]
 PASS = LIM["restart_reconcile_pass_s"]
 
@@ -44,7 +48,7 @@ def fresh(name):
     root = TMP / name
     (root / "restart" / "done").mkdir(parents=True)
     log = TMP / (name + "_log.md")
-    sch = json.loads(json.dumps(SHIPPED))
+    sch = json.loads(json.dumps(PINNED))
     sch["seat_restart"]["seats"]["BENCH"]["seat_log"] = str(log)
     return str(root), sch, log
 
@@ -72,11 +76,11 @@ def request_file(root, seat, ts, reason="goodbye", where="."):
 
 
 # ---- the shipped numbers keep the promise
-check(LIM["restart_reconcile_s"] == 600, "restart_reconcile_s is 600 in dispatcher_schedule.json")
-check(LIM["restart_reconcile_s"] - LIM["restart_reconcile_slack_s"] >= LIM["restart_reconcile_s"] - LIM["restart_reconcile_pass_s"] - LIM["restart_reconcile_slack_s"]
-      and LIM["restart_reconcile_pass_s"] + LIM["restart_reconcile_slack_s"] < 600, "a pass and a filing fit inside the bound")
+check(REAL_LIM["restart_reconcile_s"] > 0, "restart_reconcile_s is a positive bound in dispatcher_schedule.json (the owner tunes it)")
+check(REAL_LIM["restart_reconcile_s"] - REAL_LIM["restart_reconcile_slack_s"] >= REAL_LIM["restart_reconcile_s"] - REAL_LIM["restart_reconcile_pass_s"] - REAL_LIM["restart_reconcile_slack_s"]
+      and REAL_LIM["restart_reconcile_pass_s"] + REAL_LIM["restart_reconcile_slack_s"] < REAL_LIM["restart_reconcile_s"], "a pass and a filing fit inside the bound")
 unit = (HERE / "systemd/rm-restart-reconcile.timer").read_text(encoding="utf-8")
-check("OnUnitInactiveSec=%ds" % PASS in unit, "the timer's period is restart_reconcile_pass_s")
+check("OnUnitInactiveSec=%ds" % REAL_LIM["restart_reconcile_pass_s"] in unit, "the timer's period is restart_reconcile_pass_s")
 try:
     RR.limits({})
     check(False, "a missing threshold fails by name")
@@ -242,7 +246,7 @@ sp = OW.ops_dir()
 sp.mkdir(parents=True)
 (sp / "restart_reconcile_state.json").write_text(json.dumps({"armed_at": T0 - 5}), encoding="utf-8")
 sf = TMP / "sch.json"
-cli = json.loads(json.dumps(SHIPPED))
+cli = json.loads(json.dumps(PINNED))
 cli["seat_restart"]["seats"]["BENCH"]["seat_log"] = str(TMP / "cli_log.md")
 sf.write_text(json.dumps(cli), encoding="utf-8")
 os.environ["RM_RESTART_RECONCILE_SCHEDULE"] = str(sf)

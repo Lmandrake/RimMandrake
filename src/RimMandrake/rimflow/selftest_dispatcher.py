@@ -364,8 +364,10 @@ def test_no_handoff_rering_and_escalation():
     is rung again on the bounded no_handoff backoff (not after cooldown_s), and escalated after escalate_after."""
     real = D.load_schedule()
     nh = D.no_handoff_rule(real)
-    check(nh["rering_s"] == [300, 900, 1800] and nh["escalate_after"] == 3 and max(nh["rering_s"]) < real["cooldown_s"],
-          "real schedule: no_handoff.rering_s [300, 900, 1800] (bounded, all under cooldown_s), escalate_after 3")
+    check(nh["rering_s"] and all(x > 0 for x in nh["rering_s"]) and nh["escalate_after"] >= 1
+          and max(nh["rering_s"]) < real["cooldown_s"],
+          "real schedule: no_handoff.rering_s bounded, all under cooldown_s, escalate_after >= 1 (the owner tunes them)")
+    nh = D.no_handoff_rule(dict(real, no_handoff=dict(real["no_handoff"], rering_s=[300, 900, 1800], escalate_after=3)))
     sch = sched(caps=real["caps"], no_handoff={"rering_s": [300, 900, 1800], "escalate_after": 3,
                                                "_doc": "ignored"})
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
@@ -1127,13 +1129,18 @@ def test_schedule_keeps_no_unread_helper_keys():
     check(not code, "no code reads a pruned key: %s" % code)
 
 
+CON_CAPS_PINNED = {"quick_token_cap": 450000, "daily_token_cap": 1350000}
+OPS_CAPS_PINNED = {"run_token_cap": 600000, "economy_token_cap": 700000, "daily_token_cap": 4900000,
+                   "alarm_runs_per_alarm_per_day": 1, "alarm_runs_per_day": 2}
+
+
 def test_role_real_schedule_caps_and_ops_bands():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
     c, o = roles["Conductor"], roles["Operations"]
-    check(c["quick_token_cap"] == 450000 and c["daily_token_cap"] == 1350000 and c["session_week_pct_cap"] is None,
-          "schedule: Conductor caps 450,000 / 1,350,000, no session cap (owner 2026-11-04: all token limits rescinded)")
-    check(o["run_token_cap"] == 600000
+    check(0 < c["quick_token_cap"] <= c["daily_token_cap"] and c["session_week_pct_cap"] is None,
+          "schedule: Conductor quick cap under its daily cap, no session cap (owner 2026-11-04: all token limits rescinded)")
+    check(o["run_token_cap"] > 0
           and o["daily_token_cap"] >= o["economy_token_cap"] + o["run_token_cap"] * 2,
           "schedule: Operations daily cap fits economy + evening + one alarm run")
     for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
@@ -1433,9 +1440,9 @@ def test_review_q():
           "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check (schedule bands; "
           "the role file carries no band text since review T, F6)")
     # band mechanism on the frozen pre-2460d2cc0a bands (the live ones were neutralized by owner order, 2026-10-28)
-    rc = dict(real["Conductor"], throttle_bands=CON_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"),
+    rc = dict(real["Conductor"], **CON_CAPS_PINNED, throttle_bands=CON_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"),
               off_file=os.path.join(TMP, "CQ_OFF"))
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
+    ro = dict(real["Operations"], **OPS_CAPS_PINNED, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
     c8 = at_local("08:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(c8): "x"}, "runs": []}}
@@ -1537,8 +1544,8 @@ def test_review_r():
     check(D.publish_bounded(0, 0, argv=["sleep", "30"]).startswith("publish skipped"), "R-A no budget left: no publish")
     # B: an Operations alarm run (or yesterday's late run) does not let the Conductor skip today's 07:30 run
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
-    rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CR_OFF"))
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    rc = dict(real["Conductor"], **CON_CAPS_PINNED, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CR_OFF"))
+    ro = dict(real["Operations"], **OPS_CAPS_PINNED, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     t801 = at_local("08:00", 60)
     for label, run in (("an alarm run at 02:00", {"at": at_local("02:00"), "mode": "alarm", "slot": "alarm OPS_A"}),
                        ("yesterday's 19:30 run launched late", {"at": at_local("20:10") - 86400, "mode": "run",
@@ -2711,9 +2718,11 @@ def test_review_x_alarm_flap():
     crowd out the 07:30 / 19:30 scheduled runs: alarm runs reserve the scheduled runs' budget, and the schedule's
     alarm_runs_per_alarm_per_day / alarm_runs_per_day limit them."""
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
-    base = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
-    check(base.get("alarm_runs_per_alarm_per_day") == 1 and base.get("alarm_runs_per_day") == 2,
-          "X1: the real schedule holds the alarm limits as data (1 per alarm, 2 per day)")
+    ops = real["Operations"]
+    check(isinstance(ops.get("alarm_runs_per_alarm_per_day"), int) and isinstance(ops.get("alarm_runs_per_day"), int)
+          and 1 <= ops["alarm_runs_per_alarm_per_day"] <= ops["alarm_runs_per_day"],
+          "X1: the real schedule holds the alarm limits as data (per alarm <= per day; the owner tunes them)")
+    base = dict(ops, **OPS_CAPS_PINNED, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
 
     def day(ro, keys):
         t0 = at_local("00:00")

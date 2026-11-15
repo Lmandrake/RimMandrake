@@ -666,10 +666,11 @@ def test_live_schedule():
     with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
         s = json.load(f)["seat_restart"]["seats"]
     be = s["BENCH"]
-    check(be.get("backstop") is True and be.get("backstop_busy") is True and be.get("backstop_ctx_tokens") == SOFT
-          and be.get("backstop_hard_tokens") == HARD, "live: BENCH runs the same limits (owner by card 2026-11-01)")
+    soft, hard = be.get("backstop_ctx_tokens"), be.get("backstop_hard_tokens")
+    check(be.get("backstop") is True and be.get("backstop_busy") is True and isinstance(soft, int) and isinstance(hard, int)
+          and 0 < soft < hard, "live: BENCH runs a soft and a hard limit, soft under hard (owner by card 2026-11-01; he tunes them)")
     dead = D.load_schedule(os.path.join(HERE, "dispatcher_schedule.json"))
-    check(be.get("backstop_hard_alarm_s", 0) > 0 and SR.config(dead)["BENCH"]["backstop_hard_tokens"] == HARD,
+    check(be.get("backstop_hard_alarm_s", 0) > 0 and SR.config(dead)["BENCH"]["backstop_hard_tokens"] == hard,
           "config() passes the new keys")
 
 
