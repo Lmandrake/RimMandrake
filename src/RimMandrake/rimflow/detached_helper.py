@@ -46,6 +46,7 @@ Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expecte
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
 """
 import argparse
+import glob
 import json
 import os
 import re
@@ -496,12 +497,41 @@ def return_all(runner=subprocess.run, evictor=None, busy=None, publish_ledger=Tr
     return worst, "\n".join(out) or "no finished run holds a pool clone"
 
 
+# RIMMANDRAKE_GIVE_DETACHED_UNITS_WINDOWS_PATH_PYTHON_EXE_VANISHED: a launcher started from a timer has no /mnt/c on PATH
+# and no WSL_INTEROP, so its unit could not run python.exe, tasklist.exe or ./game (FlowWorks visit 1, 2026-11-15).
+WSL_FLAG = "/proc/sys/fs/binfmt_misc/WSLInterop"
+WSL_SOCKET = "/run/WSL/1_interop"
+WIN_DIRS = ("/mnt/c/Windows/System32", "/mnt/c/Windows", "/mnt/c/Windows/System32/WindowsPowerShell/v1.0")
+WIN_APPS_GLOB = "/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps"
+
+
+def unit_path(base, claude, exists=os.path.exists, isdir=os.path.isdir, globber=glob.glob):
+    """-> the unit's PATH: claude's dir, the launcher's PATH, and on WSL the Windows dirs it lacks, each once."""
+    parts = [os.path.dirname(claude)] + (base or "/usr/bin:/bin").split(":")
+    if exists(WSL_FLAG):
+        parts += [d for d in WIN_DIRS if isdir(d)] + sorted(d for d in globber(WIN_APPS_GLOB) if isdir(d))
+    out = []
+    for d in parts:
+        if d and d not in out:
+            out.append(d)
+    return ":".join(out)
+
+
+def unit_interop(environ=os.environ, exists=os.path.exists):
+    """-> the WSL interop socket the unit gets: the launcher's when it is alive, else the machine's; None off WSL."""
+    v = environ.get("WSL_INTEROP")
+    if v and exists(v):
+        return v
+    return WSL_SOCKET if exists(WSL_SOCKET) else None
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
     bounded = os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh")
     bound = int(rec["max_s"]) + GRACE_S if rec.get("max_s") else None     # None: unbounded
-    path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
+    path = unit_path(os.environ.get("PATH"), claude)
+    soc = unit_interop()
     finish = "/usr/bin/python3 %s finish --unit %s" % (shlex.quote(os.path.abspath(__file__)), unit)
     wrapup = "-+/usr/bin/python3 %s unit --unit %s --seat %s --clone %s" % (
         shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")), shlex.quote(unit),
@@ -525,6 +555,7 @@ def launch_argv(rec, msg, claude):
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
             *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
             "-p", "TimeoutStopSec=30",
+            *(["--setenv", "WSL_INTEROP=" + soc] if soc else []),
             "--setenv", "PATH=" + path, "--"] + cmd
 
 

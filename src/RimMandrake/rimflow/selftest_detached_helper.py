@@ -953,6 +953,41 @@ def test_owed_close():
         "owed: the status page line goes once a LEFT OPEN note names what is left")
 
 
+def test_windows_path():
+    """RIMMANDRAKE_GIVE_DETACHED_UNITS_WINDOWS_PATH_PYTHON_EXE_VANISHED: a unit started from a timer had no /mnt/c on PATH
+    and no WSL_INTEROP, so python.exe, tasklist.exe and ./game 'did not exist' (FlowWorks visit 1, 2026-11-15)."""
+    apps = "/mnt/c/Users/U/AppData/Local/Microsoft/WindowsApps"
+    p = DH.unit_path("/usr/bin:/bin", "/home/u/.local/bin/claude", exists=lambda x: True, isdir=lambda x: True,
+                     globber=lambda pat: [apps])
+    parts = p.split(":")
+    check(parts[:3] == ["/home/u/.local/bin", "/usr/bin", "/bin"], "winpath: claude's dir, then the launcher's PATH")
+    check("/mnt/c/Windows/System32" in parts and apps in parts and
+          "/mnt/c/Windows/System32/WindowsPowerShell/v1.0" in parts, "winpath: System32, PowerShell, WindowsApps added on WSL")
+    p2 = DH.unit_path("/usr/bin:/mnt/c/Windows/System32", "/usr/bin/claude", exists=lambda x: True,
+                      isdir=lambda x: True, globber=lambda pat: [])
+    check(p2.split(":").count("/mnt/c/Windows/System32") == 1 and p2.split(":").count("/usr/bin") == 1,
+          "winpath: a dir already on PATH is not added twice (%s)" % p2)
+    p3 = DH.unit_path("/usr/bin:/bin", "/usr/local/bin/claude", exists=lambda x: False, isdir=lambda x: True,
+                      globber=lambda pat: [apps])
+    check(p3 == "/usr/local/bin:/usr/bin:/bin", "winpath: off WSL the PATH is unchanged (%s)" % p3)
+    check(DH.unit_interop({}, exists=lambda x: x == DH.WSL_SOCKET) == DH.WSL_SOCKET,
+          "interop: a launcher without WSL_INTEROP gives the unit the machine's socket")
+    check(DH.unit_interop({"WSL_INTEROP": "/run/WSL/9_interop"}, exists=lambda x: True) == "/run/WSL/9_interop",
+          "interop: a live inherited socket is kept")
+    check(DH.unit_interop({"WSL_INTEROP": "/run/WSL/9_interop"}, exists=lambda x: False) is None,
+          "interop: nothing alive, nothing set")
+    calls, run = recorder()
+    rc, _ = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build the thing.", "opus", 600, 5, now=T0, runner=run,
+                      known=KNOWN, clone=CLONE)
+    argv = calls[0][0]
+    path = [a for a in argv if a.startswith("PATH=")]
+    check(rc == 0 and len(path) == 1 and path[0][5:] == DH.unit_path(os.environ.get("PATH"), DH.claude_bin()),
+          "argv: the unit's PATH is unit_path's")
+    soc = DH.unit_interop()
+    check(("WSL_INTEROP=" + soc in argv) if soc else not any(a.startswith("WSL_INTEROP=") for a in argv),
+          "argv: WSL_INTEROP set exactly when a socket is alive")
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -967,6 +1002,7 @@ def main():
     test_scope_quiet_when_gone()
     test_owed_close()
     test_hook_points_here()
+    test_windows_path()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
