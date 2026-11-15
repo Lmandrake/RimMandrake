@@ -1,0 +1,15 @@
+FEASIBILITY grid 2704 cells (chord 2..12 x heading_A x heading_B x fitted/plug, step 15 deg): solved 2704, with two distinct solutions (gap >= 0.1) 2682; unsolved 0
+  one shape only, by chord: {2: 22} (the owner's card exempts cords under 3 cells from cords_never_repeat)
+  one shape only (lobe family): chord 2 headA -30 headB -90 fittedA True fittedB False solutions 1
+  one shape only (lobe family): chord 2 headA -30 headB -75 fittedA True fittedB False solutions 2
+  one shape only (lobe family): chord 2 headA -30 headB -45 fittedA True fittedB False solutions 2
+  one shape only (lobe family): chord 2 headA -15 headB -90 fittedA True fittedB False solutions 4
+  one shape only (lobe family): chord 2 headA -15 headB -75 fittedA True fittedB False solutions 4
+  one shape only (lobe family): chord 2 headA -15 headB -60 fittedA True fittedB False solutions 3
+  one shape only (lobe family): chord 2 headA -15 headB -45 fittedA True fittedB False solutions 2
+  one shape only (lobe family): chord 2 headA -15 headB -30 fittedA True fittedB True solutions 2
+  one shape only (lobe family): chord 2 headA -15 headB -30 fittedA True fittedB False solutions 2
+  one shape only (lobe family): chord 2 headA -15 headB -15 fittedA True fittedB True solutions 2
+  one shape only (lobe family): chord 2 headA -15 headB -15 fittedA True fittedB False solutions 2
+  one shape only (lobe family): chord 2 headA 15 headB 15 fittedA True fittedB True solutions 2
+rc 0

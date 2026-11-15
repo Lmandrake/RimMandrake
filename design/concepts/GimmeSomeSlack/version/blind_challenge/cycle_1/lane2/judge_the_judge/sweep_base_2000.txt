@@ -1,0 +1,33 @@
+SLACK strands 16740 under 243 worst 1 :: cut-routed+whip terminal-junction 59, cut-routed+whip junction-terminal 53, cut-routed+whip terminal-consumer 28, cut-routed+whip terminal-tangle 20, cut-routed+whip terminal-terminal 16, cut-routed+whip terminal-source 11, cut-routed+whip terminal-battery 10, cut-routed+unbend+whip terminal-consumer 10, cut-routed+whip terminal-stub_wall 9, cut-routed+unbend+whip terminal-junction 6, cut-routed+unbend+whip terminal-battery 5, cut-routed+unbend+whip terminal-source 5
+  seed 3000 runs 7 maxLen 16 walls False terminal:38,19->battery:42,19 1.206 ch 4.47 cut-routed
+  seed 3008 runs 7 maxLen 16 walls False junction:27,24->terminal:30,24 1.385 ch 2.9 cut-routed
+  seed 53010 runs 7 maxLen 16 walls True terminal:40,12->consumer:40,8 1.242 ch 4.47 cut-routed+unbend
+  seed 3014 runs 7 maxLen 16 walls False terminal:7,14->battery:11,14 1.361 ch 4.47 cut-routed+unbend
+  seed 3032 runs 7 maxLen 16 walls False terminal:9,11->source:9,7 1.382 ch 4.47 cut-routed
+  seed 53037 runs 7 maxLen 16 walls True terminal:4,24->junction:8,24 1.231 ch 3.9 cut-routed
+EXC edges 6070 miss 31 low 0.38 :: cut-routed terminal-junction 4, routed junction-junction W 4, cut-routed terminal-terminal W 4, cut-routed junction-terminal 3, routed junction-junction 3, cut-routed junction-terminal W 1, cut-routed+unbend terminal-stub_wall W 1, routed junction-stub_device W 1, routed stub_wall-stub_wall W 1, routed+slack junction-junction 1, hop junction-junction W 1, cut-routed terminal-stub_wall W 1
+  seed 4006 runs 5 maxLen 18 walls False terminal:32,4->junction:32,9 far 0.99 chordExc 1.02 ratio 3.23 cut-routed chain 6
+  seed 54028 runs 5 maxLen 18 walls True junction:36,14->junction:36,14 far 0.79 chordExc 1.43 ratio 9.21 routed chain 9
+  seed 4030 runs 5 maxLen 18 walls False junction:9,31->terminal:13,30 far 0.81 chordExc 1.18 ratio 1.35 cut-routed chain 6
+  seed 54035 runs 5 maxLen 18 walls True junction:32,30->junction:32,32 far 1 chordExc 0.17 ratio 1.22 routed chain 7
+  seed 54134 runs 5 maxLen 18 walls True junction:36,33->terminal:36,39 far 0.43 chordExc 0.43 ratio 1.06 cut-routed chain 7
+  seed 54164 runs 5 maxLen 18 walls True terminal:20,31->stub_wall:17,29 far 0.78 chordExc 2.29 ratio 2.47 cut-routed+unbend chain 6
+  seed 54187 runs 5 maxLen 18 walls True terminal:35,27->terminal:36,31 far 0.97 chordExc 1.11 ratio 1.92 cut-routed chain 6
+  seed 4224 runs 5 maxLen 18 walls False terminal:29,19->junction:32,16 far 0.7 chordExc 2.15 ratio 2.9 cut-routed chain 7
+BENDS strands 17862 badStrands 1282 unforced 1580 :: cut-routed near junction far terminal end<0.5 462, tangle near pile far pile end<0.5 160, routed near junction far consumer end<0.5 117, cut-routed near junction far terminal mid 79, routed near junction far source end<0.5 67, routed near junction far junction end<0.5 64, cut-routed near terminal far terminal mid 48, cut-routed near terminal far junction mid 46, coil near pile far pile end<1.5 41, tangle near pile far pile mid 38, cut-routed near source far terminal mid 38, cut-routed near terminal far terminal end<1.5 38, cut-routed near consumer far terminal mid 37, cut-routed near terminal far consumer mid 34, routed near junction far battery end<0.5 29, routed near junction far junction mid 23, cut-routed near junction far terminal end<1.5 22, cut-routed near terminal far junction end<1.5 21, cut-routed near terminal far source mid 21, routed near consumer far source mid 15
+  seed 6501 runs 6 maxLen 14 walls True terminal:40,13|junction:40,16 cut-routed n3 at (40.499,15.8) turn 96 arc 0.59 sharp 109 fromEnd 0.25 len 10.25
+  seed 6003 runs 6 maxLen 14 walls False junction:37,38|consumer:37,37 routed n1 at (37.495,37.944) turn 98 arc 0.09 sharp 106 fromEnd 0.10 len 1.30
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.198,39.437) turn 107 arc 0.25 sharp 114 fromEnd 0.25 len 11.90
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.604,38.074) turn 129 arc 1.54 sharp 39 fromEnd 1.89 len 11.90
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (40.705,41.017) turn 114 arc 1.34 sharp 33 fromEnd 2.54 len 11.90
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.201,39.47) turn 104 arc 0.25 sharp 113 fromEnd 0.25 len 11.98
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.583,38.048) turn 126 arc 1.35 sharp 44 fromEnd 1.94 len 11.98
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.198,39.495) turn 105 arc 0.25 sharp 111 fromEnd 0.25 len 14.78
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (38.569,38.405) turn 161 arc 1.60 sharp 39 fromEnd 1.59 len 14.78
+  seed 6003 runs 6 maxLen 14 walls False junction:37,39|terminal:41,39 cut-routed n3 at (40.681,41.207) turn 108 arc 1.25 sharp 31 fromEnd 2.69 len 14.78
+REPEAT L3: pairs 2800 under0.1 369 min 0 kernelTooAlike 653/2800 lays routed 694, routed+slack 88, routed+unbend 16, hop+slack 2
+REPEAT L4: pairs 2800 under0.1 88 min 0 kernelTooAlike 237/2800 lays routed 728, routed+slack 33, hop+slack 16, routed+unbend 15, hop 8
+REPEAT L5: pairs 2800 under0.1 8 min 0 kernelTooAlike 14/2800 lays routed 694, routed+slack 73, routed+unbend 32, routed+unbend+slack 1
+REPEAT L6: pairs 2800 under0.1 3 min 0 kernelTooAlike 4/2800 lays routed 724, routed+unbend 51, routed+slack 25
+REPEAT L9: pairs 2800 under0.1 0 min 0.486 kernelTooAlike 0/2800 lays routed 717, routed+unbend 81, routed+slack 2
+REPEAT L12: pairs 2800 under0.1 0 min 0.591 kernelTooAlike 0/2800 lays routed 700, routed+unbend 98, routed+slack 2

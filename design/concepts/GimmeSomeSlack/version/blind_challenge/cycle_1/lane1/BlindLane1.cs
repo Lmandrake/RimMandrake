@@ -661,7 +661,7 @@ static class BlindLane1
             {
                 if (p.EndA == null || p.EndB == null || p.Strands.Count == 0 || !HasPts(p.Strands[0])) continue;
                 var s = p.Strands[0];
-                var chain = System.Text.RegularExpressions.Regex.Matches(p.Key, @"[cw]:\((-?\d+),(-?\d+)\)").Select(m => new V2(int.Parse(m.Groups[1].Value) + 0.5, int.Parse(m.Groups[2].Value) + 0.5)).ToList();
+                var chain = OwnChain(p.Key);
                 if (chain.Count < 6) continue; // more than four cells of conduit
                 double far = 0;
                 foreach (var q in s.Pts) { double d = DistToPolyline(q, chain); if (d > far) far = d; }
@@ -670,6 +670,21 @@ static class BlindLane1
             }
             return null;
         }, "every cord whose conduit edge runs more than four cells makes at least one excursion of a cell or more off that edge's conduit line (distance to the polyline through its chain's cell centres)");
+    }
+
+    // The edge's own conduit chain from its piece key: the VId tokens straight after the first '#', up to the first token that is not
+    // one (the node descriptions follow, and they name OTHER nodes' cells: "Nc:(39,25)Junction..."). Lane 2 repair, gss_four 2026-11-15:
+    // a regex over the whole key took those cells too, so a 4-cell edge read as 6+ and its "conduit line" jumped across the map.
+    static List<V2> OwnChain(string key)
+    {
+        var o = new List<V2>(); int h = key.IndexOf('#'); if (h < 0) return o;
+        foreach (var tok in key.Substring(h + 1).Split(';'))
+        {
+            if (!System.Text.RegularExpressions.Regex.IsMatch(tok, @"^[cwmstk]:")) break;
+            var m = System.Text.RegularExpressions.Regex.Match(tok, @"^[cw]:\((-?\d+),(-?\d+)\)$");
+            if (m.Success) o.Add(new V2(int.Parse(m.Groups[1].Value) + 0.5, int.Parse(m.Groups[2].Value) + 0.5));
+        }
+        return o;
     }
 
     static double DistToPolyline(V2 q, List<V2> l)
@@ -810,7 +825,7 @@ static class BlindLane1
             foreach (var p in Build(sc.W))
             {
                 if (p.EndA == null || p.EndB == null || p.Strands.Count == 0 || !HasPts(p.Strands[0])) continue;
-                var chain = System.Text.RegularExpressions.Regex.Matches(p.Key, @"[cw]:\((-?\d+),(-?\d+)\)").Select(m => new V2(int.Parse(m.Groups[1].Value) + 0.5, int.Parse(m.Groups[2].Value) + 0.5)).ToList();
+                var chain = OwnChain(p.Key);
                 if (chain.Count < 6) continue; e++;
                 double f = p.Strands[0].Pts.Max(q => DistToPolyline(q, chain)); low = Math.Min(low, f);
                 if (f < 1.0) { miss++; mw[p.Strands[0].Lay] = mw.GetValueOrDefault(p.Strands[0].Lay) + 1; }
@@ -1020,8 +1035,11 @@ static class BlindLane1
                 for (int i = 0; i < ps.Count && shr == "none"; i++) for (int j = i + 1; j < ps.Count; j++)
                     { double g2 = Gap(Frame(ps[i].Strands[0].Pts), Frame(ps[j].Strands[0].Pts)); if (g2 < 0.1) { shr = $"{runs} runs of 4 cells, 4 apart, build seed {seed}: {ps[i].EndA} and {ps[j].EndA} gap {g2:0.###}"; break; } }
             }
+        // lane 2 repair, gss_four 2026-11-15: the SHRUNK line went into the failure list unconditionally, so the row read FAIL with no failing pair at all;
+        // the verdict is the main grid and the 2..8-run shrink search, each a real check
+        bool repeatPass = bad.Count == 0 && shr == "none";
         bad.Insert(0, "SHRUNK: " + shr);
-        Row("L1_NO_REPEAT", new[] { "cords_never_repeat", "cord_shape_variation_probe" }, "random", bad.Count == 0 ? "PASS" : "FAIL", cases,
+        Row("L1_NO_REPEAT", new[] { "cords_never_repeat", "cord_shape_variation_probe" }, "random", repeatPass ? "PASS" : "FAIL", cases,
             $"eight equal runs side by side, lengths 4/6/9/12, seeds 1..6: smallest mean point gap between two cords in their own frames (either way, mirrored) {globalMin:0.###} cells (fail under 0.1); the kernel's own table calls {tooAlike} of {pairs} pairs too alike (under 0.3); " + string.Join("; ", bad.Take(4)));
         Row("L1_NO_REPEAT_KERNEL_TABLE", new[] { "cord_shape_variation_probe" }, "info", "INFO", pairs, $"CordShape.Table on the same rooms: {tooAlike} of {pairs} pairs under TooAlikeBelow 0.3; my independent gap min {globalMin:0.###}");
     }

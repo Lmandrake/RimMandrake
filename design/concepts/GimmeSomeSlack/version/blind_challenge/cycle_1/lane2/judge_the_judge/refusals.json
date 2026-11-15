@@ -1,0 +1,58 @@
+[
+ {
+  "id": "REFUSAL_GSS_L1_EXCURSION_CHAIN_TAKES_OTHER_NODES",
+  "on": "check",
+  "check": "lane1 L1_CORD_EXCURSION, L1_CORD_EXCURSION_RATE (BlindLane1.cs)",
+  "bar": "cords_lie_slack",
+  "verdict_on_criterion": "criterion sound (an excursion of a cell off the conduit line per edge over four cells; feasibility_sweep.py solves every heading/chord cell at once with slack and bends); the CHECK was flawed",
+  "evidence": [
+   "the chain was read by a regex over the whole piece key, which after the chain carries node descriptions naming OTHER nodes' cells ('Nc:(39,25)Junction39.50/25.50;c:(39,28)...')",
+   "seed 4021 junction:39,25->junction:40,23: own chain 4 cells (39,25 39,24 39,23 40,23), read as 6 and failed at 0.56; the bar does not apply to it",
+   "repaired read on the base kernel: 2 of 116 long edges miss (both cut-routed), not 5 of 139; L1_CORD_EXCURSION still FAIL on the base (seed 4006), so the Problem stands"
+  ],
+  "would_pass": "the conduit line is the edge's own chain: the VId tokens after the key's first '#' up to the first non-VId token",
+  "smallest_fix": "OwnChain(key) in BlindLane1.cs for both call sites (applied, this commit)",
+  "status": "CHECK_REPAIRED"
+ },
+ {
+  "id": "REFUSAL_GSS_L1_NO_REPEAT_ALWAYS_FAILS",
+  "on": "check",
+  "check": "lane1 L1_NO_REPEAT (BlindLane1.cs)",
+  "bar": "cords_never_repeat",
+  "verdict_on_criterion": "criterion sound (no pair of same-length cords under 0.1 mean point gap; the owner's card exempts cords under 3 cells; the feasibility sweep finds 2 or more distinct shapes in every chord-3+ cell, the only single-shape cells are chord 2); the CHECK could never pass",
+  "evidence": [
+   "bad.Insert(0, \"SHRUNK: \" + shr) ran before the verdict bad.Count == 0, so the row read FAIL with no failing pair",
+   "repaired, on the base kernel: FAIL (gap 0.01, 2 runs of 4 cells, build seed 6): the Problem stands"
+  ],
+  "would_pass": "verdict = no main-grid pair under 0.1 and the 2..8-run shrink search found none",
+  "smallest_fix": "compute the verdict before the SHRUNK line is inserted (applied, this commit)",
+  "status": "CHECK_REPAIRED"
+ },
+ {
+  "id": "REFUSAL_GSS_NO_HOSE_IN_GSS_BAR_SAYS_PIPE",
+  "on": "bar text (for the neutral fixer; the bar is not edited here)",
+  "bar": "no_hose_in_gss",
+  "verdict_on_criterion": "the oracle (no ThingDef, texture or class for hoses or reels) is sound; the experience text's word 'pipe' contradicts the mod's design",
+  "evidence": [
+   "experience: 'finds no hose, reel or pipe drawing in Gimme Some Slack'; scenario: 'Scan GSS defs and C# for hose, reel and pipe drawing classes and textures'",
+   "GSS draws FlowWorks pipe-pole spans by design (cycle 1 SUMMARY, RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES), so a scan obeying the word 'pipe' must fail a correct build"
+  ],
+  "would_pass": "a correct build passes once the bar names what must be absent: hose and reel art, defs and classes",
+  "smallest_fix": "experience: 'finds no hose or reel drawing in Gimme Some Slack' and scenario: 'Scan GSS defs and C# for hose and reel drawing classes and textures' (drop 'pipe' twice)",
+  "status": "FOR_NEUTRAL_FIXER"
+ },
+ {
+  "id": "REFUSAL_GSS_SHARP_TURN_TWO_LOOP_DEFINITIONS",
+  "on": "check (for cycle 2)",
+  "check": "lane1 L1_CORD_SHARP_TURN vs the bar's named instrument CordShapeAudit.Bends",
+  "bar": "no_unforced_sharp_turn",
+  "verdict_on_criterion": "the bar's oracle names CordShapeAudit.Bends; the judge's own coarser row reads a loop differently and fails on base and fix alike",
+  "evidence": [
+   "CordShapeAudit calls a stretch a loop when it turns 300+ degrees one way at a MEAN radius of 0.45+; L1_CORD_SHARP_TURN also needs the 1-cell window's own rate under 1/0.45 rad a cell",
+   "base: FAIL (a cut lead turning 135 deg in a cell); after the fix: FAIL (a cut lead's sprawl loop with a tight part, 173 deg in a cell) while BendTally counts it a loop"
+  ],
+  "would_pass": "one definition of a broad loop for both instruments",
+  "smallest_fix": "cycle 2 decides which reading is the bar's: if the local rate, CordShapeAudit.Bend.IsLoop gains the window-rate test (a builder change follows); if the mean radius, L1_CORD_SHARP_TURN's BroadLoop drops it",
+  "status": "OPEN_FOR_CYCLE_2"
+ }
+]
