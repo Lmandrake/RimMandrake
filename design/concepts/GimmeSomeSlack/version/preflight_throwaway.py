@@ -126,7 +126,8 @@ check("built_offline_tests_green", not red, sum(1 for v in TESTS.values() if v["
       return_to="3")
 
 # 7. every named def is real: def-like names in the bars' own text, against the def dump, our Defs XML and our C# symbols
-txt = open(C + "scenes.json").read() + open(C + "tree.json").read() + open(C + "record.json").read() + EXTRA_TEXT
+# the tree's `coverage` block is the judge program's stamp (signed_by CoverageJudge), not bar text
+txt = open(C + "scenes.json").read() + json.dumps({k: v for k, v in tree.items() if k != "coverage"}) + open(C + "record.json").read() + EXTRA_TEXT
 toks = sorted(set(re.findall(r"\b(?:RM|RSW|RUT)_[A-Za-z0-9_]+\b|\b[A-Z][a-z]+(?:[A-Z][a-z0-9]+)+\b", txt)))
 import refresh  # noqa: E402
 dump_dir = os.path.join(refresh.D_DUMP, "defs")

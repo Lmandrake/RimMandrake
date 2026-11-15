@@ -1,6 +1,6 @@
 # Gimme Some Slack 0.1.0: test-and-stage table
 
-Generated 2026-11-14T15:46:25-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-14T22:09:53-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
@@ -19,28 +19,28 @@ Generated 2026-11-14T15:46:25-08:00 from `test_table.json` (the record; this is 
 | bar | from | proves at | decides | supports (not proof rows) | proof rows | runnable today |
 |---|---|---|---|---|---|---|
 | `invisible_conduit` | record | 6 | sc_conduit_invisible | - | 7 | all |
-| `cord_slack_lay` | record | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack, sc_walls, sc_no_sharp_turn | T_END_HEAP, T_MATRIX | 25 | all |
+| `cord_slack_lay` | record | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_END_HEAP, T_MATRIX | 19 | all |
 | `junction_strips` | record | 6 | T_CORE, sc_junction_strips, sc_dense_tangle | T_JUNCTION_ART, T_STRIP_ART | 10 | all |
 | `connectivity_truth` | record | 6 | T_CORE, sc_true_to_grid | T_MATRIX | 53 | all |
 | `break_ends_live_dead` | record | 6 | T_CORE, sc_cut_ends | - | 19 | all |
 | `rebuild_cost` | record | 6 | sc_rewire_cost | T_CORE | 9 | all |
 | `overhead_spans` | record | 6 | sc_spans | T_CORE | 11 | all |
 | `downed_spans` | record | 6 | sc_fallen_span | T_CORE | 12 | all |
-| `fallen_wire_shock` | record | 6 | sc_shock, sc_shock_restring, sc_fuel_ignition | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 7 | all |
+| `fallen_wire_shock` | record | 6 | sc_shock, sc_shock_reach | T_SHOCK_OUTLIVES, T_SHOCK_OUTLIVES_BINDING, T_SHOCK_BITES_BINDING, T_SHOCK_RULE_OFFLINE | 8 | all |
 | `wire_down_alert` | record | 6 | sc_restring | - | 7 | all |
 | `restring_job` | record | 6 | sc_restring | - | 7 | all |
-| `power_theft` | record | 6 | T_CORE, sc_tap_theft, sc_settings | - | 39 | all |
+| `power_theft` | record | 6 | T_CORE, sc_tap_theft, sc_statics_new_game | - | 4 | all |
 | `four_styles` | record | 6 | T_CORE, sc_four_looks | T_GATE, T_JUNCTION_ART | 24 | all |
-| `mod_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings | T_CORE, T_GATE | 37 | all |
+| `mod_settings` | record | 6 | T_SETTINGS_SWEEP_OFFLINE, sc_settings, sc_owner_change, sc_gravship | T_CORE, T_GATE | 41 | all |
 | `pipe_pole_switch` | record | 6 | T_CORE, sc_settings | - | 37 | all |
 | `gravship_connectivity` | record | 6 | sc_gravship | - | 6 | all |
 | `owner_change_cut` | record | 6 | sc_owner_change | - | 3 | all |
 | `game_statics_reset` | record | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | all |
 | `uninstall_clean` | record | 6 | sc_removal_consequence | - | 0 | all |
 | `no_hose` | record | 4-5 | T_NO_HOSE | - | 0 | all |
-| `floor_end_shock` | record | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 7 | all |
+| `floor_end_shock` | record | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock, sc_fuel_ignition, sc_shock_reach | - | 12 | all |
 | `shock_reach_setting` | both | 6 | T_SHOCK_RULE_OFFLINE, sc_shock_reach | - | 3 | all |
-| `cords_draw_under_things` | record | 6 | T_CORE, sc_cords_under_items | T_FW_PIT_DRAW_CENSUS, LOOK_STAGE8 | 0 | all |
+| `cords_draw_under_things` | record | 6 | T_CORE, sc_cords_under_items, sc_cords_under_items | T_FW_PIT_DRAW_CENSUS, LOOK_STAGE8 | 53 | all |
 | `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
 | `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP | 19 | all |
 | `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, sc_no_sharp_turn | - | 1 | all |
@@ -49,7 +49,7 @@ Generated 2026-11-14T15:46:25-08:00 from `test_table.json` (the record; this is 
 | `dense_block_tangle` | tree | 6 | T_CORE, sc_dense_tangle | T_MATRIX | 8 | all |
 | `cord_shape_variation_probe` | tree | 6 | T_CORE, sc_no_repeat | - | 1 | all |
 | `cords_never_repeat` | tree | 6 | T_CORE, sc_no_repeat | T_H_NO_TWO_ALIKE_SHORT | 1 | all |
-| `drawing_true_to_grid` | tree | 6 | T_CORE, sc_true_to_grid | T_MATRIX, sc_cords_under_items | 53 | all |
+| `drawing_true_to_grid` | tree | 6 | T_CORE, sc_true_to_grid, sc_cords_under_items | T_MATRIX | 53 | all |
 | `cut_live_and_dead_ends` | tree | 6 | T_CORE, sc_cut_ends | - | 19 | all |
 | `floor_end_shocks_crossers` | tree | 6 | T_SHOCK_RULE_OFFLINE, sc_floor_end_shock | - | 7 | all |
 | `no_stall_on_rewire` | tree | 6 | sc_rewire_cost | T_CORE | 9 | all |
@@ -106,6 +106,7 @@ Generated 2026-11-14T15:46:25-08:00 from `test_table.json` (the record; this is 
 | `sc_dense_tangle` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_dense_tangle | entry exists | tangle-pile pieces over the block, crossings per cell above the sparse room's, the judge reads a tangle |
 | `sc_no_repeat` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_repeat | entry exists | every pair above the minimum shape distance; the judge sees no repeated stamp |
 | `sc_true_to_grid` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_true_to_grid | entry exists | every cord's ends on one net, one cord end per power connection, no second cable at the pump, no plug on a pipe slot; the cord reaching the dual-port device ent |
+| `sc_cords_under_items` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_under_items | entry exists | a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: the cord's draw altitude and queue read below the thing's, the junctio |
 | `sc_cut_ends` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cut_ends | entry exists | no edge across either gap; run one: the generator side live, the far side dead, and after switch-off both dead within one poll; run two: both ends live after th |
 | `sc_rewire_cost` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_rewire_cost | entry exists | max slice under 20 ms and no frame over the bar for each lone and burst action; the touched edge's drawing current after |
 | `sc_spans` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_spans | entry exists | the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the lamp mast's span joins the same PowerNet and its lamp reads |
@@ -124,14 +125,13 @@ Generated 2026-11-14T15:46:25-08:00 from `test_table.json` (the record; this is 
 | `sc_fuel_ignition` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fuel_ignition | entry exists | live and switch on: fire on the fallen wire's puddle cell and none on the floor end's puddle cell; switch off: no fire; wire dead: no fire |
 | `sc_statics_new_game` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_statics_new_game | entry exists | game 1 lists the tap and both picks, holds printed-section keys and strand names, and prices the fallen wire's cells under its map id; the new quicktest starts  |
 | `sc_removal_consequence` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_removal_consequence | entry exists | the consequence is written down: which defs drop and what errors log |
-| `sc_cords_under_items` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_under_items | entry exists | a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: the cord's draw altitude and queue read below the thing's, the junctio |
 | `LOOK_STAGE8` | 8 | look | `None` | entry ABSENT | his walk of a scavenger base on his full list, with a mid-way reload |
 
 ## Held look statements placed
 
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 34, "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3) (stage 4-5 then 6, defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14)
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 36, "The wires are also above the items and furniture otherwise, likely all the same problem." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3) (stage 4-5 then 6, as row 34)
-- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md` row 16, "[Image #8] Also, the GSS cables are now correctly below the items." -> bars cords_draw_under_things; test sc_cords_under_items (owed Stage 3) keeps it so (stage 6, approval: the regression the in-game read guards; bar added by his card 2026-11-14)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 34, "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (in scenes.json since 2026-11-14) (stage 4-5 then 6, defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 36, "The wires are also above the items and furniture otherwise, likely all the same problem." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + sc_cords_under_items (in scenes.json since 2026-11-14) (stage 4-5 then 6, as row 34)
+- `design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md` row 16, "[Image #8] Also, the GSS cables are now correctly below the items." -> bars cords_draw_under_things; test sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so (stage 6, approval: the regression the in-game read guards; bar added by his card 2026-11-14)
 
 ## The five judge corrections (rm-coverage-judge-1794599377), checked against the current text
 

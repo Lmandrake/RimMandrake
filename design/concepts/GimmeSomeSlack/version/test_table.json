@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "made": "2026-11-14T15:46:25-08:00",
+ "made": "2026-11-14T22:09:53-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -20,7 +20,7 @@
    "bars": [
     "cords_draw_under_things"
    ],
-   "test": "T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3)",
+   "test": "T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (in scenes.json since 2026-11-14)",
    "stage": "4-5 then 6",
    "kind": "defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14"
   },
@@ -31,7 +31,7 @@
    "bars": [
     "cords_draw_under_things"
    ],
-   "test": "T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3)",
+   "test": "T_CORE (slideunder: under) + sc_cords_under_items (in scenes.json since 2026-11-14)",
    "stage": "4-5 then 6",
    "kind": "as row 34"
   },
@@ -42,7 +42,7 @@
    "bars": [
     "cords_draw_under_things"
    ],
-   "test": "sc_cords_under_items (owed Stage 3) keeps it so",
+   "test": "sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
    "stage": "6",
    "kind": "approval: the regression the in-game read guards; bar added by his card 2026-11-14"
   }
@@ -1211,6 +1211,28 @@
    },
    "tier": "gimmesomeslack"
   },
+  "sc_cords_under_items": {
+   "id": "sc_cords_under_items",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack_flowworks",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_cords_under_items",
+   "entry_exists": true,
+   "new": true,
+   "observes": "a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: the cord's draw altitude and queue read below the thing's, the junction piece too; the control is offline: planted reads (a cord over steel, a battery queued first) go red in northstar/selftest_gss_cords_under_items.py; a live debug flag only to prove the instrument is left out, as scene_rows does",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs"
+   ],
+   "held": true,
+   "why_game": "draw order is a property of the running renderer; the offline census proves the routing, not the drawn result",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\proof_all.py --live --no-shots (tier gimmesomeslack_flowworks for its pit row), then python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof result json>",
+   "runs_today": {
+    "ran": false,
+    "why": "UNRUN: offline only, never the game in this run; entry built 2026-11-14 (scene_rows.cords_under_items, probe under:), its offline half northstar/selftest_gss_cords_under_items.py green, its pit row a Stage 6 driver"
+   }
+  },
   "sc_cut_ends": {
    "id": "sc_cut_ends",
    "kind": "live_minimal",
@@ -1589,27 +1611,6 @@
     "why": "live: this run is offline only; entry exists in the code"
    },
    "tier": "gimmesomeslack"
-  },
-  "sc_cords_under_items": {
-   "id": "sc_cords_under_items",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
-   "entry": "scene_cords_under_items",
-   "entry_exists": true,
-   "new": true,
-   "observes": "a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: the cord's draw altitude and queue read below the thing's, the junction piece too; the control is offline: planted reads (a cord over steel, a battery queued first) go red in northstar/selftest_gss_cords_under_items.py; a live debug flag only to prove the instrument is left out, as scene_rows does",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs",
-    "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs"
-   ],
-   "held": true,
-   "why_game": "draw order is a property of the running renderer; the offline census proves the routing, not the drawn result",
-   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\proof_all.py --live --no-shots (tier gimmesomeslack_flowworks for its pit row), then python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof result json>",
-   "runs_today": {
-    "ran": false,
-    "why": "UNRUN: offline only, never the game in this run; entry built 2026-11-14 (scene_rows.cords_under_items, probe under:), its offline half northstar/selftest_gss_cords_under_items.py green, its pit row a Stage 6 driver"
-   }
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",
@@ -5930,9 +5931,7 @@
    "decides": [
     "T_CORE",
     "T_CORD_GEOMETRY_OFFLINE",
-    "sc_cords_slack",
-    "sc_walls",
-    "sc_no_sharp_turn"
+    "sc_cords_slack"
    ],
    "supports": [
     "T_END_HEAP",
@@ -5955,13 +5954,7 @@
     "P_MX_F60_T15_S0",
     "P_B1_rope_settle",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_SC_cords_all_slack",
-    "P_M1_node_census",
-    "P_M1c_end_pieces",
-    "P_M2b_no_vertex_unwalkable",
-    "P_M1e_machine_on_inwall_run_draws_a_cord",
-    "P_M11_dive_through_setting",
-    "P_M2c_no_sharp_bends"
+    "P_SC_cords_all_slack"
    ],
    "held": [],
    "offline_decides": [
@@ -6212,8 +6205,7 @@
    "proves_at": "6",
    "decides": [
     "sc_shock",
-    "sc_shock_restring",
-    "sc_fuel_ignition"
+    "sc_shock_reach"
    ],
    "supports": [
     "T_SHOCK_OUTLIVES",
@@ -6225,8 +6217,9 @@
     "P_M20e_shock_cells_die_with_wire",
     "P_SC_splicer_spared_bystander_shocked",
     "P_SC_dead_wire_shocks_nobody",
-    "P_M20c_fallen_wire_ignites_flip",
-    "P_SC_dead_wire_lights_no_fuel"
+    "P_SC_shock_reach_default_all",
+    "P_SC_shock_reach_three_values",
+    "P_SC_shock_reach_deck_cord_per_value"
    ],
    "held": [],
    "offline_decides": [],
@@ -6291,47 +6284,12 @@
    "decides": [
     "T_CORE",
     "sc_tap_theft",
-    "sc_settings"
+    "sc_statics_new_game"
    ],
    "supports": [
-    "P_SW3_break_readout_off_no_glow_no_whip",
-    "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B7_sway_cpu_two_frame",
-    "P_B7b_sway_shader_path",
-    "P_B7c_floor_ripple",
-    "P_B5_selection_highlight",
-    "P_SW1_highlight_off_draws_no_ring",
-    "P_SW2_lod_off_far_zoom_draws_full",
-    "P_B8_lod_far_zoom",
-    "P_M10_tangle_threshold_setting",
-    "P_M11_dive_through_setting",
-    "P_M12a_slide_under_off_plug_on_cell_centre",
-    "P_M12b_slide_under_on_plug_off_centre",
-    "P_SW5_hide_hookup_off_leaves_vanilla_wire",
-    "P_SW6_needless_loops_off_reaches_builder",
-    "P_B12_shader_sway_far_zoom_drawn_once",
-    "P_ST2_switch_changes_textures",
-    "P_ST3_extcord_colour_modes",
-    "P_ST4_settings_roundtrip",
-    "P_ST5_restore_default_and_master",
-    "P_M7_off_restores_vanilla",
-    "P_M7b_on_again_invisible",
-    "P_R3_sway_proxy",
-    "P_M19n_taps_off_control",
-    "P_M20a_fallen_wire_shock_flip",
-    "P_M20b_fallen_wire_knockback_flip",
-    "P_M20c_fallen_wire_ignites_flip",
-    "P_M20d_keep_wires_setting_roundtrip",
-    "P_M21a_cut_wires_on_owner_change_off_keeps_link",
-    "P_M21b_cut_wires_on_owner_change_on_cuts_link",
-    "P_M21c_drip_loops_off_plain_curve",
-    "P_M21d_drip_loops_on_loop_samples",
-    "P_M22a_kinetic_sway_on_swings_never_cuts",
-    "P_M22b_kinetic_sway_off_does_nothing",
-    "P_M21e_keep_wires_on_gravship_off_setting_state",
-    "P_M21f_keep_wires_on_gravship_on_setting_state",
-    "P_S11_lamp_master_off_vanilla",
+    "P_SC_statics_clear_between_games",
     "P_M19_tap_drains_one_way",
+    "P_M19n_taps_off_control",
     "P_M19m_tap_mixed_net_connects_own_conduit"
    ],
    "held": [],
@@ -6396,11 +6354,22 @@
    "proves_at": "6",
    "decides": [
     "T_SETTINGS_SWEEP_OFFLINE",
-    "sc_settings"
+    "sc_settings",
+    "sc_owner_change",
+    "sc_gravship"
    ],
    "supports": [
     "T_CORE",
     "T_GATE",
+    "P_B9_cutscene_guard_idle",
+    "P_M20d_keep_wires_setting_roundtrip",
+    "P_M21e_keep_wires_on_gravship_off_setting_state",
+    "P_M21f_keep_wires_on_gravship_on_setting_state",
+    "P_GS1_keep_wires_on_gravship_on_aboard_span_flies",
+    "P_GS1_keep_wires_on_gravship_off_aboard_span_taken_down",
+    "P_M17_owner_change_cuts_cross_owner_wires",
+    "P_M21a_cut_wires_on_owner_change_off_keeps_link",
+    "P_M21b_cut_wires_on_owner_change_on_cuts_link",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
     "P_B7_sway_cpu_two_frame",
@@ -6428,15 +6397,10 @@
     "P_M20a_fallen_wire_shock_flip",
     "P_M20b_fallen_wire_knockback_flip",
     "P_M20c_fallen_wire_ignites_flip",
-    "P_M20d_keep_wires_setting_roundtrip",
-    "P_M21a_cut_wires_on_owner_change_off_keeps_link",
-    "P_M21b_cut_wires_on_owner_change_on_cuts_link",
     "P_M21c_drip_loops_off_plain_curve",
     "P_M21d_drip_loops_on_loop_samples",
     "P_M22a_kinetic_sway_on_swings_never_cuts",
     "P_M22b_kinetic_sway_off_does_nothing",
-    "P_M21e_keep_wires_on_gravship_off_setting_state",
-    "P_M21f_keep_wires_on_gravship_on_setting_state",
     "P_S11_lamp_master_off_vanilla"
    ],
    "held": [],
@@ -6608,7 +6572,9 @@
    "proves_at": "6",
    "decides": [
     "T_SHOCK_RULE_OFFLINE",
-    "sc_floor_end_shock"
+    "sc_floor_end_shock",
+    "sc_fuel_ignition",
+    "sc_shock_reach"
    ],
    "supports": [
     "P_SC_floor_end_live_shocks",
@@ -6617,7 +6583,12 @@
     "P_SC_floor_end_unfinished_run_bites",
     "P_SC_floor_end_bites_aerial_master_off",
     "P_SC_floor_end_every_end_over_spark_budget",
-    "P_SC_floor_end_fixer_spared_other_builder_shocked"
+    "P_SC_floor_end_fixer_spared_other_builder_shocked",
+    "P_M20c_fallen_wire_ignites_flip",
+    "P_SC_dead_wire_lights_no_fuel",
+    "P_SC_shock_reach_default_all",
+    "P_SC_shock_reach_three_values",
+    "P_SC_shock_reach_deck_cord_per_value"
    ],
    "held": [],
    "offline_decides": [
@@ -6658,10 +6629,64 @@
    "proves_at": "6",
    "decides": [
     "T_CORE",
+    "sc_cords_under_items",
     "sc_cords_under_items"
    ],
    "supports": [
     "T_FW_PIT_DRAW_CENSUS",
+    "P_MX_D00_n1_S0",
+    "P_MX_D05_n10_S1",
+    "P_MX_D10_n100_S2",
+    "P_MX_D15_n1000_S3",
+    "P_MX_C00_empty",
+    "P_MX_F00_T0_S0",
+    "P_MX_F04_T1_S0",
+    "P_MX_F11_T2_S3",
+    "P_MX_F13_T3_S1",
+    "P_MX_F18_T4_S2",
+    "P_MX_F21_T5_S1",
+    "P_MX_F25_T6_S1",
+    "P_MX_F30_T7_S2",
+    "P_MX_F33_T8_S1",
+    "P_MX_F39_T9_S3",
+    "P_MX_F42_T10_S2",
+    "P_MX_F47_T11_S3",
+    "P_MX_F51_T12_S3",
+    "P_MX_F54_T13_S2",
+    "P_MX_F56_T14_S0",
+    "P_MX_F60_T15_S0",
+    "P_MX_A04_N3_R12_fallen",
+    "P_MX_A05_N3_R19_up",
+    "P_MX_A06_N5_R6_fallen",
+    "P_MX_A07_N5_R12_up",
+    "P_MX_A08_N5_R19_cut",
+    "P_MX_A09_N2_R6_cut",
+    "P_MX_A10_N2_R12_fallen",
+    "P_MX_A11_N2_R19_up",
+    "P_MX_A12_N3_R6_fallen",
+    "P_M1_cords_exist",
+    "P_M1_node_census",
+    "P_M2_cords_only_within_net",
+    "P_B5_selection_highlight",
+    "P_M12a_slide_under_off_plug_on_cell_centre",
+    "P_M12b_slide_under_on_plug_off_centre",
+    "P_M13a_linked_one_net_across_gap",
+    "P_M13b_far_consumer_powered",
+    "P_M13c_unlink_two_nets_relink_one",
+    "P_M13d_refusals",
+    "P_M13e_hostile_mast_not_autolinked",
+    "P_M14_gap_control_without_fix",
+    "P_M19m_tap_mixed_net_connects_own_conduit",
+    "P_SC_doorway_run_is_one_cord",
+    "P_SC_bend_draws_no_joint_tee_draws_one",
+    "P_SC_under_battery_dry",
+    "P_SC_under_item_stack_dry",
+    "P_SC_under_furniture_dry",
+    "P_SC_under_junction_piece_dry",
+    "P_SC_under_liquid_pit",
+    "P_D1_zero_tick_rereads_same",
+    "P_D2_fresh_builder_same",
+    "P_SL3_after_load_census_equal",
     "LOOK_STAGE8"
    ],
    "held": [
@@ -6893,7 +6918,8 @@
    "proves_at": "6",
    "decides": [
     "T_CORE",
-    "sc_true_to_grid"
+    "sc_true_to_grid",
+    "sc_cords_under_items"
    ],
    "supports": [
     "T_MATRIX",
@@ -6949,8 +6975,7 @@
     "P_SC_under_liquid_pit",
     "P_D1_zero_tick_rereads_same",
     "P_D2_fresh_builder_same",
-    "P_SL3_after_load_census_equal",
-    "sc_cords_under_items"
+    "P_SL3_after_load_census_equal"
    ],
    "held": [],
    "offline_decides": [

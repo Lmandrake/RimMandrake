@@ -1,9 +1,9 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "ran_at": "2026-11-14T15:54:03-0800",
- "seconds": 5.21,
- "dump_read_seconds": 4.8,
+ "ran_at": "2026-11-14T22:10:19-0800",
+ "seconds": 4.69,
+ "dump_read_seconds": 4.3,
  "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
  "verdict": "pass",
@@ -26,7 +26,7 @@
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 702
+   "n": 726
   },
   {
    "check": "game_tests_say_why",
@@ -51,7 +51,7 @@
   {
    "check": "built_mod_decider_entries_exist",
    "result": "pass",
-   "n": 27
+   "n": 26
   },
   {
    "check": "built_mod_offline_deciders_run",
@@ -77,7 +77,7 @@
   {
    "check": "named_mods_on_the_tier",
    "result": "pass",
-   "n": 2
+   "n": 3
   },
   {
    "check": "tier_loads_all_dlc",

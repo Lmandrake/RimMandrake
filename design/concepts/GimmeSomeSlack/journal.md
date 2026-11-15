@@ -254,3 +254,11 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Was, "Stage now": - **Stage now:** Stage 3 done 2026-11-14 3:40 PM PST, offline only. Preflight: **0 refusals** (2 before this run: `sc_cords_under_items` had no entry; `T_CORD_GEOMETRY_OFFLINE` red). [measured] Next: Stages 4 and 5 (blind challenge), then Stage 6 runs the 27 scenes live.
 - Was, "Waiting on": - **Waiting on:** Stage 6 for every in-game test (all UNRUN, commands in `version/test_table.md`). Of 48 bars: 47 have every deciding test runnable (not `walk_scavenger_base`, his walk), 25 have offline deciders all green. [measured, 3:40 PM PST]
 - Record: `version/stage_record.json`.
+
+### 2026-11-14 10:05 PM PST, the Designer record brought true: owed exam and coverage judge pass (helper RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST, offline only)
+
+- Why: his card 2026-11-14 ~9:45 PM PST (OWNER:1794721009209581159, recorded on the concept item as OWNER:1794721624157925836): one exam and one coverage judge pass on the locked tree, no loop; the cords bar gets a scene.
+- Scene: `sc_cords_under_items` is in `scenes.json` (requirement `drawing_true_to_grid`, bar `cords_draw_under_things`, `coverage_rest`), `73ae08c273`; its live half UNRUN until Stage 6 (command in `version/test_table.md`). No bar, sheet line or plan edited.
+- Exam: PASS, 24 of 24 frozen scenarios, two fresh Readers agree, none accepts where a core line rejects; the control on `owner_change_coils_wires` missed e11 (`exam.json`, stage 4 closed by the program, `a9f3080583`). [measured]
+- Coverage judge: covered, 0 gaps, signed (rm-coverage-judge-1794721967, delta round, 268958 tokens; `f3d28f97d0`). `stage.json` now reads locked (`0a9faf9acf`); `concept_tree.py gate` PASS. [measured]
+- The blind-challenge stage is not touched: no `maturation.py advance`; `version/stage_record.json` unchanged.

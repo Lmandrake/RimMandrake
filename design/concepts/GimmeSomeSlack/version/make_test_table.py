@@ -165,15 +165,15 @@ H = "design/RimMandrake/validation_holding/"
 HELD = [
     dict(file=H + "owner_look_defects_2026-11-12.md", row=34,
          words="Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit.",
-         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (owed Stage 3)",
+         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + T_FW_PIT_DRAW_CENSUS + sc_cords_under_items (in scenes.json since 2026-11-14)",
          stage="4-5 then 6", kind="defect; offline checks (run today) + in-game draw-order read (owed); bar added by his card 2026-11-14"),
     dict(file=H + "owner_look_defects_2026-11-12.md", row=36,
          words="The wires are also above the items and furniture otherwise, likely all the same problem.",
-         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + sc_cords_under_items (owed Stage 3)",
+         bars=["cords_draw_under_things"], test="T_CORE (slideunder: under) + sc_cords_under_items (in scenes.json since 2026-11-14)",
          stage="4-5 then 6", kind="as row 34"),
     dict(file=H + "owner_look_defects_2026-11-13.md", row=16,
          words="[Image #8] Also, the GSS cables are now correctly below the items.",
-         bars=["cords_draw_under_things"], test="sc_cords_under_items (owed Stage 3) keeps it so",
+         bars=["cords_draw_under_things"], test="sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
          stage="6", kind="approval: the regression the in-game read guards; bar added by his card 2026-11-14"),
 ]
 
@@ -255,7 +255,7 @@ for s in scn["scenes"]:
     row["tier"] = SCENE_TIER.get(s["id"], "gimmesomeslack")
     tests[s["id"]] = row
 tests["sc_cords_under_items"] = dict(
-    id="sc_cords_under_items", kind="live_minimal", stage="6", file=G + "validation.py", entry="scene_cords_under_items",
+    id="sc_cords_under_items", kind="live_minimal", stage="6", tier="gimmesomeslack_flowworks", file=G + "validation.py", entry="scene_cords_under_items",
     entry_exists=True, new=True, observes="a floor cord under a battery, a shelf of items and furniture, dry and in a FlowWorks pit: "
     "the cord's draw altitude and queue read below the thing's, the junction piece too; the control is offline: planted reads (a cord over steel, a battery queued first) go red in northstar/selftest_gss_cords_under_items.py; a live debug flag only to prove the instrument is left out, as scene_rows does",
     reads=[G + "Source/CordUnderLiquid.cs", G + "Source/SectionLayer_RM_MessyCords.cs"], held=True,
@@ -325,7 +325,9 @@ for bid in ids:
     if is_leaf:
         sc = scenes_for_leaf.get(bid, [])
     else:
-        sc = list(dict.fromkeys(p["scene"] for p in checklist.get(bid, {}).get("parts", []) if p.get("scene")))
+        # a judge's `scene` may be free text ("workshop showcase sc_cords_slack"): the scene ids it names
+        sc = list(dict.fromkeys(s for p in checklist.get(bid, {}).get("parts", [])
+                                for s in re.findall(r"\bsc_[a-z0-9_]+", p.get("scene") or "") if s in SCENE))
     decides = list(dict.fromkeys(OFF_DECIDES.get(bid, []) + sc))
     if kind == "walk":
         decides.append("LOOK_STAGE8")
