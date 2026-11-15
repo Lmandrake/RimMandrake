@@ -186,8 +186,11 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        /// <summary>The effective profile, with the reason. Anything short of a clean, unexpired test file is CAMPAIGN.</summary>
-        internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, out string why)
+        /// <summary>The effective profile, with the reason. Anything short of a clean, unexpired test file is CAMPAIGN.
+        /// <paramref name="loadedSave"/>: "" = no game or a new game (nothing was loaded), a name = the save loaded,
+        /// null = UNKNOWN (unreadable, or the tracker missed the load): with campaign saves listed, unknown is CAMPAIGN,
+        /// because a canonical world save the tracker failed to see must not run under TEST.</summary>
+        internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, out string why, string unknownWhy = null)
         {
             if (f == null || !f.Present) { why = "no profile file: campaign by default"; return Campaign; }
             if (f.Error != null) { why = f.Error + ": campaign"; return Campaign; }
@@ -196,6 +199,11 @@ namespace JawaBench.BridgeTools
             if (f.ExpiresUtc.HasValue && nowUtc >= f.ExpiresUtc.Value)
             {
                 why = "test profile expired at " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) + ": campaign";
+                return Campaign;
+            }
+            if (loadedSave == null && f.CampaignSaves.Length > 0)
+            {
+                why = "loaded save unknown (" + (unknownWhy ?? "not readable") + ") while campaign saves are listed: campaign";
                 return Campaign;
             }
             if (loadedSave != null && f.CampaignSaves.Any(c => string.Equals(c, loadedSave.Trim(), StringComparison.OrdinalIgnoreCase)))

@@ -22,6 +22,12 @@ namespace JawaBench.BridgeTools
         private double _pendingAt;
         /// <summary>The save the CURRENT game was loaded from ("" = new game, or not known). Game-scoped.</summary>
         internal string SaveName { get; private set; } = "";
+        /// <summary>True when a load request was pending but older than the TTL as this game arrived: the game may be
+        /// that load (a slow cold load) or a new game, so its save is NOT known. The campaign gate reads this.</summary>
+        internal bool SaveUnknown { get; private set; }
+        /// <summary>Is this the game object the lifecycle last entered? False = it never saw this game (sampler off,
+        /// faulted or not yet Playing), so SaveName says nothing about it.</summary>
+        internal bool Tracks(object game) => game != null && ReferenceEquals(game, _game);
         /// <summary>Seconds spent in SaveGame during the current game. Game-scoped.</summary>
         internal double SaveTotal { get; private set; }
         /// <summary>1, 2, ... per game entered in this process: rows carry it so a reader never joins two games.</summary>
@@ -51,6 +57,7 @@ namespace JawaBench.BridgeTools
                     InMenu = true;
                     _game = null;
                     SaveName = "";
+                    SaveUnknown = false;
                     GameBoundary();
                     return Event.Menu;
                 }
@@ -63,6 +70,7 @@ namespace JawaBench.BridgeTools
                 GameSeq++;
                 bool fresh = _pendingLoad != null && now - _pendingAt <= LoadRequestTtlSeconds;
                 SaveName = fresh ? _pendingLoad : "";
+                SaveUnknown = _pendingLoad != null && !fresh;
                 _pendingLoad = null;
                 GameBoundary();
                 return Event.Game;

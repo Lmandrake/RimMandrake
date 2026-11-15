@@ -91,9 +91,9 @@ namespace JawaBench.BridgeTools
                         string text = null, path = ProfilePath;
                         if (path != null && File.Exists(path)) text = File.ReadAllText(path);
                         var f = S.ProfileFile.Parse(text, DateTime.UtcNow);
-                        string save = null;
-                        try { save = JawaBenchTpsSampler.Life.SaveName; } catch { }
-                        _effective = S.Effective(f, DateTime.UtcNow, string.IsNullOrEmpty(save) ? null : save, out _why);
+                        string unknownWhy;
+                        string save = LoadedSave(out unknownWhy);
+                        _effective = S.Effective(f, DateTime.UtcNow, save, out _why, unknownWhy);
                         _declared = !f.Present ? "none" : f.Error != null ? "invalid" : (f.Profile ?? "none");
                         if (path == null) _why += " (profile directory not resolved yet)";
                     }
@@ -103,6 +103,29 @@ namespace JawaBench.BridgeTools
                 why = _why; declared = _declared;
                 return _effective;
             }
+        }
+
+        /// <summary>The loaded save for the campaign gate: "" = no game or a new game, a name, or null = UNKNOWN with the
+        /// reason (RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES, GPT c01.F3: an unreadable name used to read as a new game,
+        /// i.e. TEST). Only the TPS lifecycle sees loads, so a game it is not tracking has an unknown save.</summary>
+        internal static string LoadedSave(out string unknownWhy)
+        {
+            unknownWhy = null;
+            try
+            {
+                var game = Current.Game;
+                if (game == null) return "";
+                var life = JawaBenchTpsSampler.Life;
+                if (!life.Tracks(game))
+                {
+                    unknownWhy = JawaBenchTpsSampler.Installed ? "the TPS lifecycle has not entered this game (still loading, or the sampler faulted)"
+                                                               : "the TPS sampler is not installed, so loads are not seen";
+                    return null;
+                }
+                if (life.SaveUnknown) { unknownWhy = "a load request expired before this game arrived"; return null; }
+                return life.SaveName ?? "";
+            }
+            catch (Exception e) { unknownWhy = "save name unreadable (" + e.GetType().Name + ")"; return null; }
         }
 
         // ------------------------------------------------------------------ install (main thread, at registration)
@@ -121,16 +144,23 @@ namespace JawaBench.BridgeTools
                 var pObj = new HarmonyMethod(typeof(JawaBenchCompanionSafety).GetMethod(nameof(GateObject), BindingFlags.Static | BindingFlags.NonPublic));
                 Type[] types;
                 try { types = typeof(JawaBenchCompanionSafety).Assembly.GetTypes(); }
-                catch (ReflectionTypeLoadException rtle) { types = rtle.Types.Where(t => t != null).ToArray(); }
+                catch (ReflectionTypeLoadException rtle)
+                {
+                    // a type that failed to load may hold tools the gate never patches: that is not "complete"
+                    types = rtle.Types.Where(t => t != null).ToArray();
+                    int dropped = rtle.Types.Length - types.Length;
+                    if (dropped > 0) Unguarded.Add(dropped + " type(s) failed to load (" + (rtle.LoaderExceptions?.FirstOrDefault()?.Message ?? "no loader message") + ")");
+                }
                 foreach (var t in types)
                 {
                     MethodInfo[] ms;
                     try { ms = t.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly); }
-                    catch { continue; }
+                    catch (Exception e) { Unguarded.Add("type " + t.FullName + " (GetMethods " + e.GetType().Name + ")"); continue; }
                     foreach (var m in ms)
                     {
                         ToolAttribute attr;
-                        try { attr = m.GetCustomAttribute<ToolAttribute>(inherit: false); } catch { continue; }
+                        try { attr = m.GetCustomAttribute<ToolAttribute>(inherit: false); }
+                        catch (Exception e) { Unguarded.Add(t.Name + "." + m.Name + " (attribute read " + e.GetType().Name + ")"); continue; }
                         if (attr == null || attr.Name == S.HandshakeTool) continue;   // the handshake is always allowed
                         lock (Gate) ToolOf[m] = attr.Name;
                         try

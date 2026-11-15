@@ -381,8 +381,7 @@ def main():
         st.say("in frame: %d pawns, %d not subjects %s"
                % (len(inframe), len(extra), extra if extra else ""))
 
-        st.call("jawa/set_fog", {"mode": "unfog", "x": rx, "z": rz,
-                                 "width": rw, "height": rh})
+        st.call("jawa/set_fog", {"action": "unfog", "rect": "%d,%d,%d,%d" % (rx, rz, rw, rh)})
         st.call("rimworld/jump_camera_to_cell", {"x": cx, "z": cz})
         st.call("rimworld/frame_cell_rect", {"x": rx, "z": rz, "width": rw,
                                              "height": rh, "paddingCells": 0})

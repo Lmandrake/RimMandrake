@@ -138,7 +138,8 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/mod_settings_field",
             Description = "Read or write ANY public field (static OR instance) on a mod's " +
-                "ModSettings-derived class by TYPE NAME and field name. BRIDGE_STATIC_SETTINGS_" +
+                "ModSettings-derived class by TYPE NAME and field name (set REFUSES a type that does not derive " +
+                "from ModSettings, and refuses under the CAMPAIGN profile; list/get read any type). BRIDGE_STATIC_SETTINGS_" +
                 "FIELDS_1: rimworld/update_mod_settings only resolves INSTANCE fields and " +
                 "refuses public static ones - most of our own mods' settings classes declare " +
                 "static fields, which that tool cannot touch at all. This tool tries the field " +
@@ -236,6 +237,18 @@ namespace JawaBench.BridgeTools
 
                 if (a == "set")
                 {
+                    // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F1): the type resolver takes ANY loaded type, so
+                    // set wrote any public static field in the AppDomain - a debug-invoke bypass of the campaign gate.
+                    if (!typeof(ModSettings).IsAssignableFrom(settingsType))
+                    {
+                        return Fail("REFUSED: '" + typeName + "' does not derive from Verse.ModSettings; set writes only a mod's settings class (list and get still read any type).");
+                    }
+                    string why, declared;
+                    if (JawaBenchCompanionSafety.Effective(out why, out declared) != JawaBenchSafetyCore.Test)
+                    {
+                        return Fail("REFUSED: set is off under the CAMPAIGN profile (" + why + "); change a campaign game's settings in the Mod Settings dialog. list and get stay available.",
+                            new { profile = JawaBenchSafetyCore.Campaign, profileWhy = why });
+                    }
                     if (value == null)
                     {
                         return Fail("Give 'value' for action='set'.");

@@ -112,7 +112,7 @@ namespace JawaBench.BridgeTools
         public static async Task<object> ArtboardStage(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "ground | subjects | all")] string phase = "all",
+            [ToolParameter(Description = "Under the CAMPAIGN profile it refuses killHostiles and a clearRect holding player-owned buildings. ground | subjects | all")] string phase = "all",
             [ToolParameter(Description = "Op lines (see description). Use opsPath for anything big.")] string ops = null,
             [ToolParameter(Description = "Absolute path of a file holding the op lines.")] string opsPath = null,
             [ToolParameter(Description = "phase ground/all: 'x,z,w,h' cell rect to clear.")] string clearRect = null,
@@ -134,6 +134,26 @@ namespace JawaBench.BridgeTools
                 string ph = (phase ?? "all").Trim().ToLowerInvariant();
                 if (ph != "ground" && ph != "subjects" && ph != "all") return Fail("phase must be ground, subjects or all.");
                 object exc = ResolveExcavationComponent(map, out Type excType, out string excErr);
+
+                // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c05.F4): validate before the first destroy, and under the
+                // CAMPAIGN profile never vanish the player's buildings or every hostile pawn on the map.
+                if (ph != "subjects")
+                {
+                    if (!TryParseRect(clearRect, out CellRect pre)) return Fail("phase " + ph + " needs clearRect 'x,z,w,h'.");
+                    if (!pre.InBounds(map)) return Fail("clearRect " + clearRect + " is not inside the map (" + map.Size.x + "x" + map.Size.z + ").");
+                }
+                if (JawaBenchCompanionSafety.Effective(out string profWhy, out string _) != JawaBenchSafetyCore.Test)
+                {
+                    if (killHostiles)
+                        return Fail("REFUSED under the CAMPAIGN profile: killHostiles destroys every hostile pawn on the map; pass killHostiles=false (" + profWhy + ").");
+                    if (ph != "subjects" && TryParseRect(clearRect, out CellRect cc))
+                    {
+                        var owned = cc.Cells.SelectMany(c => c.GetThingList(map)).Where(t => !(t is Pawn) && t.Faction == Faction.OfPlayer).Distinct().ToList();
+                        if (owned.Count > 0)
+                            return Fail("REFUSED under the CAMPAIGN profile: clearRect holds " + owned.Count + " player-owned thing(s) it would vanish (" + profWhy + ").",
+                                new { playerOwned = owned.Take(20).Select(t => t.def.defName + "@" + t.Position).ToList() });
+                    }
+                }
 
                 int hostilesKilled = 0;
                 if (killHostiles)

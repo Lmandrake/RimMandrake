@@ -36,11 +36,13 @@
 // is the one place the full `arguments` dictionary and the declared parameter names
 // are simultaneously in scope.
 //
-// 🔑 REPORT, DO NOT REFUSE - and that is a deliberate default, not timidity.
-// This sits in the SHARED binder, so refusing would change behaviour for every tool
-// on the bridge at once, including callers that have been passing a stray key and
-// getting away with it. So: record by default, and let a caller turn refusal on
-// explicitly once a session has shown what actually surfaces.
+// 🔑 REFUSE ON OUR TOOLS, REPORT ON EVERYONE ELSE'S (RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES,
+// 2026-11-15). This sits in the SHARED binder, so a blanket refusal would change every
+// provider's tools at once; those stay record-only unless a caller turns Strict on. This
+// companion's own tools refuse an undeclared key by default (OwnStrict): a recorded typo
+// on a mutating tool (dry_run for dryRun) still ran on its defaults and mutated. The
+// switch was made after an offline census of every literal caller found one misfed call
+// (stage_xenotype_grid's set_fog, fixed) and the live Player.logs held zero drops.
 //
 // ⚠️ THREE THINGS THIS CANNOT DO, STATED SO NOBODY READS MORE INTO IT
 //   1. It patches a THIRD-PARTY PRIVATE method, which carries no compatibility
@@ -104,7 +106,12 @@ namespace JawaBench.BridgeTools
         // ---- installation state, reported rather than assumed ---------------------
         internal static bool Installed;
         internal static string InstallError;      // null when Installed
-        internal static bool Strict;              // opt-in: throw instead of recording
+        internal static bool Strict;              // opt-in: throw instead of recording, for EVERY tool on the bridge
+        /// <summary>RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F6/x.X1): THIS companion's own tools refuse an
+        /// undeclared key by default - a typo'd safety key (dry_run for dryRun) used to be recorded while the call ran on
+        /// its defaults and mutated. Other providers' tools stay record-only unless Strict. Offline census of our Python
+        /// callers: bridgetools/selftest_bridge_caller_args.py.</summary>
+        internal static volatile bool OwnStrict = true;
         internal static int Seen;                 // calls observed carrying unknown keys
         internal static int Bound;                // calls observed at all
         internal static long StaleRefusals;       // calls refused for a stale expectGameEpoch / expectMapId / expectCurrentMapId
@@ -146,8 +153,8 @@ namespace JawaBench.BridgeTools
 
                     Installed = true;
                     Log.Message("[JawaBench] argument guard installed on " + TargetType + "." + TargetMethod +
-                                " - a tool argument matching no declared parameter is now RECORDED " +
-                                "(not refused; strict mode is opt-in).");
+                                " - an undeclared tool argument is REFUSED on this companion's tools and " +
+                                "RECORDED on other providers' (strict mode for those is opt-in).");
                 }
                 catch (Exception e)
                 {
@@ -159,7 +166,7 @@ namespace JawaBench.BridgeTools
 
         /// <summary>
         /// 🔴 THIS PREFIX MUST NEVER CHANGE BEHAVIOUR AND MUST NEVER THROW, except the
-        /// one deliberate throw under Strict. It returns void and declares no __result,
+        /// deliberate refusals (stale target, OwnStrict on this companion's tools, Strict). It returns void and declares no __result,
         /// so Harmony always runs the original. Everything else is inside a catch that
         /// swallows: a guard that breaks the binder would be far worse than the silent
         /// drop it exists to expose.
@@ -236,11 +243,13 @@ namespace JawaBench.BridgeTools
                 return;
             }
 
-            // The one deliberate throw, and only when a caller opted in. Outside the
-            // catch above so a genuine strict refusal is not swallowed by it.
-            if (Strict && unknown != null)
+            // The deliberate throw: always for this companion's own tools (OwnStrict), for everyone's under Strict.
+            // Outside the catch above so a genuine refusal is not swallowed by it.
+            bool own = false;
+            try { own = method != null && method.DeclaringType != null && method.DeclaringType.Assembly == typeof(JawaBenchArgGuard).Assembly; } catch { }
+            if (unknown != null && (Strict || (OwnStrict && own)))
                 throw new ArgumentException(
-                    "Strict argument mode: " + name + " was given argument(s) it does not declare: " +
+                    (Strict ? "Strict argument mode: " : "REFUSED (this companion refuses undeclared arguments): ") + name + " was given argument(s) it does not declare: " +
                     string.Join(", ", unknown.ToArray()) + ". Accepted: " +
                     string.Join(", ", (accepted ?? new List<string>()).ToArray()));
         }
@@ -279,9 +288,9 @@ namespace JawaBench.BridgeTools
                 "across every tool on the bridge, not just this companion's. Backed by a Harmony " +
                 "prefix on the host's private argument binder, so it observes calls to ALL tools. " +
                 "'report' is the default and lists what has been dropped this session; 'clear' " +
-                "empties the record; 'strict' makes an unknown argument THROW from then on, and " +
-                "'lenient' turns that back off. Strict is off by default on purpose: the binder " +
-                "is shared, so refusing changes behaviour for every caller at once. " +
+                "empties the record. This companion's OWN tools always refuse an undeclared argument " +
+                "(ownStrict, on by default); 'strict' makes every OTHER provider's tools throw too, " +
+                "'lenient' turns both off (refused under the CAMPAIGN profile) and 'own' restores the default. " +
                 "READ 'installed' FIRST - the patch target is a third-party private method and if " +
                 "upstream renamed it this reports nothing while nothing is wrong with the call.",
             ResultDescription =
@@ -291,7 +300,7 @@ namespace JawaBench.BridgeTools
         public static async Task<object> BridgeArgReport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "'report' (default), 'clear', 'strict' or 'lenient'.")]
+            [ToolParameter(Description = "'report' (default), 'clear', 'strict', 'lenient' or 'own'.")]
             string action = "report",
             [ToolParameter(Description = "Most recent N records to return. 0 or less returns all held (capped at 400).", DefaultValue = 50)]
             int limit = 50)
@@ -318,24 +327,31 @@ namespace JawaBench.BridgeTools
                 }).ConfigureAwait(false);
             }
 
-            if (act == "strict" || act == "lenient")
+            if (act == "strict" || act == "lenient" || act == "own")
             {
                 if (!JawaBenchArgGuard.Installed)
                     return Fail("The guard is not installed, so strict mode would do nothing. " +
                                 "This is a refusal, not a silent no-op.",
                         new { installError = JawaBenchArgGuard.InstallError, target = JawaBenchArgGuard.TargetType + "." + JawaBenchArgGuard.TargetMethod });
 
-                bool before = JawaBenchArgGuard.Strict;
+                if (act == "lenient" && JawaBenchCompanionSafety.Effective(out string profWhy, out string _) != JawaBenchSafetyCore.Test)
+                    return Fail("REFUSED: 'lenient' would let a misspelled safety argument run on its defaults; it is off under the CAMPAIGN profile (" + profWhy + ").");
+                bool before = JawaBenchArgGuard.Strict, ownBefore = JawaBenchArgGuard.OwnStrict;
                 JawaBenchArgGuard.Strict = (act == "strict");
+                JawaBenchArgGuard.OwnStrict = (act != "lenient");
                 return await Task.FromResult<object>(new
                 {
                     success = true,
                     action = act,
                     strictBefore = before,
                     strictAfter = JawaBenchArgGuard.Strict,
+                    ownStrictBefore = ownBefore,
+                    ownStrictAfter = JawaBenchArgGuard.OwnStrict,
                     note = JawaBenchArgGuard.Strict
-                        ? "Every tool on the bridge now THROWS on an argument it does not declare, this companion's and everyone else's. Turn it off with 'lenient'."
-                        : "Unknown arguments are recorded again rather than refused."
+                        ? "Every tool on the bridge now THROWS on an argument it does not declare, this companion's and everyone else's. 'own' returns to the default."
+                        : JawaBenchArgGuard.OwnStrict
+                            ? "This companion's tools refuse an undeclared argument; other providers' tools record it."
+                            : "Unknown arguments are recorded again rather than refused, on every tool. 'own' returns to the default."
                 }).ConfigureAwait(false);
             }
 
@@ -351,6 +367,7 @@ namespace JawaBench.BridgeTools
                 installError = JawaBenchArgGuard.InstallError,
                 target = JawaBenchArgGuard.TargetType + "." + JawaBenchArgGuard.TargetMethod,
                 strict = JawaBenchArgGuard.Strict,
+                ownStrict = JawaBenchArgGuard.OwnStrict,
                 callsObserved = JawaBenchArgGuard.Bound,
                 callsWithDroppedArgs = JawaBenchArgGuard.Seen,
                 returned = recs.Count,

@@ -582,10 +582,12 @@ namespace JawaBench.BridgeTools
         private static void LoadPrefix(string saveFileName, out JawaBenchHookGuard.Scope __state)
         {
             __state = default(JawaBenchHookGuard.Scope);
+            // The save name is recorded even when the guard rejects the hook (foreign thread, disabled): a load the
+            // campaign gate never saw would read as a new game and run a campaign save under TEST.
+            try { Life.OnLoadRequested(saveFileName, WD.Now); } catch (Exception e) { GLoad.Fault("load-name", e); }
             try
             {
                 if (!GLoad.TryEnter(OnMain(), out __state)) return;
-                Life.OnLoadRequested(saveFileName, WD.Now);
                 WD.Set(WD.PLoad);
             }
             catch (Exception e) { GLoad.Fault("load-prefix", e); Fail("load-prefix", e); }

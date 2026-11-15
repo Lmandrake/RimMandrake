@@ -33,6 +33,11 @@ namespace JawaBench.BridgeTools
             var camp = S.ProfileFile.Parse("{\"profile\": \"test\", \"campaignSaves\": \"Ashkarr Campaign, Other\"}", t0);
             check(S.Effective(camp, t0, "Ashkarr Campaign", out var why3) == S.Campaign && why3.Contains("campaign save"), "campaign_save_forces_campaign", why3);
             check(S.Effective(camp, t0, "quicktest", out _) == S.Test, "non_campaign_save_keeps_test");
+            // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F3): an UNKNOWN save (null) with campaign saves listed is
+            // campaign - the tracker missing a load must not run a canonical world under TEST; "" (new game) keeps test.
+            check(S.Effective(camp, t0, null, out var why3u, "sampler off") == S.Campaign && why3u.Contains("unknown") && why3u.Contains("sampler off"), "unknown_save_with_campaign_list_is_campaign", why3u);
+            check(S.Effective(camp, t0, "", out _) == S.Test, "new_game_empty_save_keeps_test");
+            check(S.Effective(tst, t0, null, out _) == S.Test, "unknown_save_without_campaign_list_keeps_test");
             var bad = S.ProfileFile.Parse("{\"profile\": gm", t0);
             check(S.Effective(bad, t0, null, out var why4) == S.Campaign && why4.Contains("invalid"), "invalid_profile_file_is_campaign", why4);
             var odd = S.ProfileFile.Parse("{\"profile\": \"godmode\"}", t0);
