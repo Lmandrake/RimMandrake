@@ -6,7 +6,8 @@
 Needs python.exe (the bridge binds Windows loopback), a running game with a SCRATCH map (each scene clears a 15x15
 patch), and the mod loaded (FlowWorks too, for the pit scenes). Per scene: jawa/static_call
 RimMandrake.ExplosiveKnockback.RM_KnockbackProof.Stage("<scene>,x,z") builds it and sets the blast off,
-rimworld/step_game_ticks advances time without unpausing, then .Verdict("<scene>") reads the knockback JOURNAL plus
+advance_scene moves the clock --ticks without unpausing (jawa/safe_advance chunks via tickburst_step.advance, looped
+past halts to the target tick; a short advance is INVALID, never a verdict read early), then .Verdict("<scene>") reads the knockback JOURNAL plus
 map state and returns PASS/FAIL/INVALID/ERROR. The verdict is the game's; this script only records it, plus the
 journal, to Transient/explosive_knockback/run_<stamp>.jsonl. Exit 0 only when every scene PASSed.
 """
@@ -24,6 +25,7 @@ sys.path.insert(0, HERE)
 
 PROOF = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+ADVANCE_TRIES = 12          # tickburst_step.advance calls per scene, each resumed from the game clock, before giving up
 
 
 def parse_verdict(text):
@@ -67,6 +69,49 @@ def restore_settings(b, snap):
             r, ok = "%s: %s" % (type(ex).__name__, ex), False
         if not ok:
             print("SETTING RESTORE FAILED %s -> %r: %r" % (f, v, r), file=sys.stderr)
+
+
+def _clock(sess):
+    """ticksGame from jawa/safe_advance status, or None (an old companion, or a reply without it)."""
+    try:
+        r = sess.call("jawa/safe_advance", action="status")
+        r = r.get("result", r) if isinstance(r, dict) and "ticksGame" not in r else r
+        return int(r.get("ticksGame"))
+    except Exception:                                            # noqa: BLE001 - unmeasured, the caller counts ticks
+        return None
+
+
+def advance_scene(b, ticks, tries=ADVANCE_TRIES):
+    """Move the clock `ticks` paused and return {reached, target, ticksGame, halts, path, wallS}.
+
+    RIMMANDRAKE_ADVANCE_PIT_FETCH_PAST_ONE_TICK_A_FRAME: every step goes through tickburst_step.advance (jawa/safe_advance,
+    <=2500-tick chunks, stopOn=cancel; 60000 ticks measured 129 s in visit 1, where one tick a frame needs ~17 min). A
+    chunk that stops (a mental break, a refusal) ends that call; the loop resumes from the game clock until the target
+    tick, and stops early when a call moves nothing. Without a clock reading it counts the ticks each call reports."""
+    import tickburst_step as TS
+    t0 = time.time()
+    sess = TS._GateSession(lambda tool, **kw: b.call(tool, kw, check=False))
+    start = _clock(sess)
+    target = start + ticks if start is not None else None
+    done, halts, path, now = 0, [], None, start
+    for _ in range(max(1, tries)):
+        left = (target - now) if target is not None and now is not None else ticks - done
+        if left <= 0:
+            break
+        r = TS.advance(sess.call, left, session=sess, force_fast=True)
+        path = r.get("path") or path
+        moved = int(r.get("completedTicks") or 0)
+        before, now = now, _clock(sess)
+        if now is not None and before is not None:
+            moved = now - before
+        done += moved
+        if r.get("status") != "completed":
+            halts.append(str(r.get("error") or r.get("status")))
+        if moved <= 0:
+            break
+    left = (target - now) if target is not None and now is not None else ticks - done
+    return {"reached": left <= 0, "target": target, "ticksGame": now, "advanced": done, "halts": halts, "path": path,
+            "wallS": round(time.time() - t0, 1)}
 
 
 def call(b, method, arg):
@@ -114,12 +159,20 @@ def main():
                     rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
                     print("%-16s %s %s" % (name, st, detail))
                     continue
+                adv = None
                 if a.ticks > 0:
-                    b.call("rimworld/step_game_ticks", {"ticks": a.ticks})
+                    adv = advance_scene(b, a.ticks)
+                    print("%-16s advanced %d/%d ticks in %.0f s via %s%s" % (
+                        name, adv["advanced"], a.ticks, adv["wallS"], adv["path"],
+                        (", %d halt(s)" % len(adv["halts"])) if adv["halts"] else ""))
                 if a.real_seconds > 0:
                     time.sleep(a.real_seconds)
                 st, _, detail = parse_verdict(call(b, "Verdict", name))
-                rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
+                if adv is not None and not adv["reached"] and st != "ERROR":
+                    st, detail = "INVALID", "advance short (%d of %d ticks; %s); verdict was %s %s" % (
+                        adv["advanced"], a.ticks, "; ".join(adv["halts"][-2:]) or "no halt reported", st, detail)
+                rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org,
+                             "advance": adv})
                 print("%-16s %s %s" % (name, st, detail))
             journal = call(b, "Journal", "4000")
         finally:
