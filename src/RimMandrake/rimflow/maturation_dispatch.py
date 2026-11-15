@@ -799,7 +799,11 @@ def main(argv=None):
             return 1
         print("reading at %s" % rd["at_pac"])
         for mod, r in rd["mods"].items():
-            print("%-20s %-13s %s" % (mod, r["decision"], r["why"]))
+            print("%-20s %-7s %-13s %s (%s min)" % (mod, r.get("klass"), r["decision"], r.get("status") or r["why"],
+                                                   r.get("for_min", "?")))
+        for k in ("paused", "owner", "stalled"):
+            if rd.get(k):
+                print("%s: %s" % (k, "; ".join(rd[k])[:600]))
         return 0
     if o.cmd == "clear":
         p = os.path.join(sdir(), "state.json")

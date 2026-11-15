@@ -124,6 +124,29 @@ def designer_state(root, mod):
         return None
 
 
+def designer_unit(mod, tail=600):
+    """-> the Dispatcher's Designer role unit live on this concept, or None: the newest Designer launch for
+    design/concepts/<mod> in the Dispatcher's journal, if systemd says it is active."""
+    try:
+        import doorbell
+        with open(os.path.join(doorbell.state_dir(), "journal.jsonl"), encoding="utf-8") as f:
+            lines = f.readlines()[-tail:]
+    except (OSError, ImportError):
+        return None
+    for ln in reversed(lines):
+        if '"Designer"' not in ln or "/concepts/%s\"" % mod not in ln:
+            continue
+        try:
+            unit = (json.loads(ln).get("blind") or {}).get("unit")
+        except ValueError:
+            continue
+        if unit:
+            r = subprocess.run(["systemctl", "--user", "is-active", unit + ".service", unit + ".scope"],
+                               capture_output=True, text=True, timeout=30)
+            return unit if "active" in (r.stdout or "").split() else None
+    return None
+
+
 def chain_owed(dst):
     """-> the locked_change event a chain is owed for, or None. Owed when the newest locked_change is newer than every
     coverage release, coverage stop and lock, and the concept is not locked again (a re-signed tree has had its look)."""
@@ -176,7 +199,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         elif (st.get("seed_refused") or {}).get(mod):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
         else:
-            _route(root, cfg, s, f, row, ver, dstate, locked, open_items)
+            _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit))
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             ok, why = _gate(cfg, s, row, live_total, ver)
@@ -196,7 +219,7 @@ def classify(cfg, st, rows, now):
     return rows
 
 
-def _route(root, cfg, s, f, row, ver, dstate, locked, open_items):
+def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -237,7 +260,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items):
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
     if stage in (UNM, "designer", "intake") or stage is None:
-        _designer_lane(row, mod, ver, dst, locked)
+        _designer_lane(row, mod, ver, dst, locked, fx_dunit)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
@@ -255,7 +278,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items):
                  row.get("why"), row.get("need") or row.get("why"))
 
 
-def _designer_lane(row, mod, ver, dst, locked):
+def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit):
     if dst is None:
         row.update(decision="designer_unreadable", why="design/concepts/%s/stage.json cannot be read" % mod)
         return
@@ -285,8 +308,10 @@ def _designer_lane(row, mod, ver, dst, locked):
                    card="Lock %s's Design Version? The Designer stands at stage 5 (Lock); VERSION.json is not locked. "
                         "Evidence: design/concepts/%s/tree.json and record.json." % (mod, mod))
     else:
-        row.update(decision="designer_wait", waits_on=None,
-                   why="the Designer stands at stage %s (%s): its own launcher (role_launch) runs it" % (stg, stt))
+        unit = dunit(mod)
+        row.update(decision="designer_wait", waits_on=unit,
+                   why="the Designer stands at stage %s (%s): %s" % (stg, stt, "its run %s is live" % unit if unit else
+                       "the Dispatcher's Designer launcher runs it (no Designer run live now)"))
 
 
 def _gate(cfg, s, row, live_total, ver):

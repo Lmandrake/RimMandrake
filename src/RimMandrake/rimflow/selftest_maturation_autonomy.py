@@ -61,6 +61,7 @@ class World:
         self.locked, self.found, self.bridge = locked, list(found), bridge
         self.filed, self.launched, self.briefs, self.cards, self.seeded = [], [], [], [], []
         self.fail_launch = False
+        self.dunits = {}
 
     def fx(self):
         def launch(mod, cap, item):
@@ -86,7 +87,7 @@ class World:
         return {"facts": lambda: self.facts, "account": lambda: (True, "ok"), "bridge": lambda p: self.bridge,
                 "file": file, "launch": launch, "launch_brief": launch_brief, "known": lambda: set(),
                 "open_items": lambda ids: self.items.get(ids[0], []) if self.items is not None else None,
-                "designer_state": lambda m: self.dstate.get(m), "version_locked": lambda m: self.locked,
+                "designer_state": lambda m: self.dstate.get(m), "designer_unit": lambda m: self.dunits.get(m), "version_locked": lambda m: self.locked,
                 "discovered": lambda: self.found, "seed": seed, "card": self.cards.append,
                 "page": lambda: type("R", (), {"returncode": 0})()}
 
@@ -241,6 +242,10 @@ def main():
         ok(not rd.get("stalled"), "a fresh Designer wait is not a stall yet")
         rd, g = run(w, ["D"], root, now=CLOCK + 660)
         ok(rd.get("stalled") == ["D"], "wait 6: nothing running on it for 10 minutes: maturation.stalled names it")
+        w.dunits = {"D": "rm-role-designer-7"}
+        rd, g = run(w, ["D"], root, now=CLOCK + 720)
+        ok(not rd.get("stalled") and g("D").get("waits_on") == "rm-role-designer-7",
+           "a live Designer role run on the concept: wait on that unit, not a stall")
         # every class is one of four, on every row of every tick above
         ok(all(m.get("klass") in ("launch", "wait", "paused", "owner") for m in rd["mods"].values()),
            "every row has one of the four classes")
