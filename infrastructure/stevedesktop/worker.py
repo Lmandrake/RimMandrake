@@ -1221,8 +1221,10 @@ class Attempt:
                 ok = self.read_sheet(tail)
                 gone = self.game_gone()
                 if gone:
-                    return self.fail("INVALID", "GAME_DIED", gone + "; modcheck exit %s, sheet %s"
-                                     % (rc, S.count_verdicts(self.res["rows"])))
+                    self.fail("INVALID", "GAME_DIED", gone + "; modcheck exit %s, sheet %s"
+                              % (rc, S.count_verdicts(self.res["rows"])))
+                    self.keep_game_log("Player_died.log", "Player-prev.log" if " runs now" in gone else "Player.log")
+                    return False
                 if self.liveness_unknown:
                     self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
                 if self.res.get("cause") == "CANARY":
@@ -1302,14 +1304,16 @@ class Attempt:
         self.beat()
         return self.run_modcheck()
 
-    def keep_game_log(self, name="Player.log"):
+    def keep_game_log(self, name="Player.log", src_name="Player.log"):
         """OPS_STEVE_DIAGNOSE_INVALID_MBTX: the next cold start overwrites Player.log, and a second one its -prev copy,
         so 186d97's world-start failure (Entry for 371 s, 11-01) went unread: no crash report, log gone within two jobs.
         Keep it beside the attempt BEFORE the game stops, and put the fault in the note. Never fails the result.
         FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: a frozen game (10-26, main thread silent 400+ s after the drawbridge
         proof) was killed and its log lost the same way, so the wedged-game and hung-run restarts keep it too, each
-        under its own `name` so two stops in one attempt do not overwrite each other."""
-        src = os.path.join(os.environ.get("RM_GAME_LOGDIR") or os.environ.get("RM_GAME_USERDATA", ""), "Player.log")
+        under its own `name` so two stops in one attempt do not overwrite each other. A game that died keeps its log
+        too (RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO: four 11-14 deaths lost theirs to the retry's cold start); when
+        another game already runs, the dead one's is RimWorld's rotated Player-prev.log (`src_name`)."""
+        src = os.path.join(os.environ.get("RM_GAME_LOGDIR") or os.environ.get("RM_GAME_USERDATA", ""), src_name)
         dst = os.path.join(self.d, name)
         try:
             shutil.copyfile(src, dst)

@@ -377,11 +377,20 @@ def main():
         # 3c. the game dies mid-run (TESTQ_DEAD_GAME_RUN_FIX_READS_DONE): modcheck still writes a sheet of
         # UNMEASURED rows, but a game that is gone, or is another process, measured nothing -> INVALID/GAME_DIED
         load = dict(TESTQ_CMD_LOAD="echo started pid 4242")
-        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo stopped; exit 3", **load)
+        dlogdir = os.path.join(tmp, "deadlog")
+        os.makedirs(dlogdir, exist_ok=True)
+        with open(os.path.join(dlogdir, "Player.log"), "w") as f:
+            f.write("Exception in Verse.Root.Update: boom\nlast line\n")
+        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo stopped; exit 3", RM_GAME_LOGDIR=dlogdir, **load)
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "GAME_DIED" and len(res.get("rows", [])) == 3,
               "a game gone after the run -> INVALID/GAME_DIED, rows kept as evidence: %s %s %s"
               % (res.get("outcome"), res.get("cause"), res.get("note")))
+        # RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO: four 11-14 deaths (67276d, 22c4b3, 205a75, a6cdaa) left no log, the
+        # automatic retry's cold start overwrote it: the dead game's Player.log is kept beside the attempt first
+        dkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player_died.log")
+        check(os.path.exists(dkept) and "boom" in open(dkept).read() and "game log kept at" in (res.get("note") or ""),
+              "a game that died keeps its Player.log beside the attempt: %s %s" % (dkept, res.get("note")))
         rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo 'running pid=5151 session=1 started=x'", **load)
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "GAME_DIED", "another game process after the run -> GAME_DIED: %s" % res.get("note"))
