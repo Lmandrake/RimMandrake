@@ -486,6 +486,13 @@
   "reserve": 60000,
   "spent": 14285245
  },
+ "coverage_release_granted": {
+  "after": [
+   "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS"
+  ],
+  "at": "2026-11-15T21:11:14Z",
+  "why": "per d_fix_seventeen_round_six_gaps (OWNER:1794774724955142310, design/concepts/Pyrelands/record.json): one final look after the 17-gap fix closes and its re-pin lands"
+ },
  "coverage_releases": [
   {
    "at": "2026-11-15T06:01:06Z",
@@ -1164,6 +1171,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card 2026-11-15: fix the 17 round-6 gaps, ONE final look; release once; a not_covered pauses Pyrelands for him again; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes, floor); stage 4 left stale, its exam void (sheet, tree, scenes, floor, owner changed): the next open retakes it; sources OWNER:1794774724955142310@6a4318a295, OWNER:1794774724955142310@6d8f7fe94c, OWNER:1794774724955142310@4a7b2faf61, OWNER:1794774724955142310@5b463ff0f9, OWNER:1794774895716093173"
+  },
+  {
+   "at": "2026-11-15T21:11:14Z",
+   "stage": 5,
+   "what": "coverage_release_granted",
+   "why": "per d_fix_seventeen_round_six_gaps (OWNER:1794774724955142310, design/concepts/Pyrelands/record.json): one final look after the 17-gap fix closes and its re-pin lands (takes effect after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS close and the re-pin lands)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
