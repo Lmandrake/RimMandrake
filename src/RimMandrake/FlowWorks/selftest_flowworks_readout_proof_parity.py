@@ -73,7 +73,10 @@ def checks(proofs: str, mouse: str) -> list[tuple[str, bool]]:
         ("ProofReadout no longer reads DepthReadoutAt directly", "DepthReadoutAt" not in pr),
         ("DepthSuffix still carries the sheet-water fallback", "RM_MapComponent_Sheet.ReadoutAt(map, c)" in ds),
         ("DepthSuffix still carries the natural-liquid fallback", "RM_LiquidBottleUtility.LiquidAt(" in ds),
-        ("the mouseover Prefix prints DepthSuffix", "DepthSuffix(map, c)" in method_body(mask_comments(mouse), r"public\s+static\s+void\s+Prefix\s*\(")),
+        # since f64db2c740 the Prefix writes LineAt's line, and LineAt carries DepthSuffix
+        ("the mouseover Prefix prints DepthSuffix (through LineAt)",
+         "LineAt(map, c," in method_body(mask_comments(mouse), r"public\s+static\s+void\s+Prefix\s*\(")
+         and "DepthSuffix(map, c)" in method_body(mask_comments(mouse), r"public\s+static\s+string\s+LineAt\s*\(")),
     ]
 
 
