@@ -834,7 +834,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     parked = None
     if not rec["signed"]:
         parked = DS.loop_ceiling(st) and ("ceiling", DS.loop_ceiling(st))
-        if not parked and rec.get("verdict") == "not_covered" and DS.refusals_since_loop(st) >= 2:
+        if not parked and rec.get("verdict") == "not_covered" and DS.refusals_since_loop(st) >= 2 \
+                and not DS.designer_can_fix(rec):   # gaps the Designer fixes alone are rework, not his question
             away, why_away = DS.owner_away()
             if away:    # the second refusal while he is away parks (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS)
                 parked = ("second_refusal", "the coverage judge refused %d times while you are away (%s)" % (

@@ -59,6 +59,79 @@ def owner_line(root, item="FOO_ITEM", **kw):
                                  "tsn": int(t * 1e9)}, **kw)) + "\n")
 
 
+def needs_him(rounds):
+    """The EK night with one gap per round sent to stage 2 (his answer): those refusals still park."""
+    out = json.loads(json.dumps(rounds))
+    for r in out:
+        if r.get("gaps"):
+            r["gaps"][0]["return_to"] = 2
+    return out
+
+
+def ek_designer_fixable(base, rounds, ops):
+    """RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE (owner card 2026-11-15, "Rework, and stop parking for
+    these"): the real EK night, every gap return_to 3, him away. The second refusal does not park, the Designer's
+    rework opens, and the brake (coverage_judge NOT_COVERED_LIMIT) stops judging at the third refusal with the one
+    fixed-id alarm instead of a ninth look."""
+    DS.owner_away = AWAY
+    root = os.path.join(base, "ekfix")
+    d = concept(root)
+    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds])
+    out = [CJ.run(d, root, judge, now=1794000000 + 1200 * i) for i in range(2)]
+    st = DS.load_state(d)
+    check("fixable: the second refusal while away, every gap the Designer's alone, does not park",
+          out[1][0].get("verdict") == "not_covered" and not out[1][0].get("parked") and not st.get("park")
+          and st.get("status") != "waiting_owner" and not os.path.exists(os.path.join(d, DS.PARK_FILE)),
+          (out[1][1], st.get("park"), st.get("status")))
+    r = refused(DS.open_run, d, "rework-after-2", repo=root)
+    check("fixable: the Designer's rework run opens (not PARKED)", r is None, r)
+    if r is None:
+        DS.abort_run(d, "rework-after-2")
+    rest = [CJ.run(d, root, judge, now=1794010000 + 1200 * i) for i in range(len(rounds) - 2)]
+    st = DS.load_state(d)
+    alarms = RC.open_alarms()
+    check("fixable: the brake stops judging at the third refusal (3 judges, not 9), blocked on the fixed-id alarm",
+          judge.calls == CJ.NOT_COVERED_LIMIT and rest[0][0].get("stopped") and st.get("status") == "blocked"
+          and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID) and not st.get("park"),
+          (judge.calls, rest[0][1], st.get("status"), st.get("blocked_on")))
+    check("fixable: exactly one alarm row, the fixed id, for this concept",
+          len([a for a in alarms if CJ.subject(d) in json.dumps(a)]) == 1, alarms)
+    r = refused(DS.open_run, d, "rework-after-brake", repo=root)
+    check("fixable: past the brake no Designer run opens", r and r.startswith("BLOCKED"), r)
+    RC.clear(CJ.subject(d), "selftest")
+
+    # a gap whose criterion the judge calls flawed goes to the criteria fixer, not the Designer: it still parks
+    root2 = os.path.join(base, "eksuspect")
+    d2 = concept(root2)
+    rec = {"verdict": "not_covered", "gaps": [{"return_to": 3, "ids": ["x"]}], "criteria_suspect": ["x"]}
+    check("fixable: a flawed-criterion gap is not the Designer's alone", not DS.designer_can_fix(rec), rec)
+    check("fixable: no gaps at all is not 'fixable alone' (nothing to rework)",
+          not DS.designer_can_fix({"verdict": "not_covered", "gaps": []}))
+    check("fixable: a stage-2 gap needs him", not DS.designer_can_fix(
+        {"verdict": "not_covered", "gaps": [{"return_to": 3}, {"return_to": 2}]}))
+
+    # a park written before the rule, over gaps the Designer can fix alone, no longer stands; nor does lifting it
+    # restart the loop (the brake's count and the ceiling keep running)
+    DS.write_json(os.path.join(d2, CJ.VERDICT_FILE), {"verdict": "not_covered", "gaps": [
+        {"return_to": 3, "ids": ["a"]}, {"return_to": 3, "ids": ["b"]}]})
+    DS.park(d2, "second_refusal", "selftest: an old park", root2)
+    st2 = DS.load_state(d2)
+    check("fixable: an old second_refusal park over Designer-only gaps no longer stands",
+          DS.standing_park(st2, d2, root2) is None, st2.get("park"))
+    check("fixable: lifting it keeps loop_since (the brake is not reset)",
+          DS.lift_park(st2, d2, root2) and "loop_since" not in st2 and st2["status"] == "ready"
+          and st2["parks"][-1].get("lifted_by") == "designer_can_fix", (st2.get("loop_since"), st2.get("parks")))
+    DS.write_json(os.path.join(d2, CJ.VERDICT_FILE), {"verdict": "not_covered", "gaps": [
+        {"return_to": 3, "ids": ["a"]}, {"return_to": 2, "ids": ["b"]}]})
+    DS.park(d2, "second_refusal", "selftest: needs him", root2)
+    check("fixable: an old park with a gap needing him still stands",
+          DS.standing_park(DS.load_state(d2), d2, root2) is not None)
+    DS.park(d2, "ceiling", "selftest: the ceiling", root2)
+    DS.write_json(os.path.join(d2, CJ.VERDICT_FILE), {"verdict": "not_covered", "gaps": [{"return_to": 3}]})
+    check("fixable: a ceiling park stands whatever the gaps (the spend brake)",
+          DS.standing_park(DS.load_state(d2), d2, root2) is not None)
+
+
 def ek_unattended(base, rounds, ops):
     DS.owner_away = AWAY
     root = os.path.join(base, "ek")
@@ -336,7 +409,8 @@ def main():
             os.makedirs(ops)
             os.environ.update(RM_REFUSAL_DIR=os.path.join(base, "refusals"), RM_OPS_WATCH_DIR=ops,
                               RM_DISPATCHER_STATE=os.path.join(base, "dispatcher"))
-            ek_unattended(base, rounds, ops)
+            ek_unattended(base, needs_him(rounds), ops)
+            ek_designer_fixable(base, rounds, ops)
             by_card_lifts(base)
             ceiling(base)
             healthy(base)

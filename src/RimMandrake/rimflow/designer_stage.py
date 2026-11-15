@@ -1373,18 +1373,50 @@ def refusals_since_loop(st):
                and r.get("verdict") == "not_covered" and (epoch(r.get("at")) or 0) >= since)
 
 
+# RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE (owner card 2026-11-15 on Graffiti, "Rework, and stop parking
+# for these"): a refusal whose every gap the Designer can fix alone (return_to 3, no criterion called flawed) is rework,
+# not a question for him, so the second one while he is away does not park, and a park written over such gaps before
+# the rule no longer stands. The brake on runaway rounds stays: coverage_judge.stop_reason stops judging at its
+# NOT_COVERED_LIMIT with the one fixed-id alarm (refusal_contract.ALARM_ID), and the loop still parks at its ceiling.
+VERDICT = "coverage_verdict.json"   # coverage_judge.VERDICT_FILE
+
+
+def designer_can_fix(rec):
+    """-> True when a not_covered verdict's gaps are all the Designer's alone: at least one gap, each returning to
+    stage 3 (a stage-2 gap needs his answer), and none whose criterion the judge calls flawed (the criteria fixer's)."""
+    gaps = rec.get("gaps") if isinstance(rec, dict) else None
+    return bool(isinstance(gaps, list) and gaps and rec.get("verdict") == "not_covered"
+                and not rec.get("criteria_suspect")
+                and all(isinstance(g, dict) and g.get("return_to") == 3 for g in gaps))
+
+
+def fixable_park(st, d):
+    """A second_refusal park over a verdict the Designer can fix alone (it parked before the rule above)."""
+    park = st.get("park")
+    return (isinstance(park, dict) and park.get("kind") == "second_refusal"
+            and designer_can_fix(read_json(os.path.join(d, VERDICT))))
+
+
 def standing_park(st, d, repo=REPO, lines=None):
-    """-> the park still waiting on him, or None: lifted only by his own word (ownerSaid or byCard on an OWNER event
-    naming the item) after it was written. A seat's note, a --per-ruling act or a rework helper never lifts it. An
-    unreadable OWNER shard keeps it standing."""
+    """-> the park still waiting on him, or None: lifted by his own word (ownerSaid or byCard on an OWNER event
+    naming the item) after it was written, or, for a second refusal, by every gap being the Designer's alone
+    (designer_can_fix). A seat's note, a --per-ruling act or a rework helper never lifts it. An unreadable OWNER shard
+    keeps a park needing him standing."""
     park = st.get("park")
     if not isinstance(park, dict):
         return None
-    if lines is None:
-        lines = CT.owner_lines(repo, clone_of(d))
-    if st.get("item") and lines is not None and his_answers(lines, st["item"], epoch(park.get("at")) or 0):
+    if his_word_since_park(st, d, repo, lines) or fixable_park(st, d):
         return None
     return park
+
+
+def his_word_since_park(st, d, repo=REPO, lines=None):
+    park = st.get("park")
+    if not isinstance(park, dict) or not st.get("item"):
+        return False
+    if lines is None:
+        lines = CT.owner_lines(repo, clone_of(d))
+    return bool(lines is not None and his_answers(lines, st["item"], epoch(park.get("at")) or 0))
 
 
 def ceiling_crossed_at(st):
@@ -1426,12 +1458,17 @@ def lift_park(st, d, repo=REPO):
                           "%Y-%m-%dT%H:%M:%SZ")}
     if not isinstance(st.get("park"), dict) or standing_park(st, d, repo):
         return False
+    his = his_word_since_park(st, d, repo)
     park = dict(st.pop("park"), lifted_at=now_iso())
+    if his:
+        st["loop_since"] = park["lifted_at"]
+    else:   # no word of his: the loop, its brake count and its ceiling, run on
+        park["lifted_by"] = "designer_can_fix"
     st.setdefault("parks", []).append(park)
-    st["loop_since"] = park["lifted_at"]
     if st.get("status") == "waiting_owner":
         st["status"] = "ready"
-    hist(st, "park_lifted", "his word on %s lifts the %s park" % (st.get("item"), park.get("kind")))
+    hist(st, "park_lifted", "his word on %s lifts the %s park" % (st.get("item"), park.get("kind")) if his else
+         "every gap of the %s park is the Designer's to fix alone: rework, not his question" % park.get("kind"))
     return True
 
 

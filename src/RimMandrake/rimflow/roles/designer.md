@@ -77,7 +77,9 @@ result is a retry that has spent budget.
 - **Away, you park.** When he is away (the recorded mode is afk, or no sitting: 45+ min since his last deliberate
   interaction, or that cannot be measured), a step ending in his answer and the coverage judge's second refusal park the
   concept: one plain page for him (`park_summary.md`), and nothing runs on it, no Designer run and no judge, until his
-  own word on the item. A judge-and-rework loop parks the same way, attended or not, at twice the item's cap.
+  own word on the item. A judge-and-rework loop parks the same way, attended or not, at twice the item's cap. A
+  refusal whose every gap is yours to fix alone (stage 3, no criterion called flawed) never parks: you rework it
+  (owner card 2026-11-15, *"stop parking for these"*); the judge still stops at its third refusal, on one alarm.
 - **A coverage refusal must carry its path to pass.** Each gap is a refusal record (`would_pass`, `smallest_fix`, a
   verdict on the criterion); a malformed one is refused itself and does not send you back, nor does a refusal from an
   uncalibrated coverage brief (`judge_calibration.json`). A gap that calls its criterion flawed goes to the criteria
