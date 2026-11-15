@@ -1185,6 +1185,30 @@ OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the fir
 OPENING_WINDOW = 2500                       # PyrelandsTuning.OpeningFrontWindowTicks
 
 
+def old_save_opening_verdict(kv, window=OPENING_WINDOW, rearmed=False):
+    """The A4 old-save read of one ProbeOpeningFront reply -> (verdict, why): "UNMEASURED" (not an old save), "FAIL" or
+    "PASS". LIES: a map inside its first `window` ticks is a FRESH map; a re-arm earlier in this session leaves lit > 0 on
+    any map; and a fixture built after the opening front shipped lit its own front at birth (litTick within the window
+    of the map's birth tick, now - mapAge; visit 1: litTick 372539 = birth, lit 5), so an earlier chain that aged it past
+    the window does not make it an old save. A front lit later than that window is the old-save defect and fails."""
+    if "done" not in kv or not str(kv.get("mapAge") or "").lstrip("-").isdigit():
+        return "UNMEASURED", "ProbeOpeningFront unreadable (stale FireEcologyHook.dll?): %r" % (kv,)
+    age = int(kv["mapAge"])
+    if age <= window:
+        return "UNMEASURED", "SITE: the map is %d ticks old (window %d): a fresh map, not a loaded old save" % (age, window)
+    if rearmed:
+        return "UNMEASURED", "HARNESS: RearmOpeningFront already ran this session; reload the fixture for the old-save read"
+    lit_tick, now = str(kv.get("litTick") or ""), str(kv.get("now") or "")
+    if lit_tick.isdigit() and now.isdigit():
+        born = int(now) - age
+        if 0 <= int(lit_tick) - born <= window:
+            return "UNMEASURED", ("SITE: the map lit its own opening front at birth (litTick %s, born %d, window %d): "
+                                  "a fixture built after the front shipped, not a loaded old save" % (lit_tick, born, window))
+    if kv.get("done") != "True" or kv.get("lit") != "0" or kv.get("litTick") != "-1":
+        return "FAIL", "a loaded save past its window lit (or still owes) an opening front: %r" % (kv,)
+    return "PASS", "done=True, lit=0, litTick=-1 on a map %d ticks old" % age
+
+
 @suite.chain("opening_front")
 @_teardown(fire=True)
 def opening_front(t):
@@ -1203,16 +1227,12 @@ def opening_front(t):
         kv = parse_kv((_ok(r, "ProbeOpeningFront") or {}).get("result")) if _live(t) else {}
         _note(t, "opening front on the loaded save, before any re-arm", {"probe": kv})
         if _live(t):
-            if "done" not in kv or not str(kv.get("mapAge") or "").lstrip("-").isdigit():
-                _unmeasured(t, "ProbeOpeningFront unreadable (stale FireEcologyHook.dll?): %r" % r)
-            # LIES: a map inside its first OPENING_WINDOW ticks is a FRESH map, not an old save; a re-arm earlier in this
-            # session leaves lit > 0 on any map. Neither is the old-save half.
-            if int(kv["mapAge"]) <= OPENING_WINDOW:
-                _unmeasured(t, "SITE: the map is %s ticks old (window %d): a fresh map, not a loaded old save" % (kv["mapAge"], OPENING_WINDOW))
-            if t.session is not None and getattr(t.session, "_pyre_opening_rearmed", False):
-                _unmeasured(t, "HARNESS: RearmOpeningFront already ran this session; reload the fixture for the old-save read")
-            if kv.get("done") != "True" or kv.get("lit") != "0" or kv.get("litTick") != "-1":
-                _fail("a loaded save past its window lit (or still owes) an opening front: %r" % kv)
+            verdict, why = old_save_opening_verdict(
+                kv, OPENING_WINDOW, rearmed=getattr(t.session, "_pyre_opening_rearmed", False))
+            if verdict == "UNMEASURED":
+                _unmeasured(t, why if kv else "%s: %r" % (why, r))
+            if verdict == "FAIL":
+                _fail(why)
     with _comp(t, "opening_front", shows=[]):
         _set(t, {"fireClockEnabled": True})
         _extinguish(t)

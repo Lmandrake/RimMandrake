@@ -1704,6 +1704,40 @@ def test_ruins_count_charred_floors_2026_11_15(v=None):
           and 'GetNamedSilentFail("RM_FE_Charred")' in hook)
 
 
+def test_old_save_row_skips_a_fixture_born_lit_2026_11_15():
+    """RIMMANDRAKE_SKIP_OLD_SAVE_ROW_ON_FIXTURE_BORN_LIT: opening_front_old_save_inert reads UNMEASURED SITE on a map that
+    lit its own front at birth (visit 1: litTick 372539 = birth, lit 5, aged past the window by earlier chains), and still
+    fails a save that lights its front late."""
+    v = _load_validation("pyre_validation_obl")
+    w = v.OPENING_WINDOW
+    born, now = 372539, 372539 + 40000
+
+    def kv(done="True", lit="0", lit_tick="-1", age=now - born, at=now):
+        return {"done": done, "lit": lit, "litTick": str(lit_tick), "mapAge": str(age), "now": str(at)}
+
+    cases = [
+        ("fixture lit at its birth tick", kv(lit="5", lit_tick=born), "UNMEASURED", "SITE"),
+        ("fixture lit on its first watch interval", kv(lit="5", lit_tick=born + 250), "UNMEASURED", "SITE"),
+        ("fixture lit at the window's last tick", kv(lit="5", lit_tick=born + w), "UNMEASURED", "SITE"),
+        ("pre-change save lit late (after load)", kv(lit="27", lit_tick=now - 10), "FAIL", "lit"),
+        ("save lit one tick past its window", kv(lit="3", lit_tick=born + w + 1), "FAIL", "lit"),
+        ("save still owes its front", kv(done="False"), "FAIL", "owes"),
+        ("lit count with no litTick", kv(lit="4"), "FAIL", "lit"),
+        ("clean old save", kv(), "PASS", "litTick=-1"),
+        ("fresh map inside the window", kv(lit="5", lit_tick=born, age=w, at=born + w), "UNMEASURED", "fresh map"),
+        ("unreadable probe", {}, "UNMEASURED", "unreadable"),
+        ("probe with no mapAge", {"done": "True", "lit": "0", "litTick": "-1"}, "UNMEASURED", "unreadable"),
+    ]
+    for name, reply, want, word in cases:
+        got, why = v.old_save_opening_verdict(reply, w)
+        check("old-save row: %s -> %s" % (name, want), got == want and word in why, (got, why))
+    got, why = v.old_save_opening_verdict(kv(), w, rearmed=True)
+    check("old-save row: a re-arm this session -> UNMEASURED HARNESS", got == "UNMEASURED" and "HARNESS" in why, (got, why))
+    chain = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read().split("def opening_front(t)")[1].split("\ndef ")[0]
+    check("opening_front_old_save_inert reads its verdict from old_save_opening_verdict",
+          "old_save_opening_verdict(" in chain.split('"opening_front", shows')[0], chain[:200])
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -1712,7 +1746,8 @@ def main():
               test_ash_control_and_herd_drive_2026_10_14, test_herd_window_from_measured_pace_2026_11_15,
               test_heat_guard_2026_10_15,
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
-              test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15):
+              test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15,
+              test_old_save_row_skips_a_fixture_born_lit_2026_11_15):
         try:
             t()
         except Exception as ex:
