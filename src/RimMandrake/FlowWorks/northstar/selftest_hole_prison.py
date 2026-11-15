@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 1800   (208 s alone building the production C# pit-room tests, plus its wait on the shared FlowWorks dotnet_lock behind flowworks_stock ~540 s and trench_cover ~200 s under the sweep)
 """Acceptance-driver fault injection plus selected production C# pit-room tests.
 Fake game outcomes verify assertions/cleanup; they never prove game behavior.
 """

@@ -172,15 +172,12 @@ import contextlib
 @contextlib.contextmanager
 def dotnet_lock():
     """Both FlowWorks selftest wrappers build the same SelfTest project; run_selftests.py runs them in parallel,
-    so they take this lock around every dotnet call (a rebuild under a running dll raced before)."""
-    import fcntl
-    import tempfile
-    with open(os.path.join(tempfile.gettempdir(), "flowworks_selftest_dotnet.lock"), "w") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(f, fcntl.LOCK_UN)
+    so they take this lock around every dotnet call (a rebuild under a running dll raced before). It lives in winbuild's
+    machine-wide LOCK_DIR: run_selftests gives every test its own TMPDIR, so a lock under tempfile.gettempdir() was never
+    shared and two wrappers rebuilt under each other's running dll (nightly 2026-11-14: hole_prison MSB3027, timeout)."""
+    import winbuild
+    with winbuild._flock("flowworks_selftest_dotnet"):
+        yield
 
 
 def main():
