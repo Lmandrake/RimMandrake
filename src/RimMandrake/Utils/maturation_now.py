@@ -757,6 +757,25 @@ def time_now():
     return float(v) if v else dt.datetime.now(dt.timezone.utc).timestamp()
 
 
+def dispatch_needs(now, errors):
+    """The Dispatch step's "Needs Conductor" lines (rimflow/maturation_dispatch.py's reading, item
+    RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE): a stop, a hand step, a mod ready to advance. A reading
+    over 30 min old is named as stale, never read as current."""
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+        import maturation_dispatch as MD  # noqa: E402
+        rd, _ = read_json(os.path.join(MD.sdir(), "reading.json"))
+    except Exception as e:      # noqa: BLE001
+        errors.append("dispatch step reading: %s: %s" % (e.__class__.__name__, str(e)[:160]))
+        return []
+    if not isinstance(rd, dict):
+        return ["The Dispatch step (maturation_dispatch.py) has no reading yet: nothing launches offline builders"]
+    if now - float(rd.get("at") or 0) > 1800:
+        return ["The Dispatch step's reading is %d min old (rm-maturation-dispatch.timer is not ticking)"
+                % ((now - float(rd.get("at") or 0)) / 60)]
+    return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in rd.get("needs_conductor") or []]
+
+
 def gather(root, live=True):
     names = designer_names()
     croot = os.path.join(root, "design", "concepts")
@@ -803,7 +822,10 @@ def gather(root, live=True):
     for f in others:
         has = sorted(os.listdir(os.path.join(croot, f)))
         other.append({"name": f, "files": has})
-    return {"mods": mods, "others": other, "held": held, "needs": reactions(mods, now), "now": now,
+    needs = reactions(mods, now)
+    if live:
+        needs["conductor"] += dispatch_needs(now, lf["errors"])
+    return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
             "errors": lf["errors"]}
 

@@ -28,9 +28,19 @@ a malformed one exits 3). A move writes the record, appends one dated entry to t
 what was confirmed, the "Stage now" and "Waiting on" lines it replaced) and writes a new "Stage now" line that
 maturation_now.py reads back to the same stage. --conductor-decision also writes the spec §5 intervention line.
 
+    python3 src/RimMandrake/rimflow/maturation.py brief MOD [--out F]  slice 4: the mechanical half of an offline-build
+                                                                      brief (refusals, bars not runnable, UNRUN scenes, the
+                                                                      journal's Waiting on / Next, standing rules)
+    python3 src/RimMandrake/rimflow/maturation.py launch MOD --budget-usd X --item ID [--model opus] [--seat BENCH]
+            one capped detached builder on an offline-build mod with build work owed (detached_helper.py launch)
+
 What is settled and tested here, and what stays a hand step (the open question named), is the plan's section 3 table.
-This program launches nothing: no timer, no helper. A later slice launches only through detached_helper.py with
---budget-usd. Holds are read from the journal only; a hold written only in a ledger note is not seen (slice 2).
+This program has no timer and never retries; `launch` is the only way it starts work, through detached_helper.py with
+--budget-usd (no default cap). Its caller on a timer is maturation_dispatch.py (the Dispatch step, its guard rails).
+A blank "Steward's decisions" section does not refuse an offline-build launch (the owner, 2026-11-14 ~9 PM PST); the
+brief carries a standing default, or version/steward_decisions.md when the Conductor writes one. MATURATION_DETACHED_HELPER
+names a stand-in launcher (the selftest's fake). Holds are read from the journal only; a hold written only in a ledger
+note is not seen (slice 2).
 MATURATION_CLOCK (a unix time) pins the clock for the selftest. Selftest: selftest_maturation.py.
 """
 import argparse
@@ -617,8 +627,162 @@ def next_step(root, mod):
             "since": rec.get("since"), "to": to, "passed": [p["clause"] for p in res["verdict"]["passed"]],
             "refusals": [{k: r[k] for k in ("clause", "observed", "would_pass", "smallest_fix")} for r in prog + hand],
             "hand_steps": res["hand_steps"], "cycles": rec.get("cycles"), "spend": spend_by_stage(rec),
-            "launch": "none: this slice launches nothing (a later slice launches only via detached_helper.py "
-                      "--budget-usd)", "next": nxt}
+            "launch": ("maturation.py launch %s --budget-usd <cap> --item <ID> (or the Dispatch step, "
+                       "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else "none at this stage",
+            "next": nxt}
+
+
+# ---- slice 4: the offline-build brief and its capped launch ---------------------------------------------------------
+#
+# The owner, 2026-11-14 ~9 PM PST, at the keyboard: "So can we wire up Operations/Dispatch such that they do advance on
+# these offline builders? ... As long as we don't have automated loops rejecting/cycling things, we can't get into too
+# much trouble." So a blank "Steward's decisions" section no longer refuses an offline-build launch: the brief carries
+# the standing default below, and the Conductor's decisions, when written, go in version/steward_decisions.md.
+
+OWNER_WIRE = ("So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty "
+              "inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops "
+              "rejecting/cycling things, we can't get into too much trouble.")
+STEWARD_FILE = "version/steward_decisions.md"
+STANDING_DEFAULT = ("No Conductor decisions are written for this run, so the standing default holds: build the missing "
+                    "checks for the bars listed above, offline, and nothing else. Do not change a bar, its wording, the "
+                    "Design Version or the stage. A bar that cannot get a check offline is written up in a note on your "
+                    "item as a question to the Conductor, never guessed around.")
+BUILD_CLAUSES = ("every_bar_has_a_check_that_runs", "table_version")    # refusals a builder can work off, offline
+
+
+def build_facts(root, mod):
+    """-> what the offline-build stage owes, read through evaluate(): refused_bars (not runnable, his-walk bars left
+    out: those are a hand step), build_refusals, hand_steps, other_refusals (a hold, a version mismatch: not build
+    work), and owed: "build" | "hand step" | "blocked" | "ready to advance". Any other stage: stage only."""
+    rec = load(root, mod)
+    if rec is None:
+        return {"mod": mod, "stage": UNM, "why": "no stage record"}
+    cur = rec["stage"]
+    out = {"mod": mod, "version": rec.get("version"), "stage": cur, "since": rec.get("since")}
+    if cur != "offline_build":
+        return out
+    res = evaluate(root, mod, "blind_challenge", by="maturation.py brief", why="what the offline build owes")
+    refs = res["verdict"]["refusals"]
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    bad, n = _table_runnable(tt) if tt is not None else (None, None)
+    walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
+    out.update({
+        "refused_bars": [b for b in bad if b not in walk] if isinstance(bad, list) else UNM,
+        "bars_total": n if isinstance(n, int) else UNM, "walk_bars": walk,
+        "build_refusals": [r["clause"] for r in refs if r["clause"] in BUILD_CLAUSES],
+        "hand_steps": [r["clause"] for r in refs if r["clause"] in res["hand_steps"]],
+        "other_refusals": [r["clause"] for r in refs if r["clause"] not in BUILD_CLAUSES
+                           and r["clause"] not in res["hand_steps"]],
+        "observed": {r["clause"]: r["observed"] for r in refs}})
+    out["owed"] = ("blocked" if out["other_refusals"] else "build" if out["build_refusals"] else
+                   "hand step" if out["hand_steps"] else "ready to advance")
+    return out
+
+
+def refused_ids(f):
+    """The refusals a builder can work off, as one comparable list (None when the table cannot be read)."""
+    if not isinstance(f.get("refused_bars"), list):
+        return None
+    return sorted(f["refused_bars"]) + (["table_version"] if "table_version" in f.get("build_refusals", []) else [])
+
+
+def _bar_lines(tt, ids):
+    tests = (tt or {}).get("tests") or {}
+    out = []
+    for b in (tt or {}).get("bars") or []:
+        if not isinstance(b, dict) or b.get("id") not in ids:
+            continue
+        out.append("- **%s** (%s, proves at stage %s)" % (b["id"], b.get("kind", "?"), b.get("proves_at", "?")))
+        for d in b.get("decides") or []:
+            t = tests.get(d) or {}
+            if t.get("runs_today") is True:
+                continue
+            out.append("  - decider `%s` (%s, stage %s) does not run today: %s" % (
+                d, t.get("kind", "no entry in the table"), t.get("stage", "?"),
+                ("command `%s`" % t["command"]) if t.get("command") else "no command written"))
+    return out
+
+
+def brief_text(root, mod):
+    """-> (the mechanical half of an offline-build brief, build_facts). Never refuses for a blank steward section."""
+    f = build_facts(root, mod)
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    jtext = read_text(root, mod, "journal.md") or ""
+    when = pac_heading(now_ts())
+    L = ["# Offline build (Stage 3): %s %s" % (mod, f.get("version", UNM)), "",
+         "Written by `maturation.py brief %s` at %s: the mechanical half (plan "
+         "design/plans/2026-11-14-maturation-pipeline-build.md, slice 4; spec §4 Stage 3)." % (mod, when), "",
+         "The owner, 2026-11-14 ~9 PM PST: \"%s\"" % OWNER_WIRE, "",
+         "## What the exit tests refuse now", ""]
+    for k, v in sorted((f.get("observed") or {}).items()):
+        L.append("- `%s`: %s" % (k, v))
+    if not f.get("observed"):
+        L.append("- nothing (stage %s, owed: %s)" % (f.get("stage"), f.get("owed", UNM)))
+    ids = f.get("refused_bars") if isinstance(f.get("refused_bars"), list) else []
+    L += ["", "## Bars with a deciding check that does not run (%d of %s)" % (len(ids), f.get("bars_total", UNM)), ""]
+    L += _bar_lines(tt, set(ids)) or ["- none"]
+    if f.get("walk_bars"):
+        L += ["", "Bars his Stage 8 walk helps decide (a hand step for the Conductor, not yours): %s."
+              % ", ".join(f["walk_bars"])]
+    live = sorted(k for k, t in ((tt or {}).get("tests") or {}).items()
+                  if isinstance(t, dict) and str(t.get("kind", "")).startswith("live"))
+    L += ["", "## In-game checks (UNRUN until Stage 6): %d in the table" % len(live), "",
+          "Each in-game check you write is listed UNRUN with its exact command; you never run one (no game, no bridge)."]
+    L += ["", "## The journal says", ""]
+    for field in ("Waiting on", "Next"):
+        span = _bullet(jtext, field)
+        L.append(" ".join(x.strip() for x in jtext.split("\n")[span[0]:span[1]]) if span else "- %s: (no line)" % field)
+    steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
+    L += ["", "## Steward's decisions", "", steward or STANDING_DEFAULT]
+    L += ["", "## Standing rules for this build", "",
+          "- Offline only: no bridge, no game, no deploy, no ModsConfig change. Whittle and Relentless stay off.",
+          "- The test is built with the item (owner, 2026-11-13): each missing check is watched failing where the "
+          "behaviour is missing, then passing; an in-game check is written with its exact command and recorded UNRUN.",
+          "- Remake `design/concepts/%s/version/test_table.json` with the table's own maker (its `made_by` names it) "
+          "and run `python3 src/RimMandrake/rimflow/maturation.py next %s`; say the count of bars not runnable "
+          "before (%d) and after in your last note." % (mod, mod, len(ids)),
+          "- Never run `maturation.py advance`, never judge or send the mod back: the Conductor moves stages.",
+          "- One dated line in the journal's history for what you built. Every file you touch stays DIRTY until "
+          "`code_review_status.py check` says CLEAN.",
+          "- Never guess a defName, field or namespace (RimSage, the def, or `measure`)."]
+    return "\n".join(L) + "\n", f
+
+
+def detached_helper_path():
+    return os.environ.get("MATURATION_DETACHED_HELPER") or os.path.join(HERE, "detached_helper.py")
+
+
+def brief_dir():
+    d = os.environ.get("MATURATION_BRIEF_DIR")
+    if not d:
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "maturation", "briefs")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run):
+    """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod not at the
+    offline build, and one with no build work owed; otherwise writes the brief and calls detached_helper.py launch
+    --budget-usd <cap>. It launches nothing else and never retries."""
+    if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
+        return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
+    if not item:
+        return 2, "REFUSED: --item is required (a ledger item filed on origin/main)", None
+    text, f = brief_text(root, mod)
+    if f.get("stage") != "offline_build":
+        return 2, "REFUSED: %s stands at %s; only an offline build launches from here" % (mod, f.get("stage")), None
+    if f.get("owed") != "build":
+        return 2, "REFUSED: %s owes no build work (%s)" % (mod, f.get("owed")), None
+    path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    argv = [sys.executable, detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
+            "--model", model, "--budget-usd", "%g" % budget_usd]
+    r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+    out = ((r.stdout or "") + (r.stderr or "")).strip()
+    m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
+    return r.returncode, out, (m.group(1) if m and not r.returncode else None)
 
 
 # ---- the command line ------------------------------------------------------------------------------------------------
@@ -668,6 +832,15 @@ def main(argv=None):
     p.add_argument("--wall-s", type=float)
     p.add_argument("--source", required=True)
     p.add_argument("--estimate", action="store_true")
+    b = sub.add_parser("brief")
+    b.add_argument("mod")
+    b.add_argument("--out", help="write the brief here (default: print it)")
+    la = sub.add_parser("launch")
+    la.add_argument("mod")
+    la.add_argument("--budget-usd", type=float, required=True, help="the spend cap; required, no default")
+    la.add_argument("--item", required=True, help="the ledger item the run works under (filed on origin/main)")
+    la.add_argument("--model", default="opus", choices=("fable", "opus", "sonnet"))
+    la.add_argument("--seat", default="BENCH")
     o = ap.parse_args(argv)
     root = os.path.abspath(o.root)
 
@@ -739,6 +912,19 @@ def main(argv=None):
         add_spend(root, o.mod, o.stage, o.tokens, o.usd, o.wall_s, o.source, o.estimate)
         print("SPEND %s %s: %d tokens recorded" % (o.mod, label(o.stage), o.tokens))
         return 0
+    if o.cmd == "brief":
+        text, _ = brief_text(root, o.mod)
+        if o.out:
+            with open(o.out, "w", encoding="utf-8") as fh:
+                fh.write(text)
+            print("BRIEF %s written to %s" % (o.mod, o.out))
+        else:
+            sys.stdout.write(text)
+        return 0
+    if o.cmd == "launch":
+        rc, text, _ = launch_mod(root, o.mod, o.budget_usd, o.item, model=o.model, seat=o.seat)
+        print(text)
+        return rc
     return 2
 
 

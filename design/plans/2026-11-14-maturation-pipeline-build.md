@@ -34,7 +34,7 @@ Stages are named in words. The spec's numbers are kept beside the names because 
 | each mod's `version/test_table.json` (made by throwaway `make_test_table.py`, one schema in all four) | Bars, their deciding tests, `every_decider_runnable_today`, `offline_green_today`, `proves_at`. | The offline build exit test. |
 | each mod's `version/preflight.json` (made by a throwaway preflight per mod) | Check rows, verdict, refusals, seconds. | Shown in `next`; the preflight to offline build move needs one for this version. |
 | `src/RimMandrake/rimflow/refusal_contract.py` | The refusal record shape (clause, evidence, observed, would_pass, smallest_fix, criterion_verdict) and its `check`. | Every refused advance is a verdict in that shape, checked by `refusal_contract.check` before it is printed. |
-| `src/RimMandrake/rimflow/detached_helper.py` | Launches a helper in its own unit, from a pool clone, with `--budget-usd` (the spend cap; default 15) and no wall-time limit. | The only way a later slice may launch work. The spine prints the command; slice 1 never runs it. |
+| `src/RimMandrake/rimflow/detached_helper.py` | Launches a helper in its own unit, from a pool clone, with `--budget-usd` (the spend cap; default 15) and no wall-time limit. | The only way the pipeline launches work: slice 4's `maturation.py launch`, called by the Dispatch step. |
 | the journal's `### Conductor interventions` lines (spec §5 item 5) | Holds, releases, re-pins, decisions, bars added. | A hold with no release on the current stage refuses every advance. |
 
 What was retired and is not rebuilt (`design/RimMandrake/retired_loops_2026-11-13.md`): Relentless (`relentless.py`, its
@@ -112,14 +112,14 @@ Which of the allowed lower stages is "the lowest that can show it" is judgment: 
 
 ### Which stages a program can launch, and which stay hand steps
 
-Launching comes in slice 4 at the earliest, and only through `detached_helper.py launch ... --budget-usd <cap>`.
+Launching is slice 4, only through `detached_helper.py launch ... --budget-usd <cap>`.
 
 | stage | launchable by program? | why |
 |---|---|---|
 | intake | no | Closed by his card until a mod reaches his walk; then it is his question again. |
 | designer | no | Arguing with him. The Designer's Exam and coverage judge as gates are open question 7. |
 | preflight | partly: the program can run each mod's own throwaway preflight (its path is in `preflight.json`) | A common preflight is spec build order item 3, not yet built. Running costs no tokens, so no cap is needed. |
-| offline build | yes, once a brief template exists: a builder with a cap | The brief today carries "Steward's decisions" written by the Conductor; that judgment stays his (the Conductor's). The program can fill the mechanical half (mod, version, refusals left, failing bars). |
+| offline build | **yes, and it does** [HIS, 2026-11-14 ~9 PM PST]: `maturation_dispatch.py` on `rm-maturation-dispatch.timer` launches one capped builder per mod with build work owed | "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble." The program writes the mechanical half of the brief; the Conductor's decisions, when he writes them, go in `version/steward_decisions.md`, and a blank one is a standing default, never a refusal. Guard rails in Slice 4. |
 | blind challenge | not yet | Nothing has gone through it by hand. The blind judge's inputs per part are [PROPOSAL]; its verdict format is unwritten. Open questions: what the next judge reads is decided ("All once, then changes"), but the record of "changed files and line items whose inputs changed" is not built. |
 | in-game acceptance | no | A live game; Dispatch's game-sharing between mods is not designed; flyers never without him. |
 | pre-human check | no | Nothing reached it by hand. |
@@ -128,7 +128,7 @@ Launching comes in slice 4 at the earliest, and only through `detached_helper.py
 ## 4. Slices, in build order
 
 Each slice lands with its offline selftest written at the same time, seen failing before the code and passing after.
-None starts a timer or a helper on its own. Whittle and Relentless stay off.
+Only slice 4 starts helpers on its own, offline builders under its guard rails. Whittle and Relentless stay off.
 
 ### Slice 1: the record, `next`, `advance`, `spend`, seeding (this item)
 
@@ -163,15 +163,38 @@ Acceptance test: `python3 src/RimMandrake/rimflow/selftest_mod_preflight.py`: ru
 the same refusal ids as each mod's recorded `preflight.json` (measured on the base), and planted faults (a missing def,
 a bar with no test, an unplaced held statement) are each refused.
 
-### Slice 4: the offline-build brief and capped launch
+### Slice 4: the offline-build brief, capped launch, and the Dispatch step (built 2026-11-14)
 
-`maturation.py brief <Mod>` writes the mechanical half of an offline-build brief (refusals left, failing bars, UNRUN
-scenes) with a blank "Steward's decisions" section the Conductor fills; `maturation.py launch <Mod>` refuses a brief
-whose steward section is empty and otherwise calls `detached_helper.py launch --budget-usd <cap>` (cap required, no
-default). The run's spend lands in the record when it ends.
+[HIS, 2026-11-14 ~9 PM PST] "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble."
 
-Acceptance test: `python3 src/RimMandrake/rimflow/selftest_maturation.py --launch` with a fake `detached_helper`: no cap
-or an empty steward section refuses; a good one passes the cap through.
+`maturation.py brief <Mod>` writes the mechanical half of an offline-build brief: mod and version, the refused exit tests,
+the bars not runnable with each decider that does not run, the in-game checks that stay UNRUN, the journal's Waiting on
+and Next lines, the standing rules a builder needs. The "Steward's decisions" section is `version/steward_decisions.md`
+when the Conductor writes one, else a standing default; a blank one does not refuse. `maturation.py launch <Mod>
+--budget-usd <cap> --item <ID>` calls `detached_helper.py launch` (cap required, no default; only a mod at the offline
+build with build work owed).
+
+`src/RimMandrake/rimflow/maturation_dispatch.py tick --apply` on `rm-maturation-dispatch.timer` (every 10 min, from the
+dispatch clone; settings `maturation_dispatch.json`) decides per advancing mod: launch one builder (opus, USD 15; the
+item is spawned under RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE as RUNNER, the way ops_watch files,
+and published first) when the mod stands at the offline build, its refusals are build work, and no detached run is live
+on it. Guard rails: one live builder per mod, at most 2 live on advancing mods (the Conductor's own included); after a
+run ends the next starts only if the count of refused bars fell, otherwise, or past USD 60 measured at the stage, or on
+a failed launch, it stops on that mod with one "Needs Conductor" line and never tries the same refusals again
+(`maturation_dispatch.py clear <Mod> --why` is the Conductor's lift); a hold, a version mismatch, a hand step or any
+other stage launches nothing; every exit test passing writes "ready to advance". It never judges, rejects, sends a mod
+back or advances it, and never takes the bridge or a game. The Dispatcher's account pick holds it the way it holds a role
+launch. Each tick writes `<RM_DISPATCHER_STATE>/maturation/reading.json` and regenerates MATURATION_NOW, whose "Needs
+Conductor" list carries the step's lines; ops_watch's `maturation` family reads the reading, and
+`OPS_MATURATION_IDLE_ADVANCING_MOD` alarms when a mod at the offline build has had work owed with nothing running on it
+for over 60 min.
+
+Acceptance test: `python3 src/RimMandrake/rimflow/selftest_maturation.py --launch` (fake `detached_helper`: no cap, a
+zero or negative cap, no item, a mod at intake, a mod with no build work refuse; a good one passes cap, model, item and
+seat through) and `python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py` (one launch for a mod with build
+work and none live; nothing when one is live, when the last run did not reduce the refusals, with no cap, off the list,
+at another stage, on a hold, past the ceiling or max_live, on an account hold, in a dry pass; a reducing run lets the
+next start; a failed launch is not retried; the idle reading fires on a planted idle mod and ops_watch reads it).
 
 ### Not planned yet (waits for a hand-run)
 

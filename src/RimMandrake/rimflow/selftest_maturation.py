@@ -4,7 +4,12 @@
 Item RIMMANDRAKE_BUILD_MATURATION_SPINE_WHILE_DESIGN_STILL_MOVES; plan design/plans/2026-11-14-maturation-pipeline-build.md
 section 4, slice 1. Written before maturation.py and watched failing on it (the import fails), then passing.
 
-    python3 src/RimMandrake/rimflow/selftest_maturation.py        exit 0 when every check prints PASS
+    python3 src/RimMandrake/rimflow/selftest_maturation.py           exit 0 when every check prints PASS
+    python3 src/RimMandrake/rimflow/selftest_maturation.py --launch  slice 4 (brief, capped launch) with a fake
+                                                                     detached_helper (item
+                                                                     RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE;
+                                                                     watched failing on the base: maturation.py had no
+                                                                     brief_text, then passing)
 
 What it proves:
   seeding from copies of the real journals lands each mod at the stage maturation_now.py reads, and a re-seed changes
@@ -258,6 +263,91 @@ def main():
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
+FAKE_DH = """#!/usr/bin/env python3
+import json, os, sys
+with open(os.environ["FAKE_DH_LOG"], "a") as f:
+    f.write(json.dumps(sys.argv[1:]) + "\\n")
+n = len(open(os.environ["FAKE_DH_LOG"]).readlines())
+print("DETACHED rm-detached-bench-fake-%d" % n)
+"""
+
+
+def launch_main():
+    """Slice 4: the brief's mechanical half and the capped launch, through a fake detached_helper."""
+    before = git_status()
+    root = tempfile.mkdtemp(prefix="maturation_launch_")
+    env_was = {k: os.environ.get(k) for k in ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR",
+                                              "MATURATION_CLOCK")}
+    try:
+        copy_mods(root)
+        for mod in FOUR + ("PyrelandsMechanics",):
+            shutil.copy(os.path.join(REPO, "design", "concepts", mod, "version", "stage_record.json"),
+                        os.path.join(root, "design", "concepts", mod, "version", "stage_record.json"))
+        fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
+        with open(fake, "w") as f:
+            f.write(FAKE_DH)
+        open(log, "w").close()
+        os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(CLOCK),
+                          MATURATION_BRIEF_DIR=os.path.join(root, "briefs"))
+
+        def calls():
+            with open(log) as f:
+                return [json.loads(x) for x in f if x.strip()]
+
+        text, f = M.brief_text(root, "FlowWorks")
+        ok(f["owed"] == "build" and isinstance(f["refused_bars"], list) and f["refused_bars"],
+           "FlowWorks owes build work (%s bars refused)" % len(f.get("refused_bars") or []))
+        ok(all(b in text for b in f["refused_bars"]), "the brief names every refused bar")
+        ok("## Steward's decisions" in text and M.STANDING_DEFAULT[:60] in text,
+           "a blank steward section carries the standing default, never a refusal")
+        ok("Waiting on" in text and "does not run today" in text, "the brief carries the journal's Waiting on line "
+                                                                   "and each decider that does not run")
+        with open(os.path.join(root, "design", "concepts", "FlowWorks", M.STEWARD_FILE), "w") as fh:
+            fh.write("Build the canal read first.\n")
+        text, _ = M.brief_text(root, "FlowWorks")
+        ok("Build the canal read first." in text and M.STANDING_DEFAULT[:60] not in text,
+           "the Conductor's steward_decisions.md replaces the default")
+        _, g = M.brief_text(root, "Pyrelands")
+        ok(g["owed"] == "ready to advance", "Pyrelands owes nothing but the advance (%s)" % g.get("owed"))
+        _, g = M.brief_text(root, "GimmeSomeSlack")
+        ok(g["owed"] == "hand step", "Gimme Some Slack owes only a hand step (%s)" % g.get("owed"))
+
+        for cap, what in ((None, "no cap"), (0, "a zero cap"), (-3, "a negative cap")):
+            rc, out, unit = M.launch_mod(root, "FlowWorks", cap, "RIMMANDRAKE_X_Y_Z_Q")
+            ok(rc == 2 and "cap" in out and not calls(), "%s refuses and launches nothing" % what)
+        rc, out, _ = M.launch_mod(root, "FlowWorks", 15, "")
+        ok(rc == 2 and not calls(), "no item refuses")
+        rc, out, _ = M.launch_mod(root, "PyrelandsMechanics", 15, "RIMMANDRAKE_X_Y_Z_Q")
+        ok(rc == 2 and "only an offline build" in out and not calls(), "a mod at intake refuses")
+        rc, out, _ = M.launch_mod(root, "Pyrelands", 15, "RIMMANDRAKE_X_Y_Z_Q")
+        ok(rc == 2 and "no build work" in out and not calls(), "a mod with no build work owed refuses")
+        cli = subprocess.run([sys.executable, os.path.join(HERE, "maturation.py"), "--root", root, "launch",
+                              "FlowWorks", "--item", "RIMMANDRAKE_X_Y_Z_Q"], capture_output=True, text=True,
+                             env=dict(os.environ), timeout=120)
+        ok(cli.returncode == 2 and "--budget-usd" in cli.stderr and not calls(),
+           "the command line without --budget-usd refuses")
+        rc, out, unit = M.launch_mod(root, "FlowWorks", 15, "RIMMANDRAKE_X_Y_Z_Q")
+        c = calls()
+        ok(rc == 0 and unit == "rm-detached-bench-fake-1" and len(c) == 1, "a good launch calls the launcher once")
+        if c:
+            a = c[0]
+            ok(a[0] == "launch" and a[a.index("--budget-usd") + 1] == "15" and a[a.index("--model") + 1] == "opus"
+               and a[a.index("--item") + 1] == "RIMMANDRAKE_X_Y_Z_Q" and a[a.index("--seat") + 1] == "BENCH",
+               "the cap, model, item and seat pass through (%s)" % a)
+            bf = a[a.index("--brief-file") + 1]
+            ok(os.path.exists(bf) and "FlowWorks" in open(bf).read() and bf.startswith(root),
+               "the brief file is written where MATURATION_BRIEF_DIR says")
+    finally:
+        for k, v in env_was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(root, ignore_errors=True)
+    ok(git_status() == before, "nothing under design/concepts in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(launch_main() if "--launch" in sys.argv[1:] else main())

@@ -88,7 +88,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup")
+            "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup", "maturation")
 
 
 LIVE_OPS_DIR = "/mnt/d/ClaudeWork/rimmandrake/ops_watch"
@@ -3801,13 +3801,43 @@ def c_wrapup(now, rules, ctx):
     return out
 
 
+MATURATION_READING_MAX_AGE_S = 1800     # the Dispatch step ticks every 10 min; three missed ticks is a dead step
+
+
+def c_maturation(now, rules, ctx):
+    """RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE: the longest an advancing mod at the offline build has
+    had work owed (build, a hand step, ready to advance) with nothing running on it, from maturation_dispatch.py's
+    reading (rm-maturation-dispatch.timer). Its alarm OPS_MATURATION_IDLE_ADVANCING_MOD fires over 60 min (the owner,
+    2026-11-14: four mods sat 6 to 9 h at Stage 3 unseen). A missing or stale reading is UNMEASURED, never 0."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    out = {}
+    try:
+        import maturation_dispatch as MD
+        p = os.path.join(MD.sdir(), "reading.json")
+        with open(p, encoding="utf-8") as f:
+            rd = json.load(f)
+        age = now - float(rd.get("at") or 0)
+        if age > MATURATION_READING_MAX_AGE_S:
+            raise ValueError("reading %s is %d min old (the step is not ticking)" % (p, age / 60))
+        out["maturation.idle_owed_max_min"] = M(int(rd.get("idle_owed_max_min") or 0), "min",
+                                                mods=",".join(rd.get("idle_owed_mods") or []))
+        out["maturation.needs_conductor"] = M(len(rd.get("needs_conductor") or []), "lines",
+                                              first=(rd.get("needs_conductor") or [])[:4])
+    except Exception as e:  # noqa: BLE001
+        out["maturation.idle_owed_max_min"] = U("%s: %s" % (type(e).__name__, str(e)))
+        out["maturation.needs_conductor"] = U("%s: %s" % (type(e).__name__, str(e)))
+    return out
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
               "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles,
-              "queues": c_queues, "wrapup": c_wrapup}
+              "queues": c_queues, "wrapup": c_wrapup, "maturation": c_maturation}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup")
+         "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup", "maturation")
 
 
 # ==================================================================================================== storage

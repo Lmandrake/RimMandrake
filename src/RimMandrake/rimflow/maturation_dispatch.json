@@ -1,0 +1,14 @@
+{
+  "_doc": "maturation_dispatch.py's settings (item RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE). The owner, 2026-11-14 ~9 PM PST: \"So can we wire up Operations/Dispatch such that they do advance on these offline builders? ... As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble.\"",
+  "enabled": true,
+  "advancing": ["ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack", "Pyrelands", "Graffiti"],
+  "_advancing_doc": "The four by his card of 2026-11-14 (spec §5 Dispatch), and Graffiti by his word the same night (it is at the Designer, which is never auto-launched). Order is launch priority when slots are short.",
+  "model": "opus",
+  "cap_usd": 15,
+  "seat": "BENCH",
+  "max_live": 2,
+  "_max_live_doc": "At most this many live detached runs on advancing mods at once, the Conductor's own launches included.",
+  "stage_ceiling_usd": 60,
+  "_stage_ceiling_doc": "Set by the builder of this step: one mod's measured dollars at the offline build (every run the status page places there, plus this step's launches, a run with no measured dollars counted at its cap) past this line stops the step on that mod, with a Needs Conductor line. About four capped runs.",
+  "idle_alarm_min": 60
+}
