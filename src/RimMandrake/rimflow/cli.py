@@ -4506,6 +4506,9 @@ def build_parser():
 
     s = add("note", "a line of context. Prose belongs in items/<ID>.md",
             _simple("note", (("text", "text"),)))
+    s.description = ("A note with --owner-said, --by-card or --per-ruling is the OWNER's (by design, owner card "
+                     "2026-10-11): it lands as seat OWNER in OWNER.jsonl, so commit that shard; your own note takes "
+                     "--why alone.")
     s.add_argument("id")
     s.add_argument("--text", required=True)
 

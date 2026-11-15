@@ -1,0 +1,3 @@
+Since 8504a1907f ./publish from a sparse clone (scratch_clone.py's default) runs the whole-tree checks on a throwaway full checkout of HEAD (publish.py full_head_tree: git clone --shared in the clone's git dir, ~20 s more), so a sparse clone publishes with NO RM_PUBLISH_SKIP_TREE_CHECKS and no sparse-checkout disable; a planted twin name committed in the cone was refused there (proof 2026-11-15). Skill clone-landing-commits should say: a sparse clone is not a reason to bypass the tree checks. Supersedes lessons 20261115T194926Z and 20261115T195130Z.
+item: RIMMANDRAKE_RUN_TREE_CHECKS_ON_FULL_HEAD
+home: .claude/skills/clone-landing-commits/SKILL.md

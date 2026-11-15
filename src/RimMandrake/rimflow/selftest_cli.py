@@ -1278,6 +1278,23 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
             "a question stood in for an instruction", env_=env(seat=None))
 
 
+def t_note_with_an_owner_flag_is_his_and_help_says_so():
+    """A note with --per-ruling is OWNER-authored by design (owner card 2026-10-11: the flag acts as OWNER), so it lands
+    as seat OWNER, in OWNER.jsonl; a helper's plain note takes --why alone (lesson 20261115T202149Z). `note --help`
+    says so, the place the trap was hit."""
+    fresh()
+    ok("file", "NOTE_RULING_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "cited", "--per-ruling", "NOTE_RULING_PROBE_FIXTURE",
+       env=env(seat=None))
+    ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "mine", "--why", "my own reason")
+    notes = {e.get("text"): e for e in _ledger_events() if e.get("event") == "note"
+             and e.get("id") == "NOTE_RULING_PROBE_FIXTURE"}
+    assert notes["cited"].get("seat") == "OWNER", notes
+    assert notes["mine"].get("seat") == "BUILD" and notes["mine"].get("why") == "my own reason", notes
+    out = " ".join(ok("note", "--help").split())
+    assert "OWNER.jsonl" in out and "--per-ruling" in out and "--why" in out, out
+
+
 def t_each_kind_of_authority_lands_in_its_own_field():
     """Owner, by card 2026-10-11: his words, his card clicks, a standing ruling cited by
     reference and the agent's own reason each get their OWN field, so nothing lands in
