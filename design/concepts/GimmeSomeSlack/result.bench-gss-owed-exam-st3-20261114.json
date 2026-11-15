@@ -1,0 +1,10 @@
+{
+ "run": "bench-gss-owed-exam-st3-20261114",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 reopened only because scenes.json gained sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14: 'the cords bar gets a scene') and tree.json carries the owner-eased settings_switch_cleanly text (3c1ea6e655). No leaf, sheet line or floor line edited here; Gate A lint, scenes and floor are the program's checks.",
+ "quick_look": {
+  "offer": false,
+  "why": "no question is put to him: the stage closes on mechanical checks of files his cards already decided"
+ }
+}
