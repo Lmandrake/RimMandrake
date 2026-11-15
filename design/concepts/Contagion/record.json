@@ -128,6 +128,54 @@
    "speaker": "agent",
    "source": "src/RimMandrake/rimflow/roles/designer.md",
    "what": "Most of the mod is built (impl present), so stage 1 opens with a live-walk proposal (a_live_walk) before any design question; the Codex bank's answered asks (q01, q03, q06) are closed by his 2026-11-10 card and not re-asked."
+  },
+  {
+   "id": "d_efa_q04",
+   "kind": "delegated",
+   "speaker": "conductor",
+   "source": [
+    "CONDUCTOR:1794771807335476081",
+    "OWNER:1794364405453876478"
+   ],
+   "date": "2026-11-15",
+   "what": "Colonists within one dash of a planned refuge shelter inside the natural tell lead; a distant work party may have to improvise; switching the Repulsor gives an honest warning, before it starts, that its Burn covers the whole map and everyone in the open. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card rules one dash at a cost and that prolonged outdoor work stays dangerous; the whole-map Burn is built and not offered for removal."
+  },
+  {
+   "id": "d_efa_q05",
+   "kind": "delegated",
+   "speaker": "conductor",
+   "source": [
+    "CONDUCTOR:1794771842429293067",
+    "OWNER:1794364405453876478"
+   ],
+   "date": "2026-11-15",
+   "what": "A readable early health state on the worker and one noticeable transition when exposure turns into active change, without a letter for every small exposure; the first warning and the treatment it calls for are judged together. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card has the Bloom change people slowly, with the odds clear before committing; the Sunbeam arrest is already ruled."
+  },
+  {
+   "id": "d_efa_q07",
+   "kind": "delegated",
+   "speaker": "conductor",
+   "source": [
+    "CONDUCTOR:1794771848243200767",
+    "OWNER:1794364405453876478"
+   ],
+   "date": "2026-11-15",
+   "what": "A grown limb forces a real reassignment away from skilled hand work plus a food burden, never making the colonist useless; shown by one ordinary day before the surgery against one after. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; the limbs' lasting costs (clumsy hands, weight, hunger) are built and his card puts a cost on every gain; only the size is open, and numbers are delegated design."
+  },
+  {
+   "id": "d_efa_q08",
+   "kind": "delegated",
+   "speaker": "conductor",
+   "source": [
+    "CONDUCTOR:1794771853877273515",
+    "OWNER:1794364405453876478"
+   ],
+   "date": "2026-11-15",
+   "what": "Waiting for another Coalescence stage puts more pressure on reaching the site and on the workers who go out to recover the tissue, not a threat unrelated to the creature; emissions stay bounded; shown as the same colony at two stages. PROVISIONAL: the walk and the stage-2 fresh review may revise it; it is never sent to him as an ask.",
+   "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card puts weather and body first, with trips out as the reasons to risk them; no word of his on the Coalescence exists (owner_rulings --grep coalescence: 0 rulings)."
   }
  ],
  "asks": [
@@ -328,16 +376,18 @@
    "owner_cites": [],
    "offers_removal": false,
    "author": "Codex Contagion dry run",
-   "status": "draft",
+   "status": "answered",
    "ask_first": false,
    "review": {
-    "status": "pending",
-    "by": null,
-    "verdict": null,
-    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
-    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+    "status": "done",
+    "by": "BENCH evidence-for-ask helper (not the author)",
+    "verdict": "struck",
+    "source": "CONDUCTOR:1794771807335476081",
+    "why": "Answered from his recorded words under the Evidence-for-Ask rule; design detail is delegated (delegation_policy.md section 1); no evidence the obvious answer is wrong."
    },
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_efa_q04",
+   "answer_source": "CONDUCTOR:1794771807335476081"
   },
   {
    "id": "q05",
@@ -357,16 +407,18 @@
    "owner_cites": [],
    "offers_removal": false,
    "author": "Codex Contagion dry run",
-   "status": "draft",
+   "status": "answered",
    "ask_first": false,
    "review": {
-    "status": "pending",
-    "by": null,
-    "verdict": null,
-    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
-    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+    "status": "done",
+    "by": "BENCH evidence-for-ask helper (not the author)",
+    "verdict": "struck",
+    "source": "CONDUCTOR:1794771842429293067",
+    "why": "Answered from his recorded words under the Evidence-for-Ask rule; design detail is delegated (delegation_policy.md section 1); no evidence the obvious answer is wrong."
    },
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_efa_q05",
+   "answer_source": "CONDUCTOR:1794771842429293067"
   },
   {
    "id": "q06",
@@ -422,16 +474,18 @@
    "owner_cites": [],
    "offers_removal": false,
    "author": "Codex Contagion dry run",
-   "status": "draft",
+   "status": "answered",
    "ask_first": false,
    "review": {
-    "status": "pending",
-    "by": null,
-    "verdict": null,
-    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
-    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+    "status": "done",
+    "by": "BENCH evidence-for-ask helper (not the author)",
+    "verdict": "struck",
+    "source": "CONDUCTOR:1794771848243200767",
+    "why": "Answered from his recorded words under the Evidence-for-Ask rule; design detail is delegated (delegation_policy.md section 1); no evidence the obvious answer is wrong."
    },
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_efa_q07",
+   "answer_source": "CONDUCTOR:1794771848243200767"
   },
   {
    "id": "q08",
@@ -452,16 +506,18 @@
    "owner_cites": [],
    "offers_removal": false,
    "author": "Codex Contagion dry run",
-   "status": "draft",
+   "status": "answered",
    "ask_first": false,
    "review": {
-    "status": "pending",
-    "by": null,
-    "verdict": null,
-    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
-    "why": "Local author evidence/wording review only; no fresh-agent pass fabricated."
+    "status": "done",
+    "by": "BENCH evidence-for-ask helper (not the author)",
+    "verdict": "struck",
+    "source": "CONDUCTOR:1794771853877273515",
+    "why": "Answered from his recorded words under the Evidence-for-Ask rule; design detail is delegated (delegation_policy.md section 1); no evidence the obvious answer is wrong."
    },
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "answer": "d_efa_q08",
+   "answer_source": "CONDUCTOR:1794771853877273515"
   }
  ],
  "inventory": [
