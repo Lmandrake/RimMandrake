@@ -700,34 +700,49 @@ def main():
               checked >= 1 and covered >= 15 and bad == [], (covered, bad[:3]))
         check("inactive donors are named, not passed", skipped["donor mod inactive"] >= 1, skipped)
 
-        def fx(tag, mut, must, ops_=None, active_=None, installed_=None, expect_n=1):
-            r2 = copy.deepcopy(rows)
+        def fx(tag, mut, must, ops_=None, active_=None, installed_=None, expect_n=1, rows_=None):
+            r2 = copy.deepcopy(rows_ if rows_ is not None else rows)
             mut(r2)
             got = v.effect_findings(ops_ or ops, r2, active_ if active_ is not None else active, installed_ if installed_ is not None else installed)[2]
             check("break fix: %-52s -> %s" % (tag, must[:30]), any(must in g for g in got), got)
 
         def first(cls, ty):
             return next(o for o in ops if o["cls"] == cls and o["type"] == ty and all(any(g.lower() in active for g in grp) for grp in o["guards"]))
-        try:
-            wg = first("Replace", "WorkGiverDef")
-        except StopIteration:
-            # the dump's mod set decides which donors are active; with the DrillTurret donor absent from it none of the break
-            # fixtures below can bite -- say so aloud (UNMEASURED), never crash and never pass.
-            print("UNMEASURED  fix-effect breaks: no ACTIVE-donor WorkGiverDef Replace in the current dump's mod set (MiningCo. DrillTurret not in it)")
-            wg = None
-        if wg is None:
-            print("\nUNMEASURED, not a pass or a fail" if not FAILS else "\n%d MandrakePatches selftest(s) FAILED" % len(FAILS))
-            return 1 if FAILS else 0
-        fx("turret job reverts to Mining", lambda r: r["WorkGiverDef"][wg["name"]]["fields"].__setitem__("workType", "Mining"), "workType")
+        def staged(o, fields):
+            """A donor the dump's mod set lacks (MiningCo. DrillTurret, the Buzzers) still gets its breaks: the fixture makes
+            it active and installed and puts its patched def in a copy of the dump, and the control below proves that copy
+            passes before any break is planted. -> (rows, active, installed)."""
+            g = {x.lower() for grp in o["guards"] for x in grp}
+            r2 = copy.deepcopy(rows)
+            if r2.get(o["type"]) is None:
+                r2[o["type"]] = {}
+            r2[o["type"]][o["name"]] = {"defName": o["name"], "defType": o["type"], "fields": fields}
+            return r2, active | g, installed | g
+
+        wg = next(o for o in ops if o["cls"] == "Replace" and o["type"] == "WorkGiverDef")
+        wg_rows, wg_active, wg_installed = staged(wg, {"workType": dict(wg["pairs"])["workType"]})
+        ck = v.effect_findings([wg], wg_rows, wg_active, wg_installed)
+        check("fixture control: the staged %s donor's patched def shows its effect" % wg["name"], ck[0] == 1 and ck[2] == [], ck)
+        fx("turret job reverts to Mining", lambda r: r["WorkGiverDef"][wg["name"]]["fields"].__setitem__("workType", "Mining"), "workType",
+           ops_=[wg], active_=wg_active, installed_=wg_installed, rows_=wg_rows)
         sg = first("Add", "ThingDef")
         fx("a sign loses its config-error field", lambda r: r["ThingDef"][sg["name"]]["fields"].__setitem__(sg["pairs"][0][0], False), sg["pairs"][0][0])
         wo = first("Replace", "WorldObjectDef")
         fx("settlement icon back to 1", lambda r: r["WorldObjectDef"][wo["name"]]["fields"].__setitem__("expandingIconDrawSize", 1.0), "expandingIconDrawSize")
-        rm = first("Remove", "BiomeDef")
-        last = rm["rest"].rstrip("/").split("/")[-1]
-        fx("a removed animal reappears in the biome (%s)" % last, lambda r: r["BiomeDef"][rm["name"]]["fields"].__setitem__("wildAnimals", [{"animal": last, "commonality": 1}]), "still in the dump")
-        rp = first("Replace", "RulePackDef")
-        fx("the doubled apostrophe rule comes back", lambda r: r["RulePackDef"][rp["name"]]["fields"].__setitem__("rulePack", {"rulesStrings": ["maybeApostrophe->''"]}), "replaced-away")
+        # the BiomeDef animal Removes retired with their donors; any active Remove serves (2026-11: Base_Player's AnimaTrees,
+        # an xpath predicate leaf whose removed value lives in `gone`)
+        rm = next(o for o in ops if o["cls"] == "Remove" and all(any(g.lower() in active for g in grp) for grp in o["guards"]))
+        fld = rm["rest"].strip("/").split("/")[0]
+        tok = (rm["gone"] or [rm["rest"].rstrip("/").split("/")[-1]])[0]
+        fx("a removed value reappears (%s %s/%s)" % (rm["name"], fld, tok),
+           lambda r: r[rm["type"]][rm["name"]]["fields"].__setitem__(fld, list(r[rm["type"]][rm["name"]]["fields"].get(fld) or []) + [tok]),
+           "still in the dump")
+        rp = next(o for o in ops if o["cls"] == "Replace" and o["type"] == "RulePackDef")
+        rp_rows, rp_active, rp_installed = staged(rp, {"rulePack": {"rulesStrings": [dict(rp["pairs"])["li"]]}})
+        ck = v.effect_findings([rp], rp_rows, rp_active, rp_installed)
+        check("fixture control: the staged %s donor's patched def shows its effect" % rp["name"], ck[0] == 1 and ck[2] == [], ck)
+        fx("the doubled apostrophe rule comes back", lambda r: r["RulePackDef"][rp["name"]]["fields"].__setitem__("rulePack", {"rulesStrings": ["maybeApostrophe->''"]}), "replaced-away",
+           ops_=[rp], active_=rp_active, installed_=rp_installed, rows_=rp_rows)
         # GRiNDTerra's tex-path fixes were this break's fixture; they retired with that donor (2026-10-18). Any other active
         # PawnKindDef Replace with a `gone` texPath serves; none left means this break has nothing to bite, said aloud.
         pk = next((o for o in ops if o["cls"] == "Replace" and o["type"] == "PawnKindDef" and o["gone"] and all(any(g.lower() in active for g in grp) for grp in o["guards"])), None)
@@ -735,21 +750,23 @@ def main():
             fx("an old texPath is still live (%s)" % pk["name"], lambda r: r["PawnKindDef"][pk["name"]]["fields"].__setitem__("lifeStages", [{"x": {"texPath": pk["gone"][0]}}]), "replaced-away")
         else:
             print("  skip break: no active PawnKindDef texPath Replace remains to break (UNMEASURED, not passed)")
-        fx("an active donor's def vanishes (%s)" % wg["name"], lambda r: r["WorkGiverDef"].pop(wg["name"]), "not in the dump")
-        fx("a FindMod name that no installed mod has", lambda r: None, "no installed mod is called", installed_=installed - {g.lower() for g in wg["guards"][0]})
+        fx("an active donor's def vanishes (%s)" % wg["name"], lambda r: r["WorkGiverDef"].pop(wg["name"]), "not in the dump",
+           ops_=[wg], active_=wg_active, installed_=wg_installed, rows_=wg_rows)
+        fx("a FindMod name that no installed mod has", lambda r: None, "no installed mod is called",
+           ops_=[wg], active_=wg_active, installed_=wg_installed - {g.lower() for g in wg["guards"][0]}, rows_=wg_rows)
         gone_names = {g.lower() for grp in wg["guards"] for g in grp}
-        ck = v.effect_findings([wg], rows, active - gone_names, installed)
+        ck = v.effect_findings([wg], wg_rows, wg_active - gone_names, wg_installed)
         check("break: the same op with its donor INACTIVE is skipped, not flagged", ck[0] == 0 and ck[1]["donor mod inactive"] == 1 and ck[2] == [], ck)
-        ck = v.effect_findings([dict(wg, type="NoSuchDumpedType")], dict(rows, NoSuchDumpedType=None), active, installed)
+        ck = v.effect_findings([dict(wg, type="NoSuchDumpedType")], dict(wg_rows, NoSuchDumpedType=None), wg_active, wg_installed)
         check("an undumped type is skipped and named", ck[0] == 0 and ck[1]["type not dumped"] == 1, ck)
 
         import runner
         from northstar_driver.session import FastSession
         from northstar_driver.transport import MockGame, MockTransport
 
-        def chain(r_):
+        def chain(r_, active_=active):
             saved = v._dump_inputs
-            v._dump_inputs = lambda types: (r_, active)
+            v._dump_inputs = lambda types: (r_, active_)
             try:
                 own = v.Suite("MandrakePatches")
                 own.toggles = []
@@ -760,9 +777,11 @@ def main():
                 v._dump_inputs = saved
             return dict((c["name"], c["verdict"]) for ch in res["chains"] for c in ch["components"])
         check("chain PASSes on the shipped patches", list(chain(rows).values()) == ["PASS"], chain(rows))
-        r9 = copy.deepcopy(rows)
+        check("chain PASSes with the staged DrillTurret donor active", list(chain(wg_rows, wg_active).values()) == ["PASS"],
+              chain(wg_rows, wg_active))
+        r9 = copy.deepcopy(wg_rows)
         r9["WorkGiverDef"][wg["name"]]["fields"]["workType"] = "Mining"
-        check("chain reddens when a fix did not take", list(chain(r9).values()) == ["FAIL"], chain(r9))
+        check("chain reddens when a fix did not take", list(chain(r9, wg_active).values()) == ["FAIL"], chain(r9, wg_active))
     if FAILS:
         print("\n%d MandrakePatches selftest(s) FAILED" % len(FAILS))
         return 1
