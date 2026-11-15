@@ -117,11 +117,18 @@ def widen(root, cfg, st, apply, fx=None):
 # ---- the Designer lane and the locked-change chain -------------------------------------------------------------------
 
 def designer_state(root, mod):
+    """-> stage.json, with the titles of record.json's asks under "_asks" (for an owner card), or None."""
     try:
         with open(os.path.join(root, "design", "concepts", mod, "stage.json"), encoding="utf-8") as f:
-            return json.load(f)
+            st = json.load(f)
     except (OSError, ValueError):
         return None
+    try:
+        with open(os.path.join(root, "design", "concepts", mod, "record.json"), encoding="utf-8") as f:
+            st["_asks"] = [a.get("title") or a.get("id") for a in json.load(f).get("asks") or [] if isinstance(a, dict)]
+    except (OSError, ValueError, AttributeError):
+        pass
+    return st
 
 
 def designer_unit(mod, tail=600):
@@ -298,9 +305,10 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit):
     elif stt == "waiting_owner":
         last = (dst.get("history") or [{}])[-1]
         row.update(decision="owner", why="a Designer turn waits on him (stage %s)" % stg,
-                   card="%s, Designer stage %s, waits on you: %s Pending: %s Evidence: design/concepts/%s/park_summary.md "
-                        "and stage.json." % (mod, stg, str(last.get("why") or "")[:400],
-                                             str(dst.get("pending_decision") or "none")[:400], mod))
+                   card="%s, Designer stage %s, waits on you: %s Pending: %s Its asks: %s. Evidence: "
+                        "design/concepts/%s/record.json (asks), park_summary.md and stage.json." % (
+                            mod, stg, str(last.get("why") or "")[:400], str(dst.get("pending_decision") or "none")[:400],
+                            "; ".join(str(x) for x in (dst.get("_asks") or [])[:6]) or "none written", mod))
     elif stt == "blocked" and "OWNER HOLD" in str(dst.get("blocked_on") or ""):
         row.update(decision="owner", why="an owner hold stands on the Designer (stage %s)" % stg,
                    card="%s, Designer stage %s, is held for you: %s Evidence: design/concepts/%s/stage.json." % (
