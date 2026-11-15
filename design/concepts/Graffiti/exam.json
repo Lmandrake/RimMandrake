@@ -1,10 +1,10 @@
 {
- "author": "rm-role-designer-1794729618 (stage-3 run that wrote tree, sheet, scenes and floor)",
- "examiner": "rm-judge ac8f3d846d91d6f2f (opus, fresh; read only sheet.md and tree.json)",
- "challenger": "rm-judge a1d3f239fcb540137 (opus, fresh; blind to the examiner's set)",
+ "author": "rm-role-designer-1794750411 (stage-3 run that reworked g1 and g18 into the current tree and scenes)",
+ "examiner": "rm-judge aa8e1702f644ad13e (opus, fresh; read only sheet.md, tree.json and the previous exam's scenarios)",
+ "challenger": "rm-judge af5803de5ac4e9443 (opus, fresh; read only sheet.md and tree.json, blind to the examiner's set)",
  "inputs": {
-  "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38",
-  "sheet": "f187df87b171f81511c09cb4d9836f7de6b5b01a2c5a316b07fdfcbe73c0fdd5"
+  "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
+  "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c"
  },
  "scenarios": [
   {
@@ -92,521 +92,1668 @@
    "expect_source": "leaf:weathering_bounds_marks"
   },
   {
-   "id": "c1",
+   "id": "e15",
    "text": "Faction A's raid leaves exit tags on the east wall. A letter arrives naming faction A, and clicking it jumps the camera to one of A's standing throw-ups. A's next raid and faction B's next raid (B left no marks) are then triggered at the same storyteller points, and both arrive with the same raid points and the same timing.",
    "expect": "reject: a letter with no change to the raid; a standing mark must make that faction's next raid sooner or larger than the unmarked faction's",
    "expect_source": "leaf:raider_pressure"
   },
   {
-   "id": "c2",
+   "id": "e16",
    "text": "A colonist with art skill 16 paints a mockery of a feud rival in the dining room. The rival walks past and their needs tab shows one thought, 'Mocked on the wall, but well painted', worth +1. Room beauty went up and the other viewers got a positive beauty thought.",
    "expect": "reject: the mockery's beauty and anger are folded into one net thought; the target must hold an anger thought and a beauty thought at the same time",
    "expect_source": "leaf:art_skill"
   },
   {
-   "id": "c3",
+   "id": "e17",
    "text": "Four viewers pass the same ugly vandal scrawl and the same skilled piece. The ordinary viewer gets -3 and +3, the sensitive one -5 and +5, the clean freak -6. The psychopath's needs tab shows a 'Saw graffiti' thought at -1 for the scrawl and +1 for the piece, smaller than anyone else's.",
    "expect": "reject: the psychopath must hold no mark thought at all, and a smaller thought is the named false pass",
    "expect_source": "leaf:temperament"
   },
   {
-   "id": "c4",
+   "id": "e18",
    "text": "After a raid by a hostile tribe, the wall holds an enemy vandal scrawl and an enemy devotional sigil in that tribe's ideoligion icon. A colonist with cleaning enabled and no specific orders scrubs both away within the hour, and the colony's own tag beside them is left alone.",
    "expect": "reject: cleaners must leave devotional marks alone unless ordered, and an auto-clean that wipes a devotional sigil is the red build",
    "expect_source": "leaf:scrub_protection"
   },
   {
-   "id": "c5",
+   "id": "e19",
    "text": "A colonist's Tag_A sits on a wall cell. An enemy then paints ThrowUp_A on the same cell, and on screen only the throw-up is visible because it is drawn over the tag. Inspecting the cell lists two graffiti marks, the throw-up and the colonist's tag under it.",
    "expect": "reject: going-over must remove the colonist's tag; stacking two marks on the cell with the tag surviving underneath is the named false pass and red",
    "expect_source": "leaf:going_over"
   },
   {
-   "id": "c6",
+   "id": "e20",
    "text": "A colonist walks past a mockery of themselves every hour for two days. Their hurt mood thought appears on the first pass and refreshes once on day two, never stacking. On the social tab their opinion of the painter drops -5 on day one and another -5 on day two.",
    "expect": "reject: opinion may change only once, on the first read; opinion moving again on a later pass is the named false pass",
    "expect_source": "leaf:rereads_daily"
   },
   {
-   "id": "c7",
+   "id": "e21",
    "text": "A mockery names a colonist who is restricted to the hospital area. Seeing the mark, the subject leaves the zone, walks across the base to its painter and starts a social fight. No unrelated pawns are involved, and the fight log names the mockery as its reason.",
    "expect": "reject: a fight must never break a pawn's restrictions; a restricted pawn leaving its area to fight is the named false pass even with the right people and reason",
    "expect_source": "leaf:fights_reasons"
   },
   {
-   "id": "c8",
+   "id": "e22",
    "text": "One wall holds a colonist's own ugly vandal scrawl at Beauty -15 next to a hostile raider's vandal scrawl. A colonist with cleaning enabled and no orders scrubs the raider's scrawl and walks off, leaving the colony's ugly scrawl in place. The player then orders that scrawl cleaned and it is scrubbed.",
    "expect": "accept: cleaners leave the colony's own vandal marks unless ordered and still clean the hostile vandal mark, and an ordered clean removes it",
    "expect_source": "leaf:scrub_protection"
+  },
+  {
+   "id": "e23",
+   "text": "A colonist stands in a one-cell alcove with walls to her north, east and west and paints during a spree. Afterwards a single tag is visible on the north wall, drawn on the face the camera sees and carrying on over the crease onto the wall top. The east and west walls, seen edge-on, carry nothing.",
+   "expect": "accept: the mark sits on the front face of the wall north of the painter and climbs onto the top; edge-on walls take no paint",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "e24",
+   "text": "A colonist paints while standing in a corridor that runs north-south, with walls only on her east and west. A thin, rotated tag appears along the top strip of the east wall, the narrow edge the camera sees from above.",
+   "expect": "reject: a wall seen edge-on takes no paint; a mark turned along the edge-on strip of a wall top is the listed false pass",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "e25",
+   "text": "A colonist stands just north of an east-west wall, with open floor to her north, and paints. A tag appears on that wall, and inspecting it shows it was painted on the side facing her, the wall's north side, away from the camera.",
+   "expect": "reject: only the front face, the wall north of the painter's cell, takes paint; a wall's far side carries no paint",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "e26",
+   "text": "After a spree, a tag stands upright and centred on the floor cell in front of a wall, a full cell below the wall's face; the wall itself is bare.",
+   "expect": "reject: a mark drawn on the floor cell beside the wall is the listed false pass and the red build",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "e27",
+   "text": "A mockery of Alice stands in the hall, with Alice, her friend Carla and the painter Bob on the map; it is run four times. First run: Carla walks to it, scrubs it, and the wall is clean. Second run: Carla works at it and leaves, and the mark now shows a painted cross-out over it. Third run: Carla paints a reply beside it and the reply stays on the wall. Fourth run, with an earlier piece of Bob's already painted out: Alice walks up to Bob and has words with him over the mark, and the interaction finishes.",
+   "expect": "accept: pawns answer the wall and each of the four answers (scrub, cross-out, reply, confront over painted-out work) runs to completion by a pawn with a reason, the mark's state changing to match",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "e28",
+   "text": "A mockery of Alice stands in the hall in the evening. By morning it is gone. The log carries a line saying the mark was scrubbed, but no pawn's job history shows a cleaning or scrubbing job at that wall, and nobody was seen there.",
+   "expect": "reject: the answer must be a job a pawn runs to completion; a mark vanishing with no pawn at it, or an answer only logged, is a listed false pass",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "e29",
+   "text": "The player uses the graffiti designator on three wall cells, choosing a tag for the first, a throw-up for the second and a tally for the third. One colonist walks to each in turn and paints the chosen mark on each, and no designation is left pending.",
+   "expect": "accept: the player orders a chosen mark on a chosen cell and gets exactly it, all three painted, none pending",
+   "expect_source": "leaf:player_orders"
+  },
+  {
+   "id": "e30",
+   "text": "The player designates three wall cells with three named marks. A colonist paints all three cells, but the marks that appear are whatever the colonist picks: two scrawls and a tag, none of them the ones chosen.",
+   "expect": "reject: the colonist painting random marks is the listed false pass; the player must get exactly the mark ordered",
+   "expect_source": "leaf:player_orders"
+  },
+  {
+   "id": "e31",
+   "text": "The player designates three wall cells, each with a named mark. Two are painted exactly as chosen. The third keeps its designation overlay for ten in-game days while an idle colonist with nothing else to do stands nearby, and it never gets painted.",
+   "expect": "reject: one designation staying pending forever is the listed false pass",
+   "expect_source": "leaf:player_orders"
+  },
+  {
+   "id": "e32",
+   "text": "A pirate raid breaks off its assault and turns to flee. On the way out, raiders tag three outer walls, each with the pirates' mark. Colonists soon carry a thought about enemy marks on our walls. A cleaner scrubs all three, and within the day the thought is gone from every colonist.",
+   "expect": "accept: a leaving raid tags the outer walls, the marks trouble the colony, and the trouble ends once the wall is retaken by scrubbing",
+   "expect_source": "leaf:raid_mark_troubles"
+  },
+  {
+   "id": "e33",
+   "text": "A pirate raid approaches the colony. Before the first shot, while walking in to attack, two raiders stop and spray tags on an outer wall, then join the assault.",
+   "expect": "reject: raid tags belong to the way out; tags appearing on the way in is the listed false pass",
+   "expect_source": "leaf:raid_mark_troubles"
+  },
+  {
+   "id": "e34",
+   "text": "After a raid leaves its tags on the outer walls, colonists carry a thought about enemy marks. A cleaner scrubs every enemy mark on the map. Three days later the colonists still carry the same enemy-marks thought.",
+   "expect": "reject: the trouble must end once the wall is retaken; trouble that never ends after scrubbing is the listed false pass and red",
+   "expect_source": "leaf:raid_mark_troubles"
+  },
+  {
+   "id": "e35",
+   "text": "Faction A's raid left tags on the colony's walls; faction B left none. A letter names faction A and clicking it jumps to an A tag on the north wall. A's next raid arrives at the same strength as B's at the same storyteller points, but several days earlier than B's.",
+   "expect": "accept: the standing mark makes that faction's next raid sooner or larger; sooner at equal size is allowed",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e36",
+   "text": "Faction A left tags on the colony's walls; faction B left none. A letter about A arrives. At the same storyteller points, A's next raid is larger than usual, and B's next raid is larger by the same amount.",
+   "expect": "reject: only the marking faction's raid is pushed; every faction's raids growing, marked or not, is the listed false pass",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e37",
+   "text": "Faction A left tags on the colony's walls and its next raid comes larger than unmarked faction B's. A letter arrives saying faction A has marked the colony, but it has no target: clicking it moves the camera nowhere and nothing in it points at any wall.",
+   "expect": "reject: the letter must name the faction and point at its standing mark; a letter that names no mark is the red build",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e38",
+   "text": "Faction A left two tags on the colony's walls and a letter about A points at one of them. A cleaner scrubs that one tag; the other stays on the west wall. A's next raid then comes at the same size and time as unmarked faction B's.",
+   "expect": "reject: the push holds while any of A's marks stands and lifts only when the last is gone; here one still stands",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "e39",
+   "text": "A tester follows a fresh tag on an outdoor wall through its life. It is already slightly see-through the day after it is painted and grows fainter steadily every day until it vanishes.",
+   "expect": "reject: paint stays solid until the last 40 percent of its life; fade starting at placement is the listed false pass",
+   "expect_source": "leaf:weathering_bounds_marks"
+  },
+  {
+   "id": "e40",
+   "text": "Two identical tags by the same painter, one on an unroofed outdoor wall and one in a roofed room, both start fading on the same day and disappear on the same day.",
+   "expect": "reject: marks must last longer under a roof than outdoors; roofed and unroofed lasting the same is the listed false pass",
+   "expect_source": "leaf:weathering_bounds_marks"
+  },
+  {
+   "id": "e41",
+   "text": "A mark of a permanent kind sits on an outdoor wall beside an ordinary tag painted the same day. The ordinary tag fades over the end of its life and disappears; the permanent mark is still fully solid long after.",
+   "expect": "accept: marks weather and fade at the end of their life unless they are permanent; a permanent mark never fades",
+   "expect_source": "leaf:weathering_bounds_marks"
+  },
+  {
+   "id": "e42",
+   "text": "A game is started with ideoligions turned off. Colonists paint tags, scrawls and a mockery naming a colonist, though no sigils. The game is saved and reloaded: every mark is on the same wall with the same look, and the mockery still names the same colonist.",
+   "expect": "accept: graffiti works without any ideoligion and every mark survives a reload intact, subject included",
+   "expect_source": "leaf:stands_alone_settings"
+  },
+  {
+   "id": "e43",
+   "text": "The player opens the mod settings and switches off painting as recreation; the settings page shows the switch off and keeps it after closing. Over the next two days, bored colonists still pick wall painting for recreation and new tags appear.",
+   "expect": "reject: each behaviour must stop when its setting switches it off; the settings page changing while the behaviour runs on is the listed false pass",
+   "expect_source": "leaf:stands_alone_settings"
+  },
+  {
+   "id": "e44",
+   "text": "A colony has a mockery that names Alice. After a save and reload, the mark is still on the same wall with the same picture, but its inspect panel no longer names anyone and passers-by get only a generic thought from it.",
+   "expect": "reject: marks must keep their subject across reload; a mark losing its subject on reload is the listed false pass",
+   "expect_source": "leaf:stands_alone_settings"
+  },
+  {
+   "id": "e45",
+   "text": "A painted wall cell is deconstructed, and a second painted wall elsewhere is shot down in a raid. Both marks disappear the moment their walls are gone, while a tag on the untouched wall next to the first stays where it was.",
+   "expect": "accept: paint dies with its wall, deconstructed or destroyed, and a neighbouring wall's mark stays",
+   "expect_source": "leaf:paint_dies_with_wall"
+  },
+  {
+   "id": "e46",
+   "text": "A colonist deconstructs a tagged wall to make a doorway. The wall is gone, but the tag remains drawn in the air over the now-empty floor cell, and pawns walk through it.",
+   "expect": "reject: a mark staying floating over the floor cell after its wall is gone is the listed false pass",
+   "expect_source": "leaf:paint_dies_with_wall"
+  },
+  {
+   "id": "e47",
+   "text": "A lived-in save from mid-way through a colony's three weeks is loaded. A spree on the same corridor adds new marks beside the old ones; a raid leaves tags and a pressure letter; a trader passes an insult and its faction's goodwill drops once. Reloaded and played trader first, the trader's goodwill drops once by the same amount and the same pressure letter arrives.",
+   "expect": "accept: on a lived-in save, a spree, a raid and a trader tell the same story in both orders",
+   "expect_source": "leaf:walk_lived_in"
+  },
+  {
+   "id": "e48",
+   "text": "On a lived-in save, the raid then the trader: the trader's faction loses goodwill once from an insult. After reloading the same save and taking the trader first, then the raid, the same trader's faction loses goodwill twice from the same insult.",
+   "expect": "reject: both orders must give the same insult goodwill change once; the order of raid and trader changing the outcome is the red",
+   "expect_source": "leaf:walk_lived_in"
+  },
+  {
+   "id": "e49",
+   "text": "On a lived-in save, a raid by faction A leaves tags and a pressure letter about A. The game is saved and reloaded: A's tags are still on the walls, but A's next raid comes at the ordinary size and time, as though no mark stood.",
+   "expect": "reject: marks and the pressure record must match the save after reload; the pressure record being lost on reload is the red",
+   "expect_source": "leaf:walk_lived_in"
+  },
+  {
+   "id": "e50",
+   "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. In the second and third weeks a graffiti message or letter appears every few hours, most of them about colonists reading the same marks.",
+   "expect": "reject: graffiti must make occasional stories, never a stream of messages; a message every few hours is the red",
+   "expect_source": "leaf:stories_not_tax"
+  },
+  {
+   "id": "e51",
+   "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. By the second week every colonist carries a cluster of graffiti thoughts summing to around -9 that never clears, though no new raid or mockery has happened.",
+   "expect": "reject: marks must not stack into a standing mood penalty; a permanent mood tax is the red",
+   "expect_source": "leaf:stories_not_tax"
+  },
+  {
+   "id": "e52",
+   "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. Each colonist's graffiti thoughts sum to about +2 on an average day, with a dip after a mockery that passes; the mod sends a handful of messages a week, about a spree, a raid's tags and a reply.",
+   "expect": "accept: occasional stories within the trimmed mood range and few messages per week, not a tax",
+   "expect_source": "leaf:stories_not_tax"
+  },
+  {
+   "id": "e53",
+   "text": "Six colonists each paint a wall lane during a spree. The finished lanes show a tag, a throw-up, a tally, a scrawl and a sigil, and two of the tags are clearly different designs from each other.",
+   "expect": "accept: one colony holds visibly different kinds of mark, several defs and variants, not recolours",
+   "expect_source": "leaf:marks_various"
+  },
+  {
+   "id": "e54",
+   "text": "Six colonists each paint a wall lane during a spree. Every lane holds the same tag design: one is red, one blue, one green, one yellow, one black and one purple.",
+   "expect": "reject: one def in six tints is the listed false pass; the marks must differ in kind, not colour",
+   "expect_source": "leaf:marks_various"
+  },
+  {
+   "id": "e55",
+   "text": "Reviewing every mark at play zoom, most read as spray tags and throw-ups. One variant of the vandal mark is a yellow triangle with a lightning bolt in it, kept because it looks edgy.",
+   "expect": "reject: no mark may read as a real-world sign; a hazard bolt kept as a punk mark is the listed false pass and red",
+   "expect_source": "leaf:punk_register"
+  },
+  {
+   "id": "e56",
+   "text": "The full mark set shown at play zoom is a row of neat, evenly stroked pictograms: a skull, a fist, an arrow and a star, each centred and outlined like an icon set, with no drips, overspray or hand-drawn letterforms.",
+   "expect": "reject: the set must read as urban punk graffiti; tidy clip-art pictograms passing as tags is the listed false pass",
+   "expect_source": "leaf:punk_register"
+  },
+  {
+   "id": "c1",
+   "text": "A colonist paints a tag from a cell whose only adjacent wall runs east of it, seen edge-on from the camera. The tag is drawn neatly along the thin top strip of that wall, aligned with it and not touching the floor. A close-up shows it crisp and readable.",
+   "expect": "reject: an edge-on wall takes no paint; a mark turned along the edge-on strip of a wall top is a named false_pass",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "c2",
+   "text": "A mockery stands on a corridor wall. The subject's friend gets a thought about it and the mod log records an answer of type scrub. When the player next looks, the mockery is gone and the wall is clean; no one was seen at the wall, and no cleaning job appears in any pawn's history.",
+   "expect": "reject: the player must watch a pawn's answer job finish; a logged answer with no job, or a mark that vanishes with no pawn at it, are named false_passes",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "c3",
+   "text": "Faction A left exit marks; a letter names A and jumps the camera to one of its marks, and A's next raid arrives larger than B's at the same points. Nobody scrubs; weeks later the last A mark weathers away and the letter's mark is no longer on the wall. A's following raid is still larger than B's.",
+   "expect": "reject: once the last such mark is scrubbed or weathered away the push lifts; pressure lingering after the last mark is gone is a named false_pass",
+   "expect_source": "leaf:raider_pressure"
+  },
+  {
+   "id": "c4",
+   "text": "The player switches the raider pressure setting off while faction A's exit marks still stand. No pressure letter arrives any more. A's next raid still comes with more points than faction B's at the same storyteller points.",
+   "expect": "reject: each switch off must stop its own behaviour; the settings page changing while the behaviour runs on is a named false_pass (and raider_pressure's control: setting off gives equal points and no letter)",
+   "expect_source": "leaf:stands_alone_settings"
+  },
+  {
+   "id": "c5",
+   "text": "A raid assaults the base and then retreats. Raiders spray their faction's throw-ups on the exterior walls both while advancing on the base and again on the way out. Colonists get a troubled thought about enemy marks, and it clears once every enemy mark is scrubbed.",
+   "expect": "reject: tags belong only on the way out; tags appearing on the way in is a named false_pass",
+   "expect_source": "leaf:raid_mark_troubles"
+  },
+  {
+   "id": "c6",
+   "text": "The player designates three wall cells, each with a named mark. A colonist paints two of them exactly as named on their cells. For the third, the same named mark is painted on the wall cell next to the designated one, and the designation marker stays on the original cell.",
+   "expect": "reject: the player must get exactly the chosen mark on the chosen cell; the third is on the wrong cell and its designation stays pending (oracle: painted 3, matched 3, pending 0)",
+   "expect_source": "leaf:player_orders"
+  },
+  {
+   "id": "c7",
+   "text": "Over three in-game weeks a colony of six, with no forcing, averages about minus 2 mood from graffiti thoughts after week one, and mockery and raid letters arrive only a few times a week. Every recreation tag a colonist paints also posts a message in the corner, several a day.",
+   "expect": "reject: no message stream; messages must be few per week across all Graffiti kinds, and counting only one kind is a named false_pass",
+   "expect_source": "leaf:stories_not_tax"
+  },
+  {
+   "id": "c8",
+   "text": "An outdoor wall carries a mark painted months ago that is still at full colour. Ordinary marks painted near it at the same time faded and disappeared long ago. The mark's def is flagged permanent.",
+   "expect": "accept: marks weather and fade unless permanent; the oracle states permanent never fades",
+   "expect_source": "leaf:weathering_bounds_marks"
+  },
+  {
+   "id": "n1",
+   "text": "A colonist stands just north of an east-west wall, with open floor on her other sides, and paints during a spree. Afterwards a thin band of her colours runs along the top edge of that wall, a narrow lip on the rim nearest her, and the cell's inspect panel lists it as a painted mark.",
+   "expect": "reject: a wall's far side carries no paint; a mark on a wall's far side drawn as a lip passing as painted is the listed false pass",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "n2",
+   "text": "The player uses the graffiti designator on a floor cell whose only neighbouring wall is directly south of it. A colonist walks there, paints, and a tag appears on that wall's north side, the side away from the camera.",
+   "expect": "reject: a cell whose only wall is south of it, the far side, gets no mark from a paint order",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "n3",
+   "text": "A bored colonist picks wall painting for recreation and chooses a spot in a storeroom cell whose only wall is south of it. When she finishes, a new scrawl is on that south wall.",
+   "expect": "reject: a cell whose only wall is south of it gets no mark from a pool pick; a wall's far side carries no paint",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "n4",
+   "text": "A mockery of Alice is run in four set-ups, one per answer. The scrub, cross-out and confrontation each play out and finish. In the reply set-up, Carla gets a thought and the mod log records that she replied, but no pawn ever walks to the wall and after two days no reply is painted anywhere.",
+   "expect": "reject: every one of the four answers must run as a job to completion; a reply logged with no job run is the listed false pass",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "n5",
+   "text": "In the cross-out set-up, Carla walks to the mockery of Alice, works at it for a while and leaves; her job history shows the job finished, but the mark looks exactly as it did and its inspect panel shows no change.",
+   "expect": "reject: the answer's job must change the mark's state to match; a finished cross-out job that leaves the mark untouched does not answer the wall",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "n6",
+   "text": "In the confrontation set-up, an earlier piece by the painter Bob has been painted out. Bob, Alice and Carla all pass the wall over three in-game days; they get thoughts, but nobody ever walks up to anyone over it and no confrontation starts. The scrub, cross-out and reply set-ups each finish.",
+   "expect": "reject: all four answers, including the confront over painted-out work, must run to completion; a confrontation that never happens fails the leaf",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "n7",
+   "text": "In the confrontation set-up, Dave, a colonist who is neither the mark's subject nor her friend and holds no grudge against the painter, walks up to the painter and has words with him; the interaction finishes. Alice and Carla do nothing.",
+   "expect": "reject: each answer must be run by a pawn with a reason; a confrontation by a pawn with no reason does not meet the leaf",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "n8",
+   "text": "A colonist stands in a one-cell gap with a wall to her north and another to her south and paints during a spree. One tag appears on the north wall's face, the face the camera sees, carrying over the crease onto its top; the south wall, including its top edge, stays bare. The player then designates a floor cell whose only wall is south of it, and no mark ever appears there.",
+   "expect": "accept: the mark sits on the front face of the wall north of the painter and climbs onto the top, and a wall's far side, including a cell whose only wall is south of it under a paint order, carries no paint",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "n9",
+   "text": "Over a day of recreation painting, colonists pass many cells whose only wall is south of them; none of those south walls gains a mark. Every new mark that day sits on the face of a wall directly north of where its painter stood, aligned to it and running up over the crease onto the top.",
+   "expect": "accept: each mark is on the front face of the wall north of the painter's cell, climbing onto the top, and a pool pick never marks a wall's far side",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "n10",
+   "text": "A mockery of Alice is run in four set-ups with Alice, her friend Carla and the painter Bob present. Carla scrubs it clean; in the next, Carla crosses it out and the cross-out shows; in the next, Carla paints a reply beside it; in the last, with an earlier piece of Bob's painted out, Alice confronts Bob over it and the exchange ends. Each pawn's job history shows the job finished at that wall. A plain tag nobody is offended by, left on the same wall, gets no answer in any set-up.",
+   "expect": "accept: all four answers (scrub, cross-out, reply, confront over painted-out work) run to completion by a pawn with a reason and the mark's state changes to match; an inoffensive mark gets no answer",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "x1",
+   "text": "Close-up after a spree. A painter stood in a cell with a wall directly east of it and no wall to the north. A neat tag now runs along the thin vertical strip of that east wall's top, aligned with the wall, crisp and clearly on the wall rather than on the floor. Every other mark in the lane sits on a north wall's face.",
+   "expect": "reject: a wall seen edge-on carries no paint; a cell whose only wall is edge-on gets no mark",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "x2",
+   "text": "A paint order is placed on a floor cell whose only adjacent wall is directly south of it. The pawn paints; the mark shows as a thin coloured band along the top edge of that south wall, hugging the wall, not over the floor. It looks tidy and wall-bound.",
+   "expect": "reject: a wall's far side carries no paint; a cell whose only wall is south of it gets no mark from a paint order",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "x3",
+   "text": "Close-up of a north wall lane. Each mark is aligned to its wall's front face and sits fully on that face, but every one stops at the crease; none extends up onto the wall top. Nothing touches the floor.",
+   "expect": "reject: the mark must climb over the crease onto the wall top",
+   "expect_source": "leaf:sits_on_wall"
+  },
+  {
+   "id": "x4",
+   "text": "Cross-out sub-case: a friend of the mockery's subject walks to the wall, a deface job runs to completion beside the mark, and when it ends the mockery is simply gone from the cell; no crossed-out mark remains. The scrub, reply and confront sub-cases all finish visibly.",
+   "expect": "reject: the mark's state must change to match the answer (a cross-out, not a removal)",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "x5",
+   "text": "Scrub, cross-out and reply each run to completion by a pawn at the wall. A confrontation with the painter is seen and completes in a run where the painter's earlier work still stands. In the run where the painter's earlier work has been painted out, no confrontation ever starts before the test ends.",
+   "expect": "reject: all four answers must complete, including a confront over painted-out work",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "x6",
+   "text": "Scrub sub-case: the message log reads that the subject scrubbed the mockery and the mark is gone from the wall. Reviewing the tick record, the subject never left the dining room and no cleaning job was ever started.",
+   "expect": "reject: each answer must be a job run to completion by a pawn at the wall, not logged with no job and the mark vanishing with no pawn at it",
+   "expect_source": "leaf:answer_wall"
+  },
+  {
+   "id": "x7",
+   "text": "A psychopath, an ordinary colonist and a sensitive colonist all view the same skilled mockery. The ordinary viewer gets the def's mood value, the sensitive viewer a larger one in both directions, and the psychopath's needs tab lists the graffiti thought at +0 mood.",
+   "expect": "reject: the psychopath must hold no mark thought, not a zero or smaller one",
+   "expect_source": "leaf:temperament"
+  },
+  {
+   "id": "x8",
+   "text": "Faction A left exit marks; a letter named A and its camera jump landed on an A mark; A's next raid came larger than B's at the same points. A colonist then scrubbed all but one A mark; the last one later faded out by weathering. A's next raid still arrived larger than B's. In a separate run where the last A mark was scrubbed by hand, A's next raid matched B's.",
+   "expect": "reject: the push must lift once the last mark is scrubbed or weathered away",
+   "expect_source": "leaf:raider_pressure"
   }
  ],
- "scenarios_hash": "f898248d9ecb3b166d30bb28d1dd43417c74862d522ff3b108b1aafb9ca7572e",
+ "scenarios_hash": "e342b5144da5718ce11845b93af89a14c6da69862ba58bca6bb20f1340ac9c08",
  "readers": [
-  "reader a4097db783b754009 (opus)",
-  "reader a223adf4021b3e84a (opus)"
+  "reader a13cabd45dcbab2aa (opus)",
+  "reader a5d24161926b0d1ad (opus)"
  ],
  "reader_verdicts": {
   "reader1": {
    "e1": {
     "verdict": "reject",
     "leaf": "ideo_sigil",
-    "why": "The icon is the ideoligion's but untinted, a listed false_pass; the sigil must carry the icon in its colour."
+    "why": "icon is the ideo's but untinted"
    },
    "e2": {
     "verdict": "reject",
     "leaf": "art_skill",
-    "why": "A skilled mockery collapsing anger and beauty into one net thought is a listed false_pass; the target must hold both at once."
+    "why": "mockery's beauty and anger cancel into one net thought"
    },
    "e3": {
     "verdict": "accept",
     "leaf": "art_skill",
-    "why": "The target holds a separate anger thought and beauty thought from one skilled slander, as the oracle requires."
+    "why": "skilled slander angers and pleases at once as separate thoughts"
    },
    "e4": {
     "verdict": "reject",
     "leaf": "temperament",
-    "why": "A psychopath getting a smaller thought instead of none is a listed false_pass."
+    "why": "psychopath gets a smaller thought instead of none"
    },
    "e5": {
     "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "Pressure lingering after the last mark is scrubbed is a listed false_pass; the push must lift."
+    "why": "pressure lingers after the last mark is gone"
    },
    "e6": {
     "verdict": "accept",
     "leaf": "raider_pressure",
-    "why": "Letter names A and points at its mark, the raid is larger (sooner or larger allowed) while the mark stands, and weathering away the last mark lifts it."
+    "why": "letter names and points at mark, raid larger, weathering of last mark lifts it"
    },
    "e7": {
     "verdict": "reject",
     "leaf": "visitors",
-    "why": "Goodwill dropping on every pass during one visit is a listed false_pass and the red."
+    "why": "goodwill drops on every pass instead of once per visit"
    },
    "e8": {
     "verdict": "reject",
     "leaf": "going_over",
-    "why": "Both marks stacking on the cell with the tag still visible is a listed false_pass and the red."
+    "why": "both marks stack on the cell"
    },
    "e9": {
     "verdict": "reject",
     "leaf": "no_english",
-    "why": "The TARTE tag surviving in one variant, English showing only when zoomed in, are listed false_passes."
+    "why": "author tag TARTE legible when zoomed in"
    },
    "e10": {
     "verdict": "reject",
     "leaf": "fights_reasons",
-    "why": "A drafted pawn leaving its post to fight is a listed false_pass and the red."
+    "why": "drafted pawn leaves its post to fight"
    },
    "e11": {
     "verdict": "accept",
     "leaf": "scrub_protection",
-    "why": "Unordered cleaner spares own and devotional marks, cleans the hostile vandal control, and cleans both when ordered, matching the oracle."
+    "why": "own and devotional left unless ordered, hostile vandal cleaned"
    },
    "e12": {
     "verdict": "accept",
     "leaf": "rereads_daily",
-    "why": "Opinion moved once and the mood thought refreshed at most daily without stacking."
+    "why": "mood at most daily, opinion moved once"
    },
    "e13": {
     "verdict": "accept",
     "leaf": "mockery",
-    "why": "The mockery names Alice, hurts her and lowers her opinion of Bob, amuses her rival, and does not give everyone the same thought."
+    "why": "names subject, hurts her, amuses rival, lowers regard of painter, unrelated unmoved"
    },
    "e14": {
     "verdict": "accept",
     "leaf": "weathering_bounds_marks",
-    "why": "Marks stay opaque until the last stretch of life and the outdoor one goes sooner than the roofed one."
+    "why": "fade over end of life, sooner outdoors"
+   },
+   "e15": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "standing mark changes nothing about the next raid"
+   },
+   "e16": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "anger and beauty cancelled into one net thought"
+   },
+   "e17": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "psychopath gets a smaller thought instead of none"
+   },
+   "e18": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "unordered cleaner wipes a devotional mark"
+   },
+   "e19": {
+    "verdict": "reject",
+    "leaf": "going_over",
+    "why": "colonist's tag survives under the throw-up"
+   },
+   "e20": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "opinion moves again on second day"
+   },
+   "e21": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "restricted pawn leaves its area to fight"
+   },
+   "e22": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "colony's own mark left until ordered, hostile one cleaned"
+   },
+   "e23": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "mark on north wall front face over crease, edge-on walls bare"
+   },
+   "e24": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "mark turned along the edge-on strip of a wall top"
+   },
+   "e25": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "painted on wall's far side away from camera"
+   },
+   "e26": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "mark drawn on the floor cell, wall bare"
+   },
+   "e27": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "all four answers run and finish visibly, incl confront over painted-out work"
+   },
+   "e28": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "mark vanishes with no pawn at it, answer only logged"
+   },
+   "e29": {
+    "verdict": "accept",
+    "leaf": "player_orders",
+    "why": "each chosen mark painted on its cell, none pending"
+   },
+   "e30": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "colonist paints random marks"
+   },
+   "e31": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "one designation stays pending forever"
+   },
+   "e32": {
+    "verdict": "accept",
+    "leaf": "raid_mark_troubles",
+    "why": "tags on the way out, troubles until scrubbed, then lifts"
+   },
+   "e33": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "tags appear on the way in"
+   },
+   "e34": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "trouble never ends after scrubbing"
+   },
+   "e35": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "letter names and points at mark, raid comes sooner"
+   },
+   "e36": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "every faction's raids grow, marked or not"
+   },
+   "e37": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "letter names no mark"
+   },
+   "e38": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "pressure lifted while an A mark still stands"
+   },
+   "e39": {
+    "verdict": "reject",
+    "leaf": "weathering_bounds_marks",
+    "why": "fade starts at placement"
+   },
+   "e40": {
+    "verdict": "reject",
+    "leaf": "weathering_bounds_marks",
+    "why": "roofed and unroofed last the same"
+   },
+   "e41": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "permanent never fades, ordinary fades at end"
+   },
+   "e42": {
+    "verdict": "accept",
+    "leaf": "stands_alone_settings",
+    "why": "works without ideoligion, marks and subject survive reload"
+   },
+   "e43": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "settings page changes but behaviour runs on"
+   },
+   "e44": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "mark loses its subject on reload"
+   },
+   "e45": {
+    "verdict": "accept",
+    "leaf": "paint_dies_with_wall",
+    "why": "marks gone with walls, neighbour stays"
+   },
+   "e46": {
+    "verdict": "reject",
+    "leaf": "paint_dies_with_wall",
+    "why": "mark floats over floor after wall gone"
+   },
+   "e47": {
+    "verdict": "accept",
+    "leaf": "walk_lived_in",
+    "why": "lived-in save, both orders tell same story"
+   },
+   "e48": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "order of raid and trader changes the outcome"
+   },
+   "e49": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "pressure record lost on reload"
+   },
+   "e50": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "message every few hours"
+   },
+   "e51": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "standing mood penalty stacks and never clears"
+   },
+   "e52": {
+    "verdict": "accept",
+    "leaf": "stories_not_tax",
+    "why": "small mood, passing dips, few messages a week"
+   },
+   "e53": {
+    "verdict": "accept",
+    "leaf": "marks_various",
+    "why": "several distinct defs and variants"
+   },
+   "e54": {
+    "verdict": "reject",
+    "leaf": "marks_various",
+    "why": "one def in six tints"
+   },
+   "e55": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "hazard bolt kept as a punk mark"
+   },
+   "e56": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "tidy clip-art pictograms pass as tags"
    },
    "c1": {
     "verdict": "reject",
-    "leaf": "raider_pressure",
-    "why": "A standing mark that changes nothing about the faction's next raid is the red."
+    "leaf": "sits_on_wall",
+    "why": "edge-on wall takes no paint; mark along edge-on strip"
    },
    "c2": {
     "verdict": "reject",
-    "leaf": "art_skill",
-    "why": "The target gets one net thought blending mockery and beauty, a listed false_pass."
+    "leaf": "answer_wall",
+    "why": "answer logged, mark vanishes with no pawn or job"
    },
    "c3": {
     "verdict": "reject",
-    "leaf": "temperament",
-    "why": "The psychopath holds a smaller thought instead of none, a listed false_pass."
+    "leaf": "raider_pressure",
+    "why": "pressure lingers after last mark weathered away"
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "scrub_protection",
-    "why": "An unordered cleaner wiping a devotional sigil is the red."
+    "leaf": "raider_pressure",
+    "why": "setting off must give equal points; raid still larger"
    },
    "c5": {
     "verdict": "reject",
-    "leaf": "going_over",
-    "why": "The colonist's tag surviving under the throw-up with two marks on the cell is a listed false_pass."
+    "leaf": "raid_mark_troubles",
+    "why": "tags appear on the way in"
    },
    "c6": {
     "verdict": "reject",
-    "leaf": "rereads_daily",
-    "why": "Opinion moving again on day two violates opinion changing only once, a listed false_pass."
+    "leaf": "player_orders",
+    "why": "mark not on the chosen cell, designation left pending"
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "fights_reasons",
-    "why": "A restricted pawn leaving its zone to fight is a listed false_pass, even with a proper reason."
+    "leaf": "stories_not_tax",
+    "why": "message stream, several a day"
    },
    "c8": {
     "verdict": "accept",
-    "leaf": "scrub_protection",
-    "why": "The colony's own vandal mark is left unless ordered while the hostile one is cleaned, and the ordered clean is done."
+    "leaf": "weathering_bounds_marks",
+    "why": "permanent mark never fades"
+   },
+   "n1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "far side of wall painted as a lip"
+   },
+   "n2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "wall south of cell gets paint from a paint order"
+   },
+   "n3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "wall south of cell gets paint from a pool pick"
+   },
+   "n4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "reply logged but no job runs"
+   },
+   "n5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "job finishes but mark state unchanged"
+   },
+   "n6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "confrontation answer never happens"
+   },
+   "n7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "confrontation by an unrelated pawn with no reason"
+   },
+   "n8": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "north face painted over crease, south wall and south-only cell bare"
+   },
+   "n9": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "only north-wall faces painted, south-only cells bare"
+   },
+   "n10": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "all four answers run and finish; unoffending mark gets none"
+   },
+   "x1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "edge-on wall strip painted"
+   },
+   "x2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "far side painted as a lip"
+   },
+   "x3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "mark must climb over the crease onto the top"
+   },
+   "x4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "cross-out leaves no crossed-out mark; mark state does not match"
+   },
+   "x5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "confront over painted-out work never happens"
+   },
+   "x6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "mark vanished with no pawn at it, only logged"
+   },
+   "x7": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "psychopath holds a mark thought; must hold none"
+   },
+   "x8": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "pressure lingers after the last mark weathered away"
    }
   },
   "reader2": {
    "e1": {
     "verdict": "reject",
     "leaf": "ideo_sigil",
-    "why": "The icon is the ideoligion's but untinted, which is a listed false_pass; the sigil must carry the icon in its colour."
+    "why": "The icon is the ideoligion's but untinted, which is a named false pass."
    },
    "e2": {
     "verdict": "reject",
     "leaf": "art_skill",
-    "why": "A skilled mockery collapsing into one net mixed thought is the false_pass 'a mockery's beauty cancels its anger into one net thought'."
+    "why": "Anger and beauty are folded into one net thought, a named false pass."
    },
    "e3": {
     "verdict": "accept",
     "leaf": "art_skill",
-    "why": "The target holds an anger thought and a beauty thought at once, exactly as the oracle requires."
+    "why": "A skilled mockery angers and pleases at once as two separate thoughts."
    },
    "e4": {
     "verdict": "reject",
     "leaf": "temperament",
-    "why": "A psychopath getting a smaller thought instead of none is a listed false_pass."
+    "why": "The psychopath gets a smaller thought instead of none."
    },
    "e5": {
     "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "Pressure lingering after the last mark is scrubbed is a listed false_pass."
+    "why": "The pressure lingers after the last mark is scrubbed."
    },
    "e6": {
     "verdict": "accept",
     "leaf": "raider_pressure",
-    "why": "A larger raid (not necessarily sooner) while the mark stands, a letter pointing at the mark, and the push lifting once it weathers away all match the leaf."
+    "why": "The letter names A and points at its mark, the raid is larger, and weathering away the last mark lifts the push."
    },
    "e7": {
     "verdict": "reject",
     "leaf": "visitors",
-    "why": "Goodwill dropping on every pass is a listed false_pass and the red case."
+    "why": "Goodwill drops on every pass instead of once per visit."
    },
    "e8": {
     "verdict": "reject",
     "leaf": "going_over",
-    "why": "Both marks stacking and the colonist's tag surviving under the throw-up are listed false_passes."
+    "why": "The two marks stack and the colonist's tag survives."
    },
    "e9": {
     "verdict": "reject",
     "leaf": "no_english",
-    "why": "The TARTE tag surviving in one variant, even only when zoomed in, is a listed false_pass and the red case."
+    "why": "Legible English (TARTE) shows when zoomed in, a named false pass."
    },
    "e10": {
     "verdict": "reject",
     "leaf": "fights_reasons",
-    "why": "A drafted pawn leaving its post to fight is a listed false_pass and the red case."
+    "why": "A drafted pawn leaves its post to fight."
    },
    "e11": {
     "verdict": "accept",
     "leaf": "scrub_protection",
-    "why": "Unordered cleaning spares own and devotional marks and cleans the hostile vandal mark, and ordered cleaning removes both, matching the oracle."
+    "why": "The cleaner leaves the colony's own and devotional marks unless ordered, and cleans the hostile vandal mark."
    },
    "e12": {
     "verdict": "accept",
     "leaf": "rereads_daily",
-    "why": "Opinion moved once and the mood thought refreshed at most once per day without stacking."
+    "why": "Opinion moves once, and the mood thought is refreshed at most daily with no stacking."
    },
    "e13": {
     "verdict": "accept",
     "leaf": "mockery",
-    "why": "The mockery names Alice, hurts her and lowers her opinion of Bob, amuses her rival and leaves an unrelated pawn unmoved, so not everyone gets the same thought."
+    "why": "The mark names its subject, hurts her, lowers her opinion of the painter, amuses her rival and leaves the unrelated pawn alone."
    },
    "e14": {
     "verdict": "accept",
     "leaf": "weathering_bounds_marks",
-    "why": "Fully opaque until late life, fading over the final stretch, and gone sooner outdoors than under a roof match the leaf."
+    "why": "Each tag fades late in its life, and the outdoor one goes sooner than the roofed one."
    },
-   "c1": {
+   "e15": {
     "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "A letter with a standing mark but no change to the next raid is a listed false_pass and the red case."
+    "why": "A standing mark changes nothing about A's next raid."
    },
-   "c2": {
+   "e16": {
     "verdict": "reject",
     "leaf": "art_skill",
-    "why": "The target gets one net +1 thought, where the leaf requires an anger thought and a beauty thought at once, not a cancelled net thought."
+    "why": "The mockery's beauty cancels its anger into one net thought."
    },
-   "c3": {
+   "e17": {
     "verdict": "reject",
     "leaf": "temperament",
-    "why": "The psychopath holds a smaller thought instead of none, a listed false_pass."
+    "why": "The psychopath holds a mark thought, only smaller, instead of none."
    },
-   "c4": {
+   "e18": {
     "verdict": "reject",
     "leaf": "scrub_protection",
-    "why": "Auto-clean wiping a devotional sigil without orders is the red case."
+    "why": "An unordered cleaner wipes a devotional sigil."
    },
-   "c5": {
+   "e19": {
     "verdict": "reject",
     "leaf": "going_over",
-    "why": "Two marks stacked on one cell with the tag surviving underneath is the red case, even though only the throw-up is drawn."
+    "why": "The colonist's tag survives under the throw-up and the cell lists two marks."
    },
-   "c6": {
+   "e20": {
     "verdict": "reject",
     "leaf": "rereads_daily",
-    "why": "Opinion moving again on day two breaks 'opinion changed once' and is the false_pass 'opinion keeps moving'."
+    "why": "Opinion moves again on the second day; it must change only once."
    },
-   "c7": {
+   "e21": {
     "verdict": "reject",
     "leaf": "fights_reasons",
-    "why": "A restricted pawn leaving its area to fight is a listed false_pass."
+    "why": "A restricted pawn leaves its zone to fight, which breaks its restrictions."
    },
-   "c8": {
+   "e22": {
     "verdict": "accept",
     "leaf": "scrub_protection",
-    "why": "The colony's own vandal mark is left alone unless ordered while the hostile scrawl is cleaned, and ordering it cleaned works."
-   }
-  },
-  "control_visitors": {
-   "e1": {
-    "verdict": "reject",
-    "leaf": "ideo_sigil",
-    "why": "The sigil carries the ideoligion's icon but untinted, which is the leaf's false_pass 'the icon is the ideo's but untinted'."
+    "why": "The colony's own mark is left until ordered, and the hostile mark is cleaned."
    },
-   "e2": {
-    "verdict": "reject",
-    "leaf": "art_skill",
-    "why": "A single net -1 thought is the false_pass 'a mockery's beauty cancels its anger into one net thought'; the target must hold anger and beauty at once."
-   },
-   "e3": {
+   "e23": {
     "verdict": "accept",
-    "leaf": "art_skill",
-    "why": "A skilled mockery giving its target both an anger thought and a separate beauty thought is exactly the leaf's experience."
+    "leaf": "sits_on_wall",
+    "why": "The mark is on the north wall's front face over the crease, and the edge-on walls stay bare."
    },
-   "e4": {
+   "e24": {
     "verdict": "reject",
-    "leaf": "temperament",
-    "why": "A psychopath getting a smaller thought instead of none is the leaf's false_pass."
+    "leaf": "sits_on_wall",
+    "why": "Paint on the edge-on strip of a wall top is a named false pass."
    },
-   "e5": {
+   "e25": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "The paint is on the wall's far side, away from the camera."
+   },
+   "e26": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "The mark floats on the floor cell and the wall is bare."
+   },
+   "e27": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "All four answers run to completion by pawns, including the confrontation over painted-out work."
+   },
+   "e28": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The mark vanishes with no pawn at it and no job run."
+   },
+   "e29": {
+    "verdict": "accept",
+    "leaf": "player_orders",
+    "why": "Exactly the chosen marks are painted on the chosen cells, with none left pending."
+   },
+   "e30": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "The colonist paints random marks, not the chosen ones."
+   },
+   "e31": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "One designation stays pending forever."
+   },
+   "e32": {
+    "verdict": "accept",
+    "leaf": "raid_mark_troubles",
+    "why": "Exit tags go on the outer walls in the faction's mark, and the trouble ends once they are scrubbed."
+   },
+   "e33": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "Tags appear on the way in."
+   },
+   "e34": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "The trouble never ends after scrubbing."
+   },
+   "e35": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "The letter names A and points at its mark, and the raid comes sooner, which the tree allows."
+   },
+   "e36": {
     "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "Pressure persisting after every A tag is scrubbed is the false_pass 'the pressure lingers after the last mark is gone'."
+    "why": "Every faction's raids grow, marked or not."
    },
-   "e6": {
-    "verdict": "accept",
+   "e37": {
+    "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "The letter names A and points at its mark, the raid is larger (sooner or larger is allowed), and the push lifts once the last mark weathers away."
+    "why": "The letter names no mark and points nowhere."
    },
-   "e7": {
+   "e38": {
     "verdict": "reject",
-    "leaf": "rereads_daily",
-    "why": "The same mark moves regard on every pass instead of once, which is the leaf's red 'each pass stacks ... a new opinion change'; faction goodwill is not named, so this rests on reading goodwill as regard."
+    "leaf": "raider_pressure",
+    "why": "The push lifts while an A mark still stands; only the last mark gone lifts it."
    },
-   "e8": {
+   "e39": {
     "verdict": "reject",
-    "leaf": "going_over",
-    "why": "Two marks stacked on one cell with the colonist's tag surviving is the leaf's red and both false_pass lines."
+    "leaf": "weathering_bounds_marks",
+    "why": "Fading starts at placement instead of over the last 40 percent."
    },
-   "e9": {
+   "e40": {
     "verdict": "reject",
-    "leaf": "no_english",
-    "why": "A legible TARTE tag seen when zoomed in is the false_pass 'English shows only when zoomed in' and the leaf's red donor tag."
+    "leaf": "weathering_bounds_marks",
+    "why": "The roofed and unroofed tags last the same."
    },
-   "e10": {
-    "verdict": "reject",
-    "leaf": "fights_reasons",
-    "why": "A drafted pawn leaving its post to fight is the false_pass 'a drafted or restricted pawn leaves to fight'."
-   },
-   "e11": {
-    "verdict": "accept",
-    "leaf": "scrub_protection",
-    "why": "Unordered cleaning takes only the hostile vandal mark and ordered cleaning takes the protected two, matching the leaf."
-   },
-   "e12": {
-    "verdict": "accept",
-    "leaf": "rereads_daily",
-    "why": "Opinion moved once and the mood thought refreshed at most daily without stacking, as the leaf requires."
-   },
-   "e13": {
-    "verdict": "accept",
-    "leaf": "mockery",
-    "why": "The mockery names its subject, hurts her, lowers her opinion of the painter, amuses the rival and leaves an unrelated pawn alone."
-   },
-   "e14": {
+   "e41": {
     "verdict": "accept",
     "leaf": "weathering_bounds_marks",
-    "why": "Marks stay opaque until late in life, then fade and vanish, with the outdoor one going sooner than the roofed one."
+    "why": "The ordinary tag fades at the end of its life, and the permanent mark never fades."
+   },
+   "e42": {
+    "verdict": "accept",
+    "leaf": "stands_alone_settings",
+    "why": "It works without ideoligions and keeps every mark field, including the subject, across a reload."
+   },
+   "e43": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "The settings page changes but the behaviour runs on."
+   },
+   "e44": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "The mark loses its subject on reload."
+   },
+   "e45": {
+    "verdict": "accept",
+    "leaf": "paint_dies_with_wall",
+    "why": "Both marks go with their walls, and the neighbouring control mark stays."
+   },
+   "e46": {
+    "verdict": "reject",
+    "leaf": "paint_dies_with_wall",
+    "why": "The paint outlives its wall, floating over the floor."
+   },
+   "e47": {
+    "verdict": "accept",
+    "leaf": "walk_lived_in",
+    "why": "On a lived-in save, both orders tell the same story: one goodwill change and the same pressure letter."
+   },
+   "e48": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "The order of raid and trader changes the outcome."
+   },
+   "e49": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "The pressure record is lost on reload."
+   },
+   "e50": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "The mod sends a message every few hours."
+   },
+   "e51": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "The marks stack into a standing mood penalty."
+   },
+   "e52": {
+    "verdict": "accept",
+    "leaf": "stories_not_tax",
+    "why": "Mood stays within about plus or minus 3, the stories pass, and messages are few per week."
+   },
+   "e53": {
+    "verdict": "accept",
+    "leaf": "marks_various",
+    "why": "The lanes hold at least 3 distinct defs and at least 5 def-variant pairs."
+   },
+   "e54": {
+    "verdict": "reject",
+    "leaf": "marks_various",
+    "why": "One def in six tints is a named false pass."
+   },
+   "e55": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "A hazard bolt is kept as a punk mark."
+   },
+   "e56": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "Tidy clip-art pictograms pass as tags."
    },
    "c1": {
     "verdict": "reject",
-    "leaf": "raider_pressure",
-    "why": "A standing mark that leaves the next raid unchanged in points and timing is the leaf's red and the false_pass 'a letter with no change to the raid'."
+    "leaf": "sits_on_wall",
+    "why": "An edge-on wall takes no paint; a mark on its top strip is a false pass."
    },
    "c2": {
     "verdict": "reject",
-    "leaf": "art_skill",
-    "why": "One net +1 thought for the target is the false_pass 'a mockery's beauty cancels its anger into one net thought'."
+    "leaf": "answer_wall",
+    "why": "The answer is logged but no job runs, and the mark vanishes with no pawn at it."
    },
    "c3": {
     "verdict": "reject",
-    "leaf": "temperament",
-    "why": "The psychopath holding a smaller thought instead of none is the leaf's false_pass."
+    "leaf": "raider_pressure",
+    "why": "The pressure lingers after the last mark weathers away."
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "scrub_protection",
-    "why": "An unordered cleaner wiping a devotional sigil is the leaf's red 'auto-clean wipes devotional marks'."
+    "leaf": "raider_pressure",
+    "why": "With the setting off, raid points must be equal; A still gets more."
    },
    "c5": {
     "verdict": "reject",
-    "leaf": "going_over",
-    "why": "The cell lists two marks with the tag surviving underneath, which is the false_pass 'the colonist's tag survives under it' and the red of stacking."
+    "leaf": "raid_mark_troubles",
+    "why": "Tags appear on the way in."
    },
    "c6": {
     "verdict": "reject",
-    "leaf": "rereads_daily",
-    "why": "Opinion moving again on day two is the false_pass 'opinion keeps moving each pass'; opinion may change only once."
+    "leaf": "player_orders",
+    "why": "The third mark lands on the wrong cell and its designation stays pending."
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "fights_reasons",
-    "why": "A restricted pawn leaving its area to fight breaks the leaf's 'never breaks a pawn's restrictions'."
+    "leaf": "stories_not_tax",
+    "why": "Several messages a day is a message stream."
    },
    "c8": {
     "verdict": "accept",
-    "leaf": "scrub_protection",
-    "why": "The colony's own vandal mark is left until ordered while the hostile one is cleaned, matching the leaf."
+    "leaf": "weathering_bounds_marks",
+    "why": "A permanent mark never fades while the ordinary marks weather."
+   },
+   "n1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "The wall is south of the painter, and a far-side lip passes as paint, a named false pass."
+   },
+   "n2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "A paint order puts a mark on the far side of a wall south of the cell."
+   },
+   "n3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "A pool pick paints a wall that is south of the cell."
+   },
+   "n4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The reply is logged but no job runs and nothing is painted."
+   },
+   "n5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The mark's state does not change after the cross-out job."
+   },
+   "n6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The confront answer never runs over the painted-out work."
+   },
+   "n7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "An unrelated pawn with no reason confronts the painter."
+   },
+   "n8": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "Paint goes on the north face over the crease; the south walls and the south-only cell get none."
+   },
+   "n9": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "Every mark is on a north wall's face over the crease, and no south wall is painted."
+   },
+   "n10": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "All four answers finish with jobs at the wall, and the unoffending control mark gets no answer."
+   },
+   "x1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "The edge-on east wall top carries paint."
+   },
+   "x2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "There is a lip on the far side of a south wall from a paint order."
+   },
+   "x3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "The marks must climb over the crease onto the top; these stop at it."
+   },
+   "x4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The cross-out should leave a crossed-out mark, but the mark is simply gone."
+   },
+   "x5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The confront over painted-out work never happens."
+   },
+   "x6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "The answer is logged with no job run, and the mark vanishes with no pawn at it."
+   },
+   "x7": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "The psychopath must hold no mark thought; a +0 thought is still listed."
+   },
+   "x8": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "The push lingers after the last mark weathers away; weathering must lift it as scrubbing does."
    }
   },
   "control_going_over": {
    "e1": {
     "verdict": "reject",
     "leaf": "ideo_sigil",
-    "why": "The icon is the ideoligion's but untinted, which is a named false_pass; the sigil must carry the icon in its colour."
+    "why": "sigil carries the ideo icon untinted; leaf requires it tinted"
    },
    "e2": {
     "verdict": "reject",
     "leaf": "art_skill",
-    "why": "A mockery's beauty cancelling its anger into one net thought is a named false_pass; a skilled slander must anger and please at once."
+    "why": "skilled mockery collapses anger and beauty into one net thought"
    },
    "e3": {
     "verdict": "accept",
     "leaf": "art_skill",
-    "why": "A skilled slanderous piece both angers its target and pleases by its beauty, exactly the experience line."
+    "why": "skilled slander angers and pleases at once as two thoughts"
    },
    "e4": {
     "verdict": "reject",
     "leaf": "temperament",
-    "why": "The psychopath getting a smaller thought instead of none is a named false_pass."
+    "why": "psychopath must feel nothing, gets a -1 thought"
    },
    "e5": {
     "verdict": "reject",
     "leaf": "raider_pressure",
-    "why": "The pressure lingering after the last mark is gone is a named false_pass; scrubbing every tag must lift the push."
+    "why": "pressure lingers after the last mark is scrubbed"
    },
    "e6": {
     "verdict": "accept",
     "leaf": "raider_pressure",
-    "why": "A letter names the faction and points at the mark, the raid while it stood was larger (sooner or larger is allowed), and the push lifted once the last mark weathered away."
+    "why": "letter points at the mark, raid larger while it stood, weathering lifted it"
    },
    "e7": {
     "verdict": "reject",
     "leaf": "visitors",
-    "why": "Goodwill dropping on every pass is a named false_pass; it must drop once per visit."
+    "why": "goodwill drops on every pass instead of once per visit"
    },
    "e8": {
     "verdict": "accept",
-    "leaf": "reads_at_play_zoom",
-    "why": "No leaf governs how overlapping marks on one cell layer or list, so the design does not forbid this outcome."
+    "leaf": "sits_on_wall",
+    "why": "no leaf forbids overlapping marks on one cell"
    },
    "e9": {
     "verdict": "reject",
     "leaf": "no_english",
-    "why": "The TARTE tag surviving in one variant and English showing only when zoomed in are both named false_passes."
+    "why": "legible TARTE tag survives in a variant, even if only zoomed in"
    },
    "e10": {
     "verdict": "reject",
     "leaf": "fights_reasons",
-    "why": "A drafted pawn leaving its post to fight is a named false_pass and the red line."
+    "why": "drafted pawn leaves its post to fight"
    },
    "e11": {
     "verdict": "accept",
     "leaf": "scrub_protection",
-    "why": "Cleaners leave devotional and the colony's own marks unless ordered, clean the hostile vandal mark, and clean the others when ordered."
+    "why": "own and devotional marks left unless ordered, hostile vandal cleaned"
    },
    "e12": {
     "verdict": "accept",
     "leaf": "rereads_daily",
-    "why": "Mood moves at most daily without stacking and opinion changes only once, on the first read."
+    "why": "mood at most daily, opinion once"
    },
    "e13": {
     "verdict": "accept",
     "leaf": "mockery",
-    "why": "The mockery names someone, hurts them, amuses the right other, moves opinion of the painter, and does not give everyone the same thought."
+    "why": "names subject, hurts her, amuses the rival, lowers regard of painter"
    },
    "e14": {
     "verdict": "accept",
     "leaf": "weathering_bounds_marks",
-    "why": "Fading comes late in life rather than at placement, and the outdoor mark goes sooner than the roofed one."
+    "why": "fades late in life, outdoors sooner"
+   },
+   "e15": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "standing mark changes nothing about the next raid"
+   },
+   "e16": {
+    "verdict": "reject",
+    "leaf": "art_skill",
+    "why": "beauty and anger cancelled into one net thought"
+   },
+   "e17": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "psychopath gets a smaller thought instead of none"
+   },
+   "e18": {
+    "verdict": "reject",
+    "leaf": "scrub_protection",
+    "why": "unordered cleaner wiped a devotional sigil"
+   },
+   "e19": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "no leaf forbids a mark painted over another"
+   },
+   "e20": {
+    "verdict": "reject",
+    "leaf": "rereads_daily",
+    "why": "opinion moved twice; must change once"
+   },
+   "e21": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "restricted pawn leaves its area to fight"
+   },
+   "e22": {
+    "verdict": "accept",
+    "leaf": "scrub_protection",
+    "why": "colony's own mark left until ordered"
+   },
+   "e23": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "mark on north wall front face over the crease; edge-on walls bare"
+   },
+   "e24": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "edge-on wall took paint"
+   },
+   "e25": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "paint on the wall's far side away from the camera"
+   },
+   "e26": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "mark floats on the floor cell"
+   },
+   "e27": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "all four answers run and finish visibly"
+   },
+   "e28": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "mark vanished with no pawn at it, only a log line"
+   },
+   "e29": {
+    "verdict": "accept",
+    "leaf": "player_orders",
+    "why": "exact chosen marks on chosen cells, none pending"
+   },
+   "e30": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "colonist paints random marks, not the chosen ones"
+   },
+   "e31": {
+    "verdict": "reject",
+    "leaf": "player_orders",
+    "why": "one designation stays pending forever"
+   },
+   "e32": {
+    "verdict": "accept",
+    "leaf": "raid_mark_troubles",
+    "why": "exit tags on outer walls trouble colonists until scrubbed"
+   },
+   "e33": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "tags appear on the way in"
+   },
+   "e34": {
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "trouble persists after scrubbing"
+   },
+   "e35": {
+    "verdict": "accept",
+    "leaf": "raider_pressure",
+    "why": "sooner is an allowed form of the push"
+   },
+   "e36": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "every faction's raids grow, marked or not"
+   },
+   "e37": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "letter does not point at the mark"
+   },
+   "e38": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "pressure lifted while an A mark still stands"
+   },
+   "e39": {
+    "verdict": "reject",
+    "leaf": "weathering_bounds_marks",
+    "why": "fade starts at placement"
+   },
+   "e40": {
+    "verdict": "reject",
+    "leaf": "weathering_bounds_marks",
+    "why": "roofed and unroofed last the same"
+   },
+   "e41": {
+    "verdict": "accept",
+    "leaf": "weathering_bounds_marks",
+    "why": "permanent never fades"
+   },
+   "e42": {
+    "verdict": "accept",
+    "leaf": "stands_alone_settings",
+    "why": "works without ideoligion and survives reload with subject"
+   },
+   "e43": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "switched-off setting still paints"
+   },
+   "e44": {
+    "verdict": "reject",
+    "leaf": "stands_alone_settings",
+    "why": "mark loses its subject on reload"
+   },
+   "e45": {
+    "verdict": "accept",
+    "leaf": "paint_dies_with_wall",
+    "why": "marks die with their walls, neighbour stays"
+   },
+   "e46": {
+    "verdict": "reject",
+    "leaf": "paint_dies_with_wall",
+    "why": "paint outlives its wall"
+   },
+   "e47": {
+    "verdict": "accept",
+    "leaf": "walk_lived_in",
+    "why": "both orders tell the same story"
+   },
+   "e48": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "order of raid and trader changes the outcome"
+   },
+   "e49": {
+    "verdict": "reject",
+    "leaf": "walk_lived_in",
+    "why": "pressure record lost on reload while marks stand"
+   },
+   "e50": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "message every few hours"
+   },
+   "e51": {
+    "verdict": "reject",
+    "leaf": "stories_not_tax",
+    "why": "standing mood penalty that never clears"
+   },
+   "e52": {
+    "verdict": "accept",
+    "leaf": "stories_not_tax",
+    "why": "occasional stories, mild mood, few messages"
+   },
+   "e53": {
+    "verdict": "accept",
+    "leaf": "marks_various",
+    "why": "several distinct kinds and variants"
+   },
+   "e54": {
+    "verdict": "reject",
+    "leaf": "marks_various",
+    "why": "one design in six tints"
+   },
+   "e55": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "hazard bolt kept as a punk mark"
+   },
+   "e56": {
+    "verdict": "reject",
+    "leaf": "punk_register",
+    "why": "tidy clip-art pictograms pass as tags"
    },
    "c1": {
     "verdict": "reject",
-    "leaf": "raider_pressure",
-    "why": "A letter with no change to the raid is a named false_pass; a standing mark must make the next raid sooner or larger."
+    "leaf": "sits_on_wall",
+    "why": "edge-on wall took paint"
    },
    "c2": {
     "verdict": "reject",
-    "leaf": "art_skill",
-    "why": "The target's anger and the beauty are merged into one net thought, a named false_pass."
+    "leaf": "answer_wall",
+    "why": "answer logged, mark gone with no pawn or job"
    },
    "c3": {
     "verdict": "reject",
-    "leaf": "temperament",
-    "why": "The psychopath gets smaller thoughts instead of none, a named false_pass."
+    "leaf": "raider_pressure",
+    "why": "pressure lingers after last mark weathered"
    },
    "c4": {
     "verdict": "reject",
-    "leaf": "scrub_protection",
-    "why": "Auto-clean wiping a devotional mark without orders is the red line."
+    "leaf": "stands_alone_settings",
+    "why": "setting off but raid push runs on"
    },
    "c5": {
-    "verdict": "accept",
-    "leaf": "reads_at_play_zoom",
-    "why": "No leaf governs how overlapping marks on one cell are drawn or listed, so the design does not forbid this outcome."
+    "verdict": "reject",
+    "leaf": "raid_mark_troubles",
+    "why": "tags appear on the way in"
    },
    "c6": {
     "verdict": "reject",
-    "leaf": "rereads_daily",
-    "why": "Opinion moving again on day two is a named false_pass; opinion may change only once."
+    "leaf": "player_orders",
+    "why": "mark painted on a different cell than chosen; designation left"
    },
    "c7": {
     "verdict": "reject",
-    "leaf": "fights_reasons",
-    "why": "A restricted pawn leaving its zone to fight is a named false_pass, even with a reason."
+    "leaf": "stories_not_tax",
+    "why": "message stream of several a day from recreation tags"
    },
    "c8": {
     "verdict": "accept",
-    "leaf": "scrub_protection",
-    "why": "The colony's own vandal mark is left until ordered while the hostile vandal mark is cleaned, as the experience line says."
+    "leaf": "weathering_bounds_marks",
+    "why": "permanent never fades"
+   },
+   "n1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "far-side lip passes as paint"
+   },
+   "n2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "paint order placed paint on a wall's far side"
+   },
+   "n3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "pool pick painted a wall south of the painter (far side)"
+   },
+   "n4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "reply logged but no job runs, nothing painted"
+   },
+   "n5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "cross-out job finished but mark state unchanged"
+   },
+   "n6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "confront over painted-out work never happens"
+   },
+   "n7": {
+    "verdict": "reject",
+    "leaf": "fights_reasons",
+    "why": "confrontation by an unrelated pawn with no reason"
+   },
+   "n8": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "north face painted, south far side and south-only cell bare"
+   },
+   "n9": {
+    "verdict": "accept",
+    "leaf": "sits_on_wall",
+    "why": "no far-side paint; every mark on a north wall face over the crease"
+   },
+   "n10": {
+    "verdict": "accept",
+    "leaf": "answer_wall",
+    "why": "four answers finish by pawns, unoffending tag gets no answer"
+   },
+   "x1": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "edge-on strip painted"
+   },
+   "x2": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "far-side lip from a paint order"
+   },
+   "x3": {
+    "verdict": "reject",
+    "leaf": "sits_on_wall",
+    "why": "marks do not climb over the crease onto the top"
+   },
+   "x4": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "cross-out removes the mark instead of showing a cross-out"
+   },
+   "x5": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "no confront over painted-out work"
+   },
+   "x6": {
+    "verdict": "reject",
+    "leaf": "answer_wall",
+    "why": "mark vanished with no pawn or job"
+   },
+   "x7": {
+    "verdict": "reject",
+    "leaf": "temperament",
+    "why": "psychopath holds a mark thought (at +0) instead of none"
+   },
+   "x8": {
+    "verdict": "reject",
+    "leaf": "raider_pressure",
+    "why": "pressure did not lift when the last mark weathered"
    }
   }
  },
  "control": {
   "broken_leaf": "going_over",
   "missed": true,
-  "detail": "Leaf going_over removed from tree and sheet with its pruning line and the 'going-over' word in the kept-capabilities line. Control Reader rm-judge a07f7b48cf336afe3 accepted e8 and c5 (a raider's throw-up stacked over a surviving colonist tag), which both real Readers reject; it matched expect on the other 20.",
-  "earlier_control": "A first control with visitors removed (rm-judge a10d1a2872a7a3122, every trader/goodwill/visit word stripped, walk_lived_in rewritten) did NOT miss: it rejected e7 (goodwill recharged on each pass) by reading goodwill as opinion under rereads_daily, so visitors is partly redundant with rereads_daily for this scenario. Reported, not hidden; the scenarios were not changed."
+  "detail": "Leaf going_over removed from tree and sheet with its kept-capabilities word and pruning line (regex check: no 'going-over'/'painted over'/'paints over' left). Control Reader rm-judge acf803e1e2d6c6250 missed e8, e19, which both real Readers got right; it matched expect on the other 80."
  },
  "score": {
-  "right": 22,
-  "total": 22
+  "right": 82,
+  "total": 82
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "result": "PASS: 22/22 frozen scenarios matched by both Readers; no Reader accepted an outcome a core line rejects; the control on going_over discriminates (missed e8 and c5).",
- "notes": "Frozen at 22 (14 examiner, 8 challenger) before any Reader saw them; no rescoring. Challenger misses: none (both Readers matched all 8). Charged: examiner 42174, challenger 41075, readers 43178 and 43323, controls 43628 and 34339 tokens."
+ "notes": "Refrozen against the tree reworked for g1/g18 (sits_on_wall far-side lip and pool-pick control; answer_wall four sub-cases): 63 previous scenarios kept, e27 rewritten to the four sub-cases, 10 new examiner (n1-n10), 8 challenger (x1-x8); frozen before any Reader saw them. Charged: examiner 54253, challenger 32737, readers 53091 and 54498, control 53100 tokens.",
+ "result": "PASS: 82/82 frozen scenarios matched by both Readers; no Reader accepted an outcome a core line rejects; the control on going_over discriminates (missed e8, e19)."
 }
