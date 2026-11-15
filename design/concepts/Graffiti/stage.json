@@ -275,10 +275,17 @@
     "ref": "run rm-role-designer-1794753910",
     "stage": 5,
     "tokens": 412364
+   },
+   {
+    "at": "2026-11-15T15:03:51Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794754884",
+    "stage": 5,
+    "tokens": 204575
    }
   ],
   "reserve": 60000,
-  "spent": 8768920
+  "spent": 8973495
  },
  "coverage_rounds": [
   {
@@ -623,6 +630,24 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794753910 result rejected: gate: no coverage signature on the ledger"
+  },
+  {
+   "at": "2026-11-15T15:01:37Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "8768920 of 4000000 spent; run rm-role-designer-1794754884 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T15:01:37Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794754884, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-15T15:03:51Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794754884 result rejected: gate: no coverage signature on the ledger"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -876,6 +901,15 @@
    "at": "2026-11-15T14:53:08Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794753910",
+   "stage": 5,
+   "why": [
+    "gate: no coverage signature on the ledger"
+   ]
+  },
+  {
+   "at": "2026-11-15T15:03:51Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794754884",
    "stage": 5,
    "why": [
     "gate: no coverage signature on the ledger"
