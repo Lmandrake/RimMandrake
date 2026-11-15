@@ -713,6 +713,20 @@ def file_and_publish(item, title, why, needs="offline"):
         lk.close()
 
 
+def publish_filed(item):
+    """Publish the RUNNER shard again for an item filed on an earlier tick whose publish or launch failed on a
+    transient fault (a git index.lock): under the same ingest lock as file_and_publish. -> (ok, text); the launch that
+    follows tells the truth if the item is still not on origin/main."""
+    import dispatcher as D
+    lk = D.git_lock()
+    if lk is None:
+        return False, "ingest.lock stayed busy; nothing published"
+    try:
+        return True, "publish: %s" % _ingest().publish(0, message="ledger: maturation dispatch filed %s" % item)
+    finally:
+        lk.close()
+
+
 def known_items():
     import helper_checkpoint as HC
     return HC.known_items()
@@ -957,10 +971,19 @@ def main(argv=None):
         st = _read(p, {})
         s = (st.get("mods") or {}).get(o.mod) or {}
         was = s.pop("stopped", None)
-        s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was})
+        # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
+        # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
+        released = {}
+        for book in ("steward", "fixers"):
+            for k, x in list((s.get(book) or {}).items()):
+                if AUT.releasable(s, k, x):
+                    released.setdefault(book, {})[k] = s[book].pop(k)
+        s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was, "released": released})
         st.setdefault("mods", {})[o.mod] = s
         _write(p, st)
-        print("CLEARED %s (was: %s)" % (o.mod, (was or {}).get("why", "not stopped")))
+        print("CLEARED %s (was: %s; released %d steward, %d fixer key(s))" % (
+            o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
+            len(released.get("fixers") or {})))
         return 0
     return 2
 

@@ -19,7 +19,10 @@ every mod exactly one class:
            a ready-to-ask card text goes in the Conductor log once
 A steward or fixer run is tried ONCE per state (its key); if it ends and the state has not moved, the mod is PAUSED,
 never retried (the owner's condition, 2026-11-14: "As long as we don't have automated loops rejecting/cycling things,
-we can't get into too much trouble."). A mod in `wait` with nothing named running, or with no class, for stalled_min
+we can't get into too much trouble."). A launch that never started on a TRANSIENT fault (a git lock, its item not yet
+on origin/main: transient()) is not a run: the next tick tries it again on the same item, up to launch_tries (3), then
+PAUSED naming the count and the last fault (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT).
+`maturation_dispatch.py clear MOD` releases a mod's never-launched keys and its ended runs outside an open road back. A mod in `wait` with nothing named running, or with no class, for stalled_min
 (10) raises maturation.stalled (OPS_MATURATION_MOD_STALLED).
 
 Never: certify, lock, classify Convergent/Divergent, loosen a bar, take the bridge or a game, launch on a mod with a
@@ -42,7 +45,31 @@ import maturation as M          # noqa: E402
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued"}
+        "queued", "launch_retry"}
+# a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
+# launcher's "not on origin/main" refusal, read as a spent steward run)
+TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
+                       r"ingest/publish holds")
+
+
+def transient(text):
+    """-> True when a launch failure's text names a transient fault (a lock, an unpublished shard)."""
+    return bool(text) and bool(TRANSIENT.search(str(text)))
+
+
+def releasable(s, key, x):
+    """-> True when `clear` may release book entry x: it never launched, or it ended outside the open road back and
+    no closed road back re-keyed after it (those keys are the road back's own record)."""
+    if not isinstance(x, dict):
+        return False
+    if x.get("failed") and not x.get("unit"):
+        return True
+    if x.get("road_back_closed"):
+        return False
+    rb = s.get("road_back") or {}
+    book = s.get("steward") or {}
+    opener = next((k for k, v in book.items() if isinstance(v, dict) and v.get("item") == rb.get("caused_by")), None)
+    return not (opener and str(key).split("|")[:4] == opener.split("|")[:4])
 LAUNCH = {"launch", "launched", "would_launch"}
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
 OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone",
@@ -457,14 +484,19 @@ def _gate(cfg, s, row, live_total, ver):
         key, done = row["steward_key"], s.setdefault("steward", {})
     if key in done:
         x = done[key]
-        return False, ("steward_spent" if row["aut"] == "steward" else "fixer_spent",
-                       "the automatic %s run on this state (%s) %s and the state has not moved; un-pause: "
-                       "`maturation_dispatch.py clear %s --why ...` after reading it" % (
-                           row["aut"], x.get("unit") or x.get("item"), "failed to launch: %s" % x["failed"]
-                           if x.get("failed") else "ended", row["mod"]))
+        tries, most_tries = int(x.get("tries") or 1), int(cfg.get("launch_tries", 3))
+        if not (x.get("failed") and not x.get("unit") and transient(x["failed"]) and tries < most_tries):
+            what = ("failed to launch %d times on a transient fault, the last: %s" % (tries, x["failed"])
+                    if x.get("failed") and transient(x["failed"]) else "failed to launch: %s" % x["failed"]
+                    if x.get("failed") else "ended and the state has not moved")
+            return False, ("steward_spent" if row["aut"] == "steward" else "fixer_spent",
+                           "the automatic %s run on this state (%s) %s; un-pause: `maturation_dispatch.py clear %s "
+                           "--why ...` after reading it" % (row["aut"], x.get("unit") or x.get("item"), what,
+                                                             row["mod"]))
+        row["retry_of"] = dict(x, tries=tries)
     if not cfg.get("steward_enabled", True):
         return False, ("steward_off", "steward_enabled is off in maturation_dispatch.json")
-    n = len([k for k in done if str(k).startswith(str(ver))]) if row["aut"] == "steward" else len(done)
+    n = len([k for k in done if k != key and (row["aut"] != "steward" or str(k).startswith(str(ver)))])
     most = int(cfg.get("steward_max_per_version", 12))
     if n >= most:
         return False, ("steward_spent", "%d automatic %s runs on %s at this version, the most is %d" % (
@@ -487,7 +519,7 @@ PAUSE_WHY = {
     "stopped": "the last automatic run did not move it", "blind": "an input cannot be read",
     "blocked": "a non-build refusal", "held": "a Conductor hold (a release line in the journal un-pauses it)",
     "no_cap": "no spend cap", "blind_off": "blind launches are off", "ingame_off": "in-game launches are off",
-    "launch_failed": "a launch failed", "auto_spent": "the automatic runs of this visit are spent",
+    "launch_failed": "a launch failed", "launch_retry": "a launch is retried", "auto_spent": "the automatic runs of this visit are spent",
     "hand_run_seen": "a hand-launched run worked here and wrote no record", "steward_spent": "the steward run is spent",
     "fixer_spent": "the fixer runs are spent", "cycle_unfinished": "a cycle record has no exit block",
     "visit_unfinished": "a visit record has no exit block", "cycle_limit": "three blind cycles: the Conductor decides",
@@ -515,6 +547,8 @@ def _klass(cfg, s, row, now, queue):
                                                          pos, len(queue))
         if dec in ("bridge_held", "slots_full", "account_hold", "settling") and not on:
             on = dec.replace("_", " ")
+        if dec == "launch_retry":
+            on = "a retry next tick (%s)" % row.get("why")
         row["waits_on"] = on
         k, txt = "wait", "waiting on %s" % (on or "nothing running (%s)" % dec)
     elif dec == "owner":
@@ -651,35 +685,46 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
     do_file = fx.get("file", MD.file_and_publish)
     do_launch = fx.get("launch_brief", launch_brief)
+    do_publish = fx.get("publish", MD.publish_filed)
     known = fx["known"]() if "known" in fx else MD.known_items()
     for row in rows:
         if row["mod"] not in launches or not row.get("aut"):
             continue
         try:
-            _execute_one(root, cfg, st, row, now, do_file, do_launch, known)
+            _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish)
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
-            book[row.get("fix_item") or row.get("steward_key")] = {"item": row.get("item"), "unit": None, "at": now,
-                                                                   "failed": "%s: %s" % (type(e).__name__, e)}
+            book[row.get("fix_item") or row.get("steward_key")] = {
+                "item": row.get("item"), "unit": None, "at": now, "failed": "%s: %s" % (type(e).__name__, e),
+                "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1}
             row.update(decision="launch_failed", why="%s: %s" % (type(e).__name__, e))
 
 
-def _execute_one(root, cfg, st, row, now, do_file, do_launch, known):
+def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=None):
     import maturation_dispatch as MD
     mod, s = row["mod"], st["mods"][row["mod"]]
     model = cfg.get("steward_model", "opus")
+    retry = row.get("retry_of") or {}
+    tries, filed = int(retry.get("tries") or 0) + 1, False
     if row["aut"] == "fixer":
         item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
         brief = fixer_brief(item, mod, row["cap"])
         book = s.setdefault("fixers", {})
         key = item
     else:
-        item = item_name(row, known)
         key, book = row["steward_key"], s.setdefault("steward", {})
-        title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
-            mod, row.get("steward_kind"), row.get("stage"))
-        why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why"))[:300], MD.pac(now))
-        ok, text = do_file(item, title, why) if item else (False, "no free item name")
+        if retry.get("item") and retry.get("filed", str(retry.get("failed") or "").startswith("filed ")):
+            # the last try filed its item and the launch never started: publish again, launch the same item
+            item = retry["item"]
+            ok, text = (do_publish or MD.publish_filed)(item)
+            text = "retry %d of %s, filed earlier; %s" % (tries, item, text)
+        else:
+            item = item_name(row, known)
+            title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
+                mod, row.get("steward_kind"), row.get("stage"))
+            why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why"))[:300], MD.pac(now))
+            ok, text = do_file(item, title, why) if item else (False, "no free item name")
+        filed = ok
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
                  if ok else "")
     unit = None
@@ -687,12 +732,16 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known):
         rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"))
         ok = rc == 0 and bool(unit)
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
-    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text}
+    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
+                 "tries": tries, "filed": filed}
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met"):
         s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None
+    elif transient(text) and tries < int(cfg.get("launch_tries", 3)):
+        row.update(decision="launch_retry", why="the %s launch failed on a transient fault (try %d of %d), the next "
+                   "tick tries it again: %s" % (row["aut"], tries, int(cfg.get("launch_tries", 3)), text))
     else:
         row.update(decision="launch_failed", why=text)
 

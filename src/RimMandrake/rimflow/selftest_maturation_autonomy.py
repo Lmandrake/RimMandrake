@@ -61,6 +61,8 @@ class World:
         self.locked, self.found, self.bridge = locked, list(found), bridge
         self.filed, self.launched, self.briefs, self.cards, self.seeded = [], [], [], [], []
         self.fail_launch = False
+        self.fail_texts = []        # launcher failures to return, one per launch, before it succeeds
+        self.published = []
         self.dunits = {}
         self.dchain = {}
 
@@ -72,6 +74,8 @@ class World:
         def launch_brief(item, text, model, cap, seat):
             self.launched.append(("brief", item, model))
             self.briefs.append(text)
+            if self.fail_texts:
+                return 1, self.fail_texts.pop(0).replace("X", item), None
             if self.fail_launch:
                 return 1, "LAUNCH FAILED pool full", None
             return 0, "DETACHED rm-fake-%d" % len(self.launched), "rm-fake-%d" % len(self.launched)
@@ -86,7 +90,8 @@ class World:
                 raise ValueError("its stage cannot be read")
             return "PUBLISHED fake"
         return {"facts": lambda: self.facts, "account": lambda: (True, "ok"), "bridge": lambda p: self.bridge,
-                "file": file, "launch": launch, "launch_brief": launch_brief, "known": lambda: set(),
+                "file": file, "publish": lambda item: (self.published.append(item), (True, "pushed"))[1],
+                "launch": launch, "launch_brief": launch_brief, "known": lambda: set(),
                 "open_items": lambda ids: self.items.get(ids[0], []) if self.items is not None else None,
                 "designer_state": lambda m: self.dstate.get(m), "designer_unit": lambda m: self.dunits.get(m),
                 "designer_chain": lambda m: self.dchain.get(m), "version_locked": lambda m: self.locked,
@@ -105,6 +110,79 @@ def fresh_state():
     for f in ("state.json", "reading.json", "ticks.jsonl"):
         if os.path.exists(os.path.join(d, f)):
             os.remove(os.path.join(d, f))
+
+
+GIT_LOCK = ("refused: X is not on origin/main; publish infrastructure/state/ledger/events/RUNNER.jsonl first")
+FILED_LOCK = ("publish: add failed (the lines stay in the working tree; the next ingest retries): fatal: Unable to "
+              "create '/home/mandrake/rm/dispatch/.git/index.lock': File exists.")
+
+
+def launch_retry_checks(root):
+    """RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: a steward or fixer that FAILED TO LAUNCH on a
+    transient fault (a git index.lock at publish, its item not yet on origin/main) is not a spent run. Measured
+    2026-11-15 08:00 PST: ExplosiveKnockback read PAUSED 'the steward run is spent ... failed to launch'."""
+    import maturation_autonomy as AUT
+    import maturation_dispatch as MD2
+    briefs = lambda w: [x[1] for x in w.launched if x[0] == "brief"]   # noqa: E731
+    fresh_state()
+    w = World({"A": ingame("A", "exit not met", why=["sc_ruins reads FAIL"])})
+    w.fail_texts = [GIT_LOCK]
+    rd, g = run(w, ["A"], root)
+    ok(g("A").get("klass") == "wait" and "next tick" in str(g("A").get("status")),
+       "retry 1: a launch refused on a transient fault (item not on origin/main) reads wait, a retry next tick, never "
+       "PAUSED (read %s: %s)" % (g("A").get("klass"), str(g("A").get("status"))[:120]))
+    rd, g = run(w, ["A"], root, now=CLOCK + 60)
+    b = briefs(w)
+    ok(g("A").get("klass") == "launch" and len(b) == 2 and b[0] == b[1] and len(w.filed) == 1
+       and w.published == [b[0]],
+       "retry 1: the next tick launches it on the SAME item, published again, not filed twice (read %s, briefs %s, "
+       "filed %s, published %s)" % (g("A").get("klass"), b, w.filed, w.published))
+    rd, g = run(w, ["A"], root, now=CLOCK + 120)
+    ok(g("A").get("klass") == "paused" and g("A").get("decision") == "steward_spent" and len(briefs(w)) == 2,
+       "retry 1: once it launched and ended unmoved, the state is spent as before: no third launch")
+    # every try fails on the lock: a bounded count, then PAUSED with the real reason
+    fresh_state()
+    w = World({"A": ingame("A", "exit not met", why=["sc_ruins reads FAIL"])})
+    w.fail_texts = [GIT_LOCK] * 10
+    for i in range(6):
+        rd, g = run(w, ["A"], root, now=CLOCK + 60 * i)
+    st = str(g("A").get("status"))
+    ok(g("A").get("klass") == "paused" and len(briefs(w)) == 3 and "3 times" in st and "not on origin/main" in st,
+       "retry 2: three transient failures, then PAUSED naming the count and the real reason, no fourth try (read "
+       "%d launches, %s)" % (len(briefs(w)), st[:160]))
+    # a filing whose own publish hit the lock, then the launcher refused: the same, its item reused
+    fresh_state()
+    w = World({"A": offline("A", "hand step", hand=["walk_bars_confirmed"])})
+    w.fail_texts = [GIT_LOCK]
+    rd, g = run(w, ["A"], root)
+    d = os.environ["RM_MATURATION_DISPATCH_DIR"]
+    sj = json.load(open(os.path.join(d, "state.json")))
+    for v in sj["mods"]["A"].get("steward", {}).values():     # the shape on disk before this fix: no tries, no filed
+        v.pop("tries", None)
+        v.pop("filed", None)
+        v["failed"] = "filed %s; %s; %s" % (v["item"], FILED_LOCK, GIT_LOCK.replace("X", v["item"]))
+    json.dump(sj, open(os.path.join(d, "state.json"), "w"))
+    rd, g = run(w, ["A"], root, now=CLOCK + 60)
+    b = briefs(w)
+    ok(g("A").get("klass") == "launch" and len(b) == 2 and b[0] == b[1] and len(w.filed) == 1,
+       "retry 3: a record of the old shape (no try count), as ExplosiveKnockback's state.json holds it, retries on its "
+       "filed item (read %s, briefs %s)" % (g("A").get("klass"), b))
+    # a non-transient launch failure stays spent; `clear` releases a key that never launched
+    fresh_state()
+    w = World({"A": offline("A", "hand step", hand=["walk_bars_confirmed"])})
+    w.fail_launch = True
+    run(w, ["A"], root)
+    rd, g = run(w, ["A"], root, now=CLOCK + 60)
+    ok(g("A").get("klass") == "paused" and "clear A" in str(g("A").get("status")),
+       "clear 1: a non-transient launch failure is PAUSED and names `clear` as its un-pause")
+    MD2.main(["clear", "A", "--why", "selftest"])
+    w.fail_launch = False
+    rd, g = run(w, ["A"], root, now=CLOCK + 120)
+    ok(g("A").get("klass") == "launch" and len(briefs(w)) == 2,
+       "clear 1: `maturation_dispatch.py clear` releases the never-launched steward key: the next tick launches "
+       "(read %s, %d launches)" % (g("A").get("klass"), len(briefs(w))))
+    tr = getattr(AUT, "transient", None)
+    ok(tr and tr("ingest.lock stayed busy; nothing filed") and not tr("LAUNCH FAILED pool full") and not tr(None), "transient(): a lock or an unpublished shard is transient, a full pool is not")
 
 
 def designer_lock_checks(root):
@@ -400,6 +478,7 @@ def main():
         ok("maturation.stalled" in json.dumps(rs), "alarm_routes.json routes maturation.stalled")
         road_back_checks(root)
         designer_lock_checks(root)
+        launch_retry_checks(root)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
