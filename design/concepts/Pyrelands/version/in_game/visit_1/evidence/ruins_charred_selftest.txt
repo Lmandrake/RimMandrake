@@ -1,0 +1,17 @@
+ok    the ruins guard on ticksGame is gone 
+ok    ruins: visit 1's samples with every floor charred read scorched 
+ok    ruins: the same samples with CharFloor disabled (0 charred) fail the bar 
+ok    ruins: a third of the floors charred still fails 
+ok    ruins: no cells -> None, never a pass 
+ok    ruins: water counts, a clean floor does not 
+ok    ruins: an over-count never reads above 1 
+ok    ruins: ProbeCharred parsed 
+ok    ruins: ProbeCharred called on PyrelandsAsh with the rect 
+ok    ruins: unreadable ProbeCharred {'success': True, 'result': 'error=no ColorDef RM_FE_Charred'} is UNMEASURED 
+ok    ruins: unreadable ProbeCharred {'success': True, 'result': ''} is UNMEASURED 
+ok    ruins: offline ProbeCharred is {} 
+ok    ruins chain reads charred floors and scores with ruin_scorched_share 
+ok    PyrelandsAsh.ProbeCharred exists in C# 
+ok    ProbeCharred reads the ColorDef CharFloor paints 
+PASS: 0 failure(s)
+base 84da384e3b: AttributeError: module has no attribute 'ruin_scorched_share' (test fails on base)
