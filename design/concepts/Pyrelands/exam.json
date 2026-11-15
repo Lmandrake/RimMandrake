@@ -1,174 +1,152 @@
 {
- "accept_where_reject_core": 0,
- "author": "concept (tree authored_by; last stage-3 Designer run rm-role-designer-1794596464; locked changes since by his cards, re-pinned)",
- "challenger": "rm-judge Challenger abad3224c4711c5e0 (fresh Opus, not the author)",
- "challenger_misses": [],
- "control": {
-  "broken_leaf": "flamefang_bite_carries_venom",
-  "missed": true,
-  "note": "Control reader got the tree with the leaf removed and both sheet lines naming venom dropped; it accepted e7, which both real Readers reject, so the scenarios discriminate.",
-  "reader": "rm-judge control ab8c3a63be26a19c8"
- },
- "examiner": "rm-judge Examiner ac4bb834dfc8e0bc2 (fresh Opus, not the author; run bench-pyre-owed-exam-st4-20261114)",
- "frozen_at": "2026-11-15T06:02:54Z",
+ "author": "concept (tree authored_by; last stage-3 Designer run rm-role-designer-1794596464; locked changes since by his cards incl. OWNER:1794748469904049550 at 91a7c61989, re-pinned)",
+ "examiner": "rm-judge Examiner a9a641ceb8479c818 (fresh Opus, not the author; run bench-pyre-exam-st4-20261115)",
+ "challenger": "rm-judge Challenger ad7d09ca4f5010812 (fresh Opus, not the author)",
  "inputs": {
-  "sheet": "2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1",
-  "tree": "3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107"
+  "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
+  "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f"
  },
- "readers": [
-  "rm-judge Reader A a33602048ccbba765 (fresh Opus; sheet, tree, scenario text only)",
-  "rm-judge Reader B a11a4a910abe95935 (fresh Opus; sheet, tree, scenario text only)"
- ],
  "scenarios": [
   {
-   "expect": "reject: the leaf's red exactly: the fire must never stay out for long; a smoulder must relight in open grass, so a map that stays fireless for good contradicts it",
-   "expect_source": "burn_line_walks",
    "id": "e1",
-   "text": "On a new Pyrelands colony the line of fire crosses the plain on the first day and burns itself out. From the third day to the end of the second week there is not a single flame anywhere on the map, and nothing ever relights."
+   "text": "On the home map a fire-hawk picks up a burning twig at a grass fire and a letter arrives naming the fire-hawk and the ember. Over the next two days the same hawk and two others carry embers six more times, and every carry sends another identical letter. The letter setting in Mod Settings was never touched.",
+   "expect": "reject: the promise is one letter once a game, and a letter on every carry is named in the leaf's red.",
+   "expect_source": "firehawk_hunt_rewards"
   },
   {
-   "expect": "reject: ordinary crops on deep ash must still benefit from water, the watered strip growing clearly faster; equal growth is the leaf's red",
-   "expect_source": "ash_fertile_when_watered",
    "id": "e2",
-   "text": "I planted two rows of rice on the grey ash on the same day, one right along an irrigation ditch and one a few tiles away on dry ash. After five days both rows are at exactly the same growth, the water made no difference at all."
+   "text": "The first time a fire-hawk is seen carrying an ember on the home map, one letter arrives naming the hawk and the ember; clicking it jumps the camera to the hawk. Later carries send no letter. Over a season the colony hunts and butchers a dozen fire-hawks; three of the butcherings also produce a Pristine Firehawk Crestfeather, which sells high and raises room beauty. Butchered muffalo and boars never produce one.",
+   "expect": "accept: one jump-to letter on the first carry, a crestfeather only sometimes and only from hunted fire-hawks, exactly as the leaf promises.",
+   "expect_source": "firehawk_hunt_rewards"
   },
   {
-   "expect": "reject: black rain must add to the fresh-burn bonus, not wipe it; a rained-on fresh scar doing no better than wet old ash is the leaf's red",
-   "expect_source": "fresh_burn_compounds_with_black_rain",
    "id": "e3",
-   "text": "I sowed corn on a scar the fire had just crossed, then black rain fell on it for half a day. Afterwards that corn grew no better than corn on long-burned ash under the same rain, as if the rain had rinsed the fresh-burn boost away."
+   "text": "A colonist sows rice on deep ash in two strips on the same day: one strip runs beside a channel of standing water, the other is dry ash a few cells away. The cell readout shows about 70% fertility on the dry strip and about 140% on the watered strip. Both strips grow; after five days the watered strip is clearly ahead of the dry one.",
+   "expect": "accept: dry ash is sowable at about 70%, watered ash is about 140%, and the watered crop grows clearly faster.",
+   "expect_source": "ash_fertile_when_watered"
   },
   {
-   "expect": "reject: scorch-fruit must come up only in freshly burned ground, never on unburned ground, and must not read as an ordinary wild bush",
-   "expect_source": "scorchfruit_born_of_fire",
    "id": "e4",
-   "text": "Scorch-fruit bushes are dotted across stretches of grass that no fire has ever touched, growing up like any other wild shrub far from the burn."
+   "text": "Two strips of potatoes are sown on deep ash on the same tick, one right beside a watered channel and one on dry ash a few cells away. Both strips show the same fertility in the cell readout, and after five days both stand at the same growth percentage, plant for plant.",
+   "expect": "reject: deep ash beside water growing the crop no faster than dry deep ash is the leaf's red.",
+   "expect_source": "ash_fertile_when_watered"
   },
   {
-   "expect": "reject: ordinary rain must never fall on a Pyrelands map; its only wet weather is black rain",
-   "expect_source": "no_ordinary_rain",
    "id": "e5",
-   "text": "Halfway through summer on my Pyrelands map an ordinary blue-grey rain shower rolls in and drizzles over the colony for a few hours."
+   "text": "A patch of ember grass on deep ash burns black. On day 3 about a third of the patch shows green shoots, and by day 7 well over half of it is green again. Elsewhere ember grass sown on dry ash that last burned weeks ago grows at about the speed ember grass normally grows, while ember grass sown on watered ash grows faster and some of those plants put out a sudden burst of growth; the dry plants never burst. Open ground away from the colony is carpeted thick in ember grass with no wide bare-dirt stretches.",
+   "expect": "accept: the scar re-greens within days and is largely green within a week, grass is swift on dry ash and faster with the burst only where watered.",
+   "expect_source": "grass_carpets_and_regreens"
   },
   {
-   "expect": "reject: a shovelled sand cell must turn to gravel and be finite; a cell that stays sand and can be dug forever is the leaf's red",
-   "expect_source": "sand_shovel_yields_glass_sand",
    "id": "e6",
-   "text": "My colonist shovels a patch of Pyrelands sand, gets the glass sand, and the tile is still sand afterwards; I keep ordering the same tile dug and it pays out every time."
+   "text": "Ember grass is sown on two patches: dry deep ash that last burned more than two weeks ago, and ash beside standing water. The watered grass grows briskly. The dry-ash grass barely moves: after several days it has reached only about a tenth of the growth the watered patch reached in the same time, and its growth-rate readout shows it crawling.",
+   "expect": "reject: grass on old dry ash growing at a crawl (a tenth of its speed) is the leaf's red; it must grow swiftly even on seemingly dry ash.",
+   "expect_source": "grass_carpets_and_regreens"
   },
   {
-   "expect": "reject: a flamefang bite must put flamefang venom on the health tab that worsens over hours; a plain wound only is the leaf's red",
-   "expect_source": "flamefang_bite_carries_venom",
    "id": "e7",
-   "text": "A flamefang bites my colonist twice. Her health tab shows only two bite wounds, with no venom or other condition listed, and nothing gets worse over the next hours."
+   "text": "Two colonists are each bitten by a flamefang. Both health tabs show flamefang venom besides the bite wound. One colonist is left untended and the venom's severity climbs hour by hour through the evening. The other is tended by a doctor soon after the bite, and from then on the venom stops getting worse.",
+   "expect": "accept: flamefang venom appears on the health tab and smoulders worse over the hours until treated, as promised.",
+   "expect_source": "flamefang_bite_carries_venom"
   },
   {
-   "expect": "accept: the beast must be a giant far larger than other animals and give a readable warmth status nearby that ends when the colonist leaves",
-   "expect_source": "furnacebeast_warms",
    "id": "e8",
-   "text": "The furnace-beast towers over every other animal on the map, dwarfing even the biggest grazers. When my colonist stands in the open beside it she gets a warmth status in her needs, and the status goes away once she walks off."
+   "text": "A colonist is bitten by a wild warg, not a flamefang. Afterwards the health tab shows the bite wound and also flamefang venom, which grows worse over the next few hours. A second colonist hit by a manhunting boar's tusk also shows flamefang venom.",
+   "expect": "reject: only a flamefang bite carries the venom; venom from any bite or melee hit is the leaf's false_pass and the sheet's 'no other bite does'.",
+   "expect_source": "flamefang_bite_carries_venom"
   },
   {
-   "expect": "accept: the ashwallow must show a burrowed status and dive as the front arrives, and surface unharmed after it passes",
-   "expect_source": "ashwallow_dives_unharmed",
    "id": "e9",
-   "text": "As the fire front reaches an ashwallow it shows a burrowed status and disappears into the ground; once the flames have moved past, it comes back up with full health and not a single burn."
+   "text": "At noon on a Pyrelands map the weather turns to black rain. On screen it falls as ordinary pale blue-grey rain streaks, indistinguishable from vanilla rain except for its name in the weather readout; nearby grass fires do go out.",
+   "expect": "reject: black rain drawing as blue-grey rain is the leaf's red; it must fall visibly dark.",
+   "expect_source": "three_skies"
   },
   {
-   "expect": "accept: the fire-hawk must pick up a burning twig at the fire and start a new fire where it drops it, ahead of the blaze",
-   "expect_source": "firehawk_lights_ahead",
    "id": "e10",
-   "text": "A fire-hawk swoops down to the blaze, flies off carrying a burning twig, and drops it in the grass well ahead of the fire; a new fire starts there before the main blaze gets anywhere near."
+   "text": "On one map at noon the three weathers are forced in turn. Under ash fall the map dims and loose-ash drifts bank against walls. Cinderfall looks different from ash fall at a glance and lightning strikes several times during it. Black rain falls as visibly dark streaks and the grass fires burning on the map go out. A viewer shown the three captures names each one correctly and can tell black rain from vanilla rain.",
+   "expect": "accept: three skies each recognisable at a glance, cinderfall with lightning, black rain dark and putting fires out.",
+   "expect_source": "three_skies"
   },
   {
-   "expect": "accept: black rain must fall visibly dark, not blue-grey, and put fires out",
-   "expect_source": "three_skies",
    "id": "e11",
-   "text": "When black rain comes it falls in visibly dark, sooty streaks unlike any normal rain, and the grass fires burning on the map go out under it."
+   "text": "A wild furnace-beast wanders past a muffalo herd. Standing side by side it is about the same size as a muffalo, and its inspect pane in the running game shows a body size close to a muffalo's; it is not larger than the other big animals on the map.",
+   "expect": "reject: the furnace-beast must be a giant far larger than any other animal; a beast the size of a muffalo is in the leaf's red and 'must not read'.",
+   "expect_source": "furnacebeast_warms"
   },
   {
-   "expect": "accept: a burned ember-grass patch must visibly re-green within a few days and be largely green within about a week, neither instantly green nor black for a season",
-   "expect_source": "grass_carpets_and_regreens",
    "id": "e12",
-   "text": "A patch of ember grass burns black. A few days later green shoots are clearly coming through the scar, and by the end of the week most of the patch is green again."
+   "text": "A colonist standing in the open next to a furnace-beast shows a warmth status that disappears after she walks ten cells away. Of two identical closed rooms, the one sheltering a furnace-beast is clearly warmer than the other after a few hours. Two furnace-beasts fall asleep, one on ember grass and one on bare soil; about two hours later the grass under the first catches fire, while no fire ever starts under the one on bare soil. The beast towers over every other animal on the map.",
+   "expect": "accept: a giant, a readable warmth status near it, a hotter room, and sleep-ignition on grass after a while but never on a plantless cell.",
+   "expect_source": "furnacebeast_warms"
   },
   {
-   "expect": "accept: the biome description must say the savanna was genetically engineered and has burned for millennia",
-   "expect_source": "biome_text_says_engineered",
    "id": "e13",
-   "text": "Hovering the Pyrelands biome on the world map, the description explains that this grassland was genetically engineered long ago and has been burning for thousands of years."
+   "text": "A fresh Pyrelands colony lands; a line of fire is burning across the grass on arrival and burns out by the end of day 1. Through days 2, 3, 4 and 5 no fire starts anywhere on the map in clear weather, and nothing relights in the open grass.",
+   "expect": "reject: the burn line lighting on arrival and never relighting, so by day three the map holds no fire, is the leaf's red.",
+   "expect_source": "burn_line_walks"
   },
   {
-   "expect": "accept: a colonist carrying the sprayer must foam a way through the live burn, pick the fruit in the scar and return unburned",
-   "expect_source": "firefoam_sprayer_reaches_the_fruit",
    "id": "e14",
-   "text": "I send a colonist with the firefoam sprayer into a fire that is still burning to get the ripe scorch-fruit in its scar. He foams the flames out along his way in, picks the fruit and walks back out without a single burn."
+   "text": "Partway through the first year a vanilla herd-migration letter arrives: a herd of ullai enters at one edge of the Pyrelands map, crosses it, and leaves by the opposite edge, behaving like any vanilla migrating herd.",
+   "expect": "accept: ullai herds crossing the map in vanilla herd migrations is what the leaf preserves.",
+   "expect_source": "ullai_cross_the_map_as_vanilla_herds"
   },
   {
-   "expect": "reject: scorchfruit_born_of_fire says scorch-fruit comes up rapidly in the fresh scar right behind the front while the ground still smokes, and must not read as fruit that appears days after the fire; red lists fruit appearing only days after the front passed.",
-   "expect_source": "scorchfruit_born_of_fire",
    "id": "c1",
-   "text": "The burn line crosses the grass and leaves a black, smoking scar. For the first two days the scar stays bare; on the third morning a crop of scorch-fruit comes up across it, ripens, a colonist picks it and eats it, and the leftover fruit rots within a few days."
+   "text": "A staged fire-hawk carries an ember on the home map and one letter appears naming the hawk and the ember; clicking it jumps the camera to the hawk. 400 fire-hawk carcasses are butchered under a fixed seed and 11 Pristine Firehawk Crestfeathers come out. In the control, a colonist butchers one muffalo and a Pristine Firehawk Crestfeather is among its products, along with the meat and leather.",
+   "expect": "reject: the crestfeather also drops from a non-hawk carcass, which is the leaf's false_pass 'every butchered carcass drops the crestfeather', so it reads as a trophy any carcass drops, not a reason to hunt the hawk.",
+   "expect_source": "firehawk_hunt_rewards"
   },
   {
-   "expect": "reject: fresh_burn_compounds_with_black_rain says black rain adds to the burn bonus instead of washing it away, so a wet fresh scar must out-grow wet old ash; matching wet old ash is exactly its red (rain wipes the bonus).",
-   "expect_source": "fresh_burn_compounds_with_black_rain",
    "id": "c2",
-   "text": "A colonist sows rice on ground the fire crossed this morning and on old ash nearby, and the fresh-burn rice pulls clearly ahead. Then black rain falls on both for half a day; from then on the fresh-burn rice grows at the same pace as the rained-on old-ash rice, and both outpace a dry patch."
+   "text": "The offline read shows that RM_Ullai's own race block never mentions herdMigrationAllowed, so that file alone leaves the vanilla default in place, and RM_Pyrelands lists RM_Ullai in its wild animals. No patch op touches RM_Ullai. But RM_Ullai's ThingDef takes its fields from a parent abstract def, RM_FireCastAnimalBase, and that parent sets herdMigrationAllowed to false in its race block. The resolved def inherits false.",
+   "expect": "reject: the leaf's red is 'a patch or a parent def sets herdMigrationAllowed false', and here the parent does, so ullai never join vanilla herd migrations.",
+   "expect_source": "ullai_cross_the_map_as_vanilla_herds"
   },
   {
-   "expect": "reject: no_ordinary_rain (a does-not line) says ordinary rain never falls on a Pyrelands map and its only wet weather is black rain; any ordinary rain shower breaks it.",
-   "expect_source": "no_ordinary_rain",
    "id": "c3",
-   "text": "Most weeks the sky turns between ash fall, cinderfall and dark black rain as expected. Once in late summer an ordinary grey-blue rain shower passes over the colony for a few hours, damping the grass fire before clearing."
+   "text": "Two strips of rice are sown on the same tick, one along the edge of a pond and one twelve cells away on open dry ash. After five days the pond strip is visibly taller and its growth reading is well ahead of the dry strip every day. The terrain under the dry strip reads deep ash. The terrain under the pond strip reads soil, part of the ring of richer ground around the water.",
+   "expect": "reject: the watered strip is not on ash, which is the leaf's false_pass 'the watered strip is sown on soil rather than ash', so the gap shows soil beating ash rather than water making ash fertile.",
+   "expect_source": "ash_fertile_when_watered"
   },
   {
-   "expect": "reject: furnacebeast_warms says the furnace-beast is a giant, standing far larger than any other animal, and must not read as a beast the size of a muffalo; red includes an ordinary-sized beast.",
-   "expect_source": "furnacebeast_warms",
    "id": "c4",
-   "text": "A furnace-beast wanders up to the colony; it is about the size of the muffalo grazing beside it. Colonists standing near it get a warmth status that goes when they walk away, the barn it shelters in runs clearly hotter than the empty one next door, and the grass it sleeps on catches after a while."
+   "text": "Ember grass sown on a dry deep-ash cell well away from any water grows swiftly, at nearly its full speed, every day, against a sowing on watered ash that grows faster still and shows bursts. The burn log for the dry cell shows the front passed over it three days before sowing.",
+   "expect": "reject: the dry cell burned three days ago, which is the leaf's false_pass 'the dry-ash cell burned within the last few days, so fresh ash is doing the work', so this does not show swift growth on old dry ash.",
+   "expect_source": "grass_carpets_and_regreens"
   },
   {
-   "expect": "reject: flamefang_bite_carries_venom says the venom comes from a flamefang's bite and no other bite does; its false_pass is any bite applying the venom, and the control is a non-venomous predator leaving no venom.",
-   "expect_source": "flamefang_bite_carries_venom",
    "id": "c5",
-   "text": "During a predator attack a flamefang bites one colonist and a wolf bites another. Both colonists' health tabs show a bite wound and flamefang venom that grows worse over the following hours until the doctor treats them."
+   "text": "A hostile flamefang bites a colonist on a cleared pad. Flamefang venom appears on the colonist's health tab next to the bite wound, and its severity climbs each hour until a doctor treats it. In the control the same colonist is bitten by a cougar, and flamefang venom appears on the health tab next to the cougar's bite and climbs the same way.",
+   "expect": "reject: the non-venomous control bite applies the venom too, which is the leaf's false_pass 'any bite or melee hit applies the venom' (the sheet says 'no other bite does').",
+   "expect_source": "flamefang_bite_carries_venom"
   },
   {
-   "expect": "reject: ash_ground_and_blowing_ash says a lot of ash blows across the ground like snow in any weather, and must not read as a clear sky with ash only on the ground; red includes no ash blowing in clear weather, and its false_pass is blowing ash that shows only during ash fall.",
-   "expect_source": "ash_ground_and_blowing_ash",
    "id": "c6",
-   "text": "On a fresh map the ground is almost all deep ash, with small soil pockets and richer ground by the water. When ash fall sets in, the map dims and thick ash flakes drift across it like snow and bank up in drifts; on clear days the sky is clean and nothing blows, only the grey ground shows."
+   "text": "Each weather is forced in turn on the same map at noon and captured at play zoom. Black rain falls in dark streaks and the fire pad under it goes out. Ash fall and cinderfall both show the same dim grey haze with the same pale flakes drifting, and a blind reader cannot tell those two captures apart. Lightning strikes land only during cinderfall.",
+   "expect": "reject: the leaf's red is 'cinderfall looks like ash fall'. Lightning alone does not make cinderfall 'its own look', and the blind reader cannot tell it from ash fall.",
+   "expect_source": "three_skies"
   }
  ],
- "scenarios_hash": "c7f8d4d506f653fd261cfd78dbfe3bbd7408d12e972bdf5574d0de843b275796",
+ "scenarios_hash": "807b17072f8517b4c2752a9a39af9631db16789f535fd23715fa2263ac7740ab",
+ "frozen_at": "2026-11-15T13:34:37Z",
+ "readers": [
+  "rm-judge Reader A a475d113cbb05c45b (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B a773a17ac06718886 (fresh Opus; sheet, tree, scenario text only)"
+ ],
+ "control": {
+  "broken_leaf": "three_skies",
+  "missed": true,
+  "reader": "rm-judge control abd49deeecb68f260",
+  "note": "Control reader got the tree with three_skies removed and every sheet line naming the three skies dropped (leaf line, owner-source line, showcase-3 sky clause, sky captures clause); it accepted e9 and c6, which both real Readers reject, so the scenarios discriminate."
+ },
  "score": {
   "right": 20,
   "total": 20
  },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
  "verdicts": {
-  "control": {
-   "c1": "reject",
-   "c2": "reject",
-   "c3": "reject",
-   "c4": "reject",
-   "c5": "reject",
-   "c6": "reject",
-   "e1": "reject",
-   "e10": "accept",
-   "e11": "accept",
-   "e12": "accept",
-   "e13": "accept",
-   "e14": "accept",
-   "e2": "reject",
-   "e3": "reject",
-   "e4": "reject",
-   "e5": "reject",
-   "e6": "reject",
-   "e7": "accept",
-   "e8": "accept",
-   "e9": "accept"
-  },
   "reader_a": {
    "c1": "reject",
    "c2": "reject",
@@ -178,18 +156,18 @@
    "c6": "reject",
    "e1": "reject",
    "e10": "accept",
-   "e11": "accept",
+   "e11": "reject",
    "e12": "accept",
-   "e13": "accept",
+   "e13": "reject",
    "e14": "accept",
-   "e2": "reject",
-   "e3": "reject",
+   "e2": "accept",
+   "e3": "accept",
    "e4": "reject",
-   "e5": "reject",
+   "e5": "accept",
    "e6": "reject",
-   "e7": "reject",
-   "e8": "accept",
-   "e9": "accept"
+   "e7": "accept",
+   "e8": "reject",
+   "e9": "reject"
   },
   "reader_b": {
    "c1": "reject",
@@ -200,17 +178,39 @@
    "c6": "reject",
    "e1": "reject",
    "e10": "accept",
-   "e11": "accept",
+   "e11": "reject",
    "e12": "accept",
-   "e13": "accept",
+   "e13": "reject",
    "e14": "accept",
-   "e2": "reject",
-   "e3": "reject",
+   "e2": "accept",
+   "e3": "accept",
    "e4": "reject",
-   "e5": "reject",
+   "e5": "accept",
    "e6": "reject",
-   "e7": "reject",
-   "e8": "accept",
+   "e7": "accept",
+   "e8": "reject",
+   "e9": "reject"
+  },
+  "control": {
+   "c1": "reject",
+   "c2": "reject",
+   "c3": "reject",
+   "c4": "reject",
+   "c5": "reject",
+   "c6": "accept",
+   "e1": "reject",
+   "e10": "accept",
+   "e11": "reject",
+   "e12": "accept",
+   "e13": "reject",
+   "e14": "accept",
+   "e2": "accept",
+   "e3": "accept",
+   "e4": "reject",
+   "e5": "accept",
+   "e6": "reject",
+   "e7": "accept",
+   "e8": "reject",
    "e9": "accept"
   }
  }
