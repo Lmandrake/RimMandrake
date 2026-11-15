@@ -113,6 +113,21 @@ def gm_gated_names_from_source(source_dir):
     return gated
 
 
+def _build_if_stale(dll_path):
+    """A clone that never built the companion (every pool clone, the nightly's) builds it here: build.py without --apply
+    compiles into artifacts/ and deploys nothing (~10 s). A build that fails leaves the UNMEASURED path below to say so."""
+    import subprocess
+    want = companion_identity.srchash_worktree(build.REPO_ROOT)
+    if os.path.exists(dll_path) and want and companion_identity.verdict(dll_path, build.REPO_ROOT, None, want=want)["state"] == "FRESH":
+        return
+    try:
+        r = subprocess.run([sys.executable, os.path.join(HERE, "build.py")], capture_output=True, text=True, timeout=900,
+                           stdin=subprocess.DEVNULL)
+        print("built the companion for this check (build.py, plan only): rc %d" % r.returncode)
+    except (OSError, subprocess.SubprocessError) as e:
+        print("could not build the companion for this check: %s: %s" % (type(e).__name__, e))
+
+
 def main(dll_path=DLL_PATH, want_hash=None, read_dll=tool_metadata.tool_names_from_dll):
     """`want_hash` and `read_dll` exist for selftest_tool_metadata_stale.py's fixtures."""
     if not os.path.isdir(SOURCE_DIR):
@@ -127,6 +142,8 @@ def main(dll_path=DLL_PATH, want_hash=None, read_dll=tool_metadata.tool_names_fr
               "the regex or the source path is broken, not the roster")
         return 1
 
+    if dll_path == DLL_PATH:
+        _build_if_stale(dll_path)
     if not os.path.exists(dll_path):
         # DETERMINISM_ASSESSMENT.md SS11a (item 4): a missing companion DLL is a
         # Windows-toolchain absence, not a failure of this test -- `run_selftests.py`
