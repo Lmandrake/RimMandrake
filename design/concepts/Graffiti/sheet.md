@@ -14,7 +14,7 @@
 ## does
 - [leaf:mark_appears] A painting spree leaves marks on the wall, never an empty wall with a clean job log
 - [leaf:reads_at_play_zoom] Every face-on mark reads at play zoom as made on purpose
-- [leaf:sits_on_wall] A mark sits on its wall face, never floating over the floor
+- [leaf:sits_on_wall] A mark sits on its wall's front face and climbs onto the top, never floating over the floor; an edge-on wall takes no paint
 - [leaf:marks_various] One colony holds visibly different kinds of mark, not recolours
 - [leaf:ideo_sigil] A colonist of an ideoligion paints a sigil with that ideoligion's own icon, tinted, in a frame
 - [leaf:punk_register] The set reads as urban punk graffiti, with no real-world signage
@@ -33,8 +33,9 @@
 - [leaf:visitors] A visiting trader reads an insult to its faction once per visit, never recharged
 - [leaf:fights_reasons] A fight has people and a reason, and never breaks a pawn's restrictions
 - [leaf:temperament] Psychopaths feel nothing, sensitive pawns feel more both ways, clean freaks take more and can break into cleaning marks
-- [leaf:stands_alone_settings] Works without any ideoligion, survives a reload, stops when each of its 8 settings says stop
+- [leaf:stands_alone_settings] Works without any ideoligion, survives a reload, stops when each of its settings says stop: 8 today, 11 with the raider pressure's switch, mode and size
 - [leaf:stories_not_tax] In an ordinary colony over weeks, occasional stories, never a mood tax or a message stream
+- [leaf:walk_lived_in] A lived-in colony walked again after a reload: a spree, recreation tagging, a raid and a trader, in both orders, tell the same story
 - [leaf:paint_dies_with_wall] Paint dies with its wall
 - [leaf:weathering_bounds_marks] Paint weathers: it fades over the last 40 percent of its life, sooner outdoors
 - [floor:mod_settings] Superb Mod Settings: every behaviour has its switch, and the raider pressure gets one with its tuning

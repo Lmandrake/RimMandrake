@@ -73,7 +73,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "in the close-up every mark's drawn rect lies inside its wall cell's face; control: a mark with the wall side cleared draws on the floor and is flagged",
+   "oracle_proposed": "in the close-up every mark's drawn rect lies on its wall cell's front face and over the crease onto the top; control: a mark with the wall side cleared draws on the floor and is flagged, and a cell whose only wall is edge-on gets no mark",
    "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -84,11 +84,11 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player sees each mark drawn on the wall face it was painted on, aligned to it, never floating over the floor beside it, on all four wall sides.",
+   "experience": "The player sees each mark drawn on the front face of the wall it was painted on (the face the camera sees, the wall north of the painter's cell), aligned to it and climbing over the crease onto the wall top, never floating over the floor beside it; a wall seen edge-on and a wall's far side carry no paint.",
    "scenario": "Close-up of a painted wall lane after the spree, walls on each side of the painter's cell.",
    "false_pass": [
     "the mark is drawn on the floor cell beside the wall",
-    "only south-facing walls are shown"
+    "a mark turned along the edge-on strip of a wall top passes as painted"
    ],
    "red": "a build that draws the mark at the floor cell's centre with no wall offset",
    "tier_proposed": "live_minimal",
@@ -372,7 +372,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "one answer job (scrub, deface, reply or confront) runs to completion by a pawn with a reason and the mark's state changes to match; control: a mark nobody is offended by gets no answer",
+   "oracle_proposed": "all four answer jobs (scrub, deface, reply, confront) each run to completion by a pawn with a reason and the mark's state changes to match, including a confront over painted-out work; control: a mark nobody is offended by gets no answer",
    "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -610,7 +610,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player sees graffiti work in a game without any ideoligion, survive a save and reload with every mark intact, and stop each behaviour its setting switches off.",
-   "scenario": "Quicktest with ideoligions off; paint marks; save, reload; then flip each of the 8 settings off in turn and repeat its trigger.",
+   "scenario": "Quicktest with ideoligions off; paint marks; save, reload; then flip each setting off in turn (the 8 shipped, and the 3 raider-pressure settings once built) and repeat its trigger.",
    "false_pass": [
     "the settings page changes but the behaviour runs on",
     "marks lose their subject on reload"

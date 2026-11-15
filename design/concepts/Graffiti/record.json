@@ -269,7 +269,7 @@
  "inventory": [
   {
    "id": "inv_mark_on_wall",
-   "what": "A mark is a filth-class thing on the floor cell beside a wall, recording the wall side and drawn offset onto the wall face and facing it (no linked-atlas crop); nothing paints a wall seen edge-on",
+   "what": "A mark is a filth-class thing on the floor cell south of a wall, recording the wall side and drawn on that wall's front face (the face the camera sees), climbing over the crease onto the wall top (option D), facing it (no linked-atlas crop); a wall seen edge-on (east or west of the cell) and a wall's far side take no paint (RM_GraffitiKernel.SidePaintable, PaintsEdgeOn; WallPlane.cs)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
@@ -577,7 +577,7 @@
   },
   {
    "id": "inv_settings",
-   "what": "Mod settings: painting on/off, paint interval, viewer reaction, breach bias, raid exit tagging, auto-clean protection, social layer, social messages (8)",
+   "what": "Mod settings: painting on/off, paint interval, viewer reaction, breach bias, raid exit tagging, auto-clean protection, social layer, social messages (8 shipped); with inv_raider_future_marks 3 more: raider pressure on/off, sooner-or-larger mode, push size (11 in all)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs"
