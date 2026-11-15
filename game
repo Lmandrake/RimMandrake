@@ -74,7 +74,7 @@ case "${1}" in
         echo "  --said \"…\"          the owner's words (light tidying fine, meaning unchanged)"
         echo "  --by-card \"…\"       he decided it by question card (the label is ours, not his words)"
         echo "  --per-ruling <id>    a standing ruling of his, cited by item id or ledger event"
-        echo "  --idle-ok            delegated restart: bridge free/ours/stale, his OWNER hold only 45 min after his last interaction (needs --why; never --flyer)"
+        echo "  --idle-ok            delegated restart: TAKES the bridge first (free/ours/stale; his OWNER hold only 45 min after his last interaction; needs --why; never --flyer)"
         echo "  --why \"…\"           YOUR own reason — a self-initiated restart uses this, never --said"
         echo
         echo "Stamps the ledger; run by the OWNER it also announces to every agent window."
@@ -102,12 +102,23 @@ done
 # flyer's flight. His keyboard/mouse input is NOT read (owner 2026-10-30:
 # "I really, really need you to strip "when I come back to the machine" as an event for anything changing.").
 # The flag keeps its old name for callers. The event carries `why` = "delegated: ..." so the digest lists it.
+# 🔴 IT TAKES THE BRIDGE, it does not just ask (GPT review p2.F9, RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD): it used
+# to read `bridge idle`, which is report-only, and act on that reading while another seat could take the bridge in the
+# gap. `bridge take --idle-ok` runs the same delegated gate under the bridge lock and records the take, so the restart
+# acts on a bridge that is ours; holding it is the authorization. Release it when done: rimflow bridge release --mine
 if [ "$idle_ok" = 1 ]; then
     [ -n "$why" ] || { echo "--idle-ok needs --why \"<what for>\"" >&2; exit 2; }
     [ -z "$said$by_card$per_ruling" ] || { echo "--idle-ok is the delegated path: no --said/--by-card/--per-ruling" >&2; exit 2; }
-    verdict="$(python3 "$here/src/RimMandrake/rimflow/cli.py" bridge idle --for "$why" "${flyer[@]}")" || { echo "$verdict" >&2; exit 1; }
-    echo "$verdict" | head -1
-    why="delegated: $why [$(echo "$verdict" | sed -n 's/^TAKEABLE  delegated: \(.*\)$/\1/p')]"
+    case "${1,,}" in up|down|loading|deploying|going-down|going_down|wrap) ;;      # no take for a typo'd state
+        *) echo "unknown state '${1}'." >&2; echo "usage: ./game --idle-ok --why \"…\" up|down|loading|deploying|going-down" >&2; exit 2 ;;
+    esac
+    took="$(python3 "$here/src/RimMandrake/rimflow/cli.py" bridge take --idle-ok --for "$why" "${flyer[@]}" 2>&1)" \
+        && echo "$took" | grep -q '^bridge taken by ' || {
+        echo "$took" >&2
+        echo "  not taken, so nothing announced. Check:  rimflow bridge idle --for \"$why\"" >&2; exit 1; }
+    took="$(echo "$took" | grep -m1 '^bridge taken by ')"
+    echo "$took  — release when done: rimflow bridge release --mine"
+    why="delegated: $why [${took#bridge }]"
 fi
 export RIMFLOW_OWNER_SAID="$said" RIMFLOW_WHY="$why" RIMFLOW_BY_CARD="$by_card" RIMFLOW_PER_RULING="$per_ruling"
 

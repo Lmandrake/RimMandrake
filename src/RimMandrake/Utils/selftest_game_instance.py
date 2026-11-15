@@ -286,6 +286,113 @@ def sites(w):
         check(r.returncode == 0, "%s runs as before with nothing set" % rel)
 
 
+OTHER = "CLAUDE_ARCHMAGI_OFFLINE1"      # another seat (RUNNER's bridge events are refused at replay, so not RUNNER)
+
+
+def bridge(w):
+    """RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD (GPT review p2.F2): stop asks rimflow's own delegated verdict before
+    any signal. Another seat's live hold, his OWNER hold inside his 45 min, or an UNMEASURED reading of him refuses;
+    free, ours, stale (45 min) and his hold past his window pass. Real `rimflow bridge idle`, on the fake ledger."""
+    refuse = (("another seat's live hold", [(OTHER, 120)], None),
+              ("his OWNER hold, 5 min old", [("OWNER", 300)], None),
+              ("his OWNER hold past 45 min, his last act UNMEASURED", [("OWNER", 3000)], "unmeasured"),
+              ("game b, another seat's live hold on b's bridge", [(OTHER, 120, "archmagi.b")], None))
+    allow = (("a free bridge", [], None), ("our own hold", [("BENCH", 120)], None),
+             ("another seat's stale hold (46 min)", [(OTHER, 46 * 60)], None),
+             ("his OWNER hold 50 min after his last act", [("OWNER", 3000)], None),
+             ("game b, a live hold on game a's bridge only", [(OTHER, 120)], None))
+    for verdict, cases in (("refuses", refuse), ("allowed", allow)):
+        for label, holds, owner in cases:
+            inst = "b" if label.startswith("game b") else None
+            w.bridge(*holds)
+            if owner == "unmeasured":
+                os.makedirs(w.env["RIMFLOW_OWNER_ACT_STAMP"])        # an unreadable ./bridge stamp: UNMEASURED
+            p = w.start_b() if inst else w.start_a()
+            r = w.gi("stop", instance=inst, RM_HOST="archmagi", timeout=120)
+            if verdict == "refuses":
+                check(r.returncode == G.EX_REFUSED and F.alive(p) and w.kills() == [] and "rimflow bridge" in r.stderr,
+                      "stop with %s: refused, nothing sent, and says what would pass: %s %s"
+                      % (label, r.returncode, r.stderr.strip()[-300:]))
+            else:
+                check(r.returncode == 0 and F.wait_dead(p) and w.kills() == ["taskkill /PID %d" % p],
+                      "stop with %s: allowed, one /PID: %s %s" % (label, r.returncode, (r.stdout + r.stderr).strip()[-300:]))
+            w.clear()
+    # an answer that is not rimflow's TAKEABLE is no verdict: nothing is signalled on it
+    saved = dict(os.environ)
+    os.environ.update(w.env)
+    real = G.RIMFLOW_CLI
+    try:
+        w.bridge()
+        G.RIMFLOW_CLI = os.path.join(w.tmp, "no_such_cli.py")
+        why = G.bridge_refusal("a")
+        check(why is not None and "UNMEASURED" in why, "a rimflow that does not answer refuses, UNMEASURED: %s" % why)
+        G.RIMFLOW_CLI = real
+        check(G.bridge_refusal("a") is None, "control: the same call with rimflow answering passes a free bridge")
+    finally:
+        G.RIMFLOW_CLI = real
+        os.environ.clear()
+        os.environ.update(saved)
+    w.bridge()
+
+
+FAKE_BROADCAST = """import json, os, sys
+with open(os.environ["FAKE_BROADCAST_LOG"], "a") as f:
+    f.write(json.dumps({"sentence": sys.argv[1:], "why": os.environ.get("RIMFLOW_WHY")}) + "\\n")
+"""
+
+
+def game_idle_ok(w):
+    """GPT review p2.F9: `./game --idle-ok` read the report-only `bridge idle` and then announced, so another seat could
+    take the bridge in the gap. It must TAKE the bridge (`bridge take --idle-ok`) before it acts, and take nothing for
+    a refused gate or a typo'd state. The real ./game and real rimflow, in a tree whose broadcast/modlist/zoom are fakes."""
+    import json
+    t = os.path.join(w.tmp, "gametree")
+    utils = os.path.join(t, "src", "RimMandrake", "Utils")
+    os.makedirs(utils)
+    os.symlink(os.path.join(w.repo, "src", "RimMandrake", "rimflow"), os.path.join(t, "src", "RimMandrake", "rimflow"))
+    real_utils = os.path.join(w.repo, "src", "RimMandrake", "Utils")
+    fakes = {"broadcast.py": FAKE_BROADCAST, "modlist_swap.py": "print('live currently matches: FULL')\n",
+             "zoom_guard.py": "pass\n"}
+    for f in os.listdir(real_utils):
+        if f.endswith(".py") and f not in fakes:
+            os.symlink(os.path.join(real_utils, f), os.path.join(utils, f))
+    for f, body in fakes.items():
+        with open(os.path.join(utils, f), "w") as fh:
+            fh.write(body)
+    with open(os.path.join(w.repo, "game")) as fh:
+        game = os.path.join(t, "game")
+        with open(game, "w") as out:
+            out.write(fh.read())
+    os.chmod(game, 0o755)
+    blog = os.path.join(w.tmp, "broadcast.log")
+
+    def run(*args):
+        if os.path.exists(blog):
+            os.remove(blog)
+        r = w.run([game] + list(args), RM_HOST="archmagi", FAKE_BROADCAST_LOG=blog, timeout=120)
+        sent = [json.loads(ln) for ln in open(blog)] if os.path.exists(blog) else []
+        shards = os.path.join(w.rf, "events")       # a take lands in its seat's shard, BENCH's written as CONDUCTOR
+        files = [w.env["RIMFLOW_LEDGER"]] + ([os.path.join(shards, f) for f in os.listdir(shards)] if os.path.isdir(shards) else [])
+        takes = [json.loads(ln) for p in files for ln in open(p) if ln.strip()]
+        takes = [e for e in takes if e.get("seat") in ("BENCH", "CONDUCTOR") and e.get("event") == "bridge" and e.get("state") == "taken"]
+        return r, sent, takes
+
+    w.bridge((OTHER, 120))
+    r, sent, takes = run("--idle-ok", "--why", "restart for the look", "down")
+    check(r.returncode == 1 and not sent and not takes and "rimflow bridge idle" in r.stderr,
+          "./game --idle-ok with another seat's live hold: refused, nothing announced or taken: %s %s %s" % (r.returncode, sent, r.stderr.strip()[-200:]))
+    w.bridge()
+    r, sent, takes = run("--idle-ok", "--why", "restart for the look", "bogus")
+    check(r.returncode == 2 and not sent and not takes, "./game --idle-ok with a typo'd state takes nothing: %s %s" % (r.returncode, takes))
+    w.bridge()
+    r, sent, takes = run("--idle-ok", "--why", "restart for the look", "down")
+    check(r.returncode == 0 and len(takes) == 1 and takes[0].get("purpose") == "restart for the look",
+          "./game --idle-ok on a free bridge TAKES it before acting: %s %s %s" % (r.returncode, takes, (r.stdout + r.stderr).strip()[-200:]))
+    check(len(sent) == 1 and sent[0]["sentence"] == ["Game is down"] and (sent[0]["why"] or "").startswith("delegated: restart for the look ["),
+          "... then announces, the take's reason on its why: %s" % sent)
+    w.bridge()
+
+
 def whole_repo():
     """No live tool kills by image name again. Prose may name it; a selftest may fake it."""
     import subprocess
@@ -299,7 +406,8 @@ def whole_repo():
     check(not bad, "no live taskkill /IM left: %s" % [b[:120] for b in bad])
 
 
-SECTIONS = {"names": names, "stop": stop, "blind": blind, "paths": paths, "launch": launch, "rw_game": rw_game, "sites": sites}
+SECTIONS = {"names": names, "stop": stop, "blind": blind, "paths": paths, "launch": launch, "rw_game": rw_game, "sites": sites,
+            "bridge": bridge, "game_idle_ok": game_idle_ok}
 
 
 def main():

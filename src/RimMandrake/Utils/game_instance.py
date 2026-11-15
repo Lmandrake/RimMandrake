@@ -9,7 +9,8 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
 
     python3 src/RimMandrake/Utils/game_instance.py env b            export lines: eval "$(... env b)"; nothing for a
     python3 src/RimMandrake/Utils/game_instance.py pid [b]          the pid, or nothing when it is not running
-    python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b]     taskkill /PID, never /IM
+    python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b] [--for "why"]   taskkill /PID, never /IM; only
+                                                                    when `rimflow bridge idle` says TAKEABLE
     python3 src/RimMandrake/Utils/game_instance.py prepare b        seed the folder (safe while another game runs)
     python3 src/RimMandrake/Utils/game_instance.py launch b [--wait]
     python3 src/RimMandrake/Utils/game_instance.py status
@@ -58,6 +59,7 @@ EX_BLIND, EX_REFUSED = 2, 3
 WIN_DIRS = ("/mnt/c/Windows/System32/WindowsPowerShell/v1.0", "/mnt/c/Windows/System32")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 PREFS_TEMPLATE = os.path.join(REPO, "infrastructure", "stevedesktop", "Prefs.template.xml")
+RIMFLOW_CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
 MINIMAL_LIST = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 _WSLENV = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA/p", "RM_GAME_LOGDIR/p", "GABP_SERVER_PORT", "GABP_TOKEN",
            "RIMFLOW_DRIVER_LOCK/p", "RM_INSTANCES_ROOT/p")
@@ -272,9 +274,39 @@ def ps_processes(name=None):
     return "Get-Process -Id %s -ErrorAction SilentlyContinue" % ",".join(map(str, mine)) if mine else "@()"
 
 
-def stop(pid_=None, force=False, name=None):
+def bridge_refusal(name, purpose=None, timeout=120):
+    """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
+    (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
+    `rimflow bridge idle` (the delegated gate) passes a bridge that is free, ours, or stale by the 45-min rule, and his
+    OWNER hold only 45 min after his last interaction (an UNMEASURED reading of him refuses); it also refuses on the
+    shared lock and the driver lock. Only its exit 0 with a TAKEABLE line passes: no answer is no permission."""
+    purpose = purpose or "stop game %s (game_instance.py stop)" % name
+    env = dict(os.environ)
+    if name == DEFAULT:
+        env.pop(INSTANCE_ENV, None)
+    else:
+        env[INSTANCE_ENV] = name            # the bridge of the game being stopped, whatever this shell drives
+    try:
+        r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle", "--for", purpose], env=env,
+                           capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace")
+        rc, out, text = r.returncode, r.stdout or "", ((r.stdout or "") + (r.stderr or "")).strip()
+    except (OSError, subprocess.SubprocessError) as e:
+        rc, out, text = None, "", str(e)
+    if rc == 0 and re.search(r"^TAKEABLE  ", out, re.M):
+        return None
+    if rc not in (0, 1):
+        text = "UNMEASURED: `rimflow bridge idle` gave no verdict (exit %s): %s" % (rc, text[-400:] or "no output")
+    return ("the bridge does not let this seat stop game %s: %s\n  what passes: hold it yourself, then stop again  "
+            "rimflow bridge take%s --for \"%s\"  (another seat's live hold needs --force; his OWNER hold is takeable "
+            "only 45 min after his last interaction, --force included)"
+            % (name, text, "" if name == DEFAULT else " --host <machine>.%s" % name, purpose))
+
+
+def stop(pid_=None, force=False, name=None, purpose=None):
     """taskkill by process id -> (exit code, text). With no pid, every game of this instance; a pid must be this
-    instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess."""
+    instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess. Refused too
+    while the bridge is not this seat's to act on (bridge_refusal): a stop is a reboot, the agent's to call only when
+    the bridge is free, ours, or stale (owner, 2026-09-02; his OWNER hold by card 2026-10-30)."""
     name = check_name(name or current())
     mine = pids(name)
     if pid_ is not None and pid_ not in mine:
@@ -282,6 +314,9 @@ def stop(pid_=None, force=False, name=None):
     targets = [pid_] if pid_ is not None else mine
     if not targets:
         return 0, "game %s is not running" % name
+    why = bridge_refusal(name, purpose)
+    if why:
+        raise Refused(why)
     rc, out = 0, []
     for p in targets:
         r = _run([_exe("taskkill.exe")] + (["/F"] if force else []) + ["/PID", str(p)])
@@ -427,6 +462,7 @@ def main(argv=None):
     s.add_argument("pid", nargs="?", type=int)
     s.add_argument("--force", action="store_true")
     s.add_argument("--instance", default=None)
+    s.add_argument("--for", dest="purpose", default=None, help="what the stop is for (the bridge check records it)")
     sub.add_parser("status")
     a = ap.parse_args(argv)
     try:
@@ -442,7 +478,7 @@ def main(argv=None):
         elif a.cmd == "status":
             print("\n".join(status_lines()))
         else:
-            rc, text = (stop(a.pid, a.force, a.instance) if a.cmd == "stop" else launch(a.name, a.wait))
+            rc, text = (stop(a.pid, a.force, a.instance, a.purpose) if a.cmd == "stop" else launch(a.name, a.wait))
             print(text)
             return rc
     except Blind as e:

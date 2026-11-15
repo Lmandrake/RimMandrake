@@ -168,6 +168,21 @@ class World:
                         RM_STEAMAPPS=self.steamapps, RM_GAME_USERDATA=self.a_dir, RM_GAME_LOGDIR=self.a_dir,
                         FAKE_GAME_SCRIPT=self.game_script, FAKE_KILL_LOG=self.kill_log, PYTHONDONTWRITEBYTECODE="1",
                         RM_DATA_ROOT=os.path.join(self.tmp, "data"))
+        # rimflow's bridge on throwaway state: game_instance.stop asks `rimflow bridge idle` before any signal, and a
+        # fake machine must never read (or let a live visit decide) the clone's own ledger, lock or BRIDGE mirror
+        self.rf = os.path.join(self.tmp, "rimflow")
+        os.makedirs(os.path.join(self.rf, "items"))
+        os.makedirs(os.path.join(self.rf, "chat"))
+        open(os.path.join(self.rf, "events.jsonl"), "w").close()
+        for k in ("AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RM_ROLE_UNIT"):
+            self.env.pop(k, None)
+        self.env.update(RIMFLOW_LEDGER=os.path.join(self.rf, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(self.rf, "items"),
+                        RIMFLOW_SHARED_BRIDGE=os.path.join(self.rf, "shared.json"), RIMFLOW_SEAT="BENCH",
+                        RIMFLOW_OWNER_CHAT_DIRS=os.path.join(self.rf, "chat"), RIMFLOW_OWNER_TERMINAL="0",
+                        RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.rf, "OWNER_LAST_ACT.json"),
+                        RIMFLOW_DISPATCH_LOCK=os.path.join(self.rf, "dispatch.lock"),
+                        RIMFLOW_BRIDGE_LOCK=os.path.join(self.rf, "bridge.lock"),
+                        RIMFLOW_DRIVER_LOCK=os.path.join(self.rf, "DRIVER_LOCK.json"))
         for tool in ("powershell.exe", "taskkill.exe", "tasklist.exe", "cmd.exe", "python.exe"):
             found = shutil.which(tool, path=self.env["PATH"])
             assert found and found.startswith(self.bin), "the %s shim does not resolve first: %s" % (tool, found)
@@ -221,6 +236,23 @@ class World:
                 return [ln.strip() for ln in f if ln.startswith(prefix)]
         except OSError:
             return []
+
+    def bridge(self, *holds):
+        """The fake machine's ledger is exactly these bridge takes: (seat, age_s[, host]) each, oldest first. Also emptied of
+        his interaction sources, so an OWNER hold is judged by its own age alone unless a test adds one."""
+        with open(self.env["RIMFLOW_LEDGER"], "w") as f:
+            for seat, age_s, *host in holds:
+                t = time.time() - age_s
+                ev = {"seat": seat, "event": "bridge", "state": "taken", "purpose": "fake hold",
+                      "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t)), "tsn": int(t * 1e9)}
+                ev.update({"host": host[0]} if host else {})
+                f.write(json.dumps(ev) + "\n")
+        for p in (self.env["RIMFLOW_SHARED_BRIDGE"], self.env["RIMFLOW_DRIVER_LOCK"], self.env["RIMFLOW_OWNER_ACT_STAMP"],
+                  os.path.join(self.rf, "events"), os.path.join(self.rf, "BRIDGE")):      # a take's shard and mirror
+            if os.path.isdir(p):
+                shutil.rmtree(p)
+            elif os.path.exists(p):
+                os.remove(p)
 
     def clear(self):
         """Every fake game down, by pid, whoever started it; the kill log emptied."""
