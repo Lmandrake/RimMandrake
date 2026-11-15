@@ -1,0 +1,1 @@
+testq: brake_release and the steward read the lane only through fill_plan, so a gate placed in fill_plan also silences the brake and its canary for every gated mod (intended under 18c). Older testq selftests drive mock mods through subprocess testq.py, and two of them filter TESTQ_* from the child env: an env seam must be re-added after the filter.
