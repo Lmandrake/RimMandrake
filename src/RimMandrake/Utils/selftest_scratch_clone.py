@@ -59,6 +59,29 @@ def quiet(fn, *a, **k):
     return r, buf.getvalue()
 
 
+def cone_imports_check():
+    """Every src/RimMandrake package that code in the default cone imports is in the cone too
+    (RIMMANDRAKE_ADD_CONTRACTS_TO_SCRATCH_CLONE_DEFAULT_CONE: 12 rimflow/Utils files import `contracts`, outside
+    BASE_CONE, so their selftests crashed with ModuleNotFoundError in every default helper clone). Reads HEAD's tree,
+    so it sees the whole repo from a sparse clone."""
+    import re
+    repo = HERE.parents[2]
+    pkgs = {p.split("/")[-1] for p in sh("git", "-C", str(repo), "ls-tree", "-d", "--name-only", "HEAD",
+                                         "src/RimMandrake/").split("\n") if p}
+    check(len(pkgs) > 5 and "contracts" in pkgs, f"the instrument sees src/RimMandrake's packages ({len(pkgs)})")
+    cone_dirs = [d for d in sc.BASE_CONE if d.startswith("src/RimMandrake/")]
+    files = [f for f in sh("git", "-C", str(repo), "ls-tree", "-r", "--name-only", "HEAD", *cone_dirs).split("\n")
+             if f.endswith(".py")]
+    missing = {}
+    for f in files:
+        text = sh("git", "-C", str(repo), "show", "HEAD:" + f)
+        for n in re.findall(r"^\s*(?:from|import)\s+([A-Za-z_]\w*)", text, re.M):
+            if n in pkgs and "src/RimMandrake/" + n not in sc.BASE_CONE:
+                missing.setdefault(n, f)
+    check(len(files) > 100, f"the scan read the cone's code ({len(files)} files)")
+    check(not missing, f"packages the cone's code imports are outside BASE_CONE: {missing}")
+
+
 def main() -> int:
     BASE.mkdir(parents=True)
     try:
@@ -575,6 +598,7 @@ def main() -> int:
             sr.git = sr_git
     finally:
         shutil.rmtree(BASE, ignore_errors=True)
+    cone_imports_check()
     print(f"selftest_scratch_clone: {'FAIL ' + str(len(FAILS)) if FAILS else 'OK'}")
     return 1 if FAILS else 0
 

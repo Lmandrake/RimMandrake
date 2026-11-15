@@ -1,0 +1,3 @@
+A sparse clone's cone has to hold every package its own code imports. BASE_CONE left out src/RimMandrake/contracts, so 12 rimflow and Utils files that import it crashed their selftests with ModuleNotFoundError in every default helper clone. Fixed by RIMMANDRAKE_ADD_CONTRACTS_TO_SCRATCH_CLONE_DEFAULT_CONE; selftest_scratch_clone's cone_imports_check now keeps it true. A ModuleNotFoundError in a pool clone is a cone gap to fix in BASE_CONE, not something to work around with sparse-checkout add.
+item: RIMMANDRAKE_ADD_CONTRACTS_TO_SCRATCH_CLONE_DEFAULT_CONE
+home: src/RimMandrake/Utils/scratch_clone.py

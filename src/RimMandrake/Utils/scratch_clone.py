@@ -78,7 +78,9 @@ STORE_CONFIG = {
 }
 SEATS = ("bench", "foundry")
 # The default cone (see the module docstring). Root files are always in a cone checkout.
-BASE_CONE = (".claude", "infrastructure", "skills", "src/RimMandrake/Utils", "src/RimMandrake/rimflow")
+# src/RimMandrake/contracts: rimflow and Utils import it (selftest_scratch_clone's cone_imports_check)
+BASE_CONE = (".claude", "infrastructure", "skills", "src/RimMandrake/Utils", "src/RimMandrake/contracts",
+             "src/RimMandrake/rimflow")
 
 
 def store_path() -> Path:
