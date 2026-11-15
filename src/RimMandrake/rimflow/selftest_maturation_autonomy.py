@@ -135,7 +135,7 @@ def main():
         ok(g("A").get("klass") == "wait" and not w.launched, "a held game: wait (bridge held), nothing launched")
         # a refused judge (visit not met): ONE steward run routes the failed lines back
         fresh_state()
-        w = World({"A": ingame("A", "exit not met", why=["sc_ruins reads UNMEASURED"])})
+        w = World({"A": ingame("A", "exit not met", why=["sc_ruins reads UNMEASURED at 100% of rows"])})
         rd, g = run(w, ["A"], root)
         st = [x for x in w.launched if x[0] == "brief"]
         ok(g("A").get("klass") == "launch" and st and "ROUTE_A_VISIT_ONE_FAILURES_BACK" in st[0][1] and st[0][2] == "opus",

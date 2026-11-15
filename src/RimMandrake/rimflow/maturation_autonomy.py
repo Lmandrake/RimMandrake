@@ -522,34 +522,46 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
     for row in rows:
         if row["mod"] not in launches or not row.get("aut"):
             continue
-        mod, s = row["mod"], st["mods"][row["mod"]]
-        model = cfg.get("steward_model", "opus")
-        if row["aut"] == "fixer":
-            item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
-            brief = fixer_brief(item, mod, row["cap"])
-            book = s.setdefault("fixers", {})
-            key = item
-        else:
-            item = item_name(row, known)
-            key, book = row["steward_key"], s.setdefault("steward", {})
-            title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
-                mod, row.get("steward_kind"), row.get("stage"))
-            why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why"))[:300], MD.pac(now))
-            ok, text = do_file(item, title, why) if item else (False, "no free item name")
-            brief = steward_brief(root, mod, row) % {"item": item, "cap": row["cap"]} if ok else ""
-        unit = None
-        if ok:
-            rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"))
-            ok = rc == 0 and bool(unit)
-            text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
-        book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text}
-        if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met"):
-            s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
-        if ok:
-            row.update(decision="launched", unit=unit, item=item, why=text)
-            known.add(item) if isinstance(known, set) else None
-        else:
-            row.update(decision="launch_failed", why=text)
+        try:
+            _execute_one(root, cfg, st, row, now, do_file, do_launch, known)
+        except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
+            book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
+            book[row.get("fix_item") or row.get("steward_key")] = {"item": row.get("item"), "unit": None, "at": now,
+                                                                   "failed": "%s: %s" % (type(e).__name__, e)}
+            row.update(decision="launch_failed", why="%s: %s" % (type(e).__name__, e))
+
+
+def _execute_one(root, cfg, st, row, now, do_file, do_launch, known):
+    import maturation_dispatch as MD
+    mod, s = row["mod"], st["mods"][row["mod"]]
+    model = cfg.get("steward_model", "opus")
+    if row["aut"] == "fixer":
+        item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
+        brief = fixer_brief(item, mod, row["cap"])
+        book = s.setdefault("fixers", {})
+        key = item
+    else:
+        item = item_name(row, known)
+        key, book = row["steward_key"], s.setdefault("steward", {})
+        title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
+            mod, row.get("steward_kind"), row.get("stage"))
+        why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why"))[:300], MD.pac(now))
+        ok, text = do_file(item, title, why) if item else (False, "no free item name")
+        brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
+                 if ok else "")
+    unit = None
+    if ok:
+        rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"))
+        ok = rc == 0 and bool(unit)
+        text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
+    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text}
+    if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met"):
+        s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
+    if ok:
+        row.update(decision="launched", unit=unit, item=item, why=text)
+        known.add(item) if isinstance(known, set) else None
+    else:
+        row.update(decision="launch_failed", why=text)
 
 
 def conductor_log():
