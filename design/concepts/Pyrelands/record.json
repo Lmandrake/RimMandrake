@@ -186,6 +186,18 @@
    "speaker": "owner",
    "source": "OWNER:1794594166295378777",
    "text": "By his card 2026-11-13 (World switch -> Ship OFF, unsupported): biomeGenerationEnabled ships off by default, labelled unsupported (built, commit e36d2374af). The switch stays outside the promise (d_worldgen_outside_promise); only its shipped default is checked."
+  },
+  {
+   "id": "d_ullai_keep_vanilla_herd_migration",
+   "speaker": "owner",
+   "source": "OWNER:1794694157698359872",
+   "text": "By his card 2026-11-14 (Do you want ullai herds crossing the map (vanilla herd migration)? -> Yes, let them cross): ullai keep vanilla herd migration across the map. The world-map migration leg stays cut (T_CUT_STAYS_CUT); the kept part is checked offline by T_ULLAI_HERD_MIGRATES (src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py), leaf ullai_cross_the_map_as_vanilla_herds."
+  },
+  {
+   "id": "d_fix_twelve_gaps_in_0_1_0",
+   "speaker": "owner",
+   "source": "OWNER:1794748469904049550",
+   "text": "By his card 2026-11-15 (Pyrelands 0.1.0, the coverage judge's 12 Problem gaps -> Fix all 12 in 0.1.0): the 12 Problem gaps of version/evidence/coverage_judge_refusal_2026-11-14.json are fixed inside the locked 0.1.0 as a locked change, each by its smallest_fix; two false-wording Polish gaps (g12 the stale filth wording, g14 the sheet's delegated line) are corrected with them. The scene parts this adds are owed script work, filed as RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED."
   }
  ],
  "asks": [
@@ -421,7 +433,7 @@
  "inventory": [
   {
    "id": "inv_biome_self_contained",
-   "what": "RM_FE_Pyrelands BiomeDef shipped self-contained (own terrains, plants, weather, creatures, mechanics; no donor), places itself on new worlds behind a Mod Settings switch; de-campaigned generic text; ships composed in mandrake.rm.biomes",
+   "what": "RM_FE_Pyrelands BiomeDef shipped self-contained (own terrains, plants, weather, creatures, mechanics; no donor), places itself on new worlds behind a Mod Settings switch; de-campaigned generic text; ships composed in mandrake.rm.biomes; carries the acoustic-scanner payload every biome of ours carries, FindMod-guarded (RM_AcousticPayload_Pyrelands); ports the donor's pyroclastic world mutators (magma vent, magma-thermal generator, geothermal hotspots, magmatic quagmire) for the canon save's tiles that carry them (RM_RetiredMutatorPorts_Pyrelands)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
@@ -433,7 +445,9 @@
     "ITEM:PYRELANDS_WORLD_SWITCH_1",
     "ITEM:PYRELANDS_GENERIC_TEXT_1",
     "ITEM:PYRELANDS_MAPGEN_SCRUB_1",
-    "ITEM:PYRELANDS_TERRAIN_BURNDEF_1"
+    "ITEM:PYRELANDS_TERRAIN_BURNDEF_1",
+    "src/RimMandrake/Pyrelands/Patches/RM_AcousticPayload_Pyrelands.xml",
+    "src/RimMandrake/Pyrelands/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_Pyrelands.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -453,7 +467,7 @@
   },
   {
    "id": "inv_plant_roster",
-   "what": "Wild flora is ember grass + quick grass only (scorch-fruit is fire-born); runtime wild-plant allowlist evicts leaking donor flora; density enforcer holds the owner's tripled plant density so open ground is carpeted",
+   "what": "Wild flora is ember grass + quick grass only (scorch-fruit is fire-born); runtime wild-plant allowlist evicts leaking donor flora; density enforcer holds the owner's tripled plant density so open ground is carpeted; the open-sky grasses wither under a roof, so a room raised on the grass carpet is not floored with tinder (CompWithersUnderRoof)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml",
@@ -462,7 +476,8 @@
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs",
     "ITEM:PYRELANDS_FLORA_LEAK_1",
     "ITEM:PYRELANDS_DENSITY_TRIPLE_1",
-    "ITEM:PYRELANDS_GRASS_SATURATION_1"
+    "ITEM:PYRELANDS_GRASS_SATURATION_1",
+    "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -476,7 +491,14 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_plant_distribution_correct, pyre_grass_chokes_ground. GRASS_SATURATION machine half live r5, owner approved the look OWNER:1792122657732868287",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_walk",
+     "sc_populations"
+    ],
+    "why": "parts: grass withering under a new roof (sc_walk raises one), the wild-plant allowlist (sc_populations' on/off pair)"
+   }
   },
   {
    "id": "inv_embergrass_regrow",
@@ -501,7 +523,7 @@
   },
   {
    "id": "inv_animal_roster",
-   "what": "Fire-ecology cast: fire-hawk, furnace-beast, ullai, ashwallow, emberscythe, flamefang (venom bite), sytheclaw, barbslinger, fire-wasp plus patch-added roster keys; small grazers outnumber big predators; donor creatures cut; invented RUT_ animals moved to RM_",
+   "what": "Fire-ecology cast: fire-hawk, furnace-beast, ullai, ashwallow, emberscythe, flamefang (venom bite), sytheclaw, barbslinger, fire-wasp plus patch-added roster keys; small grazers outnumber big predators; donor creatures cut; invented RUT_ animals moved to RM_; no foreign kind wanders in: incidents that bring a fixed foreign species never fire here, and vanilla's any-animal fallbacks for herd migration and aggressive-animal incidents are closed (PyrelandsForeignArrivals, RM_Pyrelands_NoForeignArrivals); the fire cast is mostly grass-watered with a very slow thirst, and herds reach the rare water one at a time (RM_Pyrelands_NativesSlowThirst, PyrelandsHerdThirst); after the animal genstep the map is topped up to a pair of fire-hawks and eight ashwallows (GenStep_PyrelandsFireCast); the flamefang's venom comes through its own bite tool (RM_FlamefangBite, RM_FlamefangVenomBite)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
@@ -515,7 +537,14 @@
     "ITEM:PYRELANDS_FAUNA_TIER_PORT_BUILD_1",
     "ITEM:PYRELANDS_DEDICATED_GRAZER_1",
     "ITEM:PYRELANDS_ANIMALS_GENSTEP_1",
-    "ITEM:PYRELANDS_FIRE_WEB_COMMISSION_1"
+    "ITEM:PYRELANDS_FIRE_WEB_COMMISSION_1",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsForeignArrivals.cs",
+    "src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NoForeignArrivals.xml",
+    "src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NativesSlowThirst.xml",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsHerdThirst.cs",
+    "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsFireCast.cs",
+    "src/RimMandrake/Pyrelands/Defs/DamageDefs/RM_FlamefangVenomBite.xml",
+    "src/RimMandrake/Pyrelands/Defs/ToolCapacityDefs/RM_FlamefangBite.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -528,18 +557,31 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_animal_distribution_correct; the real cast is patch-added in UtinniPatches, so the census must read the resolved roster (biome_probe), which it does",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_foreign_arrivals",
+     "sc_populations",
+     "sc_walk",
+     "sc_flamefang_venom"
+    ],
+    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts), the slow thirst and one-at-a-time water visits (sc_walk), the venom bite tool (sc_flamefang_venom)"
+   }
   },
   {
    "id": "inv_ash_field",
-   "what": "Ground is deep ash almost everywhere (millennia of burning); deep ash is quite fertile when watered; fresh burns give a fertility bonus (built: black rain fades it; ruled 2026-11-05: rain stops wiping it, d_blackrain_stop_wipe); ambient ash blows like snow and banks as loose-ash filth",
+   "what": "Ground is deep ash almost everywhere (millennia of burning); deep ash is quite fertile when watered; fresh burns give a fertility bonus (built: black rain fades it; ruled 2026-11-05: rain stops wiping it, d_blackrain_stop_wipe); ambient ash blows like snow and banks as ash depth on the sand grid (ProbeAsh), drawn as ground cover and as dust on the plants it lies on (PyrelandsAshCover, PyrelandsAshDust); a plant on watered ash grows as if its cell were cooler, so a vanilla crop grows in the biome's heat where water reaches it, and dry ash keeps vanilla's heat (PyrelandsWetRoots, same switch as watered fertility); the rare standing water is the map's own roll, with ragged shores and a mud and rich-soil ring, and a map may have none (GenStep_PyrelandsStandingWater)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/ScorchableGround.xml",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs",
-    "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
+    "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsWetRoots.cs",
+    "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsStandingWater.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshCover.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshDust.cs"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -558,11 +600,19 @@
     "OWNER:1791817029416124872",
     "OWNER:1793895899845199295"
    ],
-   "note": "2026-11-05 he ruled black rain compounds the fresh-burn bonus (OWNER:1793895899845199295); built code fades it with rain (PyrelandsAshField.cs rainAtBurn/rainAcc, ash redesign §4): a build delta, see c_blackrain_fades_vs_compounds."
+   "note": "2026-11-05 he ruled black rain compounds the fresh-burn bonus (OWNER:1793895899845199295); built code fades it with rain (PyrelandsAshField.cs rainAtBurn/rainAcc, ash redesign §4): a build delta, see c_blackrain_fades_vs_compounds.",
+   "parts_covered_by": {
+    "by": [
+     "sc_ash_watered",
+     "sc_ash_ground",
+     "sc_three_skies"
+    ],
+    "why": "parts: wet roots (sc_ash_watered: a crop growing at the biome's heat at all is the cooler-roots read, its control the watered-lift switch, the same gate), the standing-water ring (sc_ash_ground), ash depth and its drawing (sc_ash_ground, sc_three_skies)"
+   }
   },
   {
    "id": "inv_burn_line_fire_clock",
-   "what": "The burn line: grass fire walks the map with its own front logic (burn kernel, fire-front clock), never fully goes out (a smoulder relights in open grass far from buildings after a quiet spell), a fresh map opens with a small smouldering front, and fire-tick effects spawn props while it burns",
+   "what": "The burn line: grass fire walks the map with its own front logic (burn kernel, fire-front clock), never fully goes out (a smoulder relights in open grass far from buildings after a quiet spell), a fresh map opens with a small smouldering front, and fire-tick effects spawn props while it burns; people on a Pyrelands map keep clear of fire: a person steps off a cell the fire has reached or is about to reach (PyrelandsFireSense, job RM_PyreStepAwayFromFire), and an urgently hungry undrafted colonist eats before fire duty (RM_PyreEatBeforeFireDuty, ThinkNode_ConditionalPyrelandsColonist)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
@@ -571,7 +621,12 @@
     "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
     "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
     "ITEM:PYRELANDS_MECHANICS_1",
-    "ITEM:PYRELANDS_FIRE_CADENCE_1"
+    "ITEM:PYRELANDS_FIRE_CADENCE_1",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs",
+    "src/RimMandrake/Pyrelands/Defs/JobDefs/RM_PyreStepAwayFromFire.xml",
+    "src/RimMandrake/Pyrelands/Patches/RM_PyreStepAwayFromFire.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_PyreEatBeforeFireDuty.xml",
+    "src/RimMandrake/Pyrelands/Source/ThinkNode_ConditionalPyrelandsColonist.cs"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -587,7 +642,13 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_burn_line_present; burn_line is a long split (StandingBurnQuietTicks wait); opening front built in code with its chain but its item is still open",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_walk"
+    ],
+    "why": "part: people keep clear of fire and eat before fire duty; two weeks of ordinary play beside the front is where a colonist would burn or starve, and the walk reads it"
+   }
   },
   {
    "id": "inv_scorchfruit",
@@ -615,11 +676,12 @@
   },
   {
    "id": "inv_ruins_scorched",
-   "what": "Ruins generate blackened and fire-scarred (deep ash on footprints, loose-ash filth) so the player is warned what happens here",
+   "what": "Ruins generate blackened and fire-scarred (deep ash on footprints, ash depth on the sand grid (ProbeAsh) lying in them, walls painted charred (RM_FE_Charred)) so the player is warned what happens here",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/GenStepDefs/PyrelandsGenSteps.xml",
-    "ITEM:PYRELANDS_SCORCHED_RUINS_1"
+    "ITEM:PYRELANDS_SCORCHED_RUINS_1",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/RM_FE_Charred.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -632,17 +694,28 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_ruins_scorched",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_ruins"
+    ],
+    "why": "part: the RM_FE_Charred wall paint, read on the ruins and absent on the vanilla control"
+   }
   },
   {
    "id": "inv_firehawk_ember",
-   "what": "Fire-hawk picks up a burning twig and drops it ahead of the blaze to start a new fire",
+   "what": "Fire-hawk picks up a burning twig and drops it ahead of the blaze to start a new fire; a hawk is drawn to a burn it can see beyond its ember scan radius (JobGiver_RUT_FireHawkSeekBurn) and takes the ember to the largest easily found fuel on the map (RM_FireHawkKernel, MapComponent_RM_FireHawkFuel)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/CompFireHawkSpread.cs",
     "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FireHawkCarryEmber.cs",
     "src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs",
-    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_FireHawkThinkTree.xml"
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_FireHawkThinkTree.xml",
+    "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FireHawkSeekBurn.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireHawkKernel.cs",
+    "src/RimMandrake/Pyrelands/Source/MapComponent_RM_FireHawkFuel.cs",
+    "src/RimMandrake/Pyrelands/Defs/JobDefs/RM_PyrelandsJobs.xml",
+    "src/RimMandrake/Pyrelands/Patches/RM_PyrelandsIgniters_Comps.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -655,11 +728,17 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_firehawk_carries_ember; job-state read only: flyer flight is never live-tested without the owner",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_firehawk"
+    ],
+    "why": "part: a far hawk drawn to a visible burn, read with its switch off as the control"
+   }
   },
   {
    "id": "inv_furnacebeast",
-   "what": "Furnace-beast: a giant that warms pawns standing near it (felt-temperature aura) (local ambient offset, strength slider), banks heat in the burn (thermal charge cycle), smoulders the bed it lies in, is immune to its own heat, and heats an enclosed room",
+   "what": "Furnace-beast: a giant that warms pawns standing near it (felt-temperature aura) (local ambient offset, strength slider), banks heat in the burn (thermal charge cycle), smoulders the bed it lies in, is immune to its own heat, and heats an enclosed room; its hide is a leather (RM_FurnaceHide), and a furnace-hide heat bank built from it gives warmth back slowly with no fuel or power (RM_FurnaceHideBank, the biome's gift to the ship)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs",
@@ -671,12 +750,16 @@
     "src/RimMandrake/Pyrelands/Source/CompPawnHeatPusher.cs",
     "src/RimMandrake/Pyrelands/Source/Kernel/RM_FurnaceKernel.cs",
     "ITEM:PYRELANDS_FURNACE_WARMTH_AMBIENT_1",
-    "ITEM:PYRELANDS_HEAT_KIND_BUILD_1"
+    "ITEM:PYRELANDS_HEAT_KIND_BUILD_1",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Buildings/RM_FurnaceHideBank.xml",
+    "src/RimMandrake/Pyrelands/Patches/RM_PyrelandsIgniters_Comps.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
     "src/RimMandrake/Pyrelands/validation.py::furnace_warmth",
-    "src/RimMandrake/Pyrelands/validation.py::furnace_room"
+    "src/RimMandrake/Pyrelands/validation.py::furnace_room",
+    "src/RimMandrake/Pyrelands/validation.py::furnace_sleep"
    ],
    "scope": "approved",
    "source": [
@@ -696,7 +779,8 @@
     "src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs",
     "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs",
     "src/RimMandrake/Pyrelands/Source/RM_BurrowOnFireExtension.cs",
-    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml"
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml",
+    "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_PyrelandsHediffs.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -714,7 +798,7 @@
   },
   {
    "id": "inv_ullai_herd_giant",
-   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant (size ratio); on the map a low-charge beast walks into the burn and a full one walks away. The world-map herd migration was built, then cut by his card 2026-10-23 (commit 84cc81013d); About.xml and the race descriptions no longer mention it (grep -i migrat over About, Defs, Languages and Patches finds only herdMigrationAllowed false and a patch comment, measured 2026-11-14); the absence is checked offline by T_CUT_STAYS_CUT (version/test_table.json, specified)",
+   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant (size ratio); on the map a low-charge beast walks into the burn and a full one walks away. The world-map herd migration was built, then cut by his card 2026-10-23 (commit 84cc81013d); About.xml and the race descriptions no longer mention it (grep -i migrat over About, Defs, Languages and Patches finds only herdMigrationAllowed false and a patch comment, measured 2026-11-14); the absence is checked offline by T_CUT_STAYS_CUT (version/test_table.json, specified); kept by his card 2026-11-14 (d_ullai_keep_vanilla_herd_migration): ullai stay a herd vanilla herd migration can pick, so a herd may cross the map as vanilla herds do, checked offline by T_ULLAI_HERD_MIGRATES (leaf ullai_cross_the_map_as_vanilla_herds)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
@@ -726,23 +810,33 @@
    ],
    "proof": "stale",
    "proof_evidence": [
-    "src/RimMandrake/Pyrelands/validation.py::ullai_and_giant"
+    "src/RimMandrake/Pyrelands/validation.py::ullai_and_giant",
+    "src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py"
    ],
    "scope": "not_opened",
    "source": [
-    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1"
+    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1",
+    "OWNER:1794694157698359872"
    ],
-   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; no walk bar; herd verdict reads one 2500-tick step"
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; no walk bar; herd verdict reads one 2500-tick step",
+   "parts_covered_by": {
+    "by": [
+     "ullai_cross_the_map_as_vanilla_herds"
+    ],
+    "why": "part: the kept vanilla herd migration, a def and patch read offline (T_ULLAI_HERD_MIGRATES); a live migration is a random incident a scene cannot stage cheaply"
+   }
   },
   {
    "id": "inv_weather",
-   "what": "Ash fall (dims the map, banks loose-ash drifts), cinderfall (its own look, brings lightning), black rain (dark, puts fires out, washes ash); no ordinary rain ever",
+   "what": "Ash fall (dims the map, banks ash drifts on the sand grid (ProbeAsh)), cinderfall (its own look, brings lightning), black rain (dark, puts fires out, washes ash); no ordinary rain ever; falling weather is drawn so it reads on dark ash under a dim sky (PyrelandsWeatherOverlays), and a game condition's forced weather never brings ordinary rain (PyrelandsNoOrdinaryRain)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/WeatherDefs/AshFall.xml",
     "src/RimMandrake/Pyrelands/Defs/WeatherDefs/Cinderfall.xml",
     "src/RimMandrake/Pyrelands/Defs/WeatherDefs/BlackRain.xml",
-    "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml"
+    "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsNoOrdinaryRain.cs"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -802,7 +896,8 @@
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
     "src/RimMandrake/Pyrelands/Defs/SandShovel/RM_ShovelSand.xml",
-    "ITEM:PYRELANDS_SAND_TERRAIN_YIELD_1"
+    "ITEM:PYRELANDS_SAND_TERRAIN_YIELD_1",
+    "src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -854,7 +949,8 @@
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
     "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
     "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
-    "ITEM:PYRELANDS_SHIP_READINESS_1"
+    "ITEM:PYRELANDS_SHIP_READINESS_1",
+    "src/RimMandrake/Pyrelands/Languages/English/Keyed/RM_Pyrelands_CrossBiome.xml"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -903,13 +999,15 @@
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml",
     "ITEM:RIMMANDRAKE_ANNOUNCE_FIREHAWK_EMBER_LETTER_ON_FIRST_SIGHTING",
-    "ITEM:RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY"
+    "ITEM:RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireHawkRewardsKernel.cs"
    ],
    "proof": "missing",
    "proof_evidence": [
     "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
     "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
-    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
+    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
+    "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/FireHawkRewardsFuzz.cs"
    ],
    "scope": "opened_by_owner",
    "scope_source": "OWNER:1794693278631337978",
@@ -940,6 +1038,30 @@
   {
    "ref": "ITEM:PYRELANDS_WRONG_BIOME_DEF_1",
    "covered_by": "inv_biome_self_contained"
+  },
+  {
+   "ref": "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsDefOf.cs",
+   "not_a_capability": "DefOf plumbing for defs other rows ship (RM_ jobs, hediffs); no behaviour of its own"
+  },
+  {
+   "ref": "src/RimMandrake/Pyrelands/Source/SelfTest/Program.cs",
+   "not_a_capability": "offline selftest harness (FurnaceWarmthMath); proof, not a shipped capability"
+  },
+  {
+   "ref": "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/Program.cs",
+   "not_a_capability": "offline fuzz entry; proof, not a shipped capability"
+  },
+  {
+   "ref": "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs",
+   "not_a_capability": "offline fuzz over the Verse-free kernels; proof, not a shipped capability"
+  },
+  {
+   "ref": "ITEM:PYRELANDS_FINISH_ARTISAN_THIRD_TIME_WISER",
+   "not_a_capability": "a process run (the retired Artisan loop on this mod), not a capability"
+  },
+  {
+   "ref": "ITEM:PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID",
+   "covered_by": "inv_art_and_text"
   }
  ],
  "contradictions": [

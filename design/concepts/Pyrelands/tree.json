@@ -85,7 +85,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player farming an ordinary crop on deep ash finds it very fertile ground that still benefits from water as before: a strip beside a watered channel grows clearly faster than the same crop on dry ash a few cells away. It must not read as ash being barren, or as water making no difference to a crop on ash.",
+   "experience": "The player farming an ordinary crop on deep ash finds it sowable dry (about 70%) and very fertile where watered (about 140%), benefiting from water as before (his cards 2026-11-07 and 2026-11-13, OWNER:1794594151279833849): a strip beside a watered channel grows clearly faster than the same crop on dry ash a few cells away. It must not read as ash being barren, or as water making no difference to a crop on ash.",
    "scenario": "Two strips of the same crop sown on the same tick on deep ash, one beside water and one dry; read growth each day for five days.",
    "false_pass": [
     "the watered strip is sown on soil rather than ash",
@@ -217,7 +217,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player who finds ruins on a fresh Pyrelands map sees them blackened and fire-scarred, with deep ash on their footprint and loose ash in them, so they warn what happens here. It must not read as pristine ruins on a burned plain.",
-   "scenario": "Fresh map with ruins; capture each ruin at play zoom; read terrain and filth on its footprint.",
+   "scenario": "Fresh map with ruins; capture each ruin at play zoom; read terrain and ash depth on the sand grid (ProbeAsh) on its footprint.",
    "false_pass": [
     "a ruin is stamped scorched only in its inspect text"
    ],
@@ -554,6 +554,55 @@
    "tier_proposed": "quicktest",
    "owner_part": "no",
    "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the first ember carry seen on the home map sends exactly one letter that targets the hawk, a second carry sends none, and with the letter switch off none is sent; 400 hunted fire-hawks butchered under a fixed seed yield the Pristine Firehawk Crestfeather at the built 35% within 4 sigma, and a butchered non-hawk animal yields none",
+   "tier_reason": "the letter and the butcher products are read in a running game; a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives one in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "firehawk_hunt_rewards",
+   "by": "concept",
+   "root": [
+    "pyre_firehawk_carries_ember"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player who first sees a fire-hawk carrying an ember on the home map gets one letter that names the hawk and the ember and jumps to it, once a game and switchable off in Mod Settings; a colonist who butchers a hunted fire-hawk sometimes gets a Pristine Firehawk Crestfeather, a valuable object of beauty. It must not read as a letter every time a hawk carries, or as a trophy any carcass drops.",
+   "scenario": "A staged hawk carries an ember on the home map, unfogged; read the letter stack; a second hawk carries; turn the letter switch off and re-arm; butcher 400 fire-hawks through the patched butcher products under a fixed seed and count crestfeathers; control: butcher a non-hawk animal.",
+   "false_pass": [
+    "the letter is sent by the test",
+    "every butchered carcass drops the crestfeather"
+   ],
+   "red": "no letter on the first carry, a letter on every carry, or no crestfeather from a hunted hawk",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "T_ULLAI_HERD_MIGRATES (src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py) passes: RM_Ullai resolves as a herd animal vanilla IncidentWorker_HerdMigration can pick (herdAnimal, Animal intelligence, organic flesh, herdMigrationAllowed not false, no patch disabling it, a PawnKindDef, a Pyrelands commonality above 0)",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ullai_cross_the_map_as_vanilla_herds",
+   "by": "concept",
+   "root": [
+    "pyre_animal_distribution_correct"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees ullai herds cross the map in vanilla herd migrations, as vanilla herds do (his card 2026-11-14, \"Yes, let them cross\"). It must not read as ullai that never migrate, or as the world-map migration he cut coming back.",
+   "scenario": "Read RM_Ullai's race and PawnKindDef as the game resolves them, every patch op touching them, and the RM_Pyrelands wild-animal list, against vanilla's herd-migration rule (offline).",
+   "false_pass": [
+    "the check reads only the ullai's own XML and misses a patch that turns herd migration off"
+   ],
+   "red": "a patch or a parent def sets herdMigrationAllowed false, or RM_Pyrelands lists no ullai",
+   "tier_proposed": "offline",
+   "owner_part": "no"
   }
  ]
 }

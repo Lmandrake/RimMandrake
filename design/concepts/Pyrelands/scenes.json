@@ -32,18 +32,21 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::ground_deep_ash",
    "start": [
-    "fresh Pyrelands map, clear weather at noon (asserted)"
+    "fresh Pyrelands map, clear weather at noon (asserted, hour read); a save made there (ashground_noon)"
    ],
-   "action": "census the terrain; capture open ground; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour",
-   "expect": "deep ash on most cells, soil and gravel only in pockets, richer ground by water; ash blowing in clear weather; drifts rise and the light falls under ash fall",
+   "action": "census the terrain; capture open ground; where the map rolled water, read its shore ring; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour; reload ashground_noon, hold clear weather for the same half-day and read ProbeAsh and light at the same clock hours",
+   "expect": "deep ash on most cells, soil and gravel only in pockets, a mud and rich-soil ring round any standing water (a map with none is correct); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain",
    "control": {
-    "case": "a vanilla arid shrubland quicktest map read by the same census and capture",
-    "expect": "no deep ash and no blowing ash",
-    "rules_out": "a map-wide overlay or terrain relabel applied whatever the biome"
+    "case": "the same map's clear-weather run from ashground_noon over the same clock hours, and a vanilla arid shrubland quicktest map read by the same census and capture",
+    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; the vanilla map shows no deep ash and no blowing ash",
+    "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome"
    },
    "restore": "destroy the vanilla control map; on the Pyrelands map remove the loose ash laid by the forced ash fall and restore the weather chooser",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains ground_deep_ash"
   },
   {
    "id": "sc_ash_watered",
@@ -100,18 +103,22 @@
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::embergrass_regrow",
    "start": [
     "a burned ember-grass patch on deep ash at the biome's heat (asserted: share green near 0 after the burn)",
+    "two sown ember-grass patches of the same size and tick: one on dry deep ash last burned more than 7 days ago (asserted by burn history and the ash fertility probe: not watered, no fresh-burn bonus), one on watered deep ash (asserted: watered read); a vanilla grass patch sown on the same dry ash",
     "vitals and incident guard before and after each wait"
    ],
-   "action": "count green cells and capture on days 1, 3 and 7; census grass cover on open ground",
-   "expect": "at least 25% green on day 3, at least 60% on day 7; dense cover on open ground",
+   "action": "count green cells and capture on days 1, 3 and 7; census grass cover on open ground; read the growth of the sown dry, watered and vanilla patches daily and count growth bursts on each",
+   "expect": "at least 25% green on day 3, at least 60% on day 7; dense cover on open ground; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
    "control": {
-    "case": "the same patch with ember-grass regrow switched off",
-    "expect": "stays black through day 7",
-    "rules_out": "the test or the density enforcer re-sowing the patch"
+    "case": "the same burned patch with ember-grass regrow switched off; the vanilla grass on the same dry ash",
+    "expect": "the burned patch stays black through day 7; the vanilla grass on dry ash grows below the ember grass beside it and shows no burst",
+    "rules_out": "the test or the density enforcer re-sowing the patch, and ordinary ash fertility doing the ember grass's dry-ash work"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (the patch), restore the regrow switch",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains embergrass_regrow"
   },
   {
    "id": "sc_scorchfruit",
@@ -145,18 +152,22 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::plant_census",
    "start": [
-    "fresh Pyrelands map on the composed mandrake.rm.biomes list, log tap open from generation"
+    "fresh Pyrelands map on the composed mandrake.rm.biomes list, log tap open from generation",
+    "wild-plant allowlist (wildPlantAllowlistEnabled) on (asserted from the settings read)"
    ],
-   "action": "census every wild plant and animal on the map against the biome manifest; read the log",
-   "expect": "every defName in the manifest, grazers outnumber predators, no red error",
+   "action": "census every wild plant and animal on the map against the biome manifest; count fire-hawks and ashwallows; read the log; then add a donor plant to the map's wild-plant pass and let wild-plant spawning run for a day, allowlist on, then the same day with it off",
+   "expect": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and eight ashwallows, no red error; with the allowlist on the donor plant is evicted or never spawns",
    "control": {
-    "case": "one donor plant and one donor animal spawned before the census",
-    "expect": "both are reported as intruders",
-    "rules_out": "a census that cannot see intruders reporting a clean map"
+    "case": "one donor plant and one donor animal spawned before the census; the same wild-plant day with wildPlantAllowlistEnabled off",
+    "expect": "both seeded donors are reported as intruders; with the allowlist off the donor plant grows",
+    "rules_out": "a census that cannot see intruders reporting a clean map, and a map where no donor ever leaked passing for the allowlist evicting one"
    },
-   "restore": "despawn the two seeded intruders; nothing else is changed",
+   "restore": "despawn the seeded intruders and every donor plant the wild-plant day spawned, take the donor out of the wild-plant pass and restore the allowlist switch",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains plant_census"
   },
   {
    "id": "sc_ruins",
@@ -169,16 +180,19 @@
    "start": [
     "fresh Pyrelands map holding ruins (asserted: at least one)"
    ],
-   "action": "capture each ruin at play zoom; read footprint terrain and filth",
-   "expect": "blackened ruins on deep ash with ash lying in them (ProbeAsh over the ruin footprint: ashed cells above zero)",
+   "action": "capture each ruin at play zoom; read footprint terrain, ash depth on the sand grid (ProbeAsh) over the ruin footprint, and the paint on the ruin's walls",
+   "expect": "blackened ruins on deep ash with ash lying in them (ProbeAsh over the ruin footprint: ashed cells above zero), walls painted RM_FE_Charred",
    "control": {
     "case": "a ruin on a vanilla temperate quicktest map read the same way",
-    "expect": "reads clean, on soil",
+    "expect": "reads clean, on soil, with no RM_FE_Charred paint",
     "rules_out": "ruin art that is always scorched whatever the biome"
    },
    "restore": "destroy the vanilla control map; the Pyrelands map is read only",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains ruins"
   },
   {
    "id": "sc_firehawk",
@@ -190,18 +204,22 @@
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::firehawk",
    "start": [
     "grass pad with a fire at one end and no fire ahead of it (asserted)",
-    "one fire-hawk on the pad; flight is not watched, only state read"
+    "one fire-hawk on the pad; flight is not watched, only state read",
+    "a second fire-hawk idle more than 54 cells (its ember scan radius) from a burn it can see (asserted by distance and line of sight)"
    ],
-   "action": "read the hawk's job and carried thing each window until it drops",
-   "expect": "carry, then drop, then a fire at the drop cell beyond the front before the front reaches it",
+   "action": "read the hawk's job and carried thing each window until it drops; read the second hawk's job and distance to the burn each hour for half a day",
+   "expect": "carry, then drop, then a fire at the drop cell beyond the front before the front reaches it; the far hawk takes RM_FireHawkSeekBurn and closes on the burn",
    "control": {
-    "case": "the same pad and fire with no hawk",
-    "expect": "no fire at that cell in the same window",
-    "rules_out": "ordinary fire spread lighting the drop cell"
+    "case": "the same pad and fire with no hawk; the far hawk with the fire-hawk spread switch (fireHawkSpreadEnabled) off",
+    "expect": "no fire at that cell in the same window; the far hawk takes no RM_FireHawkSeekBurn and does not close on the burn",
+    "rules_out": "ordinary fire spread lighting the drop cell, and a hawk that wanders into a burn by chance"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn the test hawk",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains firehawk"
   },
   {
    "id": "sc_furnace",
@@ -280,20 +298,23 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::cinderfall",
    "start": [
-    "the same map at noon, clear weather asserted",
+    "the same map at local noon (hour asserted between 10h and 14h), clear weather asserted, saved there (skies_noon)",
     "three fire pads lit and burning (asserted)",
-    "an ash patch laid on the sand grid and its depth read (ProbeAsh)"
+    "two ash patches laid on the sand grid with equal depth (ProbeAsh depthSum read on both)"
    ],
-   "action": "force ash fall, cinderfall and black rain in turn, half a day each, over one fire pad and the ash patch; capture each at play zoom for a blind reader; count lightning strikes under each sky; count fire cells and loose ash each hour; keep one fire pad under clear sky and force vanilla rain over the third",
-   "expect": "the three captures are told apart and from vanilla rain; lightning strikes under cinderfall and none under ash fall; the ash patch's depth (ProbeAsh depthSum) falls under black rain; fires go out under black rain while the clear-sky pad still burns",
+   "action": "from skies_noon force ash fall, cinderfall and black rain in turn, half a day each, each from a reload of skies_noon, over one fire pad and the first ash patch while the second ash patch is held under clear sky; capture each sky, and a vanilla rain sky, at local noon (capture hour asserted between 10h and 14h) at play zoom for a blind reader; count lightning strikes under each sky; count fire cells and read ProbeAsh on both ash patches each hour; keep one fire pad under clear sky and force vanilla rain over the third",
+   "expect": "every capture's hour reads between 10h and 14h; the three captures are told apart and from vanilla rain; lightning strikes under cinderfall and none under ash fall; under black rain the first ash patch loses clearly more depth (ProbeAsh depthSum) than the clear-sky patch, at least twice its loss; fires go out under black rain while the clear-sky pad still burns",
    "control": {
-    "case": "the clear-sky fire pad and the vanilla-rain fire pad over the same hours, and a vanilla rain capture shown to the blind reader",
-    "expect": "the clear-sky pad keeps burning; the vanilla-rain pad also goes out; the reader names the vanilla capture ordinary rain",
-    "rules_out": "fires dying on their own being read as black rain's doing, and a reader that names every dark sky black rain; fire-out under black rain is vanilla rain's own rule carried by black rain, and the claim is no more than that"
+    "case": "the clear-sky fire pad, the clear-sky ash patch and the vanilla-rain fire pad over the same hours, and a vanilla rain capture shown to the blind reader",
+    "expect": "the clear-sky pad keeps burning; the clear-sky ash patch loses only dry wear; the vanilla-rain pad also goes out; the reader names the vanilla capture ordinary rain",
+    "rules_out": "fires dying on their own being read as black rain's doing, dry ash wear passing for black rain's wash, captures taken at night reading every sky dark, and a reader that names every dark sky black rain; fire-out under black rain is vanilla rain's own rule carried by black rain, and the claim is no more than that"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the weather chooser to its prior weather and clear the loose ash the scene laid",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains cinderfall"
   },
   {
    "id": "sc_no_rain",
@@ -329,16 +350,19 @@
     "fresh Pyrelands map on his full list",
     "state digest recorded"
    ],
-   "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; switch the mechanics off and on",
-   "expect": "the digest after reload equals the one before; the second pass yields fruit again; switches leave nothing behind; log clean",
+   "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, raise a roofed room on the grass carpet, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; read the fire cast's thirst and each herd's water visits; turn the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day, reading the burn line, ash depth (ProbeAsh) and furnace-bed fires, then on again for a day; switch the other mechanics off and on",
+   "expect": "the digest after reload equals the one before; the second pass yields fruit again; no colonist takes a burn standing in fire and none starves at fire duty; the grass under the new roof withers within days; herds reach the water one at a time and none dehydrates; with the roster toggle off no new front, no ash laid and no bed fire over the day, and all three resume once it is back on; switches leave nothing behind; log clean",
    "control": {
-    "case": "a reload from a save made before the front lit",
-    "expect": "the digest differs from the mid-way digest",
-    "rules_out": "a reload test that compares two empty states"
+    "case": "a reload from a save made before the front lit; the roster toggle's on day over the same length",
+    "expect": "the digest differs from the mid-way digest; with the toggle on the front walks and ash is laid",
+    "rules_out": "a reload test that compares two empty states, and a quiet day with no fire passing for the toggle stopping the mechanics"
    },
    "restore": "a save is made before the walk starts (pre_walk) and every walk save is kept for his review; the walk's colony is disposable and nothing is restored into it; his canonical world saves are never loaded or written",
    "hold": "owner_review",
-   "entry_point_item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES"
+   "entry_point_item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains walk_season"
   },
   {
    "id": "sc_firefoam_sprayer",
@@ -420,17 +444,21 @@
    "start": [
     "two wild furnace-beasts laid down on a concrete pad: A on a 5x5 of ember grass, B (the control) on a 5x5 of bare RM_FE_Ground_Soil, 6 cells apart (asserted by terrain and plant reads)",
     "weather locked Clear (asserted)",
-    "furnace thermal (furnaceThermalEnabled) on"
+    "furnace thermal (furnaceThermalEnabled) on",
+    "A's health and hediffs recorded before its bed fire; a like-sized vanilla animal (a muffalo) laid down asleep on a third 5x5 of ember grass beside A's, health recorded"
    ],
-   "action": "keep both asleep; every poll read each with CompFurnaceBedIgnition.ProbeSleep and count Fire within 2 cells of each",
-   "expect": "A's grass is alight after about two hours of sleep on average, never at once",
+   "action": "keep both asleep; every poll read each with CompFurnaceBedIgnition.ProbeSleep and count Fire within 2 cells of each; once A's bed is alight, light the muffalo's bed; read both animals' health and hediffs until each fire burns out on its cell",
+   "expect": "A's grass is alight after about two hours of sleep on average, never at once; A takes no burn injury from its own bed fire (immune to its own heat)",
    "control": {
-    "case": "B asleep on bare soil, which burns (Flammability 0.6), in the same weather",
-    "expect": "no sleep-roll fire on B's bed",
-    "rules_out": "a roll that ignores the plant, or the wake-up smoulder (any ground, put out before B lies down again) passing for the sleep roll"
+    "case": "B asleep on bare soil, which burns (Flammability 0.6), in the same weather; the muffalo in the same kind of bed fire",
+    "expect": "no sleep-roll fire on B's bed; the muffalo takes burn damage",
+    "rules_out": "a roll that ignores the plant, or the wake-up smoulder (any ground, put out before B lies down again) passing for the sleep roll, and A's fire never reaching A passing for the heat immunity"
    },
-   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn both beasts, unlock the weather",
-   "hold": "immediate"
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn both beasts and the muffalo, unlock the weather",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains furnace_sleep"
   },
   {
    "id": "sc_heat_dome",
@@ -489,18 +517,21 @@
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::flamefang_venom",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
    "start": [
-    "a colonist carrying no venom or toxic buildup hediff (asserted), on a cleared pad",
-    "a hostile RM_Flamefang beside it"
+    "three colonists carrying no venom or toxic buildup hediff (asserted), on a cleared pad, a doctor beside them",
+    "a hostile RM_Flamefang beside them"
    ],
-   "action": "let the flamefang land bites until one connects; read the colonist's hediffs at once and each hour for six hours",
-   "expect": "RM_FlamefangVenom present after the bite, its severity rising over the hours",
+   "action": "let the flamefang land bites until two colonists carry RM_FlamefangVenom; the doctor tends one, the other is left untended; read both colonists' venom severity at once and each hour for six hours; then read the untended colonist's immunity and force it to complete (or wait it out) and read severity until the hediff goes",
+   "expect": "RM_FlamefangVenom present after each bite, its severity rising over the hours; X over the same hours; once immunity completes the severity falls and the hediff goes",
    "control": {
-    "case": "a fresh colonist bitten by a non-venomous predator of like size",
+    "case": "the third colonist bitten by a non-venomous predator of like size",
     "expect": "a bite wound and no RM_FlamefangVenom",
     "rules_out": "the venom coming from any bite or melee damage, rather than the flamefang's own bite tool"
    },
-   "restore": "despawn the predators, kill or despawn the test colonists, put back the pad from the snapshot taken at scene-begin",
-   "hold": "immediate"
+   "restore": "despawn the predators, kill or despawn the test colonists and the doctor, put back the pad from the snapshot taken at scene-begin",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains flamefang_venom"
   },
   {
    "id": "sc_furnace_giant",
@@ -524,6 +555,56 @@
    },
    "restore": "re-run the giant patch with the switch on so the live defs read giant again, despawn both pawns",
    "hold": "immediate"
+  },
+  {
+   "id": "sc_foreign_arrivals",
+   "kind": "acceptance",
+   "requirement": [
+    "populations_are_the_biomes_own"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::foreign_arrivals",
+   "entry_point_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "start": [
+    "fresh Pyrelands map on the composed mandrake.rm.biomes list, its animal census recorded (asserted: only the biome's own kinds)",
+    "log tap open"
+   ],
+   "action": "run a herd migration, a manhunter-pack incident and each fixed-foreign-species incident the patch disallows (RM_Pyrelands_NoForeignArrivals) through the incident's own CanFireNow and TryExecute; census the animals after each",
+   "expect": "the fixed-species incidents refuse (CanFireNow false); any herd migration or manhunter pack that fires brings only the biome's own kinds; no foreign kind on the map after; log clean",
+   "control": {
+    "case": "the same incidents on a vanilla arid shrubland quicktest map",
+    "expect": "they fire and bring their foreign species",
+    "rules_out": "incidents that never fire anywhere, or a dead incident trigger, passing for the Pyrelands refusing a foreign arrival"
+   },
+   "restore": "despawn every animal the incidents brought, destroy the vanilla control map",
+   "hold": "immediate",
+   "live_run": "UNRUN",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "live_command": "modcheck run Pyrelands --chains foreign_arrivals"
+  },
+  {
+   "id": "sc_firehawk_rewards",
+   "kind": "acceptance",
+   "requirement": [
+    "firehawk_hunt_rewards"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py::firehawk_first_sighting_letter",
+   "start": [
+    "no fire-hawk sighting letter sent this game (asserted from the game component)",
+    "the sighting letter switch (fireHawkSightingLetterEnabled) on; a staged hawk on the home map, unfogged"
+   ],
+   "action": "the hawk carries an ember; read the letter stack; a second hawk carries; then the switch off and the gate re-armed, a hawk carries again; butcher 400 fire-hawks under a fixed seed (firehawk_crestfeather_yield) and count Pristine Firehawk Crestfeathers",
+   "expect": "exactly one letter after the first carry, targeting the hawk, and still one after the second; the crestfeather yield at the built 35% within 4 sigma",
+   "control": {
+    "case": "the letter switch off; a non-hawk animal butchered the same way",
+    "expect": "no letter with the switch off; no crestfeather from the non-hawk",
+    "rules_out": "a letter sent on every carry or by the test, and a trophy any carcass drops"
+   },
+   "restore": "despawn the staged hawks and the butchered products, restore the letter switch and the sighting gate",
+   "hold": "immediate",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains firehawk_first_sighting_letter,firehawk_crestfeather_yield"
   }
  ],
  "showcases": [
@@ -608,9 +689,10 @@
   {
    "capability": "inv_settings_gate",
    "by": [
+    "sc_walk",
     "walk_season_on_the_pyre"
    ],
-   "why": "the walk switches the mechanics off and on mid-game and the floor's mod_settings line checks every toggle"
+   "why": "the walk turns the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day and reads that the burn line, ash laying and bed fires stop and resume, then switches the other mechanics off and on; the floor's mod_settings line checks every toggle"
   },
   {
    "capability": "inv_art_and_text",
@@ -620,6 +702,14 @@
     "biome_text_says_engineered"
    ],
    "why": "the shipped art rests on his approval of the art sheet (OWNER:1792122659817386516, 2026-10-16); sc_three_skies' captures carry the floor's art and reads_as lines for the skies only; sc_populations takes no capture and checks only that the shipped cast is the biome's own; the biome text is read offline"
+  },
+  {
+   "capability": "inv_firehawk_hunt_rewards",
+   "by": [
+    "sc_firehawk_rewards",
+    "firehawk_hunt_rewards"
+   ],
+   "why": "a once-a-game letter and a butcher product are read directly; a showcase built round a hunt adds nothing the scene does not read"
   }
  ]
 }
