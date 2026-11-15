@@ -15,5 +15,5 @@ Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/red_dispatch.py tick --apply
 Nice=10
-MemoryMax=1G
+MemoryMax=2G
 TimeoutStartSec=20min
