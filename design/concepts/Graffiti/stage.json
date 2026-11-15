@@ -1,0 +1,25 @@
+{
+ "aliases": [],
+ "budget": {
+  "cap": 4000000,
+  "charges": [],
+  "reserve": 60000,
+  "spent": 0
+ },
+ "history": [
+  {
+   "at": "2026-11-15T04:54:02Z",
+   "stage": 0,
+   "what": "init",
+   "why": "stage 0, budget 4000000 (reserve 60000)"
+  }
+ ],
+ "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
+ "mod": "Graffiti",
+ "recovery": [],
+ "results": [],
+ "running": null,
+ "schema": 1,
+ "stage": 0,
+ "status": "ready"
+}
