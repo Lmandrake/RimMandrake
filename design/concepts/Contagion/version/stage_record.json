@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "mod": "Contagion",
+  "version": "0.1.0",
+  "stage": "designer",
+  "stage_label": "Designer (Stage 1)",
+  "since": "2026-11-15T06:00:29-08:00",
+  "since_from": "advance by BENCH",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-15T06:00:13-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Intake, ideas waiting, since 2026-11-15 6:30 AM PST (admitted the same morning; see history)",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [
+    {
+      "from": "intake",
+      "to": "designer",
+      "at": "2026-11-15T06:00:29-08:00",
+      "by": "BENCH",
+      "why": "next most mature biome mod by measurement (D:\\ClaudeWork\\rimmandrake\\conductor\\next_biome_mod_20261115.md); Designer lane idle; item RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
+      "confirmed": {
+        "owner_said": "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add."
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "intake_closed"
+      ]
+    }
+  ],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 0,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/Contagion/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    }
+  ]
+}

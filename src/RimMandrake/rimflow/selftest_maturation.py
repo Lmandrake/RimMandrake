@@ -201,6 +201,11 @@ def main():
         # intake is closed until a mod reaches his walk (his card, 2026-11-14)
         refused(M.advance(root, "PyrelandsMechanics", "designer", by="BENCH", why="x"), "intake_closed",
                 "intake before any mod reached his walk")
+        # ...unless his words admit this one mod (owner, 2026-11-15: "pick the next most mature biome mod to add")
+        e = M.evaluate(root, "PyrelandsMechanics", "designer", by="BENCH", why="x", owner="add this mod now")
+        ok("intake_closed" not in [r["clause"] for r in e["verdict"]["refusals"]]
+           and "intake_closed" in [p["clause"] for p in e["verdict"]["passed"]],
+           "his words open intake for one mod before any walk")
 
         # designer to preflight needs the lock; preflight to offline build needs a preflight record
         refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "an unlocked version")

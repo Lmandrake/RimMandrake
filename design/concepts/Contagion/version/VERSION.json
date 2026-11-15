@@ -1,0 +1,20 @@
+{
+ "mod": "Contagion",
+ "version": "0.1.0",
+ "state": "open: admitted to the Designer 2026-11-15; no locked design yet",
+ "ruled_on": "2026-11-15",
+ "ruled_by": "owner",
+ "owner_words": "2026-11-15 ~05:40 PST (phone; 'modest' read as 'mod set'): If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add.",
+ "record": "Contagion",
+ "bars_total": "UNMEASURED",
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 0,
+ "tokens_spent": 0,
+ "measured_from": {
+  "bars_total": "no Designer tree yet; the Designer's Lock step sets the bars",
+  "tokens_spent": "no Designer stage has run on this concept"
+ },
+ "caveats": [
+  "picked by BENCH's ranking D:\\ClaudeWork\\rimmandrake\\conductor\\next_biome_mod_20261115.md (item RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME)"
+ ]
+}

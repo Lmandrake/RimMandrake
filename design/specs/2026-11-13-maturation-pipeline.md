@@ -156,7 +156,7 @@ Plain-text version of the same map:
 | Model tier | None. A list, read by a program. | PROPOSAL |
 | Inputs | Today: 42 "first touch" Designer items in RimFlow (`python3 src/RimMandrake/Utils/owner_queue.py`, measured 2026-11-13 3:03 PM PST). Other ideas sit inside tickets and are not counted yet. | measured; "trapped in tickets" is HIS |
 | Outputs | One line per waiting mod: its name, one sentence, whether code already exists. | PROPOSAL |
-| Exit ("ready" means) | Closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. | HIS, by card 2026-11-14 |
+| Exit ("ready" means) | Closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. Before that, a mod leaves intake only on his words in the request (`advance --owner-said`): "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." (Contagion entered this way.) | HIS, by card 2026-11-14; HIS, 2026-11-15 ~05:40 PST |
 | Road back | A mod can be put back at intake at any time. Nothing is lost: its folder stays. | PROPOSAL |
 | Tracked on the mod | Date it arrived; date it was picked. | PROPOSAL |
 
@@ -493,7 +493,7 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 
 **6. What must a test be at the lock?** **[HIS, by agreement 2026-11-14]** The lock rule (§4, Stage 1), which replaces his card answer of 2026-11-13. At the lock every bar is written and names how it will be checked; no check code is required. Stage 3 writes every check, seen failing first, and no mod moves past Stage 3 until every bar has a check that runs. "A lock is never as strict as we'd like. But I understand the stricter the better."
 
-**8. How do the waiting mods enter?** **[HIS, by card 2026-11-14, about 1:40 PM PST]** "Wait for one full pass." No new mod enters until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8). How the waiting mods then enter is asked of him again at that point. (§4, "Intake"; §5, "Dispatch".)
+**8. How do the waiting mods enter?** **[HIS, by card 2026-11-14, about 1:40 PM PST]** "Wait for one full pass." No new mod enters until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8). How the waiting mods then enter is asked of him again at that point. **[HIS, 2026-11-15 ~05:40 PST]** "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." Contagion entered by that order (item RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME). (§4, "Intake"; §5, "Dispatch".)
 
 **12. When are the held look statements ingested?** **[HIS, by card 2026-11-14, about 1:40 PM PST]** "Per mod, as it advances." A mod's held statements (`design/RimMandrake/validation_holding/`) are placed in its table when it reaches Stage 2, and that placement counts as the ingest his 2026-11-12 ruling waited for. Preflight refuses a mod whose held statements are not placed. (§4, Stage 2; §7, rule 12.)
 

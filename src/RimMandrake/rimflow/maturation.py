@@ -409,11 +409,14 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
     if forward:
         if cur == "intake":
             walked = _reached(root, "his_walk")
-            clause("intake_closed", "no mod enters the Designer until one of the advancing mods has reached his walk",
-                   bool(walked), [req_ref], observed="no stage record has reached his_walk; this request is for %s" % mod,
-                   would_pass="one of Explosive Knockback, FlowWorks, Gimme Some Slack or Pyrelands has a record "
-                              "that reached his_walk", fix="wait: advance one of the four mods to his walk first",
-                   attainable="yes", cost="rerun", why_sound="his card of 2026-11-14: wait for one full pass")
+            # his words in the request admit this one mod before any walk (owner, 2026-11-15)
+            clause("intake_closed", "no mod enters the Designer until one of the advancing mods has reached his walk, "
+                   "unless his words in the request admit it", bool(walked) or bool(owner), [req_ref],
+                   observed="no stage record has reached his_walk and owner_said is empty; this request is for %s" % mod,
+                   would_pass="one of the advancing mods has a record that reached his_walk, or --owner-said quoting "
+                              "his order to add this mod", fix="wait for a walk, or pass his words admitting the mod",
+                   attainable="yes", cost="rerun", why_sound="his card of 2026-11-14: wait for one full pass; "
+                   "his order of 2026-11-15 adds a mod when the pipeline is not busy")
             if walked:
                 hand.append("owner_said")
                 clause("owner_said", "how the waiting mods enter after the first walk is asked of him again",
