@@ -36,6 +36,15 @@
    ],
    "session": "ee0fbaa8d85c426f8777aafe95cedc9f",
    "why": "log.errors_lower_bound is no longer a limit (owner by card 2026-11-09 'Two limits: load and play', ce04ffdae346): the sticky flag rises on every cold load. Under the new limits this session reads LOAD 3239 (limit 4500, passes) and PLAY 11 in-play evictions (breach), whose cause is LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS"
+  },
+  {
+   "at": "2026-11-15T14:17:58Z",
+   "item": "HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE",
+   "keys": [
+    "mem.managed_growth_mb_per_h"
+   ],
+   "session": "a46da9a1edac4fdf8181572b07d73d53",
+   "why": "debugged offline 2026-11-15 (heap_ratchet --session a46da9a1, verdict reload_ratchet): 1036.6 MB/h against 1024 is the known reload ratchet, not a new leak. Post-GC floor 3193 -> 4098 MB over 7 game loads while things fell 55685 -> 33579; floor flat after the last load (4132, 4098); peak 4730 under the 6144 line. Retainer bisect is HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE (built, waits on its live proofs)"
   }
  ]
 }
