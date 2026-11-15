@@ -1,0 +1,2 @@
+An indestructible building (destroyable false: RM_CauldronVent, geysers) survives a validation pad's destroy_batch clean-up, so a same-map retry (testq .a2) inherits the earlier attempt's state on it. Cauldron's vent read 'recovering, 17%' as 0.17x for 2 runs. Reset such fixtures in the site-ready row (ProofResetVentsIn, 9f7b107840), and pick the one at the anchor, not rows[0].
+item: CAULDRON_VENT_ENRICHMENT_HOOKS_1

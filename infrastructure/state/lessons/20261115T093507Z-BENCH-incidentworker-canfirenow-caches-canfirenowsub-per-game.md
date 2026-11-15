@@ -1,0 +1,2 @@
+IncidentWorker.CanFireNow caches CanFireNowSub per game tick (private lastCheckCanRunTick/lastCanRunResult). A proof that flips a setting and asks again in the SAME tick reads the first answer back: Webwork's siege read 'reason Eligible ... canFire False' for 3 runs. Clear lastCheckCanRunTick by reflection before and after each ask (CanFireNowFresh, RM_WebworkSiegeProof.cs, 7eb6af198e).
+item: WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE
