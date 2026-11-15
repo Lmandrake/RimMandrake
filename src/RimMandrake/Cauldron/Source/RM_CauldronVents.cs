@@ -250,6 +250,33 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref silencedUntil, "rmVentSilencedUntil", -1);
             Scribe_Values.Look(ref bloomSeen, "rmVentBloomSeen", false);
         }
+
+        // validation.py vents/gas site-ready rows (jawa/static_call): args "minX,minZ,width,height" (',' or ';'). The vent is
+        // indestructible, so the pad clean-up leaves an earlier attempt's vent on a reused map, drunk silent ("recovering,
+        // 17%", 0.17x: SteveDesktop .a2 runs 2026-11-06 and 11-14). Every vent in the rect goes back to a fresh vent's state.
+        // "RESET n | ids a,b" or "REFUSED: why".
+        public static string ProofResetVentsIn(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED: no current map";
+            string[] a = (args ?? "").Split(new[] { ',', ';', '|' });
+            if (a.Length < 4 || !int.TryParse(a[0].Trim(), out int x) || !int.TryParse(a[1].Trim(), out int z)
+                || !int.TryParse(a[2].Trim(), out int w) || !int.TryParse(a[3].Trim(), out int h))
+                return "REFUSED: args must be minX,minZ,width,height, got " + args;
+            CellRect rect = new CellRect(x, z, w, h);
+            var ids = new List<string>();
+            foreach (Thing t in map.listerThings.ThingsOfDef(ThingDef.Named("RM_CauldronVent")))
+            {
+                if (!(t is RM_Building_CauldronVent v) || !rect.Contains(v.Position)) continue;
+                v.temperament = RM_VentTemperament.Stable;
+                v.lastBlowoutTick = NeverBlew;
+                v.suppression = 0f;
+                v.silencedUntil = -1;
+                v.bloomSeen = false;
+                ids.Add(v.ThingID);
+            }
+            return "RESET " + ids.Count + " | ids " + string.Join(",", ids);
+        }
     }
 
     // ── map side: generation, falter notice, exposure weight ─────────────

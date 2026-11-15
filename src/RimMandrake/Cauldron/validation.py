@@ -1939,6 +1939,20 @@ def _vent_read(t, vid):
     return float(m.group(1)), s.group(1)
 
 
+def _vent_at_anchor(t, rows):
+    """The site-ready rows' vent: the one standing at the anchor, every vent on the pad reset to a fresh vent first. The vent
+    is indestructible, so a retry on the same map (testq .a2) found attempt 1's drunk-silent vent on the pad and read it as
+    fresh ("recovering, 17%", 0.17x; SteveDesktop 2026-11-06 and 11-14). UNMEASURED when the reset does not answer."""
+    reset = _static(t, "RimMandrake.Cauldron.RM_Building_CauldronVent", "ProofResetVentsIn", _rs(_rect(t)))
+    if not _live(t):
+        return None
+    if not reset.startswith("RESET"):
+        _unmeasured(t, "ProofResetVentsIn did not reset the pad's vents: %r" % reset[:200])
+    x, z = t.anchor
+    _note(t, "pad vents reset to fresh", {"reset": reset, "vents on pad": len(rows)})
+    return min(rows, key=lambda r: (r.get("x", 0) - x) ** 2 + (r.get("z", 0) - z) ** 2)["id"]
+
+
 def _transition_done(t):
     r = t.bridge_call("jawa/site_state")
     tr = (((r or {}).get("weather") or {}).get("transition"))
@@ -1992,7 +2006,7 @@ def vents_chain(t):
                 rows = _things(t, VENT, _rs(_rect(t)))
                 if not rows:
                     _unmeasured(t, "the spawned %s is not on the map (spawn_batch refused a 2x2 natural building?)" % VENT)
-                ids["vent"] = rows[0]["id"]
+                ids["vent"] = _vent_at_anchor(t, rows)
                 out, st = vent()
                 _note(t, "fresh vent output / state", [out, st])
         with _comp(t, "vent_weather_multiplier", toggle="ventWeatherEnabled"):
@@ -2202,7 +2216,7 @@ def gas_chain(t):
                 rows = _things(t, VENT, _rs(_rect(t)))
                 if not rows:
                     _unmeasured(t, "the spawned %s is not on the map" % VENT)
-                ids["vent"] = rows[0]["id"]
+                ids["vent"] = _vent_at_anchor(t, rows)
                 _wait(t, 1500)
                 _note(t, "vent gas after 1500 ticks", gas())
         with _comp(t, "vent_gas_emits", toggle="ventGasEnabled"):

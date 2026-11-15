@@ -466,6 +466,13 @@ class Fake(object):
             ch = min(0.75, self.WIND * 0.4) if self.settings.get("ventGasDrifts") == "True" else 0.0
             return {"success": True, "result": "total=%d cells=%d cx=%.3f cz=%.3f heading=%d wind=%.3f chance=%.3f ticks=%d"
                     % (c[0], 49 if c[0] else 0, c[1], c[2], self.heading(), self.WIND, ch, self.ticks)}
+        if method == "ProofResetVentsIn":     # selftest_vent_site_reuse: every pad vent back to a fresh vent's state
+            rr = V_rect(args.replace(";", ","))
+            ids = [v["id"] for v in self.of(V.VENT) if inrect(v["x"], v["z"], rr)]
+            for v in self.of(V.VENT):
+                if v["id"] in ids and "reset_noop" not in self.broken:
+                    v["sil"], v["supp"] = -1, 0.0
+            return {"success": True, "result": "RESET %d | ids %s" % (len(ids), ",".join(ids))}
         if method == "ProofVentRings":
             b = self.broken
             rp = 0 if "ring_old_map" in b else 2 if "gardens_off_map" in b else 1
@@ -763,6 +770,11 @@ class Fake(object):
             n = [int(v) for v in nums.split(",")]
             if d == "Wall" and "wall_not_placed" in self.broken:
                 continue
+            if d == V.VENT and "reused_pad" in self.broken and not any(
+                    v["x"] == n[0] and v["z"] == n[1] for v in self.of(V.VENT)):
+                # SITE, LIVE SteveDesktop .a2 2026-11-06/11-14: the indestructible vent of an earlier attempt, drunk
+                # silent, still stands on the pad ("recovering, 17%"), listed before the new one
+                self.things[self.new(d, n[0], n[1])]["sil"] = self.ticks - 10200
             self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1)
         return {"success": True}
 
@@ -1139,6 +1151,16 @@ def main():
     got = res.get("vent_gardens.vent_flowers_ring_vs_control", ("?",))[0]
     if got != "FAIL":
         bad.append("gardens_off_map+ring_ignores_toggle: expected vent_flowers_ring_vs_control FAIL, got %s" % got)
+    # SITE (selftest_vent_site_reuse): a retry on the same map finds the earlier attempt's drunk-silent vent on the pad;
+    # the site-ready reset makes it fresh (all green); without the reset the weather row reads 0.17x and FAILs, as live.
+    res = run(["reused_pad"])
+    reds = sorted(k for k, v in res.items() if v[0] != "PASS")
+    if reds:
+        bad.append("site break reused_pad: expected every component PASS after the pad reset, got not-PASS %s" % reds)
+    res = run(["reused_pad", "reset_noop"])
+    got = res.get("vents.vent_weather_multiplier", ("?",))[0]
+    if got != "FAIL":
+        bad.append("reused_pad+reset_noop: expected vents.vent_weather_multiplier FAIL (the live 0.17x), got %s" % got)
     # SITE: the Utinni layer is not on the tier -> the shrine row cannot ask: UNMEASURED, never red.
     res = run(["no_utinni"])
     reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
