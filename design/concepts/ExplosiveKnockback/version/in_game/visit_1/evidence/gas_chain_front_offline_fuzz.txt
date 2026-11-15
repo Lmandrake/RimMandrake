@@ -1,0 +1,14 @@
+COMMAND: python3 src/RimMandrake/Utils/selftest_cauldron_fuzz.py  (sha d1817022db35)
+
+fuzz vent: 4000 cases, 166134 steps, 0.82s, 0 failures
+fuzz yield: 3000 cases, 3516456 steps, 0.55s, 0 failures
+fuzz prints: 4001 cases, 186937 steps, 0.23s, 0 failures
+fuzz gas: 3000 cases, 88489 steps, 0.13s, 0 failures
+fuzz rhossak: 3000 cases, 184364 steps, 0.06s, 0 failures
+fuzz units: 1 cases, 128 steps, 0.01s, 0 failures
+vent: blowouts 1254, falters 52812, silences 4486, recoveries 279, exposure probes 16658, generations 8282, drink picks 16658, reachability asks saved by laziness 33710
+yield: tree sweeps 5836, dose probes 6818, eligible rows 20454, dew flips 2114, remeshes 1087; prints: added 80573, evicted 19227, expired 28122, grid cleared 16884, grid kept 2401
+rhossak: roots 101, resets 81036, binds 28750, unbound 8083
+gas: sweeps 14607, drifts 44944, burns 2800, overflows 2559
+cauldron fuzz: 17002 cases, 4142508 steps, 1.79s total -> OK
+MUTATION (front Step disabled): FAIL units: the spark burns the whole cloud with no live Fire (burnt 1, left 12, per scan 1,0,0,...)
