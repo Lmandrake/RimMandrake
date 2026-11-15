@@ -145,6 +145,7 @@ def main():
             return out
 
         fx = {"autonomy": False, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
+              "clone": lambda: world.get("clone", (0, 0)),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model=cfg["model"],
                                                             seat=cfg["seat"])}
@@ -186,21 +187,39 @@ def main():
         unit = rec["mods"]["FlowWorks"]["watch"]["unit"]
 
         # ---- the run is live: nothing more; it ends with no fewer refusals: stopped for good -----------------------
+        ok((rd.get("clone") or {}).get("measured") and rd["clone"].get("behind") == 0
+           and rec.get("clone", {}).get("level_at") == CLOCK,
+           "the tick measures its own clone: level, last level kept in state.json (%s)" % rd.get("clone"))
         world["live"]["FlowWorks"] = [unit]
-        tick(at=600)
+        world["clone"] = (4, 1)      # RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: stuck behind
+        rd = tick(at=600)
+        ok(rd["clone"].get("behind") == 4 and rd["clone"].get("behind_min") == 0.0
+           and rd["clone"].get("behind_since") == CLOCK + 600 and rd["clone"].get("level_at") == CLOCK,
+           "first tick behind: behind_since set, 0 min, last level unchanged (%s)" % rd["clone"])
         ok(len(launches()) == 1, "while the run is live, no second launch on FlowWorks")
         world["live"].pop("FlowWorks")
         world["last_end"]["FlowWorks"] = CLOCK + 900
+        world["clone"] = (None, "fetch refused and origin/main unmoved for 20 min: x")
         rd = tick(at=960)      # 60 s after the end: its files may not have reached this clone yet
+        ok(rd["clone"].get("measured") is False and "fetch refused" in rd["clone"].get("why", "")
+           and json.load(open(os.path.join(sd, "state.json")))["clone"].get("behind_since") == CLOCK + 600,
+           "a blind fetch is UNMEASURED, never level, and keeps the behind clock (%s)" % rd["clone"])
         ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "settling"
            and "stopped" not in json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
            and "watch" in json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"],
            "a tick 60 s after a run ends neither judges the refused count nor launches; the watch is kept")
+        world["clone"] = (6, 0)
         rd = tick(at=1200)
+        ok(rd["clone"].get("behind_min") == 10.0, "minutes behind count from the first tick behind, not from commit "
+           "dates (%s)" % rd["clone"].get("behind_min"))
         ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "stopped"
            and any(x.startswith("FlowWorks: stopped") for x in rd["needs_conductor"]),
            "the run ended with the same 7 refused: stopped, a Needs Conductor line, no relaunch")
+        world["clone"] = (0, 0)
         rd = tick(at=1800)
+        ok(rd["clone"].get("behind") == 0 and rd["clone"].get("behind_min") == 0.0
+           and rd["clone"].get("level_at") == CLOCK + 1800 and not rd["clone"].get("behind_since"),
+           "levelled again: the behind clock clears, last level is this tick (%s)" % rd["clone"])
         ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "stopped",
            "the next tick still never tries the same refusals again")
         r = subprocess.run([sys.executable, os.path.join(HERE, "maturation_dispatch.py"), "clear", "FlowWorks",
@@ -391,8 +410,11 @@ def main():
         gss = dict(base, advancing=["GimmeSomeSlack"])
         os.makedirs(sd, exist_ok=True)
         with open(os.path.join(sd, "state.json"), "w") as f:
-            json.dump({"mods": {"GimmeSomeSlack": {"owed_since": CLOCK - 2 * 3600}}}, f)
+            json.dump({"mods": {"GimmeSomeSlack": {"owed_since": CLOCK - 2 * 3600}},
+                       "clone": {"behind_since": CLOCK - 480, "level_at": CLOCK - 540}}, f)
+        world["clone"] = (3, 0)
         rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK, page=False)
+        world["clone"] = (0, 0)
         ok(rd["idle_owed_max_min"] == 120 and rd["idle_owed_mods"] == ["GimmeSomeSlack"],
            "a planted idle mod (owed 2 h, nothing on it) reads 120 min idle (%s)" % rd["idle_owed_max_min"])
         import ops_watch as OW
@@ -406,6 +428,22 @@ def main():
            and t[0]["op"] == ">" and t[0]["value"] == 60, "one fixed-id alarm over 60 min in ops_watch_rules.json")
         ok("maturation" in OW.FAMILIES and "maturation" in OW.ORDER and OW.COLLECTORS.get("maturation"),
            "the family is registered in ops_watch")
+        got = OW.c_maturation(CLOCK + 60, {}, {}).get("maturation.clone_behind_min") or {}
+        ok(got.get("v") == 8.0 and got.get("m") == "MEASURED" and (got.get("x") or {}).get("behind") == 3,
+           "ops_watch reads the dispatch clone's minutes behind from the reading (%s)" % got)
+        t = [x for x in rules["targets"] if x.get("name") == MD.CLONE_ALARM_NAME]
+        ok(len(t) == 1 and t[0]["key"] == "maturation.clone_behind_min" and t[0]["alarm"] is True
+           and t[0]["op"] == ">" and t[0]["value"] == 5,
+           "one fixed-id alarm, %s, when the dispatch clone is behind over 5 min" % MD.CLONE_ALARM_NAME)
+        rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK + 60, page=False)
+        got = OW.c_maturation(CLOCK + 90, {}, {}).get("maturation.clone_behind_min") or {}
+        ok(got.get("v") == 0 and got.get("m") == "MEASURED", "synced again: the reading is 0, so the alarm re-arms (%s)"
+           % got)
+        world["clone"] = (None, "clone unreadable: x")
+        rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK + 120, page=False)
+        world["clone"] = (0, 0)
+        got = OW.c_maturation(CLOCK + 150, {}, {}).get("maturation.clone_behind_min") or {}
+        ok(got.get("m") == "UNMEASURED", "a clone the tick cannot read is UNMEASURED, never 0 (%s)" % got)
         reset()
         rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK, page=False)
         ok(rd["idle_owed_max_min"] > 60, "a mod first seen owed counts its idle time from its stage's since (%s min)"
@@ -428,6 +466,62 @@ def main():
 BLIND_SHA = "da54e5338ea493e0cb1575b684791d7136756488"
 BLIND_CLOCK = 1794736800.0      # 2026-11-15 1:20 AM PST, pinned
 FW_JUDGE_AT = 1794729034.9711447    # the hand-launched FlowWorks judge's start (rm-detached-...-1794729034)
+
+
+def clone_status_main():
+    """The dispatch clone's distance from origin (clone_counts, on real git) and `status`'s first line and dead units
+    (RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE; the status reading that went stale unsaid)."""
+    root = tempfile.mkdtemp(prefix="md_clone_")
+    try:
+        bare, disp, rival = (os.path.join(root, n) for n in ("origin.git", "dispatch", "rival"))
+
+        def sh(*a, cwd=None):
+            return subprocess.run(["git"] + list(a), cwd=cwd, capture_output=True, text=True, timeout=60)
+        sh("init", "-q", "--bare", "-b", "main", bare)
+        sh("clone", "-q", bare, rival)
+        for d in (rival,):
+            sh("config", "user.email", "st@x", cwd=d)
+            sh("config", "user.name", "st", cwd=d)
+        sh("commit", "-q", "--allow-empty", "-m", "a", cwd=rival)
+        sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+        sh("clone", "-q", bare, disp)
+        ok(MD.clone_counts(disp) == (0, 0), "a level clone reads (0 behind, 0 ahead) (%s)" % (MD.clone_counts(disp),))
+        for m in ("b", "c"):
+            sh("commit", "-q", "--allow-empty", "-m", m, cwd=rival)
+        sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+        ok(MD.clone_counts(disp) == (2, 0), "the tick's own fetch sees origin move: 2 behind (sanity probe: the "
+           "instrument can see) (%s)" % (MD.clone_counts(disp),))
+        sh("remote", "set-url", "origin", os.path.join(root, "gone.git"), cwd=disp)
+        ref = os.path.join(disp, ".git", "logs", "refs", "remotes", "origin", "main")
+        os.utime(ref, (CLOCK - 3600, CLOCK - 3600))
+        got = MD.clone_counts(disp)
+        ok(got[0] is None and "fetch refused" in got[1], "a refused fetch on an old ref is no reading, not level (%s)"
+           % (got,))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    states = {"rm-maturation-dispatch.timer": "inactive", "rm-role-designer-17": "inactive", "rm-blind-x-1": "active"}
+    rd = {"at": CLOCK - 600, "at_pac": "old", "clone": {"measured": True, "behind": 49, "ahead": 7, "behind_min": 38.0,
+                                                        "level_pac": "11:41 AM"},
+          "mods": {"Pyrelands": {"klass": "wait", "decision": "designer_wait", "for_min": 40,
+                                 "status": "waiting on rm-role-designer-17"},
+                   "Graffiti": {"klass": "wait", "decision": "live", "for_min": 3, "status": "waiting on rm-blind-x-1"}}}
+    lines = MD.status_lines(rd, CLOCK, unit_state=lambda u: states.get(u, "unknown"))
+    ok(lines[0].startswith("reading is 10 min old: the tick is paused/stopped"),
+       "a reading older than two ticks says its age first, in plain words (%r)" % lines[0])
+    ok(any(ln.startswith("clone: BEHIND origin/main by 49 (ahead 7) for 38.0 min") for ln in lines),
+       "status shows the clone's distance and minutes behind")
+    py = [ln for ln in lines if ln.startswith("Pyrelands")]
+    gf = [ln for ln in lines if ln.startswith("Graffiti")]
+    ok(py and "DEAD: rm-role-designer-17 inactive" in py[0], "a wait on a dead unit is marked DEAD (%s)" % py)
+    ok(gf and "DEAD" not in gf[0], "a wait on a live unit is not (%s)" % gf)
+    states["rm-maturation-dispatch.timer"] = "active"
+    lines = MD.status_lines(dict(rd, at=CLOCK - 30), CLOCK, unit_state=lambda u: states.get(u, "unknown"))
+    ok(lines[0] == "reading at old", "a fresh reading leads with its time as before (%r)" % lines[0])
+    lines = MD.status_lines(rd, CLOCK, unit_state=lambda u: states.get(u, "unknown"))
+    ok(lines[0].startswith("reading is 10 min old: the tick is not writing it"),
+       "a stale reading with its timer active says the tick is not writing it (%r)" % lines[0])
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
 
 
 def release_main():
@@ -1283,6 +1377,7 @@ if __name__ == "__main__":
     if "--release" in sys.argv[1:]:
         sys.exit(release_main())
     rc = main()
+    rc = clone_status_main() or rc
     rc = release_main() or rc
     rc = blind_main() or rc
     sys.exit(ingame_main() or rc)

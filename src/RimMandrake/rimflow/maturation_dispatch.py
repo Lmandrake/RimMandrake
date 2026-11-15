@@ -112,6 +112,7 @@ RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
 READ_SLACK = 0.5        # USD: a release read at this spend, give or take, is still a reading of it
 CFG_PATH = os.path.join(HERE, "maturation_dispatch.json")
 ALARM_NAME = "OPS_MATURATION_IDLE_ADVANCING_MOD"
+CLONE_ALARM_NAME = "OPS_DISPATCH_CLONE_BEHIND_UNSTICK"     # ops_watch_rules.json: maturation.clone_behind_min > 5
 ITEM = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
 OWED = ("build", "hand step", "ready to advance")
 ONES = ("ZERO ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN ELEVEN TWELVE THIRTEEN FOURTEEN FIFTEEN SIXTEEN "
@@ -1134,6 +1135,100 @@ def reading(cfg, rows, now):
                                                        "idle_min", "stage_usd", "cycle", "visit", "exit")} for r in rows}}
 
 
+CLONE_FETCH_S = 30          # the tick's fetch of its own clone
+CLONE_BLIND_S = 900         # a refused fetch with origin/main's ref unmoved this long is no reading, not "level"
+
+
+def clone_counts(root):
+    """-> (behind, ahead) of this clone's HEAD against origin/main after a fetch, or (None, why). The timers run from
+    this clone (/home/mandrake/rm/dispatch), so behind origin they run stale code with every other reading sane: it sat
+    ahead 7 / behind 49 for 40 min on 2026-11-15 (RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE). A
+    refused fetch leaves the old ref, which reads 0 behind however far origin went: past CLONE_BLIND_S that is blind."""
+    def git(*a, t=60):
+        return subprocess.run(["git", "-C", root, *a], capture_output=True, text=True, timeout=t)
+    try:
+        got = git("fetch", "-q", "origin", "main", t=CLONE_FETCH_S)
+        if got.returncode:
+            gd = git("rev-parse", "--absolute-git-dir").stdout.strip()
+            try:
+                age = time.time() - os.stat(os.path.join(gd, "logs", "refs", "remotes", "origin", "main")).st_mtime
+            except OSError:
+                age = None
+            if age is None or age > CLONE_BLIND_S:
+                return None, "fetch refused and origin/main %s: %s" % (
+                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr.strip()[-160:])
+        r = git("rev-list", "--left-right", "--count", "HEAD...origin/main")
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "clone unreadable: %s" % e
+    n = r.stdout.split()
+    if r.returncode or len(n) != 2:
+        return None, "clone unreadable: %s" % (r.stderr.strip()[-160:] or r.stdout.strip())
+    return int(n[1]), int(n[0])
+
+
+def clone_reading(st, now, got):
+    """The clone's distance from origin/main and how long it has been behind, carried in state.json between ticks:
+    behind_since is the first tick that saw it behind, level_at the last tick that saw it level (its last good sync).
+    Minutes behind count from behind_since, not from commit dates: a commit pushed hours after it was made is new here."""
+    c = st.setdefault("clone", {})
+    behind, ahead = got
+    out = {"at": now, "level_at": c.get("level_at"), "level_pac": pac(c["level_at"]) if c.get("level_at") else None}
+    if behind is None:
+        return dict(out, measured=False, why=ahead)
+    if behind:
+        c.setdefault("behind_since", now)
+    else:
+        c.pop("behind_since", None)
+        c["level_at"] = now
+    since = c.get("behind_since")
+    return dict(out, measured=True, behind=behind, ahead=ahead, behind_since=since,
+                behind_min=round((now - since) / 60.0, 1) if since else 0.0,
+                level_at=c.get("level_at"), level_pac=pac(c["level_at"]) if c.get("level_at") else None)
+
+
+TICK_UNIT, TICK_S = "rm-maturation-dispatch.timer", 60     # the timer that writes the reading, and its interval
+UNIT_RX = re.compile(r"\brm-[A-Za-z0-9_@-]+(?:\.service)?")
+
+
+def clone_line(c):
+    if not c.get("measured"):
+        return "clone: UNMEASURED (%s); last level %s" % (c.get("why"), c.get("level_pac") or "never seen")
+    if c.get("behind"):
+        return "clone: BEHIND origin/main by %d (ahead %d) for %s min; last level %s: its timers run old code" % (
+            c["behind"], c.get("ahead") or 0, c.get("behind_min"), c.get("level_pac") or "never seen")
+    return "clone: level with origin/main%s" % (" (ahead %d, not yet pushed)" % c["ahead"] if c.get("ahead") else "")
+
+
+def status_lines(rd, now, unit_state=None):
+    """`status`: the reading's age leads when it is older than two ticks (then nothing below it is current), and a
+    "waiting on <unit>" whose unit has ended says DEAD, so a stopped tick cannot leave a dead run reading as live."""
+    if unit_state is None:
+        import role_launch as RL
+        unit_state = RL.unit_state
+    age = now - float(rd.get("at") or 0)
+    if age > 2 * TICK_S:
+        t = unit_state(TICK_UNIT)
+        head = "reading is %d min old: the tick is %s; nothing below is current (reading at %s)" % (
+            age // 60, "paused/stopped (%s %s)" % (TICK_UNIT, t) if t in DH.DEAD_STATES else
+            "not writing it (%s %s; see journalctl --user -u rm-maturation-dispatch)" % (TICK_UNIT, t), rd["at_pac"])
+    else:
+        head = "reading at %s" % rd["at_pac"]
+    out = [head] + ([clone_line(rd["clone"])] if rd.get("clone") else [])
+    for mod, r in rd["mods"].items():
+        txt = r.get("status") or r["why"]
+        if r.get("klass") == "wait" or "waiting on" in (txt or ""):
+            units = list(dict.fromkeys(UNIT_RX.findall(txt or "") + [u for u in (r.get("live") or [])
+                                                                    if isinstance(u, str)]))
+            dead = ["%s %s" % (u, st) for u, st in ((u, unit_state(u)) for u in units) if st in DH.DEAD_STATES]
+            if dead:
+                txt = "%s [DEAD: %s; the wait is over, the next tick re-decides]" % (txt, ", ".join(dead))
+        out.append("%-20s %-7s %-13s %s (%s min)" % (mod, r.get("klass"), r["decision"], txt, r.get("for_min", "?")))
+    for k in ("paused", "owner", "stalled"):
+        if rd.get(k):
+            out.append("%s: %s" % (k, "; ".join(rd[k])[:600]))
+    return out
+
+
 def _aut(rows, mod):
     return any(r["mod"] == mod and r.get("aut") for r in rows)
 
@@ -1180,6 +1275,7 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
     except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
         rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
     if apply:
+        rd["clone"] = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))())
         rd["spend_rows"] = record_spend(root, facts, fx)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
@@ -1230,13 +1326,7 @@ def main(argv=None):
         if not rd:
             print("no reading yet")
             return 1
-        print("reading at %s" % rd["at_pac"])
-        for mod, r in rd["mods"].items():
-            print("%-20s %-7s %-13s %s (%s min)" % (mod, r.get("klass"), r["decision"], r.get("status") or r["why"],
-                                                   r.get("for_min", "?")))
-        for k in ("paused", "owner", "stalled"):
-            if rd.get(k):
-                print("%s: %s" % (k, "; ".join(rd[k])[:600]))
+        print("\n".join(status_lines(rd, time.time())))
         return 0
     if o.cmd == "release":
         import doorbell

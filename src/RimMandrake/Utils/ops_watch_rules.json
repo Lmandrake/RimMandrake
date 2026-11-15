@@ -532,6 +532,21 @@
   "why": "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE (the owner, 2026-11-14): an advancing mod at the offline build has had work owed (a build, a hand step, or ready to advance) with nothing running on it for over 60 min; `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` names the mod and the reason, and the Needs Conductor lines on MATURATION_NOW say what is owed"
  },
  {
+  "key": "maturation.clone_behind_min",
+  "op": ">",
+  "value": 5,
+  "alarm": true,
+  "worse": {
+   "add": 30
+  },
+  "tag": "DISPATCH_CLONE_BEHIND",
+  "name": "OPS_DISPATCH_CLONE_BEHIND_UNSTICK",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: every timer runs from /home/mandrake/rm/dispatch, so behind origin/main they run old code while every other reading is sane (ahead 7 / behind 49 for 40 min, 2026-11-15 11:41-12:20 PST). Measured each minute by rm-maturation-dispatch's own fetch, counted from the first tick behind; it levels in one tick when its publishes land. `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` shows the clone line; `git -C /home/mandrake/rm/dispatch status` shows what blocks it"
+ },
+ {
   "key": "maturation.paused",
   "op": ">",
   "value": 0,
