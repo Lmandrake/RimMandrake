@@ -452,9 +452,16 @@ def release_main():
         for a, what, e in ((["NotAMod"] + args, "a mod off the advancing list", {}),
                            (["FlowWorks"] + args[:4] + ["--usd", "0"] + args[6:], "a zero release", {}),
                            (["FlowWorks", "--stage", "nowhere"] + args[2:], "an unknown stage", {}),
-                           (["FlowWorks"] + args[:-2], "no seat and no --by", {"AGENT_SEAT": "", "RIMFLOW_SEAT": ""})):
+                           (["FlowWorks"] + args[:-2], "no seat and no --by", {"AGENT_SEAT": "", "RIMFLOW_SEAT": ""}),
+                           (["FlowWorks"] + args[:-1] + ["NOBODY"], "a --by that is no ledger seat", {})):
             rc, out = run(*a, **e)
             ok(rc != 0 and len(MD.read_releases(path)[0]) == 1, "release refuses %s, writing nothing (%s)" % (what, out[-60:]))
+        # "CONDUCTOR" is the display name of seat BENCH: written as BENCH, or the page's closed seat set drops "who"
+        cp = os.path.join(tempfile.mkdtemp(dir=sd), "releases.jsonl")
+        rc, out = run(*(["FlowWorks"] + args[:-1] + ["CONDUCTOR"]), RM_MATURATION_DISPATCH_DIR=os.path.dirname(cp))
+        cr = MD.read_releases(cp)[0]
+        ok(rc == 0 and len(cr) == 1 and cr[0]["by"] == "BENCH",
+           "release --by CONDUCTOR records seat BENCH (%s)" % (cr[0]["by"] if cr else out[-60:]))
         with open(path, "a") as fh:
             fh.write("{not json\n")
         rr = DD.release_read(path)

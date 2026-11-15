@@ -172,7 +172,7 @@ by a program, `src/RimMandrake/rimflow/delegated_digest.py` (the Conductor's sch
 allow-list), from the ledger (`why` starting `delegated:`), `git log --grep '^Delegated:'`, the judge records in
 `infrastructure/state/delegated/`, the art ledger's delegated installs and marks, the leftovers acts log, and the maturation ceiling releases
 (`maturation_dispatch.py release`, class `ceiling release`: mod, stage and who; the spend is listed by
-`maturation_dispatch.py releases`, never on the token-blind page); a zero-line digest is checked
+`maturation_dispatch.py releases`, never on the token-blind page, and the Conductor adds it when it delivers the digest); a zero-line digest is checked
 against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
 a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and redraw a ban discarded (§2.3, class
 `art marks`; `art.py marks-digest` lists them), each bridge take, deploy and

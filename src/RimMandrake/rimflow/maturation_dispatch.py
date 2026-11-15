@@ -1142,8 +1142,11 @@ def main(argv=None):
         return 0
     if o.cmd == "release":
         import doorbell
-        by = (o.by or doorbell.seat_name() or "").strip()
+        import model
+        # a ledger seat key ("CONDUCTOR" -> BENCH): the digest's closed seat set drops any other name, losing "who"
+        by = model.canonical((o.by or doorbell.seat_name() or "").strip())
         bad = ("%s is not on the advancing list" % o.mod if o.mod not in (cfg.get("advancing") or []) else
+               "--by %s is not a ledger seat (%s)" % (by, ", ".join(model.SEATS)) if by and by not in model.SEATS else
                "--usd must be above 0" if not _usd_ok(o.usd, True) else
                "--read-usd must be 0 or more" if not _usd_ok(o.read_usd) else
                "--why is empty" if not o.why.strip() else

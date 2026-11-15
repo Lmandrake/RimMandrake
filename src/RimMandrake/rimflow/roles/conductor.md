@@ -163,7 +163,9 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    them (only delegation-policy §2 calls reach him, batched on one card, nothing unread; read an `OPS PROPOSAL`'s file
    first, above), and the Producer's plan
    status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
-   delivered once (`Transient/delegated_digest_<date>.md`, built by a program); (e) the digest points him at the
+   delivered once (`Transient/delegated_digest_<date>.md`, built by a program); each `ceiling release` line on it
+   is delivered WITH its spend, read by you from `maturation_dispatch.py releases` (owner by card 2026-11-15: the
+   release reaches his digest with the spend; the page itself is token-blind, you are not); (e) the digest points him at the
    innovations list, `design/RimMandrake/innovations.md` (lines that changed since the last digest, and the
    Innovator's proposals awaiting his yes; owner 2026-10-27: ask first until it proves itself); (f) **report:**
    append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (local time, what you found, what you filed
