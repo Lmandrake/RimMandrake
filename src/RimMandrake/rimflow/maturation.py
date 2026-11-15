@@ -1955,7 +1955,10 @@ def blind_brief_text(root, mod, cap_usd=None):
           "then the fixes, then the record; then `./publish`.", "",
           "## The exit, and who reads it", "",
           "**The exit condition:** every offline bar (%s) is green on your rerun, and no Problem is left PENDING or "
-          "NOTED_FOR_CONDUCTOR. A Problem FIXED red-first is closed." % (
+          "NOTED_FOR_CONDUCTOR, and no Problem was FIXED in this cycle. A Problem you FIXED red-first is closed as an item, "
+          "but a cycle's own fixes never pass its exit: a new blind judge is owed (his road back: \"send it back to just "
+          "before Stage 4 again for a new blind judgement pass\"), so a cycle that fixed any Problem writes "
+          "exit_met: false." % (
               ", ".join("`%s`" % b for b, _ in bars) or "none in the table: say so in Exit"), "",
           "Write the Exit section as this block, exactly these three keys (a program reads it):", "",
           "```", "## Exit", "offline_bars: {%s}" % ", ".join("%s: green|red" % b for b, _ in bars),
