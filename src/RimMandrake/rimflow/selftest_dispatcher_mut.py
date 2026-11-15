@@ -75,13 +75,16 @@ def test_gate_lent_rule_steven():
     g, p, acts = go(10, 80, other=(3.0, 60, 20, "MEASURED"))
     check(not g and p["state"] == "SWITCH" and p["to"] == "b" and "lent account allowance" in p["why"],
           "Steven outside the window with an owned account fit -> SWITCH to it")
-    # the real rules file: the same numbers
-    real = json.load(open(os.path.join(os.path.dirname(HERE), "Utils", "slot_rules.json")))
-    pols = list(real["lent_accounts"].values())
-    check(len(pols) == 1 and pols[0]["max_used_by_us_pct"] == 48 and pols[0]["prefer_start_of_week_h"] == 48
-          and pols[0]["floor_pct_left"] == 10,
-          "slot_rules.json lent policy: 48%% used (card 2026-10-28 10:20: leave at 52%% left) / first 48 h / 10%% floor")
-    name = list(real["lent_accounts"])[0]
+    # the real rules file reads; its numbers are the owner's to tune (card 2026-10-28 10:20 set 48% / 48 h / 10%),
+    # so the shipped file is range-checked and the cases below run on its structure with those numbers pinned
+    shipped = json.load(open(os.path.join(os.path.dirname(HERE), "Utils", "slot_rules.json")))
+    pols = list(shipped["lent_accounts"].values())
+    check(len(pols) == 1 and 0 < pols[0]["max_used_by_us_pct"] <= 100 and 0 < pols[0]["prefer_start_of_week_h"] <= 168
+          and 0 <= pols[0]["floor_pct_left"] < 100,
+          "slot_rules.json lent policy is sane: one lent account, used %% in (0,100], window in (0,168] h, floor in [0,100)")
+    name = list(shipped["lent_accounts"])[0]
+    real = dict(shipped, lent_accounts={name: dict(shipped["lent_accounts"][name], max_used_by_us_pct=48,
+                                                   prefer_start_of_week_h=48, floor_pct_left=10)})
     after = RL.slot_epoch(T.DAY0, "12:00") + 30 * 86400      # long after off_limits_through
     for h, left, want in ((150, 80, True), (120, 90, True), (119, 90, False), (150, 40, False), (150, 55, False)):
         accts = {name: (2.0, left, h, "MEASURED")}

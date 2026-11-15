@@ -1688,10 +1688,13 @@ def test_account_pick_rule():
     check(rule.get("enabled") and AP.validate(rule) == [], "schedule: account_pick enabled and valid")
     rules, fn2 = AP.load_lent(rule)
     pols = list(((rules or {}).get("lent_accounts") or {}).values())
-    # the owner's ceiling is "up to 50%"; the plan may sit under it (48 since his 2026-10-28 card), never over it
+    # the owner's ceiling is "up to 50%"; the plan may sit under it (48 since his 2026-10-28 card), never over it.
+    # The floor is his to tune (10 today): only its range is checked here
     check(fn2 is not None and any(isinstance(p.get("max_used_by_us_pct"), (int, float))
-                                  and 0 < p["max_used_by_us_pct"] <= 50 and p.get("floor_pct_left") == 10 for p in pols),
-          "schedule: lent_rules loads the allocator's lent_accounts (<= 50% early, 10% floor) and lent_allowance")
+                                  and 0 < p["max_used_by_us_pct"] <= 50
+                                  and isinstance(p.get("floor_pct_left"), (int, float)) and 0 <= p["floor_pct_left"] < 100
+                                  for p in pols),
+          "schedule: lent_rules loads the allocator's lent_accounts (<= 50% early, a floor in [0,100)) and lent_allowance")
     names = set(rules.get("lent_accounts") or {}) if rules else set()
     blob = json.dumps(rule)
     check(not any(n in blob for n in names), "schedule: the account_pick block names no account")

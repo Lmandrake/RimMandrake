@@ -9,6 +9,7 @@ after he leaves (his rule in slot_rules.json presence._doc). His word (the overr
     python3 src/RimMandrake/Utils/selftest_slot_allocator_v3.py
 """
 import copy
+import json
 import sys
 from pathlib import Path
 
@@ -36,7 +37,20 @@ def inp(**kw):
     return base
 
 
-R = copy.deepcopy(SA.load_rules())
+def pin_numbers(shipped, pinned):
+    """The shipped rules with every number in `pinned` laid over them (new keys still come from the shipped file)."""
+    out = dict(shipped)
+    for k, v in pinned.items():
+        if k.startswith("_"):
+            continue
+        out[k] = pin_numbers(shipped.get(k) if isinstance(shipped.get(k), dict) else {}, v) if isinstance(v, dict) else v
+    return out
+
+
+# The cases run on the 2026-11-15 numbers (testdata/slot_rules_pinned.json, the same pin selftest_slot_allocator.py
+# uses): the owner tunes the shipped file, and the "live rules file" checks below are the ones that read it.
+R = pin_numbers(copy.deepcopy(SA.load_rules()),
+                json.loads((HERE / "testdata" / "slot_rules_pinned.json").read_text(encoding="utf-8")))
 R["split"] = {"rule": "v3", "conductor_session_n": 3}
 R["advisory"] = {"enabled": False}   # the paced seats (the pace math); the advisory pass is tested below with RA
 

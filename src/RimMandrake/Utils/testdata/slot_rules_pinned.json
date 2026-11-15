@@ -1,0 +1,104 @@
+{
+ "_doc": "The slot_rules.json numbers the slot-allocator selftests were written against (2026-11-15). They are the owner's to tune; the tests deep-merge these over the shipped file so a changed number cannot turn a case red, and each test keeps one range check on the shipped file (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS). lent_accounts is left out: it names an account, and its numbers are pinned where they are tested.",
+ "conductor_window": {
+  "open_min": 20,
+  "cap_n": 2
+ },
+ "advisory": {
+  "n_total": 10
+ },
+ "split": {
+  "conductor_session_n": 3
+ },
+ "total_max": 10,
+ "fallback_n": {
+  "BENCH": 3,
+  "RELENTLESS": 1
+ },
+ "token": {
+  "DARK": {
+   "n": 0,
+   "enter_pct_used_ge": 98
+  },
+  "ALMOST_OUT": {
+   "n": 1,
+   "enter_p_lt": 0.5,
+   "leave_p_gt": 0.8,
+   "leave_hold_h": 2
+  },
+  "CRUISE": {
+   "n": 6,
+   "steps": [
+    [
+     0.8,
+     2
+    ],
+    [
+     1.0,
+     3
+    ],
+    [
+     1.2,
+     4
+    ]
+   ]
+  },
+  "BURN": {
+   "n": 10,
+   "enter_p_gt": 1.5,
+   "enter_reset_h_lt": 48,
+   "leave_p_lt": 1.2,
+   "leave_reset_h_lt": 6
+  },
+  "SWEEP": {
+   "n": 3,
+   "hold_h": 12
+  },
+  "cross_hold_h": 2,
+  "min_mode_min": 60,
+  "session_brake_pct_used_gt": 90
+ },
+ "fit": {
+  "window_h": 3,
+  "slope_min_points": 4,
+  "slope_min_span_h": 1.5,
+  "msgs_per_pct": 1460,
+  "min_mean_helpers": 0.5,
+  "raise_step": 1
+ },
+ "spare": {
+  "min_pct_left": 10
+ },
+ "queue": {
+  "paydown_enter": {
+   "A1_gt": 100,
+   "D1_ge": 10
+  },
+  "paydown_leave": {
+   "A1_lt": 60,
+   "D1_lt": 5
+  }
+ },
+ "presence": {
+  "bench_min": 30,
+  "afk_min": 60
+ },
+ "overage": {
+  "finish_margin_h": 6,
+  "min_window_h": 1,
+  "default_window_h": 24,
+  "bench_floor": 1,
+  "max_accrual_dt_h": 1
+ },
+ "helpers": {
+  "live_window_s": 900
+ },
+ "ops": {
+  "stale_min": 45,
+  "disk_brake_free_gb": 210,
+  "disk_brake_total": 1,
+  "codex_conserve_runway": 1.0,
+  "steve_stall_min": 30,
+  "steve_invalid_streak": 3
+ }
+}

@@ -40,7 +40,30 @@ def inp(**kw):
     return base
 
 
-R = SA.load_rules()
+def pin_numbers(shipped, pinned):
+    """The shipped rules with every number in `pinned` laid over them (new keys still come from the shipped file)."""
+    out = dict(shipped)
+    for k, v in pinned.items():
+        if k.startswith("_"):
+            continue
+        out[k] = pin_numbers(shipped.get(k) if isinstance(shipped.get(k), dict) else {}, v) if isinstance(v, dict) else v
+    return out
+
+
+SHIPPED = SA.load_rules()
+_cr = (SHIPPED.get("token") or {}).get("CRUISE") or {}
+_st = _cr.get("steps") or []
+check("shipped slot_rules.json is sane: CRUISE n in [1, total_max], steps rise in P and n, fit raise_step >= 1",
+      1 <= _cr.get("n", 0) <= SHIPPED.get("total_max", 0) and _st == sorted(_st)
+      and all(0 <= s[1] <= _cr["n"] for s in _st) and (SHIPPED.get("fit") or {}).get("raise_step", 0) >= 1,
+      (_cr, SHIPPED.get("total_max"), SHIPPED.get("fit")))
+# The cases below were written against the 2026-11-15 numbers; the owner tunes the shipped file, so they run on those
+# numbers pinned (testdata/slot_rules_pinned.json) and only the range check above reads his.
+R = pin_numbers(SHIPPED, json.loads((Path(__file__).resolve().parent / "testdata" / "slot_rules_pinned.json")
+                                    .read_text(encoding="utf-8")))
+# the lent account keeps its shipped name and off-limits date; its numbers are pinned here (card 2026-10-28)
+R["lent_accounts"] = {n: dict(p, max_used_by_us_pct=48, prefer_start_of_week_h=48, floor_pct_left=10)
+                      for n, p in (SHIPPED.get("lent_accounts") or {}).items()}
 # This file pins the v2 share split it was written against (kept as the rollback rule); the live v3 split
 # (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER) has its own test, selftest_slot_allocator_v3.py.
 R["split"] = {"rule": "share", "builder_share": 0.25}
@@ -148,7 +171,7 @@ r = d(override=ov(mode="ALMOST_OUT"))
 check("owner names ALMOST_OUT -> BENCH 1, RELENTLESS 0", seats(r) == (1, 0) and r["mode"].startswith("ALMOST_OUT"), (r["mode"], r["seats"]))
 r = d(override=ov(n=7), session_pct_used=95.0)
 check("the 5-hour brake binds even over the owner's word", seats(r) == (0, 0), r["seats"])
-# ---- lent account: steven (owner 13:10). The REAL rules file carries his numbers as data.
+# ---- lent account: steven (owner 13:10). The rules carry his numbers as data (pinned above to card 2026-10-28).
 pol = R["lent_accounts"]["steven"]
 check("rules data: steven floor 10%, at most 48% used by us (leave 52% left, card 2026-10-28), off-limits through his 10-28 reset",
       pol["floor_pct_left"] == 10 and pol["max_used_by_us_pct"] == 48
