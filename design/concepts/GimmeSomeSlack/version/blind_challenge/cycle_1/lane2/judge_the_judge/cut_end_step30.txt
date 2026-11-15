@@ -1,0 +1,2 @@
+CUT-END FEASIBILITY grid 5040 cells (chord 1,1.5,2,3,4,5,6,8,10,12 x kept-run heading (whole circle) x heading_B x live/dead(2 sides) x fitted/plug B, step 30 deg): solved 5040 (bends, fold past the kept run, slack, stray at once); distinct where owed 5040; unsolved 0
+rc 0

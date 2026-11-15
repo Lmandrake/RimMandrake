@@ -746,6 +746,9 @@ static class BlindLane1
                 {
                     var r = Geo.Resample(s.Pts, 0.05); if (r.Count < 25) continue;
                     double[] cum = Geo.CumLen(r);
+                    // a broad loop as the bar's named instrument reads one (CordShapeAudit.Bend.IsLoop, over the same 0.05 resample): one definition for both. A loop
+                    // bend's marked run lies within its arc of its apex (the instrument merges every over-90 window touching it into the one bend)
+                    var loops = CordShapeAudit.Bends(s.Pts, s.Ties).Where(b => b.IsLoop).Select(b => (b.S, half: Math.Max(b.Arc, 0.5 * b.Round * Math.PI / 180 * b.RoundR))).ToList();
                     // heading change within any 1-cell arc
                     for (int i = 1; i + 1 < r.Count; i++)
                     {
@@ -757,7 +760,8 @@ static class BlindLane1
                         }
                         if (Math.Abs(turn) <= Math.PI / 2 + 0.05) continue;
                         windows++;
-                        if (BroadLoop(r, i, j, turn)) { i = j; continue; }
+                        double mid = cum[(i + j) / 2];
+                        if (loops.Any(lp => Math.Abs(mid - lp.S) <= lp.half)) { i = j; continue; }
                         var at = r[(i + j) / 2];
                         // forced: a wall, building or device next to the bend, or the end's own socket (within half a cell of a tip)
                         bool forced = Near(sc.W, at, 1.0) || V2.Dist(at, r[0]) < 0.75 || V2.Dist(at, r[r.Count - 1]) < 0.75
@@ -770,20 +774,8 @@ static class BlindLane1
         }, "no cord turns more than 90 degrees within one cell of arc on open floor (forced: within a cell of a wall/device, within 0.75 of its tip, a tied strain-relief loop; a broad loop of 300+ degrees at radius 0.45+ is a loop, not a bend)");
     }
 
-    // from the window, walk both ways while the heading keeps turning the same way; 300+ degrees at a radius of 0.45 cell or
-    // wider (no more than 1/0.45 rad per cell inside the window) is a loop of the cord, not a kink
-    static bool BroadLoop(List<V2> r, int i, int j, double turn)
-    {
-        double arc = 0.05 * (j - i); if (arc <= 0 || Math.Abs(turn) / arc > 1 / 0.45 + 1e-9) return false;
-        int sgn = Math.Sign(turn); double tot = 0;
-        double T(int k) { var u = (r[k] - r[k - 1]).Norm(); var v = (r[k + 1] - r[k]).Norm(); return Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z); }
-        int lo = i, hi = j - 1, flat = 0;
-        for (int k = i; k < j && k + 1 < r.Count; k++) tot += T(k);
-        for (int k = lo - 1; k >= 1; k--) { double d = T(k); if (Math.Sign(d) == -sgn && Math.Abs(d) > 1e-4) { if (++flat > 3) break; } else flat = 0; tot += d; }
-        flat = 0;
-        for (int k = hi + 1; k + 1 < r.Count; k++) { double d = T(k); if (Math.Sign(d) == -sgn && Math.Abs(d) > 1e-4) { if (++flat > 3) break; } else flat = 0; tot += d; }
-        return Math.Abs(tot) >= 300 * Math.PI / 180;
-    }
+    // (BroadLoop, this row's own loop reading, is gone: it read the 1-cell window's own rate as well as the one-way stretch's, a second definition
+    // the bar's words do not give; the row now asks the bar's named instrument. Refusal REFUSAL_GSS_SHARP_TURN_TWO_LOOP_DEFINITIONS, gss_last 2026-11-15)
 
     // the bar's own instrument (oracle: "the bridge bends probe (CordShapeAudit.Bends) ... tally unforced == 0"), run offline over my scenes
     static void CordBendsTally()

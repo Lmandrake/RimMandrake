@@ -40,7 +40,7 @@ static partial class BlindLane1
             var sc = MakeScene(N, int.Parse(a[0]), int.Parse(a[1]), a[2] == "1");
             CordSlacken.Why = x => { if (a[3] == "NULL" ? x.StartsWith("|") : x.Contains(a[3])) Console.WriteLine("  slwhy: " + x.Substring(0, Math.Min(500, x.Length))); };
             CordBuilder.HopWhy = x => { if (x.Contains(a[3])) Console.WriteLine("  hopwhy: " + x.Substring(0, Math.Min(400, x.Length))); };
-            CordBuilder.StepTrace = (st, ea, eb, P) => { if ((ea ?? "").StartsWith(a[3]) || (eb ?? "").StartsWith(a[3])) Console.WriteLine($"  {ea}|{eb} {st}: unforced {CordShapeAudit.Unforced(sc.W, ea, eb, P)} n {P.Count} len {Geo.Length(P):0.00} start {P[0]} heading {(P.Count > 3 ? Math.Atan2(P[3].Z - P[0].Z, P[3].X - P[0].X) * 180 / Math.PI : 0):0}"); };
+            CordBuilder.StepTrace = (st, ea, eb, P) => { if ((ea ?? "").StartsWith(a[3]) || (eb ?? "").StartsWith(a[3])) Console.WriteLine($"  {ea}|{eb} {st}: unforced {CordShapeAudit.Unforced(sc.W, ea, eb, P)} n {P.Count} len {Geo.Length(P):0.00} start {P[0]} heading {(P.Count > 3 ? Math.Atan2(P[3].Z - P[0].Z, P[3].X - P[0].X) * 180 / Math.PI : 0):0}"); if (Environment.GetEnvironmentVariable("PTS") == "1") Console.WriteLine("    pts " + string.Join(" ", Geo.Resample(P, 0.1).Select(q => $"{q.X:0.00},{q.Z:0.00}"))); };
             foreach (var p in Build(sc.W))
                 foreach (var s in p.Strands.Where(HasPts))
                     if ((p.EndA ?? "").StartsWith(a[3]) || (p.EndB ?? "").StartsWith(a[3]))
@@ -99,6 +99,53 @@ static partial class BlindLane1
             Console.WriteLine($"ROOM strands {strands} folds {kinks} :: {Top(by, 12)}");
             return 0;
         }
+        if (mode == "bendpts")
+        {
+            // the judge's bend scenes (seeds as "bends"), every strand with an unforced bend: its bends, ends, lay and points (0.05 cell) as one JSON line
+            for (int t = 0; t < N; t++) foreach (bool walls in new[] { false, true })
+            {
+                var sc = MakeScene(b0 + 6000 + t + (walls ? 500 : 0) + (t >= 40 ? 100000 : 0), 6, 14, walls);
+                foreach (var p in Build(sc.W)) foreach (var s in p.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) continue;
+                    var bs = CordShapeAudit.Bends(s.Pts, s.Ties).Select(b => (b, why: CordShapeAudit.Why(sc.W, p.EndA, p.EndB, s.Pts, b))).ToList();
+                    if (!bs.Any(x => x.why == "unforced")) continue;
+                    var inv = System.Globalization.CultureInfo.InvariantCulture;
+                    string F(double d) => d.ToString("0.###", inv);
+                    Console.WriteLine("{\"scene\":\"" + sc.Desc + "\",\"a\":\"" + p.EndA + "\",\"b\":\"" + p.EndB + "\",\"lay\":\"" + s.Lay + "\",\"whip\":[" + s.WhipA + "," + s.WhipB + "],\"bends\":["
+                        + string.Join(",", bs.Select(x => "{\"why\":\"" + x.why + "\",\"s\":" + F(x.b.S) + ",\"turn\":" + F(x.b.Turn) + ",\"arc\":" + F(x.b.Arc) + ",\"round\":" + F(x.b.Round) + ",\"roundR\":" + F(x.b.RoundR) + ",\"fromEnd\":" + F(x.b.FromEnd) + "}"))
+                        + "],\"pts\":[" + string.Join(",", s.Pts.Select(q => "[" + F(q.X) + "," + F(q.Z) + "]")) + "],\"blocked\":["
+                        + string.Join(",", Enumerable.Range(0, sc.W.Width * sc.W.Height).Select(i => new Cell(i % sc.W.Width, i / sc.W.Width)).Where(c => !sc.W.IsWalkable(c)).Select(c => "[" + c.X + "," + c.Z + "]")) + "]}");
+                }
+            }
+            return 0;
+        }
+        if (mode == "whyat")
+        {
+            // every bend the bar's instrument reads within 0.8 cell of AT=x,z on scene seed N (runs RUNS, default 6), open floor: what it calls each
+            var at = Environment.GetEnvironmentVariable("AT").Split(','); var p0 = new V2(double.Parse(at[0], System.Globalization.CultureInfo.InvariantCulture), double.Parse(at[1], System.Globalization.CultureInfo.InvariantCulture));
+            var sc = MakeScene(N, int.Parse(Environment.GetEnvironmentVariable("RUNS") ?? "6"), 14, b0 == 1);
+            foreach (var p in Build(sc.W)) foreach (var s in p.Strands)
+            {
+                if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) continue;
+                foreach (var b in CordShapeAudit.Bends(s.Pts, s.Ties))
+                    if (V2.Dist(b.Apex, p0) < 0.8 || s.Pts.Any(q => V2.Dist(q, p0) < 0.05))
+                        Console.WriteLine($"{p.EndA}|{p.EndB} {s.Lay} apex {b.Apex} S {b.S:0.00} turn {b.Turn:0} arc {b.Arc:0.00} round {b.Round:0} R {b.RoundR:0.00} -> {CordShapeAudit.Why(sc.W, p.EndA, p.EndB, s.Pts, b)}");
+            }
+            return 0;
+        }
+#if !BASE
+        if (mode == "stagetime")
+        {
+            // where the lay time goes: ms between successive StepTrace stages (the stage named is the one that just ended), over the time mode's scenes
+            var acc = new Dictionary<string, double>(); var swt = System.Diagnostics.Stopwatch.StartNew(); double last = 0; string prev = null;
+            CordBuilder.StepTrace = (st, ea, eb, P) => { double now = swt.Elapsed.TotalMilliseconds; string k = (prev ?? "start") + "->" + st; acc[k] = acc.GetValueOrDefault(k) + now - last; last = now; prev = st; };
+            var all = System.Diagnostics.Stopwatch.StartNew();
+            for (int t = 0; t < N; t++) foreach (bool walls in new[] { false, true }) { prev = null; last = swt.Elapsed.TotalMilliseconds; Build(MakeScene(b0 + 6000 + t + (walls ? 500 : 0), 6, 14, walls).W); }
+            Console.WriteLine($"STAGETIME total {all.ElapsedMilliseconds} ms over {2 * N} scenes; " + string.Join(", ", acc.OrderByDescending(kv => kv.Value).Take(14).Select(kv => $"{kv.Key} {kv.Value:0}")));
+            return 0;
+        }
+#endif
         if (mode == "time")
         {
             var sw = System.Diagnostics.Stopwatch.StartNew(); int pieces = 0;
@@ -142,6 +189,8 @@ static partial class BlindLane1
         }
         if (mode == "bends" || mode == "all")
         {
+            var rw = new Dictionary<string, int>();
+            if (Environment.GetEnvironmentVariable("RO") == "1") CordBuilder.HopWhy = x => { if (x.StartsWith("RO ")) Inc(rw, System.Text.RegularExpressions.Regex.Replace(x, @"[0-9.]+", "#")); };
             var tally = new CordShapeAudit.BendTally(); var by = new Dictionary<string, int>(); var ex = new List<string>(); int strands = 0, bad = 0, kinks = 0;
             for (int t = 0; t < N; t++) foreach (bool walls in new[] { false, true })
             {
@@ -162,6 +211,7 @@ static partial class BlindLane1
                 }
             }
             int tot = by.Values.Sum();
+            if (rw.Count > 0) Console.WriteLine("ROUNDOUT " + Top(rw, 20));
             Console.WriteLine($"BENDS strands {strands} kinks {kinks} badStrands {bad} unforced {tot} :: {Top(by, 20)}"); foreach (var x in ex) Console.WriteLine("  " + x);
         }
         if (mode == "repeat" || mode == "all")
