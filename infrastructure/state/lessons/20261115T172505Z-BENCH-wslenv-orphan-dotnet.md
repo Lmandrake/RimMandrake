@@ -1,0 +1,3 @@
+From WSL, an env var set for a Windows exe (dotnet.exe running diag.py's Diag.dll) does not reach it unless it is listed in WSLENV: ALLROWS=1 python3 diag.py ... printed no twin rows until run as ALLROWS=1 WSLENV=ALLROWS. Also, killing the WSL /init wrapper of a dotnet.exe run leaves the Windows process alive and holding bin/*.dll (the next selftest build fails MSB3027): find it by command line with powershell Get-CimInstance Win32_Process and taskkill /PID it (never /IM, which kills every dotnet).
+item: RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX
+home: infrastructure/state/facts/tool_traps.md

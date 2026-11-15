@@ -1,0 +1,7 @@
+# diag.py repeat 1000 --base, kernel at 47f2dac1eb (twin pass); base a1a7529ef1 read under0.1 2/2/2/0/0/0
+REPEAT L3: pairs 5600 under0.1 0 min 0.156 kernelTooAlike 51/5600 lays routed+vary+loop 742, routed+vary+loop+loop 447, routed+vary 175, routed+slack+vary+loop 88, routed+slack+vary+loop+loop 62, routed+slack+vary 24, routed+loop 17, routed+loop+loop 13, routed+unbend+vary+loop 8, routed 7, hop+slack+vary+loop 4, routed+vary+twin 4
+REPEAT L4: pairs 5600 under0.1 0 min 0.152 kernelTooAlike 35/5600 lays routed+vary+loop 696, routed+vary+loop+loop 489, routed+vary 172, routed+loop 44, routed 32, routed+loop+loop 27, routed+slack+vary+loop 26, routed+slack+vary+loop+loop 15, hop+vary+loop 15, hop+slack+vary+loop 14, routed+slack+loop 12, hop+vary+loop+loop 10
+REPEAT L5: pairs 5600 under0.1 0 min 0.187 kernelTooAlike 13/5600 lays routed+vary+loop 688, routed+vary+loop+loop 611, routed+vary 143, routed+slack+vary+loop 42, routed+slack+vary+loop+loop 39, routed+unbend+vary+loop 29, routed+unbend+vary+loop+loop 26, routed+slack+vary 11, routed+unbend+vary 8, routed+loop 1, routed+vary+loop+twin 1, routed+vary+twin 1
+REPEAT L6: pairs 5600 under0.1 0 min 0.18 kernelTooAlike 7/5600 lays routed 1463, routed+unbend 87, routed+slack 49, routed+unbend+slack 1
+REPEAT L9: pairs 5600 under0.1 0 min 0.466 kernelTooAlike 0/5600 lays routed 1421, routed+unbend 174, routed+slack 5
+REPEAT L12: pairs 5600 under0.1 0 min 0.58 kernelTooAlike 0/5600 lays routed 1382, routed+unbend 216, routed+slack 2

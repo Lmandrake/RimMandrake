@@ -7,3 +7,5 @@
   `no_hose_in_gss` wording for the neutral fixer, and the two loop definitions for cycle 2.
 - `Diag.cs`, `diag.py`: the sweep harness (lane 1's scene maker, thousands of seeded scenes, failures by lay and end kind);
   `python3 diag.py all 1000 --base [--src <GimmeSomeSlack dir>]` from the repo root. `sweep_base_2000.txt`: the base kernel over 2000 scenes.
+- `repeat_twin_fix_1000.txt`: `diag.py repeat 1000 --base` after the twin pass (RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX, `47f2dac1eb`): under0.1 0 on
+  every REPEAT line (2/2/2/0/0/0 before).
