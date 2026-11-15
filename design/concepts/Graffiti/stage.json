@@ -107,11 +107,81 @@
     "ref": "run rm-role-designer-1794730323",
     "stage": 4,
     "tokens": 160900
+   },
+   {
+    "at": "2026-11-15T08:27:32Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794730911",
+    "stage": 5,
+    "tokens": 561585
+   },
+   {
+    "at": "2026-11-15T08:30:01Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794730911",
+    "stage": 5,
+    "tokens": 181631
+   },
+   {
+    "at": "2026-11-15T08:30:58Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794730904",
+    "stage": 5,
+    "tokens": 431619
    }
   ],
   "reserve": 60000,
-  "spent": 3508381
+  "spent": 4683216
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-15T08:21:51Z",
+   "error": null,
+   "gaps": 24,
+   "ids": [
+    "answer_wall",
+    "art_skill",
+    "fights_reasons",
+    "going_over",
+    "ideo_sigil",
+    "inv_beauty_and_craft",
+    "inv_breach_bias",
+    "inv_ideo_sigils",
+    "inv_joy_and_idle_tag",
+    "inv_mark_on_wall",
+    "inv_player_orders",
+    "inv_raid_marks",
+    "inv_raider_future_marks",
+    "inv_settings",
+    "inv_social_layer",
+    "inv_standalone",
+    "inv_temperament",
+    "inv_viewer_mood",
+    "inv_weathering",
+    "mockery",
+    "not_dirt",
+    "own_fun",
+    "raid_mark_troubles",
+    "raider_pressure",
+    "reads_at_play_zoom",
+    "sits_on_wall",
+    "stands_alone_settings",
+    "temperament",
+    "tribute_memorial",
+    "ugliness_visible",
+    "walk_lived_in",
+    "weathering_bounds_marks"
+   ],
+   "judge": "rm-coverage-judge-1794730911",
+   "late": [],
+   "tags": {
+    "first": 24
+   },
+   "tokens": 743216,
+   "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-15T04:54:02Z",
@@ -202,6 +272,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794730323: stage 4 done"
+  },
+  {
+   "at": "2026-11-15T08:21:50Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794730904, stage 5, budget 431619"
+  },
+  {
+   "at": "2026-11-15T08:30:58Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794730904 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -379,6 +461,15 @@
    "run": "rm-role-designer-1794730323",
    "stage": 4,
    "summary": "Cold Reader exam PASS against tree cc00c622 and sheet f187df87: 22 frozen scenarios (14 examiner, 8 challenger), both fresh Readers matched all 22, accept_where_reject_core 0, no challenger misses. Control on going_over missed e8 and c5. A first control on visitors did not miss (its reader read trader goodwill as opinion under rereads_daily); recorded in exam.json, scenarios unchanged."
+  },
+  {
+   "at": "2026-11-15T08:30:58Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794730904",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
