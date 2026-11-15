@@ -49,6 +49,7 @@ Ingest item: `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`.
 | `owner_look_defects_2026-11-13_dig_interface.md` | 2 statements from the 2026-11-13 dig-interface look |
 | `owner_look_defects_2026-11-13_evening.md` | 5 statements from the 2026-11-13 evening FlowWorks liquid look |
 | `owner_look_defects_2026-11-14.md` | 13 numbered findings and 1 follow-up ruling (22 rows) from the 2026-11-14 pit-fixes look. 5 rows are approvals kept as bars |
+| `walk_defects_2026-11-14_graffiti.md` | 6 agent findings (not his words) from the Graffiti lived-in walk, 2026-11-14 night: an Ideo save-reference error, a raid tag on natural rock, a standing-mockery daily tax, opinion piling up over weeks, two text/picture mismatches, a harness counter |
 | `src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py` (+ `selftest_owner_look_regressions.py`) | built early, awaiting ingest: in-game state reads for the rows above; wired into nothing. Its selftest runs only because the nightly sweep discovers every `selftest*.py`, so it does not rot |
 | `src/RimMandrake/Utils/selftest_screenshot_mode_restored.py` | built early, awaiting ingest: harness guard for the "cannot select or screenshot" defect |
 | enforcement `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION` | held, blocked on the ladder |

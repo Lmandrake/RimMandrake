@@ -1,0 +1,1 @@
+python.exe launched from WSL does not see WSL environment variables unless they are named in WSLENV (export WSLENV=VAR1:VAR2); a bridge script reading os.environ silently ran on its defaults and wrote a run's data into the previous run's folder. (Graffiti walk 2026-11-14)
