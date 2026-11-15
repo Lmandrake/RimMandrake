@@ -22,6 +22,26 @@ namespace RimMandrake.Webwork
 
         private static string[] Parts(string args) => (args ?? "").Split(new[] { ';', '|' });
 
+        // IncidentWorker.CanFireNow caches CanFireNowSub per game tick (private lastCheckCanRunTick): two asks in one tick
+        // under different settings read the first answer back (siege/setting_off_refuses read "Eligible ... canFire False").
+        // Clear it before the ask, and after, so the storyteller never reads an answer given under proof settings.
+        private static readonly System.Reflection.FieldInfo CanRunTick = typeof(IncidentWorker).GetField("lastCheckCanRunTick",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+        private static bool CanFireNowFresh(IncidentDef def, IncidentParms parms)
+        {
+            if (CanRunTick == null) throw new System.MissingFieldException("IncidentWorker", "lastCheckCanRunTick");
+            CanRunTick.SetValue(def.Worker, -1);
+            try
+            {
+                return def.Worker.CanFireNow(parms);
+            }
+            finally
+            {
+                CanRunTick.SetValue(def.Worker, -1);
+            }
+        }
+
         private static Lord NewestSiege(Map map)
         {
             return map.lordManager.lords.Where(l => l.LordJob is RM_LordJob_WebworkSiege && l.ownedPawns.Count > 0)
@@ -65,7 +85,7 @@ namespace RimMandrake.Webwork
                 SiegeEligibility e = RM_WebworkSiegeUtility.EligibilityFor(map, out int sampled, out int shaded, out bool measurable);
                 IncidentParms parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, map);
                 parms.forced = true;
-                bool can = RM_WebworkSiegeDefOf.RM_WebworkSiege.Worker.CanFireNow(parms);
+                bool can = CanFireNowFresh(RM_WebworkSiegeDefOf.RM_WebworkSiege, parms);
                 return "ELIG reason " + e + " | measurable " + measurable + " | sampled " + sampled + " | shaded " + shaded
                     + " | canFire " + can + " | why " + RM_WebworkSiegeKernel.Describe(e).Replace(' ', '_');
             }
