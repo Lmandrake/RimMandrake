@@ -1197,15 +1197,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid   (full list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z [--save NAME]   (proof build, the full list, a staged throwaway colony)",
    "why_game": "the walk is the full list, played (leaf walk_storeroom_raid)",
    "why_full_list": "the walk is the full list, played (leaf walk_storeroom_raid)",
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "FRAME_BUDGET is UNMEASURED until RM_FrameProbe has a bridge read; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers",
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_gas_shove_into_pit": {

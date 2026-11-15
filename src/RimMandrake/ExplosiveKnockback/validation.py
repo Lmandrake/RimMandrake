@@ -10,7 +10,12 @@ land / descent records) plus map state. A component PASSes only on a PASS verdic
 a pit scene) records UNMEASURED, never PASS. The same scenes run standalone via knockback_runner.py.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
+LIVE leaf: `python.exe validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z` (sc_walk_raid, the
+full list; see walk_storeroom_raid below). `--live` with no game, no bridge or an unknown leaf refuses non-zero.
 """
+import collections
+import json
+import math
 import os
 import re
 import sys
@@ -324,7 +329,467 @@ def mock_run():
     return 0 if ok else 1
 
 
+
+# ============================================================================ walk_storeroom_raid (leaf, scene sc_walk_raid)
+# design/concepts/ExplosiveKnockback/scenes.json sc_walk_raid; leaf walk_storeroom_raid in tree.json. FULL LIST, python.exe,
+# bridge held, the proof build deployed, a throwaway colony whose storeroom, covered pit trap and vent-gas cell are named by
+# the flags below (each asserted from the live map; INVALID, so UNMEASURED rows, otherwise).
+#   python.exe src\RimMandrake\ExplosiveKnockback\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z
+#       --gas x,z [--lit x,z] [--save NAME] [--site x,z,w,h] [--raid-points 300] [--out evidence.json]
+# Shells are GenExplosion calls at the HE mortar shell's numbers (Bullet_Shell_HighExplosive: Bomb, radius 2.9) and the
+# grenade at the frag grenade's (Proj_GrenadeFrag: Bomb, radius 1.9), so the config lookup resolves on the damageDef path;
+# the raid itself is real (jawa/fire_raid) so raiders are on the map. Orders: A mortars, mid-air save + reload, grenade,
+# gas; B (from the baseline save) gas, mortars, grenade; C the mortars with the mod off. The baseline save is reloaded at
+# the end and the player's settings put back. Exit 0 only if every row PASSes; 2 = refused (no game, no bridge); 3 = PROOF
+# BUILD REQUIRED. FRAME_BUDGET stays UNMEASURED until RM_FrameProbe has a bridge read (its Begin/Stop are internal).
+# What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
+# travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
+# cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
+WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
+             "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
+             "B_GAS_CLUMP_BY_CLUMP", "B_GAS_GOODS_MOVED", "B_IMPACTS_IN_ROOM", "B_COVER_BROKEN_ONE_DESCENT",
+             "B_REQUESTS_MATCH_PLAN", "B_REACHED_ACCOUNTED", "C_OFF_IMPACTS_NO_THROWS", "CARRIER_TICK_COST", "FRAME_BUDGET")
+SHELL = ("Bomb", 2.9)        # Bullet_Shell_HighExplosive (Core Items_Resource_Shell.xml)
+GRENADE = ("Bomb", 1.9)      # Proj_GrenadeFrag (Core RangedIndustrialGrenades.xml)
+VENTGAS = "RimMandrake.Cauldron.RM_MapComponent_VentGas"
+SETTINGS_TYPE = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+MODS_NEEDED = ("mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.cauldron")
+
+
+
+class WalkRefused(Exception):
+    """No game or no bridge: the walk did not start, which is never a STATIC exit 0."""
+
+
+def _xz(s):
+    return tuple(int(v) for v in str(s).split(","))
+
+
+def _in_rect(c, r):
+    return c is not None and r[0] <= c[0] < r[0] + r[2] and r[1] <= c[1] < r[1] + r[3]
+
+
+def _pos(t):
+    p = t.get("position") or {}
+    return (p.get("x"), p.get("z")) if isinstance(p, dict) else None
+
+
+def _num(s):
+    return "".join(ch for ch in str(s) if ch.isdigit())
+
+
+def active_mods(path=None):
+    """ModsConfig's activeMods, lowercased, or None when it is unreadable (it describes the NEXT load)."""
+    import xml.etree.ElementTree as ET
+    if path is None:
+        sys.path.insert(0, _UTILS)
+        from game_paths import MODS_CONFIG as path
+    if not os.path.isfile(path):
+        return None
+    return [li.text.strip().lower() for li in ET.parse(path).find("activeMods") if li.text]
+
+
+class _Walk:
+    def __init__(self, B, a, wait):
+        self.B, self.a, self.wait = B, a, wait
+        self.rows, self.ev = {}, {"args": vars(a)}
+        self.room = _xz(a.storeroom)
+        self.cover, self.gas = _xz(a.cover), _xz(a.gas)
+        self.lit = _xz(a.lit) if a.lit else (self.gas[0] - 2, self.gas[1])
+        if a.site:
+            self.site = _xz(a.site)
+        else:
+            xs = [self.room[0], self.room[0] + self.room[2], self.cover[0] + 1, self.gas[0] + 3, self.gas[0] - 3]
+            zs = [self.room[1], self.room[1] + self.room[3], self.cover[1] + 1, self.gas[1] + 3, self.gas[1] - 3]
+            self.site = (min(xs) - 4, min(zs) - 4, max(xs) - min(xs) + 8, max(zs) - min(zs) + 8)
+
+    # ---- bridge plumbing
+    def c(self, tool, **kw):
+        try:
+            r = self.B.call(tool, **kw)
+        except Exception as e:  # noqa: BLE001 - one failed call is that row's evidence, never a crash
+            return {"success": False, "exc": repr(e)[:300]}
+        return r if isinstance(r, dict) else {"success": True, "result": r}
+
+    def kp(self, method, arg="x", type_=PROOF):
+        r = self.c("jawa/static_call", type=type_, method=method, args=arg)
+        return r, str(r.get("result") or "")
+
+    def step(self, n):
+        self.c("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=120000)
+
+    def row(self, rid, ok, det):
+        self.rows[rid] = (ok if isinstance(ok, str) else ("PASS" if ok else "FAIL"), str(det)[:400])
+
+    def unmeasured(self, rids, why):
+        for rid in rids:
+            self.rows.setdefault(rid, ("UNMEASURED", why[:400]))
+
+    def journal(self):
+        recs = []
+        for line in self.kp("Journal", "4000")[1].splitlines():
+            line = line.strip()
+            if line.startswith("{"):
+                try:
+                    recs.append(json.loads(line))
+                except ValueError:
+                    pass
+        return recs
+
+    def haulables(self, rect):
+        r = self.c("jawa/list_things", rect="%d,%d,%d,%d" % tuple(rect), group="HaulableEver", limit=2000)
+        return r.get("things") or []
+
+    def save(self, name):
+        r = self.c("rimworld/save_game", saveName=name)
+        self.ev.setdefault("saves", []).append(name)
+        return r
+
+    def load(self, name):
+        self.c("rimworld/load_game", saveName=name)
+        ok, why = self.wait(self.B)
+        self.c("rimworld/set_time_speed", speed=0)
+        return ok, why
+
+    def perf(self):
+        r = self.c("jawa/time_perf")
+        return r.get("meanTickTime") if r.get("success") is not False else None
+
+    # ---- preconditions (asserted; any miss makes every later row UNMEASURED)
+    def preconditions(self):
+        miss = []
+        tp = self.c("jawa/time_perf")
+        if tp.get("success") is False:
+            raise WalkRefused("no game loaded, or the bridge refused (jawa/time_perf: %s)" % str(tp.get("exc") or tp.get("error") or tp)[:240])
+        r, names = self.kp("Names")
+        if is_release_answer(r):
+            return "RELEASE"
+        if "flowworks=True" not in names:
+            miss.append("FlowWorks not live (Names: %s)" % names[-60:])
+        mods = active_mods()
+        if mods is None:
+            miss.append("ModsConfig.xml unreadable")
+        else:
+            miss += ["%s not in ModsConfig activeMods" % m for m in MODS_NEEDED if m not in mods]
+            if len(mods) < self.a.full_min:
+                miss.append("%d active mods: not the full list (--full-min %d)" % (len(mods), self.a.full_min))
+            self.ev["active_mods"] = len(mods)
+        self.kp("Plant", "reset")
+        if "gasreg=True" not in self.kp("Plant", "gasreg=on")[1]:
+            miss.append("Cauldron vent gas not registered with the gas chain (Plant gasreg)")
+        rb = self.c("jawa/list_things", rect="%d,%d,%d,%d" % self.room, group="BuildingArtificial", limit=500).get("things") or []
+        defs = sorted(set(t.get("def") for t in rb if t.get("def")))
+        shelves = [d for d in defs if d in self.a.shelf_defs.split(",")]
+        closed = [d for d in defs if self.kp("IsClosed", d)[1].startswith("CLOSED ")]
+        if not shelves:
+            miss.append("no open shelf (%s) in the storeroom" % self.a.shelf_defs)
+        for d in shelves:
+            if not self.kp("IsClosed", d)[1].startswith("OPEN "):
+                miss.append("shelf %s is not OPEN by the shipped rule" % d)
+        if not closed:
+            miss.append("no closed container in the storeroom (defs %s)" % defs[:12])
+        goods = self.haulables(self.room)
+        if len(goods) < 3:
+            miss.append("%d haulable stacks in the storeroom (want >= 3)" % len(goods))
+        cov = self.c("jawa/list_things", rect="%d,%d,1,1" % self.cover, limit=20).get("things") or []
+        self.cover_def = next((t.get("def") for t in cov if str(t.get("def", "")).startswith("RM_PitCover")), None)
+        if not self.cover_def:
+            miss.append("no RM_PitCover* on the cover cell %d,%d" % self.cover)
+        self.ev["pre"] = {"shelves": shelves, "closed": closed, "goods": len(goods), "cover": self.cover_def}
+        return miss
+
+    # ---- the three acts
+    def mortars(self, tag, midair=False):
+        cx, cz = self.room[0] + self.room[2] // 2, self.room[1] + self.room[3] // 2
+        cells = [(cx, cz), (cx - 1, cz + 1), (cx + 1, cz - 1)][:max(1, self.a.shells)]
+        recs, ok_all, reached_miss = [], True, []
+        for i, (x, z) in enumerate(cells):
+            pre = [t for t in self.haulables((x - 3, z - 3, 7, 7))
+                   if _pos(t) and math.hypot(_pos(t)[0] - x, _pos(t)[1] - z) <= SHELL[1] - 1]
+            self.kp("Clear")
+            e = self.c("jawa/explosion_at", at="%d,%d" % (x, z), radius=SHELL[1], damType=SHELL[0])
+            ok_all = ok_all and e.get("success") is not False
+            if midair and i == 0:
+                self.step(2)
+                self.midair(tag)
+            self.step(self.a.settle)
+            w = self.journal()
+            recs += w
+            seen = set(_num(r.get("thing")) for r in w if r.get("thing"))
+            reached_miss += ["%s@%s" % (t.get("def"), _pos(t)) for t in pre if _num(t.get("id")) not in seen]
+        return cells, recs, ok_all, reached_miss
+
+    def midair(self, tag):
+        fl = [l for l in self.kp("Flights")[1].splitlines() if l and not l.startswith("NONE")]
+        self.ev["tick_air"] = self.perf()
+        self.ev["midair_flights"] = fl
+        if not fl:
+            self.row("A_SAVE_MIDAIR", False, "no carrier in the air 2 ticks after the first shell")
+            self.unmeasured(["A_RELOAD_NO_DUP_LOST"], "UNMEASURED: nothing in the air to save")
+            return
+
+        def census():
+            ids = [_num(t.get("id")) for t in self.haulables(self.site)]
+            for l in self.kp("Flights")[1].splitlines():
+                m = re.search(r"innerId=(\S+)", l)
+                if m:
+                    ids.append(_num(m.group(1)))
+            return sorted(ids)
+        before = census()
+        name = "EK_WALK_RAID_MIDAIR_" + self.a.stamp
+        sv = self.save(name)
+        self.row("A_SAVE_MIDAIR", sv.get("success") is not False, "%d carrier(s) in the air; save %s: %s" % (len(fl), name, str(sv)[:80]))
+        ok, why = self.load(name)
+        if not ok:
+            self.unmeasured(["A_RELOAD_NO_DUP_LOST"], "UNMEASURED: reload of %s never reached Playing (%s)" % (name, why))
+            return
+        after = census()
+        dup = sorted(i for i in set(after) if after.count(i) > 1)
+        lost = sorted(set(before) - set(after))
+        new = sorted(set(after) - set(before))
+        self.ev["reload_census"] = {"before": len(before), "after": len(after), "dup": dup, "lost": lost, "new": new}
+        self.row("A_RELOAD_NO_DUP_LOST", not dup and not lost and not new and before,
+                 "%d things before the save, %d after the reload; dup %s lost %s new %s" % (len(before), len(after), dup[:5], lost[:5], new[:5]))
+
+    def grenade(self):
+        self.kp("Clear")
+        e = self.c("jawa/explosion_at", at="%d,%d" % self.cover, radius=GRENADE[1], damType=GRENADE[0])
+        self.step(self.a.settle)
+        recs = self.journal()
+        cov = self.c("jawa/list_things", rect="%d,%d,1,1" % self.cover, limit=20).get("things") or []
+        still = [t.get("def") for t in cov if str(t.get("def", "")).startswith("RM_PitCover")]
+        desc = [r for r in recs if r.get("type") == "descent"]
+        per = collections.Counter(r.get("thing") for r in desc)
+        twice = [k for k, n in per.items() if n > 1]
+        ok = e.get("success") is not False and not still and desc and not twice
+        return recs, ok, "grenade %s; cover left %s; %d descent(s), twice %s" % (
+            "ok" if e.get("success") is not False else e, still or "none", len(desc), twice)
+
+    def gas_act(self):
+        self.kp("Clear")
+        seeded = self.kp("SeedCloud", "current|%d,%d|2|250" % self.gas, type_=VENTGAS)[1]
+        f = self.c("jawa/map_fire", action="start", rect="%d,%d,1,1" % self.lit, fireSize=1.0)
+        quiet, last = 0, 0
+        for _ in range(self.a.gas_ticks // 60):
+            self.step(60)
+            n = sum(1 for r in self.journal() if r.get("type") == "gas_burst")
+            quiet = quiet + 1 if n == last else 0
+            last = n
+            if n and quiet >= 2:
+                break
+        recs = self.journal()
+        self.kp("ClearOf", "current", type_=VENTGAS)
+        self.ev.setdefault("gas", []).append({"seeded": seeded, "fire": {k: f.get(k) for k in ("success", "firesStarted")}})
+        return recs
+
+    # ---- judging a window of journal records
+    def judge_gas(self, tag, recs):
+        b = [r for r in recs if r.get("type") == "gas_burst"]
+        cells = [tuple(r.get("at") or ()) for r in b]
+        ticks = sorted(set(r.get("tick") for r in b))
+        d = lambda c: math.hypot(c[0] - self.lit[0], c[1] - self.lit[1]) if len(c) == 2 else 0.0  # noqa: E731
+        means = [sum(d(tuple(r["at"])) for r in b if r.get("tick") == t) / max(1, sum(1 for r in b if r.get("tick") == t)) for t in ticks]
+        ordered = all(means[i + 1] >= means[i] - 1.0 for i in range(len(means) - 1))
+        self.row(tag + "_GAS_CLUMP_BY_CLUMP", len(b) >= 3 and len(ticks) >= 2 and len(set(cells)) == len(cells) and ordered,
+                 "%d bursts on %d ticks, %d distinct cells; mean distance from lit %s by tick %s" % (
+                     len(b), len(ticks), len(set(cells)), self.lit, [round(m, 1) for m in means][:12]))
+        ids = set(r.get("exp") for r in b)
+        moves = [r for r in recs if r.get("type") in ("item_move", "launch") and r.get("exp") in ids]
+        self.row(tag + "_GAS_GOODS_MOVED", bool(b) and any(r.get("type") == "item_move" for r in moves),
+                 "%d throw(s) from %d burst(s)" % (len(moves), len(ids)))
+
+    def judge_plan(self, tag, recs):
+        reqs = [r for r in recs if r.get("type") == "request"]
+        out = set((r.get("exp"), r.get("thing")) for r in recs if r.get("type") != "request" and r.get("thing"))
+        bad = ["%s exp %s: no outcome" % (r.get("thing"), r.get("exp")) for r in reqs if (r.get("exp"), r.get("thing")) not in out]
+        for r in recs:
+            t, pl, ce, stop = r.get("type"), r.get("planned"), r.get("cells"), str(r.get("stop"))
+            if t == "launch" and isinstance(pl, (int, float)) and isinstance(ce, (int, float)):
+                if ce > pl or (ce < pl and stop in ("None", "")):
+                    bad.append("%s launch %s of %s planned, stop %s" % (r.get("thing"), ce, pl, stop))
+            if t == "item_move":
+                if r.get("wildCells") != pl or "kernelCells" not in r:
+                    bad.append("%s item_move planned %s wild %s kernel %s" % (r.get("thing"), pl, r.get("wildCells"), r.get("kernelCells")))
+        if not reqs:
+            self.row(tag + "_REQUESTS_MATCH_PLAN", "UNMEASURED", "no throw request in the order's journal")
+        else:
+            self.row(tag + "_REQUESTS_MATCH_PLAN", not bad, "%d requests, %d mismatch(es): %s" % (len(reqs), len(bad), bad[:4]))
+
+    def judge_impacts(self, tag, cells, recs, ok_all):
+        inside = [r for r in recs if r.get("type") == "request" and _in_rect(tuple(r.get("centre") or ()), self.room)]
+        thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
+        if not self.ev.get("raid", {}).get("success", True):
+            self.row(tag + "_IMPACTS_IN_ROOM", "UNMEASURED", "the raid did not fire: %s" % self.ev["raid"])
+            return
+        self.row(tag + "_IMPACTS_IN_ROOM", ok_all and inside and thrown,
+                 "%d shell(s) at %s; %d request(s) centred in the storeroom, %d throw(s)" % (len(cells), cells, len(inside), len(thrown)))
+
+    # ---- the walk
+    def order(self, tag, gas_first):
+        recs = []
+        if gas_first:
+            g = self.gas_act()
+            self.judge_gas(tag, g)
+            recs += g
+        cells, m, ok_all, miss = self.mortars(tag, midair=(tag == "A"))
+        self.judge_impacts(tag, cells, m, ok_all)
+        self.row(tag + "_REACHED_ACCOUNTED", "UNMEASURED" if not cells else not miss,
+                 "%d thing(s) inside a shell's radius with no journal line: %s" % (len(miss), miss[:5]))
+        recs += m
+        gr, ok, det = self.grenade()
+        self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, det)
+        recs += gr
+        if not gas_first:
+            g = self.gas_act()
+            self.judge_gas(tag, g)
+            recs += g
+        self.judge_plan(tag, recs)
+
+    def control(self):
+        self.kp("Settings", "enabled=False")
+        before = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
+        cells, recs, ok_all, _m = self.mortars("C")
+        after = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
+        moved = [i for i, p in after.items() if i in before and before[i] != p]
+        thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
+        self.row("C_OFF_IMPACTS_NO_THROWS", ok_all and not thrown and not moved and before,
+                 "mod off: %d shell(s) went off (%s), %d throw line(s), %d of %d storeroom stack(s) moved" % (
+                     len(cells), "all" if ok_all else "NOT all", len(thrown), len(moved), len(before)))
+
+    def run(self):
+        if self.a.save:
+            ok, why = self.load(self.a.save)
+            if not ok:
+                raise WalkRefused("--save %s never reached Playing (%s)" % (self.a.save, why))
+        self.c("rimworld/set_time_speed", speed=0)
+        miss = self.preconditions()
+        if miss == "RELEASE":
+            return 3
+        self.row("W_PRECONDITIONS", "INVALID" if miss else "PASS", "; ".join(miss) or "full list, FlowWorks, Cauldron gas, shelves, closed container, cover")
+        if miss:
+            self.unmeasured(WALK_ROWS, "UNMEASURED: preconditions not met")
+            return 1
+        snap = {}
+        for f in sorted(settings_fields()):
+            r = self.c("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="get", field=f)
+            if r.get("success", True) is not False and "value" in r:
+                snap[f] = r["value"]
+        base = "EK_WALK_RAID_BASE_" + self.a.stamp
+        try:
+            self.kp("Settings", "reset")
+            self.save(base)
+            self.ev["tick_rest"] = self.perf()
+            if self.a.raid_points > 0:
+                rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
+                self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
+            self.order("A", gas_first=False)
+            for tag, fn in (("B", lambda: self.order("B", gas_first=True)), ("C", self.control)):
+                ok, why = self.load(base)
+                if not ok:
+                    self.unmeasured([r for r in WALK_ROWS if r.startswith(tag)], "UNMEASURED: baseline reload failed (%s)" % why)
+                    continue
+                self.kp("Settings", "reset")
+                if self.a.raid_points > 0:                  # B and the control C face the same raid
+                    self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
+                fn()
+        finally:
+            self.kp("Plant", "reset")
+            self.load(base)
+            for f, v in snap.items():
+                self.c("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=f, value=str(v))
+        air, rest = self.ev.get("tick_air"), self.ev.get("tick_rest")
+        self.row("CARRIER_TICK_COST", "PASS" if air is not None and rest is not None else "UNMEASURED",
+                 "meanTickTime %s ms at rest, %s ms with carriers in the air (recorded, not judged)" % (rest, air))
+        self.row("FRAME_BUDGET", "UNMEASURED", "RM_FrameProbe.Begin/Stop are internal: no bridge read of frame time yet")
+        return 0
+
+
+def _walk_args(argv):
+    import argparse
+    import datetime
+    ap = argparse.ArgumentParser(prog="validation.py --live walk_storeroom_raid")
+    ap.add_argument("--storeroom", required=True, help="storeroom interior rect x,z,w,h")
+    ap.add_argument("--cover", required=True, help="the covered pit trap's cell x,z")
+    ap.add_argument("--gas", required=True, help="vent-gas cloud centre x,z (radius 2, 250)")
+    ap.add_argument("--lit", default=None, help="the cell the Fire is set on (default 2 west of --gas)")
+    ap.add_argument("--save", default=None, help="load this throwaway colony first")
+    ap.add_argument("--site", default=None, help="census rect x,z,w,h (default: around the storeroom, cover and gas)")
+    ap.add_argument("--shelf-defs", default="Shelf,ShelfSmall")
+    ap.add_argument("--shells", type=int, default=3)
+    ap.add_argument("--settle", type=int, default=120, help="ticks after each blast")
+    ap.add_argument("--gas-ticks", type=int, default=900)
+    ap.add_argument("--raid-points", type=float, default=300.0, help="0 skips the real raid")
+    ap.add_argument("--full-min", type=int, default=100, help="active mods below this are not the full list")
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--stamp", default=datetime.datetime.now().strftime("%Y%m%dT%H%M%S"))
+    return ap.parse_args(argv)
+
+
+def walk_storeroom_raid(argv=None, bridge=None, wait=None, out=sys.stdout):
+    """The walk leaf. Returns the exit code: 0 every row PASS, 1 otherwise, 2 refused (no bridge / no game), 3 release DLL."""
+    a = _walk_args(argv if argv is not None else [])
+    close = None
+    try:
+        if bridge is None:
+            sys.path.insert(0, _UTILS)
+            from rimbridge_client import RimBridge, resolve_endpoint
+            host, port, token = resolve_endpoint()
+            rb = RimBridge(host=host, port=port, token=token)
+            rb.__enter__()
+            close = rb
+
+            class _Adapter:
+                def call(self, tool, _answer=False, **kw):
+                    return rb.call(tool, kw, check=not _answer)
+            bridge = _Adapter()
+        if wait is None:
+            from validation_core import _wait_playing
+            wait = lambda B: _wait_playing(B, leave_s=10)  # noqa: E731
+        w = _Walk(bridge, a, wait)
+        code = w.run()
+    except WalkRefused as e:
+        print("REFUSED walk_storeroom_raid: %s" % e, file=out)
+        return 2
+    except Exception as e:  # noqa: BLE001 - no bridge is a refusal, never STATIC: PASS
+        print("REFUSED walk_storeroom_raid: no game reachable over the bridge (%s: %s). Run with python.exe, a game Playing, "
+              "the bridge held." % (type(e).__name__, str(e)[:200]), file=out)
+        return 2
+    finally:
+        if close is not None:
+            try:
+                close.__exit__(None, None, None)
+            except Exception:  # noqa: BLE001
+                pass
+    if code == 3:
+        print(PROOF_BUILD_MESSAGE, file=out)
+        return 3
+    path = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "ek_proof",
+                                 "walk_storeroom_raid_%s.json" % a.stamp)
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump({"rows": w.rows, "ev": w.ev}, fh, indent=1, default=str)
+    except OSError as e:
+        path = "NOT WRITTEN (%s)" % e
+    print("%-28s %-10s %s" % ("ROW", "STATUS", "DETAIL"), file=out)
+    for rid in WALK_ROWS:
+        st, det = w.rows.get(rid, ("UNMEASURED", "not reached"))
+        print("%-28s %-10s %s" % (rid, st, det), file=out)
+    print("evidence: %s   throwaway saves: %s" % (path, w.ev.get("saves")), file=out)
+    return 0 if all(w.rows.get(r, ("",))[0] == "PASS" for r in WALK_ROWS) else 1
+
+
+LIVE_LEAVES = {"walk_storeroom_raid": walk_storeroom_raid}
+
+
 if __name__ == "__main__":
+    if "--live" in sys.argv:
+        rest = sys.argv[sys.argv.index("--live") + 1:]
+        leaf = rest[0] if rest and not rest[0].startswith("-") else None
+        if leaf not in LIVE_LEAVES:
+            print("REFUSED --live: name a leaf (%s); the scene chains run through modcheck" % ", ".join(sorted(LIVE_LEAVES)))
+            sys.exit(2)
+        sys.exit(LIVE_LEAVES[leaf](rest[1:]))
     if "--criteria" in sys.argv:
         print("\n".join(criteria_lines()))
         sys.exit(0)

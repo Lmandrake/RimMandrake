@@ -204,6 +204,7 @@ def main():
         "frame_probe_selfcheck": "the probe is a proof-build MonoBehaviour; its arithmetic is K-22 offline. Rows go to RM_FrameProbe_<stamp>.csv in the game's data folder",
         "barrage_perf": "the 40-cell cloud is a radius-3 seed (the seed's own cell count is printed, not asserted); the machine name is printed, not asserted (the bar says Archmagi); a full-list run is asserted as 60 or more active mods",
         "open_storage": "four open furniture defs, the guard's class read, no in_storage line. The floor control's cells are printed, not compared",
+        "walk_storeroom_raid": "FRAME_BUDGET is UNMEASURED until RM_FrameProbe has a bridge read; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers",
     }
     TICKS = {"no_cross_ordered": 2000, "pawn_arc": 900, "pit_goods_fetch": 60000}
     R = "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes "
@@ -215,6 +216,7 @@ def main():
         "barrage_perf": R + "frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, the owner's full list on Archmagi)",
         # Stage 6 visit 1 road back (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD)
         "gas_into_pit": R + "gas_into_pit,gas_into_pit_off --ticks 300   (proof build, minimal list + FlowWorks + the Cauldron and its 3 dependencies)",
+        "walk_storeroom_raid": 'python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z [--save NAME]   (proof build, the full list, a staged throwaway colony)',  # RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO
     }
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     for tid, t in OFF.items():
