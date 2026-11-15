@@ -9,10 +9,24 @@
     "ref": "run rm-role-designer-1794751445",
     "stage": 0,
     "tokens": 723572
+   },
+   {
+    "at": "2026-11-15T14:16:50Z",
+    "kind": "review",
+    "ref": "gpt_consult ask review a_root/a_live_walk, 2 rounds (estimated: codex log carries no token count)",
+    "stage": 1,
+    "tokens": 40000
+   },
+   {
+    "at": "2026-11-15T14:19:43Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794752036",
+    "stage": 1,
+    "tokens": 395722
    }
   ],
   "reserve": 60000,
-  "spent": 723572
+  "spent": 1159294
  },
  "history": [
   {
@@ -32,6 +46,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1794751445: stage 0 done"
+  },
+  {
+   "at": "2026-11-15T14:14:04Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1794752036, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-15T14:19:43Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1794752036: stage 1 waiting_owner"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -61,11 +87,45 @@
    "run": "rm-role-designer-1794751445",
    "stage": 0,
    "summary": "Stage 0 Read for Contagion. record.json carries 83 inventory capabilities (79 built, 4 absent: pre-Burn Dive, Bodyprints, Rawshade, Zhool'Iza), taken over from the Codex dry pass of 2026-11-09 and re-checked against src (one Contagion commit since, 9fe1f933f0); all 29 built-evidence lines are accounted for in built_reviewed. Scope and decisions hold his words with sources: admission 2026-11-15, the 2026-11-10 card (weather and body lead; one dash at a cost; other useful tissue), mulch plain fertilizer, Dive and Bodyprints kept in, geometry-only sun, peaks look-only. Ten contradictions are open, three of them new: Bloom-time sun escape against his geometry ruling, the Coalescence stuck at Stage 1, and seven fix items still open that the source read describes as built. Three failure modes: the sky clock is not a decision, the body bargain collapses, green by counters but empty in play. Stage 1 opens with a draft live-walk proposal on the saved Contagion site (a_live_walk) before any design question; the Codex questions q01, q03 and q06 are answered and q02, q04, q05, q07 and q08 stay draft."
+  },
+  {
+   "at": "2026-11-15T14:19:43Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "quick_look": {
+    "offer": true,
+    "scene": "QUICK LOOK OFFERED: the saved Contagion site v3 (src/RimMandrake/Contagion/prep_site.py), paused for him: the standing Bloom; the tells (gawpsacks sink, rattlegropes shake) then a Repulsor-forced Burn with a UV-shy native and a Scaldhide in the open; one colonist making a single crossing between two roofed refuges under the Burn; a placed Coalescence attempting to absorb Unfinished (absorption has an open reach failure) and collapsing under the Burn; a colonist with a Monstrous grown limb in four facings; a touched colonist treated with the Sunbeam. It shows whether the tells and sky change read, whether natives take the Burn, and whether the whole-map Burn plays as one dash or a lockdown. It does not settle c_sundash (a Direct Sun ruling) or c_local (an agent's guess).",
+    "settles": [
+     "c_readability",
+     "c_proof",
+     "c_coalescence_reach",
+     "d_one_dash"
+    ]
+   },
+   "run": "rm-role-designer-1794752036",
+   "stage": 1,
+   "summary": "Stage 1 turn: one ask sent (a_root, the proposed root text built from his 2026-10-20 experience line and his 2026-11-10 card), reviewed pass by a fresh Codex reviewer on round 2. Struck: a_live_walk (choosing who watches changes nothing built; the walk is offered as this turn's quick look instead) and round 1 of a_root (it reopened his weather-and-body ruling by asking whether the Coalescence should co-lead). q02, q04, q05, q07, q08 stay draft, unreviewed, held for stage 2 after the walk."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 1,
- "status": "ready"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }

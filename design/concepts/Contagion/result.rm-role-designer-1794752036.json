@@ -1,0 +1,16 @@
+{
+ "run": "rm-role-designer-1794752036",
+ "stage": 1,
+ "outcome": "waiting_owner",
+ "summary": "Stage 1 turn: one ask sent (a_root, the proposed root text built from his 2026-10-20 experience line and his 2026-11-10 card), reviewed pass by a fresh Codex reviewer on round 2. Struck: a_live_walk (choosing who watches changes nothing built; the walk is offered as this turn's quick look instead) and round 1 of a_root (it reopened his weather-and-body ruling by asking whether the Coalescence should co-lead). q02, q04, q05, q07, q08 stay draft, unreviewed, held for stage 2 after the walk.",
+ "quick_look": {
+  "offer": true,
+  "settles": [
+   "c_readability",
+   "c_proof",
+   "c_coalescence_reach",
+   "d_one_dash"
+  ],
+  "scene": "QUICK LOOK OFFERED: the saved Contagion site v3 (src/RimMandrake/Contagion/prep_site.py), paused for him: the standing Bloom; the tells (gawpsacks sink, rattlegropes shake) then a Repulsor-forced Burn with a UV-shy native and a Scaldhide in the open; one colonist making a single crossing between two roofed refuges under the Burn; a placed Coalescence attempting to absorb Unfinished (absorption has an open reach failure) and collapsing under the Burn; a colonist with a Monstrous grown limb in four facings; a touched colonist treated with the Sunbeam. It shows whether the tells and sky change read, whether natives take the Burn, and whether the whole-map Burn plays as one dash or a lockdown. It does not settle c_sundash (a Direct Sun ruling) or c_local (an agent's guess)."
+ }
+}
