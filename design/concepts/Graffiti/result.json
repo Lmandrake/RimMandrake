@@ -1,0 +1,16 @@
+{
+ "run": "rm-role-designer-1794718990",
+ "stage": 1,
+ "outcome": "waiting_owner",
+ "summary": "Stage 1 turn sent: a live walk of the built mod proposed first (he watches, or an agent brings back shots, or not now), a one-sentence root for his approval, and the flagship scene choice (lived-in wall, spree corridor, after a raid). All three passed a fresh review; two wording fixes applied.",
+ "quick_look": {
+  "offer": true,
+  "settles": [
+   "a_live_walk",
+   "a_flagship",
+   "c_vandal_signage",
+   "d_his_look"
+  ],
+  "scene": "a lived-in colony save after several in-game weeks: ordinary walls with tags and a mockery and its reply, a spree corridor, a raid's exit tags, a trader visit, and the shipped vandal_0/vandal_1 at play zoom"
+ }
+}

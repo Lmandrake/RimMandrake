@@ -102,8 +102,8 @@
  "asks": [
   {
    "id": "a_live_walk",
-   "status": "draft",
-   "author": "Designer (agent)",
+   "status": "sent",
+   "author": "rm-role-designer-1794718990",
    "source": [
     "ITEM:GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST"
    ],
@@ -112,13 +112,48 @@
     "inv_social_layer",
     "inv_viewer_mood"
    ],
-   "decision": "walk what is built before adding design",
-   "text": "Graffiti is built and its 22 bars were proven on 2026-11-08. Before any new design, a live walk of a lived-in colony save: several weeks of play on ordinary walls, spree, recreation, a raid and a trader, with the shipped vandal_0/vandal_1 on a wall at play zoom. It would show whether the social layer stays occasional (failure mode 3), settle c_vandal_signage, and re-show scrawl vs tally on a lived-in wall, which he asked for (d_his_look)."
+   "decision": "whether the first move is a live walk of what is built, and who watches it",
+   "text": "Graffiti is already built and its loop reported all 22 north-star bars proven on 2026-11-08 (two of those claims are still open: whether the vandal art still carries Earth-style signs, and that the proof lives in a loop clone the pipeline cannot rerun), so before any new design we propose a live walk of what exists: a lived-in colony save after several in-game weeks on ordinary walls, with a painting spree, recreation tagging, a raid's exit tags and a trader visit, and the shipped vandal marks at play zoom. It measures what we would otherwise ask you to predict: whether the social layer stays occasional or becomes a mood tax, whether the vandal art still carries Earth-style signs, and scrawl versus tally on a lived-in wall, which you asked to see again. Which way: (a) you watch it with us in one sitting, (b) an agent walks it and brings you a short set of zoomed shots, or (c) not now, argue the root first?",
+   "owner_cites": [
+    "OWNER:1794108433652543271"
+   ],
+   "offers_removal": false,
+   "review": {
+    "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
+    "verdict": "pass",
+    "why": "the owner-requested live walk; names what it settles, asks no prediction, answerable (a)/(b)/(c); proof wording softened to name the two open contradictions"
+   }
+  },
+  {
+   "id": "a_root",
+   "status": "sent",
+   "author": "rm-role-designer-1794718990",
+   "source": [
+    "design/validation_walks/RimMandrake/Graffiti.md"
+   ],
+   "about": [
+    "inv_mark_art_set",
+    "inv_beauty_and_craft",
+    "inv_social_layer",
+    "inv_ideo_sigils"
+   ],
+   "owner_cites": [
+    "OWNER:1794072694044656395",
+    "OWNER:1794108433652543271"
+   ],
+   "offers_removal": false,
+   "decision": "the root text of the Graffiti concept (stage 1 ends on his approval of it)",
+   "text": "Proposed root, in one sentence: \"Graffiti turns a colony's walls into a record of its people: punk tags and ideoligion sigils whose quality comes from the painter's art skill, and marks about people (mockery, tribute, memorials, insults) that move mood, opinion and now and then a confrontation, all readable at play zoom in any RimWorld game.\" Our strongest doubt about it: in a real colony it may play as a decal pack with mood numbers attached, either the social layer almost never fires or it becomes a permanent mood tax, and only the walk can tell which. Is this the root, or which word would you change?",
+   "review": {
+    "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
+    "verdict": "pass",
+    "why": "stage-1 root not yet answered by his words, answerable in a phrase, claims match the inventory, the doubt is left to the walk"
+   }
   },
   {
    "id": "a_flagship",
-   "status": "draft",
-   "author": "Designer (agent)",
+   "status": "sent",
+   "author": "rm-role-designer-1794718990",
    "source": [
     "design/validation_walks/RimMandrake/Graffiti.md"
    ],
@@ -128,7 +163,16 @@
     "inv_raid_marks"
    ],
    "decision": "which showcase is Graffiti's face (showcase 1 must be his pick)",
-   "text": "Which scene is Graffiti's face? A. A lived-in colony wall: a mockery naming someone, a reply painted over it, a confrontation. B. A spree corridor: one pawn's break leaving many visibly different punk marks, a skilled piece beside an ugly scrawl. C. After a raid: the raiders' exit tags troubling the colony until the wall is retaken and scrubbed."
+   "text": "Which scene should be Graffiti's face, the first showcase a player sees? (A) A lived-in colony wall: a mockery naming someone, a reply painted over it, a confrontation. (B) A spree corridor: one pawn's break leaving many visibly different punk marks, a skilled piece beside an ugly scrawl. (C) After a raid: the raiders' exit tags troubling the colony until the wall is retaken. The walk would show all three, so you can also answer after it.",
+   "owner_cites": [
+    "OWNER:1794108433652543271"
+   ],
+   "offers_removal": false,
+   "review": {
+    "by": "rm-judge a1c41e1db1e3b8a64 (fresh reviewer)",
+    "verdict": "pass",
+    "why": "showcase 1 must be his pick, taste not measurement, changes which scene is built; 'and scrubbed' removed (inv_raid_marks says retaking ends it)"
+   }
   }
  ],
  "inventory": [
