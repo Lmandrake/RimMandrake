@@ -1,0 +1,1 @@
+PawnFlyer.MakeFlyer suspends the current job only if it is suspendable; HaulToCell is not, so a thrown hauler's job is gone and its stack is dropped at takeoff, and on landing vanilla's override re-hauls it ~1 run in 3 (job log, 2026-11-15).

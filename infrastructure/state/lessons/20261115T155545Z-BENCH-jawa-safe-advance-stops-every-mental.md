@@ -1,0 +1,1 @@
+jawa/safe_advance stops on every mental break, injury and downing (stopBy), so one call of 5000 ticks can run 420: a long advance loops on ticksGame to its target tick, or a 60000-tick scene is verdicted at ~7000 (ExplosiveKnockback visit 1, 2026-11-15).

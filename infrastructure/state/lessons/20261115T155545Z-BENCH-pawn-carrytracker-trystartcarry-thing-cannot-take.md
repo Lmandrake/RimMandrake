@@ -1,0 +1,1 @@
+Pawn_CarryTracker.TryStartCarry(thing) cannot take a SPAWNED pawn (ThingOwner refuses spawned things); TryStartCarry(thing, 1, reserve:false) SplitOffs (despawns) it first. A proof that used the single-arg call never carried anyone (spared_states, 2026-11-15).
