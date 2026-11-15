@@ -60,6 +60,9 @@ def real(commit, path):
                           timeout=60, check=True).stdout
 
 
+FROZEN_TSN = 1794748469904049550
+
+
 def owner_lines():
     keep = {PAVING, PAVING_CLOSE, ADVANCE_CARD, EXAM_CARD}
     out = []
@@ -69,7 +72,9 @@ def owner_lines():
                 ev = json.loads(ln)
             except ValueError:
                 continue
-            if ev.get("id") == ITEM or str(ev.get("tsn")) in keep:
+            # the shard as it stood when the fixture was cut: a later owner event on ITEM (OWNER:1794748469904049550,
+            # 2026-11-15) is not part of the replayed history and turned this selftest red on base
+            if (ev.get("id") == ITEM and int(ev.get("tsn") or 0) < FROZEN_TSN) or str(ev.get("tsn")) in keep:
                 out.append(ln if ln.endswith("\n") else ln + "\n")
     return out
 
@@ -196,6 +201,37 @@ def main():
         check("2 cli repin exits 0 and leaves nothing stale", rc == 0 and DS.stale_stage(d, st, root) == (None, []),
               (rc, DS.stale_stage(d, st, root)))
         check("3 cli repin with no source exits 1", rc_bad == 1, rc_bad)
+
+        # 5: RIMMANDRAKE_REPIN_STAGE_FOUR_LEAVES_EXAM_VOID: an accepted exam over a changed tree is not re-pinned
+        root5, d5, shas5 = fixture()
+        try:
+            st5 = DS.load_state(d5)
+            res = {r["stage"]: r for r in st5.get("results") or [] if r.get("outcome") == "done"}
+            with open(os.path.join(d5, "exam.json"), "w") as f:      # the exam, frozen against stage 3's tree and sheet
+                json.dump({"inputs": {k: res[3]["inputs"].get(k) for k in ("tree", "sheet")}}, f)
+            git(root5, "add", "-A")
+            git(root5, "commit", "-q", "-m", "fixture: an exam taken before the change")
+            cur5 = DS.inputs(d5, st5, root5)
+            r4 = {"stage": 4, "outcome": "done", "inputs": dict(
+                {k: res[3]["inputs"].get(k) for k in ("sheet", "tree", "scenes", "floor")},
+                exam=cur5.get("exam"), owner=res[2]["inputs"].get("owner")),
+                "owner_uncited": res[2].get("owner_uncited")}
+            st5["results"].append(r4)
+            st5["stage"] = 5
+            DS.write_json(DS.state_path(d5), st5)
+            changed4 = sorted(k for k in ("tree", "sheet") if r4["inputs"].get(k) != cur5.get(k))
+            out5 = DS.repin(d5, good(shas5), "selftest: a tree change under an accepted exam", repo=root5)
+            st5 = DS.load_state(d5)
+            s5 = DS.stale_stage(d5, st5, root5)
+            ee = DS.exam_errors(DS.read_json(os.path.join(d5, "exam.json")), d5, st5, root5)
+            check("5 the fixture's change moves the exam's tree or sheet", bool(changed4), changed4)
+            check("5 repin leaves stage 4 out when its exam's tree or sheet changed", 4 not in out5, out5)
+            check("5 stale_stage reports stage 4, agreeing with exam_errors", s5[0] == 4
+                  and any("another" in e for e in ee), (s5, ee[:2]))
+            row5 = (st5.get("history") or [{}])[-1]
+            check("5 the history says stage 4 was left stale", "stage 4 left stale" in row5.get("why", ""), row5)
+        finally:
+            shutil.rmtree(root5, ignore_errors=True)
 
         # 4: the spend ceiling and his word that predates the park
         st = DS.load_state(d)

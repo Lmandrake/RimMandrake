@@ -83,6 +83,7 @@ ALWAYS_APPLIES = ("mod_settings", "log", "load_order", "naming", "text", "test_i
 EXAM_MIN, EXAM_PASS = 10, 0.9
 # what each stage's accepted result freezes; a later change to any of them reopens that stage
 # (record.json itself evolves every stage, so a stage freezes only the part it settled: stage 1 the root)
+EXAM_FROZEN = ("tree", "sheet")     # the inputs exam.json is frozen against (exam_errors); a repin never re-pins over them
 DEPS = {0: (), 1: ("root",), 2: ("root", "owner"), 3: ("root", "sheet", "tree", "scenes", "floor"),
         4: ("sheet", "tree", "scenes", "floor", "exam", "owner"), 5: ("tree", "sheet")}
 
@@ -1878,6 +1879,10 @@ def repin(d, sources, why, repo=None):
         plan[r["stage"]] = changed
     if not plan:
         raise Refused("nothing to re-pin: no accepted stage is stale")
+    # RIMMANDRAKE_REPIN_STAGE_FOUR_LEAVES_EXAM_VOID: the exam is frozen against a tree and a sheet (exam_errors compares
+    # them). Re-pinning stage 4 over a changed tree or sheet read stage 4 accepted while its exam was void (Pyrelands,
+    # repin @91a7c61989). So stage 4 is left stale instead: stale_stage reports 4 and the next open retakes the exam.
+    voided = {4: plan.pop(4)} if set(plan.get(4) or ()) & set(EXAM_FROZEN) else {}
     idle = [c for c in cited if c not in used]
     if idle:
         raise Refused("cited commit(s) %s changed none of the stale inputs: not the change cited" % (
@@ -1889,8 +1894,14 @@ def repin(d, sources, why, repo=None):
             if "owner" in plan[r["stage"]]:
                 r["owner_uncited"] = frozen_now
             r.setdefault("repinned", []).append({"at": at, "inputs": plan[r["stage"]], "sources": list(sources)})
-    hist(st, "locked_change", "%s; re-pinned %s; sources %s" % (why, "; ".join(
-        "stage %d (%s)" % (s, ", ".join(ks)) for s, ks in sorted(plan.items())), ", ".join(sources)))
+    for r in accepted(st):
+        if r["stage"] in voided:
+            r.setdefault("voided", []).append({"at": at, "inputs": voided[r["stage"]], "sources": list(sources),
+                                               "why": "its exam ran against another tree or sheet: retake it"})
+    hist(st, "locked_change", "%s; re-pinned %s%s; sources %s" % (why, "; ".join(
+        "stage %d (%s)" % (s, ", ".join(ks)) for s, ks in sorted(plan.items())) or "nothing", "".join(
+        "; stage %d left stale, its exam void (%s changed): the next open retakes it" % (s, ", ".join(ks))
+        for s, ks in sorted(voided.items())), ", ".join(sources)))
     write_json(state_path(d), st)
     return sorted(plan)
 
