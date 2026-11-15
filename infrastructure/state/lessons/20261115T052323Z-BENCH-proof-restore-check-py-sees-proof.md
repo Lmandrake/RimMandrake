@@ -1,0 +1,1 @@
+proof_restore_check.py sees a proof file's Stage catch only in the file that holds it: a scene builder moved to a partial-class file (RM_KnockbackProof_StageThree.cs) reads restore-delegate-not-run-on-throw even with s.restore set first; set s.restore before the write and waive it with 'restore-check: ok <why>' naming Stage's RunRestore
