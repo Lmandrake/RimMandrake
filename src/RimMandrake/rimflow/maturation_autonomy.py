@@ -133,18 +133,26 @@ def designer_unit(mod, tail=600):
             lines = f.readlines()[-tail:]
     except (OSError, ImportError):
         return None
+    seen, other = set(), None
     for ln in reversed(lines):
-        if '"Designer"' not in ln or "/concepts/%s\"" % mod not in ln:
+        if '"Designer"' not in ln or '"launched"' not in ln:
             continue
         try:
-            unit = (json.loads(ln).get("blind") or {}).get("unit")
+            e = json.loads(ln)
         except ValueError:
             continue
-        if unit:
-            r = subprocess.run(["systemctl", "--user", "is-active", unit + ".service", unit + ".scope"],
-                               capture_output=True, text=True, timeout=30)
-            return unit if "active" in (r.stdout or "").split() else None
-    return None
+        unit, concept = (e.get("blind") or {}).get("unit"), os.path.basename(str(e.get("concept") or ""))
+        if not unit or unit in seen:
+            continue
+        seen.add(unit)
+        r = subprocess.run(["systemctl", "--user", "is-active", unit + ".service", unit + ".scope"],
+                           capture_output=True, text=True, timeout=30)
+        live = "active" in (r.stdout or "").split()
+        if concept == mod:
+            return unit if live else other
+        if live and other is None:      # the Designer slot is busy on another concept: a named wait, not a stall
+            other = "the Designer slot (%s on %s)" % (unit, concept)
+    return other
 
 
 def chain_owed(dst):
@@ -339,8 +347,8 @@ def _gate(cfg, s, row, live_total, ver):
         return False, ("no_cap", "no positive %s in the settings" % ("fix_cap_usd" if row["aut"] == "fixer"
                                                                     else "steward_cap_usd"))
     if live_total >= int(cfg.get("max_live", 2)):
-        return False, ("slots_full", "%d live runs on advancing mods, the most is %s; the %s run waits" % (
-            live_total, cfg.get("max_live", 2), row["aut"]))
+        return False, ("slots_full", "%d live runs on advancing mods, the most is %s; the %s run (%s) waits for a slot" % (
+            live_total, cfg.get("max_live", 2), row["aut"], row.get("steward_kind") or row.get("fix_item")))
     row["cap"] = cap
     return True, None
 
