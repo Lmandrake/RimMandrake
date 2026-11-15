@@ -1,0 +1,858 @@
+ok   AtmosphericBase: real screen, every setting grouped, resettable, scopes as audited
+ok   AtmosphericBase: a name dropped from its group array
+ok   AtmosphericBase: a setting in two groups
+ok   AtmosphericBase: group names a non-setting
+ok   AtmosphericBase: a Group's closing brace lost
+ok   AtmosphericBase: kit dropped from the csproj
+ok   AtmosphericBase: snapshot removed
+ok   BlueDesert: real screen, every setting grouped, resettable, scopes as audited
+ok   BlueDesert: a name dropped from its group array
+ok   BlueDesert: a setting in two groups
+ok   BlueDesert: group names a non-setting
+ok   BlueDesert: a Group's closing brace lost
+ok   BlueDesert: kit dropped from the csproj
+ok   BlueDesert: snapshot removed
+ok   BlueDesert: a scope tag flipped to a dishonest one
+ok   BlueDesert: a next-game-start tag overridden to [now]
+ok   CrackedLands: real screen, every setting grouped, resettable, scopes as audited
+ok   CrackedLands: a name dropped from its group array
+ok   CrackedLands: a setting in two groups
+ok   CrackedLands: group names a non-setting
+ok   CrackedLands: a Group's closing brace lost
+ok   CrackedLands: kit dropped from the csproj
+ok   CrackedLands: snapshot removed
+ok   CrackedLands: a scope tag flipped to a dishonest one
+ok   CrackedLands: a next-game-start tag overridden to [now]
+ok   HugeThings: real screen, every setting grouped, resettable, scopes as audited
+ok   HugeThings: a name dropped from its group array
+ok   HugeThings: a setting in two groups
+ok   HugeThings: group names a non-setting
+ok   HugeThings: a Group's closing brace lost
+ok   HugeThings: kit dropped from the csproj
+ok   HugeThings: snapshot removed
+ok   HugeThings: localized search widget removed
+ok   HugeThings: localized search caption key absent
+ok   HugeThings: a scope tag flipped to a dishonest one
+ok   HugeThings: a keyed group title with no English text
+ok   HugeThings: a next-game-start tag overridden to [now]
+ok   GimmeSomeSlack#Cables: real screen, every setting grouped, resettable, scopes as audited
+ok   GimmeSomeSlack#Cables: a name dropped from its group array
+ok   GimmeSomeSlack#Cables: a setting in two groups
+ok   GimmeSomeSlack#Cables: group names a non-setting
+ok   GimmeSomeSlack#Cables: a Group's closing brace lost
+ok   GimmeSomeSlack#Cables: kit dropped from the csproj
+ok   GimmeSomeSlack#Cables: snapshot removed
+ok   GimmeSomeSlack#Cables: a dependent dropped from its master declaration (no master, not independent)
+ok   GimmeSomeSlack#Cables: a dependent drawn outside its Dependent scope
+ok   GimmeSomeSlack#Cables: a scope mixing keys with different masters
+ok   GimmeSomeSlack#Cables: Reset-all button removed
+ok   GimmeSomeSlack#Cables: masters kit dropped from the csproj
+ok   GimmeSomeSlack#Aerial: real screen, every setting grouped, resettable, scopes as audited
+ok   GimmeSomeSlack#Aerial: a name dropped from its group array
+ok   GimmeSomeSlack#Aerial: a setting in two groups
+ok   GimmeSomeSlack#Aerial: group names a non-setting
+ok   GimmeSomeSlack#Aerial: a Group's closing brace lost
+ok   GimmeSomeSlack#Aerial: kit dropped from the csproj
+ok   GimmeSomeSlack#Aerial: snapshot removed
+ok   GimmeSomeSlack#Aerial: a dependent dropped from its master declaration (no master, not independent)
+ok   GimmeSomeSlack#Aerial: a dependent drawn outside its Dependent scope
+ok   GimmeSomeSlack#Aerial: a scope mixing keys with different masters
+ok   GimmeSomeSlack#Aerial: Reset-all button removed
+ok   GimmeSomeSlack#Aerial: masters kit dropped from the csproj
+ok   FlowWorks#Hose: real screen, every setting grouped, resettable, scopes as audited
+ok   FlowWorks#Hose: a name dropped from its group array
+ok   FlowWorks#Hose: a setting in two groups
+ok   FlowWorks#Hose: group names a non-setting
+ok   FlowWorks#Hose: a Group's closing brace lost
+ok   FlowWorks#Hose: kit dropped from the csproj
+ok   FlowWorks#Hose: snapshot removed
+ok   FlowWorks#Hose: a dependent dropped from its master declaration (no master, not independent)
+ok   FlowWorks#Hose: a dependent drawn outside its Dependent scope
+ok   FlowWorks#Hose: a scope mixing keys with different masters
+ok   FlowWorks#Hose: Reset-all button removed
+ok   FlowWorks#Hose: masters kit dropped from the csproj
+ok   Graffiti: real screen, every setting grouped, resettable, scopes as audited
+ok   Graffiti: a name dropped from its group array
+ok   Graffiti: a setting in two groups
+ok   Graffiti: group names a non-setting
+ok   Graffiti: a Group's closing brace lost
+ok   Graffiti: kit dropped from the csproj
+ok   Graffiti: snapshot removed
+ok   LeaningScrub: real screen, every setting grouped, resettable, scopes as audited
+ok   LeaningScrub: a name dropped from its group array
+ok   LeaningScrub: a setting in two groups
+ok   LeaningScrub: group names a non-setting
+ok   LeaningScrub: a Group's closing brace lost
+ok   LeaningScrub: kit dropped from the csproj
+ok   LeaningScrub: snapshot removed
+ok   LeaningScrub: a scope tag flipped to a dishonest one
+ok   LeaningScrub: a dependent dropped from its master declaration (no master, not independent)
+ok   LeaningScrub: a dependent drawn outside its Dependent scope
+ok   LeaningScrub: a scope mixing keys with different masters
+ok   LeaningScrub: Reset-all button removed
+ok   LeaningScrub: masters kit dropped from the csproj
+ok   LanternDeeps: real screen, every setting grouped, resettable, scopes as audited
+ok   LanternDeeps: a name dropped from its group array
+ok   LanternDeeps: a setting in two groups
+ok   LanternDeeps: group names a non-setting
+ok   LanternDeeps: a Group's closing brace lost
+ok   LanternDeeps: kit dropped from the csproj
+ok   LanternDeeps: snapshot removed
+ok   LanternDeeps: a scope tag flipped to a dishonest one
+ok   Greentide: real screen, every setting grouped, resettable, scopes as audited
+ok   Greentide: a name dropped from its group array
+ok   Greentide: a setting in two groups
+ok   Greentide: group names a non-setting
+ok   Greentide: a Group's closing brace lost
+ok   Greentide: kit dropped from the csproj
+ok   Greentide: snapshot removed
+ok   Greentide: a scope tag flipped to a dishonest one
+ok   Greentide: a next-game-start tag overridden to [now]
+ok   Miasma: real screen, every setting grouped, resettable, scopes as audited
+ok   Miasma: a name dropped from its group array
+ok   Miasma: a setting in two groups
+ok   Miasma: group names a non-setting
+ok   Miasma: a Group's closing brace lost
+ok   Miasma: kit dropped from the csproj
+ok   Miasma: snapshot removed
+ok   Miasma: a scope tag flipped to a dishonest one
+ok   Abyss: real screen, every setting grouped, resettable, scopes as audited
+ok   Abyss: a name dropped from its group array
+ok   Abyss: a setting in two groups
+ok   Abyss: group names a non-setting
+ok   Abyss: a Group's closing brace lost
+ok   Abyss: kit dropped from the csproj
+ok   Abyss: snapshot removed
+ok   Abyss: a scope tag flipped to a dishonest one
+ok   Abyss: a next-game-start tag overridden to [now]
+ok   Contagion: real screen, every setting grouped, resettable, scopes as audited
+ok   Contagion: a name dropped from its group array
+ok   Contagion: a setting in two groups
+ok   Contagion: group names a non-setting
+ok   Contagion: a Group's closing brace lost
+ok   Contagion: kit dropped from the csproj
+ok   Contagion: snapshot removed
+ok   Contagion: a scope tag flipped to a dishonest one
+ok   Cauldron: real screen, every setting grouped, resettable, scopes as audited
+ok   Cauldron: a name dropped from its group array
+ok   Cauldron: a setting in two groups
+ok   Cauldron: group names a non-setting
+ok   Cauldron: a Group's closing brace lost
+ok   Cauldron: kit dropped from the csproj
+ok   Cauldron: snapshot removed
+ok   Cauldron: a scope tag flipped to a dishonest one
+ok   Cauldron: a next-game-start tag overridden to [now]
+ok   Pyrelands: real screen, every setting grouped, resettable, scopes as audited
+ok   Pyrelands: a name dropped from its group array
+ok   Pyrelands: a setting in two groups
+ok   Pyrelands: group names a non-setting
+ok   Pyrelands: a Group's closing brace lost
+ok   Pyrelands: kit dropped from the csproj
+ok   Pyrelands: snapshot removed
+ok   Pyrelands: a scope tag flipped to a dishonest one
+ok   Pyrelands: a next-game-start tag overridden to [now]
+ok   Pyrelands: a dependent dropped from its master declaration (no master, not independent)
+ok   Pyrelands: a dependent drawn outside its Dependent scope
+ok   Pyrelands: a scope mixing keys with different masters
+ok   Pyrelands: Reset-all button removed
+ok   Pyrelands: masters kit dropped from the csproj
+ok   GelatinousSlime: real screen, every setting grouped, resettable, scopes as audited
+ok   GelatinousSlime: a name dropped from its group array
+ok   GelatinousSlime: a setting in two groups
+ok   GelatinousSlime: group names a non-setting
+ok   GelatinousSlime: a Group's closing brace lost
+ok   GelatinousSlime: kit dropped from the csproj
+ok   GelatinousSlime: snapshot removed
+ok   GelatinousSlime: a scope tag flipped to a dishonest one
+ok   TheRot: real screen, every setting grouped, resettable, scopes as audited
+ok   TheRot: a name dropped from its group array
+ok   TheRot: a setting in two groups
+ok   TheRot: group names a non-setting
+ok   TheRot: a Group's closing brace lost
+ok   TheRot: kit dropped from the csproj
+ok   TheRot: snapshot removed
+ok   TheRot: a next-game-start tag overridden to [now]
+ok   TheForge: real screen, every setting grouped, resettable, scopes as audited
+ok   TheForge: a name dropped from its group array
+ok   TheForge: a setting in two groups
+ok   TheForge: group names a non-setting
+ok   TheForge: a Group's closing brace lost
+ok   TheForge: kit dropped from the csproj
+ok   TheForge: snapshot removed
+ok   TheForge: a next-game-start tag overridden to [now]
+ok   ShipVermin: real screen, every setting grouped, resettable, scopes as audited
+ok   ShipVermin: a name dropped from its group array
+ok   ShipVermin: a setting in two groups
+ok   ShipVermin: group names a non-setting
+ok   ShipVermin: a Group's closing brace lost
+ok   ShipVermin: kit dropped from the csproj
+ok   ShipVermin: snapshot removed
+ok   Wastes: real screen, every setting grouped, resettable, scopes as audited
+ok   Wastes: a name dropped from its group array
+ok   Wastes: a setting in two groups
+ok   Wastes: group names a non-setting
+ok   Wastes: a Group's closing brace lost
+ok   Wastes: kit dropped from the csproj
+ok   Wastes: snapshot removed
+ok   SolarMirrors: real screen, every setting grouped, resettable, scopes as audited
+ok   SolarMirrors: a name dropped from its group array
+ok   SolarMirrors: a setting in two groups
+ok   SolarMirrors: group names a non-setting
+ok   SolarMirrors: a Group's closing brace lost
+ok   SolarMirrors: kit dropped from the csproj
+ok   SolarMirrors: snapshot removed
+ok   SolarMirrors: a scope tag flipped to a dishonest one
+ok   WreckedMachines: real screen, every setting grouped, resettable, scopes as audited
+ok   WreckedMachines: a name dropped from its group array
+ok   WreckedMachines: a setting in two groups
+ok   WreckedMachines: group names a non-setting
+ok   WreckedMachines: a Group's closing brace lost
+ok   WreckedMachines: kit dropped from the csproj
+ok   WreckedMachines: snapshot removed
+ok   WreckedMachines: a next-game-start tag overridden to [now]
+ok   Webwork: real screen, every setting grouped, resettable, scopes as audited
+ok   Webwork: a name dropped from its group array
+ok   Webwork: a setting in two groups
+ok   Webwork: group names a non-setting
+ok   Webwork: a Group's closing brace lost
+ok   Webwork: kit dropped from the csproj
+ok   Webwork: snapshot removed
+ok   Webwork: a scope tag flipped to a dishonest one
+ok   Webwork: a next-game-start tag overridden to [now]
+ok   Warcasket: real screen, every setting grouped, resettable, scopes as audited
+ok   Warcasket: a name dropped from its group array
+ok   Warcasket: a setting in two groups
+ok   Warcasket: group names a non-setting
+ok   Warcasket: a Group's closing brace lost
+ok   Warcasket: kit dropped from the csproj
+ok   Warcasket: snapshot removed
+ok   Warcasket: a scope tag flipped to a dishonest one
+ok   RustCathedral: real screen, every setting grouped, resettable, scopes as audited
+ok   RustCathedral: a name dropped from its group array
+ok   RustCathedral: a setting in two groups
+ok   RustCathedral: group names a non-setting
+ok   RustCathedral: a Group's closing brace lost
+ok   RustCathedral: kit dropped from the csproj
+ok   RustCathedral: snapshot removed
+ok   RustCathedral: a scope tag flipped to a dishonest one
+ok   RustCathedral#Hum: real screen, every setting grouped, resettable, scopes as audited
+ok   RustCathedral#Hum: a name dropped from its group array
+ok   RustCathedral#Hum: a setting in two groups
+ok   RustCathedral#Hum: group names a non-setting
+ok   RustCathedral#Hum: a Group's closing brace lost
+ok   RustCathedral#Hum: kit dropped from the csproj
+ok   RustCathedral#Hum: snapshot removed
+ok   RustCathedral#Hum: a scope tag flipped to a dishonest one
+ok   RustCathedral#Walls: real screen, every setting grouped, resettable, scopes as audited
+ok   RustCathedral#Walls: a name dropped from its group array
+ok   RustCathedral#Walls: a setting in two groups
+ok   RustCathedral#Walls: group names a non-setting
+ok   RustCathedral#Walls: a Group's closing brace lost
+ok   RustCathedral#Walls: kit dropped from the csproj
+ok   RustCathedral#Walls: snapshot removed
+ok   RustCathedral#Walls: a scope tag flipped to a dishonest one
+ok   Scarlands: real screen, every setting grouped, resettable, scopes as audited
+ok   Scarlands: a name dropped from its group array
+ok   Scarlands: a setting in two groups
+ok   Scarlands: group names a non-setting
+ok   Scarlands: a Group's closing brace lost
+ok   Scarlands: kit dropped from the csproj
+ok   Scarlands: snapshot removed
+ok   Scarlands: a scope tag flipped to a dishonest one
+ok   Scarlands: a next-game-start tag overridden to [now]
+ok   TerminalBiomes: real screen, every setting grouped, resettable, scopes as audited
+ok   TerminalBiomes: a name dropped from its group array
+ok   TerminalBiomes: a setting in two groups
+ok   TerminalBiomes: group names a non-setting
+ok   TerminalBiomes: a Group's closing brace lost
+ok   TerminalBiomes: kit dropped from the csproj
+ok   TerminalBiomes: snapshot removed
+ok   TerminalBiomes: a scope tag flipped to a dishonest one
+ok   Stillsand#Main: real screen, every setting grouped, resettable, scopes as audited
+ok   Stillsand#Main: a name dropped from its group array
+ok   Stillsand#Main: a setting in two groups
+ok   Stillsand#Main: group names a non-setting
+ok   Stillsand#Main: a Group's closing brace lost
+ok   Stillsand#Main: kit dropped from the csproj
+ok   Stillsand#Main: snapshot removed
+ok   Stillsand#Main: a scope tag flipped to a dishonest one
+ok   Stillsand#Skeletons: real screen, every setting grouped, resettable, scopes as audited
+ok   Stillsand#Skeletons: a name dropped from its group array
+ok   Stillsand#Skeletons: a setting in two groups
+ok   Stillsand#Skeletons: group names a non-setting
+ok   Stillsand#Skeletons: a Group's closing brace lost
+ok   Stillsand#Skeletons: kit dropped from the csproj
+ok   Stillsand#Skeletons: snapshot removed
+ok   Stillsand#Skeletons: a scope tag flipped to a dishonest one
+ok   Stillsand#GlassChain: real screen, every setting grouped, resettable, scopes as audited
+ok   Stillsand#GlassChain: a name dropped from its group array
+ok   Stillsand#GlassChain: a setting in two groups
+ok   Stillsand#GlassChain: group names a non-setting
+ok   Stillsand#GlassChain: a Group's closing brace lost
+ok   Stillsand#GlassChain: kit dropped from the csproj
+ok   Stillsand#GlassChain: snapshot removed
+ok   Stillsand#Events: real screen, every setting grouped, resettable, scopes as audited
+ok   Stillsand#Events: a name dropped from its group array
+ok   Stillsand#Events: a setting in two groups
+ok   Stillsand#Events: group names a non-setting
+ok   Stillsand#Events: a Group's closing brace lost
+ok   Stillsand#Events: kit dropped from the csproj
+ok   Stillsand#Events: snapshot removed
+ok   Stillsand#Events: a scope tag flipped to a dishonest one
+ok   Stillsand#DuneGale: real screen, every setting grouped, resettable, scopes as audited
+ok   Stillsand#DuneGale: a name dropped from its group array
+ok   Stillsand#DuneGale: a setting in two groups
+ok   Stillsand#DuneGale: group names a non-setting
+ok   Stillsand#DuneGale: a Group's closing brace lost
+ok   Stillsand#DuneGale: kit dropped from the csproj
+ok   Stillsand#DuneGale: snapshot removed
+ok   Stillsand#DuneGale: a scope tag flipped to a dishonest one
+ok   Droidworks: real screen, every setting grouped, resettable, scopes as audited
+ok   Droidworks: a name dropped from its group array
+ok   Droidworks: a setting in two groups
+ok   Droidworks: group names a non-setting
+ok   Droidworks: a Group's closing brace lost
+ok   Droidworks: kit dropped from the csproj
+ok   Droidworks: snapshot removed
+ok   Droidworks: a scope tag flipped to a dishonest one
+ok   Droidworks: a next-game-start tag overridden to [now]
+ok   GizkaStowaway: real screen, every setting grouped, resettable, scopes as audited
+ok   GizkaStowaway: a name dropped from its group array
+ok   GizkaStowaway: a setting in two groups
+ok   GizkaStowaway: group names a non-setting
+ok   GizkaStowaway: a Group's closing brace lost
+ok   GizkaStowaway: kit dropped from the csproj
+ok   GizkaStowaway: snapshot removed
+ok   SithLine: real screen, every setting grouped, resettable, scopes as audited
+ok   SithLine: a name dropped from its group array
+ok   SithLine: a setting in two groups
+ok   SithLine: group names a non-setting
+ok   SithLine: a Group's closing brace lost
+ok   SithLine: kit dropped from the csproj
+ok   SithLine: snapshot removed
+ok   SithLine: a next-game-start tag overridden to [now]
+ok   Sarlacc: real screen, every setting grouped, resettable, scopes as audited
+ok   Sarlacc: a name dropped from its group array
+ok   Sarlacc: a setting in two groups
+ok   Sarlacc: group names a non-setting
+ok   Sarlacc: a Group's closing brace lost
+ok   Sarlacc: kit dropped from the csproj
+ok   Sarlacc: snapshot removed
+ok   UtinniPatches: real screen, every setting grouped, resettable, scopes as audited
+ok   UtinniPatches: a name dropped from its group array
+ok   UtinniPatches: a setting in two groups
+ok   UtinniPatches: group names a non-setting
+ok   UtinniPatches: a Group's closing brace lost
+ok   UtinniPatches: kit dropped from the csproj
+ok   UtinniPatches: snapshot removed
+ok   UtinniPatches: a scope tag flipped to a dishonest one
+ok   UtinniPatches: a next-game-start tag overridden to [now]
+ok   UnfinishedLine: real screen, every setting grouped, resettable, scopes as audited
+ok   UnfinishedLine: a name dropped from its group array
+ok   UnfinishedLine: a setting in two groups
+ok   UnfinishedLine: group names a non-setting
+ok   UnfinishedLine: a Group's closing brace lost
+ok   UnfinishedLine: kit dropped from the csproj
+ok   UnfinishedLine: snapshot removed
+ok   UnfinishedLine: a scope tag flipped to a dishonest one
+ok   FallLineArrivals: real screen, every setting grouped, resettable, scopes as audited
+ok   FallLineArrivals: a name dropped from its group array
+ok   FallLineArrivals: a setting in two groups
+ok   FallLineArrivals: group names a non-setting
+ok   FallLineArrivals: a Group's closing brace lost
+ok   FallLineArrivals: kit dropped from the csproj
+ok   FallLineArrivals: snapshot removed
+ok   FallLineArrivals: a scope tag flipped to a dishonest one
+ok   PyrelandsMechanics: real screen, every setting grouped, resettable, scopes as audited
+ok   PyrelandsMechanics: a name dropped from its group array
+ok   PyrelandsMechanics: a setting in two groups
+ok   PyrelandsMechanics: group names a non-setting
+ok   PyrelandsMechanics: a Group's closing brace lost
+ok   PyrelandsMechanics: kit dropped from the csproj
+ok   PyrelandsMechanics: snapshot removed
+ok   PyrelandsMechanics: a scope tag flipped to a dishonest one
+ok   ScarlandsLadder: real screen, every setting grouped, resettable, scopes as audited
+ok   ScarlandsLadder: a name dropped from its group array
+ok   ScarlandsLadder: a setting in two groups
+ok   ScarlandsLadder: group names a non-setting
+ok   ScarlandsLadder: a Group's closing brace lost
+ok   ScarlandsLadder: kit dropped from the csproj
+ok   ScarlandsLadder: snapshot removed
+ok   ScarlandsLadder: a scope tag flipped to a dishonest one
+ok   DivingInteraction: real screen, every setting grouped, resettable, scopes as audited
+ok   DivingInteraction: a name dropped from its group array
+ok   DivingInteraction: a setting in two groups
+ok   DivingInteraction: group names a non-setting
+ok   DivingInteraction: a Group's closing brace lost
+ok   DivingInteraction: kit dropped from the csproj
+ok   DivingInteraction: snapshot removed
+ok   DivingInteraction: a scope tag flipped to a dishonest one
+ok   DivingInteraction: a next-game-start tag overridden to [now]
+ok   KeelHoist: real screen, every setting grouped, resettable, scopes as audited
+ok   KeelHoist: a name dropped from its group array
+ok   KeelHoist: a setting in two groups
+ok   KeelHoist: group names a non-setting
+ok   KeelHoist: a Group's closing brace lost
+ok   KeelHoist: kit dropped from the csproj
+ok   KeelHoist: snapshot removed
+ok   KeelHoist: a scope tag flipped to a dishonest one
+ok   KineticArms: real screen, every setting grouped, resettable, scopes as audited
+ok   KineticArms: a name dropped from its group array
+ok   KineticArms: a setting in two groups
+ok   KineticArms: group names a non-setting
+ok   KineticArms: a Group's closing brace lost
+ok   KineticArms: kit dropped from the csproj
+ok   KineticArms: snapshot removed
+ok   KineticArms: a scope tag flipped to a dishonest one
+ok   FeverWood: real screen, every setting grouped, resettable, scopes as audited
+ok   FeverWood: a name dropped from its group array
+ok   FeverWood: a setting in two groups
+ok   FeverWood: group names a non-setting
+ok   FeverWood: a Group's closing brace lost
+ok   FeverWood: kit dropped from the csproj
+ok   FeverWood: snapshot removed
+ok   FeverWood: a scope tag flipped to a dishonest one
+ok   ExplosiveGrowth: real screen, every setting grouped, resettable, scopes as audited
+ok   ExplosiveGrowth: a name dropped from its group array
+ok   ExplosiveGrowth: a setting in two groups
+ok   ExplosiveGrowth: group names a non-setting
+ok   ExplosiveGrowth: a Group's closing brace lost
+ok   ExplosiveGrowth: kit dropped from the csproj
+ok   ExplosiveGrowth: snapshot removed
+ok   ExplosiveGrowth: a scope tag flipped to a dishonest one
+ok   ExplosiveKnockback: real screen, every setting grouped, resettable, scopes as audited
+ok   ExplosiveKnockback: a name dropped from its group array
+ok   ExplosiveKnockback: a setting in two groups
+ok   ExplosiveKnockback: group names a non-setting
+ok   ExplosiveKnockback: a Group's closing brace lost
+ok   ExplosiveKnockback: kit dropped from the csproj
+ok   ExplosiveKnockback: snapshot removed
+ok   AcousticScanner: real screen, every setting grouped, resettable, scopes as audited
+ok   AcousticScanner: a name dropped from its group array
+ok   AcousticScanner: a setting in two groups
+ok   AcousticScanner: group names a non-setting
+ok   AcousticScanner: a Group's closing brace lost
+ok   AcousticScanner: kit dropped from the csproj
+ok   AcousticScanner: snapshot removed
+ok   AcousticScanner: a scope tag flipped to a dishonest one
+ok   Aftermath: real screen, every setting grouped, resettable, scopes as audited
+ok   Aftermath: a name dropped from its group array
+ok   Aftermath: a setting in two groups
+ok   Aftermath: group names a non-setting
+ok   Aftermath: a Group's closing brace lost
+ok   Aftermath: kit dropped from the csproj
+ok   Aftermath: snapshot removed
+ok   Aftermath: a scope tag flipped to a dishonest one
+ok   FlameStatues: real screen, every setting grouped, resettable, scopes as audited
+ok   FlameStatues: a name dropped from its group array
+ok   FlameStatues: a setting in two groups
+ok   FlameStatues: group names a non-setting
+ok   FlameStatues: a Group's closing brace lost
+ok   FlameStatues: kit dropped from the csproj
+ok   FlameStatues: snapshot removed
+ok   FlameStatues: a next-game-start tag overridden to [now]
+ok   Inhabited: real screen, every setting grouped, resettable, scopes as audited
+ok   Inhabited: a name dropped from its group array
+ok   Inhabited: a setting in two groups
+ok   Inhabited: group names a non-setting
+ok   Inhabited: a Group's closing brace lost
+ok   Inhabited: kit dropped from the csproj
+ok   Inhabited: snapshot removed
+ok   Inhabited: a scope tag flipped to a dishonest one
+ok   GravshipLanding: real screen, every setting grouped, resettable, scopes as audited
+ok   GravshipLanding: a name dropped from its group array
+ok   GravshipLanding: a setting in two groups
+ok   GravshipLanding: group names a non-setting
+ok   GravshipLanding: a Group's closing brace lost
+ok   GravshipLanding: kit dropped from the csproj
+ok   GravshipLanding: snapshot removed
+ok   GravshipLanding: a scope tag flipped to a dishonest one
+ok   StarWarsRaces: real screen, every setting grouped, resettable, scopes as audited
+ok   StarWarsRaces: a name dropped from its group array
+ok   StarWarsRaces: a setting in two groups
+ok   StarWarsRaces: group names a non-setting
+ok   StarWarsRaces: a Group's closing brace lost
+ok   StarWarsRaces: kit dropped from the csproj
+ok   StarWarsRaces: snapshot removed
+ok   LoreStages: real screen, every setting grouped, resettable, scopes as audited
+ok   LoreStages: a name dropped from its group array
+ok   LoreStages: a setting in two groups
+ok   LoreStages: group names a non-setting
+ok   LoreStages: a Group's closing brace lost
+ok   LoreStages: kit dropped from the csproj
+ok   LoreStages: snapshot removed
+ok   Watchers: real screen, every setting grouped, resettable, scopes as audited
+ok   Watchers: a name dropped from its group array
+ok   Watchers: a setting in two groups
+ok   Watchers: group names a non-setting
+ok   Watchers: a Group's closing brace lost
+ok   Watchers: kit dropped from the csproj
+ok   Watchers: snapshot removed
+ok   Bacta: real screen, every setting grouped, resettable, scopes as audited
+ok   Bacta: a name dropped from its group array
+ok   Bacta: a setting in two groups
+ok   Bacta: group names a non-setting
+ok   Bacta: a Group's closing brace lost
+ok   Bacta: kit dropped from the csproj
+ok   Bacta: snapshot removed
+ok   RimProperty: real screen, every setting grouped, resettable, scopes as audited
+ok   RimProperty: a name dropped from its group array
+ok   RimProperty: a setting in two groups
+ok   RimProperty: group names a non-setting
+ok   RimProperty: a Group's closing brace lost
+ok   RimProperty: kit dropped from the csproj
+ok   RimProperty: snapshot removed
+ok   ShipShields: real screen, every setting grouped, resettable, scopes as audited
+ok   ShipShields: a name dropped from its group array
+ok   ShipShields: a setting in two groups
+ok   ShipShields: group names a non-setting
+ok   ShipShields: a Group's closing brace lost
+ok   ShipShields: kit dropped from the csproj
+ok   ShipShields: snapshot removed
+ok   ShipShields: a scope tag flipped to a dishonest one
+ok   WasteRun: real screen, every setting grouped, resettable, scopes as audited
+ok   WasteRun: a name dropped from its group array
+ok   WasteRun: a setting in two groups
+ok   WasteRun: group names a non-setting
+ok   WasteRun: a Group's closing brace lost
+ok   WasteRun: kit dropped from the csproj
+ok   WasteRun: snapshot removed
+ok   WasteRun: a scope tag flipped to a dishonest one
+ok   EmpirePursuit: real screen, every setting grouped, resettable, scopes as audited
+ok   EmpirePursuit: a name dropped from its group array
+ok   EmpirePursuit: a setting in two groups
+ok   EmpirePursuit: group names a non-setting
+ok   EmpirePursuit: a Group's closing brace lost
+ok   EmpirePursuit: kit dropped from the csproj
+ok   EmpirePursuit: snapshot removed
+ok   EmpirePursuit: a scope tag flipped to a dishonest one
+ok   Atlas: real screen, every setting grouped, resettable, scopes as audited
+ok   Atlas: a name dropped from its group array
+ok   Atlas: a setting in two groups
+ok   Atlas: group names a non-setting
+ok   Atlas: a Group's closing brace lost
+ok   Atlas: kit dropped from the csproj
+ok   Atlas: snapshot removed
+ok   Atlas: a scope tag flipped to a dishonest one
+ok   LuminousPigment: real screen, every setting grouped, resettable, scopes as audited
+ok   LuminousPigment: a name dropped from its group array
+ok   LuminousPigment: a setting in two groups
+ok   LuminousPigment: group names a non-setting
+ok   LuminousPigment: a Group's closing brace lost
+ok   LuminousPigment: kit dropped from the csproj
+ok   LuminousPigment: snapshot removed
+ok   LuminousPigment: a scope tag flipped to a dishonest one
+ok   LongShade: real screen, every setting grouped, resettable, scopes as audited
+ok   LongShade: a name dropped from its group array
+ok   LongShade: a setting in two groups
+ok   LongShade: group names a non-setting
+ok   LongShade: a Group's closing brace lost
+ok   LongShade: kit dropped from the csproj
+ok   LongShade: snapshot removed
+ok   LongShade: a scope tag flipped to a dishonest one
+ok   SleepingIce: real screen, every setting grouped, resettable, scopes as audited
+ok   SleepingIce: a name dropped from its group array
+ok   SleepingIce: a setting in two groups
+ok   SleepingIce: group names a non-setting
+ok   SleepingIce: a Group's closing brace lost
+ok   SleepingIce: kit dropped from the csproj
+ok   SleepingIce: snapshot removed
+ok   SleepingIce: a scope tag flipped to a dishonest one
+ok   Armoury: real screen, every setting grouped, resettable, scopes as audited
+ok   Armoury: a name dropped from its group array
+ok   Armoury: a setting in two groups
+ok   Armoury: group names a non-setting
+ok   Armoury: a Group's closing brace lost
+ok   Armoury: kit dropped from the csproj
+ok   Armoury: snapshot removed
+ok   Armoury: a scope tag flipped to a dishonest one
+ok   Armoury: a next-game-start tag overridden to [now]
+ok   RustChrome: real screen, every setting grouped, resettable, scopes as audited
+ok   RustChrome: a name dropped from its group array
+ok   RustChrome: a setting in two groups
+ok   RustChrome: group names a non-setting
+ok   RustChrome: a Group's closing brace lost
+ok   RustChrome: kit dropped from the csproj
+ok   RustChrome: snapshot removed
+ok   SacredGraffiti: real screen, every setting grouped, resettable, scopes as audited
+ok   SacredGraffiti: a name dropped from its group array
+ok   SacredGraffiti: a setting in two groups
+ok   SacredGraffiti: group names a non-setting
+ok   SacredGraffiti: a Group's closing brace lost
+ok   SacredGraffiti: kit dropped from the csproj
+ok   SacredGraffiti: snapshot removed
+ok   StructureInjections: real screen, every setting grouped, resettable, scopes as audited
+ok   StructureInjections: a name dropped from its group array
+ok   StructureInjections: a setting in two groups
+ok   StructureInjections: group names a non-setting
+ok   StructureInjections: a Group's closing brace lost
+ok   StructureInjections: kit dropped from the csproj
+ok   StructureInjections: snapshot removed
+ok   StructureInjections: a scope tag flipped to a dishonest one
+ok   SeaShores: real screen, every setting grouped, resettable, scopes as audited
+ok   SeaShores: a name dropped from its group array
+ok   SeaShores: a setting in two groups
+ok   SeaShores: group names a non-setting
+ok   SeaShores: a Group's closing brace lost
+ok   SeaShores: kit dropped from the csproj
+ok   SeaShores: snapshot removed
+ok   SeaShores: a scope tag flipped to a dishonest one
+ok   SeaShores: a next-game-start tag overridden to [now]
+ok   ProximityHatch: real screen, every setting grouped, resettable, scopes as audited
+ok   ProximityHatch: a name dropped from its group array
+ok   ProximityHatch: a setting in two groups
+ok   ProximityHatch: group names a non-setting
+ok   ProximityHatch: a Group's closing brace lost
+ok   ProximityHatch: kit dropped from the csproj
+ok   ProximityHatch: snapshot removed
+ok   ProximityHatch: a scope tag flipped to a dishonest one
+ok   WeatherSuite: real screen, every setting grouped, resettable, scopes as audited
+ok   WeatherSuite: a name dropped from its group array
+ok   WeatherSuite: a setting in two groups
+ok   WeatherSuite: group names a non-setting
+ok   WeatherSuite: a Group's closing brace lost
+ok   WeatherSuite: kit dropped from the csproj
+ok   WeatherSuite: snapshot removed
+ok   WeatherSuite: a scope tag flipped to a dishonest one
+ok   Wreckage: real screen, every setting grouped, resettable, scopes as audited
+ok   Wreckage: a name dropped from its group array
+ok   Wreckage: a setting in two groups
+ok   Wreckage: group names a non-setting
+ok   Wreckage: a Group's closing brace lost
+ok   Wreckage: kit dropped from the csproj
+ok   Wreckage: snapshot removed
+ok   Wreckage: a scope tag flipped to a dishonest one
+ok   Visibility: real screen, every setting grouped, resettable, scopes as audited
+ok   Visibility: a name dropped from its group array
+ok   Visibility: a setting in two groups
+ok   Visibility: group names a non-setting
+ok   Visibility: a Group's closing brace lost
+ok   Visibility: kit dropped from the csproj
+ok   Visibility: snapshot removed
+ok   Visibility: a scope tag flipped to a dishonest one
+ok   Oracle: real screen, every setting grouped, resettable, scopes as audited
+ok   Oracle: a name dropped from its group array
+ok   Oracle: a setting in two groups
+ok   Oracle: group names a non-setting
+ok   Oracle: a Group's closing brace lost
+ok   Oracle: kit dropped from the csproj
+ok   Oracle: snapshot removed
+ok   OasisMaker: real screen, every setting grouped, resettable, scopes as audited
+ok   OasisMaker: a name dropped from its group array
+ok   OasisMaker: a setting in two groups
+ok   OasisMaker: group names a non-setting
+ok   OasisMaker: a Group's closing brace lost
+ok   OasisMaker: kit dropped from the csproj
+ok   OasisMaker: snapshot removed
+ok   OasisMaker: a scope tag flipped to a dishonest one
+ok   MovingDunes: real screen, every setting grouped, resettable, scopes as audited
+ok   MovingDunes: a name dropped from its group array
+ok   MovingDunes: a setting in two groups
+ok   MovingDunes: group names a non-setting
+ok   MovingDunes: a Group's closing brace lost
+ok   MovingDunes: kit dropped from the csproj
+ok   MovingDunes: snapshot removed
+ok   TheBazaar: real screen, every setting grouped, resettable, scopes as audited
+ok   TheBazaar: a name dropped from its group array
+ok   TheBazaar: a setting in two groups
+ok   TheBazaar: group names a non-setting
+ok   TheBazaar: a Group's closing brace lost
+ok   TheBazaar: kit dropped from the csproj
+ok   TheBazaar: snapshot removed
+ok   TheBazaar: a scope tag flipped to a dishonest one
+ok   RaidRedesigner: real screen, every setting grouped, resettable, scopes as audited
+ok   RaidRedesigner: a name dropped from its group array
+ok   RaidRedesigner: a setting in two groups
+ok   RaidRedesigner: group names a non-setting
+ok   RaidRedesigner: a Group's closing brace lost
+ok   RaidRedesigner: kit dropped from the csproj
+ok   RaidRedesigner: snapshot removed
+ok   RaidRedesigner: a scope tag flipped to a dishonest one
+ok   Rites: real screen, every setting grouped, resettable, scopes as audited
+ok   Rites: a name dropped from its group array
+ok   Rites: a setting in two groups
+ok   Rites: group names a non-setting
+ok   Rites: a Group's closing brace lost
+ok   Rites: kit dropped from the csproj
+ok   Rites: snapshot removed
+ok   Rites: a scope tag flipped to a dishonest one
+ok   Antiquities: real screen, every setting grouped, resettable, scopes as audited
+ok   Antiquities: a name dropped from its group array
+ok   Antiquities: a setting in two groups
+ok   Antiquities: group names a non-setting
+ok   Antiquities: a Group's closing brace lost
+ok   Antiquities: kit dropped from the csproj
+ok   Antiquities: snapshot removed
+ok   CathedralPass: real screen, every setting grouped, resettable, scopes as audited
+ok   CathedralPass: a name dropped from its group array
+ok   CathedralPass: a setting in two groups
+ok   CathedralPass: group names a non-setting
+ok   CathedralPass: a Group's closing brace lost
+ok   CathedralPass: kit dropped from the csproj
+ok   CathedralPass: snapshot removed
+ok   CathedralPass: a scope tag flipped to a dishonest one
+ok   DroidRepairJobs: real screen, every setting grouped, resettable, scopes as audited
+ok   DroidRepairJobs: a name dropped from its group array
+ok   DroidRepairJobs: a setting in two groups
+ok   DroidRepairJobs: group names a non-setting
+ok   DroidRepairJobs: a Group's closing brace lost
+ok   DroidRepairJobs: kit dropped from the csproj
+ok   DroidRepairJobs: snapshot removed
+ok   DroidRepairJobs: a scope tag flipped to a dishonest one
+ok   EggReckoning: real screen, every setting grouped, resettable, scopes as audited
+ok   EggReckoning: a name dropped from its group array
+ok   EggReckoning: a setting in two groups
+ok   EggReckoning: group names a non-setting
+ok   EggReckoning: a Group's closing brace lost
+ok   EggReckoning: kit dropped from the csproj
+ok   EggReckoning: snapshot removed
+ok   EggReckoning: a scope tag flipped to a dishonest one
+ok   FungalSoilTrade: real screen, every setting grouped, resettable, scopes as audited
+ok   FungalSoilTrade: a name dropped from its group array
+ok   FungalSoilTrade: a setting in two groups
+ok   FungalSoilTrade: group names a non-setting
+ok   FungalSoilTrade: a Group's closing brace lost
+ok   FungalSoilTrade: kit dropped from the csproj
+ok   FungalSoilTrade: snapshot removed
+ok   FungalSoilTrade: a scope tag flipped to a dishonest one
+ok   KyberTradePlot: real screen, every setting grouped, resettable, scopes as audited
+ok   KyberTradePlot: a name dropped from its group array
+ok   KyberTradePlot: a setting in two groups
+ok   KyberTradePlot: group names a non-setting
+ok   KyberTradePlot: a Group's closing brace lost
+ok   KyberTradePlot: kit dropped from the csproj
+ok   KyberTradePlot: snapshot removed
+ok   KyberTradePlot: a scope tag flipped to a dishonest one
+ok   LongHunger: real screen, every setting grouped, resettable, scopes as audited
+ok   LongHunger: a name dropped from its group array
+ok   LongHunger: a setting in two groups
+ok   LongHunger: group names a non-setting
+ok   LongHunger: a Group's closing brace lost
+ok   LongHunger: kit dropped from the csproj
+ok   LongHunger: snapshot removed
+ok   LongHunger: a scope tag flipped to a dishonest one
+ok   ScavengerEvents: real screen, every setting grouped, resettable, scopes as audited
+ok   ScavengerEvents: a name dropped from its group array
+ok   ScavengerEvents: a setting in two groups
+ok   ScavengerEvents: group names a non-setting
+ok   ScavengerEvents: a Group's closing brace lost
+ok   ScavengerEvents: kit dropped from the csproj
+ok   ScavengerEvents: snapshot removed
+ok   ScavengerEvents: a scope tag flipped to a dishonest one
+ok   PropaneLakeMechanics: real screen, every setting grouped, resettable, scopes as audited
+ok   PropaneLakeMechanics: a name dropped from its group array
+ok   PropaneLakeMechanics: a setting in two groups
+ok   PropaneLakeMechanics: group names a non-setting
+ok   PropaneLakeMechanics: a Group's closing brace lost
+ok   PropaneLakeMechanics: kit dropped from the csproj
+ok   PropaneLakeMechanics: snapshot removed
+ok   PropaneLakeMechanics: a scope tag flipped to a dishonest one
+ok   ShipMemory: real screen, every setting grouped, resettable, scopes as audited
+ok   ShipMemory: a name dropped from its group array
+ok   ShipMemory: a setting in two groups
+ok   ShipMemory: group names a non-setting
+ok   ShipMemory: a Group's closing brace lost
+ok   ShipMemory: kit dropped from the csproj
+ok   ShipMemory: snapshot removed
+ok   TrophyCraft: real screen, every setting grouped, resettable, scopes as audited
+ok   TrophyCraft: a name dropped from its group array
+ok   TrophyCraft: a setting in two groups
+ok   TrophyCraft: group names a non-setting
+ok   TrophyCraft: a Group's closing brace lost
+ok   TrophyCraft: kit dropped from the csproj
+ok   TrophyCraft: snapshot removed
+ok   DesertVehicleReskin: real screen, every setting grouped, resettable, scopes as audited
+ok   DesertVehicleReskin: a name dropped from its group array
+ok   DesertVehicleReskin: a setting in two groups
+ok   DesertVehicleReskin: group names a non-setting
+ok   DesertVehicleReskin: a Group's closing brace lost
+ok   DesertVehicleReskin: kit dropped from the csproj
+ok   DesertVehicleReskin: snapshot removed
+ok   WildsteamEggBounty: real screen, every setting grouped, resettable, scopes as audited
+ok   WildsteamEggBounty: a name dropped from its group array
+ok   WildsteamEggBounty: a setting in two groups
+ok   WildsteamEggBounty: group names a non-setting
+ok   WildsteamEggBounty: a Group's closing brace lost
+ok   WildsteamEggBounty: kit dropped from the csproj
+ok   WildsteamEggBounty: snapshot removed
+ok   WildsteamEggBounty: a scope tag flipped to a dishonest one
+ok   JawaIonWeapons: real screen, every setting grouped, resettable, scopes as audited
+ok   JawaIonWeapons: a name dropped from its group array
+ok   JawaIonWeapons: a setting in two groups
+ok   JawaIonWeapons: group names a non-setting
+ok   JawaIonWeapons: a Group's closing brace lost
+ok   JawaIonWeapons: kit dropped from the csproj
+ok   JawaIonWeapons: snapshot removed
+ok   UtinniStatues: real screen, every setting grouped, resettable, scopes as audited
+ok   UtinniStatues: a name dropped from its group array
+ok   UtinniStatues: a setting in two groups
+ok   UtinniStatues: group names a non-setting
+ok   UtinniStatues: a Group's closing brace lost
+ok   UtinniStatues: kit dropped from the csproj
+ok   UtinniStatues: snapshot removed
+ok   UtinniStatues: a scope tag flipped to a dishonest one
+ok   UtinniStatues: a next-game-start tag overridden to [now]
+ok   BrainWorms: real screen, every setting grouped, resettable, scopes as audited
+ok   BrainWorms: a name dropped from its group array
+ok   BrainWorms: a setting in two groups
+ok   BrainWorms: group names a non-setting
+ok   BrainWorms: a Group's closing brace lost
+ok   BrainWorms: kit dropped from the csproj
+ok   BrainWorms: snapshot removed
+ok   BrainWorms: a scope tag flipped to a dishonest one
+ok   WeepingStones: real screen, every setting grouped, resettable, scopes as audited
+ok   WeepingStones: a name dropped from its group array
+ok   WeepingStones: a setting in two groups
+ok   WeepingStones: group names a non-setting
+ok   WeepingStones: a Group's closing brace lost
+ok   WeepingStones: kit dropped from the csproj
+ok   WeepingStones: snapshot removed
+ok   WeepingStones: a scope tag flipped to a dishonest one
+ok   WeepingStones: a next-game-start tag overridden to [now]
+ok   SWBestiary#Livestock: real screen, every setting grouped, resettable, scopes as audited
+ok   SWBestiary#Livestock: a name dropped from its group array
+ok   SWBestiary#Livestock: a setting in two groups
+ok   SWBestiary#Livestock: group names a non-setting
+ok   SWBestiary#Livestock: a Group's closing brace lost
+ok   SWBestiary#Livestock: kit dropped from the csproj
+ok   SWBestiary#Livestock: snapshot removed
+ok   SWBestiary#Livestock: a scope tag flipped to a dishonest one
+ok   SWBestiary#Ikee: real screen, every setting grouped, resettable, scopes as audited
+ok   SWBestiary#Ikee: a name dropped from its group array
+ok   SWBestiary#Ikee: a setting in two groups
+ok   SWBestiary#Ikee: group names a non-setting
+ok   SWBestiary#Ikee: a Group's closing brace lost
+ok   SWBestiary#Ikee: kit dropped from the csproj
+ok   SWBestiary#Ikee: snapshot removed
+ok   SWBestiary#BeastMechanics: real screen, every setting grouped, resettable, scopes as audited
+ok   SWBestiary#BeastMechanics: a name dropped from its group array
+ok   SWBestiary#BeastMechanics: a setting in two groups
+ok   SWBestiary#BeastMechanics: group names a non-setting
+ok   SWBestiary#BeastMechanics: a Group's closing brace lost
+ok   SWBestiary#BeastMechanics: kit dropped from the csproj
+ok   SWBestiary#BeastMechanics: snapshot removed
+ok   SWBestiary#BeastMechanics: a scope tag flipped to a dishonest one
+ok   SWBestiary#BeastMechanics: a next-game-start tag overridden to [now]
+ok   FlowWorks#Main: real screen, every setting in exactly one resettable section
+ok   FlowWorks#Main: a name dropped from its section array
+ok   FlowWorks#Main: a setting in two sections
+ok   FlowWorks#Main: a section names a non-setting
+ok   FlowWorks#Main: a Section's closing brace lost
+ok   FlowWorks#Main: Reset-all removed
+ok   FlowWorks#Main: kit dropped from the csproj
+ok   FlowWorks#Main: the draw guard removed
+ok   FlowWorks#Main: the draw guard narrowed to one exception type
+ok   FlowWorks#Main: list.End moved inside the try
+ok   BiomesShell: kit screen (search, grouped reset, worldgen label)
+ok   BiomesShell: kit dropped from csproj
+ok   BiomesShell: search box removed
+ok   BiomesShell: reset removed
+ok   BiomesShell: worldgen label dropped
+ok   ScrollListing: model: without maxOneColumn the measured height collapses below the content
+ok   ScrollListing: model: with maxOneColumn every row stays in column one and the height holds
+ok   ScrollListing: 3024 .cs files, every scrolling listing is one column
+ok   ScrollListing: plant (FlowWorks maxOneColumn removed) is caught
+ok   ScrollListing: plant (a second, unflagged listing in a flagged file) is caught
+ok   ScrollListing: scroll screens found in tiers ['RimMandrake', 'RimStarWars', 'RimUtinni']
+settings screens selftest: 856/856 ok
+rc=0
