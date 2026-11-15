@@ -160,10 +160,13 @@ def t_l7_timeout_on_two_games_is_a_defect():
 def t_m1_failed_tasklist_reads_live():
     keep, keep_log = M.subprocess.run, getattr(M, "PLAYERLOG", None)
     M.PLAYERLOG = os.path.join(tempfile.mkdtemp(prefix="modset_nolog_"), "Player.log")   # a quiet/missing log is no answer
+    # the list is game_instance's PowerShell query: rows "pid|start|cmd" and the LIST_OK line that says it answered
+    import game_instance as GI
     cases = [(types.SimpleNamespace(returncode=1, stdout="", stderr="interop down"), True),
-             (types.SimpleNamespace(returncode=0, stdout="RimWorldWin64.exe  123 Console", stderr=""), True),
-             (types.SimpleNamespace(returncode=0, stdout="INFO: No tasks are running", stderr=""), False),
-             (OSError("no tasklist.exe"), True)]
+             (types.SimpleNamespace(returncode=0, stdout="123||\n%s\n" % GI.LIST_OK, stderr=""), True),
+             (types.SimpleNamespace(returncode=0, stdout="%s\n" % GI.LIST_OK, stderr=""), False),
+             (types.SimpleNamespace(returncode=0, stdout="INFO: No tasks are running", stderr=""), True),
+             (OSError("no powershell.exe"), True)]
     try:
         for ans, want in cases:
             def fake(*a, ans=ans, **k):
