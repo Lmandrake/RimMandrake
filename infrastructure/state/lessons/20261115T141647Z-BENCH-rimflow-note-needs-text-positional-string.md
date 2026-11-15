@@ -1,0 +1,1 @@
+rimflow note needs --text: a positional string is refused, and anything launched later in the same shell command runs without the ledger record it was told to cite. Check the note printed 'note <ID> ->' before launching.
