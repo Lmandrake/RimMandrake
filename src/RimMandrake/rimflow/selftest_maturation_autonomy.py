@@ -62,6 +62,7 @@ class World:
         self.filed, self.launched, self.briefs, self.cards, self.seeded = [], [], [], [], []
         self.fail_launch = False
         self.dunits = {}
+        self.dchain = {}
 
     def fx(self):
         def launch(mod, cap, item):
@@ -87,7 +88,8 @@ class World:
         return {"facts": lambda: self.facts, "account": lambda: (True, "ok"), "bridge": lambda p: self.bridge,
                 "file": file, "launch": launch, "launch_brief": launch_brief, "known": lambda: set(),
                 "open_items": lambda ids: self.items.get(ids[0], []) if self.items is not None else None,
-                "designer_state": lambda m: self.dstate.get(m), "designer_unit": lambda m: self.dunits.get(m), "version_locked": lambda m: self.locked,
+                "designer_state": lambda m: self.dstate.get(m), "designer_unit": lambda m: self.dunits.get(m),
+                "designer_chain": lambda m: self.dchain.get(m), "version_locked": lambda m: self.locked,
                 "discovered": lambda: self.found, "seed": seed, "card": self.cards.append,
                 "page": lambda: type("R", (), {"returncode": 0})()}
 
@@ -246,6 +248,46 @@ def main():
         rd, g = run(w, ["D"], root, now=CLOCK + 720)
         ok(not rd.get("stalled") and g("D").get("waits_on") == "rm-role-designer-7",
            "a live Designer role run on the concept: wait on that unit, not a stall")
+        # stalled blind spot 1: the Designer run ends; the stall counts from its end, not from the first wait
+        w.dunits = {}
+        rd, g = run(w, ["D"], root, now=CLOCK + 780)
+        ok(not rd.get("stalled") and g("D").get("for_min") == 0,
+           "stalled 1: a Designer run that just ended restarts the clock (read for_min %s, stalled %s)" % (
+               g("D").get("for_min"), rd.get("stalled")))
+        rd, g = run(w, ["D"], root, now=CLOCK + 780 + 660)
+        ok(rd.get("stalled") == ["D"], "stalled 1: 11 minutes with nothing running after the run ended: stalled")
+        # stalled blind spot 2: the Designer chain daily cap is named, PAUSED, with its cure
+        fresh_state()
+        w = World({"G": {"mod": "G", "stage": "designer", "version": "0.1.0", "live_units": []}},
+                  dstate={"G": {"status": "ready", "stage": 3, "history": []}})
+        w.dchain = {"G": (8, 8)}
+        rd, g = run(w, ["G"], root)
+        ok(g("G").get("klass") == "paused" and "chain_max_per_day" in str(g("G").get("status"))
+           and "run-now --role Designer --concept design/concepts/G" in str(g("G").get("status")),
+           "stalled 2: a concept at the Designer's daily chain cap reads PAUSED naming the cap and the run-now cure "
+           "(read %s)" % str(g("G").get("status"))[:120])
+        w.dchain = {"G": (3, 8)}
+        rd, g = run(w, ["G"], root, now=CLOCK + 60)
+        ok(g("G").get("decision") == "designer_wait", "stalled 2: under the cap it is still a Designer wait")
+        # stalled blind spot 3: a coverage stop pauses the mod on the judge stop, never slots_full or a launch
+        fresh_state()
+        stop = {"status": "blocked", "stage": 5, "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: judging stopped",
+                "history": [{"at": "2026-11-15T13:54:40Z", "what": "locked_change"},
+                            {"at": "2026-11-15T13:56:22Z", "what": "coverage_release"},
+                            {"at": "2026-11-15T14:05:35Z", "what": "coverage_stop", "why": "round 6 not_covered"}]}
+        w = World({"P": offline("P", "ready to advance"), "L1": dict(offline("L1", "build", ["x"]), live_units=["rm-u1"]),
+                   "L2": dict(offline("L2", "build", ["y"]), live_units=["rm-u2"])}, dstate={"P": stop})
+        rd, g = run(w, ["L1", "L2", "P"], root)
+        ok(g("P").get("klass") == "paused" and g("P").get("decision") == "coverage_stop"
+           and "coverage_judge.py release" in str(g("P").get("status")),
+           "stalled 3: a coverage-stopped mod reads PAUSED on the judge stop, not slots_full (read %s)" % g("P").get(
+               "decision"))
+        fresh_state()
+        w = World({"P": offline("P", "build", refused=["b1"])}, dstate={"P": stop})
+        rd, g = run(w, ["P"], root)
+        ok(not w.launched and g("P").get("decision") == "coverage_stop",
+           "stalled 3: a coverage-stopped mod is never launched on (read %s, launched %s)" % (
+               g("P").get("decision"), w.launched))
         # every class is one of four, on every row of every tick above
         ok(all(m.get("klass") in ("launch", "wait", "paused", "owner") for m in rd["mods"].values()),
            "every row has one of the four classes")

@@ -163,6 +163,40 @@ def designer_unit(mod, tail=600):
     return other
 
 
+def designer_chain(mod, now):
+    """-> (chained runs on this concept today, chain_max_per_day) from the Dispatcher's state and schedule, or None when
+    either cannot be read. role_launch.chain_ask asks no run-now past the cap, so a ready concept at it sits."""
+    try:
+        import doorbell
+        import role_launch as RL
+        with open(os.path.join(doorbell.state_dir(), "state.json"), encoding="utf-8") as f:
+            rs = ((json.load(f).get("roles") or {}).get("Designer")) or {}
+        with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+            sched = json.load(f)
+    except (OSError, ValueError, ImportError, AttributeError):
+        return None
+    roles = sched.get("roles", sched) if isinstance(sched, dict) else sched
+    cap = next((r.get("chain_max_per_day") for r in roles or [] if isinstance(r, dict) and r.get("name") == "Designer"),
+               None)
+    cap = cap if isinstance(cap, int) and not isinstance(cap, bool) else RL.CHAIN_MAX_PER_DAY
+    day = RL.day_of(now)
+    n = sum(v for k, v in (rs.get("chain_day") or {}).items() if isinstance(v, int) and str(k).startswith(day + " ")
+            and os.path.basename(os.path.normpath(str(k).split(" ", 1)[1])) == mod)
+    return n, cap
+
+
+def coverage_stopped(dst):
+    """-> the coverage_stop event judging stands stopped on, or None: the concept is blocked and its newest coverage
+    event (stop, release, locked change, lock) is a stop. A locked change after the stop owes the chain instead."""
+    if not isinstance(dst, dict) or dst.get("status") != "blocked" or "OWNER HOLD" in str(dst.get("blocked_on") or ""):
+        return None
+    ev = [h for h in dst.get("history") or [] if isinstance(h, dict) and h.get("what") in CHAIN_AFTER + ("locked_change",)]
+    if not ev:
+        return None
+    last = max(ev, key=lambda h: _iso_ts(h.get("at")) or 0)
+    return last if last.get("what") == "coverage_stop" else None
+
+
 def chain_owed(dst):
     """-> the locked_change event a chain is owed for, or None. Owed when the newest locked_change is newer than every
     coverage release, coverage stop and lock, and the concept is not locked again (a re-signed tree has had its look)."""
@@ -211,12 +245,19 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             queue.setdefault(mod, now)
         elif dec in LAUNCH or f.get("owed") != "run":
             queue.pop(mod, None)
-        if dec in WAIT or dec in LAUNCH:
+        cs = None if dec in ("live", "settling") else coverage_stopped(dstate(mod))
+        if cs:
+            row.update(decision="coverage_stop", aut=None, why="judging stopped %s: %s; `coverage_judge.py release "
+                       "design/concepts/%s --why ...` (one more look, on his word) un-pauses it" % (
+                           cs.get("at"), str(cs.get("why") or "no reason written")[:300], mod))
+            launches = [m for m in launches if m != mod]
+        elif dec in WAIT or dec in LAUNCH:
             pass
         elif (st.get("seed_refused") or {}).get(mod):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
         else:
-            _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit))
+            _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
+                   fx.get("designer_chain", lambda m: designer_chain(m, now)))
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             ok, why = _gate(cfg, s, row, live_total, ver)
@@ -236,7 +277,7 @@ def classify(cfg, st, rows, now):
     return rows
 
 
-def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit):
+def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -277,7 +318,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
     if stage in (UNM, "designer", "intake") or stage is None:
-        _designer_lane(row, mod, ver, dst, locked, fx_dunit)
+        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
@@ -295,7 +336,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  row.get("why"), row.get("need") or row.get("why"))
 
 
-def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit):
+def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None):
     if dst is None:
         row.update(decision="designer_unreadable", why="design/concepts/%s/stage.json cannot be read" % mod)
         return
@@ -327,6 +368,13 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit):
                         "Evidence: design/concepts/%s/tree.json and record.json." % (mod, mod))
     else:
         unit = dunit(mod)
+        cc = None if unit or dchain is None else dchain(mod)
+        if cc and cc[0] >= cc[1]:
+            row.update(decision="designer_chain_cap", why="the Designer stands at stage %s (%s) and the Dispatcher "
+                       "chained %d runs on it today, the most is %d (chain_max_per_day): no run-now is asked until "
+                       "tomorrow; look at its stage history, then `role_launch.py run-now --role Designer --concept "
+                       "design/concepts/%s --by Conductor --why \"...\" --apply` un-pauses it" % (stg, stt, cc[0], cc[1], mod))
+            return
         row.update(decision="designer_wait", waits_on=unit,
                    why="the Designer stands at stage %s (%s): %s" % (stg, stt, "its run %s is live" % unit if unit else
                        "the Dispatcher's Designer launcher runs it (no Designer run live now)"))
@@ -376,7 +424,8 @@ PAUSE_WHY = {
     "visit_unfinished": "a visit record has no exit block", "cycle_limit": "three blind cycles: the Conductor decides",
     "seed_refused": "its record cannot be seeded", "designer_blocked": "the Designer is blocked",
     "designer_unreadable": "its stage.json cannot be read", "disabled": "the step is disabled",
-    "steward_off": "steward runs are off",
+    "steward_off": "steward runs are off", "designer_chain_cap": "the Designer's daily chain cap is reached",
+    "coverage_stop": "coverage judging stopped on it (REFUSAL_NOTHING_COULD_EVER_PASS)",
     "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_usd", "not_offline": "no automatic step exists for its stage",
 }
 
@@ -406,8 +455,10 @@ def _klass(cfg, s, row, now, queue):
         txt = "PAUSED %s: %s" % (PAUSE_WHY.get(dec, dec), row.get("why"))
     row["klass"], row["status"] = k, txt
     prev = s.get("klass_since") or {}
-    if prev.get("k") != k or prev.get("d") != dec:
-        s["klass_since"] = {"k": k, "d": dec, "at": now}
+    named = bool(row.get("waits_on"))
+    # a named wait that ends (a Designer run closed) restarts the clock: the stall counts from when nothing ran
+    if prev.get("k") != k or prev.get("d") != dec or prev.get("w", named) != named:
+        s["klass_since"] = {"k": k, "d": dec, "w": named, "at": now}
     row["for_min"] = round((now - s["klass_since"]["at"]) / 60)
     stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner")
     row["stalled"] = bool(stuck and row["for_min"] >= int(cfg.get("stalled_min", 10)))
