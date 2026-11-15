@@ -352,7 +352,28 @@ def _reached(root, stage):
     return out
 
 
-def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, why=None):
+PASS_REFUSED = re.compile(r"\b(not|n't|never|don'?t|do not)\b[^.]{0,30}\bpass", re.I)
+
+
+def owner_event(root, owner):
+    """RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: --owner-said for a pass is OWNER:<tsn>, an event of his on the OWNER
+    shard carrying byCard or ownerSaid that does not refuse the pass. -> (event, observed) or (None, why not)."""
+    import concept_tree as CT
+    m = re.match(r"^OWNER:(\d+)$", str(owner or "").strip())
+    if not m:
+        return None, "%r is not OWNER:<tsn> (his event on the OWNER shard)" % (owner or "none")
+    ev = CT.owner_events(root, REPO).get(m.group(1))
+    if not isinstance(ev, dict):
+        return None, "OWNER:%s is not on the OWNER shard" % m.group(1)
+    words = str(ev.get("ownerSaid") or ev.get("byCard") or "").strip()
+    if not words:
+        return None, "OWNER:%s carries no byCard or ownerSaid" % m.group(1)
+    if PASS_REFUSED.search(words):
+        return None, "OWNER:%s's words refuse the pass: %r" % (m.group(1), words[:80])
+    return ev, "OWNER:%s: %s" % (m.group(1), words[:80])
+
+
+def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, why=None, check_by=False):
     """-> {"ok", "verdict", "hand_steps"}: every clause of the move, passed or refused, as a refusal-contract verdict."""
     rec = load(root, mod) or {}
     cur = rec.get("stage", UNM)
@@ -394,6 +415,12 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                ROADS_BACK[cur])) if cur in ROADS_BACK else ""),
            fix="run advance with --to %s, finishing %s first" % (nxt or cur, label(cur)),
            why_sound="the eight stages, their order and the roads back are his and carried rulings (spec §3)")
+    # by: RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: the move names the seat that makes it (a ledger seat's name)
+    if check_by:     # a move (advance) names its mover; next and brief ask what a move needs, by no seat
+        clause("by", "the move names the seat that makes it", bool(re.match(r"^[A-Z][A-Z0-9_]{2,}$", str(by))),
+               [req_ref], observed="advance %s from %s to %s by %s" % (mod, cur, to, by or "nobody"),
+               would_pass="--by naming a ledger seat in capitals (BENCH, CONDUCTOR, RUNNER)",
+               fix="pass --by with the seat that makes the move", cost="edit")
     # version: the record is for the Design Version VERSION.json names
     v, verr = read_json(root, mod, "version/VERSION.json")
     vv = (v or {}).get("version", UNM)
@@ -433,9 +460,11 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                        why_sound="his card of 2026-11-14 says it is asked again at that point")
         elif cur == "designer":
             st = str((v or {}).get("state") or "")
+            # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: "locked" as a word (a date may follow), locked by him
+            lk = bool(re.match(r"^locked(\s|$)", st)) and str((v or {}).get("locked_by") or "") == "owner"
             clause("locked", "the Design Version is locked on his word (VERSION.json state locked)",
-                   st.startswith("locked"), [rel(mod, "version/VERSION.json")],
-                   observed="VERSION.json state is %s" % (st or UNM),
+                   lk, [rel(mod, "version/VERSION.json")],
+                   observed="VERSION.json state is %s, locked_by %s" % (st or UNM, (v or {}).get("locked_by") or UNM),
                    would_pass="VERSION.json state reads locked, with his lock words in owner_words",
                    fix="finish the Designer pass and bring him the lock question", cost="owner",
                    why_sound="a Design Version is locked on his word (Design Versions ruling, carried)")
@@ -505,8 +534,10 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    why_sound="the stage's exit is not settled as a program check (plan section 3)")
         elif cur == "his_walk":
             hand.append("owner_said")
-            clause("owner_said", "the version passes on his words alone", bool(owner), [req_ref],
-                   observed="owner_said: none in the request", would_pass="--owner-said quoting his pass of the version",
+            oe, owhy = owner_event(root, owner)
+            clause("owner_said", "the version passes on his words alone", oe is not None, [req_ref],
+                   observed="owner_said: %s" % owhy,
+                   would_pass="--owner-said OWNER:<tsn>, his event on the OWNER shard passing the version",
                    fix="his walk ends with his words; pass them verbatim", cost="owner",
                    why_sound="the pass is his alone (carried, spec Stage 8)")
     if forward and to == "blind_challenge" or (back and cur == to == "blind_challenge"):
@@ -531,7 +562,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
 # ---- the move --------------------------------------------------------------------------------------------------------
 
 def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None):
-    res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why)
+    res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True)
     errs = RC.check(res["verdict"])
     if errs:
         res["malformed"] = errs

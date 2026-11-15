@@ -83,11 +83,12 @@ def copy_mods(root):
                     f.write(data)
 
 
-def synthetic(root, state="drafting"):
+def synthetic(root, state="drafting", locked_by=None):
     c = os.path.join(root, "design", "concepts", "SpineTestMod")
     os.makedirs(os.path.join(c, "version"), exist_ok=True)
     with open(os.path.join(c, "version", "VERSION.json"), "w") as f:
-        json.dump({"mod": "SpineTestMod", "version": "0.1.0", "state": state}, f)
+        json.dump(dict({"mod": "SpineTestMod", "version": "0.1.0", "state": state},
+                       **({"locked_by": locked_by} if locked_by else {})), f)
     with open(os.path.join(c, "journal.md"), "w") as f:
         f.write("# Spine test mod: journal\n\n## The mod as it stands\n\n- **Design Version 0.1.0**, drafting.\n"
                 "- **Stage now:** Stage 1 (Designer), drafting the bars.\n- **Waiting on:** nothing.\n\n"
@@ -209,7 +210,13 @@ def main():
 
         # designer to preflight needs the lock; preflight to offline build needs a preflight record
         refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "an unlocked version")
+        # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: the lock is the word "locked", by him
+        synthetic(root, state="locked-without-owner", locked_by="owner")
+        refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "a 'locked-without-owner' state")
         synthetic(root, state="locked")
+        refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked", "a lock with no locked_by owner")
+        synthetic(root, state="locked", locked_by="owner")
+        refused(M.advance(root, "SpineTestMod", "preflight", by="", why="x"), "by", "a move that names no seat")
         r = M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="locked on his word")
         ok(r["ok"], "a locked version moves to preflight")
         refused(M.advance(root, "SpineTestMod", "offline_build", by="BENCH", why="x"), "preflight_record",
@@ -311,6 +318,22 @@ def main():
         ok(M.load(root, "Pyrelands")["pre_human_arrivals"] == 1, "arrivals at the pre-human check are counted")
         refused(M.advance(root, "Pyrelands", "passed", by="CONDUCTOR", why="x"), "owner_said",
                 "a pass without his words")
+        # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: only his event on the OWNER shard passes, and not a refusal
+        refused(M.advance(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="Do not pass this"), "owner_said",
+                "arbitrary --owner text")
+        shard = os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+        os.makedirs(os.path.dirname(shard), exist_ok=True)
+        with open(shard, "a") as f:
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "SELFTEST", "tsn": 4242000000000000001,
+                                "ownerSaid": "Pyrelands 0.1.0 passes, ship it"}) + "\n")
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "SELFTEST", "tsn": 4242000000000000002,
+                                "ownerSaid": "Do not pass this yet"}) + "\n")
+        refused(M.advance(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000002"),
+                "owner_said", "his event that refuses the pass")
+        refused(M.advance(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000009"),
+                "owner_said", "an OWNER:<tsn> not on the shard")
+        ok(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001")["ok"],
+           "his real OWNER event passing the version moves it")
         refused(M.advance(root, "PyrelandsMechanics", "designer", by="BENCH", why="x"), "owner_said",
                 "intake after a mod reached his walk still asks him")
         ok(M.advance(root, "Pyrelands", "offline_build", by="CONDUCTOR", why="a Problem he saw: the ember")["ok"],
