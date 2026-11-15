@@ -1,0 +1,3 @@
+./publish from a default sparse scratch clone refuses a commit of only infrastructure/state/items/*.md plus ledger shards: skip_when_only lists ledger/events/*.jsonl and lessons/*.md but not items/*.md, so the 7 whole-tree checks run, and in a sparse clone they are blind (no mod src: 'instrument sees the tree (2 xml, 3 BiomeDefs)', '0 src BiomeDefs', '0 roots') and go red. Measured 2026-11-15 in /home/mandrake/rm/scratch/BENCH/efa_steve_pipe at 54b6c4d7c6. Fix candidates: add infrastructure/state/items/*.md (and items/closed/*.md) to skip_when_only, and/or have tree_checks report a sparse clone as UNMEASURED instead of red. Workaround used: RM_PUBLISH_SKIP_TREE_CHECKS with the reason.
+item: NONE
+home: src/RimMandrake/Utils/publish_tree_checks.json
