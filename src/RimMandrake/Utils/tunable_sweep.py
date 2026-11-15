@@ -55,10 +55,11 @@ def scratch_copy(repo):
     tmp = tempfile.mkdtemp(prefix="tunable_sweep_")
     subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "clone", "-q", "--shared", repo, tmp + "/r"],
                    check=True, timeout=600)
-    head = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout
+    head = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True,
+                          timeout=60).stdout
     subprocess.run(["git", "-C", tmp + "/r", "checkout", "-q", "--detach", head.strip()], check=True, timeout=600)
     edits = subprocess.run(["git", "-C", repo, "diff", "--name-only", "HEAD"], capture_output=True, text=True,
-                           check=True).stdout.split()
+                           check=True, timeout=120).stdout.split()
     for p in edits:
         src, dst = os.path.join(repo, p), os.path.join(tmp, "r", p)
         if os.path.isfile(src):
@@ -143,7 +144,7 @@ def main(argv=None):
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--repo", default=".")
     a = ap.parse_args(argv)
-    repo = subprocess.run(["git", "-C", a.repo, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    repo = subprocess.run(["git", "-C", a.repo, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=60)
     if repo.returncode:
         print("not a git repo: %s" % a.repo)
         return 2
