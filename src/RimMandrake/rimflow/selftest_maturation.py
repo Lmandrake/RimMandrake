@@ -844,6 +844,10 @@ def blind_main():
              "a lane-1 UNSETTLED row that lane 1 after the fixes shows PASS"),
             (dict(lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "FAIL"}, polish_cites="L1_c"),
              "a lane-1 FAIL still FAIL after the fixes that a Polish fault names (Polish is not part of passing)"),
+            # no fixes at all, so no lane 1 after the fixes: a FAIL a Polish fault owns still clears
+            # (RIMMANDRAKE_CLEAR_POLISH_LANE1_FAIL_WITHOUT_ANY_FIX)
+            (dict(lane1_fail=True, polish_cites="L1_c"),
+             "a lane-1 FAIL a Polish fault names, in a cycle with no fixes (no lane1_rows_after_fix.jsonl)"),
             (dict(lane1_row=nk([live_bar])), "a not_kernel UNSETTLED row on stage-6 bars only (deferred to Stage 6)"),
         )
         for kw, what in met:

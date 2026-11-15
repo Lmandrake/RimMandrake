@@ -1543,8 +1543,10 @@ def read_exit(root, mod, n, tt=None):
         out["checks"]["lane1_fail_left_as_polish"] = polish
         bad_after = [f for f in bad_after if f not in polish]
         left = [f for f in fails if f not in passed and f not in polish]
-        out["checks"]["lane1_fail_cleared_after_fix"] = after is not None and not bad_after and not left
-        if after is None:
+        # a cycle with no fixes has no lane 1 after them: the FAILs a Polish fault owns still clear, and only those
+        # (RIMMANDRAKE_CLEAR_POLISH_LANE1_FAIL_WITHOUT_ANY_FIX)
+        out["checks"]["lane1_fail_cleared_after_fix"] = not bad_after and not left
+        if after is None and left:
             why.append("lane 1 has %d FAIL, UNSETTLED or unreadable row(s): %s, and no %s shows them PASS after the fixes"
                        % (len(fails), ", ".join(fails[:8]), LANE1_AFTER_FIX))
         elif bad_after or left:
