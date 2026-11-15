@@ -6,7 +6,8 @@ campaign save; never a flyer). Every row is a refusal the new companion must giv
   arg_guard_own_strict     bridge_arg_report reports ownStrict=true
   undeclared_key_refused   set_fog with an undeclared dry_run key errors instead of running (check=False skips
                            the client's own check, so the companion's refusal is what is measured)
-  settings_set_non_modsettings_refused   mod_settings_field set on Verse.Prefs refuses "does not derive"
+  settings_set_non_modsettings_refused   mod_settings_field set on Verse.DebugSettings.godMode refuses "does not derive"
+  settings_list_non_modsettings_reads    mod_settings_field list on Verse.DebugSettings succeeds (it threw before)
   terrain_batch_unknown_map_refused      set_terrain_batch mapId=999999 refuses "No loaded map"
   excavation_levels_capped               flowworks_excavation_drive deepenLevels=1000 refuses 0..64
   cache_range_capped                     world_cache_audit range 0-2147483647 lists a refusal, finishes
@@ -63,8 +64,15 @@ def main():
     txt = json.dumps(r)
     row("undeclared_key_refused", "PASS" if ("does not declare" in txt and r.get("success") is not True) else "FAIL", txt)
 
-    r = call("jawa/mod_settings_field", typeName="Verse.Prefs", action="set", field="DevMode", value="true")
+    # Verse.Prefs.DevMode is a PROPERTY, so it refused on "No public field" before the type check was reached. A real
+    # public static field on a non-ModSettings type, set to its current value, reaches the check and changes nothing.
+    r = call("jawa/mod_settings_field", typeName="Verse.DebugSettings", action="get", field="godMode")
+    cur = str(r.get("value", "False")).lower()
+    r = call("jawa/mod_settings_field", typeName="Verse.DebugSettings", action="set", field="godMode", value=cur)
     row("settings_set_non_modsettings_refused", "PASS" if r.get("success") is False and "does not derive" in json.dumps(r) else "FAIL", r)
+
+    r = call("jawa/mod_settings_field", typeName="Verse.DebugSettings", action="list")
+    row("settings_list_non_modsettings_reads", "PASS" if r.get("success") is True and r.get("count", 0) > 0 else "FAIL", r)
 
     r = call("jawa/set_terrain_batch", ops="Sand:0,0,1,1", mapId=999999)
     row("terrain_batch_unknown_map_refused", "PASS" if r.get("success") is False and "No loaded map" in json.dumps(r) else "FAIL", r)

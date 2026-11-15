@@ -96,6 +96,13 @@ namespace JawaBench.BridgeTools
             {
                 return null;
             }
+            // GetSettings<T> is constrained to ModSettings, new(): any other type made MakeGenericMethod throw, so list
+            // and get on a non-settings type (which they promise to read) failed with "Invalid generic arguments".
+            if (!typeof(ModSettings).IsAssignableFrom(settingsType) || settingsType.IsAbstract
+                || settingsType.GetConstructor(Type.EmptyTypes) == null)
+            {
+                return null;
+            }
             MethodInfo getSettings = getSettingsOpen.MakeGenericMethod(settingsType);
             foreach (Mod mod in LoadedModManager.ModHandles)
             {
