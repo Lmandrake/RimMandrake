@@ -68,6 +68,8 @@ namespace RimMandrake.ExplosiveKnockback
             // 2026-11-15 sc_goods_obstacles, named by the test table and never built (RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT;
             // RM_KnockbackProof_GoodsObstacles.cs): door, sandbags and deep water lanes, with the obstacle-free control. NOT YET RUN LIVE.
             "goods_obstacles", "goods_obstacles_control",
+            // 2026-11-15 the showcase sc_storeroom_bomb_pit and its pit-filled control (RM_KnockbackProof_StoreroomBombPit.cs). NOT YET RUN LIVE.
+            "storeroom_bomb_pit", "storeroom_bomb_pit_control",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -2398,6 +2400,9 @@ namespace RimMandrake.ExplosiveKnockback
                 case "goods_obstacles":
                 case "goods_obstacles_control":
                     return GoodsObstacles(s);
+                case "storeroom_bomb_pit":
+                case "storeroom_bomb_pit_control":
+                    return StoreroomBombPit(s);
             }
             if (s.name.StartsWith("settings_sweep_"))   // one lane per SweepLanes key
             {

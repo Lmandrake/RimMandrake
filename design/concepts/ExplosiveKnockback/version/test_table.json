@@ -450,18 +450,19 @@
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StoreroomBombPit.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes storeroom_bomb_pit --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes storeroom_bomb_pit,storeroom_bomb_pit_control --ticks 900   (proof build, minimal list + FlowWorks and LWM's Deep Storage)",
    "why_game": "the flagship interaction of every part at once, his chosen face of the mod",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code (RM_KnockbackProof_StoreroomBombPit.cs, with its control lane)"
    }
   },
   "sc_mortar_throw": {
