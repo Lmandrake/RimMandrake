@@ -8,7 +8,7 @@ one of the cut xenotypes must be removed by a Remove op in Patches/XenotypeCut_S
   * Sanguophage: only Empire_* pawnkinds (its own pawnkinds/faction are slice 2's call).
 Red on: a reference the patch does not reach (other field path, missing op), a Remove not
 wrapped in a Conditional (logs red on no match). UNMEASURED without a readable dump.
-Sanity probe: the dump must show PirateWaster naming Waster. Mutants must go red.
+Sanity probe: the dump must carry PirateWaster and 100+ xenotypeSets (a post-patch PirateWaster set is empty). Mutants must go red.
 """
 import json
 import os
@@ -103,9 +103,11 @@ def main():
     sets = (((waster_rows[0].get("fields") or {}).get("xenotypeSet") or {}).get("xenotypeChances") or []) if waster_rows else []
     n_sets = sum(1 for rs in rows.values() for r in rs
                  if ((r.get("fields") or {}).get("xenotypeSet") or {}).get("xenotypeChances"))
-    if not sets or n_sets < 100:
-        print("UNMEASURED: sanity probe failed (PirateWaster xenotypeSet empty=%s, %d defs with a set; dump cannot see xenotypeSets)"
-              % (not sets, n_sets))
+    # PirateWaster's set may be EMPTY in a post-patch dump (Waster was its only entry, and our patch removes it): the
+    # population of sets is what proves the dump can see them, PirateWaster's row only that the faction is dumped.
+    if not waster_rows or n_sets < 100:
+        print("UNMEASURED: sanity probe failed (PirateWaster row %s, xenotypeSet empty=%s, %d defs with a set; dump cannot see xenotypeSets)"
+              % ("present" if waster_rows else "absent", not sets, n_sets))
         print("UNMEASURED, not a pass or a fail")   # the runner's verdict phrase (rc 2 alone reads as FAIL)
         return 2
     post_patch = not any(x == "Waster" for _, n, _, x in refs if n == "PirateWaster")
