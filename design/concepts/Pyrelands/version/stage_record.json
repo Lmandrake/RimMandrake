@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-14T12:40:00-08:00",
-  "since_from": "the earliest journal heading naming it: Stage 3 (offline build, as reconcile) done by hand (rm-builder, detached, offline only)",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-14T21:28:26-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -15,11 +15,28 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 0,
-    "total": 0
+    "visit": 1,
+    "total": 1
   },
   "pre_human_arrivals": 0,
-  "moves": [],
+  "moves": [
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-14T21:28:26-08:00",
+      "by": "CONDUCTOR",
+      "why": "every Stage 3 exit test passes (maturation.py next, 2026-11-14 9:27 PM PST)",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle"
+      ]
+    }
+  ],
   "spend": [
     {
       "stage": "designer",

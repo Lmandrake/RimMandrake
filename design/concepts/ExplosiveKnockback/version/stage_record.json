@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-14T12:45:00-08:00",
-  "since_from": "the earliest journal heading naming it: Stage 3 (\"reconcile\") done offline (rm-builder, detached, offline only)",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-14T21:28:26-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -15,11 +15,31 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 0,
-    "total": 0
+    "visit": 1,
+    "total": 1
   },
   "pre_human_arrivals": 0,
-  "moves": [],
+  "moves": [
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-14T21:28:26-08:00",
+      "by": "CONDUCTOR",
+      "why": "Stage 3 exit: all 59 bars have a check that runs after tonight's builder; the one walk bar proves at Stage 8",
+      "confirmed": {
+        "steward_confirms": "walk_storeroom_raid: a walk bar proving at Stage 8, decided by scene sc_walk_raid and his Stage 8 look; correctly not runnable offline (Conductor read the test table 2026-11-14 9:29 PM PST)"
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "walk_bars_confirmed",
+        "table_version",
+        "fourth_cycle"
+      ]
+    }
+  ],
   "spend": [
     {
       "stage": "designer",

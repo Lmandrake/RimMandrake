@@ -8,15 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3 ("reconcile") done as far as it goes offline, 2026-11-14 12:45 PST. Preflight re-run:
-  **refuse, 6 refusals** (was 26), all C6 "built: runs" (`version/preflight.json`). Stages 4-5 can start on everything
-  else; the 6 are listed under Stage 3 below with why each was not built.
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 9:28 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** a builder for the 6 unbuilt scenes (or a Stage 4-5 start without them); the questions below.
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 9:28 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -266,3 +264,13 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 14. **sc_settings_sweep switches "fire at half" off, but no Mod Settings field does that**; the same scene's expect says the
     fire half is a def-patch value proven in sc_blast_kinds. The `fireHalf` lane answers INVALID with that reason, like
     `closedGuard` (question 10).
+
+### 2026-11-14 9:28 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: Stage 3 exit: all 59 bars have a check that runs after tonight's builder; the one walk bar proves at Stage 8
+- Checks passed: order, version, hold, every_bar_has_a_check_that_runs, walk_bars_confirmed, table_version, fourth_cycle.
+- Steward confirms: walk_storeroom_raid: a walk bar proving at Stage 8, decided by scene sc_walk_raid and his Stage 8 look; correctly not runnable offline (Conductor read the test table 2026-11-14 9:29 PM PST)
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3 ("reconcile") done as far as it goes offline, 2026-11-14 12:45 PST. Preflight re-run: **refuse, 6 refusals** (was 26), all C6 "built: runs" (`version/preflight.json`). Stages 4-5 can start on everything else; the 6 are listed under Stage 3 below with why each was not built.
+- Was, "Waiting on": - **Waiting on:** a builder for the 6 unbuilt scenes (or a Stage 4-5 start without them); the questions below.
+- Record: `version/stage_record.json`.

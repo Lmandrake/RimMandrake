@@ -13,15 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 3 done 2026-11-14 3:40 PM PST, offline only. Preflight: **0 refusals** (2 before this run:
-  `sc_cords_under_items` had no entry; `T_CORD_GEOMETRY_OFFLINE` red). [measured]
-  Next: Stages 4 and 5 (blind challenge), then Stage 6 runs the 27 scenes live.
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 9:28 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** Stage 6 for every in-game test (all UNRUN, commands in `version/test_table.md`). Of 48 bars: 47 have every
-  deciding test runnable (not `walk_scavenger_base`, his walk), 25 have offline deciders all green. [measured, 3:40 PM PST]
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 9:28 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -247,3 +244,13 @@ Brief from the Conductor: rows 1 to 3 of the pilot table, by hand, throwaway scr
 
 About $5.4 of model spend and 23 minutes wall for rows 1 to 3 (11:25 to 11:48 PST), plus the 4.6-minute test run inside
 row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no game, no bridge.
+
+### 2026-11-14 9:28 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: Stage 3 exit: every bar has a check that runs; the one walk bar proves at Stage 8
+- Checks passed: order, version, hold, every_bar_has_a_check_that_runs, walk_bars_confirmed, table_version, fourth_cycle.
+- Steward confirms: walk_scavenger_base: a walk bar proving at Stage 8, decided by scene sc_walk and his Stage 8 look; correctly not runnable offline (Conductor read the test table 2026-11-14 9:29 PM PST)
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3 done 2026-11-14 3:40 PM PST, offline only. Preflight: **0 refusals** (2 before this run: `sc_cords_under_items` had no entry; `T_CORD_GEOMETRY_OFFLINE` red). [measured] Next: Stages 4 and 5 (blind challenge), then Stage 6 runs the 27 scenes live.
+- Was, "Waiting on": - **Waiting on:** Stage 6 for every in-game test (all UNRUN, commands in `version/test_table.md`). Of 48 bars: 47 have every deciding test runnable (not `walk_scavenger_base`, his walk), 25 have offline deciders all green. [measured, 3:40 PM PST]
+- Record: `version/stage_record.json`.

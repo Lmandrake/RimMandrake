@@ -12,8 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 3 ("reconcile") done offline 2026-11-14 12:40 PST. Preflight re-run 2026-11-14 14:32:
-  **0 refusals**, verdict pass (17 before Stage 3; 1 after it, `plan.md`, since re-pinned by his card). Stages 4-5 are next.
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-14 9:28 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -30,8 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. Of the 6 PROBLEMs, the offline halves
   of g6, g7 and g10 are built (Stage 3); every live half, and g2, g4, g9, stays open. 1 POLISH (g8) stays.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** the Conductor's read of `plan.md`'s post-lock change (the one preflight refusal); the live halves of the
-  PROBLEM gaps g2, g4, g6, g7, g9, g10 (Stage 6, or more scene text); the questions at the end of the history.
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-14 9:28 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -231,3 +229,11 @@ FlowWorks water code). Owner, 2026-11-14: "We need to get this going."
 8. **The PROBLEM gaps' live halves** (g2 foreign arrivals, g4 dry-ash grass, g6 heat immunity, g7 venom tended, g9 eviction
    shown, g10 gate off) need scene text in the locked `scenes.json` or a ruling that their offline halves suffice.
 
+### 2026-11-14 9:28 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: every Stage 3 exit test passes (maturation.py next, 2026-11-14 9:27 PM PST)
+- Checks passed: order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle.
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3 ("reconcile") done offline 2026-11-14 12:40 PST. Preflight re-run 2026-11-14 14:32: **0 refusals**, verdict pass (17 before Stage 3; 1 after it, `plan.md`, since re-pinned by his card). Stages 4-5 are next.
+- Was, "Waiting on": - **Waiting on:** the Conductor's read of `plan.md`'s post-lock change (the one preflight refusal); the live halves of the PROBLEM gaps g2, g4, g6, g7, g9, g10 (Stage 6, or more scene text); the questions at the end of the history.
+- Record: `version/stage_record.json`.
