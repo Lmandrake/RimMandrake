@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -197,35 +198,60 @@ namespace RimMandrake.ExplosiveKnockback
             }
             else
             {
+                ThingDef lockerDef = DefDatabase<ThingDef>.GetNamed(locker);
                 foreach (string k in Lockers)
                 {
+                    if (k == "heavy" && !RaiseLockerMass(s, lockerDef, RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit - 1f
+                        - lockerDef.GetStatValueAbstract(StatDefOf.Mass, GenStuff.DefaultStuffFor(lockerDef))))
+                    {
+                        return locker + " has no LWM.DeepStorage.Properties maxTotalMass to raise";
+                    }
                     Thing b = Build(locker, cells[k]);
                     Track(s, k, b);
                     Item(s, "g_" + k, "Gun_Revolver", 1, b.Position);
                 }
-                // the heavy locker: heavy guns until its whole mass is 76-249 kg
-                float total = Mass(s.things["heavy"]);
-                int n = 0;
+                // the heavy locker: guns until its whole mass is 76-249 kg. As shipped LWM caps a weapons locker at 50 kg
+                // (maxTotalMass) and 10 kg a weapon, so 58 kg with its own 8: RaiseLockerMass lifts the 50 the way Deep Storage's
+                // own per-unit settings dialog does, and the guns go in as a player's would, its storage filter set to allow
+                // them (defaultStorageSettings allows nothing; visit 1 read 9.4 kg because every gun was refused) and placed
+                // through LWM's capacity check. RIMMANDRAKE_STAGE_HEAVY_LOCKER_LANE_LWM_CAPS_AT_58KG.
+                Thing heavyBox = s.things["heavy"];
+                StorageSettings heavySettings = (heavyBox as IStoreSettingsParent)?.GetStoreSettings();
                 foreach (ThingDef g in guns)
                 {
-                    if (total >= 76f || n >= 12)
+                    heavySettings?.filter?.SetAllow(g, true);
+                }
+                float total = Mass(heavyBox);
+                int n = 0;
+                for (bool any = true; any && total < 76f && n < 30;)
+                {
+                    any = false;
+                    foreach (ThingDef g in guns)
                     {
-                        break;
-                    }
-                    float gm = g.GetStatValueAbstract(StatDefOf.Mass, GenStuff.DefaultStuffFor(g));
-                    if (total + gm > 249f || !((s.things["heavy"] as IStoreSettingsParent)?.GetStoreSettings()?.AllowedToAccept(g) ?? false))
-                    {
-                        continue;
-                    }
-                    Thing t = ThingMaker.MakeThing(g, GenStuff.DefaultStuffFor(g));
-                    GenPlace.TryPlaceThing(t, s.things["heavy"].Position, Map, ThingPlaceMode.Direct, out Thing placed);
-                    if (placed != null && placed.Position == s.things["heavy"].Position)
-                    {
-                        total += gm;
-                        n++;
+                        if (total >= 76f || n >= 30)
+                        {
+                            break;
+                        }
+                        float gm = g.GetStatValueAbstract(StatDefOf.Mass, GenStuff.DefaultStuffFor(g));
+                        if (total + gm > 249f || !(heavySettings?.AllowedToAccept(g) ?? false))
+                        {
+                            continue;
+                        }
+                        Thing t = ThingMaker.MakeThing(g, GenStuff.DefaultStuffFor(g));
+                        GenPlace.TryPlaceThing(t, heavyBox.Position, Map, ThingPlaceMode.Direct, out Thing placed);
+                        if (placed != null && placed.Spawned && placed.Position == heavyBox.Position)
+                        {
+                            total += gm;
+                            n++;
+                            any = true;
+                        }
+                        else if (!t.Destroyed && !t.Spawned)
+                        {
+                            t.Destroy();
+                        }
                     }
                 }
-                s.numbers["heavyMass"] = Mass(s.things["heavy"]);
+                s.numbers["heavyMass"] = Mass(heavyBox);
                 Track(s, "safe", Build(safe, cells["safe"]));
                 Item(s, "g_safe", "Silver", 50, cells["safe"]);
                 Thing cr = Build(crate, cells["crate"]);
@@ -306,6 +332,25 @@ namespace RimMandrake.ExplosiveKnockback
                 return invalid ? "INVALID " + sc.name + " " + detail : Result(sc, ok, detail);
             };
             return null;
+        }
+
+        /// <summary>Raise LWM's per-unit maxTotalMass on <paramref name="d"/> to <paramref name="kg"/> for this scene (the field
+        /// Deep Storage's per-unit settings dialog edits; restored when the scene ends). Comps spawned after read it; a comp
+        /// that copied it at spawn is caught after Build by the caller's capacity check, not here.</summary>
+        private static bool RaiseLockerMass(Scene s, ThingDef d, float kg)
+        {
+            object props = d.comps?.FirstOrDefault(c => c.GetType().FullName == "LWM.DeepStorage.Properties");
+            FieldInfo f = props?.GetType().GetField("maxTotalMass", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (f == null || f.FieldType != typeof(float))
+            {
+                return false;
+            }
+            float was = (float)f.GetValue(props);
+            Action prev = s.restore;
+            s.restore = () => { f.SetValue(props, was); prev?.Invoke(); };
+            // restore-check: ok s.restore is set on the line above; RM_KnockbackProof.Stage's catch runs it when Build throws
+            f.SetValue(props, Math.Max(was, kg));
+            return true;
         }
 
         private static float Mass(Thing b)
