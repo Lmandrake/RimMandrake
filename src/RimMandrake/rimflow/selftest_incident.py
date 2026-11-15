@@ -34,6 +34,18 @@ os.makedirs(os.environ["RM_OPS_WATCH_DIR"])
 FAILS = []
 H, M = 3600, 60
 T0 = float(int(time.time()))
+# The shipped alarm_routes.json numbers are the owner's to tune: SHIPPED gets one sanity check, and every case runs
+# on a copy whose policy numbers are pinned to the minutes these cases are written in (RIMFLOW_ROUTES, read by
+# incident.load_table and so by dispatcher.tick), so a changed knob never turns a case red
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS).
+SHIPPED = IN.load_table(IN.ROUTES)
+PINNED_POLICY = dict(ack_within_min=30, recover_min=60, sustain_min=60, event_quiet_min=420, relapse_h=6, tame_relapses=2,
+                     tame_window_h=24, min_step_min=15, status_max_age_min=45, runs_per_hour=2, owner_revisit_min=240,
+                     revisit_batch_min=30, revisit_quiet_max_min=1440, revisit_clock_slack_min=2,
+                     ladder={"emergency": [45, 60], "distressed": [60, 240]})
+IN.ROUTES = os.path.join(TMP, "alarm_routes.json")
+json.dump(dict(SHIPPED, policy=dict(SHIPPED["policy"], **PINNED_POLICY)), open(IN.ROUTES, "w"))
+os.environ["RIMFLOW_ROUTES"] = IN.ROUTES
 TABLE = IN.load_table()
 RULES = OW.load_rules()
 OPS_LOG = os.path.join(TMP, "ops_conductor.md")      # the rules' own conductor_log lines, counted: not the real log
@@ -55,6 +67,16 @@ def check(name, cond, detail=""):
     print(("PASS " if cond else "FAIL ") + name + ("" if cond else "  %s" % (detail,)))
     if not cond:
         FAILS.append(name)
+
+
+_pol = SHIPPED["policy"]
+check("shipped alarm_routes.json is sane: each ladder ascends, emergency reaches him no later than distressed, "
+      "the ack minute comes before the first rung, positive limits",
+      all(0 < a < b for a, b in _pol["ladder"].values())
+      and _pol["ladder"]["emergency"][1] <= _pol["ladder"]["distressed"][1]
+      and 0 < _pol["ack_within_min"] <= min(v[0] for v in _pol["ladder"].values())
+      and _pol["runs_per_hour"] >= 1 and _pol["min_step_min"] >= 1 and _pol["owner_revisit_min"] >= 1,
+      {k: _pol[k] for k in ("ladder", "ack_within_min", "runs_per_hour", "min_step_min", "owner_revisit_min")})
 
 
 class Rig:
@@ -275,7 +297,7 @@ def test_ring_or_read_is_no_ack():
     try:
         _ring_or_read(r)
     finally:
-        os.environ.pop("RIMFLOW_ROUTES", None)
+        os.environ["RIMFLOW_ROUTES"] = IN.ROUTES      # back to the pinned table
 
 
 def _ring_or_read(r):

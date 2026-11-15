@@ -28,8 +28,15 @@ def check(name, ok, got=None):
             print("    got: %r" % (got,))
 
 
-CFG = RD.load_cfg()
-CFG = dict(CFG, enabled=True, max_live=2, max_launches_per_night=3, sonnet_cap_usd=5, opus_cap_usd=12)
+SHIPPED = RD.load_cfg()
+# The shipped file is the owner's to tune: one sanity check reads it (ranges), and every case below runs on pinned
+# fixture numbers, so a changed knob never turns a case red (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS).
+check("shipped red_dispatch.json is sane: caps and limits positive, opus cap >= sonnet cap, min_tests >= 2",
+      SHIPPED["max_live"] >= 1 and SHIPPED["max_launches_per_night"] >= 1 and SHIPPED["sonnet_cap_usd"] > 0
+      and SHIPPED["opus_cap_usd"] >= SHIPPED["sonnet_cap_usd"] and SHIPPED["opus_if"]["min_tests"] >= 2,
+      {k: SHIPPED[k] for k in ("max_live", "max_launches_per_night", "sonnet_cap_usd", "opus_cap_usd")})
+CFG = dict(SHIPPED, enabled=True, max_live=2, max_launches_per_night=3, sonnet_cap_usd=5, opus_cap_usd=12,
+           detail_lines=60, opus_if=dict(SHIPPED["opus_if"], min_tests=2))
 NOW = 1794740000.0      # 2026-11-15 ~01:33 PST: night 2026-11-14
 
 

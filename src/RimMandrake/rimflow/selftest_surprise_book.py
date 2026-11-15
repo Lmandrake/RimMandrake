@@ -23,6 +23,13 @@ sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import surprise_book as B          # noqa: E402
 
 PASS, FAIL = [], []
+SHIPPED = B.load_rules()
+SHIPPED_PATH = B.RULES
+# The shipped surprise_rules.json is the owner's to tune: one sanity check reads it, and every case below runs on a
+# pinned copy, so a changed number never turns a case red (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS).
+B.RULES = os.path.join(tempfile.mkdtemp(prefix="surprise_rules_"), "surprise_rules.json")
+with open(B.RULES, "w") as _f:
+    json.dump(dict(SHIPPED, retire_after=3, retire_min_sittings=2, retire_again_after_revive=5, sample_per_sitting=1), _f)
 RULES = B.load_rules()
 N, M, K = RULES["retire_after"], RULES["retire_min_sittings"], RULES["retire_again_after_revive"]
 ROT, DESERT = "biome=RM_TheRot", "biome=RM_BlueDesert"
@@ -33,6 +40,12 @@ def ok(name, cond, detail=""):
     (PASS if cond else FAIL).append(name)
     if not cond:
         print("FAIL %s %s" % (name, detail))
+
+
+ok("shipped_rules_sane", SHIPPED["retire_after"] >= 2 and SHIPPED["retire_min_sittings"] >= 1
+   and SHIPPED["retire_min_sittings"] <= SHIPPED["retire_after"] <= SHIPPED["retire_again_after_revive"]
+   and SHIPPED["sample_per_sitting"] >= 1,
+   {k: SHIPPED[k] for k in ("retire_after", "retire_min_sittings", "retire_again_after_revive", "sample_per_sitting")})
 
 
 def fresh():
@@ -420,6 +433,7 @@ with open(os.environ["RM_SURPRISE_BOOK"], "a") as f:
     f.write('{"ts": "z", "event": "retire", "kind": "made_up", "context": "biome=RM_TheRot"}\n')
 ok("check_catches_forged_retire", len(B.check()) == 1, B.check())
 del os.environ["RM_SURPRISE_BOOK"]
+B.RULES = SHIPPED_PATH                                               # the real book, under the real rules
 ok("shipped_book_clean", B.check() == [], B.check())
 
 print("selftest_surprise_book: %d passed, %d failed" % (len(PASS), len(FAIL)))

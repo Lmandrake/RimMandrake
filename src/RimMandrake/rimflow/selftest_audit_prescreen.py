@@ -14,7 +14,15 @@ def ok(name, got, want):
         print("FAIL  %s\n      got  %r\n      want %r" % (name, got, want))
 
 
-R = ap.load_rules()
+SHIPPED = ap.load_rules()
+# The shipped numbers are the owner's to tune: one sanity check reads them, every case runs on pinned ones
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS).
+ok("shipped audit_prescreen_rules.json is sane: calibration_every >= 2, positive thresholds, window 1..max",
+   SHIPPED["calibration_every"] >= 2 and SHIPPED["many_files_threshold"] >= 1 and SHIPPED["short_claim_seconds"] > 0
+   and 0 < SHIPPED["fallback_window_days"] <= SHIPPED["max_window_days"]
+   and all(w > 0 for w in SHIPPED["weights"].values()), True)
+R = dict(SHIPPED, calibration_every=5, many_files_threshold=25, short_claim_seconds=300, fallback_window_days=1,
+         max_window_days=7)
 T0 = "2026-10-27T10:00:00Z"
 since = ap._epoch("2026-10-20T00:00:00Z")
 

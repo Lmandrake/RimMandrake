@@ -831,8 +831,9 @@ def refusals_showcases(repo, root_src, good, flood, tree):
     check("showcases: a rules file with an impossible limit is refused, never a silent pass",
           any("max_overlap in [0, 1)" in e for e in bad), bad)
     real = DS.load_showcase_rules()
-    check("showcases: the real rules file reads, and labels its numbers UNMEASURED",
-          real["max_overlap"] == 0.25 and real["min_new_after_first"] == 3 and "UNMEASURED" in real["status"], real)
+    # a range, not the shipped numbers: the owner tunes them (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+    check("showcases: the real rules file reads, its numbers sane (overlap in [0, 1), new >= 1), labelled UNMEASURED",
+          0 <= real["max_overlap"] < 1 and real["min_new_after_first"] >= 1 and "UNMEASURED" in real["status"], real)
     # interactions stay: the showcase set never replaces a leaf's acceptance scene or an interaction check
     walk_tree = dict(tree, leaves=tree["leaves"] + [{"id": "walk_main", "leaf_kind": "walk",
                                                        "tier_proposed": "quicktest"}])

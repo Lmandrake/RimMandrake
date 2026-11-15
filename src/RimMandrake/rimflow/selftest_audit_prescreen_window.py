@@ -14,6 +14,11 @@ import role_launch as RL                                           # noqa: E402
 from selftest_dispatcher import D, fresh, sched                    # noqa: E402
 
 FAILED = []
+# ap.main reads audit_prescreen_rules.json itself; the cases below are written in a 1-day fallback and a 7-day clamp,
+# so they run on those numbers pinned, never on the owner's shipped ones (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS;
+# selftest_audit_prescreen.py holds the shipped file's sanity check).
+_PINNED = dict(ap.load_rules(), fallback_window_days=1, max_window_days=7)
+ap.load_rules = lambda path=None: json.loads(json.dumps(_PINNED))
 TMP = tempfile.mkdtemp(prefix="selftest_audit_prescreen_window_")
 PAST = os.path.join(TMP, "audits.jsonl")
 open(PAST, "w").close()
