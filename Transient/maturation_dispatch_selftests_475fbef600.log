@@ -1,0 +1,53 @@
+PASS  FlowWorks owes build work (7 bars refused)
+PASS  the brief names every refused bar
+PASS  a blank steward section carries the standing default, never a refusal
+PASS  the brief carries the journal's Waiting on line and each decider that does not run
+PASS  the Conductor's steward_decisions.md replaces the default
+PASS  Pyrelands owes nothing but the advance (ready to advance)
+PASS  Gimme Some Slack owes only a hand step (hand step)
+PASS  no cap refuses and launches nothing
+PASS  a zero cap refuses and launches nothing
+PASS  a negative cap refuses and launches nothing
+PASS  no item refuses
+PASS  a mod at intake refuses
+PASS  a mod with no build work owed refuses
+PASS  the command line without --budget-usd refuses
+PASS  a good launch calls the launcher once
+PASS  the cap, model, item and seat pass through (['launch', '--seat', 'BENCH', '--item', 'RIMMANDRAKE_X_Y_Z_Q', '--brief-file', '/home/mandrake/.seat-tmp/BENCH/maturation_launch_m8w094a6/briefs/FlowWorks-1794703800.md', '--model', 'opus', '--budget-usd', '15'])
+PASS  the brief file is written where MATURATION_BRIEF_DIR says
+PASS  nothing under design/concepts in the repo was written
+ALL PASS
+PASS  one builder launches, on FlowWorks ({'ExplosiveKnockback': 'live', 'FlowWorks': 'launched', 'GimmeSomeSlack': 'hand_step', 'Pyrelands': 'ready', 'Graffiti': 'not_offline', 'PyrelandsMechanics': 'not_offline'})
+PASS  Explosive Knockback has a live run: no second builder
+PASS  Gimme Some Slack owes a hand step: a Needs Conductor line, no launch
+PASS  Pyrelands passes every exit test: 'ready to advance' for the Conductor, never an advance
+PASS  Graffiti (no record, the Designer) and Pyrelands Mechanics (intake) launch nothing
+PASS  the build item is filed once, named by the refused count (['RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT'])
+PASS  the minted item name passes rimflow namecheck
+PASS  the launch carries the 15 USD cap and opus
+PASS  while the run is live, no second launch on FlowWorks
+PASS  the run ended with the same 7 refused: stopped, a Needs Conductor line, no relaunch
+PASS  the next tick still never tries the same refusals again
+PASS  the Conductor's clear lets one launch through
+PASS  the run took the refused bars 7 -> 6: the next builder starts (launched)
+PASS  no cap in the settings: nothing launches (no_cap)
+PASS  a zero cap: nothing launches (no_cap)
+PASS  FlowWorks not on the advancing list: nothing launches (None)
+PASS  two live runs on other advancing mods (max_live 2): nothing launches (slots_full)
+PASS  the Conductor's live builder on Explosive Knockback fills the one slot: nothing launches (slots_full)
+PASS  the stage's dollars past the ceiling: nothing launches (stopped)
+PASS  the account pick holds role launches: nothing launches (account_hold)
+PASS  the step disabled: nothing launches (disabled)
+PASS  a dry pass launches nothing and writes no state
+PASS  a Conductor hold on Stage 3: nothing launches (held)
+PASS  a mod at intake: nothing launches (None)
+PASS  a failed launch gets a Needs Conductor line and no automatic retry
+PASS  a planted idle mod (owed 2 h, nothing on it) reads 120 min idle (120)
+PASS  ops_watch's maturation family reads it ({'v': 120, 'm': 'MEASURED', 'unit': 'min', 'x': {'mods': 'GimmeSomeSlack'}})
+PASS  a stale reading is UNMEASURED, never 0
+PASS  one fixed-id alarm over 60 min in ops_watch_rules.json
+PASS  the family is registered in ops_watch
+PASS  a mod first seen owed counts its idle time from its stage's since (500 min)
+PASS  nothing under design/concepts in the repo was written
+ALL PASS
+ALL PASS
