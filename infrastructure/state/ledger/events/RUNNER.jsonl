@@ -7294,3 +7294,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 1 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-15T04:32:01Z","tsn":1794717121754314297}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-15T04:32:07Z","tsn":1794717127128689324}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-15T04:33:04Z","tsn":1794717184248615046}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_EB2A","reason":"steward: lane unowned 31 min (BRAKED)","ts":"2026-11-15T04:43:45Z","tsn":1794717825771371464}
