@@ -405,12 +405,27 @@ def load_validation(mod_dir):
     return suite
 
 
-def keep_modlist():
+def declared_but_missing(environ=None):
+    """The MODCHECK_* names WSLENV declares to cross into this process that this process does not hold. A sender that
+    lists `MODCHECK_KEEP_MODLIST/u` in WSLENV MEANT to pass it; when the variable did not arrive (2026-11-15: a
+    WSLENV=VAR/u hop to python.exe dropped it silently) the run took the normal path and wrote the owner's full list
+    to ModsConfig. Name it instead of falling back."""
+    env = os.environ if environ is None else environ
+    names = [n.split("/", 1)[0] for n in (env.get("WSLENV") or "").split(":") if n]
+    return [n for n in names if n.startswith("MODCHECK_") and n not in env]
+
+
+def keep_modlist(environ=None):
     """MODCHECK_KEEP_MODLIST=1 (set by the testq archmagi lane): the game is ALREADY running on the owner's list, and
     ModsConfig only names the NEXT load, so run() neither swaps to MINIMAL nor composes nor restores it -- the
     owner's ModsConfig is never written, so there is nothing for a stopped run to leave behind
-    (TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP)."""
-    return os.environ.get("MODCHECK_KEEP_MODLIST") == "1"
+    (TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP). Raises when WSLENV declares a MODCHECK_ variable that did not arrive."""
+    missing = declared_but_missing(environ)
+    if missing:
+        raise RuntimeError("WSLENV declares %s but %s not set in this process: the variable was dropped crossing "
+                           "WSL/Windows; refusing to fall back to the normal path (it would rewrite ModsConfig)"
+                           % (", ".join(missing), "it is" if len(missing) == 1 else "they are"))
+    return (os.environ if environ is None else environ).get("MODCHECK_KEEP_MODLIST") == "1"
 
 
 def restore_full():
@@ -518,6 +533,30 @@ def composed_ids(mod_folder):
     return with_own_dependencies(out)
 
 
+def composed_target_dependency_ids(pid, root=None):
+    """The hard dependencies the DEPLOYED composed mod declares: the union of its folded sources' About dependencies,
+    minus the retired (folded / absorbed) ids and its own -- what `union_about` writes into the deployed About.xml.
+    `[]` when `pid` is not the composed mod. The composed mod has no src folder of its name, so reading
+    one About.xml left Baroque Biomes' hard dependency mandrake.rm.luminouspigment out of every folded biome's list."""
+    root = root or ROOT
+    src = os.path.join(root, "src")
+    sys.path.insert(0, _UTILS)
+    import biomes_compose
+    try:
+        manifest = biomes_compose.load_manifest(src)
+        if not manifest or manifest["about"]["packageId"].lower() != pid:
+            return []
+        retired = set(biomes_compose.folded_ids(src)) | {pid}
+        out = []
+        for e in biomes_compose.composed_entries(manifest):
+            for d in mod_dependency_ids(os.path.join(src, biomes_compose.TIER_DIR, e["source"])):
+                if d not in retired and d not in out:
+                    out.append(d)
+        return out
+    except (OSError, RuntimeError, KeyError):
+        return []
+
+
 def with_own_dependencies(ids):
     """`ids` with the hard dependencies of every mod of OURS in it inserted before it, transitively. A tier closure
     member brings its own dependencies: 2026-11-06 a Pyrelands job's closure deployed UtinniPatches without the
@@ -534,7 +573,7 @@ def with_own_dependencies(ids):
             try:
                 deps = mod_dependency_ids(find_mod_dir(name))
             except (RuntimeError, OSError):   # the compose target has no src folder of its name
-                deps = []
+                deps = composed_target_dependency_ids(pid)
             for d in deps:
                 add(d, seen | {pid})
         if pid not in out:
