@@ -351,7 +351,35 @@ def build_stamp(blob):
     return None
 
 
-def plan_deploy(dll, apply_it, allow_removal=False):
+def game_running():
+    """-> True/False from the process list, or None when it cannot be read (then the copy's own refusal decides)."""
+    try:
+        sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils"))
+        import game_instance
+        return bool(game_instance.games())
+    except Exception as e:  # noqa: BLE001 - an unreadable list is UNMEASURED, said aloud, never "no game"
+        print("  game process check UNMEASURED (%s: %s); the replace itself still refuses a mapped DLL"
+              % (type(e).__name__, e))
+        return None
+
+
+def bridge_holder():
+    """-> the seat holding the cross-clone bridge lock, or None when free or unreadable (rimflow's own rule)."""
+    try:
+        sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "rimflow"))
+        import model
+        d = model.read_shared_bridge()
+        return d.get("holder") if d else None
+    except Exception as e:  # noqa: BLE001
+        print("  bridge hold check UNMEASURED (%s: %s)" % (type(e).__name__, e))
+        return None
+
+
+def _my_seat():
+    return (os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT") or "").strip().upper() or None
+
+
+def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
     target = os.path.join(DEPLOY_DIR, DLL_NAME)
     exists = os.path.exists(target)
     ours = open(dll, "rb").read()
@@ -390,12 +418,9 @@ def plan_deploy(dll, apply_it, allow_removal=False):
     elif ours_at and theirs_at and ours_at == theirs_at:
         print("  state: *** DRIFT *** same commit (%s), DIFFERENT BYTES."
               % ours_at[:12])
-        print("         The build is deterministic, so this should be "
-              "impossible. Someone")
-        print("         hand-edited the deployed DLL, or it is from another "
-              "checkout. Investigate")
-        print("         before overwriting -- --apply will destroy whatever "
-              "is there.")
+        print("         One commit builds different bytes when the sources are dirty, --gm differs, or a")
+        print("         reference-dir variable changed; otherwise someone hand-edited the deployed DLL or it")
+        print("         is from another checkout. Investigate before overwriting -- --apply replaces it.")
     else:
         print("  state: differs, would overwrite (no build stamp to compare)")
 
@@ -447,10 +472,32 @@ def plan_deploy(dll, apply_it, allow_removal=False):
 
     if not os.path.isdir(GAME_ROOT):
         sys.exit("game root not found: %s" % GAME_ROOT)
+    if same:
+        print("\nalready deployed: identical bytes, nothing copied.")
+        return True
+    # RIMMANDRAKE_MAKE_COMPANION_DEPLOY_ATOMIC_HELD (x.B1): the game and the bridge hold are checked BEFORE any write
+    if game_running():
+        sys.exit("\nCANNOT DEPLOY WHILE RIMWORLD IS RUNNING (the process list shows it). Nothing was written.")
+    holder = bridge_holder()
+    if holder and holder != _my_seat() and not ignore_hold:
+        sys.exit("\nREFUSING TO DEPLOY: the bridge is held by %s (this seat: %s). Swapping the companion under a\n"
+                 "  held session changes its tools at its next restart. Take the bridge first, or pass\n"
+                 "  --ignore-bridge-hold on purpose." % (holder, _my_seat() or "unset"))
     os.makedirs(DEPLOY_DIR, exist_ok=True)
+    # x.B2/x.B3: write the bytes already read and checked (never a re-read of the path) to a temp file beside the
+    # target, then one atomic replace; any failure leaves the old DLL untouched and removes the temp file.
+    tmp = os.path.join(DEPLOY_DIR, ".%s.deploying.%d" % (DLL_NAME, os.getpid()))
     try:
-        shutil.copy2(dll, target)
+        with open(tmp, "wb") as f:
+            f.write(ours)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, target)
     except OSError as e:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
         # WinError 1224 = "a file with a user-mapped section open". RimWorld has
         # the companion memory-mapped for as long as it runs, so the deploy is
         # not merely ineffective while the game is up -- it is IMPOSSIBLE. Worth
@@ -467,7 +514,15 @@ def plan_deploy(dll, apply_it, allow_removal=False):
                 "companions are\n"
                 "  discovered at RimBridgeServer startup, so they need that "
                 "restart anyway." % DLL_NAME)
-        raise
+        sys.exit("\nDEPLOY FAILED, the old DLL is untouched: %s: %s" % (type(e).__name__, e))
+    import hashlib
+    with open(target, "rb") as f:
+        got = hashlib.sha256(f.read()).hexdigest()
+    want = hashlib.sha256(ours).hexdigest()
+    if got != want:
+        sys.exit("\nDEPLOY READBACK MISMATCH: %s reads sha256 %s, the verified build is %s. Not deployed."
+                 % (target, got[:16], want[:16]))
+    print("  readback sha256 %s matches the verified build" % got[:16])
     print("\ndeployed. RimBridgeServer only discovers companions at startup, so "
           "this does nothing until RimWorld restarts.")
     return True
@@ -520,6 +575,8 @@ def main(argv=None):
                          "already has. Refused by default, because the usual "
                          "cause is a forgotten --gm rather than an intent to "
                          "reduce the companion.")
+    ap.add_argument("--ignore-bridge-hold", action="store_true",
+                    help="deploy although another seat (or the OWNER) holds the bridge. Refused by default.")
     ap.add_argument("--allow-dirty", action="store_true",
                     help="permit --apply from a checkout whose companion sources have uncommitted changes. "
                          "Refused by default: in a shared seat clone those are usually a peer's edits.")
@@ -539,7 +596,7 @@ def main(argv=None):
     verify_src_hash(dll)
     verify_gm_gate(dll, args.gm)
     verify_shared_closures(dll)
-    plan_deploy(dll, args.apply, args.allow_tool_removal)
+    plan_deploy(dll, args.apply, args.allow_tool_removal, args.ignore_bridge_hold)
     return 0
 
 
