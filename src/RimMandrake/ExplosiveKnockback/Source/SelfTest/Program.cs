@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.ExplosiveKnockback;
 
-// Offline kernel tests K-01..K-21 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
+// Offline kernel tests K-01..K-22 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
 internal sealed class Grid : IKbGrid
 {
     public readonly int W, H;
@@ -488,6 +488,41 @@ internal static class Program
                 && !Hk(true, KbKind.Pawn, true, 50f, 0.5f, out _, out _));
             Check("K-21 a max under the min collapses to the min", Hk(true, KbKind.Item, true, 15f, 0.7f, out float dc, out _, 4f, 1f) && dc == 4f, dc.ToString());
             Check("K-21 heavier never passes where lighter hits", Hk(true, KbKind.Item, true, 75f, 0.5f, out _, out _) && Hk(true, KbKind.Item, true, 10.01f, 0.5f, out _, out _));
+        }
+
+        // K-22 the frame-time probe's reading (RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF; leaves frame_time_probe and
+        // barrage_frame_budget): one row per rendered frame, the worst frame is the max (never an average), a paused row
+        // never counts as smooth, and a probe that samples once a second or per tick fails its self-check.
+        {
+            float[] Ms(int n, float v) { var a = new float[n]; for (int i = 0; i < n; i++) a[i] = v; return a; }
+            bool[] Pz(int n, bool v) { var a = new bool[n]; for (int i = 0; i < n; i++) a[i] = v; return a; }
+            int[] Air(int n, int v) { var a = new int[n]; for (int i = 0; i < n; i++) a[i] = v; return a; }
+            float[] ok = Ms(300, 16.7f); ok[120] = 104f;                 // 300 frames at 60 fps, one slept frame
+            int[] air = Air(300, 0); air[150] = 12;
+            KbFrameSummary g = KbFrameStats.Summarize(ok, Pz(300, false), air, 300, 5.10f);
+            Check("K-22 worst frame is the max row, not the mean", g.worstMs == 104f && g.meanMs < 20f, g.worstMs + "/" + g.meanMs);
+            Check("K-22 self-check passes one row per frame with the 100 ms sleep seen", KbFrameStats.SelfCheck(g, 100f, out string why) , why);
+            Check("K-22 rows carry the count of things in the air", g.maxInAir == 12);
+            float[] slow = Ms(5, 1000f);                                  // once a second over the same 5 s, 300 frames rendered
+            KbFrameSummary gs = KbFrameStats.Summarize(slow, Pz(5, false), Air(5, 0), 300, 5.0f);
+            Check("K-22 a once-a-second sampler fails the self-check", !KbFrameStats.SelfCheck(gs, 100f, out string w1), w1);
+            float[] tick = Ms(600, 8.3f);                                 // per tick (two ticks a frame): more rows than frames
+            KbFrameSummary gt = KbFrameStats.Summarize(tick, Pz(600, false), Air(600, 0), 300, 5.0f);
+            Check("K-22 a per-tick recorder fails the self-check", !KbFrameStats.SelfCheck(gt, 100f, out string w2), w2);
+            KbFrameSummary gp = KbFrameStats.Summarize(ok, Pz(300, true), air, 300, 5.10f);
+            Check("K-22 an all-paused run fails the self-check", !KbFrameStats.SelfCheck(gp, 100f, out string w3) && gp.pausedRows == 300, w3);
+            Check("K-22 an all-paused run never passes the budget", !KbFrameStats.WithinBudget(gp, 50f, out _));
+            float[] noSleep = Ms(300, 16.7f);
+            KbFrameSummary gn = KbFrameStats.Summarize(noSleep, Pz(300, false), air, 300, 5.01f);
+            Check("K-22 a probe that missed the slept frame fails the self-check", !KbFrameStats.SelfCheck(gn, 100f, out string w4), w4);
+            Check("K-22 a smooth run passes the 50 ms budget", KbFrameStats.WithinBudget(gn, 50f, out _));
+            float[] stall = Ms(300, 16.7f); stall[200] = 51f;
+            Check("K-22 one 51 ms frame over a smooth average fails the budget",
+                !KbFrameStats.WithinBudget(KbFrameStats.Summarize(stall, Pz(300, false), air, 300, 5.04f), 50f, out _));
+            bool[] half = Pz(300, false); half[200] = true; float[] st2 = Ms(300, 16.7f); st2[200] = 400f;
+            Check("K-22 a paused row's long frame is not the worst (paused rows are reported apart)",
+                KbFrameStats.Summarize(st2, half, air, 300, 5.4f).worstMs == 16.7f && KbFrameStats.Summarize(st2, half, air, 300, 5.4f).pausedRows == 1);
+            Check("K-22 no rows: summary is empty and nothing passes", !KbFrameStats.WithinBudget(KbFrameStats.Summarize(new float[0], new bool[0], new int[0], 0, 0f), 50f, out _));
         }
 
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");

@@ -1,7 +1,7 @@
 {
  "mod": "ExplosiveKnockback",
  "version": "0.1.0",
- "made": "2026-11-14T12:42:19-08:00",
+ "made": "2026-11-14T21:20:27-08:00",
  "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -111,9 +111,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.11,
-    "last": "explosive knockback kernel: 152/152 passed",
-    "at": "2026-11-14T12:42:19-08:00",
+    "seconds": 1.05,
+    "last": "explosive knockback kernel: 164/164 passed",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -132,9 +132,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.04,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.33s total -> OK",
-    "at": "2026-11-14T12:42:19-08:00",
+    "seconds": 2.42,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.26s total -> OK",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -154,9 +154,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.74,
+    "seconds": 1.56,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -174,9 +174,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 34.25,
+    "seconds": 34.7,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -194,9 +194,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.43,
+    "seconds": 8.79,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -216,9 +216,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.24,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.64,
+    "seconds": 3.91,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -257,9 +257,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 5.78,
+    "seconds": 5.94,
     "last": "<unknown>:2342: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "KNOWN RED RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS"
    }
   },
@@ -277,9 +277,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.78,
+    "seconds": 1.85,
     "last": "settings screens selftest: 851/856 ok",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "KNOWN RED RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT"
    }
   },
@@ -297,9 +297,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.05,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -322,9 +322,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.0,
+    "seconds": 1.07,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught | PASS",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -344,9 +344,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.84,
+    "seconds": 0.87,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -367,7 +367,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback gas clumps: PASS (0 faults, 6/6 planted faults caught)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -389,8 +389,32 @@
     "ran": true,
     "rc": 0,
     "seconds": 1.05,
-    "last": "explosive knockback kernel: 152/152 passed",
-    "at": "2026-11-14T12:42:19-08:00",
+    "last": "explosive knockback kernel: 164/164 passed",
+    "at": "2026-11-14T21:20:27-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_STAGE3_SCENES": {
+   "stage": "2",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
+   "item": "RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN",
+   "observes": "the five Stage 3 scenes (hose drop, closed containers, settings sweep, frame probe, barrage) and their control lanes are named and routed, carry their start assertions, set a restore, the sweep list equals the saved keys, and the runner can wait in real time",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+    "design/concepts/ExplosiveKnockback/scenes.json"
+   ],
+   "id": "T_STAGE3_SCENES",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS stage3 scenes: 0 failed",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -410,9 +434,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.13,
+    "seconds": 0.15,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-14T12:42:19-08:00",
+    "at": "2026-11-14T21:20:27-08:00",
     "result": "PASS"
    }
   },
@@ -597,15 +621,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes hose_carry_drop --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes hose_carry_drop,hose_carry_drop_off --ticks 300   (proof build, minimal list + FlowWorks)",
    "why_game": "a colonist mid CarryHoseEnd job is a live job state",
    "why_full_list": null,
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "the carrier is on a real RM_CarryHoseEnd job and the blast is fired when it has walked 4 cells; the takeoff cell is read from the reel 3 ticks after the blast",
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_settings_off": {
@@ -645,15 +669,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_sweep --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_sweep,settings_sweep_throwAnimals,settings_sweep_throwMechanoids,settings_sweep_throwDowned,settings_sweep_throwItems,settings_sweep_throwCorpses,settings_sweep_landingStun,settings_sweep_doorsTakeDamage,settings_sweep_debugDrawVectors,settings_sweep_vanillaCratesClosed,settings_sweep_heavyGoodsMinMass,settings_sweep_heavyGoodsKnock,settings_sweep_flyingGoods,settings_sweep_shoveClosedContainers,settings_sweep_gasChain,settings_sweep_lightMassLimit20,settings_sweep_closedGuard,settings_sweep_fireHalf,settings_sweep_after --ticks 300   (proof build, minimal list + LWM's Deep Storage + the Cauldron and its 3 dependencies, dev mode)",
    "why_game": "THIN after the move: only game-side settings (throwAnimals/Mechanoids/Downed/Items/Corpses, landingStunMin and landingStunMax, doorsTakeDamage, debugDrawVectors, vanillaCratesClosed, heavy threshold, goods in air, closed guard, heavy knock, gas chain, fire at half) and one Settings -> Kernel() read-back per kernel-side setting; the kernel-side lines move to T_SETTINGS_SWEEP_OFFLINE",
    "why_full_list": null,
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "the game-side lanes only (the kernel-side lines are T_SETTINGS_SWEEP_OFFLINE) plus the Settings -> Kernel() read-back of 9 kernel fields and the saved-field equality. Lanes closedGuard and fireHalf answer INVALID: no such Mod Settings field (journal question 10; fire at half is a def-patch value). The heavy-knock lane reads the heavy_hit line, not the stagger length",
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_wall_stop": {
@@ -837,15 +861,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes closed_containers --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes closed_containers,closed_containers_control --ticks 300   (proof build, minimal list + FlowWorks, LWM's Deep Storage, Jawa Armoury Rebalance and its 4 dependencies)",
    "why_game": "real lockers keeping contents and sliding; the hold and shove rules are K-14 offline",
    "why_full_list": null,
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "'slid one cell (action slide)' is read as moved exactly one cell away from the blast; the shipped code journals that move as action thrown (owner 2026-11-12, crates thrown whole), so the word is reported, not judged. Not yet: 'a drawn offset above zero in the thing trace' for a jolt: no thing trace exists and a jolt draws nothing (reported UNMEASURED)",
    "item": "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_heavy_knock": {
@@ -1125,15 +1149,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,frame_probe_selfcheck_paused --ticks 0 --real-seconds 8   (proof build, minimal list)",
    "why_game": "frames exist only in a running game",
    "why_full_list": null,
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "the probe is a proof-build MonoBehaviour; its arithmetic is K-22 offline. Rows go to RM_FrameProbe_<stamp>.csv in the game's data folder",
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_barrage_perf": {
@@ -1149,15 +1173,15 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live barrage_perf   (full list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, the owner's full list on Archmagi)",
    "why_game": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
    "why_full_list": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
-   "entry_exists": false,
-   "partial": null,
+   "entry_exists": true,
+   "partial": "the 40-cell cloud is a radius-3 seed (the seed's own cell count is printed, not asserted); the machine name is printed, not asserted (the bar says Archmagi); a full-list run is asserted as 60 or more active mods",
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry ABSENT in the proof code"
+    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    }
   },
   "sc_walk_raid": {
@@ -1818,12 +1842,14 @@
    "decides": [
     "sc_hose_drop"
    ],
-   "supports": [],
+   "supports": [
+    "T_STAGE3_SCENES"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "wall_stops_dead",
@@ -1989,6 +2015,7 @@
    ],
    "supports": [
     "sc_storeroom_bomb_pit",
+    "T_STAGE3_SCENES",
     "P_container_thrown"
    ],
    "held": [
@@ -2000,7 +2027,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2234,6 +2261,7 @@
    ],
    "supports": [
     "T_SCRIPT",
+    "T_STAGE3_SCENES",
     "P_goods_fly_off"
    ],
    "held": [],
@@ -2242,7 +2270,7 @@
     "T_SETTINGS_SCREEN"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2254,13 +2282,15 @@
     "sc_barrage_perf"
    ],
    "supports": [
-    "sc_frame_probe_check"
+    "sc_frame_probe_check",
+    "T_STAGE3_SCENES",
+    "T_KERNEL"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "frame_time_probe",
@@ -2270,12 +2300,15 @@
    "decides": [
     "sc_frame_probe_check"
    ],
-   "supports": [],
+   "supports": [
+    "T_STAGE3_SCENES",
+    "T_KERNEL"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "walk_storeroom_raid",
@@ -2509,6 +2542,7 @@
    "supports": [
     "T_SCRIPT",
     "T_LINT",
+    "T_STAGE3_SCENES",
     "P_goods_fly_off"
    ],
    "held": [],
@@ -2517,7 +2551,7 @@
     "T_SETTINGS_SCREEN"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2565,12 +2599,14 @@
    "decides": [
     "sc_hose_drop"
    ],
-   "supports": [],
+   "supports": [
+    "T_STAGE3_SCENES"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_proof_scenes",
@@ -2650,6 +2686,7 @@
     "sc_closed_containers"
    ],
    "supports": [
+    "T_STAGE3_SCENES",
     "P_container_thrown"
    ],
    "held": [
@@ -2660,7 +2697,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2673,6 +2710,7 @@
     "sc_closed_containers"
    ],
    "supports": [
+    "T_STAGE3_SCENES",
     "P_container_thrown"
    ],
    "held": [],
@@ -2680,7 +2718,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2728,13 +2766,15 @@
     "sc_barrage_perf"
    ],
    "supports": [
-    "sc_frame_probe_check"
+    "sc_frame_probe_check",
+    "T_STAGE3_SCENES",
+    "T_KERNEL"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "inv_weapon_ext_fields",
@@ -2821,6 +2861,7 @@
    ],
    "supports": [
     "T_SETTINGS_SWEEP_OFFLINE",
+    "T_STAGE3_SCENES",
     "P_heavy_skip",
     "P_items"
    ],
@@ -2829,7 +2870,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {

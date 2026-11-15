@@ -30,6 +30,8 @@ OFF = {
      observes="the clump plan of a lit cloud as pure logic: one burst per clump cell, ordered by distance from the lit edge, a fire not touching the cloud lights nothing, goods within 1.9 cells of a burst moved, people shoved one cell unhurt", reads=[MC]),
  "T_HEAVY_KNOCK_RULE": dict(stage="4-5", file=M + "/selftest_explosiveknockback_kernel.py", new=False, item="RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS",
      observes="the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes", reads=SELFTEST_SRC),
+ "T_STAGE3_SCENES": dict(stage="2", file=M + "/selftest_explosiveknockback_stage3_scenes.py", item="RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN",
+     observes="the five Stage 3 scenes (hose drop, closed containers, settings sweep, frame probe, barrage) and their control lanes are named and routed, carry their start assertions, set a restore, the sweep list equals the saved keys, and the runner can wait in real time", reads=[PROOF, M + "/Source/RM_KnockbackProof_StageThree.cs", MOD, M + "/knockback_runner.py", C + "/scenes.json"]),
  "T_ONLY_EXPLOSIONS_STATIC": dict(stage="2", file=M + "/selftest_explosiveknockback_hook_scope.py", new=False, item="RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS",
      observes="the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched)", reads=[M + "/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs", MC]),
 }
@@ -80,7 +82,7 @@ B = {
  "the_spared": (["T_KERNEL", "sc_spared"], ["T_SETTINGS_SWEEP_OFFLINE"]),
  "heavier_flies_less": (["T_KERNEL", "sc_mass_and_power"], ["T_FUZZ"]),
  "recovery_immunity": (["T_KERNEL", "sc_recovery"], []),
- "hose_drops_at_takeoff": (["sc_hose_drop"], []),
+ "hose_drops_at_takeoff": (["sc_hose_drop"], ["T_STAGE3_SCENES"]),
  "wall_stops_dead": (["T_KERNEL", "sc_wall_stop"], ["T_FUZZ"]),
  "pawn_hits_pawn_stops": (["T_KERNEL", "sc_pawn_hits_pawn"], ["T_FUZZ"]),
  "doors_and_deep_water_stop": (["T_KERNEL", "sc_door_water"], ["T_FUZZ"]),
@@ -88,7 +90,7 @@ B = {
  "goods_arc_spin_rebound": (["T_KERNEL", "sc_storeroom_mortar", "sc_killed_thrown"], ["sc_goods_obstacles", "sc_storeroom_bomb_pit"]),
  "every_good_moves": (["T_KERNEL", "sc_all_fly_no_cap"], ["sc_storeroom_bomb_pit"]),
  "open_shelf_scatters": (["T_CENSUS", "T_KERNEL", "sc_open_storage"], ["sc_storeroom_bomb_pit"]),
- "closed_container_holds": (["T_CENSUS", "T_KERNEL", "sc_closed_containers"], ["sc_storeroom_bomb_pit"]),
+ "closed_container_holds": (["T_CENSUS", "T_KERNEL", "sc_closed_containers"], ["sc_storeroom_bomb_pit", "T_STAGE3_SCENES"]),
  "heavy_stack_knocks": (["T_HEAVY_KNOCK_RULE", "sc_heavy_knock"], ["sc_storeroom_bomb_pit"]),
  "every_harmful_blast_throws": (["T_LINT", "T_KERNEL", "sc_blast_kinds"], ["T_LINT_PLANTED"]),
  "only_explosions_throw": (["T_ONLY_EXPLOSIONS_STATIC", "sc_only_explosions"], []),
@@ -100,9 +102,9 @@ B = {
  "pit_goods_fetched": (["sc_pit_fetch"], []),
  "no_teleport": (["sc_storeroom_mortar", "sc_gas_chain"], []),
  "no_careless_fall": (["sc_no_careless_fall"], []),
- "settings_scale_and_switch": (["T_SETTINGS_SWEEP_OFFLINE", "T_SETTINGS_SCREEN", "sc_settings_sweep", "sc_settings_off"], ["T_SCRIPT"]),
- "barrage_frame_budget": (["sc_barrage_perf"], ["sc_frame_probe_check"]),
- "frame_time_probe": (["sc_frame_probe_check"], []),
+ "settings_scale_and_switch": (["T_SETTINGS_SWEEP_OFFLINE", "T_SETTINGS_SCREEN", "sc_settings_sweep", "sc_settings_off"], ["T_SCRIPT", "T_STAGE3_SCENES"]),
+ "barrage_frame_budget": (["sc_barrage_perf"], ["sc_frame_probe_check", "T_STAGE3_SCENES", "T_KERNEL"]),
+ "frame_time_probe": (["sc_frame_probe_check"], ["T_STAGE3_SCENES", "T_KERNEL"]),
  "walk_storeroom_raid": (["sc_walk_raid", "LOOK_STAGE8"], ["sc_storeroom_bomb_pit"]),
  # record.json inventory rows
  "inv_kernel": (["T_KERNEL", "T_FUZZ"], ["T_LINT"]),
@@ -115,23 +117,23 @@ B = {
  "inv_shield": (["T_KERNEL", "sc_shield"], []),
  "inv_recovery": (["T_KERNEL", "sc_recovery"], []),
  "inv_caps": (["T_KERNEL", "T_SETTINGS_SWEEP_OFFLINE", "sc_all_fly_no_cap"], []),
- "inv_settings": (["T_SETTINGS_SWEEP_OFFLINE", "T_SETTINGS_SCREEN", "sc_settings_sweep", "sc_settings_off"], ["T_SCRIPT", "T_LINT"]),
+ "inv_settings": (["T_SETTINGS_SWEEP_OFFLINE", "T_SETTINGS_SCREEN", "sc_settings_sweep", "sc_settings_off"], ["T_SCRIPT", "T_LINT", "T_STAGE3_SCENES"]),
  "inv_pits_receive": (["T_FW_COVER", "sc_pit_fall", "sc_cover_breaks"], ["sc_pit_enemy"]),
  "inv_pit_floor_haul": (["sc_pit_fetch"], []),
- "inv_hose_drop": (["sc_hose_drop"], []),
+ "inv_hose_drop": (["sc_hose_drop"], ["T_STAGE3_SCENES"]),
  "inv_proof_scenes": (["T_SCRIPT", "T_PROOFGATE", "T_RESTORE"], []),
  "inv_gas_chain": (["T_GAS_CLUMP_ORDER", "sc_gas_chain"], ["sc_gas_shove_into_pit"]),
  "inv_goods_fly": (["T_KERNEL", "sc_storeroom_mortar"], ["sc_goods_obstacles"]),
- "inv_closed_guard": (["T_CENSUS", "T_KERNEL", "sc_closed_containers"], []),
- "inv_container_shove": (["T_KERNEL", "sc_closed_containers"], []),
+ "inv_closed_guard": (["T_CENSUS", "T_KERNEL", "sc_closed_containers"], ["T_STAGE3_SCENES"]),
+ "inv_container_shove": (["T_KERNEL", "sc_closed_containers"], ["T_STAGE3_SCENES"]),
  "inv_heavy_knock": (["T_HEAVY_KNOCK_RULE", "sc_heavy_knock"], []),
  "inv_gas_tags": (["T_GAS_TAG_CENSUS", "sc_cauldron_gas"], []),
- "inv_perf_all_fly": (["sc_barrage_perf"], ["sc_frame_probe_check"]),
+ "inv_perf_all_fly": (["sc_barrage_perf"], ["sc_frame_probe_check", "T_STAGE3_SCENES", "T_KERNEL"]),
  "inv_weapon_ext_fields": (["T_KERNEL", "T_LINT", "sc_lookup"], []),
  "inv_killed_corpse": (["sc_killed_thrown"], []),
  "inv_pit_floor_goods_stay": (["sc_spared"], []),
  "inv_big_corpse_spared": (["T_KERNEL", "sc_spared"], []),
- "inv_mass_limit_skip": (["T_KERNEL", "sc_settings_sweep"], ["T_SETTINGS_SWEEP_OFFLINE"]),
+ "inv_mass_limit_skip": (["T_KERNEL", "sc_settings_sweep"], ["T_SETTINGS_SWEEP_OFFLINE", "T_STAGE3_SCENES"]),
  "inv_too_weak_skip": (["T_KERNEL", "sc_all_fly_no_cap"], []),
  "inv_creature_mass_limit": (["T_KERNEL", "sc_mass_and_power"], ["T_SETTINGS_SWEEP_OFFLINE"]),
  "inv_blast_power_damage": (["T_KERNEL", "sc_mass_and_power"], ["T_SETTINGS_SWEEP_OFFLINE"]),
@@ -196,9 +198,22 @@ def main():
         "blast_kinds": "frag, BombSuper, Flame against the Bomb-swapped shell, and EMP, smoke, stun, extinguish, toxic gas. Not yet: the Outer Rim sonic and plasma lanes, the modded damaging explosion, the unpatched-percent-0 control",
         "pawn_arc": "holder and in-between drawn position, landing on the planned cell with a land_on_pawn line naming the walker, stun end within landingStunMax, a haul job of the same stack after, the teleport control. Not yet: 'the stack it dropped at takeoff' (the flyer carries the stack: flyWithCarriedThing; a journal question)",
         "pit_goods_fetch": "the ladder is found by trying placements until FlowWorks reads it lowered (INVALID if none); 'the hauler used the ladder' is read as the hauler standing on a pit cell at a 30-tick sample",
+        "hose_carry_drop": "the carrier is on a real RM_CarryHoseEnd job and the blast is fired when it has walked 4 cells; the takeoff cell is read from the reel 3 ticks after the blast",
+        "closed_containers": "'slid one cell (action slide)' is read as moved exactly one cell away from the blast; the shipped code journals that move as action thrown (owner 2026-11-12, crates thrown whole), so the word is reported, not judged. Not yet: 'a drawn offset above zero in the thing trace' for a jolt: no thing trace exists and a jolt draws nothing (reported UNMEASURED)",
+        "settings_sweep": "the game-side lanes only (the kernel-side lines are T_SETTINGS_SWEEP_OFFLINE) plus the Settings -> Kernel() read-back of 9 kernel fields and the saved-field equality. Lanes closedGuard and fireHalf answer INVALID: no such Mod Settings field (journal question 10; fire at half is a def-patch value). The heavy-knock lane reads the heavy_hit line, not the stagger length",
+        "frame_probe_selfcheck": "the probe is a proof-build MonoBehaviour; its arithmetic is K-22 offline. Rows go to RM_FrameProbe_<stamp>.csv in the game's data folder",
+        "barrage_perf": "the 40-cell cloud is a radius-3 seed (the seed's own cell count is printed, not asserted); the machine name is printed, not asserted (the bar says Archmagi); a full-list run is asserted as 60 or more active mods",
         "open_storage": "four open furniture defs, the guard's class read, no in_storage line. The floor control's cells are printed, not compared",
     }
     TICKS = {"no_cross_ordered": 2000, "pawn_arc": 900, "pit_goods_fetch": 60000}
+    R = "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes "
+    CMD = {  # Stage 3 eleven bars (RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN): each scene with its control lane
+        "hose_carry_drop": R + "hose_carry_drop,hose_carry_drop_off --ticks 300   (proof build, minimal list + FlowWorks)",
+        "closed_containers": R + "closed_containers,closed_containers_control --ticks 300   (proof build, minimal list + FlowWorks, LWM's Deep Storage, Jawa Armoury Rebalance and its 4 dependencies)",
+        "settings_sweep": R + "settings_sweep," + ",".join("settings_sweep_" + l for l in ("throwAnimals", "throwMechanoids", "throwDowned", "throwItems", "throwCorpses", "landingStun", "doorsTakeDamage", "debugDrawVectors", "vanillaCratesClosed", "heavyGoodsMinMass", "heavyGoodsKnock", "flyingGoods", "shoveClosedContainers", "gasChain", "lightMassLimit20", "closedGuard", "fireHalf")) + ",settings_sweep_after --ticks 300   (proof build, minimal list + LWM's Deep Storage + the Cauldron and its 3 dependencies, dev mode)",
+        "frame_probe_selfcheck": R + "frame_probe_selfcheck,frame_probe_selfcheck_paused --ticks 0 --real-seconds 8   (proof build, minimal list)",
+        "barrage_perf": R + "frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, the owner's full list on Archmagi)",
+    }
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     for tid, t in OFF.items():
         t = dict(t, id=tid, kind="offline", command="python3 " + t["file"].split(" ")[0])
@@ -214,7 +229,7 @@ def main():
         full = sid in FULL
         tests[sid] = dict(id=sid, kind="live_full" if full else "live_minimal", stage="6", file=f, entry=meth,
             observes=s.get("expect", "")[:240], reads=[f, C + "/scenes.json", MC, MATH],
-            command=("python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes %s --ticks %d   (proof build, minimal list)" % (meth, TICKS.get(meth, 300))) if not full else "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live %s   (full list)" % meth,
+            command=CMD[meth] if meth in CMD else ("python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes %s --ticks %d   (proof build, minimal list)" % (meth, TICKS.get(meth, 300))) if not full else "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live %s   (full list)" % meth,
             why_game=WHY_GAME.get(sid, "UNSTATED"), why_full_list=FULL.get(sid), entry_exists=exists, partial=PARTIAL.get(meth) if exists else None, item=s.get("entry_point_item"),
             runs_today=dict(ran=False, why="live: this pilot is offline only; entry %s in the proof code" % ("EXISTS" if exists else "ABSENT")))
     for nm, bl in OLD.items():

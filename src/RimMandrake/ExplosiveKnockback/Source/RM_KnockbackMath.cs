@@ -615,4 +615,56 @@ namespace RimMandrake.ExplosiveKnockback
             launchedCur[explosionId] = n + 1;
         }
     }
+
+    /// <summary>The frame-time probe's reading (RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF; leaves frame_time_probe and
+    /// barrage_frame_budget). Pure, so the selftest (K-22) proves the reading the proof scenes use.</summary>
+    public struct KbFrameSummary
+    {
+        public int rows, pausedRows, framesElapsed, maxInAir;
+        public float worstMs, meanMs, sumMs, wallSeconds;
+    }
+
+    public static class KbFrameStats
+    {
+        /// <summary>ms[i], paused[i], inAir[i]: one row per probe sample. framesElapsed: the engine's frame count over the
+        /// run; wallSeconds: real time over the run. The worst frame is the MAX of the unpaused rows, never a mean.</summary>
+        public static KbFrameSummary Summarize(float[] ms, bool[] paused, int[] inAir, int framesElapsed, float wallSeconds)
+        {
+            var g = new KbFrameSummary { rows = ms.Length, framesElapsed = framesElapsed, wallSeconds = wallSeconds };
+            int live = 0;
+            for (int i = 0; i < ms.Length; i++)
+            {
+                g.sumMs += ms[i];
+                if (inAir[i] > g.maxInAir) g.maxInAir = inAir[i];
+                if (paused[i]) { g.pausedRows++; continue; }
+                live++;
+                if (ms[i] > g.worstMs) g.worstMs = ms[i];
+            }
+            g.meanMs = ms.Length > 0 ? g.sumMs / ms.Length : 0f;
+            return g;
+        }
+
+        /// <summary>The probe's own check: one row per rendered frame (within 5%), its rows add up to the real time (within
+        /// 10%), the run was not paused (at least 90% unpaused rows), and a deliberate sleep of sleptMs shows as a row.</summary>
+        public static bool SelfCheck(KbFrameSummary g, float sleptMs, out string why)
+        {
+            why = null;
+            if (g.rows == 0) why = "no rows";
+            else if (g.rows - g.pausedRows < 0.9f * g.rows) why = "paused: " + g.pausedRows + " of " + g.rows + " rows";
+            else if (Math.Abs(g.rows - g.framesElapsed) > 0.05f * Math.Max(1, g.framesElapsed)) why = "rows " + g.rows + " vs frames " + g.framesElapsed;
+            else if (Math.Abs(g.sumMs / 1000f - g.wallSeconds) > 0.1f * Math.Max(0.001f, g.wallSeconds)) why = "rows sum " + g.sumMs / 1000f + " s vs wall " + g.wallSeconds + " s";
+            else if (g.worstMs < sleptMs) why = "the slept frame is missing: worst " + g.worstMs + " ms";
+            return why == null;
+        }
+
+        /// <summary>The barrage bar: the worst unpaused frame at most budgetMs, on a run that was not paused.</summary>
+        public static bool WithinBudget(KbFrameSummary g, float budgetMs, out string why)
+        {
+            why = null;
+            if (g.rows == 0) why = "no rows";
+            else if (g.rows - g.pausedRows < 0.9f * g.rows) why = "paused: " + g.pausedRows + " of " + g.rows + " rows";
+            else if (g.worstMs > budgetMs) why = "worst frame " + g.worstMs + " ms over " + budgetMs;
+            return why == null;
+        }
+    }
 }

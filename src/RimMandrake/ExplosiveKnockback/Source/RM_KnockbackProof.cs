@@ -20,7 +20,7 @@ namespace RimMandrake.ExplosiveKnockback
     ///   Journal("all"|"n")  the last n journal lines; Clear("x") empties it; Settings("field=value") pokes a setting.
     /// SCRATCH MAPS ONLY: Stage destroys everything in its patch.
     /// </summary>
-    public static class RM_KnockbackProof
+    public static partial class RM_KnockbackProof
     {
         private sealed class Scene
         {
@@ -56,6 +56,10 @@ namespace RimMandrake.ExplosiveKnockback
             // 2026-11-14 Stage 3 reconcile (Maturation Pipeline pilot): the locked scenes.json entry points. NOT YET RUN LIVE.
             "pawn_hits_pawn", "only_explosions", "open_storage", "no_cross_ordered", "spared_states", "blast_kinds",
             "goods_fly_wild", "gas_chain", "gas_census", "pawn_arc", "pit_goods_fetch",
+            // 2026-11-14 Stage 3, the eleven bars (RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN; RM_KnockbackProof_StageThree.cs),
+            // each with its control lane. settings_sweep_<lane> is any lane of SweepLanes. NOT YET RUN LIVE.
+            "hose_carry_drop", "hose_carry_drop_off", "closed_containers", "closed_containers_control", "settings_sweep",
+            "settings_sweep_after", "frame_probe_selfcheck", "frame_probe_selfcheck_paused", "barrage_perf", "barrage_perf_off",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -2185,6 +2189,26 @@ namespace RimMandrake.ExplosiveKnockback
                 case "mass_and_power_250":
                 case "mass_and_power_250_x2":
                     return MassAndPower(s);
+
+                case "hose_carry_drop":
+                case "hose_carry_drop_off":
+                    return HoseCarryDrop(s);
+                case "closed_containers":
+                case "closed_containers_control":
+                    return ClosedContainers(s);
+                case "frame_probe_selfcheck":
+                case "frame_probe_selfcheck_paused":
+                    return FrameProbeSelfCheck(s);
+                case "barrage_perf":
+                case "barrage_perf_off":
+                    return BarragePerf(s);
+                case "settings_sweep":
+                case "settings_sweep_after":
+                    return SettingsSweep(s);
+            }
+            if (s.name.StartsWith("settings_sweep_"))   // one lane per SweepLanes key
+            {
+                return SettingsSweep(s);
             }
             return "unknown scene " + s.name;
         }

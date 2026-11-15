@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """knockback_runner.py - in-game runner scenes for Explosive Knockback (design §8.2).
 
-    python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py [--scenes a,b,...] [--ticks 300]
+    python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py [--scenes a,b,...] [--ticks 300] [--real-seconds 0]
 
 Needs python.exe (the bridge binds Windows loopback), a running game with a SCRATCH map (each scene clears a 15x15
 patch), and the mod loaded (FlowWorks too, for the pit scenes). Per scene: jawa/static_call
@@ -15,6 +15,7 @@ import datetime
 import json
 import os
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -79,6 +80,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--scenes", default="")
     ap.add_argument("--ticks", type=int, default=300)
+    ap.add_argument("--real-seconds", type=float, default=0.0,
+                    help="wait this long in real time after staging (frame-time scenes run unpaused: use --ticks 0)")
     ap.add_argument("--out", default=os.path.join(REPO, "Transient", "explosive_knockback"))
     a = ap.parse_args()
     from rimbridge_client import RimBridge, resolve_endpoint
@@ -111,7 +114,10 @@ def main():
                     rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
                     print("%-16s %s %s" % (name, st, detail))
                     continue
-                b.call("rimworld/step_game_ticks", {"ticks": a.ticks})
+                if a.ticks > 0:
+                    b.call("rimworld/step_game_ticks", {"ticks": a.ticks})
+                if a.real_seconds > 0:
+                    time.sleep(a.real_seconds)
                 st, _, detail = parse_verdict(call(b, "Verdict", name))
                 rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
                 print("%-16s %s %s" % (name, st, detail))

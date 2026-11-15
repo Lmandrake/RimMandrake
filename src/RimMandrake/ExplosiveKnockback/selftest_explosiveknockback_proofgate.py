@@ -27,7 +27,7 @@ sys.path.insert(0, UTILS)
 from proof_build_gate import is_release_answer  # noqa: E402
 
 RELEASE = os.path.join(HERE, "Assemblies", "RimMandrakeExplosiveKnockback.dll")
-PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface"]
+PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface", "RM_FrameProbe"]
 SANITY = ["RM_MapComponent_Knockback", "RM_ThingFlyer_Knockback"]
 
 

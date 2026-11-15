@@ -642,6 +642,9 @@ namespace RimMandrake.ExplosiveKnockback
             if (RimMandrakeExplosiveKnockbackSettings.debugDrawVectors && Prefs.DevMode)
             {
                 map.debugDrawer.FlashLine(start, dest, 120, SimpleColor.Orange);
+#if RM_PROOFS
+                RM_KnockbackProof.VectorDraws++;
+#endif
             }
             if (pawn != null)
             {

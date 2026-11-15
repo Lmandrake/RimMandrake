@@ -216,6 +216,37 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 - Preflight, measured: 6 refusals before (14:45 run) and 6 after (14:57 run), all C6 (built tests not yet run, such as
   sc_hose_drop); C12, the locked-file pins, passes after the re-pin. Copies: `D:\ClaudeWork\rimmandrake\helpers\ek_owner_answers_20261114\`.
 
+### 2026-11-14 9:21 PM PST, Stage 3: the eleven bars made runnable (rm-builder, detached, offline only)
+
+- **Item** RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN. **Bars with every deciding check runnable: 48 of 59
+  before, 58 of 59 after**, measured by `make_test_table.py` and `maturation.py next`, which no longer refuses
+  `every_bar_has_a_check_that_runs`. The one left is `walk_storeroom_raid` (its scene `validation.py::walk_storeroom_raid`
+  is not written; the separate `walk_bars_confirmed` clause asks the steward about it). Preflight: 6 refusals before, 1
+  after (that same walk scene).
+- **Built, compile-checked, UNRUN (Stage 6)**, in `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs`,
+  each with its control lane: `hose_carry_drop` (+`_off`), `closed_containers` (+`_control`), `settings_sweep` (+ one
+  `settings_sweep_<lane>` per game-side setting, + `_after`), `frame_probe_selfcheck` (+`_paused`), `barrage_perf`
+  (+`_off`). The frame-time probe (leaf `frame_time_probe`) is a proof-build MonoBehaviour writing one row per frame to
+  `RM_FrameProbe_<stamp>.csv`. The commands, with their lanes and mod lists, are in `version/test_table.json`.
+  `knockback_runner.py` gained `--real-seconds` (frame scenes run unpaused; ticks stepped inside one frame are not frames).
+- **Offline tests, each watched red first:** K-22 in `Source/SelfTest/Program.cs` (the probe's reading as a pure kernel
+  function `KbFrameStats`: red on the missing function, then 164/164; a planted rows-vs-frames bypass and a planted
+  paused-row leak each went red); `selftest_explosiveknockback_stage3_scenes.py` (29 fails on the base commit, 0 now; 3/3
+  planted faults caught: a control lane dropped from SceneNames, a missing restore, a sweep field dropped).
+- **Mod behaviour:** none changed for players. Proof build only: a debug-vector draw counter in the map component (the
+  sweep's debugDrawVectors lane reads it). Release DLL rebuilt with its `.srchash` (the kernel file gained `KbFrameStats`).
+- **Tests run:** kernel 164/164, proofgate PASS (proof build compiles; release DLL carries no proof names, RM_FrameProbe
+  added to that list), script mock 41/41, settings sweep offline PASS, lint planted 20/20, stage3 scenes PASS; restore
+  check stays KNOWN RED with the same 12 pre-existing hits in `RM_KnockbackProof.cs` (12 on the base too), none in the
+  new file.
+- **Built around, not fixed (bar text is locked):** questions 10, 12, 13 and 14 below.
+- **Cost:** about $6.5 of model spend, about 75 minutes wall, 0 of his minutes.
+- **Boring enough to automate:** remaking the table and the preflight after a batch; compiling the proof build; the
+  scene static check (names, routing, restores) generalises to every mod's proof file.
+- **Needed judgment:** staging a real hose-carry job and firing on the walk rather than at Stage; deciding that the sweep's
+  game-side half is lanes compared against the default run; spotting that the locked closed-container text says slide
+  where the shipped code (on his 2026-11-12 words) throws.
+
 ### Questions (open)
 
 1. ~~g4~~ settled 2026-11-14 by the Conductor's decision: a test-only proof hook pins the colonist at 64 to 76 kg (Stage 3).
@@ -225,3 +256,13 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 11. **One walk row contradicts a bar**: `flying_goods.off_is_the_instant_move` says goods in the air off means an
     instant move, while the bar says goods are then not thrown at all (`version/bar_lists_map.json`). Stage 6 reports
     against the 59, but `validation.py` still reads the walk, so the row would report against the bar.
+12. **sc_closed_containers says a container "slid one cell (action slide)"; the shipped code throws it whole** (on his
+    2026-11-12 words, "the whole crate/chest would go flying a bit", item RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE),
+    journaled as action `thrown`, possibly more than one cell. The scene checks "moved exactly one cell away" and reports the
+    action word; Stage 6 may fail it on distance. Which is right for 0.1.0: the bar's one-cell slide, or the throw?
+13. **The same scene asks for "a drawn offset above zero in the thing trace" for each jolt**, but no thing trace exists and
+    a jolt draws nothing (`RM_MapComponent_Knockback.cs` journals `jolt` only). Reported UNMEASURED; building it is a
+    visible behaviour plus an instrument, so it is the Conductor's call whether 0.1.0 owes it.
+14. **sc_settings_sweep switches "fire at half" off, but no Mod Settings field does that**; the same scene's expect says the
+    fire half is a def-patch value proven in sc_blast_kinds. The `fireHalf` lane answers INVALID with that reason, like
+    `closedGuard` (question 10).
