@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-15T02:14:08-08:00",
-  "since_from": "advance by CONDUCTOR",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-15T08:34:08-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -67,6 +67,22 @@
         "version",
         "hold",
         "steward_confirms"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-15T08:34:08-08:00",
+      "by": "BENCH",
+      "why": "steward run, visit 1 exit not met: 4 FAIL (sc_pit_fetch; gas chain sc_gas_chain/sc_cauldron_gas/P_gas_clumps, one scene) and 5 UNMEASURED (sc_storeroom_bomb_pit, sc_gas_shove_into_pit, sc_goods_obstacles, sc_walk_raid: no entry; sc_closed_containers heavy lane unstageable); not every failure is a blind-lane check (pit_fetch and the gas chain are MOD or Cauldron behaviour), so the road back is offline_build; 8 items filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md exit block (47 pass, 4 fail, 5 unmeasured of 56, exit_met false) and evidence; verdict: road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],

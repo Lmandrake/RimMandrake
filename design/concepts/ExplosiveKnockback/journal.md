@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 2:14 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-15 8:34 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:14 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 8:34 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -294,4 +294,13 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 - Steward confirms: Read the cycle 2 judge's report and the neutral fixer's: both offline bars green on real reruns (5 deciders), all 10 Problems fixed and shown red at each fix's parent and green at the fix by the fixer's own runs, 29 of 29 planted faults caught, no assertion weakened. The storeroom-mortar criterion was repaired by the neutral fixer (refusal record, re-pin). Held for the owner: the container bar's wording in tree.json and sheet.md (RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING). Every live test is UNRUN and owed to Stage 6.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 12:34 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 12:34 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-15 8:34 AM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: steward run, visit 1 exit not met: 4 FAIL (sc_pit_fetch; gas chain sc_gas_chain/sc_cauldron_gas/P_gas_clumps, one scene) and 5 UNMEASURED (sc_storeroom_bomb_pit, sc_gas_shove_into_pit, sc_goods_obstacles, sc_walk_raid: no entry; sc_closed_containers heavy lane unstageable); not every failure is a blind-lane check (pit_fetch and the gas chain are MOD or Cauldron behaviour), so the road back is offline_build; 8 items filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES
+- Checks passed: order, by, version, hold.
+- Steward confirms: read design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md exit block (47 pass, 4 fail, 5 unmeasured of 56, exit_met false) and evidence; verdict: road back to offline_build
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 2:14 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:14 AM PST).
 - Record: `version/stage_record.json`.
