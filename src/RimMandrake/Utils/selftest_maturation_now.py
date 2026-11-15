@@ -426,6 +426,42 @@ def p12_phone():
         shutil.rmtree(out, ignore_errors=True)
 
 
+def p13_versionless():
+    """RIMMANDRAKE_SHOW_VERSIONLESS_MOD_GRAFFITI_ON_MAP: a folder with a stage record but no VERSION.json is on the map."""
+    t = temp_tree()
+    try:
+        cr = os.path.join(t, "design", "concepts")
+        def plant(name, stage=None, locked=False):
+            os.makedirs(os.path.join(cr, name))
+            if stage is not None:
+                json.dump({"stage": stage, "status": "locked" if locked else "waiting_owner", "history": []},
+                          open(os.path.join(cr, name, "stage.json"), "w"))
+        plant("VlLocked", 5, True)
+        plant("VlOpen", 1, False)
+        plant("VlBare")
+        d, page = data_of(t), page_of(t)
+        base = len(d["mods"])
+        for nm, label in (("VlLocked", "Vl Locked"), ("VlOpen", "Vl Open")):
+            m = mod_of(d, nm)
+            check("13 %s is on the map data" % nm, m is not None)
+            check("13 %s stands at the Designer column on the map" % nm, m is not None and m["column"] == "1", repr((m or {}).get("column")))
+            card = card_of(page, label)
+            check("13 %s has a card saying no Design Version named yet" % nm, "no Design Version named yet" in card, card[:120])
+            check("13 %s invents no version number" % nm, m is not None and m["version"] == "UNMEASURED")
+            check("13 %s has a table row" % nm, re.search(r"^\|\s*%s\s*\|[^\n]*no Design Version named yet" % label, page, re.M) is not None)
+        check("13 the locked one says the lock is the owner's", "owner" in card_of(page, "Vl Locked").lower())
+        check("13 the unlocked one does not claim a lock", "lock is the owner" not in card_of(page, "Vl Open").lower())
+        check("13 versionless count in the chip", "%d mods in the pipeline" % len([x for x in d["mods"] if not x["held"]]) in page)
+        check("13 no stage record: not a mod, stays in the list", mod_of(d, "VlBare") is None and
+              "VlBare" in page and "not placed on the map" in page)
+        # a normal versioned mod is unchanged
+        ek = mod_of(d, "ExplosiveKnockback")
+        check("13 a versioned mod keeps its version and has no versionless words",
+              ek is not None and ek["version"] != "UNMEASURED" and "no Design Version named yet" not in card_of(page, "Explosive Knockback"))
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -445,6 +481,7 @@ def main():
     p10_reactions()
     p11_unmeasured(page_of(REPO))
     p12_phone()
+    p13_versionless()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

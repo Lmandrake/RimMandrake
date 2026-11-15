@@ -236,6 +236,7 @@ def read_mod(root, folder, names):
     m["bars_total"], m["bars_met"] = num(v.get("bars_total")), num(v.get("bars_met"))
     m["judge_rounds"], m["tokens"] = num(v.get("judge_rounds")), num(v.get("tokens_spent"))
     m["locked_on"] = v.get("locked_on") or ""
+    m["versionless"] = not os.path.exists(os.path.join(c, "version", "VERSION.json"))
     # the Designer record
     if s is None:
         m["designer_step"], m["designer_status"], m["designer_why"] = UNM, UNM, ""
@@ -284,6 +285,11 @@ def read_mod(root, folder, names):
         col, door = stage_from_text(j["stage"])
         m["column"], m["at_door"] = col or UNM, door
         m["stage_text"], m["stage_from"] = j["stage"], "journal"
+    elif m["versionless"]:
+        # no Design Version named: it stands at its Designer step, from stage.json
+        m["column"], m["at_door"] = "1", False
+        m["stage_text"] = "Designer step %s %s, status %s" % (m["designer_step"], m.get("designer_step_name", UNM), m["designer_status"])
+        m["stage_from"] = "Designer record (stage.json); no Design Version named yet"
     elif m["state"].startswith("locked"):
         m["column"], m["at_door"] = "2", True
         m["stage_text"] = "at the door of Stage 2: the version is locked, which is Stage 1's exit"
@@ -296,7 +302,11 @@ def read_mod(root, folder, names):
         m["column"], m["stage_text"], m["stage_from"] = UNM, UNM, "nothing on disk names it"
     if m["state"].lower().startswith("not started"):
         m["held"] = True
+    m["owner_lock"] = bool(m["versionless"] and str(m["designer_status"]).lower().startswith("locked"))
     m["waits_on"] = j.get("waits_on") or (m["state"] if m["held"] else UNM)
+    if m["versionless"]:
+        m["waits_on"] = ("the owner's lock: the Designer tree is locked, no Design Version is named yet" if m["owner_lock"]
+                         else (m["designer_why"] or "the Designer; no Design Version named yet"))
     m["next"] = j.get("next") or UNM
     m["questions"] = j.get("questions") or ""
     m["journal_version"] = j.get("version") or ""
@@ -814,7 +824,10 @@ def gather(root, live=True):
         folders = sorted(f for f in os.listdir(croot) if not f.startswith("_") and os.path.isdir(os.path.join(croot, f)))
     except OSError:
         folders = []
-    versioned = [f for f in folders if os.path.exists(os.path.join(croot, f, "version", "VERSION.json"))]
+    # RIMMANDRAKE_SHOW_VERSIONLESS_MOD_GRAFFITI_ON_MAP: a readable Designer record (stage.json) puts a mod on the map even
+    # while no Design Version is named; a folder with neither stays in the plain list
+    versioned = [f for f in folders if os.path.exists(os.path.join(croot, f, "version", "VERSION.json"))
+                 or read_json(os.path.join(croot, f, "stage.json"))[0] is not None]
     others = [f for f in folders if f not in versioned]
     mods = [read_mod(root, f, names) for f in versioned]
     held = held_statements(root, versioned)
@@ -990,7 +1003,7 @@ def mod_row(m, y, row_h):
         p.append(t_(LBL_X + 10 + len(m["label"]) * 8.6, y + 20, flag.strip(), 12, ALERT, 700))
     st = m["state"]
     st = "locked" if st.startswith("locked") else ("not started" if st.lower().startswith("not started") else st)
-    p.append(t_(LBL_X + 4, y + 36, "%s · %s" % (m["version"], clip(st, 22)), 11, DIM))
+    p.append(t_(LBL_X + 4, y + 36, "no Design Version yet" if m["versionless"] else "%s · %s" % (m["version"], clip(st, 22)), 11, DIM))
     cur = COLUMNS.index(m["column"]) if m["column"] in COLUMNS else None
     for i, c in enumerate(COLUMNS):
         cx = COL_X0 + i * COLW + 4
@@ -1077,7 +1090,8 @@ def strip_html(m):
 def card(m):
     fill, ink, word, _ = STATUS[m["status"]]
     head = ['<span style="font-size:18px;font-weight:800">%s</span>' % esc(m["label"]),
-            chip(m["version"] if m["version"] != UNM else "version UNMEASURED", "#dfe3ea"),
+            chip("no Design Version named yet" if m["versionless"] else
+                 (m["version"] if m["version"] != UNM else "version UNMEASURED"), "#dfe3ea"),
             chip(where_word(m), "#4f97d6"),
             chip(word, fill if fill != "hatch" else "#5d6675", ink if fill != "hatch" else TEXT)]
     if m["disagree"]:
@@ -1101,7 +1115,11 @@ def card(m):
                                                              DIM, esc(m["stage_from"]))
     rows.append(row("Stage", stage))
     st = m["state"]
-    rows.append(row("Design Version", "%s, %s%s" % (val(m["version"]), val(st),
+    if m["versionless"]:
+        rows.append(row("Design Version", "no Design Version named yet" + (
+            "; the Designer tree is locked, and the lock is the owner's to give" if m["owner_lock"] else "")))
+    else:
+      rows.append(row("Design Version", "%s, %s%s" % (val(m["version"]), val(st),
                                                     ("<br><span style='color:%s'>scope: %s</span>" % (DIM, esc(m["scope"])))
                                                     if m["scope"] else "")))
     if m["designer_step"] == UNM:
@@ -1309,6 +1327,12 @@ def summary_rows(d):
     for m in d["mods"]:
         his = m["his"]
         needs = UNM if his == UNM else (", ".join(x["item"] for x in his) if his else "nothing")
+        if m.get("versionless"):
+            rows.append((m["label"], "no Design Version named yet" + (" (the lock is the owner's)" if m["owner_lock"] else ""),
+                         where_word(m), clip(m["waits_on"], 110),
+                         UNM if m["his"] == UNM else (", ".join(x["item"] for x in m["his"]) if m["his"] else "nothing"),
+                         m["last_move"]))
+            continue
         rows.append((m["label"], "%s, %s" % (m["version"], "locked" if m["state"].startswith("locked") else clip(m["state"], 30)),
                      where_word(m), clip(m["waits_on"], 110), needs, m["last_move"]))
     return rows
