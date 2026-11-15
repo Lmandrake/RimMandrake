@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 3:42 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-15 2:51 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 3:42 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:51 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -319,3 +319,13 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
   (RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION). No 0.1.0 decider waits on it: T_DIG_TIME_ARITHMETIC only
   supports canal_reads_as_dug and inv_dig_depth. Held row `2026-11-13_dig_interface#1` in `version/test_table.json` and
   `.md` now reads 0.2.0 Divergent instead of "his open call"; 0.1.0's bars do not move.
+
+### 2026-11-15 2:51 PM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: delegated: steward road back: visit 1 exit not met (16 PASS, 3 FAIL, 12 UNMEASURED of 31, two earlier FAIL rows); two failures are unbuilt mod behaviour (toss-flame order, coating condition), so the road is offline_build, not blind_challenge; 16 items filed caused by RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_ONE_FAILURES_BACK
+- Checks passed: order, by, version, hold.
+- Steward confirms: read design/concepts/FlowWorks/version/in_game/visit_1/SUMMARY.md and rows.jsonl (72 rows): exit_met false, verdict NOT met; FAIL sc_toss_flame, sc_coating_wash (MOD, real miss), sc_moat_raid (MOD dep + harness); UNMEASURED 10 scenes (harness/site real misses), OL_OWNER_LOOK_READS (criterion-flaw candidate), PIT_LOOK_1114_LIVE (bridge Int64 instrument gap); sc_fill_front/sc_fill_tiers earlier FAIL are record gaps (harness fixes at mod sha 8caccd561c, no red-before test); the driver's three test edits are stricter, none weakened
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: visit 1 exit not met (16 PASS, 3 FAIL, 12 UNMEASURED of 31, two earlier FAIL rows); two failures are unbuilt mod behaviour (toss-flame order, coating condition), so the road is offline_build, not blind_challenge; 16 items filed caused by RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_ONE_FAILURES_BACK
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 3:42 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 3:42 AM PST).
+- Record: `version/stage_record.json`.
