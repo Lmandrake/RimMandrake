@@ -331,7 +331,7 @@ namespace RimMandrake.Graffiti
             };
             for (int i = 0; i < cells.Length; i++)
             {
-                Filth_Mark.MakeMark(C(cells[i][0], cells[i][1]), map, m[i % m.Length], hand);
+                Filth_Mark.MakeMark(C(cells[i][0], cells[i][1]), map, m[i % m.Length], hand, staged: true);     // every face, the far ones too: a render stage
             }
             return "FACES " + origin.x + "," + origin.z + ",20,16";
         }
@@ -537,20 +537,20 @@ namespace RimMandrake.Graffiti
                 // a free wall end in the room
                 WallRun(map, stuffs[i], x0 + 4, z0 + 3, x0 + 6, z0 + 3);
                 // front: a piece, run hard into the door on its right; a one-cell mark; a wide mark driven into the corner on the left
-                Filth_Mark.MakeMark(C(x0 + 7, z1 - 1), map, piece, hand);
-                Filth_Mark.MakeMark(C(x0 + 2, z1 - 1), map, wide, hand);
-                Filth_Mark.MakeMark(C(x0 + 11, z1 - 1), map, one, hand);
+                Filth_Mark.MakeMark(C(x0 + 7, z1 - 1), map, piece, hand, staged: true);
+                Filth_Mark.MakeMark(C(x0 + 2, z1 - 1), map, wide, hand, staged: true);
+                Filth_Mark.MakeMark(C(x0 + 11, z1 - 1), map, one, hand, staged: true);
                 // side faces, with a wide mark on one
-                Filth_Mark.MakeMark(C(x0 + 1, z0 + 4), map, one, hand);
-                Filth_Mark.MakeMark(C(x1 - 1, z0 + 3), map, wide, hand);
+                Filth_Mark.MakeMark(C(x0 + 1, z0 + 4), map, one, hand, staged: true);
+                Filth_Mark.MakeMark(C(x1 - 1, z0 + 3), map, wide, hand, staged: true);
                 // the hidden side: a south wall seen from inside
-                Filth_Mark.MakeMark(C(x0 + 8, z0 + 1), map, tag, hand);
+                Filth_Mark.MakeMark(C(x0 + 8, z0 + 1), map, tag, hand, staged: true);
                 // the free wall's front, then its two ends' side faces
-                Filth_Mark.MakeMark(C(x0 + 5, z0 + 2), map, tag, hand);
-                Filth_Mark.MakeMark(C(x0 + 3, z0 + 3), map, tag, hand);
-                Filth_Mark.MakeMark(C(x0 + 7, z0 + 3), map, tag, hand);
+                Filth_Mark.MakeMark(C(x0 + 5, z0 + 2), map, tag, hand, staged: true);
+                Filth_Mark.MakeMark(C(x0 + 3, z0 + 3), map, tag, hand, staged: true);
+                Filth_Mark.MakeMark(C(x0 + 7, z0 + 3), map, tag, hand, staged: true);
                 // the room's south wall seen from outside: a whole front
-                Filth_Mark.MakeMark(C(x0 + 5, z0 - 1), map, wide, hand);
+                Filth_Mark.MakeMark(C(x0 + 5, z0 - 1), map, wide, hand, staged: true);
             }
             map.mapDrawer.RegenerateEverythingNow();
             return "SWEEP " + origin.x + "," + origin.z + "," + (3 * (RoomW + 2) + 2) + "," + (2 * (RoomH + 3) + 2);

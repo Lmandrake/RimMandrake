@@ -356,6 +356,27 @@ namespace RimMandrake.Graffiti.SelfTest
                     Check(RM_GraffitiKernel.FaceOfSide(bad) == RM_GraffitiKernel.FaceNone, $"out-of-range side {bad} has a face");
                 }
                 Check(RM_GraffitiKernel.FaceOfSide(0) == RM_GraffitiKernel.FaceFront && !RM_GraffitiKernel.SidePaintable(2), "a wall north of the floor shows its front; a wall south of it shows nothing");
+                // RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL: an order placed between a north and a south wall, whose north wall then
+                // goes. The brush (Filth_Mark.MakeMark, JobDriver_PaintGraffiti.ChooseMark) paints only a front face in view; over all 16 masks,
+                // that face is never the hidden one nor one seen edge-on, and losing the north wall leaves no front for the order to paint.
+                for (int mask = 0; mask < 16; mask++)
+                {
+                    Steps++;
+                    int side = RM_GraffitiKernel.WallSide((mask & 1) != 0, (mask & 2) != 0, (mask & 4) != 0, (mask & 8) != 0);
+                    int face = RM_GraffitiKernel.FaceOfSide(side);
+                    if (face == RM_GraffitiKernel.FaceFront)
+                    {
+                        Check(RM_GraffitiKernel.SidePaintable(side) && RM_GraffitiKernel.PaintsEdgeOn(face), $"mask {mask}: a front face the brush takes is unpaintable");
+                    }
+                    if ((mask & 1) == 0)
+                    {
+                        Check(face != RM_GraffitiKernel.FaceFront, $"mask {mask}: no north wall, yet a front face for the brush");
+                    }
+                }
+                int placed = RM_GraffitiKernel.WallSide(true, false, true, false), outlived = RM_GraffitiKernel.WallSide(false, false, true, false);
+                Check(RM_GraffitiKernel.FaceOfSide(placed) == RM_GraffitiKernel.FaceFront, $"north+south walls: side {placed}, want the north front");
+                Check(outlived == 2 && RM_GraffitiKernel.FaceOfSide(outlived) == RM_GraffitiKernel.FaceHidden && !RM_GraffitiKernel.SidePaintable(outlived),
+                    $"north wall gone, south stands: side {outlived}, want 2 (FaceHidden, unpaintable)");
                 // Every mark, every link set, every face, every width: inside its face, and its art's map stays affine.
                 float[][] geoms = { new[] { 0.40f, 0.22f }, new[] { 0.30f, 0.20f }, new[] { 0.45f, 0.30f } };
                 foreach (float[] g in geoms)

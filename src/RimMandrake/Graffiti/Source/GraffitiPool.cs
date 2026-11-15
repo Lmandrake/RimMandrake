@@ -160,7 +160,9 @@ namespace RimMandrake.Graffiti
         private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth, IntVec3? at)
         {
             HashSet<ThingDef> near = at.HasValue && placer?.Map != null ? DefsNear(at.Value, placer.Map) : null;
-            if (at.HasValue && placer?.Map != null && !RM_GraffitiKernel.PaintsEdgeOn(RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(at.Value, placer.Map)))) return null;
+            // No face in view, no pick: an edge-on side, a wall's hidden far side (an order that outlived its north wall) or a stub
+            // (RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL); the one placement rule the finders and the brush use.
+            if (at.HasValue && placer?.Map != null && !GraffitiJobUtility.OnFace(at.Value, placer.Map)) return null;
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
             int level = placer?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0;

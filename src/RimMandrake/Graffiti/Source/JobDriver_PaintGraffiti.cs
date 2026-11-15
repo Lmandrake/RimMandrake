@@ -133,9 +133,13 @@ namespace RimMandrake.Graffiti
         private ThingDef ChooseMark(IntVec3 cell)
         {
             // Live pass 18: an order on a doorway cell was painted as floor filth. No wall, no mark; an order there is spent.
-            if (Filth_Mark.ReadWallSide(cell, Map) == RM_GraffitiKernel.NoWall)
+            // An order outlives the wall it was placed against: its north wall taken down while one stands south, the cell now faces the
+            // wall's hidden far side, which nobody on this side can see. The brush asks again what the designator asked (a front face in
+            // view), and that order is spent too (RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL).
+            if (!GraffitiJobUtility.OnFace(cell, Map))
             {
-                GraffitiSocial.Trace(pawn.LabelShort + " found no wall to paint at " + cell);
+                int side = Filth_Mark.ReadWallSide(cell, Map);
+                GraffitiSocial.Trace(pawn.LabelShort + " found no wall to paint at " + cell + (side == RM_GraffitiKernel.NoWall ? "" : " (side " + side + ", no face in view)"));
                 if (Designated(cell))
                 {
                     Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);

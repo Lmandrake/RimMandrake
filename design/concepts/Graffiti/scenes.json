@@ -91,7 +91,7 @@
    "expect": "every mark lies on its wall's front face and climbs over the crease onto the wall top (option D), the face part bolder than the top",
    "control": {
     "case": "a mark whose wall side is cleared; a paint order on the cell whose only wall is seen edge-on; a paint order and a pool pick (GraffitiPool) on the cell whose only wall is south of it",
-    "expect": "the cleared mark draws on the floor and is flagged; the edge-on cell gets no mark (the pool returns none); the south-only cell holds no Filth_Mark after the order's job ends and the pool returns none for it. Expected to fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands (code read 2026-11-15: GraffitiPool.cs:163 refuses only edge-on faces, JobDriver_PaintGraffiti.ChooseMark only NoWall, and WallPlane.cs:471 draws a FaceHidden mark as a lip)",
+    "expect": "the cleared mark draws on the floor and is flagged; the edge-on cell gets no mark (the pool returns none); the south-only cell holds no Filth_Mark after the order's job ends and the pool returns none for it. The south-only order is the one whose north wall came down after it was placed: ChooseMark spends it with the trace line \"found no wall to paint at c (side 2, no face in view)\", and the map's Filth_Mark.ProbeWallFaces reads s=0 (live row A9 of src/RimMandrake/Graffiti/graffiti_v1_live_proof.py; a build without the fix reads a mark at c and s=1)",
     "rules_out": "a camera angle hiding a floor decal, paint on an edge-on strip, or paint on a wall's far side drawn as a lip"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",

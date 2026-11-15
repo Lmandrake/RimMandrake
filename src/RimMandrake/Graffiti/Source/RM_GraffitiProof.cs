@@ -422,5 +422,53 @@ namespace RimMandrake.Graffiti
             return "READ painted " + painted + " | matched " + matched + " | of " + designated.Count + " | pending " + pending
                 + " | got " + string.Join(",", got) + " | job " + (colonist?.CurJobDef?.defName ?? "none");
         }
+
+        // ---------- A9: an order that outlived its wall (RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL) ----------
+
+        private static IntVec3 farCell = IntVec3.Invalid;
+
+        /// <summary>A painter's-pick order on the face cell c = Face(5) (the site wall north of it), a 3-cell wall row built south of c, then
+        /// the north wall cell taken down: c now faces only the south wall's hidden far side. The colonist is ordered onto it.
+        /// -> "FARSIDE accepted B | sideBefore N | sideAfter N | ordered B".</summary>
+        public static string FarSideSetup(string args)
+        {
+            string r = Setup(out Map map);
+            if (r != null) return r;
+            farCell = Face(5);
+            for (int dx = 4; dx <= 6; dx++)
+            {
+                Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel);
+                wall.SetFaction(Faction.OfPlayer);
+                GenSpawn.Spawn(wall, Cell(dx, WallRow - 2), map);
+            }
+            int before = Filth_Mark.ReadWallSide(farCell, map);
+            var designator = new Designator_PaintGraffitiMark();
+            AccessTools.Field(typeof(Designator_PaintGraffitiMark), "chosenMark").SetValue(designator, null);
+            bool accepted = designator.CanDesignateCell(farCell).Accepted;
+            if (accepted) designator.DesignateSingleCell(farCell);
+            foreach (Thing t in Cell(5, WallRow).GetThingList(map).Where(t => t.def == ThingDefOf.Wall).ToList()) t.Destroy(DestroyMode.Vanish);
+            int after = Filth_Mark.ReadWallSide(farCell, map);
+            WorkGiverDef wgDef = DefDatabase<WorkGiverDef>.GetNamed("RM_PaintGraffitiDesignated");
+            Job job = accepted ? ((WorkGiver_Scanner)wgDef.Worker).JobOnCell(colonist, farCell, true) : null;
+            bool ordered = false;
+            if (job != null)
+            {
+                job.workGiverDef = wgDef;
+                ordered = colonist.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+            }
+            return "FARSIDE accepted " + B(accepted) + " | sideBefore " + before + " | sideAfter " + after + " | ordered " + B(ordered)
+                + " | cell " + farCell;
+        }
+
+        /// <summary>-> "READ mark none|def | side N | pending B | job J | walls marks=..;sides=n,e,s,w;.." (Filth_Mark.ProbeWallFaces).</summary>
+        public static string FarSideRead(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null || !farCell.IsValid) return "REFUSED FarSideSetup first";
+            Filth_Mark m = MarkAt(map, farCell);
+            bool pending = map.designationManager.DesignationAt(farCell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
+            return "READ mark " + (m?.def.defName ?? "none") + " | markSide " + (m?.wallSide.ToString() ?? "none") + " | side " + Filth_Mark.ReadWallSide(farCell, map)
+                + " | pending " + B(pending) + " | job " + (colonist?.CurJobDef?.defName ?? "none") + " | walls " + Filth_Mark.ProbeWallFaces();
+        }
     }
 }

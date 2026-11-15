@@ -1,6 +1,6 @@
 """Live proofs of GRAFFITI_V1_LIVE_PROOF_1, one clause per call:
 
-    python.exe src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A1|A2|A3|A4|A5|A6|A7|A8
+    python.exe src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A1|A2|A3|A4|A5|A6|A7|A8|A9
 
 Calls RimMandrake.Graffiti.RM_GraffitiProof through jawa/static_call on the current (quicktest) map; every set-up rebuilds
 the same 20x12 walled site at the map centre (see the C# class), so the clauses run in any order.
@@ -24,6 +24,11 @@ Exit 0 = the clause holds, 1 = it answered and something is wrong, 2 = UNMEASURE
   A7 choose    DesignateSetup designates 3 cells with 3 named marks and orders the colonist onto them; up to 6000 ticks until
                DesignateRead reads painted 3, matched 3, pending 0
   A8 load      Player.log of this load (Graffiti reachable, all DLC) names no Graffiti config / cross-reference / XML error
+  A9 farside   FarSideSetup: a painter's-pick order on a face cell c, a 3-cell wall row built south of c, then c's north wall
+               cell taken down (sideBefore 0, sideAfter 2, else SITE) and the colonist ordered onto c; up to 3000 ticks until
+               FarSideRead reads pending False: mark none and the map's ProbeWallFaces sides s=0 (nothing painted on the
+               hidden far side, the order spent). On a build without RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
+               it reads a mark with markSide 2 and s=1. Still pending at the limit: UNMEASURED (the brush never went up)
 verdict(), field() and log_verdict() are pure and are exercised offline by selftest_graffiti_v1_live.py.
 """
 import json
@@ -34,9 +39,9 @@ import time
 import xml.etree.ElementTree as ET
 
 PROBE = "RimMandrake.Graffiti.RM_GraffitiProof"
-CLAUSES = ("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")
+CLAUSES = ("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9")
 STEP = 250
-HEADS = ("SPREE", "READ", "RAID", "EXIT", "SIGIL", "OVER", "THOUGHT", "CLEANSET", "CLEAN", "DONE", "DESIGNATED", "LOADED")
+HEADS = ("SPREE", "READ", "RAID", "EXIT", "SIGIL", "OVER", "THOUGHT", "CLEANSET", "CLEAN", "DONE", "DESIGNATED", "LOADED", "FARSIDE")
 WANT = {
     "A3": {"ideo": "True", "frame": "halo_0", "iconIsIdeo": "True", "tinted": "True"},
     "A4": {"placed": "True", "firstGone": "True", "marksAtCell": "1", "def": "RM_Graffiti_ThrowUp_A", "rivalFaction": "True"},
@@ -139,7 +144,7 @@ def verdict(clause, text, extra=None):
     s = str(text)
     if "REFUSED" in s:
         return 2, "probe refused: " + s[s.find("REFUSED"):][:300]
-    head = {"A1": "READ", "A2": "EXIT", "A3": "SIGIL", "A4": "OVER", "A5": "THOUGHT", "A6": "CLEAN", "A7": "READ"}[clause]
+    head = {"A1": "READ", "A2": "EXIT", "A3": "SIGIL", "A4": "OVER", "A5": "THOUGHT", "A6": "CLEAN", "A7": "READ", "A9": "READ"}[clause]
     ln = line(s, head)
     if not ln:
         return 2, "no %s line: %s" % (head, s[:300])
@@ -186,6 +191,27 @@ def verdict(clause, text, extra=None):
             return 2, "no DONE line: " + str(extra)[:300]
         fails = _match(done, WANT["A6done"])
         return (1, "forced clean left a mark: " + "; ".join(fails) + " | " + done) if fails else (0, ln + " || " + done)
+    if clause == "A9":
+        setup = line(str(extra), "FARSIDE")
+        if not setup:
+            return 2, "no FARSIDE line: " + str(extra)[:300]
+        if field(setup, "accepted") != "True" or _int(setup, "sideBefore") != 0 or _int(setup, "sideAfter") != 2:
+            return 2, "SITE: the order was not placed on a north-wall face or c does not face only a south wall after: " + setup
+        if field(setup, "ordered") != "True":
+            return 2, "SITE: the colonist did not take the paint job: " + setup
+        walls = re.search(r"sides=(\d+),(\d+),(\d+),(\d+)", ln)
+        if not walls or field(ln, "pending") not in ("True", "False"):
+            return 2, "unreadable far-side read: " + ln
+        if field(ln, "pending") == "True" and field(ln, "mark") == "none":
+            return 2, "the brush never went up (order still pending, nothing painted): " + ln
+        fails = []
+        if field(ln, "mark") != "none":
+            fails.append("painted %s at c (markSide %s)" % (field(ln, "mark"), field(ln, "markSide")))
+        if int(walls.group(3)) != 0:
+            fails.append("%s mark(s) on a wall's hidden far side on the map (s=%s)" % (walls.group(3), walls.group(3)))
+        if field(ln, "pending") != "False":
+            fails.append("the order was not spent")
+        return (1, "; ".join(fails) + " | " + ln) if fails else (0, ln)
     fails = _match(ln, WANT[clause])
     return (1, "; ".join(fails) + " | " + ln) if fails else (0, ln)
 
@@ -343,6 +369,16 @@ def run(clause, rb, R):
         read, ticks = _until(rb, call, "DesignateRead", lambda r: _int(line(r, "READ") or "", "pending") == 0, 6000)
         code, why = verdict("A7", read)
         return code, "%s (after %d ticks; %s)" % (why, ticks, d[:160])
+    if clause == "A9":
+        s = call("FarSideSetup")
+        setup = line(s, "FARSIDE")
+        if not setup:
+            return verdict("A9", s, extra=s)
+        if field(setup, "ordered") != "True":
+            return 2, "SITE: the colonist did not take the paint job: " + setup
+        read, ticks = _until(rb, call, "FarSideRead", lambda r: field(line(r, "READ") or "", "pending") == "False", 3000)
+        code, why = verdict("A9", read, extra=setup)
+        return code, "%s (after %d ticks; %s)" % (why, ticks, setup[:160])
     return log_verdict(_read_log(R), call("Loaded"))
 
 

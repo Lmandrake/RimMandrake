@@ -338,8 +338,17 @@ namespace RimMandrake.Graffiti
         // other, not one filth pile growing. "Rival" = any other
         // Filth_Mark whose def differs from markDef; thickening the SAME
         // def (the vanilla FilthMaker behaviour) is left alone.
-        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false, bool reply = false, float fit = 1f)
+        //
+        // The brush's own check, for every caller: paint goes only where a wall's front face is in view (GraffitiJobUtility.OnFace, the test
+        // every cell finder and the designator use), never on a wall's hidden far side nor one seen edge-on, whatever changed since the cell
+        // was chosen (RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL). `staged` is for the render stages that paint every face on purpose.
+        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false, bool reply = false, float fit = 1f, bool staged = false)
         {
+            if (!staged && cell.IsValid && map != null && !GraffitiJobUtility.OnFace(cell, map))
+            {
+                GraffitiSocial.Trace((maker?.LabelShort ?? "nobody") + " found no wall to paint at " + cell + " (side " + ReadWallSide(cell, map) + ", no face in view)");
+                return null;
+            }
             bool repaint = false;
             // A mark that sends its own message carries the going-over in it: one act, one line.
             bool tells = subject != null || targetFaction != null;

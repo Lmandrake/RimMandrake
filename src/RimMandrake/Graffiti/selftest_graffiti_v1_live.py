@@ -228,6 +228,24 @@ check(P.log_verdict(ref, LOADED)[0] == 1, "A8 a [Ref] marker split the record an
 orphan = clean_log + "Something odd\nRimMandrake.Graffiti.Filth_Mark:Print (Verse.SectionLayer)\n"
 check(P.log_verdict(orphan, LOADED)[0] == 1, "A8 a bare Graffiti stack frame passed")
 
+# A9 farside: an order that outlived its wall never paints the hidden far face
+FS = "FARSIDE accepted True | sideBefore 0 | sideAfter 2 | ordered True | cell (105, 0, 105)"
+FAR = "READ mark none | markSide none | side 2 | pending False | job Wait | walls marks=0;onWall=0;sides=0,0,0,0;mismatch=0"
+check(code("A9", FAR, extra=FS) == 0 and code("A9", wrap(FAR), extra=FS) == 0, "A9 refused order, nothing painted not passed: %s" % (P.verdict("A9", FAR, extra=FS),))
+BASE = FAR.replace("mark none | markSide none", "mark RM_Graffiti_Tag_A | markSide 2").replace("marks=0;onWall=0;sides=0,0,0,0", "marks=1;onWall=1;sides=0,0,1,0")
+check(code("A9", BASE, extra=FS) == 1, "A9 a mark on the hidden far face (the base build) passed")
+check(code("A9", FAR.replace("sides=0,0,0,0", "sides=0,0,1,0"), extra=FS) == 1, "A9 a far-side mark elsewhere on the map (s=1) passed")
+check(code("A9", FAR.replace("mark none | markSide none", "mark RM_Graffiti_Tag_A | markSide 0"), extra=FS) == 1, "A9 a mark at c passed")
+check(code("A9", FAR.replace("pending False", "pending True"), extra=FS) == 2, "A9 an order the brush never reached not UNMEASURED")
+check(code("A9", BASE.replace("pending False", "pending True"), extra=FS) == 1, "A9 a painted far face with the order still pending not FAIL")
+check(code("A9", FAR, extra=FS.replace("sideAfter 2", "sideAfter 0")) == 2, "A9 a site whose north wall still stands not UNMEASURED")
+check(code("A9", FAR, extra=FS.replace("sideBefore 0", "sideBefore 2")) == 2, "A9 an order placed off a front face not UNMEASURED")
+check(code("A9", FAR, extra=FS.replace("accepted True", "accepted False")) == 2, "A9 a refused designation not UNMEASURED")
+check(code("A9", FAR, extra=FS.replace("ordered True", "ordered False")) == 2, "A9 an untaken job not UNMEASURED")
+check(code("A9", FAR, extra="REFUSED no current map") == 2, "A9 with no setup line not UNMEASURED")
+check(code("A9", FAR.replace(" | walls marks=0;onWall=0;sides=0,0,0,0;mismatch=0", ""), extra=FS) == 2, "A9 a read without the wall census not UNMEASURED")
+check(code("A9", wrap("REFUSED FarSideSetup first"), extra=FS) == 2, "A9 a refused read not UNMEASURED")
+
 # the bridge reply is unwrapped, so a non-ASCII faction name never ends a field early
 uni = P._reply({"success": True, "result": RAID.replace("Rough Pigs", "P\u00edgs \u00c6therfolk")})
 check(P.field(uni, "marksIn") == "0" and code("A2", EXIT, extra=uni) == 0, "A2 a non-ASCII faction name broke the RAID read: %r" % uni)
