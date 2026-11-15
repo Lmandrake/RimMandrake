@@ -2,7 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 6; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -523,10 +523,24 @@
     "ref": "run bench-pyre-exam-st4-r7-20261115",
     "stage": 4,
     "tokens": 192744
+   },
+   {
+    "at": "2026-11-15T21:59:25Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794779751",
+    "stage": 5,
+    "tokens": 436102
+   },
+   {
+    "at": "2026-11-15T22:00:21Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794779751",
+    "stage": 5,
+    "tokens": 76508
    }
   ],
   "reserve": 60000,
-  "spent": 14670733
+  "spent": 15183343
  },
  "coverage_releases": [
   {
@@ -701,8 +715,29 @@
    "tokens": 754658,
    "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-15T21:55:51Z",
+   "error": null,
+   "gaps": 1,
+   "ids": [
+    "furnacebeast_warms",
+    "inv_furnacebeast"
+   ],
+   "judge": "rm-coverage-judge-1794779751",
+   "late": [],
+   "tags": {
+    "changed": 1
+   },
+   "tokens": 512610,
+   "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-15T22:00:23Z",
+  "why": "the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide"
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1261,6 +1296,12 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-pyre-exam-st4-r7-20261115: stage 4 done"
+  },
+  {
+   "at": "2026-11-15T22:00:23Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1742,6 +1783,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
