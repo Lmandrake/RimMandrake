@@ -198,6 +198,12 @@
    "speaker": "owner",
    "source": "OWNER:1794748469904049550",
    "text": "By his card 2026-11-15 (Pyrelands 0.1.0, the coverage judge's 12 Problem gaps -> Fix all 12 in 0.1.0): the 12 Problem gaps of version/evidence/coverage_judge_refusal_2026-11-14.json are fixed inside the locked 0.1.0 as a locked change, each by its smallest_fix; two false-wording Polish gaps (g12 the stale filth wording, g14 the sheet's delegated line) are corrected with them. The scene parts this adds are owed script work, filed as RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED."
+  },
+  {
+   "id": "d_fix_seventeen_round_six_gaps",
+   "speaker": "owner",
+   "source": "OWNER:1794774724955142310",
+   "text": "By his card 2026-11-15 12:22 PM PST (How should Pyrelands 0.1.0 proceed? -> Fix the 17 gaps, one final look): the 14 Problem and 3 Correction gaps of coverage round 6 (rm-coverage-judge-1794750987: g1, g2, g4-g18, sorted in version/gaps_sorted.md Round 6) are fixed inside the locked 0.1.0 as one locked change, each by its smallest_fix. Gap g3 (inv_firehawk_ember: that sc_firehawk does not prove the hawk picks the LARGEST fuel) is Polish: it stays in version/polish.md (RIMMANDRAKE_TEST_FIREHAWK_PICKS_LARGEST_FUEL) and is out of 0.1.0's passing in his words; that part of inv_firehawk_ember is ok for coverage. Then the Cold Reader exam is retaken and the coverage judge gets ONE final look. This supersedes his 2026-11-14 limit (OWNER:1794721773574845016) for exactly that one look; a not_covered on it stops judging and pauses Pyrelands for him again."
   }
  ],
  "asks": [

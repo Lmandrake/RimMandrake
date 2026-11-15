@@ -25,11 +25,15 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Measured 2026-11-14 14:19 (the hunt-rewards bar added):** 42 bars, all with every deciding test runnable today; 15
   with an offline deciding test green; 17 built offline tests green (`T_FH_LETTER`, `T_FH_CRESTFEATHER` new in the table).
   The two live chains in `firehawk_rewards_live.py` have their entries and are UNRUN (offline only).
-- **Judge gaps:** 14 from the last coverage verdict (`version/gaps_sorted.md`). 6 of the 7 CORRECTIONs are applied to test
-  text (g1 g3 g5 g11 g12 g13); g14 (rerun the exam) is a model step and stays open. Of the 6 PROBLEMs, the offline halves
-  of g6, g7 and g10 are built (Stage 3); every live half, and g2, g4, g9, stays open. 1 POLISH (g8) stays.
+- **Judge gaps:** 18 from the round-6 coverage verdict (rm-coverage-judge-1794750987, `version/gaps_sorted.md` Round 6):
+  14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
+  (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 7:26 AM PST).
+- **Waiting on:** `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` (his card 2026-11-15 12:22 PM PST, OWNER:1794774724955142310):
+  the 17 round-6 gaps fixed and committed, then ONE `designer_stage.py repin`. Judging stays stopped until that re-pin.
+  The re-pin owes the chain steward (Cold Reader exam retake, ONE `coverage_judge.py release`, ONE look). That look is
+  the last: a not_covered stops judging and pauses Pyrelands for him again, with its verdict as the evidence. No second
+  release is given without his word.
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -54,6 +58,8 @@ fire's own cast of animals, three skies and never ordinary rain, whole on its ow
   paved_strip_holds_the_line; Banks heat → same as the tested warmth and sleep-ignition, fold the leaf"
 - 2026-11-13, the lock: "Yes, lock the other four mods" (typed to the Conductor) and, by card, "Own mod, own version, later"
   (the Deep Desert Tribes split).
+- 2026-11-15 12:22 PM PST, by card: "How should Pyrelands 0.1.0 proceed? → Fix the 17 gaps, one final look"
+  (OWNER:1794774724955142310; `record.json` d_fix_seventeen_round_six_gaps).
 
 ### Oddities (things a reader would otherwise get wrong)
 
@@ -295,3 +301,21 @@ so the Conductor takes it. These are Conductor decisions, not his.
 - Round-6 gaps (rm-coverage-judge-1794750987) are sorted in `version/gaps_sorted.md` "Round 6". Of the 18, 14 are
   PROBLEM, 3 CORRECTION, 1 POLISH (`version/polish.md`, proposed) and 0 NEXT VERSION. Judging stays stopped
   (REFUSAL_NOTHING_COULD_EVER_PASS); this sort releases nothing.
+
+### 2026-11-15 12:35 PM PST, his card: fix the 17 gaps, one final look (BENCH helper, by card)
+
+- His card 2026-11-15 12:22 PM PST (OWNER:1794774724955142310, on `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`): "Fix the
+  17 gaps, one final look". Builders fix the 14 PROBLEM and 3 CORRECTION gaps of round 6 (g1, g2, g4-g18 of
+  rm-coverage-judge-1794750987). g3 (POLISH) stays in `version/polish.md` and is not part of passing. The exam is retaken,
+  then the coverage judge looks ONE more time. This supersedes his 2026-11-14 limit (OWNER:1794721773574845016) for that
+  one look only; it is not a rework loop.
+- Route, by the pipeline's own mechanism: one fix ticket, `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` (BENCH,
+  offline, Relentless). It applies the 17 fixes, writes `coverage_fixes.json` against the round-6 judge (g3 claimed as out
+  in his words, `record.json` d_fix_seventeen_round_six_gaps), and ends with ONE `designer_stage.py repin` citing this card.
+  It does not release and does not judge. The re-pin is a `locked_change`, which owes the maturation chain steward
+  (`maturation_autonomy.py` chain_owed): it retakes the Cold Reader exam, runs `coverage_judge.py release` once and the
+  judge once. A seventh not_covered stops judging again (`coverage_judge.py` stop_reason counts only rounds after the last
+  release) and pauses Pyrelands for him.
+- Not released now, on purpose: Pyrelands sits at Offline build with its exit tests green, so a release before the fixes
+  would let the maturation steward advance it to Blind challenge with the 17 gaps open. Until the re-pin, judging stays
+  stopped and maturation stays paused on the coverage stop.
