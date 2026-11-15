@@ -15,7 +15,8 @@ every mod exactly one class:
            hold, a settling run, or the Designer's own launcher
   paused   the pipeline stops that mod and says why and what un-pauses it; ops_watch raises ONE alarm with a fixed id
            (OPS_MATURATION_MOD_PAUSED) while any mod is paused, so a repeat reopens it
-  owner    a stop that is genuinely his (his walk, opening the next version, a Designer turn waiting on him, a lock
+  rested   a passed version: nothing runs and nothing is asked; opening the next version is an ordering call
+  owner    a stop that is genuinely his (his walk, a Designer turn waiting on him, a lock
            with recorded evidence against 0.1.0): a ready-to-ask card text goes in the Conductor log once, and it
            quotes the evidence (his Evidence-for-Ask ruling, 2026-11-15)
 A new mod whose concept tree is locked and whose Design Version is not is LOCKED AT 0.1.0 BY THE PIPELINE (autolock:
@@ -76,8 +77,11 @@ def releasable(s, key, x):
     return not (opener and str(key).split("|")[:4] == opener.split("|")[:4])
 LAUNCH = {"launch", "launched", "would_launch"}
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
-OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone",
-                "passed": "the version passed; opening the next version is decided with him (spec §3.8)"}
+OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone"}
+# A passed version rests (spec: "pass record written; the mod rests"); opening the next one is weighed against the other
+# mods, an ordering call (delegation_policy.md §1), so it is no card to him (Evidence-for-Ask, owner 2026-11-15).
+RESTED = ("the version passed and the mod rests; opening its next version is the Conductor's ordering call against "
+          "the other mods (delegation_policy.md §1, Evidence-for-Ask), taken with `maturation.py next-version`")
 STEWARD_STAGES = {"preflight", "pre_human"}     # stages whose whole step is the steward's: run it, then advance
 CHAIN_AFTER = ("coverage_release", "coverage_stop", "lock")
 ROAD_BACK_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -506,6 +510,9 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)
+    if stage == "passed":
+        row.update(decision="rested", why=RESTED)
+        return
     if stage in OWNER_STAGES:
         row.update(decision="owner", why=OWNER_STAGES[stage],
                    card="%s %s stands at %s. %s. Evidence: design/concepts/%s/journal.md and %s." % (
@@ -673,6 +680,8 @@ def _klass(cfg, s, row, now, queue):
         k, txt = "wait", "waiting on %s" % (on or "nothing running (%s)" % dec)
     elif dec == "owner":
         k, txt = "owner", "OWNER %s" % row.get("why")
+    elif dec == "rested":
+        k, txt = "rested", "RESTED %s" % row.get("why")
     else:
         k = "paused"
         txt = "PAUSED %s: %s" % (PAUSE_WHY.get(dec, dec), row.get("why"))
@@ -683,7 +692,7 @@ def _klass(cfg, s, row, now, queue):
     if prev.get("k") != k or prev.get("d") != dec or prev.get("w", named) != named:
         s["klass_since"] = {"k": k, "d": dec, "w": named, "at": now}
     row["for_min"] = round((now - s["klass_since"]["at"]) / 60)
-    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner")
+    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner", "rested")
     row["stalled"] = bool(stuck and row["for_min"] >= int(cfg.get("stalled_min", 10)))
 
 

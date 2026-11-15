@@ -476,8 +476,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
            v is not None and vv == rec.get("version"), [rec_ref, rel(mod, "version/VERSION.json")],
            observed="the record says version %s; VERSION.json says %s" % (rec.get("version"), vv if v else verr),
            would_pass="a stage_record.json whose version field equals VERSION.json's version %s" % vv,
-           fix="open the new version by hand (a hand step: the spec's 'open the next version' is decided with him) "
-               "and seed a fresh stage record for it", cost="owner")
+           fix="open the new version with `maturation.py next-version` (the Conductor's ordering call against the other "
+               "mods, delegation_policy.md §1 and Evidence-for-Ask; a Divergent-or-not call stays his at filing), "
+               "which seeds a fresh stage record for it", cost="edit")
     # hold: the journal holds the stage
     jref = rel(mod, "journal.md")
     jtext = read_text(root, mod, "journal.md") or ""

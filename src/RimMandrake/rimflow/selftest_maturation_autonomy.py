@@ -504,6 +504,13 @@ def main():
         w = World({"H": {"mod": "H", "stage": "his_walk", "version": "0.1.0", "live_units": []}})
         rd, g = run(w, ["H"], root)
         ok(g("H").get("klass") == "owner" and not w.launched, "his walk: OWNER, nothing launched")
+        # a passed version rests (Evidence-for-Ask): no card to him; opening the next version is an ordering call
+        fresh_state()
+        w = World({"P": {"mod": "P", "stage": "passed", "version": "0.1.0", "live_units": []}})
+        rd, g = run(w, ["P"], root)
+        ok(g("P").get("klass") == "rested" and not w.launched and not w.cards
+           and not any(x.startswith("P:") for x in (rd.get("owner") or []) + (rd.get("paused") or [])),
+           "a passed version: RESTED, no owner card, no pause alarm, nothing launched")
         # an unreadable designer state: PAUSED
         w = World({"U": {"mod": "U", "stage": "designer", "version": "0.1.0", "live_units": []}}, dstate={})
         rd, g = run(w, ["U"], root)
@@ -585,8 +592,8 @@ def main():
            "stalled 3: a coverage-stopped mod is never launched on (read %s, launched %s)" % (
                g("P").get("decision"), w.launched))
         # every class is one of four, on every row of every tick above
-        ok(all(m.get("klass") in ("launch", "wait", "paused", "owner") for m in rd["mods"].values()),
-           "every row has one of the four classes")
+        ok(all(m.get("klass") in ("launch", "wait", "paused", "owner", "rested") for m in rd["mods"].values()),
+           "every row has one of the five classes")
         # the ops_watch side: the alarm targets and the route exist
         rules = json.load(open(os.path.join(HERE, "..", "Utils", "ops_watch_rules.json")))
         names = {t.get("name"): t.get("key") for t in rules.get("targets") or []}
