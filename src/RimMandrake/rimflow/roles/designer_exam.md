@@ -40,6 +40,9 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
    miss needs his answer. Never re-score the same scenarios against an edited tree without refreezing.
 
 Charge every Examiner, Challenger, Reader and Control run: `designer_stage.py charge --kind helper`.
+These helpers run under this Designer run's own allowance (`slot_rules.json` `role_runs`, five), counted on your own
+session, never the Conductor's budget. A spawn refused `slots_full` means wait for one of yours to finish, then spawn:
+it is a wait, never a reason to end the run blocked.
 - **A control run must strip every mention of the removed leaf's rule.** Removing a core leaf from `tree.json` and its sheet lines is not enough: a `## delegated` or `## pruning` clause naming the same check (e.g. 'new-game cleanup') still lets the control Reader reject, so the control does not discriminate.
 
 ## exam.json

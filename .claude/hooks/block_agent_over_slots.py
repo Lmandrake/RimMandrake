@@ -27,6 +27,13 @@ writes a reservation (<streams>/spawn_reservations.json) that counts as a runnin
 started after it appears or helpers.reserve_s (default 90 s) passes, so two concurrent spawns cannot both take the
 last slot.
 
+Role runs with their own allowance (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS): a role run whose
+RM_ROLE_UNIT starts with a prefix in slot_rules.json `role_runs` (the Designer, rm-role-designer-*) is a Maturation
+Pipeline run, already counted in the pipeline's own slots; its helpers (the exam's Examiner, Challenger, two Readers and
+Control) are capped at that prefix's N, counted on that run's OWN session only, never against the Conductor's budget nor
+the window's helpers. Measured 2026-11-15: CONDUCTOR N=0 once he left the window, so Contagion's exam could never run.
+His word (slot_override.json) still caps it. A full allowance is refused with reason `slots_full`: the run waits.
+
 Fails open: a broken guard must not stop all spawning.
 
     python3 .claude/hooks/selftest_block_agent_over_slots.py
@@ -101,6 +108,29 @@ def session_exempt(seat, payload, rules, now):
     return t is not None and 0 <= now - t < open_min * 60
 
 
+def role_allowance(rules):
+    """(N, prefix) when this is a role run with its own allowance (slot_rules.json role_runs, keyed by RM_ROLE_UNIT
+    prefix), else None. A non-integer N is ignored (the Conductor budget then applies, as before)."""
+    unit = (os.environ.get("RM_ROLE_UNIT") or "").strip()
+    rr = rules.get("role_runs") or {}
+    for prefix, n in rr.items():
+        if unit and not prefix.startswith("_") and unit.startswith(prefix) and isinstance(n, int) \
+                and not isinstance(n, bool) and n >= 0:
+            return n, prefix
+    return None
+
+
+def session_scope(payload):
+    """(reservation key, this session's subagents folder) for a role run's own count. The folder is the transcript's
+    sibling <session id>/subagents; None when the payload names no transcript or session (only reservations count)."""
+    unit = (os.environ.get("RM_ROLE_UNIT") or "").strip()
+    tp, sid = payload.get("transcript_path"), payload.get("session_id")
+    if not sid and tp:
+        sid = Path(tp).stem
+    sub = str(Path(tp).parent / sid / "subagents") if tp and sid else None
+    return "role:" + unit, sub
+
+
 def allowed_n(SA, rules, seat, now):
     """(N, mode, why, source) for this seat (the allocator's key: BENCH is the Conductor's window)."""
     try:
@@ -157,6 +187,23 @@ def decide(payload, now=None):
         )
     ov = SA._override_live(SA.read_json(SA.streams_dir() / "slot_override.json"), now) or {}
     his_n = (ov.get("seats") or {}).get(seat, ov.get("n"))
+    own = role_allowance(rules)
+    if own is not None:
+        rn, prefix = own
+        rwhy = f"slot_rules.json role_runs[{prefix!r}]: this role run's own allowance, counted on its own session"
+        if his_n is not None and int(his_n) < rn:
+            rn, rwhy = int(his_n), f"his word: \"{ov.get('ownerSaid')}\" (slot_override.json) caps the role run"
+        unit = os.environ.get("RM_ROLE_UNIT", "").strip()
+
+        def refuse_own(running):
+            ids = ", ".join(x["id"][:10] for x in running[:8])
+            return (
+                f"slots_full: this role run ({unit}) already has {len(running)} helper(s) running and its own "
+                f"allowance is N={rn}.\n\nWhy N={rn}: {rwhy}\n\nRunning: {ids}\n\n"
+                "Wait for one of your helpers to finish, then spawn (the exam's steps run in order; two Readers and "
+                "the Control may overlap). Do not cancel a running helper, and do not end the run blocked on this: a "
+                "full allowance is a wait, not a defect.")
+        return _gate(seat, rules, now, rn, refuse_own, scope=session_scope(payload))
     # SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP: his word is read BEFORE the typing exemption, so an explicit N of his caps
     # the window even while he types; the open policy only lifts the window's default cap.
     if his_n is None and session_exempt(seat, payload, rules, now):
@@ -206,7 +253,7 @@ def _pending(res, starts, now, hold_s):
     return left
 
 
-def _gate(seat, rules, now, n, refuse):
+def _gate(seat, rules, now, n, refuse, scope=None):
     """SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP: count and reserve under one lock, so two concurrent spawns cannot both pass
     the last slot. An allowed spawn leaves a reservation that counts as a running helper until a helper transcript
     started after it appears (or reserve_s passes). n None = uncapped (the open policy): reserve only. Fails open when
@@ -214,6 +261,10 @@ def _gate(seat, rules, now, n, refuse):
     import slot_allocator as SA
     hold_s = reserve_s(rules)
     proj = SA.projects_dir() / SA.SEAT_PROJECT[seat]
+    key, pattern = seat, os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")
+    if scope is not None:   # a role run's own allowance: its own session's helpers and reservations only
+        key, sub = scope
+        pattern = os.path.join(sub, "agent-*.jsonl") if sub else None
     d = SA.streams_dir()
     try:
         import fcntl
@@ -236,12 +287,18 @@ def _gate(seat, rules, now, n, refuse):
         rf = d / "spawn_reservations.json"
         allr = SA.read_json(rf)
         allr = allr if isinstance(allr, dict) else {}
-        mine = [t for t in (allr.get(seat) or []) if isinstance(t, (int, float))]
-        running = SA.running_helpers([proj], now, rules) if n is not None else []
+        mine = [t for t in (allr.get(key) or []) if isinstance(t, (int, float))]
+        if n is None:
+            running = []
+        elif scope is None:
+            running = SA.running_helpers([proj], now, rules)
+        else:
+            running = [x for x in SA.running_helpers([Path(scope[1]).parent.parent], now, rules)
+                       if Path(x["path"]).parent == Path(scope[1])] if scope[1] else []
         starts = []
-        if mine and hold_s > 0:
+        if mine and hold_s > 0 and pattern:
             lo = min(mine) - START_SLACK_S
-            for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
+            for p in glob.glob(pattern):
                 try:
                     if os.path.getmtime(p) < lo:
                         continue
@@ -255,7 +312,7 @@ def _gate(seat, rules, now, n, refuse):
             held = running + [{"id": "reserved-" + time.strftime("%H%M%S", time.localtime(t))} for t in pend]
             return refuse(held)
         if hold_s > 0:
-            allr[seat] = sorted(pend + [max([now] + pend)])
+            allr[key] = sorted(pend + [max([now] + pend)])
             tmpf = rf.with_name(rf.name + f".{os.getpid()}.tmp")
             tmpf.write_text(json.dumps(allr))
             os.replace(tmpf, rf)

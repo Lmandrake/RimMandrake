@@ -14,7 +14,9 @@ every mod exactly one class:
   wait     on a named running unit, a busy game driver (queue order recorded), a held bridge, full slots, an account
            hold, a settling run, or the Designer's own launcher
   paused   the pipeline stops that mod and says why and what un-pauses it; ops_watch raises ONE alarm with a fixed id
-           (OPS_MATURATION_MOD_PAUSED) while any mod is paused, so a repeat reopens it
+           (OPS_MATURATION_MOD_PAUSED) while any mod is paused, so a repeat reopens it; a pause whose cause is a
+           filed open fix item (coverage stopped, or a Designer blocked on a named item) launches that item's one
+           fixer run itself (_stop_tickets), and stays paused meanwhile
   rested   a passed version: nothing runs and nothing is asked; opening the next version is an ordering call
   owner    a stop that is genuinely his (his walk, a Designer turn waiting on him, a lock
            with recorded evidence against 0.1.0): a ready-to-ask card text goes in the Conductor log once, and it
@@ -303,6 +305,22 @@ def stop_tickets(dst, s, items):
     return [{"id": i} for i in out]
 
 
+ITEM_NAME = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
+
+
+def blocked_tickets(dst, items):
+    """-> [{id}] the open ledger items a blocked Designer's blocked_on names, in the order named (an alarm name or
+    unknown word is no item; a closed item is no ticket). RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS:
+    a Designer run that ends blocked on a pipeline defect files its fix item and names it; the tick launches it."""
+    import model
+    out = []
+    for i in ITEM_NAME.findall(str((dst or {}).get("blocked_on") or "") if isinstance(dst, dict) else ""):
+        x = items.get(i)
+        if x is not None and x.state and x.state not in model.TERMINAL and i not in out:
+            out.append(i)
+    return [{"id": i} for i in out]
+
+
 def ticket_runs(item):
     """-> [(unit, status)] of the detached runs launched on this item (a hand launch counts as its one fixer run)."""
     import detached_helper as DH
@@ -512,6 +530,10 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
                    fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)))
+            if row.get("decision") == "designer_blocked":
+                # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
+                # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
+                _stop_tickets(fx, row, s, dst, now, kind="blocked")
         if row.get("aut") == "autolock":
             # the pipeline's lock is an act, not a run: no slot; tried once (transient faults up to launch_tries)
             x = (s.get("steward") or {}).get(row["steward_key"])
@@ -540,12 +562,17 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     return rows, launches
 
 
-def _stop_tickets(fx, row, s, dst, now):
+def _stop_tickets(fx, row, s, dst, now, kind="stop"):
     """RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED: a coverage-stopped mod stays paused, but its own open fix tickets get
     one fixer run each (the road-back fixer, extended): a live run on a ticket is waited on and booked as its run, an
     earlier run on it counts as spent, and the status names the ticket. No ticket or an unreadable ledger: as before."""
+    lead = "judging stopped" if kind == "stop" else "the Designer is blocked"
     try:
-        tk = fx["stop_tickets"](row["mod"], dst, s) if "stop_tickets" in fx else stop_tickets(dst, s, ledger_items())
+        if kind == "blocked":
+            tk = (fx["blocked_tickets"](row["mod"], dst) if "blocked_tickets" in fx
+                  else blocked_tickets(dst, ledger_items()))
+        else:
+            tk = fx["stop_tickets"](row["mod"], dst, s) if "stop_tickets" in fx else stop_tickets(dst, s, ledger_items())
     except Exception:       # noqa: BLE001  an unreadable ledger leaves the plain pause
         tk = None
     if not tk:
@@ -559,17 +586,18 @@ def _stop_tickets(fx, row, s, dst, now):
             fixed.setdefault(t["id"], {"item": t["id"], "unit": unit, "hand": True, "at": now})
             if status in ("launching", "running"):
                 row.update(decision="live", waits_on="%s (fix ticket %s)" % (unit, t["id"]), need=None,
-                           why="judging stopped and stays paused; its fix ticket %s has a live run %s" % (t["id"], unit))
+                           why="%s and stays paused; its fix ticket %s has a live run %s" % (lead, t["id"], unit))
                 return
     todo = [t["id"] for t in tk if t["id"] not in fixed]
     ids = ", ".join(t["id"] for t in tk)
     if todo:
-        row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None,
-                   why="judging stopped; its fix ticket %s (of %d open: %s) gets one fixer run while the mod stays "
-                       "paused" % (todo[0], len(tk), ids))
+        row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None, fix_for=kind,
+                   why="%s; its fix ticket %s (of %d open: %s) gets one fixer run while the mod stays "
+                       "paused" % (lead, todo[0], len(tk), ids))
     else:
-        row["why"] += "; every open fix ticket (%s) has had its one fixer run and is still open" % ids
-        row["need"] += "; its open fix tickets (%s) have each had their one fixer run" % ids
+        row["why"] = str(row.get("why") or "") + "; every open fix ticket (%s) has had its one fixer run and is still open" % ids
+        row["need"] = (row.get("need") or "%s: PAUSED, %s" % (row["mod"], lead)) + \
+            "; its open fix tickets (%s) have each had their one fixer run" % ids
 
 
 def classify(cfg, st, rows, now):
@@ -1012,7 +1040,17 @@ def steward_brief(root, mod, row):
         "saying what you read, what you moved or filed, and anything that is the owner's (as card text).", ""])
 
 
-def fixer_brief(item, mod, cap):
+def fixer_brief(item, mod, cap, fix_for=None):
+    if fix_for == "blocked":
+        return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
+                "src/RimMandrake/rimflow/cli.py show %s` to its end: %s's Designer ended blocked on it, a defect in the "
+                "pipeline's own machinery, and the mod is PAUSED until it is fixed. Fix it, its acceptance test first "
+                "(watch it fail on the base), land with `./publish -m ... <paths>`, close the item with the published "
+                "sha, then un-block the Designer: `python3 src/RimMandrake/rimflow/designer_stage.py unblock "
+                "design/concepts/%s --why \"%s fixed at <sha>\"` and land design/concepts/%s/stage.json. If it cannot "
+                "be fixed offline, or the fix is the owner's (a bar, a ruling, a spend cap), write that in a note "
+                "starting LEFT OPEN: and drop nothing. Never take the bridge or a game.\n%s\n" % (
+                    item, mod, item, cap, item, mod, mod, item, mod, M.SELF_FIX_RULE))
     return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
             "src/RimMandrake/rimflow/cli.py show %s` to its end: it is one failed line of %s's in-game visit or blind "
             "cycle, sent back by the steward. Fix it, run its acceptance test (watch it fail first if it is new), land "
@@ -1102,7 +1140,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     tries, filed = int(retry.get("tries") or 0) + 1, False
     if row["aut"] == "fixer":
         item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
-        brief = fixer_brief(item, mod, row["cap"])
+        brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"))
         book = s.setdefault("fixers", {})
         key = item
     else:
