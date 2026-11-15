@@ -30,13 +30,6 @@
    "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
   },
   {
-   "added": "2026-11-13T07:54:07Z",
-   "expires": "2026-11-27T07:54:07Z",
-   "item": "RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT",
-   "test": "src/RimMandrake/Utils/selftest_settings_screens.py",
-   "why": "filed, too new for the list; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
    "added": "2026-11-13T05:16:25Z",
    "expires": "2026-11-27T05:16:25Z",
    "item": "RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK",

@@ -539,9 +539,11 @@ MODS = {
         "Mod switch": "Now",
         "Throw strength and range": "Now",
         "What gets thrown": "Now",
+        "Flying goods": "Now",
         "Impact and landing": "Now",
+        "Burning gas": "Now",
         "Shield belts": "Now",
-        "Performance caps and debug": "Now",
+        "Debug": "Now",
     }, ()),
     "AcousticScanner": ("RM_AcousticScannerMod.cs", "RM_AcousticScanner.csproj", {
         "Sounder availability": "Now",
@@ -857,7 +859,8 @@ DELIBERATE_KEY_PREFIXES = ("hose_",)
 INTERNAL_FLAGS = {"hoseSettingsImported"}
 
 
-GROUP_RE = re.compile(r'if \(Group\(list, ("([^"]+)"|"(\w+)"\.Translate\(\)), [\w.]*SettingScope\.(\w+),\s+new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)')
+# a group may be dev-only: `if (Prefs.DevMode && Group(list, ...))` (ExplosiveKnockback's Debug group)
+GROUP_RE = re.compile(r'if \((?:Prefs\.DevMode && )?Group\(list, ("([^"]+)"|"(\w+)"\.Translate\(\)), [\w.]*SettingScope\.(\w+),\s+new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)')
 
 
 def english_keyed(mod_dir):
