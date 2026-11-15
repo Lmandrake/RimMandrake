@@ -1,0 +1,3 @@
+A criterion-repair patch (ExplosiveKnockback closed_containers_thrown_2026-11-15/tree_sheet_rewording.patch) rewrote the tree leaf and the sheet's settings lines but missed sheet.md line 36 ('shoved a little: one cell at or under the 250 kg container mass limit'). certify still printed PASS and both 'slides one cell' greps read 0, because the stale line said 'one cell' without 'slides'. All three cold readers flagged e20 as ambiguous against it. Before certifying a rewording patch, grep the sheet and tree for the old idea's core noun ('one cell'), not only the verify grep's exact phrase.
+item: RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING
+home: NONE

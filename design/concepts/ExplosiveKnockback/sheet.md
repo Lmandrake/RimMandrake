@@ -33,7 +33,7 @@
 - [leaf:goods_arc_spin_rebound] Loose goods and corpses, a pawn the blast kills among them, fly wild: about 1.6 times as far as a person, high arc, fast spin, rebounds off walls and closed doors keeping about 70 percent each, until spent; over sandbags, and never into deep water. OWNER:1794468855146168085, owed
 - [leaf:every_good_moves] Every light loose good the blast reaches with a throw of a cell or more moves (bar those spared above); the 40-throw cap and the per-tick drop are removed, nothing is skipped over a cap. OWNER:1794468864684141079, owed
 - [leaf:open_shelf_scatters] Open shelves, hoppers and tables protect nothing: anything that draws its contents is open, period. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
-- [leaf:closed_container_holds] Closed containers (storage that hides what it holds: sealed crates, modded lockers and safes that do not draw their contents, and another mod's hiding container given the opt-in tag, such as the Armoury's secret floor panels) keep their goods and may themselves be shoved a little: one cell at or under the 250 kg container mass limit, else a jolt, never into a pit, a wall or onto a pawn. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
+- [leaf:closed_container_holds] Closed containers (storage that hides what it holds: sealed crates, modded lockers and safes that do not draw their contents, and another mod's hiding container given the opt-in tag, such as the Armoury's secret floor panels) keep their goods and may themselves be shoved a little: thrown a short way at or under the 250 kg container mass limit, else a jolt, never into a pit, a wall or onto a pawn. OWNER:1794468845275647261 OWNER:1794529787425697771, owed
 - [leaf:heavy_stack_knocks] A heavy thrown stack gives a pawn a light knock and a stagger; light goods pass. OWNER:1794468869384727517, owed
 - [leaf:every_harmful_blast_throws] Every harmful explosion throws: bombs full, fire at half strength (about half the throw), other mods too (the other-mods percent only for a damage type our patch does not tune, never stacked); harmless bursts nothing. OWNER:1794468840281537479, owed
 - [leaf:only_explosions_throw] Only explosions throw; melee and bullets move nobody, by his 2026-10-06 answer
@@ -46,7 +46,7 @@
 - [leaf:barrage_frame_budget] A mortar barrage into a full stockpile and a long gas chain stay smooth at normal speed, owed
 - [leaf:frame_time_probe] A per-frame time probe, so the frame budget can be measured
 - [leaf:walk_storeroom_raid] A raid on a stocked colony on the full list, with a mid-way reload, a repeat and a second order
-- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working, each to its own off state: goods in the air off, goods unthrown, never the old hop; closed guard off, container goods thrown loose; container shove off, containers stay; sealed crates counted closed off, a crate neither slides nor jolts; heavy knock off, stacks pass; gas chain off, a cloud burns without bursts; fire at half off, fire throws nothing; blast power from damage off, damage is ignored
+- [leaf:settings_scale_and_switch] Superb Mod Settings: every line takes effect (the removed cap settings are gone from the page), and every new part switches off cleanly with the rest still working, each to its own off state: goods in the air off, goods unthrown, never the old hop; closed guard off, container goods thrown loose; container shove off, containers stay; sealed crates counted closed off, a crate is neither thrown nor jolted; heavy knock off, stacks pass; gas chain off, a cloud burns without bursts; fire at half off, fire throws nothing; blast power from damage off, damage is ignored
 - [floor:mod_settings] Superb Mod Settings: master switch, strengths and every new part switch off cleanly
 - [floor:tick_cost] The thrown-thing carrier's own tick cost, measured on the walk
 
@@ -61,7 +61,7 @@
 ## open
 
 ## delegated
-- A 1x1 closed container whose own mass plus contents is at or under the 250 kg container mass limit (a Mod Setting, not the 75 kg goods limit) slides one cell if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
+- A 1x1 closed container whose own mass plus contents is at or under the 250 kg container mass limit (a Mod Setting, not the 75 kg goods limit) is thrown a short way if the cell behind it is free, else it jolts in place; never into a pit, a wall or onto a pawn
 - Sealed crates count as closed containers is a Mod Setting, on by default; a crate's goods sit in its own holder, out of any blast's reach, so the switch only decides whether the crate is shoved or jolted (off: neither)
 - The creature mass limit is 150 kg (60 kg times the old body size 2.5, so a muffalo at 144 flies and a rhino at 180 does not), measured from the game's defs; a corpse is weighed only by the 75 kg goods limit; the grav-ram's own limit is 216 kg
 - A damage type's normal damage is its own default (Bomb 50, Flame 10), so fire keeps its half and a mortar still throws a colonist 3 cells; the vanilla grenade, mortar and IED all deal 50 and differ by radius; blast power from damage is a Mod Setting, on; gas clump bursts are not scaled by damage

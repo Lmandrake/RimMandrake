@@ -1,10 +1,10 @@
 {
  "author": "tree lineage BENCH builder run a0034a1c20bdb097d, edited by the Conductor in 0c1592e2d7 and by BENCH Designer runs bench-ek3-st3-20261113 and bench-ek3-st3b-20261113",
- "examiner": "rm-judge aad34d02f157fbdcd (opus)",
+ "examiner": "rm-judge aad34d02f157fbdcd (opus); exam11: its 15 container scenarios (c10, c4, e20, m13, m14, m15, m19, m20, v11, v6, v7, w3, w4, w7, y5) reworded to the owner's card by the BENCH builder, polarity unchanged",
  "challenger": "rm-judge a8fabd7e113116576 (opus)",
  "inputs": {
-  "tree": "02900038234b11c46790c7a09b75a68a0b877cd3270c7e57c94564ef758b15b2",
-  "sheet": "234fd3c20e850bdde174efc6b3d4b20f1025dc5ddbf2c15caef766a925f0c722"
+  "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0",
+  "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d"
  },
  "scenarios": [
   {
@@ -123,8 +123,8 @@
   },
   {
    "id": "e20",
-   "text": "A mortar shell lands in a storeroom two cells from a Deep Storage weapons locker holding rifles, about 100 kg with its rifles, the floor cell behind the locker empty. The locker slides one cell away from the blast and every rifle stays inside it.",
-   "expect": "accept: a closed container (a modded locker that does not draw its contents) keeps its goods and, 1x1, at or under the 250 kg container mass limit and with a free cell behind it, slides one cell",
+   "text": "A mortar shell lands in a storeroom two cells from a Deep Storage weapons locker holding rifles, about 100 kg with its rifles, the floor cell behind the locker empty. The locker is thrown a short way from the blast, landing a couple of cells off, and every rifle stays inside it.",
+   "expect": "accept: a closed container (a modded locker that does not draw its contents) keeps its goods and, 1x1, at or under the 250 kg container mass limit and with a free cell behind it, is thrown a short way",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -171,8 +171,8 @@
   },
   {
    "id": "c4",
-   "text": "A mortar shell lands beside a Deep Storage weapons locker of rifles with empty floor behind it. The locker slides one cell, and as it settles two rifles spill from it onto the floor beside it, the rest staying inside.",
-   "expect": "reject: a closed container keeps its goods; only the container itself may be shoved",
+   "text": "A mortar shell lands beside a Deep Storage weapons locker of rifles with empty floor behind it. The locker is thrown a short way, and as it lands two rifles spill from it onto the floor beside it, the rest staying inside.",
+   "expect": "reject: a closed container keeps its goods; only the container itself may be thrown",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -207,8 +207,8 @@
   },
   {
    "id": "c10",
-   "text": "A mortar shell lands beside a Deep Storage weapons locker standing against a wall, the wall directly behind it. The locker does not slide but jolts in place, and every rifle inside stays inside.",
-   "expect": "accept: a closed container may slide one cell or jolt; never into a wall, and its goods stay in",
+   "text": "A mortar shell lands beside a Deep Storage weapons locker standing against a wall, the wall directly behind it. The locker is not thrown but jolts in place, and every rifle inside stays inside.",
+   "expect": "accept: a closed container may be thrown a short way or jolt; never into a wall, and its goods stay in",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -297,8 +297,8 @@
   },
   {
    "id": "y5",
-   "text": "A grenade goes off beside a sealed crate of silver standing at the lip of an open pit, the pit on the far side of the crate from the blast. The crate slides one cell straight over the edge and drops to the pit floor with its silver.",
-   "expect": "reject: a closed container (a sealed crate) may shift a cell or jolt but is never shoved into a pit",
+   "text": "A grenade goes off beside a sealed crate of silver standing at the lip of an open pit, the pit on the far side of the crate from the blast. The crate is thrown a short way straight over the edge and drops to the pit floor with its silver.",
+   "expect": "reject: a closed container (a sealed crate) may be thrown a short way or jolt but is never thrown into a pit",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -333,14 +333,14 @@
   },
   {
    "id": "w3",
-   "text": "A grenade goes off beside an ancient security crate, the big two-by-two kind, holding gold, with open floor behind it. The whole crate slides a cell away from the blast, the gold still inside.",
-   "expect": "reject: only a 1x1 closed container may slide; one larger than 1x1 stays on its cells and jolts in place",
+   "text": "A grenade goes off beside an ancient security crate, the big two-by-two kind, holding gold, with open floor behind it. The whole crate is thrown a short way from the blast, the gold still inside.",
+   "expect": "reject: only a 1x1 closed container may be thrown; one larger than 1x1 stays on its cells and jolts in place",
    "expect_source": "leaf:closed_container_holds"
   },
   {
    "id": "w4",
-   "text": "A mortar shell lands beside a 500 kg Deep Storage safe full of silver, with empty floor behind it. The safe slides a full cell across the floor, its silver still locked inside.",
-   "expect": "reject: a 1x1 closed container slides only at or under the 250 kg container mass limit; the 500 kg safe is over it and only jolts in place",
+   "text": "A mortar shell lands beside a 500 kg Deep Storage safe full of silver, with empty floor behind it. The safe is thrown a short way across the floor, its silver still locked inside.",
+   "expect": "reject: a 1x1 closed container is thrown only at or under the 250 kg container mass limit; the 500 kg safe is over it and only jolts in place",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -358,7 +358,7 @@
   {
    "id": "w7",
    "text": "A mortar shell lands beside a sealed crate of components with a colonist standing on the cell directly behind it. The crate shudders on its cell without moving off it, the colonist is not pushed by it, and every component stays inside the crate.",
-   "expect": "accept: a sealed crate is a closed container and keeps its goods; with a pawn behind it, it jolts in place, never shoved onto a pawn",
+   "expect": "accept: a sealed crate is a closed container and keeps its goods; with a pawn behind it, it jolts in place, never thrown onto a pawn",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -555,20 +555,20 @@
   },
   {
    "id": "m13",
-   "text": "A mortar shell lands two cells from a Deep Storage weapons locker that hides its rifles, 200 kg with its contents, an empty floor cell behind it. The locker slides one cell away from the blast and every rifle stays inside.",
-   "expect": "accept: a 1x1 closed container at or under the 250 kg container mass limit (not the 75 kg goods limit) slides one cell when the cell behind is free, its goods kept",
+   "text": "A mortar shell lands two cells from a Deep Storage weapons locker that hides its rifles, 200 kg with its contents, an empty floor cell behind it. The locker is thrown a short way from the blast and every rifle stays inside.",
+   "expect": "accept: a 1x1 closed container at or under the 250 kg container mass limit (not the 75 kg goods limit) is thrown a short way when the cell behind is free, its goods kept",
    "expect_source": "leaf:closed_container_holds"
   },
   {
    "id": "m14",
    "text": "The same 200 kg weapons locker with an empty cell behind it is beside the next mortar shell. It does not move off its cell, only shudders in place, because it weighs more than 75 kg.",
-   "expect": "reject: a 1x1 closed container at or under the 250 kg container mass limit slides one cell when the cell behind is free; the 75 kg goods limit does not weigh containers",
+   "expect": "reject: a 1x1 closed container at or under the 250 kg container mass limit is thrown a short way when the cell behind is free; the 75 kg goods limit does not weigh containers",
    "expect_source": "leaf:closed_container_holds"
   },
   {
    "id": "m15",
-   "text": "A grenade goes off beside a 1x1 modded safe that hides its contents, 300 kg with its silver, an empty floor cell behind it. The safe slides a full cell away from the blast, silver still inside.",
-   "expect": "reject: a closed container heavier than the 250 kg container mass limit only jolts in place; it slides only at or under the limit",
+   "text": "A grenade goes off beside a 1x1 modded safe that hides its contents, 300 kg with its silver, an empty floor cell behind it. The safe is thrown a short way from the blast, silver still inside.",
+   "expect": "reject: a closed container heavier than the 250 kg container mass limit only jolts in place; it is thrown only at or under the limit",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -591,14 +591,14 @@
   },
   {
    "id": "m19",
-   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a mortar shell lands beside a 1x1 sealed crate of components with an empty cell behind it. The crate neither slides nor jolts, and every component stays inside it.",
-   "expect": "accept: sealed crates counted closed off, a crate neither slides nor jolts, and its goods stay in its own holder",
+   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a mortar shell lands beside a 1x1 sealed crate of components with an empty cell behind it. The crate is neither thrown nor jolted, and every component stays inside it.",
+   "expect": "accept: sealed crates counted closed off, a crate is neither thrown nor jolted, and its goods stay in its own holder",
    "expect_source": "leaf:settings_scale_and_switch"
   },
   {
    "id": "m20",
-   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a grenade goes off beside a 1x1 sealed crate with free floor behind it. The crate slides one cell away from the blast, its goods inside.",
-   "expect": "reject: with sealed crates counted closed off, a crate neither slides nor jolts",
+   "text": "With 'Sealed crates count as closed containers' switched off in Mod Settings, a grenade goes off beside a 1x1 sealed crate with free floor behind it. The crate is thrown a short way from the blast, its goods inside.",
+   "expect": "reject: with sealed crates counted closed off, a crate is neither thrown nor jolted",
    "expect_source": "leaf:settings_scale_and_switch"
   },
   {
@@ -681,14 +681,14 @@
   },
   {
    "id": "v6",
-   "text": "A mortar shell lands two cells from a 1x1 modded weapons locker that hides its rifles, total 180 kg with its contents, and the floor behind it is free. The rifles stay inside; the locker does not slide but jolts in place, because its mass is over the 75 kg mass limit.",
-   "expect": "reject: a closed container is weighed by the 250 kg container mass limit, not the 75 kg goods limit; at 180 kg with a free cell behind it slides one cell",
+   "text": "A mortar shell lands two cells from a 1x1 modded weapons locker that hides its rifles, total 180 kg with its contents, and the floor behind it is free. The rifles stay inside; the locker is not thrown but jolts in place, because its mass is over the 75 kg mass limit.",
+   "expect": "reject: a closed container is weighed by the 250 kg container mass limit, not the 75 kg goods limit; at 180 kg with a free cell behind it is thrown a short way",
    "expect_source": "leaf:closed_container_holds"
   },
   {
    "id": "v7",
-   "text": "A grenade goes off beside a 1x1 hiding weapons locker of 200 kg standing on the rim of an open pit. The locker is shoved one cell into the pit and drops to its floor with its rifles still inside, and a colonist can later haul the rifles back out.",
-   "expect": "reject: a shoved closed container never goes into a pit; with the pit behind it, it jolts in place",
+   "text": "A grenade goes off beside a 1x1 hiding weapons locker of 200 kg standing on the rim of an open pit. The locker is thrown a short way into the pit and drops to its floor with its rifles still inside, and a colonist can later haul the rifles back out.",
+   "expect": "reject: a thrown closed container never goes into a pit; with the pit behind it, it jolts in place",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -711,8 +711,8 @@
   },
   {
    "id": "v11",
-   "text": "With 'Sealed crates count as closed containers' off, a mortar shell lands two cells from a 1x1 sealed crate with free floor behind it and from a hiding weapons locker of 150 kg. The locker slides one cell away; the crate neither slides nor jolts, and its goods stay inside.",
-   "expect": "accept: off, a sealed crate neither slides nor jolts and keeps its goods in its own holder; the locker under the 250 kg container limit with a free cell behind slides one",
+   "text": "With 'Sealed crates count as closed containers' off, a mortar shell lands two cells from a 1x1 sealed crate with free floor behind it and from a hiding weapons locker of 150 kg. The locker is thrown a short way; the crate is neither thrown nor jolted, and its goods stay inside.",
+   "expect": "accept: off, a sealed crate is neither thrown nor jolted and keeps its goods in its own holder; the locker under the 250 kg container limit with a free cell behind is thrown a short way",
    "expect_source": "leaf:closed_container_holds"
   },
   {
@@ -722,16 +722,16 @@
    "expect_source": "leaf:thrown_into_pit_falls"
   }
  ],
- "scenarios_hash": "70926da2da0758b66047acc9dc5d50beaf316acb897667b80e22fee5a54dcab6",
+ "scenarios_hash": "8d1cf1f9cfa81af029eb14c1db9bb5dda2a8536ba5283d3ed38d14f091fa34fb",
  "readers": [
-  "reader a473319ec15ae5385 (opus)",
-  "reader a8fa6ad09cfa05533 (opus)"
+  "reader a4f7d2a0f5fcdeba0 (opus)",
+  "reader a0e1cdf81e0def718 (opus)"
  ],
  "control": {
   "broken_leaf": "heavier_flies_less",
   "missed": true,
-  "reader": "a83ccac75557b40bd",
-  "note": "tree and sheet with heavier_flies_less removed and every mention of its rule stripped (his 2026-11-13 mass and damage words, the blast-power card line, the delegated normal-damage line, the settings blast-power off clause, pruning); the control reader got m1, m3, m5, m8, v1, v2 wrong (113 of 119; 4 of the 5 scenarios the examiner listed as relying on the leaf); the real tree's readers got all 119 right"
+  "reader": "aa88842fb5049ecd5",
+  "note": "exam10's control copy (heavier_flies_less removed, every mention of its rule stripped) with the 2026-11-15 container rewording applied; the control reader got m1, m3, m5, m8, v1, v2 wrong (113 of 119 right; of the relied scenarios m1, m3, m5, m7, m8: m1, m3, m5, m8 wrong); the real tree's readers got 119 of 119 right"
  },
  "score": {
   "right": 119,
@@ -739,6 +739,6 @@
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam10\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json",
- "exam_run": "bench-ek3-st4-20261113 (exam10): 73 carried from exam9, 6 fixed (e7, e8, e10, e20, e23, w4: body-size and container-limit wording), 28 new (m1-m28) by a fresh examiner on the leaves the 2026-11-13 rework moved, 12 by a fresh challenger (v1-v12); 80 rejects"
+ "verdicts": "D:\\ClaudeWork\\rimmandrake\\designer\\ExplosiveKnockback\\exam11\\verdicts_r1.json, verdicts_r2.json, verdicts_control.json",
+ "exam_run": "RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING (exam11, 2026-11-15): exam10's 119 scenarios refrozen, 15 container scenarios reworded from 'slides one cell' to 'thrown a short way' after the tree took the owner's rewording (OWNER:1794721689897638306, certified OWNER:1794748823561950419); two fresh readers and a fresh control reader on the new tree"
 }
