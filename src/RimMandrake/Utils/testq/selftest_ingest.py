@@ -275,6 +275,76 @@ def publish_checks():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def peer_dirty_checks():
+    """RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: the dispatch clone has several writers (RUNNER
+    ingest, the Dispatcher's notes, the maturation tick's filings, the live sweep), each appending to its own shard and
+    publishing it alone. `git rebase` refuses on ANY unstaged file, so one writer's live append stopped every other
+    writer's publish, and the clone sat ahead 7 / behind 49 for 40 min (2026-11-15 11:41-12:20 PST) while its timers ran
+    stale code. Writer A's publish must land A and leave B's unstaged line where it is, level with origin; also when
+    origin has moved B's shard too (a union-merged shard: B's line stays on top of origin's)."""
+    import ingest as I
+    peer = os.path.join("infrastructure", "state", "ledger", "events", "DISPATCHER.jsonl")
+    for upstream_peer in (False, True):
+        root = tempfile.mkdtemp(prefix="rf_peer_")
+        bare, disp, rival = (os.path.join(root, n) for n in ("origin.git", "dispatch", "rival"))
+
+        def sh(*a, cwd=None):
+            return subprocess.run(["git"] + list(a), cwd=cwd, capture_output=True, text=True, timeout=60)
+        try:
+            sh("init", "-q", "--bare", "-b", "main", bare)
+            sh("clone", "-q", bare, rival)
+            for d in (rival,):
+                sh("config", "user.email", "st@x", cwd=d)
+                sh("config", "user.name", "st", cwd=d)
+            os.makedirs(os.path.join(rival, os.path.dirname(I.SHARD_REL)))
+            for rel, line in ((I.SHARD_REL, '{"a":1}\n'), (peer, '{"d":1}\n'),
+                              (".gitattributes", "infrastructure/state/ledger/events/*.jsonl merge=union\n")):
+                with open(os.path.join(rival, rel), "w") as f:
+                    f.write(line)
+                sh("add", rel, cwd=rival)
+            sh("commit", "-qm", "init", cwd=rival)
+            sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+            sh("clone", "-q", bare, disp)
+            sh("config", "user.email", "st@x", cwd=disp)
+            sh("config", "user.name", "st", cwd=disp)
+            with open(os.path.join(disp, I.SHARD_REL), "a") as f:      # writer A: the lines this publish ships
+                f.write('{"runner":"ingest"}\n')
+            with open(os.path.join(disp, peer), "a") as f:             # writer B: a live append, not committed
+                f.write('{"dispatcher":"note"}\n')
+            target = peer if upstream_peer else "other.txt"
+            with open(os.path.join(rival, target), "a") as f:
+                f.write('{"rival":"line"}\n')
+            sh("add", target, cwd=rival)
+            sh("commit", "-qm", "rival", cwd=rival)
+            sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+            lint_py = os.path.join(disp, "src", "RimMandrake", "Utils", "ledger_lint.py")
+            os.makedirs(os.path.dirname(lint_py))
+            with open(lint_py, "w") as f:
+                f.write(LINT_CLEAN)
+            old, I.REPO = I.REPO, disp
+            try:
+                out = I.publish(1)
+            finally:
+                I.REPO = old
+            sh("fetch", "-q", "origin", cwd=disp)
+            lr = sh("rev-list", "--left-right", "--count", "origin/main...HEAD", cwd=disp).stdout.split()
+            on_origin = sh("show", "origin/main:" + I.SHARD_REL, cwd=disp).stdout
+            with open(os.path.join(disp, peer)) as f:
+                wt = f.read()
+            staged = sh("diff", "--cached", "--name-only", cwd=disp).stdout.split()
+            want = '{"d":1}\n' + ('{"rival":"line"}\n' if upstream_peer else "") + '{"dispatcher":"note"}\n'
+            label = "origin also moved the peer's shard" if upstream_peer else "origin moved another file"
+            check(out.endswith("pushed") and '{"runner":"ingest"}' in on_origin,
+                  "%s, a peer's shard holds an unstaged append: writer A's publish still lands (%r)" % (label, out))
+            check(lr == ["0", "0"], "%s: the clone is level with origin afterwards, so its timers run current code "
+                  "(behind/ahead %s)" % (label, lr))
+            check(wt == want and peer not in staged and '{"dispatcher":"note"}' in sh("diff", "--", peer, cwd=disp).stdout,
+                  "%s: the peer's line stays in its working tree, unstaged and whole, on top of origin's bytes (%r)"
+                  % (label, wt))
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
+
+
 def crash_checks():
     """A record whose ingest raises (a rimflow call timing out) is retried and counted like a returned error; it
     neither stops the records after it nor crashes ingest.py - a crash there failed the unit every tick, so no record
@@ -1060,6 +1130,7 @@ def main():
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     publish_checks()
+    peer_dirty_checks()
     publish_prose_checks()
     leftover_checks()
     fresh_lock_checks()

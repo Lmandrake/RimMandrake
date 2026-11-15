@@ -759,8 +759,8 @@ def _publish_locked(n, shard_rel=SHARD_REL, message=None):
 
 
 def _publish(n, shard_rel=SHARD_REL, message=None):
-    """Commit `shard_rel` alone, pull --rebase, lint, push. Also the RimFlow v3 Dispatcher's publisher for its
-    DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
+    """Commit `shard_rel` alone, replay onto origin/main (dirty files carried), lint, push. Also the RimFlow v3
+    Dispatcher's publisher for its DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
 
@@ -781,30 +781,59 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
         c = git_index("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", *paths)
         if c.returncode != 0:
             return "commit failed: " + c.stderr.strip()[-200:]
-    p = None
+    p, note = None, ""
     for _ in range(3):
         # Never `pull --rebase`: it reads FETCH_HEAD, where a peer's fetch in this clone leaves a second line, and then
         # refuses with "Cannot rebase onto multiple branches" (8 stopped publishes by 2026-11-01). origin/main is one ref.
         r = git("fetch", "-q", "origin", "main")
-        if r.returncode == 0:
-            r = git("rebase", "-q", "origin/main")
         if r.returncode != 0:
-            # A failed rebase leaves a detached, conflicted tree: pushing HEAD then pushes origin's own tip and
-            # "succeeds" while the RUNNER commit sits unapplied (drill 2026-10-26). Abort, keep the commit local,
-            # stop publication (design section 6: no reset, no stash, no game re-run).
-            gd = git("rev-parse", "--git-dir").stdout.strip()
-            rebasing = any(os.path.isdir(os.path.join(REPO, gd, d)) for d in ("rebase-merge", "rebase-apply"))
-            if rebasing:
-                git("rebase", "--abort")
-            return "publish stopped: fetch and rebase failed%s, the commit stays local (the next ingest retries): " % \
-                (", rebase aborted" if rebasing else "") + (r.stderr or r.stdout).strip()[-200:]
-        bad = lint_refusal()
+            return "publish stopped: fetch failed, the commit stays local (the next ingest retries): " + \
+                (r.stderr or r.stdout).strip()[-200:]
+        # Never `git rebase` either: it refuses on ANY unstaged file, and this clone has several writers, each with a
+        # live append in its own shard, so they blocked each other's publish and the clone sat ahead 7 / behind 49 for
+        # 40 min (RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE, 2026-11-15). publish.py's replay is
+        # the seats' own landing path: plumbing (no worktree), then a reset that carries dirty files and unions shards.
+        head, why, stranded = replay_onto_origin()
+        if why:
+            return "publish stopped: the replay onto origin/main refused, the commit stays local (the next ingest " \
+                "retries): " + why
+        if stranded:
+            note = "this clone's branch did not move (a dirty file overlaps origin's change): %s; " % stranded
+        bad = lint_refusal(head)
         if bad:
             return "publish stopped: ledger_lint refuses HEAD, the commit stays local (the next ingest retries): " + bad
-        p = git("push", "-q", "origin", "HEAD:main")
+        p = git("push", "-q", "origin", "%s:refs/heads/main" % head)
         if p.returncode == 0:
-            return "pushed"
+            git("fetch", "-q", "origin", "main")
+            return note + "pushed"
     return "push failed (the commit stays local; the next ingest retries): " + p.stderr.strip()[-200:]
+
+
+def replay_onto_origin():
+    """publish.py's rebase() on REPO -> (sha to push, None, None) once the branch sits on origin/main with the dirty
+    files carried; (replayed tip, None, why) when the replay is good but a dirty file overlaps origin's change, so
+    only the branch waits (publish.Stranded: the work still lands); (None, why, None) when it refuses. Loaded by
+    path: this module has its own `publish`. Its prints are kept out of the ingest log line."""
+    import contextlib as _cl
+    import importlib.util
+    import io
+    spec = importlib.util.spec_from_file_location("rm_publish_tool", os.path.join(HERE, "..", "publish.py"))
+    pub = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pub)
+    said = io.StringIO()
+    try:
+        with _cl.redirect_stdout(said):
+            rebuilt = pub.rebase(REPO)
+    except pub.Stranded as s:
+        return s.tip, None, str(s).splitlines()[0][:200]
+    except pub.Refuse as e:
+        return None, str(e)[-300:], None
+    except (subprocess.SubprocessError, OSError) as e:          # commit-tree's check=True, a git timeout
+        return None, ("replay failed: %s %s" % (e, (getattr(e, "stderr", "") or "").strip()))[-300:], None
+    if rebuilt:                                       # a committed DLL conflicted: only ./publish rebuilds those
+        return None, "a committed DLL conflicted (%s); land it with ./publish" % ", ".join(sorted(rebuilt)), None
+    return subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True,
+                          timeout=60).stdout.strip(), None, None
 
 
 STALE_LOCK_S = 300
@@ -925,15 +954,15 @@ def clear_leftovers(git, now=None, procs=git_procs_in_repo):
     return "; ".join(notes) or None
 
 
-def lint_refusal():
-    """ledger_lint on HEAD vs origin/main, as the pre-push hook runs it (the dispatch clone has no hooks:
+def lint_refusal(rev="HEAD"):
+    """ledger_lint on `rev` (HEAD, or the replayed tip when the branch could not move) vs origin/main, as the pre-push hook runs it (the dispatch clone has no hooks:
     TESTQ_DISPATCH_PUSH_ENFORCE_LINT) -> None when clean, else why not to push. A lint that cannot run or crashes
     refuses too: this pusher is unattended, so it never pushes unlinted."""
     script = os.path.join(REPO, "src", "RimMandrake", "Utils", "ledger_lint.py")
     if not os.path.isfile(script):                   # a sparse clone without it: lint with this checkout's copy
         script = os.path.join(HERE, "..", "ledger_lint.py")
     try:
-        r = subprocess.run([sys.executable, script, "--rev", "HEAD", "--root", REPO, "--base", "origin/main"],
+        r = subprocess.run([sys.executable, script, "--rev", rev, "--root", REPO, "--base", "origin/main"],
                            capture_output=True, text=True, timeout=120)
     except (OSError, subprocess.SubprocessError) as e:
         return "ledger_lint could not run: %s" % e
