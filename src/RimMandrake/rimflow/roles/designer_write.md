@@ -2,7 +2,7 @@
 
 Injected with `designer.md` and `designer_scene_contract.md`. You write `sheet.md`, the tree, `plan.md`, `scenes.json`
 and `floor.json`. Stage 3 is `done` when `concept_tree.py lint` passes and `designer_stage.py check` accepts the scenes,
-the showcase set and the floor. 🔑 Ask him to approve the root text **before** this stage (it is stage 1's result): the tree is written once,
+the showcase set and the floor. 🔑 The root text is approved **before** this stage (it is stage 1's result: his approval, or a delegated Evidence-for-Ask approval, `designer.md`): the tree is written once,
 against an approved root, and then examined, signed and gated at that version.
 
 ## The sheet

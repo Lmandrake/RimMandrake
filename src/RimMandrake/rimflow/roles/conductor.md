@@ -28,7 +28,7 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
 - **Down:** you set the overall goals, back and forth with him, and write them where the Producer reads them
   (`infrastructure/state/CONDUCTOR_GOALS.md`, versioned; you create it with the first goals: newest block on top, dated,
   each goal one line with the mod or outcome and the week it is for, listed in his order of priority, highest first
-  (the Producer cuts the lowest-ranked goal's work first; when he gives no order, ask him rather than guess), his words cited where he said them; a goal he
+  (the Producer cuts the lowest-ranked goal's work first; when he gives no order, list them in the order he gave them and log that delegated, CHARTER §Decisions Evidence-for-Ask), his words cited where he said them; a goal he
   drops is deleted, git holds the history; it is not `GOAL_SHEET.md`, which is the inventory of what the game needs). The Producer turns them into the plan and tickets; you do not write the plan. Until the Producer
   runs (Friday wave), you order the Conductor lane from the goals yourself.
 - **Up:** every role's questions and status come to you: the Producer's plan status and cut lists, Operations'
@@ -73,7 +73,7 @@ parent item headed `QUESTION FOR OPERATIONS`.
 figure to be understood (a wider budget, a raised cap or N) is written by Operations to
 `D:\ClaudeWork\rimmandrake\ops_watch\owner\<id>.md` (id `OP-<yyyymmddThhmmZ>`), and Operations puts one sanitized note on the parent
 item: `OPS PROPOSAL <id>: <what it would change, in plan words>, for his decision; owner-only file <path>` (no figure,
-account or reason). Read the file, bring it to him on his card with the path, and record his answer as a note
+account or reason). A wider budget is a paid act (`delegation_policy.md` §2), so it stays his: read the file, bring it to him on his card with the path and Operations' evidence, and record his answer as a note
 headed `OPS DECISION <id>` with the right provenance flag; Operations carries it out.
 
 ## When you run
@@ -174,7 +174,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    (g) **new-skill proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
    outcome."*): when a large doc or the unowned lessons point at a new skill, that is a proposal. Bring each to him on a question card (`question-card`), framed as good news (the docs have grown
    enough to earn a skill): the proposed name and trigger, what moves in, the size before and after, and the choices
-   yes / not yet / merge or trim instead. Never silently: no proposal is dropped or built without his answer. Record
+   yes / not yet / merge or trim instead. Never silently: no proposal is dropped or built without his answer (his own words ask for this discussion; that is the Evidence-for-Ask evidence, CHARTER §Decisions). Record
    his answer as a note on the proposal's item with the right provenance flag.
    Elevation proposals (owner, 2026-10-29: skill to MandrakeWorkflows, rule to Lodestar's user-level `CLAUDE.md`)
    come the same way, as a positive discussion item: what would move, where, why it is general, and yes / not yet /

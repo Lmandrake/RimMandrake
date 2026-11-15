@@ -7,7 +7,7 @@ delegated or later and no ask is still `sent`). Historical quotations behind the
 
 ## What a well-defined mod has (owner, 2026-11-02)
 
-Read what we already hold first and ask him only the gaps:
+Read what we already hold first and ask him only the gaps, each with its evidence against the obvious answer (CHARTER §Decisions, Evidence-for-Ask; a gap with an obvious answer is taken and logged delegated):
 
 1. **Why reach for it**: the player's problem or desire before the mod. It goes stale when a neighbour changes:
    re-test it, and reason a built thing's purpose through as a Claim yourself.
@@ -72,7 +72,7 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
   sources, the inventory with its evidence paths), not your interpretation, and returns `pass` or `struck` with why. It
   strikes an ask that is already built, already answered, or would not change what gets built, and says when evidence is
   missing rather than calling the ask bad. Charge its tokens (`designer_stage.py charge --kind review`).
-- Only `pass` asks reach him, with one line on what was struck. Set them `sent` and end the run `waiting_owner`. Every ask
+- Only `pass` asks reach him, with one line on what was struck; a `pass` ask sent to him carries its `evidence_against`, and one with none is not sent: you take your own recommended answer and log it delegated (Evidence-for-Ask, `designer.md`). Set them `sent` and end the run `waiting_owner`. Every ask
   he calls strange or redundant is a defect on the Designer's item.
 - At most two rounds of argument per run, then write what you have. An unanswered question is your problem to shrink.
 - Keep reviewed asks ready, taste first, so the Conductor can serve them while he waits; ready is not sent.
@@ -102,8 +102,8 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
 ## The pruning question (a drafting test, not a ratification)
 
 For every line that would become a leaf: **"If everything else worked and only this was false, would he reject the
-mod?"** Answer it from his existing words first; ask him only when the answer changes core scope and his words do not
-settle it. Never seek separate approval for every derived leaf. If he would not reject it, it is no leaf: at most an
+mod?"** Answer it from his existing words first; ask him only when the answer changes core scope, his words do not
+settle it, and the ask carries its evidence against the obvious answer (Evidence-for-Ask). Never seek separate approval for every derived leaf. If he would not reject it, it is no leaf: at most an
 `[advisory]` line. For each acceptance property name a concrete rejected implementation and a finite set of situations
 and variants; group equivalent variants and say why; add one only when it could expose a different failure. Fifteen
 leaves is a warning sign; a small mod should fit in eight.

@@ -129,12 +129,16 @@ plus the Conductor's text in `--why`.
 
 ## Decisions
 
-Agents decide nearly everything, art included (owner, 2026-10-22); only
-`design/RimMandrake/delegation_policy.md` §2 still needs him. Taste calls go to a judge agent, every
-delegated call is logged `--why "delegated: <class>"` and reaches him in a daily digest. A ruling is one
-dated line in `infrastructure/state/canon.yml` (numbers, rosters — every value with a `src:`) or on the item (scope). A reversal
-**replaces** the old line in the same commit and propagates to every file naming the
-item, same commit. A ruling under 24 h old is a draft — reversible without ceremony.
+Agents decide nearly everything, art included (owner, 2026-10-22); only `design/RimMandrake/delegation_policy.md` §2
+still needs him. **Evidence-for-Ask** (owner, 2026-11-15; the statement every role file points at; his words in
+CLAUDE.md): any seat or helper that would pause for him takes the obvious answer, logged `--per-ruling
+RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`;
+it pauses only on concrete evidence against that answer, every ask carries the evidence, and a §2 hold stays his with
+its evidence on the ask. Taste calls go to a judge agent, every delegated call is logged `--why "delegated: <class>"`
+and reaches him in a daily digest. A ruling is one dated line in `infrastructure/state/canon.yml` (numbers, rosters —
+every value with a `src:`) or on the item (scope). A reversal **replaces** the old line in the same commit and
+propagates to every file naming the item, same commit. A ruling under 24 h old is a draft — reversible without
+ceremony.
 
 ## Rules and lessons
 

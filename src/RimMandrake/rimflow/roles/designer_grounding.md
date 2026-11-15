@@ -43,7 +43,7 @@ a `record.json` `built_reviewed` row `{"ref": "...", "covered_by": "<inventory i
 "nothing built". A built capability is clarified, never put up for keeping: an ask whose wording offers to keep, cut,
 drop or remove something is refused when it is about a `present` capability whose scope he has not opened, whatever its
 `offers_removal` flag says, and refused outright when it names no inventory entry. Ask him only on a real fork: a
-decision his words and the built code do not already settle.
+decision his words and the built code do not already settle, with the evidence against the obvious answer on the ask (Evidence-for-Ask, CHARTER §Decisions).
 
 ## Ends
 
