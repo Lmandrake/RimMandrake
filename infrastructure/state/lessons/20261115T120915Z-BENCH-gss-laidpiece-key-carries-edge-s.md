@@ -1,0 +1,1 @@
+A GSS LaidPiece.Key carries the edge's chain (VId tokens after the first '#') and then node text naming OTHER nodes' cells ('Nc:(39,25)Junction...'): a regex over the whole key reads a wrong conduit line. Parse up to the first token not shaped like a VId (lane 1 L1_CORD_EXCURSION, 2026-11-15).

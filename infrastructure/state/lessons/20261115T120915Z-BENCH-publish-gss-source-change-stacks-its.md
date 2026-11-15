@@ -1,0 +1,1 @@
+./publish on a GSS Source change stacks its own 'Rebuild RimMandrakeGimmeSomeSlack.dll' commit on top: the fix sha for a red/green record is the commit under it, and its parent is the one before (gss_four, 2026-11-15).
