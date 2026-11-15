@@ -3801,7 +3801,7 @@ def c_wrapup(now, rules, ctx):
     return out
 
 
-MATURATION_READING_MAX_AGE_S = 1800     # the Dispatch step ticks every 10 min; three missed ticks is a dead step
+MATURATION_READING_MAX_AGE_S = 1800     # the Dispatch step ticks every 60 s; 30 missed ticks is a dead step (30 min, kept)
 
 
 def c_maturation(now, rules, ctx):

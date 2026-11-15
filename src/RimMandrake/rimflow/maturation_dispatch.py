@@ -14,7 +14,7 @@ no builder on them, because every launch was a Conductor hand step.)
     python3 src/RimMandrake/rimflow/maturation_dispatch.py clear MOD --why "..."
             the Conductor lifts a stop on MOD (the next tick may launch on it once)
 
-Runs on rm-maturation-dispatch.timer (every 10 min, from the dispatch clone); its own timer, not the Dispatcher's tick,
+Runs on rm-maturation-dispatch.timer (every 60 s, from the dispatch clone); its own timer, not the Dispatcher's tick,
 so a slow ledger read never cuts a Dispatcher beat. Settings: maturation_dispatch.json beside this file.
 
 Per mod on the advancing list, in order, one decision:
@@ -214,6 +214,14 @@ def decide(cfg, st, facts, now, account=(True, "")):
                               "ours": any(x.get("unit") == live[0] for x in s.get("launches") or [])}
             s.pop("owed_since", None)
             put("live", "%s is live on it (refused bars %s when first seen)" % (", ".join(live), s["watch"]["refused"]))
+            continue
+        le = f.get("last_end")
+        settle = float(cfg.get("settle_s", 180))
+        if s.get("watch") and isinstance(le, (int, float)) and 0 <= now - le < settle:
+            # a 60 s tick can land seconds after the unit ends, before its published files reach this clone: the refused
+            # count read now may still be the old one. Keep the watch, judge it on a later tick.
+            put("settling", "run %s ended %d s ago; its result is judged %d s after the end, not before" % (
+                s["watch"].get("unit"), now - le, settle))
             continue
         w = s.pop("watch", None)
         if w:       # a run ended since the last tick: did the refused count fall?

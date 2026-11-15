@@ -10,5 +10,7 @@
   "_max_live_doc": "At most this many live detached runs on advancing mods at once, the Conductor's own launches included.",
   "stage_ceiling_usd": 60,
   "_stage_ceiling_doc": "Set by the builder of this step: one mod's measured dollars at the offline build (every run the status page places there, plus this step's launches, a run with no measured dollars counted at its cap) past this line stops the step on that mod, with a Needs Conductor line. About four capped runs.",
+  "settle_s": 180,
+  "_settle_doc": "A run that ended less than this many seconds ago is not judged yet (the tick is 60 s; its published files may not have reached the dispatch clone). Nothing launches on the mod meanwhile.",
   "idle_alarm_min": 60
 }

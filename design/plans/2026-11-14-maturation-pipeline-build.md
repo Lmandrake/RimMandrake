@@ -174,7 +174,7 @@ when the Conductor writes one, else a standing default; a blank one does not ref
 --budget-usd <cap> --item <ID>` calls `detached_helper.py launch` (cap required, no default; only a mod at the offline
 build with build work owed).
 
-`src/RimMandrake/rimflow/maturation_dispatch.py tick --apply` on `rm-maturation-dispatch.timer` (every 10 min, from the
+`src/RimMandrake/rimflow/maturation_dispatch.py tick --apply` on `rm-maturation-dispatch.timer` (every 60 s, from the
 dispatch clone; settings `maturation_dispatch.json`) decides per advancing mod: launch one builder (opus, USD 15; the
 item is spawned under RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE as RUNNER, the way ops_watch files,
 and published first) when the mod stands at the offline build, its refusals are build work, and no detached run is live

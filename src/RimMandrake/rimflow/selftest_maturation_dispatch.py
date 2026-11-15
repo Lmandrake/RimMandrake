@@ -155,6 +155,11 @@ def main():
         ok(len(launches()) == 1, "while the run is live, no second launch on FlowWorks")
         world["live"].pop("FlowWorks")
         world["last_end"]["FlowWorks"] = CLOCK + 900
+        rd = tick(at=960)      # 60 s after the end: its files may not have reached this clone yet
+        ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "settling"
+           and "stopped" not in json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
+           and "watch" in json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"],
+           "a tick 60 s after a run ends neither judges the refused count nor launches; the watch is kept")
         rd = tick(at=1200)
         ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "stopped"
            and any(x.startswith("FlowWorks: stopped") for x in rd["needs_conductor"]),

@@ -1,11 +1,11 @@
-# Every 10 min - see rm-maturation-dispatch.service.
+# Every 60 s - see rm-maturation-dispatch.service.
 [Unit]
-Description=RimMandrake Maturation Pipeline Dispatch step, every 10 min
+Description=RimMandrake Maturation Pipeline Dispatch step, every 60 s
 
 [Timer]
 OnBootSec=3min
-OnUnitActiveSec=10min
-AccuracySec=30s
+OnUnitActiveSec=60s
+AccuracySec=5s
 
 [Install]
 WantedBy=timers.target

@@ -6,7 +6,7 @@
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-maturation-dispatch.timer
 # Off:      systemctl --user disable --now rm-maturation-dispatch.timer   (or "enabled": false in maturation_dispatch.json)
 [Unit]
-Description=RimMandrake Maturation Pipeline Dispatch step (offline builders for advancing mods), every 10 min
+Description=RimMandrake Maturation Pipeline Dispatch step (offline builders for advancing mods), every 60 s
 
 [Service]
 Type=oneshot
