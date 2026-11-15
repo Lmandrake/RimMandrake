@@ -1859,11 +1859,13 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
                 with open(os.path.join(d, PARK_FILE), "w", encoding="utf-8") as f:
                     f.write(lock_summary(d, st, run))
         else:
-            st["stage"], st["status"] = stage + 1, "ready"
+            st["stage"] = stage + 1
+            lift_block(st)      # a ready concept has no block: an older writer's leftover reason goes too
     elif out == "waiting_owner":
         st["status"], st["waiting_owner_feed"] = "waiting_owner", owner_feed(repo, st.get("item"), d)
     elif out == "return":
-        st["stage"], st["status"] = res["to"], "ready"
+        st["stage"] = res["to"]
+        lift_block(st)
         st["pending_decision"] = res["decision"]
     elif out == "blocked":
         st["status"], st["blocked_on"] = "blocked", res["on"]
@@ -1941,12 +1943,24 @@ def safe(run):
     return re.sub(r"[^A-Za-z0-9_.-]", "_", str(run))
 
 
+def lift_block(st):
+    """A block lifts with its reason (RIMMANDRAKE_CLEAR_STALE_BLOCK_REASON_ON_LIFT): a 'ready' concept still holding
+    blocked_on showed a stop that had been released as the Designer's why. The reason stays in history. -> the reason."""
+    st["status"] = "ready"
+    return st.pop("blocked_on", None)
+
+
 def unblock(d, why):
+    """Lift a block; on a concept already lifted by an older writer that left its reason, take the stale reason off."""
     st = load_state(d)
     if st.get("status") != "blocked":
+        if st.get("status") == "ready" and st.get("blocked_on"):
+            hist(st, "unblock", "%s (stale reason taken off a ready concept: %s)" % (why, st.pop("blocked_on")))
+            write_json(state_path(d), st)
+            return
         raise Refused("not blocked")
-    st["status"] = "ready"
-    hist(st, "unblock", why)
+    on = lift_block(st)
+    hist(st, "unblock", "%s (was blocked on %s)" % (why, on) if on else why)
     write_json(state_path(d), st)
 
 

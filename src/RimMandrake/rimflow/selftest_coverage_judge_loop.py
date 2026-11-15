@@ -106,6 +106,10 @@ def release(d, judge, root, ops, rounds):
         check("a release without a reason is refused", True)
     st = CJ.release(d, "the Conductor read the gaps and wants one more look")
     check("a release unblocks and closes the alarm row", st["status"] == "ready" and not RC.open_alarms())
+    # RIMMANDRAKE_CLEAR_STALE_BLOCK_REASON_ON_LIFT (watched failing on d08616308): Pyrelands read "ready" with the
+    # stop's "released for one more look ... judging stopped" still in blocked_on, and the page showed it as the why
+    check("a release takes the stop's reason off the record with the block",
+          "blocked_on" not in st and "blocked_on" not in DS.load_state(d), st.get("blocked_on"))
     judge.script[:] = [answer("not_covered", rounds[3]["gaps"], rounds[3]["tokens"])]
     rec, _ = CJ.run(d, os.path.join(root, "ek"), judge, now=1794100000)
     check("the one more look is judged, and not covering stops it again",

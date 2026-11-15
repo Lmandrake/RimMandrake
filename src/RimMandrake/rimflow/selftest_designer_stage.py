@@ -1202,8 +1202,31 @@ def refusals_launcher(tmp, repo):
     DS.unblock(dB, "FOO_DEPENDENCY landed")
     check("blocked: unblock releases it", DS.load_state(dB)["status"] == "ready"
           and refused(DS.open_run, dB, "b3", repo=repo.root) is None, DS.load_state(dB)["status"])
+    # RIMMANDRAKE_CLEAR_STALE_BLOCK_REASON_ON_LIFT (watched failing on d08616308): the reason leaves with the block
+    check("blocked: unblock takes the block's reason off the record", "blocked_on" not in DS.load_state(dB),
+          DS.load_state(dB).get("blocked_on"))
     r = refused(DS.unblock, dB, "again")
     check("unblock on a concept that is not blocked is refused", r and "not blocked" in r, r)
+    # a concept already lifted by an older writer, its reason left behind: unblock is the repair, and says so
+    st = DS.load_state(dB)
+    st["blocked_on"] = "OLD_STOP: judging stopped"
+    DS.write_json(DS.state_path(dB), st)
+    DS.unblock(dB, "the stop was released; its reason stayed")
+    st = DS.load_state(dB)
+    check("unblock repairs a stale reason on a concept that is not blocked, status and stage unchanged",
+          "blocked_on" not in st and st["status"] == "ready" and st["history"][-1]["what"] == "unblock"
+          and "OLD_STOP" in st["history"][-1]["why"], (st.get("blocked_on"), st["history"][-1]))
+    r = refused(DS.unblock, dB, "again")
+    check("and once repaired, unblock is refused again", r and "not blocked" in r, r)
+    dC = os.path.join(tmp, "design/concepts/BlkClose")
+    DS.init(dC, "BlkClose", "BLK_ITEM", cap=100000, reserve=20000)
+    st = DS.load_state(dC)
+    st["blocked_on"], st["stage"] = "OLD_STOP: judging stopped", 1
+    DS.write_json(DS.state_path(dC), st)
+    ok, errs = run_cycle(repo=repo, d=dC, run="c1", outcome="return", to=0, decision="x")
+    st = DS.load_state(dC)
+    check("a run closing on a ready concept takes an older writer's leftover reason off",
+          ok and st["status"] == "ready" and st["stage"] == 0 and "blocked_on" not in st, (ok, errs, st.get("blocked_on")))
     # a block outlasts a changed input: the stale reopen must not set it ready underneath the block (EK 2026-11-13)
     stale = {"stage": 5, "status": "ready", "item": "BLK_ITEM",
              "results": [{"stage": 3, "outcome": "done", "inputs": {"scenes": "old"}}]}

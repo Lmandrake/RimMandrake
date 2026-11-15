@@ -527,7 +527,7 @@ def release(d, why, now=None, after=None, item_state=None):
     st.setdefault("coverage_releases", []).append(rec)
     st.pop("coverage_stop", None)
     if st.get("status") == "blocked" and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID):
-        st["status"] = "ready"
+        DS.lift_block(st)   # the stop's reason leaves with it (the coverage_stop history row keeps it)
     DS.hist(st, "coverage_release", why)
     DS.write_json(DS.state_path(d), st)
     RC.clear(subject(d), why, now=now)
