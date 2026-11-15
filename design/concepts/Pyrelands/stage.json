@@ -1078,6 +1078,12 @@
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 5; that look was malformed; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-15T13:54:40Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his card 2026-11-15 'Fix all 12 in 0.1.0': the round-5 coverage judge's 5 open gaps (the unfixed remainder of the 12 Problem gaps) applied in 75a13036d3; re-pinned stage 3 (scenes); stage 4 (scenes); sources OWNER:1794748469904049550@75a13036d3"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1427,7 +1433,7 @@
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "0ad953a1ec1b1693c6a9b7fe3371512db7ddd511a85601bc6752bf07e7395378",
+    "scenes": "b185c5cd305aab4cc7a11f42a0e9497dad1c36dbb797934ee9b20c232133bc45",
     "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
     "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb"
    },
@@ -1466,6 +1472,15 @@
      "sources": [
       "OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
      ]
+    },
+    {
+     "at": "2026-11-15T13:54:40Z",
+     "inputs": [
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794748469904049550@75a13036d3"
+     ]
     }
    ],
    "run": "rm-role-designer-1794596464",
@@ -1485,7 +1500,7 @@
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
     "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "0ad953a1ec1b1693c6a9b7fe3371512db7ddd511a85601bc6752bf07e7395378",
+    "scenes": "b185c5cd305aab4cc7a11f42a0e9497dad1c36dbb797934ee9b20c232133bc45",
     "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
     "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb"
    },
@@ -1503,6 +1518,17 @@
     "offer": false,
     "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
    },
+   "repinned": [
+    {
+     "at": "2026-11-15T13:54:40Z",
+     "inputs": [
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794748469904049550@75a13036d3"
+     ]
+    }
+   ],
    "run": "bench-pyre-exam-st4-20261115",
    "stage": 4,
    "summary": "Cold Reader exam retaken on the tree and sheet as fixed by his card 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550, 91a7c61989): 20 frozen scenarios (Examiner a9a641ceb8479c818 e1-e14, Challenger ad7d09ca4f5010812 c1-c6; 13 rejects), Readers a475d113cbb05c45b and a773a17ac06718886 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on a tree with three_skies stripped (abd49deeecb68f260) accepted e9 and c6, so the set discriminates. exam.json carries it."

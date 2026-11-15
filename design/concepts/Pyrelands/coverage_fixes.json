@@ -1,62 +1,26 @@
 {
- "against": "rm-coverage-judge-1794722839",
- "by": "RIMMANDRAKE_APPLY_PYRELANDS_JUDGE_EDITS_ALL_TWENTY_ATTAINABLE (edits 91a7c61989, his card OWNER:1794748469904049550); claims written by the BENCH helper after reading each place",
+ "against": "rm-coverage-judge-1794749968",
+ "by": "RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL (edits 75a13036d3, his card OWNER:1794748469904049550); claims written by the BENCH helper after reading each place",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "record.json:614-625 (inv_burn_line_fire_clock cites Source/PyrelandsFireSense.cs) and record.json:525-542 (inv_animal_roster cites Patches/RM_Pyrelands_NoForeignArrivals.xml); stage-0 inventory rerun, every tracked Pyrelands .cs/.xml cited, built_evidence unaccounted 0; new scene scenes.json:560 sc_foreign_arrivals with its control"
+   "evidence": "scenes.json:540-561 sc_flamefang_venom expect: the 'X' is replaced by the tended colonist's severity rising more slowly than the untended colonist's at every hourly read from the tend onwards and staying below it (RM_FlamefangVenom TendDuration severityPerDayTended -0.4 against Immunizable +0.35 a day)"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json:97 sc_grass_regreens: start adds two sown ember-grass patches (dry deep ash burned >7 days ago, and watered) with the burst count; control adds the vanilla grass on the same dry ash"
+   "evidence": "scenes.json:371-392 new scene sc_fire_sense: colonist P beside a test-lit Fire takes RM_PyreStepAwayFromFire and ends >= 3 cells (SafeClear) from every fire, no Fire attached at any poll; urgently hungry H eats (Ingest) before BeatFire; control with PyrelandsMechanicsGate off (both sit behind it); record.json:614 inv_burn_line_fire_clock parts_covered_by now names sc_fire_sense first"
   },
   {
    "gap": "g3",
-   "evidence": "scenes.json:437-455 sc_furnace_bed: expect A takes no burn injury from its own bed fire (immunity read); control: a muffalo on B's bed takes burn damage"
+   "evidence": "scenes.json:51-72 sc_ash_watered: start asserts both strips' cell temperature above the crop's plant.maxOptimalGrowthTemperature; action and expect read Plant.GrowthRateFactor_Temperature daily, watered above dry, dry equal to vanilla's; the switch-off control's factor equals the dry strip's; record.json:572 inv_ash_field parts_covered_by reworded"
   },
   {
    "gap": "g4",
-   "evidence": "scenes.json:511-524 sc_flamefang_venom: two venomed colonists, one tended and one untended, read side by side, and severity falling once immunity completes"
+   "evidence": "scenes.json:466-488 sc_furnace_bed: every poll reads a Fire on A's own cell while A lies on it; expect asserts at least one such poll (exposure) and no Burn hediff on A; control: the muffalo, with a Fire on its own cell for a poll, gains a Burn hediff"
   },
   {
    "gap": "g5",
-   "evidence": "scenes.json:293-309 sc_three_skies: start lays two ash patches of equal ProbeAsh depth; control adds the clear-sky ash patch over the same hours (it loses only dry wear) beside the black-rain patch"
-  },
-  {
-   "gap": "g6",
-   "evidence": "scenes.json:147-161 sc_populations: allowlist asserted on from the settings read, a donor plant/animal added, and the same wild-plant day with wildPlantAllowlistEnabled off as the control"
-  },
-  {
-   "gap": "g7",
-   "evidence": "scenes.json:342-356 sc_walk names the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day (front, ash laying, bed fires stop) and the toggle's on day as control; coverage_rest scenes.json:690-695 inv_settings_gate points at it"
-  },
-  {
-   "gap": "g8",
-   "evidence": "tree.json:566 leaf firehawk_hunt_rewards; scenes.json:586 sc_firehawk_rewards (letter once, switch off, crestfeather yield, non-hawk control); coverage_rest scenes.json:707 inv_firehawk_hunt_rewards; sheet.md:24 does line; record.json:994 inv_firehawk_hunt_rewards"
-  },
-  {
-   "gap": "g9",
-   "evidence": "record.json:194 decision (his card 2026-11-14, ullai keep vanilla herd migration); record.json:800-814 inv_ullai_herd_giant cites selftest_pyrelands_ullai_herd_migration.py; tree.json:587-601 offline leaf ullai_cross_the_map_as_vanilla_herds citing T_ULLAI_HERD_MIGRATES; sheet.md:28 does line"
-  },
-  {
-   "gap": "g10",
-   "evidence": "scenes.json:27 sc_ash_ground: start a clear-weather noon save (ashground_noon, hour read); control is the same map's clear-weather run over the same clock hours (dims only with the hour, banks less ash) compared with the ash-fall run"
-  },
-  {
-   "gap": "g11",
-   "evidence": "scenes.json:301 sc_three_skies start: the map at local noon (hour asserted between 10h and 14h), saved as skies_noon; scenes.json:305 action runs each sky from a reload of skies_noon"
-  },
-  {
-   "gap": "g12",
-   "evidence": "the loose-ash filth wording is gone from record.json, tree.json and scenes.json (grep 'loose-ash filth' finds none); tree.json:219 ruins_stand_blackened and the inventory rows read ash depth on the sand grid (ProbeAsh)"
-  },
-  {
-   "gap": "g13",
-   "evidence": "sheet.md:17 and tree.json:88: ordinary crops find deep ash sowable dry (about 70%, his card 2026-11-07) and very fertile where watered (about 140%)"
-  },
-  {
-   "gap": "g14",
-   "evidence": "sheet.md:54 delegated line reworded to match scenes.json coverage_rest: sand shovel, firefoam sprayer and fire-rite hook by their own scenes; Mod Settings by the walk's switch-off steps (the roster toggle among them) and the floor's mod_settings line; the art on his 2026-10-16 approval of the art sheet"
+   "evidence": "scenes.json:150-170 sc_populations: expect fire-hawks = max(2, the gate-off control's count) and ashwallows at least max(8, its count); control adds a same-seed same-tile map with PyrelandsMechanicsGate off (GenStep_PyrelandsFireCast returns before its top-up), the same roll asserted by every other wild kind's count; record.json:525 inv_animal_roster parts_covered_by reworded"
   }
  ]
 }
