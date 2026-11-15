@@ -68,12 +68,26 @@ namespace RimMandrake.TitanicCreatures
             return SiteReport();
         }
 
+        // IncidentWorker.CanFireNow caches its answer per game tick (private lastCheckCanRunTick), so a second ask in the same tick
+        // under changed state reads the first answer back. Clear it before and after each ask (see RM_WebworkSiegeProof.CanFireNowFresh).
+        private static readonly System.Reflection.FieldInfo CanRunTick = typeof(IncidentWorker).GetField("lastCheckCanRunTick",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+        private static bool CanFireNowFresh(IncidentDef def, IncidentParms parms)
+        {
+            if (CanRunTick == null) throw new System.MissingFieldException("IncidentWorker", "lastCheckCanRunTick");
+            IncidentWorker w = def.Worker;
+            CanRunTick.SetValue(w, -1);
+            try { return w.CanFireNow(parms); }
+            finally { CanRunTick.SetValue(w, -1); }
+        }
+
         public static string PassageCanFire()
         {
             Map map = Find.CurrentMap;
             IncidentDef def = DefDatabase<IncidentDef>.GetNamedSilentFail("RM_TitanPassage");
             if (map == null || def == null) return "FAIL no map or RM_TitanPassage";
-            bool can = def.Worker.CanFireNow(new IncidentParms { target = map });
+            bool can = CanFireNowFresh(def, new IncidentParms { target = map });
             bool t3 = TitanPassageUtility.T3OnMap(map);
             var kinds = DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => TitanPassageUtility.Eligible(k, map, t3)).ToList();
             var ext = map.Biome?.GetModExtension<RM_TitanPassageExtension>();

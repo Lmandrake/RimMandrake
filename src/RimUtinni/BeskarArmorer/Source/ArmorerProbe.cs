@@ -19,6 +19,20 @@ namespace RimMandrake.Utinni.BeskarArmorer
         private const string Cat = "Beskar Armorer";
         public static string FilePath { get { return Path.Combine(GenFilePaths.SaveDataFolderPath, "BeskarArmorerProbe.jsonl"); } }
 
+        // IncidentWorker.CanFireNow caches its answer per game tick (private lastCheckCanRunTick), so a second ask in the same tick
+        // under changed state reads the first answer back. Clear it before and after each ask (see RM_WebworkSiegeProof.CanFireNowFresh).
+        private static readonly System.Reflection.FieldInfo CanRunTick = typeof(IncidentWorker).GetField("lastCheckCanRunTick",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+        private static bool CanFireNowFresh(IncidentDef def, IncidentParms parms)
+        {
+            if (CanRunTick == null) throw new System.MissingFieldException("IncidentWorker", "lastCheckCanRunTick");
+            IncidentWorker w = def.Worker;
+            CanRunTick.SetValue(w, -1);
+            try { return w.CanFireNow(parms); }
+            finally { CanRunTick.SetValue(w, -1); }
+        }
+
         private static void Row(string row, bool pass, string detail)
         {
             string esc = (detail ?? "").Replace("\\", "/").Replace("\"", "'").Replace("\n", " ").Replace("\r", " ");
@@ -479,7 +493,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 restore += () => BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
                 BeskarArmorerSettings.prisonBreakEarliestDay = 0;
                 IncidentParms parms = new IncidentParms { target = Find.World };
-                Row("L8.route2_refused_after_loss", !ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker.CanFireNow(parms), "CanFireNow false");
+                Row("L8.route2_refused_after_loss", !CanFireNowFresh(ArmorerDefOf.RM_BlackstarPrisonBreakOffer, parms), "CanFireNow false");
             });
         }
 
@@ -690,7 +704,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 BeskarArmorerSettings.prisonBreakEarliestDay = 0;
                 BeskarArmorerSettings.routeTwoEnabled = false;
                 IncidentParms parms = new IncidentParms { target = Find.World, points = 500f };
-                Row("L10.route2_off", !ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker.CanFireNow(parms), "CanFireNow false");
+                Row("L10.route2_off", !CanFireNowFresh(ArmorerDefOf.RM_BlackstarPrisonBreakOffer, parms), "CanFireNow false");
                 BeskarArmorerSettings.routeTwoEnabled = priorRouteTwo;
                 BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
 
