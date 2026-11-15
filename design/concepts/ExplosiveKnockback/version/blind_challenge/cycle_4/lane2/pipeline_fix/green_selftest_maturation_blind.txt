@@ -1,0 +1,8 @@
+# same command at 52c3efecf8: rc 0
+ALL PASS
+PASS  a FIXED Problem was never shown red: not met, and the reading says why (FIXED Problem RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED has no fixes.jsonl row shown red (a)
+PASS  a lane-1 FAIL a Polish fault names, in a cycle with no fixes (no lane1_rows_after_fix.jsonl) reads met ( left as Polish, not part of passing (the steward confirms the move): L1_c (RIMMANDRAKE_NOTE_SELFTEST_POLISH_LEFT_ALONE))
+PASS  a list-of-runs fix never shown red: not met, and the reading says why (FIXED Problem RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED has no fixes.jsonl row shown red (an rc non-zero) then )
+PASS  a list-of-runs green with an unrecorded rc: not met, and the reading says why (FIXED Problem RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED has no fixes.jsonl row shown red (an rc non-zero) then )
+PASS  faults written with `cls`: a FIXED Problem never shown red: not met, and the reading says why (FIXED Problem RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED has no fixes.jsonl row shown red (an rc non-zero) then )
+PASS  a fix row in the failing direction (red rc 0, green rc 1): not met, and the reading says why (FIXED Problem RIMMANDRAKE_FIX_SELFTEST_FAULT_SHOWN_RED has no fixes.jsonl row shown red (an rc non-zero) then )

@@ -1,0 +1,22 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT",
+   "class": "Polish",
+   "bar": "pawn_hits_pawn_stops",
+   "criterion": "A thrown person stops at another pawn in the way and takes an impact hit, as at a wall (sheet leaf pawn_hits_pawn_stops); inv_kernel: the path walk goes over sandbags",
+   "evidence": [
+    "lane-1 row L1_PATH_RANDOM_CONSERVATION (lane1/lane1_rows.jsonl): FAIL, 42 of 30000 random grids, seed 20261115, one violation kind: 'pawn stop without the hit pawn next to it'",
+    "shrunk: lane start 4 | sandbag 5 | pawn 6, 5 cells east, kind Pawn: RM_KnockbackMath.Resolve returns dest 4 (travelled 0, the sandbag back-off at RM_KnockbackMath.cs:504), stop Pawn, hitOther at 6, impact and otherImpact > 0",
+    "caller src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs ThrowPawn (lines ~994-1014) applies res.impact, res.otherImpact (to the pawn at otherX,otherZ) and door damage before its !res.Moved check, so the thrown pawn never moves yet it, the pawn two cells away and a door two cells away (sandbag then door) are all hurt",
+    "the same shape with a wall behind the sandbag: the pawn stays put and takes the full impact without touching the wall",
+    "Polish, not Problem: the thrown pawn does stop before the other pawn and takes a hit, and nothing rests on a sandbag (vanilla PassThroughOnly); no bar's words are broken. The oddity is a hit across a one-cell gap the player never sees closed"
+   ],
+   "would_pass": "L1_PATH_RANDOM_CONSERVATION PASS: after a sandbag back-off a hit (impact, otherImpact, hitDoor) is kept only when the obstacle is adjacent to the final cell, or the pawn lands beyond the sandbag; T_KERNEL and T_FUZZ stay green",
+   "smallest_fix": "in Resolve, after the back-off: if the backed-off cell is not adjacent to the hit cell, clear hitOther/hitDoor and the impact and report stop Distance (or None at 0 cells); a design call on what a blocked vault should do, hence Polish",
+   "verdict_on_criterion": "criterion sound; the code meets its words",
+   "status": "PENDING (filed)",
+   "miss_of": 3
+  }
+ ]
+}
