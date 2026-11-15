@@ -23,10 +23,17 @@
     "ref": "run rm-role-designer-1794752036",
     "stage": 1,
     "tokens": 395722
+   },
+   {
+    "at": "2026-11-15T20:07:03Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794773070",
+    "stage": 1,
+    "tokens": 178502
    }
   ],
   "reserve": 60000,
-  "spent": 1159294
+  "spent": 1337796
  },
  "history": [
   {
@@ -58,6 +65,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1794752036: stage 1 waiting_owner"
+  },
+  {
+   "at": "2026-11-15T20:04:44Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1794773070, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-15T20:07:03Z",
+   "stage": 1,
+   "what": "retry",
+   "why": "run rm-role-designer-1794773070 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -120,12 +139,21 @@
    "run": "rm-role-designer-1794752036",
    "stage": 1,
    "summary": "Stage 1 turn: one ask sent (a_root, the proposed root text built from his 2026-10-20 experience line and his 2026-11-10 card), reviewed pass by a fresh Codex reviewer on round 2. Struck: a_live_walk (choosing who watches changes nothing built; the walk is offered as this turn's quick look instead) and round 1 of a_root (it reopened his weather-and-body ruling by asking whether the Coalescence should co-lead). q02, q04, q05, q07, q08 stay draft, unreviewed, held for stage 2 after the walk."
+  },
+  {
+   "at": "2026-11-15T20:07:03Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794773070",
+   "stage": 1,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 1,
- "status": "waiting_owner",
+ "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
