@@ -164,8 +164,11 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
   2026-11-02: *"Those were very strange questions given we already have these capabilities."*). The launcher refuses
   keep/remove wording on such an ask whatever its `offers_removal` flag says.
 - Define everything. The core concepts that must be true, no more.
-- Hide a fault in the system itself (this role, the tools, Relentless): file it as a system item and say so in the
-  filing; system items outrank content. Never mark anything expedited: Operations and the Conductor set that.
+- Hide a fault in the system itself (this role, its launcher, the pipeline's tools and records): file it as a system
+  item with its acceptance test and, when its cause is clear and its fix known, fix it in this run, tests first, and
+  publish (The pipeline fixes its own defects, owner 2026-11-15: `design/RimMandrake/standing_rulings.md` §The pipeline
+  fixes its own defects); hand it off only with the evidence and what you tried. Never mark anything expedited:
+  Operations and the Conductor set that.
 - Enable a schedule for yourself, advance your own stage, or hand a mod to Relentless past a refused gate.
 - Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat CONDUCTOR --home <skill or doc>`.
 

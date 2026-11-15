@@ -1033,6 +1033,16 @@ def next_step(root, mod):
 OWNER_WIRE = ("So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty "
               "inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops "
               "rejecting/cycling things, we can't get into too much trouble.")
+# The owner's self-fixing ruling (2026-11-15, item RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP): the one line every
+# brief this pipeline launches carries (builder, blind judge, in-game driver here; steward and fixer in
+# maturation_autonomy). Written once; the full text lives in standing_rulings.md. selftest_self_fix_rule.py.
+SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a defect you find in the pipeline itself (its "
+                 "code, tools, records, tests, status page) with a clear cause and a known fix is yours: file it (its "
+                 "acceptance test in the body), fix it in this run, tests first, publish, and name the ticket and sha in "
+                 "your report. Hand it off only when the fix is unknown, outside your tools, or would change a "
+                 "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
+                 "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
+                 "§The pipeline fixes its own defects.")
 STEWARD_FILE = "version/steward_decisions.md"
 STANDING_DEFAULT = ("No Conductor decisions are written for this run, so the standing default holds: build the missing "
                     "checks for the bars listed above, offline, and nothing else. Do not change a bar, its wording, the "
@@ -1148,7 +1158,8 @@ def brief_text(root, mod, cap_usd=None):
           "- Never run `maturation.py advance`, never judge or send the mod back: the Conductor moves stages.",
           "- One dated line in the journal's history for what you built. Every file you touch stays DIRTY until "
           "`code_review_status.py check` says CLEAN.",
-          "- Never guess a defName, field or namespace (RimSage, the def, or `measure`)."]
+          "- Never guess a defName, field or namespace (RimSage, the def, or `measure`).",
+          SELF_FIX_RULE]
     return "\n".join(L) + "\n", f
 
 
@@ -1952,6 +1963,7 @@ def blind_brief_text(root, mod, cap_usd=None):
           "reruns matching of rerun; planted faults caught of planted; the Problem and Polish counts%s; shas; the tests "
           "you edited; what you could not settle; whether the exit is met; spend." % (
               " and how many are `miss_of`" if n >= 2 else "")]
+    L += ["", "## Defects in the pipeline itself", "", SELF_FIX_RULE]
 
     # ---- steward's decisions
     lines, undated = steward_lines(rec, read_text(root, mod, "journal.md") or "", n)
@@ -2517,6 +2529,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
         L += ["", "From `design/concepts/%s/%s`:" % (mod, STEWARD_FILE), "", steward]
     if not lines and not steward:
         L.append(INGAME_DEFAULT)
+    L += ["", "## Defects in the pipeline itself", "", SELF_FIX_RULE]
     return "\n".join(L) + "\n", f
 
 

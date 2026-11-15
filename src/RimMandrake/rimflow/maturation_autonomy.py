@@ -717,7 +717,7 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   "..." [--steward-confirms "<what you read and the verdict>"]`, forward one stage or along a drawn road back.
 - Land with `./publish -m "subject" <explicit paths>` (the record, the journal, the ledger shard); a move that is not on
   origin/main did not happen. Close this item with the published sha.
-"""
+""" + M.SELF_FIX_RULE + "\n"
 
 
 def steward_brief(root, mod, row):
@@ -768,7 +768,7 @@ def fixer_brief(item, mod, cap):
             "cycle, sent back by the steward. Fix it, run its acceptance test (watch it fail first if it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. Never take the bridge or a game.\n" % (item, mod, item, cap, item, mod))
+            "nothing. Never take the bridge or a game.\n%s\n" % (item, mod, item, cap, item, mod, M.SELF_FIX_RULE))
 
 
 def item_name(row, known):

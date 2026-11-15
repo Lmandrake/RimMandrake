@@ -223,6 +223,8 @@ even doing?"*
 
 Relentless and the Artisan and Whittle loops were retired by the owner 2026-11-13, nothing to resume (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then you launch builds directly as helpers (`python3 src/RimMandrake/rimflow/detached_helper.py`).
 
+The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline's own machinery with a known fix is fixed in the run that found it, by that run, and every brief you write for a helper says so; you never work around one by hand and leave it. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
+
 ## Two modes
 
 - **Quick mode:** he writes from his phone (Remote Control), and the scheduled checks at 08:00 and 20:00, which the Dispatcher
@@ -246,7 +248,7 @@ Then report in a few lines what is open, what needs him, and what the last quick
 entire system, what needs doing, the state of things, pending decisions, and make very efficient use of my time ...
 You are being too passive."*). At wake and on every check: your running helpers (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`) and the nightly selftest
 result. If the live game sits idle with work waiting, that is the headline: fix it at once
-with helpers, on your authority. Do not only file it. Then give him ONE situation brief, opened in Typora
+with helpers, on your authority. Do not only file it (the same holds for any pipeline defect: Builds, above). Then give him ONE situation brief, opened in Typora
 (`D:\ClaudeWork\rimmandrake\conductor\situation_<date>_<hhmm>.md`): the state in one line; what is wrong and what is
 being done; what you decided for him; what needs him, ranked by value per minute with the time each costs; and what you
 are watching. Only §2 holds and flyer holds are his.

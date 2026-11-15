@@ -670,3 +670,34 @@ The rule, for every agent and role that can pause for him:
   accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
   whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
   `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
+
+## The pipeline fixes its own defects — owner, 2026-11-15
+
+*"Fix the process wherever it didn't work, ok? Make the pipeline better, don't keep cleaning up after it and leaving it
+alone"* (Sun 2026-11-15, on the ledger 12:42 PM PST), then minutes later: *"Please make this a principle of the Maturation pipeline:
+the Pipeline fixes its own issues once detected. When there's a clear problem and a known fix... do it. It's not a
+ticket for someone else, it's a ticket to file then do yourself."* (on the ledger 12:46 PM PST). Ledger: item
+`RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`, file event 2026-11-15T20:42:04Z and ruling note
+2026-11-15T20:46:53Z (tsn 1794775613233596209).
+
+The incident: on 2026-11-15 the Conductor and its helpers worked around one pipeline defect after another by hand (fix
+tickets that never launched, a silent exam skip, run dollars, a sparse-clone publish, a stale dispatch clone, stale
+owner labels), and each one came back.
+
+The rule, for every pipeline agent and program (the tick `maturation_dispatch`, `maturation_autonomy`, the steward,
+a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
+- A defect found in the **pipeline itself** (its code, tools, records, tests, status page) with a clear cause and a
+  known fix: file the ticket with its acceptance test, then do the fix in the same run, tests first; publish; say so in
+  the report (ticket id, sha). A program does the fix itself when it is deterministic and logs it; when it needs a
+  model, the program files the ticket and launches a fixer on it itself, inside its own caps.
+- Hand off only when the fix is not known, is outside the agent's tools (it needs the game and the agent holds no
+  bridge; it needs the owner under `delegation_policy.md` §2), or would change a north-star bar. Then the ticket
+  carries the evidence and what was tried.
+- A workaround by hand without the permanent fix is not allowed. Cleaning up after the pipeline and leaving it alone is
+  the thing he ruled against.
+- What it does not change: a MOD's gaps (its bars, its build work, its findings) keep going through the stages as
+  designed; this rule is about the pipeline's own machinery. Ledger calls made under it: `--per-ruling
+  RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP --why "delegated: self-fix: <what and why>"`.
+- Where the tick still hands a line to the Conductor, and whether it self-fixes now: the prose of
+  `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
+  `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".

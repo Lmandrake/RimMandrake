@@ -246,6 +246,16 @@ RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: ev
 that evidence. His own §2 holds above still wait for him, each ask with its evidence. Full text:
 `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
 
+## 🔴 The pipeline fixes its own defects — owner, 2026-11-15
+
+*"the Pipeline fixes its own issues once detected. When there's a clear problem and a known fix... do it. It's not a
+ticket for someone else, it's a ticket to file then do yourself."* Any agent or program in the Maturation Pipeline that
+finds a defect in the pipeline's own machinery (code, tools, records, tests, status page) with a known fix files the
+ticket with its acceptance test, does the fix in the same run (tests first), publishes, and says so. It hands off only
+when the fix is unknown, outside its tools, or would change a north-star bar, with the evidence on the ticket; a hand
+workaround without the permanent fix is not allowed. A mod's gaps still go through the stages. Full text:
+`design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
+
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
 User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.

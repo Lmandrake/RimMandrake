@@ -54,9 +54,17 @@ Words used here:
 
 His full message is also kept at `D:\ClaudeWork\rimmandrake\conductor\maturation_pipeline_20261113\OWNER_WORDS.md`.
 
+**[HIS] 2026-11-15 (Sunday), typed to the Conductor, two messages minutes apart, verbatim (phone typos fixed). On the ledger at 12:42 and 12:46 PM PST, item `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`.**
+
+> Fix the process wherever it didn't work, ok? Make the pipeline better, don't keep cleaning up after it and leaving it alone
+
+> Please make this a principle of the Maturation pipeline: the Pipeline fixes its own issues once detected. When there's a clear problem and a known fix... do it. It's not a ticket for someone else, it's a ticket to file then do yourself.
+
+What it means in practice: §5, "The pipeline fixes its own defects".
+
 ---
 
-## 2. The idea in ten lines
+## 2. The idea in eleven lines
 
 1. **[HIS]** The pipeline moves **whole versioned mods**, not tickets. Tickets stay in RimFlow.
 2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk. **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
@@ -68,6 +76,7 @@ His full message is also kept at `D:\ClaudeWork\rimmandrake\conductor\maturation
 8. **[HIS, by card 2026-11-13]** The **steward** is the Conductor, always. **[PROPOSAL]** Each mod has a **journal file**; the Conductor reads the evidence at every stage change and the journal holds the memory. This is the answer offered to "how do we preserve the intelligence".
 9. **[HIS, 2026-11-13]** He may look at any stage, and questions may be sent to him at any time; the Conductor lets him know (§8, decision 5). **[PROPOSAL]** An early look produces line items like any other.
 10. **[HIS, by agreement]** It is done by hand on Explosive Knockback first. **[PROPOSAL]** Only what proved boring by hand gets automated.
+11. **[HIS, 2026-11-15]** The pipeline fixes its own defects once detected: a clear problem with a known fix is a ticket to file and then do in the same run, not a ticket for someone else (§5, "The pipeline fixes its own defects"). A mod's gaps still go through the stages.
 
 ---
 
@@ -328,6 +337,20 @@ Nothing changes in what Operations watches. **[PROPOSAL]** One thing is added to
 - Inside a stage, the work is still tickets in RimFlow. The stage's worker picks among that mod's tickets. Nobody picks among all tickets of all mods.
 - **[HIS, 2026-11-14 ~9 PM PST]** "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble." (That evening all four advancing mods had sat at Stage 3 for 6 to 9 hours with no builder on them: every launch was a Conductor hand step.) So Dispatch launches offline builders by itself: `src/RimMandrake/rimflow/maturation_dispatch.py` on `rm-maturation-dispatch.timer`, every 60 seconds (page and launch decisions alike; a run that ended under 180 s ago is not judged yet), no model of its own. For each advancing mod at Stage 3 whose exit tests refuse bars as build work and that has no detached run live on it, it launches one capped builder (opus, USD 15, `maturation.py launch`). Guard rails, his condition: one live builder per mod and at most two on advancing mods at once; after a run ends the next starts only if the count of refused bars fell, otherwise (or past USD 60 spent at the stage) it stops on that mod with a "Needs Conductor" line and never tries the same refusals again; it never judges, rejects, sends a mod back or advances it, and launches nothing at any other stage but the blind challenge and in-game acceptance (the Designer stays his; the pre-human check onward stay hand steps). At the blind challenge it launches one capped judge per visit when the cycle is owed and nothing is live or recorded on it, never a second automatically; every ended cycle is a "Needs Conductor" line and the steward still confirms the exit (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED, 2026-11-15). At in-game acceptance it launches one capped live driver per visit when the visit is owed, nothing is live on the mod, no in-game run is live on any mod (one live-game driver at a time) and `rimflow bridge idle` says the bridge is takeable; it ships off (`ingame_enabled` false in `maturation_dispatch.json`) until the Conductor has run the first visit by hand, and every ended visit is a "Needs Conductor" line (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST, 2026-11-15). A mod whose exit tests all pass gets "ready to advance" for the Conductor. Graffiti joined the advancing list by his word the same night.
 - Work that belongs to no mod (tools, infrastructure) stays ticket work as today. A tool ticket that blocks an advancing mod takes that mod's urgency. (Open question "Tickets that belong to no mod".)
+
+### The pipeline fixes its own defects
+
+**[HIS, 2026-11-15]** "the Pipeline fixes its own issues once detected. When there's a clear problem and a known fix... do it. It's not a ticket for someone else, it's a ticket to file then do yourself." (Both messages in §1.)
+
+What that means, for every agent and program in the pipeline (the tick, the steward, a judge, a fixer, a builder, a Conductor helper):
+
+- It finds a defect in the **pipeline itself** (its code, tools, records, tests, status page) with a clear cause and a known fix. It files the ticket with its acceptance test, does the fix in the same run (tests first), publishes, and says so in its report.
+- A program does a deterministic fix itself and logs it. When the fix needs a model, the program files the ticket and launches a fixer on it itself, inside its live and spend caps. Nothing waits for a hand.
+- It hands off only when the fix is not known, is outside its tools (it needs the game and holds no bridge, or needs him under `delegation_policy.md` §2), or would change a north-star bar. The ticket then carries the evidence and what was tried.
+- A workaround by hand without the permanent fix is not allowed.
+- Scope: the pipeline's own machinery. A mod's gaps keep going through the stages as designed.
+
+Full text: `design/RimMandrake/standing_rulings.md` §"The pipeline fixes its own defects". Which "Needs Conductor" lines the tick still raises, and which of them it now fixes itself: the prose of item `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`.
 
 ### The steward and the journal
 
