@@ -1328,11 +1328,34 @@ def read_shared_bridge():
     return d if d and d.get("holder") else None
 
 
-def write_shared_bridge(holder, purpose=None, since=None):
-    """Record (or with holder=None clear) the cross-clone holder. Best effort: a failure prints and allows."""
+def _shared_fence(p):
+    """The driver lock's O_EXCL fence, on the shared file: every write of it is one fenced read-check-write across clones
+    and python.exe (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES: an unfenced heartbeat read the old holder, then wrote it
+    back over a newer one, OWNER included)."""
+    try:
+        from . import driver_lock
+    except ImportError:
+        import driver_lock
+    return driver_lock._fence(p), driver_lock.FenceBusy
+
+
+def write_shared_bridge(holder, purpose=None, since=None, _check=None):
+    """Record (or with holder=None clear) the cross-clone holder. Best effort: a failure prints and allows.
+    _check: called on the record read inside the fence; False skips the write (touch_shared_bridge)."""
     p = shared_bridge_path()
     if not p:
         return
+    fence, busy = _shared_fence(p)
+    try:
+        with fence:
+            if _check is not None and not _check(read_shared_bridge()):
+                return
+            _write_shared_bridge(p, holder, purpose, since)
+    except busy as e:
+        sys.stderr.write("rimflow: shared bridge lock %s not written, its fence stayed busy: %s\n" % (p, e))
+
+
+def _write_shared_bridge(p, holder, purpose, since):
     body = {"holder": holder, "since": since or now(), "touched": now(), "purpose": purpose, "clone": ROOT} if holder else {"holder": None, "touched": now(), "clone": ROOT}
     tmp = p + ".%d.tmp" % os.getpid()
     try:
@@ -1347,7 +1370,8 @@ def touch_shared_bridge(seat):
     """A holder's every event keeps its cross-clone lock fresh, the way its ledger events keep it alive locally."""
     d = read_shared_bridge()
     if d and d.get("holder") == seat:
-        write_shared_bridge(seat, d.get("purpose"), d.get("since"))
+        # judged again inside the fence: a holder written since the read above is never overwritten by this heartbeat
+        write_shared_bridge(seat, d.get("purpose"), d.get("since"), _check=lambda now: now == d)
 
 
 def shared_bridge_age_seconds(d):

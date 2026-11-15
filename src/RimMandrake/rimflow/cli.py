@@ -3246,6 +3246,15 @@ def _driver_release(seat, force=None):
     r = driver_lock.release(dl, seat, driver_lock.my_identity(), force=force)
     if not r["ok"]:
         print("⚠️  %s - the driver lock stays; another take is refused while its holder process lives" % r["why"])
+    return r
+
+
+def _driver_release_failed(r):
+    """-> the reason when a release left a driver lock that may still be OURS (contended fence, unreadable lock), else
+    None. Held by another process, or replaced under us, it was never ours to free: the ledger release is the truth."""
+    if not r or r["ok"] or "not this process" in r["why"] or "changed under the release" in r["why"]:
+        return None
+    return r["why"]
 
 
 def _bridge_lock_path():
@@ -3343,7 +3352,10 @@ def _bridge_release_write(seat, w, holder):
     if crossed:
         ev["override"] = "released the bridge out from under %s" % holder
     _refuse_before_lock(ev)
-    _driver_release(seat)
+    failed = _driver_release_failed(_driver_release(seat))
+    if failed:                         # never "released" over an enforcing lock that may still be ours
+        die("bridge NOT released: the driver lock did not come free (%s).\n  nothing written: the ledger still "
+            "shows %s holding it; retry  rimflow bridge release" % (failed, holder or "nobody"))
     _emit(ev, w, quiet=True)
     _mirror_from_ledger(seat)
     sh = model.read_shared_bridge()
@@ -3364,30 +3376,7 @@ def _owner_verdict(holds, evs=None):
     when the holder IS the OWNER."""
     if evs is None:
         evs, _ = load()
-    problems, ledger = [], None
-    for ev in evs:
-        if owner_interaction.is_his_act(ev):
-            e = _epoch(ev.get("ts"))
-            if not e:
-                problems.append("an OWNER ledger event has an unreadable ts %r" % (ev.get("ts"),))
-            elif ledger is None or e > ledger:
-                ledger = e
-    times = {"OWNER ledger event": ledger}
-    for label, ts in holds:
-        e = _epoch(ts) if ts else 0.0
-        if not e:
-            problems.append("%s has no readable time (%r)" % (label, ts))
-        else:
-            times[label] = e
-    t, prob = owner_interaction.read_stamp()
-    times["./bridge"] = t
-    if prob:
-        problems.append(prob)
-    t, prob = owner_interaction.last_chat()
-    times["chat prompt"] = t
-    if prob:
-        problems.append(prob)
-    return owner_interaction.verdict(times, problems[:4])
+    return owner_interaction.measure(evs, holds)
 
 
 def _owner_refusal(owner):
@@ -3706,11 +3695,19 @@ def _bridge_other_host_locked(args, seat, w, hk):
             ev["override"] = "released the %s bridge out from under %s" % (hk, holder)
         _refuse_before_lock(ev)
         rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
-        if rc != 0:
-            print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
+        if rc != 0 and not (rc == host_guard.EX_HELD and "not this process" in out):
+            # 🔴 the guard still holds our take (or could not be reached): the ledger must not say FREE over an
+            # enforcing lock that is not (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES). Nothing is written; the hold
+            # still goes stale by the 45-min rule, and any take may --force it, so this locks nobody out.
+            die("%s guard NOT released (exit %d): %s\n  nothing written: the ledger still shows %s holding %s.\n"
+                "  check   rimflow bridge who --host %s\n  retry   rimflow bridge release --host %s"
+                % (hk, rc, out, holder or "nobody", hk, hk, hk))
         _emit(ev, w, quiet=True)
         _mirror_from_ledger(None)
-        print("%s bridge released by %s" % (hk, seat))
+        if rc != 0:                    # the guard was another process's, never ours: the ledger release is the truth
+            print("%s bridge released by %s (its guard lock is not this window's: %s)" % (hk, seat, out))
+        else:
+            print("%s bridge released by %s" % (hk, seat))
         return 0
     holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
     # his OWNER hold on this host: takeable only 45 min after his last interaction (owner, by card 2026-10-30)

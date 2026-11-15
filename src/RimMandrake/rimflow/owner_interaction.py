@@ -295,6 +295,46 @@ def last_chat(now=None, window_s=WINDOW_S):
 # ---------------------------------------------------------------------------------------------------------------------
 # the verdict
 
+
+def _epoch(ts):
+    try:
+        return calendar.timegm(time.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S"))
+    except (ValueError, TypeError):
+        return 0.0
+
+
+def measure(evs, holds, now=None):
+    """-> (takeable, text): his rule on an OWNER hold, from every source. evs: the replayed ledger (None: UNMEASURED);
+    holds: [(label, ts)] the hold's own events (a None or unreadable ts is UNMEASURED). Reads the stamp and his chat
+    transcripts. The one gatherer: `rimflow bridge take` (cli._owner_verdict) and a script's host_guard take both call
+    it, so a script cannot pass a hold the ledger lock would refuse (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES)."""
+    problems, ledger = [], None
+    if evs is None:
+        problems.append("the ledger could not be read")
+    for ev in evs or ():
+        if is_his_act(ev):
+            e = _epoch(ev.get("ts"))
+            if not e:
+                problems.append("an OWNER ledger event has an unreadable ts %r" % (ev.get("ts"),))
+            elif ledger is None or e > ledger:
+                ledger = e
+    times = {"OWNER ledger event": ledger}
+    for label, ts in holds:
+        e = _epoch(ts) if ts else 0.0
+        if not e:
+            problems.append("%s has no readable time (%r)" % (label, ts))
+        else:
+            times[label] = e
+    t, prob = read_stamp()
+    times["./bridge"] = t
+    if prob:
+        problems.append(prob)
+    t, prob = last_chat(now)
+    times["chat prompt"] = t
+    if prob:
+        problems.append(prob)
+    return verdict(times, problems[:4], now)
+
 def verdict(times, problems, now=None, window_s=WINDOW_S):
     """Pure. times: {source label: epoch or None}; problems: [str]. -> (takeable, text).
 

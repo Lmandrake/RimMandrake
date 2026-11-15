@@ -35,7 +35,9 @@ import time
 DEFAULT = rm_win("scratch", "DRIVER_LOCK.json") if os.name == "nt" else rm_str("scratch", "DRIVER_LOCK.json")
 STALE_HEARTBEAT_S = 45 * 60          # only consulted when the holder process cannot be inspected
 WRITING_GRACE_S = 3.0
-FENCE_STALE_S = 10.0                 # a fence is held for milliseconds; one this old belongs to a crashed process
+FENCE_STALE_S = 60.0                 # a fence is held for milliseconds; one this old whose holder cannot be inspected
+                                     # belongs to a crashed process (an inspectable holder: its liveness decides)
+FENCE_EMPTY_S = 2.0                  # an empty fence younger than this is still being written
 FENCE_WAIT_S = 15.0
 
 
@@ -273,24 +275,81 @@ def _fence_path(path):
     return path + ".op"
 
 
+def _fence_identity():
+    """The fence holder is THIS process (the fence lives milliseconds, not a window's take)."""
+    pid = os.getpid()
+    if os.name == "nt":
+        return {"pid": pid, "start": None, "boot_id": None, "platform": "nt", "host": socket.gethostname()}
+    return {"pid": pid, "start": _proc_start(pid), "boot_id": current_boot_id(), "platform": "wsl",
+            "host": socket.gethostname()}
+
+
+def _fence_stale(raw, age):
+    """-> True when the fence whose content is `raw` and mtime age is `age` belongs to a dead process.
+    🔴 Age alone never breaks a fence an inspectable LIVE process holds (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES:
+    a 10 s mtime rule let a holder stalled inside the fence - a slow D: drive - have it renamed away under it, and two
+    writers both entered the critical section). Its holder gone: stale at once. Not inspectable (another machine, a
+    legacy "pid host time" fence, an unparseable one): stale after FENCE_STALE_S."""
+    if not raw.strip():
+        return age > FENCE_EMPTY_S
+    try:
+        ident = json.loads(raw)
+        if not isinstance(ident, dict) or "pid" not in ident:
+            raise ValueError("not a fence identity")
+    except ValueError:
+        return age > FENCE_STALE_S
+    me = _fence_identity()
+    if all(ident.get(k) == me[k] for k in ("pid", "platform", "host")):
+        return False                              # this very process holds it: live by definition
+    alive = process_alive(ident)
+    if alive is False:
+        return True
+    if alive is True:
+        return False
+    return age > FENCE_STALE_S
+
+
+def _read_raw(path):
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return fh.read()
+    except OSError:
+        return None
+
+
 @contextlib.contextmanager
 def _fence(path):
-    """Hold `<lock>.op` (O_EXCL) for one read-check-write of the lock. Raises FenceBusy after FENCE_WAIT_S. A fence
-    older than FENCE_STALE_S is a crashed holder's and is broken; ours is removed only while it still holds our nonce,
-    so a fence broken as stale and re-made by another process is never deleted by us."""
+    """Hold `<lock>.op` (O_EXCL) for one read-check-write of the lock. Raises FenceBusy after FENCE_WAIT_S. A fence is
+    broken only when _fence_stale says its holder is dead, and only the very fence that was judged: it is renamed aside
+    and compared, and anything else (a fence made in between) is put back. Ours is removed only while it still holds
+    our nonce, so a fence broken as stale and re-made by another process is never deleted by us."""
     op = _fence_path(path)
-    nonce = "%d %s %.6f" % (os.getpid(), socket.gethostname(), time.time())
+    nonce = json.dumps(dict(_fence_identity(), t="%.6f" % time.time()))
     deadline = time.time() + FENCE_WAIT_S
+    judged = {}                                   # fence content -> its liveness probe, at most one probe each
     while True:
         try:
             fd = os.open(op, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
         except (FileExistsError, PermissionError):  # Windows: a fence pending delete refuses with access denied
             try:
-                if time.time() - os.path.getmtime(op) > FENCE_STALE_S:
-                    aside = "%s.stale.%d" % (op, os.getpid())
-                    os.rename(op, aside)
-                    os.remove(aside)
-                    continue
+                raw = _read_raw(op)
+                age = time.time() - os.path.getmtime(op)
+                if raw is not None:
+                    key = (raw, age > FENCE_STALE_S, age > FENCE_EMPTY_S)
+                    if key not in judged:
+                        judged[key] = _fence_stale(raw, age)
+                    if judged[key]:
+                        aside = "%s.stale.%d" % (op, os.getpid())
+                        os.rename(op, aside)
+                        if _read_raw(aside) != raw:   # another process made a fresh fence between read and rename
+                            try:
+                                fd2 = os.open(op, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+                                with os.fdopen(fd2, "w", encoding="utf-8") as fh:
+                                    fh.write(_read_raw(aside) or "")
+                            except OSError:
+                                pass
+                        os.remove(aside)
+                        continue
             except OSError:
                 pass
             if time.time() > deadline:
@@ -443,21 +502,32 @@ def heartbeat(path, identity):
         return False
 
 
-def release(path, seat, identity, force=None):
+def release(path, seat, identity, force=None, spare_owner=False, owner_heartbeat=None):
+    """spare_owner: a forced release still refuses a held OWNER lock (owner_held); owner_heartbeat: the heartbeat of the
+    lock of his a caller's verdict measured - any other OWNER lock was not cleared. Both are judged INSIDE the fence, on
+    the lock about to be removed (a check on an earlier unfenced read could delete a newer OWNER hold)."""
     cur, problem = _read(path)
     if cur is None and not problem:
         return {"ok": True, "why": "already free"}      # nothing to fence (and no fence to make if the dir is gone)
     try:
         with _fence(path):
-            return _release(path, seat, identity, force)
+            return _release(path, seat, identity, force, spare_owner, owner_heartbeat)
     except FenceBusy as e:
         return {"ok": False, "why": "driver lock contended: %s" % e}
 
 
-def _release(path, seat, identity, force):
+def _release(path, seat, identity, force, spare_owner=False, owner_heartbeat=None):
     cur, problem = _read(path)
     if cur is None and not problem:
         return {"ok": True, "why": "already free"}
+    if cur is not None and cur.get("seat") == "OWNER" and seat != "OWNER" \
+            and not same_process(cur["identity"], identity):
+        if spare_owner and owner_held(cur):
+            return {"ok": False, "holder": cur, "why": "the OWNER holds this lock; --force does not cut it (45 min "
+                    "after his last interaction, or he releases it)"}
+        if owner_heartbeat and cur.get("heartbeat") != owner_heartbeat:
+            return {"ok": False, "holder": cur, "why": "the OWNER's lock moved after his hold was measured (%s, "
+                    "measured %s): measure again" % (cur.get("heartbeat"), owner_heartbeat)}
     if problem and not force:
         return {"ok": False, "why": "driver lock is %s; release it with --force after looking" % problem}
     if cur is not None and not same_process(cur["identity"], identity) and not force:

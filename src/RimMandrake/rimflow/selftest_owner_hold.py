@@ -640,7 +640,9 @@ def test_host_owner_hold():
                   "guard lock OWNER 1 min ago, empty ledger: take %s refused (rc=%s %s)" % (args[0], rc, out[:140]))
         rc, out = w.rf("bridge", "idle", "--host", "stevedesktop", "--for", "x")
         check(rc == 1 and "NOT TAKEABLE" in out, "idle says NOT TAKEABLE (%s)" % out[:140])
-        # the guard alone, as a script or another clone would call it
+        # the guard alone, as a script or another clone would call it ON THAT MACHINE (Archmagi measures his rule
+        # itself and does not trust owner_cleared: selftest_bridge_lock_owner_holes)
+        os.environ["RM_HOST"] = "stevedesktop"
         r = H.acquire("RUNNER", "job", force="break it", identity=dict(foreign, pid=9), path=lock)
         check(not r["ok"] and "OWNER" in r["why"], "guard: --force does not break a live OWNER lock (%s)" % r["why"][:100])
         r = H.release("RUNNER", force="break it", identity=dict(foreign, pid=2), path=lock)
@@ -667,6 +669,7 @@ def test_host_owner_hold():
         lock_at(lock, "RUNNER", 60)
         r = H.acquire("BENCH", "job", force="cut", identity=dict(foreign, pid=4), path=lock)
         check(r["ok"], "guard: --force still cuts a seat's lock (%s)" % r["why"])
+        os.environ.pop("RM_HOST", None)
         # 44 min old lock, 50 min old everything else: the cli's verdict still needs the lock's own heartbeat old enough
         lock_at(lock, "OWNER", 2640)
         rc, out = w.rf("bridge", "take", "--host", "stevedesktop", "--force", "--for", "x")
@@ -678,6 +681,7 @@ def test_host_owner_hold():
         check(rc == 0 and t and "OWNER" in t[-1].get("override", ""), "46 min quiet: taken, naming his hold (rc=%s %s %s)"
               % (rc, out[:120], t[-1:]))
     finally:
+        os.environ.pop("RM_HOST", None)
         w.close()
 
 

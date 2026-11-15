@@ -22,6 +22,11 @@ deploy and rw_game.sh - so a window and a script can never both drive one game.
     `rimflow bridge take --host` runs his rule and hands its verdict over as --owner-cleared. A lock with its process
     gone and its heartbeat 45 min old is free here as any other; `rimflow bridge take` still runs his rule on it first
     (HOST_OWNER_HOLD_ENFORCE_ACROSS_CLONES).
+  * 🔴 On Archmagi, where his windows, ledger and stamp live, a script take or forced release MEASURES his rule itself
+    (owner_interaction.measure, the gatherer `rimflow bridge take` uses) on any OWNER lock, held or past its heartbeat,
+    and refuses when it is not takeable or UNMEASURED; --owner-cleared there is not trusted (a free string). Elsewhere
+    it stays the only signal, and passing his lock on the heartbeat alone is said on stderr, never silent
+    (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES: his chat prompt does not refresh the heartbeat).
 
 CLI (exit 0 ok, 75 held by someone else, 2 usage or lock unusable):
   host_guard.py status [--json]
@@ -40,10 +45,11 @@ import subprocess
 import sys
 
 try:                                   # imported as rimflow.host_guard (cli.py) - one copy of model, not two
-    from . import driver_lock
+    from . import driver_lock, owner_interaction
 except ImportError:                    # run as a script on the runner or from a shell
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import driver_lock  # noqa: E402
+    import owner_interaction  # noqa: E402
 
 ENV_GEN = "RM_HOST_GUARD_GEN"
 EX_HELD = 75
@@ -160,9 +166,43 @@ def _shared_window_holder(seat):
     if not sh or sh.get("holder") in (None, seat):
         return None
     age = m.shared_bridge_age_seconds(sh)
+    if sh.get("holder") == "OWNER":     # his hold is not stale by its own age: acquire() measures his rule on it
+        return "OWNER (shared bridge file, %s min ago, for: %s)" % ("?" if age is None else age // 60, sh.get("purpose"))
     if age is None or age >= m.BRIDGE_STALE_SECONDS:
         return None
     return "%s (shared bridge file, %d min ago, for: %s)" % (sh["holder"], age // 60, sh.get("purpose"))
+
+
+def _measures_owner():
+    """This machine reads his interactions (his windows' transcripts, the ledger, the ./bridge stamp)."""
+    return local_machine() == _model().DEFAULT_BRIDGE_HOST
+
+
+def _owner_measured(holds):
+    """-> (takeable, text): his rule, measured here. An unreadable ledger is UNMEASURED, which refuses."""
+    try:
+        evs = _model().read()
+    except Exception as e:             # LedgerError, an unreadable shard: never "he was quiet"
+        sys.stderr.write("host_guard: ledger unreadable for his rule: %s\n" % e)
+        evs = None
+    return owner_interaction.measure(evs, holds)
+
+
+def _owner_gate(cur, seat, identity, owner_cleared):
+    """-> (refusal or None, owner_cleared, owner_heartbeat) for a take or forced release over lock `cur`."""
+    if not cur or cur.get("seat") != "OWNER" or seat == "OWNER" or \
+            driver_lock.same_process(cur.get("identity"), identity):
+        return None, owner_cleared, None
+    if _measures_owner():
+        ok, text = _owner_measured([("his guard lock's heartbeat", cur.get("heartbeat"))])
+        if not ok:
+            return "the OWNER holds this lock: %s" % text, None, None
+        return None, text, cur.get("heartbeat")
+    if not owner_cleared and not driver_lock.owner_held(cur):
+        sys.stderr.write("host_guard: the OWNER's lock here is past its 45-min heartbeat and his interactions are "
+                         "UNMEASURED on this machine (only %s reads them): passing it on the heartbeat rule\n"
+                         % _model().DEFAULT_BRIDGE_HOST)
+    return None, owner_cleared, None
 
 
 def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=None, owner_heartbeat=None):
@@ -175,11 +215,22 @@ def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=N
     if inherited is not None:
         return {"ok": True, "reentrant": True, "generation": inherited, "why": "inherited take", "path": path}
     seat = _model().bridge_identity(seat)   # the name its `bridge take` wrote into the shared file
+    identity = identity or self_identity()
     other = _shared_window_holder(seat)
-    if other and (not force or (other.startswith("OWNER ") and not owner_cleared)):
+    if other and other.startswith("OWNER "):
+        sh = _model().read_shared_bridge() or {}
+        ok, text = _owner_measured([("the shared lock's OWNER hold", sh.get("touched"))])
+        if not ok:
+            return {"ok": False, "why": "the OWNER holds this machine's bridge (%s): %s" % (other, text), "path": path}
+        other = None                   # takeable by his rule means 45 min past every interaction: stale, as any other
+    if other and not force:
         return {"ok": False, "why": "a window holds this machine's bridge: %s" % other, "path": path}
-    r = driver_lock.acquire(path, seat, purpose, identity or self_identity(), force=force,
-                            spare_owner=not owner_cleared, owner_heartbeat=owner_heartbeat)
+    cur, _problem = driver_lock._read(path)
+    refusal, owner_cleared, measured_hb = _owner_gate(cur, seat, identity, owner_cleared)
+    if refusal:
+        return {"ok": False, "holder": cur, "why": refusal, "path": path}
+    r = driver_lock.acquire(path, seat, purpose, identity, force=force,
+                            spare_owner=not owner_cleared, owner_heartbeat=measured_hb or owner_heartbeat)
     r["reentrant"] = False
     r["path"] = path
     return r
@@ -189,11 +240,16 @@ def release(seat, force=None, identity=None, path=None, owner_cleared=None):
     path = path or lock_path()
     if not path:
         return {"ok": False, "why": "no driver lock path on this machine"}
+    identity = identity or self_identity()
+    if not force:                      # without force only the holder's own identity releases: nothing to measure
+        return driver_lock.release(path, seat, identity)
     cur, _problem = driver_lock._read(path)
-    if force and not owner_cleared and seat != "OWNER" and driver_lock.owner_held(cur):
-        return {"ok": False, "why": "the OWNER holds this lock; --force does not cut it (45 min after his last "
-                "interaction, or he releases it)"}
-    return driver_lock.release(path, seat, identity or self_identity(), force=force)
+    refusal, owner_cleared, measured_hb = _owner_gate(cur, seat, identity, owner_cleared)
+    if refusal:
+        return {"ok": False, "why": refusal + "; --force does not cut it"}
+    # judged again inside the fence, on the lock about to go: a newer OWNER hold is never deleted by this check
+    return driver_lock.release(path, seat, identity, force=force, spare_owner=not owner_cleared,
+                               owner_heartbeat=measured_hb)
 
 
 def export_take(gen):
