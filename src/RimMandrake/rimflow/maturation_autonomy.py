@@ -251,6 +251,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row.update(decision="coverage_stop", aut=None, why="judging stopped %s: %s; `coverage_judge.py release "
                        "design/concepts/%s --why ...` (one more look, on his word) un-pauses it" % (
                            cs.get("at"), str(cs.get("why") or "no reason written")[:300], mod))
+            # its Needs Conductor line says the pause, not decide's stage reading (Pyrelands read "ready to advance")
+            row["need"] = ("%s: PAUSED, coverage judging stopped %s; nothing moves on it until `coverage_judge.py "
+                           "release design/concepts/%s --why ...` (one more look, on his word)" % (mod, cs.get("at"), mod))
             launches = [m for m in launches if m != mod]
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
                 _road_back(s, row, open_items, now, moved=True):
@@ -414,10 +417,20 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None)
     elif stt == "blocked":
         row.update(decision="designer_blocked", why="%s (designer_stage.py unblock or the named release un-pauses "
                    "it)" % str(dst.get("blocked_on") or "no reason written")[:300])
-    elif stt == "locked" or (stg == 5 and locked(mod)):
+    elif (stt == "locked" or stg == 5) and locked(mod):
+        # RIMMANDRAKE_GATE_DESIGNER_LOCKED_ON_VERSION_FILE_NOT_TREE: the Design Version lock is VERSION.json (his word),
+        # never stage.json's `locked` (the concept tree passed its gate)
         _steward(row, "designer_locked", "%s|designer|locked" % ver, "the Design Version is locked: advance it to "
                  "preflight", "the version is locked; record its bars (`maturation.py lock-bars %s --by BENCH --why ...`, land "
                  "version/locked_bars.json), then advance %s --to preflight (the lock clause passes)" % (mod, mod))
+    elif stt == "locked":
+        row.update(decision="owner", why="the lock is his (the Designer's concept tree is locked; version/VERSION.json "
+                   "is absent or not locked)",
+                   card="Lock %s's Design Version? The Designer finished Lock: stage.json reads locked (stage %s), the "
+                        "concept tree passed its gate. version/VERSION.json is absent or not locked, so no Design Version "
+                        "is named yet. On his lock: write version/VERSION.json (state locked, locked_by owner, "
+                        "owner_words), then `maturation.py next-version %s`. Evidence: design/concepts/%s/stage.json, "
+                        "tree.json, coverage_verdict.json, exam.json and record.json." % (mod, stg, mod, mod))
     elif stg == 5 and not locked(mod):
         row.update(decision="owner", why="the lock is his (Designer stage 5, VERSION.json not locked)",
                    card="Lock %s's Design Version? The Designer stands at stage 5 (Lock); VERSION.json is not locked. "

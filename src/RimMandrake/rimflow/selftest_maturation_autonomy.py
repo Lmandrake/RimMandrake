@@ -107,6 +107,34 @@ def fresh_state():
             os.remove(os.path.join(d, f))
 
 
+def designer_lock_checks(root):
+    """RIMMANDRAKE_GATE_DESIGNER_LOCKED_ON_VERSION_FILE_NOT_TREE (watched failing on e696f33db1, decision steward): the
+    Designer's stage.json `locked` is the concept tree's gate; only VERSION.json locked is the Design Version lock."""
+    import maturation_autonomy as A
+    r = {}
+    A._designer_lane(r, "Graffiti", "UNMEASURED", {"status": "locked", "stage": 5}, lambda m: False)
+    ok(r.get("decision") == "owner" and "Lock Graffiti's Design Version?" in str(r.get("card")),
+       "designer lock: a locked tree with no VERSION.json lock is an OWNER card, never a steward (read %s)" %
+       r.get("decision"))
+    r = {}
+    A._designer_lane(r, "Graffiti", "0.1.0", {"status": "locked", "stage": 5}, lambda m: True)
+    ok(r.get("decision") == "steward" and r.get("steward_kind") == "designer_locked",
+       "designer lock: a locked tree with VERSION.json locked is the steward's advance to preflight")
+    r = {}
+    A._designer_lane(r, "Graffiti", "0.1.0", {"status": "drafting", "stage": 5}, lambda m: True)
+    ok(r.get("decision") == "steward", "designer lock: stage 5 with VERSION.json locked is the steward's advance")
+    # the tick: Graffiti's steward already spent on the old reading; it reads OWNER now, its card written once
+    fresh_state()
+    w = World({}, dstate={"Gf": {"status": "locked", "stage": 5, "history": []}}, locked=False)
+    w.facts = {"Gf": {"mod": "Gf", "stage": "designer", "live_units": []}}
+    rd, g = run(w, ["Gf"], root)
+    rd2, g2 = run(w, ["Gf"], root, now=CLOCK + 60)
+    ok(g("Gf").get("klass") == "owner" and g2("Gf").get("klass") == "owner" and not w.launched
+       and len([c for c in w.cards if "Gf" in c]) == 1,
+       "designer lock: the tick reads OWNER, launches nothing, writes the lock card once (read %s, cards %d)" % (
+           g("Gf").get("decision"), len(w.cards)))
+
+
 def road_back_checks(root):
     """RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM (acceptance test folded in, watched failing on
     e696f33db1): a blind_challenge -> blind_challenge road back gives each open item its fixer before the next cycle
@@ -349,6 +377,9 @@ def main():
            and "coverage_judge.py release" in str(g("P").get("status")),
            "stalled 3: a coverage-stopped mod reads PAUSED on the judge stop, not slots_full (read %s)" % g("P").get(
                "decision"))
+        need = " ".join(x for x in rd.get("needs_conductor") or [] if x.startswith("P:"))
+        ok("ready to advance" not in need and "PAUSED, coverage judging stopped" in need,
+           "stalled 3: its Needs Conductor line says the coverage pause, not ready to advance (read %s)" % need[:120])
         fresh_state()
         w = World({"P": offline("P", "build", refused=["b1"])}, dstate={"P": stop})
         rd, g = run(w, ["P"], root)
@@ -368,6 +399,7 @@ def main():
         rs = routes.get("routes", routes) if isinstance(routes, dict) else routes
         ok("maturation.stalled" in json.dumps(rs), "alarm_routes.json routes maturation.stalled")
         road_back_checks(root)
+        designer_lock_checks(root)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
