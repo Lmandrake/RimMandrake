@@ -7,6 +7,7 @@ GI_ONLY=picks,any runs some (selftest_second_game_mutants.py uses it).
 """
 import os
 import sys
+import subprocess
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -117,7 +118,10 @@ def launches(w):
     code = ("import sys; sys.path.insert(0, %r); import live_session as L; L.time.sleep = lambda s: None; "
             "L.launch_and_wait(budget=60); print('UP')" % os.path.join(w.repo, "src/RimMandrake/Utils/northstar_driver"))
     a = w.start_a()
-    r = w.py(code, instance="b", timeout=120)
+    try:
+        r = w.py(code, instance="b", timeout=120)
+    except subprocess.TimeoutExpired:      # a b launch sent through Steam waits out launch_to_process_s for a process
+        r = subprocess.CompletedProcess([], -1, "", "timed out after 120 s (a launch for b went through Steam?)")
     check("UP" in r.stdout and F.alive(a) and not w.log_lines("cmd ") and w.gi("pid", "b").stdout.strip().isdigit(),
           "live_session launch under b starts b directly and sees its port line: %s %s" % (r.stdout[-80:], r.stderr[-200:]))
     check(not [ln for ln in w.log_lines("PS ") if "steam://" in ln], "live_session under b never touched steam://")
