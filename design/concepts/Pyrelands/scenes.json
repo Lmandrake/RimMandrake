@@ -15,7 +15,7 @@
    "action": "watch the front for a game day, then let it die down and wait out the smoulder window",
    "expect": "a contiguous front whose centroid moves, a growing scorched trail, and a relight in open grass beyond the building margin after it dies",
    "control": {
-    "case": "the same seed with the burn line switch off",
+    "case": "the same seed with the burn line switch (burnLineEnabled) off",
     "expect": "no front walks and no relight comes in the same window",
     "rules_out": "a vanilla wildfire incident or a test-lit fire passing for the burn line"
    },
@@ -37,14 +37,17 @@
    "action": "census the terrain; capture open ground; where the map rolled water, read its shore ring; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour; reload ashground_noon, hold clear weather for the same half-day and read ProbeAsh and light at the same clock hours",
    "expect": "deep ash on most cells, soil and gravel only in pockets, a mud and rich-soil ring round any standing water (a map with none is correct); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain",
    "control": {
-    "case": "the same map's clear-weather run from ashground_noon over the same clock hours, and a vanilla arid shrubland quicktest map read by the same census and capture",
-    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; the vanilla map shows no deep ash and no blowing ash",
+    "case": "the same map's clear-weather run from ashground_noon over the same clock hours; the forced ash fall from ashground_noon again with ash-fall accumulation (ashfallAccumulationEnabled) off; the clear-weather half-day again with ambient ash (ambientAshEnabled) off, and a vanilla arid shrubland quicktest map read by the same census and capture",
+    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; with accumulation off the ash fall banks no more ProbeAsh depth than the clear-weather run; with ambient ash off no ash blows and none banks; the vanilla map shows no deep ash and no blowing ash",
     "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome"
    },
    "restore": "destroy the vanilla control map; on the Pyrelands map remove the loose ash laid by the forced ash fall and restore the weather chooser",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "owed_parts_item": [
+    "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+    "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN"
+   ],
    "live_run": "UNRUN",
    "live_command": "modcheck run Pyrelands --chains ground_deep_ash"
   },
@@ -89,7 +92,7 @@
    "action": "start black rain over two pads for half a day; read the probe and crop growth on each through day 7",
    "expect": "wet fresh scar about 190%, dry fresh scar about 120%, wet old ash about 140% while it rains; the burn bonus gone by day 6 to 7 on its own clock",
    "control": {
-    "case": "the same three pads with the burn bonus switch off",
+    "case": "the same three pads with the burn bonus switch (freshBurnBonusEnabled) off",
     "expect": "the wet fresh scar reads the same as wet old ash",
     "rules_out": "rain watering alone passing for the compound"
    },
@@ -139,13 +142,16 @@
    "action": "burn the pad and read scorch-fruit on it during and just after the burn; ripen one; a colonist harvests it and a hungry colonist eats; leave a ripe plant and a stack in the open",
    "expect": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the plant withers within a day and the stack rots within four",
    "control": {
-    "case": "the unburned pad",
-    "expect": "shows 0 scorch-fruit",
-    "rules_out": "scorch-fruit placed by the test or growing as wild flora"
+    "case": "the unburned pad; and a second fresh burn of the same ground with scorch-fruit (scorchFruitEnabled) off",
+    "expect": "the unburned pad shows 0 scorch-fruit; the switched-off burn shows 0 scorch-fruit during and after it",
+    "rules_out": "scorch-fruit placed by the test or growing as wild flora, and a burn that seeds fruit whatever the switch"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both pads), remove every scorch-fruit plant and stack, restore the colonists' food need",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains scorchfruit_fire_born"
   },
   {
    "id": "sc_populations",
@@ -263,7 +269,7 @@
    "action": "read status and health before, during and after the front",
    "expect": "burrowed status while the front is on its cell, health unchanged after",
    "control": {
-    "case": "the same animal and front with the burrow switch off",
+    "case": "the same animal and front with the burrow switch (burrowOnFireEnabled) off",
     "expect": "takes burn damage",
     "rules_out": "the fire simply missing the animal"
    },
@@ -354,8 +360,8 @@
     "fresh Pyrelands map on his full list",
     "state digest recorded"
    ],
-   "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, raise a roofed room on the grass carpet, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; read the fire cast's thirst and each herd's water visits; turn the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day, reading the burn line, ash depth (ProbeAsh) and furnace-bed fires, then on again for a day; switch the other mechanics off and on",
-   "expect": "the digest after reload equals the one before; the second pass yields fruit again; no colonist takes a burn standing in fire and none starves at fire duty; the grass under the new roof withers within days; herds reach the water one at a time and none dehydrates; with the roster toggle off no new front, no ash laid and no bed fire over the day, and all three resume once it is back on; switches leave nothing behind; log clean",
+   "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, raise a roofed room on the grass carpet, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; read the fire cast's thirst and each herd's water visits; turn the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day, reading the burn line, ash depth (ProbeAsh) and furnace-bed fires, then on again for a day; then turn the Mod enabled master (pyrelandsEnabled) off for a day, reading the same three, and on again",
+   "expect": "the digest after reload equals the one before; the second pass yields fruit again; no colonist takes a burn standing in fire and none starves at fire duty; the grass under the new roof withers within days; herds reach the water one at a time and none dehydrates; with the roster toggle off, and again with the Mod enabled master (pyrelandsEnabled) off, no new front, no ash laid and no bed fire over the day, and all three resume once it is back on; switches leave nothing behind; log clean",
    "control": {
     "case": "a reload from a save made before the front lit; the roster toggle's on day over the same length",
     "expect": "the digest differs from the mid-way digest; with the toggle on the front walks and ash is laid",
@@ -364,7 +370,10 @@
    "restore": "a save is made before the walk starts (pre_walk) and every walk save is kept for his review; the walk's colony is disposable and nothing is restored into it; his canonical world saves are never loaded or written",
    "hold": "owner_review",
    "entry_point_item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES",
-   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "owed_parts_item": [
+    "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+    "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN"
+   ],
    "live_run": "UNRUN",
    "live_command": "modcheck run Pyrelands --chains walk_season"
   },
@@ -491,6 +500,33 @@
    "live_command": "modcheck run Pyrelands --chains furnace_sleep"
   },
   {
+   "id": "sc_furnace_hide_bank",
+   "kind": "acceptance",
+   "requirement": [
+    "furnacebeast_warms"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::furnace_hide_bank",
+   "entry_point_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "start": [
+    "a vanilla tundra or ice-sheet quicktest map with the outdoor temperature below 0 C (asserted from the map's outdoor temperature read): the bank pushes heat only below its heatPushMaxTemperature of 21 C, and it is the ship's heater for the cold",
+    "a furnace-beast corpse (asserted: race RM_FurnaceBeast) at a butcher spot and a colonist with butchering work enabled",
+    "two identical closed 5x5 rooms of the same wall and roof, doors shut, each at the same temperature (asserted: within 1 C of each other) and below 21 C, with no heater, fuel, power conduit or battery in either (asserted: no thing with CompHeatPusher, CompRefuelable or CompPowerTrader in either room)"
+   ],
+   "action": "the colonist butchers the corpse; count RM_FurnaceHide in the products; build one RM_FurnaceHideBank in room A from that hide (its costList); read that the bank carries no fuel and no power comp; read both rooms' temperature each game hour for 12 hours",
+   "expect": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads at least 5 C above room B at every hourly read from hour 6, never above 21 C; log clean",
+   "control": {
+    "case": "room B, the twin room with no bank, read over the same 12 hours",
+    "expect": "room B moves only with the outside air and reads at least 5 C below room A from hour 6",
+    "rules_out": "the outside air, the burn line or another heater warming the room passing for the bank's heat, and a bank that warms only with fuel or power"
+   },
+   "restore": "despawn the bank, the hide stack and the butchery leftovers, remove both test rooms and put back the pad from the snapshot taken at scene-begin; the tundra quicktest map is destroyed after",
+   "hold": "immediate",
+   "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains furnace_hide_bank"
+  },
+  {
    "id": "sc_heat_dome",
    "kind": "acceptance",
    "requirement": [
@@ -579,7 +615,7 @@
    "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size, and both pawns' body sizes",
    "expect": "live body size 6 and the giant draw sizes, the beast more than three times the ullai's 1.8",
    "control": {
-    "case": "RM_PyrelandsGiants' classic restore invoked with the switch off (static call, no reload)",
+    "case": "RM_PyrelandsGiants' classic restore invoked with the giant switch (furnaceBeastGiant) off (static call, no reload)",
     "expect": "live body size back to the classic 3.2 and the classic draw sizes",
     "rules_out": "a size read that only echoes the XML file, rather than the game's live def that the switch changes"
    },
@@ -627,7 +663,7 @@
    "action": "the hawk carries an ember; read the letter stack; a second hawk carries; then the switch off and the gate re-armed, a hawk carries again; butcher 400 fire-hawks under a fixed seed (firehawk_crestfeather_yield) and count Pristine Firehawk Crestfeathers",
    "expect": "exactly one letter after the first carry, targeting the hawk, and still one after the second; the crestfeather yield at the built 35% within 4 sigma",
    "control": {
-    "case": "the letter switch off; a non-hawk animal butchered the same way",
+    "case": "the letter switch (fireHawkSightingLetterEnabled) off; a non-hawk animal butchered the same way",
     "expect": "no letter with the switch off; no crestfeather from the non-hawk",
     "rules_out": "a letter sent on every carry or by the test, and a trophy any carcass drops"
    },
@@ -653,7 +689,6 @@
     "inv_scorchfruit",
     "inv_ash_field",
     "inv_plant_roster",
-    "inv_biome_self_contained",
     "inv_animal_roster"
    ],
    "source": [
@@ -682,7 +717,8 @@
     "sc_three_skies",
     "sc_furnace",
     "sc_ruins",
-    "sc_furnace_bed"
+    "sc_furnace_bed",
+    "sc_furnace_hide_bank"
    ],
    "exercises": [
     "inv_weather",
@@ -692,6 +728,19 @@
   }
  ],
  "coverage_rest": [
+  {
+   "capability": "inv_biome_self_contained",
+   "by": [
+    "sc_populations",
+    "biome_text_says_engineered"
+   ],
+   "checks": [
+    "T_SELF_CONTAINED_OFFLINE",
+    "T_LINT",
+    "T_SITE"
+   ],
+   "why": "the self-contained biome is checked where each part can fail, not by a showcase (no showcase scene uses the payload, the ports or the text): sc_populations censuses the map's own plants and cast and reads the log; biome_text_says_engineered reads the description; T_SELF_CONTAINED_OFFLINE (python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py) reads that the acoustic-scanner payload RM_AcousticPayload_Pyrelands is FindMod-guarded on the scanner's own About name and targets RM_Pyrelands and defs our mods declare, so with the scanner absent nothing applies and nothing logs; that every ported pyroclastic mutator in RM_RetiredMutatorPorts_Pyrelands is a mapped port the canon save's tiles resolve to; and that no label, description or keyed text carries campaign vocabulary (RSW_/RUT_ names, Ashkarr, Jawa, Star Wars canon words). The ports are inert until the one paint; the canon save loading their tiles with no missing-def error is a live read, UNRUN (load the canonical world save on the composed list and read Player.log for 'Could not resolve' naming an RM_ mutator)"
+  },
   {
    "capability": "inv_firefoam_sprayer",
    "by": [
@@ -722,7 +771,157 @@
     "sc_walk",
     "walk_season_on_the_pyre"
    ],
-   "why": "the walk turns the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day and reads that the burn line, ash laying and bed fires stop and resume, then switches the other mechanics off and on; the floor's mod_settings line checks every toggle"
+   "why": "every Scribe'd setting of RM_PyrelandsSettings is mapped in settings_map: a scene id means that scene's action or control turns the switch off and reads its mechanic stop (the roster toggle PyrelandsMechanicsGate and the Mod enabled master pyrelandsEnabled by sc_walk for a day each); T_SETTINGS_SWEEP_OFFLINE (python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py) reads for every setting that it is scribed once, its default equals the shipped behaviour and his ruled numbers, it is read by its mechanic outside the settings file, and every switch the master stops consults the gate; T_SITE reads the world switch ships off and labelled unsupported; T_SELF_CONTAINED_OFFLINE reads the cross-biome section's Unsupported label, and the sweep that the four cross-biome settings ship off. A setting mapped only to the sweep has its off state checked statically (read by its mechanic, behind the master), not in play; that stays inferred",
+   "settings_map": {
+    "pyrelandsEnabled": [
+     "sc_walk",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashDustingEnabled": [
+     "sc_fire_dusts_ash",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashDustingChance": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "scorchFruitEnabled": [
+     "sc_scorchfruit",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "scorchFruitChance": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "scorchFruitMapCap": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashfallAccumulationEnabled": [
+     "sc_ash_ground",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashfallRateMultiplier": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "biomeGenerationEnabled": [
+     "T_SITE",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "wildPlantAllowlistEnabled": [
+     "sc_populations",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "plantGrowthStagesEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "scorchedRuinsEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "burnLineEnabled": [
+     "sc_burn_line_walks",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "fireHawkSpreadEnabled": [
+     "sc_firehawk",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "fireHawkSightingLetterEnabled": [
+     "sc_firehawk_rewards",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "furnaceThermalEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "furnaceWarmthStrength": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "fireClockEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "crossBiomeEnabled": [
+     "T_SELF_CONTAINED_OFFLINE",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "crossBiomeEverywhere": [
+     "T_SELF_CONTAINED_OFFLINE",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "crossBiomeBiomeList": [
+     "T_SELF_CONTAINED_OFFLINE",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "crossBiomeCoverage": [
+     "T_SELF_CONTAINED_OFFLINE",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "burrowOnFireEnabled": [
+     "sc_ashwallow",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "burrowDomeOnHeatHit": [
+     "sc_heat_dome",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ullaiEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ullaiHerdSizeMultiplier": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "furnaceBeastGiant": [
+     "sc_furnace_giant",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "sandShovelEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "sandShovelYieldMultiplier": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashWaterFertilityEnabled": [
+     "sc_ash_watered",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashDryFertility": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashWateredFertility": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ashNaturalWaterRadius": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "freshBurnBonusEnabled": [
+     "sc_burn_compounds",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "freshBurnBonus": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "freshBurnDays": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "blackRainWaterHours": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "blackRainDousingEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "blackRainDousing": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ambientAshEnabled": [
+     "sc_ash_ground",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ambientAshShare": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "ambientAshHeavy": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "wildPlantRegrowDaysOverride": [
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ]
+   }
   },
   {
    "capability": "inv_art_and_text",

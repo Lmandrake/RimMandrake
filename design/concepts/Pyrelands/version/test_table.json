@@ -1479,6 +1479,34 @@
     "ran": false,
     "why": "Stage 8"
    }
+  },
+  "T_SELF_CONTAINED_OFFLINE": {
+   "id": "T_SELF_CONTAINED_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
+   "observes": "the self-contained biome's unscened parts: the acoustic-scanner payload FindMod-guarded on the scanner's own name and aimed at RM_Pyrelands and declared defs; every ported pyroclastic mutator a mapped port; no campaign vocabulary in the biome's text; the cross-biome section's Unsupported label drawn (round-6 g2, g4)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Patches/",
+    "src/RimMandrake/Pyrelands/Defs/",
+    "src/RimMandrake/Pyrelands/Languages/",
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+    "design/RimMandrake/retired_mutators_port_map.json"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
+   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS"
+  },
+  "T_ROUND6_GAPS": {
+   "id": "T_ROUND6_GAPS",
+   "kind": "offline",
+   "stage": "3",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
+   "observes": "the 17 round-6 coverage gaps (g1, g2, g4-g18) stay closed in scenes.json, tree.json, sheet.md, record.json and floor.json, and the Designer's gates (concept_tree lint, scene_errors, showcase_check) stay clean",
+   "reads": [
+    "design/concepts/Pyrelands/"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
+   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS"
   }
  },
  "bars": [
@@ -1880,7 +1908,8 @@
    "supports": [
     "T_SITE",
     "P_startup_and_def_wiring",
-    "P_mapgen_log"
+    "P_mapgen_log",
+    "T_SELF_CONTAINED_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2222,7 +2251,8 @@
    ],
    "supports": [
     "sc_walk",
-    "P_gate"
+    "P_gate",
+    "T_SELF_CONTAINED_OFFLINE"
    ],
    "held": [],
    "offline_decides": [

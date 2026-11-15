@@ -775,7 +775,16 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_furnacebeast_warmth, pyre_furnacebeast_heats_room (both with controls). Bed ignition and thermal charge have no walk bar of their own",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
-   ]
+   ],
+   "parts_covered_by": {
+    "by": [
+     "sc_furnace",
+     "sc_furnace_bed",
+     "sc_furnace_giant",
+     "sc_furnace_hide_bank"
+    ],
+    "why": "parts: the warmth aura and room heat (sc_furnace), the bed smoulder and heat immunity (sc_furnace_bed), the giant (sc_furnace_giant), the hide and the furnace-hide heat bank (sc_furnace_hide_bank: butchered hide, a bank with no fuel or power against a twin room with none, on a cold map)"
+   }
   },
   {
    "id": "inv_burrowers_heat_dome",

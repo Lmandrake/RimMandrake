@@ -32,7 +32,8 @@
    "status": "applicable"
   },
   "mod_settings": {
-   "status": "applicable"
+   "status": "applicable",
+   "establishes": "every Scribe'd setting is mapped (scenes.json coverage_rest inv_settings_gate settings_map) to the scene control that turns it off or to T_SETTINGS_SWEEP_OFFLINE (default equals shipped, read by its mechanic, behind the Mod enabled master); the cross-biome switches ship off and labelled unsupported (T_SELF_CONTAINED_OFFLINE); a switch with no scene control has its off state checked statically only, which stays inferred"
   },
   "multiplayer": {
    "status": "applicable"

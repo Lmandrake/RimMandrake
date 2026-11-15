@@ -254,7 +254,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep)",
+   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -266,15 +266,16 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, a closed room holding a furnace-beast grows clearly hotter than the same room without one, and a furnace-beast that falls asleep on grass sets that grass alight after a while, never at once and never on a cell with no plant. It must not read as a heater building, as ordinary body heat, as a beast the size of a muffalo, or as a bed fire the test lit.",
-   "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour. Two wild furnace-beasts laid down to sleep, one on ember grass and one on bare soil (the control), in clear weather on a concrete pad; read fire near each as they sleep.",
+   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, a closed room holding a furnace-beast grows clearly hotter than the same room without one, and a furnace-beast that falls asleep on grass sets that grass alight after a while, never at once and never on a cell with no plant. A colonist who butchers a furnace-beast gets furnace hide, and a furnace-hide heat bank (RM_FurnaceHideBank) built from it warms a closed room slowly with no fuel and no power, up to about 21 C. It must not read as a heater building, as ordinary body heat, as a beast the size of a muffalo, or as a bed fire the test lit.",
+   "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour. Two wild furnace-beasts laid down to sleep, one on ember grass and one on bare soil (the control), in clear weather on a concrete pad; read fire near each as they sleep. Butcher a furnace-beast and build a furnace-hide heat bank from its hide in one of two identical closed rooms on a cold map; read both rooms each hour.",
    "false_pass": [
     "the warmth status is applied by the test",
     "the hot room is hot because of the burn outside",
     "the size is read from the XML file, not the running game's def",
-    "the bed fire was lit by the burn line or the wake-up smoulder rather than the sleep roll"
+    "the bed fire was lit by the burn line or the wake-up smoulder rather than the sleep roll",
+    "the bank's room is warmed by the outside air or another heater, not the bank"
    ],
-   "red": "the beast is ordinary-sized, no warmth status appears near it, its room stays at the other room's temperature, or a beast asleep on grass never lights it (or lights bare soil)",
+   "red": "the beast is ordinary-sized, no warmth status appears near it, its room stays at the other room's temperature, or a beast asleep on grass never lights it (or lights bare soil), or a furnace-hide heat bank warms nothing without fuel or power",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
