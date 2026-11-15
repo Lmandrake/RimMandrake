@@ -264,7 +264,46 @@ def designer_lock_checks(root):
     rd, g = run(w, ["Gf"], root)
     ok(not w.autolocked and g("Gf").get("decision") == "launched",
        "evidence-for-ask 3: an already-locked version is never re-locked; the steward advances it")
+    upstream_wait_checks()
     evidence_and_act_checks()
+
+
+def upstream_wait_checks():
+    """RIMMANDRAKE_READ_STALE_OWNER_HOLD_AS_WAITING (watched failing on 8586d42006, decision owner): an OWNER HOLD on
+    the Designer whose VERSION.json says the version waits for another mod's version to pass reads as waiting on that
+    mod's version while it has not passed, never as his; once it has passed, the hold is his again."""
+    import maturation_autonomy as A
+    tmp = tempfile.mkdtemp(prefix="upw_")
+    try:
+        concept(tmp, "PyM", {"version/VERSION.json": {"mod": "PyM", "version": "0.1.0", "state":
+                             "not started: waits for Pyr 0.1.0 to pass; stays out of test mod lists until then"}})
+        concept(tmp, "Pyr", {"version/VERSION.json": {"mod": "Pyr", "version": "0.1.0", "state": "locked"},
+                             "version/stage_record.json": {"mod": "Pyr", "version": "0.1.0", "stage": "offline_build"}})
+        hold = {"status": "blocked", "stage": 4, "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: OWNER HOLD, not a "
+                "refusal: the Designer loop is held while the Design Version 0.1.0 entry lands"}
+
+        def lane():
+            r = {"mod": "PyM"}
+            try:
+                A._designer_lane(r, "PyM", "0.1.0", hold, lambda m: True, root=tmp)
+            except TypeError as e:      # the base takes no root: a FAIL, never a crash
+                r["error"] = str(e)
+            return r
+        r = lane()
+        ok(r.get("decision") not in ("owner", None) and "Pyr 0.1.0" in str(r.get("why")) and not r.get("card")
+           and not r.get("aut"),
+           "upstream wait: an OWNER HOLD whose version waits for Pyr 0.1.0 (not passed) reads as waiting on Pyr 0.1.0, "
+           "no card, no launch (read %s: %s)" % (r.get("decision"), str(r.get("why") or r.get("error"))[:160]))
+        if not r.get("error"):
+            A._klass({}, {}, r, CLOCK, {})
+            ok(r.get("klass") == "wait" and "waiting on Pyr 0.1.0 to pass" in str(r.get("status")) and not r["stalled"],
+               "upstream wait: the board line reads 'waiting on Pyr 0.1.0 to pass' (read %s)" % r.get("status"))
+        concept(tmp, "Pyr", {"version/stage_record.json": {"mod": "Pyr", "version": "0.1.0", "stage": "passed"}})
+        r = lane()
+        ok(r.get("decision") == "owner",
+           "upstream wait: once Pyr 0.1.0 has passed, the OWNER HOLD is his again (read %s)" % r.get("decision"))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def concept(root, mod, files):

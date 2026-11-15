@@ -50,7 +50,7 @@ import maturation as M          # noqa: E402
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued", "launch_retry"}
+        "queued", "launch_retry", "upstream_wait"}
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
@@ -324,6 +324,26 @@ def exam_gate(root, mod):
 def version_locked(root, mod):
     v, _ = M.read_json(root, mod, "version/VERSION.json")
     return str((v or {}).get("state") or "").startswith("locked")
+
+
+UPSTREAM_WAIT = re.compile(r"waits for ([A-Za-z0-9_]+) (\d+\.\d+\.\d+) to pass")
+
+
+def upstream_wait(root, mod):
+    """RIMMANDRAKE_READ_STALE_OWNER_HOLD_AS_WAITING: (mod, version, where it stands) when this mod's VERSION.json state
+    says it waits for another mod's version to pass ("waits for Pyrelands 0.1.0 to pass", his card 2026-11-13) and that
+    version's version/stage_record.json does not yet read stage passed; None when nothing upstream explains a wait."""
+    v, _ = M.read_json(root, mod, "version/VERSION.json")
+    m = UPSTREAM_WAIT.search(str((v if isinstance(v, dict) else {}).get("state") or ""))
+    if not m:
+        return None
+    up, uv = m.group(1), m.group(2)
+    rec, err = M.read_json(root, up, "version/stage_record.json")
+    rec = rec if isinstance(rec, dict) else {}
+    if rec.get("version") == uv and rec.get("stage") == "passed":
+        return None
+    return up, uv, (err or ("at %s" % rec.get("stage") if rec.get("version") == uv else
+                            "its stage record names version %s" % rec.get("version")))
 
 
 SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
@@ -650,7 +670,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
     if stage in (UNM, "designer", "intake") or stage is None:
-        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain, evidence=fx_evidence, exam=fx_exam)
+        _designer_lane(row, mod, ver, dst, locked, fx_dunit, fx_dchain, evidence=fx_evidence, exam=fx_exam,
+                       root=root)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
@@ -671,7 +692,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
             row["road_back_after"] = after
 
 
-def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None, evidence=None, exam=None):
+def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None, evidence=None, exam=None,
+                   root=None):
     if dst is None:
         row.update(decision="designer_unreadable", why="design/concepts/%s/stage.json cannot be read" % mod)
         return
@@ -687,6 +709,12 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
                         "design/concepts/%s/record.json (asks), park_summary.md and stage.json." % (
                             mod, stg, str(last.get("why") or "")[:400], str(dst.get("pending_decision") or "none")[:400],
                             "; ".join(str(x) for x in (dst.get("_asks") or [])[:6]) or "none written", mod))
+    elif stt == "blocked" and "OWNER HOLD" in str(dst.get("blocked_on") or "") and root and upstream_wait(root, mod):
+        # the hold's own condition is met; what it waits for is another mod's version (the hold stays, nothing launches)
+        up, uv, at = upstream_wait(root, mod)
+        row.update(decision="upstream_wait", waits_on="%s %s to pass" % (up, uv),
+                   why="its Design Version waits for %s %s to pass (%s; design/concepts/%s/version/VERSION.json); the "
+                       "hold on the Designer (stage %s) stays until then" % (up, uv, at, mod, stg))
     elif stt == "blocked" and "OWNER HOLD" in str(dst.get("blocked_on") or ""):
         row.update(decision="owner", why="an owner hold stands on the Designer (stage %s)" % stg,
                    card="%s, Designer stage %s, is held for you: %s Evidence: design/concepts/%s/stage.json." % (
