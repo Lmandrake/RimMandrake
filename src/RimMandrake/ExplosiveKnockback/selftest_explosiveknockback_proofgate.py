@@ -8,7 +8,9 @@ RM_KnockbackProof, RM_PatchApplierProbe and the proof-only hooks compile only un
   P1  a proof build (winbuild.py ... -- -p:RmProofs=true, output to a scratch folder so Assemblies/ stays release)
       has every proof name.
   G1  proof_build_gate.is_release_answer reads the bridge's "Type not found" answer as release, and a real answer
-      as not release.
+      as not release: neither another type's "Type not found" nor a proof-type error is release; require_proof_build
+      exits EXIT (3) on the release answer and hands a real answer back unchanged (blind cycle 3: an `or` for the `and`
+      and a gate that never exits both stayed green).
 Names are matched exactly (NUL on both sides): the #Strings heap is NUL-separated UTF-8, so a doc comment or a longer
 name never matches.
 
@@ -24,11 +26,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(HERE, "..", "Utils")
 sys.path.insert(0, HERE)
 sys.path.insert(0, UTILS)
-from proof_build_gate import is_release_answer  # noqa: E402
+import io  # noqa: E402
+from proof_build_gate import EXIT, is_release_answer, require_proof_build  # noqa: E402
 
 RELEASE = os.path.join(HERE, "Assemblies", "RimMandrakeExplosiveKnockback.dll")
 PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface", "RM_FrameProbe"]
 SANITY = ["RM_MapComponent_Knockback", "RM_ThingFlyer_Knockback"]
+PROOF_ERROR = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof.Stage threw: NullReferenceException"
 
 
 def strings_heap(path):
@@ -98,7 +102,16 @@ def main():
                 fails.append("P1 proof build lacks %s" % miss)
     fake_release = {"success": False, "error": "Type not found: RimMandrake.ExplosiveKnockback.RM_KnockbackProof"}
     g = [is_release_answer(fake_release), not is_release_answer({"success": True, "result": "items,caps ..."}),
-         not is_release_answer({"success": False, "error": "No public static Stage with 1 params."})]
+         not is_release_answer({"success": False, "error": "No public static Stage with 1 params."}),
+         not is_release_answer({"success": False, "error": "Type not found: RimMandrake.Other.SomeProof"}),
+         not is_release_answer({"success": False, "error": PROOF_ERROR})]
+    try:
+        require_proof_build(fake_release, out=io.StringIO())
+        exited = None
+    except SystemExit as e:
+        exited = e.code
+    real = {"success": True, "result": "items,caps ..."}
+    g += [exited == EXIT == 3, require_proof_build(real) is real]
     print("G1 %s gate reads release/proof answers: %s" % ("PASS" if all(g) else "FAIL", g))
     if not all(g):
         fails.append("G1 gate misreads %s" % g)

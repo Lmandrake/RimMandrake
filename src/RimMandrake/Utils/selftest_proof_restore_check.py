@@ -662,5 +662,63 @@ red("the Lean waiver riding on the end of a write", lambda t: waiver_problems(LE
     "            // restore-check: ok only ProofFire",
     "            RM_LeaningScrubSettings.leanScentEnabled = leanOn; // restore-check: ok only ProofFire")
 
+# ---------------------------------- 7. ExplosiveKnockback's storeroom proof: its settings waiver, run for real
+# storeroom_pit_proof.py waives its resets on "the run snapshots every saved setting before its first reset and
+# restore_player_settings puts each back in its finally". The waiver was taken on trust (blind cycle 3 of Explosive
+# Knockback: a partial snapshot and a swallowed failed write both stayed green), so its two functions run here, from the
+# real source, against a fake bridge: the snapshot holds every saved field, an unreadable field refuses it (None, so the
+# run changes nothing), every field goes back, and a write that does not take is named.
+import ast  # noqa: E402
+
+SPP = os.path.join(SRC, "ExplosiveKnockback", "proof", "storeroom_pit_proof.py")
+EK_MODCS = os.path.join(SRC, "ExplosiveKnockback", "Source", "RM_KnockbackMod.cs")
+
+
+def spp_problems(text):
+    fns = [n for n in ast.parse(text).body if isinstance(n, ast.FunctionDef) and n.name in ("player_settings", "restore_player_settings")]
+    if len(fns) != 2:
+        return ["player_settings / restore_player_settings not found"]
+    fields = re.findall(r"Scribe_Values\.Look\(ref (\w+),", read(EK_MODCS))
+    if len(fields) < 2:
+        return ["cannot read the saved fields of %s" % EK_MODCS]
+    game, refuse_get, refuse_set = {f: "v_" + f for f in fields}, set(), set()
+
+    def c(tool, **kw):
+        f = kw.get("field")
+        if kw.get("action") == "get":
+            return {"success": False} if f in refuse_get else {"success": True, "value": game.get(f)}
+        if f in refuse_set:
+            return {"success": False}
+        game[f] = kw.get("value")
+        return {"success": True}
+    ns = {"c": c, "os": os, "MODCS": EK_MODCS, "SETTINGS": "S"}
+    exec(compile(ast.Module(body=fns, type_ignores=[]), SPP, "exec"), ns)
+    got = []
+    snap = ns["player_settings"]()
+    if not snap or sorted(snap) != sorted(fields):
+        got.append("the snapshot does not hold every saved field")
+    for f in fields:
+        game[f] = "reset"
+    refuse_set.add(fields[0])
+    bad = ns["restore_player_settings"](snap or {})
+    if bad != [fields[0]]:
+        got.append("a write that did not take is not named (got %r)" % (bad,))
+    if any(game[f] != "v_" + f for f in fields[1:]):
+        got.append("restore did not put every field back")
+    refuse_get.add(fields[1])
+    if ns["player_settings"]() is not None:
+        got.append("an unreadable field gave a partial snapshot")
+    return got
+
+
+SPP_TEXT = read(SPP)
+check("storeroom_pit_proof's settings waiver holds when run", not spp_problems(SPP_TEXT), "; ".join(spp_problems(SPP_TEXT)))
+for name, old, new in (("a failed write swallowed", "            bad.append(f)\n", "            pass\n"),
+                       ("an unreadable field skipped", "            return None\n        snap[f]", "            continue\n        snap[f]")):
+    if SPP_TEXT.count(old) != 1:
+        check("mutant storeroom: %s applies" % name, False, "%d matches of %r" % (SPP_TEXT.count(old), old))
+        continue
+    check("mutant storeroom: %s goes red" % name, bool(spp_problems(SPP_TEXT.replace(old, new))), "the audit stayed green")
+
 print("selftest_proof_restore_check: %s (%d failure(s))" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)
