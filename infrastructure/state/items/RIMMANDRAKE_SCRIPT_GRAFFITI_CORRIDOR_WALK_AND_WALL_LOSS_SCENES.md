@@ -6,7 +6,7 @@ Three proof-scene entry points Graffiti's design (design/concepts/Graffiti/scene
 the twelve unclaimed must-show lines (RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE owns those):
 
 - `src/RimMandrake/Graffiti/validation.py::scene_spree_corridor`: his flagship (owner OWNER:1794728091811038301, "I'd say
-  B"): one colonist's painting spree down a fresh 1x20 corridor, a skilled colonist's designated piece mid-corridor, a 64 px
+  B"): one colonist's painting spree down a fresh 1x20 corridor, a skilled colonist's script-forced piece mid-corridor (RM_PaintGraffitiJob, no designator, asserted designations 0), a 64 px
   capture held for his review. Start, action, expect, control and restore are in the scene `sc_spree_corridor`.
 - `src/RimMandrake/Graffiti/validation.py::scene_wall_loss`: a painted wall deconstructed and another destroyed, both marks
   gone the tick their wall goes; an untouched neighbour keeps its mark (scene `sc_wall_loss`; inventory `inv_wall_loss`,

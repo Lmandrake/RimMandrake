@@ -6,7 +6,13 @@
  "root_ref": "design/validation_walks/RimMandrake/Graffiti.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "07ee6ecdbfb296ddd3fff8050204ea237fa3f8796e4ba49d835ad385c5ce1df8",
- "coverage": null,
+ "coverage": {
+  "signed_by": "CoverageJudge",
+  "at": "2026-11-15T14:47:37Z",
+  "tree_hash": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
+  "sheet_hash": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
+  "ledger_item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",

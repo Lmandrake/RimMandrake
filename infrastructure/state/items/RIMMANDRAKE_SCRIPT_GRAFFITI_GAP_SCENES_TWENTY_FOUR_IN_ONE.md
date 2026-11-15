@@ -26,7 +26,9 @@ Additions to existing entry points (graffiti_v1_live_proof.py and validation.py)
 - `graffiti_v1_live_proof.py::A6` (`sc_scrub_protection`): the ordered scrub goes through Designator_ScrubGraffiti and
   WorkGiver_ScrubGraffitiDesignated; an undesignated protected neighbour stays.
 - `validation.py::wall_closeup` (`sc_wall_closeup`): the edge-on control (a cell whose only wall is east or west gets no
-  mark) and the wall-top assertion (option D: the paint climbs over the crease).
+  mark), the far-side control (a cell whose only wall is south of it: a paint order and a pool pick leave no mark; expected
+  to fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands) and the wall-top assertion (option D:
+  the paint climbs over the crease).
 - `validation.py::gallery` (`sc_gallery`): the planted vanilla filth cell the judge must call dirt, and two vanilla dirt
   cells it must call alike.
 - `validation.py::beauty_pair` (`sc_beauty_pair`): the side-swapped repeat and the identical-tally pair.
