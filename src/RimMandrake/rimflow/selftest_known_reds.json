@@ -30,13 +30,6 @@
    "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
   },
   {
-   "added": "2026-11-13T05:16:23Z",
-   "expires": "2026-11-27T05:16:23Z",
-   "item": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
-   "test": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
-   "why": "RM_KnockbackProof.cs:755 and :1285 do not restore on throw (proof_restore_check)"
-  },
-  {
    "added": "2026-11-13T07:54:07Z",
    "expires": "2026-11-27T07:54:07Z",
    "item": "RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT",

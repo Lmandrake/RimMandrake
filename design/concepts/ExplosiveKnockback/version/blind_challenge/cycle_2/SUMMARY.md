@@ -41,28 +41,110 @@ per-user Windows dotnet, staged on `D:\ClaudeWork\rimmandrake\scratch\ek_blind_c
 - Guard check: three planted kernel breaks (wild ignored, gas cap rescaled, intoPits off ignored) each turned the harness RED.
 
 ## Lane 2 reruns
-(pending)
+Before any fix (`lane2/reruns.jsonl`, cycle-1 `rerun_offline.py` with a recorded-prefix match): **15 of 16 offline tests match** on
+verdict and last line; T_RESTORE matches on verdict (FAIL, known red) but not on its last line (the recorded line was a stderr
+SyntaxWarning) [measured]. T_SETTINGS_SCREEN is known red and decides no offline bar.
+
+After the fixes (`lane2/reruns_after_fix.jsonl`, at 04bb4c93fa): **15 of 16 PASS**; the 16th is T_SETTINGS_SCREEN, known red
+(855/856, was 851/856). T_KERNEL now runs 174 checks (was 164). T_RESTORE PASS.
 
 ## Planted
-(pending)
+`lane2/planted_faults.json`, `lane2/plant_faults.py`, `lane2/planted_results.jsonl` (+ `planted_results_recheck.jsonl`).
+**29 faults** planted, at least two per changed file (kernel 7, settings 4, map component 7, damage patch 1, proof 4, Stage-3
+proof 1, storeroom proof 1, proof gate 1, lint 1, def patch 2), one or more per new switch, journal line and the rim rule; run
+against 11 offline suites plus lane 1 for kernel faults, under `WINBUILD_ROOT=D:\ClaudeWork\rimmandrake\scratch\ek_blind_c2_mut`,
+restored on SIGTERM/SIGINT/SIGHUP; every batch ended `tree_clean_after: true` [measured].
+- First pass: **23 of 29 caught** by the builder's suites or lane 1; **6 missed** by every offline suite:
+  PF_MOD_WILD_CONSTANT_ONE, PF_MAP_GAS_CAP_SCALED, PF_PROOF_GOODS_WANT_PLAIN, PF_PROOF_SCENE_NAME_DROPPED,
+  PF_STAGE3_FIRE_LANE_ALWAYS_OWN, PF_STOREROOM_NO_RESTORE; and 2 kernel faults (WildCells ignored, gas cap rescaled) were caught by
+  blind lane 1 only, not by inv_kernel's own deciders [measured].
+- After the new checks (04bb4c93fa): **all 8 re-planted are caught**, the kernel two by T_KERNEL too, so **29 of 29 caught** [measured].
+- Limit: PF_STOREROOM_NO_RESTORE was invisible to T_RESTORE because the reset lines carry a reviewed `restore-check: ok`
+  annotation; it is caught by T_JOURNAL_JOLT's wiring check instead.
 
 ## Faults
-(pending)
+`lane2/faults.json`, each filed in rimflow. **10 Problems, all FIXED red first; 2 Polish, filed** [measured]. `miss_of: 1`
+(material unchanged since cycle 1): 7 Problems and both Polish.
+| id | class | bar | status | miss_of |
+|---|---|---|---|---|
+| RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS | Problem | inv_proof_scenes | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED | Problem | settings_scale_and_switch | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED | Problem | settings_scale_and_switch | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL | Problem | closed_container_holds | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG | Problem | closed_container_holds | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE | Problem | every_harmful_blast_throws | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR | Problem | settings_scale_and_switch | FIXED 587529cee1 | 1 |
+| RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR | Problem | inv_too_weak_skip | FIXED 587529cee1 | 0 |
+| RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER | Problem | inv_kernel | FIXED 04bb4c93fa | 0 |
+| RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE | Problem | inv_proof_scenes | FIXED 04bb4c93fa | 0 |
+| RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST | Polish | inv_proof_scenes (instrument) | PENDING (filed) | 1 |
+| RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER | Polish | FlowWorks, not this mod | PENDING (filed, baselined) | 1 |
+
+Found by me without a steward pointer: the flying-off hop, the rim decided by the wild factor (lane 1's INFO row, confirmed in the
+caller), the two kernel-decider gaps, the six wiring gaps, the checker's variable-args blind spot.
 
 ## Fixes
-(pending)
+`lane2/fixes.jsonl`: one row per Problem with the red command, rc and line on the parent and the green on the fix sha.
+- **587529cee1**: storeroom_pit_proof.py snapshots every saved setting before its first reset and restores it in a finally;
+  closedContainerGuard and fireAtHalf (saved, default on, reset, on the page, read in HeldReason/InClosedContainer/ThrowContainer
+  and ConfigOf); flyingGoods off skips goods `flying_off` (and the prefix's ItemWillBeThrown); a blocked container is drawn
+  shaking (StartJolt, MapComponentUpdate, kernel JoltOffset: 20 ticks, at most 0.15 cells, at most 64 at once); ContainerShove/KbShove
+  deleted, ThrowContainer plans with the new kernel ContainerThrowCells; a rim good needs a kernel cell; lint ek-pins; the walk row.
+  Release and proof builds both compile with 0 errors; the committed DLL is the release build [measured].
+- **04bb4c93fa**: K-23 (WildCells), K-24 (exact gas cap) in T_KERNEL; six wiring checks in T_JOURNAL_JOLT.
 
 ## Steward's decisions enacted
-(pending)
+Each acted on with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` where the ledger allowed it (OWNER.jsonl published).
+1. **T_RESTORE green: done** (587529cee1; `run_selftests --only selftest_proof_restore_check.py` prints `RESULT: GREEN` [measured]).
+   The brief's premise was stale: RM_KnockbackProof.cs lines ~755/~1285 no longer leak (Stage and Verdict restore on throw; the
+   checker learned the helper-built restore at af61b9c206, 2026-11-15 00:38 PST). The red came from 7 other hits: 3 resets in this
+   mod's storeroom_pit_proof.py (a real Problem: the player's values were lost; fixed), a reviewed annotation one line too high in
+   HugeThings' showcase_common.py and a restore planner in Utils/wrapup_debt.py (both annotated after reading them), and 2 FlowWorks
+   hits baselined under a filed item (the checker's own filed-not-fixed table). Dropped from the known-red list.
+2. Goods factor 1.6 stays a constant: honoured; T_JOURNAL_JOLT now pins it at 1.6.
+3. sc_storeroom_mortar repair: **not landed** (no scenes.json commit since f5e310809f) - owed by the neutral fixer; no verdict built.
+4. Wild cells on the move line: **already there**: both `item_move` lines carry `kernelCells` and `wildCells` in the code at f5e310809f..origin/main
+   (the diff since the stage opened adds them); it is the *request* line that does not. No code change; the offline format test was added (T_JOURNAL_JOLT,
+   passes on the parent too, so it is not red-first; a planted drop of wildCells turns it red [measured]).
+5. Non-push forces pinned in T_LINT: done; red against a planted Flame 0.7 (parent lint rc 0, new rc 1) and a planted EMP 0.2.
+6. Two switches and a jolt: done (above); the settings sweep covers both; RM_KnockbackMod.cs now saves 48 settings.
+7. Closed containers thrown: rewording **not landed** - owed by the steward; no verdict on sc_closed_containers. The dead slide
+   kernel is deleted with every inbound reference (K-14, KnockbackSweep, both blind lane-1 harnesses) and the throw is kernel-tested.
+8. Walk row yields to its bar: done in validation.py, bar_lists_map.json, the walk's must-be-true list (outside the north-star
+   section) and required_checks.json; the code now follows the bar as well, and the goods_fly_off proof scene expects no throw.
+9. Questions 10 to 14: not re-asked.
 
 ## Tests edited
-(pending)
+`tests_edited.json` lists every test file touched, with before and after sha; none loosens a check. The one matching rule widened
+is T_STAGE3_SCENES' F2: a saved key also counts as named when the locked action names it in the sheet's words (an explicit
+two-entry alias: "closed guard", "fire at half"), because the fixer may not edit the scene text. Added:
+`selftest_explosiveknockback_journal_jolt.py` (T_JOURNAL_JOLT; not yet in test_table.json, which is the steward's).
 
 ## Unsettled
-(pending)
+- Lane 1: 5 `not_kernel` rows (carrier arc/spin and the keep-100 bounce limit, every good counted, the gas chain, each switch's off
+  state, the proof scenes): game-side, owed to Stage 6.
+- The jolt is drawn by code that compiles and is offline-tested for bounds and wiring; whether it reads as a jolt on screen is
+  UNRUN. Every live test touched is UNRUN (goods_fly_off, the closedGuard/fireHalf sweep lanes, storeroom_pit_proof.py's restore).
+- Lane 1 INFO: whole cells make a good's flight 1.0 to 2.0 times the kernel's per stack (mean 1.582 [measured]); the sheet's
+  "about 1.6" holds on average. That is the sc_storeroom_mortar criterion the neutral fixer owns; no verdict here.
 
 ## Exit
-(pending)
+```
+offline_bars: {inv_kernel: green, inv_proof_scenes: green}
+problems_open: 0
+exit_met: true
+```
+inv_kernel: T_KERNEL 174/174 and T_FUZZ OK on the rerun at 04bb4c93fa. inv_proof_scenes: T_SCRIPT, T_PROOFGATE and T_RESTORE PASS
+on that rerun [measured]. Lane 1: 0 FAIL rows. All 10 Problems FIXED red first; the 2 Polish are filed and do not block.
+The two locked-text repairs (decisions 3 and 7) are owed by others and carry no verdict here.
 
 ## Owed
-(pending)
+- **Steward:** re-pin sc_closed_containers to "thrown a short way" (decision 7), and sc_storeroom_mortar's words "each good's request
+  line carries..." to the move line (decision 4); add T_JOURNAL_JOLT to test_table.json; name closedContainerGuard and fireAtHalf in
+  sc_settings_sweep's action when it is next re-pinned.
+- **Neutral fixer:** the sc_storeroom_mortar ratio criterion (decision 3).
+- **Stage 6 (live):** look at the container jolt (is it visible, does it read as a jolt); run goods_fly_off, the closedGuard and
+  fireHalf sweep lanes, and storeroom_pit_proof.py (row SETTINGS_RESTORED).
+- **Filed, open:** RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST; RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER (FlowWorks).
+- Trap seen once: `run_selftests --only` ran T_KERNEL and T_SETTINGS_SWEEP_OFFLINE in parallel and reported RED, then GREEN on a
+  rerun; both stage into the same `ExplosiveKnockbackSelfTest` folder [guess ~75% that the race is the cause].

@@ -1,0 +1,175 @@
+[
+ {
+  "id": "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
+  "bar": "inv_proof_scenes",
+  "criterion": "T_RESTORE: selftest_proof_restore_check.py prints RESULT: GREEN",
+  "evidence": [
+   "lane2/reruns.jsonl T_RESTORE FAIL",
+   "proof_restore_check --all: 7 new hits, none in RM_KnockbackProof.cs (Stage/Verdict already restore on throw; checker fix af61b9c206)",
+   "storeroom_pit_proof.py arm()/storage_arm()/end: Settings reset with no restore of the player's values"
+  ],
+  "would_pass": "every new hit restored or filed",
+  "smallest_fix": "snapshot the player's settings before the first reset and restore them in a finally; reviewed annotations where a restore exists; baseline the two FlowWorks hits under a filed item",
+  "verdict_on_criterion": "sound; the steward's line numbers (755, 1285) were stale",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED",
+  "bar": "settings_scale_and_switch",
+  "criterion": "goods in the air off, goods unthrown, never the old hop",
+  "evidence": [
+   "RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)",
+   "RM_KnockbackProof.cs goods_fly_off expected the instant move"
+  ],
+  "would_pass": "flyingGoods off: skip flying_off, no item_move",
+  "smallest_fix": "skip goods and corpses with reason flying_off; ItemWillBeThrown false",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED",
+  "bar": "settings_scale_and_switch",
+  "criterion": "closed guard off, container goods thrown loose; fire at half off, fire throws nothing",
+  "evidence": [
+   "RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)"
+  ],
+  "would_pass": "two saved switches read by their code paths",
+  "smallest_fix": "closedContainerGuard (HeldReason, InClosedContainer, ThrowContainer goods) and fireAtHalf (ConfigOf) with checkboxes, Scribe, Reset; sweep lanes wired",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL",
+  "bar": "closed_container_holds",
+  "criterion": "else a jolt (sc_closed_containers: a drawn offset above zero for each jolt)",
+  "evidence": [
+   "ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container"
+  ],
+  "would_pass": "a bounded drawn shake",
+  "smallest_fix": "StartJolt + MapComponentUpdate draws JoltOffset (<= 0.15 cells, 20 ticks, <= 64 at once)",
+  "verdict_on_criterion": "sound; visibility UNRUN (Stage 6 live look owed)",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG",
+  "bar": "closed_container_holds",
+  "criterion": "the kernel tests test the rule the game runs",
+  "evidence": [
+   "ContainerShove/KbShove called by nothing in the game",
+   "K-14 pinned its limit at 75 kg (the goods limit); the sheet's container limit is 250 kg"
+  ],
+  "would_pass": "the throw the game calls is kernel-tested",
+  "smallest_fix": "delete; ContainerThrowCells used by ThrowContainer; K-14 rewritten; cycle-1 lane 1 and KnockbackSweep follow",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE",
+  "bar": "every_harmful_blast_throws",
+  "criterion": "EMP, smoke, stun, extinguish and toxic gas at 0, fire at half",
+  "evidence": [
+   "T_LINT rc 0 on a copy with Flame 0.7"
+  ],
+  "would_pass": "the lint pins each force",
+  "smallest_fix": "ek-pins table",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR",
+  "bar": "settings_scale_and_switch",
+  "criterion": "the walk row reports against its bar",
+  "evidence": [
+   "validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move"
+  ],
+  "would_pass": "row says goods unthrown",
+  "smallest_fix": "rename to flying_goods.off_goods_unthrown everywhere",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 1,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR",
+  "bar": "inv_too_weak_skip",
+  "criterion": "a thing at the rim whose kernel throw rounds to 0 cells is not thrown (skip too_weak); every_good_moves: reached = kernel throw >= 1",
+  "evidence": [
+   "lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1",
+   "Execute threw goods by the wild count alone"
+  ],
+  "would_pass": "kernel 0 -> too_weak for goods too",
+  "smallest_fix": "require kernelCells >= 1 in Execute and ItemWillBeThrown",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 587529cee173",
+  "miss_of": 0,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER",
+  "bar": "inv_kernel",
+  "criterion": "T_KERNEL/T_FUZZ decide inv_kernel",
+  "evidence": [
+   "planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ"
+  ],
+  "would_pass": "T_KERNEL red on both",
+  "smallest_fix": "K-23, K-24",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 04bb4c93faca",
+  "miss_of": 0,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE",
+  "bar": "inv_proof_scenes",
+  "criterion": "the offline deciders see breaks of the shipped wiring",
+  "evidence": [
+   "6 planted faults MISSED (planted_results.jsonl)"
+  ],
+  "would_pass": "each caught",
+  "smallest_fix": "journal_jolt wiring() checks",
+  "verdict_on_criterion": "sound",
+  "status": "FIXED 04bb4c93faca",
+  "miss_of": 0,
+  "class": "Problem"
+ },
+ {
+  "id": "RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST",
+  "bar": "inv_proof_scenes",
+  "criterion": "proof_restore_check sees every settings poke",
+  "evidence": [
+   "storeroom_pit_proof.py arm(): Settings(args=kv) is invisible (py_poke_kind falls back to the tool name)"
+  ],
+  "would_pass": "a variable Settings arg is a poke",
+  "smallest_fix": "in py_poke_kind fall back to call.args[-1] only when no args= keyword exists",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING (filed)",
+  "miss_of": 1,
+  "class": "Polish"
+ },
+ {
+  "id": "RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER",
+  "bar": "(FlowWorks, not this mod)",
+  "criterion": "T_RESTORE baseline",
+  "evidence": [
+   "pump_outflow_live.py:174, tank_theft_live.py:80"
+  ],
+  "would_pass": "remove both baseline keys, T_RESTORE green",
+  "smallest_fix": "restore liquidPumpEnabled to its prior; make the wrapper visible",
+  "verdict_on_criterion": "sound",
+  "status": "PENDING (filed, baselined)",
+  "miss_of": 1,
+  "class": "Polish"
+ }
+]

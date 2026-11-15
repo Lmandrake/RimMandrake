@@ -1,0 +1,85 @@
+{
+ "cycle": 2,
+ "note": "shown to the next blind judge; none of these loosens a check (each adds checks or follows a deleted kernel)",
+ "edited": [
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "what": "GAME_SIDE += closedContainerGuard, fireAtHalf; switches(): each sheet switch declared true, saved true, reset true, on the page, read in its code path; 4 planted switch faults",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
+   "what": "F2: a key counts as named when the locked action names it in the sheet's words ('closed guard', 'fire at half'), an explicit two-entry alias",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+   "what": "ek-pins: Flame 0.5, EMP/Smoke/Extinguish/ToxGas 0, exactly one patch each",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+   "what": "K-14 ContainerShove checks replaced by ContainerThrowCells and JoltOffset checks; K-23 WildCells, K-24 exact gas cap",
+   "before": "dce1db1f1fba",
+   "after": "04bb4c93faca"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackSweep.cs",
+   "what": "locker.shove from ContainerThrowCells (Thrown/Jolt/None) instead of the deleted ContainerShove (Slide)",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "what": "goods_fly_off expects the bar (skip flying_off, unmoved) instead of the instant move",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173",
+   "run": "UNRUN (live, Stage 6)"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+   "what": "closedGuard and fireHalf lanes wired to the new switches (were INVALID); SweepFields += both",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173",
+   "run": "UNRUN (live, Stage 6)"
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/validation.py",
+   "what": "walk row goods_fly_off -> flying_goods.off_goods_unthrown (steward's decision 8)",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "design/concepts/ExplosiveKnockback/version/bar_lists_map.json",
+   "what": "the same row corrected to the bar",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "src/RimMandrake/Utils/proof_restore_check.py",
+   "what": "BASELINE += two FlowWorks keys under a filed item (the checker's own filed-not-fixed mechanism; counts 1 each)",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_1/lane1/BlindLane1.cs",
+   "what": "its two container rows call ContainerThrowCells (the deleted ContainerShove no longer compiles)",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  },
+  {
+   "path": "design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane1/BlindLane1.cs",
+   "what": "after lane 1 was recorded: L1_container_shove_kernel_as_locked became L1_container_throw_kernel (the kernel it tested was deleted)",
+   "before": "dce1db1f1fba",
+   "after": "587529cee173"
+  }
+ ],
+ "added": [
+  "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py (item_move format, container throw and jolt, flying_off, rim, and six wiring checks; 15 planted breaks)",
+  "cycle_2/lane2/plant_faults.py, rerun_offline.py"
+ ],
+ "tried_and_reverted": []
+}
