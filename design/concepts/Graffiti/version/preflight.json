@@ -1,0 +1,289 @@
+{
+ "mod": "Graffiti",
+ "version": "0.1.0",
+ "program": "design/concepts/Graffiti/version/pilot_throwaway/preflight_graffiti.py",
+ "at": "2026-11-15T20:58:18Z",
+ "dump": {
+  "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
+  "provenance": {
+   "builder": "measure/dumpdb.py",
+   "captured_utc": "2026-11-12T08:10:06Z",
+   "collided_names": "0",
+   "collision_blind": "0",
+   "defcount_entries": "481",
+   "defcount_names": "481",
+   "defs_lost_to_collision": "0",
+   "defs_total": "59262"
+  }
+ },
+ "seconds": 3.15,
+ "verdict": "refuse",
+ "refusals": 3,
+ "known_red": {
+  "P_A9": "RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL"
+ },
+ "checks": [
+  {
+   "id": "C1_bars_complete",
+   "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "47 bars, 47 locked",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C2_bars_name_checks",
+   "what": "every bar names a deciding check and every named check is defined",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "47 bars, 46 tests",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C3_stages_named",
+   "what": "every check names its stage and each bar's proves_at is its highest decider",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "46 tests",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C4_test_files_real",
+   "what": "every named test file is real (a new test's folder is real)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "46 files",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C5_reads_real",
+   "what": "every file a test reads is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "52 read paths",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C6_entries_measured",
+   "what": "each live test's entry_exists matches its code; unwritten tests are Stage 3 work, not refusals",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "24 tests owed to Stage 3",
+   "smallest_fix": null,
+   "route": null,
+   "notes": {
+    "stage3_owed": [
+     "sc_spree_corridor (src/RimMandrake/Graffiti/validation.py::scene_spree_corridor, item RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES)",
+     "sc_spree_variety (src/RimMandrake/Graffiti/validation.py::spree_variety, item None)",
+     "sc_wall_closeup (src/RimMandrake/Graffiti/validation.py::wall_closeup, item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE)",
+     "sc_art_skill (src/RimMandrake/Graffiti/validation.py::scene_art_skill, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_own_fun (src/RimMandrake/Graffiti/validation.py::scene_own_fun, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_rereads (src/RimMandrake/Graffiti/validation.py::scene_rereads, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_mockery (src/RimMandrake/Graffiti/validation.py::scene_mockery, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_tribute_memorial (src/RimMandrake/Graffiti/validation.py::scene_tribute_memorial, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_answer_wall (src/RimMandrake/Graffiti/validation.py::scene_answer_wall, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_raid_retaken (src/RimMandrake/Graffiti/validation.py::scene_raid_retaken, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_raider_pressure (src/RimMandrake/Graffiti/validation.py::scene_raider_pressure, item RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL)",
+     "sc_visitors (src/RimMandrake/Graffiti/validation.py::scene_visitors, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_fights (src/RimMandrake/Graffiti/validation.py::scene_fights, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_temperament (src/RimMandrake/Graffiti/validation.py::scene_temperament, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_settings (src/RimMandrake/Graffiti/validation.py::scene_settings_each_switch, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_wall_loss (src/RimMandrake/Graffiti/validation.py::scene_wall_loss, item RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES)",
+     "sc_lived_in_soak (src/RimMandrake/Graffiti/validation.py::scene_lived_in_soak, item RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE)",
+     "sc_walk (src/RimMandrake/Graffiti/validation.py::scene_walk_lived_in, item RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES)",
+     "sc_weathered_raid_mark (src/RimMandrake/Graffiti/validation.py::scene_weathered_raid_mark, item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE)",
+     "sc_breach_bias_raid (src/RimMandrake/Graffiti/validation.py::scene_breach_bias_raid, item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE)",
+     "H1_IDEO_RELOAD (src/RimMandrake/Graffiti/validation.py::scene_ideo_removed_save_reload, item RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST)",
+     "T_WEATHER_OFFLINE (src/RimMandrake/Utils/selftest_graffiti_weather.py, item RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE)",
+     "T_RAID_TAG_BUILT_WALL_ONLY (src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py, item RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK)",
+     "T_MSG_COUNTERS_RESET (src/RimMandrake/Utils/selftest_graffiti_message_counters.py, item RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME)"
+    ]
+   },
+   "seconds": 0.004
+  },
+  {
+   "id": "C7_why_game_and_full_list",
+   "what": "every game test says why offline cannot decide it; every full-list test says why",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "32 live tests",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C8_held_statements_placed",
+   "what": "every held look statement in validation_holding/ is on a bar and a test",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "6 held rows found (design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md)",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.004
+  },
+  {
+   "id": "C9_defs_real",
+   "what": "every named def is real; our RM_/RUT_/RSW_ names against the repo's current XML and C# types",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "12 names (1 family prefixes, each with >=2 current repo defs: RM_Graffiti); dump /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite captured 2026-11-12T08:10:06Z (51081 defs); 971 dump-only defs of ours; probe: a dump-only def of ours RM_BrineEncasement_Rough: refuse; a fake name of ours RM_Graffiti_NoSuchProbeDef: refuse; a real def of ours RM_Graffiti_ThrowUp_A: pass; a vanilla def Wall: pass",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.004
+  },
+  {
+   "id": "C10_mods_real",
+   "what": "every named mod is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "2 mods named",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C11_settings_real",
+   "what": "every named settings field is real and the shipped count matches",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "8 fields in RM_GraffitiMod.cs: paintingEnabled, paintIntervalTicks, viewerReactionEnabled, breachBiasEnabled, raidExitTaggingEnabled, autoCleanProtectionEnabled, socialEnabled, socialMessagesEnabled; named 2; claimed counts ['8']",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.005
+  },
+  {
+   "id": "C12_lock_pins_current",
+   "what": "the seven locked files still hash to their pins in bars.md",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "9 pins read",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.02
+  },
+  {
+   "id": "C13_known_red_recorded",
+   "what": "the known defect is recorded as known_red on a deciding test",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "holders ['P_A9']",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C14_cs_symbols_real",
+   "what": "every C# type and member a test names is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "12 symbols",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.079
+  },
+  {
+   "id": "C15_items_real",
+   "what": "every named ledger item is real (new test items are listed for the steward to file)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "6758 ledger ids read",
+   "smallest_fix": null,
+   "route": null,
+   "notes": {
+    "new_items_unfiled": [
+     "RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK",
+     "RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE",
+     "RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST",
+     "RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME"
+    ]
+   },
+   "seconds": 0.0
+  },
+  {
+   "id": "C16_scenes_wired",
+   "what": "every scene is a test on a bar and decides the leaves it is required for",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "30 scenes",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C17_built_offline_green",
+   "what": "every built offline test passes today (known red excepted)",
+   "verdict": "refuse",
+   "refusals": [
+    {
+     "line": "ship_check.py art",
+     "evidence": "FAIL art      58 texture paths, 1 unresolved [('Designator_ScrubGraffiti.cs', 'UI/Designators/RemovePaint')]",
+     "smallest_fix": "let the art clause resolve vanilla AssetBundle textures (UI/Designators/RemovePaint ships in Ideology)",
+     "route": "neutral fixer"
+    },
+    {
+     "line": "ship_check.py settings",
+     "evidence": "FAIL settings 8 settings, untipped [], viewerReaction labelled=False",
+     "smallest_fix": "update the settings clause to the 8 shipped fields and the current viewerReactionEnabled label ('Feelings while near a mark')",
+     "route": "neutral fixer"
+    },
+    {
+     "line": "ship_check.py review",
+     "evidence": "FAIL review   37 files, not CLEAN: ['Source/AutoCleanProtection.cs', 'Source/Designator_PaintGraffitiMark.cs', 'Source/D...",
+     "smallest_fix": "review the 37 Graffiti files to CLEAN (code_review_status.py)",
+     "route": "Stage 3"
+    }
+   ],
+   "evidence": "10 built offline tests",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.018
+  },
+  {
+   "id": "C18_inventory_evidence_real",
+   "what": "every record.json impl_evidence path and ITEM is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "51 evidence entries",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.001
+  },
+  {
+   "id": "C19_runnable_flags_measured",
+   "what": "each bar's every_decider_runnable_today agrees with its measured deciders",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "14 bars runnable today",
+   "smallest_fix": null,
+   "route": null,
+   "notes": null,
+   "seconds": 0.0
+  }
+ ]
+}

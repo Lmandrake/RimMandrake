@@ -1,0 +1,2253 @@
+{
+ "mod": "Graffiti",
+ "version": "0.1.0",
+ "made": "2026-11-15T20:56:02Z",
+ "made_by": "design/concepts/Graffiti/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
+ "stages": {
+  "4-5": "offline (blind)",
+  "6": "in game",
+  "8": "owner walk"
+ },
+ "rule": "a bar passes when every test in decides passes; supports adds evidence and decides nothing; proves_at is the highest stage among the deciders",
+ "known_red": {
+  "P_A9": "RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL"
+ },
+ "held_statements": [
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 1",
+   "row": 1,
+   "text": "After the colony's original ideoligion is removed (its last believer died: \"Primary ideoligion changed\"), every mark still saves `rmMarkMakerIdeo` pointing at it. Saving logs \"Object with load ID Ideo_12 is referenced (xml node name: rmMarkMakerIdeo) but is not deep-saved\", and loading logs \u226519 red ",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "inv_standalone",
+    "stands_alone_settings"
+   ],
+   "tests": [
+    "H1_IDEO_RELOAD"
+   ],
+   "note": ""
+  },
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 2",
+   "row": 2,
+   "text": "A raid exit tag can land on natural rock: a Shelryshkov raider tagged a gold vein (MineableGold) at (165,139), about 20 cells from the colony's walls, where no colonist may ever see it. The tag came in the tick the rest of its raid was killed; that it came from a dying raider is a guess (~70%).",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "raid_mark_troubles",
+    "inv_raid_marks"
+   ],
+   "tests": [
+    "T_RAID_TAG_BUILT_WALL_ONLY",
+    "sc_raid_exit"
+   ],
+   "note": ""
+  },
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 3",
+   "row": 3,
+   "text": "A standing mockery taxes its subject daily for as long as nobody scrubs it. Run 1: Vex re-read Mariana's day-1 mockery at \u22123.6 every day for 13+ days; Vex's wall mood averaged \u22126.1, at \u22125 or below in 21 of 34 samples (worst \u221212).",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "stories_not_tax",
+    "mockery"
+   ],
+   "tests": [
+    "sc_lived_in_soak",
+    "sc_mockery"
+   ],
+   "note": "may be by design: the owner's call at the Stage 8 walk; the soak measures it"
+  },
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 4",
+   "row": 4,
+   "text": "Opinion from walls keeps piling up over weeks. The colony mean of summed \\",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "stories_not_tax"
+   ],
+   "tests": [
+    "sc_lived_in_soak"
+   ],
+   "note": "the owner's call; the soak measures the slope over weeks"
+  },
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 5",
+   "row": 5,
+   "text": "The text doesn't match the picture. The tally's description says \"in charcoal\", but its art is light chalk on the texture and draws orange in game. The scrawl's description says \"the ugliest thing on the wall, and it looks it\", but it reads as a loud, colourful tag at Beauty \u22122 (craft is capped at p",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "ugliness_visible",
+    "inv_beauty_and_craft"
+   ],
+   "tests": [
+    "sc_beauty_pair",
+    "sc_walk",
+    "LOOK_STAGE8"
+   ],
+   "note": "look only: text and picture agree is judged by eye; decided at sc_beauty_pair and the walk"
+  },
+  {
+   "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 6",
+   "row": 6,
+   "text": "Harness: `GraffitiSocial.messagesSent` and `messagesKept` are statics that survive starting a new game in the same session, so `Tally` reports msgs=24 at tick 1 of a new game. The gameplay statics are guarded against stale ticks (`at <= now`, `now >= hit.Key`).",
+   "speaker": "agent (walk finding, measured); not the owner's words",
+   "bars": [
+    "stories_not_tax"
+   ],
+   "tests": [
+    "T_MSG_COUNTERS_RESET"
+   ],
+   "note": "harness defect; its fix makes sc_lived_in_soak's message count an honest instrument"
+  }
+ ],
+ "held_note": "validation_holding has one Graffiti file (walk_defects_2026-11-14_graffiti.md, 6 agent rows); no owner_look_defects_* row names Graffiti",
+ "tests": {
+  "T_FUZZ": {
+   "id": "T_FUZZ",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_fuzz.py",
+   "observes": "kernel rules by fuzz: weighted pick, meme/skill/hostility gates, reaction priority, scrub-protection predicates, wall-cell candidates, breach lure (NOT weather)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+    "src/RimMandrake/Graffiti/Source/SelfTest/RimMandrakeGraffiti.SelfTest.csproj"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_fuzz.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [
+    "RM_GraffitiKernel"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.0,
+    "last": "graffiti fuzz: 136472 cases, 136838 steps, 1.69s total -> OK",
+    "at": "2026-11-15T20:53:57Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fuzz.txt",
+    "result": "PASS"
+   }
+  },
+  "T_LINT": {
+   "id": "T_LINT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_lint.py",
+   "observes": "14 static clauses over defs, textures, keys and settings",
+   "reads": [
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml",
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_GraffitiMemeGlyphs.xml"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_lint.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [
+    "RM_Graffiti_ThrowUp_A",
+    "RM_Graffiti_IdeoSigil"
+   ],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 27.2,
+    "last": "Graffiti lint planted-defect selftest: 14/14 ok",
+    "at": "2026-11-15T20:54:24Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_lint.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SIGIL_COVERAGE": {
+   "id": "T_SIGIL_COVERAGE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/sigil_coverage.py",
+   "observes": "every vanilla meme the sigil set claims has a glyph def (reads installed Ideology data)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Defs/ThingDefs_GraffitiMemeGlyphs.xml"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/sigil_coverage.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [
+    "RM_Graffiti_IdeoSigil"
+   ],
+   "symbols": [],
+   "mods": [
+    "ludeon.rimworld.ideology"
+   ],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 37.6,
+    "last": "RESULT: PASS (0 finding(s))",
+    "at": "2026-11-15T20:55:02Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/sigil_coverage.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SETTINGS_SCREENS": {
+   "id": "T_SETTINGS_SCREENS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
+   "observes": "the Graffiti settings screen lays out every field (rows tagged 'Graffiti:')",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+   "new": false,
+   "item": null,
+   "mod_rows": "Graffiti",
+   "defs": [],
+   "symbols": [
+    "RM_GraffitiMod"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.1,
+    "last": "settings screens selftest: 856/856 ok",
+    "at": "2026-11-15T20:55:04Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_settings_screens.txt",
+    "mod_rows": {
+     "tag": "Graffiti:",
+     "ok": 7,
+     "fail": 0
+    },
+    "result": "PASS"
+   }
+  },
+  "T_SHIP_CHECK": {
+   "id": "T_SHIP_CHECK",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/ship_check.py",
+   "observes": "ship gate: art, settings, review, stamp, deploy clauses",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+    "src/RimMandrake/Graffiti/About/About.xml"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/ship_check.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 54.5,
+    "last": "PASS deploy   in sync (115 files)",
+    "at": "2026-11-15T20:55:58Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/ship_check.txt",
+    "result": "FAIL"
+   }
+  },
+  "T_FULL_LIST_MODE": {
+   "id": "T_FULL_LIST_MODE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/selftest_full_list_mode.py",
+   "observes": "harness: northstar full-list mode switches",
+   "reads": [
+    "src/RimMandrake/Graffiti/northstar_full.py"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/selftest_full_list_mode.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.0,
+    "last": "[modcheck] chain auto_clean_protection_toggle_flips END 0s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=0.0s teardown=0.0s",
+    "at": "2026-11-15T20:56:00Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_full_list_mode.txt",
+    "result": "PASS"
+   }
+  },
+  "T_FRESH_QT": {
+   "id": "T_FRESH_QT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/selftest_graffiti_fresh_quicktest.py",
+   "observes": "harness: fresh quicktest staging",
+   "reads": [
+    "src/RimMandrake/Graffiti/stage_colony.py"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_fresh_quicktest.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.3,
+    "last": "selftest_graffiti_fresh_quicktest: PASS",
+    "at": "2026-11-15T20:56:01Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fresh_quicktest.txt",
+    "result": "PASS"
+   }
+  },
+  "T_PLAY_ZOOM": {
+   "id": "T_PLAY_ZOOM",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/selftest_graffiti_play_zoom.py",
+   "observes": "harness: play-zoom camera framing",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_play_zoom.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "last": "selftest graffiti play zoom: PASS (0 failure(s))",
+    "at": "2026-11-15T20:56:01Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_play_zoom.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SPREE_SURPRISE": {
+   "id": "T_SPREE_SURPRISE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py",
+   "observes": "harness: spree start is not pre-announced",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "last": "selftest graffiti spree surprise: PASS",
+    "at": "2026-11-15T20:56:01Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_spree_surprise.txt",
+    "result": "PASS"
+   }
+  },
+  "T_V1_LIVE_VERDICTS": {
+   "id": "T_V1_LIVE_VERDICTS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py",
+   "observes": "offline check of graffiti_v1_live_proof.py's clause verdict logic",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py",
+   "new": false,
+   "item": null,
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.0,
+    "last": "PASS selftest_graffiti_v1_live",
+    "at": "2026-11-15T20:56:02Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_v1_live.txt",
+    "result": "PASS"
+   }
+  },
+  "T_WEATHER_OFFLINE": {
+   "id": "T_WEATHER_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_weather.py",
+   "observes": "fade curve: WeatherDays roofed > unroofed for every form and craft; WeatherFade alpha 1 before 60% of life, 0 at its end, monotone; a permanent mark never fades; mutants go red",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_weather.py",
+   "new": true,
+   "item": "RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE",
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [
+    "RM_GraffitiKernel",
+    "GraffitiForm"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": false,
+    "why": "not written yet: Stage 3 work (RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE)"
+   }
+  },
+  "T_RAID_TAG_BUILT_WALL_ONLY": {
+   "id": "T_RAID_TAG_BUILT_WALL_ONLY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py",
+   "observes": "the exit-tag wall predicate rejects natural rock (MineableGold, granite) and accepts a built wall (held walk defect #2; GraffitiJobUtility.IsPaintableWall accepts isNaturalRock today)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/GraffitiJobUtility.cs",
+    "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py",
+   "new": true,
+   "item": "RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK",
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [
+    "GraffitiJobUtility",
+    "RaidExitTaggerMod"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": false,
+    "why": "not written yet: Stage 3 work (RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK)"
+   }
+  },
+  "T_MSG_COUNTERS_RESET": {
+   "id": "T_MSG_COUNTERS_RESET",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_message_counters.py",
+   "observes": "GraffitiSocial.messagesSent and messagesKept read 0 at a new game's start (held walk defect #6)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/GraffitiSocial.cs",
+    "src/RimMandrake/Graffiti/Source/RM_GraffitiSocialProof.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_message_counters.py",
+   "new": true,
+   "item": "RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME",
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [
+    "GraffitiSocial"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": false,
+    "why": "not written yet: Stage 3 work (RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME)"
+   }
+  },
+  "sc_spree_corridor": {
+   "id": "sc_spree_corridor",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_spree_corridor",
+   "observes": "the spree leaves many marks along the corridor, at least 3 kinds; the skilled piece raises the corridor's beauty and the scrawls lower it; a 64 px capture shows both; the walker holds a negative viewed-mark thought from a scrawl and a positive one from the skilled piece (asserted thought defs and signs)",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_spree_corridor",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "mark_appears",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_spree_wall": {
+   "id": "sc_spree_wall",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "spree_wall",
+   "observes": "every lane holds marks made by its painter",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py spree_wall",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "mark_appears",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_spree_variety": {
+   "id": "sc_spree_variety",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "spree_variety",
+   "observes": "at least 3 defs and 5 def-variant pairs",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py spree_variety",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "marks_various",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_wall_closeup": {
+   "id": "sc_wall_closeup",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "wall_closeup",
+   "observes": "every mark lies on its wall's front face and climbs over the crease onto the wall top (option D), the face part bolder than the top",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py wall_closeup",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "sits_on_wall",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_gallery": {
+   "id": "sc_gallery",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "gallery",
+   "observes": "each cell reads as a deliberate punk mark, none as signage, English or dirt",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py gallery",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "reads_at_play_zoom",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_beauty_pair": {
+   "id": "sc_beauty_pair",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "beauty_pair",
+   "observes": "the judge picks the scrawl as uglier",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py beauty_pair",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "ugliness_visible",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_art_skill": {
+   "id": "sc_art_skill",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_art_skill",
+   "observes": "room beauty falls for skill 2 and rises for skill 16; the mockery's subject holds anger and beauty thoughts together; the skill-2 room's viewer holds a negative mark thought, the skill-16 room's viewer a positive one",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_art_skill",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "art_skill",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_own_fun": {
+   "id": "sc_own_fun",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_own_fun",
+   "observes": "the paint joy job runs, joy rises, a maker thought appears; the idle colonist paints a tag on the wall",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_own_fun",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "own_fun",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_rereads": {
+   "id": "sc_rereads",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_rereads",
+   "observes": "the mark's thought refreshes at most once per day, opinion changes once; the in-sight and the same-room viewers each gain the thought",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_rereads",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "rereads_daily",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_mockery": {
+   "id": "sc_mockery",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_mockery",
+   "observes": "subject hurt and lower opinion of the painter, a rival of the subject amused; the mark's subject field is the target; a neutral (non-rival) viewer holds no amused thought",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_mockery",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "mockery",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_tribute_memorial": {
+   "id": "sc_tribute_memorial",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_tribute_memorial",
+   "observes": "grief thought eased for the memorial's painter; for the tribute the subject warm AND the rival jealous or annoyed",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_tribute_memorial",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "tribute_memorial",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_answer_wall": {
+   "id": "sc_answer_wall",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_answer_wall",
+   "observes": "all four answer jobs complete, each by a pawn with a reason: the scrub leaves the mark gone, the deface leaves it crossed out, the reply leaves a reply mark beside it, the confront ends in a confrontation subject against painter; the painted-out case also ends in a confrontation",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_answer_wall",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "answer_wall",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_scrub_protection": {
+   "id": "sc_scrub_protection",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A6",
+   "observes": "unforced own and devotional kept, control cleaned; forced all gone; the designated protected mark is scrubbed by WorkGiver_ScrubGraffitiDesignated and an undesignated protected neighbour stays",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A6",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "scrub_protection",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_sigil": {
+   "id": "sc_sigil",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A3",
+   "observes": "ideo True, frame halo_0, iconIsIdeo True, tinted True with the ideo's colour; M's glyph in the pool with M, absent without it",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A3",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "ideo_sigil",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_player_orders": {
+   "id": "sc_player_orders",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A7",
+   "observes": "painted 3, matched 3, pending 0",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A7",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "player_orders",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_raid_exit": {
+   "id": "sc_raid_exit",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A2",
+   "observes": "no tag on the way in, tags on exterior walls on the way out, each in its faction's mark",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A2",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "raid_mark_troubles",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_hostile_thought": {
+   "id": "sc_hostile_thought",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A5",
+   "observes": "makerHostile True, worker True, mood True",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A5",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "raid_mark_troubles",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_raid_retaken": {
+   "id": "sc_raid_retaken",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_raid_retaken",
+   "observes": "the EnemyClaim stage read at N marks and again at fewer marks falls with the count; WorkGiver_ScrubGraffitiDesignated does each scrub; the thought ends once the last mark is gone",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_raid_retaken",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "raid_mark_troubles",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_going_over": {
+   "id": "sc_going_over",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A4",
+   "observes": "firstGone True, marksAtCell 1, rivalFaction True",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/graffiti_v1_live_proof.py A4",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "going_over",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_raider_pressure": {
+   "id": "sc_raider_pressure",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_raider_pressure",
+   "observes": "a letter names A and points at its marks; A's raid is larger (larger mode) or sooner (sooner mode) by the setting; with one A mark scrubbed the pressure stays; with both scrubbed A matches B",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_raider_pressure",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "raider_pressure",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_visitors": {
+   "id": "sc_visitors",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_visitors",
+   "observes": "one goodwill change per visit within the cap",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_visitors",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "visitors",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_fights": {
+   "id": "sc_fights",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_fights",
+   "observes": "in the unrestricted run at least one confrontation, subject against painter, the mark as its reason; in every run any confrontation is subject against painter; drafted and restricted pawns stay",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_fights",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "fights_reasons",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_temperament": {
+   "id": "sc_temperament",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_temperament",
+   "observes": "psychopath none, sensitive larger both ways, clean freak extra debuff and the cleaning break",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_temperament",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "temperament",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_settings": {
+   "id": "sc_settings",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_settings_each_switch",
+   "observes": "at least one mark painted with ideoligions off; each mark's def, variant, wall side, craft and subject equal before and after reload; each switch stops only its own behaviour",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_settings_each_switch",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "stands_alone_settings",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_breach_toggle": {
+   "id": "sc_breach_toggle",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "breach_bias_toggle_flips",
+   "observes": "the setting reads back off, then on (write and read-back only: the behavioural A/B of a raid biased toward a warning glyph is not built)",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py breach_bias_toggle_flips",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "stands_alone_settings",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_wall_loss": {
+   "id": "sc_wall_loss",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_wall_loss",
+   "observes": "both marks gone the tick their wall goes",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_wall_loss",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "paint_dies_with_wall",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_lived_in_soak": {
+   "id": "sc_lived_in_soak",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_lived_in_soak",
+   "observes": "summed mark thoughts stay small and Graffiti messages few per week",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_lived_in_soak",
+   "why_game": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed on the full list",
+   "why_game_from_leaf": "stories_not_tax",
+   "why_full_list": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed on the full list",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_walk": {
+   "id": "sc_walk",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_walk_lived_in",
+   "observes": "marks and the pressure record survive reload; the recreation job leaves a mark; the mark count rises after the repeated spree; the scrawl and tally pair is captured for his re-show; both orders give the same insult goodwill change once and the same pressure letter",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_walk_lived_in",
+   "why_game": "the walk is the mod in play on the full list",
+   "why_game_from_leaf": "walk_lived_in",
+   "why_full_list": "the walk is the mod in play on the full list",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_weathered_raid_mark": {
+   "id": "sc_weathered_raid_mark",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_weathered_raid_mark",
+   "observes": "the unroofed mark despawns; with the roofed one still standing EnemyClaim stays; age the roofed one past its own WeatherDays: it despawns, EnemyClaim ends and A's pressure lifts",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_weathered_raid_mark",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "raid_mark_troubles",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "sc_breach_bias_raid": {
+   "id": "sc_breach_bias_raid",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_breach_bias_raid",
+   "observes": "with bias on the pick is W (or the eligible building carrying the glyph) and the breaching raid's first target is W; with bias off the pick is vanilla's building: the breach-bias switch stops its own behaviour (stands_alone_settings' row for this switch, the behaviour half that sc_breach_toggle's write and read-back leaves out)",
+   "reads": [
+    "src/RimMandrake/Graffiti/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_breach_bias_raid",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "stands_alone_settings",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "P_A9": {
+   "id": "P_A9",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+   "entry": "A9",
+   "observes": "a mark's paint order dies with its wall (no hidden face keeps a paint order)",
+   "reads": [
+    "src/RimMandrake/Graffiti/graffiti_v1_live_proof.py",
+    "src/RimMandrake/Graffiti/Source/WallLossPatch.cs"
+   ],
+   "command": "bridge: graffiti_v1_live_proof.py A9",
+   "why_game": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "why_game_from_leaf": "sits_on_wall",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL",
+   "known_red": "RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL",
+   "new": false,
+   "defs": [],
+   "symbols": [
+    "WallLossPatch"
+   ],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "H1_IDEO_RELOAD": {
+   "id": "H1_IDEO_RELOAD",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "entry": "scene_ideo_removed_save_reload",
+   "observes": "after the colony's ideoligion is removed, a save reloads with 0 Graffiti reference errors (held walk defect #1: rmMarkMakerIdeo, Filth_Mark.cs:297)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs"
+   ],
+   "command": "bridge: validation.py scene_ideo_removed_save_reload",
+   "why_game": "Scribe reference resolution on save and load is engine behaviour over a live world's ideoligion list; no offline model of Scribe_References exists to decide it",
+   "why_game_from_leaf": null,
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST",
+   "new": true,
+   "defs": [],
+   "symbols": [
+    "Filth_Mark"
+   ],
+   "mods": [
+    "mandrake.rm.graffiti"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
+   }
+  },
+  "LOOK_STAGE8": {
+   "id": "LOOK_STAGE8",
+   "kind": "look",
+   "stage": "8",
+   "file": null,
+   "observes": "the owner walks the mod",
+   "reads": [],
+   "command": "owner walk",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": false,
+    "why": "Stage 8: the owner's own walk"
+   }
+  }
+ },
+ "bars": [
+  {
+   "id": "inv_mark_on_wall",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_wall_closeup",
+    "P_A9"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_mark_art_set",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_gallery",
+    "sc_spree_variety"
+   ],
+   "supports": [
+    "T_LINT",
+    "T_SHIP_CHECK",
+    "sc_beauty_pair"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_beauty_and_craft",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_beauty_pair",
+    "sc_art_skill"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    5
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_ideo_sigils",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_sigil",
+    "T_SIGIL_COVERAGE"
+   ],
+   "supports": [
+    "T_LINT",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SIGIL_COVERAGE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_spree",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_spree_wall"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "T_SPREE_SURPRISE"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_joy_and_idle_tag",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_own_fun"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_player_orders",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_player_orders"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_viewer_mood",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_rereads",
+    "sc_hostile_thought"
+   ],
+   "supports": [
+    "sc_beauty_pair",
+    "T_LINT"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_social_layer",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_mockery",
+    "sc_answer_wall",
+    "sc_tribute_memorial",
+    "sc_fights"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "T_MSG_COUNTERS_RESET"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_visitors",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_visitors"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_raid_marks",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_raid_exit",
+    "sc_going_over",
+    "sc_raid_retaken",
+    "T_RAID_TAG_BUILT_WALL_ONLY"
+   ],
+   "supports": [],
+   "held": [
+    2
+   ],
+   "offline_decides": [
+    "T_RAID_TAG_BUILT_WALL_ONLY"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_breach_bias",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_breach_bias_raid",
+    "sc_breach_toggle"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_scrub_protection",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_scrub_protection"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_temperament",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_temperament"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_wall_loss",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_wall_loss"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_settings",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_settings",
+    "T_SETTINGS_SCREENS"
+   ],
+   "supports": [
+    "T_LINT",
+    "T_SHIP_CHECK",
+    "sc_breach_toggle"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_SETTINGS_SCREENS"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_standalone",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_settings",
+    "H1_IDEO_RELOAD"
+   ],
+   "supports": [
+    "T_SHIP_CHECK"
+   ],
+   "held": [
+    1
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_raider_future_marks",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_raider_pressure"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "inv_weathering",
+   "source": "record",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_weathered_raid_mark",
+    "T_WEATHER_OFFLINE"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WEATHER_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "mark_appears",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_spree_wall"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "T_FRESH_QT",
+    "T_SPREE_SURPRISE",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "reads_at_play_zoom",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_gallery"
+   ],
+   "supports": [
+    "T_PLAY_ZOOM",
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "sits_on_wall",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_wall_closeup",
+    "P_A9"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "marks_various",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_spree_variety"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "ideo_sigil",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_sigil"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "T_SIGIL_COVERAGE"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "punk_register",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_gallery"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "no_english",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_gallery"
+   ],
+   "supports": [
+    "T_LINT",
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "not_dirt",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_gallery"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "ugliness_visible",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_beauty_pair"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "sc_walk",
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    5
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "art_skill",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_art_skill"
+   ],
+   "supports": [
+    "sc_spree_corridor",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "own_fun",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_own_fun"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "rereads_daily",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_rereads"
+   ],
+   "supports": [
+    "sc_lived_in_soak"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "mockery",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_mockery"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "sc_lived_in_soak"
+   ],
+   "held": [
+    3
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "tribute_memorial",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_tribute_memorial"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "answer_wall",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_answer_wall"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "scrub_protection",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_scrub_protection"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "player_orders",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_player_orders"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "raid_mark_troubles",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_raid_exit",
+    "sc_hostile_thought",
+    "sc_raid_retaken",
+    "sc_weathered_raid_mark",
+    "T_RAID_TAG_BUILT_WALL_ONLY"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [
+    2
+   ],
+   "offline_decides": [
+    "T_RAID_TAG_BUILT_WALL_ONLY"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "going_over",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_going_over"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "raider_pressure",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_raider_pressure"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "visitors",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_visitors"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "fights_reasons",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_fights"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "temperament",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_temperament"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "stands_alone_settings",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_settings",
+    "sc_breach_toggle",
+    "sc_breach_bias_raid"
+   ],
+   "supports": [
+    "H1_IDEO_RELOAD",
+    "T_SETTINGS_SCREENS"
+   ],
+   "held": [
+    1
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "stories_not_tax",
+   "source": "tree",
+   "kind": "live_full",
+   "proves_at": "6",
+   "decides": [
+    "sc_lived_in_soak"
+   ],
+   "supports": [
+    "sc_rereads",
+    "T_MSG_COUNTERS_RESET"
+   ],
+   "held": [
+    3,
+    4,
+    6
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "paint_dies_with_wall",
+   "source": "tree",
+   "kind": "live_minimal",
+   "proves_at": "6",
+   "decides": [
+    "sc_wall_loss"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "weathering_bounds_marks",
+   "source": "tree",
+   "kind": "offline",
+   "proves_at": "6",
+   "decides": [
+    "T_WEATHER_OFFLINE",
+    "sc_weathered_raid_mark"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_WEATHER_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "walk_lived_in",
+   "source": "tree",
+   "kind": "live_full",
+   "proves_at": "6",
+   "decides": [
+    "sc_walk"
+   ],
+   "supports": [
+    "LOOK_STAGE8",
+    "T_FULL_LIST_MODE"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  }
+ ]
+}

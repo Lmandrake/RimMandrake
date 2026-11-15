@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Graffiti",
   "version": "0.1.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-15T11:39:31-08:00",
-  "since_from": "next-version by BENCH",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-15T13:01:25-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-15T11:39:31-08:00",
@@ -28,6 +28,24 @@
       "why": "VERSION.json locked as 0.1.0 on his card 2026-11-15 11:33 AM PST, Lock as 0.1.0 now (OWNER:1794771556666342734)",
       "version_from": "UNMEASURED",
       "version_to": "0.1.0"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-15T13:01:25-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward run RIMMANDRAKE_STEWARD_GRAFFITI_PREFLIGHT_STAGE, Stage 2 preflight run and read",
+      "confirmed": {
+        "steward_confirms": "Read version/preflight.json (preflight_graffiti.py, 19 checks, planted run 19/19 red, verdict refuse, 3 refusals, all in built offline test ship_check.py): art clause blind to the vanilla AssetBundle texture UI/Designators/RemovePaint and settings clause stale (6 fields/'Sacred Marks' vs the shipped 8/'Feelings while near a mark'), both a broken checker criterion filed RIMMANDRAKE_MEND_GRAFFITI_SHIPCHECK_STALE_LABEL_BLIND_BUNDLE; 37 files not CLEAN, Stage 3 review work filed RIMMANDRAKE_REVIEW_GRAFFITI_SOURCE_THIRTY_SEVEN_FILES_DIRTY. None is a spec fault. The one Stage 1 refusal (scenes.json blob drift from 68f199064a, sc_wall_closeup control text following the in-version A9 fix) was re-pinned in version/bars.md with a journal line. Owed tests (3 offline, 1 live, 20 absent scene entries) are Stage 3 work per the lock rule."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
     }
   ]
 }
