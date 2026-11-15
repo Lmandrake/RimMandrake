@@ -35,7 +35,41 @@ GAME_SIDE = {
     "goodsRebound": "sc_storeroom_mortar", "thrownGoodsBlastDamagePercent": "sc_storeroom_mortar",
     "goodsWallImpactPerCell": "sc_storeroom_mortar", "gasBurstRadius": "T_GAS_CLUMP_ORDER", "gasBurstGoodsCells": "T_GAS_CLUMP_ORDER",
     "gasPawnCooldownTicks": "T_GAS_CLUMP_ORDER",
+    "closedContainerGuard": "sc_settings_sweep", "fireAtHalf": "sc_settings_sweep",
 }
+# the sheet's switches (settings_scale_and_switch, sheet.md "closed guard off, container goods thrown loose ... fire at half off,
+# fire throws nothing"): each is a saved setting, default on, reset to on, and READ by the code path it switches (blind cycle 2,
+# steward's decision 6). file -> the code that must read it.
+SWITCH_READS = {
+    "closedContainerGuard": [("RM_MapComponent_Knockback.cs", r"HeldReason\(Thing t, Map map\)(.*?)\n        \}"),
+                             ("RM_MapComponent_Knockback.cs", r"InClosedContainer\(Thing t, Map map\)(.*?)\n        \}")],
+    "fireAtHalf": [("RM_Patch_DamageWorker_ExplosionKnockback.cs", r"public static KbConfig ConfigOf\((.*?)\n        \}")],
+    # goods in the air off: goods unthrown, never the old hop (sheet; the walk row yields to the bar, steward's decision 8)
+    "flyingGoods": [("RM_MapComponent_Knockback.cs", r"public static bool ItemWillBeThrown\((.*?)\n        \}")],
+}
+
+
+def switches(mod, src):
+    """Each sheet switch: declared true, saved with default true, reset to true, and read inside the code path it switches."""
+    faults = []
+    for name, reads in SWITCH_READS.items():
+        if not re.search(r"public static bool %s = true;" % name, mod):
+            faults.append("switch %s is not a bool setting defaulting to true" % name)
+        if not re.search(r'Scribe_Values\.Look\(ref %s, "%s", true\);' % (name, name), mod):
+            faults.append("switch %s is not saved with default true" % name)
+        if not re.search(r"RimMandrakeExplosiveKnockbackSettings\.%s = true;" % name, mod):
+            faults.append("switch %s is not reset to true" % name)
+        if not re.search(r"ref %s\b" % name, mod.split("DoWindowContents", 1)[-1]):
+            faults.append("switch %s has no checkbox on the settings page" % name)
+        for f, body_re in reads:
+            m = re.search(body_re, src.get(f, ""), re.S)
+            if not m or not re.search(r"RimMandrakeExplosiveKnockbackSettings\.%s\b" % name, m.group(1)):
+                faults.append("switch %s is not read by %s (%s)" % (name, f, body_re.split("\\(")[0]))
+    # flying goods off: the instant move is gone from Execute's goods path (goods unthrown instead)
+    ex = src.get("RM_MapComponent_Knockback.cs", "")
+    if re.search(r"if \(RimMandrakeExplosiveKnockbackSettings\.flyingGoods\)\s*\{", ex) and "flying_off" not in ex:
+        faults.append("flyingGoods off still falls through to the instant move (no flying_off skip)")
+    return faults
 SWEPT_ELSEWHERE = {"enabled": "sc_settings_off", "shieldsAbsorbThrow": "sc_shield"}
 BANNED = re.compile(r"maxThrowsPerExplosion|maxItemThrowsPerMapTick|immuneBodySize|Throws\w*Per|BodySize", re.I)  # throw caps, body size
 # Kernel(): mod setting -> KbSettings field, as KnockbackSweep.Kernel mirrors it
@@ -92,7 +126,9 @@ def main():
     swept = sw.split()[1].split(",")
     defaults = dict(kv.split("=", 1) for kv in df.split()[1:])
     mod = open(MOD, encoding="utf-8").read()
-    faults = static(mod, swept, defaults)
+    src = {f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
+           for f in ("RM_MapComponent_Knockback.cs", "RM_Patch_DamageWorker_ExplosionKnockback.cs")}
+    faults = static(mod, swept, defaults) + switches(mod, src)
     for f in faults:
         print("FAIL", f)
     # planted static faults
@@ -104,6 +140,22 @@ def main():
         "a changed default": mod.replace("public static float strength = 1f;", "public static float strength = 1.5f;", 1),
     }
     missed = [k for k, m in planted.items() if m == mod or not static(m, swept, defaults)]
+    # planted switch faults: each must be seen by switches()
+    cg_src = dict(src)
+    cg_src["RM_MapComponent_Knockback.cs"] = re.sub(r"RimMandrakeExplosiveKnockbackSettings\.closedContainerGuard\b", "true", src["RM_MapComponent_Knockback.cs"])
+    fh_src = dict(src)
+    fh_src["RM_Patch_DamageWorker_ExplosionKnockback.cs"] = re.sub(r"RimMandrakeExplosiveKnockbackSettings\.fireAtHalf\b", "true",
+                                                                   src["RM_Patch_DamageWorker_ExplosionKnockback.cs"])
+    sw_planted = {
+        "closed guard read nowhere": (mod, cg_src),
+        "fire at half read nowhere": (mod, fh_src),
+        "fire at half defaults off": (mod.replace("public static bool fireAtHalf = true;", "public static bool fireAtHalf = false;", 1), src),
+        "closed guard not saved": (re.sub(r'Scribe_Values\.Look\(ref closedContainerGuard, "closedContainerGuard", true\);', "", mod), src),
+    }
+    sw_missed = [k for k, (m, sr) in sw_planted.items() if (m == mod and sr == src) or not switches(m, sr)]
+    for k in sw_missed:
+        print("FAIL planted switch fault NOT CAUGHT:", k)
+
     for k in missed:
         print("FAIL planted static fault NOT CAUGHT:", k)
     # the scene's own action list, for the record: saved settings it never names (test text, a journal question)
@@ -113,8 +165,9 @@ def main():
     if unnamed:
         print("NOTE sc_settings_sweep's action names %d saved settings fewer than the class saves: %s" % (len(unnamed), ",".join(unnamed)))
     kline = next((l for l in lines if l.startswith("explosive knockback settings sweep")), "no summary line")
-    ok = rc == 0 and not faults and not missed
-    print("%s | static: %d faults, %d/%d planted caught | %s" % (kline, len(faults), len(planted) - len(missed), len(planted), "PASS" if ok else "FAIL"))
+    ok = rc == 0 and not faults and not missed and not sw_missed
+    print("%s | static: %d faults, %d/%d planted caught, %d/%d switch faults caught | %s" % (kline, len(faults), len(planted) - len(missed), len(planted),
+                                                                                          len(sw_planted) - len(sw_missed), len(sw_planted), "PASS" if ok else "FAIL"))
     return 0 if ok else 1
 
 

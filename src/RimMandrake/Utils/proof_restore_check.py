@@ -59,6 +59,10 @@ BASELINE: dict[str, tuple[str, int]] = {
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.deepWaterTintEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.wetWallBandEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/bridgetools/prove_sea_dive_floor.py::unrestored-on-throw::raw': ('SEA_DIVE_PROOF_RESTORE_PRIOR', 1),
+    # filed 2026-11-15 by blind cycle 2 of ExplosiveKnockback: a `setting(typ, field, *value)` wrapper (vararg, so not seen as a setter);
+    # the runs snapshot and restore_scene in their finally, but liquidPumpEnabled is also flipped back to a FIXED True
+    'src/RimMandrake/FlowWorks/northstar/pump_outflow_live.py::unrestored-on-throw::raw': ('RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER', 1),
+    'src/RimMandrake/FlowWorks/northstar/tank_theft_live.py::unrestored-on-throw::raw': ('RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER', 1),
 }
 
 # ------------------------------------------------------------------------------------------------------------ C#

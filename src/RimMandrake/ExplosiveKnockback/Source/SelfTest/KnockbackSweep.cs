@@ -105,7 +105,8 @@ internal static class KnockbackSweep
         o["unpatched.force"] = un.force.ToString("0.###");
         o["unpatched.cells"] = RM_KnockbackMath.ThrowCells(0f, 2.9f, un.force, 70f, s).ToString();
         // the weapons locker (1x1, 8 kg, free behind) and an over-limit locker
-        o["locker.shove"] = RM_KnockbackMath.ContainerShove(w.shoveClosedContainers, true, 8f, w.closedContainerMassLimit, true).ToString();
+        o["locker.shove"] = !w.shoveClosedContainers ? "None"
+            : RM_KnockbackMath.ContainerThrowCells(true, 8f, w.closedContainerMassLimit, 1f, 2.9f, 1f, s) > 0 ? "Thrown" : "Jolt";
         o["shelf.held"] = RM_KnockbackMath.GoodsHeld(true, false, w.openStorageProtectsGoods).ToString();
         // the heavy stack (15 kg) aimed at a pawn
         bool hit = RM_KnockbackMath.HeavyKnock(w.heavyGoodsKnock, KbKind.Item, true, 15f, w.heavyGoodsMinMass, w.heavyGoodsDamageMin,
@@ -137,7 +138,7 @@ internal static class KnockbackSweep
         ("ownCapScale", "0.5", @"^owncap\.", (d, n) => I(d["owncap.cells"]) == 4 && I(n["owncap.cells"]) == 2, "own-cap grenade 2 cells, plain unchanged"),
         ("unpatchedHarmfulPercent", "50", @"^unpatched\.", (d, n) => F(d["unpatched.force"]) == 1f && F(n["unpatched.force"]) == 0.5f, "unpatched at full by default, half at 50"),
         ("creatureMassLimit", "90", @"^animal2\.", (d, n) => d["animal2.eligible"] == "True" && n["animal2.eligible"] == "False", "the second animal thrown at default, spared at 90"),
-        ("closedContainerMassLimit", "5", @"^locker\.", (d, n) => d["locker.shove"] == "Slide" && n["locker.shove"] == "Jolt", "the locker slides at default, jolts at 5"),
+        ("closedContainerMassLimit", "5", @"^locker\.", (d, n) => d["locker.shove"] == "Thrown" && n["locker.shove"] == "Jolt", "the locker is thrown at default, jolts at 5"),
         ("shoveClosedContainers", "False", @"^locker\.", (d, n) => n["locker.shove"] == "None", "with the shove off the locker stays put"),
         ("blastPowerFromDamage", "False", @"cells_x2|ratio_x2", (d, n) => F(d["ratio_x2"]) == 2f && F(n["ratio_x2"]) == 1f
             && new[] { "colonist", "animal", "animal2", "mech" }.All(k => I(d[k + ".cells_x2"]) > I(d[k + ".cells"]) || I(d[k + ".cells_x2"]) == 6)

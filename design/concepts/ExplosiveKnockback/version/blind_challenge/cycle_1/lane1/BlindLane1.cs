@@ -456,15 +456,15 @@ static class BlindLane1
             Row("L1_open_storage_protects_nothing", "open_shelf_scatters,closed_container_holds", "fixed", ok, 4, "open shelf: thrown; closed container: held; loose: thrown (shipped openStorageProtectsGoods false)");
         }
         {
-            bool ok = RM_KnockbackMath.ContainerShove(true, true, ContainerLimit, ContainerLimit, true) == KbShove.Slide
-                && RM_KnockbackMath.ContainerShove(true, true, 251f, ContainerLimit, true) == KbShove.Jolt
-                && RM_KnockbackMath.ContainerShove(true, true, 100f, ContainerLimit, true) == KbShove.Slide
-                && RM_KnockbackMath.ContainerShove(true, false, 50f, ContainerLimit, true) == KbShove.Jolt
-                && RM_KnockbackMath.ContainerShove(true, true, 50f, ContainerLimit, false) == KbShove.Jolt
-                && RM_KnockbackMath.ContainerShove(false, true, 50f, ContainerLimit, true) == KbShove.None;
+            // (cycle 2: the dead slide kernel ContainerShove was deleted, steward's decision 7; the container throw the game calls)
+            var cks = new KbSettings();
+            bool ok = RM_KnockbackMath.ContainerThrowCells(true, ContainerLimit, ContainerLimit, 0f, 2.9f, 2f, cks) >= 1
+                && RM_KnockbackMath.ContainerThrowCells(true, 251f, ContainerLimit, 0f, 2.9f, 2f, cks) == 0
+                && RM_KnockbackMath.ContainerThrowCells(true, 100f, ContainerLimit, 0f, 2.9f, 1f, cks) >= 1
+                && RM_KnockbackMath.ContainerThrowCells(false, 50f, ContainerLimit, 0f, 2.9f, 1f, cks) == 0;
             foreach (KbCell k in Enum.GetValues(typeof(KbCell))) ok &= RM_KnockbackMath.ShoveCellFree(k, false) == (k == KbCell.Open);
             ok &= !RM_KnockbackMath.ShoveCellFree(KbCell.Open, true);
-            Row("L1_container_slide_or_jolt_at_250", "closed_container_holds", "fixed", ok, 16, "with the 250 kg container limit passed in: 250 and 100 kg slide, 251 jolts, 2x2 jolts, blocked behind jolts, off none; only empty open ground is free (never pit, cover, wall, door, bags, water, edge, pawn). Which limit the game passes is lane 2's question");
+            Row("L1_container_slide_or_jolt_at_250", "closed_container_holds", "fixed", ok, 14, "with the 250 kg container limit passed in (cycle 2: ContainerThrowCells): 250 and 100 kg thrown, 251 jolts, 2x2 jolts; only empty open ground is free (never pit, cover, wall, door, bags, water, edge, pawn). Which limit the game passes is lane 2's question");
         }
 
         // ===================== heavy_stack_knocks =====================
@@ -610,7 +610,7 @@ static class BlindLane1
             for (float lim = 20f; lim <= 1000f && bad == null; lim += 10f)
             {
                 cases++;
-                if (RM_KnockbackMath.ContainerShove(true, true, lim, lim, true) != KbShove.Slide || RM_KnockbackMath.ContainerShove(true, true, lim + 1f, lim, true) != KbShove.Jolt) bad = $"container limit {lim}";
+                if (RM_KnockbackMath.ContainerThrowCells(true, lim, lim, 0f, 2.9f, 3f, new KbSettings()) < 1 || RM_KnockbackMath.ContainerThrowCells(true, lim + 1f, lim, 0f, 2.9f, 3f, new KbSettings()) != 0) bad = $"container limit {lim}";
             }
             for (float mn = 1f; mn <= 75f && bad == null; mn += 1f)
                 for (float dmin = 0f; dmin <= 20f && bad == null; dmin += 2f)

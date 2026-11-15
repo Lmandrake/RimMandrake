@@ -77,6 +77,34 @@ def census():
     return c("jawa/list_things", rect=a.site, group="HaulableEver", limit=2000).get("things") or []
 
 
+SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+MODCS = os.path.join(HERE, "..", "Source", "RM_KnockbackMod.cs")
+
+
+def player_settings():
+    """The player's value of every saved Explosive Knockback setting, read before the first reset (blind cycle 2: the resets
+    below must not leave the player's own values replaced by defaults). None = a field could not be read."""
+    import re
+    fields = re.findall(r"Scribe_Values\.Look\(ref (\w+),", open(MODCS, encoding="utf-8").read())
+    snap = {}
+    for f in fields:
+        g = c("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f)
+        if not g.get("success", True) or g.get("value") is None:
+            return None
+        snap[f] = g.get("value")
+    return snap
+
+
+def restore_player_settings(snap):
+    """Put back every value player_settings() read; returns the fields that did not take."""
+    bad = []
+    for f, v in (snap or {}).items():
+        r = c("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+        if r.get("success") is False:
+            bad.append(f)
+    return bad
+
+
 def pawns_in_site():
     x, z, w, h = (int(v) for v in a.site.split(","))
     return {p["id"]: p for p in c("jawa/list_pawns", limit=400).get("pawns") or []
@@ -91,6 +119,7 @@ def load():
 
 def arm(name, settings):
     load()
+    # restore-check: ok -- the run snapshots every saved setting before its first reset and restore_player_settings puts each back in its finally
     c("jawa/static_call", type=KP, method="Settings", args="reset")
     for kv in settings:
         r = str(c("jawa/static_call", type=KP, method="Settings", args=kv).get("result"))
@@ -145,6 +174,7 @@ def storage_arm(name, settings):
     """One reload: check the container def is closed by the shipped rule, apply settings, fire the bomb, and return before/after of the shelf
     goods, the container goods and the container itself, plus the journal lines."""
     load()
+    # restore-check: ok -- the run snapshots every saved setting before its first reset and restore_player_settings puts each back in its finally
     c("jawa/static_call", type=KP, method="Settings", args="reset")
     cs = str(c("jawa/static_call", type=KP, method="IsClosed", args=a.container_def).get("result"))
     if not cs.startswith("CLOSED"):
@@ -197,65 +227,75 @@ def moved(v):
 
 # release DLL (no RM_KnockbackProof): exit 3 PROOF BUILD REQUIRED before any load, never a table of FAILs
 require_proof_build(c("jawa/static_call", type=KP, method="Names", args="x"))
-if a.storage:
-    S = storage_arm("SA", [])
-    if S:
-        sh = S["shelf"].values()
-        row("SA_OPEN_SHELF_THROWN", bool(sh) and all(moved(v) for v in sh),
-            "%d/%d shelf goods moved (destroyed counts as not moved)" % (sum(moved(v) for v in sh), len(S["shelf"])))
-        end = tuple(S["container_after"] or ())
-        stay = [v for v in S["held"].values() if v[2] is not None and (v[2], v[3]) in {(v[0], v[1]), end}]
-        row("SA_CLOSED_GOODS_STAY", bool(S["held"]) and len(stay) == len(S["held"]) and S["skips"].get("closed_container", 0) >= 1,
-            "%d/%d container goods at start or carried; closed_container skips %d" % (
-                len(stay), len(S["held"]), S["skips"].get("closed_container", 0)))
-        # fails alone when the blast destroys the container (a staging defect, not the rule): the 25-shell storeroom
-        # destroyed every Hopper (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); Station 5 uses 3 shells
-        row("SA_CONTAINER_SURVIVES", S["container_after"] is not None, "container %s -> %s" % (S["container"], S["container_after"]))
-        cl = S["container_lines"]
-        ok, det = False, "lines %s" % cl
-        if len(cl) == 1 and S["container_after"]:
-            l = cl[0]
-            to, frm = tuple(l.get("to") or ()), tuple(l.get("from") or ())
-            if l.get("action") == "thrown":
-                # owner 2026-11-12: thrown whole (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE); it lands on its
-                # planned cell or, if that filled meanwhile, the nearest free one, never in a pit or on a pawn, goods with it
-                ok = (bool(end) and end != frm and not in_pit(*end) and list(end) not in S["pawn_cells"]
-                      and all((v[2], v[3]) == end for v in S["held"].values() if v[2] is not None))
-            elif l.get("action") == "jolt":
-                ok = end == frm == tuple(S["container"])
-            det = "%s %s->%s after %s mass %s" % (l.get("action"), frm, to, end, l.get("mass"))
-        row("SA_CONTAINER_RULE", ok, det)
-        row("SA_NO_IN_STORAGE_SKIP", S["skips"].get("in_storage", 0) == 0, str(dict(S["skips"])))
-    S = storage_arm("SC", ["enabled=False"])
-    if S:
-        # a shelf the blast destroys drops leavings that vanilla GenSpawn may nudge a stack one cell aside, so "still" is
-        # wrong (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST): off means no item_move line and no stack >1 cell away
-        far = [i for i, v in S["shelf"].items() if v[2] is not None and max(abs(v[2] - v[0]), abs(v[3] - v[1])) > 1]
-        row("SC_OFF_SHELF_GOODS_NOT_THROWN", S["journal"].get("item_move", 0) == 0 and not far,
-            "item_move %d; >1 cell %s; %s" % (S["journal"].get("item_move", 0), far, str(S["shelf"])[:120]))
-        row("SC_OFF_CONTAINER_STILL", S["container_after"] == S["container"], "%s -> %s" % (S["container"], S["container_after"]))
-        row("SC_OFF_NO_CONTAINER_LINE", not S["container_lines"], str(dict(S["journal"])))
-    A = Bm = C = None
-else:
-    A = arm("A", [])
-if A:
-    row("A_GOODS_IN_PIT", A["goods"].get("in_pit", 0) >= a.k, "%s (need >=%d in pit)" % (A["goods"], a.k))
-    row("A_PAWN_IN_PIT", A["pawns"].get("in_pit", 0) >= 1, str(A["pawns"]))
-    row("A_NO_GOODS_DESTROYED", A["goods"].get("destroyed", 0) == 0, str(A["goods"]))
-    row("A_NO_COLONIST_DEAD", A["pawns"].get("dead", 0) == 0, str(A["pawns"]))
-    row("A_SPARED_JOURNALLED", A["journal"].get("spared", 0) >= 1, str(A["journal"]))
-    row("A_WALL_IMPACT_JOURNALLED", A["journal"].get("goods_impact", 0) >= 1, str(A["journal"]))
-Bm = None if a.storage else arm("B", ["thrownGoodsBlastDamagePercent=100"])
-if Bm:
-    row("B_VANILLA_DESTROYS_FRAGILE", Bm["goods"].get("destroyed", 0) >= 1, str(Bm["goods"]))
-    row("B_NOTHING_SPARED", Bm["journal"].get("spared", 0) == 0, str(Bm["journal"]))
-C = None if a.storage else arm("C", ["enabled=False"])
-if C:
-    row("C_OFF_NO_GOODS_THROWN", C["goods"].get("moved", 0) + C["goods"].get("in_pit", 0) == 0, str(C["goods"]))
-    row("C_OFF_NO_PAWN_IN_PIT", C["pawns"].get("in_pit", 0) == 0, str(C["pawns"]))
-    row("C_OFF_JOURNAL_EMPTY", sum(C["journal"].values()) == 0, str(C["journal"]))
-load()  # leave the scene as saved, defaults restored
-c("jawa/static_call", type=KP, method="Settings", args="reset")
+PLAYER = player_settings()
+if PLAYER is None:
+    row("SETTINGS_SNAPSHOT", "UNMEASURED", "could not read every saved setting before the first reset; nothing was changed")
+try:
+    if PLAYER is not None:
+        if a.storage:
+            S = storage_arm("SA", [])
+            if S:
+                sh = S["shelf"].values()
+                row("SA_OPEN_SHELF_THROWN", bool(sh) and all(moved(v) for v in sh),
+                    "%d/%d shelf goods moved (destroyed counts as not moved)" % (sum(moved(v) for v in sh), len(S["shelf"])))
+                end = tuple(S["container_after"] or ())
+                stay = [v for v in S["held"].values() if v[2] is not None and (v[2], v[3]) in {(v[0], v[1]), end}]
+                row("SA_CLOSED_GOODS_STAY", bool(S["held"]) and len(stay) == len(S["held"]) and S["skips"].get("closed_container", 0) >= 1,
+                    "%d/%d container goods at start or carried; closed_container skips %d" % (
+                        len(stay), len(S["held"]), S["skips"].get("closed_container", 0)))
+                # fails alone when the blast destroys the container (a staging defect, not the rule): the 25-shell storeroom
+                # destroyed every Hopper (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST); Station 5 uses 3 shells
+                row("SA_CONTAINER_SURVIVES", S["container_after"] is not None, "container %s -> %s" % (S["container"], S["container_after"]))
+                cl = S["container_lines"]
+                ok, det = False, "lines %s" % cl
+                if len(cl) == 1 and S["container_after"]:
+                    l = cl[0]
+                    to, frm = tuple(l.get("to") or ()), tuple(l.get("from") or ())
+                    if l.get("action") == "thrown":
+                        # owner 2026-11-12: thrown whole (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE); it lands on its
+                        # planned cell or, if that filled meanwhile, the nearest free one, never in a pit or on a pawn, goods with it
+                        ok = (bool(end) and end != frm and not in_pit(*end) and list(end) not in S["pawn_cells"]
+                              and all((v[2], v[3]) == end for v in S["held"].values() if v[2] is not None))
+                    elif l.get("action") == "jolt":
+                        ok = end == frm == tuple(S["container"])
+                    det = "%s %s->%s after %s mass %s" % (l.get("action"), frm, to, end, l.get("mass"))
+                row("SA_CONTAINER_RULE", ok, det)
+                row("SA_NO_IN_STORAGE_SKIP", S["skips"].get("in_storage", 0) == 0, str(dict(S["skips"])))
+            S = storage_arm("SC", ["enabled=False"])
+            if S:
+                # a shelf the blast destroys drops leavings that vanilla GenSpawn may nudge a stack one cell aside, so "still" is
+                # wrong (RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST): off means no item_move line and no stack >1 cell away
+                far = [i for i, v in S["shelf"].items() if v[2] is not None and max(abs(v[2] - v[0]), abs(v[3] - v[1])) > 1]
+                row("SC_OFF_SHELF_GOODS_NOT_THROWN", S["journal"].get("item_move", 0) == 0 and not far,
+                    "item_move %d; >1 cell %s; %s" % (S["journal"].get("item_move", 0), far, str(S["shelf"])[:120]))
+                row("SC_OFF_CONTAINER_STILL", S["container_after"] == S["container"], "%s -> %s" % (S["container"], S["container_after"]))
+                row("SC_OFF_NO_CONTAINER_LINE", not S["container_lines"], str(dict(S["journal"])))
+            A = Bm = C = None
+        else:
+            A = arm("A", [])
+        if A:
+            row("A_GOODS_IN_PIT", A["goods"].get("in_pit", 0) >= a.k, "%s (need >=%d in pit)" % (A["goods"], a.k))
+            row("A_PAWN_IN_PIT", A["pawns"].get("in_pit", 0) >= 1, str(A["pawns"]))
+            row("A_NO_GOODS_DESTROYED", A["goods"].get("destroyed", 0) == 0, str(A["goods"]))
+            row("A_NO_COLONIST_DEAD", A["pawns"].get("dead", 0) == 0, str(A["pawns"]))
+            row("A_SPARED_JOURNALLED", A["journal"].get("spared", 0) >= 1, str(A["journal"]))
+            row("A_WALL_IMPACT_JOURNALLED", A["journal"].get("goods_impact", 0) >= 1, str(A["journal"]))
+        Bm = None if a.storage else arm("B", ["thrownGoodsBlastDamagePercent=100"])
+        if Bm:
+            row("B_VANILLA_DESTROYS_FRAGILE", Bm["goods"].get("destroyed", 0) >= 1, str(Bm["goods"]))
+            row("B_NOTHING_SPARED", Bm["journal"].get("spared", 0) == 0, str(Bm["journal"]))
+        C = None if a.storage else arm("C", ["enabled=False"])
+        if C:
+            row("C_OFF_NO_GOODS_THROWN", C["goods"].get("moved", 0) + C["goods"].get("in_pit", 0) == 0, str(C["goods"]))
+            row("C_OFF_NO_PAWN_IN_PIT", C["pawns"].get("in_pit", 0) == 0, str(C["pawns"]))
+            row("C_OFF_JOURNAL_EMPTY", sum(C["journal"].values()) == 0, str(C["journal"]))
+        load()  # leave the scene as saved, defaults restored
+        # restore-check: ok -- the run snapshots every saved setting before its first reset and restore_player_settings puts each back in its finally
+        c("jawa/static_call", type=KP, method="Settings", args="reset")
+finally:
+    if PLAYER is not None:
+        unset = restore_player_settings(PLAYER)
+        row("SETTINGS_RESTORED", not unset, "player values back on %d fields%s" % (len(PLAYER), (", failed: " + ",".join(unset)) if unset else ""))
 out = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "ek_proof",
                             "storeroom_pit_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
 os.makedirs(os.path.dirname(out), exist_ok=True)

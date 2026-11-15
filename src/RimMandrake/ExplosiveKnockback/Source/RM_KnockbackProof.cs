@@ -1459,8 +1459,8 @@ namespace RimMandrake.ExplosiveKnockback
 
                 case "goods_fly_off":
                 {
-                    // control: flyingGoods off -> today's instant move (item_move flying=false, never inside a carrier),
-                    // same cell and count as a flight would land on
+                    // flyingGoods off -> goods unthrown (settings_scale_and_switch: "goods in the air off, goods unthrown, never the
+                    // old hop"): one skip flying_off, no item_move, never inside a carrier, still on its cell with its count
                     s.restore = FlightRestore(s);
                     RimMandrakeExplosiveKnockbackSettings.flyingGoods = false;
                     Item(s, "steel", "Steel", 75, O(s, 1, 0));
@@ -1473,15 +1473,14 @@ namespace RimMandrake.ExplosiveKnockback
                         int want = (int)sc.numbers["want"];
                         if (want < 1)
                         {
-                            return "INVALID " + sc.name + " steel would not be thrown (want=0)";
+                            return "INVALID " + sc.name + " steel would not be thrown with flying goods on (want=0): the control is empty";
                         }
                         string m = Moved(sc, "steel", out Thing tt, out int cells);
-                        var mv = ForThing(sc, "item_move", t);
-                        bool instant = mv.Count == 1 && Equals(mv[0]["flying"], false);
+                        bool skipped = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == "flying_off");
+                        bool noMove = ForThing(sc, "item_move", t).Count == 0;
                         bool neverAir = !sc.numbers.ContainsKey("steel_airTick");
-                        bool ok = instant && neverAir && tt.Spawned && cells == want && tt.stackCount == 75
-                                  && ForThing(sc, "item_land", t).Count == 0;
-                        return Result(sc, ok, m + " want=" + want + " instant=" + instant + " seenInCarrier=" + !neverAir);
+                        bool ok = skipped && noMove && neverAir && tt.Spawned && cells == 0 && tt.stackCount == 75;
+                        return Result(sc, ok, m + " wantIfOn=" + want + " flyingOffSkip=" + skipped + " itemMoves=" + (noMove ? 0 : 1) + " seenInCarrier=" + !neverAir);
                     };
                     return null;
                 }

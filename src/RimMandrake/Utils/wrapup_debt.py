@@ -204,6 +204,7 @@ def key_plan(key, orig):
         return [step("jawa/difficulty_tune", **{name: orig})]
     if kind == "mod_settings_field" and "." in name:
         t, f = name.rsplit(".", 1)          # the type name is dotted (its namespace); a field name never is
+        # restore-check: ok -- this IS the restore: the plan writes back the value the door recorded before it was changed
         return [step("jawa/mod_settings_field", typeName=t, action="set", field=f, value=orig)]
     return []
 

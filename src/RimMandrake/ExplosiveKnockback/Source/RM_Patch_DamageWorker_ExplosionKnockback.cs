@@ -46,6 +46,12 @@ namespace RimMandrake.ExplosiveKnockback
                 explosion?.weapon?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
                 def?.GetModExtension<RM_KnockbackExtension>()?.ToConfig(),
                 def != null && def.harmsHealth, RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent / 100f);
+            // fire at half off (sheet: "off: fire throws nothing"): a fire damage type's own patched force is switched off; a
+            // projectile's or weapon's own tuning is that weapon's and stays
+            if (!RimMandrakeExplosiveKnockbackSettings.fireAtHalf && c.source == "damageDef" && IsFire(def))
+            {
+                c.force = 0f;
+            }
             // blast power (owner card 2026-11-13, "Type x damage"): the resolved force x this explosion's own damage over its
             // type's reference damage. Every config here is a fresh copy (ToConfig / Resolve), so scaling it is safe.
             if (explosion != null)
@@ -64,6 +70,12 @@ namespace RimMandrake.ExplosiveKnockback
                 c.force *= c.damageRatio;
             }
             return c;
+        }
+
+        /// <summary>A fire damage type: Flame, or any type that burns (Anomaly's ElectricalBurn inherits Flame's patch).</summary>
+        public static bool IsFire(DamageDef def)
+        {
+            return def != null && (def == DamageDefOf.Flame || def.hediff?.defName == "Burn");
         }
 
         /// <summary>A damage type's reference damage for blast power: its extension's refDamage when set, else its own

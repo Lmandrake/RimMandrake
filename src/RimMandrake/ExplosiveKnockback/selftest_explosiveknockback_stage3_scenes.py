@@ -104,7 +104,10 @@ def main():
     check("F1", sweep == keys, "SweepFields equals the saved Scribe keys" + ("" if sweep == keys else ": extra %s missing %s"
           % (sorted(sweep - keys), sorted(keys - sweep))))
     action = scenes.get("sc_settings_sweep", {}).get("action", "")
-    unnamed = sorted(k for k in keys - {"enabled", "shieldsAbsorbThrow"} if not re.search(r"\b%s\b" % k, action))
+    # the two sheet switches the locked action names in words, not by field (blind cycle 2 built them: steward's decision 6)
+    words = {"closedContainerGuard": "closed guard", "fireAtHalf": "fire at half"}
+    unnamed = sorted(k for k in keys - {"enabled", "shieldsAbsorbThrow"}
+                     if not re.search(r"\b%s\b" % k, action) and not (k in words and words[k] in action))
     check("F2", not unnamed, "every saved key but enabled and shieldsAbsorbThrow is named in sc_settings_sweep's action"
           + (": unnamed %s" % unnamed if unnamed else ""))
     banned = [b for b in ("maxThrowsPerExplosion", "maxItemThrowsPerMapTick", "immuneBodySize") if b in keys]

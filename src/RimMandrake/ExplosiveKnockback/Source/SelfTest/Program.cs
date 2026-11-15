@@ -132,12 +132,33 @@ internal static class Program
         Check("K-14 closed container holds", RM_KnockbackMath.GoodsHeld(true, true, false));
         Check("K-14 old rule: open shelf holds when set", RM_KnockbackMath.GoodsHeld(true, false, true));
         Check("K-14 old rule never holds floor goods", !RM_KnockbackMath.GoodsHeld(false, false, true));
-        Check("K-14 shove: 1x1 light free -> slide", RM_KnockbackMath.ContainerShove(true, true, 20f, 75f, true) == KbShove.Slide);
-        Check("K-14 shove: at the limit -> slide", RM_KnockbackMath.ContainerShove(true, true, 75f, 75f, true) == KbShove.Slide);
-        Check("K-14 shove: blocked -> jolt", RM_KnockbackMath.ContainerShove(true, true, 20f, 75f, false) == KbShove.Jolt);
-        Check("K-14 shove: heavy -> jolt", RM_KnockbackMath.ContainerShove(true, true, 76f, 75f, true) == KbShove.Jolt);
-        Check("K-14 shove: 2x1 -> jolt", RM_KnockbackMath.ContainerShove(true, false, 20f, 75f, true) == KbShove.Jolt);
-        Check("K-14 shove off -> none", RM_KnockbackMath.ContainerShove(false, true, 20f, 75f, true) == KbShove.None);
+        // K-14 container throw (owner card 2026-11-14: closed containers are thrown, as built; the dead slide kernel removed)
+        var cs = new KbSettings();
+        Check("K-14 container: 30 kg 1x1 at mortar d1 is thrown the item kernel's cells",
+            RM_KnockbackMath.ContainerThrowCells(true, 30f, 250f, 1f, 2.9f, 1f, cs) == RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 30f, cs)
+            && RM_KnockbackMath.ContainerThrowCells(true, 30f, 250f, 1f, 2.9f, 1f, cs) >= 1);
+        Check("K-14 container: at the 250 kg limit still thrown", RM_KnockbackMath.ContainerThrowCells(true, 250f, 250f, 0f, 2.9f, 2f, cs) >= 1);
+        Check("K-14 container: over the limit jolts (0 cells)", RM_KnockbackMath.ContainerThrowCells(true, 251f, 250f, 0f, 2.9f, 2f, cs) == 0);
+        Check("K-14 container: the limit is the container limit, not the 75 kg goods limit", RM_KnockbackMath.ContainerThrowCells(true, 100f, 250f, 0f, 2.9f, 1f, cs) >= 1);
+        Check("K-14 container: 2x1 jolts", RM_KnockbackMath.ContainerThrowCells(false, 20f, 250f, 1f, 2.9f, 1f, cs) == 0);
+        Check("K-14 container: shorter than the same mass loose (wild)", RM_KnockbackMath.ContainerThrowCells(true, 30f, 250f, 1f, 2.9f, 1f, cs)
+            <= RM_KnockbackMath.WildCells(1f, 2.9f, 1f, 30f, cs, 1.6f));
+        Check("K-14 container: never past the cap", RM_KnockbackMath.ContainerThrowCells(true, 1f, 250f, 0f, 2.9f, 3f, cs) == cs.maxCells);
+        // K-14 the jolt's drawn offset: above zero mid-jolt, never past its amplitude, 0 outside the jolt
+        bool joltBounded = true, joltMoves = false;
+        for (int tk = -3; tk <= 25; tk++)
+        {
+            RM_KnockbackMath.JoltOffset(tk, 20, 0.15f, 1f, 1f, out float jx, out float jz);
+            float mag = (float)Math.Sqrt(jx * jx + jz * jz);
+            joltBounded &= mag <= 0.15f + 1e-5f && ((tk >= 0 && tk < 20) || mag == 0f);
+            joltMoves |= mag > 0.01f;
+        }
+        Check("K-14 jolt offset bounded by its amplitude and 0 outside the jolt", joltBounded);
+        Check("K-14 jolt offset is above zero mid-jolt", joltMoves);
+        RM_KnockbackMath.JoltOffset(5, 20, 0.15f, 0f, 0f, out float ex, out float ez);
+        Check("K-14 jolt at the epicentre still shakes", ex != 0f || ez != 0f);
+        RM_KnockbackMath.JoltOffset(5, 0, 0.15f, 1f, 0f, out float zx, out _);
+        Check("K-14 jolt of 0 ticks draws nothing", zx == 0f);
         bool shoveCells = RM_KnockbackMath.ShoveCellFree(KbCell.Open, false) && !RM_KnockbackMath.ShoveCellFree(KbCell.Open, true);
         foreach (KbCell bad in new[] { KbCell.Wall, KbCell.Door, KbCell.Partial, KbCell.Pawn, KbCell.Pit, KbCell.CoveredPit, KbCell.Water, KbCell.OutOfBounds })
         {

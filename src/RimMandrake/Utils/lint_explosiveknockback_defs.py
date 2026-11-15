@@ -8,6 +8,9 @@
   ek-flyer    RM_PawnFlyer_Knockback: PawnFlyerBase parent, thingClass PawnFlyer (FlowWorks' pit-landing postfix is on the base class),
               flight duration and speed positive, progress curve rises monotonically from (0,0) to (1,1), stun range lo <= hi
   ek-reset    Reset-to-defaults writes exactly the declared default of every setting, and every default sits inside its slider
+  ek-pins     the non-push forces are pinned (sheet.md: "EMP, smoke, stun, extinguish and toxic gas at 0, fire at half"): this mod's
+              damage-def patch gives Flame 0.5 and EMP, Smoke, Extinguish, ToxGas 0, each exactly once (Stun is harmsHealth false,
+              so the unpatched default never reaches it)
   ek-kernel   RM_KnockbackMath.cs is Verse-free (the offline tests compile it alone); the Harmony id equals the About packageId
 
     python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py [--quiet] [--mod-dir D]
@@ -27,6 +30,8 @@ EXT = "RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"
 FIELDS = {"force", "maxThrowCells", "impactFactor", "creatureMassLimitOverride", "refDamage"}
 VANILLA_DAMAGE = {"Bomb", "Flame", "EMP", "Smoke", "Extinguish", "ToxGas", "Thump"}   # Core, Biotech (ToxGas) and Odyssey (Thump) damage defs this stack patches
 S = "RimMandrakeExplosiveKnockbackSettings"
+# ek-pins: DamageDef -> the force sheet.md pins (blind cycle 2, steward's decision 5)
+PINNED_FORCE = {"Flame": 0.5, "EMP": 0.0, "Smoke": 0.0, "Extinguish": 0.0, "ToxGas": 0.0}
 
 
 def main(argv):
@@ -93,6 +98,26 @@ def main(argv):
                 E("ek-ext", "%s: a field is not a number (%s)" % (rel, e))
     if in_mod < 6 or in_kinetic < 1:
         E("ek-ext", "sweep saw %d extensions in this mod (want >= 6) and %d in KineticArms (want >= 1): the lint cannot see what it checks" % (in_mod, in_kinetic))
+
+    # ek-pins
+    got = {}
+    pins = ET.parse(os.path.join(mod, "Patches", "RM_Knockback_DamageDefs.xml")).getroot()
+    for op in pins.iter("Operation"):
+        m = re.search(r'DamageDef\[defName="([^"]+)"\]', op.findtext("xpath") or "")
+        li = next((x for x in op.iter("li") if x.get("Class") == EXT), None)
+        if m and li is not None:
+            got.setdefault(m.group(1), []).append(li.findtext("force"))
+    for dd, want in PINNED_FORCE.items():
+        vals = got.get(dd, [])
+        if len(vals) != 1:
+            E("ek-pins", "DamageDef %s has %d knockback patches in RM_Knockback_DamageDefs.xml (want exactly 1, force %s)" % (dd, len(vals), want))
+            continue
+        try:
+            ok = abs(float(vals[0] if vals[0] is not None else 1) - want) < 1e-9
+        except ValueError:
+            ok = False
+        if not ok:
+            E("ek-pins", "DamageDef %s force is %s; sheet.md pins it at %s" % (dd, vals[0], want))
 
     # ek-flyer
     root = ET.parse(os.path.join(mod, "Defs", "ThingDefs", "RM_PawnFlyer_Knockback.xml")).getroot()

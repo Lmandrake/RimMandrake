@@ -340,18 +340,19 @@ public static class BlindLane1
     static void ContainerAndHeavy()
     {
         var k = new Checks();
-        // the sheet's delegated rule as locked: a 1x1 closed container at or under the 250 kg container limit slides one cell if the cell
-        // behind is free, else jolts; never into a pit, a wall or onto a pawn. The kernel's parameter is named lightMassLimit; passed 250.
-        k.Eq("250 kg 1x1 behind free: slide", RM_KnockbackMath.ContainerShove(true, true, 250f, 250f, true), KbShove.Slide);
-        k.Eq("251 kg: jolt", RM_KnockbackMath.ContainerShove(true, true, 251f, 250f, true), KbShove.Jolt);
-        k.Eq("behind blocked: jolt", RM_KnockbackMath.ContainerShove(true, true, 10f, 250f, false), KbShove.Jolt);
-        k.Eq("not 1x1: jolt", RM_KnockbackMath.ContainerShove(true, false, 10f, 250f, true), KbShove.Jolt);
-        k.Eq("off: none", RM_KnockbackMath.ContainerShove(false, true, 10f, 250f, true), KbShove.None);
+        // (edited after lane 1 was recorded, blind cycle 2: the dead slide kernel ContainerShove was deleted by the steward's
+        // decision 7, owner card 2026-11-14 "thrown as built"; the row now tests the container throw the game calls)
+        var cs = Def();
+        k.Eq("30 kg 1x1 at mortar d1: the item kernel's cells", RM_KnockbackMath.ContainerThrowCells(true, 30f, 250f, 1f, MortarR, 1f, cs), RM_KnockbackMath.ThrowCells(1f, MortarR, 1f, 30f, cs));
+        k.True("250 kg at the limit is still thrown", RM_KnockbackMath.ContainerThrowCells(true, 250f, 250f, 0f, MortarR, 2f, cs) >= 1);
+        k.Eq("251 kg: jolt (0 cells)", RM_KnockbackMath.ContainerThrowCells(true, 251f, 250f, 0f, MortarR, 2f, cs), 0);
+        k.Eq("not 1x1: jolt", RM_KnockbackMath.ContainerThrowCells(false, 10f, 250f, 0f, MortarR, 1f, cs), 0);
+        k.True("100 kg (over the 75 kg goods limit) still thrown: the container limit is its own", RM_KnockbackMath.ContainerThrowCells(true, 100f, 250f, 0f, MortarR, 1f, cs) >= 1);
         foreach (KbCell c in Enum.GetValues(typeof(KbCell)))
             k.Eq("shove cell " + c, RM_KnockbackMath.ShoveCellFree(c, false), c == KbCell.Open);
         k.True("shove cell with things on it", !RM_KnockbackMath.ShoveCellFree(KbCell.Open, true));
-        k.Emit("L1_container_shove_kernel_as_locked", "closed_container_holds,inv_container_shove", "fixed",
-            "kernel ContainerShove is checked against the locked sheet text; whether the game calls it is a lane-2 question");
+        k.Emit("L1_container_throw_kernel", "closed_container_holds,inv_container_shove", "fixed",
+            "ContainerThrowCells (called by ThrowContainer) against the 250 kg container limit; sc_closed_containers' wording (slide vs thrown) is the steward's re-pin, no verdict built on it");
         var h = new Checks();
         h.True("10 kg stack knocks", RM_KnockbackMath.HeavyKnock(true, KbKind.Item, true, 10f, 10f, 2f, 5f, 0.5f, 30, out float d1, out int st1) && d1 >= 2f && d1 <= 5f && st1 == 30);
         h.True("9.9 kg passes", !RM_KnockbackMath.HeavyKnock(true, KbKind.Item, true, 9.9f, 10f, 2f, 5f, 0.5f, 30, out _, out _));

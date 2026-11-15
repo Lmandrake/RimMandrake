@@ -54,7 +54,7 @@ SCENES = [
     ("goods_fly_lands", "flying_goods", "lands_on_the_instant_cell_count_intact", "goodsFlightSpeed"),
     ("goods_fly_wall", "flying_goods", "wall_cut_short_applies_impact", "goodsRebound"),
     ("goods_fly_rebound", "flying_goods", "rebound_off_wall_at_keep_percent", "goodsReboundKeepPercent"),
-    ("goods_fly_off", "flying_goods", "off_is_the_instant_move", "flyingGoods"),
+    ("goods_fly_off", "flying_goods", "off_goods_unthrown", "flyingGoods"),
     # 2026-11-12 RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST / RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS
     ("fire_half", "throw", "fire_and_incendiary_throw_at_half", None),
     ("harmful_unpatched", "throw", "unpatched_harmful_blast_throws_at_full", "unpatchedHarmfulPercent"),

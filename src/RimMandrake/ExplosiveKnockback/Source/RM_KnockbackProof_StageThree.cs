@@ -338,8 +338,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>The game-side lanes (the kernel-side lines are T_SETTINGS_SWEEP_OFFLINE). Each lane: its fields and
         /// values, and the observations it may change; every other observation must equal the default run's.
-        /// closedGuard and fireHalf are listed by the scene but have no Mod Settings field (journal question 10; the scene
-        /// itself says fire at half is per damage type in the def patch): those lanes answer INVALID with the reason.</summary>
+        /// closedGuard switches closedContainerGuard and fireHalf switches fireAtHalf (blind cycle 2, steward's decision 6).</summary>
         private static readonly Dictionary<string, KeyValuePair<string[], string[]>> SweepLanes = new Dictionary<string, KeyValuePair<string[], string[]>>
         {
             ["throwAnimals"] = Lane(new[] { "throwAnimals=False" }, "A"),
@@ -357,8 +356,8 @@ namespace RimMandrake.ExplosiveKnockback
             ["shoveClosedContainers"] = Lane(new[] { "shoveClosedContainers=False" }, "locker", "crate"),
             ["gasChain"] = Lane(new[] { "gasChain=False" }, "gas", "gasGoods"),
             ["lightMassLimit20"] = Lane(new[] { "lightMassLimit=20" }, "C", "H"),
-            ["closedGuard"] = Lane(new string[0]),
-            ["fireHalf"] = Lane(new string[0]),
+            ["closedGuard"] = Lane(new[] { "closedContainerGuard=False" }, "locker", "lockerGoods", "G", "Gcell", "H"),
+            ["fireHalf"] = Lane(new[] { "fireAtHalf=False" }),
         };
 
         private static KeyValuePair<string[], string[]> Lane(string[] set, params string[] changes) => new KeyValuePair<string[], string[]>(set, changes);
@@ -381,6 +380,7 @@ namespace RimMandrake.ExplosiveKnockback
             "goodsSpinDegPerTick", "goodsRebound", "goodsReboundKeepPercent", "openStorageProtectsGoods", "heavyGoodsDamageMin",
             "heavyGoodsDamageMax", "heavyGoodsStaggerTicks", "gasBurstRadius", "gasBurstGoodsCells", "gasPawnCooldownTicks",
             "flyingGoods", "shoveClosedContainers", "heavyGoodsKnock", "gasChain", "enabled", "shieldsAbsorbThrow",
+            "closedContainerGuard", "fireAtHalf",
         };
 
         private static IEnumerable<System.Reflection.FieldInfo> SavedFields() => typeof(RimMandrakeExplosiveKnockbackSettings)
@@ -393,14 +393,6 @@ namespace RimMandrake.ExplosiveKnockback
             if (lane != "default" && lane != "after" && !SweepLanes.ContainsKey(lane))
             {
                 return "unknown sweep lane " + lane + " (lanes: " + string.Join(",", SweepLanes.Keys) + ")";
-            }
-            if (lane == "closedGuard")
-            {
-                return "no Mod Settings field switches the closed-container guard off (RM_KnockbackMod.cs; journal question 10)";
-            }
-            if (lane == "fireHalf")
-            {
-                return "fire at half has no Mod Settings field: it is the Flame damage def's patch value, proven in sc_blast_kinds";
             }
             if (lane != "default" && sweepDefault == null)
             {
@@ -481,6 +473,14 @@ namespace RimMandrake.ExplosiveKnockback
                     case "shoveClosedContainers": own = obs["locker"] == "none" && obs["lockerGoods"] == "kept"; break;
                     case "gasChain": own = obs["gas"] == "none"; break;
                     case "lightMassLimit20": own = obs["P"] == "thrown"; break;
+                    // the locker's goods are thrown loose: no longer on the locker's cell after the blast
+                    case "closedGuard": own = obs["lockerGoods"] == "lost"; seen = "lockerGoods=" + obs["lockerGoods"] + " " + seen; break;
+                    // fire throws nothing: a Flame damage type's resolved force is 0 with the switch off (read while it is off)
+                    case "fireHalf":
+                        float ff = RM_Patch_DamageWorker_ExplosionKnockback.ConfigOf(null, DamageDefOf.Flame).force;
+                        own = ff <= 0f;
+                        seen = "flameForce=" + ff.ToString("0.###") + " " + seen;
+                        break;
                     default: own = false; break;
                 }
                 if (lane == "debugDrawVectors" && !Prefs.DevMode)

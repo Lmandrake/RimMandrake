@@ -21,7 +21,7 @@ Sources: `design/RimMandrake/explosive_knockback_design_2026-10-06.md` (§3, §5
 - A flown stack lands on the cell the instant move would choose, count intact, no carrier left. → flying_goods.lands_on_the_instant_cell_count_intact
 - A flight cut short by a wall (rebound off) lands beside it and takes today's wall impact there. → flying_goods.wall_cut_short_applies_impact
 - With rebound on, a cut-short flight bounces back with about 70% of the cells it had left; the impact applies at the bounce. → flying_goods.rebound_off_wall_at_keep_percent
-- flyingGoods off is today's instant move (no carrier). → flying_goods.off_is_the_instant_move
+- flyingGoods off: loose goods and corpses are not thrown at all, never the old instant move (the bar settings_scale_and_switch wins). → flying_goods.off_goods_unthrown
 - A closed container (a stasis locker, a sealed crate) that survives the blast is thrown whole, shorter than the same goods loose, its goods still in it and unhurt by the blast (owner 2026-11-12). → light_things.closed_container_thrown_whole_contents_inside_unhurt
 - A flying stack of 10 kg or more that reaches a person hits them lightly, staggers them and drops there; a light stack flies past. → flying_goods.heavy_stack_hits_and_stops_light_passes
 - A thrown stack never shoves a stack already lying where it lands (a stackLimit-1 thing into a full cell lands beside it). → flying_goods.landing_never_shoves_a_resident

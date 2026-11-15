@@ -62,6 +62,10 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS (owner card 2026-11-11, d_c_which_blasts): any damaging explosion with no
         /// knockback extension throws at this percent. Harmless ones (harmsHealth false) never throw.</summary>
         public static float unpatchedHarmfulPercent = 100f;
+        /// <summary>Sheet: "fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)". On = a fire
+        /// damage type (Flame, and Anomaly's ElectricalBurn through its parent) throws at its def patch's half force; off = fire
+        /// throws nothing. A projectile's or weapon's own knockback tuning is its own and is not switched.</summary>
+        public static bool fireAtHalf = true;
         public static bool throwDowned = true;
         public static bool throwAnimals = true;
         public static bool throwMechanoids = true;
@@ -98,6 +102,10 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Owner ruling 2026-11-10/11 (RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED): open storage (shelves, hoppers,
         /// tables: anything that draws its contents) gives goods no cover; only a closed container keeps them. On = the old rule, every storage building keeps its goods.</summary>
         public static bool openStorageProtectsGoods = false;
+        /// <summary>Sheet: "closed guard off, container goods thrown loose". On = goods in a closed container are kept and take no
+        /// blast damage; off = a closed container protects nothing, its goods fly like goods on the floor (the container itself is
+        /// still thrown or jolted by shoveClosedContainers, empty-handed).</summary>
+        public static bool closedContainerGuard = true;
         /// <summary>Owner, 2026-11-12 (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE): "the whole crate/chest would go
         /// flying a bit, but their contents would remain inside and protected". A blast-hit 1x1 closed container at or under
         /// closedContainerMassLimit (its own mass plus what it holds) is thrown as ONE unit, shorter than loose goods by
@@ -164,6 +172,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref maxThrowCells, "maxThrowCells", 6);
             Scribe_Values.Look(ref ownCapScale, "ownCapScale", 1f);
             Scribe_Values.Look(ref unpatchedHarmfulPercent, "unpatchedHarmfulPercent", 100f);
+            Scribe_Values.Look(ref fireAtHalf, "fireAtHalf", true);
             Scribe_Values.Look(ref throwDowned, "throwDowned", true);
             Scribe_Values.Look(ref throwAnimals, "throwAnimals", true);
             Scribe_Values.Look(ref throwMechanoids, "throwMechanoids", true);
@@ -182,6 +191,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref goodsRebound, "goodsRebound", true);
             Scribe_Values.Look(ref goodsReboundKeepPercent, "goodsReboundKeepPercent", 70f);
             Scribe_Values.Look(ref openStorageProtectsGoods, "openStorageProtectsGoods", false);
+            Scribe_Values.Look(ref closedContainerGuard, "closedContainerGuard", true);
             Scribe_Values.Look(ref shoveClosedContainers, "shoveClosedContainers", true);
             Scribe_Values.Look(ref closedContainerMassLimit, "closedContainerMassLimit", 250f);
             Scribe_Values.Look(ref vanillaCratesClosed, "vanillaCratesClosed", true);
@@ -227,7 +237,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "Throw strength and range", RimMandrake.Shared.SettingScope.Now, new[] { "strength", "maxThrowCells", "ownCapScale", "unpatchedHarmfulPercent", "blastPowerFromDamage", "blastPowerRefPercent" }))
+            if (Group(list, "Throw strength and range", RimMandrake.Shared.SettingScope.Now, new[] { "strength", "maxThrowCells", "ownCapScale", "unpatchedHarmfulPercent", "fireAtHalf", "blastPowerFromDamage", "blastPowerRefPercent" }))
             {
                 list.Label("Throw strength: " + strength.ToString("0.00")
                     + "x  (1.0 = a mortar shell beside a person throws them 3 cells)");
@@ -241,6 +251,8 @@ namespace RimMandrake.ExplosiveKnockback
                 list.Label("Explosions from other mods with no knockback setting throw at: "
                     + unpatchedHarmfulPercent.ToString("0") + "%");
                 unpatchedHarmfulPercent = list.Slider(unpatchedHarmfulPercent, 0f, 100f);
+                list.CheckboxLabeled("Fire throws at half strength", ref fireAtHalf,
+                    "On (the default): fire and incendiary blasts throw at half a bomb's push. Off: fire throws nothing.");
                 list.CheckboxLabeled("Bigger blasts throw harder", ref blastPowerFromDamage,
                     "On (the default): a blast's push is its type's strength times its damage over that type's normal damage, so a blast dealing twice the normal damage pushes twice as hard (still capped by the maximum throw). Vanilla grenades, mortars and IEDs all deal the normal 50 and throw as before. Off: damage does not change the push.");
                 if (blastPowerFromDamage)
@@ -252,7 +264,7 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "creatureMassLimit", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "shoveClosedContainers", "closedContainerMassLimit", "vanillaCratesClosed", "heavyGoodsKnock", "heavyGoodsMinMass", "heavyGoodsDamageMin", "heavyGoodsDamageMax", "heavyGoodsStaggerTicks" }))
+            if (Group(list, "What gets thrown", RimMandrake.Shared.SettingScope.Now, new[] { "throwDowned", "throwAnimals", "throwMechanoids", "creatureMassLimit", "throwItems", "throwCorpses", "lightMassLimit", "thrownGoodsBlastDamagePercent", "goodsWallImpactPerCell", "openStorageProtectsGoods", "closedContainerGuard", "shoveClosedContainers", "closedContainerMassLimit", "vanillaCratesClosed", "heavyGoodsKnock", "heavyGoodsMinMass", "heavyGoodsDamageMin", "heavyGoodsDamageMax", "heavyGoodsStaggerTicks" }))
             {
                 list.CheckboxLabeled("Throw downed pawns", ref throwDowned);
                 list.CheckboxLabeled("Throw animals", ref throwAnimals);
@@ -270,6 +282,8 @@ namespace RimMandrake.ExplosiveKnockback
                 goodsWallImpactPerCell = Mathf.Round(list.Slider(goodsWallImpactPerCell, 0f, 50f));
                 list.CheckboxLabeled("Open shelves and tables protect their goods", ref openStorageProtectsGoods,
                     "Off (the default): goods on open storage fly like goods on the floor; only closed containers (storage that hides its contents, e.g. Deep Storage lockers) keep them. On: every storage building keeps its goods.");
+                list.CheckboxLabeled("Closed containers protect their goods", ref closedContainerGuard,
+                    "On (the default): goods inside a closed container (storage that hides its contents) stay in it and take no blast damage. Off: closed containers protect nothing; their goods are thrown loose like goods on the floor.");
                 list.CheckboxLabeled("Blasts throw closed containers whole", ref shoveClosedContainers,
                     "On (the default): a small closed container (a sealed crate, a Deep Storage locker: storage that hides its contents) hit by a blast flies a little as one unit, shorter than loose goods because it is heavier, with its contents inside. Off: it stays put. Its contents never take blast damage either way.");
                 list.Label("Closed containers heavier than " + closedContainerMassLimit.ToString("0") + " kg (with their contents) stay put");
@@ -433,6 +447,7 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;
             RimMandrakeExplosiveKnockbackSettings.ownCapScale = 1f;
             RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent = 100f;
+            RimMandrakeExplosiveKnockbackSettings.fireAtHalf = true;
             RimMandrakeExplosiveKnockbackSettings.throwDowned = true;
             RimMandrakeExplosiveKnockbackSettings.throwAnimals = true;
             RimMandrakeExplosiveKnockbackSettings.throwMechanoids = true;
@@ -451,6 +466,7 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.goodsRebound = true;
             RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent = 70f;
             RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods = false;
+            RimMandrakeExplosiveKnockbackSettings.closedContainerGuard = true;
             RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers = true;
             RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit = 250f;
             RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed = true;

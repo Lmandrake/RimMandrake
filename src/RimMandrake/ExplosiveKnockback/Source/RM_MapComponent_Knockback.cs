@@ -385,7 +385,8 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return null;
             }
-            bool closed = RM_KnockbackCompat.IsClosedContainer(ed);
+            // closed guard off (sheet: "container goods thrown loose"): a closed container protects nothing
+            bool closed = RimMandrakeExplosiveKnockbackSettings.closedContainerGuard && RM_KnockbackCompat.IsClosedContainer(ed);
             bool storage = closed || ed is Building_Storage || (ed.def.building != null && ed.def.building.fixedStorageSettings != null);
             if (!RM_KnockbackMath.GoodsHeld(storage, closed, RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods))
             {
@@ -400,7 +401,8 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool ItemWillBeThrown(Thing t, Explosion explosion, KbConfig cfg)
         {
             Map map = explosion.Map;
-            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || HeldReason(t, map) != null
+            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || !RimMandrakeExplosiveKnockbackSettings.flyingGoods
+                || HeldReason(t, map) != null
                 || RM_KnockbackCompat.IsSuperdeep(map, t.Position))
             {
                 return false;
@@ -412,7 +414,8 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             float dist = (t.Position - explosion.Position).LengthHorizontal;
-            return RM_KnockbackMath.WildCells(dist, explosion.radius, cfg.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild) > 0;
+            return RM_KnockbackMath.ThrowCells(dist, explosion.radius, cfg.force, mass, s) > 0
+                && RM_KnockbackMath.WildCells(dist, explosion.radius, cfg.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild) > 0;
         }
 
         /// <summary>Owner ruling 2026-11-12, "worse damage if they then hit a solid object": a stack stopped by a wall, door or
@@ -446,7 +449,8 @@ namespace RimMandrake.ExplosiveKnockback
         /// damage (read by the explosion prefix before the damage lands).</summary>
         public static bool InClosedContainer(Thing t, Map map)
         {
-            return map != null && t.Spawned && t.def.category == ThingCategory.Item && RM_KnockbackCompat.IsClosedContainer(t.Position.GetEdifice(map));
+            return RimMandrakeExplosiveKnockbackSettings.closedContainerGuard && map != null && t.Spawned && t.def.category == ThingCategory.Item
+                && RM_KnockbackCompat.IsClosedContainer(t.Position.GetEdifice(map));
         }
 
         /// <summary>Would a Direct placement of t at c shove a resident stack? GenPlace's TryPlaceDirect merges first, then
@@ -590,6 +594,13 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_pit");
                 return false;
             }
+            // goods in the air off (sheet, settings_scale_and_switch: "goods unthrown, never the old hop"): loose goods and
+            // corpses are not thrown at all
+            if (kind != KbKind.Pawn && !RimMandrakeExplosiveKnockbackSettings.flyingGoods)
+            {
+                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "flying_off");
+                return false;
+            }
             KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
             if (pawn != null && r.gas)
             {
@@ -624,7 +635,9 @@ namespace RimMandrake.ExplosiveKnockback
             // goods and corpses fly wild (GoodsThrowWild); people keep the kernel
             int cells = kind == KbKind.Pawn ? kernelCells
                 : RM_KnockbackMath.WildCells(dist, r.radius, r.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
-            if (cells <= 0)
+            // the rim (inv_too_weak_skip; every_good_moves' "reached"): a throw is decided by the KERNEL; the wild factor only
+            // lengthens a good's throw of a cell or more, it never lifts a rim good the kernel leaves in place
+            if (kernelCells <= 0 || cells <= 0)
             {
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "too_weak", "dist", dist, "mass", mass);
                 return false;
@@ -724,7 +737,7 @@ namespace RimMandrake.ExplosiveKnockback
             float mass = b.GetStatValue(StatDefOf.Mass);
             foreach (Thing h in start.GetThingList(map))
             {
-                if (h != b && h.def.category == ThingCategory.Item)
+                if (h != b && h.def.category == ThingCategory.Item && RimMandrakeExplosiveKnockbackSettings.closedContainerGuard)
                 {
                     goods.Add(h);
                     mass += h.GetStatValue(StatDefOf.Mass) * h.stackCount;
@@ -743,7 +756,7 @@ namespace RimMandrake.ExplosiveKnockback
             s.intoPits = false; // an open pit is a wall for a container's path
             float dist = (start - r.centre).LengthHorizontal;
             float limit = RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit;
-            int planned = one && mass <= limit ? RM_KnockbackMath.ThrowCells(dist, r.radius, r.force, mass, s) : 0;
+            int planned = RM_KnockbackMath.ContainerThrowCells(one, mass, limit, dist, r.radius, r.force, s);
             IntVec3 to = start;
             int travelled = 0;
             if (planned > 0)
@@ -774,11 +787,68 @@ namespace RimMandrake.ExplosiveKnockback
             if (!flew)
             {
                 FleckMaker.ThrowDustPuff(start, map, 1f);
+                StartJolt(b, dx, dz);
             }
             RM_KnockbackJournal.Add("container", r.explosionId, b, "action", flew ? "thrown" : "jolt", "from", start, "to", flew ? to : start,
                 "planned", planned, "cells", flew ? travelled : 0, "mass", mass, "goods", goods.Count, "held", held, "oneByOne", one,
                 "overLimit", mass > limit);
             return flew;
+        }
+
+        // ── the drawn jolt (journal question 13; steward's decision 6) ─────────────
+        /// <summary>Ticks a jolt is drawn, its largest offset (cells), and the most jolts drawn at once (a barrage is bounded).</summary>
+        public const int JoltTicks = 20;
+        public const float JoltAmplitude = 0.15f;
+        public const int MaxJolts = 64;
+        private readonly List<KeyValuePair<Thing, Vector3>> joltThing = new List<KeyValuePair<Thing, Vector3>>();
+        private readonly List<int> joltStart = new List<int>();
+#if RM_PROOFS
+        /// <summary>Proof build: how many jolt frames were drawn and the largest offset drawn (cells), for the jolt's live check.</summary>
+        internal static int JoltFrames;
+        internal static float JoltMaxOffset;
+#endif
+
+        /// <summary>A blocked closed container jolts in place: drawn shaking for JoltTicks, at most MaxJolts at once (the
+        /// oldest gives way).</summary>
+        private void StartJolt(Thing b, float dx, float dz)
+        {
+            if (joltThing.Count >= MaxJolts)
+            {
+                joltThing.RemoveAt(0);
+                joltStart.RemoveAt(0);
+            }
+            joltThing.Add(new KeyValuePair<Thing, Vector3>(b, new Vector3(dx, 0f, dz)));
+            joltStart.Add(Find.TickManager.TicksGame);
+        }
+
+        /// <summary>Draws each live jolt: the container's graphic again at its drawn position plus the bounded offset of
+        /// RM_KnockbackMath.JoltOffset; a finished, despawned or destroyed one is dropped.</summary>
+        public override void MapComponentUpdate()
+        {
+            if (joltThing.Count == 0)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            for (int i = joltThing.Count - 1; i >= 0; i--)
+            {
+                Thing b = joltThing[i].Key;
+                int since = now - joltStart[i];
+                if (b == null || b.Destroyed || !b.Spawned || b.Map != map || since >= JoltTicks || since < 0)
+                {
+                    joltThing.RemoveAt(i);
+                    joltStart.RemoveAt(i);
+                    continue;
+                }
+                Vector3 d = joltThing[i].Value;
+                RM_KnockbackMath.JoltOffset(since, JoltTicks, JoltAmplitude, d.x, d.z, out float ox, out float oz);
+                Vector3 at = b.DrawPos + new Vector3(ox, 0.01f, oz);
+                b.Graphic?.Draw(at, b.Rotation, b);
+#if RM_PROOFS
+                JoltFrames++;
+                JoltMaxOffset = Mathf.Max(JoltMaxOffset, Mathf.Sqrt(ox * ox + oz * oz));
+#endif
+            }
         }
 
         /// <summary>A cell a thrown container may come to rest on: open ground (no wall, door, sandbag, water, pit or edge),

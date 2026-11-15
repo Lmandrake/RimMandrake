@@ -22,9 +22,6 @@ namespace RimMandrake.ExplosiveKnockback
 
     public enum KbKind : byte { Pawn = 0, Item = 1, Corpse = 2 }
 
-    /// <summary>What a blast does to a closed container (plan step 2, dl_container_shove).</summary>
-    public enum KbShove : byte { None = 0, Slide = 1, Jolt = 2 }
-
     public enum KbStop : byte
     {
         None = 0,        // no move at all
@@ -281,15 +278,43 @@ namespace RimMandrake.ExplosiveKnockback
             return onStorage && (closed || openStorageProtects);
         }
 
-        /// <summary>dl_container_shove: a 1x1 closed container at or under the light-mass limit slides one cell when the cell
-        /// behind it (away from the blast) is free open ground; anything else jolts in place. Off = nothing.</summary>
-        public static KbShove ContainerShove(bool enabled, bool oneByOne, float mass, float lightMassLimit, bool behindFree)
+        /// <summary>A closed container's planned throw (owner 2026-11-12, "the whole crate/chest would go flying a bit", by card
+        /// 2026-11-14 thrown as built): a 1x1 container whose own mass plus its goods is at or under the container mass limit
+        /// (closedContainerMassLimit, 250 kg, not the 75 kg goods limit) flies the kernel's item throw at that mass, so shorter
+        /// than the same goods loose; anything else plans 0 cells and jolts in place. RM_MapComponent_Knockback.ThrowContainer
+        /// walks the path (an open pit is a wall for it, it never rests on a person).</summary>
+        public static int ContainerThrowCells(bool oneByOne, float mass, float containerMassLimit, float dist, float radius, float force, KbSettings s)
         {
-            if (!enabled)
+            if (!oneByOne || mass > containerMassLimit)
             {
-                return KbShove.None;
+                return 0;
             }
-            return oneByOne && mass <= lightMassLimit && behindFree ? KbShove.Slide : KbShove.Jolt;
+            return ThrowCells(dist, radius, force, mass, s);
+        }
+
+        /// <summary>A blocked container's jolt, drawn (journal question 13): the drawn offset `ticksSince` ticks into a jolt of
+        /// `durationTicks`, a decaying shake along the blast's direction (dx,dz), never more than `amplitude` cells, 0 before
+        /// it starts and from its end on. Pure, so the selftest proves the bound the drawing uses.</summary>
+        public static void JoltOffset(int ticksSince, int durationTicks, float amplitude, float dx, float dz, out float ox, out float oz)
+        {
+            ox = 0f;
+            oz = 0f;
+            if (durationTicks <= 0 || ticksSince < 0 || ticksSince >= durationTicks || !(amplitude > 0f))
+            {
+                return;
+            }
+            float m = (float)Math.Sqrt(dx * dx + dz * dz);
+            if (m < 1e-6f)
+            {
+                dx = 1f;
+                dz = 0f;
+                m = 1f;
+            }
+            float left = 1f - ticksSince / (float)durationTicks;                 // decays to 0 at the end
+            float wave = (float)Math.Sin((ticksSince + 1) * Math.PI / 3.0);     // a shake of about six ticks a cycle
+            float a = amplitude * left * wave;
+            ox = a * dx / m;
+            oz = a * dz / m;
         }
 
         /// <summary>RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS (owner card d_c_heavy_knock): a flying good reaching a standing person's

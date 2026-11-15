@@ -218,9 +218,9 @@ class Settings(object):
         return all(v is not None for v in self.prior.values())
 
     def put(self, f, v):
-        # restore-check: ok -- snapshot() runs before any put and restore() runs in every driver's finally
         if f not in self.prior:
             self.prior[f] = self.get(f)
+        # restore-check: ok -- snapshot() runs before any put and restore() runs in every driver's finally
         self.sc.call("jawa/mod_settings_field", typeName=self.typ, action="set", field=f, value=str(v))
         got = self.get(f)
         try:

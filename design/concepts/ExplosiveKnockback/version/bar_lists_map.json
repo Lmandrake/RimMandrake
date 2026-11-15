@@ -249,12 +249,12 @@
    "note": null
   },
   {
-   "row": "flyingGoods off is today's instant move (no carrier).",
-   "slug": "flying_goods.off_is_the_instant_move",
+   "row": "flyingGoods off: loose goods and corpses are not thrown at all, never the old instant move (the bar settings_scale_and_switch wins).",
+   "slug": "flying_goods.off_goods_unthrown",
    "bars": [
     "settings_scale_and_switch"
    ],
-   "note": "CONFLICT: the walk row says flyingGoods off is the old instant move; the locked bar settings_scale_and_switch says goods in the air off means loose goods are not thrown at all, never the old hop. The bar wins; the walk row is stale."
+   "note": "Corrected to the bar 2026-11-15 (blind cycle 2, steward's decision 8): the row said flyingGoods off was the old instant move; the locked bar settings_scale_and_switch says goods in the air off means loose goods are not thrown at all, never the old hop. The code follows the bar (skip flying_off)."
   },
   {
    "row": "A closed container (a stasis locker, a sealed crate) that survives the blast is thrown whole, shorter than the same goods loose, its goods still in it and unhurt by the blast (owner 2026-11-12).",
