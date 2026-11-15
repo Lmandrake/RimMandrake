@@ -263,6 +263,28 @@ def stale_clone(tmp):
     check("origin_shard: a folder inside a clone is not that clone (no borrowed origin)", CT.origin_shard(sub) is None, "")
 
 
+def evidence_marks(tmp):
+    """Evidence-for-Ask (owner, 2026-11-15): each ask on his line says whether it carries evidence against the obvious
+    answer; one without it is marked as the Conductor's to take delegated, not his."""
+    repo = os.path.join(tmp, "efa")
+    os.makedirs(os.path.dirname(os.path.join(repo, CT.OWNER_SHARD)))
+    d = os.path.join(repo, "design", "concepts", "Foo")
+    waiting_concept(d, repo, time.time() - 600)
+    rp = os.path.join(d, "record.json")
+    rec = json.load(open(rp))
+    rec["asks"][1]["evidence_against"] = "his 11-10 card says the opposite"
+    json.dump(rec, open(rp, "w"))
+    t = DS.pending_turn(d, repo)
+    ev = {a["id"]: a.get("evidence") for a in (t or {}).get("asks") or []}
+    check("pending_turn: each ask carries its evidence_against, empty when it has none",
+          ev == {"ask_prisoner": "", "ask_match": "his 11-10 card says the opposite"}, ev)
+    line = DS.turn_line(t) if t else ""
+    check("turn_line: an ask without evidence is marked the Conductor's to take delegated; one with it quotes it",
+          "ask_prisoner: Which way for ask_prisoner? [no evidence against the obvious answer: the Conductor takes it" in line
+          and "ask_match: Which way for ask_match? [evidence against the obvious answer: his 11-10 card says the "
+              "opposite]" in line, line)
+
+
 def main():
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     tmp = tempfile.mkdtemp(prefix="designer_turns_")
@@ -271,6 +293,7 @@ def main():
         _, d = doorstep(tmp)
         escalation(tmp, d)
         stale_clone(tmp)
+        evidence_marks(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "all passed")

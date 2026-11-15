@@ -19,6 +19,11 @@ written as seat CONDUCTOR; the old key BENCH is a read alias and the tile's held
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
+**Evidence-for-Ask** (owner, 2026-11-15; the rule is CHARTER §Decisions): before a question goes up to him, it carries
+its evidence against the obvious answer, or you take that answer yourself and log it delegated. A Designer ask marked
+`no evidence against the obvious answer` on his queue (`designer_stage.py turns`) is yours: answer it as `designer.md`
+says, never relay it.
+
 ## Goals down, questions and status up (owner, 2026-10-27)
 
 His words (ledger note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"Lukas and Conductur interact back and forth.

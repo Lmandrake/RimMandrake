@@ -2300,7 +2300,8 @@ def pending_turn(d, repo=REPO, lines=None):
     if item and lines is not None and his_answers(lines, item, since):
         return None
     rec = read_json(os.path.join(d, "record.json")) or {}
-    asks = [{"id": a.get("id"), "text": " ".join(str(a.get("text") or "").split())}
+    asks = [{"id": a.get("id"), "text": " ".join(str(a.get("text") or "").split()),
+             "evidence": " ".join(str(a.get("evidence_against") or "").split())}
             for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
     if pk:      # a park's page is the turn, its reason the first ask
         asks = [{"id": "park", "text": "parked (%s): %s" % (pk.get("kind"), pk.get("why"))}] + asks
@@ -2356,7 +2357,18 @@ def turn_line(t):
         "QUICK LOOK OFFERED: " if t.get("quick_look") else "", t["mod"], t["stage"],
         (t.get("at") or "?").replace("T", " "), n, "ask" if n == 1 else "asks",
         " (%s)" % ", ".join(str(a["id"]) for a in t["asks"]) if n else "", owner_path(t.get("turn") or t["dir"]),
-        "".join(" | %s: %s" % (a["id"], a["text"]) for a in t["asks"]))
+        "".join(" | %s: %s%s" % (a["id"], a["text"], ask_mark(a)) for a in t["asks"]))
+
+
+def ask_mark(a):
+    """Evidence-for-Ask (owner, 2026-11-15): an ask on his line says what argues against its obvious answer, or that
+    nothing does and the Conductor takes it delegated (the park line carries no evidence field and no mark)."""
+    if "evidence" not in a:
+        return ""
+    if a["evidence"]:
+        return " [evidence against the obvious answer: %s]" % a["evidence"]
+    return (" [no evidence against the obvious answer: the Conductor takes it delegated, --per-ruling %s]"
+            % EVIDENCE_FOR_ASK)
 
 
 def status(d, repo=REPO):
