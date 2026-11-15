@@ -258,7 +258,7 @@ def claude_reader(prompt, pics_dir, model="opus", timeout=900):
     denied outright (deny beats the user settings' bare Read allow), so this repo's answer key, the manifest and any
     result file (main refuses either outside /home or /mnt) are out of its reach. User settings still load: they carry
     the environment the CLI's account comes from. Rules use //path, the absolute form. -> its stdout."""
-    cmd = ["claude", "-p", prompt, "--model", model, "--tools", "Read", "--strict-mcp-config",
+    cmd = [os.path.expanduser("~/.local/bin/claude"), "-p", prompt, "--model", model, "--tools", "Read", "--strict-mcp-config",
            "--permission-mode", "dontAsk", "--allowedTools", "Read(/%s/**)" % pics_dir,
            "--disallowedTools", *["Read(%s%s/**)" % (sl, d) for d in DENY for sl in ("/", "//")],
            "--no-session-persistence", "--output-format", "text"]

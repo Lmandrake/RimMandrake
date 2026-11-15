@@ -78,6 +78,7 @@ with tempfile.TemporaryDirectory() as tmp:
 # takes his words (--owner-said, --said, a HIS_WORDS metavar) must offer --per-ruling beside it, and a refusal that
 # demands his words must name the route. EXEMPT is the only way out, each with the reason it is not a gate.
 EXEMPT = {
+    "src/RimMandrake/rimflow/red_dispatch.py": "builder_start only excludes OWNER start events from a builder count; it grants nothing",
     "src/RimMandrake/Utils/art/facing_scale_lint.py": "--owner-said is optional; without it the install runs under a "
                                                       "script reason, nothing is refused",
     "src/RimMandrake/Utils/pulse/brief.py": "--why is accepted in its place, so no Conductor instruction is refused",

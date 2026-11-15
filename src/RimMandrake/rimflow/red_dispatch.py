@@ -334,11 +334,11 @@ def execute(cfg, st, rows, launches, now, details, fx=None):
         s.pop("told", None)
         s.setdefault("attempts", []).append({"night": night, "at": now, "unit": unit, "model": row["model"],
                                              "cap": row["cap"],
-                                             "failed": None if ok_launch else (text or "rc %s" % rc)[:400]})
+                                             "failed": None if ok_launch else (text or "rc %s" % rc)})
         if ok_launch:
             row.update(decision="launched", unit=unit)
         else:
-            row.update(decision="launch_failed", why=(text or "rc %s" % rc)[:400])
+            row.update(decision="launch_failed", why=(text or "rc %s" % rc))
 
 
 def reading(rows, now, night):

@@ -927,7 +927,7 @@ def _jsonl(path):
         try:
             out.append(json.loads(x))
         except ValueError:
-            out.append({"_bad": x[:120]})
+            out.append({"_bad": x[:120]})  # cut-ok: in-memory marker of a bad line
     return out
 
 
@@ -1945,9 +1945,9 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     for e in debts["fixed_problems"]:
         L.append("- Problem `%s` (bars %s), %s, never run live: run %s and show the fixed behaviour in the game (%s)."
                  % (e["id"], ", ".join(e["bars"]), e["status"], ", ".join("`%s`" % c for c in e["checks"]),
-                    e["fix"][:200]))
+                    e["fix"][:200]))  # cut-ok: report display line
     for e in debts["scene_polish"]:
-        L.append("- Polish `%s` (bars %s): %s; scene %s." % (e["id"], ", ".join(e["bars"]), e["fix"][:200],
+        L.append("- Polish `%s` (bars %s): %s; scene %s." % (e["id"], ", ".join(e["bars"]), e["fix"][:200],  # cut-ok: report display line
                                                            ", ".join("`%s`" % c for c in e["checks"]) or "none named"))
     for e in debts["planted_misses"]:
         L.append("- Planted fault `%s` in `%s` (`%s`), missed by every offline test (bars %s): the in-game check %s "
@@ -2054,6 +2054,7 @@ def main(argv=None):
     a.add_argument("--steward-confirms")
     a.add_argument("--conductor-decision")
     a.add_argument("--owner-said")
+    a.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     a.add_argument("--waits-on")
     a.add_argument("--json", action="store_true")
     p = sub.add_parser("spend")
@@ -2137,7 +2138,7 @@ def main(argv=None):
             print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))
             return 1
         res = advance(root, o.mod, o.to, by=o.by, why=o.why, steward=o.steward_confirms,
-                      conductor=o.conductor_decision, owner=o.owner_said, waits_on=o.waits_on)
+                      conductor=o.conductor_decision, owner=o.owner_said or (("per-ruling %s: %s" % (o.per_ruling, o.why)) if o.per_ruling else None), waits_on=o.waits_on)
         if res.get("malformed"):
             print("MALFORMED REFUSAL (a bug in maturation.py): %s" % "; ".join(res["malformed"]))
             return 3
