@@ -594,6 +594,30 @@ def t_hooks_keep_their_own_glob_pathspecs(a, b):
     assert sha == sh(a, "rev-parse", "origin/main")
 
 
+def t_hook_refusal_stops_at_once_with_its_reason(a, b):
+    """RIMMANDRAKE_STOP_RETRYING_A_PRE_PUSH_REFUSAL: a pre-push hook's `REFUSED` is a verdict, not a race. Retried, it
+    cost three sleeps and showed only git's last line ("failed to push some refs"), never the hook's reason."""
+    hooks = os.path.join(os.path.dirname(a), "hooks")
+    count = os.path.join(os.path.dirname(a), "hook_runs")
+    write(hooks, "pre-push", "#!/bin/sh\necho x >> '%s'\necho 'pre-push REFUSED (orphan item prose): X.md: no ledger"
+          " row at all' >&2\nexit 1\n" % count)
+    os.chmod(os.path.join(hooks, "pre-push"), 0o755)
+    sh(a, "config", "core.hooksPath", hooks)
+    write(a, "h.txt", "mine\n")
+    P.MAX_TRIES, old_tries = 3, P.MAX_TRIES
+    try:
+        try:
+            P_quiet_publish(a, ["h.txt"], "mine")
+            raise AssertionError("a refusing hook published")
+        except P.Refuse as e:
+            got = str(e)
+    finally:
+        P.MAX_TRIES = old_tries
+    runs = len(open(count).read().split())
+    assert runs == 1, "the refusing hook ran %d times" % runs
+    assert "no ledger row at all" in got, "the refusal lost the hook's reason: %r" % got
+
+
 def t_crash_between_carry_and_move_loses_nothing(a, b):
     """Planted: publish dies right after the working-tree write. The file holds both sides; the next run finishes."""
     import seat_sync

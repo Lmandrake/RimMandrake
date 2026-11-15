@@ -1,0 +1,1 @@
+The pre-push hook refuses an item spec (infrastructure/state/items/<ID>.md) whose ledger row is not in the same push: rimflow file the item BEFORE the first ./publish that carries its spec, and name the seat shard in that publish. Before 2026-11-15 publish retried that refusal and showed only 'failed to push some refs'; git push --dry-run printed the reason.

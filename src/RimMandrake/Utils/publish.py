@@ -555,6 +555,9 @@ def land(top):
             rebuild_dlls(top, bad)
             continue
         nonff = re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err)
+        if not nonff and re.search(r"^pre-push REFUSED", err, re.M):
+            # RIMMANDRAKE_STOP_RETRYING_A_PRE_PUSH_REFUSAL: a hook's verdict, not a race; retrying hid its reason
+            raise Refuse("push refused by the pre-push hook (nothing pushed):\n%s" % err)
         if not nonff:
             if attempt + 1 < MAX_TRIES:
                 print("push failed (%s); retrying" % err.splitlines()[-1] if err else "push failed")
