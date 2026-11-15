@@ -36,6 +36,8 @@ internal static class Program
 {
     private static int pass, fail;
 
+    private static KbSettings cs0() => new KbSettings();
+
     private static void Check(string id, bool ok, string detail = "")
     {
         if (ok)
@@ -132,6 +134,13 @@ internal static class Program
         Check("K-14 closed container holds", RM_KnockbackMath.GoodsHeld(true, true, false));
         Check("K-14 old rule: open shelf holds when set", RM_KnockbackMath.GoodsHeld(true, false, true));
         Check("K-14 old rule never holds floor goods", !RM_KnockbackMath.GoodsHeld(false, false, true));
+        // K-23 goods fly wild (blind cycle 1/2): the kernel's unrounded throw x wild, rounded and capped; never short of the kernel
+        Check("K-23 wild: mortar d1 70 kg good flies 4 (2.62 x 1.6)", RM_KnockbackMath.WildCells(1f, 2.9f, 1f, 70f, cs0(), 1.6f) == 4);
+        Check("K-23 wild 1 = the kernel", RM_KnockbackMath.WildCells(1f, 2.9f, 1f, 70f, cs0(), 1f) == RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 70f, cs0()));
+        Check("K-23 wild never past the cap", RM_KnockbackMath.WildCells(0f, 2.9f, 1f, 1f, cs0(), 1.6f) == 6);
+        // K-24 a gas burst's goods cap is exact: scaleOwnCap false ignores the own-max scale; a weapon's own max is scaled
+        Check("K-24 gas cap 2 under scale 0.25 stays 2", KbLookup.Apply(cs0(), new KbConfig { ownCap = 2, scaleOwnCap = false }, 6, 0.25f).maxCells == 2);
+        Check("K-24 weapon own max 4 under scale 0.5 is 2", KbLookup.Apply(cs0(), new KbConfig { ownCap = 4 }, 6, 0.5f).maxCells == 2);
         // K-14 container throw (owner card 2026-11-14: closed containers are thrown, as built; the dead slide kernel removed)
         var cs = new KbSettings();
         Check("K-14 container: 30 kg 1x1 at mortar d1 is thrown the item kernel's cells",
