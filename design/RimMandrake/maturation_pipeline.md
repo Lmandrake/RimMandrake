@@ -326,7 +326,7 @@ A `hold` blocks every advance until a later `release`.
 |---|---|---|
 | Stage record, `next`, `advance`, `spend`, `seed` | `maturation.py` | `selftest_maturation.py` |
 | Offline-build brief and capped launch | `maturation.py brief`, `launch` | `selftest_maturation.py --launch` |
-| Dispatch step, idle alarm | `maturation_dispatch.py` | `selftest_maturation_dispatch.py` |
+| Dispatch step, idle alarm, cap reserved before launch, spend rows of ended runs | `maturation_dispatch.py` | `selftest_maturation_dispatch.py` |
 | Blind challenge brief, launcher (one per visit), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py` |
 | In-game brief, launcher (shipped off; on since 2026-11-15), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py`, `selftest_maturation_dispatch.py` |
 | SteveDesktop admission | `Utils/testq/pipeline_admit.py` | `Utils/testq/selftest_testq_pipeline_admit.py` |
@@ -339,22 +339,21 @@ A `hold` blocks every advance until a later `release`.
 - **A common preflight** that tags each refusal as build work or a spec fault (plan slice 3). Each mod has a throwaway
   script, and the steward's word stands in for the tag.
 - **A common test-table maker**: each mod has its own, and they disagree on whether his Stage 8 look counts as a check.
-- **The status page reading the stage record** (plan slice 2), and `advance` refusals counted by
-  `refusal_contract.submit` so a stage refused again and again raises an alarm.
+- **`advance` refusals counted by `refusal_contract.submit`** (plan slice 2), so a stage refused again and again raises
+  an alarm. (The status page reads the stage record since 84993ce73e.)
 - **Program-checked exits** for the blind challenge, in-game acceptance and pre-human check: each is a steward's word.
-- **A verdict counting only on the version and list he walks** (spec §4 Stage 6): `mod_sha` is recorded and never
-  compared; no deployed-folder hash, mod list or game build is recorded.
+- **A verdict counting only on the version and list he walks** (spec §4 Stage 6): one visit's rows must name one
+  `mod_sha`, never compared with the stage's build; no deployed-folder hash, mod list or game build is recorded.
 - **The pre-human check** (Stage 7): no brief, launcher or reader.
 - **The pass record** and anything after a pass (re-running a passed version on change).
 - **Routing a stage-6 check to SteveDesktop** when it is the free game: the admission rule exists, no check carries a
   `testq` block, nothing routes.
-- **Spend at the blind and in-game stages**: no spend row is written for them (section 10 shows the gap).
 
 ### Where the spec and the code disagree
 
 1. **A new blind judge after a fix.** His words (spec §4 Stages 4 and 5, Road back): fix it right there, "then send it
-   back to just before Stage 4 again for a new blind judgement pass". The code's exit reader reads "met" when the same
-   cycle's Problems are FIXED red-then-green, and `advance` lets the mod leave on the steward's word. Pyrelands (cycle 1)
+   back to just before Stage 4 again for a new blind judgement pass". Since 10e1fafbf9 a cycle whose Problems were FIXED reads
+   "a new blind judge is owed", not met; `advance` still lets the mod leave on the steward's word. Pyrelands (cycle 1)
    and FlowWorks (cycle 1) went to in-game acceptance on 2026-11-15 after a neutral fixer's reconcile in the same cycle,
    with no new blind judge.
 2. **The blind, in-game and pre-human exits** are "PROPOSAL" in the spec and enforced by nothing in the code but a
@@ -373,36 +372,35 @@ A `hold` blocks every advance until a later `release`.
 Found by the skeptical review of 2026-11-15 and confirmed by reading the code (claims and where each was read:
 `D:\ClaudeWork\rimmandrake\conductor\maturation_gpt_review_20261115\claims_checked.md`):
 
-7. **The exit readers grade the worker's own files, and loosely.** The blind-challenge reader (`read_exit`) accepts a
-   FIXED Problem with no commands, needs only that `tests_edited.json` exist, needs only the last planted row to leave
-   the tree clean (no planted fault has to be caught), and does not refuse UNSETTLED or empty lane-1 rows. The in-game
-   reader (`read_ingame_exit`) accepts any existing file as the savegame, any non-empty `filed` or `explained` text,
-   and a bare `site_checked: true`, and it lets the last row for a test win, so a later PASS hides an earlier FAIL. The
-   selftest's happy blind fixture itself contains UNSETTLED rows and commandless fixes.
-8. **The steward's word moves every forward stage, and the selftest asserts it.** `advance` to in-game acceptance,
-   pre-human and his walk needs only a non-empty `--steward-confirms` (`selftest_maturation.py` 253-258 checks exactly
-   that); his walk to passed needs only a non-empty `--owner` string, whatever it says; preflight "pass" needs nothing
-   else; the Designer gate is `startswith("locked")`; `by` is never checked.
-9. **The offline-build gate and Dispatch's "progress" read the builder's own flags.** `_table_runnable` never compares
-   `test_table.json` with the locked bars, so a table that drops or invents a bar passes; Dispatch calls a fall in the
-   refused count "progress", so one flag flipped buys another run, and renaming a refused bar lifts a stop.
-10. **Dispatch's ceiling is checked before launch, not reserved.** `usd >= ceiling` is the test, so USD 59 spent of 60
-    still launches a USD 15 run; occupancy facts that are not lists count as zero (fails open).
+7. **The exit readers** (tightened ef6a38dbb6): the blind reader needs a command on every fix run, rerun PASS rows with
+   their command and rc 0, a planted fault caught, no dirty planted row, a list in `tests_edited.json`, and treats
+   UNSETTLED lane-1 rows as not passing; the in-game reader refuses an earlier non-PASS row, a bare `site_checked`, a
+   non-hash `mod_sha`, rows on two builds (a3b3dead86), thin strange-thing entries and a file that is not a save. Read
+   again on 2026-11-15, Explosive Knockback cycle 2, FlowWorks cycle 1 and Pyrelands cycle 1 read not met.
+8. **The steward's word moves the forward stages to in-game, pre-human and his walk** (a non-empty `--steward-confirms`;
+   binding those exits is his open decision). His walk to passed needs `OWNER:<tsn>`, his event on the OWNER shard
+   that does not refuse the pass; the Designer gate needs state `locked` by `owner`; `--by` must name a seat
+   (d5d5339d3b).
+9. **The offline-build gate reads the builder's own flags.** `_table_runnable` does not compare `test_table.json` with
+   the locked bars (no locked bar list exists to compare with). Dispatch's progress is a refused bar resolved by id
+   since e85a351a54: a rename or a flag flipped with its checks unchanged is a stop, and a stop lifts only when the
+   refused set shrinks.
+10. **Dispatch's ceiling** reserves the run's cap since 780db1ef3e (spent plus cap must fit), at the offline build, the
+    blind challenge and in-game acceptance; an unreadable occupancy launches nothing.
 11. **The owner certificate binds only the gap count.** It accepts any of his events on the concept's item newer than
     the verdict, can be replayed after the tree changes, and records (judge run, verdict, number of gaps), not which
     gaps he saw.
 12. **Calibration cuts one way.** A `covered` verdict signs under an UNTESTED brief (calibration is read only on the
     `not_covered` path); `calibrate` promotes to CALIBRATED on a free check's exit 0 without checking the cases ran, and
     always writes the registry; `submit` counts refusals and raises repair and alarms before it reads calibration, so an
-    advisory refusal still triggers them. The coverage judge ignores its runner's exit code, its freshness check covers
-    the tree and sheet only (not `scenes.json`), and after a release `stop_reason` ignores the run, spend and malformed
-    caps while the last look reads covered.
-13. **The refusal contract checks refusals, not passes.** Passed-row evidence lines are not bounds-checked; `observed`
-    needs one shared word of three letters or more; `sha` need only be non-empty; `given` falls back to the verdict's
-    own copy; an all-pass verdict is not stored whole.
-14. **A stage move is two unlocked writes** (`journal.md`, then `stage_record.json`); the cycle counter resets on
-    re-entry and rises on a blind-to-blind self-move with no judge run; there is no next-version operation and `seed`
-    never overwrites, so a version change has no route through the record.
+    advisory refusal still triggers them. (The coverage judge's runner exit, all-input freshness and caps after a
+    release were fixed in bf830aa827.)
+13. **The refusal contract** (f4e4cda069) checks passed rows' evidence as refusals', needs two shared words in
+    `observed`, binds a given `sha`, and stores an all-pass verdict whole; `given` still falls back to the verdict's
+    own copy (the program builds both).
+14. **Stage moves** are one locked write since 84993ce73e (the record first, rolled back on failure), with
+    `maturation.py next-version` for a new version; a blind-to-blind self-move with no judge record does not count a
+    cycle (10e1fafbf9).
 
 ## 10. Where each mod stands (snapshot, 2026-11-15 13:21 UTC, from `maturation.py next`)
 
