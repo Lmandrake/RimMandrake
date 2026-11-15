@@ -839,9 +839,10 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; no walk bar; herd verdict reads one 2500-tick step",
    "parts_covered_by": {
     "by": [
-     "ullai_cross_the_map_as_vanilla_herds"
+     "ullai_cross_the_map_as_vanilla_herds",
+     "sc_foreign_arrivals"
     ],
-    "why": "part: the kept vanilla herd migration, a def and patch read offline (T_ULLAI_HERD_MIGRATES); a live migration is a random incident a scene cannot stage cheaply"
+    "why": "parts: the kept vanilla herd migration, a def and patch read offline (T_ULLAI_HERD_MIGRATES) and, live, sc_foreign_arrivals' CanFireNow and executed migration under the mod's own herd filter (PyrelandsForeignArrivals); the cut world-map migration staying absent, T_CUT_STAYS_CUT"
    }
   },
   {
@@ -1013,7 +1014,7 @@
    "source": [
     "OWNER:1792122659817386516"
    ],
-   "proof_note": "he approved the whole sheet 2026-10-16 ('This is amazing ... playtest tuning much later'); open follow-ups: grass lifecycle states, kept-art judge digest, ashwallow dome sprite"
+   "proof_note": "he approved the whole sheet 2026-10-16 ('This is amazing ... playtest tuning much later'); open follow-ups: grass lifecycle states, kept-art judge digest, ashwallow dome sprite; art and text added since are listed with their judge or owed item in scenes.json coverage_rest inv_art_and_text post_approval_art"
   },
   {
    "id": "inv_firehawk_hunt_rewards",

@@ -24,6 +24,11 @@ The table below is the work list (scene, entry point, owed parts, gap). It is fi
 | sc_no_rain | no_ordinary_rain | a GameCondition_ForceWeather forced to Rain on the Pyrelands map and on the vanilla control; read the weather after the change and an hour later | g8 |
 | sc_heat_dome | heat_dome | ProbeDome bodyGraphic at +60 and after surfacing; two captures at play zoom for a judge | g9 |
 | sc_furnace_giant | ullai_and_giant | body and draw size of every resolved roster kind (biome_probe), margin asserted | g10 |
+| sc_firehawk_rewards | firehawk_rewards_live.py | the letter's label and text read for the hawk's LabelShortCap and the ember string; live crestfeather MarketValue vs RM_FireHawk's, Beauty | g11 |
+| sc_burn_line_walks | burn_line | 24 hourly captures at play zoom with the hour asserted at each; one save while the front walks (burn_line_walking), kept | g13 |
+| sc_burn_compounds | fresh_burn_bonus | vitals and pending incidents before the 7-day wait and at day 7 | g14 |
+| sc_grass_regreens | embergrass_regrow | cover census first on a fresh map (no sow/spawn/set_terrain before it, from the call log), live plantDensity read; same-seed map at plantDensity 1.0 | g15 |
+| sc_foreign_arrivals | foreign_arrivals | IncidentWorker_HerdMigration.CanFireNow on the Pyrelands map; executed migration brings RM_Ullai | g16 |
 
 ## Acceptance test
 
