@@ -8,6 +8,7 @@ parameters and every Python call whose first argument is a literal "jawa/..." st
 tool would now refuse. Matching is case-insensitive, as the guard's is; the reserved expect* keys pass.
 
 Exit 0 = no mismatch, 1 = mismatches (one line each), 2 = the instrument could not see (no tools parsed).
+A call line marked `# argcheck-ok` sends an undeclared key on purpose (a refusal probe) and is skipped.
 Blind spots, by construction: tool names or keys built at run time (f-strings, **kwargs from a variable)
 are not checked; the count of such calls is printed, never folded into "clean".
 """
@@ -102,6 +103,7 @@ def calls_in(path):
         if isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef)) and f.args.kwarg is not None:
             named = [a.arg for a in f.args.args + f.args.kwonlyargs if a.arg != "self"][1:]
             wrapper_kw.setdefault(f.name, set()).update(named)
+    lines = src.splitlines()
     out = []
     for n in ast.walk(tree):
         if not isinstance(n, ast.Call) or not n.args:
@@ -130,6 +132,8 @@ def calls_in(path):
                 dyn |= d
             elif kw.arg not in consumed:
                 keys.append(kw.arg)
+        if "argcheck-ok" in lines[n.lineno - 1]:
+            continue        # a deliberate undeclared key: a live proof that the companion refuses it
         out.append((n.lineno, a0.value, keys, dyn))
     return out
 
