@@ -13,6 +13,7 @@ namespace RimMandrake.FlowWorks.Machinery
     public static class RM_WreckedLinksProof
     {
         private static readonly List<Thing> shown = new List<Thing>();
+        private static Game shownGame;   // the game `shown` was staged in: a prior game's Things are dropped, never destroyed
 
         private static ThingDef PipeDef => DefDatabase<ThingDef>.GetNamedSilentFail(PipeStyles.PipeDef);
 
@@ -107,6 +108,11 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             Map map = Find.CurrentMap;
             if (map == null) return "REFUSED: no current map";
+            if (shownGame != Current.Game)
+            {
+                shown.Clear();
+                shownGame = Current.Game;
+            }
             foreach (Thing t in shown)
                 if (!t.Destroyed) t.Destroy(DestroyMode.Vanish);
             shown.Clear();

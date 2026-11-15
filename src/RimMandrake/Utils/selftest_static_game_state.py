@@ -161,6 +161,26 @@ REVIEWED = {
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAwareness.cs::Open": "keyed by our own monotonic context ids, never game ids",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTpsSampler.cs::_game": "the sampler's own Game guard",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchReviewLabels.cs::_mapAtLoad": "deliberately the OLD game's Map: compared by reference only while a load is pending, to wait for a new map",
+    # FlowWorks, GimmeSomeSlack, Pyrelands, reviewed 2026-11-15 (RIMMANDRAKE_DRAIN_NIGHTLY_REDS_WHILE_PIPELINE_SLEEPS)
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidTheft.cs::actor": "[ThreadStatic] scope value: set by the using-scope's constructor and restored to the previous actor in Dispose on every exit",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_WreckedLinksProof.cs::shown": "dev capture staging (jawa/static_call only); dropped, never destroyed, when Current.Game differs from shownGame",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_WreckedLinksProof.cs::shownGame": "the shown list's own Game guard",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitEdgePlacement.cs::depths": "scratch list of ints, cleared at its only use and read in the same call; no game reference",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitFloorGround.cs::cache": "keyed by TerrainDef pairs: defs live for the session, the merged affordance lists hold defs only",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::covers": "Material cache keyed by a numeric look key; holds no game object",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::ctxThing": "print-split context: nulled by Begin and End around each TakePrintFrom, read only between them and only while Spawned",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::rtThing": "realtime-draw context: written by the prefix that sets rtOn immediately before the draw that reads it; never read without a fresh write",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::sliceMeshes": "Mesh cache keyed by a numeric size key; holds no game object",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::tintedOverlays": "Material cache keyed by a numeric look key; holds no game object",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::underSheet": "Material cache keyed by a liquid id; holds no game object",
+    "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs::drinkableCells": "keyed by map.uniqueID but each entry holds a WeakReference<Map> and is used only when it is the same Map (ids repeat across games)",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_LiveWirePathCost.cs::byMap": "map ids repeat across games: cleared by GssSessionReset (Aerial.RM_LiveWirePathCost.Clear())",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs::faded": "Material cache keyed by a numeric alpha-step key; holds no game object",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs::noIncidentEnds": "a shared empty sentinel list, never added to; no game reference",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs::pileBootTags": "string cache keyed by (PileArt, boot): art values, no game object",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs::sameFrameMap": "nulled with sameFrameWall by ResetSameFrame (GssSessionReset), and compared by reference only with a Spawned wall",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs::steadyMap": "set by the DoCellSteadyEffects prefix and nulled by its finalizer on every exit, read only inside that call",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs::fires": "scratch list, cleared at its only use and read in the same TryGiveJob call",
 }
 
 # The fixes this test was written for (Transient/experiment_2026-10-14/static_state_audit.md): each must stay fixed.
