@@ -1158,6 +1158,12 @@
    "stage": 5,
    "what": "coverage_stop",
    "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 6; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-15T21:06:06Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his card 2026-11-15: fix the 17 round-6 gaps, ONE final look; release once; a not_covered pauses Pyrelands for him again; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes, floor); stage 4 left stale, its exam void (sheet, tree, scenes, floor, owner changed): the next open retakes it; sources OWNER:1794774724955142310@6a4318a295, OWNER:1794774724955142310@6d8f7fe94c, OWNER:1794774724955142310@4a7b2faf61, OWNER:1794774724955142310@5b463ff0f9, OWNER:1794774895716093173"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1450,7 +1456,7 @@
    "inputs": {
     "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "597b36df9f99e9272ed2efc0508fc8ea1736decc94764644ebe3bd2df0e8b8bb",
+    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
     "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
     "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
@@ -1464,7 +1470,7 @@
    "owner_uncited": [
     "1793766816609436834",
     "1794611171307640419",
-    "1794721773574845016"
+    "1794774895716093173"
    ],
    "repinned": [
     {
@@ -1478,6 +1484,19 @@
       "OWNER:1794684238949922350@08d917c12a",
       "OWNER:1794611171307640419",
       "OWNER:1794721773574845016"
+     ]
+    },
+    {
+     "at": "2026-11-15T21:06:06Z",
+     "inputs": [
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794774724955142310@6a4318a295",
+      "OWNER:1794774724955142310@6d8f7fe94c",
+      "OWNER:1794774724955142310@4a7b2faf61",
+      "OWNER:1794774724955142310@5b463ff0f9",
+      "OWNER:1794774895716093173"
      ]
     }
    ],
@@ -1504,12 +1523,12 @@
    "at": "2026-11-13T19:03:33Z",
    "inputs": {
     "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
-    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
     "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b185c5cd305aab4cc7a11f42a0e9497dad1c36dbb797934ee9b20c232133bc45",
-    "sheet": "d06507c42c7fca5216cf4bdf95da878d60d1deabe440a14d2a6334498272e65f",
-    "tree": "a556f6ea6ddde8b42ab2f122fa765182d10fa7fdaf23cf427bd53995c0e465eb"
+    "scenes": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
+    "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
+    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -1554,6 +1573,22 @@
      ],
      "sources": [
       "OWNER:1794748469904049550@75a13036d3"
+     ]
+    },
+    {
+     "at": "2026-11-15T21:06:06Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "floor"
+     ],
+     "sources": [
+      "OWNER:1794774724955142310@6a4318a295",
+      "OWNER:1794774724955142310@6d8f7fe94c",
+      "OWNER:1794774724955142310@4a7b2faf61",
+      "OWNER:1794774724955142310@5b463ff0f9",
+      "OWNER:1794774895716093173"
      ]
     }
    ],
@@ -1605,7 +1640,27 @@
    ],
    "run": "bench-pyre-exam-st4-20261115",
    "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as fixed by his card 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550, 91a7c61989): 20 frozen scenarios (Examiner a9a641ceb8479c818 e1-e14, Challenger ad7d09ca4f5010812 c1-c6; 13 rejects), Readers a475d113cbb05c45b and a773a17ac06718886 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on a tree with three_skies stripped (abd49deeecb68f260) accepted e9 and c6, so the set discriminates. exam.json carries it."
+   "summary": "Cold Reader exam retaken on the tree and sheet as fixed by his card 'Fix all 12 in 0.1.0' (OWNER:1794748469904049550, 91a7c61989): 20 frozen scenarios (Examiner a9a641ceb8479c818 e1-e14, Challenger ad7d09ca4f5010812 c1-c6; 13 rejects), Readers a475d113cbb05c45b and a773a17ac06718886 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on a tree with three_skies stripped (abd49deeecb68f260) accepted e9 and c6, so the set discriminates. exam.json carries it.",
+   "voided": [
+    {
+     "at": "2026-11-15T21:06:06Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "floor",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794774724955142310@6a4318a295",
+      "OWNER:1794774724955142310@6d8f7fe94c",
+      "OWNER:1794774724955142310@4a7b2faf61",
+      "OWNER:1794774724955142310@5b463ff0f9",
+      "OWNER:1794774895716093173"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
+    }
+   ]
   }
  ],
  "runner": "claude",
