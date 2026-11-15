@@ -11,7 +11,7 @@ it among the advancing mods; the Dispatch step never launches the Designer.
 
 ## The mod as it stands
 
-- **Stage now:** Stage 1, the Designer, since 2026-11-14 9:00 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 2, preflight, since 2026-11-15 11:39 AM PST (`version/stage_record.json`).
 - **Design Version:** none yet; it is cut at the Designer's Lock step, which Graffiti has not passed.
 - **Designer:** `stage.json` reads its Lock step, status waiting_owner, parked (second_refusal, 2026-11-15T09:32Z) on
   `park_summary.md`. Accepted: Read, Argue the idea, Argue the edge, Write, Exam (64 frozen scenarios, both Readers
@@ -41,3 +41,10 @@ PST. Answers to its asks came by card between 9:43 PM and 11:36 PM PST (ledger n
 Written by a Conductor helper (BENCH) answering "Are all the mods being advanced right now?": Graffiti had a Designer
 record but no maturation record, so `maturation.py next Graffiti` read UNMEASURED. Seeded from this journal. Nothing
 was launched: the park waits on his word.
+
+### 2026-11-15 11:39 AM PST, version change: UNMEASURED to 0.1.0 (by BENCH)
+
+- Why: VERSION.json locked as 0.1.0 on his card 2026-11-15 11:33 AM PST, Lock as 0.1.0 now (OWNER:1794771556666342734)
+- The UNMEASURED record (at Designer (Stage 1)) is kept as `version/stage_record_UNMEASURED.json`.
+- Was, "Stage now": - **Stage now:** Stage 1, the Designer, since 2026-11-14 9:00 PM PST (`version/stage_record.json`).
+- Record: `version/stage_record.json`.

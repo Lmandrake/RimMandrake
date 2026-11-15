@@ -1,0 +1,26 @@
+{
+ "mod": "Graffiti",
+ "version": "0.1.0",
+ "state": "locked",
+ "locked_on": "2026-11-15",
+ "locked_by": "owner",
+ "owner_words": "Lock as 0.1.0 now (owner, by question card, Sun 2026-11-15 11:33 AM PST; the option he picked, not words he typed; the card asked: \"Graffiti (the wall-painting mod) has finished its design stage ... Naming the version is yours ... How do you want to lock it?\", and told him one defect is open and stays in this version, RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL)",
+ "bars_total": 47,
+ "bars_met": 47,
+ "judge_rounds": 3,
+ "tokens_spent": 9223164,
+ "locked_from_commit": "9c13eeab55600faa1716147d216e85060e34a9b0",
+ "measured_from": {
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (19) + tree.json leaves (28), no id in both, = 47, the coverage checklist rows the judge passes or refuses on; read at locked_from_commit (design/concepts/Graffiti unchanged from it)",
+  "bars_met": "checklist rows with every part ok in the latest verdict rm-coverage-judge-1794753924 (2026-11-15T14:45:24Z, verdict covered, 0 gaps): 47 of 47 rows, coverage_judge.missing_rows() empty; judged at tree_hash a6eedf8713 = concept_tree.py hash of the tree at the lock (tree.json coverage, signed 2026-11-15T14:47:37Z)",
+  "judge_rounds": "coverage_judge.rounds(): 3 recorded in stage.json coverage_rounds (rm-coverage-judge-1794730911 not_covered, rm-coverage-judge-1794734941 not_covered, rm-coverage-judge-1794753924 covered), 0 legacy rounds from budget charges",
+  "tokens_spent": "stage.json budget.spent (cap 4000000): the sum of its 41 charges, every Designer stage run, helper, review and judge charge on this concept",
+  "locked_from_commit": "origin/main when this version was entered, 2026-11-15 after his card answer; per-file blob hashes in bars.md"
+ },
+ "caveats": [
+  "Open defect, a Problem that stays in 0.1.0 (his card named it): RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, a paint order whose north wall is removed is painted on the wall's hidden far side (the designated-order path does not re-check at the brush). Until it lands, record.json inv_mark_on_wall's proof overstates the far-side clause of sits_on_wall; bars_met counts the judge's signature, not this defect.",
+  "2 of the 41 budget charges are kind 'unmeasured' (run rm-role-designer-1794730904, 431619 tokens; run rm-role-designer-1794734934, 500000 tokens): estimates, included in budget.spent.",
+  "The Designer's spend (9223164 tokens) passed its stage budget cap (4000000).",
+  "stage.json status 'locked' (stage 5) is the Designer's concept-tree Lock, not this file; this file is the Design Version lock on his word."
+ ]
+}

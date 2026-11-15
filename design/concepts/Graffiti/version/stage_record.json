@@ -1,24 +1,33 @@
 {
   "schema": 1,
   "mod": "Graffiti",
-  "version": "UNMEASURED",
-  "stage": "designer",
-  "stage_label": "Designer (Stage 1)",
-  "since": "2026-11-14T21:00:00-08:00",
-  "since_from": "the earliest journal heading naming it: Stage 1 begins: the Designer's first touch",
+  "version": "0.1.0",
+  "stage": "preflight",
+  "stage_label": "Preflight (Stage 2)",
+  "since": "2026-11-15T11:39:31-08:00",
+  "since_from": "next-version by BENCH",
   "at_door": false,
   "seeded": {
-    "at": "2026-11-15T05:32:23-08:00",
-    "by": "maturation.py seed",
-    "stage_read_from": "journal",
-    "stage_line": "Stage 1, the Designer, since 2026-11-14 9:00 PM PST (version/stage_record.json)",
-    "run_records": "UNMEASURED"
+    "at": "2026-11-15T11:39:31-08:00",
+    "by": "maturation.py next-version",
+    "from_version": "UNMEASURED",
+    "previous": "version/stage_record_UNMEASURED.json"
   },
   "cycles": {
     "visit": 0,
     "total": 0
   },
   "pre_human_arrivals": 0,
-  "moves": [],
-  "spend": []
+  "spend": [],
+  "moves": [
+    {
+      "from": "UNMEASURED at designer",
+      "to": "preflight",
+      "at": "2026-11-15T11:39:31-08:00",
+      "by": "BENCH",
+      "why": "VERSION.json locked as 0.1.0 on his card 2026-11-15 11:33 AM PST, Lock as 0.1.0 now (OWNER:1794771556666342734)",
+      "version_from": "UNMEASURED",
+      "version_to": "0.1.0"
+    }
+  ]
 }
