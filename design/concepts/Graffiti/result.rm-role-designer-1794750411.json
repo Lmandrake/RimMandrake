@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1794750411",
+ "stage": 2,
+ "outcome": "done",
+ "summary": "His card of 2026-11-15 (OWNER:1794749812865303715, 'Rework, and stop parking for these') recorded as decision d_rework_no_park; no ask is sent and no core contradiction is open. The rework edits are already in for stage 3 to lint and the judge to see: g1 (sc_spree_corridor's skilled piece is a script-forced paint job, not a player order; after_the_raid new 3, overlap 0.00, showcase set accepted), g18 (sc_wall_closeup gains a south-only cell and a far-side control, cited to RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, which had never been filed and is now filed for BENCH), answer_wall's scenario now four sub-cases, and sc_breach_bias_raid's citation made true by a bias-off read. Gate A lint PASS; coverage_fixes.json written against rm-coverage-judge-1794734941. Budget: the task is past its cap (6.94M of 4.0M); raising it is the Conductor's call.",
+ "quick_look": {
+  "offer": false,
+  "why": "no owner question is proposed: his card settled the rework and nothing waits on him"
+ }
+}

@@ -205,10 +205,17 @@
     "ref": "run rm-role-designer-1794734934",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-15T13:51:44Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794750411",
+    "stage": 2,
+    "tokens": 500893
    }
   ],
   "reserve": 60000,
-  "spent": 6936989
+  "spent": 7437882
  },
  "coverage_rounds": [
   {
@@ -457,17 +464,51 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794734934 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-15T13:47:00Z",
+   "stage": 2,
+   "what": "invalidated",
+   "why": "inputs changed since stage 2 was accepted: owner; back to stage 2 (his new words to take in: OWNER:1794749812865303715)"
+  },
+  {
+   "at": "2026-11-15T13:47:00Z",
+   "stage": 2,
+   "what": "park_lifted",
+   "why": "his word on RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED lifts the second_refusal park"
+  },
+  {
+   "at": "2026-11-15T13:47:00Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "6936989 of 4000000 spent; run rm-role-designer-1794750411 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-15T13:47:00Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1794750411, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-15T13:51:45Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1794750411: stage 2 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
+ "loop_since": "2026-11-15T13:47:00Z",
  "mod": "Graffiti",
- "park": {
-  "at": "2026-11-15T09:32:10Z",
-  "kind": "second_refusal",
-  "quick_look": true,
-  "summary": "park_summary.md",
-  "why": "the coverage judge refused 2 times while you are away (no sitting: the owner has not interacted for 45+ min (last: 2026-11-15T08:37:31Z (chat prompt, 54 min ago)))"
- },
+ "parks": [
+  {
+   "at": "2026-11-15T09:32:10Z",
+   "kind": "second_refusal",
+   "lifted_at": "2026-11-15T13:47:00Z",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "the coverage judge refused 2 times while you are away (no sitting: the owner has not interacted for 45+ min (last: 2026-11-15T08:37:31Z (chat prompt, 54 min ago)))"
+  }
+ ],
  "pending_decision": "Fix every gap of coverage verdict rm-coverage-judge-1794730911 (tree cc00c622) in one stage-3 run and write coverage_fixes.json against that judge, one claim per gap: g1 (inv_viewer_mood/inv_player_orders/inv_weathering), g2 (), g3 (art_skill/inv_beauty_and_craft), g4 (reads_at_play_zoom/not_dirt), g5 (ugliness_visible/inv_beauty_and_craft), g6 (answer_wall/inv_social_layer), g7 (fights_reasons/inv_social_layer), g8 (mockery/inv_social_layer), g9 (tribute_memorial/inv_social_layer), g10 (raider_pressure/inv_raider_future_marks), g11 (inv_weathering/weathering_bounds_marks/raider_pressure/inv_raider_future_marks), g12 (inv_settings/stands_alone_settings/raider_pressure), g13 (inv_breach_bias), g14 (inv_joy_and_idle_tag), g15 (inv_ideo_sigils), g16 (inv_viewer_mood), g17 (inv_player_orders), g18 (inv_mark_on_wall/sits_on_wall), g19 (raid_mark_troubles/inv_raid_marks), g20 (going_over), g21 (own_fun/temperament/ideo_sigil/inv_temperament), g22 (stands_alone_settings/inv_standalone), g23 (walk_lived_in), g24 (walk_lived_in). Each gap's smallest_fix in coverage_verdict.json is an edit (all criterion_verdict sound, return_to 3). Biggest: drop the unsupported showcase claims (spree_corridor inv_viewer_mood; after_the_raid inv_player_orders, inv_weathering) or add the scene actions, and keep after_the_raid at min_new_after_first 3; give inv_weathering and breach-bias behaviour their own scenes; make sits_on_wall and inv_mark_on_wall agree on paintable sides (WallPlane.cs).",
  "recovery": [],
  "results": [
@@ -580,70 +621,6 @@
    "summary": "Stage 2 turn sent: one question, what a raider's left-behind mark does to that faction's next raid: (a) aims it at the marked wall (recommended), (b) brings it sooner or larger, or (c) a threat letter only. Settled by looking, not asking: the shipped vandal art no longer carries the hazard bolt or prohibition sign (GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT is stale). The proof-home and site-settings gaps go to stage 3. The flagship pick still waits on the agent walk he ordered (RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES, not yet run). New inventory entry: paint weathers away."
   },
   {
-   "at": "2026-11-15T07:48:55Z",
-   "inputs": {
-    "exam": null,
-    "floor": null,
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": null,
-    "sheet": null,
-    "tree": null
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "rm-role-designer-1794728785",
-   "stage": 2,
-   "summary": "Both stage-2 asks answered and taken in: Graffiti's face is the spree corridor (his lean, OWNER:1794728091811038301), and a raider faction's standing mark brings its next raid sooner or larger, announced by a letter (by card, OWNER:1794728164229812842, chosen over the recommended aim). Designer's undoable reading: the letter names the faction and its mark so the pressure is traceable to the wall; scrubbing or weathering the last mark lifts it; sooner/larger and size are Mod Settings tuning. No ask sent, no core contradiction open; proof-home and site-settings script gaps go to stage 3."
-  },
-  {
-   "at": "2026-11-15T08:09:45Z",
-   "inputs": {
-    "exam": null,
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "2bb9abd17f83f4b820cc7aa3680266f43bc518f393915142380cfacca0c2204f",
-    "sheet": "f187df87b171f81511c09cb4d9836f7de6b5b01a2c5a316b07fdfcbe73c0fdd5",
-    "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "rm-role-designer-1794729618",
-   "stage": 3,
-   "summary": "Stage 3 written: sheet.md, tree.json (28 leaves covering all 22 validated north-star lines plus the raider pressure he picked by card, built capabilities kept under their nearest line, one walk leaf), plan.md, scenes.json (28 script-staged scenes; 4 greedy showcases led by his spree-corridor pick; breach bias, settings and standing-alone in coverage_rest) and floor.json (motion and biome_scope not applicable). Missing entry points are filed: RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE (existing, twelve scenes), RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES, RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL, and the start-assertion gap RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT (its acceptance test watched failing on the base). Breach bias proof stays missing: today's script only writes and reads back its switch."
-  },
-  {
-   "at": "2026-11-15T08:19:16Z",
-   "inputs": {
-    "exam": "2b66e0db412cd8c66e33fe5e2930a575da9f603cd638b6060840a455d8120368",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "2bb9abd17f83f4b820cc7aa3680266f43bc518f393915142380cfacca0c2204f",
-    "sheet": "f187df87b171f81511c09cb4d9836f7de6b5b01a2c5a316b07fdfcbe73c0fdd5",
-    "tree": "cc00c62250c6807d9211cf903c45ef310d3e8a908b84ab055381340a2e9e8f38"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "run": "rm-role-designer-1794730323",
-   "stage": 4,
-   "summary": "Cold Reader exam PASS against tree cc00c622 and sheet f187df87: 22 frozen scenarios (14 examiner, 8 challenger), both fresh Readers matched all 22, accept_where_reject_core 0, no challenger misses. Control on going_over missed e8 and c5. A first control on visitors did not miss (its reader read trader goodwill as opinion under rereads_daily); recorded in exam.json, scenarios unchanged."
-  },
-  {
    "at": "2026-11-15T08:30:58Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794730904",
@@ -676,57 +653,6 @@
    "to": 3
   },
   {
-   "at": "2026-11-15T09:06:23Z",
-   "inputs": {
-    "exam": "2b66e0db412cd8c66e33fe5e2930a575da9f603cd638b6060840a455d8120368",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "0a109a6daf5201b45c6205cc5eaf35576c06fa469d04ddc26d85bac5e1f2a8d7",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "19c93521787f08adc51c4d4fb5447a98b213d1b104092ea4042ab9980ea5cf0e"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "quick_look": {
-    "offer": false,
-    "why": "no owner question is proposed: every gap was a scene or text edit"
-   },
-   "run": "rm-role-designer-1794732988",
-   "stage": 3,
-   "summary": "Fixed all 24 gaps of coverage verdict rm-coverage-judge-1794730911 in one run and claimed each in coverage_fixes.json. Two new acceptance scenes (sc_weathered_raid_mark, sc_breach_bias_raid); 17 scenes tightened; sits_on_wall and inv_mark_on_wall now agree from WallPlane/kernel code (front face only, edge-on and far side take no paint, paint climbs onto the top); answer_wall oracle requires all four answers; raider-pressure settings counted (11). after_the_raid drops inv_weathering (now coverage_rest) and keeps 3 new; showcase set accepted, lint PASS. New entry points filed as RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE; assertions on scenes owned by other items noted on them. Budget past cap (4.98M of 4.0M before this run): raising it is the Conductor's call."
-  },
-  {
-   "at": "2026-11-15T09:16:12Z",
-   "inputs": {
-    "exam": "28a42f76bf15438aff3a660a75f09d5dc7b0342169e66b517b8b89c8f13c92b3",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "0a109a6daf5201b45c6205cc5eaf35576c06fa469d04ddc26d85bac5e1f2a8d7",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "19c93521787f08adc51c4d4fb5447a98b213d1b104092ea4042ab9980ea5cf0e"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "quick_look": {
-    "offer": false,
-    "why": "no owner question is proposed: the exam passed and nothing waits on him"
-   },
-   "run": "rm-role-designer-1794733740",
-   "stage": 4,
-   "summary": "Cold Reader exam PASS against tree 19c93521 / sheet 40637a73: 64 frozen scenarios (Examiner re-checked the previous 22 against the current tree and added 34 on the changed leaves; Challenger 8, 7 of them reject traps on sits_on_wall, answer_wall, raider_pressure, raid_mark_troubles, player_orders, stands_alone_settings, stories_not_tax), 45 reject cases; both Readers matched all 64; accept_where_reject_core 0; no challenger misses. Control on going_over (every mention stripped) missed e8 and e19, so the set discriminates. Helpers charged 229273 tokens; the task is past its cap (5.99M of 4.0M): raising it is the Conductor's call."
-  },
-  {
    "at": "2026-11-15T09:34:27Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794734934",
@@ -734,12 +660,43 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-15T13:47:00Z",
+   "outcome": "invalidated",
+   "stage": 2,
+   "why": "inputs changed since stage 2 was accepted: owner; back to stage 2 (his new words to take in: OWNER:1794749812865303715)"
+  },
+  {
+   "at": "2026-11-15T13:51:45Z",
+   "inputs": {
+    "exam": "28a42f76bf15438aff3a660a75f09d5dc7b0342169e66b517b8b89c8f13c92b3",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
+    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
+    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": false,
+    "why": "no owner question is proposed: his card settled the rework and nothing waits on him"
+   },
+   "run": "rm-role-designer-1794750411",
+   "stage": 2,
+   "summary": "His card of 2026-11-15 (OWNER:1794749812865303715, 'Rework, and stop parking for these') recorded as decision d_rework_no_park; no ask is sent and no core contradiction is open. The rework edits are already in for stage 3 to lint and the judge to see: g1 (sc_spree_corridor's skilled piece is a script-forced paint job, not a player order; after_the_raid new 3, overlap 0.00, showcase set accepted), g18 (sc_wall_closeup gains a south-only cell and a far-side control, cited to RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, which had never been filed and is now filed for BENCH), answer_wall's scenario now four sub-cases, and sc_breach_bias_raid's citation made true by a bias-off read. Gate A lint PASS; coverage_fixes.json written against rm-coverage-judge-1794734941. Budget: the task is past its cap (6.94M of 4.0M); raising it is the Conductor's call."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
- "status": "waiting_owner",
+ "stage": 3,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
