@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-15T08:34:08-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-15T09:04:49-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 2,
-    "total": 2
+    "visit": 1,
+    "total": 3
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -83,6 +83,25 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-15T09:04:49-08:00",
+      "by": "BENCH",
+      "why": "steward run: Stage 3 exit met after the visit-1 road back; all 9 items caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES closed with L0 verifies; every live row UNRUN and owed to Stage 6",
+      "confirmed": {
+        "steward_confirms": "read maturation next (exit tests order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle pass) and the ledger: storeroom_bomb_pit 5298951585, gas_into_pit d4e34dda04, goods_obstacles 16a4636cf1, walk_raid live mode 3d1f9ae2ca, heavy locker lane 7c910364ce, gas chain fix d1817022db (cauldron fuzz 17002 cases), pit_fetch runner advance 266aaf93ef, pit_fetch control fixed ladder 7c17ebc622, steward git-lock retry 79a4ef9107: each closed with a pass verify, base watched red; live reruns UNRUN with commands recorded. Verdict: advance to blind_challenge"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle"
       ]
     }
   ],

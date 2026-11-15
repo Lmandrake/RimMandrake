@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3, offline build, since 2026-11-15 8:34 AM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 9:04 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 8:34 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 9:04 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -303,4 +303,14 @@ before Stage 3. Owner, 2026-11-14: "We need to get this going."
 - Steward confirms: read design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md exit block (47 pass, 4 fail, 5 unmeasured of 56, exit_met false) and evidence; verdict: road back to offline_build
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 2:14 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:14 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-15 9:04 AM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward run: Stage 3 exit met after the visit-1 road back; all 9 items caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES closed with L0 verifies; every live row UNRUN and owed to Stage 6
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle.
+- Steward confirms: read maturation next (exit tests order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle pass) and the ledger: storeroom_bomb_pit 5298951585, gas_into_pit d4e34dda04, goods_obstacles 16a4636cf1, walk_raid live mode 3d1f9ae2ca, heavy locker lane 7c910364ce, gas chain fix d1817022db (cauldron fuzz 17002 cases), pit_fetch runner advance 266aaf93ef, pit_fetch control fixed ladder 7c17ebc622, steward git-lock retry 79a4ef9107: each closed with a pass verify, base watched red; live reruns UNRUN with commands recorded. Verdict: advance to blind_challenge
+- Blind cycle 1 of this visit (3 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 8:34 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 8:34 AM PST).
 - Record: `version/stage_record.json`.
