@@ -30,10 +30,17 @@
     "ref": "run rm-role-designer-1794773070",
     "stage": 1,
     "tokens": 178502
+   },
+   {
+    "at": "2026-11-15T20:14:52Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794773367",
+    "stage": 1,
+    "tokens": 404756
    }
   ],
   "reserve": 60000,
-  "spent": 1337796
+  "spent": 1742552
  },
  "history": [
   {
@@ -77,6 +84,18 @@
    "stage": 1,
    "what": "retry",
    "why": "run rm-role-designer-1794773070 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-15T20:09:35Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1794773367, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-15T20:14:53Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1794773367: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -148,12 +167,35 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-15T20:14:53Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
+    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "run": "rm-role-designer-1794773367",
+   "stage": 1,
+   "summary": "Stage 1 done: root approved as written by the owner (OWNER:1794772416196929336, 2026-11-15 ~11:55 AM PST, a_root answer (a)). The same event certifies q02 (first demonstration A) and decisions d_efa_q04/q05/q08, recorded as owner decisions. It moves the grown-limb work to Design Version 0.2.0: d_efa_q07 deleted, the five limbs and limb_removal set to scope later. Filed RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT (v2, Divergent, acceptance test none: tuning he judges in play)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
