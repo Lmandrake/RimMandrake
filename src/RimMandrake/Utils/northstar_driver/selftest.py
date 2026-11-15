@@ -219,7 +219,7 @@ def main():
         check("site: black frame refused", _raises(AssertionError, site.black_frame_guard, png))
     except ImportError:
         print("skip  PIL absent: image primitives untested")
-    # graffiti plan end to end: all 10 bars claimed + a cannot-show unclaimed is refused
+    # graffiti plan end to end: every bar claimed + a cannot-show unclaimed is refused
     import json
     if os.path.isfile(os.path.join(cli.ROOT, "src", "RimMandrake", "Graffiti", "northstar_plan.py")):
         B.REGISTRY.clear()
@@ -227,9 +227,10 @@ def main():
         code = cli.main(["run", "--mock", "--mod", "Graffiti", "--out", out2, "--plan",
                          os.path.join(cli.ROOT, "src", "RimMandrake", "Graffiti", "northstar_plan.py")])
         d = json.load(open(out2))
-        check("graffiti mock plan: not refused, all 10 expected bars rolled up",
-              code in (0, 1) and len([b for b in d["bars"] if not b.get("functional")]) == 10
-              and len(d["expected"]) == 10,
+        # the bar count follows Graffiti's north star (10 in 2026-10, 22 by 2026-11-14): every expected bar, no other
+        rolled = sorted(b.get("id") for b in d["bars"] if not b.get("functional"))
+        check("graffiti mock plan: not refused, every expected bar rolled up",
+              code in (0, 1) and len(d["expected"]) >= 10 and rolled == sorted(d["expected"]),
               "code=%s bars=%d expected=%d" % (code, len(d["bars"]), len(d["expected"])))
         check("graffiti: functional suite rows reach the result too",
               any(b.get("functional") for b in d["bars"]), str(len(d["bars"])))
