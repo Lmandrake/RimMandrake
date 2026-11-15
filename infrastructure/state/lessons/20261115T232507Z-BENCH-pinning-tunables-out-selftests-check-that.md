@@ -1,0 +1,2 @@
+Pinning tunables out of selftests: a check that a timer unit carries the same number as the config (selftest_restart_reconcile: OnUnitInactiveSec = restart_reconcile_pass_s; selftest_nightly_catchup: OnCalendar hour = nightly_full_hour_local) is a deliberate drift check, not a pin: the timer is a second copy of the number, so changing the config alone really does leave the system wrong. tunable_sweep.py reports it PINNED; leave it, and say why in the report.
+item: RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS
