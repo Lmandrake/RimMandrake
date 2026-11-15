@@ -1,0 +1,11 @@
+coating
+  ok    a named condition for a staining coat
+  ok    leaving oil, tar, blood or another staining liquid applies it
+  ok    normal water washes it off
+  ok    the map ticks the coating
+  ok    stepping out of a coating liquid adds the coat
+  ok    wading a washing liquid removes the coat
+  ok    oil, tar and blood coat; water washes
+  ok    the coat is named for its liquid
+  8 undo mutants checked
+PASS
