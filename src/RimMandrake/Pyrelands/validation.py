@@ -2970,6 +2970,29 @@ def flamefang_venom(t):
                 _fail("a %s bite carried %s: the venom is not the flamefang's own" % (PLAIN_BITER, VENOM))
 
 
+def _log_mark(t):
+    """jawa/drain_log does NOT drain: it returns the newest `limit` lines of the whole Verse.Log buffer every call (visit 1,
+    2026-11-15: a 'drain' before a beat and a read after it returned the game-load banner, read as a rite-hook line). Mark the
+    buffer's size now; _log_since(t, mark) returns only the lines logged after it. None offline."""
+    r = t.bridge_call("jawa/drain_log", limit=1)
+    return (r or {}).get("totalInBuffer") if _live(t) else None
+
+
+def _log_since(t, mark, limit=500):
+    """Lines (dicts) logged after _log_mark. Fails when the buffer shrank (a Log.Clear or the cap), since the window is then
+    unknown."""
+    r = t.bridge_call("jawa/drain_log", limit=limit) or {}
+    if not _live(t):
+        return []
+    total, msgs = r.get("totalInBuffer"), r.get("messages") or []
+    if mark is None or total is None or total < mark:
+        _unmeasured(t, "log window unknown: buffer %r lines now, %r at the mark" % (total, mark))
+    new = total - mark
+    if new > len(msgs):
+        _unmeasured(t, "%d lines logged in the window, only %d readable (limit %d)" % (new, len(msgs), limit))
+    return msgs[len(msgs) - new:] if new > 0 else []
+
+
 def rite_offers(before, after):
     """ProbeHook lines before and after one forced fire-clock beat -> offers counted. Pure."""
     a, b = parse_kv(before), parse_kv(after)
@@ -2995,14 +3018,14 @@ def rite_hook_alone(t):
             if h.get("hook") != "null":
                 _unmeasured(t, "the rite hook is filled (%s): PyrelandsMechanics is on this list, so the scene's start "
                                "(loaded without it) does not hold" % h.get("hook"))
-        t.bridge_call("jawa/drain_log", limit=500)
+        mark = _log_mark(t)
         forced = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ForceFrontDue")
         _wait(t, 4 * BURN_WATCH_TICKS)
-        msgs = [m.get("text", "") for m in ((t.bridge_call("jawa/drain_log", limit=500) or {}).get("messages") or [])]
+        msgs = [m.get("text", "") for m in _log_since(t, mark)]
         if _live(t):
             if str((forced or {}).get("result")) != "1":
                 _unmeasured(t, "ForceFrontDue found no burn-line component: %r" % forced)
-            rite = [m[:200] for m in msgs if re.search(r"rite|PyrelandsFireRite|FireRiteHook", m, re.I)]
+            rite = [m[:200] for m in msgs if re.search(r"\brites?\b|FireRite|RiteHook", m, re.I)]
             _note(t, "log lines over the beat", {"lines": len(msgs), "rite": rite})
             if rite:
                 _fail("the log holds rite-hook lines on a list without the Tribes: %r" % rite[:3])
@@ -3159,15 +3182,15 @@ def walk_season(t):
     with _comp(t, "walk_second_pass_and_switches"):
         _wait(t, WALK_DAYS * 60000)
         fruit_born = _count(t, FRUIT_PLANT) or 0
-        t.bridge_call("jawa/drain_log", limit=500)
+        mark = _log_mark(t)
         _set(t, {"pyrelandsEnabled": False})
         _extinguish(t)
         _wait(t, 2500)
         fires_off = _count(t, "Fire") or 0
         _set(t, {"pyrelandsEnabled": True})
         _wait(t, 2500)
-        errs = [m.get("text", "")[:200] for m in ((t.bridge_call("jawa/drain_log", limit=500) or {}).get("messages") or [])
-                if str(m.get("level", "")).lower() in ("error", "exception")]
+        errs = [m.get("text", "")[:200] for m in _log_since(t, mark)
+                if str(m.get("type") or m.get("level") or "").lower() in ("error", "exception")]
         t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_end")
         if _live(t):
             _note(t, "second half", {"fruitStanding": fruit_born, "firesWithMechanicsOff": fires_off, "errors": errs[:5]})
