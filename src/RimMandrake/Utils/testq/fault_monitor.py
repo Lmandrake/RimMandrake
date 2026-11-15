@@ -529,9 +529,14 @@ def periodic_reboot(st, a, now):
         else:
             pr["quiet"] = 0
         return
-    if uptime >= float(every) * 3600 and (not pz or PR_MARK in (pz.get("reason") or "")):
+    # an OPEN window is a CPU measured bad this boot: every job run on it risks garbage IL (HAR's cctor dying in
+    # Harmony's MethodBodyReader, 10 of 10 kept logs); waiting out reboot_every_h only wastes lane hours
+    recent = [t for t in st.get("reboots", []) if now - t < 86400]
+    early = bool(a.get("open")) and uptime >= MIN_UPTIME_S and len(recent) < MAX_REBOOTS_DAY
+    if (uptime >= float(every) * 3600 or early) and (not pz or PR_MARK in (pz.get("reason") or "")):
         if not pz:
-            T.cmd_pause(argparse.Namespace(reason=PR_MARK + " boot is %.1f h old: drain, reboot, resume" % (uptime / 3600),
+            T.cmd_pause(argparse.Namespace(reason=PR_MARK + " boot is %.1f h old%s: drain, reboot, resume" % (
+                uptime / 3600, " with an open fault window" if early else ""),
                                            hours=PAUSE_HOURS))
         st["pr"] = {"state": "DRAIN", "quiet": 0, "n": pr.get("n", 0)}
 

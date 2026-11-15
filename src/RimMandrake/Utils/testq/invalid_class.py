@@ -48,7 +48,7 @@ SIGNATURES = (
     ("game_would_not_start", GAME, r"no RimWorldWin64 process \d+ s after Start-Process"),
     ("load_hang", GAME, r"no bridge port in a fresh Player\.log after"),
     ("d3d_texture", GAME, r"D3D error"),
-    ("har_ctor_token_zero", GAME, r"Token 0x0 is not a valid MethodBase"),
+    ("har_ctor_garbled_il", GAME, r"Token 0x0 is not a valid MethodBase|Error in static constructor of AlienRace\.HarmonyPatches"),
     ("native_crash_in_load", GAME, r"mono_profiler_init_etw|END OF STACKTRAC|\(function-name not available\)"),
     ("world_start_no_map", GAME, r"readiness .mapData|quicktest world start FAILED"),
     ("game_died", GAME, r"the game loaded as pid \d+ is gone"),

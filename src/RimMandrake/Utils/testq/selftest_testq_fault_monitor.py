@@ -268,6 +268,16 @@ def periodic_checks():
         check("resume" not in log, "periodic: no resume until a new boot is seen")
         FM.periodic_reboot(st, {"boot": B + 13 * 3600 + 400}, B + 13 * 3600 + 900)
         check(log[-1] == "resume" and not st["pr"]["state"], "periodic: new boot answering resumes the lane")
+        log.clear()
+        box.update(pz=None)
+        FM.periodic_reboot({}, {"boot": B, "open": {"id": "FX"}}, B + 600)
+        check(not log, "periodic: an open window on a boot under MIN_UPTIME_S waits (a reboot is not clearing it)")
+        capped = {"reboots": [B + i for i in range(FM.MAX_REBOOTS_DAY)]}
+        FM.periodic_reboot(capped, {"boot": B, "open": {"id": "FX"}}, B + 3600)
+        check(not log, "periodic: the daily reboot cap holds against an open window")
+        st2 = {}
+        FM.periodic_reboot(st2, {"boot": B, "open": {"id": "FX"}}, B + 3600)
+        check(log == ["pause"] and st2["pr"]["state"] == "DRAIN", "periodic: an open window drains early, long before reboot_every_h")
         os.remove(FM.T.q(FM.ADVISORY_FILE))
         log.clear()
         FM.periodic_reboot({}, old, B + 99 * 3600)
