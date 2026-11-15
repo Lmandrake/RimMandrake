@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-15T09:04:49-08:00",
+  "since": "2026-11-15T14:08:41-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 1,
-    "total": 3
+    "visit": 2,
+    "total": 4
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -101,6 +101,24 @@
         "hold",
         "every_bar_has_a_check_that_runs",
         "table_version",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T14:08:41-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); his road back sends a fixed mod to a new blind judgement pass; judge's exit_met true came from the brief defect fixed in 228cb916de; nothing new filed (3 Polish already filed by the judge)",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1794780263",
+      "confirmed": {
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); his road back sends a fixed mod to a new blind judgement pass; judge's exit_met true came from the brief defect fixed in 228cb916de; nothing new filed (3 Polish already filed by the judge)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
         "fourth_cycle"
       ]
     }
