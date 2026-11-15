@@ -128,7 +128,7 @@ Judge the judge (`lane2/judge_the_judge/`): the four criteria are sound (feasibi
 stray and bends at once). Two lane-1 checks were wrong and were repaired (refusals.json): L1_CORD_EXCURSION read other nodes' cells as the conduit line,
 L1_NO_REPEAT could never pass. Fix 0416599c69 (parent 0725d4522a), red then green in `lane2/fixes.jsonl`: slack, stray and repeat FIXED; bends 82 -> 4 on the
 judge's 80 scenes, still open. Over 2000 seeded scenes, base -> fix: slack 243 -> 5 of 16740 strands, stray 31 -> 6 of 6070 edges, unforced bends
-1580 -> 92, twins (3-6 cells) 468 -> 1 of 11200 pairs. T_CORE 4510/4510. Lane 1 after the fix: `lane2/lane1_rows_after_fix.jsonl` (FAIL: bends, the judge's
+1580 -> 92 (on an earlier seed set: the committed Diag.cs reads 174 at that kernel, gss_last), twins (3-6 cells) 468 -> 1 of 11200 pairs. T_CORE 4510/4510. Lane 1 after the fix: `lane2/lane1_rows_after_fix.jsonl` (FAIL: bends, the judge's
 sharp-turn row, the fallen wire Polish).
 
 ## Lane 2 follow-up (gss_last, 2026-11-15)

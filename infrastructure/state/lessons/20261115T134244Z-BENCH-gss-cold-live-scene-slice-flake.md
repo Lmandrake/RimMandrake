@@ -1,0 +1,1 @@
+The GSS cold live-scene slice flake was not GC: a collection ran in about 42 of 75 Builds, and a 36.8 ms Build had none. A process's first cold build also pays JIT (158 ms). Hold wall-clock bounds to one of N fresh attempts, not to a GC-excluded max (gss_last, 2026-11-15)

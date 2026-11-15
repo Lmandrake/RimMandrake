@@ -1,0 +1,1 @@
+CordShape.Fair resamples between rounds, so the last pinned sample of a kept run bends toward the drawn-in cord and makes the fold the kink check refuses. To blend a join, take the kept run and its heading from the cord BEFORE the fairing (gss_last BlendCutRun, 2026-11-15)

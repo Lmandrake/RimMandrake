@@ -1,0 +1,1 @@
+A validation source-shape pin (GSS validation.py O7) goes stale when a fix changes the pinned line on purpose. T_GATE read red on every run from 6d2aeb9c3f, and one rerun was taken for a flake. Re-pin in the same commit as the fix (gss_last, 2026-11-15)
