@@ -570,6 +570,12 @@ def blind_main():
             ok(ex.get("state") == "met" and (not kw.get("polish_cites") or "Polish" in (ex.get("why") or [""])[0]
                                              and "L1_c" in (ex.get("why") or [""])[0]),
                "%s reads met (%s)" % (what, (ex.get("why") or ["-"])[-1][-120:]))
+        # a Polish row later fixed: lane 1 after the fixes shows it PASS, so the reading must not call it left as Polish
+        write_cycle(root, "FlowWorks", 1, lane1_fail=True, lane1_after={"L1_a": "PASS", "L1_c": "PASS"}, polish_cites="L1_c")
+        ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+        ok(ex.get("state") == "met" and "Polish" not in " ".join(ex.get("why") or []),
+           "a Polish lane-1 FAIL that lane 1 after the fixes shows PASS reads met, not left as Polish (%s)"
+           % (ex.get("why") or ["-"])[-1][-120:])
         tt_saved = open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")).read()
         broken = (
             (dict(fix_runs=dict(runs, red=[{"cmd": "a", "rc": 0}])), "a list-of-runs fix never shown red", "red"),

@@ -1097,7 +1097,8 @@ def read_exit(root, mod, n, tt=None):
         after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
         bad_after = [r.get("id", "?") for r in after or [] if str(r.get("verdict", "")).upper() == "FAIL" or "_bad" in r]
         passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
-        polish = _polish_rows(faults, sorted(set(fails) | set(bad_after)))   # a FAIL a Polish fault owns is not passing's
+        # a FAIL a Polish fault owns is not passing's; a row that PASSes after the fixes is cleared, not left as Polish
+        polish = _polish_rows(faults, sorted((set(fails) - passed) | set(bad_after)))
         out["checks"]["lane1_fail_left_as_polish"] = polish
         bad_after = [f for f in bad_after if f not in polish]
         left = [f for f in fails if f not in passed and f not in polish]
