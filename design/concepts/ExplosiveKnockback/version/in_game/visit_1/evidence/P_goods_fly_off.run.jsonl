@@ -1,0 +1,4 @@
+{"type": "scenario", "scene": "goods_fly_off", "status": "PASS", "detail": "steel 13,12->13,12 (0 cells) wantIfOn=6 flyingOffSkip=True itemMoves=0 seenInCarrier=False", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":4802,\"exp\":45590,\"thing\":\"Steel45589\",\"def\":\"Steel\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":4802,\"exp\":45590,\"thing\":\"Steel45589\",\"def\":\"Steel\",\"reason\":\"flying_off\"}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

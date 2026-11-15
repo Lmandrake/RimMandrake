@@ -1,0 +1,6 @@
+{"type": "scenario", "scene": "corpse_into_pit", "status": "PASS", "detail": "corpse 13,12->15,12 (2 cells) onPitFloor=True forbidden=False", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"spared\",\"tick\":2402,\"exp\":-1,\"thing\":\"Corpse_Human45334\",\"def\":\"Corpse_Human\",\"blast\":1,\"taken\":0.25}"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":2402,\"exp\":45335,\"thing\":\"Corpse_Human45334\",\"def\":\"Corpse_Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"item_move\",\"tick\":2402,\"exp\":45335,\"thing\":\"Corpse_Human45334\",\"def\":\"Corpse_Human\",\"kind\":\"Corpse\",\"from\":[13,12],\"to\":[15,12],\"planned\":4,\"cells\":2,\"stop\":\"Pit\",\"mass\":60.8,\"count\":1,\"kernelCells\":3,\"wildCells\":4,\"flying\":true,\"flyer\":45336,\"flightTicks\":9}"}
+{"type": "journal", "rec": "{\"type\":\"item_land\",\"tick\":2411,\"exp\":45335,\"thing\":\"Corpse_Human45334\",\"def\":\"Corpse_Human\",\"from\":[13,12],\"to\":[15,12],\"dest\":[15,12],\"bounces\":0,\"stop\":\"Pit\",\"count\":1,\"spawnFallback\":false,\"residentsMoved\":0,\"ticks\":9}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

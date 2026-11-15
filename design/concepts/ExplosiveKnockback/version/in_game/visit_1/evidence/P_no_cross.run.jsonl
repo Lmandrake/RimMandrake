@@ -1,0 +1,6 @@
+{"type": "scenario", "scene": "no_cross", "status": "PASS", "detail": "p 12,12->14,12 (2 cells) (1-wide pit at x+2; must stop IN it)", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":2102,\"exp\":45305,\"thing\":\"Human45302\",\"def\":\"Human\",\"from\":[12,12],\"centre\":[11,12],\"radius\":4.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":2102,\"exp\":45305,\"thing\":\"Human45302\",\"def\":\"Human\",\"from\":[12,12],\"to\":[14,12],\"planned\":3,\"cells\":2,\"stop\":\"Pit\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":60.75,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":2121,\"exp\":0,\"thing\":\"Human45302\",\"def\":\"Human\",\"at\":[14,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":true}"}
+{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":2121,\"exp\":0,\"thing\":\"Human45302\",\"def\":\"Human\",\"at\":[14,12]}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

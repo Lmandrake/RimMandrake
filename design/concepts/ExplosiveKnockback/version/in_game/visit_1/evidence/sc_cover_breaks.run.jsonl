@@ -1,5 +1,5 @@
 {"type": "scenario", "scene": "cover_breaks", "status": "PASS", "detail": "coversLeft=0 pawnInPit=True descents=1 at 14,12", "origin": "12,12"}
-{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":13802,\"exp\":0,\"thing\":\"Human20131\",\"def\":\"Human\",\"at\":[14,12]}"}
-{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":13804,\"exp\":20134,\"thing\":\"Human20131\",\"def\":\"Human\",\"from\":[14,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
-{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":13804,\"exp\":20134,\"thing\":\"Human20131\",\"def\":\"Human\",\"reason\":\"in_pit\",\"at\":[14,12]}"}
+{"type": "journal", "rec": "{\"type\":\"descent\",\"tick\":19802,\"exp\":0,\"thing\":\"Human70107\",\"def\":\"Human\",\"at\":[14,12]}"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":19804,\"exp\":70110,\"thing\":\"Human70107\",\"def\":\"Human\",\"from\":[14,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":19804,\"exp\":70110,\"thing\":\"Human70107\",\"def\":\"Human\",\"reason\":\"in_pit\",\"at\":[14,12]}"}
 {"type": "run_end", "verdict": "PASS", "scenes": 1}

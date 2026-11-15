@@ -1,4 +1,4 @@
-{"type": "scenario", "scene": "shield_counter", "status": "PASS", "detail": "p 13,12->13,12 (0 cells) energy 1.1->1.1 [type=skip tick=4502 exp=18583 thing=Human18579 reason=shield energyBefore=1.067 energyAfter=0.737 broke=False]", "origin": "12,12"}
-{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":4502,\"exp\":18583,\"thing\":\"Human18579\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":true,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
-{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":4502,\"exp\":18583,\"thing\":\"Human18579\",\"def\":\"Human\",\"reason\":\"shield\",\"energyBefore\":1.067,\"energyAfter\":0.737,\"broke\":false}"}
+{"type": "scenario", "scene": "shield_counter", "status": "PASS", "detail": "p 13,12->13,12 (0 cells) energy 1.1->1.1 [type=skip tick=16202 exp=57384 thing=Human57376 reason=shield energyBefore=1.067 energyAfter=0.737 broke=False]", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":16202,\"exp\":57384,\"thing\":\"Human57376\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":true,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"skip\",\"tick\":16202,\"exp\":57384,\"thing\":\"Human57376\",\"def\":\"Human\",\"reason\":\"shield\",\"energyBefore\":1.067,\"energyAfter\":0.737,\"broke\":false}"}
 {"type": "run_end", "verdict": "PASS", "scenes": 1}

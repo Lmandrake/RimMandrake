@@ -1,0 +1,3 @@
+{"type": "scenario", "scene": "lookup_zero_wins", "status": "PASS", "detail": "p 13,12->13,12 (0 cells) requests=0", "origin": "12,12"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 3601, 'operation': {'OperationId': 'op_e230a2ed1e1743b0b6018f085f6ad53a', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 3601}}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

@@ -1,0 +1,6 @@
+{"type": "scenario", "scene": "shelf", "status": "PASS", "detail": "steel 13,12->19,12 (6 cells) (on an open shelf: must move)", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"spared\",\"tick\":1502,\"exp\":-1,\"thing\":\"Steel42967\",\"def\":\"Steel\",\"blast\":1,\"taken\":0.25}"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":1502,\"exp\":42968,\"thing\":\"Steel42967\",\"def\":\"Steel\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"item_move\",\"tick\":1502,\"exp\":42968,\"thing\":\"Steel42967\",\"def\":\"Steel\",\"kind\":\"Item\",\"from\":[13,12],\"to\":[19,12],\"planned\":6,\"cells\":6,\"stop\":\"Distance\",\"mass\":10,\"count\":20,\"kernelCells\":5,\"wildCells\":6,\"flying\":true,\"flyer\":42969,\"flightTicks\":26}"}
+{"type": "journal", "rec": "{\"type\":\"item_land\",\"tick\":1528,\"exp\":42968,\"thing\":\"Steel42967\",\"def\":\"Steel\",\"from\":[13,12],\"to\":[19,12],\"dest\":[19,12],\"bounces\":0,\"stop\":\"Distance\",\"count\":20,\"spawnFallback\":false,\"residentsMoved\":0,\"ticks\":26}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

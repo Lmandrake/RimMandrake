@@ -1,3 +1,3 @@
 {"type": "scenario", "scene": "no_cross_ordered", "status": "PASS", "detail": "a@(15, 0, 10) b@(15, 0, 15) descents=0 (step 2000 ticks)", "origin": "12,12"}
-{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 16701, 'operation': {'OperationId': 'op_ec97588bd7d44259a092255a454cc30a', 'Status': 'Completed', 'Success': True, 'DurationMs': 35}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 16701}}"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 22701, 'operation': {'OperationId': 'op_45a64efa38f94c11b77e1dba2da880c7', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 22701}}"}
 {"type": "run_end", "verdict": "PASS", "scenes": 1}

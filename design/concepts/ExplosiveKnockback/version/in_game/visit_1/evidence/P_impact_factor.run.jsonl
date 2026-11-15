@@ -1,0 +1,5 @@
+{"type": "scenario", "scene": "impact_factor", "status": "PASS", "detail": "p 13,12->14,12 (1 cells) [type=launch tick=3002 exp=45400 thing=Human45396 from=13,12 to=14,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=62.49998 hoseDropped=False faction=PlayerColony]", "origin": "12,12"}
+{"type": "journal", "rec": "{\"type\":\"request\",\"tick\":3002,\"exp\":45400,\"thing\":\"Human45396\",\"def\":\"Human\",\"from\":[13,12],\"centre\":[12,12],\"radius\":2.9,\"force\":1,\"damType\":\"Bomb\",\"source\":\"projectile\",\"shieldAbsorbed\":false,\"typeForce\":1,\"damage\":50,\"damageRatio\":1}"}
+{"type": "journal", "rec": "{\"type\":\"launch\",\"tick\":3002,\"exp\":45400,\"thing\":\"Human45396\",\"def\":\"Human\",\"from\":[13,12],\"to\":[14,12],\"planned\":3,\"cells\":1,\"stop\":\"Wall\",\"impact\":0,\"otherImpact\":0,\"door\":false,\"mass\":62.5,\"hoseDropped\":false,\"faction\":\"PlayerColony\"}"}
+{"type": "journal", "rec": "{\"type\":\"land\",\"tick\":3021,\"exp\":0,\"thing\":\"Human45396\",\"def\":\"Human\",\"at\":[14,12],\"spawned\":true,\"dead\":false,\"downed\":false,\"inPit\":false}"}
+{"type": "run_end", "verdict": "PASS", "scenes": 1}

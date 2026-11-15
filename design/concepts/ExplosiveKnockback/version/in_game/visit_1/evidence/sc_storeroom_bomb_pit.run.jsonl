@@ -1,3 +1,3 @@
 {"type": "scenario", "scene": "storeroom_bomb_pit", "status": "INVALID", "detail": "unknown scene storeroom_bomb_pit", "origin": "12,12"}
-{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 1201, 'operation': {'OperationId': 'op_4b7a022bc5ad424988aadca409f4d73e', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 1201}}"}
+{"type": "journal", "rec": "{'success': True, 'method': 'System.String Journal(System.String)', 'thingArgs': [], 'ticksGame': 23461, 'operation': {'OperationId': 'op_570527a14610447fb8ac738234985557', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 23461}}"}
 {"type": "run_end", "verdict": "INVALID", "scenes": 1}
