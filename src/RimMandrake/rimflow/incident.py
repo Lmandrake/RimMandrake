@@ -167,6 +167,15 @@ def readings(table, status, now):
     return bad, True, seen
 
 
+def retired_sane(status, metric):
+    """A retired belt's reading that stopped coming (its churn alarm left alarms.json, so ops_watch no longer writes the
+    key) is the retirement, not a blind instrument, as ops_watch.andon reads it. -> True for a `relentless.` key while
+    `relentless.retired` reads 1, else None. Without it an incident holding such a key never closes on its readings
+    (work_belt-20261101160557: 56 churn keys absent, at his rung for good after the Relentless retirement)."""
+    p = ((status or {}).get("points") or {}).get("relentless.retired") or {}
+    return True if metric.startswith("relentless.") and p.get("m") == "MEASURED" and p.get("v") == 1 else None
+
+
 def chain_of(table, inc):
     return [inc["reader"]] + table["policy"]["chain"]
 
@@ -507,7 +516,7 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
                 states.append(True)
                 quiet = True
             else:
-                states.append(seen.get(m) if fresh else None)
+                states.append(seen.get(m, retired_sane(status, m)) if fresh else None)
         if all(s is True for s in states):
             if not inc.get("sane_since"):
                 emit("sane", inc, sane_since=now)

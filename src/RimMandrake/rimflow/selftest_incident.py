@@ -1647,6 +1647,22 @@ def test_seat_relapse_kinds_do_not_reopen():
     check("control: restart:BENCH:hard_stuck back inside relapse_h reopens its incident (the check can fail)",
           "opened" in evs and "reopened" in evs, evs)
 
+def test_retired_belt_keys_read_sane():
+    """A relentless key ops_watch stopped writing (its churn alarm gone) reads sane while relentless.retired is 1, so the
+    incident holding it closes on its readings; with the belt live the absent key stays unknown (the check can fail)."""
+    table, rev, rows = at_his_rung("rl-1")
+    key = "relentless.churn_item.SOME_ITEM"
+    rows[0]["metrics"] = {key: {"class": "distressed", "event": False}}
+    rows[0]["revisit_read"] = {}
+    now = T0 + 2 * M
+    gone = {"t": now, "points": {"relentless.retired": {"m": "MEASURED", "v": 1, "class": "sane"}}, "alarms": {}}
+    evs = [x["ev"] for x in IN.step(table, rows, gone, now)["rows"] if x["id"] == "rl-1"]
+    check("retired: an absent relentless key reads sane once the belt is retired", "sane" in evs, evs)
+    live = {"t": now, "points": {"relentless.retired": {"m": "MEASURED", "v": 0, "class": "sane"}}, "alarms": {}}
+    evs = [x["ev"] for x in IN.step(table, rows, live, now)["rows"] if x["id"] == "rl-1"]
+    check("control: with the belt live the absent key is unknown and the incident stays open", "sane" not in evs, evs)
+
+
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_standing_source_holds_incident_open, test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
@@ -1655,7 +1671,7 @@ for t in (test_standing_source_holds_incident_open, test_silent_reader, test_cha
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries,
           test_disjoint_reopen_is_new_incident, test_role_relapse_kinds_do_not_reopen,
-          test_seat_relapse_kinds_do_not_reopen):
+          test_seat_relapse_kinds_do_not_reopen, test_retired_belt_keys_read_sane):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
