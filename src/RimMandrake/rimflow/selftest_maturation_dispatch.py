@@ -227,7 +227,8 @@ def main():
             out = {}
             for mod in c["advancing"]:
                 f = M.build_facts(root, mod)
-                f["live_units"] = list(world["live"].get(mod, []))
+                f["live_units"] = (MD.UNM if mod in world.get("unreadable", ()) else
+                                   list(world["live"].get(mod, [])))
                 f["last_end"], f["stage_runs"], f["run_usd"] = None, dict(world["stage_runs"].get(mod, {})), {}
                 out[mod] = f
             return out
@@ -243,6 +244,22 @@ def main():
                            "the Conductor's live builder on Explosive Knockback fills the one slot", "slots_full",
                            live={"ExplosiveKnockback": ["u-ek"]})
         none_launched(one, "the stage's dollars past the ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 61.0}})
+        # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the cap is reserved, and an unknown occupancy fails closed
+        rd = none_launched(dict(one, stage_ceiling_usd=60, cap_usd=15), "USD 50 spent plus a USD 15 cap passes the "
+                           "60 ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 50.0}})
+        ok("cap passes" in rd["mods"]["FlowWorks"]["why"], "the refusal names the reserved cap (%s)"
+           % rd["mods"]["FlowWorks"]["why"])
+        reset()
+        world.update(stage_runs={"FlowWorks": {"u1": 45.0}})
+        rd = MD.tick(root, dict(one, stage_ceiling_usd=60, cap_usd=15), True,
+                     fx=dict(fx, facts=lambda: facts_for(dict(one, stage_ceiling_usd=60, cap_usd=15))), now=CLOCK,
+                     page=False)
+        ok(rd["mods"]["FlowWorks"]["decision"] == "launched", "USD 45 spent plus a USD 15 cap fits the 60 ceiling: it "
+           "launches (%s)" % rd["mods"]["FlowWorks"]["decision"])
+        none_launched(dict(base, advancing=["ExplosiveKnockback", "FlowWorks"], max_live=2),
+                      "Explosive Knockback's live runs cannot be read (occupancy unknown)", "slots_unknown",
+                      unreadable={"ExplosiveKnockback"})
+        world["unreadable"] = ()
         none_launched(one, "the account pick holds role launches", "account_hold",
                       account=(False, "the Dispatcher's account pick reads HOLD"))
         world["account"] = (True, "test account KEEP")
@@ -355,6 +372,8 @@ def blind_main():
                 f = M.build_facts(root, mod)
                 f["live_units"] = list(world["live"].get(mod, []))
                 f["last_end"], f["stage_runs"], f["run_usd"] = world["last_end"].get(mod), {}, {}
+                f["box_runs"] = dict(world.get("box_runs", {}).get(mod, {}))
+                f["ended_runs"] = list(world.get("ended", {}).get(mod, []))
                 out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
             return out
 
@@ -369,7 +388,7 @@ def blind_main():
             shutil.rmtree(sd, ignore_errors=True)
             open(log, "w").close()
             del filed[:]
-            world.update(live={}, last_end={}, runs={})
+            world.update(live={}, last_end={}, runs={}, box_runs={}, ended={})
 
         def need(rd, mod):
             return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
@@ -479,6 +498,38 @@ def blind_main():
         none(gss, "a Conductor hold on stage 4+5", "held")
         with open(jp, "w") as f:
             f.write(jsaved)
+        # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the ceiling holds at the blind challenge too, cap reserved
+        rd = none(dict(gss, stage_ceiling_usd=60, blind_cap_usd=20), "USD 45 spent at the blind challenge plus a USD 20 "
+                  "cap passes the 60 ceiling", "ceiling", box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
+        # a finished blind run and a finished in-game run each write one spend row, once
+        reset()
+        landed = []
+        ended = [{"unit": "u-blind-1", "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_FIRST",
+                  "live": False, "at": BLIND_CLOCK - 3600, "end": BLIND_CLOCK - 600, "usd": 12.5, "tokens": 3013781,
+                  "wall_s": 3000, "cap": 20, "stages": []},
+                 {"unit": "u-ig-1", "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_ACCEPTANCE_VISIT_ONE",
+                  "live": False, "at": BLIND_CLOCK - 3600, "end": BLIND_CLOCK - 500, "usd": None, "said_usd": 18.0,
+                  "tokens": None, "wall_s": 2000, "cap": 30, "stages": []},
+                 {"unit": "u-live", "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_TWO_TESTS_FIRST",
+                  "live": True, "at": BLIND_CLOCK - 60, "end": None, "stages": []}]
+        world["ended"] = {"GimmeSomeSlack": ended}
+        fx2 = dict(fx, land_spend=lambda paths: landed.append(paths) or "PUBLISHED test")
+        MD.tick(root, gss, True, fx=dict(fx2, facts=lambda: facts_for(gss)), now=BLIND_CLOCK, page=False)
+        rows = M.read_run_spend(root, "GimmeSomeSlack")
+        by = {x.get("unit"): x for x in rows}
+        ok(set(by) == {"u-blind-1", "u-ig-1"} and by["u-blind-1"]["stage"] == "blind_challenge"
+           and by["u-blind-1"]["tokens"] == 3013781 and by["u-ig-1"]["stage"] == "in_game"
+           and by["u-ig-1"]["usd"] == 18.0, "a finished blind run and a finished in-game run each write a spend row; "
+           "the live one does not (%s)" % sorted(by))
+        ok(landed == [["design/concepts/GimmeSomeSlack/%s" % M.RUN_SPEND]], "the rows are landed, that file only (%s)"
+           % landed)
+        MD.tick(root, gss, True, fx=dict(fx2, facts=lambda: facts_for(gss)), now=BLIND_CLOCK + 60, page=False)
+        ok(len(M.read_run_spend(root, "GimmeSomeSlack")) == 2 and len(landed) == 1,
+           "a second tick writes no second row and lands nothing")
+        sp = M.next_step(root, "GimmeSomeSlack")["spend"]
+        ok(sp.get("blind_challenge", {}).get("tokens", 0) >= 3013781 and "in_game" in sp,
+           "maturation.py next counts them under their stages (%s)" % sorted(sp))
+        os.remove(os.path.join(root, "design/concepts/GimmeSomeSlack", M.RUN_SPEND))
         reset()
         rd = tick(dict(base, advancing=["Graffiti"]))
         ok(not launches() and "GimmeSomeSlack" not in rd["mods"], "a mod not on the advancing list: no row, no launch")

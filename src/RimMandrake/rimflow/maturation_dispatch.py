@@ -31,6 +31,8 @@ Per mod on the advancing list, in order, one decision:
   ready         every exit test passes: "ready to advance" for the Conductor; the program never advances
   blind         the run records or the test table cannot be read: nothing (never launch on a blind reading)
   no_cap        the settings have no positive cap_usd: nothing launches anywhere
+  slots_unknown an advancing mod's live runs cannot be read: no launch anywhere (an unknown occupancy is never 0)
+  ceiling       blind or in-game: the stage's dollars plus the run's cap pass stage_ceiling_usd (the cap is reserved)
   slots_full    max_live live runs on advancing mods already (the Conductor's included)
   account_hold  the Dispatcher's account pick holds role launches (its rule's `hold` list): nothing
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
@@ -152,6 +154,11 @@ def _ts(iso_s):
         return None
 
 
+def _usd(r):
+    return (r["usd"] if isinstance(r.get("usd"), (int, float)) else
+            r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
+
+
 def gather(root, cfg, live=True):
     """-> {mod: facts}: maturation.build_facts plus, from maturation_now's run placement, the live units, the last run's
     end and the dollars the stage has spent."""
@@ -170,6 +177,10 @@ def gather(root, cfg, live=True):
             f["stage_runs"] = {r["unit"]: (r["usd"] if isinstance(r.get("usd"), (int, float)) else
                                            r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
                                for r in box3 if r.get("unit")}
+            f["box_runs"] = {c: {r["unit"]: _usd(r) for r in (b.get("runs") or []) if r.get("unit")}
+                             for c, b in (m.get("boxes") or {}).items()}
+            f["ended_runs"] = [r for r in runs if not r.get("live") and isinstance(r.get("end"), (int, float))
+                               and r.get("unit")]
             f["run_usd"] = {r["unit"]: (r["usd"] if isinstance(r.get("usd"), (int, float)) else
                                         r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
                             for r in runs if r.get("unit")}
@@ -233,6 +244,62 @@ def account_gate(sched_path=None, dstate=None):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
+def occupancy(facts):
+    """-> the live runs on advancing mods, or None when any mod's live runs cannot be read: an unknown occupancy is
+    never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch)."""
+    occ = [f.get("live_units") for f in facts.values()]
+    if not all(isinstance(x, list) for x in occ):
+        return None
+    return sum(len(x) for x in occ)
+
+
+def no_slot(cfg, live_total, put):
+    """True (the row put) when no launch slot is free: max_live reached, or the occupancy unknown (fails closed)."""
+    if live_total is None:
+        put("slots_unknown", "the live runs of an advancing mod cannot be read, so the live count is unknown; nothing "
+            "launches on an unknown occupancy")
+        return True
+    if live_total >= int(cfg.get("max_live", 2)):
+        put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+        return True
+    return False
+
+
+def over_ceiling(usd, cap, ceiling, where):
+    """-> why the next run may not start, or None. The cap is reserved before launch: spent plus the run's cap must fit
+    the ceiling (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: `usd >= ceiling` let USD 59 of 60 launch a USD 15 run)."""
+    if not (isinstance(ceiling, (int, float)) and not isinstance(ceiling, bool)):
+        return None
+    if usd >= ceiling:
+        return "USD %.2f spent at %s, at or past the %g ceiling" % (usd, where, ceiling)
+    if usd + cap > ceiling:
+        return "USD %.2f spent at %s plus the next run's USD %g cap passes the %g ceiling" % (usd, where, cap, ceiling)
+    return None
+
+
+def stage_spent(f, stage, ours):
+    """-> USD spent at this stage: every run the status page placed in its box (measured dollars, else its cap), plus
+    this step's own launches there not yet placed (at their cap)."""
+    spent = dict((f.get("box_runs") or {}).get(M.COL[stage]) or {})
+    for x in ours or []:
+        if x.get("unit") and x["unit"] not in spent:
+            spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
+    return round(sum(spent.values()), 2)
+
+
+def reserve_refused(cfg, f, row, put, cap, stage, ours):
+    """The ceiling at the blind challenge and in-game acceptance, as at the offline build: True (the row put) when the
+    stage's spend plus this run's cap passes stage_ceiling_usd. Read every tick, never stored: raising the ceiling or a
+    Conductor's word on the spend lifts it."""
+    usd = stage_spent(f, stage, ours)
+    row["stage_usd"] = usd
+    over = over_ceiling(usd, cap, cfg.get("stage_ceiling_usd"), M.label(stage))
+    if over:
+        put("ceiling", over, "the ceiling, %s; nothing more launches on it until the Conductor reads the spend" % over)
+        return True
+    return False
+
+
 def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
     """-> (rows, launches). Pure over (cfg, st, facts): it mutates st (watch, stop, owed_since) and returns one row per
     advancing mod and the mods to launch, in list order. Never launches on a mod twice in one tick, and at most one
@@ -241,7 +308,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
     cap = cfg.get("cap_usd")
     cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
     mods = st.setdefault("mods", {})
-    live_total = sum(len(f["live_units"]) for f in facts.values() if isinstance(f.get("live_units"), list))
+    live_total = occupancy(facts)
     drivers = [u for f in facts.values() for u in (f.get("ingame_live") or [])]
     for mod in cfg.get("advancing") or []:
         f = facts.get(mod) or {"stage": UNM}
@@ -346,9 +413,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
         usd = round(sum(spent.values()), 2)
         row["stage_usd"] = usd
         ceiling = cfg.get("stage_ceiling_usd")
-        if isinstance(ceiling, (int, float)) and usd >= ceiling:
-            s["stopped"] = {"ids": ids, "at": now, "why": "USD %.2f spent at the offline build, at or past the %g "
-                            "ceiling" % (usd, ceiling)}
+        over = over_ceiling(usd, cap if cap_ok else 0, ceiling, "the offline build")
+        if over:
+            s["stopped"] = {"ids": ids, "at": now, "why": over}
             put("stopped", s["stopped"]["why"], "stopped, %s" % s["stopped"]["why"])
             continue
         if not cap_ok:
@@ -357,8 +424,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None):
         if not account[0]:
             put("account_hold", account[1])
             continue
-        if live_total >= int(cfg.get("max_live", 2)):
-            put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+        if no_slot(cfg, live_total, put):
             continue
         live_total += 1
         put("launch", "%d bars refused as build work, nothing live on it (%s)" % (n, account[1]))
@@ -446,11 +512,12 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total):
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
         return False
+    if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto")):
+        return False
     if not account[0]:
         put("account_hold", account[1])
         return False
-    if live_total >= int(cfg.get("max_live", 2)):
-        put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+    if no_slot(cfg, live_total, put):
         return False
     row.update(cap=cap, visit_id=vid)
     put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle (%s)" % (
@@ -536,6 +603,8 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         put("no_cap", "the settings have no positive ingame_cap_usd; no live driver launches without a cap")
         return False
+    if reserve_refused(cfg, f, row, put, cap, "in_game", s.get("ingame_auto")):
+        return False
     if not account[0]:
         put("account_hold", account[1])
         return False
@@ -543,8 +612,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         put("driver_busy", "an in-game run is live (%s): one live-game driver at a time across all mods" % (
             ", ".join(drivers)))
         return False
-    if live_total >= int(cfg.get("max_live", 2)):
-        put("slots_full", "%d live runs on advancing mods, the most is %s" % (live_total, cfg.get("max_live", 2)))
+    if no_slot(cfg, live_total, put):
         return False
     go, why = (bridge or (lambda p: M.bridge_idle(p, cfg.get("seat", "BENCH"))))(
         "%s in-game acceptance visit %s" % (mod, n))
@@ -709,6 +777,54 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
     return done
 
 
+def run_stages(r):
+    """-> the stage words an ended run worked in: where the status page placed it, else its item's name (a blind or
+    in-game item of this step's naming), else [] (not recorded: a guess is never a spend row)."""
+    st = [M.WORD_OF_COL[c] for c in (r.get("stages") or []) if c in M.WORD_OF_COL]
+    if st:
+        return st
+    if "BLIND" in str(r.get("item") or "").upper():
+        return ["blind_challenge"]
+    if _is_ingame_item(r.get("item")):
+        return ["in_game"]
+    return []
+
+
+def land_spend(root, paths, fx=None):
+    """Land the RUN_SPEND files just written (land.sh -m: a temp index from origin/main; one writer, so nothing of a
+    steward's is overwritten). A root that is not a git clone (a selftest) or RM_STAGE_LAND=0 lands nothing."""
+    if (fx or {}).get("land_spend"):
+        return fx["land_spend"](paths)
+    if os.environ.get("RM_STAGE_LAND") == "0":
+        return "skipped: RM_STAGE_LAND=0"
+    r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=120)
+    if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
+        return "skipped: %s is not a clone's top" % root
+    import designer_stage as DS
+    p = subprocess.run([DS.LAND, "-m", "maturation: spend rows of ended runs (Dispatch step)"] + paths, cwd=root,
+                       capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+    if p.returncode and "nothing to land" not in p.stderr:
+        return "land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:])
+    return (p.stdout.strip().splitlines() or ["nothing to land"])[-1]
+
+
+def record_spend(root, facts, fx=None):
+    """Every advancing mod's ended runs not yet recorded -> RUN_SPEND rows, then one landing. -> {mod: rows written}."""
+    wrote, paths = {}, []
+    for mod, f in facts.items():
+        try:
+            rows = M.record_run_spend(root, mod, f.get("ended_runs") or [], run_stages)
+        except (OSError, ValueError) as e:
+            wrote[mod] = "failed: %s" % e
+            continue
+        if rows:
+            wrote[mod] = len(rows)
+            paths.append("design/concepts/%s/%s" % (mod, M.RUN_SPEND))
+    if paths:
+        wrote["_land"] = land_spend(root, paths, fx)
+    return wrote
+
+
 def reading(cfg, rows, now):
     owed = [r for r in rows if r.get("stage") == "offline_build" and r.get("owed") in OWED and not r.get("live")
             and r.get("decision") not in ("launched",)]
@@ -756,6 +872,7 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         AUT.post_cards(rows, st, now, fx)
     rd = AUT.annotate(reading(cfg, rows, now), rows)
     if apply:
+        rd["spend_rows"] = record_spend(root, facts, fx)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:

@@ -41,7 +41,8 @@ import maturation as M          # noqa: E402
 
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
-WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "account_hold", "designer_wait", "queued"}
+WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
+        "queued"}
 LAUNCH = {"launch", "launched", "would_launch"}
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
 OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone",
@@ -193,8 +194,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     launches (within max_live and the caps), paused or owner. Mutates st (steward/fixer keys, queue, class clocks)."""
     fx = fx or {}
     mods = st.setdefault("mods", {})
-    live_total = sum(len(f["live_units"]) for f in facts.values() if isinstance(f.get("live_units"), list))
-    live_total += len(launches)
+    import maturation_dispatch as MD
+    live_total = MD.occupancy(facts)
+    live_total = None if live_total is None else live_total + len(launches)
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
@@ -219,7 +221,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         if row.get("aut"):
             ok, why = _gate(cfg, s, row, live_total, ver)
             if ok:
-                live_total += 1
+                live_total = None if live_total is None else live_total + 1
                 launches = [m for m in launches if m != mod] + [mod]
             else:
                 row.update(decision=why[0], why=why[1], aut=None)
@@ -354,6 +356,9 @@ def _gate(cfg, s, row, live_total, ver):
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         return False, ("no_cap", "no positive %s in the settings" % ("fix_cap_usd" if row["aut"] == "fixer"
                                                                     else "steward_cap_usd"))
+    if live_total is None:
+        return False, ("slots_unknown", "the live runs of an advancing mod cannot be read; the %s run waits on a "
+                       "readable occupancy" % row["aut"])
     if live_total >= int(cfg.get("max_live", 2)):
         return False, ("slots_full", "%d live runs on advancing mods, the most is %s; the %s run (%s) waits for a slot" % (
             live_total, cfg.get("max_live", 2), row["aut"], row.get("steward_kind") or row.get("fix_item")))
@@ -371,7 +376,8 @@ PAUSE_WHY = {
     "visit_unfinished": "a visit record has no exit block", "cycle_limit": "three blind cycles: the Conductor decides",
     "seed_refused": "its record cannot be seeded", "designer_blocked": "the Designer is blocked",
     "designer_unreadable": "its stage.json cannot be read", "disabled": "the step is disabled",
-    "steward_off": "steward runs are off", "not_offline": "no automatic step exists for its stage",
+    "steward_off": "steward runs are off",
+    "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_usd", "not_offline": "no automatic step exists for its stage",
 }
 
 

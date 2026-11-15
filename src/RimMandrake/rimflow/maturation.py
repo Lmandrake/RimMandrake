@@ -190,6 +190,19 @@ def _since(hist, col):
     return UNM, "no dated journal heading names it"
 
 
+def _spend_row(r, stages):
+    """One detached run (a maturation_now run view) -> its spend entry, under the stage words it worked in."""
+    usd = r.get("usd") if isinstance(r.get("usd"), (int, float)) else r.get("said_usd")
+    return {"stage": stages[0], "stages": stages, "tokens": r.get("tokens") if isinstance(
+        r.get("tokens"), int) else UNM, "usd": usd if isinstance(usd, (int, float)) else UNM,
+        "usd_from": "run record" if isinstance(r.get("usd"), (int, float)) else
+        ("the run's own words" if isinstance(r.get("said_usd"), (int, float)) else UNM),
+        "wall_s": round(r["wall_s"]) if isinstance(r.get("wall_s"), (int, float)) else UNM,
+        "cap_usd": r.get("cap") if isinstance(r.get("cap"), (int, float)) else UNM,
+        "unit": r.get("unit"), "source": "detached run %s (item %s)" % (r.get("unit"), r.get("item")),
+        "kind": "measured"}
+
+
 def _run_spend(m):
     """The detached runs maturation_now placed on this mod's stages -> spend entries (one per run, never twice)."""
     out, seen = [], set()
@@ -200,14 +213,7 @@ def _run_spend(m):
                 continue
             seen.add(u)
             stages = [WORD_OF_COL[c] for c in (r.get("stages") or [col]) if c in WORD_OF_COL] or [WORD_OF_COL.get(col)]
-            usd = r.get("usd") if isinstance(r.get("usd"), (int, float)) else r.get("said_usd")
-            out.append({"stage": stages[0], "stages": stages, "tokens": r.get("tokens") if isinstance(
-                r.get("tokens"), int) else UNM, "usd": usd if isinstance(usd, (int, float)) else UNM,
-                "usd_from": "run record" if isinstance(r.get("usd"), (int, float)) else
-                ("the run's own words" if isinstance(r.get("said_usd"), (int, float)) else UNM),
-                "wall_s": round(r["wall_s"]) if isinstance(r.get("wall_s"), (int, float)) else UNM,
-                "cap_usd": r.get("cap") if isinstance(r.get("cap"), (int, float)) else UNM,
-                "source": "detached run %s (item %s)" % (u, r.get("item")), "kind": "measured"})
+            out.append(_spend_row(r, stages))
     return out
 
 
@@ -591,6 +597,69 @@ def add_spend(root, mod, stage, tokens, usd=None, wall_s=None, source=None, esti
     return rec
 
 
+RUN_SPEND = "version/run_spend.jsonl"
+
+
+def _unit_of(row):
+    u = row.get("unit")
+    if u:
+        return str(u)
+    m = re.match(r"detached run (\S+)", str(row.get("source") or ""))
+    return m.group(1) if m else None
+
+
+def read_run_spend(root, mod):
+    """-> the spend rows the Dispatch step wrote for ended runs (RUN_SPEND, one JSON object a line; a bad line skipped)."""
+    out = []
+    for line in (read_text(root, mod, RUN_SPEND) or "").splitlines():
+        try:
+            x = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(x, dict):
+            out.append(x)
+    return out
+
+
+def spend_rows(root, mod, rec):
+    """-> the record's spend entries plus the Dispatch step's run rows for units the record does not already hold."""
+    rows = list((rec or {}).get("spend") or [])
+    have = {_unit_of(x) for x in rows} - {None}
+    for x in read_run_spend(root, mod):
+        u = _unit_of(x)
+        if u and u not in have:
+            have.add(u)
+            rows.append(x)
+    return rows
+
+
+def record_run_spend(root, mod, runs, stage_of):
+    """RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: write one spend row per ENDED run on this mod that neither the record nor
+    RUN_SPEND holds yet (the blind and in-game stages had none: one blind reconcile measured 3,013,781 tokens and was
+    never recorded). runs: maturation_now run views; stage_of(run) -> its stage words, [] to skip. RUN_SPEND has one
+    writer (the Dispatch step), so landing it never overwrites a steward's record. -> the rows written."""
+    rec = load(root, mod)
+    if rec is None:
+        return []
+    have = {_unit_of(x) for x in spend_rows(root, mod, rec)} - {None}
+    new = []
+    for r in runs or []:
+        u = r.get("unit")
+        if not u or u in have or r.get("live") or not isinstance(r.get("end"), (int, float)):
+            continue
+        stages = stage_of(r)
+        if not stages:
+            continue
+        have.add(u)
+        new.append(dict(_spend_row(r, stages), at=iso(r["end"])))
+    if new:
+        text = read_text(root, mod, RUN_SPEND) or ""
+        if text and not text.endswith("\n"):
+            text += "\n"
+        write_text(root, mod, RUN_SPEND, text + "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in new))
+    return new
+
+
 def spend_by_stage(rec):
     """-> {stage: {tokens, usd, wall_s, entries, estimates, unmeasured}}. A run that worked in several stages is
     counted once, under the joined key ("designer+preflight"), never split by a guess. usd is UNMEASURED when no
@@ -692,7 +761,8 @@ def next_step(root, mod):
     return {"mod": mod, "version": rec.get("version"), "stage": cur, "stage_label": label(cur),
             "since": rec.get("since"), "to": to, "passed": [p["clause"] for p in res["verdict"]["passed"]],
             "refusals": [{k: r[k] for k in ("clause", "observed", "would_pass", "smallest_fix")} for r in prog + hand],
-            "hand_steps": res["hand_steps"], "cycles": rec.get("cycles"), "spend": spend_by_stage(rec),
+            "hand_steps": res["hand_steps"], "cycles": rec.get("cycles"),
+            "spend": spend_by_stage({"spend": spend_rows(root, mod, rec)}),
             "launch": ("maturation.py launch %s --budget-usd <cap> --item <ID> (or the Dispatch step, "
                        "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else
             ("maturation.py launch %s --budget-usd <cap> --item <ID> (blind cycle %d; or the Dispatch step, "
@@ -2117,7 +2187,7 @@ def main(argv=None):
         print("%s %s: %s since %s; blind cycles %s; arrivals at the pre-human check %s; moves %d"
               % (o.mod, rec["version"], label(rec["stage"]), rec["since"], rec.get("cycles"),
                  rec.get("pre_human_arrivals"), len(rec.get("moves") or [])))
-        for st, t in spend_by_stage(rec).items():
+        for st, t in spend_by_stage({"spend": spend_rows(root, o.mod, rec)}).items():
             print("  spend %s: %s tokens, USD %s, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
                   % (" + ".join(label(x) for x in st.split("+")), t["tokens"], t["usd"] if t["usd"] == UNM else
                      "%.2f" % t["usd"], round(t["wall_s"]), t["entries"], t["estimates"], t["unmeasured"]))
