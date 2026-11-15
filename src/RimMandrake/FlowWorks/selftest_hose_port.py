@@ -365,8 +365,11 @@ def main():
     hits = []
     for p in glob.glob(os.path.join(GSS, "Source", "**", "*.cs"), recursive=True):
         # RM_FallenWireShock: the soft ignition lookup; LegacyName(+Checks): the MessyConduit -> GSS rename table, whose
-        # FireHosesMod handle still renames the oldest hose settings file so FlowWorks can import it (data, not a dependency)
-        if "/bin/" in p or "/obj/" in p or p.endswith(("RM_FallenWireShock.cs", "LegacyName.cs", "LegacyNameChecks.cs")):
+        # FireHosesMod handle still renames the oldest hose settings file so FlowWorks can import it (data, not a dependency);
+        # CordUnderLiquid: the soft by-name lookup of FlowWorks' floor reader (RM_SubmergeDraw.FloorSeen), absent = no fade;
+        # ShockRuleChecks: the shock rule's own cases, which name a dropped FlowWorks deck cord in their messages only
+        if "/bin/" in p or "/obj/" in p or p.endswith(("RM_FallenWireShock.cs", "LegacyName.cs", "LegacyNameChecks.cs",
+                                                      "CordUnderLiquid.cs", "ShockRuleChecks.cs")):
             continue
         for ln in code_lines(open(p, encoding="utf-8").read()):
             if "FlowWorks" in ln or re.search(r"\bHose(Math|Relay|Styles|Settings|Probe|Look)\b|CompHoseReel|RM_MapComponent_Hoses", ln):
