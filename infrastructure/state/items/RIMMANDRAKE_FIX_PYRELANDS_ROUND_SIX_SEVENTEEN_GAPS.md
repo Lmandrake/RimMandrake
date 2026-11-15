@@ -39,6 +39,14 @@ Do, in this order, as ONE item (one re-pin; a second re-pin would owe a second l
 - A dry maturation tick (`maturation_dispatch.py tick --no-page` in a fresh clone) shows the Pyrelands row owing the
   chain steward, not paused.
 
+## Watch out
+- The exam on file (`exam.json`, taken at `292b94bca8`, 05:37 PST) fails the exam gate tightened at `677d7dfdb4`
+  (07:53 PST): no scenario marked `"by": "challenger"`, control `missed_ids` unset, no `exam_control/copy.json`
+  (`designer_stage.py` exam_errors, lines ~1063 and ~1185). `coverage_judge.py` status/run skips on a failing exam
+  (coverage_judge.py:753-755) before it would judge. So the chain's retake must meet `roles/designer_exam.md` in full
+  (`designer_stage.py exam-control <dir> --leaf <id>`, the control Reader, Challenger-marked scenarios), or the one
+  look never runs. This item does not take the exam; it only must not leave it worse.
+
 ## limits
 - The one-look limit is enforced by `coverage_judge.py` stop_reason (only rounds after the last release count): after the
   chain's single release, a not_covered stops judging and maturation pauses on the coverage stop. No second release

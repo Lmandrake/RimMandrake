@@ -316,6 +316,9 @@ so the Conductor takes it. These are Conductor decisions, not his.
   (`maturation_autonomy.py` chain_owed): it retakes the Cold Reader exam, runs `coverage_judge.py release` once and the
   judge once. A seventh not_covered stops judging again (`coverage_judge.py` stop_reason counts only rounds after the last
   release) and pauses Pyrelands for him.
+- The exam on file predates the exam gate of `677d7dfdb4` and fails it (no Challenger scenario, no control copy, control
+  `missed_ids` unset), so the chain's retake must follow `roles/designer_exam.md` in full; the judge skips while the exam
+  fails (`coverage_judge.py` 753-755).
 - Not released now, on purpose: Pyrelands sits at Offline build with its exit tests green, so a release before the fixes
   would let the maturation steward advance it to Blind challenge with the 17 gaps open. Until the re-pin, judging stays
   stopped and maturation stays paused on the coverage stop.
