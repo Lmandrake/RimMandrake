@@ -1,0 +1,6 @@
+## spec
+Found by RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO (census of the 21 INVALID SteveDesktop jobs of 2026-11-14). `infrastructure/stevedesktop/rw_game.sh up` runs Start-Process, sleeps a fixed 5 s, checks for the pid once, and fails `FAILED: no RimWorldWin64 process 5 s after Start-Process`. Twice on 11-14 (J20261114T070338Z-2112d5 07:06Z, J20261114T180722Z-f71815 18:14Z), each the worker's stale-load restart relaunching 7 s after `down` had reported `stopped (graceful)`; both jobs ended INVALID/LOAD. Unmeasured why the process was not visible at 5 s (a slow start, or a Steam relaunch via SteamAPI_RestartAppIfNecessary are guesses).
+
+Fix: poll for the process (e.g. every 2 s up to 60 s) instead of one look at 5 s; if it never appears, say how long it waited. Keep the rest of `up --wait` as is.
+
+Acceptance test: `python3 src/RimMandrake/Utils/testq/invalid_census.py --since <the fix's landing time> --forbid "after Start-Process"` exits 0 over at least 3 days of lane traffic (exit 2 means the window held no job, not a pass). Watched failing on the base: `--since 2026-11-14T00:00:00Z --forbid "5 s after Start-Process"` exits 1 (2026-11-14 16:5x PST). An offline check of the polling loop with a stubbed pid_of is welcome but not the oracle.
