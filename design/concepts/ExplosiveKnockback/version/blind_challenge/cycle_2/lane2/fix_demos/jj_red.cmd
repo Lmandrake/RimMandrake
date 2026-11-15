@@ -1,0 +1,1 @@
+git archive ecd0b23322 src/RimMandrake/ExplosiveKnockback/Source | tar -x -C /mnt/d/ClaudeWork/rimmandrake/scratch/ek_c2_fixdemo/parent_ecd0b23322 && python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py --source /mnt/d/ClaudeWork/rimmandrake/scratch/ek_c2_fixdemo/parent_ecd0b23322/src/RimMandrake/ExplosiveKnockback/Source

@@ -1,0 +1,20 @@
+FAIL ThrowContainer does not plan with ContainerThrowCells
+FAIL the dead slide kernel (ContainerShove / KbShove) is still in Source/
+FAIL a container that does not fly is not drawn jolting (no StartJolt on the jolt path)
+FAIL MapComponentUpdate does not draw the jolt through JoltOffset
+FAIL StartJolt is not bounded by MaxJolts
+FAIL JoltTicks missing or not 1..120
+FAIL JoltAmplitude missing or not in (0, 0.5] cells
+FAIL MaxJolts missing or not 1..256
+FAIL RM_KnockbackMath.JoltOffset is missing
+FAIL flying goods off does not skip goods with reason flying_off
+FAIL the rim: a good whose kernel throw is 0 is not skipped too_weak in Execute
+FAIL the rim: ItemWillBeThrown does not require a kernel throw of a cell
+FAIL planted break NOT CAUGHT: goods thrown by the plain kernel
+FAIL planted break NOT CAUGHT: the jolt not drawn
+FAIL planted break NOT CAUGHT: jolts unbounded
+FAIL planted break NOT CAUGHT: container planned without the kernel
+FAIL planted break NOT CAUGHT: flying off falls through
+FAIL planted break NOT CAUGHT: rim good flies on wild alone
+explosive knockback journal and jolt: FAIL (12 faults, 2/8 planted breaks caught)
+rc=1

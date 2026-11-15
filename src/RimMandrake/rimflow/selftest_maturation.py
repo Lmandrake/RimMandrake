@@ -567,6 +567,11 @@ def blind_main():
             (dict(lane1_fail=True, lane1_after={"L1_c": "PASS", "L1_d": "FAIL"}),
              "a new FAIL in the after-fix rerun", "still fails L1_d"),
             (dict(record_decider="T_CONVERT"), "a record decider with no command", "record with no command"),
+            (dict(fix_runs=dict(red={"cmd": "lint planted copy", "rc": 0}, green={"cmd": "lint planted copy", "rc": 1})),
+             "a fix row in the failing direction (red rc 0, green rc 1)", "inverted"),
+            (dict(fix_runs=dict(red={"command": "t.py --source <parent Source>", "rc": 1},
+                                green={"command": "t.py --source <parent Source>", "rc": 0})),
+             "a fix row whose command holds a placeholder", "<parent Source>"),
         )
         for kw, what, word in broken:
             write_cycle(root, "FlowWorks", 1, **kw)
@@ -595,6 +600,8 @@ def blind_main():
         ok("FORMAT_NOTES.md" in text and "names this mod's cycle-1 findings" in text,
            "Explosive Knockback's own FORMAT_NOTES is sealed until lane 1")
         ok("T_RESTORE" in text, "the brief lists every decider of the offline bars (T_RESTORE included)")
+        ok("rc 0 means the fix holds" in text and "rc 0 when caught" in text,
+           "the brief says a fix's command is a test whose rc 0 means the fix holds, a planted-fault catch included")
 
         # ---- offline build is unchanged ------------------------------------------------------------------------------
         data = fixture("FlowWorks", "version/stage_record.json")

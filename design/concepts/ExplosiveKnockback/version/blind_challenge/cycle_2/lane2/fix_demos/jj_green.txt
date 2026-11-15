@@ -1,0 +1,2 @@
+explosive knockback journal and jolt: PASS (0 faults, 8/8 planted breaks caught)
+rc=0

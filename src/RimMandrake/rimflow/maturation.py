@@ -892,6 +892,21 @@ def _rcs(v):
     return v if isinstance(v, list) else [v] if v is not None else []
 
 
+# a fixes.jsonl command naming a stand-in for a path (`<parent Source>`, `<copy with Flame 0.7>`) cannot be rerun
+PLACEHOLDER = re.compile(r"<[A-Za-z][\w .,/-]*>")
+
+
+def _cmds(fx):
+    """-> every command string of a fixes.jsonl row's red and green runs (`cmd`, or the older `command`)."""
+    out = []
+    for side in ("red", "green"):
+        v = fx.get(side)
+        for run in v if isinstance(v, list) else [v]:
+            if isinstance(run, dict):
+                out += [str(run[k]) for k in ("cmd", "command") if run.get(k)]
+    return out
+
+
 def exit_block(summary):
     """-> ({key: value} for the keys found in the SUMMARY.md Exit section, or None when it has no Exit heading)."""
     lines = (summary or "").split("\n")
@@ -988,8 +1003,18 @@ def read_exit(root, mod, n, tt=None):
             fx = fixes.get(x.get("id"))
             red, green = _rcs((fx or {}).get("red")), _rcs((fx or {}).get("green"))
             if not fx or not any(isinstance(c, int) and c != 0 for c in red) or not green or any(c != 0 for c in green):
-                why.append("FIXED Problem %s has no fixes.jsonl row shown red (an rc non-zero) then green (rc 0)"
-                           % x.get("id"))
+                inverted = bool(red) and bool(green) and all(c == 0 for c in red) and all(
+                    isinstance(c, int) and c != 0 for c in green)
+                why.append("FIXED Problem %s has no fixes.jsonl row shown red (an rc non-zero) then green (rc 0)%s"
+                           % (x.get("id"), "; its row is inverted (red rc 0, green rc non-zero: a check whose rc 0 is "
+                              "the failure): rerun it on the parent and the fix as a test whose rc 0 means the fix "
+                              "holds (for a test that must catch a planted fault: the catching run, rc 0 when caught)"
+                              if inverted else ""))
+            else:
+                held = sorted({m for c in _cmds(fx) for m in PLACEHOLDER.findall(c)})
+                if held:
+                    why.append("FIXED Problem %s: its fixes.jsonl command holds the placeholder %s, not a rerunnable "
+                               "record: name the path and run it at both shas" % (x.get("id"), ", ".join(held)))
     l1 = _jsonl(os.path.join(d, "lane1", "lane1_rows.jsonl"))
     if l1 is None:
         why.append("lane1/lane1_rows.jsonl is missing")
@@ -1355,7 +1380,9 @@ def blind_brief_text(root, mod, cap_usd=None):
           "You **may** fix mod code to fix a Problem, red first: the test fails on the parent sha and passes on the fix "
           "sha; record both in `lane2/fixes.jsonl` (`fault`, `red` {`on`, `cmd`, `rc`, `line`}, `green` {same}, `sha`; "
           "`red` or `green` may be a list of such runs, each with its own `rc`: red needs one rc non-zero, green every "
-          "rc zero). Run each command for real at both shas; a `cmd` holding a placeholder like `<parent>` is not a "
+          "rc zero). The command is a test whose rc 0 means the fix holds, so red is an rc non-zero: when the fix is "
+          "to a test that must now catch a planted fault, the command is the catching run (rc 0 when caught, "
+          "non-zero when missed), never a check whose rc 0 is the failure. Run each command for real at both shas; a `cmd` holding a placeholder like `<parent>` is not a "
           "rerunnable record, so name the path. Leave `lane1/lane1_rows.jsonl` as recorded, blind; after the fixes, "
           "rerun lane 1 into `%s`: a lane-1 FAIL clears only when that file has no FAIL and shows it PASS. "
           "You may add tests or extend existing ones; list every test you touch in `tests_edited.json` (write it even "
