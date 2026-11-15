@@ -1,0 +1,391 @@
+[pyre-note] colony vitals after some_row: {"colonists": 1, "offsite": 0, "damage": []}
+[pyre] 07:47:28 some_row PASS 
+[pyre-note] colony vitals after scorchfruit_produces: {"colonists": 1, "offsite": 0, "damage": []}
+[pyre] 07:47:28 scorchfruit_produces PASS 
+[pyre-note] colony vitals after some_row: {"colonists": 1, "offsite": 0, "damage": ["a died during the row"]}
+[pyre] 07:47:28 some_row UNMEASURED UNMEASURED: RESTART (damage to the test, not a verdict): a died during the row
+[pyre-note] heat guard (row start, row scorchfruit_spoils_fast): {"cleared": [["a", 0.3]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["a", 0.1335]], "failed": [], "read": true}
+[pyre-note] colony vitals after scorchfruit_spoils_fast: {"colonists": 1, "offsite": 0, "damage": []}
+[pyre] 07:47:28 scorchfruit_spoils_fast PASS 
+[pyre-note] colony vitals after scorchfruit_produces: {"colonists": 1, "offsite": 0, "damage": []}
+[pyre] 07:47:28 scorchfruit_produces PASS 
+ok    tier pyrelands exists 
+ok    tier dlc True (owner 2026-09-19) 
+ok    tier want = plan 3.1 + mandrake.rm.patches (285a403024) 
+ok    tier excludes transitions/mapdesigner/BCP 
+ok    alphabiomes is a retired donor (retired_mods.json, 2026-10-18) 
+ok    resolve_tier clean: nothing missing/banned 
+ok    resolve_tier refuses the retired alphabiomes if a dep pulls it back 
+ok    resolve_tier carries all 5 DLCs 
+ok    resolve_tier refuses a forbidden mod pulled in by closure 
+ok    modset_builder --tier pyrelands (plan) refuses a banned closure 
+ok    PLANTS == validation.PLANT_MANIFEST 
+ok    ANIMALS == validation.ANIMAL_MANIFEST (16) 
+ok    site isolation == validation ISOLATION_OFF 
+ok    SETTINGS type == validation SETTINGS 
+ok    burn_line arm constants == PyrelandsTuning (quiet/watch) 
+ok    opening_front old-save window == PyrelandsTuning.OpeningFrontWindowTicks 
+ok    burn_line chain is registered and skipped in the main split 
+ok    northstar_plan main split skips burn_line 
+ok    DEFAULTS covers every static settings field 
+ok    DEFAULTS values == C# initialisers 
+ok    biomeGenerationEnabled ships off 
+ok    biomeGenerationEnabled scribe default is off 
+ok    biomeGenerationEnabled label says unsupported 
+ok    gate A clean: every row PASS 
+ok    gate A clean: verdict ok 
+ok    gate A records a def fingerprint 
+ok    gate A records storyteller for gate C 
+ok    gate A other_seat          -> 3.8.1 FAIL, run refused 
+ok    gate A other_seat          -> no collateral rows 
+ok    gate A deploy_after_launch -> 3.8.2 FAIL, run refused 
+ok    gate A deploy_after_launch -> no collateral rows 
+ok    gate A extra_mod           -> 3.8.3 FAIL, run refused 
+ok    gate A extra_mod           -> no collateral rows 
+ok    gate A no_odyssey          -> 3.8.3 FAIL, run refused 
+ok    gate A no_odyssey          -> no collateral rows 
+ok    gate A reorder             -> 3.8.3 FAIL, run refused 
+ok    gate A reorder             -> no collateral rows 
+ok    gate A deploy_drift        -> 3.2.1 FAIL, run refused 
+ok    gate A deploy_drift        -> no collateral rows 
+ok    gate A stamp_drift         -> 3.8.4 FAIL, run refused 
+ok    gate A stamp_drift         -> no collateral rows 
+ok    gate A src_drift           -> 3.8.4 FAIL, run refused 
+ok    gate A src_drift           -> no collateral rows 
+ok    gate A dll_twice           -> 3.2.3 FAIL, run refused 
+ok    gate A dll_twice           -> no collateral rows 
+ok    gate A dll_drift           -> 3.2.3 FAIL, run refused 
+ok    gate A dll_drift           -> no collateral rows 
+ok    gate A defs_missing        -> 3.8.5 FAIL, run refused 
+ok    gate A defs_missing        -> no collateral rows 
+ok    gate A defs_fail           -> 3.8.5 UNMEASURED, run refused 
+ok    gate A defs_fail           -> no collateral rows 
+ok    gate A setting_off         -> 3.3 FAIL, run refused 
+ok    gate A setting_off         -> no collateral rows 
+ok    gate A biome_off           -> 3.3 FAIL, run refused 
+ok    gate A biome_off           -> no collateral rows 
+ok    gate A log_nre             -> 3.8.7 FAIL, run refused 
+ok    gate A log_nre             -> no collateral rows 
+ok    gate A log_xref            -> 3.8.7 FAIL, run refused 
+ok    gate A log_xref            -> no collateral rows 
+ok    gate A log_burn5           -> 3.8.7 FAIL, run refused 
+ok    gate A log_burn5           -> no collateral rows 
+ok    gate A load_high           -> 3.8.12 FAIL, run refused 
+ok    gate A load_high           -> no collateral rows 
+ok    gate A load_unknown        -> 3.8.12 UNMEASURED, run refused 
+ok    gate A load_unknown        -> no collateral rows 
+ok    gate A modal               -> 3.8.dialogs FAIL, run refused 
+ok    gate A modal               -> no collateral rows 
+ok    benign log window is closed, not refused 
+ok    gate A reports ALL failures together (GPT #20) 
+ok    missing bridge tool -> UNMEASURED, never PASS 
+ok    gate B clean: every row PASS 
+ok    gate B sampled >= 20 unroofed cells 
+ok    gate B never samples a roofed cell 
+ok    gate B cell sampler honours the burning-cell avoid set 
+ok    gate B wrong_biome  -> 3.8.8 FAIL, run refused 
+ok    gate B mutators     -> 3.8.8 FAIL, run refused 
+ok    gate B high_lat     -> 3.8.8 FAIL, run refused 
+ok    gate B raw_temp     -> 3.8.8 FAIL, run refused 
+ok    gate B hot_spot     -> 3.8.8 FAIL, run refused 
+ok    gate B fog          -> 3.8.8 FAIL, run refused 
+ok    gate B rain         -> 3.8.9 FAIL, run refused 
+ok    gate B running      -> 3.8.9 FAIL, run refused 
+ok    gate B loud         -> 3.8.10 FAIL, run refused 
+ok    gate B queue        -> 3.8.10 FAIL, run refused 
+ok    gate B few          -> 3.8.11 FAIL, run refused 
+ok    gate B downed       -> 3.8.11 FAIL, run refused 
+ok    gate B modal        -> 3.8.dialogs-B FAIL, run refused 
+ok    gate C settings files restored byte-exact 
+ok    gate C in-memory toggle drift is set back 
+ok    gate C storyteller restored 
+ok    gate C releases the bridge under WSL as this seat, then reads it free 
+ok    gate C without --restore-tier is UNMEASURED (refuses) 
+ok    neighbour csv drops -1 padding 
+ok    site candidates exist 
+ok    candidate centre |lat| <= 25 
+ok    candidate >= 10 steps from colony 
+ok    candidate patch: no water/river/road 
+ok    candidate patch is 2 rings (19 interior) 
+ok    candidate order is deterministic (|lat|, id) 
+ok    midsummer: forward in time 
+ok    midsummer: lands in a Summer quadrum 
+ok    midsummer: local noon at lon 45 (tz +3h) 
+ok    build_site runs end to end on the fake 
+ok    fresh world: went to menu then quicktest 
+ok    seedString recorded, never chosen 
+ok    patch re-tiled to RM_Pyrelands at 50 
+ok    only the patch was re-tiled (19 tiles) 
+ok    temperature written before anything reads the site tile 
+ok    all 7 fire/migration toggles OFF before mapgen 
+ok    mutators cleared before mapgen 
+ok    census ran at the gen tick (before time moved) 
+ok    toggles restored to shipped defaults 
+ok    quicktest colony retired: map 1 gone, every colonist on the site 
+ok    retired before the food top-up 
+ok    fixture saved under NS_Pyrelands_site_1_<fp12> 
+ok    existing save untouched 
+ok    Saves backed up before saving 
+ok    reloaded via load_game, current map is the site 
+ok    no load_game_ready used as a load 
+ok    never unfogAll 
+ok    mapgen failed step -> SiteError 
+ok    toggles restored even when mapgen fails (finally) 
+ok    save touching another slot -> SiteError 
+ok    existing fixture name is never overwritten 
+ok    quicktest timeout: polled, never resent 
+ok    retire: offsite_ghost refuses the fixture 
+ok    retire: abandon_fails refuses the fixture 
+ok    fake models the hop: unnamed + crossing NNN200 -> colony map current 
+ok    reload plain: lands on the site after the settle ticks 
+ok    reload plain: name_colony runs before any tick 
+ok    reload plain: settle runs 1500 ticks, queue cleared before AND after 
+ok    reload ('load_on_colony',): lands on the site after the settle ticks 
+ok    reload ('load_on_colony',): name_colony runs before any tick 
+ok    reload ('load_on_colony',): settle runs 1500 ticks, queue cleared before AND after 
+ok    name_colony that names no site settlement -> SiteError (never ticks unnamed) 
+ok    build_site names the colony before saving the fixture 
+ok    the saved fixture is named (a reload raises no dialog) 
+ok    plan exposes preflight(s) for cli.py's site hook 
+ok    plan preflight: clean site -> no refusal 
+ok    plan preflight: hot_spot -> refusal naming 3.8.8 
+ok    plan preflight: queue -> refusal naming 3.8.10 
+ok    plan preflight: modal -> refusal naming 3.8.dialogs-B 
+ok    Pyrelands GenStepDefs found (the instrument can see) 
+ok    validation.py thing reads were found (the instrument can see) 
+ok    no thing read names a GenStepDef 
+ok    short _wait re-asserts the site after the ticks 
+ok    name_colony called exactly once per run 
+ok    biome_probe_animals reads the resolved roster 
+ok    a capped biome_probe list is UNREADABLE, never a short roster 
+ok    a refused biome_probe is unreadable 
+ok    a missing biome row is unreadable 
+ok    a refused ignition quotes this rect's planting 
+ok    another rect's planting is never quoted as this one's 
+ok    probe plant is a roster plant, never Plant_Grass 
+ok    probe plant ignores keys outside the allowlist 
+ok    probe plant with no live keys is None 
+ok    probe host is another standing roster def 
+ok    regrow burn outlasts EmberGrass (~4500) and stops before the 7500-tick floor burn 
+ok    probe host is None when only the probe's own def stands 
+ok    ignition_record keeps the fire reply per attempt 
+ok    a refusal quotes every earlier attempt in full 
+ok    burn that left all 256 originals standing is not cleared and says 256 
+ok    burn that left 10 of 256 is cleared 
+ok    burn_cleared with no pre-burn plants is not cleared 
+ok    regrow row stops UNMEASURED before waiting when the burn did not clear 
+ok    spoil sampling continues while the stack is present 
+ok    spoil sampling stops once the stack vanished before day 3 
+ok    a stack gone at day 3+ is the rot verdict's, not an early stop 
+ok    spoil room and both furnace rooms are built without a door 
+ok    the animal manifest is no longer read through get_defs wildAnimals 
+ok    fake world has rock cells the sampler meets (the instrument can see) 
+ok    temperature is never read on a solid-rock cell 
+ok    gate B still PASSes with rock in the sample 
+ok    FOOD_RUN_TICKS covers the longest declared chain 
+ok    food covers 6 colonists x 2 packs x (8 days + 1 spare) 
+ok    food_ops makes stacks of 10,10,5 along +x 
+ok    food cache is outside the centre pad's clear_area and the burrow pad 
+ok    site build stocks the food cache (read back) and tops needs 
+ok    colonists' Food need set to 1.0 
+ok    clock jumps BEFORE mapgen and never after the colonists exist 
+ok    the clock set passes timeException=true (safe-advance gate) 
+ok    tickAtGen is the mid-Summer noon tick 
+ok    a cache that reads back short is a SiteError 
+ok    intact colony -> no damage 
+ok    death -> damage 
+ok    newly downed -> damage 
+ok    starving -> damage 
+ok    already-dead colonist is not new damage 
+ok    unreadable food is not damage 
+ok    row start tops a low Food need to 1.0 
+ok    intact colony: the row keeps its PASS 
+ok    a needs-measuring row is never topped up 
+ok    a death inside the row -> UNMEASURED RESTART, never FAIL 
+ok    a death ends the chain (reload) and is listed 
+ok    the ruins guard on ticksGame is gone 
+ok    untagged name is unchanged 
+ok    tagged name appends the tag 
+ok    control-temp tag order 
+ok    bad tag '' refused 
+ok    bad tag 'a b' refused 
+ok    bad tag 'x/y' refused 
+ok    bad tag '..' refused 
+ok    bad tag 'anima_0' refused 
+ok    rate: 2000 ticks in 10 s = 200 tps 
+ok    rate: a clock that did not move is None, never 0 
+ok    rate: an unreadable clock is None 
+ok    northstar_site --plan prints the recipe offline 
+ok    fresh_quicktest_world refuses with a foreign client mid-run 
+ok    reload_fixture refuses with a foreign client mid-run 
+ok    no go_to_main_menu was sent 
+ok    is_water_family(WaterShallow) is True 
+ok    is_water_family(WaterMovingChestDeep) is True 
+ok    is_water_family(Mud) is True 
+ok    is_water_family(Riverbank) is True 
+ok    is_water_family(Marsh) is True 
+ok    is_water_family(RM_FE_Ash_Deep) is False 
+ok    is_water_family(RM_FE_Ground_Soil) is False 
+ok    is_water_family(None) is False 
+ok    the r3 pond is within the radius of the old fixed far cell (the measured cause) 
+ok    the anchor strip on r3 is rejected 
+ok    a dry strip is found inside the pad 
+ok    the chosen strip's halo holds no water 
+ok    the chosen strip lies inside the cleared pad 
+ok    a dry site keeps the anchor strip 
+ok    an all-wet pad yields no origin (the row is UNMEASURED, never a pass) 
+ok    the ash row places its strip with pick_ash_strip before laying it 
+ok    parse_kv reads the probe shape 
+ok    xz_of reads x,z and refuses 'invalid' 
+ok    a herd that walked most of the way to A passes 
+ok    a herd that walked to the fresh burn B fails 
+ok    a herd that barely moved fails 
+ok    an unread centroid fails 
+ok    the herd starts far beyond the giver's settle+radius (16) from both burns 
+ok    both herd pads are fire pads (excluded from the fresh-site burn census) 
+ok    HERD_LAG_TICKS is RM_Ullai's lagDays 
+ok    HERD_HISTORY_INTERVAL is the burn line's 
+ok    the burn line exposes the history probe and the backdate drive 
+ok    the giver and its probe share one decision (JobFor -> RM_BurnKernel.FollowBurnDecision) 
+ok    the herd row is a drive now, not the UNMEASURED stub 
+ok    the herd row steps one short window, never two days 
+ok    the ullai chain tears down its fires and settings 
+ok    the scorch-fruit roll set is per map, never a static HashSet (a reload re-issues fire ids) 
+ok    herd_pace is the median walker's cells per tick (19 cells / 1000 ticks) 
+ok    herd_pace refuses a herd that never moved (None, never a guessed pace) 
+ok    herd_pace refuses unread positions 
+ok    herd_pace ignores a pawn read at only one end 
+ok    the measured sand pace gives a window that covers min_close with the margin 
+ok    the old 2,500-tick step was too short at the measured pace 
+ok    a faster pace gives a shorter window 
+ok    an unread or zero pace gives no window 
+ok    a pace too slow for the cap gives no window (never a clipped one) 
+ok    the window is never two days 
+ok    a herd walking to A at the measured pace passes in the paced window (7 of 10 walking) 
+ok    the same herd failed the old 2,500-tick window (the visit-1 misread, reproduced) 
+ok    a herd whose giver goes to B fails in the paced window 
+ok    a herd that stood still through the paced window fails 
+ok    the drive measures the pace on the site before it sizes the window 
+ok    the motion wait is the paced window, not a constant 
+ok    no pace or no window is a verdict, never a fallback step 
+ok    guarded row: 30000-tick waits run as 6000-tick steps 
+ok    guarded row: Heatstroke cleared at row start and after every chunk 
+ok    guarded row: only Heatstroke is removed 
+ok    guarded row: no colonist carries moderate Heatstroke between passes 
+ok    guard never touches temperature 
+ok    row marker cleared after the row 
+ok    guard passes are recorded with the severity taken off 
+ok    exempt row (measures Food): one unsplit wait, no guard 
+ok    can-fail: unguarded, the same wait downs a colonist (>= 0.62) 
+ok    furnacebeast_warmth is exempt (it reads felt temperature) 
+ok    every exempt row is a real component 
+ok    outside any row the wait is not split 
+ok    sleep row constants == PyrelandsTuning (grace / mtb / check) 
+ok    room row ceiling == PyrelandsTuning.FurnaceRoomAboveOutdoorC 
+ok    the sleep FAIL span is >= 5 MTB (a working roll fails a run < 1%) and fits the wait 
+ok    room +25 C over the control passes 
+ok    room +5 C over the control fails (not clearly hotter) 
+ok    room +60 C over the control fails (ceiling did not hold) 
+ok    an unread room fails 
+ok    lit grass with Fire seen, control slept 3 MTB clean -> PASS 
+ok    the control one poll short -> no verdict yet 
+ok    the sleep roll lit but no Fire by the next poll -> FAIL 
+ok    lit on the last poll, Fire not yet read -> no verdict 
+ok    fire beside the control asleep on bare ground -> FAIL 
+ok    the sleep roll's record on the control -> FAIL 
+ok    fire beside a control lying on a plant is not graded 
+ok    the wake smoulder beside a woken control is not this row's fire 
+ok    5 MTB rolling on grass with no light -> FAIL 
+ok    one poll short of the FAIL span -> no verdict 
+ok    a beast asleep off the grass is not rolling (no FAIL) 
+ok    PAD_SLEEP is a fire pad and overlaps no other pad 
+ok    furnace_sleep is a registered chain 
+ok    furnace_sleep tears down its fires and weather lock 
+ok    furnace_sleep grades with sleep_ignition_verdict, reads ProbeSleep, controls on bare soil 
+ok    furnace_room grades with room_heat_verdict 
+ok    ProbeSleep reports the sleep roll's own record (litAfterTicks) 
+ok    the heat pusher's def cap is lifted (the ceiling lives in the postfix) 
+ok    foreign map 1, site loaded as map 4 -> map 4 current and recorded 
+ok    no Pyrelands map loaded -> 'UNMEASURED SITE' naming the loaded maps 
+ok    already on the site -> no set_current_map 
+ok    offline acceptance read 41 shipped xml files (instrument sees) 
+ok    leaf biome_text_says_engineered holds on the shipped defs 
+ok    leaf flamefang_bite_carries_venom holds on the shipped defs 
+ok    leaf paved_strip_excised holds on the shipped defs 
+ok    mutant for biome_text_says_engineered fails it and only it 
+ok    mutant for flamefang_bite_carries_venom fails it and only it 
+ok    mutant: a shipped paved strip def fails paved_strip_excised alone 
+ok    ruins: visit 1's samples with every floor charred read scorched 
+ok    ruins: the same samples with CharFloor disabled (0 charred) fail the bar 
+ok    ruins: a third of the floors charred still fails 
+ok    ruins: no cells -> None, never a pass 
+ok    ruins: water counts, a clean floor does not 
+ok    ruins: an over-count never reads above 1 
+ok    ruins: ProbeCharred parsed 
+ok    ruins: ProbeCharred called on PyrelandsAsh with the rect 
+ok    ruins: unreadable ProbeCharred {'success': True, 'result': 'error=no ColorDef RM_FE_Charred'} is UNMEASURED 
+ok    ruins: unreadable ProbeCharred {'success': True, 'result': ''} is UNMEASURED 
+ok    ruins: offline ProbeCharred is {} 
+ok    ruins chain reads charred floors and scores with ruin_scorched_share 
+ok    PyrelandsAsh.ProbeCharred exists in C# 
+ok    ProbeCharred reads the ColorDef CharFloor paints 
+ok    old-save row: fixture lit at its birth tick -> UNMEASURED 
+ok    old-save row: fixture lit on its first watch interval -> UNMEASURED 
+ok    old-save row: fixture lit at the window's last tick -> UNMEASURED 
+ok    old-save row: pre-change save lit late (after load) -> FAIL 
+ok    old-save row: save lit one tick past its window -> FAIL 
+ok    old-save row: save still owes its front -> FAIL 
+ok    old-save row: lit count with no litTick -> FAIL 
+ok    old-save row: clean old save -> PASS 
+ok    old-save row: fresh map inside the window -> UNMEASURED 
+ok    old-save row: unreadable probe -> UNMEASURED 
+ok    old-save row: probe with no mapAge -> UNMEASURED 
+ok    old-save row: a re-arm this session -> UNMEASURED HARNESS 
+ok    opening_front_old_save_inert reads its verdict from old_save_opening_verdict 
+ok    chain cinderfall carries one row per clause 
+ok    chain blackrain carries one row per clause 
+ok    clause ash_wash holds on the shipped defs 
+ok    clause fires_out holds on the shipped defs 
+ok    clause lightning holds on the shipped defs 
+ok    mutant lightning is a real edit 
+ok    mutant lightning fails its clause and only it 
+ok    mutant lightning (ash fall strikes too) is a real edit 
+ok    mutant lightning (ash fall strikes too) fails its clause and only it 
+ok    mutant ash_wash is a real edit 
+ok    mutant ash_wash fails its clause and only it 
+ok    mutant fires_out (dousing off) is a real edit 
+ok    mutant fires_out (dousing off) fails its clause and only it 
+ok    mutant fires_out (dousing 0) is a real edit 
+ok    mutant fires_out (dousing 0) fails its clause and only it 
+ok    mutant fires_out (hook keys another def) is a real edit 
+ok    mutant fires_out (hook keys another def) fails its clause and only it 
+ok    live def read: a serialised strike counts, rainRate and the dousing settings read 
+ok    live def read: unserialised eventMakers, rainRate and unread settings are unread (None), never a fail or a pass 
+ok    lightning passes on visit 1's settled windows 
+ok    lightning fails with no strike under cinderfall 
+ok    lightning fails with strikes under ash fall 
+ok    lightning fails on an unread window 
+ok    wash passes on visit 1's black-rain loss over a dry-wear clear 
+ok    wash fails with black rain no wetter than clear 
+ok    wash fails when black rain takes less than twice clear's loss 
+ok    wash fails on a bare or unread patch 
+ok    fires_out fails on visit 1's pads (both out at 2,250) 
+ok    fires_out passes when black rain is out while clear burns 
+ok    fires_out fails on an unread or short series 
+
+PASS: 0 failure(s)
