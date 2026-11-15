@@ -353,7 +353,8 @@ namespace RimMandrake.ExplosiveKnockback
             ["vanillaCratesClosed"] = Lane(new[] { "vanillaCratesClosed=False" }, "crate"),
             ["heavyGoodsMinMass"] = Lane(new[] { "heavyGoodsMinMass=100" }, "H"),
             ["heavyGoodsKnock"] = Lane(new[] { "heavyGoodsKnock=False" }, "H"),
-            ["flyingGoods"] = Lane(new[] { "flyingGoods=False" }, "G", "Gcell", "H", "gasGoods"),
+            // flyingGoods off skips goods AND corpses with flying_off (RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED): C is its own
+            ["flyingGoods"] = Lane(new[] { "flyingGoods=False" }, "G", "Gcell", "H", "gasGoods", "C"),
             ["shoveClosedContainers"] = Lane(new[] { "shoveClosedContainers=False" }, "locker", "crate"),
             ["gasChain"] = Lane(new[] { "gasChain=False" }, "gas", "gasGoods"),
             ["lightMassLimit20"] = Lane(new[] { "lightMassLimit=20" }, "C", "H"),
@@ -470,7 +471,7 @@ namespace RimMandrake.ExplosiveKnockback
                     case "vanillaCratesClosed": own = obs["crate"] == "none"; break;
                     case "heavyGoodsMinMass":
                     case "heavyGoodsKnock": own = obs["H"] == "no"; break;
-                    case "flyingGoods": own = obs["G"].StartsWith("skip:") && obs["Gcell"] == "same"; break;
+                    case "flyingGoods": own = obs["G"].StartsWith("skip:") && obs["Gcell"] == "same" && obs["C"].StartsWith("skip:flying_off"); break;
                     case "shoveClosedContainers": own = obs["locker"] == "none" && obs["lockerGoods"] == "kept"; break;
                     case "gasChain": own = obs["gas"] == "none"; break;
                     case "lightMassLimit20": own = obs["P"] == "thrown"; break;
@@ -568,7 +569,8 @@ namespace RimMandrake.ExplosiveKnockback
             Item(s, "lg", "Gun_Revolver", 1, lk.Position);
             vt.GetMethod("ClearOf")?.Invoke(null, new object[] { map });
             vt.GetMethod("SeedCloud").Invoke(null, new object[] { map, O(s, -5, -5), 1, 250 });
-            Item(s, "gg", "Steel", 10, O(s, -5, -3));
+            // inside the seeded cloud, so a burst always reaches it (two cells out it was reached on 13 of 18 lanes: visit 1)
+            Item(s, "gg", "Steel", 10, O(s, -5, -4));
             Action prev = s.restore;
             s.restore = () => { vt.GetMethod("ClearOf")?.Invoke(null, new object[] { map }); prev?.Invoke(); };
             int draws0 = VectorDraws;

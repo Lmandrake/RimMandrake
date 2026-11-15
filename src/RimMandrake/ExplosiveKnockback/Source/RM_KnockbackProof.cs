@@ -32,6 +32,7 @@ namespace RimMandrake.ExplosiveKnockback
             public readonly Dictionary<string, float> numbers = new Dictionary<string, float>();
             public Func<Scene, string> verdict;
             public Action restore;
+            public Dictionary<string, IntVec3> atBlast;     // spared_states: each thing's cell just after the blast (visit 1)
         }
 
         private static readonly Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
@@ -1911,10 +1912,50 @@ namespace RimMandrake.ExplosiveKnockback
                         Track(s, "corpse", corpseOf.Corpse);
                         Action prev = s.restore;
                         s.restore = () => { if (!big.Destroyed) big.Destroy(); prev?.Invoke(); };
-                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 60, () => Blast(s.o, 2.9f)));
+                        // Stage 6 visit 1 (2026-11-15): an undrafted carrier with no job drops its pawn within the 60 ticks before the
+                        // blast, so the carry starts in the blast's own action; each spared thing's cell is read 8 ticks after it
+                        // (atBlast), since a skipped animal wanders and a woken sleeper gets up before the 300-tick verdict
+                        var atBlast = new Dictionary<string, IntVec3>();
+                        // the carry is re-pinned every tick from +55 to +64 and read on each tick of the blast's spread (+60 to +64)
+                        s.numbers["carryingAtBlast"] = 1;
+                        for (int d = 55; d <= 64; d++)
+                        {
+                            int dd = d;
+                            RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + dd, () =>
+                            {
+                                if (carrier.carryTracker.CarriedThing != carried && carried.Spawned)
+                                {
+                                    carrier.carryTracker.TryStartCarry(carried);
+                                }
+                                if (dd >= 60 && carrier.Spawned && carrier.carryTracker.CarriedThing != carried)
+                                {
+                                    s.numbers["carryingAtBlast"] = 0;
+                                }
+                                if (dd == 60)
+                                {
+                                    Blast(s.o, 2.9f);
+                                }
+                            }));
+                        }
+                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 68, () =>
+                        {
+                            foreach (string k in new[] { "big", "pit", "pitstack", "carrier", "sleeper", "corpse" })
+                            {
+                                Thing t = s.things[k];
+                                if (t.Spawned)
+                                {
+                                    atBlast[k] = t.Position;
+                                }
+                            }
+                        }));
+                        s.atBlast = atBlast;
                     }
                     s.verdict = sc =>
                     {
+                        if (!sc.numbers.TryGetValue("carryingAtBlast", out float cab) || cab < 1f)
+                        {
+                            return "INVALID " + sc.name + " the carrier was not carrying its pawn at the blast";
+                        }
                         var want = new Dictionary<string, string> { ["big"] = "too_heavy_creature", ["pit"] = "in_pit", ["pitstack"] = "in_pit",
                             ["carrier"] = "carrying_pawn", ["sleeper"] = "in_bed", ["corpse"] = "too_heavy" };
                         var sb = new StringBuilder();
@@ -1927,7 +1968,7 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             Thing t = sc.things[kv.Key];
                             bool skip = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == kv.Value);
-                            bool stayed = t.Spawned ? t.Position == sc.starts[kv.Key] : kv.Key == "carrier";
+                            bool stayed = sc.atBlast != null && sc.atBlast.TryGetValue(kv.Key, out IntVec3 atBlast) ? atBlast == sc.starts[kv.Key] : kv.Key == "carrier";
                             ok &= skip && stayed && ForThing(sc, "launch", t).Count == 0;
                             sb.Append(kv.Key).Append(skip ? " " + kv.Value : " NO " + kv.Value).Append(stayed ? "" : " MOVED").Append("; ");
                         }
@@ -2001,7 +2042,8 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "the colonist's current job is not a haul of the stack";
                         }
-                        Pawn w = Colonist(s, "w", O(s, 4, 3), drafted: true);
+                        // one cell from the planned landing O(4,0): three cells out it cannot arrive inside a ~25-tick flight (visit 1)
+                        Pawn w = Colonist(s, "w", O(s, 4, 1), drafted: true);
                         Pawn tp = Colonist(s, "tp", O(s, -4, 4), drafted: true);
                         Map m0 = Map;
                         for (int d = 1; d <= 900; d++)
