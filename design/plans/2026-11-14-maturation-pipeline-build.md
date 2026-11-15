@@ -120,7 +120,7 @@ Launching is slice 4, only through `detached_helper.py launch ... --budget-usd <
 | designer | no | Arguing with him. The Designer's Exam and coverage judge as gates are open question 7. |
 | preflight | partly: the program can run each mod's own throwaway preflight (its path is in `preflight.json`) | A common preflight is spec build order item 3, not yet built. Running costs no tokens, so no cap is needed. |
 | offline build | **yes, and it does** [HIS, 2026-11-14 ~9 PM PST]: `maturation_dispatch.py` on `rm-maturation-dispatch.timer` launches one capped builder per mod with build work owed | "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble." The program writes the mechanical half of the brief; the Conductor's decisions, when he writes them, go in `version/steward_decisions.md`, and a blank one is a standing default, never a refusal. Guard rails in Slice 4. |
-| blind challenge | not yet | Nothing has gone through it by hand. The blind judge's inputs per part are [PROPOSAL]; its verdict format is unwritten. Open questions: what the next judge reads is decided ("All once, then changes"), but the record of "changed files and line items whose inputs changed" is not built. |
+| blind challenge | **yes, one judge per visit** (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED, 2026-11-15): `maturation_dispatch.py` launches one capped judge (opus, `blind_cap_usd`) when cycle N is owed and nothing is live, just ended or recorded on it; at most `blind_auto_cycles_per_visit` (1) automatic cycles per visit | Four mods went through it by hand (the pilot, then three from its FORMAT_NOTES). `maturation.py brief` writes the brief from the mod's own files; `next` reads the cycle record's Exit block (`offline_bars`, `problems_open`, `exit_met`) and checks it against the record's files, as evidence for the steward: the steward still confirms the exit by hand (the exit is [PROPOSAL]). Every ended cycle is a Needs Conductor line; the program never advances. |
 | in-game acceptance | no | A live game; Dispatch's game-sharing between mods is not designed; flyers never without him. |
 | pre-human check | no | Nothing reached it by hand. |
 | his walk | never | His. |
@@ -182,7 +182,7 @@ on it. Guard rails: one live builder per mod, at most 2 live on advancing mods (
 run ends the next starts only if the count of refused bars fell, otherwise, or past USD 60 measured at the stage, or on
 a failed launch, it stops on that mod with one "Needs Conductor" line and never tries the same refusals again
 (`maturation_dispatch.py clear <Mod> --why` is the Conductor's lift); a hold, a version mismatch, a hand step or any
-other stage launches nothing; every exit test passing writes "ready to advance". It never judges, rejects, sends a mod
+other stage but the blind challenge (one judge per visit, row above) launches nothing; every exit test passing writes "ready to advance". It never judges, rejects, sends a mod
 back or advances it, and never takes the bridge or a game. The Dispatcher's account pick holds it the way it holds a role
 launch. Each tick writes `<RM_DISPATCHER_STATE>/maturation/reading.json` and regenerates MATURATION_NOW, whose "Needs
 Conductor" list carries the step's lines; ops_watch's `maturation` family reads the reading, and
@@ -198,15 +198,16 @@ next start; a failed launch is not retried; the idle reading fires on a planted 
 
 ### Not planned yet (waits for a hand-run)
 
-The blind challenge (no mod has entered it), in-game acceptance with Dispatch sharing the two games, the pre-human check,
+In-game acceptance with Dispatch sharing the two games, the pre-human check,
 the pass record. Each gets a slice after one mod has gone through it by hand and its journal says what was boring.
 
 **Spec §8, decision 18 (his card, 2026-11-14):** the entry rule is built (the queue admits only a locked bar's check from a mod version past Stages 4 and 5: `src/RimMandrake/Utils/testq/pipeline_admit.py`). Still to plan, in the Stage 6 slice: a job that writes one line item's in-game verdict to the mod's record on whichever game is free, with the version-and-list check of spec §4 Stage 6. Re-running a passed version on change is planned only after one version has passed.
 
 ## 5. The open questions that most block automation, ranked
 
-1. **The blind challenge's verdict format and inputs** (spec Stages 4 and 5 "Order" and "Exit" rows are [PROPOSAL]): no
-   mod has entered it, so nothing after offline build can be tested by a program.
+1. **The blind challenge's verdict format and inputs** (spec Stages 4 and 5 "Order" and "Exit" rows are [PROPOSAL]): the
+   pilot's FORMAT_NOTES layout and the briefs' Exit block are read by `maturation.py next`, but the exit is still the
+   steward's to confirm, and whether a fault is a Problem or Polish stays a judge's call.
 2. **A common preflight that tags refusals as build work or spec faults** (spec build order item 3): until it exists the
    preflight exit needs the steward's word.
 3. **What "every bar has a check that runs" means for one table schema** ([PROPOSAL] in the Stage 3 exit row for
