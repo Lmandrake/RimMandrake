@@ -10,17 +10,19 @@ Owner questions: `D:\ClaudeWork\rimmandrake\conductor\water_models_20261112\QUES
 
 Tags: [measured] = run by a harness and readable on disk; [guess ~N%] = my estimate with rough confidence.
 
-**This is an agents' recommendation, not the owner's decision.** Owner, 2026-11-14: *"I never approved the new water engine
-from model work. I'd like to hear the pros and cons of the top contenders. No need to review the really slow ones."* Nothing
-is built into FlowWorks on it until he chooses. Pros and cons for him:
-`D:\ClaudeWork\rimmandrake\conductor\water_engine_status_20261114.md`.
+**The owner chose this engine by card on 2026-11-14** (~3:00 PM PST, ledger OWNER tsn 1794697688760431392): *"Which water
+engine should FlowWorks natural water be built on? -> Right timing, thin rivers (simplified shallow-water, local-inertial,
+with the Froude 0.544 speed cap)"*, shown its accepted costs (undying criss-cross ripples in a reservoir after a dam burst;
+rivers deliver 12% less). Told the cap does not fix the ripples, he kept it (~3:15 PM PST): *"We go as chosen in this
+version. Fixes for ripples come after live viewing them and next version."* Ripple fixes are next-version work, decided
+after his live look. Pros and cons as shown: `D:\ClaudeWork\rimmandrake\conductor\water_engine_status_20261114.md`.
 
 **Updated 2026-11-13 by the stage-2 review (`RIMMANDRAKE_HARDEN_FAST_WATER_SOLVERS_VIA_GPT_PIPES_RING`; MandrakeModels
-`results/stage2.md`, 252407e): the recommendation is refined, not changed.** The recommended engine is local-inertial **with every face
+`results/stage2.md`, 252407e): the winner is refined, not changed.** The engine is local-inertial **with every face
 discharge capped at the critical-flow (weir) value, face Froude 0.544** (`local_inertial_frcap`): plain local-inertial floods
 early, and the cap puts it on the referee's schedule at the same cost. Virtual pipes is no longer a fallback.
 
-## 1. Recommendation in six lines
+## 1. The decision in six lines
 
 1. **Engine: local-inertial shallow water with a Froude 0.544 face cap** (Bates 2010, de Almeida 2012; MandrakeModels
    `local_inertial_frcap`), on design 7's bookkeeping: whole decilitres per square, one shared transfer per edge, current read
