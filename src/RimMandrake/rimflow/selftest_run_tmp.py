@@ -231,6 +231,22 @@ def main():
         acts = []
         relentless.run_tmp_sweep(Store(), object(), time.time(), acts, "end")
         ok(acts == [], "a fake fx without the hook is untouched")
+
+        # A zombie (exited, not yet reaped) reads EACCES on /proc/<pid>/environ; it holds no dir, so it is not blindness.
+        # Before this, any zombie on the machine made prepare() refuse a relaunch (the 2026-11-14 nightly CRASH).
+        kid = os.fork()
+        if kid == 0:
+            os._exit(0)
+        try:
+            for _ in range(100):
+                if run_tmp._state("/proc/%d" % kid) == "Z":
+                    break
+                time.sleep(0.02)
+            ok(run_tmp._state("/proc/%d" % kid) == "Z", "the fixture made a zombie")
+            _used, blind = run_tmp.users(rt)
+            ok(not [b for b in blind if b.startswith("pid %d " % kid)], "a zombie is not a blind process (%s)" % blind[:2])
+        finally:
+            os.waitpid(kid, 0)
     finally:
         subprocess.run(["rm", "-rf", base])
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")

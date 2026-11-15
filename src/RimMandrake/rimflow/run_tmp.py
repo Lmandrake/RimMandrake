@@ -143,6 +143,15 @@ def _read(base: str):
         return e
 
 
+def _state(base: str) -> str | None:
+    """The process state letter from /proc/<pid>/stat (Z: a zombie, reads EACCES on environ), None when unreadable."""
+    try:
+        with open(base + "/stat", "rb") as f:
+            return f.read().rsplit(b")", 1)[1].split()[0].decode()
+    except (OSError, IndexError):
+        return None
+
+
 def users(rt: str | None = None) -> tuple[set[str], list[str]]:
     """({top-level names under the root some process of ours uses}, [processes we could not read])."""
     rt = os.path.realpath(rt or root())
@@ -170,7 +179,7 @@ def users(rt: str | None = None) -> tuple[set[str], list[str]]:
         if got is None:
             continue
         if isinstance(got, OSError):
-            if comm in NONDUMPABLE:
+            if comm in NONDUMPABLE or _state(base) in ("Z", "X"):   # a zombie has no env, cwd, fds or maps: it holds nothing
                 continue
             blind.append("pid %s (%s): %s" % (pid, comm, got.strerror))
             continue
