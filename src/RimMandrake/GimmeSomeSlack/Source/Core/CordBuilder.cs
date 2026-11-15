@@ -733,8 +733,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
                     CordLayer.ProjectOut(w, coil);
+                    // the small curl is a 0.2-cell pigtail: kept only where the bend bar reads it clean, else the spur's spare cord is not drawn
+                    // (blind cycle 1: 8 unforced bends in 400 random scenes were this curl)
+                    if (opt.Lay.FairBends && CordShapeAudit.Unforced(w, null, null, coil) > 0) coil = null;
                 }
-                if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value(), Lay = "coil" });
+                if (coil != null && coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value(), Lay = "coil" });
                 outp.Add(p);
             }
             (tangleCache, tangleNext) = (tangleNext, tangleCache);
@@ -1061,6 +1064,33 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c) ^ (w.IsBusy(c) ? 1UL << 62 : 0UL) ^ (w.IsFurniture(c) ? 1UL << 61 : 0UL);
 
         /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
+        /// <summary>The edge's conduit line: the polyline through its chain's conduit cell centres (cords_lie_slack's "off the conduit line").</summary>
+        internal static List<V2> ConduitLine(CordEdge e)
+        {
+            var o = new List<V2>();
+            foreach (VId v in e.Chain()) if (v.T == 'c' || v.T == 'w') o.Add(v.A.Centre);
+            return o.Count >= 2 ? o : null;
+        }
+
+
+        /// <summary>An end whose fitting faces one fixed way and may be left from its very tip (a junction arm, a stub's plate, a pile port): never a cut end
+        /// (its live run and limp curl are authored) or a machine's plug (the plug is placed with its own approach).</summary>
+        private static bool FittedTip(CordNode nd, BuildOptions opt) => !nd.IsMachine && opt.PileFor(nd.Cell) != PileArt.Strips
+            && (nd.Type == NodeType.Junction || nd.Type == NodeType.Tangle || nd.Type.ToString().StartsWith("Stub", StringComparison.Ordinal));
+
+        /// <summary>The cord at an end the cut-lead passes (Fair, Slacken) leave as laid: a cut end's whole live run, limp curl and writhing tail
+        /// (<see cref="CutKeep"/>: the live end's art reads 0.6 cell of it straight, and the bend bar reads a cut end's first cell as its own, LimpReach), else <see cref="FairPin"/>.</summary>
+        private static double CutPin(CordNode nd, Func<Cell, bool> isLive) => nd.Type == NodeType.Terminal && !nd.Seam ? CutKeep : FairPin(nd, isLive);
+        private const double CutKeep = 1.0;
+
+        /// <summary>The cord at an end the vary passes leave as laid: a strip socket's plug exit (its stiff length, bend or tied loop: the sitting's
+        /// last-1.2-cell hook read), else <see cref="FairPin"/>.</summary>
+        private static double VaryPin(CordNode nd, BuildOptions opt, Func<Cell, bool> isLive) =>
+            (nd.Type == NodeType.Junction || nd.Type == NodeType.Tangle) && opt.PileFor(nd.Cell) == PileArt.Strips ? StripExitKeep : FairPin(nd, isLive);
+        private const double StripExitKeep = 1.25;
+        /// <summary>A varied lead's room for its own loops over its slack budget, cells (<see cref="CordSlacken.VaryLoop"/>).</summary>
+        private const double VaryLoopAllowance = 4.5;
+
         public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
 
         private static LaidPiece LayEdge(CordWorld w, CordGraph g, CordEdge e, string key, bool parallel, BuildOptions opt,
@@ -1166,6 +1196,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a cord to a cut end keeps its old lay, as it keeps its length (ShortBow): its live run, limp curl and writhing tail are break_live_and_dead_ends_differ's art
                 bool cutEnd = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
                 if (!fell && prm.FairBends && !cutEnd) P = CordShape.Fair(w, P, FairPin(na, isLive), FairPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB));
+                else if (!fell && prm.FairBends && L >= CutFairMinPath)
+                {
+                    // a cut lead is faired too (blind cycle 1: its mid-cord bends were never eased), its cut end's run kept (CutPin) and its loops left whole
+                    // (it keeps its length), unless the fairing folds it where its kept run meets the faired cord (the shape check read 24 folds in 115 strands there)
+                    List<V2> faired = CordShape.Fair(w, P, CutPin(na, isLive), CutPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB), cutLoops: false);
+                    if (CordShape.Kinks(faired).Count <= CordShape.Kinks(P).Count) P = faired;
+                }
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
@@ -1184,9 +1221,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (jointFit) P = joint;
                 // a short cord that still bends sharp where nothing makes it (never_taut_straight_cord) is laid again whole, fitting to fitting; a cord that passes keeps its lay
                 string lay = fell ? "fell" : jointFit ? "joint" : "routed";
-                if (!jointFit && !fell && prm.FairBends && !cutEnd && n == 1 && L <= HopMaxPath && (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0 || CordShapeAudit.FittingsForce(P)))
+                // a bundle's strands too (blind cycle 1: two boxes a cell apart S-hooked every strand of their bundle), each from its own draw so they part
+                if (!jointFit && !fell && prm.FairBends && !cutEnd && (n == 1 || !DeviceLead(na, nb)) && L <= HopMaxPath && (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0 || (n == 1 && CordShapeAudit.FittingsForce(P))))
                 {
-                    List<V2> hop = HopWhole(w, g, e, C, opt, piece, key, isLive);
+                    List<V2> hop = HopWhole(w, g, e, C, opt, piece, i == 0 ? key : key + "#" + i, isLive);
                     if (hop != null) { P = hop; lay = "hop"; }
                 }
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
@@ -1215,15 +1253,38 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 bool cut = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
                 Func<V2, bool> off = null;
+                List<V2> line = null;
                 foreach (CordStrand s in piece.Strands)
                 {
                     if (s.FellBack || s.Lifted || s.OverFace || s.SwayW != null || s.Pts == null || s.Pts.Count < 3) continue;
                     off = off ?? SlackClear(g, e);
-                    List<V2> eased = CordSlacken.Unbend(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB);
+                    List<V2> eased = CordSlacken.Unbend(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB,
+                                                        FittedTip(na, opt), FittedTip(nb, opt));
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
-                    if (cut || s.WhipA > 0 || s.WhipB > 0) continue;
-                    List<V2> loose = CordSlacken.Slacken(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, slackSide);
+                    // a cut end's lead is slack too (cords_lie_slack names no exception; blind cycle 1 found 6 of 679 under 1.4, every one a cut lead): its
+                    // limp curl or live run is pinned (FairPin) and its writhing tail kept whole (WhipA/WhipB), the lobe lies between
+                    line = line ?? ConduitLine(e);
+                    List<V2> loose = CordSlacken.Slacken(w, s.Pts, CutPin(na, isLive), CutPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, slackSide, s.WhipA, s.WhipB, line,
+                                                         jitter: CordRng.Of(opt.Seed, "slackshape", key, piece.Strands.IndexOf(s)));
                     if (loose != null) { s.Pts = loose; s.Lay += "+slack"; }
+                    // a short lead's shape from its own draw (cords_never_repeat; the owner's card exempts cords under 3 cells): equal runs side by side otherwise
+                    // settle to one curve, the room clamping every excursion alike (blind cycle 1)
+                    if (!cut && s.WhipA == 0 && s.WhipB == 0 && L >= VaryMinPath && L < VaryMaxPath && !s.Lay.StartsWith("nub", StringComparison.Ordinal))
+                    {
+                        // the length a varied lead may come to: its slack budget (path and MaxExtra) and a loop's worth, under the fuzz's own limit
+                        double most = 1.25 * (L + prm.MaxExtra) + VaryLoopAllowance;
+                        int si = piece.Strands.IndexOf(s);
+                        double va = VaryPin(na, opt, isLive), vb = VaryPin(nb, opt, isLive);
+                        List<V2> varied = CordSlacken.Slacken(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties, slackSide, 0, 0, line,
+                                                              CordRng.Of(opt.Seed, "vary", key, si), maxAudits: CordSlacken.VaryAudits);
+                        if (varied != null && Geo.Length(varied) <= most) { s.Pts = varied; s.Lay += "+vary"; }
+                        List<V2> looped = CordSlacken.VaryLoop(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties,
+                                                              CordRng.Of(opt.Seed, "varyloop", key, si), CordSlacken.VaryLoopP, most);
+                        if (looped != null) { s.Pts = looped; s.Lay += "+loop"; }
+                        List<V2> looped2 = looped == null ? null : CordSlacken.VaryLoop(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties,
+                                                              CordRng.Of(opt.Seed, "varyloop2", key, si), CordSlacken.VaryLoop2P, most);
+                        if (looped2 != null) { s.Pts = looped2; s.Lay += "+loop"; }
+                    }
                 }
             }
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
@@ -1484,8 +1545,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 || (endB && nb.Type == NodeType.Terminal && !nb.Seam);
             bool repair = allowRepair && !cut && CordShape.HasCurvatureFaults(P, ties);
             if (FinalKinkLog)
-                return TraceFinalCurvature(w, g, e, P, ties, key, strand, section, cut, repair, allowRepair);
-            return repair ? RepairFinalCurvature(w, g, e, P, ties, null) : P;
+                return KeepIfNoNewBend(w, na, nb, P, TraceFinalCurvature(w, g, e, P, ties, key, strand, section, cut, repair, allowRepair));
+            return repair ? KeepIfNoNewBend(w, na, nb, P, RepairFinalCurvature(w, g, e, P, ties, null)) : P;
+        }
+
+        /// <summary>A curvature repair is kept only when the bend bar (CordShapeAudit) counts no more on it than on the strand it replaces (blind cycle 1: the
+        /// repair laid an S-hook into a junction-to-generator lead that had none).</summary>
+        private static List<V2> KeepIfNoNewBend(CordWorld w, CordNode na, CordNode nb, List<V2> before, List<V2> after)
+        {
+            if (ReferenceEquals(before, after) || after == null) return before;
+            string ea = na.OracleName + ":" + na.Cell.X + "," + na.Cell.Z, eb = nb.OracleName + ":" + nb.Cell.X + "," + nb.Cell.Z;
+            return CordShapeAudit.Unforced(w, ea, eb, after) > CordShapeAudit.Unforced(w, ea, eb, before) ? before : after;
         }
 
         private static List<V2> TraceFinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties,
@@ -1807,6 +1877,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private const double BoxKeepOff = 0.55;
 
         private const int SmoothRounds = 6;
+        /// <summary>The shortest planned cut lead <see cref="CordShape.Fair"/> fairs: on a one-cell hop to a cut end it cuts the slack away and leaves an S at the box.</summary>
+        private const double CutFairMinPath = 2.0;
+        /// <summary>The planned paths whose lead is laid from its own draw (<see cref="CordSlacken.Slacken"/>'s vary): from the owner's 3-cell exemption to the
+        /// length past which the sprawl's own excursions part (blind cycle 1: 6-cell runs already kept 0.46 cell apart; varying them too drew twins).</summary>
+        private const double VaryMinPath = 2.5, VaryMaxPath = 5.5;
+        /// <summary><see cref="HopWhole"/>'s second pass: the most a hop may turn when it must come round (a ring and a bit), at no tighter a radius than this.</summary>
+        private const double HopLoopTurn = 2.4 * Math.PI, HopLoopR = 0.6;
         /// <summary>The straight bit a fitted end keeps (cells): a junction arm's or a plug's, the shortest an end is laid with.</summary>
         private const double FitStraight = 0.15;
         /// <summary>How much cord before and after a bend <see cref="SmoothBends"/> lays again, cells, in the order tried.</summary>
@@ -2137,6 +2214,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (best != null) { bestCost = 0; break; }
                 }
             if (best != null) { HopWhy?.Invoke(piece.EndA + "|" + piece.EndB + " CORNER"); return best; }
+            // a second pass, only when no path of half a turn or less is clean: the cord comes round (a box a cell from its machine with its arm facing
+            // the machine's hookup: every way into a plug turns past half a turn; blind cycle 1, 23 hooks in 400 random scenes). The bar's own broad loop.
+            for (int pass = 0; pass < 2 && best == null; pass++)
             foreach (HopEnd A in endsA)
                 foreach (HopEnd B in endsB)
                 {
@@ -2148,9 +2228,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         && (V2.Dist(q, a0.T) < 0.3 || V2.Dist(q, b0.T) < 0.3
                             || (a0.Clear(q) && b0.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff)));
                     foreach (double rad in HopRadii)
-                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Len).Take(2))
+                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Len).Take(pass == 0 ? 2 : 4))
                         {
-                            if (dp.Turning > Math.PI) { No("turns"); continue; }
+                            if (pass == 1 && best != null) break;   // the coming-round pass takes its first clean draw: it runs only where nothing else would do
+                            if (dp.Turning > (pass == 0 ? Math.PI : HopLoopTurn) || (pass == 1 && rad < HopLoopR)) { No("turns"); continue; }
                             var basePts = new List<V2> { ea };
                             basePts.AddRange(CordShape.Dubins.Sample(ea, ha, dp, 0.05));
                             if (basePts.Count < 3) { No("short"); continue; }
@@ -2162,6 +2243,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                 foreach (double f in HopDepths)
                                     foreach (int side in new[] { sg, -sg })
                                     {
+                                        if (pass == 1 && best != null) break;
                                         if (f == 0 && (side != sg || shape == 1)) continue;
                                         double D = side * f * Lb;
                                         var mid = new List<V2>(basePts.Count);
@@ -2182,7 +2264,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                         for (int q = 1; q <= nb2; q++) P.Add(eb + B.Arrive * (B.Straight * q / nb2));
                                         P[P.Count - 1] = B.T;
                                         double ratio = Geo.Length(P) / gap;
-                                        if (ratio > HopMaxRatio) { No("long"); continue; }
+                                        if (ratio > HopMaxRatio && (pass == 0 || Geo.Length(P) > gap + HopLoopTurn * rad)) { No("long"); continue; }
                                         bool rod = CordShapeAudit.LongestRod(P, out _) >= CordShapeAudit.RodLen;
                                         if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
                                         if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
@@ -2217,7 +2299,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (dp.Turning <= CordShapeAudit.FitForceTurn) return null;
             double need = Math.Abs(Wrap(hb - ha));
             Func<V2, bool> clear = q => V2.Dist(q, A.T) < 0.3 || V2.Dist(q, B.T) < 0.3 || (A.Clear(q) && B.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff));
-            foreach (double rad in FitRadii)
+            // last, the S straight from tip to tip: two boxes a cell apart facing the same way leave too little room for both straight bits and a round S
+            // (blind cycle 1: an S-hook between two such arms, sharp 92 where the bar forces only 45)
+            for (int tipToTip = 0; tipToTip < 2; tipToTip++)
+            {
+            if (tipToTip == 1) { ea = A.T; eb = B.T; A.Straight = 0; B.Straight = 0; }
+            foreach (double rad in tipToTip == 0 ? FitRadii : FitTipRadii)
                 foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Turning))
                 {
                     if (dp.Turning > Math.Max(need + FitTurnSpare, Math.PI)) break;   // a corner or a lazy S, never a loop
@@ -2235,11 +2322,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0) continue;
                     return P;
                 }
+            }
             return null;
         }
 
-        /// <summary><see cref="FitCorner"/>'s radii, widest first (cells).</summary>
-        private static readonly double[] FitRadii = { 0.6, 0.52, 0.45, 0.38, 0.32 };
+        /// <summary><see cref="FitCorner"/>'s radii, widest first (cells); tip to tip, down to the 0.26 a forced turn may take (0.2 cell turning 44 degrees).</summary>
+        private static readonly double[] FitRadii = { 0.6, 0.52, 0.45, 0.38, 0.32 }, FitTipRadii = { 0.38, 0.32, 0.29, 0.26 };
         /// <summary>How much further than the two facings ask <see cref="FitCorner"/>'s turn may go, radians.</summary>
         private const double FitTurnSpare = 0.3;
 
@@ -3115,9 +3203,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // from behind: first out past the free end, so the cord comes round the strip instead of under it, into a plug leaning its way
                 P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap - sp.Side * 0.2, onSide);
             }
-            // a cut end keeps the old approach: its live end runs straight out of the conduit end and its dead end curls limp (break_live_and_dead_ends_differ)
-            CordNode farEnd = g.Nodes[atA ? e.B : e.A];
-            if (opt.Lay.FairBends && !(nd.Type == NodeType.Terminal && !nd.Seam) && !(farEnd.Type == NodeType.Terminal && !farEnd.Seam))
+            // a cut end keeps the old approach: its live end runs straight out of the conduit end and its dead end curls limp (break_live_and_dead_ends_differ).
+            // Only the cut end: the fitting at a cut lead's other end comes round like any other, keeping 1.2 cells clear of the cut end's run (keepFar)
+            // (blind cycle 1: that end took the old approach too and hooked out of its junction arm, 53 of 82 unforced bends over 80 random scenes)
+            if (opt.Lay.FairBends && !(nd.Type == NodeType.Terminal && !nd.Seam))
             {
                 Func<V2, bool> clear = ArriveClear(w, P, target, nd.IsMachine ? nd.Machine : null);
                 CordNode farNd = g.Nodes[atA ? e.B : e.A];
@@ -4413,6 +4502,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 used.Add(a); used.Add(b);
                 internalEnds[pa.Connector]++; internalEnds[pb.Connector]++;
             }
+            // a heap cable's bend the bar still counts is eased in place, on the heap's ground, from its port's tip if it hooks there (blind cycle 1: 30 of the
+            // 66 unforced bends left over 400 random scenes were heap cables)
+            if (opt.Lay.FairBends)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 5) continue;
+                    Func<V2, bool> heap = q => compSet.Contains(q.Floor) || (onGround != null && onGround(q));
+                    List<V2> eased = CordSlacken.Unbend(w, s.Pts, 0.22, 0.22, null, null, heap, s.Ties, 0, 0, !strips, !strips);
+                    if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
+                }
             // ---- connectors are printed over the cables; a strip gets a plug in every socket a cable uses
             p.Decals.AddRange(cons);
             if (strips)
