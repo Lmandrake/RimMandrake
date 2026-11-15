@@ -469,7 +469,8 @@ def item_states(ids):
 def grant_waits(st, item_state=None):
     """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE -> what the standing granted release still waits on ([] when due), or
     None when no grant stands. Due: every item it names is closed, and a locked_change (the re-pin) was written after
-    the grant in the concept's history."""
+    the stop the grant lifts (RIMMANDRAKE_ACCEPT_REPIN_BEFORE_GRANT_RECORDED_FIVE_MINUTES_LATE: Pyrelands' re-pin
+    landed five minutes before its grant was written, and "after the grant" kept the one look from ever applying)."""
     import model
     g = st.get("coverage_release_granted")
     if not isinstance(g, dict):
@@ -479,8 +480,10 @@ def grant_waits(st, item_state=None):
     waits = ["%s (%s)" % (i, states.get(i) or "never filed") for i in after if states.get(i) not in model.TERMINAL]
     hs = [h for h in st.get("history") or [] if isinstance(h, dict)]
     at = max((n for n, h in enumerate(hs) if h.get("what") == "coverage_release_granted"), default=-1)
-    if not any(h.get("what") == "locked_change" for h in hs[at + 1:]):
-        waits.append("the re-pin (a locked_change after the grant at %s: designer_stage.py repin)" % g.get("at"))
+    stop = max((n for n, h in enumerate(hs[:at + 1]) if h.get("what") == "coverage_stop"), default=at)
+    if not any(h.get("what") == "locked_change" for h in hs[stop + 1:]):
+        waits.append("the re-pin (a locked_change after the stop the grant at %s lifts: designer_stage.py repin)"
+                     % g.get("at"))
     return waits
 
 

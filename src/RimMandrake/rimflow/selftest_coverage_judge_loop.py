@@ -177,6 +177,51 @@ def granted(root, rounds):
         CJ.item_states = saved
 
 
+def granted_late(root, rounds):
+    """RIMMANDRAKE_ACCEPT_REPIN_BEFORE_GRANT_RECORDED_FIVE_MINUTES_LATE: Pyrelands, 2026-11-15. The fixes and their
+    re-pin (locked_change 21:06:06Z) landed after the stop, and the grant was written at 21:11:14Z; the re-pin the grant
+    waits on is one since the stop it lifts, not one since the grant, or the one look never applies."""
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted_late")
+    d = concept(os.path.join(root, "granted_late"))
+    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
+    for i in range(3):
+        CJ.run(d, os.path.join(root, "granted_late"), judge, now=1794600000 + 1200 * i)
+    states = {"FIX_B": "proposed"}
+    saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
+    try:
+        st = DS.load_state(d)
+        DS.hist(st, "locked_change", "fixed FIX_B; re-pinned stage 3 (tree)")
+        DS.write_json(DS.state_path(d), st)
+        CJ.release(d, "per d_y: one final look after FIX_B (its re-pin already landed)", after=["FIX_B"])
+        states["FIX_B"] = "done"
+        st = CJ.release(d, "the chain's release")
+        rel = (st.get("coverage_releases") or [{}])[-1]
+        check("granted late: a re-pin since the stop but before the grant counts; the grant applies as the final look",
+              rel.get("final") is True and rel.get("after") == ["FIX_B"] and st["status"] == "ready", (rel, st["status"]))
+    except DS.Refused as e:
+        check("granted late: a re-pin since the stop but before the grant counts; the grant applies as the final look",
+              False, str(e))
+    finally:
+        CJ.item_states = saved
+    d = concept(os.path.join(root, "granted_stale_repin"))
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted_stale")
+    st = DS.load_state(d)
+    DS.hist(st, "locked_change", "an older re-pin, before the stop")
+    DS.write_json(DS.state_path(d), st)
+    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
+    for i in range(3):
+        CJ.run(d, os.path.join(root, "granted_stale_repin"), judge, now=1794700000 + 1200 * i)
+    saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: "done" for i in ids}
+    try:
+        CJ.release(d, "per d_z: one final look after FIX_C", after=["FIX_C"])
+        CJ.release(d, "the chain's release")
+        check("granted late: a re-pin from before the stop does not count", False)
+    except DS.Refused as e:
+        check("granted late: a re-pin from before the stop does not count", "re-pin" in str(e), str(e))
+    finally:
+        CJ.item_states = saved
+
+
 def healthy(root):
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_healthy")   # every fixture concept is named Foo
     d = concept(os.path.join(root, "healthy"))
@@ -289,6 +334,7 @@ def main():
             d, judge = ek_replay(root, rounds, ops)
             release(d, judge, root, ops, rounds)
             granted(root, rounds)
+            granted_late(root, rounds)
             healthy(root)
             legacy(root, rounds)
             units()
