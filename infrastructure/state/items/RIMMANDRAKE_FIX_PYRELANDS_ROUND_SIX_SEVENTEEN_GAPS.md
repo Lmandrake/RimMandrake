@@ -51,3 +51,14 @@ Do, in this order, as ONE item (one re-pin; a second re-pin would owe a second l
 - The one-look limit is enforced by `coverage_judge.py` stop_reason (only rounds after the last release count): after the
   chain's single release, a not_covered stops judging and maturation pauses on the coverage stop. No second release
   without his word.
+
+## progress (BENCH detached helper, 2026-11-15)
+Acceptance test: `python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py` (T_ROUND6_GAPS): one check per
+gap plus the Designer's gates. On base 7c9f5784b1 it read 17 of 17 gap checks FAIL, gates PASS (measured).
+Script parts the fixes owe: RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN (live UNRUN, commands in scenes.json).
+No new tree leaf (each would be a new locked bar): every gap folds into existing leaves, scenes and coverage_rest rows.
+- [x] g1, g2, g4: 6a4318a295 (new offline test T_SELF_CONTAINED_OFFLINE, 8 of 8 mutants red)
+- [x] g5, g6, g7, g8, g9, g10: 6d8f7fe94c (record.json's "dome sprite is the standing body" was false and is corrected)
+- [ ] g11-g16
+- [ ] g17, g18
+- [ ] coverage_fixes.json (18 claims), then ONE re-pin
