@@ -1,0 +1,4 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\design\concepts\FlowWorks\version\in_game\visit_1\evidence\sc_moat_raid_20261115T131951.json AssertionError("rows not all PASS: [('MOAT_raiders_swim', 'FAIL'), ('MOAT_drains_fast', 'FAIL'), ('MOAT_two_held_and_captured', 'FAIL'), ('MOAT_chemfuel_pumped', 'PASS'), ('MOAT_moat_burns', 'FAIL'), ('MOAT_control_bridge_down_no_swim', 'PASS')]")
+[bridge split] 36.9 s wall: load 0.5 / ticks 5.5 / reads 2.6 / other 8.8 / outside calls 19.6 s
+[bridge split] WARN 85 calls of jawa/static_call (3.5 s): batch them
+[bridge split] WARN 80 calls of jawa/flowworks_excavation_drive (3.3 s): batch them

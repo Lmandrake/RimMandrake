@@ -1,0 +1,126 @@
+{
+ "step": "stage",
+ "problems": [],
+ "G1_dry": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21169', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 21, 'z': 70}, 'operatio",
+  "sky": true,
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G2_water1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21170', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 64, 'z': 98}, 'operatio",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Water",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G2h_water2m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21171', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 36, 'z': 149}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Water",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "Gbrim_water4m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21172', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 111, 'z': 230}, 'operat",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Water",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G8_gen_dry_then_water": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21173', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 189, 'z': 171}, 'operat",
+  "sky": true,
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G3_tar1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21174', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 12, 'z': 112}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Tar",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G4_oil1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21175', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 27, 'z': 112}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Oil",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G5_blood1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21176', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 42, 'z': 112}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Blood",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G6_slime1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21177', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 80, 'z': 112}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_SlimeGreen",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G7_acid1m": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21178', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 95, 'z': 112}, 'operati",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_AcidWater",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "G8b_water_then_gen": {
+  "spawn": "{'success': True, 'thingId': 'Thing_SteamGeyser21179', 'defName': 'SteamGeyser', 'label': 'Steam geyser', 'stackCount': 1, 'cell': {'x': 150, 'z': 112}, 'operat",
+  "sky": true,
+  "fill": "FILL applied=36 refused=0 notOwned=0 fluid=RM_Fluid_Water",
+  "ladder_spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+ },
+ "answers": {
+  "G1_dry": {
+   "ladder": "LADDER cell=20,73 present=True raised=False want=False ordered=False top=20,74 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=104 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21169 seatNotches=8 vent=22.0,71.0 heated=0 levelMetres=0.000 covered=False fluid=none bathable=False pool=False spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G2_water1m": {
+   "ladder": "LADDER cell=63,101 present=True raised=False want=False ordered=False top=63,102 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=61 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21170 seatNotches=8 vent=65.0,99.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G2h_water2m": {
+   "ladder": "LADDER cell=35,152 present=True raised=False want=False ordered=False top=35,153 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=89 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21171 seatNotches=8 vent=37.0,150.0 heated=16 levelMetres=2.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "Gbrim_water4m": {
+   "ladder": "LADDER cell=110,233 present=True raised=False want=False ordered=False top=110,234 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=131 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21172 seatNotches=8 vent=112.0,231.0 heated=16 levelMetres=4.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G8_gen_dry_then_water": {
+   "ladder": "LADDER cell=188,174 present=True raised=False want=False ordered=False top=188,175 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=82 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21173 seatNotches=8 vent=190.0,172.0 heated=0 levelMetres=0.000 covered=False fluid=none bathable=False pool=False spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G3_tar1m": {
+   "ladder": "LADDER cell=11,115 present=True raised=False want=False ordered=False top=11,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=113 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21174 seatNotches=8 vent=13.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Tar bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G4_oil1m": {
+   "ladder": "LADDER cell=26,115 present=True raised=False want=False ordered=False top=26,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=98 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21175 seatNotches=8 vent=28.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Oil bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G5_blood1m": {
+   "ladder": "LADDER cell=41,115 present=True raised=False want=False ordered=False top=41,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=83 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21176 seatNotches=8 vent=43.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Blood bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G6_slime1m": {
+   "ladder": "LADDER cell=79,115 present=True raised=False want=False ordered=False top=79,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=45 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21177 seatNotches=8 vent=81.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_SlimeGreen bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G7_acid1m": {
+   "ladder": "LADDER cell=94,115 present=True raised=False want=False ordered=False top=94,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=30 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21178 seatNotches=8 vent=96.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_AcidWater bathable=False pool=False spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  },
+  "G8b_water_then_gen": {
+   "ladder": "LADDER cell=149,115 present=True raised=False want=False ordered=False top=149,116 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_ladder_climbs_it,_prisoners_and_wild_animals_too.",
+   "reach": "REACH veto=False reach=True reachPawnless=True found=True cells=35 onDeck=0 under=0 view=deck agree=True",
+   "proof": "spawned=True thingId=SteamGeyser21179 seatNotches=8 vent=151.0,113.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False"
+  }
+ },
+ "bad": []
+}

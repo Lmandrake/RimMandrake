@@ -1,0 +1,15 @@
+G1_dry LADDER cell=20,73 present=True raised=False want=False ordered=False t | REACH veto=False reach=True reachPawnless=True found=True cells=104 onDeck=0 under=0 view=
+G2_water1m LADDER cell=63,101 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=61 onDeck=0 under=0 view=d
+G2h_water2m LADDER cell=35,152 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=89 onDeck=0 under=0 view=d
+Gbrim_water4m LADDER cell=110,233 present=True raised=False want=False ordered=False | REACH veto=False reach=True reachPawnless=True found=True cells=131 onDeck=0 under=0 view=
+G8_gen_dry_then_water LADDER cell=188,174 present=True raised=False want=False ordered=False | REACH veto=False reach=True reachPawnless=True found=True cells=82 onDeck=0 under=0 view=d
+G3_tar1m LADDER cell=11,115 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=113 onDeck=0 under=0 view=
+G4_oil1m LADDER cell=26,115 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=98 onDeck=0 under=0 view=d
+G5_blood1m LADDER cell=41,115 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=83 onDeck=0 under=0 view=d
+G6_slime1m LADDER cell=79,115 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=45 onDeck=0 under=0 view=d
+G7_acid1m LADDER cell=94,115 present=True raised=False want=False ordered=False  | REACH veto=False reach=True reachPawnless=True found=True cells=30 onDeck=0 under=0 view=d
+G8b_water_then_gen LADDER cell=149,115 present=True raised=False want=False ordered=False | REACH veto=False reach=True reachPawnless=True found=True cells=35 onDeck=0 under=0 view=d
+PASS: every pit has a lowered ladder and a colonist route in
+[bridge split] 48.4 s wall: load 0.0 / ticks 1.0 / reads 3.6 / other 42.1 / outside calls 1.7 s
+[bridge split] WARN 792 calls of jawa/flowworks_excavation_drive (38.2 s): batch them
+[bridge split] WARN 53 calls of jawa/static_call (2.5 s): batch them

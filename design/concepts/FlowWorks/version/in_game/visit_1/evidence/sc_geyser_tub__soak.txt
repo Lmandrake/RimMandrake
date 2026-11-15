@@ -1,0 +1,19 @@
+{
+ "G2_order": {
+  "success": true,
+  "accepted": true,
+  "nowRunningRequested": true,
+  "note": null
+ },
+ "mid_hediffs": {
+  "Scarification": 2.0,
+  "RM_HotPoolSoak": 1.0
+ },
+ "mid_proof": "spawned=True thingId=SteamGeyser21170 seatNotches=8 vent=65.0,99.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=16071 dryPuffs=995 coveredPuffsStopped=4755 soakers=1 capped=False",
+ "after_hediffs": {
+  "Scarification": 2.0,
+  "RM_HotPoolAfterglow": 0.497333348
+ },
+ "soak_seen": true,
+ "afterglow": true
+}

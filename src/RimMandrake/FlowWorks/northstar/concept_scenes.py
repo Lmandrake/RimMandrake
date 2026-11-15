@@ -426,7 +426,8 @@ class _Stage:
             self.B.call('jawa/mod_settings_field', typeName=typ, field=name, action='set', value=str(v))
 
     def ticks(self, n):
-        self.B.call('rimworld/step_game_ticks', ticks=n, pauseFirst=True, timeoutMs=600000)
+        # governed chunks (jawa/safe_advance, many ticks a frame); step_game_ticks ran one tick a frame (Stage 6 visit 1)
+        self.B.ticks(n)
 
     def pulse(self, n):
         self.B.call('jawa/flowworks_pulse', count=n, x=0, z=0, w=0, h=0, includeBodies=False)
@@ -513,12 +514,19 @@ def _fill_front(S):
 def _one_surface(S):
     canal = _line(O[0], O[1], 10)
     pit = [(O[0] + 10 + i, O[1] + j) for i in range(3) for j in range(-1, 2)]
-    S.dig(canal, 2); S.dig(pit, 8); S.dig([(O[0] - 1, O[1])], 4)   # the head cell is dug: a fill needs an excavated cell
-    S.fill([(O[0] - 1, O[1])], 1.5, WATER)
+    S.dig(canal, 2); S.dig(pit, 8)
+    # Stage 6 visit 1: one head cell of 1.5 m drained whole into the 4 m pit and left the canal dry, so the canal and the
+    # pit are filled at two different heights instead and must settle to ONE surface. ProofLevelSurface prints
+    # "OK <bodies> worst <gap> m;x,z:squares:gap:min:max;..." (it never printed spread=/ok=, which the draft parsed).
+    S.fill(canal, 0.8, WATER); S.fill(pit, 3.0, WATER)
     S.pulse(30); S.ticks(5000)                                 # two game hours
     lv = S.sc(NSP, 'ProofLevelSurface', '%d,%d,%d,%d' % (O[0], O[1] - 1, 13, 3))
-    S.row('ONE_level_every_cell', 'spread=0' in lv or 'ok=True' in lv, lv)
+    head = lv.split(';')[0].split()
+    body = (lv.split(';') + ['', ''])[1].split(':')
+    one = len(head) >= 4 and head[0] == 'OK' and head[1] == '1' and float(head[3]) <= 0.01
+    S.row('ONE_level_every_cell', one and len(body) >= 2 and body[1].isdigit() and int(body[1]) >= len(canal) + len(pit), lv)
     S.call('jawa/spawn_batch', ops='RM_Sluice:%d,%d' % (O[0] + 5, O[1]))
+    S.fill(canal[:4], 1.0, WATER)
     S.pulse(30)
     S.row('ONE_control_sluice_splits', len(set(S.dl(canal[:4]) + S.dl(canal[6:]))) > 1, (S.dl(canal[:4]), S.dl(canal[6:])))
 

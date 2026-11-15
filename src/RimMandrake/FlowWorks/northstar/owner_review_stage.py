@@ -815,7 +815,9 @@ def row_bars_access(s, L):
     s.item("RM_ClimbingGear", (pc[0], pc[1] + 1))
     cap.append(s.station("bars_access", (pc[0], pc[1] + 1, 1, 1), "climbing gear item on the ground", short="gear item"))
     s.pit((pc[0] + 3, pc[1]), 3, 4)
-    s.place("RM_PitCover_PlankLattice", (pc[0] + 4, pc[1] + 1))
+    for i in range(3):          # every square of the 3x3 pit: one 1x1 lid in the centre left the pit plainly open (visit 1)
+        for j in range(3):
+            s.place("RM_PitCover_PlankLattice", (pc[0] + 3 + i, pc[1] + j))
     cap.append(s.station("bars_access", (pc[0] + 3, pc[1], 3, 3), "concealed pit (planks) over a 2 m pit", short="planks"))
     return cap
 
@@ -846,7 +848,9 @@ def row_bars_bridges(s, L):
                 tier, rails, "north" if lane == 0 else "south"), lane=lane, short="%s rails %s" % (tier, rails)))
     px = bx + 4 * BRIDGE_PITCH
     s.pit((px, bz + 39), 3, 4)
-    s.place("RM_PitCover_PlankLattice", (px + 1, bz + 40))
+    for i in range(3):          # every square of the 3x3 pit (visit 1: a centre-only lid read as an open pit)
+        for j in range(3):
+            s.place("RM_PitCover_PlankLattice", (px + i, bz + 39 + j))
     cap.append(s.station("bars_bridges", (px, bz + 39, 3, 3), "concealed pit (planks, east end) beside the bridges: a concealed pit "
                          "passes for ground, a bridge does not", short="planks"))
     return cap

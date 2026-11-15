@@ -1,0 +1,295 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1794777891.657322,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/set_plants",
+      "args": {
+        "ops": "Plant_Potato:60,57,12,5",
+        "density": 1.0,
+        "growth": 0.1
+      },
+      "result": {
+        "success": true,
+        "message": "Planted 52, cleared 8, REJECTED 8.",
+        "planted": 52,
+        "cleared": 8,
+        "rejected": 8,
+        "rejectionReasons": {
+          "terrain or conditions cannot support Plant_Potato: blocked by marble chunk. [ChunkMarble]": 2,
+          "terrain or conditions cannot support Plant_Potato: Need more fertile terrain.": 6
+        },
+        "rejectedCells": [
+          {
+            "x": 62,
+            "z": 61,
+            "terrain": "Soil",
+            "fertility": 1.0,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "blocker": "ChunkMarble",
+            "reason": "blocked by marble chunk. [ChunkMarble]"
+          },
+          {
+            "x": 65,
+            "z": 57,
+            "terrain": "Soil",
+            "fertility": 1.0,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "blocker": "ChunkMarble",
+            "reason": "blocked by marble chunk. [ChunkMarble]"
+          },
+          {
+            "x": 69,
+            "z": 60,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          },
+          {
+            "x": 69,
+            "z": 61,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          },
+          {
+            "x": 70,
+            "z": 60,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          },
+          {
+            "x": 70,
+            "z": 61,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          },
+          {
+            "x": 71,
+            "z": 60,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          },
+          {
+            "x": 71,
+            "z": 61,
+            "terrain": "Sand",
+            "fertility": 0.1,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "reason": "Need more fertile terrain."
+          }
+        ],
+        "cellsSkippedByDensity": 0,
+        "cellsOutOfBounds": 0,
+        "growth": 0.1,
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f603cae018be4fa49be37a7cdeacacf5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_batch",
+      "args": {
+        "ops": "RM_LiquidDrill:74,60;RM_LiquidPump:75,60;RM_SprinklerHead:74,57;RM_LiquidTank:76,62;RM_PipeFaucet:77,62"
+      },
+      "result": {
+        "success": true,
+        "message": "Placed 5 thing(s) of 5 requested across 5 of 5 op(s).",
+        "opsRequested": 5,
+        "spawned": 5,
+        "failed": 0,
+        "thingsRequested": 5,
+        "thingsPlaced": 5,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+          "RM_LiquidDrill": 1,
+          "RM_LiquidPump": 1,
+          "RM_SprinklerHead": 1,
+          "RM_LiquidTank": 1,
+          "RM_PipeFaucet": 1
+        },
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_97bde7918de54758bf8378b2f8a4e3e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-15T21:24:51Z",
+    "problems": [],
+    "load_s": 4.5,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-15T21:24:57Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 6.4,
+    "verified": true
+  },
+  "scene": "scene_garden",
+  "rows": [],
+  "status": "FAIL",
+  "error": "GovernorStop('safe_advance stopped after 480 of 2500 tick(s): starving: food category Starving')",
+  "finished": 1794777923.0241768
+}

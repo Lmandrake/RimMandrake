@@ -1999,7 +1999,9 @@ def b9_owner(s):
     heal_colonists(s)
     feed_colonists(s)
     import owner_review_stage as ORS
-    ox, oz = s.zones["owner"][0] + 3, s.zones["owner"][1] + 6
+    # +5, not +6: the staged site grew a row, and at +6 owner_review_stage refused "(21, 163) puts the site off the 250x250
+    # map (it fits at (21, 162))" and staged nothing (FlowWorks 0.1.0 Stage 6 visit 1, 2026-11-15)
+    ox, oz = s.zones["owner"][0] + 3, s.zones["owner"][1] + 5
     argv = ["--origin", "%d,%d" % (ox, oz), "--only", "ladders,spikes,gates,shallows,sprinklers,hoses,bars_joint,bars_dry,bars_trench,bars_access,bars_bridges"]
     if s.mock:
         argv.append("--mock")

@@ -1,0 +1,62 @@
+\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\src\RimMandrake\FlowWorks\northstar\live_session.py:2344: SyntaxWarning: invalid escape sequence '\.'
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+LIVE SESSION PLAN  zones on 250x250:
+  zone covers     (15, 15, 26, 10)
+  zone trench     (15, 15, 30, 16)
+  zone thirst     (15, 15, 96, 42)
+  zone access     (47, 15, 40, 14)
+  zone climb      (51, 15, 46, 12)
+  zone digdepth   (93, 15, 12, 8)
+  zone sprinkler  (103, 15, 16, 86)
+  zone reservoir  (111, 15, 16, 26)
+  zone l2         (125, 15, 30, 18)
+  zone grenade    (133, 15, 20, 10)
+  zone raillip    (159, 15, 16, 14)
+  zone l2b        (161, 15, 30, 18)
+  zone ride       (181, 15, 6, 6)
+  zone tanks      (193, 15, 12, 6)
+  zone l6         (197, 15, 30, 18)
+  zone readout    (228, 15, 22, 16)
+  zone ice        (15, 47, 16, 8)
+  zone flood      (37, 47, 18, 10)
+  zone suspension (61, 47, 40, 16)
+  zone props      (107, 47, 30, 10)
+  zone l4         (15, 107, 30, 18)
+  zone l5         (51, 107, 30, 18)
+  zone owner      (18, 157, 216, 78)
+B0   preflight: tier truth, log revive, calm, clock rate                                ~    0 ticks ~   0 s (ESTIMATED)
+B9   owner review staging + ONE save                                                    ~ 5300 ticks ~ 240 s (ESTIMATED)
+       FLOWWORKS_LADDER_RAISE_LOWER_1               A2                     owner_review_stage ladders  [OWNER EYES]
+       PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS      A5                     native in-situ props + owner_review_stage  [OWNER EYES]
+       POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD         A8                     owner_review_stage shallows (thin water in situ)  [OWNER EYES]
+       SPRINKLER_HEADS_BUILD_PUMP_REQUIRED          looks                  owner_review_stage sprinklers (four nozzle looks spraying)  [OWNER EYES]
+       HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME           walk                   owner_review_stage --only hoses (sibling's row)  [OWNER EYES]
+       HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD  A4                     owner judges the four pipe atlases (hoses row shots)  [OWNER EYES]
+       LIQUID_LEDGER_BUILD_NO_UNIT_LOST             A9                     spill art + 'Fitting:' relabel in the owner save  [OWNER EYES]
+       PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT          A4                     deep wall faces / sink / tint past 2 m in the owner save  [OWNER EYES]
+       LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP         A2                     lake_floor_stage.py savegame (mountainous map: NOT this map)  [OWNER EYES]
+OUT OF THIS LOAD: CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS, CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME, SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS, SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP, SUSPENSION_JETTY_BUILD_WALK_THE_PLANK, SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD, SUSPENSION_WATERS_BUILD_MAY_BACKTRACK, THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL, WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES
+ESTIMATED wall for the selected blocks: 240 s (+ one cold load, MEASURED 44-70 s, + one quicktest map, 2-8 s)
+=== B0 preflight: tier truth, log revive, calm, clock rate  (t+0s, tick 603)
+  B0_tier_truth                      PASS       HARNESS - - {"running": 12, "flowworks": true, "why": ""}
+  B0_assembly_identity               PASS       HARNESS - - {"loaded": "010b2d458ec6", "repo": "010b2d458ec6", "mvidMatchesFile": true, "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Flow
+  B0_clock_rate                      PASS       HARNESS - - {"ticks": 600, "wall_s": 0.47, "ticks_per_s": 1288.5, "frameBudgetMs": 150.0}
+=== B9 owner review staging + ONE save  (t+2s, tick 1203)
+  B9_props_staged                    UNMEASURED OWED    PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A5 {"rect": [107, 47, 30, 10], "why": "his look: portable ladder diagonal vs flat, climbing gear icon"}
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261115_1339  origin (21, 162)  rect (18, 156, 64, 70)  rows ['ladders', 'spikes', 'gates', 'shallows', 'sprinklers', 'hoses', 'bars_joint', 'bars_dry', 'bars_trench', 'bars_access', 'bars_bridges']
+REFUSED: map biome Grasslands is not one where water is known to draw right (TemperateForest, TemperateSwamp, BorealForest, TropicalRainforest, TropicalSwamp, AridShrubland, Desert, Tundra, ColdBog); load a vanilla-biome map (e.g. a TemperateForest quicktest) or pass --any-biome
+  B9_staged_flowworks_A2             UNMEASURED OWED    FLOWWORKS_LADDER_RAISE_LOWER_1 A2 {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_pond_A8                  UNMEASURED OWED    POND_DEPTH_BUILD_SHALLOWS_BEFORE_M A8 {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_sprinkler_looks          UNMEASURED OWED    SPRINKLER_HEADS_BUILD_PUMP_REQUIRE looks {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_hose_walk                UNMEASURED OWED    HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME walk {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_hose_A4                  UNMEASURED OWED    HOSE_RULINGS_BUILD_THREE_REVERSALS A4 {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_liquid_A9                UNMEASURED OWED    LIQUID_LEDGER_BUILD_NO_UNIT_LOST A9 {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+  B9_staged_pit_A4                   UNMEASURED OWED    PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGH A4 {"stageExit": 3, "why": "his eyes: open the owner-review save"}
+\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\src\RimMandrake\FlowWorks\northstar\live_session.py:2344: SyntaxWarning: invalid escape sequence '\.'
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+DONE 11 rows {'PASS': 3, 'UNMEASURED': 8}  verify lines 1 -> design\concepts\FlowWorks\version\in_game\visit_1\evidence\ls_b9\verify_lines.txt  session design\concepts\FlowWorks\version\in_game\visit_1\evidence\ls_b9\session.json
+OWNER EYES (8): FLOWWORKS_LADDER_RAISE_LOWER_1 A2; HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME walk; HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD A4; LIQUID_LEDGER_BUILD_NO_UNIT_LOST A9; PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS A5; PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT A4; POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD A8; SPRINKLER_HEADS_BUILD_PUMP_REQUIRED looks
+[bridge split] 49.8 s wall: load 0.0 / ticks 0.5 / reads 0.5 / other 1.1 / outside calls 47.8 s
+save_guard: 315 keepers hashed and backed up in /mnt/d/ClaudeWork/rimmandrake/scratch/save_keepers
+save_guard: command exit 0; changed files: none
+save_guard: VERIFIED - no keeper changed

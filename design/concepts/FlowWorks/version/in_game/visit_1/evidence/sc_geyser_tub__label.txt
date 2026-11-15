@@ -1,0 +1,7 @@
+{
+ "G2_floor": "line=Pit, 1.0 m water in 4.0 m (walk speed 30%) \u2014 Hole 4 m \u00b7 Water 1.00 m (2,000 L) \u00b7 Hot tub",
+ "G2_vent": "line=Pit, 1.0 m water in 4.0 m (walk speed 30%) \u2014 Hole 4 m \u00b7 Water 1.00 m (2,000 L) \u00b7 Hot tub",
+ "G1_dry_floor": "line=Pit, 4.0 m deep (walk speed 100%) \u2014 Hole 4 m \u00b7 Water 0.00 m (0 L)",
+ "G2h_water2m_floor": "line=Pit, 2.0 m water in 4.0 m \u2014 Hole 4 m \u00b7 Water 2.00 m (4,000 L) \u00b7 Hot tub",
+ "calm_open_ground": "line=vanilla",
+}

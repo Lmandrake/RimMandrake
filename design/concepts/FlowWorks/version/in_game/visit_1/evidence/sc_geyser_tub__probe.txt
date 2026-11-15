@@ -1,0 +1,13 @@
+{
+ "G2_vent": "OK Hole 4 m \u00b7 Water 1.00 m (2,000 L)",
+ "G2_pool_floor": "OK Hole 4 m \u00b7 Water 1.00 m (2,000 L)",
+ "G1_dry_vent": "OK Hole 4 m \u00b7 Water 0.00 m (0 L)",
+ "G1_dry_floor": "OK Hole 4 m \u00b7 Water 0.00 m (0 L)",
+ "G2_proof": "spawned=True thingId=SteamGeyser21170 seatNotches=8 vent=65.0,99.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=116 dryPuffs=0 coveredPuffsStopped=0 soakers=0 capped=False",
+ "order": "{'success': False, 'accepted': False, 'interruptibleBefore': True, 'requestedJobDef': 'RM_SoakInGeyserPool', 'nowRunningRequested': False, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 0, 'note': \"TryTakeOrderedJob returned false, which in 1.6 has exactly one cause: job.TryMakePreToilR",
+ "hediffs_after": {
+  "Gunshot": 5.0
+ },
+ "soaked": false,
+ "G2_proof_after": "spawned=True thingId=SteamGeyser21170 seatNotches=8 vent=65.0,99.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=False plumeBubbles=13488 dryPuffs=995 coveredPuffsStopped=3743 soakers=0 capped=False"
+}

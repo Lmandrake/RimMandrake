@@ -1,0 +1,2437 @@
+[
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureGrand",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureGrand",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_DoubleBed",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_DoubleBed",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_HoseReel",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_RM_HoseReel",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Table2x2c",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Table2x2c",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_TableButcher",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_TableButcher",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_HandTailoringBench",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_HandTailoringBench",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureLarge",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureLarge",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Bed",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Bed",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Shelf",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Shelf",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Dresser",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Dresser",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Bedroll",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Bedroll",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Battery",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Battery",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_PlantPot",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_PlantPot",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_SculptureSmall",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_SculptureSmall",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_DiningChair",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_DiningChair",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Stool",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Stool",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Armchair",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Armchair",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_EndTable",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_EndTable",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_StandingLamp",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_StandingLamp",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_TorchLamp",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_TorchLamp",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_Cooler",
+"verdict": "PASS",
+"got": "kind=building share=0.000"
+},
+{
+"row": "OL_no_surface_shadow_BP0_dry_Cooler",
+"verdict": "PASS",
+"got": "dry shadow 0.3"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP0_dry_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_WoodLog",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Plasteel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gold",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ComponentIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Cloth",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Hay",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Silver",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Steel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Leather_Plain",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MealSimple",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MealFine",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RawPotatoes",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Meat_Cow",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Pemmican",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Beer",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Chocolate",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MedicineIndustrial",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MedicineHerbal",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Neutroamine",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MeleeWeapon_Knife",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gun_BoltActionRifle",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Gun_Revolver",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_MeleeWeapon_LongSword",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_Parka",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_CowboyHat",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Apparel_FlakVest",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ChunkGranite",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_ChunkSlagSteel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Shell_HighExplosive",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Shell_EMP",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Jade",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_Novel",
+"verdict": "PASS",
+"got": "kind=item share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP0_dry_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_Armchair",
+"verdict": "PASS",
+"got": "kind=minified share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_EndTable",
+"verdict": "PASS",
+"got": "kind=minified share=0.000"
+},
+{
+"row": "OL_goods_covered_BP0_dry_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP0_dry_corpse_Muffalo",
+"verdict": "PASS",
+"got": "kind=corpse share=0.000"
+},
+{
+"row": "OL_corpses_covered_BP0_dry_corpse_Villager",
+"verdict": "PASS",
+"got": "kind=corpse share=0.000"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP1_0.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP1_0.5m_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP1_0.5m_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP1_0.5m_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP2_1m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP2_1m_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP2_1m_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP2_1m_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP3_2m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP3_2m_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP3_2m_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP3_2m_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP4_3m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP4_3m_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP4_3m_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP4_3m_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP5_brim_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP5_brim_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP5_brim_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP5_brim_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureGrand",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_DoubleBed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_GlowTank",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_HoseReel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Table2x2c",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_TableButcher",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_HandTailoringBench",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureLarge",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Bed",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Shelf",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Dresser",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_ResinSealingJarShelf",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Bedroll",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Battery",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_PlantPot",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_SculptureSmall",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_DiningChair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Stool",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_StandingLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_TorchLamp",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_Cooler",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_EvaporativeCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_buildings_covered_BP6_tar1.5m_furn_RM_AncientStasisLocker_Refurbished",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_WoodLog",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Plasteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gold",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ComponentIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Cloth",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Hay",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Silver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Steel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Leather_Plain",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MealSimple",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MealFine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RawPotatoes",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Meat_Cow",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Pemmican",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Beer",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Chocolate",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MedicineIndustrial",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MedicineHerbal",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Neutroamine",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MeleeWeapon_Knife",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gun_BoltActionRifle",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Gun_Revolver",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_MeleeWeapon_LongSword",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_Parka",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_CowboyHat",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Apparel_FlakVest",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ChunkGranite",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_ChunkSlagSteel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Shell_HighExplosive",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Shell_EMP",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Jade",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_Novel",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_ResinSealedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_ResinSealedFruit",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_item_RM_AmberAgedMeat",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_Armchair",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_EndTable",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_goods_covered_BP6_tar1.5m_mini_RM_BrineCrock",
+"verdict": "FAIL",
+"got": "the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid"
+},
+{
+"row": "OL_corpses_covered_BP6_tar1.5m_corpse_Muffalo",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_corpses_covered_BP6_tar1.5m_corpse_Villager",
+"verdict": "FAIL",
+"got": "share=0.000 in liquid"
+},
+{
+"row": "OL_pour_never_no_room",
+"verdict": "UNMEASURED",
+"got": "acts off (pass --acts to pour on the spare pit)"
+},
+{
+"row": "OL_label_text_true_depth",
+"verdict": "BLOCKED",
+"got": "no reader for the on-screen pit label (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); expected text is pinned offline by PitLabelChecks"
+},
+{
+"row": "OL_overlays_hidden",
+"verdict": "BLOCKED",
+"got": "overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS rope and connector) do not report to the law (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS)"
+},
+{
+"row": "OL_screenshot_mode_off",
+"verdict": "PASS",
+"got": "off before and after"
+}
+]

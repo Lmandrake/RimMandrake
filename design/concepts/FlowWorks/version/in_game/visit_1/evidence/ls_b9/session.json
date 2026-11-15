@@ -1,0 +1,357 @@
+{
+ "script": "live_session.py",
+ "mode": "live",
+ "env": {
+  "partial": true,
+  "running": 12,
+  "flowworks": true,
+  "assembly_matches": 1,
+  "config": "min-12",
+  "assembly_identical": true,
+  "ticks_per_s": 1188.0
+ },
+ "zones": {
+  "owner": [
+   18,
+   157,
+   216,
+   78
+  ],
+  "covers": [
+   15,
+   15,
+   26,
+   10
+  ],
+  "access": [
+   47,
+   15,
+   40,
+   14
+  ],
+  "digdepth": [
+   93,
+   15,
+   12,
+   8
+  ],
+  "reservoir": [
+   111,
+   15,
+   16,
+   26
+  ],
+  "grenade": [
+   133,
+   15,
+   20,
+   10
+  ],
+  "raillip": [
+   159,
+   15,
+   16,
+   14
+  ],
+  "ride": [
+   181,
+   15,
+   6,
+   6
+  ],
+  "tanks": [
+   193,
+   15,
+   12,
+   6
+  ],
+  "readout": [
+   228,
+   15,
+   22,
+   16
+  ],
+  "ice": [
+   15,
+   47,
+   16,
+   8
+  ],
+  "flood": [
+   37,
+   47,
+   18,
+   10
+  ],
+  "suspension": [
+   61,
+   47,
+   40,
+   16
+  ],
+  "props": [
+   107,
+   47,
+   30,
+   10
+  ],
+  "trench": [
+   15,
+   15,
+   30,
+   16
+  ],
+  "climb": [
+   51,
+   15,
+   46,
+   12
+  ],
+  "sprinkler": [
+   103,
+   15,
+   16,
+   86
+  ],
+  "l2": [
+   125,
+   15,
+   30,
+   18
+  ],
+  "l2b": [
+   161,
+   15,
+   30,
+   18
+  ],
+  "l6": [
+   197,
+   15,
+   30,
+   18
+  ],
+  "l4": [
+   15,
+   107,
+   30,
+   18
+  ],
+  "l5": [
+   51,
+   107,
+   30,
+   18
+  ],
+  "thirst": [
+   15,
+   15,
+   96,
+   42
+  ]
+ },
+ "timing": {
+  "park_cell": [
+   126,
+   126
+  ],
+  "parked": [
+   {
+    "cell": [
+     126,
+     126
+    ],
+    "pawns": [
+     [
+      "Thing_Human1059",
+      true
+     ],
+     [
+      "Thing_Human1053",
+      true
+     ],
+     [
+      "Thing_Human1056",
+      true
+     ]
+    ]
+   }
+  ],
+  "B0": 2.7,
+  "B9": 157.8,
+  "total_s": 160.8
+ },
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 12,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_assembly_identity",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "loaded": "010b2d458ec6",
+    "repo": "010b2d458ec6",
+    "mvidMatchesFile": true,
+    "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 0.51,
+    "ticks_per_s": 1188.0,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B9_props_staged",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rect": [
+     107,
+     47,
+     30,
+     10
+    ],
+    "why": "his look: portable ladder diagonal vs flat, climbing gear icon"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_flowworks_A2",
+   "item": "FLOWWORKS_LADDER_RAISE_LOWER_1",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_pond_A8",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A8",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_sprinkler_looks",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED",
+   "criterion": "looks",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_hose_walk",
+   "item": "HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME",
+   "criterion": "walk",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_hose_A4",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A4",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_liquid_A9",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A9",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_staged_pit_A4",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A4",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "stageExit": 0,
+    "why": "his eyes: open the owner-review save"
+   },
+   "block": "B9",
+   "eyes": true
+  }
+ ],
+ "notes": [],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B9",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": false,
+  "out_dir": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_1\\evidence\\ls_b9",
+  "state": "",
+  "chunk_s": 450,
+  "check_state": "",
+  "chunks": false,
+  "max_seconds": 3000
+ }
+}

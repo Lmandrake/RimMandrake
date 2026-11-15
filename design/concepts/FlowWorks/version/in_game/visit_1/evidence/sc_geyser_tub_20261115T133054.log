@@ -1,0 +1,5 @@
+PASS       TUB_reads_hot_tub        line=Pit, 1.0 m water in 4.0 m (walk speed 30%) � Hole 4 m � Water 1.00 m (2,000 L) � Hot tub
+PASS       TUB_dry_pit_not_a_tub    line=Pit, 4.0 m deep (walk speed 100%) � Hole 4 m � Water 0.00 m (0 L)
+PASS       TUB_beside_stays_cold    line=Pit, 1.0 m water in 4.0 m (walk speed 30%) � Hole 4 m � Water 1.00 m (2,000 L)
+PASS       TUB_pawn_soaks_bonus     {'mid': {'Bite': 4.0, 'Scarification': 2.5, 'RM_HotPoolSoak': 1.0}, 'after': {'Bite': 4.0, 'Scarification': 2.5, 'RM_HotPoolAfterglow': 0.497333348}, 'pool': 'spawned=True thingId=SteamGeyser21170 sea
+[bridge split] 20.8 s wall: load 0.0 / ticks 2.5 / reads 0.1 / other 17.7 / outside calls 0.5 s
