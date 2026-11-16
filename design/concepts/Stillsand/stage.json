@@ -148,6 +148,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794832693: stage 2 done"
+  },
+  {
+   "at": "2026-11-16T13:45:41Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794836727, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T13:50:09Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794836727: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -317,6 +329,28 @@
    "run": "rm-role-designercodex-1794832693",
    "stage": 2,
    "summary": "Assessed OWNER:1794831087978003730 as the completed cross-clone repair filing and reaffirmed the separately authenticated current built-water/later film boundary and expedition_harbour_fortune flagship. Preserved every prior inventory, root, scope, ask, contradiction and failure mode. Filed, fixed, published and closed causal-only owner intake with a regression that fails before repair and passes afterward. All 35 affected pipeline tests and 14 whole-tree checks pass; explicit related-item owner words remain inputs. Existing-code walk and runtime observations remain unrun."
+  },
+  {
+   "at": "2026-11-16T13:50:09Z",
+   "inputs": {
+    "exam": null,
+    "floor": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+    "scenes": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
+    "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794836727",
+   "stage": 3,
+   "summary": "Revalidated the existing Stillsand Write package after stage-2 causal-only intake repair. Gate A, all 33 scene contracts, seven ordered showcases and 23 floor lines pass; every planned entry point has its filed implementation item. The pipeline selftest reports ALL PASS, including the prior cross-clone rejection regression. Preserved the adopted current built-water/later shared-film boundary, separately authenticated expedition_harbour_fortune flagship, root and all 71 inventory entries. No Stillsand release number is inferred. Checks and hashes are recorded in write_checks.json. Existing-code walk and all runtime observations remain unrun; no bridge, game, restart or deployment action. Launcher owns stage advancement."
   }
  ],
  "runner": "codex",
@@ -389,10 +423,18 @@
     "input_tokens": 3974784,
     "output_tokens": 13037
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794836727",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 929437,
+    "output_tokens": 5819
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready"
 }
