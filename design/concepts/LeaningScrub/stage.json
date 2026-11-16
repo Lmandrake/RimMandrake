@@ -1,0 +1,32 @@
+{
+ "aliases": [],
+ "budget": {
+  "cap": 4000000,
+  "charges": [],
+  "reserve": 60000,
+  "spent": 0
+ },
+ "draft_input": {
+  "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/LeaningScrub.check.json)",
+  "path": "/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/LeaningScrub.designer_draft.md",
+  "sha256": "5e00049d010ab0e75cceeb31a955ccf64fdcf427110b27deef68361f7ab55e21",
+  "use": "input to verify, never the output"
+ },
+ "history": [
+  {
+   "at": "2026-11-16T01:06:51Z",
+   "stage": 0,
+   "what": "init",
+   "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  }
+ ],
+ "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
+ "mod": "LeaningScrub",
+ "recovery": [],
+ "results": [],
+ "runner": "codex",
+ "running": null,
+ "schema": 1,
+ "stage": 0,
+ "status": "ready"
+}
