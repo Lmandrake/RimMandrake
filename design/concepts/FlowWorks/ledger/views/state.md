@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":4287,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=78672094a2c2c59ca48d49874651adb4b33a20673d1ba1d64c0ba816e3a9c38f -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":4970,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=5c2d3d74e549daf320be12e622ea77e45fef71427fc552b01210cd2402cc2893 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1213 events in 6 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 1215 events in 6 shards · reducer 1
 holder lease run-1794848129, token 3, last active 2026-11-16T17:08:01Z
-holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 400000
+holder session 014e863d-f9f9-45c0-af41-7f39afdcf454, context 118003 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794848129, 2026-11-16T17:08:01Z)
 - done: Steward read blind cycle 2: 5 Problems fixed and closed at 4b33b22f00, 4 Polish filed; 11 certificate refusals were RECORD GAP (stale ran_on_this_build), redone by maturation.py certificate --run (8 reruns, OK on 55 bars); test edits only add or tighten; advanced to blind cycle 3
@@ -494,6 +494,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1213 events (views/history.md; never read whole)
+- the full history: 1215 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T17:08:01Z.1794848881037415083 (modledger.py since --mod FlowWorks t=2026-11-16T17:08:01Z.1794848881037415083 prints what changed after this packet)
+cursor: t=2026-11-16T17:11:06Z.1794849066600929912 (modledger.py since --mod FlowWorks t=2026-11-16T17:11:06Z.1794849066600929912 prints what changed after this packet)

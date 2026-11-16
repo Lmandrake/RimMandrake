@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":4287,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=ed35f5414b58f4f7ff1efbf3bb89f6f4f2a4af38b835464e72903c58787c7575 -->
-# FlowWorks — mod ledger history (1213 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":4970,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=23f04e93588daed4a9b2b7c6f8a75590df5ab5866d1907d5aa29c0c1db9e3c6b -->
+# FlowWorks — mod ledger history (1215 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1214,3 +1214,5 @@
 - 2026-11-16T16:57:30Z HOLDER.run-1794848129#1 lease.renew session v0.1.0: 
 - 2026-11-16T17:07:50Z DISPATCH#13 stage.accepted stage v0.1.0: 
 - 2026-11-16T17:08:01Z HOLDER.run-1794848129#2 session.checkpoint session v0.1.0: 
+- 2026-11-16T17:11:06Z DISPATCH#14 run.end run v0.1.0: 
+- 2026-11-16T17:11:06Z DISPATCH#15 session.id session v0.1.0: 
