@@ -147,7 +147,7 @@ def wake_lines(repo, seat="CONDUCTOR", timeout=120):
         r = subprocess.run(cmd, cwd=repo, capture_output=True, text=True, timeout=timeout)
         out = (r.stdout or "").rstrip()
         if r.returncode or not out:
-            raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or "").strip()[-300:]))
+            raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or "").strip()))
     except Exception as e:                      # noqa: BLE001 - said, never silent
         return ["", WAKE_HEAD, "OWED view did not run (%s: %s). Run `rimflow queue CONDUCTOR --owed` yourself and say "
                 "so to him in one line." % (type(e).__name__, e)]

@@ -29,6 +29,11 @@ import sys
 import time
 import uuid
 
+try:
+    from . import fulltext
+except ImportError:
+    import fulltext  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(HERE, "..", "Utils")
@@ -129,7 +134,7 @@ def plan(decls, bad, live_tiers, live_mods, asks_full=False, owes_declared=False
 def _git_paths(repo=None):
     r = subprocess.run(["git", "ls-files"], cwd=repo or REPO, capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
-        raise OSError("git ls-files exited %d: %s" % (r.returncode, r.stderr.strip()[:200]))
+        raise OSError("git ls-files exited %d: %s" % (r.returncode, r.stderr.strip()))
     return r.stdout.splitlines()
 
 
@@ -202,7 +207,7 @@ def _load(what, source, default):
         v = (source if source is not None else default)
         return (v() if callable(v) else v), None
     except Exception as e:
-        return None, "%s: %s" % (type(e).__name__, str(e)[:240])
+        return None, "%s: %s" % (type(e).__name__, str(e))
 
 
 _MEMO = {}
@@ -465,7 +470,7 @@ def _id_checks(obs, decls, ctx):
                 obs("B11", v, "FAIL", "`%s` resolves but is not an ancestor of HEAD: not landed" % v,
                     "cite the landed sha, or land it first", t0=t, origin=org)
             else:
-                obs("B11", v, "UNMEASURED", "git merge-base failed: %s" % a.stderr.strip()[:160], t0=t, origin=org)
+                obs("B11", v, "UNMEASURED", "git merge-base failed: %s" % a.stderr.strip(), t0=t, origin=org)
         except (OSError, subprocess.SubprocessError) as e:
             obs("B11", v, "UNMEASURED", "git did not run: %s" % e, t0=t, origin=org)
     ctx["_items"] = items
@@ -541,7 +546,7 @@ def _supervise(args, deadline_s):
             code = 1
             try:
                 out.write(json.dumps({"id": "CHILD", "ref": None, "status": "UNMEASURED", "ms": 0.0, "fix": "",
-                                      "evidence": "preflight child crashed: %s: %s" % (type(e).__name__, str(e)[:200])}) + "\n")
+                                      "evidence": "preflight child crashed: %s: %s" % (type(e).__name__, str(e))}) + "\n")
                 out.flush()
             except Exception:
                 pass
@@ -777,7 +782,7 @@ class Shadow(object):
             rep = run_item(self.item, trigger=self.trigger, run_id=self.run_id, record=False, **kw)
             self.checks, self.cut = rep["checks"], rep["cut_off"]
         except Exception as e:                          # noqa: BLE001  the door carries on
-            self.crash = "%s: %s" % (type(e).__name__, str(e)[:200])
+            self.crash = "%s: %s" % (type(e).__name__, str(e))
         self.ms += (time.perf_counter() - t) * 1000
         return self
 
@@ -791,7 +796,7 @@ class Shadow(object):
             self.finish()
             raise
         except Exception as e:
-            self._note(gid, "FAIL", "the existing gate raised %s: %s" % (type(e).__name__, str(e)[:160]), t)
+            self._note(gid, "FAIL", "the existing gate raised %s: %s" % (type(e).__name__, str(e)), t)
             self.finish()
             raise
         try:
@@ -833,8 +838,11 @@ class Shadow(object):
         out = ["PREFLIGHT, shadow, refuses nothing (%s %s, %.0f ms%s): %d checks, %d not PASS" % (
             self.door, self.item, self.ms, ", CUT OFF" if self.cut else "", len(allc), len(bad))]
         for c in bad[:SHOW_MAX]:
-            out.append("  %-10s %s %s: %s%s" % (c["status"], c["id"], c.get("ref") or "", c.get("evidence", "")[:220],
-                                                ("  FIX: " + c["fix"][:160]) if c.get("fix") else ""))
+            where = "rimflow preflight %s" % self.item
+            out.append("  %-10s %s %s: %s%s" % (c["status"], c["id"], c.get("ref") or "",
+                                                fulltext.clip(c.get("evidence", ""), 220, where),
+                                                ("  FIX: " + fulltext.clip(c["fix"], 160, where)) if c.get("fix")
+                                                else ""))
         if len(bad) > SHOW_MAX:
             out.append("  ... %d more: rimflow preflight %s" % (len(bad) - SHOW_MAX, self.item))
         self.done = "\n".join(out)

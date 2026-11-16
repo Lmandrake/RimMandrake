@@ -294,8 +294,8 @@ def planted(shared):
 
     def add(group, cid, what, bad, good):
         """bad / good: (fired, evidence) of the planted ticket and of its good twin."""
-        out.append({"group": group, "check": cid, "what": what, "caught": bool(bad[0]), "evidence": str(bad[1])[:300],
-                    "good_passes": not good[0], "good_evidence": str(good[1])[:200]})
+        out.append({"group": group, "check": cid, "what": what, "caught": bool(bad[0]), "evidence": str(bad[1]),
+                    "good_passes": not good[0], "good_evidence": str(good[1])})
 
     def tp(text, cid, proof="", **kw):
         r = TP.run_text(text, proof, item_id="PLANTED", inline=True, record=False, defs=shared["defs"], src=shared["src"],
@@ -541,7 +541,7 @@ def main():
         if cid in REFUSING and ex:
             ex.sort(key=lambda c: (c["corpus"] == "open", not c.get("worked", c["corpus"] == "measured_week")))
             sample[cid] = [{"item": c["item"], "corpus": c["corpus"], "as_of": c.get("as_of"), "commit": c.get("sha"),
-                            "day": c.get("day"), "evidence": [k["evidence"][:240] for k in c["checks"]
+                            "day": c.get("day"), "evidence": [k["evidence"] for k in c["checks"]
                                                              if k["id"] == cid and k["status"] == "FAIL"][:2]}
                            for c in ex[:12]]
     worked = [c for c in cases if (c["corpus"] == "closed_60d" and c.get("worked")) or c["corpus"] == "measured_week"]

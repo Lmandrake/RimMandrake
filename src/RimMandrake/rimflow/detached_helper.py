@@ -685,7 +685,7 @@ class _NoShadow(object):
 
 def _refusal(res):
     """A launch gate's answer (None, or refusal text) as an observation."""
-    return ("FAIL", str(res)[:300]) if res else ("PASS", "")
+    return ("FAIL", str(res)) if res else ("PASS", "")
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,

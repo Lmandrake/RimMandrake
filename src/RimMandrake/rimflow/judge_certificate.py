@@ -103,7 +103,7 @@ def _last_line(*texts):
     for t in texts:
         lines = [x.strip() for x in str(t or "").splitlines() if x.strip()]
         if lines:
-            return lines[-1][:300]
+            return lines[-1]
     return ""
 
 

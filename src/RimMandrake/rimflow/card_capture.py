@@ -520,7 +520,7 @@ def backfill(since, apply=False):
                            capture_output=True, text=True, env=env, cwd=REPO, timeout=120)
         if r.returncode:
             bad += 1
-            print("   note refused: %s" % (r.stdout + r.stderr).strip()[-200:])
+            print("   note refused: %s" % (r.stdout + r.stderr).strip())
         else:
             ok += 1
     print("backfill: %d relays since %s, %d matched a card, %d noted, %d refused"
