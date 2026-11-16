@@ -1,0 +1,1 @@
+modledger_backfill run twice without committing between can re-create a line the first run deleted under its old id (same content key, new ts); the shard lint then reads it as EDITED_IN_PLACE against origin/main. Before re-running a mod's backfill, git checkout its ledger dir back to HEAD, then run once (seen on GSS 2026-11-16: 31 lint findings, gone after a checkout + one run).
