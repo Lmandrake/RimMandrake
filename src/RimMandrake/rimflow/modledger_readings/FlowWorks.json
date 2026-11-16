@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 0.5495,
+"spent_usd_last_run": 0.0253,
 "tickets": {
 "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE": {
 "at": "2026-11-16T00:27:47",
@@ -6905,6 +6905,24 @@
 ]
 }
 },
+"RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED": {
+"at": "2026-11-16T02:14:26",
+"hash": "6e6cae5ab1d51878",
+"reading": {
+"accept": "python3 src/RimMandrake/rimflow/maturation.py certificate FlowWorks --run reads all three green (recorded red at 1:34 AM PST 2026-11-16).",
+"bars": [
+"inv_raider_fetch_fallen",
+"inv_liquid_coating",
+"inv_toss_flame"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "FlowWorks sits at Stage 3 with three offline deciders red and no item owing them: T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE.",
+"proposed_fix": "For each of the three tests, build the feature or correct the test, offline.",
+"traps": []
+}
+},
 "RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN": {
 "at": "2026-11-16T00:30:39",
 "hash": "dbf83a8caf086279",
@@ -7386,17 +7404,15 @@
 }
 },
 "RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED": {
-"at": "2026-11-16T00:30:50",
-"hash": "4e18e92319450203",
+"at": "2026-11-16T02:14:26",
+"hash": "81d9b0c33cc427e7",
 "keep": [
 1,
-2,
-3,
-4
+2
 ],
-"keep_hash": "07d5c8d9ad9bb531",
+"keep_hash": "a8213e2927e44a1e",
 "reading": {
-"accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_walk_moat_season --out <json> on the calm site exits 0 with every row PASS on his full list; offline selftest red at 2b4bffe212, green on the fix.",
+"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_walk_moat_season --out <json> on the calm site exits 0 with every row PASS on his full list. Offline: selftest red at 2b4bffe212, green on fix.",
 "bars": [
 "walk_moat_season"
 ],
@@ -7405,25 +7421,17 @@
 "depends_on": [
 "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
 ],
-"text": "Visit 1's toggle off/on row passing did not show the toggle works: the engine reads the setting only at load (EngineSwitch snaps) unless depthEngineLiveForTests is set, so off/on never reached the engine."
+"text": "The visit 1 toggle row's PASS did not test the engine: the engine reads the setting only at game load unless depthEngineLiveForTests is set, so the old off/on never turned it off."
 }
 ],
-"changed": "scene_walk_moat_season now asks 8 rows (pond pays, pays again, no leftovers, log clean, mid-way reload, pre-fill control, toggle, switch-off holds), refuses vacuous reads, and sets depthEngineLiveForTests since the old off/on never reached the engine. Selftest_walk_scene.py added; selftest_bridge_args covers single-quoted drivers.",
+"changed": "scene_walk_moat_season now asks pond pays, reload digest (mid-way save), pre-fill control, toggle off/on, switch-off holds water, pays again, no leftovers, log clean, swimmer survives reload, and the second order (chemfuel first, water drain after). The old off/on never reached the engine (EngineSwitch snaps at load); the scene now sets depthEngineLiveForTests. _ph_swim crash on a tuple cell fixed.",
 "class": "problem",
-"defect": "FlowWorks sc_walk asked only the toggle and save/reload on the 316-mod list; pond paying again, no leftovers and clean log were not asked, and the first PASS was vacuous (absent keys).",
-"proposed_fix": "Ask the remaining rows and refuse vacuous reads (all-zero vector, REFUSED reply, event never happened reads UNMEASURED). Then run the live scene on the calm site with the full list.",
+"defect": "scene_walk_moat_season asked only the toggle and save/reload rows on the 316-mod list; pond paying again, no leftovers and clean log were not asked, and the first PASS was vacuous (absent keys).",
+"proposed_fix": "Ask the remaining rows (log row through the repo's measure path, not a PATH lookup); rows must refuse a vacuous read (all-zero vector, REFUSED reply, event that never happened reads UNMEASURED).",
 "traps": [
 {
-"text": "Offline half landed in 6ec30d8736 but live acceptance is UNRUN (needs bridge and the 316-mod list); do not read it as closed. The work was also left in an orphan bundle.",
-"where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261116T000711Z-RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED.det"
-},
-{
-"text": "Coordinates O=(60,60) are unverified on the calm site; the bar's second order (chemfuel first, drain water after) and a swimmer in the mid-way save are not asked.",
-"where": "scene_walk_moat_season"
-},
-{
-"text": "selftest_bridge_args only picked up files calling bridge tools in double quotes, so concept_scenes.py and three other drivers were never checked.",
-"where": "src/RimMandrake/FlowWorks/northstar/selftest_bridge_args.py"
+"text": "Closed on the offline selftests only; the live acceptance test is UNRUN. Not asked: prisoners at the save; chemfuel is poured (ProofFillWithFluid), not pumped. Coordinates O=(60,60) and spawn into 2 m water unverified live.",
+"where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py scene_walk_moat_season"
 }
 ]
 }
@@ -7848,31 +7856,26 @@
 }
 },
 "RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN": {
-"at": "2026-11-16T00:30:53",
-"hash": "431a53bc2fd99c0c",
+"at": "2026-11-16T02:14:26",
+"hash": "642b7722755250d6",
 "keep": [
-1,
-2
+1
 ],
-"keep_hash": "048b6e436bb5b1b3",
+"keep_hash": "a6427d0b5175f4d3",
 "reading": {
 "accept": "Offline selftest red at 8caccd561c, green at HEAD; visit 2 reruns sc_fill_front and sc_fill_tiers live, each a single PASS row.",
 "bars": [
 "fill_level_legible"
 ],
 "causes_refuted": [],
-"changed": "Offline half only: selftest_fill_scenes_dig_first.py (4ec7f0f266) runs every STAGE3 concept scene against a fake refusing an undug fill, and plot_B_fill_tiers against a decilitre fake engine. 6 FAIL at 8caccd561c, 45 ok at HEAD. The plot_B_fill_tiers description is corrected.",
+"changed": "selftest_fill_scenes_dig_first.py added at 4ec7f0f266: scene_fill_front, scene_one_surface, scene_pawn_height and scene_walk_moat_season filled an undug head cell, and fill_tier_under_quarter_metre_look was hard-wired UNMEASURED (6 FAIL at 8caccd561c, 45 ok at HEAD). plot_B_fill_tiers' description fixed.",
 "class": "problem",
-"defect": "sc_fill_front and sc_fill_tiers earlier FAIL rows were fixed in harness-only changes (3ed7c2c5c0) with no red-before test. Four scenes filled an undug head cell and fill_tier_under_quarter_metre_look was hard-wired UNMEASURED.",
-"proposed_fix": "Offline selftest that every cell a concept scene fills is dug first and plot_B_fill_tiers has no component hard-wired UNMEASURED. Then rerun sc_fill_front and sc_fill_tiers live in visit 2.",
+"defect": "sc_fill_front and sc_fill_tiers earlier FAIL rows were fixed in the harness with no red-before test: scenes filled undug head cells, and plot_B fill_tier_under_quarter_metre_look was hard-wired UNMEASURED.",
+"proposed_fix": "Add an offline selftest that every cell a concept scene fills is dug first and that plot_B_fill_tiers has no component hard-wired UNMEASURED; rerun both scenes live in visit 2.",
 "traps": [
 {
-"text": "The item is not closed: the live half (visit 2 reruns of sc_fill_front via concept_scenes.py --scene scene_fill_front and sc_fill_tiers via extension_proof.py --chains plot_B_fill_tiers) is unrun and needs the bridge. The offline pin alone does not prove the live rows.",
-"where": "design/concepts/FlowWorks/version/in_game/visit_1/run_row.py"
-},
-{
-"text": "The earlier PASS rows 1 and 19 came from harness fixes, not mod fixes; the FAIL rows 0 and 18 were harness faults at mod sha 8caccd561c.",
-"where": "visit_1/rows.jsonl rows 0, 1, 18, 19"
+"text": "Closed on the offline selftest only; the two live reruns are UNRUN. Also selftest_review_map is red at HEAD (5 new defs not on the review map), filed separately.",
+"where": "src/RimMandrake/FlowWorks/northstar/selftest_fill_scenes_dig_first.py; in_game/unrun.jsonl"
 }
 ]
 }
@@ -8037,68 +8040,54 @@
 }
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED": {
-"at": "2026-11-16T00:30:58",
-"hash": "385b8079eb54d0b2",
+"at": "2026-11-16T02:14:26",
+"hash": "ef6ba381b19a2e33",
 "keep": [
-1,
-2,
-3
+1
 ],
-"keep_hash": "c8fbd032078b6ecc",
+"keep_hash": "a363559a6067f09f",
 "reading": {
-"accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_garden_scene.py.",
+"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json> on the calm site exits 0 with every row PASS; vacuous reads give UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
 "bars": [
-"inv_sprinklers",
 "inv_converters",
-"inv_drilling"
+"inv_sprinklers",
+"inv_drilling",
+"inv_overflow_sheet"
 ],
 "causes_refuted": [],
-"changed": "scene_garden rebuilt with five separately piped nets, a drill pouring into its dug outlet, a walled 5x5 yard with a 3 cm sheet, and colonists fed every 2,500 ticks (governed chunks). Added RM_NorthstarProofs.ProofDrill and Building_LiquidDrill.PendingUnits.",
+"changed": "scene_garden rebuilt at c6da40ed34: five separately piped nets, a drill into a dug outlet, a walled 5x5 yard with a 3 cm sheet, run in governed 2,500-tick chunks with colonists fed between. Eight GARDEN_* rows, UNMEASURED on a vacuous read. Added RM_NorthstarProofs.ProofDrill and Building_LiquidDrill.PendingUnits.",
 "class": "problem",
-"defect": "scene_garden read UNMEASURED: machines were placed side by side with no pipe, and the 60,000-tick run fed no one, so the clock stopped at tick 480 on starving colonists. Five blind-cycle cases and three planted faults went unseen.",
-"proposed_fix": "Stage converter, still, pump-fed sprinkler and drill piped together on a fed colony; see the five owed cases; each planted fault must turn a row red; vacuous reads give UNMEASURED.",
+"defect": "scene_garden placed machines unpiped and ran 60,000 ticks without feeding anyone, so the clock stopped (GovernorStop) at tick 480 on starving colonists; the five owed cases and three planted faults were never seen.",
+"proposed_fix": "Stage converter, still, pump-fed sprinkler and drill piped together on a fed colony; see the five owed cases and make each planted fault (CALLER_CONV_DROPS_CLIPPED, CALLER_SPR_SPRAYS_WITHOUT_PUMP, DEF_STILL_RATE_TENFOLD) turn a row red.",
 "traps": [
 {
-"text": "The live run needs the rebuilt DLL deployed first, because the scene uses the new ProofDrill probe. The live acceptance is UNRUN.",
-"where": "RM_NorthstarProofs.ProofDrill; scene_garden"
-},
-{
-"text": "The scene sets converterRateMultiplier 4.1, because otherwise batches divide exactly and a dropped clip cannot show; it also sets drillUnitsPerCycle 0.3 and sheetOverflowEnabled on, and restores all three.",
-"where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py scene_garden"
-},
-{
-"text": "Not covered by the scene: the bottle fill/empty/wash jobs (only the faucet drink is staged) and the subsurface survey roll (the scene sets the yield).",
-"where": "scene_garden"
+"text": "Live run needs the rebuilt DLL deployed first. Not covered: bottle fill/empty/wash jobs (only the faucet drink is staged) and the subsurface survey roll (the scene sets the yield). Closed on the offline selftest only.",
+"where": "src/RimMandrake/FlowWorks/northstar/selftest_garden_scene.py; concept_scenes.py scene_garden"
 }
 ]
 }
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE": {
-"at": "2026-11-16T00:30:58",
-"hash": "8d8facff01840b69",
+"at": "2026-11-16T02:14:26",
+"hash": "826d35593c3345f1",
 "keep": [
-1,
-2
+1
 ],
-"keep_hash": "108cb429fbacc8d2",
+"keep_hash": "18d0b35d71340178",
 "reading": {
-"accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_hose_look --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_hose_look_scene.py.",
+"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_hose_look --out <json> on the calm site exits 0 with every row PASS. Offline selftest red at 2b4bffe212, green on fix.",
 "bars": [
 "hose_reads_as_hose"
 ],
 "causes_refuted": [],
-"changed": "scene_hose_look now stages the proof_hose realflow plot (3-cell channel, charged battery, reel facing the far tank, hose laid by HoseProbe lay:); rows HOSE_plump_when_flowing, HOSE_tinted_carried_liquid, HOSE_flat_when_not and HOSE_control_unpowered_stays_flat; a missing read or unpowered flowing pump reads UNMEASURED.",
+"changed": "scene_hose_look rebuilt at b3bfaa7038 on proof_hose realflow scene 0: dug and filled channel, charged battery, reel facing the far tank, hose laid via HoseProbe. Rows: plump when flowing, tint, flat when not, unpowered control; a missing read or unpowered pump reads UNMEASURED.",
 "class": "problem",
-"defect": "scene_hose_look read UNMEASURED: the draft pump had no source, power or laid hose, so plump-vs-flat was never asked and 'flat' passed by default.",
-"proposed_fix": "Stage from proof_hose.py's realflow scene-0 plot: channel dug and filled, charged battery, reel facing the far tank, hose laid via HoseProbe.",
+"defect": "The sc_hose_look draft pump had no source, power or laid hose, so plump-vs-flat was never asked; flat passed by default.",
+"proposed_fix": "Stage from proof_hose.py's realflow site; rows must read UNMEASURED on a vacuous read.",
 "traps": [
 {
-"text": "The live half of the acceptance is UNRUN, so the fix at b3bfaa7038 is proven only against the offline fake.",
-"where": "scene_hose_look; selftest_hose_look_scene.py"
-},
-{
-"text": "The scene does not cover the spec's relay, four-styles or span start items.",
-"where": "scene_hose_look"
+"text": "Closed on the offline selftest only (live UNRUN). The spec's relay, four-styles and span start items are not covered.",
+"where": "src/RimMandrake/FlowWorks/northstar/selftest_hose_look_scene.py"
 }
 ]
 }
@@ -8252,40 +8241,52 @@
 }
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID": {
-"at": "2026-11-16T00:31:19",
-"hash": "e00d5c0bdad24cd0",
-"reading": {
-"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pit_trap_raid --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline: a selftest red at 2b4bffe212, green on the fix.",
-"bars": [],
-"causes_refuted": [],
-"changed": null,
-"class": "problem",
-"defect": "sc_pit_trap_raid read UNMEASURED because the clock gate stopped on the raid the scene fired itself (GovernorStop hostile_arrival).",
-"proposed_fix": "Advance with the hostile_arrival gate waived for the raid the scene fired.",
-"traps": []
-}
-},
-"RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE": {
-"at": "2026-11-16T00:31:19",
-"hash": "1dd41b56a8cd3ba8",
+"at": "2026-11-16T02:14:26",
+"hash": "d986c703739e0644",
 "keep": [
 1
 ],
-"keep_hash": "819be017f87327f4",
+"keep_hash": "57f25efe57a4b919",
 "reading": {
-"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_source_pays --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline: a selftest red at 2b4bffe212, green on the fix.",
+"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pit_trap_raid --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
+"bars": [
+"moat_raid_sequence",
+"raiders_fetch_their_fallen"
+],
+"causes_refuted": [],
+"changed": "Published e9f2f50fd215: _pit_trap_raid advances with hostile_arrival waived for its own raid and orders RM_CaptureDown from the north lip on each fallen raider. Rows PTR_two_fall, PTR_fallen_become_prisoners, control; REFUSED or vacuous reads UNMEASURED.",
+"class": "problem",
+"defect": "scene_pit_trap_raid stopped on the raid it fired itself (GovernorStop hostile_arrival), so its rows read UNMEASURED.",
+"proposed_fix": "Advance with the hostile_arrival gate waived for the raid the scene fired.",
+"traps": [
+{
+"text": "Closed on the offline selftest only. Unverified live: a 700-pt raid reaching the trap, two falls, capture inside 900 ticks.",
+"where": "src/RimMandrake/FlowWorks/northstar/selftest_pit_trap_raid_scene.py"
+}
+]
+}
+},
+"RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE": {
+"at": "2026-11-16T02:14:26",
+"hash": "792c33a0cc64665d",
+"keep": [
+1
+],
+"keep_hash": "9faf6c50a6b59f03",
+"reading": {
+"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_source_pays --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
 "bars": [
 "source_pays_and_refills"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "Published e9f2f50fd215: _source_pays digs and fills a 20x10 pond (0.5 m shelf, 2 m core) on the calm site. Rows SRC_pond_drops, SRC_shore_recedes, SRC_control_tap_zero, SRC_flow_stops_when_empty, SRC_refill_visible, SRC_lake_reads_endless.",
 "class": "problem",
-"defect": "sc_source_pays assumes a natural pond and a lake the calm map lacks, so the row reads UNMEASURED.",
-"proposed_fix": "Stage a dug pond on the calm site and read the lake on a lake map (the river map reads Endless: evidence/sc_river__endless_read.txt).",
+"defect": "scene_source_pays assumed a natural pond and a lake that the calm map lacks, so it read UNMEASURED.",
+"proposed_fix": "Stage a dug pond on the calm site; read the lake on a lake map (the river map reads Endless).",
 "traps": [
 {
-"text": "Reading the lake on the river map is not valid for the lake row: the river map reads Endless.",
-"where": "evidence/sc_river__endless_read.txt"
+"text": "SRC_lake_reads_endless reads UNMEASURED on the calm site (no limitless body there); it is owed on the river site. Closed on the offline selftest only; drain timing, rain refill and sink at (59,65) unverified live.",
+"where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _source_pays, SRC_lake_reads_endless"
 }
 ]
 }
@@ -8314,26 +8315,32 @@
 }
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF": {
-"at": "2026-11-16T00:31:19",
-"hash": "4f2dcbca92513254",
+"at": "2026-11-16T02:14:20",
+"hash": "627e0007c76b6e53",
 "keep": [
-1
+1,
+2
 ],
-"keep_hash": "0624148cdf1eb382",
+"keep_hash": "a729a7d805037742",
 "reading": {
-"accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_trench_cover --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline: a selftest red at 2b4bffe212, green on the fix.",
+"accept": "Live: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_trench_cover --out <json> on the calm site exits 0, every row PASS, vacuous reads UNMEASURED. Offline: selftest red at 2b4bffe212, green on fix.",
 "bars": [
-"trench_gives_cover"
+"trench_gives_cover",
+"inv_trench_cover"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "_trench_cover now reads combat cover via RM_TrenchCover.ProofTrenchCover with trench_cover_proof.py's readers (trench colonist vs open-ground twin, gunner 10 cells square-on) and stages a real raid under RAID_STOP_ON; no raider within 3 cells reads UNMEASURED.",
 "class": "problem",
-"defect": "sc_trench_cover read ProofCover (pit lids), not combat cover, and its raider row passed with no raid on the map (a false pass).",
-"proposed_fix": "Read combat cover as trench_cover_proof.py does (ProofTrench) and stage a real raid for TR_no_raider_shelters_in_pit.",
+"defect": "FlowWorks sc_trench_cover read ProofCover (pit lids) instead of combat cover, and its raider row passed with no raid staged, so the scene gave a false pass (visit_1 rows 39 and 57).",
+"proposed_fix": "Read combat cover as trench_cover_proof.py does and stage a real raid for TR_no_raider_shelters_in_pit; no raider within 3 cells reads UNMEASURED.",
 "traps": [
 {
-"text": "trench_cover_proof.py already reads 6 cover rows PASS live; the scene's cover read is a different, wrong proof, so those 6 PASS do not cover the scene's raid rows, which are still owed.",
-"where": "evidence/sc_trench_cover__proof_*.json; design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl rows 39, 57"
+"text": "Closed on the offline selftest only (selftest_trench_cover_scene.py, 14/14 green at e9f2f50fd215). The live scene run is UNRUN, so the raid reaching the trench in 6000 ticks and the Mercenary_Gunner ranged read are unverified.",
+"where": "design/concepts/FlowWorks/version/in_game/unrun.jsonl; scene_trench_cover"
+},
+{
+"text": "The old sc_trench_cover draft showed 6 cover rows PASS (evidence/sc_trench_cover__proof_*.json), but they read pit lids (ProofCover), not combat cover, and the raider row passed with no raid. Those passes prove nothing about trench cover.",
+"where": "evidence/sc_trench_cover__proof_*.json; visit_1/rows.jsonl rows 39, 57"
 }
 ]
 }
@@ -8376,26 +8383,52 @@
 }
 },
 "RIMMANDRAKE_REPAIR_FLOWWORKS_OL_SHADOW_JUDGE_PRESUMED_STALE": {
-"at": "2026-11-16T00:31:19",
-"hash": "8944544c49a4fd3f",
+"at": "2026-11-16T02:14:20",
+"hash": "88dcd09e182e2ee9",
 "keep": [
-1
+1,
+2,
+3,
+4,
+5
 ],
-"keep_hash": "40010698677e177a",
+"keep_hash": "cd496af7e6d969f7",
 "reading": {
-"accept": "The owner_look_regressions command of row 63 on a freshly staged big pit reads 0 FAIL, 0 UNMEASURED, and a planted shadow-over-the-sheet build reads FAIL.",
+"accept": "owner_look_regressions command (rows.jsonl line 64) on a freshly staged big pit reads 0 FAIL, 0 UNMEASURED; a planted shadow-over-the-sheet build reads FAIL.",
 "bars": [
 "inv_looks"
 ],
-"causes_refuted": [],
-"changed": null,
+"causes_refuted": [
+{
+"depends_on": [
+"RM_UnderLiquid.cs",
+"RM_SubmergeDraw.cs"
+],
+"text": "The mod's shadow draw was not wrong: RM_UnderLiquid.cs:150-154 keeps dry shadow alpha under clear liquid and RM_SubmergeDraw.cs:450-459 draws it at UnderSheetQueue 2448 < SheetQueue 2449; the 130 live FAIL shadows read 0.3 = dry alpha. The judge was stale."
+},
+{
+"depends_on": [
+"owner_look_regressions.py"
+],
+"text": "The 7 OL_labels_fade FAILs were not label defects: tops sit exactly at the 1 m line and LabelAlpha=1 by design; the old judge counted share=1 as under."
+}
+],
+"changed": "owner_look_regressions.py shadow judge now passes dry alpha in clear water and FAILs alpha 0, faded, or queue>=2449; label judge decides by line-over-top instead of counting share=1 as under; vacuous reads are UNMEASURED.",
 "class": "problem",
-"defect": "OL_OWNER_LOOK_READS UNMEASURED: 130 OL_no_surface_shadow and 7 OL_labels_fade FAIL from a judge presumed stale against the design that draws the shadow under the liquid sheet (RM_UnderLiquid.ThingShadow, owner 2026-11-12).",
-"proposed_fix": "Confirm the 11-12 design text, then repair OL_no_surface_shadow and OL_labels_fade to expect the shadow under the sheet and re-pin in version/bars.md with a journal line if the bar's meaning is unchanged.",
+"defect": "OL_OWNER_LOOK_READS gave 130 OL_no_surface_shadow FAILs and 7 OL_labels_fade FAILs from an owner-look judge that expected the wrong shadow behaviour; the mod's draw was correct.",
+"proposed_fix": "Repair the OL_no_surface_shadow and OL_labels_fade judges to the shadow-under-the-sheet design; re-pin in bars.md only if the bar's meaning is unchanged.",
 "traps": [
 {
-"text": "This is a criterion-flaw candidate for a neutral fixer, never the builder. If the bar's words themselves are wrong, it is the owner's card (before and after text). Nothing was weakened in visit 1; 2 BLOCKED and 1 UNMEASURED rows are also owed.",
-"where": "design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl rows 50, 51, 63; strange.jsonl"
+"text": "Closed on the offline selftest only (selftest_owner_look_regressions.py, 36/36 green; red 14 before). The live rerun on a freshly staged big pit is UNRUN.",
+"where": "design/concepts/FlowWorks/version/in_game/unrun.jsonl"
+},
+{
+"text": "The ticket cites the OL command as row 63 of rows.jsonl; it is line 64.",
+"where": "design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl"
+},
+{
+"text": "The 2 BLOCKED rows are by design (hooked items) and the 1 UNMEASURED row is the pour row run without --acts; neither is a mod fault. The new row OL_no_surface_shadow_under_sheet stays BLOCKED until the shadow queue is reported.",
+"where": "owner_look_regressions.py; OL_no_surface_shadow_under_sheet"
 }
 ]
 }
@@ -8418,6 +8451,31 @@
 {
 "text": "A later re-make at 4b37a37db9 reads GSS's compiled DLL (types, entry-point parameter types, RebuildContacts -> ExternalContacts -> registered sources), not its source text; it is red on a GSS build without the ExternalContacts call or with RegisterLiveWireSource's parameter changed.",
 "where": "DeckCollapseLinesChecks.cs; T_PIT_COVER"
+}
+]
+}
+},
+"RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER": {
+"at": "2026-11-16T02:14:20",
+"hash": "5aedd929d644b968",
+"keep": [
+1
+],
+"keep_hash": "e6631fea61a0c8d7",
+"reading": {
+"accept": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py with the new case red before the fix and green after; live owner_look_regressions.py on a staged big pit reads OL_no_surface_shadow_under_sheet PASS, not BLOCKED.",
+"bars": [
+"inv_looks"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "ProofSubmerge does not report the shadow draw queue, so the judge cannot see draw order and OL_no_surface_shadow_under_sheet reads BLOCKED ON HOOK.",
+"proposed_fix": "ProofSubmerge appends shadowQueue=<ShadowMat(q).renderQueue>; add a FlowWorks C# SelfTest case pinning ShadowMat renderQueue == UnderSheetQueue (2448).",
+"traps": [
+{
+"text": "The new SelfTest case does not exist yet, so it has not been watched red; the C# was not built when this was filed.",
+"where": "src/RimMandrake/Utils/selftest_flowworks_stock.py"
 }
 ]
 }
@@ -8626,6 +8684,36 @@
 {
 "text": "Unblocking PyrelandsMechanics does not make it ready: its exam still fails its control after unblocking.",
 "where": "PyrelandsMechanics exam"
+}
+]
+}
+},
+"RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL": {
+"at": "2026-11-16T02:14:20",
+"hash": "32b04cb9ba27f5ee",
+"keep": [
+1,
+2
+],
+"keep_hash": "dbec94db603ae6cf",
+"reading": {
+"accept": "none, no acceptance test filed; the live repro (haul beside a sealed pit) completes only when the sealed stack is destroyed.",
+"bars": [
+"inv_pit_access"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "Toils_Haul.CheckForGetOpportunityDuplicate retargets a haul at a same-def stack within 8 cells inside a sealed pit (raised ladder). The path errors (ErroredPather at GotoThing), the carried stack drops on the ladder cell, and the same haul repeats every ~500 ticks.",
+"proposed_fix": "Harmony on CheckForGetOpportunityDuplicate: prefix wraps extraValidator as t => (orig==null||orig(t)) && !RM_SuperdeepTrap.RelativeVeto(t.Map, A.Position, t, PathEndMode.ClosestTouch, A), A a [ThreadStatic] actor; postfix sets A=toil.actor around initAction.",
+"traps": [
+{
+"text": "FlowWorks' pit reach rule lives in a CanReach postfix (RM_SuperdeepTrap.RelativeVeto), which the region search used by GenClosest.ClosestThingReachable never calls, so reach checks look correct but do not cover the duplicate-pickup search.",
+"where": "RM_SuperdeepTrap.RelativeVeto; Toils_Haul.CheckForGetOpportunityDuplicate"
+},
+{
+"text": "ExplosiveKnockback's scene was relaid so its lanes no longer interact (f03d8d4f4a); that hides the defect there but it remains in FlowWorks for any player hauling beside a sealed pit.",
+"where": "design/concepts/ExplosiveKnockback/version/in_game/road_back_2026-11-16/"
 }
 ]
 }

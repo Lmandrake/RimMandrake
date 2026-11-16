@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 0.1416,
+"spent_usd_last_run": 0.0161,
 "tickets": {
 "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS": {
 "at": "2026-11-16T00:25:29",
@@ -808,19 +808,22 @@
 }
 },
 "RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT": {
-"at": "2026-11-16T00:25:15",
-"hash": "832dd7d6ec356639",
+"at": "2026-11-16T02:13:49",
+"hash": "bfa0921f581233b9",
 "keep": [
 1,
 2,
 3,
 4,
 5,
-6
+6,
+7,
+8,
+9
 ],
-"keep_hash": "9289ed4cf77df31d",
+"keep_hash": "bc4dbebf0b228c60",
 "reading": {
-"accept": "Live: python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 60000 reads PASS with pits dry (FAIL on 2d0685e9e6); plus an offline selftest red before the fix.",
+"accept": "Live: python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 60000 reads PASS with pits dry; plus an offline selftest of the found cause, red before the fix.",
 "bars": [
 "pit_goods_fetched",
 "inv_pit_floor_haul"
@@ -828,44 +831,52 @@
 "causes_refuted": [
 {
 "depends_on": [
-"RM_Building_Ladder.SpawnSetup",
+"RM_Building_Ladder",
 "RM_LadderUtility"
 ],
-"text": "Ladder placement: RM_Building_Ladder.SpawnSetup re-hangs the portable ladder on the wall with the biggest drop, so it at O(2,0) faces the rim O(1,0), and RM_LadderUtility.Reaches gives LadderReaches(4,0,6)=true."
+"text": "Portable ladder misplaced: RM_Building_Ladder.SpawnSetup re-hangs it on the wall with the biggest drop, so the ladder at O(2,0) faces the rim O(1,0) and LadderReaches(4,0,6) is true."
+},
+{
+"depends_on": [],
+"text": "Stale reachability masks: spawn and despawn bump the climb generation, push a cell delta and clear reachability."
+},
+{
+"depends_on": [],
+"text": "Stale StateVersion from SpawnSetup: per-tick ladder-join caches (LadderJoinsFor, LadderEdgesOwned) reset every tick, so staleness lasts one tick at most."
+},
+{
+"depends_on": [],
+"text": "Ladder closed to colonists or pit goods forbidden: ClosedLaddersFor returns null for player colonists and neither mod forbids pit goods."
 },
 {
 "depends_on": [
-"LadderJoinsFor",
-"LadderEdgesOwned"
+"RM_SuperdeepTrap"
 ],
-"text": "Stale reachability masks: spawn and despawn bump the climb generation, push a cell delta and clear reachability; the per-tick ladder-join caches reset every tick, so a stale StateVersion lasts one tick at most."
+"text": "Reach veto (RM_SuperdeepTrap.RelativeVeto) or work giver never offering the job as the cause: the hauler's live job log showed the haul was offered and went wrong via vanilla duplicate pickup retargeting to the control pit's stack."
 },
 {
 "depends_on": [
-"ClosedLaddersFor"
+"RM_KnockbackProof.cs"
 ],
-"text": "Closed ladders or forbidden pit goods: ClosedLaddersFor returns null for player colonists and neither mod forbids pit goods."
-},
-{
-"depends_on": [
-"RM_PitPathing.TryPlan",
-"RM_LadderRules"
-],
-"text": "RM_PitPathing.TryPlan and RM_LadderRules.LadderLetsOut/Reaches for the portable ladder add nothing: with cliff masks on only ClosedLaddersFor applies (null for colonists) and OutsiderBarredFromFloor is retired."
+"text": "'corpse out=True' was read as proof of descent; the corpse sat on the pit's edge row, so a rim hauler could touch it without descending."
 }
 ],
-"changed": null,
+"changed": "Moved the control pit out of the 8-cell duplicate-pickup range so the haul no longer retargets to its raised-ladder stack, and put the corpse inside the 5-wide pit; offline guard selftest_explosiveknockback_pit_fetch.py went red to green. Live acceptance passed 4 of 5.",
 "class": "problem",
-"defect": "sc_pit_fetch FAIL with dry pits (AridShrubland, DLL 2d0685e9e6, rain off, 60000 ticks): the hauler never climbs down the portable ladder; stack out=False, 20 steel left at O(3,0); earlier passes were swims.",
-"proposed_fix": "With a game up on the minimal list, stage pit_goods_fetch, run set_colonist_job_logging on the hauler, then ProofRoute(h,O(3,0)), CanReach(h,steel,ClosestTouch), RM_SuperdeepTrap.RelativeVeto; fix whichever answers false, with an offline selftest red first.",
+"defect": "In sc_pit_fetch with the pits dry, the hauler never climbed down the portable ladder for the steel stack at O(3,0). Vanilla's duplicate-pickup step retargeted the haul to the control pit's stack 6 cells away, whose ladder is raised; the path errored, the stack was dropped, and the job looped.",
+"proposed_fix": "Relay the scene: move the control pit out of the 8-cell duplicate-pickup range into the far corner, put the corpse inside a 5-wide main pit. The FlowWorks veto defect is filed separately and untouched.",
 "traps": [
 {
-"text": "corpse out=True does not show the hauler descended: the corpse at O(3,1) is on the pit's edge row, so a rim hauler at O(3,2) can touch it. Only the steel at O(3,0) needs the ladder. Gap filed as RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE (proposed, unworked).",
-"where": "sc_pit_fetch / pit_goods_fetch scene in RM_KnockbackProof.cs"
+"text": "Run 1 of the acceptance command FAILED (corpse out=False, first scene on a fresh map) with unread cause; PASS is 4 of 5, not 5 of 5.",
+"where": "knockback_runner.py --scenes pit_goods_fetch, run 1"
 },
 {
-"text": "Earlier sc_pit_fetch passes were swims (wet pits), so they say nothing about ladder descent.",
-"where": "sc_pit_fetch earlier rows"
+"text": "The underlying FlowWorks defect (veto unseen by GenClosest, so duplicate pickup crosses a sealed pit) is still open and hits players; the scene relay only avoids it.",
+"where": "RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL"
+},
+{
+"text": "The visit-2 'earlier passes' were not descents of the ladder (title says swims); with pits dry a pass must show the hauler in the pit.",
+"where": "design/concepts/ExplosiveKnockback/version/in_game/visit_2/rows.jsonl sc_pit_fetch"
 }
 ]
 }
@@ -920,39 +931,54 @@
 }
 },
 "RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES": {
-"at": "2026-11-16T00:25:15",
-"hash": "99139c3395d87471",
+"at": "2026-11-16T02:13:49",
+"hash": "058a93d8ae8f3974",
 "keep": [
 1,
 2,
-3
+3,
+4,
+5
 ],
-"keep_hash": "e6ddff33acdd9453",
+"keep_hash": "371615fe1e218aaf",
 "reading": {
-"accept": "Live: the command in the sc_walk_raid row of visit_2/rows.jsonl exits 0 (exit 1 on 61567a7b75); each MOD cause also gets an offline selftest red before its fix.",
+"accept": "Live: the sc_walk_raid row command in design/concepts/ExplosiveKnockback/version/in_game/visit_2/rows.jsonl exits 0 (exit 1 on 61567a7b75); each MOD cause also gets an offline selftest red before its fix.",
 "bars": [
-"walk_storeroom_raid"
+"walk_storeroom_raid",
+"gas_goes_clump_by_clump",
+"barrage_frame_budget",
+"frame_time_probe"
 ],
 "causes_refuted": [
 {
 "depends_on": [
 "validation.py"
 ],
-"text": "A_RELOAD_NO_DUP_LOST 11 vs 7 was a harness defect, not the mod: run 2 compared a census before the save with one after load a tick apart (PauseOnLoad runs one DoSingleTick) while shell 1's wave was still spreading."
-}
-],
-"changed": "Harness fixes at 44e13a3c7a: reload row now uses saveload_triplet (live/load/reload at save+10); the walk reads living pawns on the cover before the grenade and their fate after (ev.grenade); blast-killed pawns pair with their corpse outcome (ev.killed_by_blast); every gas burst kept in ev.gas_bursts.",
-"class": "problem",
-"defect": "sc_walk_raid FAIL at visit 2 (10 PASS 6 FAIL, FRAME_BUDGET UNMEASURED): A_RELOAD_NO_DUP_LOST 11 before save, 7 after reload; cover gone with 0 descents; gas cells burst twice; Human38765 has no outcome.",
-"proposed_fix": "Re-run sc_walk_raid live with the proof build; classify the cover and gas rows from ev.grenade and ev.gas_bursts; each MOD cause found gets an offline selftest red before its fix.",
-"traps": [
-{
-"text": "The cover rows may be unmeasurable by scene design: [guess ~70%] the drafted colonist was killed by the frag grenade on his own cell (Bomb 50), and a corpse never descends (Building_PitCover.DeSpawn takes Pawn things only). If confirmed, the scene goes to the Designer.",
-"where": "walk_storeroom_raid A/B_COVER_BROKEN_ONE_DESCENT"
+"text": "Reload loss was not a mod defect: the census compared a pre-save tick with one a tick after load (PauseOnLoad runs one DoSingleTick) while shell 1's wave was spreading; later, things born after the save take id, cell and count from the RNG."
 },
 {
-"text": "B_REQUESTS_MATCH_PLAN Human38765 is guessed (~70%) a blast-killed pawn requested by name but executed as its corpse (Corpse_<race><id>); a harness pairing issue, not confirmed.",
-"where": "walk_storeroom_raid B_REQUESTS_MATCH_PLAN"
+"depends_on": [
+"RM_KnockbackProof.cs"
+],
+"text": "Cover breaks with 0 descents were not the mod: the first storeroom shell broke the cover and dropped its rider before the grenade (site design)."
+}
+],
+"changed": "Reload row: judged census now uses saveload_triplet and holds only the save's things. Cover rows: grenade now first, cover read before it. Gas rows: EK bursts a vent-gas cell at most once per 600 ticks (GasCellOnceTicks). Request row: blast-killed pawn paired with its corpse outcome. Live runs 8 and 9 on 1089aaadce: 17 of 17 judged rows PASS.",
+"class": "problem",
+"defect": "sc_walk_raid failed 6 rows at visit 2: A_RELOAD_NO_DUP_LOST (11 before save, 7 after reload), A/B_COVER_BROKEN_ONE_DESCENT (0 descents), A/B_GAS_CLUMP_BY_CLUMP (cells burst twice in 900 ticks), B_REQUESTS_MATCH_PLAN (Human38765 no outcome). FRAME_BUDGET is unmeasured by construction.",
+"proposed_fix": "Build the frame probe bridge read (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED) so RM_FrameProbe can be read, then rerun the sc_walk_raid row command with --save EK_WALK_RAID_BASE_20261115T173148.",
+"traps": [
+{
+"text": "FRAME_BUDGET reads UNMEASURED by construction until RM_FrameProbe has a bridge read, so the walk cannot exit 0 even when all 17 judged rows pass.",
+"where": "sc_walk_raid row, FRAME_BUDGET"
+},
+{
+"text": "A corpse never descends (Building_PitCover.DeSpawn takes Pawn things only); a cover row with no living rider or a rider killed by the grenade is SITE UNMEASURED, not a mod pass.",
+"where": "validation.py walk_storeroom_raid, ev.grenade"
+},
+{
+"text": "A blast-killed pawn is requested by name but executed as its corpse (Corpse_<race><id>), so it looks like a missing outcome unless paired via ev.killed_by_blast.",
+"where": "validation.py B_REQUESTS_MATCH_PLAN"
 }
 ]
 }
@@ -1250,27 +1276,27 @@
 }
 },
 "RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE": {
-"at": "2026-11-16T00:25:37",
-"hash": "4fa237e7b71ca3c8",
+"at": "2026-11-16T02:13:49",
+"hash": "3f58bae5a93d1212",
 "keep": [
 1
 ],
-"keep_hash": "bb8bf7cc91f7d6c2",
+"keep_hash": "57276b18b93465e4",
 "reading": {
-"accept": "Offline selftest parsing the pit_goods_fetch block asserting all 8 touch neighbours of the corpse and stack cells lie inside the main Pit rect (not yet written; watch it red on base 1e4264f663 first); live knockback_runner.py --scenes pit_goods_fetch unrun.",
+"accept": "Offline: a selftest parsing the pit_goods_fetch block asserts all 8 touch neighbours of corpse and stack cells lie inside the main Pit rect (red on the old layout); plus live knockback_runner.py --scenes pit_goods_fetch.",
 "bars": [
 "pit_goods_fetched",
 "inv_pit_floor_haul"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "Main pit widened to 5 wide with the corpse at its interior O(6,5); guard G2 (corpse and stack not touchable from undug ground) red on the old layout, green now; live sc_pit_fetch PASS with hauler in pit (runs 2-5).",
 "class": "problem",
-"defect": "In sc_pit_fetch the corpse at O(3,1) sits on the 3x3 pit's edge row, so a hauler on the rim can touch it without descending. 'Corpse out' therefore does not prove ladder use.",
-"proposed_fix": "Dig the main pit 3x4 (Pit(O(s,2,-1),3,4)) so O(3,1) is interior; stockpiles at z=5 and the hauler at z=3 stay outside.",
+"defect": "In pit_goods_fetch the corpse at O(3,1) sits on the 3x3 pit's edge row, so a hauler on the rim at O(3,2) can touch it without descending; 'corpse out' proves no ladder use. Only the steel at O(3,0) needs the ladder.",
+"proposed_fix": "Dig the main pit larger so all 8 touch neighbours of the corpse and stack cells lie inside the pit (e.g. Pit(O(s,2,-1),3,4)); keep stockpiles and hauler outside.",
 "traps": [
 {
-"text": "Visit 2's 'corpse out=True with hauler in pit=False' reads as a pass but fits a rim pickup: Pit(O(2,-1),3,3) digs x2..4 z-1..1 and O(3,2), the corpse's north neighbour, is undug rim. Only the steel at O(3,0) has all eight neighbours in the pit.",
-"where": "RM_KnockbackProof.cs pit_goods_fetch"
+"text": "Under the old layout 'corpse out=True' did not show the hauler descended; the corpse was reachable from the surface rim.",
+"where": "RM_KnockbackProof.cs pit_goods_fetch, Pit(O(2,-1),3,3)"
 }
 ]
 }
@@ -1647,48 +1673,42 @@
 }
 },
 "RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO": {
-"at": "2026-11-16T00:26:00",
-"hash": "9e7bdb5b2888d9e1",
+"at": "2026-11-16T02:13:49",
+"hash": "500d38f07bc2756d",
 "keep": [
 1,
 2,
-3,
-4
+3
 ],
-"keep_hash": "d720513a2562f6af",
+"keep_hash": "93a50ff6e5c934f2",
 "owner": [],
 "owner_hash": "2f7e89a0c246a688",
 "reading": {
-"accept": "Live: python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25 on the full list reads barrage_perf PASS, windowP99Ms <= 50.",
+"accept": "Live: python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25 on the full list reads the control under 50 ms in window and barrage PASS.",
 "bars": [
-"barrage_frame_budget"
+"barrage_frame_budget",
+"frame_time_probe"
 ],
 "causes_refuted": [
 {
 "depends_on": [
 "design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_barrage_perf_2026-11-15/FINDINGS.md"
 ],
-"text": "Control spikes fall outside the barrage window, so restricting the worst-frame statistic to the window would fix it: refuted. With the mod off the worst in-window frame is 151.3/54.4/100.8 ms, over 50 ms in 3 of 3 runs."
-},
-{
-"depends_on": [
-"design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_barrage_perf_2026-11-15/FINDINGS.md"
-],
-"text": "The mod's barrage causes the visit-2 failures: the mod-on in-window worst frames are 28.9/25.8/75.3 ms; the failing 153.9/65.3/155.2 ms all fall outside the window (list noise of ~0.13 frames >50 ms per second)."
+"text": "Mod-caused frame spikes: the visit's 153.9/65.3/155.2 ms barrage worst frames all fall outside the barrage window; mod-on in-window worst was 28.9/25.8/75.3 ms."
 }
 ],
-"changed": "Bar reworded to p99 frame in the 0.9-8.25 s window <= 50 ms (worst frame reported, not judged), so one random list stall no longer fails it; stages 2-4 re-pinned at 6dbf3b7021 and tree recertified. The live acceptance run is still unrun.",
+"changed": "sc_barrage_perf bar reworded to p99 frame in the 0.9-8.25 s window <= 50 ms (a probe stopping before 8.25 s fails); stages 2-4 re-pinned; live acceptance passed 3 of 3 with window p99 32.1/20.3/20.4 ms.",
 "class": "problem",
-"defect": "sc_barrage_perf judged the worst frame on the full 316-mod list; the mod-off control's worst frame in the barrage window (0.9-8.25 s) is 151.3/54.4/100.8 ms, over the 50 ms bar in 3 of 3 runs, so the instrument cannot see the barrage's cost.",
-"proposed_fix": "Reword sc_barrage_perf to the 99th-percentile frame inside the 0.9-8.25 s barrage window, at most 50 ms; worst frame reported, not judged; a probe stopping before 8.25 s fails.",
+"defect": "sc_barrage_perf failed the 50 ms worst-frame bar because even the mod-off control's worst frame (104-151 ms) exceeded it; the criterion measured list noise, not the mod.",
+"proposed_fix": "Reword the bar to the 99th-percentile frame inside the barrage window (0.9-8.25 s), at most 50 ms; report the worst frame without judging it.",
 "traps": [
 {
-"text": "The offline p99 selftest passing is not the acceptance test: the live run on the proof build and full list has not run, so barrage_perf PASS is not yet shown live.",
-"where": "selftest_explosiveknockback_barrage_p99.py vs knockback_runner.py live run"
+"text": "The mod-off control's in-window worst frame is 151.3/54.4/100.8 ms, over 50 in 3 of 3 runs, so the old worst-frame bar could never pass; the full mod list also stalls over 50 ms about 0.13 times per second outside the window.",
+"where": "sc_barrage_perf, barrage_perf_off control"
 },
 {
-"text": "A 200 ms single stall passes the p99 bar by design, while 1.5 s at 75 ms and 2 s at 55 ms stalls fail. It does not catch isolated spikes.",
-"where": "sc_barrage_perf p99 window statistic"
+"text": "The tree.json/sheet.md wording is held as a patch because the owner's certificate is bound to the tree hash; the reworded bar lives in the criterion, not yet in those files.",
+"where": "criterion_repairs/sc_barrage_perf_2026-11-15/tree_sheet_rewording.patch"
 }
 ]
 }

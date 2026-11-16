@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "e10cd5f43e364fc902e6cf5bebab52cca7a5cb8293721d586cd97c9d7c80d937",
+  "body_sha256": "0f6dcc1dd5b0583cae458ee17ea5d87dc0fda7135d7203ef12eebd1457d618b1",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 972259,
+   "BACKFILL": 939545,
    "DISPATCH": 1331,
    "HOLDER.run-1794816885": 928,
    "STEWARD": 2597
@@ -17,7 +17,7 @@
      "by_card": "Flat dead-end channel fills far end first — the look you want? → No: wet front moves out from the mouth"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:03Z"
+    "ts": "2026-11-16T10:24:36Z"
    },
    "decision:finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL": {
     "answer": "Connect it today and make it tremendous. ... a powerful, intense fire that should feel like you lit a moat of gasoline ... Then there's astrofuel. That should simply be a massive explosion that burns all of it up almost instantly ... In Utinni such a thing should instantly summon raids ... and massive imperial heat increase.",
@@ -33,7 +33,7 @@
      "owner_said": "The enigmatic floor/pile of planks next to the bridge remains present. It was supposed to be removed on all bridges. The raised bridges were explicitly not supposed to be straight up. Stop."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING": {
     "answer": "Make the pipes half as thick. Flexible hoses need to be much thinner too",
@@ -52,12 +52,12 @@
     "ts": "2026-11-16T08:33:02Z"
    },
    "decision:finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
-    "answer": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules",
+    "answer": "Who goes down into a pit to tend or rescue → Anyone who can climb out",
     "authority": {
-     "by_card": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules"
+     "by_card": "Who goes down into a pit to tend or rescue → Anyone who can climb out"
     },
     "question": null,
-    "ts": "2026-11-16T08:52:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY": {
     "answer": "Endless readout: keep the depth? → keep \"Endless (about 2 m deep)\"",
@@ -65,7 +65,7 @@
      "by_card": "Endless readout: keep the depth? → keep \"Endless (about 2 m deep)\""
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH": {
     "answer": "Pit ladder → Keep it, with a warning; Thirst bed → Start with bottles",
@@ -81,7 +81,7 @@
      "owner_said": "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall. Enemies can fall if the pit is concealed or they are forced/blown in."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:02Z"
+    "ts": "2026-11-16T10:24:36Z"
    },
    "decision:finding:FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE": {
     "answer": "No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously.",
@@ -89,7 +89,7 @@
      "owner_said": "No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE": {
     "answer": "Ladder: colonist job or instant? → a colonist walks over to do it",
@@ -113,7 +113,7 @@
      "by_card": "What lights your moat? → New 'toss a flame' order (Recommended)"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:FLOWWORKS_SLUICE_TWO_DOORS_1": {
     "answer": "There are sealed sluice gates (standard) and the ones made of metal grates that always allow liquid (this is just a gate, not a sluice gate then). Yes, both, two kinds of door.",
@@ -156,12 +156,12 @@
     "ts": "2026-11-16T08:33:02Z"
    },
    "decision:finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
-    "answer": "And the hose is going under the battery and wall... we used to be better than this.",
+    "answer": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
     "authority": {
-     "owner_said": "And the hose is going under the battery and wall... we used to be better than this."
+     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
     },
     "question": null,
-    "ts": "2026-11-16T08:52:06Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
     "answer": "You'll find this might not predict how they'll look in the game when connected in various ways",
@@ -177,7 +177,7 @@
      "by_card": "D1 scheme → A: litres, metres, 0.5 m notch"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:03Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
     "answer": "May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings",
@@ -193,7 +193,7 @@
      "by_card": "Pit cover → Yes, they fall"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:PIT_PRISON_JUDGE_D3_ROOMS": {
     "answer": "Should 3-deep pits work as prisons → Superdeep only, as designed",
@@ -209,15 +209,7 @@
      "by_card": "GPT review Q6 → ponds pump to last dL"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
-   },
-   "decision:finding:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
-    "answer": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move",
-    "authority": {
-     "by_card": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move"
-    },
-    "question": null,
-    "ts": "2026-11-16T08:33:06Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING": {
     "answer": "What should happen to the five FlowWorks settings that do nothing? -> Remove them now",
@@ -260,12 +252,12 @@
     "ts": "2026-11-16T08:33:06Z"
    },
    "decision:finding:RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER": {
-    "answer": "Noted that when the pawn climbed the ladder up and down, they remain in the slowed/climbing mode long after they visually leave the ladder (almost twice the vertical length), so that should be altered to only correspond when they are crossing the ladder texture itself.",
+    "answer": "The colonist DID slow and speed back up climbing the ladder more accurate to its size than before.",
     "authority": {
-     "owner_said": "Noted that when the pawn climbed the ladder up and down, they remain in the slowed/climbing mode long after they visually leave the ladder (almost twice the vertical length), so that should be altered to only correspond when they are crossing the ladder texture itself."
+     "owner_said": "The colonist DID slow and speed back up climbing the ladder more accurate to its size than before."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES": {
     "answer": "Fill N → Delete it (Design A: exact dL/metres only, fill N gone from code/tools/tests, 'Water stands exactly level' switch removed, pit depth stays whole 0.5 m notches); Wet from → Above 5 cm; Waterline → Follow it smoothly (walls, ladders, spikes cut at true level); Test water → Per body",
@@ -281,7 +273,7 @@
      "owner_said": "Shadows should ALWAYS be inside the pit only for \"negative height items\" like a pit of course. But it's not that \"a full pit just hides shadows\" it should simply be transparent to them as usual. It's much more that they're only inside the pit."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS": {
     "answer": "We go as chosen in this version. Fixes for ripples come after live viewing them and next version.",
@@ -297,15 +289,15 @@
      "by_card": "A tap backs up and leaves its channel half full under the new water engine: which behaviour do you want? -> Pour whatever fits"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:06Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:finding:RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH": {
-    "answer": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. […]",
+    "answer": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death.",
     "authority": {
-     "by_card": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. […]"
+     "by_card": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death."
     },
     "question": null,
-    "ts": "2026-11-16T07:16:30Z"
+    "ts": "2026-11-16T10:12:24Z"
    },
    "decision:finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
     "answer": "The tanks should have switchable art like everything else in here. I don't see the switch.",
@@ -321,7 +313,7 @@
      "by_card": "Cut scope → Thirst: drop Dubs interop"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "decision:q:2026-11-04-owner-1793796507483890758-concept": {
     "answer": "2026-11-04 (OWNER:1793796507483890758): concept budgets are advisory.",
@@ -380,12 +372,12 @@
     "ts": "2026-11-16T07:16:29Z"
    },
    "decision:q:fountain-sculptures-design-water-meets-art": {
-    "answer": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. […]",
+    "answer": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground.",
     "authority": {
-     "owner_said": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. […]"
+     "owner_said": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground."
     },
     "question": null,
-    "ts": "2026-11-16T07:16:30Z"
+    "ts": "2026-11-16T10:12:24Z"
    },
    "decision:q:gss-walk-hoses-excise-reeled-in": {
     "answer": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...",
@@ -418,6 +410,14 @@
     },
     "question": null,
     "ts": "2026-11-16T07:29:25Z"
+   },
+   "decision:q:rimmandrake-advance-flowworks-offline-beside-the-pilot": {
+    "answer": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move",
+    "authority": {
+     "by_card": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move"
+    },
+    "question": null,
+    "ts": "2026-11-16T10:12:27Z"
    },
    "decision:q:rimmandrake-design-knockback-first-touch": {
     "answer": "SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.",
@@ -858,15 +858,6 @@
     "text": "C5-F1 (flood-fed driver inputs not saved): driver-input marks only seed flow ORDER for a 5000-tick window, no volume is lost, so no change was made.",
     "ts": "2026-11-16T08:32:29Z"
    },
-   "cause:c5-f2-refused-cells-forgotten-on-reload-is": {
-    "code_sha": "17a082d2d09a",
-    "depends_on": [
-     "src/RimMandrake/FlowWorks"
-    ],
-    "status": "refuted",
-    "text": "C5-F2 (refused cells forgotten on reload) is not a bug: a forgotten refusal is re-offered once after load, spends no volume and re-decides by current state (documented at IsFrontCell).",
-    "ts": "2026-11-16T08:32:29Z"
-   },
    "cause:c7a-f8-corridor-hash-walking-the-whole-bounding": {
     "code_sha": "19b45b92e815",
     "depends_on": [
@@ -1047,15 +1038,6 @@
     "text": "Stale row: the failure was not merely an out-of-date result; a re-run still failed (class HARNESS+MOD, not stale).",
     "ts": "2026-11-16T08:32:35Z"
    },
-   "cause:t-pit-cover-going-red-was-not-a": {
-    "code_sha": "cf6efc30552e",
-    "depends_on": [
-     "src/RimMandrake/FlowWorks"
-    ],
-    "status": "refuted",
-    "text": "T_PIT_COVER going red was not a FlowWorks pit-cover defect: GSS changed a RebuildContacts signature that the source-text check pinned. Fixed upstream in cf6efc3055, and the check now reads the compiled DLL and stays green when a RebuildContacts parameter is added.",
-    "ts": "2026-11-16T08:32:46Z"
-   },
    "cause:the-10-18-t6-fail-dehydration-0-075": {
     "code_sha": "4b6120a31eee",
     "depends_on": [
@@ -1064,6 +1046,15 @@
     "status": "refuted",
     "text": "The 10-18 T6 FAIL (dehydration 0.075 against 0.30 expected) was not a mod defect: it traced to the harness before fix 025f7fdbfa, in which the pawn was not drafted and drank.",
     "ts": "2026-11-16T08:32:52Z"
+   },
+   "cause:the-7-ol-labels-fade-fails-were-not": {
+    "code_sha": "e9f2f50fd215",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks"
+    ],
+    "status": "refuted",
+    "text": "The 7 OL_labels_fade FAILs were not label defects: tops sit exactly at the 1 m line and LabelAlpha=1 by design; the old judge counted share=1 as under.",
+    "ts": "2026-11-16T10:15:09Z"
    },
    "cause:the-7cae6d72be18-live-fail-row-125-125-lacks": {
     "code_sha": "7cae6d72be18",
@@ -1147,15 +1138,6 @@
     "text": "The L5 run 1 miss was not a mod fault: its 300-tick wait was shorter than the 375-tick flow lease.",
     "ts": "2026-11-16T08:32:21Z"
    },
-   "cause:the-live8-fail-mod-on-lower-only-from": {
-    "code_sha": "f26cc003c25f",
-    "depends_on": [
-     "src/RimMandrake/FlowWorks/northstar/drawbridge_proof.py"
-    ],
-    "status": "refuted",
-    "text": "The live8 FAIL MOD on LOWER_ONLY_FROM_WINCH and RAID_UP was later resolved: the 2026-10-22 belt run passed 12/12 including RAID_UP assault+sapper.",
-    "ts": "2026-11-16T08:32:16Z"
-   },
    "cause:the-melt-row-passing-with-no-ice-was": {
     "code_sha": "c074be9f79f8",
     "depends_on": [
@@ -1164,6 +1146,15 @@
     "status": "refuted",
     "text": "The melt row passing with no ice was not a mod result: it read the pond's own fill water, so it passed with no ice anywhere.",
     "ts": "2026-11-16T08:32:49Z"
+   },
+   "cause:the-mod-s-shadow-draw-was-not-wrong": {
+    "code_sha": "e9f2f50fd215",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks"
+    ],
+    "status": "refuted",
+    "text": "The mod's shadow draw was not wrong: RM_UnderLiquid.cs:150-154 keeps dry shadow alpha under clear liquid and RM_SubmergeDraw.cs:450-459 draws it at UnderSheetQueue 2448 < SheetQueue 2449; the 130 live FAIL shadows read 0.3 = dry alpha. The judge was stale.",
+    "ts": "2026-11-16T10:15:09Z"
    },
    "cause:the-mod-was-not-at-fault-the-fails": {
     "code_sha": "3a2dfdf4b15a",
@@ -1273,15 +1264,6 @@
     "text": "The throw was not FlowWorks code: it is a vanilla 1.6 Odyssey bug. RM_Patch_LiquidHeatTerrainChanged was only listed on the Harmony stack of the patched TerrainGrid.DoTerrainChangedEffects and never ran, because the original threw first.",
     "ts": "2026-11-16T08:32:31Z"
    },
-   "cause:the-title-s-open-question-mod-vs-arrayworld": {
-    "code_sha": "4706f9eacdb9",
-    "depends_on": [
-     "src/RimMandrake/FlowWorks"
-    ],
-    "status": "refuted",
-    "text": "The title's open question 'MOD vs ArrayWorld gap vs superseded property' was settled as a real level-set kernel bug in the mod.",
-    "ts": "2026-11-16T08:32:43Z"
-   },
    "cause:the-two-failures-were-not-caused-by-sump": {
     "code_sha": "14b5a573688a",
     "depends_on": [
@@ -1290,6 +1272,15 @@
     "status": "refuted",
     "text": "The two failures were not caused by SUMP_TAR_FIRE_NETWORK_1's fire-gate diff; the cases were stale tests, and both pass without source or test changes at 14b5a573688a.",
     "ts": "2026-11-16T08:32:30Z"
+   },
+   "cause:the-visit-1-toggle-row-s-pass-did": {
+    "code_sha": "f1e06be47a88",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
+    ],
+    "status": "refuted",
+    "text": "The visit 1 toggle row's PASS did not test the engine: the engine reads the setting only at game load unless depthEngineLiveForTests is set, so the old off/on never turned it off.",
+    "ts": "2026-11-16T10:15:07Z"
    },
    "cause:the-walk-claimed-the-flood-never-calls-setterrain": {
     "code_sha": "88c2da130de3",
@@ -1316,8 +1307,8 @@
      "src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProofWorks.cs"
     ],
     "status": "refuted",
-    "text": "Undecided SITE-vs-MOD only by one live print. - The \"weir at the map edge\" reading is REFUTED. `FindWeirSite` (`src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProofWorks.cs:24-69`) already skips a margin of `weirPoolLength + 4` = 12 cells (`RM_RiversSettings.cs:57`, default 8); […]",
-    "ts": "2026-11-16T07:16:28Z"
+    "text": "Undecided SITE-vs-MOD only by one live print. - The \"weir at the map edge\" reading is REFUTED. `FindWeirSite` (`src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProofWorks.cs:24-69`) already skips a margin of `weirPoolLength + 4` = 12 cells (`RM_RiversSettings.cs:57`, default 8)",
+    "ts": "2026-11-16T10:12:08Z"
    },
    "cause:wakes-truly-off-in-the-mod-the-later": {
     "code_sha": "90a7e94f4c4d",
@@ -1343,7 +1334,7 @@
     },
     "by": "BACKFILL",
     "text": "Flat dead-end channel fills far end first — the look you want? → No: wet front moves out from the mouth",
-    "ts": "2026-11-16T08:33:03Z"
+    "ts": "2026-11-16T10:24:36Z"
    },
    "finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL": {
     "authority": {
@@ -1359,7 +1350,7 @@
     },
     "by": "BACKFILL",
     "text": "The enigmatic floor/pile of planks next to the bridge remains present. It was supposed to be removed on all bridges. The raised bridges were explicitly not supposed to be straight up. Stop.",
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING": {
     "authority": {
@@ -1379,11 +1370,11 @@
    },
    "finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
     "authority": {
-     "by_card": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules"
+     "by_card": "Who goes down into a pit to tend or rescue → Anyone who can climb out"
     },
     "by": "BACKFILL",
-    "text": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules",
-    "ts": "2026-11-16T08:52:05Z"
+    "text": "Who goes down into a pit to tend or rescue → Anyone who can climb out",
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY": {
     "authority": {
@@ -1391,7 +1382,7 @@
     },
     "by": "BACKFILL",
     "text": "Endless readout: keep the depth? → keep \"Endless (about 2 m deep)\"",
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH": {
     "authority": {
@@ -1407,7 +1398,7 @@
     },
     "by": "BACKFILL",
     "text": "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall. Enemies can fall if the pit is concealed or they are forced/blown in.",
-    "ts": "2026-11-16T08:33:02Z"
+    "ts": "2026-11-16T10:24:36Z"
    },
    "finding:FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE": {
     "authority": {
@@ -1415,7 +1406,7 @@
     },
     "by": "BACKFILL",
     "text": "No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously.",
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE": {
     "authority": {
@@ -1439,7 +1430,7 @@
     },
     "by": "BACKFILL",
     "text": "What lights your moat? → New 'toss a flame' order (Recommended)",
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:FLOWWORKS_SLUICE_TWO_DOORS_1": {
     "authority": {
@@ -1483,11 +1474,11 @@
    },
    "finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
     "authority": {
-     "owner_said": "And the hose is going under the battery and wall... we used to be better than this."
+     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
     },
     "by": "BACKFILL",
-    "text": "And the hose is going under the battery and wall... we used to be better than this.",
-    "ts": "2026-11-16T08:52:06Z"
+    "text": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
     "authority": {
@@ -1503,7 +1494,7 @@
     },
     "by": "BACKFILL",
     "text": "D1 scheme → A: litres, metres, 0.5 m notch",
-    "ts": "2026-11-16T08:33:03Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
     "authority": {
@@ -1519,7 +1510,7 @@
     },
     "by": "BACKFILL",
     "text": "Pit cover → Yes, they fall",
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:PIT_PRISON_JUDGE_D3_ROOMS": {
     "authority": {
@@ -1535,15 +1526,7 @@
     },
     "by": "BACKFILL",
     "text": "GPT review Q6 → ponds pump to last dL",
-    "ts": "2026-11-16T08:33:04Z"
-   },
-   "finding:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
-    "authority": {
-     "by_card": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move"
-    },
-    "by": "BACKFILL",
-    "text": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move",
-    "ts": "2026-11-16T08:33:06Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING": {
     "authority": {
@@ -1587,11 +1570,11 @@
    },
    "finding:RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER": {
     "authority": {
-     "owner_said": "Noted that when the pawn climbed the ladder up and down, they remain in the slowed/climbing mode long after they visually leave the ladder (almost twice the vertical length), so that should be altered to only correspond when they are crossing the ladder texture itself."
+     "owner_said": "The colonist DID slow and speed back up climbing the ladder more accurate to its size than before."
     },
     "by": "BACKFILL",
-    "text": "Noted that when the pawn climbed the ladder up and down, they remain in the slowed/climbing mode long after they visually leave the ladder (almost twice the vertical length), so that should be altered to only correspond when they are crossing the ladder texture itself.",
-    "ts": "2026-11-16T08:33:05Z"
+    "text": "The colonist DID slow and speed back up climbing the ladder more accurate to its size than before.",
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES": {
     "authority": {
@@ -1607,7 +1590,7 @@
     },
     "by": "BACKFILL",
     "text": "Shadows should ALWAYS be inside the pit only for \"negative height items\" like a pit of course. But it's not that \"a full pit just hides shadows\" it should simply be transparent to them as usual. It's much more that they're only inside the pit.",
-    "ts": "2026-11-16T08:33:05Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS": {
     "authority": {
@@ -1623,15 +1606,15 @@
     },
     "by": "BACKFILL",
     "text": "A tap backs up and leaves its channel half full under the new water engine: which behaviour do you want? -> Pour whatever fits",
-    "ts": "2026-11-16T08:33:06Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "finding:RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH": {
     "authority": {
-     "by_card": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. […]"
+     "by_card": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death."
     },
     "by": "BACKFILL",
-    "text": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. […]",
-    "ts": "2026-11-16T07:16:30Z"
+    "text": "Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death.",
+    "ts": "2026-11-16T10:12:24Z"
    },
    "finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
     "authority": {
@@ -1647,7 +1630,7 @@
     },
     "by": "BACKFILL",
     "text": "Cut scope → Thirst: drop Dubs interop",
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T10:24:37Z"
    },
    "q:2026-11-04-owner-1793796507483890758-concept": {
     "authority": {
@@ -1707,11 +1690,11 @@
    },
    "q:fountain-sculptures-design-water-meets-art": {
     "authority": {
-     "owner_said": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. […]"
+     "owner_said": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground."
     },
     "by": "BACKFILL",
-    "text": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. […]",
-    "ts": "2026-11-16T07:16:30Z"
+    "text": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground.",
+    "ts": "2026-11-16T10:12:24Z"
    },
    "q:gss-walk-hoses-excise-reeled-in": {
     "authority": {
@@ -1744,6 +1727,14 @@
     "by": "BACKFILL",
     "text": "May we draft replacements for FlowWorks pipe art (real 3- and 4-way fittings, one coupling per joint, a matched end cap per look, three more pump looks)? → Draft all of it",
     "ts": "2026-11-16T07:29:25Z"
+   },
+   "q:rimmandrake-advance-flowworks-offline-beside-the-pilot": {
+    "authority": {
+     "by_card": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move"
+    },
+    "by": "BACKFILL",
+    "text": "Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move",
+    "ts": "2026-11-16T10:12:27Z"
    },
    "q:rimmandrake-design-knockback-first-touch": {
     "authority": {
@@ -1794,7 +1785,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1269,
+  "events": 1217,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1915,7 +1906,7 @@
     "status": "verified",
     "tags": [],
     "text": "A flat dead-end canal channel wets the far end first. The owner wants the wet front to move out from the mouth.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY": {
@@ -1932,7 +1923,7 @@
     "status": "verified",
     "tags": [],
     "text": "Since the level solve, source-fed canals wet only their first cell: a fed D=1 run sat at 1,0,0,0. Five validation_v2 fill rows failed: E2_channels_fill_every_direction, E3b_recession_shipped, E2s_shared_source_both_fill, E3_budget_exhaustion, E3n_budget_off_supplies.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:CANAL_SWIM_VERIFY_POISON_POOL_PARTY": {
@@ -2046,7 +2037,7 @@
     "status": "verified",
     "tags": [],
     "text": "A painted 5184-square lake with deep beds on read deepest=4, bedSum=19080, where the 2026-10-22 belt read 12. DL_lake_over_4000_is_limited and DL_drained_reads_gradual_hollow FAILED and both colonist rows were UNMEASURED.",
-    "ts": "2026-11-16T08:32:15Z",
+    "ts": "2026-11-16T10:11:49Z",
     "version": "0.1.0"
    },
    "finding:DEEP_SAND_FIX_READS_AS_FRESHWATER": {
@@ -2165,7 +2156,7 @@
     "status": "verified",
     "tags": [],
     "text": "Build the ruled FlowWorks drawbridge (timber hand-winch, steel powered): bascule leaf, gate leaf and plank art. Raising tips riders to the hinge bank without Collapse. Peace mode auto-lowers and any free hostile locks it. Raiders get trench rules, winch sappers and raid planks.",
-    "ts": "2026-11-16T08:32:16Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH": {
@@ -2233,7 +2224,7 @@
      "other-mod"
     ],
     "text": "Legacy rehydration re-reads filled-back channel cells as excavations on reload, and filling a channel with no recorded original terrain left channel terrain instead of surrounding ground.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED": {
@@ -2283,7 +2274,7 @@
     "status": "verified",
     "tags": [],
     "text": "The liquid-fire burn pulse may consume replacement water that refilled the cell (RM_LiquidFire.cs ~428-450); the path was unverified and had to be reproduced before fixing.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL": {
@@ -2299,7 +2290,7 @@
      "other-mod"
     ],
     "text": "A flood fills a D4 cell for only one volumePerTile (Flood_FlowWorks.cs ~333-343 vs RM_MapComponent_Excavation.cs ~1256-1261) instead of debiting the full depth filled.",
-    "ts": "2026-11-16T08:32:38Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:FLOOD_DRIVER_OWNERSHIP_CONTRACT_1": {
@@ -2315,7 +2306,7 @@
      "other-mod"
     ],
     "text": "Legacy flood conflicts with the engine's temp terrain, and TrySetDriverFill's single false conflates refusal reasons.",
-    "ts": "2026-11-16T08:32:38Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS": {
@@ -2349,7 +2340,7 @@
      "other-mod"
     ],
     "text": "With legacyFloodViaEngineEnabled off, a flood release restores the old flood/terrain race (Flood_FlowWorks.cs ~333, 353-354).",
-    "ts": "2026-11-16T08:32:38Z",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0"
    },
    "finding:FLOWPINS_FIX_PASS_ON_REGRESSION": {
@@ -2440,14 +2431,14 @@
      "fill_flows_along_canal"
     ],
     "by": "BACKFILL",
-    "claim": "Fixed at ddb4734162cf (pre-landing; landed as 64ff430d93db); the record names no change beyond its title",
+    "claim": "FlowWorks: fix east/north channel oscillation (FLOWWORKS_CHANNEL_OSCILLATION_1): rank-ordered flow, direction-independent, fills in length x depth pulses (recorded on pre-landing ddb4734162cf; landed as 64ff430d93db)",
     "class": "problem",
     "code_sha": "64ff430d93db",
     "proposed_fix": "none stated in the record.",
     "status": "claimed_fixed",
     "tags": [],
     "text": "A canal dug east or north from its water source never fills: water oscillates between cells forever. West and south canals fill normally.",
-    "ts": "2026-11-16T08:32:38Z",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CHECKOUT_SCOPE_1": {
@@ -2465,7 +2456,7 @@
      "other-mod"
     ],
     "text": "The FlowWorks walk's step 4 (doors, spikes, ladders, prison room, pump, bottles, shores, fire etc.) sat outside the basic checkout, so a green core proof said nothing about them. Underlying-terrain recovery and flood expiry have no live row.",
-    "ts": "2026-11-16T08:32:16Z",
+    "ts": "2026-11-16T10:11:51Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT": {
@@ -2532,7 +2523,7 @@
      "other-mod"
     ],
     "text": "In CompLiquidConverter (~line 265), the first blocked recipe truncates the shared budget, so a later bigger recipe is starved even though it has room to run.",
-    "ts": "2026-11-16T08:32:38Z",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE": {
@@ -2585,7 +2576,7 @@
      "test"
     ],
     "text": "After the drawbridges chain the game's main thread went silent from ~15:28:34Z for 400+ s, paused, with TPS watchdog phase frame-rest (PGuiRender) and heap creeping; the bridge static_call timed out and the game was force-killed. Cause unclassified, no stack.",
-    "ts": "2026-11-16T08:32:39Z",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_DONOR_AFFORDANCE_GAP_1": {
@@ -2635,7 +2626,7 @@
      "code"
     ],
     "text": "The depth readout over never-drying water must read \"Endless\"; drainable water must never show it.",
-    "ts": "2026-11-16T08:32:39Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_ENGINE_OFF_SCHEDULE_1": {
@@ -2651,7 +2642,7 @@
     "status": "verified",
     "tags": [],
     "text": "With the FlowWorks engine off, fire burns on its own timer and the pulse schedule is frozen (E4 and E1c live fails).",
-    "ts": "2026-11-16T08:32:39Z",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH": {
@@ -2704,7 +2695,7 @@
     "status": "verified",
     "tags": [],
     "text": "validation_v2 row P3 asserts the refusal of walking into a pit, since careless pathing into a pit is forbidden. The forced-entry half (flyer landing or explosive knockback into a D=4 pit with no ladder) was unmeasured.",
-    "ts": "2026-11-16T08:32:29Z",
+    "ts": "2026-11-16T10:12:01Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_GPT_B_FIX_ACID_FILL_TIERS": {
@@ -2749,14 +2740,14 @@
      "inv_hoses"
     ],
     "by": "BACKFILL",
-    "claim": "Fixed at 234620b32 (pre-landing; landed as 0f8ba4857d32); the record names no change beyond its title",
+    "claim": "Hose carry S4: live drawing (carried hose follows the walked trail to the hand, retract clip, animated cut-hose retract, LOD), endKind in the census (CR5c), HoseEnds/HoseEvents, free-end port find, deployed reel art while carrying (recorded on pre-landing 234620b32; landed as 0f8ba4857d32)",
     "class": "problem",
     "code_sha": "0f8ba4857d32",
     "proposed_fix": "Add a 'Deploy hose' pump-side order. A colonist carries the free end and the hose draws along the path actually walked, not a pre-planned polyline. Interruption drops the end, pickup resumes it, and retract reels it back.",
     "status": "claimed_fixed",
     "tags": [],
     "text": "A hose cannot be deployed to a location by a colonist dragging the free end out, shown unrolling live. An interrupted drag must drop the end where it lies, and the end must be pickable to carry on or back, or retractable from the pump.",
-    "ts": "2026-11-16T08:32:39Z",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_HOSE_FIX_NAN_WINDING_INSTANT": {
@@ -2982,7 +2973,7 @@
     "accept": "preflight_flowworks.py run against a deliberately dirtied copy (rain on, pre-filled plot cell, stray pawn, cold cell) refuses each and exits non-zero naming each failure, recorded in the item.",
     "bars": [],
     "by": "BACKFILL",
-    "claim": "Fixed at 73d377946ff8f01e1fd6a39d38fd513f8c61e465 (pre-landing; landed as f5292ce9a43f); the record names no change beyond its title",
+    "claim": "FLOWWORKS_NORTHSTAR_SITE_PREP_1: golden rebuilt on the current DLL; JawaBench excavation_drive passes TrySetDriverFill's new 3rd arg A lone roofed cell collapses within 250 ticks even with a wall beside it, so the golden carries no roofed twin. (recorded on pre-landing 73d377946ff8; landed as f5292ce9a43f)",
     "class": "problem",
     "code_sha": "f5292ce9a43f",
     "proposed_fix": "Build modset_builder.py tier flowworks (asserting mandrake.rm.pits absent), prep_site.py golden save with sidecar manifest, and preflight_flowworks.py implementing every §3.9 row, plus byte-exact ModsConfig/ModSettings backup/restore.",
@@ -2994,14 +2985,14 @@
      "other-mod"
     ],
     "text": "The FlowWorks trial needs a clean, reproducible test site: a golden save, per-cell manifest, and a preflight that refuses any dirty site.",
-    "ts": "2026-11-16T08:32:30Z",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_NORTHSTAR_TRIAL_1": {
     "accept": "python3 -m modcheck.cli status FlowWorks (from src/RimMandrake/Utils) prints GREEN, re-derived, on the full list.",
     "bars": [],
     "by": "BACKFILL",
-    "claim": "Fixed at 4f76420cb616 (pre-landing; landed as 7acc86918217); the record names no change beyond its title",
+    "claim": "FlowWorks northstar: rivers + machinery settings in site_spec (75 toggles); rivers suite registered; machinery hose/found-works chains; 11 rivers toggles named as owed (recorded on pre-landing 4f76420cb616; landed as 7acc86918217)",
     "class": "problem",
     "code_sha": "7acc86918217",
     "proposed_fix": "Close the children against real shas, run GREEN_FULL on the full list, re-derive GREEN via modcheck status FlowWorks, and close or park the §5 SHIPPED gaps.",
@@ -3012,7 +3003,7 @@
      "other-mod"
     ],
     "text": "FlowWorks north-star ladder (VALIDATED, WIRED, GREEN-minimal, GREEN-full, SHIPPED) is not complete; GREEN_FULL not run and the stored GREEN is stale.",
-    "ts": "2026-11-16T08:32:18Z",
+    "ts": "2026-11-16T10:11:52Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_NORTHSTAR_WIRE_1": {
@@ -3116,7 +3107,7 @@
      "other-mod"
     ],
     "text": "Colonists must never fall into a pit by pathing, only when blown or forced in; enemies fall when the pit is concealed or when forced. KEYSHEET stop 19 says a colonist walks in and climbs out, contradicting this.",
-    "ts": "2026-11-16T08:32:30Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1": {
@@ -3134,7 +3125,7 @@
      "other-mod"
     ],
     "text": "The near lip hides an occupant at every pit depth including D4.",
-    "ts": "2026-11-16T08:32:30Z",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PIT_PAWN_ROWS_RED_1": {
@@ -3166,7 +3157,7 @@
      "code"
     ],
     "text": "Flying, jumping and floating creatures must cross pits freely and land unhurt (bar jump_into_pit_lands_unhurt).",
-    "ts": "2026-11-16T08:32:40Z",
+    "ts": "2026-11-16T10:12:10Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PLAYTEST_CAMPAIGN_1": {
@@ -3185,7 +3176,7 @@
      "other-mod"
     ],
     "text": "Campaign to find FlowWorks bugs with new test methods and rich-screenshot art pre-review must end with a method-per-bug-class table and a verdict.",
-    "ts": "2026-11-16T08:32:30Z",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED": {
@@ -3202,7 +3193,7 @@
     "status": "verified",
     "tags": [],
     "text": "A drained moat or pit must act as a prison without a bed, and capture from the rim must work there. RM_PitRoomMath.cs:82 still needs a prisoner bed.",
-    "ts": "2026-11-16T08:32:40Z",
+    "ts": "2026-11-16T10:12:10Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PROBES_MEND_HOOK_HAZARDS": {
@@ -3274,7 +3265,7 @@
     "status": "verified",
     "tags": [],
     "text": "IsLiveMouth ignores pump/drill inlets, so a D=1 canal fed by a pump or drill stalls (RM_FlowKernel.cs:919).",
-    "ts": "2026-11-16T08:32:40Z",
+    "ts": "2026-11-16T10:12:10Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PUMP_FIX_POURS_BACK_STILL_THREE": {
@@ -3308,7 +3299,7 @@
      "code"
     ],
     "text": "Pump needs one port per side: a hose must attach at a side port, while a solid pipe joins whenever adjacent (corners included) and is drawn under to the pump centre.",
-    "ts": "2026-11-16T08:32:40Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN": {
@@ -3399,7 +3390,7 @@
     "accept": "L2: each row re-run on the current build reads PASS, or MOD-FAIL filed as its own item, or UNMEASURED with a reason. L0: mod_completion.py FlowWorks no longer lists any part whose row passed as broken.",
     "bars": [],
     "by": "BACKFILL",
-    "claim": "Fixed at c9af26496cca; the record names no change beyond its title",
+    "claim": "Built at c9af26496cca; no change named by its record or commit",
     "class": "problem",
     "code_sha": "c9af26496cca",
     "proposed_fix": "Re-run in one game-up: fw_live_checks.py W1_wakes_terrain_walked and L5_switched_off_hose_spills, glow_tank_live.py GLOWTANK_SALT_DRAWN_ONE_UNIT and GLOW_TANK_LIQUID_FEED_1 A2, the HOSE_SPILL A2 row, and the ladder/ramp rows; then re-run mod_completion.py.",
@@ -3410,7 +3401,7 @@
      "other-mod"
     ],
     "text": "mod_completion.py FlowWorks lists 13 broken parts although their fixes are closed, because the part's latest L2 row is the old failing one: the scripts holding those rows were not re-run on the current build.",
-    "ts": "2026-11-16T08:32:18Z",
+    "ts": "2026-11-16T10:11:52Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING": {
@@ -3460,7 +3451,7 @@
      "other-mod"
     ],
     "text": "RM_RiverColors.cs:160 path compression writes parent[] while enumerating parent.Keys, which can throw InvalidOperationException.",
-    "ts": "2026-11-16T08:32:41Z",
+    "ts": "2026-11-16T10:12:11Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL": {
@@ -3530,7 +3521,7 @@
      "other-mod"
     ],
     "text": "Two FlowWorks C# selftest cases were red: Pond_capacity_dug_out_and_back_in_any_order (DeepBedChecks.cs) and PipeTankRiser_wiring_link_stops_layer_prints_flange_follows (ReelRiserShadowChecks.cs, westward rim check).",
-    "ts": "2026-11-16T08:32:30Z",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS": {
@@ -3564,7 +3555,7 @@
     "status": "verified",
     "tags": [],
     "text": "The FlowWorks settings screen does not say when each setting takes effect (now, next pulse, new ponds only, new maps only), and has no per-section reset; source-budget and drill-odds sliders look broken.",
-    "ts": "2026-11-16T08:32:31Z",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER": {
@@ -3596,7 +3587,7 @@
     "status": "verified",
     "tags": [],
     "text": "FlowWorks Mod Settings lacks master switches and Reset all declared through the settings kit; wiring was written down instead of done.",
-    "ts": "2026-11-16T08:32:31Z",
+    "ts": "2026-11-16T10:12:03Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SHARED_SOURCE_STALL_1": {
@@ -3605,14 +3596,14 @@
      "fill_flows_along_canal"
     ],
     "by": "BACKFILL",
-    "claim": "Fixed at a8e179a4007f (pre-landing; landed as 1ca52175b919); the record names no change beyond its title",
+    "claim": "FlowWorks: fix shared-source stall (FLOWWORKS_SHARED_SOURCE_STALL_1): per-component source tracking; Northstar v2 GREEN live, 56 pass 0 fail in 1,030 ticks (recorded on pre-landing a8e179a4007f; landed as 1ca52175b919)",
     "class": "problem",
     "code_sha": "1ca52175b919",
     "proposed_fix": "none recorded",
     "status": "claimed_fixed",
     "tags": [],
     "text": "Two channels dug off one source cell: the second stalls at its inlet forever because the visited set is shared across components.",
-    "ts": "2026-11-16T08:32:41Z",
+    "ts": "2026-11-16T10:12:11Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES": {
@@ -3663,7 +3654,7 @@
     "status": "verified",
     "tags": [],
     "text": "Drains were set per component, not per region, and ordered by cell index, so a shut sluice before an edge drain left the canal upstream unfilled (RM_FlowKernel.cs:738).",
-    "ts": "2026-11-16T08:32:41Z",
+    "ts": "2026-11-16T10:12:11Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SLUICE_TWO_DOORS_1": {
@@ -3729,7 +3720,7 @@
     "status": "verified",
     "tags": [],
     "text": "FlowWorks pipes, tanks, hose reel and adapters were not placed in the build-menu tab where the major pipe mods (Vanilla Chemfuel/Helixien/Nutrient Paste Expanded) put theirs: the VCHE_PipeNetworks 'pipe networks' tab.",
-    "ts": "2026-11-16T08:32:31Z",
+    "ts": "2026-11-16T10:12:03Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_TANK_LOOP_ROW_WRONG_1": {
@@ -3848,7 +3839,7 @@
     "status": "verified",
     "tags": [],
     "text": "The owner's five visual rules for pits and liquids need drawing: deep cuts as tall walls, dirt/stone faces by neighbour terrain, animated water, tar as a black liquid, and a burned pit as a scorched empty pit. Drawing only, no mechanic changes.",
-    "ts": "2026-11-16T08:32:19Z",
+    "ts": "2026-11-16T10:11:53Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW": {
@@ -3952,7 +3943,7 @@
     "status": "verified",
     "tags": [],
     "text": "The settings UI promises a liquid can be switched off, but not every input honours it, so a switched-off liquid can still enter the map (e.g. rain into a canal).",
-    "ts": "2026-11-16T08:32:42Z",
+    "ts": "2026-11-16T10:12:12Z",
     "version": "0.1.0"
    },
    "finding:FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO": {
@@ -3968,7 +3959,7 @@
     "status": "verified",
     "tags": [],
     "text": "An exhausted fluid palette returns key 0, so a cell's fluid identity silently changes (RM_MapComponent_Excavation.cs ~303-319).",
-    "ts": "2026-11-16T08:32:19Z",
+    "ts": "2026-11-16T10:11:53Z",
     "version": "0.1.0"
    },
    "finding:FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN": {
@@ -4067,7 +4058,7 @@
     "status": "verified",
     "tags": [],
     "text": "RM_ScorchDebris_Char0 has a thick black keyline unlike its siblings; RM_StationSign has a baked oval ground shadow; RM_BankWeirSpill_* read as weak grey banded strips; Bottle_FreshWater looks photoreal beside outlined containers.",
-    "ts": "2026-11-16T08:32:32Z",
+    "ts": "2026-11-16T10:12:03Z",
     "version": "0.1.0"
    },
    "finding:FW_MOCK_FIX_PULSE_FORGOT_ITS_DL": {
@@ -4141,7 +4132,7 @@
      "other-mod"
     ],
     "text": "Proof bridge reads lack fields the proofs need: per-cell liquid/dL in excavation_rect (4.5, 7.12), dL in flowworks_pulse (6.2), InFloorBand read (6.4), proof_hose DLL stamp (7.1), hose_port P9 window (7.11), CR5 forced fallback (8.3).",
-    "ts": "2026-11-16T08:32:32Z",
+    "ts": "2026-11-16T10:12:04Z",
     "version": "0.1.0"
    },
    "finding:FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY": {
@@ -4213,7 +4204,7 @@
      "other-mod"
     ],
     "text": "mod_completion counted four parts broken (RM_Fluid_BoilingWater, RM_Liquid_BoilingWater, RM_WaterBoiling, RM_LiquidTank) by glow_tank_live.py GLOWTANK_SALT_DRAWN_ONE_UNIT and GLOW_TANK_LIQUID_FEED_1:A2: the glow tank salt draw did not read as one unit. Cause was filed UNMEASURED.",
-    "ts": "2026-11-16T08:32:32Z",
+    "ts": "2026-11-16T10:12:04Z",
     "version": "0.1.0"
    },
    "finding:GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES": {
@@ -4320,7 +4311,7 @@
      "other-mod"
     ],
     "text": "The liquid heat budget is spent from the start of the list every interval, so later-listed excavated and natural cells starve (RM_LiquidHeat.cs ~112-134).",
-    "ts": "2026-11-16T08:32:20Z",
+    "ts": "2026-11-16T10:11:54Z",
     "version": "0.1.0"
    },
    "finding:HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK": {
@@ -4354,7 +4345,7 @@
      "other-mod"
     ],
     "text": "HoseMath.WallDepth measured distance to a sample's own cell edge, so a hose centreline on the seam between two blocked cells read ~0 depth and passed Clear (ClipTolerance 0.06), drawing the hose through walls.",
-    "ts": "2026-11-16T08:32:32Z",
+    "ts": "2026-11-16T10:12:04Z",
     "version": "0.1.0"
    },
    "finding:HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE": {
@@ -4511,7 +4502,7 @@
     "status": "verified",
     "tags": [],
     "text": "A laid hose on RM_fw_walkthrough_20261022b map C is drawn under the yellow battery and through a wall. Walls must never be crossed; the under-building draw was deferred.",
-    "ts": "2026-11-16T08:32:20Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:HOSE_ROWS_FIX_FOUR_REDS_ON_STEVE": {
@@ -4582,7 +4573,7 @@
     "status": "verified",
     "tags": [],
     "text": "fw_live_checks L5_switched_off_hose_spills and TANK_DEBUG_BUILD_FILL_AT_WILL A1 failed for RM_Liquid_FreshWater; cause was UNMEASURED.",
-    "ts": "2026-11-16T08:32:20Z",
+    "ts": "2026-11-16T10:11:55Z",
     "version": "0.1.0"
    },
    "finding:HOSE_SPILL_MEND_POND_GETS_NOTHING": {
@@ -4667,7 +4658,7 @@
     "status": "verified",
     "tags": [],
     "text": "The FlowWorks joint gate did not measure the drawn collar box against each nozzle/port point, had no under-building or through-wall rows, no per-joint crop, and the walkthrough save did not refuse while the gate was red.",
-    "ts": "2026-11-16T08:32:33Z",
+    "ts": "2026-11-16T10:12:05Z",
     "version": "0.1.0"
    },
    "finding:LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING": {
@@ -4751,7 +4742,7 @@
     "status": "verified",
     "tags": [],
     "text": "The lava liquid the owner promoted by card 2026-09-24 was missing from the FlowWorks liquid registry. It is built at 3f6213543d1f; the Forge-map check A4 is still owed.",
-    "ts": "2026-11-16T08:32:21Z",
+    "ts": "2026-11-16T10:11:55Z",
     "version": "0.1.0"
    },
    "finding:LEVELLING_BUDGET_FIX_STARVES_LATER_HOSES": {
@@ -4851,7 +4842,7 @@
     "status": "verified",
     "tags": [],
     "text": "FlowWorks code, defs and settings must follow the ruled depth spec §7.2: one ruler in metres and litres, FillTier by metres of water, one MaxDepth, one burn rate, the 5:1 label and sourceBudgetMultiplier deleted, and labels and mouseover in metres.",
-    "ts": "2026-11-16T08:32:34Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_FIRE_MEND_COVER_AND_SAVE": {
@@ -4938,7 +4929,7 @@
     "status": "verified",
     "tags": [],
     "text": "Liquid looks must own their materials: tar/propane/water channels each keep their own colour, and toggling liquid looks off and on several times must restore vanilla water with no colour bleed.",
-    "ts": "2026-11-16T08:32:44Z",
+    "ts": "2026-11-16T10:12:13Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB": {
@@ -4972,7 +4963,7 @@
     "status": "verified",
     "tags": [],
     "text": "Pond recession must use same-body neighbours, never fragment into separate wet patches, scan in bounded fashion, and keep a sub-cell residual so a drawn-down pond keeps one wet cell.",
-    "ts": "2026-11-16T08:32:44Z",
+    "ts": "2026-11-16T10:12:13Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_ROTATION_FIX_STARVED_STRANGER": {
@@ -5005,7 +4996,7 @@
     "status": "verified",
     "tags": [],
     "text": "RM_LiquidTheft.Witness uses the 3-arg GenSight.LineOfSight, which ends at the tank's Position cell only; the 2x2 RM_LiquidTank's other three cells block sight, so a witness approaching through any other cell never sees it and live L6 caught 0 in a day.",
-    "ts": "2026-11-16T08:32:34Z",
+    "ts": "2026-11-16T10:12:05Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_THEFT_VERIFY_FALSE_ACCUSATION": {
@@ -5038,7 +5029,7 @@
      "other-mod"
     ],
     "text": "fw_live_checks W1_wakes_terrain_walked failed/was unmeasured: the row never stood a pawn on the liquids, wanted RM_Fill_Water where dug water settles to RM_WaterThin, never toggled liquidWakesEnabled or counted wakes. RM_LiquidSurface.LookFor returned null for RM_WaterThin.",
-    "ts": "2026-11-16T08:32:35Z",
+    "ts": "2026-11-16T10:12:06Z",
     "version": "0.1.0"
    },
    "finding:MAP_STATICS_PRUNE_GHOST_MAPS": {
@@ -5088,7 +5079,7 @@
      "other-mod"
     ],
     "text": "The machinery player mission's goal (northstar/player_missions.py ~677-693) accepts ANY filled tank rather than the destination tank.",
-    "ts": "2026-11-16T08:32:44Z",
+    "ts": "2026-11-16T10:12:13Z",
     "version": "0.1.0"
    },
    "finding:MODCHECK_SUITE_CORRECTIONS_1": {
@@ -5159,7 +5150,7 @@
      "other-mod"
     ],
     "text": "The natural-heat cache trusts terrain for 15,000 ticks after it changes (GPT G3.9, hook unverified), so room warming can continue after a hot pool is drained.",
-    "ts": "2026-11-16T08:32:22Z",
+    "ts": "2026-11-16T10:11:56Z",
     "version": "0.1.0"
    },
    "finding:NATURAL_LIQUID_FIX_PUMPS_AS_FRESH_WATER": {
@@ -5294,7 +5285,7 @@
     "status": "verified",
     "tags": [],
     "text": "Deconstructing a pit cover must drop whoever stands on it into the pit, same as destruction (fire/damage) already does.",
-    "ts": "2026-11-16T08:32:44Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:PIT_ENTRY_PROVE_DONE_BUT_STILL_RED": {
@@ -5310,7 +5301,7 @@
     "status": "verified",
     "tags": [],
     "text": "RM_Ladder and RM_PitRamp are listed broken by mod_completion because WATERED_PIT_FIX_NO_WAY_IN (done) and PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH carry a non-pass latest verify; real regression or instrument miscount was unseparated.",
-    "ts": "2026-11-16T08:32:35Z",
+    "ts": "2026-11-16T10:12:06Z",
     "version": "0.1.0"
    },
    "finding:PIT_FALL_MEND_SAVED_MIDAIR": {
@@ -5544,7 +5535,7 @@
      "other-mod"
     ],
     "text": "A natural pond did not pump to the last decilitre as a dug channel does. With exact-level on, a pump should drain it to 0 dL.",
-    "ts": "2026-11-16T08:32:45Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:POND_RECESSION_STRANDS_CHANNEL_1": {
@@ -5561,7 +5552,7 @@
      "other-mod"
     ],
     "text": "A limited pond recedes the very cell its channel draws from, stranding about 80% of stock. Measured live: a 6-cell pond with an 8-cell channel drains 6 of 30 and stops.",
-    "ts": "2026-11-16T08:32:45Z",
+    "ts": "2026-11-16T10:12:13Z",
     "version": "0.1.0"
    },
    "finding:PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD": {
@@ -5577,7 +5568,7 @@
     "status": "verified",
     "tags": [],
     "text": "A pump-fed channel may stall after reload because driverInputTick is unsaved (RM_MapComponent_Excavation.cs ~1483-1485, 1196-1200). Write the brimming-outlet reload test first and fix only if it fails.",
-    "ts": "2026-11-16T08:32:45Z",
+    "ts": "2026-11-16T10:12:13Z",
     "version": "0.1.0"
    },
    "finding:PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY": {
@@ -5612,7 +5603,7 @@
     "status": "verified",
     "tags": [],
     "text": "Raiders facing an uncrossable trench stalled. When no colonist is reachable and the target is on another climb-band component, they must jump, scale ladders, or breach by shovelling a causeway (melee only, pit at or under the 4-square fill line); sieges are unchanged.",
-    "ts": "2026-11-16T08:32:23Z",
+    "ts": "2026-11-16T10:11:57Z",
     "version": "0.1.0"
    },
    "finding:RAIDER_CHOP_FIX_AXE_NEVER_LANDS": {
@@ -5695,7 +5686,7 @@
      "other-mod"
     ],
     "text": "SelfTest Readout_two_numbers_and_the_limitless_mark is red: RewireChecks.cs:203 greps RM_NorthstarProofs.cs for a line removed by 56bd0e0876, since ProofReadout now reads RM_Patch_MouseoverDepth.DepthSuffix.",
-    "ts": "2026-11-16T08:32:45Z",
+    "ts": "2026-11-16T10:12:14Z",
     "version": "0.1.0"
    },
    "finding:REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS": {
@@ -5764,24 +5755,6 @@
     "ts": "2026-11-16T08:32:23Z",
     "version": "0.1.0"
    },
-   "finding:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
-    "accept": "none, the pipeline's own stages judge it.",
-    "bars": [],
-    "by": "BACKFILL",
-    "claim": null,
-    "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Follow design/specs/2026-11-13-maturation-pipeline.md; deliver design/concepts/FlowWorks/journal.md, version/test_table.json and version/preflight.json.",
-    "status": "open",
-    "tags": [
-     "live",
-     "test",
-     "other-mod"
-    ],
-    "text": "Take FlowWorks 0.1.0 (locked) through the maturation pipeline's offline stages by hand, to stage 5 at most, no game: journal, bars-to-tests table with stages, throwaway preflight.",
-    "ts": "2026-11-16T08:32:23Z",
-    "version": "0.1.0"
-   },
    "finding:RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES": {
     "accept": "none filed as a command; the blind fault's would_pass is: the delay in days survives a pulse-slider change.",
     "bars": [
@@ -5831,6 +5804,24 @@
     "ts": "2026-11-16T08:32:45Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED": {
+    "accept": "python3 src/RimMandrake/rimflow/maturation.py certificate FlowWorks --run reads all three green (recorded red at 1:34 AM PST 2026-11-16).",
+    "bars": [
+     "inv_raider_fetch_fallen",
+     "inv_liquid_coating",
+     "inv_toss_flame"
+    ],
+    "by": "BACKFILL",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "For each of the three tests, build the feature or correct the test, offline.",
+    "status": "open",
+    "tags": [],
+    "text": "FlowWorks sits at Stage 3 with three offline deciders red and no item owing them: T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE.",
+    "ts": "2026-11-16T10:15:06Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN": {
     "accept": "`python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame` red on base, green on the build; live `concept_scenes.py --scene scene_toss_flame --out <json>` with both rows PASS.",
     "bars": [
@@ -5865,23 +5856,6 @@
     ],
     "text": "Gimme Some Slack draws a waterproof conduit across FlowWorks' RM_Fill_Water_Superdeep (2 m+) as one cord lying on the water, battery to consumer. The same crossing over vanilla WaterDeep dives with two water stubs at the banks. Deep swim on or off makes no difference.",
     "ts": "2026-11-16T08:32:23Z",
-    "version": "0.1.0"
-   },
-   "finding:RIMMANDRAKE_CHALLENGE_FLOWWORKS_BLIND_CYCLE_ONE_FIFTY_SEVEN_BARS": {
-    "accept": "`maturation.py next FlowWorks` reads exit met: five offline bars green, 8 deciders PASS, problems_open 0.",
-    "bars": [],
-    "by": "BACKFILL",
-    "claim": null,
-    "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Run lane 1 (blind rows), lane 2 (offline reruns and planted faults), fix Problems red-first, then advance with `maturation.py advance FlowWorks --to in_game` or open cycle 2.",
-    "status": "open",
-    "tags": [
-     "test",
-     "other-mod"
-    ],
-    "text": "FlowWorks 0.1.0 needs blind challenge cycle 1: independent tests written blind, then reruns and planted faults, ending in an exit that `maturation.py next FlowWorks` reads.",
-    "ts": "2026-11-16T08:32:46Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE": {
@@ -6074,19 +6048,19 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED": {
-    "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_walk_moat_season --out <json> on the calm site exits 0 with every row PASS on his full list; offline selftest red at 2b4bffe212, green on the fix.",
+    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_walk_moat_season --out <json> on the calm site exits 0 with every row PASS on his full list. Offline: selftest red at 2b4bffe212, green on fix.",
     "bars": [
      "walk_moat_season"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Ask the remaining rows and refuse vacuous reads (all-zero vector, REFUSED reply, event never happened reads UNMEASURED). Then run the live scene on the calm site with the full list.",
-    "status": "open",
+    "code_sha": "f1e06be47a88",
+    "proposed_fix": "Ask the remaining rows (log row through the repo's measure path, not a PATH lookup); rows must refuse a vacuous read (all-zero vector, REFUSED reply, event that never happened reads UNMEASURED).",
+    "status": "verified",
     "tags": [],
-    "text": "FlowWorks sc_walk asked only the toggle and save/reload on the 316-mod list; pond paying again, no leftovers and clean log were not asked, and the first PASS was vacuous (absent keys).",
-    "ts": "2026-11-16T08:32:47Z",
+    "text": "scene_walk_moat_season asked only the toggle and save/reload rows on the 316-mod list; pond paying again, no leftovers and clean log were not asked, and the first PASS was vacuous (absent keys).",
+    "ts": "2026-11-16T10:15:07Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIT_SENSE_V3_WRAPUP_NEVER_FINISHED_IN_FIFTEEN": {
@@ -6119,7 +6093,7 @@
     "status": "verified",
     "tags": [],
     "text": "The pawn stays in slowed climbing mode along the whole floor-to-lip step (1+sink cells, 2.2 at D4), long after leaving the ladder art, not only across it.",
-    "ts": "2026-11-16T08:32:47Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIX_CONVERTER_RATE_REMAINDER_EATEN_BY_THE_CAP": {
@@ -6316,7 +6290,7 @@
      "other-mod"
     ],
     "text": "selftest_extensions is red: 17 registry switches (14 geyser, pitEdgeStraddleRefused, pitFloorCarriesGround, pitSubmergeCut) are on neither the toggle floor nor TOGGLES_NOT_ON_FLOOR.",
-    "ts": "2026-11-16T08:32:48Z",
+    "ts": "2026-11-16T10:12:15Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_LIST_TOSS_FLAME_TOGGLE_MOCK_RED_ON_LANDING": {
@@ -6332,7 +6306,7 @@
     "status": "verified",
     "tags": [],
     "text": "validation_v2 settings table lacks tossFlameOrderEnabled, so the clean mock run (L2_tier_live settings_default) is red since 30cc533cf3.",
-    "ts": "2026-11-16T08:32:48Z",
+    "ts": "2026-11-16T10:12:16Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_MAP_NEW_FLOWWORKS_DEFS_REVIEW_MAP_FELL_BEHIND": {
@@ -6392,12 +6366,12 @@
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Offline selftest that every cell a concept scene fills is dug first and plot_B_fill_tiers has no component hard-wired UNMEASURED. Then rerun sc_fill_front and sc_fill_tiers live in visit 2.",
-    "status": "open",
+    "code_sha": "4ec7f0f266",
+    "proposed_fix": "Add an offline selftest that every cell a concept scene fills is dug first and that plot_B_fill_tiers has no component hard-wired UNMEASURED; rerun both scenes live in visit 2.",
+    "status": "verified",
     "tags": [],
-    "text": "sc_fill_front and sc_fill_tiers earlier FAIL rows were fixed in harness-only changes (3ed7c2c5c0) with no red-before test. Four scenes filled an undug head cell and fill_tier_under_quarter_metre_look was hard-wired UNMEASURED.",
-    "ts": "2026-11-16T08:32:48Z",
+    "text": "sc_fill_front and sc_fill_tiers earlier FAIL rows were fixed in the harness with no red-before test: scenes filled undug head cells, and plot_B fill_tier_under_quarter_metre_look was hard-wired UNMEASURED.",
+    "ts": "2026-11-16T10:15:08Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES": {
@@ -6501,37 +6475,38 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED": {
-    "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_garden_scene.py.",
+    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json> on the calm site exits 0 with every row PASS; vacuous reads give UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
     "bars": [
-     "inv_sprinklers",
      "inv_converters",
-     "inv_drilling"
+     "inv_sprinklers",
+     "inv_drilling",
+     "inv_overflow_sheet"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Stage converter, still, pump-fed sprinkler and drill piped together on a fed colony; see the five owed cases; each planted fault must turn a row red; vacuous reads give UNMEASURED.",
-    "status": "open",
+    "code_sha": "c6da40ed34",
+    "proposed_fix": "Stage converter, still, pump-fed sprinkler and drill piped together on a fed colony; see the five owed cases and make each planted fault (CALLER_CONV_DROPS_CLIPPED, CALLER_SPR_SPRAYS_WITHOUT_PUMP, DEF_STILL_RATE_TENFOLD) turn a row red.",
+    "status": "verified",
     "tags": [],
-    "text": "scene_garden read UNMEASURED: machines were placed side by side with no pipe, and the 60,000-tick run fed no one, so the clock stopped at tick 480 on starving colonists. Five blind-cycle cases and three planted faults went unseen.",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "scene_garden placed machines unpiped and ran 60,000 ticks without feeding anyone, so the clock stopped (GovernorStop) at tick 480 on starving colonists; the five owed cases and three planted faults were never seen.",
+    "ts": "2026-11-16T10:15:08Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE": {
-    "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_hose_look --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_hose_look_scene.py.",
+    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_hose_look --out <json> on the calm site exits 0 with every row PASS. Offline selftest red at 2b4bffe212, green on fix.",
     "bars": [
      "hose_reads_as_hose"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Stage from proof_hose.py's realflow scene-0 plot: channel dug and filled, charged battery, reel facing the far tank, hose laid via HoseProbe.",
-    "status": "open",
+    "code_sha": "b3bfaa7038",
+    "proposed_fix": "Stage from proof_hose.py's realflow site; rows must read UNMEASURED on a vacuous read.",
+    "status": "verified",
     "tags": [],
-    "text": "scene_hose_look read UNMEASURED: the draft pump had no source, power or laid hose, so plump-vs-flat was never asked and 'flat' passed by default.",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "The sc_hose_look draft pump had no source, power or laid hose, so plump-vs-flat was never asked; flat passed by default.",
+    "ts": "2026-11-16T10:15:08Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE": {
@@ -6601,51 +6576,53 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID": {
-    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pit_trap_raid --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED.",
-    "bars": [],
+    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pit_trap_raid --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
+    "bars": [
+     "moat_raid_sequence",
+     "raiders_fetch_their_fallen"
+    ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "e9f2f50fd215",
     "proposed_fix": "Advance with the hostile_arrival gate waived for the raid the scene fired.",
-    "status": "open",
-    "tags": [
-     "other-mod"
-    ],
-    "text": "sc_pit_trap_raid read UNMEASURED because the clock gate stopped on the raid the scene fired itself (GovernorStop hostile_arrival).",
-    "ts": "2026-11-16T08:32:50Z",
+    "status": "verified",
+    "tags": [],
+    "text": "scene_pit_trap_raid stopped on the raid it fired itself (GovernorStop hostile_arrival), so its rows read UNMEASURED.",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE": {
-    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_source_pays --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED.",
+    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_source_pays --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline selftest red at 2b4bffe212, green on fix.",
     "bars": [
      "source_pays_and_refills"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Stage a dug pond on the calm site and read the lake on a lake map (the river map reads Endless: evidence/sc_river__endless_read.txt).",
-    "status": "open",
+    "code_sha": "e9f2f50fd215",
+    "proposed_fix": "Stage a dug pond on the calm site; read the lake on a lake map (the river map reads Endless).",
+    "status": "verified",
     "tags": [],
-    "text": "sc_source_pays assumes a natural pond and a lake the calm map lacks, so the row reads UNMEASURED.",
-    "ts": "2026-11-16T08:32:50Z",
+    "text": "scene_source_pays assumed a natural pond and a lake that the calm map lacks, so it read UNMEASURED.",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF": {
-    "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_trench_cover --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED.",
+    "accept": "Live: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_trench_cover --out <json> on the calm site exits 0, every row PASS, vacuous reads UNMEASURED. Offline: selftest red at 2b4bffe212, green on fix.",
     "bars": [
-     "trench_gives_cover"
+     "trench_gives_cover",
+     "inv_trench_cover"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Read combat cover as trench_cover_proof.py does (ProofTrench) and stage a real raid for TR_no_raider_shelters_in_pit.",
-    "status": "open",
+    "code_sha": "e9f2f50fd215",
+    "proposed_fix": "Read combat cover as trench_cover_proof.py does and stage a real raid for TR_no_raider_shelters_in_pit; no raider within 3 cells reads UNMEASURED.",
+    "status": "verified",
     "tags": [],
-    "text": "sc_trench_cover read ProofCover (pit lids), not combat cover, and its raider row passed with no raid on the map (a false pass).",
-    "ts": "2026-11-16T08:32:50Z",
+    "text": "FlowWorks sc_trench_cover read ProofCover (pit lids) instead of combat cover, and its raider row passed with no raid staged, so the scene gave a false pass (visit_1 rows 39 and 57).",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE": {
@@ -6684,19 +6661,19 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REPAIR_FLOWWORKS_OL_SHADOW_JUDGE_PRESUMED_STALE": {
-    "accept": "The owner_look_regressions command of row 63 on a freshly staged big pit reads 0 FAIL, 0 UNMEASURED, and a planted shadow-over-the-sheet build reads FAIL.",
+    "accept": "owner_look_regressions command (rows.jsonl line 64) on a freshly staged big pit reads 0 FAIL, 0 UNMEASURED; a planted shadow-over-the-sheet build reads FAIL.",
     "bars": [
      "inv_looks"
     ],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Confirm the 11-12 design text, then repair OL_no_surface_shadow and OL_labels_fade to expect the shadow under the sheet and re-pin in version/bars.md with a journal line if the bar's meaning is unchanged.",
-    "status": "open",
+    "code_sha": "e9f2f50fd215",
+    "proposed_fix": "Repair the OL_no_surface_shadow and OL_labels_fade judges to the shadow-under-the-sheet design; re-pin in bars.md only if the bar's meaning is unchanged.",
+    "status": "verified",
     "tags": [],
-    "text": "OL_OWNER_LOOK_READS UNMEASURED: 130 OL_no_surface_shadow and 7 OL_labels_fade FAIL from a judge presumed stale against the design that draws the shadow under the liquid sheet (RM_UnderLiquid.ThingShadow, owner 2026-11-12).",
-    "ts": "2026-11-16T08:32:50Z",
+    "text": "OL_OWNER_LOOK_READS gave 130 OL_no_surface_shadow FAILs and 7 OL_labels_fade FAILs from an owner-look judge that expected the wrong shadow behaviour; the mod's draw was correct.",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER": {
@@ -6714,6 +6691,22 @@
     "tags": [],
     "text": "T_PIT_COVER FAILs (recorded PASS): DeckCollapse_GSS_shock_seam_is_soft_and_load_safe pinned the whole old RebuildContacts signature as source text, and Gimme Some Slack 63ac285403 added an optional HashSet<int> dropped.",
     "ts": "2026-11-16T08:32:14Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER": {
+    "accept": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py with the new case red before the fix and green after; live owner_look_regressions.py on a staged big pit reads OL_no_surface_shadow_under_sheet PASS, not BLOCKED.",
+    "bars": [
+     "inv_looks"
+    ],
+    "by": "BACKFILL",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "ProofSubmerge appends shadowQueue=<ShadowMat(q).renderQueue>; add a FlowWorks C# SelfTest case pinning ShadowMat renderQueue == UnderSheetQueue (2448).",
+    "status": "open",
+    "tags": [],
+    "text": "ProofSubmerge does not report the shadow draw queue, so the judge cannot see draw order and OL_no_surface_shadow_under_sheet reads BLOCKED ON HOOK.",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER": {
@@ -6817,6 +6810,22 @@
     "ts": "2026-11-16T08:32:51Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL": {
+    "accept": "none, no acceptance test filed; the live repro (haul beside a sealed pit) completes only when the sealed stack is destroyed.",
+    "bars": [
+     "inv_pit_access"
+    ],
+    "by": "BACKFILL",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "Harmony on CheckForGetOpportunityDuplicate: prefix wraps extraValidator as t => (orig==null||orig(t)) && !RM_SuperdeepTrap.RelativeVeto(t.Map, A.Position, t, PathEndMode.ClosestTouch, A), A a [ThreadStatic] actor; postfix sets A=toil.actor around initAction.",
+    "status": "open",
+    "tags": [],
+    "text": "Toils_Haul.CheckForGetOpportunityDuplicate retargets a haul at a same-def stack within 8 cells inside a sealed pit (raised ladder). The path errors (ErroredPather at GotoThing), the carried stack drops on the ladder cell, and the same haul repeats every ~500 ticks.",
+    "ts": "2026-11-16T10:15:10Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL": {
     "accept": "none, an owner decision on wanted behaviour; owner chose 'Pour whatever fits'. Gate: MapControl_source_and_sink_conserve_through_the_kernel (>= 20 of 24, conservation exact in dL).",
     "bars": [
@@ -6831,7 +6840,7 @@
     "status": "verified",
     "tags": [],
     "text": "Under the exact kernel a 0.5/pulse map-control source pouring whole notches (RM_FlowTaps, CanPourLevel) into a 12-square D2 channel with a 0.25/pulse sink settled about half full (~12 of 24 notches): the poured notch spreads ~one square a pulse, so the tap backed up against its own pour.",
-    "ts": "2026-11-16T08:32:51Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:RIMMASTER_MOVE_IMAGE_SKILLS_OUT_PAST_CODE_PATHS": {
@@ -6938,7 +6947,7 @@
     "status": "verified",
     "tags": [],
     "text": "FlowWorks stagers build every hose reel West (RM_HoseReel:x,z,3) though reels turn, so 10 walkthrough hoses leave the west nozzle and U-turn to targets behind the reel.",
-    "ts": "2026-11-16T08:32:36Z",
+    "ts": "2026-11-16T10:12:06Z",
     "version": "0.1.0"
    },
    "finding:SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN": {
@@ -7088,7 +7097,7 @@
      "other-mod"
     ],
     "text": "A pumping station's reach was measured from its position, not its footprint (Building_LiquidPump.cs ~73-79; GPT G1.22 note).",
-    "ts": "2026-11-16T08:32:51Z",
+    "ts": "2026-11-16T10:12:18Z",
     "version": "0.1.0"
    },
    "finding:SUNKEN_DRAWBRIDGE_FIX_REJECTS_HINGE_BANK": {
@@ -7121,7 +7130,7 @@
      "other-mod"
     ],
     "text": "The Superdeep shooting rule was applied as a post-selection null, so a ranged hostile idled instead of picking another target.",
-    "ts": "2026-11-16T08:32:51Z",
+    "ts": "2026-11-16T10:12:18Z",
     "version": "0.1.0"
    },
    "finding:SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT": {
@@ -7163,14 +7172,14 @@
      "inv_swim"
     ],
     "by": "BACKFILL",
-    "claim": "Fixed in 601e7482f3 (pre-landing; landed as 413f16e88b02); the record does not say how.",
+    "claim": "HugeThings+FlowWorks: ClearArea spares giants only in NaturalRockOnly; late deep-swim toggle recomputes; settings headers use keys (recorded on pre-landing 601e7482f3; landed as 413f16e88b02)",
     "class": "problem",
     "code_sha": "413f16e88b02",
     "proposed_fix": "Make Reapply recalculate path costs when deepSwimEnabled is turned on mid-game, instead of returning early on a null swimTerrain.",
     "status": "claimed_fixed",
     "tags": [],
     "text": "RM_Swim.Reapply (~332) returns early when swimTerrain is null, so turning deepSwimEnabled on mid-game never recalculates path costs.",
-    "ts": "2026-11-16T08:32:51Z",
+    "ts": "2026-11-16T10:12:18Z",
     "version": "0.1.0"
    },
    "finding:SWIM_WARNING_FIX_ANY_PAWN_MESSAGE": {
@@ -7205,7 +7214,7 @@
      "other-mod"
     ],
     "text": "The gale carry (RM_DuneGale) and FlowWorks' swept-away (RM_WorldComponent_SweptAway) are the same hold/letter/return mechanism built twice, and a pawn taken by the land leaves no ground trace at the spot.",
-    "ts": "2026-11-16T08:32:27Z",
+    "ts": "2026-11-16T10:12:00Z",
     "version": "0.1.0"
    },
    "finding:TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT": {
@@ -7289,7 +7298,7 @@
      "other-mod"
     ],
     "text": "Tar cooling writes glass onto cells the depth engine owns (Flood_FlowWorks.cs ~377-390).",
-    "ts": "2026-11-16T08:32:27Z",
+    "ts": "2026-11-16T10:12:00Z",
     "version": "0.1.0"
    },
    "finding:TAR_LAG_FIX_NO_WATER_CONTROL": {
@@ -7408,7 +7417,7 @@
     "status": "claimed_fixed",
     "tags": [],
     "text": "FlowWorks needs its own drinking bottles and its own thirst need (RM_Thirst, dehydration, drinking from terrain, bottle or tank), usable by animals too, and the carried-water job (HW1) must use these bottles. Dubs Bad Hygiene interop was cut.",
-    "ts": "2026-11-16T08:32:52Z",
+    "ts": "2026-11-16T10:24:36Z",
     "version": "0.1.0"
    },
    "finding:THIRST_CHAIN_UNSTICK_STILL_SIPPING": {
@@ -7523,7 +7532,7 @@
     "status": "verified",
     "tags": [],
     "text": "RM_UniversalPipe is listed broken by mod_completion because HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD criterion A5's latest verify is not a pass, though that item reads validated.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:12:07Z",
     "version": "0.1.0"
    },
    "finding:VALIDATION_HOSE_REELS_FIX_STILL_WEST": {
@@ -7604,7 +7613,7 @@
     "status": "verified",
     "tags": [],
     "text": "ProofWeirPool returned POOL cells=0 at a weir at z=12 on tile 825, so works.weir_arrest_and_pool failed and 8 later components were UNMEASURED. RM_Building_BankWeir.AddPoolCells found no upstream cell.",
-    "ts": "2026-11-16T08:32:37Z",
+    "ts": "2026-11-16T10:12:07Z",
     "version": "0.1.0"
    },
    "finding:WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST": {
@@ -7669,233 +7678,8 @@
     "kind": "live.run",
     "result": "PASS",
     "sha": "8caccd561c31",
-    "subject": "bar:inv_fire",
-    "text": "visit_1 sc_canal_fire PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "FAIL",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_liquid_coating",
-    "text": "visit_1 sc_coating_wash FAIL (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_pits",
-    "text": "visit_1 sc_covered_pit PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_dig_depth",
-    "text": "visit_1 sc_dig_and_read PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_quarry",
-    "text": "visit_1 sc_dig_finds PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_raider_fetch_fallen",
-    "text": "visit_1 sc_fetch_fallen UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_flow_level",
-    "text": "visit_1 sc_fill_front PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_liquid_roster",
-    "text": "visit_1 sc_fill_tiers PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_geyser_tub",
-    "text": "visit_1 sc_geyser_tub PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_prison_no_bed",
-    "text": "visit_1 sc_hole_prison PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_hoses",
-    "text": "visit_1 sc_hose_look UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_bridges",
-    "text": "visit_1 sc_hung_bridge PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "8caccd561c31",
-    "subject": "bar:ice_cuts_and_melts",
-    "text": "visit_1 sc_ice UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "8caccd561c31",
-    "subject": "bar:island_bridges_trap_and_fail",
-    "text": "visit_1 sc_islands UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "FAIL",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:moat_raid_sequence",
-    "text": "visit_1 sc_moat_raid FAIL (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_liquid_net",
-    "text": "visit_1 sc_one_network PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_flow_level",
-    "text": "visit_1 sc_one_surface PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_swim",
-    "text": "visit_1 sc_pawn_height UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_pits",
-    "text": "visit_1 sc_pit_reads PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
     "subject": "bar:inv_rivers",
     "text": "visit_1 sc_river PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_slime",
-    "text": "visit_1 sc_slime PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "PASS",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_doors",
-    "text": "visit_1 sc_sluice PASS (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_stock",
-    "text": "visit_1 sc_source_pays UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "FAIL",
-    "sha": "8caccd561c31",
-    "subject": "bar:inv_toss_flame",
-    "text": "visit_1 sc_toss_flame FAIL (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "3ed7c2c5c064",
-    "subject": "bar:inv_trench_cover",
-    "text": "visit_1 sc_trench_cover UNMEASURED (runner None)",
-    "ts": "2026-11-16T07:16:23Z"
-   },
-   {
-    "by": "BACKFILL",
-    "kind": "live.run",
-    "result": "UNMEASURED",
-    "sha": "76c78e5e974d",
-    "subject": "bar:inv_settings",
-    "text": "visit_1 sc_walk UNMEASURED (runner None)",
     "ts": "2026-11-16T07:16:23Z"
    },
    {
@@ -7906,24 +7690,241 @@
     "subject": "bar:inv_pit_access",
     "text": "visit_1 sc_ways_out PASS (runner None)",
     "ts": "2026-11-16T07:16:23Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_fire",
+    "text": "visit_1 sc_canal_fire PASS (runner None)",
+    "ts": "2026-11-16T10:11:43Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "FAIL",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_liquid_coating",
+    "text": "visit_1 sc_coating_wash FAIL (runner None)",
+    "ts": "2026-11-16T10:11:43Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_pits",
+    "text": "visit_1 sc_covered_pit PASS (runner None)",
+    "ts": "2026-11-16T10:11:43Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_dig_depth",
+    "text": "visit_1 sc_dig_and_read PASS (runner None)",
+    "ts": "2026-11-16T10:11:43Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_quarry",
+    "text": "visit_1 sc_dig_finds PASS (runner None)",
+    "ts": "2026-11-16T10:11:43Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_raider_fetch_fallen",
+    "text": "visit_1 sc_fetch_fallen UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:44Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_flow_level",
+    "text": "visit_1 sc_fill_front PASS (runner None)",
+    "ts": "2026-11-16T10:11:44Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_liquid_roster",
+    "text": "visit_1 sc_fill_tiers PASS (runner None)",
+    "ts": "2026-11-16T10:11:44Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_geyser_tub",
+    "text": "visit_1 sc_geyser_tub PASS (runner None)",
+    "ts": "2026-11-16T10:11:44Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_prison_no_bed",
+    "text": "visit_1 sc_hole_prison PASS (runner None)",
+    "ts": "2026-11-16T10:11:44Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_hoses",
+    "text": "visit_1 sc_hose_look UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:45Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_bridges",
+    "text": "visit_1 sc_hung_bridge PASS (runner None)",
+    "ts": "2026-11-16T10:11:45Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "8caccd561c31",
+    "subject": "bar:ice_cuts_and_melts",
+    "text": "visit_1 sc_ice UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:45Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "8caccd561c31",
+    "subject": "bar:island_bridges_trap_and_fail",
+    "text": "visit_1 sc_islands UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:45Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "FAIL",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:moat_raid_sequence",
+    "text": "visit_1 sc_moat_raid FAIL (runner None)",
+    "ts": "2026-11-16T10:11:45Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_liquid_net",
+    "text": "visit_1 sc_one_network PASS (runner None)",
+    "ts": "2026-11-16T10:11:46Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_flow_level",
+    "text": "visit_1 sc_one_surface PASS (runner None)",
+    "ts": "2026-11-16T10:11:46Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_swim",
+    "text": "visit_1 sc_pawn_height UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:46Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_pits",
+    "text": "visit_1 sc_pit_reads PASS (runner None)",
+    "ts": "2026-11-16T10:11:46Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_slime",
+    "text": "visit_1 sc_slime PASS (runner None)",
+    "ts": "2026-11-16T10:11:46Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "PASS",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_doors",
+    "text": "visit_1 sc_sluice PASS (runner None)",
+    "ts": "2026-11-16T10:11:47Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_stock",
+    "text": "visit_1 sc_source_pays UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:47Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "FAIL",
+    "sha": "8caccd561c31",
+    "subject": "bar:inv_toss_flame",
+    "text": "visit_1 sc_toss_flame FAIL (runner None)",
+    "ts": "2026-11-16T10:11:47Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "3ed7c2c5c064",
+    "subject": "bar:inv_trench_cover",
+    "text": "visit_1 sc_trench_cover UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:47Z"
+   },
+   {
+    "by": "BACKFILL",
+    "kind": "live.run",
+    "result": "UNMEASURED",
+    "sha": "76c78e5e974d",
+    "subject": "bar:inv_settings",
+    "text": "visit_1 sc_walk UNMEASURED (runner None)",
+    "ts": "2026-11-16T10:11:47Z"
    }
   ],
   "traps": {
    "trap:12-12-live-rows-and-validated-do-not": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "12/12 live rows and 'validated' do not mean done. The owner stopped the 2026-11-05 sitting: the staged build still shows the plank pile next to the bridge (to be removed on all bridges) and raised leaves straight up (they must not be). Blocked on DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED.",
-    "ts": "2026-11-16T08:32:16Z",
+    "text": "12/12 live rows and 'validated' do not mean done. Blocked on DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED.",
+    "ts": "2026-11-16T10:11:50Z",
     "version": "0.1.0",
     "where": "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED; drawbridge art, in-game look"
-   },
-   "trap:7-lane-1-rows-are-unsettled-game-side": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "7 lane-1 rows are UNSETTLED (game-side logic no kernel decides, owed to Stage 6); the old kernels still give 4 FAIL. Several commits sit in detached run clones bundled as orphans.",
-    "ts": "2026-11-16T08:32:46Z",
-    "version": "0.1.0",
-    "where": "design/concepts/FlowWorks/version/blind_challenge/cycle_1/"
    },
    "trap:a-1-unit-bottle-only-moves-liquid-at": {
     "by": "BACKFILL",
@@ -7997,13 +7998,13 @@
     "version": "0.1.0",
     "where": "ProofForcedFlyer, RM_Patch_PawnFlyer_LandInPit RM_PitPathing.cs:587-591"
    },
-   "trap:a-passing-settle-check-does-not-prove-settling": {
+   "trap:a-passing-probe-and-accepted-order-do-not": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "A passing settle check does not prove settling: LowVolumeWideBasinOnePatch accepts restA >= 0, so an alternating move/idle regression still passes.",
-    "ts": "2026-11-16T08:32:21Z",
+    "text": "A passing probe and accepted order do not satisfy it; that needs depth 3->4.",
+    "ts": "2026-11-16T10:11:50Z",
     "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/Source/SelfTest/LevelSetChecks.cs Run, LowVolumeWideBasinOnePatch"
+    "where": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS A2"
    },
    "trap:a-planned-full-sweep-needs-16740-s-but": {
     "by": "BACKFILL",
@@ -8013,6 +8014,14 @@
     "version": "0.1.0",
     "where": "sweep J20261029T181522Z-8afa44"
    },
+   "trap:a-red-run-never-closes-this-item": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "A RED run never closes this item.",
+    "ts": "2026-11-16T10:11:52Z",
+    "version": "0.1.0",
+    "where": "modcheck status FlowWorks; Transient/belt_bridge5_review/FlowWorks_owner_review.html"
+   },
    "trap:a-rerun-of-only-p5-on-the-same": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8021,14 +8030,6 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py:99-103,426-435"
    },
-   "trap:a-rerun-on-the-fresh-map-still-reads": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "A rerun on the fresh map still reads UNMEASURED/SITE: the fresh map gained blood and RM_ChokingSpores, so the pawn was likely harmed. Depth 3->3 does not show the order failing. A rerun on a spore-free tile is owed.",
-    "ts": "2026-11-16T08:32:15Z",
-    "version": "0.1.0",
-    "where": "deep_stone_live.py --fresh-map, DS_superdeep_cut_turns_up_deep_stone"
-   },
    "trap:a-rows-filtered-run-ended-unmeasured-for-t23": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8036,14 +8037,6 @@
     "ts": "2026-11-16T08:32:53Z",
     "version": "0.1.0",
     "where": "testq J20261028T174051Z-4d6a4d"
-   },
-   "trap:a-selftest-pass-selftest-flowworks-stock-738-738": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "A selftest PASS (selftest_flowworks_stock 738/738, Reactor_* checks) does not verify the owed in-game criterion; it stays owed.",
-    "ts": "2026-11-16T08:32:41Z",
-    "version": "0.1.0",
-    "where": "selftest_flowworks_stock.py"
    },
    "trap:a-sixth-dead-setting-pondheadruleenabled-connected-water-levels": {
     "by": "BACKFILL",
@@ -8061,22 +8054,6 @@
     "version": "0.1.0",
     "where": "RM_Sluice / RM_SecurityGrateDoor"
    },
-   "trap:a1-a2-are-offline-only-in-game-check": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "A1/A2 are offline only; in-game check A3 is still owed.",
-    "ts": "2026-11-16T08:32:27Z",
-    "version": "0.1.0",
-    "where": "criterion A3"
-   },
-   "trap:a1-still-failed-after-the-park-fix-vikinger": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "A1 still failed after the park fix (Vikinger parked True at 126,126 and drafted, then ended at 160,95 with Bruise + Crack). Presumed harness (parking not holding a drafted pawn across the sprinkler block), unproven. Do not treat the ticket as fixed on the O1 selftest alone.",
-    "ts": "2026-11-16T08:32:26Z",
-    "version": "0.1.0",
-    "where": "D:\\ClaudeWork\\rimmandrake\\scratch\\br1g_caps\\ls_c2f\\session.json"
-   },
    "trap:a2-is-only-partial-code-review-status-check": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8093,14 +8070,6 @@
     "version": "0.1.0",
     "where": "HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK A2, save RM_fw_walkthrough_20261023e"
    },
-   "trap:a2-is-only-partial-the-one-crossing-map": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "A2 is only partial: the one crossing (map 51, 175,89) reads lifts over, but the shadow is faint in the crop and the second-agent judgment is still owed.",
-    "ts": "2026-11-16T08:32:20Z",
-    "version": "0.1.0",
-    "where": "joint_gate/m51_013_hose_crossing.png"
-   },
    "trap:a9-owner-judges-spill-art-and-fitting-relabel": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8108,6 +8077,14 @@
     "ts": "2026-11-16T08:32:21Z",
     "version": "0.1.0",
     "where": "criterion A9"
+   },
+   "trap:add-mod-hash-to-the-walk-output-first": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Add mod_hash to the walk output first.",
+    "ts": "2026-11-16T10:11:51Z",
+    "version": "0.1.0",
+    "where": "northstar/water_scenes_walk.py"
    },
    "trap:after-site-size-100-dig-pulse-without-size": {
     "by": "BACKFILL",
@@ -8117,14 +8094,6 @@
     "version": "0.1.0",
     "where": "northstar/flow_bignet_live.py:60,97-110,131-138"
    },
-   "trap:after-the-fix-the-row-is-still-unmeasured": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "After the fix the row is still UNMEASURED/SITE. The fresh map gained 7 Filth_Blood and 7 RM_ChokingSpores near the plot and the pawn was likely harmed, so depth 3->3 is not a mod verdict.",
-    "ts": "2026-11-16T08:32:15Z",
-    "version": "0.1.0",
-    "where": "deep_stone_live.py --fresh-map, DS_superdeep_cut row"
-   },
    "trap:aftermath-s-harmony-patches-registered-failed-because-jawa": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8132,6 +8101,14 @@
     "ts": "2026-11-16T08:32:21Z",
     "version": "0.1.0",
     "where": "item:MODCHECK_SUITE_CORRECTIONS_1"
+   },
+   "trap:also-selftest-review-map-is-red-at-head": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Also selftest_review_map is red at HEAD (5 new defs not on the review map), filed separately.",
+    "ts": "2026-11-16T10:15:08Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_fill_scenes_dig_first.py; in_game/unrun.jsonl"
    },
    "trap:an-earlier-live-attempt-was-unmeasured-because-the": {
     "by": "BACKFILL",
@@ -8165,14 +8142,6 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs AssertClose"
    },
-   "trap:bill-and-recipe-preview-labels-are-vanilla-s": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Bill and recipe preview labels are vanilla's and still name the stone (e.g. granite) even though the recipe is called 'make glass bottles'. Only the built Thing label reads 'glass'.",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "RM_CompContainerMaterial naming; bill/recipe previews"
-   },
    "trap:both-verifies-recorded-only-partial-flowworks-tier-11": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8197,14 +8166,6 @@
     "version": "0.1.0",
     "where": "matrix F60 canal scene XW2, XW3"
    },
-   "trap:building-rm-mapcontrol-cs-and-its-xml-are": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Building_RM_MapControl.cs and its XML are still DIRTY, awaiting code review.",
-    "ts": "2026-11-16T08:32:42Z",
-    "version": "0.1.0",
-    "where": "Building_RM_MapControl.cs"
-   },
    "trap:c6-f8-ferry-posts-pairing-on-the-same": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8212,14 +8173,6 @@
     "ts": "2026-11-16T08:32:29Z",
     "version": "0.1.0",
     "where": "Rivers/RM_FerryAndLevee.cs TryPair/LineCrossesWater"
-   },
-   "trap:c8a-f4-install-pre-check-measured-from-reel": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "C8a-F4 (install pre-check measured from reel centre, routing from mouth) is already fixed at 79902641c6; only F2 remains open despite the broader title.",
-    "ts": "2026-11-16T08:32:20Z",
-    "version": "0.1.0",
-    "where": "HOSE_LAY_POLISH_CENTRE_VS_MOUTH"
    },
    "trap:c8a-f5-polygonal-fallback-accepts-a-lay-tighter": {
     "by": "BACKFILL",
@@ -8261,13 +8214,13 @@
     "version": "0.1.0",
     "where": "selftest_flowworks_stock.py GptFixesAChecks"
    },
-   "trap:closed-on-an-offline-selftest-only-gptfixesachecks-the": {
+   "trap:closed-on-the-offline-selftest-only-drain-timing": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Closed on an offline selftest only (GptFixesAChecks); the live check (no player link, stock change, caught/charges stay 0) was never run.",
-    "ts": "2026-11-16T08:32:34Z",
+    "text": "Closed on the offline selftest only; drain timing, rain refill and sink at (59,65) unverified live.",
+    "ts": "2026-11-16T10:15:09Z",
     "version": "0.1.0",
-    "where": "selftest_flowworks_stock.py GptFixesAChecks; RM_LiquidTheft.caught/charges"
+    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _source_pays, SRC_lake_reads_endless"
    },
    "trap:closed-on-the-offline-selftest-only-no-live": {
     "by": "BACKFILL",
@@ -8276,6 +8229,22 @@
     "ts": "2026-11-16T08:32:33Z",
     "version": "0.1.0",
     "where": "GptFixesAChecks in selftest_flowworks_stock.py"
+   },
+   "trap:closed-on-the-offline-selftest-only-selftest-owner": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Closed on the offline selftest only (selftest_owner_look_regressions.py, 36/36 green; red 14 before).",
+    "ts": "2026-11-16T10:15:09Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/in_game/unrun.jsonl"
+   },
+   "trap:closed-on-the-offline-selftest-only-selftest-trench": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Closed on the offline selftest only (selftest_trench_cover_scene.py, 14/14 green at e9f2f50fd215).",
+    "ts": "2026-11-16T10:15:09Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/in_game/unrun.jsonl; scene_trench_cover"
    },
    "trap:closed-with-live-predicates-unmeasured-until-the-baseline": {
     "by": "BACKFILL",
@@ -8293,19 +8262,11 @@
     "version": "0.1.0",
     "where": "validation_v2.py:4515"
    },
-   "trap:closure-rests-on-offline-selftest-flowworks-gpt-c": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Closure rests on offline selftest_flowworks_gpt_c.py only; the live 3-reload RM_LiquidSurface mesh count (C5-F4's named check) was not run.",
-    "ts": "2026-11-16T08:32:35Z",
-    "version": "0.1.0",
-    "where": "selftest_flowworks_gpt_c.py; RM_LiquidSurface meshes"
-   },
    "trap:coat-water-washes-it-passed-with-no-coat": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "COAT_water_washes_it passed with no coat on the pawn, so a green row did not show washing. The live scene_coating_wash is still unrun and the DLL must be deployed first; only the offline test is green.",
-    "ts": "2026-11-16T08:32:45Z",
+    "text": "COAT_water_washes_it passed with no coat on the pawn, so a green row did not show washing.",
+    "ts": "2026-11-16T10:12:14Z",
     "version": "0.1.0",
     "where": "scene_coating_wash row COAT_water_washes_it; design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl row 67"
    },
@@ -8328,8 +8289,8 @@
    "trap:commit-9544ea0571-nested-finds-while-digging-inside-digging": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Commit 9544ea0571 nested 'Finds while digging' inside 'Digging' through a misplaced brace; it compiled and all FlowWorks tests stayed green. selftest_settings_screens.py caught it; fixed in the SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING commit, section count now 19. Live look still owed.",
-    "ts": "2026-11-16T08:32:31Z",
+    "text": "Commit 9544ea0571 nested 'Finds while digging' inside 'Digging' through a misplaced brace; it compiled and all FlowWorks tests stayed green. selftest_settings_screens.py caught it; fixed in the SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING commit, section count now 19.",
+    "ts": "2026-11-16T10:12:03Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/Utils/selftest_settings_screens.py"
    },
@@ -8340,22 +8301,6 @@
     "ts": "2026-11-16T08:32:47Z",
     "version": "0.1.0",
     "where": "concept_tree.py gate"
-   },
-   "trap:coordinates-o-60-60-are-unverified-on-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Coordinates O=(60,60) are unverified on the calm site; the bar's second order (chemfuel first, drain water after) and a swimmer in the mid-way save are not asked.",
-    "ts": "2026-11-16T08:32:47Z",
-    "version": "0.1.0",
-    "where": "scene_walk_moat_season"
-   },
-   "trap:coverage-judge-is-untested-in-judge-calibration-json": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "coverage_judge is UNTESTED in judge_calibration.json (only evidence_gate is CALIBRATED), so its verdicts are advisory once this lands; it must be calibrated in the same item or the owed exam and coverage passes stall.",
-    "ts": "2026-11-16T08:32:24Z",
-    "version": "0.1.0",
-    "where": "judge_calibration.json"
    },
    "trap:covers-have-no-minifieddef-so-there-is-no": {
     "by": "BACKFILL",
@@ -8392,18 +8337,18 @@
    "trap:default-taken-all-flowworks-tanks-go-in-pipe": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Default taken: all FlowWorks tanks go in pipe networks because they hold any liquid, though Dubs Bad Hygiene puts its water tanks in Hygiene. Open question only if the owner wants water-only tanks beside DBH's.",
-    "ts": "2026-11-16T08:32:31Z",
+    "text": "Default taken: all FlowWorks tanks go in pipe networks because they hold any liquid, though Dubs Bad Hygiene puts its water tanks in Hygiene.",
+    "ts": "2026-11-16T10:12:03Z",
     "version": "0.1.0",
     "where": "Defs/Machinery/RM_PipeNetworksTab.xml"
    },
-   "trap:depthenginelivefortests-is-a-harness-switch-never-saved-so": {
+   "trap:depth-3-3-does-not-show-the-order": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "depthEngineLiveForTests is a harness switch, never saved, so it needs a registry exemption, not a Scribe line.",
-    "ts": "2026-11-16T08:32:52Z",
+    "text": "Depth 3->3 does not show the order failing.",
+    "ts": "2026-11-16T10:11:49Z",
     "version": "0.1.0",
-    "where": "FlowWorks settings registry: depthEngineLiveForTests"
+    "where": "deep_stone_live.py --fresh-map, DS_superdeep_cut_turns_up_deep_stone"
    },
    "trap:do-not-count-the-invalid-harness-runs-modcheck": {
     "by": "BACKFILL",
@@ -8453,6 +8398,14 @@
     "version": "0.1.0",
     "where": "deep_lake_proof.py --fresh-map; RM_Volume.AbyssBedLevels"
    },
+   "trap:earlier-design-text-and-the-dbh-bridge-patch": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Earlier design text and the DBH bridge patch no longer apply, and T1 now has one arm (Own) and can FAIL.",
+    "ts": "2026-11-16T10:12:19Z",
+    "version": "0.1.0",
+    "where": "thirst_bottles_design_2026-10-16.md; thirst_live T1, T18"
+   },
    "trap:enginepulse-calls-the-handover-before-the-kernel-s": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8493,6 +8446,14 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py:526"
    },
+   "trap:expected-live-guess-75-ice-cut-leaves-crushed": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Expected live (guess ~75%): ICE_cut_leaves_crushed_ice FAIL (MOD), because RM_DigDiscovery.IceCut classifies RM_DigSpoil.GroundAt (not the temp grid where vanilla ThinIce lives) and RM_GroundClassMath.IceTerrains has no ThinIce, so cutting a frozen pond yields nothing.",
+    "ts": "2026-11-16T10:12:16Z",
+    "version": "0.1.0",
+    "where": "RM_DigDiscovery.IceCut; RM_GroundClassMath.IceTerrains"
+   },
    "trap:explicit-dampers-inside-the-theta-alpha-stability-margin": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8500,6 +8461,14 @@
     "ts": "2026-11-16T08:32:25Z",
     "version": "0.1.0",
     "where": "item:RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS"
+   },
+   "trap:explosiveknockback-s-scene-was-relaid-so-its-lanes": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "ExplosiveKnockback's scene was relaid so its lanes no longer interact (f03d8d4f4a); that hides the defect there but it remains in FlowWorks for any player hauling beside a sealed pit.",
+    "ts": "2026-11-16T10:15:10Z",
+    "version": "0.1.0",
+    "where": "design/concepts/ExplosiveKnockback/version/in_game/road_back_2026-11-16/"
    },
    "trap:fail-line-counts-overcount-components-because-phases-repeat": {
     "by": "BACKFILL",
@@ -8541,6 +8510,14 @@
     "version": "0.1.0",
     "where": "northstar/extensions.py first_find_sends_letter; RM_DigDiscoveryProof"
    },
+   "trap:fix-commit-25ad4b10c4-sits-in-a-detached-clone": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Fix commit 25ad4b10c4 sits in a detached clone bundled at 20261116T025752Z-...DET (relentless restore_bundle).",
+    "ts": "2026-11-16T10:12:17Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_pawn_height_scene.py"
+   },
    "trap:fix-lengthens-routes-the-station-34-owner-maze": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8549,21 +8526,13 @@
     "version": "0.1.0",
     "where": "station-34 owner maze"
    },
-   "trap:flood-refill-unmeasured-is-not-a-site-fault": {
+   "trap:flowworks-pit-reach-rule-lives-in-a-canreach": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "flood_refill UNMEASURED is not a site fault or a regression: it is owed by construction (_owed, no flood edge staged), so it will keep reading UNMEASURED.",
-    "ts": "2026-11-16T08:32:43Z",
+    "text": "FlowWorks' pit reach rule lives in a CanReach postfix (RM_SuperdeepTrap.RelativeVeto), which the region search used by GenClosest.ClosestThingReachable never calls, so reach checks look correct but do not cover the duplicate-pickup search.",
+    "ts": "2026-11-16T10:15:10Z",
     "version": "0.1.0",
-    "where": "ext_river flood_refill row"
-   },
-   "trap:floodedcanyon-another-mod-still-calls-the-bool-trysetdriverfill": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "FloodedCanyon (another mod) still calls the bool TrySetDriverFill; switching it to TrySetDriverFillOutcome is owed by that mod.",
-    "ts": "2026-11-16T08:32:38Z",
-    "version": "0.1.0",
-    "where": "FloodedCanyon calls to TrySetDriverFill"
+    "where": "RM_SuperdeepTrap.RelativeVeto; Toils_Haul.CheckForGetOpportunityDuplicate"
    },
    "trap:flowworks-rm-patch-liquidheatterrainchanged-appears-in-the-stack": {
     "by": "BACKFILL",
@@ -8613,14 +8582,6 @@
     "version": "0.1.0",
     "where": "RM_LiquidWorksScatter.xml:14; RM_MachinerySettings.cs:42"
    },
-   "trap:graffiti-s-poisoned-socket-reconnect-pattern-is-not": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Graffiti's poisoned-socket reconnect pattern is not yet built into the runner library.",
-    "ts": "2026-11-16T08:32:21Z",
-    "version": "0.1.0",
-    "where": "modcheck runner library (runner spec §2)"
-   },
    "trap:gss-power-cords-under-the-battery-d12-are": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8636,14 +8597,6 @@
     "ts": "2026-11-16T08:32:31Z",
     "version": "0.1.0",
     "where": "Rivers/RM_Weir.cs:210, :233"
-   },
-   "trap:industrial-rivers-bank-stake-and-ridges-still-carry": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Industrial Rivers bank stake and ridges still carry hazard stripes, so a raw-cement silt trap stands beside striped siblings; check the RiverWorks family reads as one set per look.",
-    "ts": "2026-11-16T08:32:22Z",
-    "version": "0.1.0",
-    "where": "Rivers/Industrial"
    },
    "trap:ingest-skips-exact-tier-proofs-relentless-game-reads": {
     "by": "BACKFILL",
@@ -8688,8 +8641,8 @@
    "trap:item-4-depth-named-water-labels-is-not": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Item 4 (depth-named water labels) is NOT part of this round any more; it was replaced by the two-figure readout. The rest stands, with the live look still owed.",
-    "ts": "2026-11-16T08:32:18Z",
+    "text": "Item 4 (depth-named water labels) is NOT part of this round any more; it was replaced by the two-figure readout.",
+    "ts": "2026-11-16T10:11:53Z",
     "version": "0.1.0",
     "where": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE"
    },
@@ -8700,14 +8653,6 @@
     "ts": "2026-11-16T08:32:47Z",
     "version": "0.1.0",
     "where": "jawa/flowworks_pulse tool (fixed to call FinishPulse, 8160302a47)"
-   },
-   "trap:joint-check-py-covers-hose-ends-and-reel": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "joint_check.py covers hose ends and reel links, not pipe section-layer stubs, so it cannot see this class of stub.",
-    "ts": "2026-11-16T08:32:52Z",
-    "version": "0.1.0",
-    "where": "joint_check.py"
    },
    "trap:joint-check-py-is-stricter-than-when-a3": {
     "by": "BACKFILL",
@@ -8773,6 +8718,14 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/level_surface_bar.py"
    },
+   "trap:line-numbers-in-the-table-are-at-e101a7383a": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Line numbers in the table are at e101a7383a.",
+    "ts": "2026-11-16T10:12:03Z",
+    "version": "0.1.0",
+    "where": "FlowWorks/northstar proof drivers"
+   },
    "trap:liquid-ledger-a4-ns-intake-needs-pump-has": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8781,29 +8734,13 @@
     "version": "0.1.0",
     "where": "proof_hose / liquid_checks live drivers"
    },
-   "trap:live-run-is-unrun-expected-live-guess-75": {
+   "trap:live-run-needs-the-rebuilt-dll-deployed-first": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Live run is UNRUN. Expected live (guess ~75%): ICE_cut_leaves_crushed_ice FAIL (MOD), because RM_DigDiscovery.IceCut classifies RM_DigSpoil.GroundAt (not the temp grid where vanilla ThinIce lives) and RM_GroundClassMath.IceTerrains has no ThinIce, so cutting a frozen pond yields nothing.",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "Live run needs the rebuilt DLL deployed first. Not covered: bottle fill/empty/wash jobs (only the faucet drink is staged) and the subsurface survey roll (the scene sets the yield).",
+    "ts": "2026-11-16T10:15:08Z",
     "version": "0.1.0",
-    "where": "RM_DigDiscovery.IceCut; RM_GroundClassMath.IceTerrains"
-   },
-   "trap:live-state-read-is-still-owed-only-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Live state read is still owed; only the selftests StartPath_reach_answers_for_the_walker_not_the_person_band and Too_wide_pawn_is_not_walled_in_by_the_masks back the fix.",
-    "ts": "2026-11-16T08:32:35Z",
-    "version": "0.1.0",
-    "where": "Superdeep/RM_SuperdeepTrap.cs, Superdeep/RM_CliffMask.cs"
-   },
-   "trap:live-tests-northstar-dead-settings-live-py-and": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Live tests northstar/dead_settings_live.py and northstar/tap_fill_live.py are unrun. selftest_extensions, selftest_flowworks_call_sites and selftest_review_map were already red on HEAD, and the C# suite has 1 unrelated FAIL (RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR).",
-    "ts": "2026-11-16T08:32:46Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/northstar/dead_settings_live.py; northstar/tap_fill_live.py"
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_garden_scene.py; concept_scenes.py scene_garden"
    },
    "trap:load-average-9-on-14-cores-with-5": {
     "by": "BACKFILL",
@@ -8812,14 +8749,6 @@
     "ts": "2026-11-16T08:32:24Z",
     "version": "0.1.0",
     "where": "/mnt/d/ClaudeWork/rimmandrake/metronome/shadow/beats.jsonl"
-   },
-   "trap:many-steve-targeted-pass-verifies-are-recorded-on": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Many 'steve-targeted' pass verifies are recorded on this ticket, and the 2026-10-31 one is partial, but A1 is still listed as owed. Sweep chain 'pit_fill_effects' was non-PASS on 2026-10-26, and the SteveDesktop lane run on 2026-10-28 was REFUSED/SYNC with no verdict.",
-    "ts": "2026-11-16T08:32:26Z",
-    "version": "0.1.0",
-    "where": "D:\\ClaudeWork\\rimmandrake\\fw_sweep_triage\\nonpass.tsv"
    },
    "trap:map-0-fails-the-gate-while-the-staged": {
     "by": "BACKFILL",
@@ -8853,14 +8782,6 @@
     "version": "0.1.0",
     "where": "item:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH"
    },
-   "trap:mod-completion-py-reads-a-part-as-broken": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "mod_completion.py reads a part as broken from its LATEST L2 row; closed fixes still read broken until the row's script is re-run on the current build. The stale red row is not a live defect. Grate rows (GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO) are out of scope.",
-    "ts": "2026-11-16T08:32:18Z",
-    "version": "0.1.0",
-    "where": "mod_completion.py FlowWorks"
-   },
    "trap:mod-fault-in-held-open-gates-by-hand": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8868,14 +8789,6 @@
     "ts": "2026-11-16T08:32:23Z",
     "version": "0.1.0",
     "where": "item:REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES"
-   },
-   "trap:modcheck-read-pending-owner-review-at-74p-0f": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "modcheck read PENDING-OWNER-REVIEW at 74P/0F, not GREEN: the owner's review (modcheck review FlowWorks --owner-said) is still owed. A RED run never closes this item.",
-    "ts": "2026-11-16T08:32:17Z",
-    "version": "0.1.0",
-    "where": "modcheck status FlowWorks; Transient/belt_bridge5_review/FlowWorks_owner_review.html"
    },
    "trap:modcheck-record-refused-the-2026-10-12-step": {
     "by": "BACKFILL",
@@ -8941,14 +8854,6 @@
     "version": "0.1.0",
     "where": "modcheck.suite.TestContext.wait_ticks"
    },
-   "trap:no-run-is-owed-at-the-current-code": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "No run is owed at the current code: the last Steve run was at 1d1d7396e8 and `git log 1d1d7396e8..HEAD -- src/RimMandrake/FlowWorks` is empty. Re-running the chain at the same code repeats an identical failure.",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "dig_finds chain, FlowWorks sha 1d1d7396e8"
-   },
    "trap:no-saved-copy-of-the-639-mod-full": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8957,13 +8862,13 @@
     "version": "0.1.0",
     "where": "full mod list for GREEN_FULL_1"
    },
-   "trap:not-covered-by-the-scene-the-bottle-fill": {
+   "trap:not-asked-prisoners-at-the-save-chemfuel-is": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Not covered by the scene: the bottle fill/empty/wash jobs (only the faucet drink is staged) and the subsurface survey roll (the scene sets the yield).",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "Not asked: prisoners at the save; chemfuel is poured (ProofFillWithFluid), not pumped. Coordinates O=(60,60) and spawn into 2 m water unverified live.",
+    "ts": "2026-11-16T10:15:07Z",
     "version": "0.1.0",
-    "where": "scene_garden"
+    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py scene_walk_moat_season"
    },
    "trap:not-the-deep-swim-bug-the-superdeep-cell": {
     "by": "BACKFILL",
@@ -8989,14 +8894,6 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/Utils/proof_restore_check.py"
    },
-   "trap:offline-half-landed-in-6ec30d8736-but-live-acceptance": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Offline half landed in 6ec30d8736 but live acceptance is UNRUN (needs bridge and the 316-mod list); do not read it as closed. The work was also left in an orphan bundle.",
-    "ts": "2026-11-16T08:32:47Z",
-    "version": "0.1.0",
-    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261116T000711Z-RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED.det"
-   },
    "trap:offline-l0-criteria-o1-o2-are-done-riverswitchflip": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9013,37 +8910,21 @@
     "version": "0.1.0",
     "where": "item:FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1"
    },
-   "trap:offline-pass-covers-only-a1-a2-live-is": {
+   "trap:offline-pass-covers-only-a1": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Offline pass covers only A1; A2 (live) is still owed, so the item is not closed.",
-    "ts": "2026-11-16T08:32:19Z",
+    "text": "Offline pass covers only A1.",
+    "ts": "2026-11-16T10:11:53Z",
     "version": "0.1.0",
     "where": "FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO A2"
-   },
-   "trap:offline-selftest-10-10-does-not-show-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Offline selftest 10/10 does not show the live run passes; the live half is UNRUN. Fix commit 25ad4b10c4 sits in a detached clone bundled at 20261116T025752Z-...DET (relentless restore_bundle).",
-    "ts": "2026-11-16T08:32:50Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/northstar/selftest_pawn_height_scene.py"
    },
    "trap:offline-selftest-green-13-ok-does-not-cover": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Offline selftest green (13 ok) does not cover live behaviour; unverified live: ProofMakeDrawbridge over a filled moat, raiders pathing into a closed ring, a 4 m dry ring holding them. MOAT_moat_burns still depends on RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN.",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "Offline selftest green (13 ok) does not cover live behaviour; unverified live: ProofMakeDrawbridge over a filled moat, raiders pathing into a closed ring, a 4 m dry ring holding them.",
+    "ts": "2026-11-16T10:12:17Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/selftest_moat_scene.py"
-   },
-   "trap:offline-selftest-green-6-cases-does-not-show": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Offline selftest green (6 cases) does not show the objects work in game; not deployed and live check not yet run.",
-    "ts": "2026-11-16T08:32:42Z",
-    "version": "0.1.0",
-    "where": "b696fdb9a2 Source/MapControls/"
    },
    "trap:old-saves-lose-their-liquid-on-load-the": {
     "by": "BACKFILL",
@@ -9077,37 +8958,45 @@
     "version": "0.1.0",
     "where": "FlowWorks Defs texture references"
    },
-   "trap:only-offline-selftest-and-winbuild-have-passed-a2": {
+   "trap:only-offline-selftest-and-winbuild-have-passed": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Only offline selftest and winbuild have passed; A2, the live check, is still owed.",
-    "ts": "2026-11-16T08:32:27Z",
+    "text": "Only offline selftest and winbuild have passed.",
+    "ts": "2026-11-16T10:12:00Z",
     "version": "0.1.0",
     "where": "criterion A2"
    },
-   "trap:only-the-offline-a1-check-passed-a2-live": {
+   "trap:only-the-built-thing-label-reads-glass": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Only the offline A1 check passed; A2 (live room warming over a late-listed hot cell) is still owed, so the fix is not proven live.",
-    "ts": "2026-11-16T08:32:20Z",
+    "text": "Only the built Thing label reads 'glass'.",
+    "ts": "2026-11-16T10:11:51Z",
+    "version": "0.1.0",
+    "where": "RM_CompContainerMaterial naming; bill/recipe previews"
+   },
+   "trap:only-the-offline-a1-check-passed": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Only the offline A1 check passed.",
+    "ts": "2026-11-16T10:11:54Z",
     "version": "0.1.0",
     "where": "A2 proof_heat"
    },
-   "trap:only-the-offline-selftest-ran-the-live-l1": {
+   "trap:only-the-offline-selftest-has-run-red-at": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Only the offline selftest ran; the live L1 check (A2) is still owed.",
-    "ts": "2026-11-16T08:32:28Z",
+    "text": "Only the offline selftest has run, red at 2 of 3 laws on 507b8cb3d.",
+    "ts": "2026-11-16T10:11:52Z",
     "version": "0.1.0",
-    "where": "criterion A2, sha e3b0a513a649"
+    "where": "northstar/concept_scenes.py --scene scene_fetch_fallen"
    },
-   "trap:only-the-walkthrough-builder-was-fixed-other-proofs": {
+   "trap:only-the-player-gizmo-orders-a-colonist": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Only the walkthrough builder was fixed; other proofs that still stage reels West are filed as PROOF_REELS_FIX_STILL_STAGED_WEST. Verification covered save c map C only; map R was not built.",
-    "ts": "2026-11-16T08:32:36Z",
+    "text": "Only the player gizmo orders a colonist.",
+    "ts": "2026-11-16T10:12:10Z",
     "version": "0.1.0",
-    "where": "fw_gss_sitting-14, save c map C"
+    "where": "ladder gizmo (dev)"
    },
    "trap:order-pawn-success-means-arrived-so-with-waitticks": {
     "by": "BACKFILL",
@@ -9125,19 +9014,11 @@
     "version": "0.1.0",
     "where": "owner_look_regressions, RM_UnderLiquid.ThingShadow"
    },
-   "trap:p1-s-modcheck-record-was-never-run-the": {
+   "trap:p3-has-open-mod-findings-pump-canal-stalls": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "P1's modcheck record was never run: the water_scenes_walk JSON carries no mod_hash/env fingerprint, so modcheck record would refuse. Add mod_hash to the walk output first.",
-    "ts": "2026-11-16T08:32:17Z",
-    "version": "0.1.0",
-    "where": "northstar/water_scenes_walk.py"
-   },
-   "trap:p3-p4-p8-p11-p13-are-built-but": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "P3/P4/P8/P11/P13 are built but their L2 proof is owed to the P10 walk; P3 has open MOD findings (pump->canal stalls after one notch, spill vanishes with no filth, S5.e sheet destroyed).",
-    "ts": "2026-11-16T08:32:17Z",
+    "text": "P3 has open MOD findings (pump->canal stalls after one notch, spill vanishes with no filth, S5.e sheet destroyed).",
+    "ts": "2026-11-16T10:11:51Z",
     "version": "0.1.0",
     "where": "FlowWorks P3 / P10 walk"
    },
@@ -9160,26 +9041,18 @@
    "trap:patchfeature-diagnostic-names-developer-log-notice-were-deliberately": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "PatchFeature diagnostic names (developer log/notice) were deliberately left as they are; grepping them is not a leak. The live read-through for line wraps and designator hover is still owed.",
-    "ts": "2026-11-16T08:32:31Z",
+    "text": "PatchFeature diagnostic names (developer log/notice) were deliberately left as they are; grepping them is not a leak.",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0",
     "where": "RimMandrakeFlowWorksMod.cs; PatchFeature diagnostics"
    },
-   "trap:pit-deepstone-build-digging-finally-pays-a2-stays": {
+   "trap:pit-bars-must-not-be-moved-as-they": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS A2 stays owed. A passing probe and accepted order do not satisfy it; that needs depth 3->4.",
-    "ts": "2026-11-16T08:32:15Z",
+    "text": "Pit bars must not be moved as they stand; PIT_SUPERDEEP_COLLAPSE_1 rewrites them.",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0",
-    "where": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS A2"
-   },
-   "trap:pitaccesschecks-186-151-in-the-settings-section-list": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "PitAccessChecks:186/151 'in the settings section list' is satisfied by the Scribe key string itself. DirtyReview1022:111 pose order, PumpChecks:107-110 and :124 are left unverified and unfixed.",
-    "ts": "2026-11-16T08:32:38Z",
-    "version": "0.1.0",
-    "where": "PitAccessChecks:186/151; DirtyReview1022:111; PumpChecks:107-110,:124"
+    "where": "design/validation_walks/RimMandrake/Pits.md; FlowWorks.md"
    },
    "trap:pitrescueladderenabled-defaults-on-so-pit-rows-that-expect": {
     "by": "BACKFILL",
@@ -9189,37 +9062,29 @@
     "version": "0.1.0",
     "where": "validation_v2 phase_P"
    },
-   "trap:pits-md-s-11-1-bars-never-bound": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Pits.md's 11+1 bars never bound any check: modcheck run FlowWorks reads only FlowWorks.md, so Pits.md passing meant nothing. Pit bars must not be moved as they stand; PIT_SUPERDEEP_COLLAPSE_1 rewrites them.",
-    "ts": "2026-11-16T08:32:30Z",
-    "version": "0.1.0",
-    "where": "design/validation_walks/RimMandrake/Pits.md; FlowWorks.md"
-   },
    "trap:placement-is-not-refused-on-a-map-with": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Placement is NOT refused on a map with nothing drillable; the survey is text only. A refusal would be a behaviour change left for the owner. The live look of the placing text was owed at close, not done.",
-    "ts": "2026-11-16T08:32:28Z",
+    "text": "Placement is NOT refused on a map with nothing drillable; the survey is text only. A refusal would be a behaviour change left for the owner.",
+    "ts": "2026-11-16T10:12:01Z",
     "version": "0.1.0",
     "where": "drill/tap PlaceWorker; Building_LiquidDrill.GetInspectString"
    },
-   "trap:planted-faults-24-of-27-caught-a-converter": {
+   "trap:planted-faults-24-of-27-caught": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Planted faults: 24 of 27 caught. A converter caller fault, a sprinkler caller fault and a tenfold change to a still's rate survived every test, and a drill fault survived its bar's own test and was caught only by lane 1.",
-    "ts": "2026-11-16T08:32:46Z",
+    "text": "Planted faults: 24 of 27 caught.",
+    "ts": "2026-11-16T10:12:14Z",
     "version": "0.1.0",
     "where": "design/concepts/FlowWorks/version/blind_challenge/cycle_1/SUMMARY.md"
    },
-   "trap:prompt-sources-stopped-asking-for-red-on-2026": {
+   "trap:presumed-harness-parking-not-holding-a-drafted-pawn": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Prompt sources stopped asking for red on 2026-11-06, but art already drawn from them was not redrawn; the installed art is still red.",
-    "ts": "2026-11-16T08:32:22Z",
+    "text": "Presumed harness (parking not holding a drafted pawn across the sprinkler block), unproven. Do not treat the ticket as fixed on the O1 selftest alone.",
+    "ts": "2026-11-16T10:11:59Z",
     "version": "0.1.0",
-    "where": "TankTall/v2/restyle.sh, ReelTapRedraw/gen_one.sh, BridgeRedraw/bridge_redraw.py, Weir/generate.sh, Faucet/artlist.json"
+    "where": "D:\\ClaudeWork\\rimmandrake\\scratch\\br1g_caps\\ls_c2f\\session.json"
    },
    "trap:proof-hose-s-relay-block-emits-no-rl1": {
     "by": "BACKFILL",
@@ -9245,14 +9110,6 @@
     "version": "0.1.0",
     "where": "FlowWorks/Source/Rivers/RM_RiverWorksProof.cs ProofTaken"
    },
-   "trap:pump-ports-live-stays-owed-only-the-5": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "pump_ports_live stays owed; only the 5 SelfTest rows of pump_ports_one_per_side were re-run offline. The rc=5 cause is not shown fixed; if it recurs after rebuild, the reason carries the dotnet exception line.",
-    "ts": "2026-11-16T08:32:51Z",
-    "version": "0.1.0",
-    "where": "pump_ports_one_per_side"
-   },
    "trap:python-selftest-reds-178-194-are-main-s": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9277,6 +9134,14 @@
     "version": "0.1.0",
     "where": "ladder raise, hanging hose"
    },
+   "trap:re-running-the-chain-at-the-same-code": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Re-running the chain at the same code repeats an identical failure.",
+    "ts": "2026-11-16T10:11:50Z",
+    "version": "0.1.0",
+    "where": "dig_finds chain, FlowWorks sha 1d1d7396e8"
+   },
    "trap:re-targeted-to-flowworks-0-2-0-and": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9293,14 +9158,6 @@
     "version": "0.1.0",
     "where": "item:GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO"
    },
-   "trap:reading-the-lake-on-the-river-map-is": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Reading the lake on the river map is not valid for the lake row: the river map reads Endless.",
-    "ts": "2026-11-16T08:32:50Z",
-    "version": "0.1.0",
-    "where": "evidence/sc_river__endless_read.txt"
-   },
    "trap:removing-the-skills-folder-breaks-every-art-job": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9308,22 +9165,6 @@
     "ts": "2026-11-16T08:32:26Z",
     "version": "0.1.0",
     "where": "rm-artpiped.service; skills/generating-images/scripts/codex_image.py"
-   },
-   "trap:residual-an-indoor-room-can-still-split-by": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Residual: an indoor room can still split by equalising from the truncated value; RM_LiquidHeat and other engine temperature readers still feed Credit unchanged.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "ClassifyCell; RM_LiquidHeat"
-   },
-   "trap:review-map-coverage-md-still-lists-pondheadruleenabled-it": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "review/map/COVERAGE.md still lists pondHeadRuleEnabled; it was not regenerated after the removal.",
-    "ts": "2026-11-16T08:32:46Z",
-    "version": "0.1.0",
-    "where": "review/map/COVERAGE.md"
    },
    "trap:review-map-py-spawns-rm-bottleempty-and-rm": {
     "by": "BACKFILL",
@@ -9392,8 +9233,8 @@
    "trap:ruling-12-2026-09-16-said-a-sluice": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Ruling 12 (2026-09-16) said a sluice gate holds liquid back until opened, but the 09-17 commission says Sluice passes liquid while closed; the built def follows the commission. Art is placeholder vanilla door art, and live proof of the flow_doors chain was still owed.",
-    "ts": "2026-11-16T08:32:29Z",
+    "text": "Ruling 12 (2026-09-16) said a sluice gate holds liquid back until opened, but the 09-17 commission says Sluice passes liquid while closed; the built def follows the commission.",
+    "ts": "2026-11-16T10:12:01Z",
     "version": "0.1.0",
     "where": "design/RimMandrake/flowworks_mod_definition.md ruling 12; Source/Superdeep/RM_FlowDoors.cs"
    },
@@ -9453,14 +9294,6 @@
     "version": "0.1.0",
     "where": "judge_certificate.certify(..., to=\"in_game\")"
    },
-   "trap:scnsluice-in-jawabenchflowworksplaytestscenes-cs-still-carries-expectedfailuntil-flowworks": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "ScnSluice in JawaBenchFlowWorksPlaytestScenes.cs still carries expectedFailUntil=FLOWWORKS_SLUICE_TWO_DOORS_1, so it prints XPASS, not PASS; remove the marker and rebuild the DLL.",
-    "ts": "2026-11-16T08:32:31Z",
-    "version": "0.1.0",
-    "where": "JawaBenchFlowWorksPlaytestScenes.cs ScnSluice"
-   },
    "trap:scribing-lastcell-alone-would-read-a-walked-arrival": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9472,18 +9305,10 @@
    "trap:search-matched-only-section-names-network-showed-the": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Search matched only section names: 'network' showed the whole section while the checkbox's own words found nothing. Rows drawn with raw list.CheckboxLabeled inside a kit Section were not in the index.",
-    "ts": "2026-11-16T08:32:51Z",
+    "text": "Search matched only section names: 'network' showed the whole section while the checkbox's own words found nothing.",
+    "ts": "2026-11-16T10:12:18Z",
     "version": "0.1.0",
     "where": "RM_SettingsSearchIndex; FlowWorks Mod Settings, Water engine section"
-   },
-   "trap:selftest-bridge-args-only-picked-up-files-calling": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "selftest_bridge_args only picked up files calling bridge tools in double quotes, so concept_scenes.py and three other drivers were never checked.",
-    "ts": "2026-11-16T08:32:47Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/northstar/selftest_bridge_args.py"
    },
    "trap:selftest-flowworks-northstar-tier-want-rows-are-red": {
     "by": "BACKFILL",
@@ -9493,14 +9318,6 @@
     "version": "0.1.0",
     "where": "selftest_flowworks_northstar tier-want rows"
    },
-   "trap:selftest-player-missions-py-passing-does-not-verify": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "selftest_player_missions.py passing does not verify the in-game criterion; the live read of the destination tank by ThingID was owed until the 2026-10-26 live run.",
-    "ts": "2026-11-16T08:32:44Z",
-    "version": "0.1.0",
-    "where": "northstar/selftest_player_missions.py"
-   },
    "trap:selftest-review-map-coverage-fail-pre-exists-on": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9509,14 +9326,6 @@
     "version": "0.1.0",
     "where": "selftest_review_map"
    },
-   "trap:selftest-stage3-owed-only-fetch-fallen-still-fails": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "selftest_stage3_owed --only fetch_fallen still fails the same 2 checks, because the raider fetch-a-fallen-comrade job is not built; that is expected, not a harness fault.",
-    "ts": "2026-11-16T08:32:48Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
-   },
    "trap:selftest-weir-looks-timber-sha-024e3d8002-has-no": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9524,6 +9333,14 @@
     "ts": "2026-11-16T08:32:40Z",
     "version": "0.1.0",
     "where": "selftest_weir_looks TIMBER_SHA"
+   },
+   "trap:several-commits-sit-in-detached-run-clones-bundled": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Several commits sit in detached run clones bundled as orphans.",
+    "ts": "2026-11-16T10:12:14Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/blind_challenge/cycle_1/"
    },
    "trap:several-invalid-harness-testq-runs-unknown-outcome-jawa": {
     "by": "BACKFILL",
@@ -9560,8 +9377,8 @@
    "trap:stage-json-is-the-only-locked-file-that": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "`stage.json` is the only locked file that moved since the lock (blob `3af342069` → `34f93a515`; state, not a bar). The seven bar files are byte-identical to `version/bars.md`. `stage.json` reads `locked` since 2026-11-14 (it read an OWNER HOLD pending the lock until then; intervention of 2:28 PM PST). […]",
-    "ts": "2026-11-16T07:16:23Z",
+    "text": "`stage.json` is the only locked file that moved since the lock (blob `3af342069` → `34f93a515`; state, not a bar). The seven bar files are byte-identical to `version/bars.md`. `stage.json` reads `locked` since 2026-11-14 (it read an OWNER HOLD pending the lock until then; intervention of 2:28 PM PST).",
+    "ts": "2026-11-16T10:11:49Z",
     "version": "0.1.0",
     "where": "stage.json"
    },
@@ -9581,6 +9398,14 @@
     "version": "0.1.0",
     "where": "RIMMANDRAKE_DECIDE_GOODS_AND_SWALE_UNDER_LIQUID"
    },
+   "trap:sweep-chain-pit-fill-effects-was-non-pass": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Sweep chain 'pit_fill_effects' was non-PASS on 2026-10-26, and the SteveDesktop lane run on 2026-10-28 was REFUSED/SYNC with no verdict.",
+    "ts": "2026-11-16T10:11:59Z",
+    "version": "0.1.0",
+    "where": "D:\\ClaudeWork\\rimmandrake\\fw_sweep_triage\\nonpass.tsv"
+   },
    "trap:swim-armour-warned-before-under-can-pass-with": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9588,6 +9413,14 @@
     "ts": "2026-11-16T08:32:27Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py:233-244, row SWIM_armour_warned_before_under"
+   },
+   "trap:t-pit-cover-going-red-was-not-a": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "T_PIT_COVER going red was not a FlowWorks pit-cover defect: GSS changed a RebuildContacts signature that the source-text check pinned. Fixed upstream in cf6efc3055, and the check now reads the compiled DLL and stays green when a RebuildContacts parameter is added.",
+    "ts": "2026-11-16T10:12:14Z",
+    "version": "0.1.0",
+    "where": "T_PIT_COVER"
    },
    "trap:tar-front-lags-water-does-not-compare-against": {
     "by": "BACKFILL",
@@ -9612,14 +9445,6 @@
     "ts": "2026-11-16T08:32:39Z",
     "version": "0.1.0",
     "where": "D:\\ClaudeWork\\rimmandrake\\testq_brake\\tps_2272_001.jsonl, calls_job1_tail.jsonl"
-   },
-   "trap:the-10-24-capture-showing-reset-everywhere-is": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The 10-24 capture showing Reset everywhere is incomplete: Quarry was not found by name, and the separate Water effects window has no reset or search.",
-    "ts": "2026-11-16T08:32:18Z",
-    "version": "0.1.0",
-    "where": "captures/br1f/fws/fws_fw_00..34.png, fws_fw_uniq.txt"
    },
    "trap:the-10-jump-pack-share-for-raids-on": {
     "by": "BACKFILL",
@@ -9648,8 +9473,8 @@
    "trap:the-12-24-half-full-figure-came-from": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The 12/24 half-full figure came from the offline per-square model, not the game's canal-wide walk (22.5/24 on the old pour). The live tap-fill test is UNRUN; the fix is proven only offline.",
-    "ts": "2026-11-16T08:32:51Z",
+    "text": "The 12/24 half-full figure came from the offline per-square model, not the game's canal-wide walk (22.5/24 on the old pour).",
+    "ts": "2026-11-16T10:12:18Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/tap_fill_live.py (after water_scenes_walk.py prep)"
    },
@@ -9668,6 +9493,14 @@
     "ts": "2026-11-16T08:32:29Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/, Tools/generate_liquid_suite.py"
+   },
+   "trap:the-2-blocked-rows-are-by-design-hooked": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The 2 BLOCKED rows are by design (hooked items) and the 1 UNMEASURED row is the pour row run without --acts; neither is a mod fault. The new row OL_no_surface_shadow_under_sheet stays BLOCKED until the shadow queue is reported.",
+    "ts": "2026-11-16T10:15:09Z",
+    "version": "0.1.0",
+    "where": "owner_look_regressions.py; OL_no_surface_shadow_under_sheet"
    },
    "trap:the-2026-10-07-rerun-s-sluice-fail": {
     "by": "BACKFILL",
@@ -9693,14 +9526,6 @@
     "version": "0.1.0",
     "where": "item:SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT"
    },
-   "trap:the-2026-10-24-verify-of-a3-passed": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The 2026-10-24 verify of A3 passed except the known staged C7 pipe stub, which still reads JOINT CHECK: FAIL.",
-    "ts": "2026-11-16T08:32:33Z",
-    "version": "0.1.0",
-    "where": "save RM_fw_walkthrough_20261023e, C7 pipe stub"
-   },
    "trap:the-2026-11-01-note-says-commit-069abc50e5": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9708,14 +9533,6 @@
     "ts": "2026-11-16T08:32:20Z",
     "version": "0.1.0",
     "where": "commit 069abc50e5 vs e4544cc001ab"
-   },
-   "trap:the-2204-row-matrix-0-fail-2026-11": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The 2204-row matrix 0 FAIL (2026-11-12) predates the owner's look, which found many defects (portable ladder, ramp, items, D8 inconsistency); it does not show the current law is right. 441c321a20dc is offline only, live proof still owed.",
-    "ts": "2026-11-16T08:32:25Z",
-    "version": "0.1.0",
-    "where": "northstar/pit_fittings_matrix.py; RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE"
    },
    "trap:the-250-tick-scan-gap-c6-f6-was": {
     "by": "BACKFILL",
@@ -9765,14 +9582,6 @@
     "version": "0.1.0",
     "where": "validation_v2 config fw_gss_sitting"
    },
-   "trap:the-a1-l2-live-check-tar-beast-bulge": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The A1 L2 live check (tar-beast bulge and belch still fire on the Sump map) was not run; the item is built with only the offline check.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1 A1"
-   },
    "trap:the-a2-proof-uses-the-seam-rm-building": {
     "by": "BACKFILL",
     "status": "noted",
@@ -9816,8 +9625,8 @@
    "trap:the-all-off-fixture-is-not-actually-all": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The all_off fixture is not actually all off: settings_registry.py:65-67 excludes internal switches from all_off(), and RimMandrakeFlowWorksMod.cs:43-49 latches the engine setting until reload unless the internal test override is on. A failure of all_off_still_digs may come from the still-running engine.",
-    "ts": "2026-11-16T08:32:15Z",
+    "text": "The all_off fixture is not actually all off: settings_registry.py:65-67 excludes internal switches from all_off(), and RimMandrakeFlowWorksMod.cs:43-49 latches the engine setting until reload unless the internal test override is on.",
+    "ts": "2026-11-16T10:11:49Z",
     "version": "0.1.0",
     "where": "northstar/extensions.py _setting_in, all_off_still_digs; Source/RimMandrakeFlowWorksMod.cs:43-49"
    },
@@ -9828,14 +9637,6 @@
     "ts": "2026-11-16T08:32:51Z",
     "version": "0.1.0",
     "where": "FlowWorks/northstar/river_site.py"
-   },
-   "trap:the-art-is-not-yet-greyscale-until-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The art is not yet greyscale until the three fwart_*_Stuffable_v1 jobs install. Until then the coloured patchwork art multiplied by the stuff colour reads muddy, which is not a tint bug.",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "fwart_RM_Bottle/Barrel/Bucket_Stuffable_v1"
    },
    "trap:the-bar-s-literal-wording-no-pipe-is": {
     "by": "BACKFILL",
@@ -9884,30 +9685,6 @@
     "ts": "2026-11-16T08:32:39Z",
     "version": "0.1.0",
     "where": "FlowWorks review browser sheet HTML"
-   },
-   "trap:the-build-commit-30cc533cf3-was-only-in-a": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The build commit 30cc533cf3 was only in a detached run clone that was bundled as an orphan (no remote had it); restore it from the bundle if it is still wanted.",
-    "ts": "2026-11-16T08:32:46Z",
-    "version": "0.1.0",
-    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261115T234746Z-RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN.det"
-   },
-   "trap:the-build-commit-ade1f4d429-was-only-in-a": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The build commit ade1f4d429 was only in a detached run clone that was bundled as an orphan (no remote had it); restore it from the bundle if it is still wanted.",
-    "ts": "2026-11-16T08:32:45Z",
-    "version": "0.1.0",
-    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261115T231600Z-RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING.det"
-   },
-   "trap:the-c-port-still-clips-steps-in-litiming": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The C# port still clips steps in LiTiming/Program.cs (lines 66, 148), unlike Spreader.cs, which splits evenly. The EvenDt rule must be carried into the FlowWorks port and its evensteps check run there.",
-    "ts": "2026-11-16T08:32:26Z",
-    "version": "0.1.0",
-    "where": "LiTiming/Program.cs; LocalInertialDL.EvenDt"
    },
    "trap:the-c-selftest-is-one-console-app-holding": {
     "by": "BACKFILL",
@@ -9997,22 +9774,6 @@
     "version": "0.1.0",
     "where": "known_reds.py"
    },
-   "trap:the-close-was-offline-only-the-live-in": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The close was offline only; the live in-game swap rows are still owed.",
-    "ts": "2026-11-16T08:32:53Z",
-    "version": "0.1.0",
-    "where": "RM_TrenchStride Swap, sha a027e060d9"
-   },
-   "trap:the-closing-acceptance-run-is-green-4-4": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The closing acceptance run is GREEN 4/4 at c18e27a7a4, but the FlowWorks DLL is not deployed to the game folder and the live scene_coating_wash check of a reload mid-wade is UNRUN.",
-    "ts": "2026-11-16T08:32:48Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks; scene_coating_wash"
-   },
    "trap:the-closing-sha-976ccbd165-was-replaced-by-the": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10028,14 +9789,6 @@
     "ts": "2026-11-16T08:32:49Z",
     "version": "0.1.0",
     "where": "scene_ice"
-   },
-   "trap:the-comments-name-patch-files-patches-kits-rm": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The comments name patch files Patches/Kits/RM_TarResidue.xml and Patches/Kits/RM_TarAcidReaction_Sump.xml that do not exist, so the residue extension on RM_Fluid_Tar and the TheSump TarAcid patch are not wired.",
-    "ts": "2026-11-16T08:32:44Z",
-    "version": "0.1.0",
-    "where": "RM_FluidResidue.cs header; RM_LiquidKits.xml"
    },
    "trap:the-commit-b9264604c6-named-in-the-note-landed": {
     "by": "BACKFILL",
@@ -10077,14 +9830,6 @@
     "version": "0.1.0",
     "where": "compare.py"
    },
-   "trap:the-decision-doc-once-said-the-engine-was": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The decision doc once said the engine was only an agent recommendation; that text was false and removed. The owner chose local_inertial_frcap by card 2026-11-14.",
-    "ts": "2026-11-16T08:32:26Z",
-    "version": "0.1.0",
-    "where": "design/specs/water_solver_decision_2026-11-12.md"
-   },
    "trap:the-deployed-flowworks-dll-10-31-10-48": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10101,13 +9846,13 @@
     "version": "0.1.0",
     "where": "'Dig to depth' float menu; census section 4"
    },
-   "trap:the-dev-gizmo-still-toggles-the-ladder-instantly": {
+   "trap:the-detached-setup-run-s-clone-was-bundled": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The dev gizmo still toggles the ladder instantly. Only the player gizmo orders a colonist.",
-    "ts": "2026-11-16T08:32:41Z",
+    "text": "The detached setup run's clone was bundled to orphans and has to be restored from that bundle if its work is wanted.",
+    "ts": "2026-11-16T10:11:51Z",
     "version": "0.1.0",
-    "where": "ladder gizmo (dev)"
+    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261107T231851Z-FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH.det"
    },
    "trap:the-drafted-setter-early-returns-when-unchanged-so": {
     "by": "BACKFILL",
@@ -10125,14 +9870,6 @@
     "version": "0.1.0",
     "where": "sha 101e561a6e06 vs c29007b6b66e"
    },
-   "trap:the-earlier-pass-rows-1-and-19-came": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The earlier PASS rows 1 and 19 came from harness fixes, not mod fixes; the FAIL rows 0 and 18 were harness faults at mod sha 8caccd561c.",
-    "ts": "2026-11-16T08:32:48Z",
-    "version": "0.1.0",
-    "where": "visit_1/rows.jsonl rows 0, 1, 18, 19"
-   },
    "trap:the-earlier-v2-x10-canal-fire-pass-and": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10141,21 +9878,21 @@
     "version": "0.1.0",
     "where": "v2 X10_canal_fire; plot_E_fire, fire_explosion chains"
    },
+   "trap:the-evendt-rule-must-be-carried-into-the": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The EvenDt rule must be carried into the FlowWorks port and its evensteps check run there.",
+    "ts": "2026-11-16T10:11:59Z",
+    "version": "0.1.0",
+    "where": "LiTiming/Program.cs; LocalInertialDL.EvenDt"
+   },
    "trap:the-evidence-is-offline-math-and-source-wiring": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The evidence is offline math and source wiring; curve numerics use copied math pinned to production source. Live gameplay, GSS pixel/angle proof and Replay execution remain unverified.",
-    "ts": "2026-11-16T08:32:30Z",
+    "text": "The evidence is offline math and source wiring; curve numerics use copied math pinned to production source.",
+    "ts": "2026-11-16T10:12:02Z",
     "version": "0.1.0",
     "where": "whittle/fw-drain-selftest-resume/FINDINGS.md"
-   },
-   "trap:the-existing-liveness-family-never-ran-with-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The existing liveness family never ran with the shipped flags, so it passed while this bug stood.",
-    "ts": "2026-11-16T08:32:43Z",
-    "version": "0.1.0",
-    "where": "FillsFromLimitless liveness family"
    },
    "trap:the-existing-negative-controls-only-test-credits-outside": {
     "by": "BACKFILL",
@@ -10269,14 +10006,6 @@
     "version": "0.1.0",
     "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261116T022446Z-RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE.det"
    },
-   "trap:the-fix-covers-toxic-only-salt-brine-acid": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The fix covers toxic only; salt, brine, acid, reaction liquor and coloured waters still map to RM_Fluid_Water and still pump as fresh water.",
-    "ts": "2026-11-16T08:32:22Z",
-    "version": "0.1.0",
-    "where": "RM_LiquidDefRegistry.xml; RM_FluidIdentity.cs:27; RM_LiquidStock.cs:143,232"
-   },
    "trap:the-fix-is-proven-offline-only-gptfixesachecks-no": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10284,6 +10013,14 @@
     "ts": "2026-11-16T08:32:28Z",
     "version": "0.1.0",
     "where": "selftest_flowworks_stock.py GptFixesAChecks"
+   },
+   "trap:the-fix-is-proven-only-by-the-l0": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The fix is proven only by the L0 pin. A second reaction def would re-open the live case. Row REACTOR_NEXT_REACTION_RUNS reads UNMEASURED/SITE.",
+    "ts": "2026-11-16T10:12:11Z",
+    "version": "0.1.0",
+    "where": "RM_LiquidKits.xml; row REACTOR_NEXT_REACTION_RUNS"
    },
    "trap:the-fix-is-unconfirmed-live-only-selftest-extensions": {
     "by": "BACKFILL",
@@ -10293,11 +10030,11 @@
     "version": "0.1.0",
     "where": "selftest_extensions _repair_probes"
    },
-   "trap:the-fix-reorders-the-registry-stepfor-still-returns": {
+   "trap:the-fix-reorders-the-registry": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The fix reorders the registry; StepFor still returns the first eligible conversion, so the order of conversion rows decides which recipe runs.",
-    "ts": "2026-11-16T08:32:21Z",
+    "text": "The fix reorders the registry.",
+    "ts": "2026-11-16T10:11:55Z",
     "version": "0.1.0",
     "where": "RM_LiquidDefRegistry.xml; Source/Machinery/CompLiquidConverter.cs StepFor"
    },
@@ -10341,6 +10078,14 @@
     "version": "0.1.0",
     "where": "item:FLOWWORKS_SELFTEST_FIX_FOUR_RED_AT_BASE"
    },
+   "trap:the-fresh-map-gained-7-filth-blood-and": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The fresh map gained 7 Filth_Blood and 7 RM_ChokingSpores near the plot and the pawn was likely harmed, so depth 3->3 is not a mod verdict.",
+    "ts": "2026-11-16T10:11:50Z",
+    "version": "0.1.0",
+    "where": "deep_stone_live.py --fresh-map, DS_superdeep_cut row"
+   },
    "trap:the-froude-cap-does-not-fix-the-reservoir": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10356,14 +10101,6 @@
     "ts": "2026-11-16T08:32:50Z",
     "version": "0.1.0",
     "where": "Source/SelfTest/DeckCollapseLinesChecks.cs:223"
-   },
-   "trap:the-fw-live-checks-l6-row-still-fails": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The fw_live_checks L6 row still FAILs after the fix because of a harness problem: its lordless witnesses walk off before the first check. The pass came from a hand-run with a witness spawned 3 ticks before the check.",
-    "ts": "2026-11-16T08:32:34Z",
-    "version": "0.1.0",
-    "where": "fw_live_checks L6 row"
    },
    "trap:the-gap-is-latent-no-def-sets-fillterrainveryshallow": {
     "by": "BACKFILL",
@@ -10429,22 +10166,6 @@
     "version": "0.1.0",
     "where": "proof"
    },
-   "trap:the-item-file-was-restored-from-the-ledger": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The item file was restored from the ledger and records nothing owed beyond the title; the real history is in the ledger events and the loop clone. The detached setup run's clone was bundled to orphans and has to be restored from that bundle if its work is wanted.",
-    "ts": "2026-11-16T08:32:17Z",
-    "version": "0.1.0",
-    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261107T231851Z-FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH.det"
-   },
-   "trap:the-item-is-not-closed-the-live-half": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The item is not closed: the live half (visit 2 reruns of sc_fill_front via concept_scenes.py --scene scene_fill_front and sc_fill_tiers via extension_proof.py --chains plot_B_fill_tiers) is unrun and needs the bridge. The offline pin alone does not prove the live rows.",
-    "ts": "2026-11-16T08:32:48Z",
-    "version": "0.1.0",
-    "where": "design/concepts/FlowWorks/version/in_game/visit_1/run_row.py"
-   },
    "trap:the-j-workgiver-selection-fail-was-not-persistent": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10469,22 +10190,6 @@
     "version": "0.1.0",
     "where": "setting recedeKeepsLastCell"
    },
-   "trap:the-l1-in-game-criterion-a1-can-never": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The L1 in-game criterion A1 can never run in the shipped game: RM_Reaction_TarAcid is the only RM_LiquidReactionDef, so no second reaction C+D exists. The fix is proven only by the L0 pin. A second reaction def would re-open the live case. Row REACTOR_NEXT_REACTION_RUNS reads UNMEASURED/SITE.",
-    "ts": "2026-11-16T08:32:41Z",
-    "version": "0.1.0",
-    "where": "RM_LiquidKits.xml; row REACTOR_NEXT_REACTION_RUNS"
-   },
-   "trap:the-l1-l2-rows-test-a-kernel-path": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The L1/L2 rows test a kernel path that the P3 solver replaces for still water; re-run them after P3 lands, not before.",
-    "ts": "2026-11-16T08:32:42Z",
-    "version": "0.1.0",
-    "where": "FLOW_ORDER_EXTERNAL_INPUT_1 owed L1/L2 rows"
-   },
    "trap:the-labour-multiplier-theory-cuts-of-7-529": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10492,14 +10197,6 @@
     "ts": "2026-11-16T08:32:16Z",
     "version": "0.1.0",
     "where": "northstar/extensions.py:3302-3357 (dig_finds, _dig_by_hand); quarry_find_live.py:108-122"
-   },
-   "trap:the-ladder-bars-rows-still-stop-at-2": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The ladder bars' rows still stop at 2 m (LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO), though the bars are reworded in metres.",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "pit_depth_ladder_legible; pawn_height_ladder_legible rows"
    },
    "trap:the-lake-access-selftest-ruler-can-report-a": {
     "by": "BACKFILL",
@@ -10517,30 +10214,6 @@
     "version": "0.1.0",
     "where": "RAID_FILL_CAUSEWAY (raid_trench_proof), sha 5516b15f25"
    },
-   "trap:the-live-acceptance-run-is-unrun-when-run": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live acceptance run is UNRUN. When run, FETCH_ladder_into_pit is expected to FAIL (MOD) until FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN builds the fetch job (implementation absent).",
-    "ts": "2026-11-16T08:32:48Z",
-    "version": "0.1.0",
-    "where": "scene_fetch_fallen row FETCH_ladder_into_pit"
-   },
-   "trap:the-live-check-a2-is-still-owed-only": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live check (A2) is still owed; only the selftest is verified.",
-    "ts": "2026-11-16T08:32:15Z",
-    "version": "0.1.0",
-    "where": "FlowWorks SelfTest; RM_PitFillEffects.Tick"
-   },
-   "trap:the-live-check-is-still-owed-only-the": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live check is still owed; only the selftest was red-then-green.",
-    "ts": "2026-11-16T08:32:22Z",
-    "version": "0.1.0",
-    "where": "selftest PitRamp_walked_step_down_a_ramp_is_no_fall"
-   },
    "trap:the-live-criterion-a1-thirsty-pawn-does-not": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10548,30 +10221,6 @@
     "ts": "2026-11-16T08:32:16Z",
     "version": "0.1.0",
     "where": "FlowWorks_PitFluidTerrain.xml hazard fill terrains; RM_ThirstUtility.cs:127-141"
-   },
-   "trap:the-live-half-of-the-acceptance-is-unrun": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live half of the acceptance is UNRUN, so the fix at b3bfaa7038 is proven only against the offline fake.",
-    "ts": "2026-11-16T08:32:49Z",
-    "version": "0.1.0",
-    "where": "scene_hose_look; selftest_hose_look_scene.py"
-   },
-   "trap:the-live-joy-check-was-not-run-no": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live joy check was not run (no bridge that sitting); the fix is confirmed by code only.",
-    "ts": "2026-11-16T08:32:28Z",
-    "version": "0.1.0",
-    "where": "Patches/Canals/FlowWorks_NoRecreationalSwim.xml"
-   },
-   "trap:the-live-look-is-still-owed-the-architect": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live look is still owed: the architect menu should show 'sluice gate' and a sluice box's inspect line should read 'Sluice box: ...'. The ticket closed on offline checks only (SelfTest 773/773, FlowWorks py 50/50, settings screens 854/854).",
-    "ts": "2026-11-16T08:32:36Z",
-    "version": "0.1.0",
-    "where": "architect menu; sluice box inspect line"
    },
    "trap:the-live-pass-ran-on-tile-9980-rm": {
     "by": "BACKFILL",
@@ -10589,30 +10238,6 @@
     "version": "0.1.0",
     "where": "ratchet_pilot 21 mods, FlowWorks hose settings screen"
    },
-   "trap:the-live-run-needs-the-rebuilt-dll-deployed": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live run needs the rebuilt DLL deployed first, because the scene uses the new ProofDrill probe. The live acceptance is UNRUN.",
-    "ts": "2026-11-16T08:32:49Z",
-    "version": "0.1.0",
-    "where": "RM_NorthstarProofs.ProofDrill; scene_garden"
-   },
-   "trap:the-live-scene-scene-fetch-fallen-is-unrun": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live scene scene_fetch_fallen is UNRUN. Only the offline selftest has run, red at 2 of 3 laws on 507b8cb3d.",
-    "ts": "2026-11-16T08:32:18Z",
-    "version": "0.1.0",
-    "where": "northstar/concept_scenes.py --scene scene_fetch_fallen"
-   },
-   "trap:the-live-scene-toss-flame-is-unrun-only": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The live scene_toss_flame is unrun; only the offline selftest and C# SelfTest are green.",
-    "ts": "2026-11-16T08:32:46Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_toss_flame"
-   },
    "trap:the-live-yield-check-a1-l1-is-not": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10629,22 +10254,6 @@
     "version": "0.1.0",
     "where": "artisan_now.py:623 COUNT_LINE; ARTISAN_NOW"
    },
-   "trap:the-mod-list-and-settings-field-checks-passed": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The mod-list and settings-field checks passed only because the scenes name neither, so they proved nothing. 17 scene entries are written but UNRUN until Stage 6, and some coordinates and call arguments are guesses.",
-    "ts": "2026-11-16T08:32:23Z",
-    "version": "0.1.0",
-    "where": "version/test_table.json; scene entries"
-   },
-   "trap:the-modcheck-run5-core-replay-passed-s5-once": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The modcheck run5 core replay PASSED S5 once after the run4 fail, but the ticket is not closed until validation_v2 --live --fresh-map passes it again. The run4 probe ran with sticky back ON, so it reflects the later setting.",
-    "ts": "2026-11-16T08:32:37Z",
-    "version": "0.1.0",
-    "where": "live_20261025/modcheck_run5/modcheck.log; live_20261024/modcheck_run4/probe_w6.txt"
-   },
    "trap:the-modern-look-s-red-gloss-is-a": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10652,6 +10261,14 @@
     "ts": "2026-11-16T08:32:21Z",
     "version": "0.1.0",
     "where": "Things/Building/FlowWorks/RM_LiquidPump.png, Machinery/RM_LiquidPump.png, Pump/<Style>/RM_LiquidPump.png"
+   },
+   "trap:the-new-selftest-case-does-not-exist-yet": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The new SelfTest case does not exist yet, so it has not been watched red; the C# was not built when this was filed.",
+    "ts": "2026-11-16T10:15:09Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/Utils/selftest_flowworks_stock.py"
    },
    "trap:the-north-star-section-gained-still-water-one": {
     "by": "BACKFILL",
@@ -10725,14 +10342,6 @@
     "version": "0.1.0",
     "where": "item:RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS"
    },
-   "trap:the-older-walls-20-above-the-head-pit": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The older 'walls 20% above the head' pit-depth rule does not stand: the owner kept the 0.05 per half metre sink and the old check (X4 in validation_v2.py) is rewritten to follow 0.05.",
-    "ts": "2026-11-16T08:32:23Z",
-    "version": "0.1.0",
-    "where": "validation_v2.py"
-   },
    "trap:the-one-clause-passing-at-ed7e3b5389-fail-1": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10741,19 +10350,11 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/rimflow/acceptance/guard_empty_game_accept.py"
    },
-   "trap:the-oq-1-ruling-dubs-thirst-runs-ours": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The OQ-1 ruling (Dubs' thirst runs, ours steps aside) is void after the 10-31 scope cut. Earlier design text and the DBH bridge patch no longer apply, and T1 now has one arm (Own) and can FAIL.",
-    "ts": "2026-11-16T08:32:52Z",
-    "version": "0.1.0",
-    "where": "thirst_bottles_design_2026-10-16.md; thirst_live T1, T18"
-   },
    "trap:the-original-a1-small-recipe-s-output-full": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The original A1 (small recipe's output full, big recipe has room) cannot be staged from shipped content, because every shipped conversion outputs fresh water. A1 was re-scoped to a block by the drinking reserve: icy water held at the 200 L reserve is blocked while salt water distils on the same still.",
-    "ts": "2026-11-16T08:32:38Z",
+    "text": "The original A1 (small recipe's output full, big recipe has room) cannot be staged from shipped content, because every shipped conversion outputs fresh water.",
+    "ts": "2026-11-16T10:12:09Z",
     "version": "0.1.0",
     "where": "row CONVERTER_BIG_RECIPE_RUNS (sitting_gaps_proof.py)"
    },
@@ -10768,26 +10369,18 @@
    "trap:the-owner-accepted-the-four-pipe-atlases-from": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The owner accepted the four pipe atlases from offline renders at 128 px/cell. Those may not predict in-game looks across connection patterns; an in-game capture with mixed connections is still owed.",
-    "ts": "2026-11-16T08:32:33Z",
+    "text": "The owner accepted the four pipe atlases from offline renders at 128 px/cell.",
+    "ts": "2026-11-16T10:12:05Z",
     "version": "0.1.0",
     "where": "offline atlas renders; RimMandrake/FlowWorks/Pipe/<Look>/"
    },
-   "trap:the-owner-ruled-all-wetness-migrates-to-a": {
+   "trap:the-pass-came-from-a-hand-run-with": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The owner ruled all wetness migrates to a thin film with no separate wetted state, so building the two-squares wetted state as filed would conflict; this is re-targeted to FlowWorks 0.2.0, so build nothing for 0.1.0.",
-    "ts": "2026-11-16T08:32:19Z",
+    "text": "The pass came from a hand-run with a witness spawned 3 ticks before the check.",
+    "ts": "2026-11-16T10:12:05Z",
     "version": "0.1.0",
-    "where": "design/concepts/FlowWorks/version/next_version/README.md"
-   },
-   "trap:the-owner-s-helper-budget-bench-6-override": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The owner's helper_budget BENCH:6 override was deliberately left alone, so BENCH still appears in the budget.",
-    "ts": "2026-11-16T08:32:39Z",
-    "version": "0.1.0",
-    "where": "helper_budget BENCH:6"
+    "where": "fw_live_checks L6 row"
    },
    "trap:the-ported-hose-s-later-flow-behaviour-is": {
     "by": "BACKFILL",
@@ -10845,6 +10438,14 @@
     "version": "0.1.0",
     "where": "r9 ferry proof; Rivers/RM_MapComponent_RiverCurrent.cs"
    },
+   "trap:the-rc-5-cause-is-not-shown-fixed": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The rc=5 cause is not shown fixed; if it recurs after rebuild, the reason carries the dotnet exception line.",
+    "ts": "2026-11-16T10:12:18Z",
+    "version": "0.1.0",
+    "where": "pump_ports_one_per_side"
+   },
    "trap:the-record-s-testq-runs-on-stevedesktop-for": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10901,13 +10502,13 @@
     "version": "0.1.0",
     "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261114T235842Z-RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED.det"
    },
-   "trap:the-river-extension-run-read-20-0-1": {
+   "trap:the-ripples-carry-no-flow-direction": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The river extension run read 20/0/1: flood_refill is owed and has no predicate.",
-    "ts": "2026-11-16T08:32:37Z",
+    "text": "The ripples carry no flow direction.",
+    "ts": "2026-11-16T10:11:53Z",
     "version": "0.1.0",
-    "where": "river extension validation, flood_refill row"
+    "where": "wall_faces chain; Transient/night_20261013/fw_checks.md"
    },
    "trap:the-river-map-is-the-cause-is-not": {
     "by": "BACKFILL",
@@ -10925,14 +10526,6 @@
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/Source/Machinery/RM_Levelling.cs Tick/DugBody"
    },
-   "trap:the-row-wants-substring-rm-fill-water-but": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The row wants substring RM_Fill_Water but dug water now settles to RM_WaterThin.",
-    "ts": "2026-11-16T08:32:35Z",
-    "version": "0.1.0",
-    "where": "fw_live_checks.py W1 want substring"
-   },
    "trap:the-run-s-work-39753a53ff-was-left-in": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10949,21 +10542,13 @@
     "version": "0.1.0",
     "where": "modcheck run4 (FlowWorks_20261025T014223Z.json)"
    },
-   "trap:the-scene-does-not-cover-the-spec-s": {
+   "trap:the-run4-probe-ran-with-sticky-back-on": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The scene does not cover the spec's relay, four-styles or span start items.",
-    "ts": "2026-11-16T08:32:49Z",
+    "text": "The run4 probe ran with sticky back ON, so it reflects the later setting.",
+    "ts": "2026-11-16T10:12:08Z",
     "version": "0.1.0",
-    "where": "scene_hose_look"
-   },
-   "trap:the-scene-sets-converterratemultiplier-4-1-because-otherwise": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The scene sets converterRateMultiplier 4.1, because otherwise batches divide exactly and a dropped clip cannot show; it also sets drillUnitsPerCycle 0.3 and sheetOverflowEnabled on, and restores all three.",
-    "ts": "2026-11-16T08:32:49Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py scene_garden"
+    "where": "live_20261025/modcheck_run5/modcheck.log; live_20261024/modcheck_run4/probe_w6.txt"
    },
    "trap:the-scene-text-is-correct-and-the-code": {
     "by": "BACKFILL",
@@ -10972,14 +10557,6 @@
     "ts": "2026-11-16T08:32:23Z",
     "version": "0.1.0",
     "where": "design/concepts/ExplosiveKnockback/tree.json (thrown_into_pit_falls); sheet.md:44; sc_storeroom_bomb_pit"
-   },
-   "trap:the-second-agent-crop-read-required-by-a2": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The second-agent crop read required by A2 was recorded as owed in the 2026-10-24 verify; close cites only A1/A2 verified and the A3 pass, so do not assume the crops were read.",
-    "ts": "2026-11-16T08:32:33Z",
-    "version": "0.1.0",
-    "where": "A2 crops under Transient/joint_gate/<stamp>"
    },
    "trap:the-selftest-is-source-level-only-and-no": {
     "by": "BACKFILL",
@@ -10997,13 +10574,13 @@
     "version": "0.1.0",
     "where": "selftest_flowworks_stock.py"
    },
-   "trap:the-selftests-northstar-selftest-river-site-py-and": {
+   "trap:the-spec-s-relay-four-styles-and-span": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The selftests northstar/selftest_river_site.py and selftest_liquid_checks.py PASS, but they do not verify the owed criterion. It is an in-game check and stays owed.",
-    "ts": "2026-11-16T08:32:52Z",
+    "text": "The spec's relay, four-styles and span start items are not covered.",
+    "ts": "2026-11-16T10:15:08Z",
     "version": "0.1.0",
-    "where": "northstar/selftest_river_site.py, selftest_liquid_checks.py"
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_hose_look_scene.py"
    },
    "trap:the-stage-3-offline-checks-of-five-bars": {
     "by": "BACKFILL",
@@ -11021,6 +10598,14 @@
     "version": "0.1.0",
     "where": "owner_review_stage.py, water_scenes_walk.gate_open label"
    },
+   "trap:the-stale-red-row-is-not-a-live": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "The stale red row is not a live defect. Grate rows (GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO) are out of scope.",
+    "ts": "2026-11-16T10:11:52Z",
+    "version": "0.1.0",
+    "where": "mod_completion.py FlowWorks"
+   },
    "trap:the-stale-rsw-names-raise-no-error-the": {
     "by": "BACKFILL",
     "status": "noted",
@@ -11036,14 +10621,6 @@
     "ts": "2026-11-16T08:32:18Z",
     "version": "0.1.0",
     "where": "modcheck stored GREEN for FlowWorks"
-   },
-   "trap:the-swale-rebuild-is-not-in-0-1": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The swale rebuild is not in 0.1.0: the owner placed it in 0.2.0 and 0.1.0's bars do not move, so 0.1.0 still has the metal-slide swale.",
-    "ts": "2026-11-16T08:32:23Z",
-    "version": "0.1.0",
-    "where": "RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE"
    },
    "trap:the-sweep-itself-never-runs-validation-v2-live": {
     "by": "BACKFILL",
@@ -11072,8 +10649,8 @@
    "trap:the-t8-row-in-the-bench-criteria-is": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The 'T8' row in the bench criteria is the caravan water readout, not design T8. Design T8 (RM_Bottle_RustWater present, ingestible, hydrates) holds on disk only; its live def-read was still owed.",
-    "ts": "2026-11-16T08:32:52Z",
+    "text": "The 'T8' row in the bench criteria is the caravan water readout, not design T8.",
+    "ts": "2026-11-16T10:12:19Z",
     "version": "0.1.0",
     "where": "RM_LiquidBottles.xml:622"
    },
@@ -11085,21 +10662,13 @@
     "version": "0.1.0",
     "where": "BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE; TANK_DEBUG_BUILD_FILL_AT_WILL A1"
    },
-   "trap:the-ticket-is-built-but-half-fixed-deep": {
+   "trap:the-ticket-closed-on-offline-checks-only-selftest": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The ticket is built but half-fixed: deep sand still counts as a pond source via RM_MapComponent_Excavation.IsNaturalLiquid (and RM_LiquidStock fluid assignment), so a passing drink check does not clear the defect.",
-    "ts": "2026-11-16T08:32:15Z",
+    "text": "The ticket closed on offline checks only (SelfTest 773/773, FlowWorks py 50/50, settings screens 854/854).",
+    "ts": "2026-11-16T10:12:07Z",
     "version": "0.1.0",
-    "where": "RM_MapComponent_Excavation.cs IsNaturalLiquid (~1224-1245); RM_LiquidStock.cs:143,232"
-   },
-   "trap:the-ticket-reads-as-if-it-still-needs": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The ticket reads as if it still needs the owner, but it was already ruled: the owner held the sitting on 2026-10-20 (bars 1-21 accepted) and the only hold, girth, was settled by his 10-21 walk. If modcheck validate still binds only on --owner-said, that is a tool gap (MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS).",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "design/RimMandrake/flowworks_bars_answers_2026-10-20.md; modcheck validate"
+    "where": "architect menu; sluice box inspect line"
    },
    "trap:the-ticket-s-original-line-numbers-pitaccesschecks-cs": {
     "by": "BACKFILL",
@@ -11120,8 +10689,8 @@
    "trap:the-ticket-title-says-four-questions-but-lists": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The ticket title says four questions but lists six numbered items plus an unproven note. Station 32's hose gap is not confirmed: only a sheet-scale look, a closer capture is owed. The grey thing at station 49 is presumed a wild animal, unproven; get_cells_info does not list pawns.",
-    "ts": "2026-11-16T08:32:24Z",
+    "text": "The ticket title says four questions but lists six numbered items plus an unproven note. The grey thing at station 49 is presumed a wild animal, unproven; get_cells_info does not list pawns.",
+    "ts": "2026-11-16T10:11:58Z",
     "version": "0.1.0",
     "where": "visit_1 stations_1..4.jpg, station 32 and 49"
    },
@@ -11173,19 +10742,11 @@
     "version": "0.1.0",
     "where": "tank_loop_on row, ProofTank"
    },
-   "trap:the-validation-v2-live-e6-rain-fills-unroofed": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The validation_v2 live E6_rain_fills_unroofed row still FAILS (oracle +1 level at rain pulse 2, live none); harness suspected ~60%, unresolved. vv2 live is 62 PASS / 1 FAIL / 0 UNMEASURED.",
-    "ts": "2026-11-16T08:32:47Z",
-    "version": "0.1.0",
-    "where": "validation_v2.py E6_rain_fills_unroofed"
-   },
    "trap:the-verify-pass-offline-selftest-winbuild-covers-only": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "The verify pass (offline-selftest+winbuild) covers only A1; A2, the live drain proof, is still owed.",
-    "ts": "2026-11-16T08:32:22Z",
+    "text": "The verify pass (offline-selftest+winbuild) covers only A1.",
+    "ts": "2026-11-16T10:12:30Z",
     "version": "0.1.0",
     "where": "criterion A2"
    },
@@ -11197,14 +10758,6 @@
     "version": "0.1.0",
     "where": "Superdeep/RM_SubmergeMath.cs (deleted); cell 113,104 on EWA_SUBMERGE_REVIEW_20261112"
    },
-   "trap:the-wall-faces-chain-passing-2-2-covers": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The wall_faces chain passing 2/2 covers only part of A2; face material, liquid surface and pit shading still lack rows, and A3 (Opus) and A4 (owner) are unrun. The ripples carry no flow direction.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "wall_faces chain; Transient/night_20261013/fw_checks.md"
-   },
    "trap:the-wetted-ground-state-does-not-need-building": {
     "by": "BACKFILL",
     "status": "noted",
@@ -11212,14 +10765,6 @@
     "ts": "2026-11-16T08:32:23Z",
     "version": "0.1.0",
     "where": "item:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT"
-   },
-   "trap:the-wetting-selftests-are-red-on-507b8cb3d-3": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The wetting selftests are red on 507b8cb3d (3 laws and 1 law) and the live scene is unrun, so a missing pass is not a regression.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "selftest_stage3_owed.py --only wetting / wetness_probe"
    },
    "trap:the-workgiver-hands-this-pawn-no-job-unmeasured": {
     "by": "BACKFILL",
@@ -11237,27 +10782,11 @@
     "version": "0.1.0",
     "where": "concept_scenes.py _pawn_height; setting pitSinkClampEnabled"
    },
-   "trap:these-chains-read-as-owed-rather-than-failing": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "These chains read as owed rather than failing, so they never show red: no row has ever measured them.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "extensions.py _owed; validation.py EXTENSION_TOGGLES_OWED"
-   },
-   "trap:this-is-a-criterion-flaw-candidate-for-a": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "This is a criterion-flaw candidate for a neutral fixer, never the builder. If the bar's words themselves are wrong, it is the owner's card (before and after text). Nothing was weakened in visit 1; 2 BLOCKED and 1 UNMEASURED rows are also owed.",
-    "ts": "2026-11-16T08:32:50Z",
-    "version": "0.1.0",
-    "where": "design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl rows 50, 51, 63; strange.jsonl"
-   },
    "trap:three-bar-vocabularies": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Three bar vocabularies. The 57 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings, tick_cost, worldgen, multiplayer) and the 22 lines of `floor.json` are floor lines every mod meets, not among the 59. […]",
-    "ts": "2026-11-16T07:16:23Z",
+    "text": "Three bar vocabularies. The 57 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings, tick_cost, worldgen, multiplayer) and the 22 lines of `floor.json` are floor lines every mod meets, not among the 59.",
+    "ts": "2026-11-16T10:11:49Z",
     "version": "0.1.0",
     "where": "[floor:…]"
    },
@@ -11268,14 +10797,6 @@
     "ts": "2026-11-16T07:16:23Z",
     "version": "0.1.0",
     "where": "impl: absent"
-   },
-   "trap:touched-files-are-dirty-a-full-file-code": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Touched files are DIRTY; a full-file code review is still owed. Line numbers in the table are at e101a7383a.",
-    "ts": "2026-11-16T08:32:32Z",
-    "version": "0.1.0",
-    "where": "FlowWorks/northstar proof drivers"
    },
    "trap:touched-files-await-independent-review-and-are-not": {
     "by": "BACKFILL",
@@ -11301,22 +10822,6 @@
     "version": "0.1.0",
     "where": "RM_NorthstarProofs.ProofClimb; TrappedIn"
    },
-   "trap:trench-cover-proof-py-already-reads-6-cover": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "trench_cover_proof.py already reads 6 cover rows PASS live; the scene's cover read is a different, wrong proof, so those 6 PASS do not cover the scene's raid rows, which are still owed.",
-    "ts": "2026-11-16T08:32:50Z",
-    "version": "0.1.0",
-    "where": "evidence/sc_trench_cover__proof_*.json; design/concepts/FlowWorks/version/in_game/visit_1/rows.jsonl rows 39, 57"
-   },
-   "trap:unblocking-pyrelandsmechanics-does-not-make-it-ready-its": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Unblocking PyrelandsMechanics does not make it ready: its exam still fails its control after unblocking.",
-    "ts": "2026-11-16T08:32:51Z",
-    "version": "0.1.0",
-    "where": "PyrelandsMechanics exam"
-   },
    "trap:under-building-battery-power-connector-is-not-covered": {
     "by": "BACKFILL",
     "status": "noted",
@@ -11332,6 +10837,22 @@
     "ts": "2026-11-16T08:32:16Z",
     "version": "0.1.0",
     "where": "walk must-be-true lines; jawa/flowworks_spawn_flood, jawa/canal_cell_report"
+   },
+   "trap:until-then-the-coloured-patchwork-art-multiplied-by": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Until then the coloured patchwork art multiplied by the stuff colour reads muddy, which is not a tint bug.",
+    "ts": "2026-11-16T10:11:51Z",
+    "version": "0.1.0",
+    "where": "fwart_RM_Bottle/Barrel/Bucket_Stuffable_v1"
+   },
+   "trap:unverified-live-a-700-pt-raid-reaching-the": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Unverified live: a 700-pt raid reaching the trap, two falls, capture inside 900 ticks.",
+    "ts": "2026-11-16T10:15:09Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_pit_trap_raid_scene.py"
    },
    "trap:v2-e4-engine-off-pass-covers-the-pulse": {
     "by": "BACKFILL",
@@ -11397,11 +10918,19 @@
     "version": "0.1.0",
     "where": "TerrainDef.waterBodyType, WaterBodyTracker"
    },
+   "trap:verification-covered-save-c-map-c-only-map": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "Verification covered save c map C only; map R was not built.",
+    "ts": "2026-11-16T10:12:07Z",
+    "version": "0.1.0",
+    "where": "fw_gss_sitting-14, save c map C"
+   },
    "trap:verified-only-by-offline-selftest-gptfixesachecks-selftest-flowworks": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Verified only by offline selftest GptFixesAChecks (selftest_flowworks_stock.py). F12 was fixed by reading code and its live row (wall over an Outflow end beside a channel, then a pump cycle, read channel fill) was not run.",
-    "ts": "2026-11-16T08:32:33Z",
+    "text": "Verified only by offline selftest GptFixesAChecks (selftest_flowworks_stock.py).",
+    "ts": "2026-11-16T10:12:05Z",
     "version": "0.1.0",
     "where": "selftest_flowworks_stock.py GptFixesAChecks"
    },
@@ -11412,14 +10941,6 @@
     "ts": "2026-11-16T08:32:36Z",
     "version": "0.1.0",
     "where": "selftest_flowworks_stock.py GptFixesAChecks"
-   },
-   "trap:visit-1-s-toggle-off-on-row-passing": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Visit 1's toggle off/on row passing did not show the toggle works: the engine reads the setting only at load (EngineSwitch snaps) unless depthEngineLiveForTests is set, so off/on never reached the engine.",
-    "ts": "2026-11-16T08:32:47Z",
-    "version": "0.1.0",
-    "where": "item:RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED"
    },
    "trap:w1-pawn-paths-around-the-5-row-strips": {
     "by": "BACKFILL",
@@ -11452,6 +10973,14 @@
     "ts": "2026-11-16T08:32:21Z",
     "version": "0.1.0",
     "where": "liquid_checks L5 rows; RM_LiquidSpill counters"
+   },
+   "trap:when-run-fetch-ladder-into-pit-is-expected": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "When run, FETCH_ladder_into_pit is expected to FAIL (MOD) until FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN builds the fetch job (implementation absent).",
+    "ts": "2026-11-16T10:12:16Z",
+    "version": "0.1.0",
+    "where": "scene_fetch_fallen row FETCH_ladder_into_pit"
    },
    "trap:whether-the-post-deploy-first-launch-matters-is": {
     "by": "BACKFILL",
@@ -11496,8 +11025,8 @@
    "trap:worktypeisdisabled-reads-capability-not-the-player-s-work": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "WorkTypeIsDisabled reads capability, not the player's Work-tab setting, so it does not mean Doctor is switched off. The live check is still owed.",
-    "ts": "2026-11-16T08:32:22Z",
+    "text": "WorkTypeIsDisabled reads capability, not the player's Work-tab setting, so it does not mean Doctor is switched off.",
+    "ts": "2026-11-16T10:11:57Z",
     "version": "0.1.0",
     "where": "RM_PitAccess.cs:164-167 AnyRescuerReaches"
    },

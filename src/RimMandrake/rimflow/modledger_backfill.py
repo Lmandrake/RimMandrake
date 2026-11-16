@@ -1356,7 +1356,8 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                             refused.append((kind, subject, str(r3)))
                             continue
                     elif same:              # an older mine holds the same fact under other evidence: keep that line
-                        held.add(same.group(1))
+                        held.add(same.group(1))           # (and keep it in its subject's plan order below)
+                        seq.setdefault(subject, []).append((idx, same.group(1), False, body, auth))
                         already += 1
                         continue
                     else:
@@ -1369,13 +1370,18 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
         seq.setdefault(subject, []).append((idx, eid, created, body, auth))
         written += created
         already += not created
-    # a subject's events must stay in plan order (the reducer reads the last): a line kept from an earlier run that the
-    # plan puts AFTER a line written now (a re-read finding text before its kept claim) is re-appended after it
+    # a subject's events must stay in plan order (the reducer reads the last): from the first line that sits in the
+    # shard after a line the plan puts later (a kept line behind one written now, or a kept pair an earlier run left
+    # out of order), every line of the subject is re-appended in plan order, written-now ones included (else a line
+    # written now stays in front of the kept lines re-appended after it: ExplosiveKnockback's stage read
+    # offline_build over its stage.enter in_game, 2026-11-16)
+    pos = {e.get("id"): i for i, e in enumerate(M.read(root, mod)) if e.get("_shard") == W}
     redo = []
     for subject, xs in seq.items():
-        first = next((i for i, x in enumerate(xs) if x[2]), None)
-        if first is not None:
-            redo += [x for x in xs[first + 1:] if not x[2]]
+        p = [pos.get(x[1], -1) for x in xs]
+        j = next((i for i in range(len(p)) if any(q < p[i] for q in p[i + 1:])), None)
+        if j is not None:
+            redo += xs[j:]
     if redo:
         M.delete(root, mod, [x[1] for x in redo])
         for idx, eid, _c, body, auth in sorted(redo, key=lambda x: x[0]):
@@ -1396,8 +1402,9 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                         refused.append((kind, subject, str(r)))
                         held.discard(eid)
                         break
-            written += 1
-            already -= 1
+            if not _c:
+                written += 1
+                already -= 1
     # after the appends (a line fitted to the byte cap is held under its fitted key): a BACKFILL line the plan no
     # longer holds is deleted
     old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("id") not in held]
@@ -1422,6 +1429,31 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                 except M.Refusal as r:
                     refused.append((e["kind"], subject, str(r)))
             near.append((subject, "re-minted apart after its old first line was deleted"))
+    # a kept cause whose finding line was just re-written now sits before its finding (lint REFUSED finding): it is
+    # re-appended after it under a fresh key (Gimme Some Slack, 2026-11-16)
+    orphan = [ln for c, pth, ln, d in M.lint(root, mod, None)[0] if c == "STANDARD" and
+              pth.endswith("/%s.jsonl" % W) and "REFUSED finding: " in d]
+    if orphan:
+        with open(M.shard_path(root, mod, W), encoding="utf-8") as fh:
+            raw = fh.read().split("\n")
+        ids = {json.loads(raw[ln - 1]).get("id") for ln in orphan if 0 < ln <= len(raw) and raw[ln - 1].strip()}
+        shard = [e for e in M.read(root, mod) if e.get("_shard") == W]
+        # each orphan moves with every later line of its subject, so the subject keeps its order
+        first = {}
+        for i, e in enumerate(shard):
+            if e.get("id") in ids:
+                first.setdefault(e["subject"], i)
+        lines = [e for i, e in enumerate(shard) if e["subject"] in first and i >= first[e["subject"]]]
+        M.delete(root, mod, [e["id"] for e in lines])
+        for e in lines:
+            rkey = hashlib.sha256(("%s\0after its finding" % e["id"]).encode()).hexdigest()[:16]
+            body = {k: v for k, v in e["body"].items() if k not in ("by", "ts", "new_subject_why")}
+            try:
+                M.append(root, mod, W, e["kind"], e["subject"], body=body, version=e.get("version"),
+                         evidence=e.get("evidence") or [], authority=e.get("authority"), code_sha=e.get("code_sha"),
+                         views=False, key=rkey)
+            except M.Refusal as r:
+                refused.append((e["kind"], e["subject"], str(r)))
     M.write_views(root, mod)
     if replaced:
         notes.append("%d lines of an earlier mining restating a fact in other words were replaced by the re-mine's"

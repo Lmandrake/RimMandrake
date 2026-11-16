@@ -776,6 +776,31 @@ subj_probs = [x for x in M.lint(root, MOD, None)[0] if "REFUSED subject" in str(
 check("re-mine: a subject whose old first line was deleted after the new lines were written still passes the "
       "duplicate-subject check (lint clean)", not subj_probs, subj_probs[:2])
 
+# re-mine order (found re-mining the three pilots, 2026-11-16): an edited older stage move and a new one must leave the
+# stage where the stage record says (ExplosiveKnockback read offline_build over its in_game), and a kept cause whose
+# finding line is re-written must not sit before it (Gimme Some Slack lint REFUSED finding)
+srp_ = os.path.join(v, "stage_record.json")
+sr_ = json.load(open(srp_))
+sr_["moves"][0]["why"] = "exit met, re-recorded"
+sr_["moves"].append({"from": "offline_build", "to": "in_game", "at": "z", "by": "C", "why": "road back closed"})
+sr_.update(stage="in_game", stage_label="In-game acceptance (Stage 6)", since="2026-11-16T01:18:11-08:00")
+w(srp_, sr_)
+fo_ = next(e for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["kind"] == "finding.open" and
+           e["subject"] == "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX")
+M.delete(root, MOD, [fo_["id"]])
+M.append(root, MOD, "BACKFILL", "finding.open", fo_["subject"], body=dict(fo_["body"], text="Arcs overshoot walls, "
+         "an earlier wording"), version="0.1.0", evidence=fo_["evidence"], views=False)
+ro_ = B.run(root, MOD)
+lint_ = M.lint(root, MOD, None)[0]
+check("re-mine order: an edited older stage move and a new move leave the stage the stage record names",
+      M.reduce(M.read(root, MOD))["stage"] == "in_game", (M.reduce(M.read(root, MOD))["stage"], ro_["refused"]))
+check("re-mine order: a kept cause whose finding line was re-written is moved after it (lint has no REFUSED finding)",
+      not [x for x in lint_ if "REFUSED finding" in str(x)] and not ro_["refused"],
+      ([x for x in lint_ if "REFUSED finding" in str(x)][:2], ro_["refused"]))
+ro2_ = B.run(root, MOD)
+check("re-mine order: the repaired ledger is stable (the next run writes and deletes nothing)",
+      ro2_["written"] == 0 and ro2_["deleted"] == 0 and not M.lint(root, MOD, None)[0], (ro2_, M.lint(root, MOD, None)[0]))
+
 import modledger_sample as SMP                                   # noqa: E402
 pop_, sm_ = SMP.draw(root, MOD, 7, 5)
 check("sample: a seeded draw of ticket-mined entries, each with its ticket and the other entries mined from it",

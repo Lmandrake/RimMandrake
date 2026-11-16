@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 0.2352,
+"spent_usd_last_run": 0.0235,
 "tickets": {
 "AERIAL_CUT_POINT_PRECISION_1": {
 "at": "2026-11-16T00:08:44",
@@ -2424,14 +2424,15 @@
 }
 },
 "RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST": {
-"at": "2026-11-16T00:09:39",
-"hash": "0c5d594aaac156cb",
+"at": "2026-11-16T02:13:11",
+"hash": "8e75290a8772a58e",
 "keep": [
-1
+1,
+2
 ],
-"keep_hash": "d645dd1f7d227b3b",
+"keep_hash": "4c0eef391f4aa2db",
 "reading": {
-"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/plant_faults.py --ids PF_GAME_FLOOR_DEAD_ENDS_BITE,PF_GAME_ANY_BUILDER_EXEMPT,PF_PATCH_SWITCH_NOT_STYLED,PF_MOTION_LIVE_END_LIMP --out /tmp/pf.jsonl prints CAUGHT 4 times (watched MISSED x4).",
+"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/plant_faults.py --ids PF_GAME_FLOOR_DEAD_ENDS_BITE,PF_GAME_ANY_BUILDER_EXEMPT,PF_PATCH_SWITCH_NOT_STYLED,PF_MOTION_LIVE_END_LIMP --out /tmp/pf.jsonl prints CAUGHT 4 times",
 "bars": [
 "floor_end_shocks_crossers",
 "cut_live_and_dead_ends",
@@ -2440,12 +2441,16 @@
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "Four planted faults in game-side callers and patches turn no offline test red: FloorEndShock lists dead ends as contacts, any construction job beside an end is exempt, a patch xpath typo leaves the switch unstyled, and WhipAmp 0 leaves live ends limp.",
+"defect": "Four planted faults in game-side callers and patches turn no offline test red: FloorEndShock lists dead ends as contacts, any construction job beside an end is exempt, the patch xpath is mistyped, WhipAmp is 0. Only Stage 6 scenes decide them.",
 "proposed_fix": "Add a binding test of FloorEndShock's EndLive and EverTransmitsPower guards; run validate_patch.py on Patches/ offline; add a kernel row that WhipAmp > 0.",
 "traps": [
 {
-"text": "This is a coverage gap, not a defect today: the four plants' deciders are the Stage 6 scenes, so offline suites staying green says nothing about these callers and patches.",
-"where": "sc_floor_end_shock, sc_cut_ends, sc_four_looks (Stage 6 scenes)"
+"text": "The text-reading dropped-cords guard (selftest_gss_dropped_cords_ignore_aerial_master.py) reads source text, so an if wrapped around the ExternalContacts call still passes it; green there does not mean the call is unconditional.",
+"where": "selftest_gss_dropped_cords_ignore_aerial_master.py"
+},
+{
+"text": "Offline suites are green on these faults; their deciders are the Stage 6 scenes sc_floor_end_shock, sc_cut_ends, sc_four_looks. This is coverage, not a defect today.",
+"where": "sc_floor_end_shock, sc_cut_ends, sc_four_looks"
 }
 ]
 }
@@ -2500,42 +2505,69 @@
 }
 },
 "RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME": {
-"at": "2026-11-16T00:09:39",
-"hash": "24a1d89e17bce4b9",
+"at": "2026-11-16T02:13:11",
+"hash": "24c808774f7d9a78",
 "keep": [
 1
 ],
 "keep_hash": "8fb89036c10a6b84",
 "reading": {
-"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1/run_lane1.py --out /tmp/l1.jsonl; grep L1_RESTRING_TICKS_SWEEP /tmp/l1.jsonl | grep -q '\"PASS\"' (watched FAIL on 8d03656883).",
+"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1/run_lane1.py --out /tmp/l1.jsonl; grep L1_RESTRING_TICKS_SWEEP /tmp/l1.jsonl | grep -q '\"PASS\"'",
 "bars": [
-"restring_cut_span",
-"restring_job"
+"restring_cut_span"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "AerialMath.RestringTicks(double.NaN) returns int.MinValue because Math.Max(0.1, NaN) is NaN. The caller passes a pawn's ConstructionSpeed stat, never NaN in play (guess ~90%).",
-"proposed_fix": "Treat NaN like a speed under 0.1 in AerialMath.RestringTicks.",
+"defect": "AerialMath.RestringTicks(NaN) returns int.MinValue because Math.Max(0.1, NaN) is NaN; RestringTicks(+inf) returns 0 (Math.Ceiling(300/inf)). The caller passes the ConstructionSpeed stat, never NaN or inf in play.",
+"proposed_fix": "Treat NaN and +inf like an out-of-range speed in AerialMath.RestringTicks so the result is >= 1 for every input.",
+"traps": []
+}
+},
+"RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
+"at": "2026-11-16T02:13:11",
+"hash": "7f18a8f1e72f4330",
+"keep": [
+1
+],
+"keep_hash": "b29bca1954393524",
+"reading": {
+"accept": "none, a blind judge cycle's verdict is its result (cycle_5/SUMMARY.md with exit_met stated)",
+"bars": [
+"no_hose",
+"no_hose_in_gss"
+],
+"causes_refuted": [],
+"changed": "The Problem, T_NO_HOSE missing hoses shipped via 1.6/Common folders, Assemblies, joined path pieces and settings text, was fixed at 396433f04a; the settings header dropped 'flexible pipes and'.",
+"class": "problem",
+"defect": "Blind cycle 5 of Gimme Some Slack must judge the mod and state its exit. Result: exit_met false; lane 1 had 21 pass, 7 fail, 3 info, 39 unsettled (game-side, stage 6 or later); 1 Problem found and fixed, 8 Polish.",
+"proposed_fix": "none, a judge cycle's verdict is its result.",
 "traps": [
 {
-"text": "The criterion is a defensive bound no bar states; RestringTicks is 300 at speed 1, monotone and >= 1 everywhere except NaN.",
-"where": "L1_RESTRING_TICKS_SWEEP, AerialMath.RestringTicks"
+"text": "6 of 19 planted faults are still missed after the fixes; they are game-side or patch faults no offline test can see, so offline green does not cover those bars. Stage 6 decides them.",
+"where": "cycle_5/lane2/planted_results.jsonl"
+},
+{
+"text": "The cycle's work clone was bundled as an orphan and is not on any remote; it must be restored from the bundle if the work is wanted.",
+"where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261116T090405Z-RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET.det"
 }
 ]
 }
 },
-"RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
-"at": "2026-11-16T00:29:58",
-"hash": "153022bb051a8589",
+"RIMMANDRAKE_JUDGE_SLACK_BLIND_CYCLE_SIX_CONFIRMS_HOSE_FIX": {
+"at": "2026-11-16T02:13:11",
+"hash": "3db92325c91586e7",
 "reading": {
-"accept": "none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)",
-"bars": [],
+"accept": "none, a blind judge cycle's verdict is its result (cycle_6/SUMMARY.md with exit_met stated)",
+"bars": [
+"no_hose",
+"no_hose_in_gss"
+],
 "causes_refuted": [],
 "changed": null,
 "class": "problem",
-"defect": "Task: run Gimme Some Slack blind cycle 5, the first started from its mod-ledger packet, and produce a verdict with exit_met stated in the cycle SUMMARY.",
-"proposed_fix": "Run the 19 planted faults, then write faults.json and design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated.",
+"defect": "A new blind judge must confirm cycle 5's hose fix (396433f04a), because cycle 5 fixed a real Problem.",
+"proposed_fix": "Run blind cycle 6 and write its SUMMARY.md with exit_met stated.",
 "traps": []
 }
 },
@@ -2579,26 +2611,26 @@
 }
 },
 "RIMMANDRAKE_NOTE_GSS_FALLEN_TIPS_NEARLY_MEET_RARELY": {
-"at": "2026-11-16T00:09:39",
-"hash": "aff3e43a6b1746fa",
+"at": "2026-11-16T02:13:11",
+"hash": "530a1aea5b3337f2",
 "keep": [
 1
 ],
-"keep_hash": "0b3544072beb8100",
+"keep_hash": "3bf6a38e3fc81a0e",
 "reading": {
-"accept": "none, no acceptance test filed; would_pass is no two tips of one drop within ~0.3 cell.",
+"accept": "none, no acceptance command filed; would_pass: tips stay apart",
 "bars": [
 "fallen_span_on_ground"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "1 in 800 multi-wire drops ends two tips 0.045 cell apart (seed 8081 case 554: 3 wires over 9.1 cells, tips 0 and 2), though the kernel's doc says tips are FallenSpread (1.15) apart.",
-"proposed_fix": "In LayFallenStrands, separate tips after the lay when they meet.",
+"defect": "Multi-wire fallen spans sometimes end two tips nearly touching: seed 8081 gave 32 tip pairs under 0.25 cell apart over 1000 spans (closest 0.066). More often than the item's 'rarely'.",
+"proposed_fix": "Separate the tips after the lay.",
 "traps": [
 {
-"text": "The bar names no spacing; only the kernel's own doc does (FallenSpread 1.15).",
-"where": "L1_FALLEN_STRANDS_EACH_ITS_OWN; LayFallenStrands"
+"text": "The title says 1 in 800 drops with tips 0.045 apart, but the lane-1 row measured 32 in 1000 spans under 0.25 cell, closest 0.066.",
+"where": "lane1/lane1_rows.jsonl L1_FALLEN_STRANDS_EACH_ITS_OWN"
 }
 ]
 }
@@ -2620,26 +2652,26 @@
 }
 },
 "RIMMANDRAKE_NOTE_GSS_NORTH_SOUTH_SPAN_RULER_STRAIGHT": {
-"at": "2026-11-16T00:09:39",
-"hash": "12c286ebe671b921",
+"at": "2026-11-16T02:13:11",
+"hash": "b811d43629174dfa",
 "keep": [
 1
 ],
-"keep_hash": "3a4a1366f2d4b91b",
+"keep_hash": "44f2e567d1a5fdcf",
 "reading": {
-"accept": "none, no acceptance test filed; would_pass is sc_spans also measuring off-chord distance on a north-south span, or the look accepted as the projection.",
+"accept": "none, no acceptance command filed; would_pass: a north-south span reads as sagging",
 "bars": [
 "spans_above_everything"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "A north-south overhead span draws every point on its chord, because the droop is screen -Z along a north-south chord (SpanMesh.Build draws AerialMath.SpanCurve unchanged). 124 of 2000 random spans at sag 0.06 show under 0.1 cell off chord.",
-"proposed_fix": "Re-pin sc_spans' expect to name the bearing; any sideways bow is an art change for a judge.",
+"defect": "A north-south overhead span draws on its chord: at sag 0.06, 104 of 2000 spans (seed 5150) leave the chord by under 0.1 cell; (0,0)->(0,8) lies on its chord because the droop is screen-down. The sag slider reaches 0.",
+"proposed_fix": "An art call for a look judge (a sideways bow), or the steward re-pins sc_spans' expect to name the bearing.",
 "traps": [
 {
-"text": "sc_spans' 'sag above zero' reads SagDepth, > 0 on every bearing, so it passes a ruler-straight north-south span vacuously.",
-"where": "scene sc_spans; L1_SPAN_VISIBLE_SAG_EVERY_BEARING"
+"text": "sc_spans' 'sag above zero' expectation would pass a north-south span that is drawn on its chord.",
+"where": "sc_spans"
 }
 ]
 }
@@ -3035,14 +3067,14 @@
 }
 },
 "RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE": {
-"at": "2026-11-16T00:09:41",
-"hash": "5a0bab6c674aaf84",
+"at": "2026-11-16T02:13:11",
+"hash": "bcaf77c3a7dfdaf1",
 "keep": [
 1
 ],
-"keep_hash": "2b59f840c490ddbe",
+"keep_hash": "a8be1016eca040a2",
 "reading": {
-"accept": "none, a bar-wording decision for the neutral fixer",
+"accept": "none, no acceptance command filed; would_pass: the bar's words say whose the pipe-pole spans are",
 "bars": [
 "no_hose_in_gss",
 "pipe_pole_switch"
@@ -3050,12 +3082,12 @@
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "Sheet leaf no_hose_in_gss reads 'No hose, reel or pipe is drawn by this mod', which conflicts with pipe_pole_switch: GSS's aerial engine draws the spans between FlowWorks pipe poles. No defect a player sees.",
-"proposed_fix": "The neutral fixer rewords the leaf, e.g. 'No hose, reel or pipe of its own is shipped by this mod; FlowWorks' pipe-pole spans use its line engine', or the steward rules the spans out.",
+"defect": "Bar no_hose_in_gss says 'No hose, reel or pipe is drawn by this mod', but GSS's aerial engine draws and links FlowWorks pipe-pole spans by design (pipe_pole_switch): AerialLineKind.Pipe, AerialMaterials.PipeMats, CompAerialAnchor 'Link pipe span'.",
+"proposed_fix": "The neutral fixer rewords the leaf so the words say whose the pipe-pole spans are; the bar keeps its meaning.",
 "traps": [
 {
-"text": "The kernel carries AerialLineKind.Pipe and the line engine draws pipe spans (AerialLineProfiles LookOfThing/RangeFor/Noun 'pipe span') under FlowWorks' own switch. record.json says GSS draws no hose or pipe because hoses and reels live in FlowWorks, which is true only of ownership.",
-"where": "sheet.md leaf no_hose_in_gss; AerialLineProfiles; record.json no_hose"
+"text": "Reading the bar literally, pipe-pole span code in GSS looks like a violation; it is intended behaviour and the bar's words are wrong, not the mod.",
+"where": "lane1 row NH_PIPE_POLE_SPANS_DRAWN_BY_GSS_CODE"
 }
 ]
 }
@@ -3176,6 +3208,32 @@
 {
 "text": "The slice gate's 30 ms per-build bound is tight: one build hit 31.2 ms before the caps on shapes tried per cord, and the offline gate failed once under load and passed alone.",
 "where": "SliceGateChecks slice bound (30 ms)"
+}
+]
+}
+},
+"RIMMANDRAKE_SPLIT_GSS_DLL_HOSE_DRAW_ORDER_SHARED_TABLE": {
+"at": "2026-11-16T02:13:11",
+"hash": "bb6d2e34f78ad954",
+"keep": [
+1
+],
+"keep_hash": "3ea532785d14448e",
+"reading": {
+"accept": "Remove the five names from ALLOWED_NAMES in selftest_gss_no_hose.py, rebuild GSS (python3 src/RimMandrake/Utils/winbuild.py GimmeSomeSlack) and FlowWorks: the no-hose test exits 0 and FlowWorks' C# suite stays green.",
+"bars": [
+"no_hose",
+"no_hose_in_gss"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "The shipped GSS DLL holds hose-named members HoseBaseLift, HoseFittingLift, HoseQueue, HoseTopAltitude and LayerHose, compiled in from _Shared/SlackGeometry/DrawOrder.cs. No GSS code calls them.",
+"proposed_fix": "Move DrawOrder's hose members into a hose-only shared file FlowWorks compiles and GSS does not, then drop them from T_NO_HOSE's ALLOWED_NAMES.",
+"traps": [
+{
+"text": "T_NO_HOSE is green on these names only because it allows them by name in ALLOWED_NAMES; they are altitudes, not a drawn hose. With the names removed, T1 reads red on the 5 assembly names.",
+"where": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py ALLOWED_NAMES"
 }
 ]
 }
@@ -3311,27 +3369,26 @@
 }
 },
 "RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP": {
-"at": "2026-11-16T00:09:49",
-"hash": "eaa13ce359c9cdf8",
+"at": "2026-11-16T02:13:11",
+"hash": "52441c5e34f33b37",
 "keep": [
 1
 ],
-"keep_hash": "0d0c4b781adcffc3",
+"keep_hash": "494af87ee8582f94",
 "reading": {
-"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_4/lane1/run_lane1.py: row fallen_random_lies_on_ground PASS (fails on 69e7d7f47e: 22 of 2500).",
+"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_4/lane1/run_lane1.py -> row fallen_random_lies_on_ground PASS (watched fail on 69e7d7f47e: 22 of 2500)",
 "bars": [
-"fallen_span_on_ground",
-"cords_meet_walls_at_face"
+"fallen_span_on_ground"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "AerialMath.LayFallen checks the ground path every 0.2 cell (clearTo) but draws it every 0.1 (and coils), so 22 of 2500 random fallen wires put a grounded point up to 0.114 cell inside an unwalkable cell (Blocked false).",
+"defect": "AerialMath.LayFallen checks the ground path every 0.2 cell (clearTo) but draws it every 0.1, so 22 of 2500 random fallen wires put a grounded point up to 0.114 cell inside an unwalkable cell (Blocked false). Hidden under wall/rock art.",
 "proposed_fix": "Make clearTo step 0.1, the draw step.",
 "traps": [
 {
-"text": "The clip is hidden because the ground wire draws at AltitudeLayer.Conduits + 0.004, under wall and rock art, so it is invisible; but a shock contact can still be listed on a wall cell no pawn stands on.",
-"where": "SectionLayer_RM_AerialGround.cs:44; lane1 row fallen_random_lies_on_ground"
+"text": "The ticket title and the fault record cite different measurements (22 of 2500, up to 0.114 cell, versus 7 of 2500 at seed 4405, deepest 0.139) and different row names (fallen_random_lies_on_ground vs L1_FALLEN_ON_GROUND_NOT_IN_WALLS).",
+"where": "cycle_4/lane1 rows"
 }
 ]
 }
@@ -3365,27 +3422,31 @@
 }
 },
 "RIMMANDRAKE_TRIM_GSS_FALLEN_WIRE_COILS_OUTGROW_CABLE": {
-"at": "2026-11-16T00:09:49",
-"hash": "59f18bbf2760a787",
+"at": "2026-11-16T02:13:11",
+"hash": "7f6a3c9021c66241",
 "keep": [
-1
+1,
+2
 ],
-"keep_hash": "6a4717b2ce877c09",
+"keep_hash": "d8f7b3d6b8011d01",
 "reading": {
-"accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1 run (seed 4202): row L1_DOWNED_LAY_ON_GROUND_RANDOM PASS (fails on 8d03656883); contingent on the 2x+2 bound being accepted.",
+"accept": "Lane-1 run, row L1_DOWNED_LAY_ON_GROUND_RANDOM PASS (watched fail on 8d03656883); contingent on the 2x + 2 bound being accepted as the criterion.",
 "bars": [
-"fallen_span_on_ground",
-"downed_spans"
+"fallen_span_on_ground"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "13 of 1500 seeded fallen wires (AerialMath.LayFallen) draw a ground polyline over 2x their cable + 2 cells, e.g. 14.27 cells for a 5.66-cell cable, unblocked; AddCoil coils and up to four bends add length the cable lacks.",
-"proposed_fix": "Scale AddCoil's radius by the cable left (cable - reach) on an unblocked lay.",
+"defect": "A fallen wire's drawn ground polyline can exceed 2x its cable + 2 cells: 13 of 1500 seeded cases (seed 4202), e.g. 14.27 cells for a 5.66-cell cable, unblocked. The coils (AddCoil) and bends add length the cable does not have.",
+"proposed_fix": "Scale AddCoil by the cable left.",
 "traps": [
 {
-"text": "The 2x + 2 cells bound is lane 1's own conservation bound; no bar states a length, so the row's failure is not a bar violation unless the steward accepts the bound.",
-"where": "L1_DOWNED_LAY_ON_GROUND_RANDOM"
+"text": "The acceptance bound (2 x cable + 2 cells) is not promised by any bar; no bar promises length, and whether a player notices is a Stage 6 look.",
+"where": "lane1 row L1_DOWNED_LAY_ON_GROUND_RANDOM"
+},
+{
+"text": "The ticket's verify names row L1_DOWNED_LAY_ON_GROUND_RANDOM (seed 4202, 13 of 1500) while the fault record cites L1_FALLEN_LENGTH_NOTHING_CREATED (seed 4405, 7 of 2500).",
+"where": "lane1/lane1_rows.jsonl"
 }
 ]
 }
@@ -3631,6 +3692,32 @@
 {
 "text": "The red run names c1aa831c41, whose GimmeSomeSlack tree is byte-identical to the parent 46c33d40e2 (git diff empty).",
 "where": "cycle_4/lane2/check_nohose_catches.py red run"
+}
+]
+}
+},
+"RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_LOAD_FOLDERS_SAID_PIPES": {
+"at": "2026-11-16T02:13:11",
+"hash": "7463fef87e797190",
+"keep": [
+1
+],
+"keep_hash": "f6f23ea07b053a97",
+"reading": {
+"accept": "check_nohose_at.py --sha <tree> --test-from <fix sha>: rc 1 on the parent tree, rc 0 on the fix sha; selftest_gss_no_hose.py 25 PASS, rc 0.",
+"bars": [
+"no_hose",
+"no_hose_in_gss"
+],
+"causes_refuted": [],
+"changed": "T_NO_HOSE now scans every content root (root, version folders, Common/, LoadFolders.xml), every Assemblies/*.dll's names, bare hose/reel literals and player-facing hose claims, which fixes the four missed routes; the header drops 'flexible pipes and'. Red on 094cd380de, green at 396433f04a.",
+"class": "problem",
+"defect": "T_NO_HOSE, the sole decider of no_hose and no_hose_in_gss, stayed green on hoses shipped via 1.6/Defs, a leftover Assemblies/*.dll, a joined path literal, and settings text. The shipped Mod Settings header said 'Drawn flexible pipes and wires ...'.",
+"proposed_fix": "Widen the scan to every content root and Assemblies/*.dll, bare hose/reel literals and claim text (mutants M16-M20, green G3); drop 'flexible pipes and' from the header.",
+"traps": [
+{
+"text": "T_NO_HOSE was green for the wrong reason: Assemblies was never read and only the root content folder was scanned. The scanner changed; the header text and shipping paths were unchanged since cycle 4 (miss_of 4).",
+"where": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py"
 }
 ]
 }
