@@ -68,9 +68,7 @@ ROW_LEAVES = dict(_MATRIX, **{
     "B4d_spark_budget_shared_visible_first": ["cut_live_and_dead_ends", "no_stall_on_rewire"],
     "M1e_machine_on_inwall_run_draws_a_cord": ["conduit_invisible", "cords_meet_walls_at_face"],
     "M1f_machine_on_hidden_conduit_draws_none": ["conduit_invisible"],
-    "B7_sway_cpu_two_frame": ["settings_switch_cleanly", "no_stall_on_rewire"],
-    "B7b_sway_shader_path": ["settings_switch_cleanly"],
-    "B7c_floor_ripple": ["settings_switch_cleanly"],
+    "B7_ground_cords_never_sway": ["cords_lie_slack", "drawing_true_to_grid"],   # owner 2026-11-16: wind moves pole wires only
     "B5_selection_highlight": ["drawing_true_to_grid", "settings_switch_cleanly"],
     "SW1_highlight_off_draws_no_ring": ["settings_switch_cleanly"],
     "SW2_lod_off_far_zoom_draws_full": ["settings_switch_cleanly"],
@@ -84,7 +82,6 @@ ROW_LEAVES = dict(_MATRIX, **{
     "B13_hidden_conduit_hookup_not_drawn": ["conduit_invisible"],
     "SW5_hide_hookup_off_leaves_vanilla_wire": ["settings_switch_cleanly"],
     "SW6_needless_loops_off_reaches_builder": ["settings_switch_cleanly", "cords_lie_slack"],
-    "B12_shader_sway_far_zoom_drawn_once": ["no_stall_on_rewire", "settings_switch_cleanly"],
     "P1B_perf_rebuild": ["no_stall_on_rewire"],
     "A8_same_frame_dirty_not_dropped": ["no_stall_on_rewire"],
     "ST1_styles_textures_load": ["four_looks_one_run"],

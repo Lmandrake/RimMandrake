@@ -37,12 +37,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// sub-mesh; the selection highlight (white band tinted warm, drawn over the cords).</summary>
         public static Material StrandLod, Highlight;
 
-        private static Material[] strandV = new Material[0], faceV = new Material[0], lodV = new Material[0], plantV = new Material[0];
-        /// <summary>Optional shader sway (B7 option 1): the face strand built on ShaderDatabase.CutoutPlant. MaterialPool
-        /// registers every CutoutPlant material with WindManager (decompiled 1.6 MaterialPool.MatFrom), which then
-        /// writes _SwayHead into it every tick while the map is current.</summary>
-        public static Material StrandPlant;
-        private static readonly HashSet<Material> plants = new HashSet<Material>();
+        private static Material[] strandV = new Material[0], faceV = new Material[0], lodV = new Material[0];
         private static readonly HashSet<Material> lods = new HashSet<Material>();
         private static readonly Dictionary<Texture2D, Material> lodCache = new Dictionary<Texture2D, Material>();
 
@@ -158,7 +153,7 @@ namespace RimMandrake.GimmeSomeSlack
             SlotPaths.Clear();
             // ---- strands (per-net variants)
             string[] paths = StrandPathsFor(style);
-            var sv = new List<Material>(); var fv = new List<Material>(); var lv = new List<Material>(); var pv = new List<Material>(); var used = new List<string>();
+            var sv = new List<Material>(); var fv = new List<Material>(); var lv = new List<Material>(); var used = new List<string>();
             foreach (string p in paths)
             {
                 Texture2D tex = Tex(p);
@@ -166,7 +161,6 @@ namespace RimMandrake.GimmeSomeSlack
                 tex.wrapMode = TextureWrapMode.Repeat;
                 sv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue }));
                 fv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue }));
-                pv.Add(PlantMat(tex));
                 if (!lodCache.TryGetValue(tex, out Material lod))
                 {
                     lod = new Material(sv[sv.Count - 1]) { name = "RM_MessyCords_StrandLod_" + tex.name };
@@ -186,14 +180,12 @@ namespace RimMandrake.GimmeSomeSlack
                     tex.wrapMode = TextureWrapMode.Repeat;
                     sv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue }));
                     fv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue }));
-                    pv.Add(PlantMat(tex));
                     if (!lodCache.TryGetValue(tex, out Material lod)) { lod = new Material(sv[0]) { name = "RM_MessyCords_StrandLod_" + tex.name }; lodCache[tex] = lod; lods.Add(lod); }
                     lv.Add(lod);
                     used.Add(Dir + "Strand_Jawa");
                 }
             }
-            strandV = sv.ToArray(); faceV = fv.ToArray(); lodV = lv.ToArray(); plantV = pv.ToArray();
-            StrandPlant = plantV.Length > 0 ? plantV[0] : null;
+            strandV = sv.ToArray(); faceV = fv.ToArray(); lodV = lv.ToArray();
             StrandPaths = used.ToArray();
             Strand = strandV.Length > 0 ? strandV[0] : null;
             StrandFace = faceV.Length > 0 ? faceV[0] : null;
@@ -271,7 +263,7 @@ namespace RimMandrake.GimmeSomeSlack
         // material by (style, colour or kind) instead of by the global setting"). Flat index g = ConduitStyles.Global(look,
         // variant). Every Material comes from MaterialPool with the SAME request the default-look set above uses, so a legacy
         // piece drawn through g gets the very Material object it drew before stage 2 (StyleProbe "cstyles" checks it).
-        private static Material[] gStrand = new Material[0], gFace = new Material[0], gLod = new Material[0], gPlant = new Material[0];
+        private static Material[] gStrand = new Material[0], gFace = new Material[0], gLod = new Material[0];
         private static Dictionary<DecalKind, Material>[] gDecals = new Dictionary<DecalKind, Material>[0];
         /// <summary>State read: the strand texture path of each flat index; every slot path that fell back or is missing.</summary>
         public static string[] GlobalStrandPaths = new string[0];
@@ -303,7 +295,7 @@ namespace RimMandrake.GimmeSomeSlack
         public static void BuildAll()
         {
             int n = Aerial.ConduitStyles.GlobalCount;
-            gStrand = new Material[n]; gFace = new Material[n]; gLod = new Material[n]; gPlant = new Material[n];
+            gStrand = new Material[n]; gFace = new Material[n]; gLod = new Material[n];
             gDecals = new Dictionary<DecalKind, Material>[n];
             GlobalStrandPaths = new string[n];
             GlobalMissing.Clear();
@@ -320,7 +312,6 @@ namespace RimMandrake.GimmeSomeSlack
                     tex.wrapMode = TextureWrapMode.Repeat;
                     gStrand[g] = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue });
                     gFace[g] = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue });
-                    gPlant[g] = PlantMat(tex);
                     if (!lodCache.TryGetValue(tex, out Material lod))
                     {
                         lod = new Material(gStrand[g]) { name = "RM_MessyCords_StrandLod_" + tex.name };
@@ -358,7 +349,6 @@ namespace RimMandrake.GimmeSomeSlack
         public static Material StrandG(int g) => g >= 0 && g < gStrand.Length ? gStrand[g] ?? Strand : Strand;
         public static Material StrandFaceG(int g) => g >= 0 && g < gFace.Length ? gFace[g] ?? StrandFace : StrandFace;
         public static Material StrandLodG(int g) => g >= 0 && g < gLod.Length ? gLod[g] ?? StrandLod : StrandLod;
-        public static Material StrandPlantG(int g) => g >= 0 && g < gPlant.Length ? gPlant[g] ?? StrandPlant : StrandPlant;
         public static Material DecalG(DecalKind k, int g) =>
             g >= 0 && g < gDecals.Length && gDecals[g] != null && gDecals[g].TryGetValue(k, out Material m) ? m : Decal(k);
 
@@ -409,16 +399,6 @@ namespace RimMandrake.GimmeSomeSlack
             return MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = queue });
         }
 
-        private static Material PlantMat(Texture2D tex)
-        {
-            if (ShaderDatabase.CutoutPlant == null) return null;
-            Material m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.CutoutPlant) { renderQueue = FaceQueue });
-            if (m != null) plants.Add(m);
-            return m;
-        }
-
-        public static bool IsPlant(Material m) => m != null && plants.Contains(m);
-        public static Material StrandPlantFor(int v) => v >= 0 && v < plantV.Length ? plantV[v] : StrandPlant;
 
         public static int VariantCount => strandV.Length;
 

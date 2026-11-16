@@ -33,8 +33,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public double Squash;
         /// <summary>A live fray that rides the whipping tail: printed statically only with whip off.</summary>
         public bool OnWhip;
-        /// <summary>The fray on a wall end's hanging tail: it sways with that tail, so while the tail sways the component draws it, not the section.</summary>
-        public bool OnSwayTail;
         /// <summary>Round 4: the art sub-rectangle printed (u along art X, v along art Z); U1 = 0 means the whole canvas. A wall
         /// plate prints only its plate, never the art's own curl of cord (WallMount).</summary>
         public double U0, U1, V0, V1;
@@ -65,9 +63,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// B3): the section layer leaves them out of the static mesh while whipping is on, and the map
         /// component draws them bent per frame. 0 = no tail.</summary>
         public int WhipA, WhipB;
-        /// <summary>A lifted piece (wall-hanging tail): sways in the wind, weight per point (0 at the pin).</summary>
+        /// <summary>A lifted piece (wall-hanging tail). Wind never moves it (owner 2026-11-16: wind sway is for pole wires only).</summary>
         public bool Lifted;
-        public double[] SwayW;
         /// <summary>Rope-settle diagnostics (phase 1b B1); null when the strand was not settled.</summary>
         internal SettleStats Settle;
         /// <summary>Dive-through: this strand's start (DiveA) / end (DiveB) is where the cord dives under a barrier or comes
@@ -1596,7 +1593,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 List<V2> line = null;
                 foreach (CordStrand s in piece.Strands)
                 {
-                    if (s.Lifted || s.OverFace || s.SwayW != null || s.Pts == null || s.Pts.Count < 3) continue;
+                    if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 3) continue;
                     off = off ?? SlackClear(g, e);
                     // a strand the floor rule laid on its planned centreline (FellBack) is a taut straight cord; it takes the slack lobe too, on clear ground
                     // (blind cycle 1, 2000 seeded scenes: 2 of the 7 strands under 1.4, a 6-cell rod to a heap's port), and nothing else
@@ -3176,7 +3173,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (seats.Count == 0) return;
             foreach (CordStrand s in piece.Strands)
             {
-                if (s.Lifted || s.OverFace || s.SwayW != null || s.Pts == null || s.Pts.Count < 2) continue;
+                if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 2) continue;
                 List<V2> P = s.Pts;
                 int n = P.Count;
                 // a dive end seats too: DiveDecor plugs a Modern wall crossing's strand ends into the wall

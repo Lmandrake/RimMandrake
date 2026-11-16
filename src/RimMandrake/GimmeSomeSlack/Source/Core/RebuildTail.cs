@@ -99,7 +99,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>A section's owned-set signature as a 64-bit hash, allocation-free: per piece in print order its key and
         /// geometry, net seed and material index, then (eligibility on) each strand's static/dynamic bits in print order.
         /// Carries exactly what the former string signature carried (key@geometry#seed%mat, then " e" + one char per strand);
-        /// 0 means "no pieces here" (the former empty string). <paramref name="elig"/> null = sway and ripple both off.</summary>
+        /// 0 means "no pieces here" (the former empty string). <paramref name="elig"/> null = no per-strand bits (the component passes null: no ground cord is drawn per frame but a whip tail).</summary>
         internal static ulong SectionSig(List<LaidPiece> l, Dictionary<LaidPiece, int> seeds, Dictionary<LaidPiece, int> mats, Func<CordStrand, int> elig)
         {
             if (l == null) return 0UL;

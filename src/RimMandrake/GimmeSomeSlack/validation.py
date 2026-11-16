@@ -119,8 +119,7 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
-           "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true",
-           "swayMode": "SwayMode.CPU", "floorRipple": "true",
+           "maxSparkingEnds": "24", "highlight": "true", "lod": "true",
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
@@ -548,7 +547,6 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
     ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
     ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "foreignStyle: ForeignStyled(l)"),
-    ("B14 ripple draws into reused buffers", "RM_MapComponent_CordGraph.cs", "CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si)"),
     ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur, roomPos, roomNeg);"),
     ("B24 unchanged settings close re-prints nothing", "GimmeSomeSlackMod.cs", "if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();"),
     ("a pole's lead lies from its foot (owner 2026-11-08)", "Aerial/RM_MapComponent_Aerial.cs", "FallenLay lay = AerialMath.LayFootDrop(foot, from, d.thingIDNumber, walk);"),
@@ -1236,23 +1234,22 @@ def lane_a_live(B, rows, log):
     B.ticks(2)
     B.probe("poll")
     frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
-    # B7 sway (CPU path): two frames 30 ticks apart differ with sway ON, nothing drawn with it OFF
-    a = motion(B)
+    # B7 (owner 2026-11-16: "Wind wasn't supposed to mess with conduit-based wiring at all"): with wind blowing, every
+    # ground strand in SITE is printed once in the static mesh and none is drawn per frame, and the census geometry hash
+    # is the same 30 ticks later. Calm (< 0.01) proves nothing about wind and reads UNMEASURED.
+    s1 = B.probe("strands:%d,%d,%d,%d" % SITE)
+    g1 = B.probe("rect:%d,%d,%d,%d" % SITE)
     B.ticks(30)
-    b = motion(B)
-    B.probe("set:sway=False")
-    c = motion(B)
-    B.probe("set:sway=True")
-    # the frame-to-frame change needs wind; B7b/B7c already accept a calm (< 0.01) map, B7 now too (audit 2026-10-10)
-    sway_ok = a.get("swayDraws", 0) > 0 and (a.get("swayHash") != b.get("swayHash") or (a.get("windSpeed") or 0) < 0.01) and \
-        c.get("swayDraws") == 0 and c.get("liftedSwaying") == 0
-    # the WALL2 terminal's hanging wire was the only lifted strand; owner 2026-11-16 removed it (one loose end per end,
-    # RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO), so with nothing lifted B7/B7b have no subject and read UNMEASURED, not FAIL
-    row(rows, "B7_sway_cpu_two_frame", ("PASS" if sway_ok else "FAIL") if a.get("plantWindSway") and a.get("liftedStrands") else "UNMEASURED", "MOD",
-        {"mode": a.get("swayMode"), "plantWindSway": a.get("plantWindSway"), "wind": a.get("windSpeed"), "amp": a.get("swayAmplitude"),
-         "lifted": a.get("liftedStrands"), "swaying": a.get("liftedSwaying"), "swayDraws": a.get("swayDraws"), "swayVerts": a.get("swayVerts"),
-         "hashA": a.get("swayHash"), "hashB_30ticks": b.get("swayHash"), "off_swayDraws": c.get("swayDraws"), "off_swaying": c.get("liftedSwaying")})
-    optional_motion_live(B, rows, a)
+    s2 = B.probe("strands:%d,%d,%d,%d" % SITE)
+    g2 = B.probe("rect:%d,%d,%d,%d" % SITE)
+    wind = s1.get("windSpeed")
+    dyn = sum(1 for r in (s1.get("strands") or []) + (s2.get("strands") or []) if r.get("dynamic"))
+    still = (s1.get("strandCount", 0) > 0 and s1.get("badPaths") == 0 and s2.get("badPaths") == 0 and dyn == 0 and
+             g1.get("geometryHash") is not None and g1.get("geometryHash") == g2.get("geometryHash"))
+    row(rows, "B7_ground_cords_never_sway", ("PASS" if still else "FAIL") if (wind or 0) >= 0.01 else "UNMEASURED", "MOD",
+        {"wind": wind, "strands": s1.get("strandCount"), "badPaths": [s1.get("badPaths"), s2.get("badPaths")], "dynamic": dyn,
+         "geometryHash": [g1.get("geometryHash"), g2.get("geometryHash")],
+         "meaning": "PASS = in wind, no ground cord in SITE is drawn per frame and its laid geometry is unchanged 30 ticks on"})
     # B5 selection highlight
     sa = B.probe("select:%d,%d" % (X0 + 5, Z0 + 3))
     h1 = motion(B, 3)
@@ -1648,7 +1645,7 @@ def hidden_conduit_hookup_live(B, rows):
     PatchCable, and the hookup patch then PRINTS the look's thick cable to it, if vanilla reaches PrintWirePieceConnecting for
     hidden conduit at all. A lamp 3 cells from a hidden-conduit line (the M11 pocket, cleared by then): the census counter
     hookupCablesPrinted must not move. A rise confirms B13 (a cosmetic call for the owner); no HiddenConduit def is UNMEASURED.
-    B12 (shader-sway strands drawn once at near and far zoom) follows: shader_sway_far_zoom_live."""
+"""
     x0, z0 = POCKET_RECT[0], POCKET_RECT[1]
     before = B.probe("census")
     try:
@@ -1673,116 +1670,6 @@ def hidden_conduit_hookup_live(B, rows):
         row(rows, "B13_hidden_conduit_hookup_not_drawn", "PASS" if moved == 0 else "FAIL", "MOD", dict(d, moved=moved))
     sw_hookup_row(B, rows)
     sw_needless_row(B, rows)
-    shader_sway_far_zoom_live(B, rows)
-
-
-def shader_sway_far_zoom_live(B, rows):
-    """GPT pre-release B12: swayMode=Shader + lod on, the WALL2 terminal's hanging (lifted) strands in SITE. A shader
-    strand is printed ONCE in a full-detail CutoutPlant sub-mesh; at far zoom DrawLayer disables every full sub-mesh and
-    DrawMotion draws no geometry, so the LOD strand is the one draw. Near: plant sub-meshes enabled (shaderEnabled > 0),
-    no CPU sway draw (swayDraws 0), and every lifted strand in SITE printedStatic with paths == 1 (strands:). Far (the
-    camera's maximum root, as B8): lodFarNow, shaderEnabled 0, swayDraws 0, lodEnabled > 0, fullEnabled 0. No lifted
-    strand, or no plant sway in prefs (the shader route is off), is UNMEASURED SITE. Settings and zoom are restored."""
-    m0 = B.probe("motion")
-    prev_mode, prev_lod = m0.get("swayModeSetting") or "CPU", m0.get("lodSetting")
-    cam = B.call("rimworld/get_camera_state")   # review: read before the sets, so nothing can raise between them and the try
-    try:
-        B.probe("set:swayMode=Shader")
-        B.probe("set:lod=True")
-        frame_fit(B, SITE)
-        B.ticks(2)
-        near = motion(B, 3)
-        sn = B.probe("strands:%d,%d,%d,%d" % SITE)
-        far_root = max(58, int(((cam.get("sizeRange") or {}).get("max")) or 58))
-        B.call("rimworld/set_camera_zoom", rootSize=far_root)
-        t_z = time.time()
-        far = motion(B, 3)
-        while far.get("zoom") != "Furthest" and time.time() - t_z < 5.0:
-            far = motion(B, 2)
-        sf = B.probe("strands:%d,%d,%d,%d" % SITE)
-    finally:
-        B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
-        B.probe("set:swayMode=%s" % prev_mode)
-        B.probe("set:lod=%s" % ("False" if prev_lod is False else "True"))   # an unread setting restores the shipped default (on)
-        frame_fit(B, SITE)
-        B.ticks(2)
-    lifted = [x for x in (sn.get("strands") or []) if x.get("lifted") and x.get("ownerPrinted")]
-    keys = ("zoom", "swayMode", "swayModeReason", "lodFarNow", "shaderSubMeshes", "shaderEnabled", "swayDraws",
-            "lodEnabled", "fullEnabled", "plantWindSway")
-    d = {"near": {k: near.get(k) for k in keys}, "far": {k: far.get(k) for k in keys},
-         "liftedNear": [[x.get("key"), x.get("printedStatic"), x.get("dynamic"), x.get("paths")] for x in lifted],
-         "farLiftedDynamic": sum(1 for x in (sf.get("strands") or []) if x.get("lifted") and x.get("dynamic")),
-         "restored": [prev_mode, prev_lod]}
-    if near.get("swayMode") != "Shader" or not lifted:
-        row(rows, "B12_shader_sway_far_zoom_drawn_once", "UNMEASURED", "SITE", d)
-        return
-    near_ok = ((near.get("shaderEnabled") or 0) > 0 and near.get("swayDraws") == 0 and not near.get("lodFarNow") and
-               all(x.get("printedStatic") and not x.get("dynamic") and x.get("paths") == 1 for x in lifted))
-    far_ok = (far.get("lodFarNow") is True and far.get("shaderEnabled") == 0 and far.get("swayDraws") == 0 and
-              (far.get("lodEnabled") or 0) > 0 and far.get("fullEnabled") == 0 and d["farLiftedDynamic"] == 0)
-    row(rows, "B12_shader_sway_far_zoom_drawn_once", "PASS" if near_ok and far_ok else "FAIL", "MOD", d)
-
-
-def optional_motion_live(B, rows, cpu):
-    """The two OPTIONAL motion features (owner card 2026-10-04: build both, prove both), one roof toggle each side
-    so a single pass covers on / off / roofed / fallback for both. All state reads, never pixels.
-      B7b shader sway: swayMode=Shader prints the lifted tails ONCE with the CutoutPlant strand -- shader name ==
-        ShaderDatabase.CutoutPlant, the material is in WindManager.plantMaterials (reflection), _SwayHead advances
-        over 30 ticks, open vertex alpha max > 0, the CPU route draws nothing (no double draw); roofing the WALL2
-        terminal makes its alpha 0; back to CPU, the CPU route draws again (the fallback/default path).
-      B7c floor ripple: OFF (set explicitly; the default is ON since 2026-10-15) draws nothing; ON, the unroofed plain floor strands ripple (draws > 0, pose hash
-        changes over 30 ticks, the static layer leaves exactly those out); the roof over RUN2 takes them out; OFF
-        again draws nothing."""
-    roof = (X0 + 23, Z0 + 7, 5, 5)                      # over the WALL2 terminal and the east end of RUN2
-    B.probe("set:swayMode=Shader")
-    s1 = motion(B, 3)
-    B.ticks(30)
-    s2 = motion(B)
-    B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % roof)
-    B.ticks(2)
-    s3 = motion(B, 3)
-    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % roof)
-    B.ticks(2)
-    B.probe("set:swayMode=CPU")
-    s4 = motion(B, 3)
-    head1, head2 = s1.get("plantSwayHead"), s2.get("plantSwayHead")
-    wind = s1.get("windSpeed") or 0
-    sh_ok = (s1.get("swayMode") == "Shader" and s1.get("plantShader") and s1.get("plantShader") == s1.get("cutoutPlantShader") and
-             s1.get("plantRegistered") is True and s1.get("shaderSubMeshes", 0) > 0 and s1.get("shaderLiftedOpen", 0) > 0 and
-             s1.get("shaderAlphaMaxOpen", 0) > 0 and s1.get("shaderAlphaMaxRoofed", 0) == 0 and s1.get("swayDraws") == 0 and
-             isinstance(head1, (int, float)) and isinstance(head2, (int, float)) and (head2 > head1 or wind < 0.01) and
-             s3.get("shaderLiftedRoofed", 0) > 0 and s3.get("shaderAlphaMaxRoofed") == 0 and
-             s4.get("swayMode") == "CPU" and s4.get("shaderSubMeshes") == 0 and s4.get("swayDraws", 0) > 0)
-    keys = ("swayMode", "swayModeReason", "plantShader", "cutoutPlantShader", "plantRegistered", "plantSwayHead", "shaderSubMeshes",
-            "shaderVerts", "shaderLiftedOpen", "shaderLiftedRoofed", "shaderAlphaMaxOpen", "shaderAlphaMaxRoofed", "swayDraws", "windSpeed")
-    row(rows, "B7b_sway_shader_path", ("PASS" if sh_ok else "FAIL") if cpu.get("plantWindSway") and cpu.get("liftedStrands") else "UNMEASURED", "MOD",
-        {"shader": {k: s1.get(k) for k in keys}, "after30": {k: s2.get(k) for k in ("plantSwayHead", "ticksGame")},
-         "roofed": {k: s3.get(k) for k in keys}, "backToCpu": {k: s4.get(k) for k in keys}})
-    # ---- B7c floor ripple
-    B.probe("set:floorRipple=False")   # default is ON since 2026-10-15; the OFF path is measured explicitly
-    r0 = motion(B)
-    B.probe("set:floorRipple=True")
-    r1 = motion(B, 3)
-    B.ticks(30)
-    r2 = motion(B)
-    B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % roof)
-    B.ticks(2)
-    r3 = motion(B, 3)
-    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % roof)
-    B.ticks(2)
-    B.probe("set:floorRipple=False")
-    r4 = motion(B, 3)
-    B.probe("set:floorRipple=True")   # restore the shipped default
-    rp_ok = (r0.get("floorRipple") is False and r0.get("rippleDraws") == 0 and r0.get("rippling") == 0 and r0.get("floorStrandsOpen", 0) > 0 and
-             r1.get("rippling") == r1.get("floorStrandsOpen") and r1.get("rippleDraws", 0) > 0 and
-             r1.get("rippleSkippedStatic") == r1.get("rippling") and
-             (r1.get("rippleHash") != r2.get("rippleHash") or (r1.get("windSpeed") or 0) < 0.01) and
-             r3.get("rippling", 0) < r1.get("rippling", 0) and r3.get("rippling") == r3.get("floorStrandsOpen") and
-             r4.get("rippleDraws") == 0 and r4.get("rippling") == 0 and r4.get("rippleSkippedStatic") == 0)
-    rk = ("floorRipple", "floorStrands", "floorStrandsOpen", "rippling", "rippleDraws", "rippleVerts", "rippleHash", "rippleSkippedStatic", "windSpeed")
-    row(rows, "B7c_floor_ripple", ("PASS" if rp_ok else "FAIL") if cpu.get("plantWindSway") else "UNMEASURED", "MOD",
-        {"explicit_off": {k: r0.get(k) for k in rk}, "on": {k: r1.get(k) for k in rk}, "on_30ticks": {k: r2.get(k) for k in rk},
-         "roofed": {k: r3.get(k) for k in rk}, "off_again": {k: r4.get(k) for k in rk}})
 
 
 # ============================================================================ lane C: art styles (live)
@@ -2078,7 +1965,7 @@ suite.toggles = list(SHIPPED)          # every Mod Settings field; floor.uncover
 
 # rows whose check flips a Mod Settings field (the component's `toggle`)
 ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "enabled",
-               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "B7b_sway_shader_path": "swayMode", "B7c_floor_ripple": "floorRipple", "M10_tangle_threshold_setting": "tangleMin", "M11_dive_through_setting": "diveThrough",
+               "B3_whip_live_ends": "whip", "M10_tangle_threshold_setting": "tangleMin", "M11_dive_through_setting": "diveThrough",
                "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
 ROW_TOGGLES["ST1_styles_textures_load"] = "style"
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")

@@ -366,9 +366,7 @@ namespace RimMandrake.GimmeSomeSlack
                 catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[GimmeSomeSlack] run styles: " + ex, 0x4d43_5346); }
                 // dirty every section whose owned set changed (not just the regenerating one)
                 // CORD_STATIC_DYNAMIC_HANDOFF_1: the compared signature is the one recorded when the section was last
-                // dirtied for print, and it carries each strand's static/dynamic eligibility (sway, shader sway + pin roof,
-                // ripple) — so a roof landing in ANOTHER section, which leaves the piece set unchanged, still reprints the
-                // owner section, and the per-frame and printed paths never both draw (or both skip) a strand.
+                // dirtied for print.
                 tSig = System.Diagnostics.Stopwatch.GetTimestamp();
                 LastSigSections = 0;
                 if (Current.ProgramState == ProgramState.Playing)
@@ -376,7 +374,7 @@ namespace RimMandrake.GimmeSomeSlack
                     // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: a 64-bit signature per section (RebuildTail.SectionSig), no strings:
                     // the former string join of every piece's cache key and geometry ran over the whole map on every frame
                     // rebuild, untimed, and its garbage fed the stop-the-world collector
-                    Func<CordStrand, int> elig = SwayOn || GimmeSomeSlackSettings.floorRipple ? (eligBits ??= EligBits) : null;
+                    Func<CordStrand, int> elig = null;   // no strand is drawn per frame but a whip tail (wind moves no ground cord)
                     sigKeys.Clear();
                     sigKeys.UnionWith(nextBy.Keys);
                     sigKeys.UnionWith(prevBy.Keys);
@@ -438,25 +436,6 @@ namespace RimMandrake.GimmeSomeSlack
 
         private readonly Dictionary<IntVec2, ulong> printedSig = new Dictionary<IntVec2, ulong>();
         private readonly HashSet<IntVec2> sigKeys = new HashSet<IntVec2>();
-        private Func<CordStrand, int> eligBits;
-
-        /// <summary>A strand's static/dynamic eligibility bits (sway 1, shader sway 2, pin roofed 4, ripple 8), read in print
-        /// order into its section's signature.</summary>
-        private int EligBits(CordStrand st)
-        {
-            int bits = 0;
-            if (st.Lifted && SwaysNow(map, st)) bits |= 1;
-            if (ShaderSwayPrints(st)) { bits |= 2; if (PinRoofed(map, st)) bits |= 4; }
-            if (RipplesNow(map, st)) bits |= 8;
-            return bits;
-        }
-
-        /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: the global inputs of that eligibility (vanilla's plant-sway option,
-        /// our sway / ripple settings, the effective sway route). A transition reprints every section that changes.</summary>
-        private string swayModeKey;
-        private string SwayModeKey() =>
-            (Prefs.PlantWindSway ? "P" : "p") + (SwayOn ? "S" : "s") + (GimmeSomeSlackSettings.floorRipple ? "R" : "r") +
-            (SwayOn && EffectiveSwayMode(out _) == SwayMode.Shader ? "H" : "c");
 
         /// <summary>
         /// MapDrawer.RegenerateEverythingNow (map load / FinalizeInit) creates its Section objects one by one
@@ -676,83 +655,23 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         // ================================================================ phase 1b lane A: motion
-        // Whip (B3), downed-wire bursts (B4), selection highlight (B5), wind sway of lifted pieces (B7,
-        // CPU path). All runtime-only, drawn from MapComponentUpdate with two dynamic meshes rebuilt per
-        // frame for what is on screen; nothing here touches the static section meshes.
+        // Whip (B3), downed-wire bursts (B4), selection highlight (B5). All runtime-only, drawn from
+        // MapComponentUpdate with a dynamic mesh rebuilt per frame for what is on screen; nothing here touches the
+        // static section meshes. Wind moves no ground cord (owner 2026-11-16: wind sway is for pole wires only).
         private bool motionErrorLogged;
         private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
         private Mesh hiMesh;
-        /// <summary>Per strand variant (lane C): one whip mesh and one sway mesh each, drawn with that variant's material.</summary>
-        private readonly Mesh[] floorMeshes = new Mesh[16], faceMeshes = new Mesh[16], rippleMeshes = new Mesh[16];
+        /// <summary>Per strand variant (lane C): one whip mesh each, drawn with that variant's material.</summary>
+        private readonly Mesh[] floorMeshes = new Mesh[16];
         private readonly List<Vector3> mv = new List<Vector3>();
         private readonly List<Vector2> mu = new List<Vector2>();
         private readonly List<int> mt = new List<int>();
         private PowerNet hiNet;
         private int hiBuilds = -1;
-        public static int WhipDraws, WhipStillDraws, SwayDraws, SwayVerts, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
-        public static ulong SwayHash, RippleHash;
-        public static int RippleDraws, RippleVerts;
-        public static float LastWind;
+        public static int WhipDraws, WhipStillDraws, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
         public static readonly int[] DownedHist = new int[4];
         public static string HighlightNetId;
 
-        /// <summary>Does this lifted strand sway right now (so the static layer leaves it out)? Setting on,
-        /// strength > 0, vanilla's plant-sway preference on, and not under a roof (design §8.4: 0 under a roof).</summary>
-        public static bool SwaysNow(Map map, CordStrand s)
-        {
-            if (!SwayOn || EffectiveSwayMode(out _) != SwayMode.CPU) return false;
-            if (s.Pts == null || s.Pts.Count < 2 || s.SwayW == null) return false;
-            return !PinRoofed(map, s);
-        }
-
-        /// <summary>Sway is wanted at all: setting on, strength > 0, vanilla's plant-sway preference on.</summary>
-        public static bool SwayOn => GimmeSomeSlackSettings.sway && GimmeSomeSlackSettings.swayAmplitude > 0.01f && Prefs.PlantWindSway;
-
-        /// <summary>A lifted strand's pin cell (where it leaves the wall) is roofed, or off the map.</summary>
-        public static bool PinRoofed(Map map, CordStrand s)
-        {
-            IntVec3 c = CordWorldAdapter.I(s.Pts[0].Floor);
-            return !c.InBounds(map) || map.roofGrid.Roofed(c);
-        }
-
-        private static System.Reflection.FieldInfo plantMatsField;
-        /// <summary>WindManager's private static plant material list (reflection): the shader route only moves a
-        /// material that is in it, because WindManagerTick writes _SwayHead to exactly that list.</summary>
-        public static bool RegisteredWithWind(Material m)
-        {
-            if (m == null) return false;
-            if (plantMatsField == null)
-                plantMatsField = typeof(WindManager).GetField("plantMaterials", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            return plantMatsField?.GetValue(null) is List<Material> l && l.Contains(m);
-        }
-
-        /// <summary>The sway route actually used: Shader only when chosen AND the CutoutPlant strand material exists, uses
-        /// that shader and is registered with WindManager; otherwise CPU (the safe fallback). reason says why.</summary>
-        public static SwayMode EffectiveSwayMode(out string reason)
-        {
-            if (GimmeSomeSlackSettings.swayMode != SwayMode.Shader) { reason = "cpu (setting)"; return SwayMode.CPU; }
-            Material m = CordMaterials.StrandPlant;
-            if (ShaderDatabase.CutoutPlant == null || m == null) { reason = "fallback: no CutoutPlant strand material"; return SwayMode.CPU; }
-            if (m.shader != ShaderDatabase.CutoutPlant) { reason = "fallback: strand material shader is " + m.shader?.name; return SwayMode.CPU; }
-            if (!RegisteredWithWind(m)) { reason = "fallback: material not registered with WindManager"; return SwayMode.CPU; }
-            reason = "shader";
-            return SwayMode.Shader;
-        }
-
-        /// <summary>The section layer prints this lifted strand with the plant shader (vertex alpha = sway weight).</summary>
-        public static bool ShaderSwayPrints(CordStrand s) =>
-            s.Lifted && s.SwayW != null && s.Pts != null && s.Pts.Count >= 2 && SwayOn && EffectiveSwayMode(out _) == SwayMode.Shader;
-
-        /// <summary>Optional floor ripple: a plain floor strand (not lifted, not over a face, no whip tail) whose middle
-        /// cell is unroofed ripples per frame while the setting (default ON, owner 2026-10-15) and the game's plant sway are on.</summary>
-        public static bool RipplesNow(Map map, CordStrand s)
-        {
-            if (!GimmeSomeSlackSettings.floorRipple || GimmeSomeSlackSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;
-            if (s.Lifted || s.OverFace || s.WhipA > 0 || s.WhipB > 0 || s.Pts == null || s.Pts.Count < 3) return false;
-            IntVec3 c = CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor);
-            // a cord under a pit's liquid does not ripple in the wind: it is printed, and the print fades it (CordUnderLiquid)
-            return c.InBounds(map) && !map.roofGrid.Roofed(c) && CordUnderLiquid.SeenAt(map, c.x, c.z) >= 1f;
-        }
 
         private static Mesh Fresh(ref Mesh m)
         {
@@ -780,7 +699,7 @@ namespace RimMandrake.GimmeSomeSlack
             pendingPrints.Clear();
             void Kill(ref Mesh m) { if (m != null) { UnityEngine.Object.Destroy(m); m = null; } }
             Kill(ref hiMesh);
-            for (int i = 0; i < floorMeshes.Length; i++) { Kill(ref floorMeshes[i]); Kill(ref faceMeshes[i]); Kill(ref rippleMeshes[i]); }
+            for (int i = 0; i < floorMeshes.Length; i++) Kill(ref floorMeshes[i]);
         }
 
         /// <summary>Any point of pts[from .. from+count) inside the view (GPT review #4: a long strand stays drawn while
@@ -801,14 +720,13 @@ namespace RimMandrake.GimmeSomeSlack
         /// set (cleared with the buckets); whip snap cursors are kept per tail seed.</summary>
         private readonly Dictionary<(CordStrand, int), ulong> motionSeeds = new Dictionary<(CordStrand, int), ulong>();
         private readonly Dictionary<ulong, CordMotion.WhipCursor> whipCursors = new Dictionary<ulong, CordMotion.WhipCursor>();
-        private readonly List<V2> tailBuf = new List<V2>(), bentBuf = new List<V2>(), rippleBuf = new List<V2>(), swayBuf = new List<V2>();
-        private double[] rippleArc;
+        private readonly List<V2> tailBuf = new List<V2>(), bentBuf = new List<V2>();
 
-        /// <summary>kind 0 = whip at start, 1 = whip at end, 2 = ripple, 3 = CPU sway (si = strand's 1-based index in its piece).</summary>
+        /// <summary>kind 0 = whip at start, 1 = whip at end (si unused, kept 0).</summary>
         private ulong MotionSeed(LaidPiece p, CordStrand s, int kind, int si)
         {
             if (motionSeeds.TryGetValue((s, kind), out ulong h)) return h;
-            h = kind == 3 ? CordRng.Hash("sway", p.Key) : kind == 2 ? CordRng.Hash("ripple", p.Key, si) : CordRng.Hash("whip", p.Key, s.S0, kind == 0);
+            h = CordRng.Hash("whip", p.Key, s.S0, kind == 0);
             motionSeeds[(s, kind)] = h;
             return h;
         }
@@ -847,7 +765,7 @@ namespace RimMandrake.GimmeSomeSlack
         private void DrawMotion()
         {
             if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
-            WhipDraws = 0; WhipStillDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
+            WhipDraws = 0; WhipStillDraws = 0; HighlightCords = 0; HighlightStubs = 0;
             whipLaid.Clear(); whipNow.Clear(); whipOut.Clear();
             if (!GimmeSomeSlackSettings.enabled || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
@@ -861,7 +779,6 @@ namespace RimMandrake.GimmeSomeSlack
                 return;
             }
             CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
-            float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift;
             bool whip = GimmeSomeSlackSettings.whip && GimmeSomeSlackSettings.breakReadout;
             // ---- B3 whipping live tails (floor)
             // stage 2: one mesh per flat material index (every look's strands), each piece in its own run's material
@@ -921,76 +838,6 @@ namespace RimMandrake.GimmeSomeSlack
                 }
             Flush(ref floorMeshes[v], CordMaterials.StrandG(v));
             }
-            // ---- B7 sway of lifted pieces (wall-hanging tails), CPU path, game-time clock
-            float wind = map.windManager.WindSpeed;
-            LastWind = wind;
-            double gt = Find.TickManager.TicksGame / 60.0;
-            ulong h = 1469598103934665603UL;
-            // GPT review #12: no per-strand scan at all unless the CPU sway route is on
-            bool swayCpu = SwayOn && EffectiveSwayMode(out _) == SwayMode.CPU;
-            for (int v = 0; v < nv && swayCpu; v++)
-            {
-            mv.Clear(); mu.Clear(); mt.Clear();
-            foreach (LaidPiece p in byMat[v])
-                foreach (CordStrand s in p.Strands)
-                {
-                    if (!s.Lifted || !SwaysNow(map, s)) continue;
-                    if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
-                    List<V2> sw = swayBuf;
-                    CordMotion.SwayInto(s.Pts, s.SwayW, gt, MotionSeed(p, s, 3, 0), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind, sw);
-                    SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0, CordMaterials.AspectG(v));
-                    // a wall end's tail sways, so its fray and its sparks go with it
-                    V2 swTip = sw[sw.Count - 1];
-                    whipLaid.Add(s.Pts[s.Pts.Count - 1]);
-                    whipNow.Add(swTip);
-                    whipOut.Add((swTip - sw[Math.Max(0, sw.Count - 4)]).Norm());
-                    foreach (CordDecal d in p.Decals)
-                    {
-                        if (!d.OnSwayTail || V2.Dist(d.Pos, s.Pts[s.Pts.Count - 1]) > 0.01) continue;
-                        Material swFray = CordMaterials.DecalG(d.Kind, v);
-                        if (swFray != null)
-                            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)swTip.X, baseY + 0.009f, (float)swTip.Z), Quaternion.Euler(0f, -(float)d.Angle * Mathf.Rad2Deg, 0f), new Vector3((float)d.Scale, 1f, (float)d.Scale)), swFray, 0);
-                    }
-                    foreach (V2 q in sw)
-                    {
-                        h = (h ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
-                        h = (h ^ unchecked((ulong)(long)Math.Round(q.Z * 10000))) * 1099511628211UL;
-                    }
-                    SwayDraws++;
-                }
-            SwayVerts += mv.Count;
-            Flush(ref faceMeshes[v], CordMaterials.StrandFaceG(v) ?? CordMaterials.StrandG(v));
-            }
-            SwayHash = h;
-            // ---- optional floor ripple (default ON, owner card): unroofed plain floor strands on screen, game-time clock
-            ulong rh = 1469598103934665603UL;
-            if (GimmeSomeSlackSettings.floorRipple)
-                for (int v = 0; v < nv; v++)
-                {
-                    mv.Clear(); mu.Clear(); mt.Clear();
-                    foreach (LaidPiece p in byMat[v])
-                    {
-                        int si = 0;
-                        foreach (CordStrand s in p.Strands)
-                        {
-                            si++;
-                            if (!RipplesNow(map, s)) continue;
-                            if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
-                            List<V2> rp = rippleBuf;
-                            CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si), CordMotion.RippleAmp * GimmeSomeSlackSettings.swayAmplitude, wind, rp, ref rippleArc);
-                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0, CordMaterials.AspectG(v));
-                            foreach (V2 q in rp)
-                            {
-                                rh = (rh ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
-                                rh = (rh ^ unchecked((ulong)(long)Math.Round(q.Z * 10000))) * 1099511628211UL;
-                            }
-                            RippleDraws++;
-                        }
-                    }
-                    RippleVerts += mv.Count;
-                    Flush(ref rippleMeshes[v], CordMaterials.StrandG(v));
-                }
-            RippleHash = rh;
             DrawEffects(now, baseY);
         }
 
@@ -1133,14 +980,6 @@ namespace RimMandrake.GimmeSomeSlack
         {
             // GPT review #1: when this frame already rebuilt, the dirty event may have landed AFTER that rebuild, so the
             // flag is kept (deferred to the next frame) rather than cleared and lost
-            if (GimmeSomeSlackSettings.enabled)
-            {
-                string mk = SwayModeKey();
-                // GPT deep review 2026-10-22 #8: the key used to be consumed even when a same-frame rebuild suppressed the
-                // flag, so the change was lost; the flag is set unconditionally and the gate below defers it a frame
-                if (swayModeKey != null && mk != swayModeKey) StaleOffscreen = true;
-                swayModeKey = mk;
-            }
             // a sliced build: rebuild once the lay worker has landed pieces, or has stopped with edges still missing
             // GSS round 9: coalesced, so a stream of landings rebuilds every ~100 ms or 64 pieces, not every frame
             if (LastPending > 0)

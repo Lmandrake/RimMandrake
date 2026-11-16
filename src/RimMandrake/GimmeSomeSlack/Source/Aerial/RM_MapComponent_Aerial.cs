@@ -1113,7 +1113,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>
-    /// The wind-sway hook shared with the floor-cord lifted pieces (L4, design 1.5 / 2.5): ONE switch and one answer
+    /// The pole-wire wind-sway hook (design 2.5; ground cords never sway, owner 2026-11-16): ONE switch and one answer
     /// for "should wires move now", so the two lanes never disagree. Spans always sway on the CPU (no shader path for
     /// spans). The two "on" modes differ in one thing (2026-10-10 build-out: a setting must do something): Auto follows
     /// the game's plant-sway preference like the plants do; Always sways the wires even with plant sway off.

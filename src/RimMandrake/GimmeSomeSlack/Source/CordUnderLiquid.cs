@@ -10,8 +10,8 @@ namespace RimMandrake.GimmeSomeSlack
     /// RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR (owner 2026-11-12: "The wires are also above the items and
     /// furniture otherwise"): a cord lying on the floor of a FlowWorks pit is seen through the liquid over it by FlowWorks' one
     /// under-liquid law, at the height it runs at (the pit floor). FlowWorks is optional: its RM_SubmergeDraw.FloorSeen is
-    /// found by name once; without it every cord shows whole. A cord under liquid does not ripple in the wind
-    /// (RM_MapComponent_CordGraph.RipplesNow), so it is printed by SectionLayer_RM_MessyCords, which fades it here.
+    /// found by name once; without it every cord shows whole. SectionLayer_RM_MessyCords prints every floor cord and fades
+    /// the ones under liquid here.
     /// </summary>
     internal static class CordUnderLiquid
     {

@@ -20,11 +20,6 @@ namespace RimMandrake.GimmeSomeSlack
     /// <summary>Extension-cord colours: a different colour per power net (seeded per net), or one colour everywhere.</summary>
     public enum ExtCordColorMode { Mixed, Single }
 
-    /// <summary>How lifted pieces sway (phase-2 doc 1.5): CPU (shipping default, per-frame deformed mesh) or Shader
-    /// (the engine's CutoutPlant vertex shader, vertex alpha = sway weight). Shader falls back to CPU by itself when
-    /// the plant shader or its wind registration is unavailable (see RM_MapComponent_CordGraph.EffectiveSwayMode).</summary>
-    public enum SwayMode { CPU, Shader }
-
     // ════════════════════════════════════════════════════════════════════
     // Mod Settings (owner, 2026-09-12: every mod ships a real settings screen; defaults = shipped
     // behaviour; all-off degrades to vanilla). Static fields so jawa/mod_settings_field can read and
@@ -77,14 +72,6 @@ namespace RimMandrake.GimmeSomeSlack
         public static int maxSparkingEnds = 24;
         /// <summary>Selecting anything on a power net highlights every cord of that net.</summary>
         public static bool highlight = true;
-        /// <summary>Lifted pieces (wall-hanging tails) sway in the wind; obeys vanilla's plant-sway preference.</summary>
-        public static bool sway = true;
-        /// <summary>Sway strength multiplier (0-2).</summary>
-        public static float swayAmplitude = 1f;
-        /// <summary>Sway route for lifted pieces: CPU (default) or the plant vertex shader (optional).</summary>
-        public static SwayMode swayMode = SwayMode.CPU;
-        /// <summary>Optional: outdoor floor cords ripple slightly in the wind. On by default (owner 2026-10-15); off leaves floor cords still.</summary>
-        public static bool floorRipple = true;
         /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
         public static bool lod = true;
         // ---- art styles (lane C, 2026-10-02)
@@ -125,10 +112,6 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref sparksOnlyOverlay, "sparksOnlyOverlay", false);
             Scribe_Values.Look(ref maxSparkingEnds, "maxSparkingEnds", 24);
             Scribe_Values.Look(ref highlight, "highlight", true);
-            Scribe_Values.Look(ref sway, "sway", true);
-            Scribe_Values.Look(ref swayAmplitude, "swayAmplitude", 1f);
-            Scribe_Values.Look(ref swayMode, "swayMode", SwayMode.CPU);
-            Scribe_Values.Look(ref floorRipple, "floorRipple", true);
             Scribe_Values.Look(ref lod, "lod", true);
             Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
@@ -159,10 +142,6 @@ namespace RimMandrake.GimmeSomeSlack
             sparksOnlyOverlay = false;
             maxSparkingEnds = 24;
             highlight = true;
-            sway = true;
-            swayAmplitude = 1f;
-            swayMode = SwayMode.CPU;
-            floorRipple = true;
             lod = true;
             extCordColorMode = ExtCordColorMode.Mixed;
             extCordColor = 0;
@@ -311,30 +290,6 @@ namespace RimMandrake.GimmeSomeSlack
                 list.GapLine();
             }
 
-            if (Group(list, "Wind sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayAmplitude", "swayMode", "floorRipple" }))
-            {
-            using (Dependent(list, "sway", "swayAmplitude", "floorRipple", "swayMode"))
-            {
-            list.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref sway);
-            list.Label("Sway strength: " + swayAmplitude.ToString("0.0") + "x");
-            swayAmplitude = list.Slider(swayAmplitude, 0f, 2f);
-            using (Dependent(list, "swayMode"))
-            {
-            if (list.RadioButton("   Sway drawn on the CPU (default, always works)", swayMode == SwayMode.CPU,
-                              tooltip: "Each hanging cord on screen is bent every frame. Costs a little CPU; this is the shipping behaviour."))
-                swayMode = SwayMode.CPU;
-            if (list.RadioButton("   Sway drawn by the plant wind shader (experimental, zero CPU)", swayMode == SwayMode.Shader,
-                              tooltip: "Hanging cords use the same wind shader as plants and move with them. Falls back to the CPU route " +
-                                       "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
-                swayMode = SwayMode.Shader;
-            }
-            list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind", ref floorRipple,
-                "Off: cords on the floor lie still. On (default): unroofed floor cords on screen ripple gently with the wind " +
-                "(uses the sway strength above; obeys the game's plant-sway option).");
-            }
-                list.GapLine();
-            }
-
             if (Group(list, "Which conduits become cords", RimMandrake.Shared.SettingScope.Now, new[] { "excludedConduits" }))
             {
             using (Dependent(list, "excludedConduits"))
@@ -375,14 +330,13 @@ namespace RimMandrake.GimmeSomeSlack
         /// look of masts and wires too) and the four spark settings (RM_MapComponent_Aerial: fallen wires and tap clamps).</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("enabled", "extCordColorMode", "extCordColor", "hideHookupWires", "slack", "loopBudget", "cordsPerConnection",
-                     "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin", "whip", "downedWire", "highlight", "sway", "swayAmplitude",
-                     "swayMode", "floorRipple", "excludedConduits", "lod", "debugDraw")
+                     "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin", "whip", "downedWire", "highlight",
+                     "excludedConduits", "lod", "debugDraw")
             .Declare("tangles", "tangleMin")          // BuildOptions: TangleMin is used only while Tangles (CordBuilder)
             .Declare("breakReadout", "whip")           // whip = whip && breakReadout (CordGraph, MessyCords layer)
-            .Declare("sway", "swayMode")               // the sway route only matters while hanging cords sway
             .Independent("style", "breakReadout", "sparkIntensity", "sparksOnlyOverlay", "maxSparkingEnds")
             .Name("enabled", "Messy cords (master switch)").Name("tangles", "Dense conduit fields become one tangle")
-            .Name("breakReadout", "Break readout").Name("sway", "Hanging cords sway in the wind");
+            .Name("breakReadout", "Break readout");
 
         private static object GetField(string n)
         {

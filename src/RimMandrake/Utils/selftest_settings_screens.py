@@ -78,7 +78,7 @@ MODS = {
         "Messy cords and default style": "Now",
         "Slack, loops and tangles": "Now",
         "Breaks and sparks": "Now",
-        "Wind sway": "Now",
+        # "Wind sway" removed 2026-11-16 (owner: wind moves pole wires only, never ground cords)
         "Which conduits become cords": "Now",
         "Far zoom and debug": "Now",
     }, ("excludedConduits",)),

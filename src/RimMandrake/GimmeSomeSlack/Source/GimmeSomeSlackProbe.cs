@@ -158,10 +158,10 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: "x,z,w,h" -- every strand of every piece with a point inside the rect,
         /// with how it is drawn RIGHT NOW: printedStatic (in the static mesh its owner section printed at its last
-        /// regenerate, SectionLayer_RM_MessyCords.PrintedStatic), dynamic (drawn per frame: a lifted CPU-sway strand or a
-        /// floor ripple, the same predicates DrawMotion uses), paths = the two summed (1 is correct; 0 = drawn by
-        /// neither, 2 = drawn twice). ownerPrinted=false means the owner section has not regenerated since load (off
-        /// screen) and printedStatic is UNMEASURED for it. Also the global sway inputs. Read-only.</summary>
+        /// regenerate, SectionLayer_RM_MessyCords.PrintedStatic), dynamic (always false since wind moves no ground cord,
+        /// owner 2026-11-16), paths = the two summed (1 is correct; 0 = drawn by neither, 2 = drawn twice).
+        /// ownerPrinted=false means the owner section has not regenerated since load (off screen) and printedStatic is
+        /// UNMEASURED for it. Read-only.</summary>
         private static string StrandPaths(Map map, RM_MapComponent_CordGraph comp, string args)
         {
             int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
@@ -169,10 +169,7 @@ namespace RimMandrake.GimmeSomeSlack
             var sb = new StringBuilder("{\"success\":true,\"cmd\":\"strands\"");
             void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
             F("ticksGame", Find.TickManager.TicksGame.ToString());
-            F("plantWindSway", J.B(Prefs.PlantWindSway));
-            F("swayOn", J.B(RM_MapComponent_CordGraph.SwayOn));
-            F("swayMode", J.S(RM_MapComponent_CordGraph.EffectiveSwayMode(out string why).ToString() + " (" + why + ")"));
-            F("floorRipple", J.B(GimmeSomeSlackSettings.floorRipple));
+            F("windSpeed", J.D(map.windManager.WindSpeed));   // B7: the no-ground-sway row needs wind to mean anything
             var rows = new List<string>();
             int bad = 0;
             foreach (LaidPiece p in comp.Pieces)
@@ -186,13 +183,13 @@ namespace RimMandrake.GimmeSomeSlack
                     CordStrand s = p.Strands[i];
                     if (s.Pts == null || !s.Pts.Any(q => { IntVec3 c = CordWorldAdapter.I(q.Floor); return c.x >= x0 && c.x <= x1 && c.z >= z0 && c.z <= z1; })) continue;
                     bool st = ownerPrinted && printed.Contains(p.Key + "#" + i);
-                    bool dyn = (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(map, s)) || RM_MapComponent_CordGraph.RipplesNow(map, s);
+                    const bool dyn = false;
                     int paths = (st ? 1 : 0) + (dyn ? 1 : 0);
                     if (ownerPrinted && paths != 1) bad++;
                     IntVec3 pin = s.Pts.Count > 0 ? CordWorldAdapter.I(s.Pts[0].Floor) : IntVec3.Invalid;
                     rows.Add("{\"key\":" + J.S(p.Key + "#" + i) + ",\"owner\":" + J.S(own.x + "," + own.z) + ",\"ownerSection\":" + J.S(skey)
                         + ",\"pin\":" + J.S(pin.x + "," + pin.z) + ",\"pinSection\":" + J.S(pin.InBounds(map) ? SectionLayer_RM_MessyCords.SectionKey(map, new IntVec3(pin.x / Section.Size * Section.Size, 0, pin.z / Section.Size * Section.Size)) : "off")
-                        + ",\"lifted\":" + J.B(s.Lifted) + ",\"pinRoofed\":" + J.B(s.Pts.Count >= 2 && RM_MapComponent_CordGraph.PinRoofed(map, s))
+                        + ",\"lifted\":" + J.B(s.Lifted)
                         + ",\"ownerPrinted\":" + J.B(ownerPrinted) + ",\"printedStatic\":" + J.B(st) + ",\"dynamic\":" + J.B(dyn) + ",\"paths\":" + paths + "}");
                 }
             }
@@ -781,7 +778,7 @@ namespace RimMandrake.GimmeSomeSlack
             return sb.ToString();
         }
 
-        /// <summary>Phase 1b lane A state reads: whip/sway/highlight counters of the last drawn frame, the
+        /// <summary>Phase 1b lane A state reads: whip/highlight counters of the last drawn frame, the
         /// downed-wire state histogram since motionreset, LOD and cutscene state, and per-net cord counts.</summary>
         private static string Motion(Map map, RM_MapComponent_CordGraph comp)
         {
@@ -813,31 +810,6 @@ namespace RimMandrake.GimmeSomeSlack
             F("sparkSet", sset.Count.ToString());
             F("sparkSetOnScreen", sset.Count(OnScreen).ToString());
             F("maxSparkingEnds", GimmeSomeSlackSettings.maxSparkingEnds.ToString());
-            SwayMode eff = RM_MapComponent_CordGraph.EffectiveSwayMode(out string effWhy);
-            F("swayMode", J.S(eff.ToString()));
-            F("swayModeSetting", J.S(GimmeSomeSlackSettings.swayMode.ToString()));
-            F("swayModeReason", J.S(effWhy));
-            UnityEngine.Material pm = CordMaterials.StrandPlant;
-            F("plantShader", J.S(pm?.shader?.name));
-            F("cutoutPlantShader", J.S(ShaderDatabase.CutoutPlant?.name));
-            F("plantRegistered", J.B(RM_MapComponent_CordGraph.RegisteredWithWind(pm)));
-            F("plantSwayHead", pm != null && pm.HasProperty("_SwayHead") ? J.D(pm.GetFloat("_SwayHead")) : "null");
-            F("floorRipple", J.B(GimmeSomeSlackSettings.floorRipple));
-            var plain = comp.Pieces.SelectMany(p => p.Strands).Where(x => !x.Lifted && !x.OverFace && x.WhipA == 0 && x.WhipB == 0 && x.Pts != null && x.Pts.Count >= 3).ToList();
-            F("floorStrands", plain.Count.ToString());
-            F("floorStrandsOpen", plain.Count(x => { IntVec3 c = CordWorldAdapter.I(x.Pts[x.Pts.Count / 2].Floor); return c.InBounds(map) && !map.roofGrid.Roofed(c); }).ToString());
-            F("rippling", plain.Count(x => RM_MapComponent_CordGraph.RipplesNow(map, x)).ToString());
-            F("rippleDraws", RM_MapComponent_CordGraph.RippleDraws.ToString());
-            F("rippleVerts", RM_MapComponent_CordGraph.RippleVerts.ToString());
-            F("rippleHash", J.S(RM_MapComponent_CordGraph.RippleHash.ToString("x16")));
-            F("plantWindSway", J.B(Prefs.PlantWindSway));
-            F("windSpeed", J.D(map.windManager.WindSpeed));
-            F("swayAmplitude", J.D(GimmeSomeSlackSettings.swayAmplitude));
-            F("liftedStrands", comp.Pieces.Sum(p => p.Strands.Count(x => x.Lifted)).ToString());
-            F("liftedSwaying", comp.Pieces.Sum(p => p.Strands.Count(x => x.Lifted && RM_MapComponent_CordGraph.SwaysNow(map, x))).ToString());
-            F("swayDraws", RM_MapComponent_CordGraph.SwayDraws.ToString());
-            F("swayVerts", RM_MapComponent_CordGraph.SwayVerts.ToString());
-            F("swayHash", J.S(RM_MapComponent_CordGraph.SwayHash.ToString("x16")));
             F("downedHist", "{\"Drip\":" + RM_MapComponent_CordGraph.DownedHist[0] + ",\"Flash\":" + RM_MapComponent_CordGraph.DownedHist[1] +
                             ",\"Quiet\":" + RM_MapComponent_CordGraph.DownedHist[2] + ",\"Crackle\":" + RM_MapComponent_CordGraph.DownedHist[3] + "}");
             F("dripEvents", RM_MapComponent_CordGraph.DripEvents.ToString());
@@ -859,26 +831,19 @@ namespace RimMandrake.GimmeSomeSlack
             // GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT (GPT pre-release B13): what the vanilla hookup-wire patch did, counted
             F("hookupCablesPrinted", ConduitVisuals.HookupCablesPrinted.ToString());
             F("hookupWiresSuppressed", ConduitVisuals.HookupWiresSuppressed.ToString());
-            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0, plantSm = 0, plantOn = 0, plantV = 0, plantOpen = 0, plantRoofed = 0, aOpen = 0, aRoofed = 0, ripSkip = 0;
+            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0;
             var sections = Traverse.Create(map.mapDrawer).Field("sections").GetValue<Section[,]>();
             if (sections != null)
                 foreach (Section sec in sections)
                     foreach (SectionLayer l in Traverse.Create(sec).Field("layers").GetValue<List<SectionLayer>>())
                     {
                         if (!(l is SectionLayer_RM_MessyCords cl)) continue;
-                        plantV += cl.plantVerts; plantOpen += cl.plantOpenStrands; plantRoofed += cl.plantRoofedStrands;
-                        aOpen = Math.Max(aOpen, cl.alphaMaxOpen); aRoofed = Math.Max(aRoofed, cl.alphaMaxRoofed); ripSkip += cl.rippleSkipped;
                         foreach (LayerSubMesh m in l.subMeshes.Where(m => m.finalized && m.verts.Count > 0))
                         {
-                            if (CordMaterials.IsPlant(m.material)) { plantSm++; if (!m.disabled) plantOn++; }   // B12: drawn this frame
                             if (CordMaterials.IsLod(m.material)) { lodSm++; if (!m.disabled) lodOn++; }
                             else { fullSm++; if (!m.disabled) fullOn++; }
                         }
                     }
-            F("shaderSubMeshes", plantSm.ToString()); F("shaderEnabled", plantOn.ToString()); F("shaderVerts", plantV.ToString());
-            F("shaderLiftedOpen", plantOpen.ToString()); F("shaderLiftedRoofed", plantRoofed.ToString());
-            F("shaderAlphaMaxOpen", aOpen.ToString()); F("shaderAlphaMaxRoofed", aRoofed.ToString());
-            F("rippleSkippedStatic", ripSkip.ToString());
             F("lodSubMeshes", lodSm.ToString()); F("lodEnabled", lodOn.ToString());
             F("fullSubMeshes", fullSm.ToString()); F("fullEnabled", fullOn.ToString());
             F("cutsceneInProgress", J.B(WorldComponent_GravshipController.CutsceneInProgress));

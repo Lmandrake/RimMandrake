@@ -34,7 +34,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         // ------------------------------------------------------------------ L3: B3 whip tails split, B7 lifted tails
         private static void WhipTailChecks(List<JsonElement> scenes)
         {
-            int liveTails = 0, deadTails = 0, badLen = 0, lifted = 0, badW = 0, fray = 0;
+            int liveTails = 0, deadTails = 0, badLen = 0, lifted = 0, fray = 0;
             foreach (JsonElement s in scenes)
             {
                 JsonElement sc = s.GetProperty("scene");
@@ -57,7 +57,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         if (st.Lifted)
                         {
                             lifted++;
-                            if (st.SwayW == null || st.SwayW.Length != st.Pts.Count || st.SwayW[0] != 0 || st.SwayW[st.SwayW.Length - 1] < 0.9) badW++;
                         }
                     }
                     fray += p.Decals.Count(d => d.Kind == DecalKind.FrayLive && d.OnWhip);
@@ -74,7 +73,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(fray > 0, "whip: no live fray decal rides the whip (OnWhip)");
             // the wall terminal's hanging wire was its only lifted strand; owner 2026-11-16 ("both a hanging out sparking end as well as the wire
             // plugging into the same point on the wall. That's not ok") removed it, so none is expected now (the sway maths stays checked below)
-            Check(lifted == 0 && badW == 0, $"sway: {lifted} lifted (wall-hanging) strands, {badW} with bad sway weights (none hang out of a wall since 2026-11-16)");
+            Check(lifted == 0, $"lifted: {lifted} lifted (wall-hanging) strands (none hang out of a wall since 2026-11-16)");
             Console.WriteLine($"  whip: {liveTails} live tails, {deadTails} dead, {fray} riding fray decals; lifted strands {lifted}");
         }
 
@@ -121,34 +120,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             double peak = 0;
             for (int k = 0; k < 200 && peak < 1.9; k++) { flash.Advance(k); if (flash.State == DripState.Flash) peak = flash.Glow(k + 0.01); }
             Check(peak >= 1.9 && flash.Glow(flash.StateAt + 2.0) < 0.35, "drip: FLASH does not pop to 2x and fade to an ember");
-            // sway
-            var span = new List<V2>(); var wt = new List<double>();
-            for (int i = 0; i < 16; i++) { span.Add(new V2(3, 3 - i * 0.025)); wt.Add(Math.Pow(i / 15.0, 1.3)); }
-            List<V2> sw0 = CordMotion.Sway(span, wt, 3.0, 11, 0.12, 0), swA = CordMotion.Sway(span, wt, 3.0, 11, 0.12, 1), swB = CordMotion.Sway(span, wt, 3.5, 11, 0.12, 1);
-            Check(sw0.Zip(span, (x, y) => V2.Dist(x, y)).Max() == 0, "sway: moves with no wind");
-            Check(V2.Dist(swA[0], span[0]) == 0, "sway: the pinned point moved");
-            Check(swA.Zip(swB, (x, y) => V2.Dist(x, y)).Max() > 1e-3, "sway: pose does not change with time");
-            Check(swA.Zip(span, (x, y) => V2.Dist(x, y)).Max() <= 0.12 * 1.3 + 1e-9, "sway: displacement beyond 1.3 x amp at wind 1");
-            // shader-path sway weights (B7 option 1): vertex alpha 0 at the pin, rising to the tip, all 0 under a roof
-            byte[] al = CordMotion.ShaderSwayAlpha(wt, false, 0.35), alR = CordMotion.ShaderSwayAlpha(wt, true, 0.35);
-            Check(al.Length == wt.Count && al[0] == 0 && al[al.Length - 1] == 89 && al.Max() == al[al.Length - 1],
-                  $"shader sway: alpha pin {al[0]} tip {al[al.Length - 1]} (want 0 .. 89 = 255 x 0.35, max at the tip)");
-            Check(alR.All(b => b == 0), "shader sway: a roofed lifted piece carries non-zero sway alpha");
-            Check(CordMotion.ShaderSwayAlpha(wt, false, 9).Max() == 255, "shader sway: alpha not clamped to 255");
-            // optional floor ripple: ends pinned, no wind no motion, bounded, moves with time, deterministic
-            var floor = new List<V2>();
-            for (int i = 0; i < 25; i++) floor.Add(new V2(2 + i * 0.25, 4 + 0.3 * Math.Sin(i * 0.4)));
-            List<V2> r0 = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 0), rA = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 1),
-                     rA2 = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 1), rB = CordMotion.Ripple(floor, 3.6, 7, CordMotion.RippleAmp, 1),
-                     rW = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 9);
-            double rMax = rA.Zip(floor, (x, y) => V2.Dist(x, y)).Max();
-            Check(r0.Zip(floor, (x, y) => V2.Dist(x, y)).Max() == 0, "ripple: moves with no wind");
-            Check(V2.Dist(rA[0], floor[0]) == 0 && V2.Dist(rA[24], floor[24]) == 0, "ripple: an end moved (ends are pinned)");
-            Check(rMax > 1e-3 && rMax <= CordMotion.RippleAmp + 1e-9, $"ripple: displacement {rMax:0.0000} at wind 1 (want >0, <= amp)");
-            Check(rW.Zip(floor, (x, y) => V2.Dist(x, y)).Max() <= 1.5 * CordMotion.RippleAmp + 1e-9, "ripple: wind not clamped to 1.5");
-            Check(rA.Zip(rB, (x, y) => V2.Dist(x, y)).Max() > 1e-3, "ripple: pose does not change with time");
-            Check(rA.Zip(rA2, (x, y) => V2.Dist(x, y)).Max() == 0, "ripple: pose not deterministic");
-            Console.WriteLine($"  shader sway alpha tip {al[al.Length - 1]}; ripple max {rMax:0.0000} cells at wind 1");
+            // owner 2026-11-16: wind moves no ground cord; the cords' motion kernel takes no wind and has no sway or ripple
+            var windy = typeof(CordMotion).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)
+                .Where(m => m.DeclaringType == typeof(CordMotion) && (m.GetParameters().Any(q => q.Name == "wind") || m.Name.Contains("Sway") || m.Name.Contains("Ripple")))
+                .Select(m => m.Name).Distinct().ToList();
+            Check(windy.Count == 0, "wind: CordMotion still moves a ground cord with the wind (" + string.Join(", ", windy) + ")");
+            Check(typeof(CordMotion).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).Any(m => m.Name == "WhipInto"),
+                  "can-fail: the reflection scan sees CordMotion's internal methods (WhipInto)");
             Console.WriteLine($"  motion: whip max {maxD:0.000}, snaps {snaps}/20 s; drip states {seen.Count}, gaps {gmin:0.00}-{gmax:0.00} mean {mean:0.00}, sparks {sparks}/200");
         }
 

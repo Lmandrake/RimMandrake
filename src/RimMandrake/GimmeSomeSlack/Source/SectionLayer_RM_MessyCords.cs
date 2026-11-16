@@ -27,13 +27,6 @@ namespace RimMandrake.GimmeSomeSlack
         public const float ShadowWidth = 0.13f;
         public const float FaceLift = 0.01f;
         public static int LastPrintedVerts;
-        /// <summary>Shader-path sway weight scale: vertex alpha = 255 x weight x this x strength (a plant's top carries
-        /// 255 x topWindExposure 0.25; a hanging cord tip is a little looser).</summary>
-        public const float ShaderAlphaScale = 0.35f;
-        /// <summary>State read (probe "motion"): what THIS section printed with the plant shader at its last
-        /// Regenerate -- vertices, lifted strands open / roofed, the largest vertex alpha written open / roofed -- and
-        /// how many floor strands it left out for the per-frame ripple.</summary>
-        public int plantVerts, plantOpenStrands, plantRoofedStrands, alphaMaxOpen, alphaMaxRoofed, rippleSkipped;
         private const int MaxMeshVerts = 65000;
         /// <summary>Ribbons/quads dropped because a sub-mesh hit MaxMeshVerts (cumulative; probe-readable).</summary>
         public static int OverflowDrops;
@@ -62,7 +55,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Lane C state read: pieces printed per strand variant since the last StyleProbe reset.</summary>
         public static readonly Dictionary<int, int> PrintedVariants = new Dictionary<int, int>();
         /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1 state read: per section (map id + botLeft), the strands ("pieceKey#index")
-        /// this layer printed into its static mesh at its LAST regenerate (plain ribbon or shader-sway print). The probe's
+        /// this layer printed into its static mesh at its LAST regenerate. The probe's
         /// strands: command joins it with the per-frame predicates, so a strand drawn by neither path or by both is visible
         /// without a screenshot.</summary>
         public static readonly Dictionary<string, HashSet<string>> PrintedStatic = new Dictionary<string, HashSet<string>>();
@@ -97,7 +90,6 @@ namespace RimMandrake.GimmeSomeSlack
         {
             ClearSubMeshes(MeshParts.All);
             bounds = section.CellRect;
-            plantVerts = plantOpenStrands = plantRoofedStrands = alphaMaxOpen = alphaMaxRoofed = rippleSkipped = 0;
             var comp = Map.GetComponent<RM_MapComponent_CordGraph>();
             List<LaidPiece> owned = comp?.PiecesForSection(section.botLeft);
             int verts = 0;
@@ -127,31 +119,6 @@ namespace RimMandrake.GimmeSomeSlack
                     {
                         si++;
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
-                        // a lifted piece that sways is drawn per frame by the component, not printed
-                        if (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s)) { k++; continue; }
-                        // optional shader route: printed ONCE with the CutoutPlant strand, vertex alpha = sway weight
-                        // (0 at the pin, 0 everywhere under a roof), uv.z = per-piece phase; the GPU moves it
-                        if (RM_MapComponent_CordGraph.ShaderSwayPrints(s))
-                        {
-                            Material plant = CordMaterials.StrandPlantG(g);
-                            if (plant != null)
-                            {
-                                bool roofed = RM_MapComponent_CordGraph.PinRoofed(Map, s);
-                                byte[] alpha = CordMotion.ShaderSwayAlpha(s.SwayW, roofed, ShaderAlphaScale * Mathf.Clamp(GimmeSomeSlackSettings.swayAmplitude, 0f, 2f));
-                                float phase = (float)(CordRng.Hash("sway", p.Key) % 1024UL);
-                                int n = Ribbon(plant, s.Pts, StrandWidth, y, s.S0, Vector2.zero, alpha, phase);
-                                verts += n;
-                                plantVerts += n;
-                                foreach (byte b in alpha) { if (roofed) alphaMaxRoofed = Math.Max(alphaMaxRoofed, b); else alphaMaxOpen = Math.Max(alphaMaxOpen, b); }
-                                if (roofed) plantRoofedStrands++; else plantOpenStrands++;
-                                if (n > 0) printed.Add(p.Key + "#" + si);
-                                k++;
-                                continue;
-                            }
-                        }
-                        // optional floor ripple: an unroofed plain floor strand is drawn per frame by the component
-                        bool ripples = RM_MapComponent_CordGraph.RipplesNow(Map, s);
-                        if (ripples) rippleSkipped++;
                         List<V2> pts = s.Pts;
                         if (whip && (s.WhipA > 0 || s.WhipB > 0))
                         {
@@ -165,13 +132,10 @@ namespace RimMandrake.GimmeSomeSlack
                             verts += WetRibbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, ShadowOffset, grow: grow);
                         }
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
-                        if (!ripples)
-                        {
-                            int rn = WetRibbon(s.OverFace && strandFace != null ? strandFace : strand,
-                                               pts, StrandWidth, y, s.S0, Vector2.zero);
-                            verts += rn;
-                            if (rn > 0) printed.Add(p.Key + "#" + si);
-                        }
+                        int rn = WetRibbon(s.OverFace && strandFace != null ? strandFace : strand,
+                                           pts, StrandWidth, y, s.S0, Vector2.zero);
+                        verts += rn;
+                        if (rn > 0) printed.Add(p.Key + "#" + si);
                         if (GimmeSomeSlackSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
                         {
                             // B8: one strand per piece, every 3rd point, a little thinner, no decals
@@ -187,7 +151,6 @@ namespace RimMandrake.GimmeSomeSlack
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
-                        if (d.OnSwayTail && p.Strands.Any(s => s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s))) continue;   // and a wall tail's rides that tail
                         Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
                         if (d.Plugged && CordMaterials.OutletPlugged != null) m = CordMaterials.OutletPlugged;

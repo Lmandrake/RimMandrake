@@ -246,19 +246,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             var cord = new List<V2>();
             for (int i = 0; i < 40; i++) cord.Add(new V2(2 + i * 0.25, 5 + 0.1 * Math.Sin(i)));
-            // B14: the per-frame form writes into reused buffers: the same pose as the allocating form, and no allocation
-            var o = new List<V2>();
-            double[] arc = null;
-            CordMotion.RippleInto(cord, 3.0, 7, CordMotion.RippleAmp, 1, o, ref arc);
-            List<V2> r = CordMotion.Ripple(cord, 3.0, 7, CordMotion.RippleAmp, 1);
-            Check(o.Count == r.Count && o.Zip(r, (p, q) => V2.Dist(p, q) < 1e-12).All(x => x), "B14 RippleInto draws exactly what Ripple draws");
-            long before = GC.GetAllocatedBytesForCurrentThread();
-            for (int f = 0; f < 500; f++) CordMotion.RippleInto(cord, f / 60.0, 7, CordMotion.RippleAmp, 1, o, ref arc);
-            long ripAlloc = GC.GetAllocatedBytesForCurrentThread() - before;
-            Check(ripAlloc == 0, "B14 500 frames of one rippling cord allocate nothing (" + ripAlloc + " bytes)");
-            before = GC.GetAllocatedBytesForCurrentThread();
-            for (int f = 0; f < 50; f++) CordMotion.Ripple(cord, f / 60.0, 7, CordMotion.RippleAmp, 1);
-            Check(GC.GetAllocatedBytesForCurrentThread() - before > 50 * 40 * 16, "B14 can-fail: the allocating form allocates a list and an array per call");
 
             // B15: the whip resumes its snap search from the last frame's interval; the pose is the same as a search from t = 0
             var tail = cord.GetRange(0, 9);
