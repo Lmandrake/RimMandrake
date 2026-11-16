@@ -1,0 +1,452 @@
+{
+ "faults": [
+  {
+   "id": "SHEET_LEVEL_LEFTOVER_DROPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "long L0 = a, left = V - Fill(L0);",
+   "new": "long L0 = a, left = 0;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "levelling throws away the dL that do not fill a whole surface step: a still pool loses water every pulse"
+  },
+  {
+   "id": "SHEET_PREVIEW_IGNORES_WET_CAP",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (!seen && s.Dl[c] == 0) { if (wet >= p.MaxWetCells) continue; wet++; }",
+   "new": "if (!seen && s.Dl[c] == 0) { wet++; }",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the preview promises more than the spill takes once the wet-square cap binds; a caller debits what was never accepted"
+  },
+  {
+   "id": "SHEET_ZERO_PERCENT_DOOR_LEAKS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (p.DoorLeakPermille <= 0) continue;   // GPT deep review 2026-10-22 #10: the 0% setting seals a door",
+   "new": "",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the 0 percent door setting no longer seals the door"
+  },
+  {
+   "id": "SHEET_FOREIGN_BODY_TAKES_SPILL",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (!Compatible(w.BodyFluid[j], s.Fluid[i])) continue;\n\t\t\t\t\tint give;",
+   "new": "int give;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "a pit or lake of another liquid swallows the spill: liquids mix"
+  },
+  {
+   "id": "SHEET_LOAD_FORGETS_CALM",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "s.Tiers[c] = (Tier)br.ReadByte(); s.Stand[c] = br.ReadInt32(); s.Calm[c] = br.ReadByte();",
+   "new": "s.Tiers[c] = (Tier)br.ReadByte(); s.Stand[c] = br.ReadInt32(); br.ReadByte(); s.Calm[c] = 0;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "a load wakes every wet square: the save/load-diverges class of the live SAVE_LOAD_CONTINUES_IDENTICAL row"
+  },
+  {
+   "id": "SHEET_CROP_WEEK_UNCONVERTED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "Math.Max(1, PulsesFor((int)Math.Min(int.MaxValue, (long)Math.Max(1, pulsesAtBase) * CropDelayBasePulseTicks), pulseIntervalTicks));",
+   "new": "Math.Max(1, pulsesAtBase);",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": "the cycle-2 changed kernel line undone: the week stretches with the flow-pulse slider"
+  },
+  {
+   "id": "SHEET_PULSES_ROUND_DOWN",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "pulseIntervalTicks <= 0 ? 0 : (ticks + pulseIntervalTicks - 1) / pulseIntervalTicks;",
+   "new": "pulseIntervalTicks <= 0 ? 0 : ticks / pulseIntervalTicks;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the delay rounds down: a crop drowns up to a pulse before its week"
+  },
+  {
+   "id": "SHEET_HEAT_DRIES_UNCAPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "Math.Min(maxFactor, t / 20f)",
+   "new": "(t / 20f)",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "hot ground dries without the 3x cap the settings text promises"
+  },
+  {
+   "id": "SHEET_FREEZES_AT_ZERO",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (fr.NeverFreezes || w.TempDeciC[c] >= fr.FreezeDeciC) continue; // D10: strictly below",
+   "new": "if (fr.NeverFreezes || w.TempDeciC[c] > fr.FreezeDeciC) continue; // D10: strictly below",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "water reading exactly 0 C freezes (the live K +0.04 C bug class)"
+  },
+  {
+   "id": "FLOOD_PART_NOTCH_IN_WHOLE_MODE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_FloodReleaseMath.cs",
+   "old": "want -= want % U;",
+   "new": "",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "a whole-notch engine is poured a part notch"
+  },
+  {
+   "id": "FLOOD_EXPIRY_IGNORES_UNPAID",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_FloodReleaseMath.cs",
+   "old": " + t * Math.Max(0, unpaidSteps);",
+   "new": ";",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "a release passing along a brimming channel expires mid-way"
+  },
+  {
+   "id": "CONV_BATCH_ON_PART_BUDGET",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "int n = (int)Math.Floor(accrued / inputUnits + 1e-4f);",
+   "new": "int n = (int)Math.Ceiling(accrued / inputUnits - 1e-4f);",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": "a batch runs on part of its budget: the machine beats its rate"
+  },
+  {
+   "id": "CONV_ROTATION_REPEATS_LAST",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "for (int k = 1; k <= n; k++)",
+   "new": "for (int k = 0; k < n; k++)",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": "the input that ran last runs again: a second liquid starves"
+  },
+  {
+   "id": "CONV_BUDGET_IGNORES_ENVIRONMENT",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return inputUnitsPerDay * tierRate * settingsMultiplier * environmentFactor / RareTicksPerDay;",
+   "new": "return inputUnitsPerDay * tierRate * settingsMultiplier / RareTicksPerDay;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": "a half-shaded or cold machine runs at full rate"
+  },
+  {
+   "id": "THIRST_HEALS_WHILE_THIRSTY",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "if (level > ThirstyBelow)",
+   "new": "if (level > 0f)",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "why": "dehydration heals while the pawn is still thirsty (ruled: above 0.3 only)"
+  },
+  {
+   "id": "THIRST_FOULED_HYDRATES_FULLY",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return 0.7f;",
+   "new": "return 1f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "why": "fouled water quenches like clean"
+  },
+  {
+   "id": "THIRST_DESPERATE_WHEN_PARCHED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "public const float DesperateBelow = 0.005f;",
+   "new": "public const float DesperateBelow = 0.1f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "why": "a last-resort liquid is drunk while parched, not only when empty (the rotten-food rule)"
+  },
+  {
+   "id": "THIRST_SALT_BREAK_WHEN_THIRSTY",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return level < ParchedBelow && !saltPoisoned",
+   "new": "return level < ThirstyBelow && !saltPoisoned",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "why": "the salt-water break fires while merely thirsty"
+  },
+  {
+   "id": "DRILL_UNSURVEYED_POURS",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (!s.surveyed) return Block.Unsurveyed;",
+   "new": "",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": "an unsurveyed map pours"
+  },
+  {
+   "id": "DRILL_POURS_INTO_FOREIGN_LIQUID",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (s.outletOtherLiquid) return Block.OutletOtherLiquid;",
+   "new": "",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": "the drill pours its liquid into an outlet holding another"
+  },
+  {
+   "id": "SPRK_VALVE_IGNORES_RESERVE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (reserveUnits > 0) cap = Math.Min(cap,",
+   "new": "if (reserveUnits > 1000000) cap = Math.Min(cap,",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": "the thirst valve drinks the net below the drinkers' reserve"
+  },
+  {
+   "id": "SPRK_VALVE_FARTHEST_FIRST",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "want.Sort((a, b) => a.Dist != b.Dist ? a.Dist.CompareTo(b.Dist) : a.Index.CompareTo(b.Index));",
+   "new": "want.Sort((a, b) => a.Dist != b.Dist ? b.Dist.CompareTo(a.Dist) : a.Index.CompareTo(b.Index));",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": "a trimmed pulse waters the farthest cells, not the nearest"
+  },
+  {
+   "id": "SPRK_CROP_SPEND_KEEPS_WET",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "            wetUntil[cell] = 0;\n            return true;",
+   "new": "            return true;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": "a fruiting crop's use of the water leaves the square wet (EC3)"
+  },
+  {
+   "id": "CALLER_SHEET_CROP_CONVERSION_UNDONE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RimMandrakeFlowWorksSettings.PulseIntervalTicks);",
+   "new": "prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": "the changed caller line undone: the delay setting is read as pulses of the current flow pulse"
+  },
+  {
+   "id": "CALLER_SHEET_CAP_SETTING_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.SheetCapDl = Math.Max(DlPerCm, RM_SheetSettings.sheetCapCm * DlPerCm);",
+   "new": "prm.SheetCapDl = 50 * DlPerCm;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the deepest-sheet slider does nothing"
+  },
+  {
+   "id": "CALLER_SHEET_DOOR_SETTING_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.DoorLeakPermille = Mathf.Clamp(RM_SheetSettings.doorLeakPercent, 0, 100) * 10;",
+   "new": "prm.DoorLeakPermille = 50;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the door-leak slider does nothing (0 percent no longer seals)"
+  },
+  {
+   "id": "CALLER_SHEET_MESSAGE_DAYS_AT_BASE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "+ (prm.CropKillPulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks / GenDate.TicksPerDay).ToString(\"0.#\")",
+   "new": "+ (prm.CropKillPulses * (float)RM_SheetMath.CropDelayBasePulseTicks / GenDate.TicksPerDay).ToString(\"0.#\")",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": "the drowning message states the wrong number of days when the flow pulse is moved"
+  },
+  {
+   "id": "CALLER_CONVERTER_DRINKS_RESERVE",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, Thirst.RM_DrinkReserve.Spendable(parent, liquid), room);   // Q10: drinkers first",
+   "new": "RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, tanks.Where(t => t.storedLiquid == liquid).Sum(t => t.storedUnits), room);   // Q10: drinkers first",
+   "bars": [
+    "inv_converters",
+    "inv_bottles_thirst"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "why": "a converter eats the drinkers' reserve of potable water"
+  },
+  {
+   "id": "CALLER_DRILL_DRAWS_POWER_SWITCHED_OFF",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "bool on = RimMandrakeFlowWorksSettings.liquidDrillingEnabled && (flick == null || flick.SwitchIsOn);",
+   "new": "bool on = true;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": "a drill switched off (or off in Mod Settings) still draws power"
+  },
+  {
+   "id": "SETTINGS_CROP_DAYS_LABEL_UNCONVERTED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+   "old": "(pulses * (float)RM_SheetMath.CropDelayBasePulseTicks / GenDate.TicksPerDay).ToString(\"0.#\");",
+   "new": "(pulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks / GenDate.TicksPerDay).ToString(\"0.#\");",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": "the changed label line undone: the slider shows the wrong days when the flow pulse moves"
+  },
+  {
+   "id": "SETTINGS_CROP_DEFAULT_HALF_WEEK",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+   "old": "public static int cropDrownPulses = 1680;",
+   "new": "public static int cropDrownPulses = 840;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": "the shipped default is half a week (the bar says a week)"
+  },
+  {
+   "id": "SETTINGS_RAIN_READS_PUMP_SWITCH",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+   "old": "case RM_SheetMath.Source.Rain: return spillFromRain;",
+   "new": "case RM_SheetMath.Source.Rain: return spillFromPumps;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "switching rain spills off does nothing"
+  },
+  {
+   "id": "COAT_COLONISTS_NEVER_COATED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs",
+   "old": "if (p.Dead || p.health == null || p.Flying)",
+   "new": "if (p.Dead || p.health == null || p.Flying || p.RaceProps.Humanlike)",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": "no colonist is ever coated"
+  },
+  {
+   "id": "COAT_CANAL_LIQUID_NEVER_COATS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs",
+   "old": "return ex.WetAt(c) ? ex.FluidAt(c) ?? ex.ActiveFluid : null;",
+   "new": "return null;",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": "a pawn out of a dug canal of oil is never coated (only ground water counts)"
+  }
+ ],
+ "not_planted": [
+  {
+   "file": "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+   "why": "a build output (binary); its .srchash pins the sources above, which carry the faults"
+  },
+  {
+   "file": "src/RimMandrake/FlowWorks/Source/SelfTest/*.cs (4 changed)",
+   "why": "deciders, not product code: their claims are tested by the faults planted in the code they check (crop week, drill charge, thirst rates, flood release)"
+  }
+ ]
+}

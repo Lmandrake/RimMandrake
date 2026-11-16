@@ -1,0 +1,126 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "T_SHEET decides inv_overflow_sheet; a decider must go red when the overspill's behaviour breaks (a planted behaviour fault that survives a green decider is a Problem against the test)",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl CALLER_SHEET_DOOR_SETTING_IGNORED: stock T_SHEET rc0 (door-leak slider wired to 5 percent)",
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl SETTINGS_RAIN_READS_PUMP_SWITCH: stock T_SHEET rc0 (rain spill switch answers for pumps)"
+   ],
+   "would_pass": "T_SHEET red when any sheet tuning setting stops reaching the kernel's Params or an inflow answers to another inflow's switch",
+   "smallest_fix": "src/RimMandrake/FlowWorks/Source/SelfTest/BlindCycle3Checks.cs: case Sheet_every_setting_reaches_the_kernel_and_its_own_inflow (source laws, the code is Verse-bound)",
+   "verdict_on_criterion": "criterion sound: the bar's overspill is governed by these settings",
+   "status": "FIXED 96941bfa43",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "the readable sign of a crop drowning (message) and the delay slider's label state the delay the kernel runs, at any flow pulse",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl CALLER_SHEET_MESSAGE_DAYS_AT_BASE: T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE rc0",
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl SETTINGS_CROP_DAYS_LABEL_UNCONVERTED (the cycle-2 changed line undone): rc0"
+   ],
+   "would_pass": "a decider red when either text converts pulses with the wrong pulse length",
+   "smallest_fix": "BlindCycle3Checks.cs: case Sheet_crop_delay_text_converts_with_its_own_pulse",
+   "verdict_on_criterion": "criterion sound",
+   "status": "FIXED 96941bfa43",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "kills crops under standing overflow after a week (never sooner, at any flow pulse); soaks in and dries at the shipped rates (settings text: hotter dries faster, up to 3x)",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl SHEET_PULSES_ROUND_DOWN: stock T_SHEET rc0, lane 1 SHEET_CROP_DELAY_FOLLOWS_SLIDERS FAIL",
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl SHEET_HEAT_DRIES_UNCAPPED: stock T_SHEET rc0, lane 1 SHEET_SOAK_AND_DRY_RATES FAIL"
+   ],
+   "would_pass": "T_SHEET red when the delay rounds down or drying passes 3x",
+   "smallest_fix": "BlindCycle3Checks.cs: case Sheet_crop_delay_never_short_and_drying_capped_at_three_times",
+   "verdict_on_criterion": "criterion sound",
+   "status": "FIXED 96941bfa43",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE",
+   "class": "Problem",
+   "bar": "inv_converters",
+   "criterion": "converters on the network draw a potable liquid only above the drinkers' reserve (Q10, owner 2026-10-17: drinkers first)",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl CALLER_CONVERTER_DRINKS_RESERVE: T_CONVERT, PY_WATER_NOT_FOOD, PY_NATIVES_DRINK_OWN_WATER all rc0"
+   ],
+   "would_pass": "T_CONVERT red when CompLiquidConverter's batches are not bounded by RM_DrinkReserve.Spendable",
+   "smallest_fix": "BlindCycle3Checks.cs: case Converter_caller_keeps_drinkers_reserve",
+   "verdict_on_criterion": "criterion sound",
+   "status": "FIXED 96941bfa43",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_REPIN_FLOWWORKS_PIT_CENSUS_AFTER_GSS_DROPPED_RIPPLE",
+   "class": "Problem",
+   "bar": "inv_pits",
+   "criterion": "PY_FLOWWORKS_PIT_DRAW_CENSUS (decides inv_pits, pit_reads_as_hole, no_snared_standing; proves at stage 6) stays green",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/reruns.jsonl PY_FLOWWORKS_PIT_DRAW_CENSUS FAIL vs recorded PASS: ROUTE MISSING GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs [CordUnderLiquid.SeenAt(map, c.x, c.z) >= 1f]",
+    "GSS b560ff91e8 2026-11-16 07:03 PST removed ground ripple everywhere (owner 2026-11-16), after the recorded PASS (10:52Z)"
+   ],
+   "would_pass": "the census re-pinned to the GSS floor cord as it now is (no ground ripple anywhere), and green",
+   "smallest_fix": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py: replace the route row for the deleted guard with a law that GSS draws no ground ripple; a judge may not delete an assertion, so the steward re-pins it",
+   "verdict_on_criterion": "criterion's meaning kept (no cord ripples under liquid); its pin names a line the owner's ruling removed",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_DRILL_DRAWS_POWER_WHEN_OFF_UNPINNED",
+   "class": "Polish",
+   "bar": "inv_settings",
+   "criterion": "a machine switched off (flick or Mod Settings) draws no power (settings promise; not in inv_drilling's words)",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl CALLER_DRILL_DRAWS_POWER_SWITCHED_OFF: T_DRILL rc0"
+   ],
+   "would_pass": "a toggle-chain law or row pinning Building_LiquidDrill.TickRare's on = liquidDrillingEnabled && switch",
+   "smallest_fix": "a source law in the T_SETTINGS_SWEEP_OFFLINE family",
+   "verdict_on_criterion": "inv_drilling's bar does not cover power draw; owed to Stage 6 inv_settings",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_COATING_LAWS_MISS_COLONISTS",
+   "class": "Polish",
+   "bar": "inv_liquid_coating",
+   "criterion": "a pawn out of a staining liquid carries its coating (stage-6 bar; T_LIQUID_COATING_OFFLINE is its offline half)",
+   "evidence": [
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/planted_results.jsonl COAT_COLONISTS_NEVER_COATED and COAT_CANAL_LIQUID_NEVER_COATS: selftest_stage3_owed.py --only coating rc0"
+   ],
+   "would_pass": "the coating laws, or sc_coating_wash at Stage 6, red when no humanlike is coated or a dug canal's liquid never coats",
+   "smallest_fix": "sc_coating_wash coats a colonist out of a dug canal of oil",
+   "verdict_on_criterion": "bar proves at stage 6; the live scene decides",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_SHEET_TOOLTIP_TWO_CM",
+   "class": "Polish",
+   "bar": "inv_overflow_sheet",
+   "criterion": "the crops-drown tooltip ('Water at least 2 cm deep ... kills it')",
+   "evidence": [
+    "lane1/lane1_rows.jsonl SHEET_CROP_TWO_AND_A_HALF_CM_RISEN (INFO): the kernel's standing tier starts at 3 cm rising, 2 cm falling; relief lifts some squares past 3 cm"
+   ],
+   "would_pass": "the tooltip says 3 cm rising, 2 cm falling, or the behaviour is accepted as worded",
+   "smallest_fix": "Sheet/RM_SheetSettings.cs tooltip text",
+   "verdict_on_criterion": "words only; not part of passing",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  }
+ ],
+ "equivalent_mutants": [
+  {
+   "id": "CONV_BUDGET_IGNORES_ENVIRONMENT",
+   "why": "CompLiquidConverter.EnvironmentFactor returns only 0 or 1 (SunFactor is 0 or 1; every other branch 0 or 1), and 0 returns before the budget, so dropping the factor changes no shipped behaviour"
+  }
+ ]
+}

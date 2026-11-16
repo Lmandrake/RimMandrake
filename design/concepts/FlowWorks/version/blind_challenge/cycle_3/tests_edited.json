@@ -1,0 +1,27 @@
+{
+ "cycle": 3,
+ "run": "judge-1794849236",
+ "edited": [
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/BlindCycle3Checks.cs",
+   "why": "new file: four cases catching planted faults T_SHEET/T_CONVERT missed; no assertion removed anywhere",
+   "before": null,
+   "after": "fd926b31b809b8c5ed993a6fad5a3e6b9517a98e",
+   "commit": "96941bfa43e903180fedad8a5099edb6237ad72b"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+   "why": "one line: BlindCycle3Checks.Run(Case)",
+   "before": "9b614e75afe6b10a4ee38091890602888827d3b8",
+   "after": "2f05a1396e50508c585509d61033cd6af905d5a4",
+   "commit": "96941bfa43e903180fedad8a5099edb6237ad72b"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+   "why": "one Compile line for BlindCycle3Checks.cs",
+   "before": "7b2961563d052f73efb0e550f1b8a9bf65a36364",
+   "after": "722f95d47ade380bff33713a95fd3cc8a7b36217",
+   "commit": "96941bfa43e903180fedad8a5099edb6237ad72b"
+  }
+ ]
+}
