@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1794790336",
+ "stage": 5,
+ "outcome": "done",
+ "summary": "Locked. Coverage judge rm-coverage-judge-1794790345 (delta round on the furnace body-9 fix) returned covered with 0 gaps and signed tree 2c1e467c / sheet c356b3cd; signature, verdict and ledger shard committed (4a44d06017). concept_tree.py gate PASS; designer_stage.py showcases accepts burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25. All 29 scenes name an entry point; the five chains not yet in validation.py (roof_withers, herd_thirst, fire_sense, furnace_hide_bank, foreign_arrivals) are owed by live build items RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED and RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. Mod item filed --kind mod: RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE, ## verify citing design/concepts/Pyrelands/tree.json at hash 2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5. sc_furnace_giant live read stays UNRUN with its command."
+}
