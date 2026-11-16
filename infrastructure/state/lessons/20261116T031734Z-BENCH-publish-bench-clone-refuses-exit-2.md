@@ -1,0 +1,1 @@
+./publish in the bench clone refuses (exit 2, 'Blocking uncommitted paths') when a Designer harvest leaves design/concepts/<Mod>/stage.json and result.<run>.json in the working tree that origin/main already holds byte for byte; restoring/removing the main-identical copies lets it land. Same shape as the scratch_clone false strand fixed in b7916ccd00. 2026-11-15 19:18 PST.
