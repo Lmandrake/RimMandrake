@@ -1,0 +1,8 @@
+/home/mandrake/rm/relentless/clones/RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN.det/src/RimMandrake/FlowWorks/northstar/live_session.py:2344: SyntaxWarning: "\." is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\."? A raw string is also an option.
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+selftest_extensions: PASS -- 63 core rows, 54 extension chains / 149 components, 83 bars (65 core, 18 extension-only), 109 toggles
+rc=0
+ok    P-O2 answers from the real repo (PASS) 
+
+PASS: 0 failure(s)
+rc=0

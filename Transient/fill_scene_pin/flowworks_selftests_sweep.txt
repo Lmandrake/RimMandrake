@@ -1,0 +1,408 @@
+contained in rm-harness.slice (max 24G), 6 workers
+KNOWN RED src/RimMandrake/FlowWorks/selftest_stage3_owed.py: failed on these same inputs at 2026-11-15 16:20 (6120bb02aa); reds always rerun
+[1/173] PASS         92.6s  src/RimMandrake/FlowWorks/northstar/selftest_extensions.py
+[2/173] PASS         64.9s  src/RimMandrake/FlowWorks/northstar/selftest_thirst_live.py
+[3/173] PASS        164.7s  src/RimMandrake/FlowWorks/northstar/selftest_proof_hose.py
+[4/173] PASS        184.8s  src/RimMandrake/FlowWorks/northstar/selftest_sprinkler_live.py
+[5/173] PASS        193.7s  src/RimMandrake/FlowWorks/northstar/selftest_scenarios_map.py
+[6/173] PASS         38.4s  src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py
+[7/173] PASS         69.0s  src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py
+[8/173] PASS         35.9s  src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py
+[9/173] PASS         67.8s  src/RimMandrake/FlowWorks/Tools/selftest_weir_installed.py
+[10/173] FAIL         25.0s  src/RimMandrake/FlowWorks/selftest_review_map.py
+[11/173] PASS         23.1s  src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py
+[12/173] PASS         30.4s  src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py
+[13/173] PASS         16.4s  src/RimMandrake/FlowWorks/northstar/selftest_pit_superdeep_walk.py
+[14/173] PASS         47.3s  src/RimMandrake/FlowWorks/northstar/selftest_human_review.py
+[15/173] PASS         11.5s  src/RimMandrake/FlowWorks/northstar/selftest_station_port_live_connects.py
+[16/173] PASS         22.9s  src/RimMandrake/FlowWorks/Tools/selftest_hose_explore.py
+[17/173] PASS          7.9s  src/RimMandrake/FlowWorks/northstar/selftest_pipe_levelling_perf_proof.py
+[18/173] PASS          8.3s  src/RimMandrake/FlowWorks/northstar/selftest_fw_walks.py
+[19/173] PASS          5.7s  src/RimMandrake/FlowWorks/northstar/selftest_modern_fittings_live.py
+[20/173] PASS          7.1s  src/RimMandrake/FlowWorks/northstar/selftest_live_session.py
+[21/173] PASS          6.5s  src/RimMandrake/FlowWorks/northstar/selftest_level_water.py
+[22/173] PASS          5.9s  src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py
+[23/173] PASS          4.8s  src/RimMandrake/FlowWorks/northstar/selftest_b1_pristine_map.py
+[24/173] PASS          3.4s  src/RimMandrake/FlowWorks/northstar/selftest_joint_check.py
+[25/173] PASS          4.9s  src/RimMandrake/FlowWorks/northstar/selftest_water_walks.py
+[26/173] PASS          4.6s  src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py
+[27/173] PASS          3.7s  src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py
+[28/173] PASS          5.3s  src/RimMandrake/FlowWorks/selftest_flowworks_driver_rows.py
+[29/173] PASS          3.7s  src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py
+[30/173] PASS          2.1s  src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py
+[31/173] PASS          3.3s  src/RimMandrake/FlowWorks/selftest_hose_fittings.py
+[32/173] PASS          1.5s  src/RimMandrake/FlowWorks/northstar/selftest_falsepass_late.py
+[33/173] PASS          3.9s  src/RimMandrake/FlowWorks/selftest_flowworks_selftest_requests.py
+[34/173] PASS          2.3s  src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py
+[35/173] PASS          0.9s  src/RimMandrake/FlowWorks/northstar/selftest_bridge_args.py
+[36/173] PASS          1.5s  src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py
+[37/173] PASS          1.8s  src/RimMandrake/FlowWorks/selftest_settings_search.py
+[38/173] PASS          1.8s  src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py
+[39/173] PASS          1.7s  src/RimMandrake/FlowWorks/northstar/selftest_static_call_empty_arg.py
+[40/173] PASS          1.3s  src/RimMandrake/FlowWorks/selftest_flowworks_suspension_linked.py
+[41/173] PASS          1.2s  src/RimMandrake/FlowWorks/selftest_hose_port.py
+[42/173] PASS          1.3s  src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py
+[43/173] FAIL          0.9s  src/RimMandrake/FlowWorks/selftest_stage3_owed.py
+[44/173] PASS          0.7s  src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py
+[45/173] PASS          1.3s  src/RimMandrake/FlowWorks/selftest_hose_ports.py
+[46/173] PASS          1.2s  src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py
+[47/173] PASS          0.6s  src/RimMandrake/FlowWorks/northstar/selftest_glow_tank_live.py
+[48/173] PASS          0.5s  src/RimMandrake/FlowWorks/selftest_proof_read_gaps.py
+[49/173] PASS          0.8s  src/RimMandrake/FlowWorks/northstar/selftest_sitting_gaps_proof.py
+[50/173] PASS          0.6s  src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py
+[51/173] PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_lines_proof.py
+[52/173] PASS          0.7s  src/RimMandrake/FlowWorks/northstar/selftest_sheet_overflow_proof.py
+[53/173] PASS          0.4s  src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py
+[54/173] PASS          0.6s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_travel_tags.py
+[55/173] PASS          0.7s  src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py
+[56/173] PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_batch_reads.py
+[57/173] PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_reach_map_proof.py
+[58/173] PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_player_missions.py
+[59/173] PASS          0.4s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py
+[60/173] PASS          0.3s  src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py
+[61/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py
+[62/173] PASS          0.5s  src/RimMandrake/FlowWorks/selftest_tank_art_edges.py
+[63/173] PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_blind_reader.py
+[64/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_falsepass_early.py
+[65/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_fill_scenes_dig_first.py
+[66/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_gptfw_review_fixes.py
+[67/173] PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py
+[68/173] PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_walk_gaps_proof.py
+[69/173] PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_trial_site.py
+[70/173] PASS          0.4s  src/RimMandrake/FlowWorks/selftest_flowworks_river_colors.py
+[71/173] PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py
+[72/173] PASS          0.4s  src/RimMandrake/FlowWorks/selftest_hose_offline.py
+[73/173] PASS          0.3s  src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py
+[74/173] PASS          0.2s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py
+[75/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_canal_fill_front.py
+[76/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_big_pit_scene.py
+[77/173] PASS          0.6s  src/RimMandrake/FlowWorks/selftest_pause_arg.py
+[78/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_mission_fixture_probe.py
+[79/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_escape_live.py
+[80/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_drawbridge_proof.py
+[81/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_owner_review_stage.py
+[82/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_pit_rescue_live.py
+[83/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_propane_pour_sink.py
+[84/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_river_site.py
+[85/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_pump_return_readback.py
+[86/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_suspension_bridge_proof.py
+[87/173] PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_sluice_live_binding.py
+[88/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_suspension_bridge_reach.py
+[89/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_validation_case_names.py
+[90/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_walk_scene.py
+[91/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_flowworks_flat_shadow.py
+[92/173] PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_water_looks_proof.py
+[93/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_hose_cr2_detail.py
+[94/173] PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py
+[95/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py
+[96/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_pump_station_ports.py
+[97/173] PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py
+[98/173] PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py
+[99/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py
+[100/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_climb_proof.py
+[101/173] PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py
+[102/173] PASS          0.2s  src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py
+[103/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_deep_lake_proof.py
+[104/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_deep_stone_live.py
+[105/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_dig_finds_budget.py
+[106/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_droid_dig_live.py
+[107/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fill_in_order.py
+[108/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_diptych_host.py
+[109/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fixture_pit_prison_cleanup.py
+[110/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fixture_proofreach_walker.py
+[111/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_geyser_pit_scene.py
+[112/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_gravel_stage.py
+[113/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_gravel_live.py
+[114/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_hole_prison_driver.py
+[115/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py
+[116/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py
+[117/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_mock_dll_identity.py
+[118/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_owner_look_regressions.py
+[119/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_exposure_live.py
+[120/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_water_fixes_live.py
+[121/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_playtest_runner.py
+[122/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_plot_unroof.py
+[123/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pond_pump.py
+[124/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py
+[125/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_preflight_calm.py
+[126/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_proof_tar_fire_gate.py
+[127/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_rail_walk_live.py
+[128/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_raid_trench.py
+[129/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_scratch_halts.py
+[130/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py
+[131/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_s5_third_draft.py
+[132/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_trench_cover_proof.py
+[133/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_wakes_checks.py
+[134/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_underpass_reach_live.py
+[135/173] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_work_bar.py
+[136/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py
+[137/173] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_wall_faces_proof.py
+[138/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_drafted_move_pit.py
+[139/173] PASS          0.2s  src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py
+[140/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_flood_hour_cadence.py
+[141/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_pose.py
+[142/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py
+[143/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py
+[144/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py
+[145/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py
+[146/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_hot_wet_terrain.py
+[147/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_floor_ground.py
+[148/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py
+[149/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py
+[150/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_proof_readers.py
+[151/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pond_outlet_fractional.py
+[152/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_excavation.py
+[153/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py
+[154/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_readout_proof_parity.py
+[155/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_superdeep.py
+[156/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py
+[157/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py
+[158/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py
+[159/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py
+[160/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_swale.py
+[161/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py
+[162/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py
+[163/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_tank_drink_recheck.py
+[164/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_freeze_big_map.py
+[165/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py
+[166/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py
+[167/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_liquid_look_tune.py
+[168/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py
+[169/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_stage_proof_site.py
+[170/173] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_style_readback.py
+[171/173] PASS        468.0s  src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py
+[172/173] PASS        668.0s  src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py
+[173/173] PASS        223.5s  src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 46aa46a7cbb9d091
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/173 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 173 ran, 82 recorded, 0 checked against a stored PASS, 1 known red
+  ran (84): an input changed: src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py <- env PATH; src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py <- env PATH; src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py <- env PATH
+  ran (88): no record
+  not recordable (37): clock: src/RimMandrake/FlowWorks/Tools/selftest_hose_explore.py, src/RimMandrake/FlowWorks/northstar/selftest_b1_pristine_map.py, src/RimMandrake/FlowWorks/northstar/selftest_batch_reads.py, src/RimMandrake/FlowWorks/northstar/selftest_drawbridge_proof.py ...
+  not recordable (20): changed during the run: src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py, src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py, src/RimMandrake/FlowWorks/northstar/selftest_human_review.py, src/RimMandrake/FlowWorks/northstar/selftest_proof_hose.py ...
+  not recordable (15): machine state: src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py, src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py, src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py, src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py ...
+  not recordable (12): external: src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py, src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py, src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py, src/RimMandrake/FlowWorks/northstar/selftest_falsepass_early.py ...
+  not recordable (6): git state: src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py, src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py, src/RimMandrake/FlowWorks/northstar/selftest_fixture_proofreach_walker.py, src/RimMandrake/FlowWorks/selftest_hose_fittings.py ...
+  not recordable (1): reads and writes /var/tmp/blind_reader_006lg2ru/picture_01.png: src/RimMandrake/FlowWorks/northstar/selftest_blind_reader.py
+PASS        668.0s  src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py
+PASS          0.3s  src/RimMandrake/FlowWorks/Tools/selftest_fw_gate_lift.py
+PASS          3.7s  src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py
+PASS         30.4s  src/RimMandrake/FlowWorks/Tools/selftest_fw_offline_art.py
+PASS         22.9s  src/RimMandrake/FlowWorks/Tools/selftest_hose_explore.py
+PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_lava_row.py
+PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py
+PASS          0.2s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py
+PASS          0.4s  src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py
+PASS          1.3s  src/RimMandrake/FlowWorks/Tools/selftest_pipe_seat.py
+PASS          1.5s  src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py
+PASS          3.7s  src/RimMandrake/FlowWorks/Tools/selftest_spike_float32_parity.py
+PASS          0.2s  src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py
+PASS          0.6s  src/RimMandrake/FlowWorks/Tools/selftest_water_terrains_name_liquid.py
+PASS         67.8s  src/RimMandrake/FlowWorks/Tools/selftest_weir_installed.py
+PASS         69.0s  src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py
+PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py
+PASS          2.3s  src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py
+PASS          4.6s  src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py
+PASS         23.1s  src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py
+PASS          4.8s  src/RimMandrake/FlowWorks/northstar/selftest_b1_pristine_map.py
+PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_batch_reads.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_big_pit_scene.py
+PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_blind_reader.py
+PASS          0.9s  src/RimMandrake/FlowWorks/northstar/selftest_bridge_args.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_canal_fill_front.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_climb_proof.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_deep_lake_proof.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_deep_stone_live.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_dig_finds_budget.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_diptych_host.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_drawbridge_proof.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_droid_dig_live.py
+PASS         92.6s  src/RimMandrake/FlowWorks/northstar/selftest_extensions.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_falsepass_early.py
+PASS          1.5s  src/RimMandrake/FlowWorks/northstar/selftest_falsepass_late.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fill_in_order.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_fill_scenes_dig_first.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fixture_pit_prison_cleanup.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_fixture_proofreach_walker.py
+PASS         38.4s  src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py
+PASS          8.3s  src/RimMandrake/FlowWorks/northstar/selftest_fw_walks.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_geyser_pit_scene.py
+PASS          0.6s  src/RimMandrake/FlowWorks/northstar/selftest_glow_tank_live.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_gptfw_review_fixes.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_gravel_live.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_gravel_stage.py
+PASS        468.0s  src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_hole_prison_driver.py
+PASS         47.3s  src/RimMandrake/FlowWorks/northstar/selftest_human_review.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py
+PASS          3.4s  src/RimMandrake/FlowWorks/northstar/selftest_joint_check.py
+PASS          6.5s  src/RimMandrake/FlowWorks/northstar/selftest_level_water.py
+PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_lines_proof.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_liquid_checks.py
+PASS          7.1s  src/RimMandrake/FlowWorks/northstar/selftest_live_session.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_mission_fixture_probe.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_mock_dll_identity.py
+PASS          5.7s  src/RimMandrake/FlowWorks/northstar/selftest_modern_fittings_live.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_owner_look_regressions.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_owner_review_stage.py
+PASS          7.9s  src/RimMandrake/FlowWorks/northstar/selftest_pipe_levelling_perf_proof.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_escape_live.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_exposure_live.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_pit_rescue_live.py
+PASS         16.4s  src/RimMandrake/FlowWorks/northstar/selftest_pit_superdeep_walk.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pit_water_fixes_live.py
+PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_player_missions.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_playtest_runner.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_plot_unroof.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_pond_pump.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_preflight_calm.py
+PASS        164.7s  src/RimMandrake/FlowWorks/northstar/selftest_proof_hose.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_proof_tar_fire_gate.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_propane_pour_sink.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_pump_return_readback.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_raid_trench.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_rail_walk_live.py
+PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_reach_map_proof.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_river_site.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_s5_third_draft.py
+PASS        193.7s  src/RimMandrake/FlowWorks/northstar/selftest_scenarios_map.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_scratch_halts.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py
+PASS          0.7s  src/RimMandrake/FlowWorks/northstar/selftest_sheet_overflow_proof.py
+PASS          0.8s  src/RimMandrake/FlowWorks/northstar/selftest_sitting_gaps_proof.py
+PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_sluice_live_binding.py
+PASS        184.8s  src/RimMandrake/FlowWorks/northstar/selftest_sprinkler_live.py
+PASS          1.7s  src/RimMandrake/FlowWorks/northstar/selftest_static_call_empty_arg.py
+PASS         11.5s  src/RimMandrake/FlowWorks/northstar/selftest_station_port_live_connects.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_suspension_bridge_proof.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_suspension_bridge_reach.py
+PASS         64.9s  src/RimMandrake/FlowWorks/northstar/selftest_thirst_live.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_trench_cover_proof.py
+PASS          0.5s  src/RimMandrake/FlowWorks/northstar/selftest_trial_site.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_underpass_reach_live.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_validation_case_names.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_wakes_checks.py
+PASS          0.4s  src/RimMandrake/FlowWorks/northstar/selftest_walk_gaps_proof.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_walk_scene.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_wall_faces_proof.py
+PASS          0.3s  src/RimMandrake/FlowWorks/northstar/selftest_water_looks_proof.py
+PASS          4.9s  src/RimMandrake/FlowWorks/northstar/selftest_water_walks.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_work_bar.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py
+PASS          2.1s  src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_drafted_move_pit.py
+PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_pose.py
+PASS          5.3s  src/RimMandrake/FlowWorks/selftest_flowworks_driver_rows.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_flowworks_flat_shadow.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_flood_hour_cadence.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py
+PASS          1.2s  src/RimMandrake/FlowWorks/selftest_flowworks_geyser_tub.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py
+PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_hot_wet_terrain.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py
+PASS          1.8s  src/RimMandrake/FlowWorks/selftest_flowworks_one_water_number.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pipe_pole_art.py
+PASS          0.4s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_floor_ground.py
+PASS          0.6s  src/RimMandrake/FlowWorks/selftest_flowworks_pit_travel_tags.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_pond_outlet_fractional.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_proof_readers.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_readout_proof_parity.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_excavation.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_review1022_superdeep.py
+PASS          0.4s  src/RimMandrake/FlowWorks/selftest_flowworks_river_colors.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py
+PASS          3.9s  src/RimMandrake/FlowWorks/selftest_flowworks_selftest_requests.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py
+PASS         35.9s  src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py
+PASS          1.3s  src/RimMandrake/FlowWorks/selftest_flowworks_suspension_linked.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_swale.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_tank_drink_recheck.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py
+PASS          0.3s  src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_freeze_big_map.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_hose_cr2_detail.py
+PASS          3.3s  src/RimMandrake/FlowWorks/selftest_hose_fittings.py
+PASS          0.7s  src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py
+PASS          0.4s  src/RimMandrake/FlowWorks/selftest_hose_offline.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py
+PASS          1.2s  src/RimMandrake/FlowWorks/selftest_hose_port.py
+PASS          1.3s  src/RimMandrake/FlowWorks/selftest_hose_ports.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_liquid_look_tune.py
+PASS          5.9s  src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py
+PASS          0.6s  src/RimMandrake/FlowWorks/selftest_pause_arg.py
+PASS          0.3s  src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py
+PASS          0.5s  src/RimMandrake/FlowWorks/selftest_proof_read_gaps.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_pump_station_ports.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py
+FAIL         25.0s  src/RimMandrake/FlowWorks/selftest_review_map.py
+             rc 1
+             FAIL
+               uncovered: [('def', 'JobDef/RM_TossFlame', 'Defs/Canals/JobDefs/FlowWorks_JobDefs.xml'), ('def', 'FleckDef/RM_Fleck_VentFroth', 'Defs/LiquidTypes/FleckDefs/RM_LiquidBubble.xml'), ('def', 'HediffDef/RM_HotPoolSoak', 'Defs/Pits/GeyserPool/RM_GeyserPool.xml'), ('def', 'HediffDef/RM_HotPoolAfterglow', 'Defs/Pits/GeyserPool/RM_GeyserPool.xml'), ('def', 'JobDef/RM_SoakInGeyserPool', 'Defs/Pits/GeyserPool/RM_GeyserPool.xml')]
+               coverage file
+PASS          1.8s  src/RimMandrake/FlowWorks/selftest_settings_search.py
+FAIL          0.9s  src/RimMandrake/FlowWorks/selftest_stage3_owed.py
+             rc 1
+               ok    only an enclosed pit counts: PrisonRoom needs ProperRoom and IsPitRoom
+               ok    kept = a secure prisoner of the colony, held in that pit
+               ok    a bed elsewhere does not move him: TakeToBed returns no job for a kept pawn
+               ok    fed without a bed: ShouldBeFed postfix for lip care
+               ok    tended without a bed: GoodLayingStatusForTend postfix for lip care
+               ok    food lands in the hole, not outside it
+               5 undo mutants checked
+             wetting
+               RED   a wetting law exists: a class named for wetting
+               RED   its reach is two squares (owner 2026-11-04: "Two squares away from the canal")
+               RED   a wetted cell is never standing water: the wetting class writes no liquid
+             wetness_probe
+               RED   a static_call probe reads one cell's wetting ("x,z" -> "WETTING ... wetted=b")
+             toss_flame
+               ok    a JobDef for the toss-flame order
+               ok    its JobDriver walks to the rim and lights the picked square
+               ok    the player can give it: a float-menu or gizmo offers it
+               ok    the JobDef runs JobDriver_TossFlame and the code binds it
+               ok    the toss lights a burnable canal or pond through the liquid-fire engine
+               ok    a burnable spill on open ground lights too
+               ok    dry burnable ground falls back to a vanilla fire
+               ok    it is thrown from the rim: dry standable ground outside the dug squares, in sight of the target
+               ok    the driver walks to the rim, then tosses
+               ok    the menu offers it only where something will catch, and only with its setting on
+               9 undo mutants checked
+             fetch_fallen
+               ok    the ladder half exists: raiders already set a ladder (trench raids)
+               RED   a raider job to fetch a comrade held in a pit
+               RED   its target is a pawn of the raider's own faction held in a pit
+             coating
+               ok    a named condition for a staining coat
+               ok    leaving oil, tar, blood or another staining liquid applies it
+               ok    normal water washes it off
+               ok    the map ticks the coating
+               ok    stepping out of a coating liquid adds the coat
+               ok    wading a washing liquid removes the coat
+               ok    oil, tar and blood coat; water washes
+               ok    the coat is named for its liquid
+               8 undo mutants checked
+             RED 6: wetting: a wetting law exists: a class named for wetting; wetting: its reach is two squares (owner 2026-11-04: "Two squares away from the canal"); wetting: a wetted cell is never standing water: the wetting class writes no liquid; wetness_probe: a static_call probe reads one cell's wetting ("x,z" -> "WETTING ... wetted=b"); fetch_fallen: a raider job to fetch a comrade held in a pit; fetch_fallen: its target is a pawn of the raider's own faction held in a pit
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_stage_proof_site.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_style_readback.py
+PASS        223.5s  src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py
+PASS          0.5s  src/RimMandrake/FlowWorks/selftest_tank_art_edges.py
+PASS          0.2s  src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py
+PASS          0.7s  src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py
+
+PASS 171/173  FAIL 2/173  UNMEASURED 0/173  CRASH 0/173  SKIPPED 0/173  (wall 892.3s) — contained in rm-harness.slice (max 24G), 6 workers
+FAIL (2/173): src/RimMandrake/FlowWorks/selftest_review_map.py, src/RimMandrake/FlowWorks/selftest_stage3_owed.py
+RESULT: RED (green = FAIL 0 and CRASH 0)
