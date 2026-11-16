@@ -19,6 +19,7 @@ Scene entry points owed or consumed:
 - observer_recovery: src/RimMandrake/Cauldron/validation.py::scene_observer_recovery
 - arrival_identity: src/RimMandrake/Cauldron/validation.py::scene_arrival_identity
 - weather_gardens: src/RimMandrake/Cauldron/validation.py::scene_weather_gardens
+- mapgen_vents_gardens: src/RimMandrake/Cauldron/validation.py::scene_mapgen_vents_gardens
 - pool_identity: src/RimMandrake/Cauldron/validation.py::scene_pool_identity
 - falter_hour: src/RimMandrake/Cauldron/validation.py::scene_falter_hour
 - ambient_routes: src/RimMandrake/Cauldron/validation.py::scene_ambient_routes
@@ -26,7 +27,7 @@ Scene entry points owed or consumed:
 - metal_purge: src/RimMandrake/Cauldron/validation.py::scene_metal_purge
 - acid_injuries: src/RimMandrake/Cauldron/validation.py::scene_acid_injuries
 - thornwood_harvest: src/RimMandrake/Cauldron/validation.py::scene_thornwood_harvest
-- trunk_coat_check: src/RimMandrake/Cauldron/validation.py::scene_trunk_coat_check
+- trunk_coat_check: src/RimMandrake/Cauldron/validation.py::scene_trunk_coat_check (independent exploration only; accepts no core leaf)
 - rhossak_cycle: src/RimMandrake/Cauldron/validation.py::scene_rhossak_cycle
 - flora_uses: src/RimMandrake/Cauldron/validation.py::scene_flora_uses
 - animal_products: src/RimMandrake/Cauldron/validation.py::scene_animal_products
@@ -62,3 +63,15 @@ Scene entry points owed or consumed:
 ## Interdependencies
 
 FlowWorks owns transfer/process mechanics and liquid identity; EnvironmentalHazards owns shared contact/paralysis; CreatureBehaviors owns tether/track services; ExplosiveKnockback owns displacement. Preserve optional VEF and Utinni guards. Canonical composed Biomes packaging must be fingerprinted. Historical chain passes are scoped and stale, and source work cannot certify the current loaded candidate.
+
+## Stage-3 coverage rework, rm-role-designercodex-1794846919
+
+Follow the revised scenes.json, not superseded thirty-five-scene assumptions. The plan now has 35 acceptance/interaction contracts and one independent trunk-coat exploration. Add scene_mapgen_vents_gardens with production local-map callbacks, safe-arrival/state/garden checks and off/idempotence controls; do not generate a world. The entry point remains unimplemented and owed by this item.
+
+For arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day and resume_walk implement the named keeper save, replay branch, owner_review hold and explicit owner-finished/released end in each restore contract. scene-hold records the keeper and release condition; eventual scene-end requires verified entry recovery. No review hold has been executed by this design amendment.
+
+Require eskith flock activity/stillness and isolate weather output changes from vent recovery, suppression and scaling-off. Add unfinished AttackMelee cancellation arms for warden-off and attacks-igniter-off, with an enabled counterpart and an unrelated drinking-toggle control. Cancellation is at the first pawn job update after the toggle, before a further hit; natural expiry or target death cannot pass it. Keep walk/drink cancellation distinct.
+
+Normally construct and use the plate-only door, craft and use each dedicated container and suit/helmet, trace real consumed inputs and new outputs, and test missing-input/incomplete-work/forbidden-stuff controls. Include eligible exposed and protected player, visitor and hostile bodies in ambient-acid arms. Test the supported_ecology leaf through real provider-owned consumers; preserve state-only aerial checkout and owner-present visible-motion review.
+
+trunk_coat_check is now exploration with no requirement leaf. UNBUILT is an inventory observation with no core leaf verdict. The separate existing trunk-deposit item remains as recorded, absent and unopened. Heat-insulation numbers, output rates, exact generation counts/radii/probabilities and art-variant counts are diagnostic tuning or advisory, not new passing bars. The owner-ruled warning hour is retained.
