@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2562,"HOLDER.run-1794816885":928,"JUDGE.judge-1794833810":50782,"STEWARD":2597} body_sha256=4439dfc8d33c162b91130d6f5af4be948a56f25a6872083bb39752b48788238b -->
-# FlowWorks — mod ledger history (1201 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2562,"HOLDER.run-1794816885":928,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=4cb5e9d91d6a95231c6750af64c612af239686dff2f684f5bd11c951f233bd0a -->
+# FlowWorks — mod ledger history (1206 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1202,3 +1202,8 @@
 - 2026-11-16T16:25:46Z JUDGE.judge-1794833810#89 test.run judge v0.1.0: Reran the 8 offline-bar deciders: 8 PASS, 8 match their recorded result; T_DIG_TIME_ARITHMETIC not rerunnable (no command)
 - 2026-11-16T16:25:46Z JUDGE.judge-1794833810#90 test.run judge v0.1.0: Planted 57 faults (kernels, callers, every changed mod file): 37 caught, 20 missed; tree clean after
 - 2026-11-16T16:25:46Z JUDGE.judge-1794833810#91 test.run judge v0.1.0: At the fix sha: the 8 offline-bar deciders and 3 stage-6 coating/toss/fetch deciders all PASS; lane 1 rerun 39 PASS 0 FAIL
+- 2026-11-16T16:31:22Z JUDGE.judge-1794833810#92 note judge v0.1.0: RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
+- 2026-11-16T16:31:22Z JUDGE.judge-1794833810#93 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
+- 2026-11-16T16:31:23Z JUDGE.judge-1794833810#94 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
+- 2026-11-16T16:31:23Z JUDGE.judge-1794833810#95 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
+- 2026-11-16T16:31:23Z JUDGE.judge-1794833810#96 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.

@@ -1,12 +1,12 @@
 {
  "_view": {
-  "body_sha256": "386ca10db8ad2bf3ad1b5e5fd2fcb9ba0902a461a1794f35e30a2c9c892d050a",
+  "body_sha256": "501f1e29f9658387a4613267e4ecaa323ad046fb2216f999af1beca487449566",
   "reducer": 1,
   "shards": {
    "BACKFILL": 881268,
    "DISPATCH": 2562,
    "HOLDER.run-1794816885": 928,
-   "JUDGE.judge-1794833810": 50782,
+   "JUDGE.judge-1794833810": 53964,
    "STEWARD": 2597
   }
  },
@@ -1669,7 +1669,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1201,
+  "events": 1206,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7721,6 +7721,36 @@
     "subject": "judge",
     "text": "Verification: 74 of 118 claimed fixes verified offline at 4b33b22f; 44 not ruled (live-only claims, or no test named or carrying the id): left claimed_fixed, owed to Stage 6 or the next judge. Each ruling and its method: lane2/verification.json.",
     "ts": "2026-11-16T16:25:36Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.",
+    "ts": "2026-11-16T16:31:22Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.",
+    "ts": "2026-11-16T16:31:22Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.",
+    "ts": "2026-11-16T16:31:23Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.",
+    "ts": "2026-11-16T16:31:23Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.",
+    "ts": "2026-11-16T16:31:23Z"
    }
   ],
   "questions": {},

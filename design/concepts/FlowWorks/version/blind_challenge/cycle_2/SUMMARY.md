@@ -142,4 +142,4 @@ new blind judge is owed (cycle 3 of this visit's count, the Conductor's call aft
 - A new blind judge (cycle 3): the five fixes above are this cycle's own and cannot pass its exit.
 - The 4 Polish items (Polish list, not part of passing).
 - The 44 unruled claims at Stage 6.
-- Cost of this run: about $18 of the $62.27 bound [measured, the session's budget line at the record].
+- Cost of this run: about $21 of the $62.27 bound [measured, the session's budget line at the close].
