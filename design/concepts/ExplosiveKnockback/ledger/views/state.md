@@ -1,18 +1,15 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763} body_sha256=0f787d6676538077f5f6884707e6880133c1b69e8da7480af6949930f1181578 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763} body_sha256=a4222463b8328723ac7c7832a769ca38d7ed471d3040b2f5743bdc59f174823b -->
 # ExplosiveKnockback — mod ledger packet
 version 0.1.0 · stage offline_build · 249 events in 1 shards · reducer 1
 
 ## Open findings (47)
 - finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars goods_arc_spin_rebound: lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
-  proposed fix: kernel RM_KnockbackMath.WildCells(dist, radius, force, mass, s, wild); Execute and ItemWillBeThrown use it for items and corpses; setting goodsThrowWild 1.6 (slider 1..3, Scribe, Reset); journal kernel/wild fields
   accept: sheet.md: loose goods and corpses fly wild, about 1.6 times as far as a person; tree.json advisory and scenes.json sc_storeroom_mortar: each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio […]
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
 - finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z: RM_MapComponent_Knockback.cs GasBurst builds KbConfig{ownCap = gasBurstGoodsCells}; Execute calls Kernel(cfg) -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale), so the 'weapons with their own maximum' scale (slider 0.25..2) rescales the gas goods cap: at 2.0 burning gas throws goods 4 cells, at 0.25 […]
-  proposed fix: KbConfig.scaleOwnCap (default true); KbLookup.Apply scales the own cap only when it is set; GasBurst sets it false
   accept: sheet.md delegated: one gas clump burst throws goods at most 2 cells (gasBurstGoodsCells); settings_scale_and_switch oracle: each changed setting changes only its own outcome
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
 - finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT [claimed_fixed, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars goods_arc_spin_rebound: lane 1 L1_sweep_rebound_keep_slider_chain_ends: at goodsReboundKeepPercent 100 (slider top) ReboundCells(6,100) = 6, the kernel never ends the chain [measured]
-  proposed fix: correct the two comments (kernel ReboundCells, settings goodsReboundKeepPercent); lane 1 row checks the kernel below 100 and the carrier's MaxBounces at 100
   accept: kernel comment on ReboundCells: 'rounded DOWN so a throw always runs out'
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
 - finding:RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter named lightMassLimit) is called by no game code; ThrowContainer throws the container ThrowCells cells with its own loop [measured, grep]
@@ -34,43 +31,33 @@ version 0.1.0 · stage offline_build · 249 events in 1 shards · reducer 1
   proposed fix: scene text: request line -> item_move line
   accept: scenes.json: 'each good's request line carries its kernel cells and its wild cells'
 - finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: lane2/reruns.jsonl T_RESTORE FAIL
-  proposed fix: snapshot the player's settings before the first reset and restore them in a finally; reviewed annotations where a restore exists; baseline the two FlowWorks hits under a filed item
   accept: T_RESTORE: selftest_proof_restore_check.py prints RESULT: GREEN
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)
-  proposed fix: skip goods and corpses with reason flying_off; ItemWillBeThrown false
   accept: goods in the air off, goods unthrown, never the old hop
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)
-  proposed fix: closedContainerGuard (HeldReason, InClosedContainer, ThrowContainer goods) and fireAtHalf (ConfigOf) with checkboxes, Scribe, Reset; sweep lanes wired
   accept: closed guard off, container goods thrown loose; fire at half off, fire throws nothing
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container
-  proposed fix: StartJolt + MapComponentUpdate draws JoltOffset (<= 0.15 cells, 20 ticks, <= 64 at once)
   accept: else a jolt (sc_closed_containers: a drawn offset above zero for each jolt)
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: ContainerShove/KbShove called by nothing in the game
-  proposed fix: delete; ContainerThrowCells used by ThrowContainer; K-14 rewritten; cycle-1 lane 1 and KnockbackSweep follow
   accept: the kernel tests test the rule the game runs
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars every_harmful_blast_throws: T_LINT rc 0 on a copy with Flame 0.7
-  proposed fix: ek-pins table
   accept: EMP, smoke, stun, extinguish and toxic gas at 0, fire at half
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move
-  proposed fix: rename to flying_goods.off_goods_unthrown everywhere
   accept: the walk row reports against its bar
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_too_weak_skip: lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1
-  proposed fix: require kernelCells >= 1 in Execute and ItemWillBeThrown
   accept: a thing at the rim whose kernel throw rounds to 0 cells is not thrown (skip too_weak); every_good_moves: reached = kernel throw >= 1
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
 - finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_kernel: planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ
-  proposed fix: K-23, K-24 (the finder's smallest_fix as written, a pointer rather than a fix; read the fault record)
   accept: T_KERNEL/T_FUZZ decide inv_kernel
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
 - finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: 6 planted faults MISSED (planted_results.jsonl)
-  proposed fix: journal_jolt wiring() checks
   accept: the offline deciders see breaks of the shipped wiring
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
 - finding:RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: storeroom_pit_proof.py arm(): Settings(args=kv) is invisible (py_poke_kind falls back to the tool name)
@@ -80,15 +67,12 @@ version 0.1.0 · stage offline_build · 249 events in 1 shards · reducer 1
   proposed fix: restore liquidPumpEnabled to its prior; make the wrapper visible
   accept: T_RESTORE baseline
 - finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName="Flame"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)
-  proposed fix: the switch decision in the kernel (FireSwitchedOff / IsFireDamage, ElectricalBurn named) and T_KERNEL K-23 over the vanilla fire family
   accept: sheet.md: "fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)"; the patch and the caller both name Anomaly's ElectricalBurn as fire
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (bace1c29cc)
 - finding:RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)
-  proposed fix: two more G1 answers and a require_proof_build exit/return check
   accept: inv_proof_scenes: the live scenes and the runner that drives them; T_PROOFGATE G1 claims the gate reads release vs proof answers
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
 - finding:RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust
-  proposed fix: T_RESTORE section 7: run the two functions from the real source against a fake bridge, with two in-memory mutants
   accept: T_RESTORE (decider of inv_proof_scenes): a live proof undoes every Mod Settings poke on every exit path, putting back the value it found
   holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
 - finding:RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP: missed offline
