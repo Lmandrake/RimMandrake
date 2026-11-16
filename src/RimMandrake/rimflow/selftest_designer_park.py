@@ -26,6 +26,11 @@ import coverage_judge as CJ  # noqa: E402
 import designer_stage as DS  # noqa: E402
 import incident  # noqa: E402
 import refusal_contract as RC  # noqa: E402
+import refusal_contract as _RC  # noqa: E402
+
+# covered signs only under a CALIBRATED coverage brief (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS): the brief under test
+# here is calibrated; selftest_judge_calibration tests the UNTESTED side
+_RC.status = lambda family: "CALIBRATED"
 from selftest_coverage_judge import concept  # noqa: E402
 from selftest_coverage_judge_loop import Judge, answer, told_rows  # noqa: E402
 

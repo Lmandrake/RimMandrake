@@ -59,19 +59,58 @@ def main():
         os.environ["RM_CALIBRATION_ROOT"] = root
         check("an UNTESTED brief's refusals are advisory", RC.advisory("fam") is True)
         check("a family with no row is advisory (UNTESTED)", RC.advisory("no_such_family") is True)
-        # the free check: a command that passes calibrates, one that fails marks FAILED
-        reg2 = {"families": {"ok": {"brief": ["b.md"], "hash": None, "status": "UNTESTED", "cases": {"gap": "x"},
-                                    "free_check": [sys.executable, "-c", "raise SystemExit(0)"]},
-                             "bad": {"brief": ["b.md"], "hash": None, "status": "UNTESTED", "cases": {"gap": "x"},
-                                     "free_check": [sys.executable, "-c", "raise SystemExit(1)"]}}}
+        # the free check (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS): exit 0 is not enough; every planted case must have
+        # run and come out as planted, both ways, before a brief is CALIBRATED
+        def writes(cases, code=0):
+            body = "import json,os\nif os.environ.get('RM_CALIBRATION_RESULTS'):\n" \
+                   "    json.dump({'cases': %r}, open(os.environ['RM_CALIBRATION_RESULTS'], 'w'))\n" \
+                   "raise SystemExit(%d)\n" % (cases, code)
+            return [sys.executable, "-c", body]
+        planted = [{"id": "p_good", "expect": "pass"}, {"id": "p_bad", "expect": "refuse"}]
+        both = [{"id": "p_good", "expect": "pass", "got": "pass"}, {"id": "p_bad", "expect": "refuse", "got": "refuse"}]
+
+        def row(cmd, pl=planted):
+            return {"brief": ["b.md"], "hash": None, "status": "UNTESTED", "cases": {"gap": "x"}, "planted": pl,
+                    "free_check": cmd}
+        reg2 = {"families": {"ok": row(writes(both)),
+                             "bad": row(writes(both, code=1)),
+                             "silent": row(writes([])),
+                             "nowrite": row([sys.executable, "-c", "raise SystemExit(0)"]),
+                             "short": row(writes(both[:1])),
+                             "wrong": row(writes([both[0], dict(both[1], got="pass")])),
+                             "oneway": row(writes(both[:1]), pl=planted[:1])}}
         with open(path, "w") as f:
             json.dump(reg2, f)
         out = RC.calibrate(path, root, run_free=True)
-        check("a passing free check sets CALIBRATED at the current hash",
-              out["families"]["ok"]["status"] == "CALIBRATED"
-              and out["families"]["ok"]["hash"] == RC.brief_hash(["b.md"], root), out["families"]["ok"])
-        check("a failing free check sets FAILED", out["families"]["bad"]["status"] == "FAILED", out["families"]["bad"])
-        check("CALIBRATED is not advisory, FAILED is", RC.advisory("ok") is False and RC.advisory("bad") is True)
+        F = out["families"]
+        check("every planted case ran and came out as planted: CALIBRATED at the current hash",
+              F["ok"]["status"] == "CALIBRATED" and F["ok"]["hash"] == RC.brief_hash(["b.md"], root), F["ok"])
+        check("a failing free check sets FAILED", F["bad"]["status"] == "FAILED", F["bad"])
+        check("exit 0 with no case results stays UNTESTED", F["silent"]["status"] == "UNTESTED"
+              and F["nowrite"]["status"] == "UNTESTED", (F["silent"], F["nowrite"]))
+        check("exit 0 with a planted case that did not run stays UNTESTED and names it",
+              F["short"]["status"] == "UNTESTED" and "p_bad" in str(F["short"].get("last_run")), F["short"])
+        check("a planted case that came out the other way sets FAILED and names it",
+              F["wrong"]["status"] == "FAILED" and "p_bad" in str(F["wrong"].get("last_run")), F["wrong"])
+        check("planted cases one way only stay UNTESTED (a gate is trusted both ways)",
+              F["oneway"]["status"] == "UNTESTED", F["oneway"])
+        check("CALIBRATED is not advisory, FAILED and UNTESTED are",
+              RC.advisory("ok") is False and RC.advisory("bad") is True and RC.advisory("short") is True)
+        # calibrate --no-run is a read-only status: the registry's bytes do not move, even over an edited brief
+        with open(path, "rb") as f:
+            before = f.read()
+        with open(os.path.join(root, "b.md"), "a") as f:
+            f.write("an edit the status must report, not write\n")
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = RC.main(["calibrate", "--no-run"])
+        with open(path, "rb") as f:
+            after = f.read()
+        check("calibrate --no-run leaves the registry bytes unchanged", rc == 0 and before == after)
+        check("calibrate --no-run reports the edited brief as UNTESTED", "UNTESTED" in buf.getvalue()
+              and "CALIBRATED" not in buf.getvalue().split("ok", 1)[-1].splitlines()[0], buf.getvalue())
 
         # the coverage judge: an UNTESTED brief's well-formed refusal does not send the Designer back
         import selftest_coverage_refusal_record as T
@@ -103,6 +142,40 @@ def main():
             rec, msg = CJ.run(d, croot, T.script([T.answer("not_covered", [T.good_gap()])], []))
             check("a CALIBRATED coverage judge's not_covered sends the Designer back (no stop)",
                   rec["verdict"] == "not_covered" and not rec.get("advisory") and not CJ.stop_exit(rec), msg)
+            # covered signs only under a CALIBRATED brief (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS)
+            ok_rows = [T.ROWS[0], dict(T.ROWS[1], parts=[{"what": "a wall stops a throw", "scene": "sc_throw", "ok": True}])]
+            signed = []
+            CT.sign = lambda d, by, repo=None, **kw: signed.append(d) or []
+            shutil.rmtree(croot)
+            d = T.concept(croot)
+            rec, msg = CJ.run(d, croot, T.script([T.answer("covered", [], rows=ok_rows)], []))
+            check("a CALIBRATED coverage judge's covered signs and records its calibration",
+                  rec["verdict"] == "covered" and rec["signed"] and signed and rec.get("calibration") == "CALIBRATED",
+                  (msg, rec.get("calibration")))
+            with open(path, "w") as f:
+                json.dump({"families": {}}, f)
+            signed[:] = []
+            shutil.rmtree(croot)
+            d = T.concept(croot)
+            rec, msg = CJ.run(d, croot, T.script([T.answer("covered", [], rows=ok_rows)], []))
+            check("an UNTESTED coverage judge's covered does not sign: advisory, and the Designer's run stops",
+                  rec["verdict"] == "covered" and not rec["signed"] and not signed and rec.get("advisory")
+                  and CJ.stop_exit(rec) and rec.get("calibration") == "UNTESTED", (msg, rec.get("advisory")))
+            # not retroactive: a signature already made under an unproven brief is flagged in the status, not voided
+            srepo = os.path.join(root, "srepo")
+            for name, verdict in (("Old", {"verdict": "covered", "signed": True}),
+                                  ("New", {"verdict": "covered", "signed": True, "calibration": "CALIBRATED"})):
+                cd = os.path.join(srepo, "design", "concepts", name)
+                os.makedirs(cd)
+                with open(os.path.join(cd, "tree.json"), "w") as f:
+                    json.dump({"coverage": {"signed_by": "CoverageJudge", "at": "2026-11-15T05:54:32Z"}}, f)
+                with open(os.path.join(cd, CJ.VERDICT_FILE), "w") as f:
+                    json.dump(verdict, f)
+            flagged = CJ.unproven_signatures(srepo)
+            check("a signature made under an unproven brief is flagged; one under CALIBRATED is not",
+                  [f["concept"] for f in flagged] == ["design/concepts/Old"], flagged)
+            with open(os.path.join(srepo, "design", "concepts", "Old", "tree.json")) as f:
+                check("the flagged signature is not voided", json.load(f)["coverage"]["signed_by"] == "CoverageJudge")
         finally:
             CT.coverage_problem, CT.sign, DS.exam_errors, DS.owner_away = saved
             for k in ("RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT", "RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR",

@@ -135,11 +135,13 @@ All in `src/RimMandrake/rimflow/maturation.py`:
   run is capped at USD 8. The third `not_covered`, a fourth run, or judge spend past its limit stops judging and raises
   `REFUSAL_NOTHING_COULD_EVER_PASS`.
 - **Calibration**: `refusal_contract.py` keeps a registry of judge briefs, `infrastructure/state/judge_calibration.json`.
-  An edited brief resets to `UNTESTED`. Only a `CALIBRATED` brief's refusal sends the Designer back; an `UNTESTED` one
-  is "stored and shown". On 2026-11-15 the coverage judge's brief is `UNTESTED`. But an advisory refusal still leaves the
-  tree unsigned, and the lock gate refuses an unsigned tree, so in practice it blocks the Designer's lock until the
-  judge says `covered` or Mandrake certifies (section 5). (Reading the registry with `refusal_contract.py calibrate
-  --no-run` rewrites its hashes: it is not a read-only status command.)
+  An edited brief resets to `UNTESTED`. Only a `CALIBRATED` brief's verdict has a consequence, either way: its refusal
+  sends the Designer back and its `covered` signs; under an `UNTESTED` brief both are stored and shown, nothing is signed,
+  and an advisory refusal raises no repair and no alarm. A brief is `CALIBRATED` only when a check on its current hash
+  shows every planted case ran and came out as planted, good and bad both (`refusal_contract.judge_cases`); the coverage
+  judge's planted cases are `coverage_calibration.py`, run by `refusal_contract.py calibrate --model coverage_judge`
+  (it spends). `calibrate --no-run` is a read-only status; it flags signatures made under an unproven brief, never
+  voiding them.
 - **Artifacts**: the concept folder (section 7) and, at the lock, the version folder: `vision.md`, `bars.md`,
   `VERSION.json` (state, version, who locked it, when, his words, token spend), `polish.md`, `next_version/`.
 - **Gate to leave**: `VERSION.json` state starts with `locked` and its version is the record's. `VERSION.json` is
@@ -398,11 +400,10 @@ Found by the skeptical review of 2026-11-15 and confirmed by reading the code (c
 11. **The owner certificate binds only the gap count.** It accepts any of his events on the concept's item newer than
     the verdict, can be replayed after the tree changes, and records (judge run, verdict, number of gaps), not which
     gaps he saw.
-12. **Calibration cuts one way.** A `covered` verdict signs under an UNTESTED brief (calibration is read only on the
-    `not_covered` path); `calibrate` promotes to CALIBRATED on a free check's exit 0 without checking the cases ran, and
-    always writes the registry; `submit` counts refusals and raises repair and alarms before it reads calibration, so an
-    advisory refusal still triggers them. (The coverage judge's runner exit, all-input freshness and caps after a
-    release were fixed in bf830aa827.)
+12. **Calibration cut one way** until `RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS`: `covered` signed under an UNTESTED brief,
+    `calibrate` promoted on a bare exit 0 and always wrote the registry, and advisory refusals raised repair and alarms.
+    Now symmetric (the Calibration bullet above). (The coverage judge's runner exit, all-input freshness and caps after a release
+    were fixed in bf830aa827.)
 13. **The refusal contract** (f4e4cda069) checks passed rows' evidence as refusals', needs two shared words in
     `observed`, binds a given `sha`, and stores an all-pass verdict whole; `given` still falls back to the verdict's
     own copy (the program builds both).

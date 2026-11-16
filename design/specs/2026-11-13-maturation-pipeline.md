@@ -535,6 +535,9 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 - *Drop both as gates.* The lock needs: preflight green, one cold read by a fresh reader, and his "lock it".
 - *Keep the Exam for mods with no code, where there is nothing else to test the design against.*
 - **Recommendation:** drop both as gates for built mods now; decide for unbuilt mods after the first one goes through.
+- **Answered** by his card 2026-11-14 19:22Z: *Keep both*. A gate is only a gate if its judge is trustworthy both ways, so
+  the coverage judge's `covered` signs and its `not_covered` sends the Designer back only under a CALIBRATED brief, one
+  whose planted good and bad cases ran and came out as planted (`RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS`).
 
 **9. How many mods advance at once?** Until one of the four reaches Stage 8, the four advance and none is added (decision 8). This asks the limit after that.
 

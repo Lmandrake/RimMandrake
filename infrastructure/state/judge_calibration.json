@@ -1,5 +1,5 @@
 {
- "about": "Judge calibration registry (RIMMANDRAKE_SEED_JUDGE_CALIBRATION_FROM_CORPORA; spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md section 5). Keyed by family; `hash` is refusal_contract.brief_hash of `brief`. Only a CALIBRATED brief's refusal has a consequence; any edit to a brief file resets it to UNTESTED (refusal_contract.py calibrate). A model-judged brief is CALIBRATED only by a recorded run on its current hash that passes every good case and refuses every bad one.",
+ "about": "Judge calibration registry (RIMMANDRAKE_SEED_JUDGE_CALIBRATION_FROM_CORPORA; spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md section 5). Keyed by family; `hash` is refusal_contract.brief_hash of `brief`. Only a CALIBRATED brief's verdict, either way, has a consequence (a refusal sends work back, a pass signs); any edit to a brief file resets it to UNTESTED (refusal_contract.py calibrate). A brief is CALIBRATED only by a check on its current hash whose case results show every `planted` case ran and came out as planted, good and bad both (refusal_contract.judge_cases; RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS): `free_check` is deterministic and runs on every calibrate, `model_check` spends and runs only on `calibrate --model <family>`. `cases` is prose about the corpora a row was seeded from.",
  "families": {
   "art_eval_first_pass": {
    "brief": [
@@ -46,16 +46,37 @@
    ],
    "cases": {
     "bad": [
-     "planted: a tree leaf with no scene must be refused (mutate-your-checker); no owner-caught coverage miss on file yet"
+     "planted (coverage_calibration.py): bad_leaf_no_scene, a leaf and capability with no scene; bad_scene_no_control, a scene with no control and no asserted start; no owner-caught coverage miss on file yet"
     ],
     "good": [
-     "design/concepts/FlowWorks: signed by the coverage judge at tree 572198fed9",
+     "planted (coverage_calibration.py): good_lanterns, every capability and leaf with a contract scene, his flagship bound; it also plants the Pyrelands round 6 noise kinds g17 and g18 (a gap asking for documentation or another showcase that names no wrong behaviour)",
+     "design/concepts/FlowWorks: signed by the retired Arbiter (tree.json coverage.signed_by Arbiter, 2026-11-05) at tree 572198fed9, not by this brief; a legacy signature, not a calibration case of it",
      "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
     ]
    },
-   "hash": "c2940c3ffd7f1054",
-   "reset_at": "2026-11-13T06:08:15Z",
+   "hash": "66337fdd01cd92b1",
+   "model_check": [
+    "python3",
+    "src/RimMandrake/rimflow/coverage_calibration.py",
+    "run"
+   ],
+   "planted": [
+    {
+     "expect": "pass",
+     "id": "good_lanterns"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_leaf_no_scene"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_scene_no_control"
+    }
+   ],
+   "reset_at": "2026-11-16T14:59:28Z",
    "status": "UNTESTED",
+   "timeout_s": 1800,
    "was": "UNTESTED"
   },
   "evidence_gate": {
@@ -77,15 +98,23 @@
     "corpus",
     "check"
    ],
-   "hash": "bc47485e4fb528c5",
+   "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-13T06:08:15Z",
+    "at": "2026-11-16T14:59:28Z",
+    "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK"
+    "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
+    "results": "822 case rows"
    },
-   "reset_at": "2026-11-13T06:08:15Z",
+   "planted": {
+    "count": {
+     "pass": 767,
+     "refuse": 55
+    }
+   },
+   "reset_at": "2026-11-16T14:59:28Z",
    "status": "CALIBRATED",
-   "was": "UNTESTED"
+   "was": "CALIBRATED"
   },
   "scene_look_judge_brief": {
    "brief": [

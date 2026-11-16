@@ -702,6 +702,30 @@ def row_reask_text(rows, cv, given, gaps):
     return "\n".join(out)
 
 
+def unproven_signatures(repo):
+    """-> [{concept, signed_by, at, why}] for every concept whose coverage signature was made by a judge whose brief
+    was not CALIBRATED when it signed (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: flagged, never voided)."""
+    out = []
+    root = os.path.join(repo, "design", "concepts")
+    for name in sorted(os.listdir(root)) if os.path.isdir(root) else []:
+        d = os.path.join(root, name)
+        tree = CT._read_json(os.path.join(d, "tree.json"))
+        cov = (tree or {}).get("coverage") if isinstance((tree or {}).get("coverage"), dict) else {}
+        by = cov.get("signed_by")
+        if by in CT.LEGACY_SIGNERS:
+            why = "legacy signer %s, before any calibration registry" % by
+        elif by == CT.SIGNER:
+            v = CT._read_json(os.path.join(d, VERDICT_FILE)) or {}
+            cal = v.get("calibration") if v.get("signed") else None
+            if cal == "CALIBRATED":
+                continue
+            why = "brief %s when it signed" % (cal or "UNTESTED (signed before covered read calibration)")
+        else:
+            continue
+        out.append({"concept": "design/concepts/%s" % name, "signed_by": by, "at": cov.get("at"), "why": why})
+    return out
+
+
 def stop_exit(rec):
     """True when the pre-launch step must stop the Designer's run: judging stopped, parked, or the verdict refused
     itself (a malformed refusal never sends the Designer back to rework), or the refusal is advisory (an
@@ -1017,6 +1041,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
                 rec["criteria_suspect"] = suspect
     tree2 = CT.load(d)
     if rec["verdict"] == "covered":
+        rec["calibration"] = RC.status(CONTRACT_FAMILY)
         if missing:
             rec["error"] = "a covered verdict with no row for %s is not a covered verdict: not signed" % ", ".join(missing)
         elif fresh_key(d, tree2) != before:
@@ -1025,6 +1050,11 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
                 ", ".join(moved) if moved else "tree or sheet")
         elif rec.get("gaps"):
             rec["error"] = "a covered verdict that lists gaps is not a covered verdict: not signed"
+        elif rec["calibration"] != "CALIBRATED":
+            # RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: a gate trusted one way only is no gate; covered signs only
+            # under a CALIBRATED brief, as not_covered binds only under one
+            rec["advisory"] = ("the coverage brief is %s: this covered verdict is stored and shown, nothing is signed"
+                               % rec["calibration"])
         else:
             old = os.environ.get("RM_ROLE_UNIT")
             os.environ["RM_ROLE_UNIT"] = unit

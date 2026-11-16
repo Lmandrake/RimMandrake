@@ -36,9 +36,12 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
     python3 src/RimMandrake/rimflow/refusal_contract.py alarms          the open alarm rows, one line each
     python3 src/RimMandrake/rimflow/refusal_contract.py diffguard <old.json> <new.json> [--bars a,b] [--card R]
                                     [--second-read R]   classify a criteria change {clause: text}; exit 1 if refused
-    python3 src/RimMandrake/rimflow/refusal_contract.py calibrate [--no-run]   the judge calibration registry
-                                    (infrastructure/state/judge_calibration.json): an edited brief resets to UNTESTED,
-                                    free deterministic checks run; only a CALIBRATED brief's refusal has a consequence
+    python3 src/RimMandrake/rimflow/refusal_contract.py calibrate [--no-run | --model <family>]   the judge calibration
+                                    registry (infrastructure/state/judge_calibration.json): an edited brief resets to
+                                    UNTESTED, free deterministic checks run (--model runs a family's model_check, which
+                                    spends); a check must show every planted case ran and came out as planted, both
+                                    ways. Only a CALIBRATED brief's verdict, either way, has a consequence. --no-run is
+                                    a read-only status (writes nothing) and flags signatures made under an unproven brief
     python3 src/RimMandrake/rimflow/refusal_contract.py repair <case.json>   the neutral fixer (roles/criteria_fixer.md,
                                     one fresh Opus run), guarded by diffguard, recorded whole; exit 1 if refused
 
@@ -473,6 +476,8 @@ def submit(verdict, given=None, now=None):
     given = given if given is not None else (verdict or {}).get("given")
     item, fam = str((verdict or {}).get("item") or ""), str((verdict or {}).get("family") or "")
     res = {"ok": False, "errors": [], "counted": False, "cached": [], "repair_due": [], "alarms": []}
+    res["calibration"] = status(fam)
+    res["advisory"] = adv = res["calibration"] != "CALIBRATED"
     with _locked():
         c = counters()
         it = _item(c, item) if item else {"refused": 0}
@@ -502,6 +507,12 @@ def submit(verdict, given=None, now=None):
             ptr = _store(dict(stored, kind="refusal", key=key, record=rec))
             c["cache"][key] = {"item": item, "clause": rec["clause"], "sha": sha, "pointer": ptr, "at": iso(now)}
             fresh.append(rec)
+        if adv and fresh:
+            # RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: an uncalibrated brief's refusal is stored and shown only; it is
+            # not counted, so it raises no repair and no alarm
+            _write(counters_path(), c)
+            res["may_judge"] = may_judge(item)
+            return res
         if not verdict["refusals"]:
             res["pointer"] = _store(dict(stored, kind="pass", verdict=verdict, given=given))   # an all-pass, kept whole
         if fresh or not verdict["refusals"]:
@@ -532,8 +543,6 @@ def submit(verdict, given=None, now=None):
                 res["alarms"].append(alarm("family:%s" % fam, trip, now, family=fam))
         _write(counters_path(), c)
     res["may_judge"] = may_judge(item)
-    res["calibration"] = status(fam)
-    res["advisory"] = res["calibration"] != "CALIBRATED"
     return res
 
 
@@ -589,11 +598,68 @@ def advisory(family):
     return status(family) != "CALIBRATED"
 
 
-def calibrate(path=None, root=None, run_free=True, now=None):
-    """Re-read every row: an edited brief resets to UNTESTED; a row with a `free_check` command (deterministic, no
-    model) is run, and sets CALIBRATED (exit 0) or FAILED at the current hash. A model-judged brief is calibrated only
-    by a recorded run on its current hash (one judge run per case; never started here). Writes the registry back."""
+EXPECTS = ("pass", "refuse")
+RESULTS_ENV = "RM_CALIBRATION_RESULTS"   # where a check writes {"cases": [{"id", "expect", "got"}, ...]}
+
+
+def judge_cases(planted, results):
+    """-> (status, why) for one check's case results against the row's planted cases (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS).
+    `planted` is a list of {id, expect} or {"count": {"pass": n, "refuse": m}} (a corpus too big to list). CALIBRATED
+    only when every planted case ran and came out as planted and the cases go both ways; a case that came out the other
+    way is FAILED; a case that did not run, no results, or one-way cases leave it UNTESTED. Exit 0 alone proves nothing."""
+    cases = [c for c in (results or {}).get("cases") or [] if isinstance(c, dict)]
+    wrong = sorted(str(c.get("id")) for c in cases if c.get("expect") in EXPECTS and c.get("got") != c.get("expect"))
+    if isinstance(planted, dict) and isinstance(planted.get("count"), dict):
+        want = {k: int(planted["count"].get(k) or 0) for k in EXPECTS}
+        ran = {k: sum(1 for c in cases if c.get("expect") == k) for k in EXPECTS}
+        missing = ["%d %s case(s)" % (want[k] - ran[k], k) for k in EXPECTS if ran[k] < want[k]]
+    else:
+        want = {k: sum(1 for c in planted or [] if isinstance(c, dict) and c.get("expect") == k) for k in EXPECTS}
+        got = {str(c.get("id")): c for c in cases}
+        missing = sorted(str(c.get("id")) for c in planted or [] if isinstance(c, dict) and str(c.get("id")) not in got)
+        wrong = sorted(set(wrong) | {str(c.get("id")) for c in planted or [] if isinstance(c, dict)
+                                     and str(c.get("id")) in got and got[str(c["id"])].get("got") != c.get("expect")})
+    if wrong:
+        return "FAILED", "came out the other way: %s" % ", ".join(wrong)
+    if not all(want.values()):
+        return "UNTESTED", "planted cases do not go both ways (%s)" % ", ".join("%s %d" % kv for kv in sorted(want.items()))
+    if missing:
+        return "UNTESTED", "did not run: %s" % ", ".join(missing)
+    return "CALIBRATED", "%d planted case(s) ran and came out as planted" % len(cases)
+
+
+def run_check(cmd, root, planted, timeout=600):
+    """Run one calibration check with RESULTS_ENV set. -> (status, last_run)."""
     import subprocess
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        res_path = os.path.join(tmp, "results.json")
+        try:
+            p = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout,
+                               env=dict(os.environ, **{RESULTS_ENV: res_path}))
+            code, out = p.returncode, (p.stdout + p.stderr).strip()
+        except (OSError, subprocess.SubprocessError) as e:
+            code, out = None, str(e)
+        try:
+            with open(res_path, encoding="utf-8") as f:
+                results = json.load(f)
+        except (OSError, ValueError):
+            results = None
+    if code != 0:
+        st, why = "FAILED", "exit %s" % code
+    else:
+        st, why = judge_cases(planted, results)
+    run = {"exit": code, "out": out.splitlines()[-1] if out else "", "cases": why}
+    if isinstance(results, dict) and isinstance(results.get("cases"), list):
+        run["results"] = results["cases"] if len(results["cases"]) <= 20 else "%d case rows" % len(results["cases"])
+    return st, run
+
+
+def calibrate(path=None, root=None, run_free=True, now=None, model=()):
+    """Re-read every row: an edited brief resets to UNTESTED; a row with a `free_check` command (deterministic, no
+    model) is run; a family named in `model` has its `model_check` run (it spends: never by default). A check sets
+    its status by judge_cases over the case results it writes to $RM_CALIBRATION_RESULTS, at the current hash. Writes
+    the registry back. With run_free False and no model it only reports: nothing is written (`calibrate --no-run`)."""
     path, root = path or calibration_path(), root or calibration_root()
     reg = load_calibration(path)
     at = iso(time.time() if now is None else now)
@@ -601,15 +667,13 @@ def calibrate(path=None, root=None, run_free=True, now=None):
         h = brief_hash(row.get("brief") or [], root)
         if row.get("hash") != h:
             row.update(status="UNTESTED", was=row.get("status"), hash=h, reset_at=at)
-        if run_free and row.get("free_check"):
-            try:
-                p = subprocess.run(row["free_check"], cwd=root, capture_output=True, text=True, timeout=600)
-                code, out = p.returncode, (p.stdout + p.stderr).strip()
-            except (OSError, subprocess.SubprocessError) as e:
-                code, out = None, str(e)
-            row["status"] = "CALIBRATED" if code == 0 else "FAILED"
-            row["last_run"] = {"at": at, "exit": code, "out": out.splitlines()[-1] if out else ""}
-    _write(path, reg)
+        cmd = row.get("model_check") if fam in model else row.get("free_check") if run_free else None
+        if cmd:
+            row["status"], row["last_run"] = run_check(cmd, root, row.get("planted"),
+                                                       timeout=int(row.get("timeout_s") or 600))
+            row["last_run"]["at"] = at
+    if run_free or model:
+        _write(path, reg)
     return reg
 
 
@@ -789,9 +853,18 @@ def main(argv=None):
         print(json.dumps(res, indent=1, sort_keys=True))
         return 0 if res["ok"] else 1
     if cmd == ["calibrate"]:
-        reg = calibrate(run_free="--no-run" not in argv)
+        model = argv[argv.index("--model") + 1].split(",") if "--model" in argv else ()
+        reg = calibrate(run_free="--no-run" not in argv and not model, model=model)
         for fam, row in sorted(reg["families"].items()):
-            print("%-24s %-10s %s" % (fam, row["status"], (row.get("last_run") or {}).get("out", "")))
+            lr = row.get("last_run") or {}
+            print("%-24s %-10s %s" % (fam, row["status"], lr.get("cases") or lr.get("out", "")))
+        try:
+            import coverage_judge
+            for f in coverage_judge.unproven_signatures(calibration_root()):
+                print("FLAGGED %s signed by %s at %s under an unproven brief (%s); not voided" % (
+                    f["concept"], f["signed_by"], f["at"], f["why"]))
+        except Exception as e:  # noqa: BLE001 - the status table stands; the scan's failure is said by name
+            print("FLAGGED UNMEASURED: %s: %s" % (type(e).__name__, e))
         return 0
     if cmd == ["counters"]:
         c = counters()

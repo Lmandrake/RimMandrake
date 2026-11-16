@@ -6,7 +6,9 @@ Good: a well-formed verdict is stored whole and counted. Malformed: each defect 
 not count against the item; a second one from the same brief alarms the family. Repeat: the same refusal on unchanged
 evidence at the same sha is answered from the cache and never counted; changed evidence is judged again. Counters: the
 3rd refusal of one clause is due for repair, the 4th refused verdict alarms the item and stops judging; a family rate
-trips at >70% of 20 and at all of 8 across 3 items, and a healthy family does not. Every write goes to a temp dir."""
+trips at >70% of 20 and at all of 8 across 3 items, and a healthy family does not. Those counters bind a CALIBRATED brief
+only: an advisory (uncalibrated) refusal is stored but raises no repair and no alarm (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS).
+Every write goes to a temp dir."""
 import copy
 import json
 import os
@@ -185,6 +187,28 @@ def families(root):
     check("the alarm routes to the Conductor", rt and rt["reader"] == "Conductor" and rt.get("cause") == "refusals", rt)
 
 
+def advisory(root):
+    """RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: an UNTESTED family's refusals are stored, never repair or alarm."""
+    g = given(root)
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "adv")
+    out = []
+    for i in range(5):
+        write(root, "scene.log", "BlastAt 10,10\npawn Kira displaced 1.%d cells\nend\n" % i)
+        v = good(item="ITEM_ADV", family="untested_fam")
+        if i:
+            v["refusals"][0]["new_since"] = "unfixed:C1"
+        out.append(RC.submit(v, g, now=1794300000 + i))
+    check("advisory: an UNTESTED family's refusals are stored and marked advisory",
+          all(r["ok"] and r["advisory"] and r["calibration"] == "UNTESTED" for r in out), out)
+    check("advisory: five refusals of one clause raise no repair and no alarm",
+          not any(r["repair_due"] or r["alarms"] for r in out) and not RC.open_alarms() and RC.may_judge("ITEM_ADV"),
+          [(r["repair_due"], r["alarms"]) for r in out])
+    with open(RC.records_path()) as f:
+        n = sum(1 for x in f if '"ITEM_ADV"' in x)
+    check("advisory: each refusal is still kept whole in the store", n == 5, n)
+    write(root, "scene.log", "BlastAt 10,10\npawn Kira displaced 1 cell\nend\n")
+
+
 def cli(root):
     p = os.path.join(root, "v.json")
     v = good()
@@ -200,7 +224,8 @@ def cli(root):
 
 
 def main():
-    env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")}
+    env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
+                                          "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")}
     try:
         with tempfile.TemporaryDirectory() as root:
             ops = os.path.join(root, "ops")
@@ -209,9 +234,17 @@ def main():
                               RM_DISPATCHER_STATE=os.path.join(root, "dispatcher"))
             write(root, "scene.log", "BlastAt 10,10\npawn Kira displaced 1 cell\nend\n")
             write(root, "player.log", "Loaded 13 mods\n")
+            # the counters bind a CALIBRATED brief only: these families are calibrated at their brief's hash
+            write(root, "brief.md", "a calibrated brief\n")
+            h = RC.brief_hash(["brief.md"], root)
+            with open(os.path.join(root, "cal.json"), "w") as f:
+                json.dump({"families": {fam: {"brief": ["brief.md"], "hash": h, "status": "CALIBRATED", "cases": {}}
+                                        for fam in ("scene_look", "gate_x", "healthy")}}, f)
+            os.environ.update(RM_JUDGE_CALIBRATION=os.path.join(root, "cal.json"), RM_CALIBRATION_ROOT=root)
             malformed(root)
             store_and_counts(root, ops)
             families(root)
+            advisory(root)
             cli(root)
     finally:
         for k, v in env.items():

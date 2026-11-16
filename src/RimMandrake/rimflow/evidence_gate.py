@@ -909,6 +909,13 @@ def main(argv=None):
     with open(a.path, encoding="utf-8") as f:
         corpus = json.load(f)
     bad, n = check_corpus(corpus)
+    if os.environ.get("RM_CALIBRATION_RESULTS"):
+        # each corpus close is a planted case for the judge calibration registry (refusal_contract.judge_cases):
+        # proof that it ran and came out as planted, not just an exit code (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS)
+        cases = [{"id": "%s@%s" % (r["item"], r["sha"][:10]), "expect": "pass" if r["class"] == "valid" else "refuse",
+                  "got": "pass" if corpus_judge(r)[0] else "refuse"} for r in corpus["closes"]]
+        with open(os.environ["RM_CALIBRATION_RESULTS"], "w", encoding="utf-8") as f:
+            json.dump({"cases": cases}, f)
     for b in bad[:20]:
         print("MISS " + b)
     print("evidence corpus: %d false closes, %d rejected; %d valid closes, %d accepted - %s"
