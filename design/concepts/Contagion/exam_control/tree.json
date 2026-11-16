@@ -1,0 +1,649 @@
+{
+ "schema_version": 1,
+ "subject": "Contagion",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimMandrake/Contagion.md#north-star",
+ "root_state": "DRAFT",
+ "root_hash": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "Burn dose sizes, tells lead, Coalescence stage timings and the mutation deck weights are tuning; scenes check sign and order, never the number"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "weather is an RM_Contagion Bloom def and a judge reading the midday shot names it red and storm-roofed; control shot under vanilla rain is named grey",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "bloom_reads_sick",
+   "by": "concept",
+   "root": [
+    "contagion_bloom_reads_unwholesome"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player at play zoom on a Contagion map under the standing Bloom sees a red, storm-roofed sky and red rain or fog, never an ordinary grey overcast day.",
+   "scenario": "Saved Contagion site v3, standing Bloom, midday, screenshots at play zoom; the same site retiled to a temperate forest under vanilla rain as the control.",
+   "false_pass": [
+    "the weather def reads RM_ContagionBloom while the screen shows vanilla grey rain",
+    "a screenshot taken at night where every sky looks dark"
+   ],
+   "red": "a build whose Bloom weather loads with the vanilla rain sky colours, so the lid is not red",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: one midday shot of the standing Bloom beside the vanilla-rain control"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "first tell render tick precedes the Burn condition start by at least the configured tells window; with tells disabled in settings no tell renders and the Burn still comes",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "tells_then_burn",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player watching a Contagion map sees the tells first, gawpsacks sinking, rattlegrope shaking, red puffs and the rustle sound, and only then the light changing as the Burn arrives, never the Burn first.",
+   "scenario": "Saved site, a natural Burn scheduled by clock jump to just inside the tells window; read tell renders and the Burn condition tick by tick across the window.",
+   "false_pass": [
+    "tells fire on the same tick as the Burn so there is no lead",
+    "the tell state flag is set but nothing moves on screen"
+   ],
+   "red": "a build where the tells window is zero or the tell renderer never runs, so the Burn lands unannounced",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: a short capture of one tells window ending in the Burn"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the near pair is in shade at Burn start; the far pair is not, and nothing moved them but their own jobs or the player's order",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "shelter_in_lead",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees colonists within one dash of a planned refuge get inside during the tells lead, while a distant work party is caught in the open and must improvise.",
+   "scenario": "Saved site, two colonists working 8 cells from a roofed refuge and two 60 cells away; a natural Burn tells window opens; read positions when the Burn starts.",
+   "false_pass": [
+    "the near workers were already standing under the roof when the window opened",
+    "the Burn starts before any tell, so the lead was never offered"
+   ],
+   "red": "a build where colonists ignore the tells and keep working outdoors until burned, or where every pawn on the map is teleported to safety",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "dash colonist alive with a Burn dose above zero and below the downed threshold; the standing colonist's dose is at least three times the dasher's",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "one_dash_at_cost",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player orders a prepared colonist across open ground from one refuge to the next during a Burn and sees them arrive alive, hurt by a readable Burn dose, while a colonist left working outdoors for the whole Burn is gravely hurt.",
+   "scenario": "Saved site during a forced Burn: a colonist crosses 20 open cells between two roofed refuges; a second colonist is drafted standing in the open for the Burn's length; read RM_BurnDose and health.",
+   "false_pass": [
+    "the dash is safe because the Burn deals nothing to colonists",
+    "the dash colonist dies, so the Burn is a lockdown"
+   ],
+   "red": "a build where the Burn is either harmless to colonists or lethal within one crossing, so the dash is no choice: the lockdown he would stop the review on",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the dash and its cost, the flagship stop line"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "dose rises exactly on cells the shade grid reads open and stays zero on cells it reads shade, across all five placements",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "refuge_is_shade",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a pawn take shelter from the Burn under a roof, under a tree's cast shade or in water, the same cells the shared shade overlay calls shade, and sees no pawn safe in a cell that shade calls open.",
+   "scenario": "Saved site, forced Burn: pawns placed on a roofed cell, a cell in a tree's cast canopy shade off the trunk cell, a water cell, a trunk cell whose shade grid reads open, and plain open ground; read RM_MapComponent_ShadeGrid and Burn dose per pawn.",
+   "false_pass": [
+    "only the trunk cell protects, as the old exact-cell tree test did",
+    "the scene places every pawn on a roof so geometry is never tested"
+   ],
+   "red": "a build that keeps the Burn's own exact-cell tree test beside the shared shade grid, so canopy shade beside a trunk still burns",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the UV-shy native carries a Burn injury; Scaldhide and Crispling carry none; with the Burn ended none gains one",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "natives_take_burn",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees UV-shy natives hurt by the Burn while the armoured Scaldhide and Crispling walk through it unharmed.",
+   "scenario": "Saved site, a forced Burn with a UV-shy native, a Scaldhide and a Crispling in the open; read hediffs after 2500 ticks.",
+   "false_pass": [
+    "the UV-shy native was killed by a predator, not the Burn",
+    "every native is exempt so nothing is ever hurt"
+   ],
+   "red": "a build where Burn harm never reaches natives, the 2026-11-06 FAIL, or where armour exemptions are lost",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "at Burn start the UV-shy natives are sheltered with zero Burn dose and the sun lover is in the open; control with the dive setting off: they are hit in the open",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "preburn_dive",
+   "by": "concept",
+   "root": [
+    "contagion_burn_reads_as_danger"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees natives dive for shelter during the tells, before the Burn lands, and sun lovers come out as the others go, so who flees what reads ahead of time.",
+   "scenario": "Saved site, a natural Burn tells window; UV-shy natives and a sun-loving native in the open; read positions and jobs at window start and at Burn start.",
+   "false_pass": [
+    "natives move only after they are already burned, the reactive dive that exists today",
+    "the dive is a teleport"
+   ],
+   "red": "a build where the only dive is the reactive sprint after damage, so the Burn hurts first and natives flee after",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "zero sun-escape jobs under the Bloom; at least one under the Burn with the same pawns",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "bloom_quiets_sundash",
+   "by": "concept",
+   "root": [
+    "contagion_bloom_reads_unwholesome"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player under the standing Bloom sees no Unfinished or native dashing for shade from the sun; once the Burn clears the sky the sun escape returns.",
+   "scenario": "Saved site, standing Bloom at midday with Unfinished in the open; count sun-escape jobs over 2500 ticks; then force a Burn and count again.",
+   "false_pass": [
+    "no Unfinished were on the map, so the count is zero for no reason",
+    "sun escape is switched off globally"
+   ],
+   "red": "a build where the sun-escape trigger reads raw sun angle and ignores the weather's sunExposureFactor, so Unfinished dash under a covered sky",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "warning shown before warmup names the whole map; RM_ContagionBurn condition after warmup; condition gone within its hold time after power off; off-biome it is RM_RepulsorClearSky, never a Burn",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "repulsor_warns_and_clears",
+   "by": "concept",
+   "root": [
+    "contagion_repulsor_clears_sky"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player switching on a Cloud Repulsor is told, before it starts, that its Burn covers the whole map and everyone in the open; once warm, the whole Contagion sky clears into the Burn, and the Burn lapses after its power is cut.",
+   "scenario": "Saved site: build and power a Repulsor; read the warning text before warmup, the condition and weather after warmup, then cut power and read the lapse; the same on a temperate quicktest map, where it holds an ordinary clear sky.",
+   "false_pass": [
+    "the warning appears only after the Burn has started",
+    "the Burn was a natural one that happened to start"
+   ],
+   "red": "a build where the Repulsor starts a map-wide Burn with no warning, or never lapses after power loss",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the warning text and the sky clearing"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the touched hediff is visible before the first mutation; exactly one transition message at the active-change stage; zero letters for sub-threshold exposure",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "touched_reads_early",
+   "by": "concept",
+   "root": [
+    "contagion_bloom_reads_unwholesome"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a colonist who works out in the Bloom carry a readable early Contagion-touched health state and get one noticeable message when exposure turns into active change, never a letter for each small exposure.",
+   "scenario": "Saved site, a colonist working outdoors under the Bloom for a day by clock; count letters and messages and read RM_ContagionTouched severity and stage across the day.",
+   "false_pass": [
+    "the test sets the severity by hand",
+    "no letter fires because the colonist was indoors"
+   ],
+   "red": "a build where every exposure tick sends a letter, or where the change starts with no prior visible state",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "split within the data weights; no duplicate on one body; no body past the cap",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "mutations_both_ways",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a touched colonist's changes come from a mixed deck, some harmful and some mixed blessings, capped and never repeated on one body.",
+   "scenario": "Selftest over the mutation deck: 200 seeded draws per eligible body; read harmful versus mixed split, duplicates and the cap.",
+   "false_pass": [
+    "the deck has only one card so the split is trivially met",
+    "duplicates are filtered by the test, not the deck"
+   ],
+   "red": "a build whose deck deals only harmful cards, or deals the same mutation twice, or ignores the cap",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "three buds with pairwise different rolled limb sites; the dead one leaves slime and RM mulch and no corpse",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "unfinished_malformed",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees the Unfinished budded by a Bloody Mess each look differently half-made, and sees one that dies dissolve into slime and mulch, never an ordinary corpse.",
+   "scenario": "Saved site, a Bloody Mess with its budding deadline jumped three times; screenshot each Unfinished at play zoom; kill one and read what it leaves.",
+   "false_pass": [
+    "every Unfinished rolled the same limbs",
+    "the dead one left a corpse that was hauled away before the read"
+   ],
+   "red": "a build whose variation comp never rolls, or whose death leaves a corpse",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the three Unfinished side by side"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "at least one stage up with absorption counted from arrivals; manhunters within the map cap; Burn collapse yields Monstrous samples and mulch, gunfire yields less mulch and no samples",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "coalescence_grows_and_breaks",
+   "by": "concept",
+   "root": [
+    "contagion_coalescence_reads_as_mass"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a Coalescence form, Unfinished walk to its ring and be absorbed, its body visibly grow a stage, its manhunters stay bounded, and a Burn collapse it into Monstrous samples where killing it gives less.",
+   "scenario": "Saved site: place a Coalescence, spawn six Unfinished, jump passive growth; read mass, stage graphic and manhunter count; force a Burn and read what it leaves; control: a second Coalescence killed by gunfire.",
+   "false_pass": [
+    "the stage graphic is set by the test",
+    "absorption is counted from Unfinished despawned by the cleanup"
+   ],
+   "red": "a build where the Unfinished never reach the ring and the mass stays at stage 1, or where the Burn collapse yields nothing more than gunfire",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the same Coalescence at two stages"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "stage 2 emits more manhunters than stage 1, still within the cap, all from the Coalescence; no unrelated incident fires",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "waiting_costs_more",
+   "by": "concept",
+   "root": [
+    "contagion_coalescence_reads_as_mass"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player who waits for one more Coalescence stage faces more pressure reaching the site and on the workers sent to recover the tissue, not a threat unrelated to the creature.",
+   "scenario": "Saved site: the same Coalescence read at stage 1 and stage 2 by clock; read manhunter count, their reach toward the colony and the recovery path.",
+   "false_pass": [
+    "pressure grows because an unrelated raid was fired",
+    "the stage 2 read is a different Coalescence"
+   ],
+   "red": "a build where a later stage adds no pressure, or adds pressure from outside the creature",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "odds visible in the existing UI before the job starts; batch of 2 to 4 donor-labelled parts; matched install gives the mood and no mismatch; the interrupted injection keeps the sample and starts no gestation",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "genome_brings_tissue",
+   "by": "concept",
+   "root": [
+    "contagion_grown_limb_visible"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player who extracts a genome sample, injects a Bloody Mess and waits out the gestation sees the odds before committing and, when the wanted part misses, still gets matched or sellable tissue.",
+   "scenario": "Saved site: extract a sample from a donor, inject a host, jump four days; read the odds shown before the injection, the batch and its donor labels; install one organ on the donor; interrupt a second injection mid-bar.",
+   "false_pass": [
+    "the batch is spawned by the test",
+    "odds are written in a dev log only"
+   ],
+   "red": "a build where a missed batch yields nothing, the odds are hidden until after the stab, or an interrupted injection still spends the sample",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "one of the five limb items from a Monstrous batch; after install the render differs from the natural-armed pawn in at least the south facing",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "limb_still_grows",
+   "by": "concept",
+   "root": [
+    "contagion_grown_limb_visible"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a Monstrous batch still yield one of the five grown limbs and a fitted colonist look different from one with a natural arm; what the limb costs is judged in Design Version 0.2.0, not here.",
+   "scenario": "Saved site: a Monstrous sample injected, gestation jumped; install the limb; screenshot the colonist in four facings beside a natural-armed one.",
+   "false_pass": [
+    "the limb is spawned by the test",
+    "the fitted pawn is never rendered"
+   ],
+   "red": "a build where the Monstrous branch falls back to an ordinary batch with limbs enabled, or the installed limb draws nothing",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "one print per Unfinished; its saved label names the roll; the matching contract consumes it and pays",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "prints_pay",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player scans a living Unfinished for a draftprint and sees a Helix contract that asks for that combination pay silver for it.",
+   "scenario": "Saved site with a Contagion home: scan a living Unfinished; fire a Helix contract asking for its roll; deliver the print.",
+   "false_pass": [
+    "the print item is spawned by the test",
+    "the contract asks for any print at all"
+   ],
+   "red": "a build where a print can be scanned twice, or the contract never consumes the matching print",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "corpse, collapsed skin and print exist in order; the Bloody Mess consumption removes the skin; the final print yields a sample",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "bodyprints_phased",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a corpse collapse to skin, the skin to a lasting anatomical print, a Bloody Mess physically eat what is left, and the final print still sampleable.",
+   "scenario": "Saved site: a native corpse left in the open; jump the phase clock through each stage; a Bloody Mess nearby; read the thing at each phase and sample the final print.",
+   "false_pass": [
+    "the phases are spawned by the test",
+    "instant slime death stands in for the sequence"
+   ],
+   "red": "a build where a death goes straight to slime, the sequence absent today",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every rostered plant renders its own RM art; conversions on the Contagion; none off-biome",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "flora_flesh",
+   "by": "concept",
+   "root": [
+    "contagion_flora_reads_as_flesh"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player at play zoom sees the Contagion's plants read as grown flesh, visibly unlike vanilla plants, and sees zhool haze turn ordinary plants in owned biomes only.",
+   "scenario": "Saved site at play zoom, one patch per rostered plant; a zhool in a mixed patch with its haze clock jumped; the same zhool on a temperate quicktest map as the control.",
+   "false_pass": [
+    "the test plants the converted species",
+    "the haze runs on the temperate map too"
+   ],
+   "red": "a build where flora loads with donor or vanilla art, or the haze converts plants outside our biomes",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: one shot of the flora patches at play zoom"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "at least half the roster rows spawn within the day; no species renders the missing texture",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cast_lives_here",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed",
+    "contagion_never_magenta"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees the Contagion's natives spawn at density and each read as its own creature, never a magenta square.",
+   "scenario": "Saved site, wild animals spawned to the biome's density over a day by clock; screenshot each species at play zoom; count spawns per roster row.",
+   "false_pass": [
+    "the test spawns the animals by hand",
+    "one species fills the whole count"
+   ],
+   "red": "a build where animalDensity is unset so nothing spawns, or a race loads with no texture",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the cast sheet at play zoom"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every flyer resolves MaxFlightTime above zero and its four-facing frame set; Gawpsack carries none",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "airborne_stats",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The tester reading defs sees each flyer of the Contagion carry the MaxFlightTime stat, its race flags and a whole-body flip-book; the flight itself is never tested live without him.",
+   "scenario": "Selftest over the race defs of Blisterfloat, Sparkleech, Skinflap and Gorekite; read MaxFlightTime, race flags and flyingAnimationFramePathPrefix frames on disk.",
+   "false_pass": [
+    "the stat is present on the parent def only",
+    "frames exist for one facing"
+   ],
+   "red": "a build where a flyer loses its MaxFlightTime stat or its flip-book frames",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "each switch off stops its feature alone; reset restores shipped defaults",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "settings_superb",
+   "by": "concept",
+   "root": [
+    "contagion_bloom_reads_unwholesome"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player opening the Contagion's Mod Settings finds every major feature with its own switch and its tuning, and sees each switch, once off, stop exactly its feature.",
+   "scenario": "Quicktest map retiled to the Contagion: flip each feature switch off, run its scene step, read that the feature stops and the others run; reset to defaults.",
+   "false_pass": [
+    "a switch is read back but nothing checks the behaviour",
+    "all switches are flipped at once"
+   ],
+   "red": "a build where a switch round-trips but the feature ignores it",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge does not name the Contagion shot a forest",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": "a Contagion map that reads as a plain vanilla forest with recoloured trees",
+   "wall_expect_h": null,
+   "id": "no_vanilla_forest",
+   "by": "concept",
+   "root": [
+    "contagion_never_vanilla_forest"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player at play zoom never sees a Contagion map that reads as a vanilla forest with recoloured trees.",
+   "scenario": "Saved site at play zoom beside a temperate forest quicktest map; a judge reads both.",
+   "false_pass": [
+    "the judge is shown only close-ups"
+   ],
+   "red": "a build where the roster falls back to vanilla trees",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every texPath resolves to a file on disk",
+   "tier_reason": null,
+   "cannot_show": "a magenta square for any flora, creature or device",
+   "wall_expect_h": null,
+   "id": "no_magenta",
+   "by": "concept",
+   "root": [
+    "contagion_never_magenta"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player never sees a magenta square for any Contagion flora, creature or device.",
+   "scenario": "Offline texture resolution over every Contagion def's texPath, then the cast and flora screenshots.",
+   "false_pass": [
+    "only defs with a texPath are checked"
+   ],
+   "red": "a build where a renamed texture leaves a def pointing at nothing",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same samples and letters; the repeated dash costs a dose again",
+   "tier_reason": "the walk is the mod in play on the full list",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "walk_red_lid",
+   "by": "concept",
+   "root": [
+    "contagion_bloom_reads_unwholesome",
+    "contagion_burn_reads_as_danger",
+    "contagion_repulsor_clears_sky",
+    "contagion_coalescence_reads_as_mass",
+    "contagion_grown_limb_visible"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "preserve",
+   "experience": "The player walks a lived-in Contagion colony through a Bloom day, a natural Burn with a dash, a Coalescence harvest and a gestation, and the sky and the body tell one story.",
+   "scenario": "Load a lived-in Contagion save made mid-way through two in-game weeks; take a natural Burn with one dash, then harvest a Coalescence under a Repulsor Burn and start a gestation; reload and take them in the second order, harvest first; repeat the dash on the next Burn; read doses, hediffs, samples and letters each time.",
+   "false_pass": [
+    "a fresh map stands in for the lived-in save",
+    "the second order is never run"
+   ],
+   "red": "a build where the Burn schedule, touched progression or gestation is lost on reload, or the order of harvest and Burn changes the outcome",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  }
+ ]
+}
