@@ -1,0 +1,3063 @@
+{
+  "inventory": [
+    {
+      "id": "package",
+      "speaker": "agent",
+      "text": "Development package, explicitly compiled assembly and composed Baroque Biomes shipping route; owned art assets and load wiring.",
+      "source": "src/RimMandrake/Stillsand/About/About.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/About/About.xml",
+        "src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj",
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical load and patch verification; no current assembly/deploy match or visual atlas judgment.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:398"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "terrain",
+      "speaker": "agent",
+      "text": "Sparse extreme-desert biome: sand and broad walkable deep sand, no rain, low fertility, no rivers, allowed roads, disease/weather tables and arrival letter.",
+      "source": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/FlowWorks/Defs/ManyWaters/TerrainDefs/RM_DeepSand.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Inline XML presence and historical load do not establish current coverage, travel cost or appearance.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:398",
+        "OWNER:1792525593703436506"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "roster",
+      "speaker": "agent",
+      "text": "Native wild roster plus upper-tier fauna/flora/pack patches; Vaalok admitted as carrier to trader group makers through the Biomes setting gate; shipped Vozzik definition remains for its other home.",
+      "source": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vaalok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vozzik.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_TraderCarriers_Stillsand.xml",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandTraderProbe.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Current roster must be read after all patches. Historical partial cast evidence, no live atlas here. RM_Vozzik remains defined here but is rostered elsewhere.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:398",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1660"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "flora_optics",
+      "speaker": "agent",
+      "text": "Light-pipe nubs yield biosilica; glasscrust yields biosilica grit and provides the low visible flora; no added lush scrub.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Built content closed offline. Spawn/resolution checks cannot accept the glints, ecological usefulness or map composition.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "ollim",
+      "speaker": "agent",
+      "text": "Tall and kneeling ollims yield the same unusual ollim wood; enormous slow-growing shade plants form bone-field places.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml",
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:364"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Wood and plant XML present; effective shade geometry and the living place not visually accepted here.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1009",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "hourbloom",
+      "speaker": "agent",
+      "text": "Short-lived unsowable hourbloom is output of pouring and gale seeding rather than an ordinary wild roster resident.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:187",
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:645"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Return has partial later evidence, not a current full lifecycle demonstration.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "murrowbulb",
+      "speaker": "agent",
+      "text": "Franchise-free Murrowbulb crop and raw food, with the canon bloddle supplied separately by campaign patch.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Murrowbulb.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Murrowbulb.xml",
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened",
+      "proof_note": "Implementation is direct XML; no specific current crop/harvest acceptance recovered. Owner rehome note is OWNER:1792159400615069154, not new art approval.",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "rehome_residents",
+      "speaker": "agent",
+      "text": "LongShade-supplied Ulgga and Vosska fauna plus Ultriss Pad flora are rostered on Stillsand in the composed package; their creature/plant data remain in the neighbouring source folder.",
+      "source": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml",
+        "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Ultracactus.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened",
+      "proof_note": "Current XML wiring, not proof that the older Stillsand atlas and behaviour checks cover all rehomed residents. Retain their built capabilities and actual ownership.",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "giant_residents",
+      "speaker": "agent",
+      "text": "Oommok mirror giant and aurrok grazer; native giant bodies, stats, kinds and art, with Oommok moving-shade support in shared creature engine.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Oommok.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Oommok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Aurrok.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Built definitions and historical cast proof; useful colonist travel in a moving shadow is not established by spawning a giant.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1009",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "shade_tenants",
+      "speaker": "agent",
+      "text": "Eemmok follows giant shade; loomma seeks shade and carries sunstruck severity and dung-seeding behaviour.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_ShadeMite.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_ShadeMite.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Loomma later proof includes failures and partials. Spawned actors do not establish a stable functioning shade ecosystem.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:16149",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4547",
+        "infrastructure/state/live_proofs/STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "soorrak",
+      "speaker": "agent",
+      "text": "Soorrak giant flyer and canteen eggs, real flight stat plus map-entry/exit flags; runtime job-loop regression probes.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/prove_soorrak_not_stuck.py",
+        "src/RimMandrake/Stillsand/validation.py:1549"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical fixes verification; no unattended flight work performed. Stat reads and job-loop checks do not accept animation.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3618"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "gaanok",
+      "speaker": "agent",
+      "text": "Gaanok slow giant predator, described as patient follower; current implementation is ordinary predator AI and slow movement.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Definition is built; a persistent caravan-following story is not claimed as an implemented custom pursuit system.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "grain_life",
+      "speaker": "agent",
+      "text": "Ikee grain-scale creature; likka likka sand filter feeder, veessa cleanable/carrion consumer, and dormant siidda; their eggs/products and native art.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Ikee.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Ikee.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Siidda.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical content evidence. Special ecological claims require behaviour checks beyond ordinary spawn success.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1605"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "drazzik",
+      "speaker": "agent",
+      "text": "Drazzik drum lure and nizzek trap offspring, proximity-hatching eggs when the ProximityHatch service loads; separate buried presentation ownership.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Drazzik.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Drazzik.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Definition and shared comp wiring, not a current bait/lunge/false-signal scene.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1009"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "duumma",
+      "speaker": "agent",
+      "text": "Duumma buried creature and butchered six-litre water sac, shared fluid-sac comp and water-volume accounting.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_DuummaWaterSac.xml",
+        "src/RimMandrake/Stillsand/validation.py:2328"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Later Return verification partial. Sac hook is distinct from a real butcher-to-drink expedition. Dry drumming is not a demonstrated custom simulation.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "guzzka",
+      "speaker": "agent",
+      "text": "Cave-resident guzzka with valuable fertile/unfertile eggs; fertile proximity hatch trap, optional DBH water extension, six-litre pour/debt comp on unfertile egg.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Guzzka.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Guzzka.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical partial cave placement and L1 cave verification. No current egg-taking threat/reward acceptance.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1751",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3521"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "karrask",
+      "speaker": "agent",
+      "text": "Rehomed karrask livestock sheds raw plate via vanilla shearable; crafting cures it into workable stuff; fauna kind and recipe live in this mod.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Karrask.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Karrask.xml",
+        "src/RimMandrake/Stillsand/Defs/PawnKindDefs/RM_Karrask_Kind.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_Karrask_Recipes.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened",
+      "proof_note": "Not in the old Stillsand walk. XML present, not evidence of a currently accepted herd/shearing/curing loop or a Stillsand wild home.",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "swim_consumers",
+      "speaker": "agent",
+      "text": "Vekka and qorrax opt into the shared sand-submersion kit; terrain/strike/hit surfacing, invisible hediff, breach, rumble, wake query and living-body targeting with droid immunity.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vekka.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vekka.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Qorrax.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+        "src/RimMandrake/Stillsand/prove_sandswim.py"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Later partial/failure does not erase earlier evidence. Latest cited suite failure names catch, not automatically the Gravel submersion row.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1593",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16753",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5087",
+        "infrastructure/state/live_proofs/STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1.txt",
+        "infrastructure/state/live_proofs/STILLSAND_SAND_SWIM_REMAINDER_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "swim_signs",
+      "speaker": "agent",
+      "text": "Swimmer kill signs, letter/message, drag marks and leviathan body-taking; ordinary Vekka kill leaves a meal, event leviathan take can remove its victim corpse.",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs:615",
+        "infrastructure/state/items/closed/STILLSAND_FIXES_LIVE_PROOF_1.md"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Old letter wording was corrected to struck down for ordinary kills. Do not reopen that already-recorded corpse policy or equate it with event takes.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3618",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16753"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "drift_swim",
+      "speaker": "agent",
+      "text": "MovingDunes active-field query adds sufficiently deep drift as swim ground; cached delegate avoids repeated reflective calls.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:25",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:25",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_SunKernel.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Implementation and offline verification, no current drift-depth transition scene recovered.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:4502",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16618"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "thumper",
+      "speaker": "agent",
+      "text": "Water-refuelled thumper wets nearby cells and calls submerged non-player swimmers; reachable destinations, radius overlays, settings and Groundcaller variant patch.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_Thumper.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Thumper.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_Thumper.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_Thumper_Groundcaller.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "The remainder proof's five clauses cover swimming/catch/wakes, not a complete dry-versus-charged thumper test or Long Hunger summon.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:16618",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16753"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "sand_fishing",
+      "speaker": "agent",
+      "text": "Odyssey fishing on deep sand yields dune crawlers and rare glass pearls; new Fish sessions can call an existing swimmer toward the fisher.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_SandCatches.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_SandCatches.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingSetMakerDefs/RM_RareSandCatches.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:67",
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "A later recorded FAIL explicitly says Fish job landed no catch. This is not proof fishDefs are absent and not permission to simplify the fishing capability.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:16753",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5088"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "listening",
+      "speaker": "agent",
+      "text": "Wind-scaled hiss and saltation, singing actual slab movement and one near-building warning, shared swimmer rumble/breach sounds; gale drowns rumble.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:121",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:121",
+        "src/RimMandrake/Stillsand/Defs/SoundDefs/RM_SandListening.xml",
+        "src/RimMandrake/MovingDunes/Source/RM_DuneEvents.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Source now listens to actual SandMoved events rather than requested depth changes. Audio quality, mix and actionable warning time unverified.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:16618"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "tracks",
+      "speaker": "agent",
+      "text": "Stillsand sand/deep-sand surfaces consume shared TrackGrid: invisible swim troughs and Oommok prints, erasure on accumulated sand motion through SetDepth/AddDepth and gale wipe.",
+      "source": "src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Source/RM_DuneTrackEraser.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_DuneTrackKernel.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical grid proof; cumulative movement tally explicitly session-only. No current persisted partial-burial check.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2589",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5085"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "geophone",
+      "speaker": "agent",
+      "text": "Biosilica geophone reports coarse compass and size for nearby submerged swimmers or drum lures, selection rays and new-rumble notice; silent in gale.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_Geophone.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Geophone.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_Geophone.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Recorded L1 A1, not current in-play directional readability or threat discrimination acceptance.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3516"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "zuurrik",
+      "speaker": "agent",
+      "text": "Blood-cluster wake, stripping swarm, unwounded protection via ordinary behaviour, all-member quiet burial, growth by eaten filth/nutrition and toggle allowing active swarm to finish.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_MapComponent_Zuurrik.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_MapComponent_Zuurrik.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Zuurrik.xml",
+        "src/RimMandrake/Stillsand/validation.py:1383"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical partial. Current source repaired several old review findings; inaccessible food can still prevent burial. No full current A2 content result found.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1660"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "eruption",
+      "speaker": "agent",
+      "text": "Biome-gated sand-buster incident stages tunnel-to-mound, threat scaling and readable letter; ruukka and oorrik are incident castes rather than ambient residents.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_IncidentWorker_SandBusterEruption.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_IncidentWorker_SandBusterEruption.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SandBusterTunnelSpawner.cs",
+        "src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandBusterEruption.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Spawn/log historical checks; no multi-day brood ecology acceptance established.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3618"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "brood",
+      "speaker": "agent",
+      "text": "Sand-buster Hive mound uses vanilla dormancy, pawn spawning, healing and spreading-hive comps for the ruukka/oorrik brood.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SandBusterMound.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SandBusterMound.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_SandBusters.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "A tunnel producing one mound does not prove the escalating wave and destruction-stop behaviour over days.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1009",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3618"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "leviathan",
+      "speaker": "agent",
+      "text": "Muurrok incident warns, rumbles, arrives, breaches, appraises a body, attacks, takes and seeks sand to dive; data-driven incident/odds and loud draw ordering drills, charged thumper, shuttle, pour, colony.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_LeviathanKernel.cs",
+        "src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandLeviathanIncidents.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_LoudDraws.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Later emergence trace pass distinguishes came-and-went from never-arrived; earlier event ladder failed beam. Neither accepts the entire hunt or player warning experience.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:11364",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1749",
+        "infrastructure/state/live_proofs/STILLSAND_MUURROK_EMERGENCE_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "mirror_beam",
+      "speaker": "agent",
+      "text": "Animal-safe sun-reflection beam with null-safe weapon attribution, shared sun policy by default, heat/damage with no explicit ignition; Muurrok crest-plate corpse product.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_Verb_MirrorBeam.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Verb_MirrorBeam.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Muurrok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_CrestPlate.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical beam no-damage finding; warmup protection now present. Save-resumed burst budget and current hit/no-fire acceptance unverified.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1749",
+        "infrastructure/state/items/closed/MUURROK_BEAM_NO_DAMAGE_1.md"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "sun_lance",
+      "speaker": "agent",
+      "text": "Sun-fed turret uses the mirror beam with non-pawn sunlight gate, elevation scaling, independent setting and own base/top art.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SunLance.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SunLance.xml",
+        "src/RimMandrake/Stillsand/Source/RM_Verb_MirrorBeam.cs:88"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Recorded L1 A1 does not establish target damage, no fire, gale/shade refusal and reload in actual combat.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3531"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "horn",
+      "speaker": "agent",
+      "text": "Generic horn use/cooldown routs smaller predators and hostile tribal humans, rolls delayed answer incident; RSW horn item/recipe and Utinni answer incident wiring.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_KraytHorn.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_KraytHorn_Answer.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Built offline; remainder live row deliberately UNMEASURED on RM tier. No current horn-use/answer loop accepted.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2522"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "den_quest",
+      "speaker": "agent",
+      "text": "Quest nodes find the recorded den occupant, send an offer and clear the precious-den state on the selected kill signal; campaign quest data supplies canon content.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:220",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:220",
+        "src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/RUT_KraytDenQuest.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Cross-reference checks do not establish a complete played quest, bait/charges scene or live occupant identity after reload.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2522"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "sarlacc_seep",
+      "speaker": "agent",
+      "text": "Optional campaign seep-rooting incident and cave row consume Sarlacc swimmer-road/rooting machinery; visibility owner stays in Sarlacc.",
+      "source": "src/RimStarWars/Sarlacc/Defs/IncidentDefs_SwimmerSeep.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimStarWars/Sarlacc/Defs/IncidentDefs_SwimmerSeep.xml",
+        "src/RimStarWars/Sarlacc/Source/RSW_SwimmerRoad.cs",
+        "src/RimMandrake/Stillsand/Source/RM_CaveTierElements.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "RM-tier remainder explicitly unmeasured; Stage-I merger item is a neighbour obligation, not a new Stillsand design question.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2522"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "rock_island",
+      "speaker": "agent",
+      "text": "Largest natural outcrop becomes wind-aligned yardang when suitable; rare rockless tor, shade-side tunnel and thick-roofed cave, saved location/row and Rock island arrival letter.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaveGeometry.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_PreciousCaves_BiomeGenSteps.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical ten-map claim and later L1 verification; no newly measured cave success rate, real walkable entrance or visual review.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1751",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3521"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "cave_table",
+      "speaker": "agent",
+      "text": "Weighted enabled cave rows: brine food web, guzzka clutch, lens grotto, sealed cache, previously taken cave; generic terrain/item/pawn elements and saved den occupants.",
+      "source": "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:908"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "One logged roll is not proof all content is usable or balanced as fortune. Taken row remains, without the cut tribal mark.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1751",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3521"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "cave_preservation",
+      "speaker": "agent",
+      "text": "Roofed recorded cave cells disable rotting and animal-corpse vanish timer; leaving or lost roof releases owned preservation; held den gates it.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:17",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:17",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:325"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Recorded L1; no current warm control, carried/storage boundary, release and reload acceptance. Does not establish biome-wide no-rot for every body outdoors.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3530"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "lens_grotto",
+      "speaker": "agent",
+      "text": "Mineable grown-biosilica wall ring replaces natural rock around cave floor, yielding biosilica; independently toggled.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:159",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:159",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_CavePlace.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Definition/source and L1 result; actual mine/haul/use loop not established.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3530"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "tier_caves",
+      "speaker": "agent",
+      "text": "Extra cave rows for krayt den, sarlacc seep and Sun-Debt shrine; generic either/or and mummy elements live in RM, layer-owned defs supply content.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_CaveTierElements.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CaveTierElements.cs",
+        "src/RimStarWars/SWBestiary/Defs/MapGeneration/RSW_PreciousCave_KraytDen.xml",
+        "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_PreciousCave_DebtCave.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Offline closed build, no complete upper-tier row-roll proof recovered.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2353"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "skeleton_landmarks",
+      "speaker": "agent",
+      "text": "Large skeleton buildings and skull pocket, partial rib cover, full skull shade comp, bone harp sustainers, sparse placements with ollims/tenants and configurable deconstruction leavings.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GiantSkeletons.xml",
+        "src/RimMandrake/Stillsand/Defs/SoundDefs/RM_BoneHarp.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_GiantSkeletons.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical art/wiring and L1 result. Bone material list must be read, not inferred from old promised giant-bone item; no sound/shadow eye test here.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1648",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2589",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3540"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "corpse_history",
+      "speaker": "agent",
+      "text": "Old giant corpses convert into species skeletons; scans find room before destruction and retry crowded corpses, with delay/toggle settings; canon skeletons/graveyard supplied above RM.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:446",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:446",
+        "src/RimMandrake/Stillsand/Patches/RM_GiantSkeletons_Wiring.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Existing positive/toggle-off scene. Shared HugeThings titan-site conversion can intercept giant corpses before this longer clock and needs a joint check.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1648",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3540"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "horizon",
+      "speaker": "agent",
+      "text": "Eligible walk-in raids, neutral groups and passers get bearing/plume then delayed arrival; quests and drop modes bypass; thread-local reentrant entry forcing; arrived/cancelled plume lifecycle and dust-settled letter.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_HorizonMath.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical L1 and later partial. Successful trader arrival does not exercise cancelled arrival, passers or blocked announced entry.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3540",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4544"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "glass_materials",
+      "speaker": "agent",
+      "text": "Drift clearing yields glass sand through MovingDunes, traded fine sand, sun/lens glass and precision/pearl lenses with recipes; guarded canon krayt lens remains a trade prize, plain lens to still.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_GlassChain_Items.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_GlassChain_Items.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_GlassChain_Recipes.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_KraytLens.xml",
+        "src/RimMandrake/MovingDunes/Source/Patch_ClearSandYield.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Later glass proof failure/partial retained. Full-yield drift ruling is settled; no invented new krayt-lens throughput bonus.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1644",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16007",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4546"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "sifting",
+      "speaker": "agent",
+      "text": "Autonomous home-area sifting with carried sieve, fetch-first work giver, batch consumption, yield slider, grit/pearl rolls and Crafting learning; no sieve processing building required.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SandSieve.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSieve.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_SandSieve.xml",
+        "src/RimMandrake/Stillsand/Defs/JobDefs/RM_SiftGlassSand.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Recorded L1; no current autonomous forty-colonist contention/throughput proof.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3524"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "sun_tables",
+      "speaker": "agent",
+      "text": "Sun furnace and lens bench retain vanilla bills; cached roof/shade/weather/elevation gate, stat-part work-speed scaling and outdoor/temperature penalty cancellation, recipe toggles.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+        "src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_GlassChain.xml",
+        "src/RimMandrake/Stillsand/Defs/WorkGiverDefs/RM_GlassChain_WorkGivers.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Actual new-bill/refusal/cycle script exists. It does not yet prove a running bill stops promptly when weather changes or all work-speed stacking interactions.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1644",
+        "infrastructure/state/ledger/events/BENCH.jsonl:16007",
+        "infrastructure/state/live_proofs/STILLSAND_GLASS_CHAIN_REMAINDER_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "solar_ovens",
+      "speaker": "agent",
+      "text": "Fuel/power-free cooking in sun and crest-plate faster oven capable of baking sun glass; shared gate and ordinary cooking bills.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_GlassChain.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Ordinary oven cycle/roof refusal has script; crest upgrade and steady kitchen throughput are not accepted by the same result.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1644",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4546"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "brine",
+      "speaker": "agent",
+      "text": "Dry-edge brine dipping spot, five-brine bill and work giver, brine feedstock and ordinary-stove salt boiling.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_BrineDipping.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_BrineDipping.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_BoilBrineToSalt.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs:219",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Implemented with explicit L2 placement and output criteria still owed; source presence is not a completed bill.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:5750"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "solar_still",
+      "speaker": "agent",
+      "text": "Rare-ticking storage-cell condenser processes brine/eggs/meat/sacs, sun-scaled progress, pearl lens multiplier, water output and production debt notification; output has cooling ingestion effect.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SolarStill.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_SunKernel.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "ProofStillCycle calls production outright, bypassing normal sunlit progress. Actual cycle, pearl rate, DBH output and failure recovery remain distinct.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:5750",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "wringing",
+      "speaker": "agent",
+      "text": "Wringing still accepts corpses and produces body-size-based water; outsiders versus believers get different thoughts, volume booked on ledger.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs:118",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs:118",
+        "src/RimMandrake/Stillsand/Defs/ThoughtDefs/RM_Thought_DeadDistilled.xml",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Implemented A5 still owed live. Witness thought is currently applied map-wide to free colonists, not a verified sight/radius model.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:5750"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "pour",
+      "speaker": "agent",
+      "text": "Player orders one water-volume item poured into remembering sand; sunward line/halo wets cells, sows hourbloom within budget and attracts swimmers for a saved interval; gravel/roof guards.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Defs/JobDefs/RM_PourWaterIntoSand.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Current source has wet state and real pour-job tests. Shared consumable irrigation/wetting agreement is not yet demonstrated.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:14031",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "wet_line",
+      "speaker": "agent",
+      "text": "Procedural damp-sand stains with fade, renderer diagnostics and draw toggle; gale clears both wet cells and attraction point; saves wet expiry and pour.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:250",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:250",
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedgerProof.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Counts submitted by renderer do not accept actual visible darkness/readability; source now clears stale lure correctly.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:14031",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "ledger",
+      "speaker": "agent",
+      "text": "Inert RM water ledger activates only from upper-tier def; volumes, production-booked flag, debt bands, believer mood, tribe goodwill and incident multipliers.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_LedgerKernel.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:67",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Mixed partial proof; RM absence and Utinni/DBH presence require separate running tiers. Still flask skips second charge; multi-unit ingestion and DBH bottle provenance not fully established.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:14031",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "return_ritual",
+      "speaker": "agent",
+      "text": "Event-opened Return obligation after gale/kill/debt threshold; sunward real-water offering, good bloom/debt/goodwill, great nearby-cache return, bad siidda refusal; debt stone and old debt cave.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs:244",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs:244",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TheReturn_KraytOpens.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "ProofBelieve edits ideology and ProofReturnOutcome invokes outcome directly. These do not establish a player-completed ritual or restore previous colony faith/debt/time.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:14031",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5086",
+        "infrastructure/state/live_proofs/STILLSAND_RETURN_REMAINDER_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "legacy_sun",
+      "speaker": "agent",
+      "text": "Built pinned tile-derived sky, old elevation-dependent heat regime and sand glare floor; shared shade/pathing/gear and sky-glow solar-panel support.",
+      "source": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:204"
+      ],
+      "proof": "stale",
+      "scope": "opened_by_owner",
+      "proof_note": "Legacy implementation is present, but the later geometry-only Direct Sun ruling opens its replacement. Historical proof of the old roof regime cannot accept the later rule.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1602",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:2875",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5089",
+        "infrastructure/state/live_proofs/STILLSAND_ROOF_COVER_EXPOSURE_1.txt"
+      ],
+      "scope_source": "OWNER:1792410399049610407",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "glare_gear",
+      "speaker": "agent",
+      "text": "Glare-blind sight debuff, adapted gene exemption, biosilica and sun-glass goggles plus tagged existing headgear; separate cooling draught raises comfortable maximum for six hours.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Apparel/RM_SunGoggles.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Apparel/RM_SunGoggles.xml",
+        "src/RimMandrake/Stillsand/Defs/HediffDefs/RM_CoolingDraught.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Own icon/worn paths now exist. Current full wear/decay/gene/real-drink proof and all facings not reviewed.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1618",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1632",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:2250"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "mirage",
+      "speaker": "agent",
+      "text": "Shared engine mirage condition and heat-shimmer accuracy penalty, chasing-water mental state with on-map recovery and letter; Stillsand supplies threshold data.",
+      "source": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
+        "infrastructure/state/items/closed/STILLSAND_MIRAGE_CONDITION_1.md"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical offline closure. Stillsand walk delegates behaviour proof to CreatureBehaviors; no new visual/mental-state run.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1625"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "gale",
+      "speaker": "agent",
+      "text": "Herald-to-gale-to-aftermath condition, rare incident, 20x transport/4x influx data with mass cap, reduced exposure/senses and rumble drowning, launch restriction and weather penalties.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs",
+        "src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_GaleKernel.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical partial/failing live runs and later implementation; AND-versus-OR sand movement oracle contradiction remains. No current gale accepted.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:1676",
+        "infrastructure/state/ledger/events/BENCH.jsonl:15780",
+        "infrastructure/state/ledger/events/BENCH.jsonl:15961",
+        "infrastructure/state/live_proofs/STILLSAND_DUNE_GALE_LIVE_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "gale_carry",
+      "speaker": "agent",
+      "text": "Crest/body-size/roof eligibility and carry dice, downwind drag/bruises/signs; offmap carry registered with FlowWorks TakenByLand, return edge/survival/letters and old-save migration.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:331",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:331",
+        "src/RimMandrake/Stillsand/Source/RM_GaleTakenPolicy.cs",
+        "src/RimMandrake/FlowWorks/Source/TakenByLand"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Forced probes bypass crest/dice and force survival; useful service coverage but not natural take eligibility, ordinary survival odds, reload or map-loss proof.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:15780",
+        "infrastructure/state/ledger/events/BENCH.jsonl:15961"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "gale_aftermath",
+      "speaker": "agent",
+      "text": "One weighted emergence: mummified caravan with water skins, hull/cache, skeleton or cave mouth; track wipe, siidda wake, glasscrust and water-near hourbloom seeding.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:411",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:411",
+        "src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_CaravanWaterSkin.xml"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "One emergence letter and LastEmergencePlaced do not prove every row or usable cave contents; seeding has no complete current acceptance found.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:15780",
+        "infrastructure/state/ledger/events/BENCH.jsonl:15961"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "wreck_salvage",
+      "speaker": "agent",
+      "text": "Sparse sand-sealed hull, cylinder and tread wreck field consumes the shared Wreckage salvage/weathering engine; own render paths and shadows are wired. Cave and gale salvage remain distinct placement routes.",
+      "source": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_StillsandWrecks.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_StillsandWrecks.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_StillsandWreckField.xml",
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Historical partial shared-salvage result; no current Stillsand manual salvage/field-density scene.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4545"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "fossil_port",
+      "speaker": "agent",
+      "text": "Retired GiantFossils mutator content port uses skeleton scatter gensteps and Stillsand whitelist; separate from normal capped skeleton placement.",
+      "source": "src/RimMandrake/Stillsand/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_Stillsand.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_Stillsand.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened",
+      "proof_note": "Defined content, not proof it is selected on the fixed world or that scatter respects the ordinary skeleton cap. No world painting proposed.",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "acoustic_payload",
+      "speaker": "agent",
+      "text": "Optional Acoustic Scanner payload describes buried motion, caches, brood chambers and hidden caves via guarded biome extension.",
+      "source": "src/RimMandrake/Stillsand/Patches/RM_AcousticPayload_Stillsand.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Patches/RM_AcousticPayload_Stillsand.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened",
+      "proof_note": "Walk explicitly lacks this service in RM proof tier; no scan-result play proof located. Geophone is a separate local instrument.",
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "settings",
+      "speaker": "agent",
+      "text": "Persistent master/per-feature toggles and tuning across Stillsand, caves, glass, events, gale, skeletons, water, swimming and tracks; scroll/search/collapse/reset and timing tags; shared sunlight/swim/dunes options owned by neighbours.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_StillsandMod.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaveSettings.cs",
+        "src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandEventsMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_DuneGaleSettings.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SkeletonSettings.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Current scroll retrofit supersedes old no-scroll review. Roundtrip tests do not prove every toggle's real effect or all-off/reload behaviour.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:4851"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "proof_tools",
+      "speaker": "agent",
+      "text": "Site/plan, fake-game mutation probes, offline geometry/sun/ledger/gale kernels and fuzz; live script adapters, trader/ledger/gale diagnostics and source/def regressions.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/validation.py",
+        "src/RimMandrake/Stillsand/northstar_site.py",
+        "src/RimMandrake/Stillsand/northstar_plan.py",
+        "src/RimMandrake/Stillsand/selftest_stillsand.py",
+        "src/RimMandrake/Stillsand/Source/SelfTest/Fuzz/StillsandFuzz.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandTraderProbe.cs",
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedgerProof.cs"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Built test tooling, not current gameplay acceptance or official Stage 0 completion; detailed scene audit below.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3166",
+        "infrastructure/state/ledger/events/BENCH.jsonl:5734",
+        "infrastructure/state/live_proofs/STILLSAND_CONTENT_LIVE_PROOF_1.txt"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "lookup_cache",
+      "speaker": "agent",
+      "text": "Loud-draw opted-in defs and MovingDunes registry lookup cached, preserving hot-path performance and guarded service startup.",
+      "source": "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:172",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:172",
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:25"
+      ],
+      "proof": "stale",
+      "scope": "not_opened",
+      "proof_note": "Current source contains cache repair; old GPT advice to add it is no longer unbuilt work.",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:4502"
+      ],
+      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "source": "OWNER:1792410399049610407",
+      "id": "unified_direct_sun",
+      "speaker": "agent",
+      "scope_source": "OWNER:1792410399049610407",
+      "proof": "missing",
+      "text": "Ruled geometry-only Direct Sun and roof/parasols at every elevation, replacing legacy regime and per-biome floor.",
+      "scope": "approved",
+      "search_scope": "Searched src/ for Direct Sun and the shared implementation names, inspected CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs EffectiveHeatKind/EffectiveHeatOffsetC, RM_SunHeatExtension.cs, RM_MapComponent_PinnedSun.cs, Stillsand biome heat fields and arrival text, standing_rulings.md and DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES. The approved replacement is absent; existing solar/shade machinery is separately present in legacy_sun.",
+      "proof_note": "Named bounded search resolves absence of the replacement, not absence of all sun code. Legacy implementation is separately present. No feasibility invention needed: cross-cutting implementation item already exists.",
+      "impl": "absent",
+      "feasibility": {
+        "source": [
+          "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:204",
+          "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+          "infrastructure/state/items/DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES.md"
+        ],
+        "assessment": "Feasible as a shared C#/Harmony geometry migration using existing pinned-sun, shade grid and felt-temperature hooks, plus data/text/test migration. XML alone cannot remove runtime heat kinds or enforce universal roof/parasols. Reuse the existing shared item; no Stillsand-specific alternative heat engine or new implementation is designed here.",
+        "skill": "/home/mandrake/.claude/skills/synced/bcd47911-8c8c-4b92-a8b2-91d558848d1f_9a81f485-3f1e-4674-bb44-49a48e00f139/rimworld-modding/SKILL.md"
+      },
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "source": "OWNER:1792759873235145774",
+      "id": "removed_gale_fluff",
+      "speaker": "agent",
+      "proof": "missing",
+      "text": "Dust devils, abrasion and static",
+      "scope": "out",
+      "search_scope": "Searched src/RimMandrake/Stillsand/Source and Defs for removed classes, settings and feature hooks; inspected RM_DuneGale.cs, RM_DuneGaleSettings.cs, RM_CavePlace.cs, RM_GiantSkeletons.cs and the explicit csproj compile list. Checked removal commit 67aaa14ef8 against current files.",
+      "proof_note": "Removed from current capability set by recorded later cut; not a missing feature. Historical comments/closed items may still name it. Future coverage is an absence check, never a showcase.",
+      "impl": "absent",
+      "history_check": {
+        "source": "design/RimMandrake/fluff_cuts_2026-10-23.md",
+        "commit": "67aaa14ef8",
+        "method": "git log -S and git show --stat; inspected current source/defs and searched removed class/setting names. Runtime classes/settings were cut; the SkeletonBurial selftest project name is a historical filename, not surviving burial behaviour."
+      },
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "source": "OWNER:1792759876250066479",
+      "id": "removed_skeleton_burial",
+      "speaker": "agent",
+      "proof": "missing",
+      "text": "Skeleton burial/tint/silencing",
+      "scope": "out",
+      "search_scope": "Searched src/RimMandrake/Stillsand/Source and Defs for removed classes, settings and feature hooks; inspected RM_DuneGale.cs, RM_DuneGaleSettings.cs, RM_CavePlace.cs, RM_GiantSkeletons.cs and the explicit csproj compile list. Checked removal commit 67aaa14ef8 against current files.",
+      "proof_note": "Removed from current capability set by recorded later cut; not a missing feature. Historical comments/closed items may still name it. Future coverage is an absence check, never a showcase.",
+      "impl": "absent",
+      "history_check": {
+        "source": "design/RimMandrake/fluff_cuts_2026-10-23.md",
+        "commit": "67aaa14ef8",
+        "method": "git log -S and git show --stat; inspected current source/defs and searched removed class/setting names. Runtime classes/settings were cut; the SkeletonBurial selftest project name is a historical filename, not surviving burial behaviour."
+      },
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "source": "OWNER:1792759874733672738",
+      "id": "removed_cave_fluff",
+      "speaker": "agent",
+      "proof": "missing",
+      "text": "Cave drip and tribal mark",
+      "scope": "out",
+      "search_scope": "Searched src/RimMandrake/Stillsand/Source and Defs for removed classes, settings and feature hooks; inspected RM_DuneGale.cs, RM_DuneGaleSettings.cs, RM_CavePlace.cs, RM_GiantSkeletons.cs and the explicit csproj compile list. Checked removal commit 67aaa14ef8 against current files.",
+      "proof_note": "Removed from current capability set by recorded later cut; not a missing feature. Historical comments/closed items may still name it. Future coverage is an absence check, never a showcase.",
+      "impl": "absent",
+      "history_check": {
+        "source": "design/RimMandrake/fluff_cuts_2026-10-23.md",
+        "commit": "67aaa14ef8",
+        "method": "git log -S and git show --stat; inspected current source/defs and searched removed class/setting names. Runtime classes/settings were cut; the SkeletonBurial selftest project name is a historical filename, not surviving burial behaviour."
+      },
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "source": "OWNER:1792117913860590679",
+      "id": "removed_fulgurite",
+      "speaker": "agent",
+      "proof": "missing",
+      "text": "Fulgurite and lightning breaker",
+      "scope": "out",
+      "search_scope": "Searched current Stillsand Source/Defs and adjacent MovingDunes/Pyrelands source for fulgurite and lightning breaker definitions/production. Read OWNER:1792117913860590679 and fluff cut digest. Historical item titles and art commission lists do not establish a surviving capability.",
+      "proof_note": "Removed from current capability set by recorded later cut; not a missing feature. Historical comments/closed items may still name it. Future coverage is an absence check, never a showcase.",
+      "impl": "absent",
+      "source_checked_in_run": "rm-role-designercodex-1794797937"
+    }
+  ],
+  "failure_modes": [
+    "F1: Fortunes scattered through emptiness stop organising play: the biome becomes a busy zoo or disconnected attractions, and distant rock islands and uncertain cave discoveries no longer draw repeated expeditions. Basis: OWNER:1794377002766121379; design/RimMandrake/biome_experiences_2026-10-20.md.",
+    "F2: The desert teaches false safety or meaningless rewards: an unfamiliar island promises rest before it is secured, warning or loss signs give no useful decision, or a cave fortune cannot practically fund the next expedition/outpost. Basis: OWNER:1794377002766121379; src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs; src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs.",
+    "F3: Connected systems fail in routine play or its proof: legacy sun contradicts shared geometry, water is lost/double-counted or fails to wet shared growth, jobs stall, or destructive scenes and settings leave state behind. Basis: OWNER:1792410399049610407; OWNER:1793794389686592719; src/RimMandrake/Stillsand/validation.py:495."
+  ],
+  "neighbours": [
+    {
+      "source": "src/RimMandrake/MovingDunes/Source/MapComponent_DuneField.cs",
+      "id": "n_dunes",
+      "text": "MovingDunes owns transport, wind bearing, depth, burial caches, clear yield and committed SandMoved events. Stillsand supplies gale/weather/material bindings and track erasure, not another sand store."
+    },
+    {
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+      "id": "n_creatures",
+      "text": "CreatureBehaviors owns sand-swim state, droid target filter, shared shade/pinned sun/heat, tracks, drum lure, filter feed, shadow following and shade-driven severity. Stillsand opts in and supplies content, sounds, thumper/geophone and event control."
+    },
+    {
+      "source": "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs",
+      "id": "n_water",
+      "text": "FlowWorks owns deep-sand terrain and shared TakenByLand lifecycle; spill/growth wetting must agree with Stillsand wet state. DBH optionally owns real thirst jobs/bottles; RM water items still function without it."
+    },
+    {
+      "source": "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs",
+      "id": "n_places",
+      "text": "EnvironmentalHazards provides set-piece element vocabulary and arrival service; Stillsand owns its rare rock/cave context and rows. ProximityHatch owns hatch-on-approach behaviour when loaded."
+    },
+    {
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+      "id": "n_tiers",
+      "text": "SWBestiary, Sarlacc and Utinni own canon species/quest data/rooting/faith; Stillsand engine remains useful without them. LongHunger Groundcaller consumes thumper comp; that patch alone does not prove a summon."
+    },
+    {
+      "source": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+      "id": "n_giants",
+      "text": "HugeThings owns giant physical footprints and titan corpse sites. Its queued T3 conversion and Stillsand seasonal skeleton conversion require an interaction scene, not assumed compatibility. TitanPassage is HugeThings-owned, uses the map biome roster or explicit passers, and filters sea/land after later rulings; the closed pool proof demonstrates forced arrival only, not a completed crossing or owner showcase. Keep that boundary in any Stillsand walk."
+    },
+    {
+      "source": "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml",
+      "id": "n_rehomes",
+      "text": "LongShade source still supplies Ulgga, Vosska and Ultriss Pad while their native wild home is Stillsand. Composition resolves that file ownership; do not mistake the folder for a roster assignment."
+    },
+    {
+      "source": "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_StillsandWreckField.xml",
+      "id": "n_salvage",
+      "text": "Wreckage owns salvage jobs and loot/weathering; Acoustic Scanner owns ship-side scanning. The geophone is local coarse listening and does not replace either."
+    },
+    {
+      "id": "n_growth",
+      "source": "src/RimMandrake/ExplosiveGrowth/Source/RM_WetSources.cs",
+      "text": "ExplosiveGrowth owns the wet-source registry and consumable plant-water interface. FlowWorks spill opts in using WaterSpill filth. Stillsand WetSand still has its own expiring map and needs the ruled shared-consumption integration; do not add a second independent plant hydration model."
+    }
+  ],
+  "scene_audit": [
+    {
+      "id": "site",
+      "control_and_gaps": "No comparison with same seed/settings or measured pre-clearing hazard state; log presence does not prove cave.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::site_chain"
+      ],
+      "start": "Asserts actual regenerated Stillsand biome and reads cave log/cap.",
+      "restoration_and_hold": "Regenerates map and changes tile/time/temperature; no original-world restoration or recovery journal.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::site_chain",
+          "source_line": 609,
+          "components": [
+            "site_stillsand_map",
+            "site_cave_logged",
+            "skeleton_gen_within_cap"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "defs",
+      "control_and_gaps": "Static resolution and extension presence cannot prove play; optional tier rows explicitly unmeasured.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::defs_chain"
+      ],
+      "start": "Live def/biome/recipe/comp reads with absent-name sanity cases.",
+      "restoration_and_hold": "Read-only body aside from shared cleanup; no hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "play acceptance beyond data/log checks",
+        "explicit hold classification; shared guarded cleanup/weather side effects must be isolated"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::defs_chain",
+          "source_line": 668,
+          "components": [
+            "defs_resolve",
+            "sand_sieve_defs",
+            "solar_still_defs",
+            "sun_lance_defs",
+            "geophone_defs",
+            "sand_swim_remainder",
+            "cave_tier_rows",
+            "cave_place_defs",
+            "custom_defs_resolve",
+            "biome_row",
+            "biome_roster",
+            "giants_skeleton_wired",
+            "water_egg_patched",
+            "eruption_biome_gate"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "settings",
+      "control_and_gaps": "Many roundtrips have no driven effect; default-value assertion is not all-off behaviour.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::settings_chain"
+      ],
+      "start": "Defaults and field existence/readback; toggled fields restored in finally.",
+      "restoration_and_hold": "Restores shipped values, not arbitrary entry values; failure prints only. No recovery block or hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::settings_chain",
+          "source_line": 964,
+          "components": [
+            "defaults"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "sun",
+      "control_and_gaps": "Old row tests above-55 roof regime; no two-tile geometry or low-angle intended roof case.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::sun_chain"
+      ],
+      "start": "Two times on pinned map, clear open exposure and settled roof comparison.",
+      "restoration_and_hold": "Clock jumps/roofs/terrain not restored. Same cleanup limitations; no hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::sun_chain",
+          "source_line": 1039,
+          "components": [
+            "sun_pinned_no_night",
+            "sun_open_sand_full_exposure",
+            "sun_roof_cover_above_55deg"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "fauna_flora",
+      "control_and_gaps": "Does not accept native composition, actual behaviours, art, zoom or animation.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::fauna_chain",
+        "src/RimMandrake/Stillsand/validation.py::flora_chain"
+      ],
+      "start": "Spawns every parsed kind/plant and reads living/standing result; flight stat read only.",
+      "restoration_and_hold": "Spawn cleanup and clear pads; no terrain snapshot or hold. Flight observation remains owner-only.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::fauna_chain",
+          "source_line": 1105,
+          "components": [
+            "fauna_spawns",
+            "soorrak_can_fly"
+          ]
+        },
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::flora_chain",
+          "source_line": 1139,
+          "components": [
+            "flora_spawns"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "sandswim",
+      "control_and_gaps": "Forced attacks/Goto are useful mechanism probes; catch lacks a non-sand zone control, terrain/depth interactions need own cases.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::sandswim_chain"
+      ],
+      "start": "Sand/Gravel paired states, struck/re-submerge, kill funnel+letter, mech rejection, real Fish job and tracked wake movement.",
+      "restoration_and_hold": "Clears/repaints repeatedly, changes fishing body state and actors; no recovery snapshot/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::sandswim_chain",
+          "source_line": 1160,
+          "components": [
+            "vekka_submerges_on_sand",
+            "vekka_take_leaves_funnel",
+            "vekka_surfaces_when_struck",
+            "vekka_spares_a_mech",
+            "vekka_wake_trough_record",
+            "stillsand_catch"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "zuurrik",
+      "control_and_gaps": "Newer script extends old walk; inaccessible food and interrupted/disabled/reloaded swarm not distinguished.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::zuurrik_chain"
+      ],
+      "start": "Below-threshold versus wake, blood stripping, unwounded actors, toggle and quiet reburial.",
+      "restoration_and_hold": "Cleanup destroys actors and pads; map-component fatness/cooldown may persist. No recovery/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::zuurrik_chain",
+          "source_line": 1384,
+          "components": [
+            "zuurrik_below_threshold_dormant",
+            "zuurrik_wakes_on_blood",
+            "zuurrik_strips_blood",
+            "zuurrik_spares_unwounded",
+            "zuurrik_toggle_off_no_wake",
+            "zuurrik_reburies_when_quiet"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "loomma",
+      "control_and_gaps": "Artificial pad not a functioning ollim/tenant ecosystem; later verification contains failures.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::loomma_chain"
+      ],
+      "start": "Roof/open paired severity with checks that roofed actor stayed under roof.",
+      "restoration_and_hold": "Actors removed, roof/terrain changes not restored; no hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::loomma_chain",
+          "source_line": 1502,
+          "components": [
+            "loomma_sunstruck_open_vs_roofed"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "soorrak",
+      "control_and_gaps": "Job progress does not accept flight animation; joint live constraints still apply.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::soorrak_chain"
+      ],
+      "start": "State/job/position/log samples detect idle loop and flight-job exception.",
+      "restoration_and_hold": "Never run here. Cleanup shared; no owner-review hold mechanism.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::soorrak_chain",
+          "source_line": 1550,
+          "components": [
+            "soorrak_no_exceptions",
+            "soorrak_not_stuck"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "glass",
+      "control_and_gaps": "New-bill refusal does not prove interruption of an ongoing bill; drift test disables shovel requirement and lacks no-yield sibling control.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::glass_chain",
+        "src/RimMandrake/Stillsand/validation.py::_glass_live_rows"
+      ],
+      "start": "Asserts table/site/actor/ingredients, recipe outputs, roof/gale refusal and real drift-clear output.",
+      "restoration_and_hold": "Bills/settings mostly cleaned; no original terrain/area/sand/time restoration or recovery hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::glass_chain",
+          "source_line": 1661,
+          "components": [
+            "glass_site_ready",
+            "sun_table_reads_sun_in_open",
+            "sun_table_roofed_idle",
+            "furnace_work_speed_tracks_sun",
+            "sun_work_speed_multiplier_scales",
+            "glass_remainder_static",
+            "glass_remainder_defs_live",
+            "recipe_toggles_hide_recipes"
+          ]
+        },
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::_glass_live_rows",
+          "source_line": 1958,
+          "components": [
+            "glass_live_staged",
+            "furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof",
+            "oven_cooks_in_sun_not_shade",
+            "drift_clear_drops_glass_sand"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "water",
+      "control_and_gaps": "ProofStillCycle bypasses progress; ProofDrinkHook bypasses ingestion for some rows; direct outcome bypasses ritual. Draw calls are not visual acceptance.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::water_chain"
+      ],
+      "start": "Real pour versus gravel/toggle, renderer drawn count, RM ledger absence, Utinni debt delta/opening/outcome and DBH drink job.",
+      "restoration_and_hold": "ProofBelieve edits faith; debt/goodwill/time/wet state not snapshotted/restored; no scene journal/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::water_chain",
+          "source_line": 2120,
+          "components": [
+            "pour_blooms_on_sand",
+            "pour_toggle_off_no_bloom",
+            "pour_on_gravel_no_bloom",
+            "still_water_charged_once",
+            "wet_line_drawn_then_gale_wipes",
+            "rm_tier_has_no_ledger",
+            "return_sun_debt_gale_opens_good_outcome_pays",
+            "dbh_thirst_drink_books_debt"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "skeleton",
+      "control_and_gaps": "No occupied-footprint, inherited HugeThings conversion, skull shade or harp-control scene.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::skeleton_chain"
+      ],
+      "start": "Accelerated corpse time with on/off conversion pair.",
+      "restoration_and_hold": "Clock/corpses/buildings/map state not restored; no hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::skeleton_chain",
+          "source_line": 2409,
+          "components": [
+            "corpse_becomes_skeleton",
+            "corpse_stays_when_toggle_off"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "glare_cooling",
+      "control_and_gaps": "No current gene-exempt actor, real still drink, onset/recovery visual or low-angle intended shade case.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::glare_chain",
+        "src/RimMandrake/Stillsand/validation.py::cooling_chain"
+      ],
+      "start": "Bare/goggled severity contrast and added/removed comfort hediff.",
+      "restoration_and_hold": "Shared cleanup; no prior health/time/roof restoration or hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::glare_chain",
+          "source_line": 2460,
+          "components": [
+            "glare_site_ready",
+            "glare_blind_gained_in_open_sun",
+            "goggles_block_glare_blind"
+          ]
+        },
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::cooling_chain",
+          "source_line": 2503,
+          "components": [
+            "cooling_draught_widens_comfort"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "gale",
+      "control_and_gaps": "No asserted comparable initial sand stock/quiet transport control; AND/OR oracle differs. ForceDrag bypasses crest/dice; ForceCarryOff forces survival; forced ReturnGale bypasses waiting/next natural storm.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::gale_chain",
+        "src/RimMandrake/Stillsand/validation.py::_run_gale"
+      ],
+      "start": "Weather-lock refusal, herald/gale sequence, clear-vs-gale pawn exposure, emergence on/off, forced drag/offmap-return/signs.",
+      "restoration_and_hold": "Original terrain/weather/time/sand/world pawn holds not fully recovered. Cleanup does not guarantee End of interrupted gale. No scene-begin/end/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::gale_chain",
+          "source_line": 2614,
+          "components": [
+            "gale_incident_fires",
+            "gale_toggle_off_refuses",
+            "gale_carry_is_a_taker_of_the_shared_service",
+            "gale_phases_and_aftermath",
+            "gale_dims_sun_exposure",
+            "gale_carry_drag_and_return",
+            "gale_emergence_off_quiet"
+          ]
+        },
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::_run_gale",
+          "source_line": 2580,
+          "components": []
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "muurrok",
+      "control_and_gaps": "Emergence proves arrival, not full appraisal/escape/take; no roof/gale combat or reload burst control.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::muurrok_chain"
+      ],
+      "start": "Unforced visit control and repeated 100-tick census, forced incident, beam damage/toggle pair.",
+      "restoration_and_hold": "Shared cleanup, weather/time/visit state not fully restored; no hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::muurrok_chain",
+          "source_line": 2823,
+          "components": [
+            "muurrok_absent_unforced",
+            "muurrok_emergence_fires",
+            "beam_burns_target",
+            "beam_toggle_off_blocked"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "eruption",
+      "control_and_gaps": "No non-Stillsand refusal arm or multi-day spread/stop control here.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::eruption_chain"
+      ],
+      "start": "Reads tunnel/letter then mound with a clock.",
+      "restoration_and_hold": "Spawns outside pad and long-lived brood need recovery; no journal/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::eruption_chain",
+          "source_line": 2897,
+          "components": [
+            "eruption_tunnel_then_mound"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "horizon",
+      "control_and_gaps": "Cancellation row often UNMEASURED when trader arrives; no forced cancellation/blocked entry/passer/drop-raid controls.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::horizon_chain"
+      ],
+      "start": "Warning before arrival with toggle-off immediate vanilla fire and queue/refusal diagnostics.",
+      "restoration_and_hold": "Cleans new visitors but not original time/incident queue/plumes; no recovery/hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::horizon_chain",
+          "source_line": 2955,
+          "components": [
+            "horizon_warns_then_arrives",
+            "horizon_dust_settled_letter",
+            "horizon_toggle_off_vanilla"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "caves",
+      "control_and_gaps": "No same-site enabled geometric control; no player path into every cave row or preservation/harp/shade boundary proof.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::caves_chain"
+      ],
+      "start": "Both placement toggles off, regeneration and no cave-log/skeleton assertions.",
+      "restoration_and_hold": "Whole map regeneration destroys entry state; no disposable-map reload assertion or hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "complete asserted start for the approved player scene",
+        "full discriminating control for gaps named in control_and_gaps",
+        "snapshot/restoration with verified recovery",
+        "explicit immediate/owner_review hold"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::caves_chain",
+          "source_line": 3071,
+          "components": [
+            "caves_regen_both_off",
+            "genstep_off_no_cave_line",
+            "skeleton_placement_off_none"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "remainder",
+      "control_and_gaps": "Live upper-tier arms explicitly UNMEASURED; cross references do not demonstrate a played horn/den/rooting interaction.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::remainder_chain"
+      ],
+      "start": "Parses horn, den, seep and loud-draw cross references and banned load tokens.",
+      "restoration_and_hold": "Static checks read only; no runtime restoration to assess until actual scenes exist.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "play acceptance beyond data/log checks",
+        "explicit hold classification; shared guarded cleanup/weather side effects must be isolated"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::remainder_chain",
+          "source_line": 3139,
+          "components": [
+            "remainder_files_obey_load_log_lessons",
+            "remainder_horn_cross_references",
+            "remainder_seep_incident_stillsand_only",
+            "remainder_den_quest_cross_references",
+            "remainder_loud_draws_wired"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    },
+    {
+      "id": "log",
+      "control_and_gaps": "Clean log alone cannot accept mechanics or appearance; bounded buffer and name filtering limit detection.",
+      "source": "src/RimMandrake/Stillsand/validation.py",
+      "entry_points": [
+        "src/RimMandrake/Stillsand/validation.py::log_chain"
+      ],
+      "start": "Requires readable nonempty log, scans own errors and cross-reference/config names.",
+      "restoration_and_hold": "Read only; shared cleanup remains. No hold.",
+      "status": "audit_only_not_acceptance_scene",
+      "parts_missing": [
+        "play acceptance beyond data/log checks",
+        "explicit hold classification; shared guarded cleanup/weather side effects must be isolated"
+      ],
+      "component_groups": [
+        {
+          "entry_point": "src/RimMandrake/Stillsand/validation.py::log_chain",
+          "source_line": 3247,
+          "components": [
+            "log_clean"
+          ]
+        }
+      ],
+      "disposition": "Audit only. At stage 3, turn missing acceptance-scene parts into build items; do not count these helper checks as approved experience acceptance."
+    }
+  ],
+  "schema": 1,
+  "mod": "Stillsand",
+  "root": {
+    "text": "Stillsand is an ocean of apparently empty sand beneath a sun that never sets, crossed by giants. Fortunes scattered among distant rock islands and uncertain caves draw repeated expeditions. Exploring and securing an island makes a dependable harbour, and a useful cave discovery supplies or funds the next expedition or outpost. Learning to live here uses sunlight and desert resources to make glass and lenses, cook food and recover water.",
+    "speaker": "conductor",
+    "delegated": "evidence-for-ask",
+    "source": "CONDUCTOR:1794805294378261874",
+    "answers": "a_root_synthesis"
+  },
+  "scope": [
+    {
+      "source_excerpt": "An ocean of nothing under a sun that never sets, crossed by giants. Rock islands are your harbours, and their caves are your fortune.",
+      "speaker": "agent",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:22",
+      "id": "s_experience",
+      "text": "The existing owner-selected sentence is the root anchor, not a new approval. The file identifies it as picked by card on 2026-10-20; no corresponding tsn was found in the supplied OWNER shard."
+    },
+    {
+      "speaker": "agent",
+      "source": "infrastructure/state/ledger/events/OWNER.jsonl:91",
+      "id": "s_union",
+      "text": "One RM_Stillsand biome carries both desert sheets. Dune Sea is a region, not another biome. This historical event has no tsn; a path citation preserves that fact."
+    },
+    {
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "id": "s_built",
+      "text": "Present capabilities remain covered. not_opened does not mean unwanted or unapproved; no question offers their removal."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792410399049610407",
+      "id": "s_sun",
+      "text": "Geometry-only Direct Sun, one 55 C zenith value, ordinary air heat, roofs and parasols at every sun angle. This later ruling wins over the 55-degree regime and the far-ring heat floor still in source."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792759873235145774",
+      "id": "s_cuts_gale",
+      "text": "October 23 recorded cut removes dust devils, abrasion and static from gale obligations. Do not restore them from old item prose."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792759874733672738",
+      "id": "s_cuts_cave",
+      "text": "Cave drip and tribal mark cut; preservation and grown-biosilica wall ring stay."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792759876250066479",
+      "id": "s_cuts_burial",
+      "text": "Skeleton dune burial cut; tracks, eraser, harps and horizon remain."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792117913860590679",
+      "id": "s_fulgurite",
+      "text": "Fulgurite and lightning breaker excised. Historical glass-chain specifications do not reopen them."
+    },
+    {
+      "speaker": "agent",
+      "source": "OWNER:1792525593703436506",
+      "id": "s_roads",
+      "text": "Current road permission follows the later road ruling; old frozen-sheet no-road prose is historical."
+    },
+    {
+      "speaker": "agent",
+      "source": "design/Jawa/worldbuilding/biomes/rosters/dune_sea_deep_desert.json:581",
+      "id": "s_cast",
+      "text": "Roster is historical in places. RM_Vozzik lives in Warscar, the other Vozzik was assigned Rust Cathedral; no eviction or alias question is reopened. Current patched roster, not comments alone, decides spawning."
+    },
+    {
+      "id": "s_wetting",
+      "speaker": "owner",
+      "source": "OWNER:1793794389686592719",
+      "text": "Ground wetting and flood water are distinct. FlowWorks and Stillsand should share the ground-wetting technique; plants have access to that water and explosive growth consumes wetting until replenished."
+    },
+    {
+      "id": "s_fortunes_lead",
+      "speaker": "owner",
+      "source": "OWNER:1794377002766121379",
+      "text": "Fortunes scattered through emptiness lead the Stillsand experience: searching distant rock islands and caves motivates repeated expeditions toward uncertain discoveries."
+    },
+    {
+      "id": "s_prepared_harbour",
+      "speaker": "owner",
+      "source": "OWNER:1794377002766121379",
+      "text": "Only a prepared harbour is dependable. An unfamiliar island must be explored and secured before it offers dependable rest; reaching rock alone does not guarantee safety."
+    },
+    {
+      "id": "s_practical_fortune",
+      "speaker": "owner",
+      "source": "OWNER:1794377002766121379",
+      "text": "A cave fortune enables the next expedition or outpost through practical supplies, equipment or trade value, potentially useful lens production."
+    },
+    {
+      "id": "s_run_boundary",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "text": "Stage 0 is a source and evidence inventory only. All DLC assumed. No bridge, game restart, deployment, implementation, art, owner question or stage advancement in this run."
+    }
+  ],
+  "decisions": [
+    {
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "id": "d_provenance",
+      "text": "The root synthesis carries its recorded Evidence-for-Ask delegation and conductor speaker. Original owner choices retain their OWNER event. The agent-authored root_draft identifies the synthesis and evidence."
+    },
+    {
+      "speaker": "agent",
+      "source": "infrastructure/state/live_proofs/STILLSAND_RETURN_REMAINDER_1.criteria",
+      "id": "d_proof",
+      "text": "No proof is current: no running/deployed/source/settings fingerprint was matched. Historical verification is stale and keeps its level/result. A proof command or criteria file is an obligation, not a passing result. missing means adequate acceptance not located, never that he did not exercise it."
+    },
+    {
+      "speaker": "agent",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs:214",
+      "id": "d_neighbour",
+      "text": "Vanilla comparison is already material: bills and WorkGiver_DoBill remain the user workflow, with the common sunlight gate. No new public-mod research needed to decide the question bank."
+    },
+    {
+      "id": "d_answers_recovered",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794377002766121379",
+        "design/RimMandrake/designer_codex_2026-11-09/Stillsand/QUESTIONS_OWNER.md",
+        "design/RimMandrake/designer_codex_2026-11-09/Stillsand/ANSWERS_OWNER.md"
+      ],
+      "text": "Read the original question pictures and OWNER byCard event. The three answers settle emphasis, dependable refuge and practical cave payoff. The stage-1 synthesis is recorded through a separate Evidence-for-Ask delegation."
+    },
+    {
+      "id": "d_built_first",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "text": "Present capabilities remain inventoried without keep/remove questions. not_opened preserves scope; it does not mean rejected. Later source cuts override closed-as-built item titles; removed capabilities are absent/out with explicit search scope and cut evidence."
+    },
+    {
+      "id": "d_walk_first",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer.md",
+        "src/RimMandrake/Stillsand/northstar_site.py",
+        "src/RimMandrake/Stillsand/validation.py:589"
+      ],
+      "text": "Offer the recorded existing-code live walk before new design or questions. The published site regenerates the map and the suite has incomplete recovery, so this is a proposal for a disposable recoverable scene, not authorization to run it on an owner save. No live scene was opened."
+    },
+    {
+      "id": "d_source_refresh",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj",
+        "design/RimMandrake/designer_codex_2026-11-09/Stillsand/record.json"
+      ],
+      "text": "The previous rehearsal was used as a reading index, with current source, owner events, required built items and all registered proof groups checked here. git diff from its recorded 27a9c378b04a baseline through this run HEAD shows Stillsand code/validation and the directly touched CreatureBehaviors/MovingDunes source unchanged; the Stillsand wreck Tank label/description now say cylinder. This is source continuity, not fresh live proof."
+    },
+    {
+      "id": "d_root_synthesis",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": "CONDUCTOR:1794805294378261874",
+      "answers": "a_root_synthesis",
+      "text": "Stillsand is an ocean of apparently empty sand beneath a sun that never sets, crossed by giants. Fortunes scattered among distant rock islands and uncertain caves draw repeated expeditions. Exploring and securing an island makes a dependable harbour, and a useful cave discovery supplies or funds the next expedition or outpost. Learning to live here uses sunlight and desert resources to make glass and lenses, cook food and recover water."
+    },
+    {
+      "id": "d_stage1_review",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage1_review.json",
+        "design/concepts/Stillsand/log.md"
+      ],
+      "text": "The fresh reviewer passed the root synthesis and struck another human approval ask as redundant. The crowding counterexample carries forward as F1. The workshop sentence adopts the reviewer input-precision correction."
+    }
+  ],
+  "asks": [
+    {
+      "id": "a_root_synthesis",
+      "text": "Does this root capture Stillsand's purpose?",
+      "decision": "Root synthesis of the selected experience and the three recovered owner choices",
+      "about": [
+        "rock_island",
+        "cave_table",
+        "glass_materials",
+        "sun_tables",
+        "solar_ovens",
+        "solar_still"
+      ],
+      "owner_cites": [
+        "OWNER:1794377002766121379"
+      ],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794805106",
+      "status": "answered",
+      "review": {
+        "by": "/root/root_review",
+        "verdict": "pass",
+        "why": "Synthesis passes against primary evidence. A further human approval ask was struck as redundant. Use the recorded Evidence-for-Ask delegation.",
+        "source": "design/concepts/Stillsand/stage1_review.json"
+      },
+      "evidence_against": [],
+      "source": [
+        "design/concepts/Stillsand/log.md",
+        "design/concepts/Stillsand/stage1_review.json"
+      ],
+      "delivery": "delegated_no_owner_ask",
+      "answer": {
+        "text": "Stillsand is an ocean of apparently empty sand beneath a sun that never sets, crossed by giants. Fortunes scattered among distant rock islands and uncertain caves draw repeated expeditions. Exploring and securing an island makes a dependable harbour, and a useful cave discovery supplies or funds the next expedition or outpost. Learning to live here uses sunlight and desert resources to make glass and lenses, cook food and recover water.",
+        "speaker": "conductor",
+        "delegated": "evidence-for-ask",
+        "source": "CONDUCTOR:1794805294378261874"
+      }
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "c_sun",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:204",
+      "speaker": "agent",
+      "text": "Legacy KindFromElevation and per-biome minScaledHeatOffsetC remain in runtime and Stillsand XML, contrary to later Direct Sun ruling. Arrival letter still teaches the old low-sun roof rule. Resolve through existing shared item, not a fresh owner question.",
+      "status": "resolved_design_implementation_gap",
+      "related": [
+        "legacy_sun",
+        "unified_direct_sun",
+        "glare_gear"
+      ],
+      "core": true,
+      "resolved": true,
+      "resolution": "OWNER:1792410399049610407 settles the design: geometry-only Direct Sun supersedes the legacy kind/floor. Current source still needs the existing shared implementation item. No new owner sun question.",
+      "on": "ITEM:DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES"
+    },
+    {
+      "id": "c_gale_oracle",
+      "source": "src/RimMandrake/Stillsand/validation.py:2676",
+      "speaker": "agent",
+      "text": "Filed A1 live criterion allows nonzero mass delta OR moved-cell count; script separately requires BOTH. Conservation-respecting redistribution can be rejected. A net delta or any-motion counter alone also needs a quiet/control case to attribute movement to the gale.",
+      "status": "proof_gap_for_stage_3",
+      "related": [
+        "gale",
+        "proof_tools"
+      ],
+      "core": false,
+      "resolved": true,
+      "resolution": "Current prove_dune_gale.py describes A1 as delta OR movement; validation.py gale_phases_and_aftermath separately requires BOTH. Keep this as a discriminating-control/oracle audit gap, not a change to the owner experience."
+    },
+    {
+      "id": "c_wetting",
+      "source": [
+        "OWNER:1793794389686592719",
+        "src/RimMandrake/ExplosiveGrowth/Source/RM_WetSources.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:276"
+      ],
+      "speaker": "agent",
+      "text": "Stillsand wetUntil and direct plant spawning are present; no consumption/delegation to shared growth wetting was found in Pour/MarkWet. FlowWorks spill code names ExplosiveGrowth spillFilth. The named shared-wetting promise needs interface/units/lifetime/consumption proof before claiming harmony.",
+      "status": "decided_integration_unproven",
+      "related": [
+        "pour",
+        "wet_line"
+      ],
+      "core": true,
+      "resolved": true,
+      "resolution": "The OWNER event decides shared consumable wetting. Stillsand stores its own wetUntil and directly sows plants; ExplosiveGrowth RM_WetSources exposes a source/Consume seam, while FlowWorks spill uses a different wet source. No Stillsand WetSand registration/consumer was found in the bounded source search. Integration must be implemented/proven using the shared service, not reopened as preference."
+    },
+    {
+      "id": "c_decay",
+      "source": [
+        "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:26",
+        "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs"
+      ],
+      "speaker": "agent",
+      "text": "Current cave preservation is limited to recorded roofed cave cells and restores its owned vanish/rot state on release. MovingDunes owns sealed buried caches; HugeThings queues T3 corpse-site conversion before Stillsand seasonal skeleton conversion. These mechanisms do not prove biome-wide no-rot, nor their combined ordering. Do not infer a new biome-wide preservation promise from the old sheet; stage 3 needs a shared corpse/preservation interaction check.",
+      "status": "interaction_proof_gap",
+      "related": [
+        "cave_preservation",
+        "corpse_history"
+      ],
+      "core": false,
+      "resolved": false
+    },
+    {
+      "id": "c_cast",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+      "speaker": "agent",
+      "text": "Historical roster/comments retain retired KraytDragon and moved Vozzik/old aliases. Actual patch has GreaterKraytDragon and WarWyrm, with ordinary KraytDragon row removed; source still houses RM_Vozzik for other consumers. Do not ask whether to re-add or evict them.",
+      "status": "resolved_for_inventory",
+      "related": [
+        "roster",
+        "mirror_beam"
+      ],
+      "core": false,
+      "resolved": true,
+      "resolution": "Read the rescope on SWB_TWINS_DEDUPE_STILLSAND and current roster patch: RM_Vozzik home is Warscar; RSW_Vozzik home is Rust Cathedral; only the SandLion alias was deduplicated. Source-folder residence is not native-roster membership."
+    },
+    {
+      "id": "c_appraisal",
+      "source": "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs:286",
+      "speaker": "agent",
+      "text": "Turn-four slate removes travel-thirsty appraisal, while event code retains WaterScore/WettestBody. The later creature-specific event spec explicitly appraises Muurrok targets. Preserve present capability, flag the scope difference, and recover original card context before asking a removal/replacement question.",
+      "status": "authority_conflict_to_reconcile_at_stage_2",
+      "related": [
+        "leviathan"
+      ],
+      "core": true,
+      "resolved": false,
+      "evidence_against_obvious": "The turn-4 cast bible and original BENCH ledger note cut travel thirsty/the water appraisal, but the later creature-specific spec and shipped RM_SandLeviathan.WaterScore/WettestBody still appraise the Muurrok target. Do not infer permission to remove built appraisal, or call the implementation an owner-approved reversal.",
+      "next": "Recover whether the cut applied to the general travel-thirsty mechanism or also to creature-specific Muurrok selection. Have Conductor reconcile original authority before an owner fork; any proposed question must explain the conflicting evidence and offer a quick look."
+    }
+  ],
+  "grounding": {
+    "run": "rm-role-designercodex-1794797937",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "baseline": "design/RimMandrake/designer_codex_2026-11-09/Stillsand/record.json",
+    "note": "Earlier rehearsal is a reading index only. Inventory, authority, proof status and script audit are being rechecked in this live repository. No root approval, owner waiver or accepted scene inherited.",
+    "head": "83973656a7056a97a8a7c55ffb07928d90058b06",
+    "baseline_role": "reading index only; no draft root, question bank or historical source claim accepted without current checking",
+    "completed": "Source/spec/owner/ledger/scene-contract grounding complete. Only the named appraisal authority conflict and non-core interaction proof gap remain for later stages; no owner response required to complete stage 0."
+  },
+  "live_walk_proposal": {
+    "id": "walk_existing_first",
+    "source": [
+      "design/validation_walks/RimMandrake/Stillsand.md",
+      "src/RimMandrake/Stillsand/northstar_plan.py"
+    ],
+    "status": "proposed_not_run",
+    "scene": "Use a disposable Stillsand scene in the composed Biomes tier, with open sand/deep sand beside a rock-island cave, a shade-bearing giant and tenant, and an established glass/water workshop. Show the calm landscape and refuge, then a separately recoverable gale/swimmer scene. Pair open ground with roof at the same sun angle; inspect warning, wet line and Return only in the tier that supplies its faith.",
+    "settles": [
+      "whether sparse terrain and moving giant shade read as the chosen experience",
+      "whether refuge and warning are legible",
+      "whether sunlight machines and water output work through ordinary jobs"
+    ],
+    "save": "No canonical or owner save is selected or modified. The documented northstar site regenerates its map and cannot be run on a save to preserve. A scene runner needs snapshot/recovery and hold before a live walk.",
+    "constraint": "Proposal only; this BENCH run does not use the bridge, restart, deploy or stage live state."
+  },
+  "proof_script_audit": {
+    "source": [
+      "src/RimMandrake/Stillsand/validation.py",
+      "src/RimMandrake/Stillsand/northstar_site.py",
+      "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+    ],
+    "existing_start": "preflight checks quicktest tile, DLC and shipped settings; site_chain changes the tile then regenerates the map; _prep clears a pad, removes roof, paints terrain and locks clear weather. This is fixture setup, not a complete asserted player-scene start.",
+    "existing_controls": "Useful pairs include Sand/Gravel, bare/goggled, roof/open, feature on/off, and unforced/forced visits; control_and_gaps identifies what each still fails to discriminate.",
+    "restoration": "_setting restores shipped DEFAULTS rather than an arbitrary prior value. _cleanup removes spawned pawns/pad contents and unlocks weather; it does not restore the previous world/map, terrain/roof, clock, sand stock, debt/faith/goodwill, incident queues or held world pawns. Restore failures print diagnostics rather than creating a blocking recovery debt.",
+    "hold": "No designer_stage scene-begin/end/hold registration or owner-review hold is implemented. No scene was run in this stage 0 turn.",
+    "proof_wrappers": "prove_stillsand_content, prove_glass_chain, prove_sandswim, prove_stillsand_return, prove_muurrok_emergence, prove_soorrak_not_stuck and prove_dune_gale call/read the same validation chains; prove_roof_cover and the registered row_verdict commands consume targeted results. They introduce no additional recoverable acceptance scene. Cache freshness or static selftests do not establish source/deployed/settings identity.",
+    "acceptance_boundary": "ProofStillCycle/ProofDrinkHook/forced ritual outcome/ForceDrag/ForceCarryOff/ReturnGale isolate internal mechanisms. They do not demonstrate normal work, real ritual, carry eligibility/dice or natural return timing. Fliers require the separate owner-attended protocol; this run exercises none."
+  },
+  "comparison": {
+    "id": "vanilla_workflow",
+    "source": [
+      "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+      "src/RimMandrake/Stillsand/Source/RM_IncidentWorker_SandBusterEruption.cs"
+    ],
+    "text": "The useful vanilla comparison is DoBill: Stillsand sun work retains ordinary bills/work givers and gates usability, so acceptance must start and interrupt an actual bill rather than inspect a stat. Sand-buster code also explicitly reuses infestation/Hive machinery with its own cap counter. Existing source resolves the design choice; no unrelated popular-mod survey is needed."
+  },
+  "built_reviewed": [
+    {
+      "ref": "src/RimMandrake/Stillsand",
+      "covered_by": "package",
+      "note": "Source tree mapped across the inventory, not package capability alone."
+    },
+    {
+      "ref": "ITEM:STILLSAND_BEDAZZLE_CONTENT_1",
+      "covered_by": "roster",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_BEDAZZLE_SITTING_1",
+      "covered_by": "roster",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_CAVE_TIER_ROWS_1",
+      "covered_by": "tier_caves",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_DEAD_GATE_SWEEP_1",
+      "covered_by": "package",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_DESIGN_SITTING_1",
+      "covered_by": "roster",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_DUNE_GALE_1",
+      "covered_by": "gale",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_EVENT_CREATURES_1",
+      "covered_by": "leviathan",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_EVENT_CREATURES_REMAINDER_1",
+      "covered_by": "horn",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_FIXES_LIVE_PROOF_1",
+      "covered_by": "proof_tools",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_FUZZ_FIX_RUNOUT_TICKS_MISSTATED",
+      "covered_by": "proof_tools",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_GLARE_BLIND_GOGGLES_1",
+      "covered_by": "glare_gear",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_GLASS_LENS_CHAIN_1",
+      "covered_by": "glass_materials",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_LOAD_DEF_ERRORS_1",
+      "covered_by": "roster",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_LOOKUP_CACHE_1",
+      "covered_by": "lookup_cache",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_MIRAGE_CONDITION_1",
+      "covered_by": "mirage",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_MUURROK_EMERGENCE_1",
+      "covered_by": "leviathan",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_NATIVE_CRASH_LIVECHECK_1",
+      "covered_by": "proof_tools",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_PRECIOUS_CAVES_1",
+      "covered_by": "rock_island",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_RETURN_RITUAL_1",
+      "covered_by": "return_ritual",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_RM_MOD_BUILD_1",
+      "covered_by": "package",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_ROADS_DECIDE_ROADS_INTO_THIN_AIR",
+      "covered_by": "terrain",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_RULED_CONTENT_1",
+      "covered_by": "roster",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_SAND_SWIM_KIT_1",
+      "covered_by": "swim_consumers",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_SETTINGS_SCROLL_1",
+      "covered_by": "settings",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_SKELETONS_TRACKS_1",
+      "covered_by": "skeleton_landmarks",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_SKELETON_ART_TRACKS_WIRING_1",
+      "covered_by": "tracks",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_STILL_COOLING_DRAUGHT_1",
+      "covered_by": "glare_gear",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_SUN_FROM_LATITUDE_1",
+      "covered_by": "legacy_sun",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "ITEM:STILLSAND_WIND_SUN_BEARING_1",
+      "covered_by": "terrain",
+      "note": "Reviewed current source/ledger; historical item title does not reverse later cuts."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_CONTENT_LIVE_PROOF_1.txt",
+      "covered_by": "proof_tools",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_DUNE_GALE_LIVE_1.txt",
+      "covered_by": "gale",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_GLASS_CHAIN_REMAINDER_1.txt",
+      "covered_by": "sun_tables",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1.txt",
+      "covered_by": "shade_tenants",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_MUURROK_EMERGENCE_1.txt",
+      "covered_by": "leviathan",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_RETURN_REMAINDER_1.txt",
+      "covered_by": "return_ritual",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_ROOF_COVER_EXPOSURE_1.txt",
+      "covered_by": "legacy_sun",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1.txt",
+      "covered_by": "swim_consumers",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/STILLSAND_SAND_SWIM_REMAINDER_1.txt",
+      "covered_by": "swim_consumers",
+      "note": "Proof command registration only; no current passing outcome claimed."
+    }
+  ],
+  "proof_observations": [
+    {
+      "id": "obs_stillsand_content_live_proof_1",
+      "source": "ITEM:STILLSAND_CONTENT_LIVE_PROOF_1",
+      "state": "ready",
+      "level_reached": null,
+      "outstanding": [],
+      "latest_runs": [
+        {
+          "ts": "2026-10-01T08:49:42Z",
+          "result": "partial",
+          "sha": "cc4bc992243",
+          "evidence": "Transient/LIVE_SESSION_2026-10-01.md"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_dune_gale_live_1",
+      "source": "ITEM:STILLSAND_DUNE_GALE_LIVE_1",
+      "state": "built",
+      "level_reached": "L0",
+      "outstanding": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-05T08:40:15Z",
+          "result": "fail",
+          "sha": "895f9870d4a5",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_DUNE_GALE_LIVE_1-A2-20261105T083135Z.log"
+        },
+        {
+          "ts": "2026-11-05T08:48:49Z",
+          "result": "fail",
+          "sha": "895f9870d4a5",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_DUNE_GALE_LIVE_1-A3-20261105T084017Z.log"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_glass_chain_remainder_1",
+      "source": "ITEM:STILLSAND_GLASS_CHAIN_REMAINDER_1",
+      "state": "built",
+      "level_reached": "L0",
+      "outstanding": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-05T12:17:59Z",
+          "result": "fail",
+          "sha": "b703c9c6e0a8",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_GLASS_CHAIN_REMAINDER_1-A1-20261105T121123Z.log"
+        },
+        {
+          "ts": "2026-11-06T08:11:44Z",
+          "result": "partial",
+          "sha": "675cf20cb57a0ce811360cc75326dd38e7ec1f66",
+          "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Stillsand_20261106T080724Z.html (testq J20261106T074949Z-52ff79.a2)"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_loomma_sunstruck_shade_1",
+      "source": "ITEM:STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1",
+      "state": "built",
+      "level_reached": "L0",
+      "outstanding": [
+        "A1"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-14T15:02:53Z",
+          "result": "partial",
+          "sha": "78476a1d9fc8feeeaf7aff4f34f0dc8e62893334",
+          "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Stillsand_20261114T150202Z.html (testq J20261114T144925Z-64da9f.a1)"
+        },
+        {
+          "ts": "2026-11-15T01:55:27Z",
+          "result": "partial",
+          "sha": "158c9ce595b1a20871f19f194f21c7f4fa34f910",
+          "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Stillsand_20261115T015433Z.html (testq J20261115T014158Z-9fd0b4.a1)"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_muurrok_emergence_1",
+      "source": "ITEM:STILLSAND_MUURROK_EMERGENCE_1",
+      "state": "done",
+      "level_reached": "L2",
+      "outstanding": [],
+      "latest_runs": [
+        {
+          "ts": "2026-11-03T04:00:31Z",
+          "result": "pass",
+          "sha": "0e6e98192929",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_MUURROK_EMERGENCE_1-A1-20261103T035508Z.log"
+        },
+        {
+          "ts": "2026-11-03T04:00:42Z",
+          "result": "pass",
+          "sha": "0e6e98192929",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_MUURROK_EMERGENCE_1-A2-20261103T040032Z.log"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_return_remainder_1",
+      "source": "ITEM:STILLSAND_RETURN_REMAINDER_1",
+      "state": "validated",
+      "level_reached": "L2",
+      "outstanding": [
+        "A1",
+        "A2",
+        "A4"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-06T15:33:06Z",
+          "result": "partial",
+          "sha": "b4e470ec4fffaef77b0d227215d6d23bcff3012a",
+          "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Stillsand_20261106T152847Z.html (testq J20261106T151635Z-b1284b.a1)"
+        },
+        {
+          "ts": "2026-11-14T15:02:58Z",
+          "result": "partial",
+          "sha": "78476a1d9fc8feeeaf7aff4f34f0dc8e62893334",
+          "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Stillsand_20261114T150202Z.html (testq J20261114T144925Z-64da9f.a1)"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_roof_cover_exposure_1",
+      "source": "ITEM:STILLSAND_ROOF_COVER_EXPOSURE_1",
+      "state": "built",
+      "level_reached": "L0",
+      "outstanding": [
+        "A2"
+      ],
+      "latest_runs": [],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_sandswim_gravel_submerge_1",
+      "source": "ITEM:STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1",
+      "state": "built",
+      "level_reached": "L0",
+      "outstanding": [
+        "A2"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-06T18:14:14Z",
+          "result": "fail",
+          "sha": "0c3e2fd71d",
+          "evidence": "/home/mandrake/rm/relentless/books/Transient/modcheck/Stillsand_20261106T181411Z.html"
+        },
+        {
+          "ts": "2026-11-06T18:14:29Z",
+          "result": "fail",
+          "sha": "0bb933ab45e2",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1-A2-20261106T181336Z.log"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    },
+    {
+      "id": "obs_stillsand_sand_swim_remainder_1",
+      "source": "ITEM:STILLSAND_SAND_SWIM_REMAINDER_1",
+      "state": "validated",
+      "level_reached": "L2",
+      "outstanding": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "latest_runs": [
+        {
+          "ts": "2026-11-04T21:56:27Z",
+          "result": "pass",
+          "sha": "c3ea05110bdb",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_SAND_SWIM_REMAINDER_1-A5-20261104T215615Z.log"
+        },
+        {
+          "ts": "2026-11-06T00:13:18Z",
+          "result": "pass",
+          "sha": "cedf80136911",
+          "evidence": "/home/mandrake/rm/relentless/live/STILLSAND_SAND_SWIM_REMAINDER_1-A5-20261106T000250Z.log"
+        }
+      ],
+      "judgement": "Historical ledger observation only. Remote/raw reports and running source/deployment/settings identity not revalidated in this run; registration or a partial run is not current acceptance."
+    }
+  ],
+  "related_items_reviewed": [
+    {
+      "ref": "ITEM:BAROQUE_BIOMES_WAVE2_FOLD_1",
+      "title": "Baroque Biomes Wave 2 (spec section 6): fold the 12 on-list biome/kit mods (FeverWood, GelatinousSlime, Greentide, LongShade, NightsideIce, Pyrelands, Stillsand, TerminalBiomes, TheRot, Wasteland, SeaShores, DivingInteraction) into the compose manifest at compose_wave 2, then a SINGLE ModsConfig swap that removes those 12 packageIds in the same write the new compose deploys - never split across two swaps or the game logs missing-mod noise. Cold-load prove + spot-check per-biome def counts equal to pre-merge (measured, not assumed).",
+      "source": "ITEM:BAROQUE_BIOMES_WAVE2_FOLD_1",
+      "covered_by": "package",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:BEDAZZLE_ENRICHMENT_REVIEW_REST_1",
+      "title": "Owner review later: GPT enrichment cards for Leaning Scrub and Long Shade, plus the Stillsand turn-3 development and its five open questions",
+      "source": "ITEM:BEDAZZLE_ENRICHMENT_REVIEW_REST_1",
+      "covered_by": "roster",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:CLONE_POOL_DECIDE_REVERT_CLAUSE_TRIPPED",
+      "title": "Owner's pool rule (2026-10-31: revert if a clone strands work or the pool passes 40 GB) has tripped: 4 pool clones stranded with unlanded work (NORTHSTAR_EVERYWHERE_PROGRAM_1, REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS, STILLSAND_ROOF_COVER_EXPOSURE_1, a FOUNDRY scratchpad), pool full 10/10 at 38.9/40 GB. Conductor: salvage (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG) then carry out the revert or record why not",
+      "source": "ITEM:CLONE_POOL_DECIDE_REVERT_CLAUSE_TRIPPED",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:CONTAGION_IKEE_NAME_COLLISION_1",
+      "title": "Owner ruling needed: Contagion and Stillsand both built a creature labeled ikee off the same 2026-08-15 ruling",
+      "source": "ITEM:CONTAGION_IKEE_NAME_COLLISION_1",
+      "covered_by": "grain_life",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:DEEP_SAND_WALKABLE_TERRAIN_1",
+      "title": "Deep sand: walkable-very-slow, a whole terrain type (some Long Shade, much Stillsand) - owner ruling 2026-09-27 supersedes the impassable spec",
+      "source": "ITEM:DEEP_SAND_WALKABLE_TERRAIN_1",
+      "covered_by": "terrain",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:GALE_CARRIED_RETURN_HARDENING_1",
+      "title": "Stillsand: Gale-carried pawns: dead ones should come back as bodies; safe fallback map",
+      "source": "ITEM:GALE_CARRIED_RETURN_HARDENING_1",
+      "covered_by": "gale_carry",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:GALE_STRUCTURE_WEAR_RATE_1",
+      "title": "Stillsand: Dune gale structure wear runs ~25x slower than its stated MTB",
+      "source": "ITEM:GALE_STRUCTURE_WEAR_RATE_1",
+      "covered_by": "removed_gale_fluff",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:HELD_CLONE_WORK_TRIAGE_1",
+      "title": "Land or drop work stranded in side clones: _fwY_gate (uncommitted RM_SluiceGate.cs, RM_SluiceGateMath.cs, settings), _fwY_blood/quarry/tanker (one untracked belt_fwlogistics_*.md each), reconcile (12 unpushed commits), ~/.cache/pyrelands_replay_1607507 (2), ~/.cache/stillsand_s2_replay (3); then quarantine the clones. List: Transient/seat_memory_2026-10-08/disk.md",
+      "source": "ITEM:HELD_CLONE_WORK_TRIAGE_1",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:HORIZON_CARAVAN_VANILLA_REFUSES_1",
+      "title": "Stillsand horizon_warns_then_arrives: vanilla TraderCaravanArrival also refused on the L2 site. Repro: regenerated Stillsand site, horizonWarningsEnabled OFF, jawa/storyteller_fire TraderCaravanArrival; read jawa/list_factions (non-hostile w/ trader kinds), jawa/incident_parms_preview, Player.log around the fire -> DONOR (minimal list lacks traders) vs HARNESS (world has no trader faction). Script now reports UNMEASURED when vanilla refuses. Triage: Transient/l2_failure_triage_20261007.md",
+      "source": "ITEM:HORIZON_CARAVAN_VANILLA_REFUSES_1",
+      "covered_by": "horizon",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL",
+      "title": "Proof readers of modcheck results JSON score a refused run (summary.refused, stale_load, chains []) as FAIL; must be UNMEASURED exit 2. Same class as the fix in Scarlands/chatrak_live_proof.py 427693afa4: modcheck/live_queue/row_verdict.py, Stillsand/prove_roof_cover.py, Bones/prove_bones.py read only summary.chains",
+      "source": "ITEM:MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL",
+      "covered_by": "proof_tools",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:PRECIOUS_CAVE_PRESERVATION_EDGES_1",
+      "title": "Stillsand: Cave preservation leaves animal corpses permanently non-vanishing",
+      "source": "ITEM:PRECIOUS_CAVE_PRESERVATION_EDGES_1",
+      "covered_by": "cave_preservation",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:PYRELANDS_WALKLINT_FINDINGS_1",
+      "title": "run_selftests reports 3 walklint findings in design/validation_walks/RimMandrake/Pyrelands.md (found by STILLSAND_SKELETONS_TRACKS_1 full run 2026-10-01) — read each finding, fix the walk, never the grader",
+      "source": "ITEM:PYRELANDS_WALKLINT_FINDINGS_1",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:QUARANTINE_REMAINDER_REVIEW_1",
+      "title": "Resolve the remaining ~60 GB quarantine: pull held work out of _fwY_gate/blood/quarry/tanker, reconcile, pyrelands_replay, stillsand_replay, cache-bench, wt_gitlab (owner 2026-10-08: safe set purged, review the rest soon)",
+      "source": "ITEM:QUARANTINE_REMAINDER_REVIEW_1",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:RIMPLACE_GENSTEP_NRE_1",
+      "title": "GenStep_RimplacePlan.Generate throws NullReferenceException during map generation (Stillsand quicktest)",
+      "source": "ITEM:RIMPLACE_GENSTEP_NRE_1",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:SANDBUSTER_CASTES_BUILD_1",
+      "title": "Sand busters: ruukka eruptor + oorrik swarm + mound + biome-gated eruption incident - the ruled 2026-09-24 amendment finally filed, Stillsand marquee rank 1",
+      "source": "ITEM:SANDBUSTER_CASTES_BUILD_1",
+      "covered_by": "eruption",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05",
+      "title": "SteveDesktop lane BRAKED, unowned 10 min: filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards,RustCathedral,Graffiti,Pyr",
+      "source": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_968D",
+      "title": "SteveDesktop lane BRAKED, unowned 10 min: filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards,RustCathedral,Graffiti,Pyr",
+      "source": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_968D",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_9C4E",
+      "title": "SteveDesktop lane BRAKED, unowned 10 min: filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards,RustCathedral,Graffiti,Pyr",
+      "source": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_9C4E",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283",
+      "title": "SteveDesktop lane BRAKED, unowned 10 min: filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards,RustCathedral,Graffiti,Pyr",
+      "source": "ITEM:STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:SWB_TWINS_DEDUPE_STILLSAND",
+      "title": "RSW_Vozzik/RSW_SandLion duplicate Stillsand RM_Vozzik/RM_Vekka: retire the SWB copies, alias RSW_->RM_, repoint Utinni RUT_ExtremeDesert/AnimalTolerances/MegafaunaYield refs; also RSW_Vozzik/RSW_Zhakka use SWBestiary C# CompProperties_InnateAbility, which must exist in an RM assembly before they can leave SWB",
+      "source": "ITEM:SWB_TWINS_DEDUPE_STILLSAND",
+      "covered_by": "roster",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL",
+      "title": "gaps.py item_owed links a generic chain name (defs, defs_resolve) to an unrelated item: fill_rank for Stillsand, Contagion, TerminalBiomes and EnvironmentalHazards each picks 'defs*' as owed by GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND, so a filler run of another mod's defs chain is recorded (row_items) against the Greentide item",
+      "source": "ITEM:TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL",
+      "not_a_capability": "Operational clone salvage/quarantine, lane scheduling, unrelated map generator/walklint, or testq attribution maintenance. Read for context; no additional Stillsand play feature."
+    },
+    {
+      "ref": "ITEM:TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+      "title": "RM_TitanPassage's eligible pool (live, R3 Stillsand, 2026-10-21) holds sea and juvenile kinds that would walk across a desert: RM_Reefback, RM_ReefbackJuv (a JUVENILE kind, judged by adult tier), RM_Lanternwhale, RSW_Reefback, RSW_Lanternwhale, RSW_ShadeWhale, RSW_SandoAquaMonster, RM_GrippingTerror, RM_Titanoslime among 19. Eligible() checks animal/tier/homed-elsewhere/season only. NEXT: ask the owner by question card whether the pool excludes water-homed (sea-biome-only) and non-adult kinds, then add that filter to TitanPassageUtility.Eligible + the kernel fuzz.",
+      "source": "ITEM:TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+      "covered_by": "giant_residents",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+      "title": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+      "source": "ITEM:VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+      "covered_by": "rehome_residents",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    },
+    {
+      "ref": "ITEM:WRECK_ART_WIRE_RENDERS_NOBODY_POINTS_AT",
+      "title": "Four wreck children draw the family's vanilla ShipChunk placeholder although their renders are on disk with no def pointing at them: RM_LongShadeWreckSpeeder, RM_WastesWarcasketSarcophagus, RM_FeverWoodWreckCarapace, RM_StillsandWreckTread. Wire texPath + measured shadow (alpha>16 bbox, Scald ratio x family drawSize) as done for RM_ContagionWreckFragment",
+      "source": "ITEM:WRECK_ART_WIRE_RENDERS_NOBODY_POINTS_AT",
+      "covered_by": "wreck_salvage",
+      "note": "Read source/item context; title alone is not a new design obligation. TITAN_PASSAGE belongs to HugeThings and its proof is bounded to filtering/forced arrival; gale wear was later cut."
+    }
+  ],
+  "reading_limits": [
+    {
+      "id": "read_bound",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "text": "Read the current mod/manifest/defs, current specifications and walk, stage packet, relevant owner events, required done-item/proof registrations, proof chains/helpers and directly touched shared services. Expanded only for the recorded sun, wetting, cast, decay, gale-oracle and appraisal uncertainties. No broad compatibility survey, art/audio acceptance or full implementation correctness certificate."
+    },
+    {
+      "id": "no_runtime",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "text": "No bridge, restart, deployment, game/save mutation or live proof ran. No scene recovery is owed from this turn. Historical remote report locations are ledger citations, not reports inspected here."
+    }
+  ],
+  "root_draft": {
+    "id": "root_synthesis_stage1",
+    "speaker": "agent",
+    "text": "Stillsand is an ocean of apparently empty sand beneath a sun that never sets, crossed by giants. Fortunes scattered among distant rock islands and uncertain caves draw repeated expeditions. Exploring and securing an island makes a dependable harbour, and a useful cave discovery supplies or funds the next expedition or outpost. Learning to live here uses sunlight and desert resources to make glass and lenses, cook food and recover water.",
+    "source": [
+      "design/concepts/Stillsand/log.md",
+      "OWNER:1794377002766121379",
+      "design/RimMandrake/biome_experiences_2026-10-20.md:22"
+    ],
+    "author": "rm-role-designercodex-1794805106"
+  },
+  "dialogue": {
+    "stage": 1,
+    "run": "rm-role-designercodex-1794805106",
+    "source": "design/concepts/Stillsand/log.md",
+    "turns": 1,
+    "root_resolution": "CONDUCTOR:1794805294378261874",
+    "owner_questions_sent": 0,
+    "walk_offered_first": "walk_existing_first",
+    "review": "design/concepts/Stillsand/stage1_review.json",
+    "evidence_search": "Read the exact three-choice OWNER event and original cards, selected experience row and current inventory. Later OWNER shard matches for Stillsand contain operational retirement/reclaim events.",
+    "carry_forward": [
+      "c_sun",
+      "c_gale_oracle",
+      "c_wetting",
+      "c_decay",
+      "c_cast",
+      "c_appraisal"
+    ]
+  }
+}
