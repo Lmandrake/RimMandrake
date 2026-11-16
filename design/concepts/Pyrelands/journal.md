@@ -357,6 +357,12 @@ so the Conductor takes it. These are Conductor decisions, not his.
   both items. The Dispatch tick's builder works them; then the advance.
 - The round-8 coverage look (released 2026-11-16T00:11:33Z after the furnace-beast fix, 6120bb02aa) ran and signed
   covered with 0 gaps at 00:52Z (rm-coverage-judge-1794790345).
+- 2026-11-16 (RIMMANDRAKE_AUTOBUILD_PYRELANDS_ZERO_BARS_LEFT): the twelve scenes' owed parts were built offline in
+  validation.py (d6ab2b6632) and RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED was closed. The live
+  halves are UNRUN. `maturation.py next` now reads 16 of 42 bars not runnable. Still open:
+  RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. The table was not remade: make_test_table.py refuses
+  because tree.json and record.json now hold 44 bars and the maker lacks firehawk_hunt_rewards and
+  ullai_cross_the_map_as_vanilla_herds.
 
 ## 2026-11-15 — his answer on the giant (the furnace-beast size bar): settled, do not ask again
 
