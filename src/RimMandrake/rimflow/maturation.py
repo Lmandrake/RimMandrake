@@ -845,7 +845,41 @@ def _git_show(root, commit, path):
         return None
 
 
-def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None):
+LOCK_PINNED = ("tree.json", "sheet.md", "scenes.json", "floor.json", "exam.json", "record.json", "plan.md", "stage.json",
+               "coverage_verdict.json")
+
+
+def _git_blob(root, commit, path):
+    r = subprocess.run(["git", "-C", root, "rev-parse", "%s:%s" % (commit, path)], capture_output=True, text=True,
+                       timeout=120)
+    return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else None
+
+
+def pin_bars_md(root, mod, v, ids, blob=None):
+    """RIMMANDRAKE_PIN_BARS_MD_WHEN_PIPELINE_LOCKS_A_MOD: write version/bars.md, the git blob of each locked file at
+    VERSION.json's locked_from_commit, when no bars.md exists (a hand lock wrote one; the pipeline's lock did not, and
+    the re-pin rule, the judges' inputs and every preflight's pin check read it). Never rewrites one. -> path or None."""
+    if os.path.exists(os.path.join(mod_dir(root, mod), "version", "bars.md")):
+        return None
+    blob = blob or (lambda c, p: _git_blob(root, c, p))
+    c = v.get("locked_from_commit")
+    rows = [(f, blob(c, rel(mod, f))) for f in LOCK_PINNED]
+    rows = [(f, b) for f, b in rows if b]
+    L = ["# %s %s: the bars, locked as they stood on %s" % (mod, v.get("version"), v.get("locked_on") or "UNMEASURED"),
+         "", "Locked by %s (%s). Nothing here edits a bar: this file points at the bars and pins their bytes. State: %s."
+         % (v.get("locked_by") or "UNMEASURED", v.get("per_ruling") or v.get("why") or "no ruling recorded",
+            v.get("state")), "",
+         "Lock commit: `%s`. Written by `maturation.py lock-bars` with the first record of the locked bars." % c, "",
+         "## The locked files", "", "| file | git blob at the lock commit | role |", "|---|---|---|"]
+    L += ["| `%s` | `%s` | locked input |" % (rel(mod, f), b) for f, b in rows]
+    L += ["", "## Counts at the lock", "", "- Bars: **%d**, the ids in `locked_bars.json`." % len(ids),
+          "- A locked file changed after the lock ONLY in test text, check wording or bookkeeping fields is re-pinned "
+          "here with a journal line; a changed bar is his card (re-pin rule, 2026-11-14).", ""]
+    write_text(root, mod, "version/bars.md", "\n".join(L))
+    return rel(mod, "version/bars.md")
+
+
+def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blob=None):
     """RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: record the locked version's bar ids in version/locked_bars.json, the
     list the test table is compared with. The first record derives them from the lock itself: coverage_judge's
     required_ids (record.json inventory, then tree.json leaves) at VERSION.json's locked_from_commit, less
@@ -896,6 +930,8 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None):
     out = {"schema": 1, "mod": mod, "version": v.get("version"), "locked_from_commit": v.get("locked_from_commit"),
            "ids": ids, "history": hist}
     write_text(root, mod, LOCKED_BARS, json.dumps(out, indent=1) + "\n")
+    if not (isinstance(cur, dict) and cur.get("version") == v.get("version") and isinstance(cur.get("ids"), list)):
+        pin_bars_md(root, mod, v, ids, blob)
     return {"ok": True, "why": how, "ids": ids}
 
 

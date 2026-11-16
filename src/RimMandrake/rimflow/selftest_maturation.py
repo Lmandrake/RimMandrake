@@ -559,9 +559,22 @@ def lock_bars_main(root):
         ok(False, "lock-bars exists (maturation.lock_bars)")
     else:
         try:
-            r = lb(root, mod, "BENCH", "selftest", show=show)
+            # RIMMANDRAKE_PIN_BARS_MD_WHEN_PIPELINE_LOCKS_A_MOD: the first record also pins the locked files in bars.md
+            bp = os.path.join(c, "bars.md")
+            if os.path.exists(bp):
+                os.remove(bp)
+            blobs = {"design/concepts/%s/tree.json" % mod: "a" * 40, "design/concepts/%s/scenes.json" % mod: "b" * 40}
+            blob = lambda commit, path: blobs.get(path) if commit == "c0ffee" else None     # noqa: E731
+            try:
+                r = lb(root, mod, "BENCH", "selftest", show=show, blob=blob)
+            except TypeError:
+                r = lb(root, mod, "BENCH", "selftest", show=show)
             ok(r["ok"] and r["ids"] == ids, "lock-bars derives the locked bars: required_ids at locked_from_commit, less "
                "the moved, plus the added after lock (%s)" % r["why"][:80])
+            bm = open(bp).read() if os.path.exists(bp) else ""
+            ok("| `design/concepts/%s/tree.json` | `%s` |" % (mod, "a" * 40) in bm and "`c0ffee`" in bm
+               and "sheet.md" not in bm, "the first lock-bars pins each locked file that exists at locked_from_commit "
+               "in version/bars.md (a pipeline lock had no pins)")
             r2 = lb(root, mod, "BENCH", "selftest", show=show)
             ok(not r2["ok"] and "already records" in r2["why"], "a second lock-bars with no change is refused")
             r3 = lb(root, mod, "BENCH", "selftest", add=["invented_bar"], show=show)
