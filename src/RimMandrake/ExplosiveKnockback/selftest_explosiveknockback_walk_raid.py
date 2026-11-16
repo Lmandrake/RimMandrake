@@ -27,8 +27,12 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       42837 live, 43837 in both loads): A_RELOAD_NO_DUP_LOST still PASSes; ids are compared only for things the save holds
   W18 a thing born after the save is placed with the RNG, whose state a load changes (live 2026-11-16: a WoodLog leaving at
       101,42 live, 102,42 in both loads): born things are counted by def, not by cell, and the row still PASSes
-  W19 the frame probe reads a 99th-percentile frame of 75 ms in the real-time window: FRAME_BUDGET FAIL
+  W19 the frame probe reads a 99th-percentile frame of 75 ms in the real-time window with the mod on, 24 ms with it off:
+      FRAME_BUDGET FAIL
   W20 the frame probe saw no frame (Frame stop answers NONE): FRAME_BUDGET UNMEASURED, never PASS
+  W22 the frame window over the bar with the mod OFF too (full-list noise; live, visit 3 run 2 read 59.3 ms with nothing in
+      the air): FRAME_BUDGET UNMEASURED naming both arms, never a mod FAIL
+  W23 nothing in the air in the frame window (the shells threw nothing): FRAME_BUDGET UNMEASURED
   W21 jawa/time_perf reads 0.0 on a paused clock (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with
       carriers in the air", PASS): the fake answers 0.0 unless the clock runs, and a sound world reads both tick costs
       above 0 (W0); a perf that always reads 0.0 leaves CARRIER_TICK_COST UNMEASURED, never PASS
@@ -195,9 +199,12 @@ class Fake:
                 elif not w.pop("probe", False) or self.brk.get("probe_blind") or 1 not in w.get("probe_speed", []):
                     r = "NONE no probe running, or it saw no frame"
                 else:
-                    p99 = 75.0 if self.brk.get("slow_frames") else 24.0
-                    r = ("FRAME frames=480 probeRows=480 paused=12 wall=8.00s worstMs=%.1f meanMs=16.7 maxInAir=12 window=0.5-8s "
-                         "windowRows=450 windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv" % (p99 + 9, p99))
+                    on = w.get("enabled", True)
+                    slow = self.brk.get("slow_noise") or (self.brk.get("slow_frames") and on)
+                    p99 = 75.0 if slow else 24.0
+                    air = 12 if on and not self.brk.get("nothing_flies") else 0
+                    r = ("FRAME frames=480 probeRows=480 paused=12 wall=8.00s worstMs=%.1f meanMs=16.7 maxInAir=%d window=0.5-8s "
+                         "windowRows=450 windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv" % (p99 + 9, air, p99))
             return {"success": True, "result": r or "OK"}
         if tool == "jawa/list_things":
             x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
@@ -336,6 +343,12 @@ def main():
     code, rows, txt = run(probe_blind=True)
     check("W20", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(slow_noise=True)
+    check("W22", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
+          "a frame window over the bar with the mod off too is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(nothing_flies=True)
+    check("W23", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
+          "a frame window with nothing in the air is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
     code, rows, txt = run(perf_blind=True)
     check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
           "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))

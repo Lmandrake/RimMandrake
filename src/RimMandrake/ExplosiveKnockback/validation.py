@@ -341,10 +341,11 @@ def mock_run():
 # the raid itself is real (jawa/fire_raid) so raiders are on the map. Orders: A mortars, mid-air save + reload, grenade,
 # gas; B (from the baseline save) gas, mortars, grenade; C the mortars with the mod off. The baseline save is reloaded at
 # the end and the player's settings put back. Exit 0 only if every row PASSes; 2 = refused (no game, no bridge); 3 = PROOF
-# BUILD REQUIRED. FRAME_BUDGET (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED): the walk's acts step paused
-# ticks, so they hold no real frames; at the end of order A the probe (RM_KnockbackProof.Frame) runs while the shells go
-# off again over the storeroom with the clock UNPAUSED at speed 1 for --frame-seconds real seconds, and the row is the
-# barrage bar's: the 99th-percentile unpaused frame inside 0.5 s..the end at most 50 ms (worst frame recorded, not judged).
+# BUILD REQUIRED. FRAME_BUDGET (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED): the orders step paused
+# ticks, so they hold no real frames; two more arms reload the baseline, run the clock at speed 1 and set the shells off over
+# the stocked storeroom while RM_KnockbackProof.Frame reads real frames, once with the mod on and once off. The row is the
+# barrage bar (p99 unpaused frame at most 50 ms); over it is FAIL only when the mod-off arm holds the bar, UNMEASURED when
+# nothing flew or the list's own noise is over the bar too. CARRIER_TICK_COST is read in the on arm on a running clock.
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
@@ -772,40 +773,58 @@ class _Walk:
             self.judge_gas(tag, g)
             recs += g
         self.judge_plan(tag, recs)
-        if tag == "A":
-            self.frame_act()
 
-    def frame_act(self):
-        """FRAME_BUDGET: the shells again over the storeroom, the clock running at speed 1, the probe reading real frames."""
+    def frame_act(self, arm):
+        """FRAME_BUDGET arm `on` or `off` (the mod off), each on a fresh baseline reload: the clock runs at speed 1, the
+        shells go off over the stocked storeroom, and the probe reads real frames. The order acts step paused ticks and
+        hold no real frames; an arm at the end of order A met an emptied room and measured nothing in the air (live,
+        visit 3 run 2: p99 59.3 ms, maxInAir 0, a FAIL that was full-list noise). The row is judged in frame_row."""
         import time
         wait = SLEEP or time.sleep
         secs = float(self.a.frame_seconds)
         b = self.kp("Frame", "begin")[1]
         if not b.startswith("BEGUN"):
-            self.row("FRAME_BUDGET", "UNMEASURED", "Frame begin answered %r" % b[:200])
+            self.ev["frame_" + arm] = {"why": "Frame begin answered %r" % b[:200]}
             return
-        # CARRIER_TICK_COST is read here too, on a running clock: jawa/time_perf's meanTickTime reads 0.0 on a paused one
-        # (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with carriers in the air" and scored PASS)
+        # CARRIER_TICK_COST is read in the `on` arm, on a running clock: jawa/time_perf's meanTickTime reads 0.0 on a
+        # paused one (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with carriers in the air", PASS)
         self.c("rimworld/set_time_speed", speed=1)
         wait(2.0)
-        self.ev["tick_rest_running"] = self.perf()
+        if arm == "on":
+            self.ev["tick_rest_running"] = self.perf()
         cx, cz = self.room[0] + self.room[2] // 2, self.room[1] + self.room[3] // 2
         for x, z in [(cx, cz), (cx - 1, cz + 1), (cx + 1, cz - 1)][:max(1, self.a.shells)]:
             self.c("jawa/explosion_at", at="%d,%d" % (x, z), radius=SHELL[1], damType=SHELL[0])
         wait(1.0)
-        self.ev["tick_air_running"] = self.perf()
-        self.ev["in_air_at_tick_read"] = len([l for l in self.kp("Flights")[1].splitlines() if l and not l.startswith("NONE")])
+        if arm == "on":
+            self.ev["tick_air_running"] = self.perf()
+            self.ev["in_air_at_tick_read"] = len([l for l in self.kp("Flights")[1].splitlines() if l and not l.startswith("NONE")])
         wait(max(0.0, secs - 1.0))
         self.c("rimworld/set_time_speed", speed=0)
         r = self.kp("Frame", "stop,0.5,%g" % (secs + 2.0))[1]
-        self.ev["frame_probe"] = r
-        p99, rows = re.search(r"windowP99Ms=([0-9.]+)", r), re.search(r"windowRows=(\d+)", r)
-        if not r.startswith("FRAME") or not p99 or not rows or int(rows.group(1)) < FRAME_MIN_ROWS:
-            self.row("FRAME_BUDGET", "UNMEASURED", "no frame reading (%d s unpaused after the shells): %s" % (secs, r[:300]))
-            return
-        self.row("FRAME_BUDGET", float(p99.group(1)) <= FRAME_BUDGET_MS,
-                 "99th-percentile unpaused frame %s ms (bar %g) over %s rows, %g s at speed 1 (2 s before %d shell(s)): %s"
-                 % (p99.group(1), FRAME_BUDGET_MS, rows.group(1), secs + 2.0, max(1, self.a.shells), r[:240]))
+        num = lambda k: re.search(k + r"=([0-9.]+)", r)  # noqa: E731
+        p99, rows, air = num("windowP99Ms"), num("windowRows"), num("maxInAir")
+        self.ev["frame_" + arm] = {"text": r[:400], "p99": float(p99.group(1)) if p99 else None,
+                                   "rows": int(rows.group(1)) if rows else 0, "inAir": int(air.group(1)) if air else 0}
+
+    def frame_row(self):
+        """FRAME_BUDGET: PASS when the `on` arm's 99th-percentile unpaused frame is within the bar; FAIL when it is over
+        and the mod-off arm is within (the mod's cost); UNMEASURED when nothing flew, the probe saw too few frames, or
+        the mod-off arm is over the bar too (the list's own noise; barrage_perf's p99 bar has the same control)."""
+        on, off = self.ev.get("frame_on") or {}, self.ev.get("frame_off") or {}
+        det = "on p99 %s ms (%s rows, %s in the air), mod off p99 %s ms (%s rows), bar %g; %s" % (
+            on.get("p99"), on.get("rows"), on.get("inAir"), off.get("p99"), off.get("rows"), FRAME_BUDGET_MS,
+            on.get("text") or on.get("why") or "no on arm")
+        if on.get("p99") is None or on.get("rows", 0) < FRAME_MIN_ROWS:
+            self.row("FRAME_BUDGET", "UNMEASURED", "no frame reading: " + det)
+        elif not on.get("inAir"):
+            self.row("FRAME_BUDGET", "UNMEASURED", "nothing in the air in the window: " + det)
+        elif on["p99"] <= FRAME_BUDGET_MS:
+            self.row("FRAME_BUDGET", "PASS", det)
+        elif off.get("p99") is not None and off.get("rows", 0) >= FRAME_MIN_ROWS and off["p99"] <= FRAME_BUDGET_MS:
+            self.row("FRAME_BUDGET", "FAIL", det)
+        else:
+            self.row("FRAME_BUDGET", "UNMEASURED", "over the bar with the mod off too (list noise): " + det)
 
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
@@ -845,15 +864,17 @@ class _Walk:
                 rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
             self.order("A", gas_first=False)
-            for tag, fn in (("B", lambda: self.order("B", gas_first=True)), ("C", self.control)):
+            for tag, fn in (("B", lambda: self.order("B", gas_first=True)), ("C", self.control),
+                            ("FRAME_ON", lambda: self.frame_act("on")), ("FRAME_OFF", lambda: self.frame_act("off"))):
                 ok, why = self.load(base)
                 if not ok:
                     self.unmeasured([r for r in WALK_ROWS if r.startswith(tag)], "UNMEASURED: baseline reload failed (%s)" % why)
+                    self.ev.setdefault("frame_" + tag[6:].lower(), {"why": "baseline reload failed (%s)" % why}) if tag.startswith("FRAME") else None
                     continue
                 self.kp("Settings", "reset")
                 if self.a.raid_points > 0:                  # B and the control C face the same raid
                     self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
-                if tag == "C":
+                if tag in ("C", "FRAME_OFF"):
                     self.kp("Settings", "enabled=False")
                 fn()
         finally:
@@ -867,7 +888,7 @@ class _Walk:
                  "meanTickTime %s ms at rest, %s ms 1 s after the shells with %s carrier(s) in the air, clock running "
                  "(recorded, not judged)%s" % (rest, air, self.ev.get("in_air_at_tick_read"),
                                                 "" if seen else ": a reading of 0 or none is a blind instrument"))
-        self.unmeasured(["FRAME_BUDGET"], "UNMEASURED: order A never reached the frame act")
+        self.frame_row()
         return 0
 
 
