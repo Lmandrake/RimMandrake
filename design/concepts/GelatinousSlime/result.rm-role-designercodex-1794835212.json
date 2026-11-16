@@ -1,0 +1,243 @@
+{
+  "run": "rm-role-designercodex-1794835212",
+  "stage": 3,
+  "outcome": "done",
+  "summary": "Revalidated the published Stage-3 package after the prior cross-clone artifact-visibility rejection. All 20 rejection reasons are resolved: all six authored files exist locally and match origin/main, and the VALIDATED root supplies living_body_bargain for every leaf. Gate A, record provenance, all 34 planned scene contracts, four ordered showcases, all 23 floor lines and the full result check pass. Showcase 1 remains chosen_gene_friend_rescue under stage2_flagship_chosen_gene_friend_rescue and CONDUCTOR:1794825281765620778. All 43 built/in-scope capabilities retain planned coverage. No design scope, implementation or runtime proof changed.",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "seeker_scanner",
+      "seeker_extraction",
+      "gene_injection",
+      "warnings",
+      "antidote",
+      "kit_art"
+    ],
+    "scene": "Identify an existing composed-biomes review save and follow ordinary archive choice, handheld localisation/extraction, ordered injection and completed friend treatment, then inspect retained target/rider/social effects. Separately hold stages-one/five Titanoslimes for the owed in-game owner review. Exact save identity is unverified. An authorised operator records durable recovery before changes and restores or explicitly holds the scene."
+  },
+  "rejection_resolution": [
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/root.md does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/root.md",
+        "sha256": "193a00ad0c392df6d9bac577c29cd0c99aae9105f3bdf4aa4db9aa3a955d2891",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/sheet.md does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/sheet.md",
+        "sha256": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/tree.json does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/tree.json",
+        "sha256": "4557d22afe437c57976d31941f0795c8102f70a30d63056e03f7bc45e07aedda",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/plan.md does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/plan.md",
+        "sha256": "a4adb01e81c040c771ffbb12bfb486998b621182bde28d3eb235e6bfd3b128df",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/scenes.json does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/scenes.json",
+        "sha256": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_authored_contract]: source path design/concepts/GelatinousSlime/floor.json does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/floor.json",
+        "sha256": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_showcase_greedy_order]: source path design/concepts/GelatinousSlime/scenes.json does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/scenes.json",
+        "sha256": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "decisions[stage3_inherited_checkout_scope]: source path design/concepts/GelatinousSlime/floor.json does not exist",
+      "resolution": "The authored file is present locally and published in origin/main by 5f3e54eac7b504962ae7e51277b6f2863f8393da. Stage-3 validation now resolves artifacts in the concept clone.",
+      "evidence": {
+        "path": "design/concepts/GelatinousSlime/floor.json",
+        "sha256": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+        "origin_main_matches": true
+      }
+    },
+    {
+      "rejection": "lint: leaf scene_observer: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "scene_observer",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf useful_body: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "useful_body",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf ordinary_absorption: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "ordinary_absorption",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf chosen_gene_journey: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "chosen_gene_journey",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf friend_rescue: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "friend_rescue",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf lasting_gene_price: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "lasting_gene_price",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf living_ecology: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "living_ecology",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf titan_lifecycle: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "titan_lifecycle",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf harvested_chunk: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "harvested_chunk",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf actual_vault_breach: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "actual_vault_breach",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf last_touch_return: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "last_touch_return",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    },
+    {
+      "rejection": "lint: leaf settings_and_scope: root id living_body_bargain is not in the north star",
+      "resolution": "The published root parses with living_body_bargain. Gate A lint passes against the concept clone, including this leaf.",
+      "evidence": {
+        "leaf": "settings_and_scope",
+        "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+        "parsed_state": "VALIDATED",
+        "parsed_id": "living_body_bargain",
+        "parsed_root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa"
+      }
+    }
+  ],
+  "validation": {
+    "gate_a": "pass",
+    "record": "pass",
+    "scenes": "pass",
+    "showcases": "accepted; new coverage 9/10/8/6, zero counted overlap",
+    "floor": "pass; all 23 lines applicable",
+    "artifact_publication": "all six authored files byte-for-byte equal origin/main",
+    "root": "VALIDATED; living_body_bargain; exact delegated synthesis",
+    "designer_stage_check": "result.json would be accepted"
+  },
+  "system_repair": {
+    "item": "DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE",
+    "evidence": "infrastructure/state/items/closed/DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE.md",
+    "status": "Existing published repair confirmed in result_errors; no new system-code changes required."
+  },
+  "limits": [
+    "The 34 scene entry points remain planned under their filed build item. Runtime proof, Titanoslime owner art review and archive field-list review remain outstanding.",
+    "No live scene was begun, and no bridge, restart, deployment, stage advance or mod handoff was performed."
+  ]
+}
