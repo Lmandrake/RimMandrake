@@ -436,6 +436,75 @@ def _walk_deciders(tt, bar_ids):
     return out
 
 
+def ledger_implemented(root, ids):
+    """-> {id: sha} for these ledger items whose newest `implemented` event (rimflow refuses one whose sha is not on
+    origin/main) has no later reopen (a `live` event with result broken), in time order as ledger_needs reads."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, seen = set(ids), []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"implemented"' not in ln and '"live"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                k, i = e.get("event"), e.get("id")
+                if i in want and (k == "implemented" and e.get("sha") or k == "live" and e.get("result") == "broken"):
+                    seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, i, e.get("sha") if k == "implemented" else None))
+    out = {}
+    for _, _, i, sha in sorted(seen, key=lambda x: (x[0], x[1])):
+        if sha:
+            out[i] = sha
+        else:
+            out.pop(i, None)
+    return out
+
+
+def live_known_red_owed(root, tt, bar_ids):
+    """-> {bar id: [(test id, known-red item, why)]} for the bars among bar_ids whose only unrunnable deciders are live
+    stage-6 checks whose entry exists and whose known red is cured (closed) or implemented with a remainder that needs
+    the live game (ledger needs game-up or bridge). Such a check runs: it is UNRUN with its command and owed to Stage 6,
+    which runs every decider (RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD; the owner's 2026-11-13 rule, an
+    unrun live test is recorded UNRUN with its command). Any decider of another shape, an offline known red, an
+    unlanded fix or an offline remainder keeps the bar refused: the bar itself is never loosened."""
+    tests = (tt or {}).get("tests") or {} if isinstance(tt, dict) else {}
+    bars = {b.get("id"): b for b in (tt or {}).get("bars") or [] if isinstance(b, dict)} if isinstance(tt, dict) else {}
+    reds = {t.get("known_red") for t in tests.values() if isinstance(t, dict) and isinstance(t.get("known_red"), str)}
+    if not reds or not bar_ids:
+        return {}
+    need, ended, impl = ledger_needs(root, reds), ledger_ended(root, reds), ledger_implemented(root, reds)
+    out = {}
+    for bid in bar_ids:
+        dec, owe, fine = (bars.get(bid) or {}).get("decides") or [], [], True
+        for d in dec:
+            t = tests.get(d)
+            if not isinstance(t, dict):
+                fine = False
+            elif t.get("kind") == "offline":
+                rt = t.get("runs_today") or {}
+                fine = fine and not t.get("known_red") and rt.get("ran") is True and rt.get("result") == "PASS"
+            elif t.get("kind") in ("live_minimal", "live_full") and str(t.get("stage")) == "6" \
+                    and t.get("entry_exists") is True:
+                k = t.get("known_red")
+                if not k:
+                    continue
+                if k in ended:
+                    owe.append((d, k, "closed"))
+                elif k in impl and need.get(k) in LIVE_NEEDS:
+                    owe.append((d, k, "implemented at %s, needs %s" % (impl[k], need[k])))
+                else:
+                    fine = False
+            else:
+                fine = False
+        if dec and fine and owe:
+            out[bid] = owe
+    return out
+
+
 def _reached(root, stage):
     """Mods (other than none) whose record has ever stood at `stage`."""
     out = []
@@ -630,13 +699,19 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             bad, n = res
             walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
             owed = {}
+            live_red = {}
             if isinstance(bad, list):
                 bad = [x for x in bad if x not in walk]
+                live_red = live_known_red_owed(root, tt, bad)
+                bad = [x for x in bad if x not in live_red]
                 owed = {b: i for b, i in owed_scene_parts(root, mod, tt).items() if b not in bad}
                 bad += sorted(owed)
             owed_txt = ("; the table flags these runnable but a deciding scene in scenes.json still owes script parts "
                         "to an open item: %s" % "; ".join("%s (%s)" % (b, ", ".join(i)) for b, i in sorted(owed.items()))
                         ) if owed else ""
+            owed_txt += ("; counted runnable, UNRUN and owed to Stage 6 (a live known red with its fix landed): %s"
+                         % "; ".join("%s (%s)" % (b, ", ".join("%s: %s %s" % x for x in r))
+                                     for b, r in sorted(live_red.items()))) if live_red else ""
             clause("every_bar_has_a_check_that_runs", "every bar has every deciding check runnable "
                    "(an in-game scene may be UNRUN with its command, not with its script parts still owed)",
                    isinstance(bad, list) and not bad,
@@ -1236,8 +1311,10 @@ def build_facts(root, mod):
         out["table_error"] = n
     out["bar_fp"] = bar_fingerprints(tt)
     walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
+    live_red = live_known_red_owed(root, tt, [b for b in bad if b not in walk]) if isinstance(bad, list) else {}
     out.update({
-        "refused_bars": [b for b in bad if b not in walk] if isinstance(bad, list) else UNM,
+        "refused_bars": [b for b in bad if b not in walk and b not in live_red] if isinstance(bad, list) else UNM,
+        "live_red_owed": sorted(live_red),
         "bars_total": n if isinstance(n, int) else UNM, "walk_bars": walk,
         "build_refusals": [r["clause"] for r in refs if r["clause"] in BUILD_CLAUSES],
         "hand_steps": [r["clause"] for r in refs if r["clause"] in res["hand_steps"]],

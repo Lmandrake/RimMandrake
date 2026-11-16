@@ -489,6 +489,64 @@ def main():
         listed = cl[0]["observed"].split("not runnable: ", 1)[-1].split(";")[0].split(", ") if cl else []
         ok(owed not in json.dumps(cl) and bar["id"] not in listed,
            "once the owed item closes the bar runs again (only the table's own refusals are left)")
+        # RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD: a live decider whose known red's fix is implemented
+        # (published) and whose only remainder needs the live game is a check that runs, UNRUN and owed to Stage 6;
+        # an unlanded fix, an offline remainder or an offline known red still refuses
+        tp = os.path.join(root, "design", "concepts", "FlowWorks", "version", "test_table.json")
+        t_was = read(root, "FlowWorks", "version/test_table.json")
+        kr, kro = "RIMMANDRAKE_SELFTEST_KNOWN_RED_LIVE_ONLY", "RIMMANDRAKE_SELFTEST_KNOWN_RED_OFFLINE_TEST"
+        tk = json.loads(t_was)
+        bk, bo = tk["bars"][0]["id"], tk["bars"][1]["id"]
+        tk["tests"]["SELFTEST_KR"] = {"id": "SELFTEST_KR", "kind": "live_minimal", "stage": "6", "entry_exists": True,
+                                      "known_red": kr, "command": "bridge: selftest.py KR"}
+        tk["tests"]["SELFTEST_KR_PASS"] = {"id": "SELFTEST_KR_PASS", "kind": "offline", "stage": "4-5",
+                                           "runs_today": {"ran": True, "result": "PASS"}}
+        tk["tests"]["SELFTEST_KRO"] = {"id": "SELFTEST_KRO", "kind": "offline", "stage": "4-5", "known_red": kro,
+                                       "runs_today": {"ran": True, "result": "FAIL"}}
+        for b in tk["bars"]:
+            if b["id"] == bk:
+                b.update(decides=["SELFTEST_KR", "SELFTEST_KR_PASS"], every_decider_runnable_today=False)
+            elif b["id"] == bo:
+                b.update(decides=["SELFTEST_KRO"], every_decider_runnable_today=False)
+        with open(tp, "w") as f:
+            json.dump(tk, f)
+
+        def kr_listed():
+            c = owed_refusal()
+            return (c[0]["observed"].split("not runnable: ", 1)[-1].split(";")[0].split(", ") if c else []), c
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            for i in (kr, kro):
+                f.write(json.dumps({"seat": "BENCH", "event": "file", "id": i, "needs": "offline", "ts": "1"}) + "\n")
+        lst, _ = kr_listed()
+        ok(bk in lst and bo in lst, "a known red whose fix has not landed is no check that runs (%s)" % lst[:4])
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "implemented", "id": kr, "sha": "abcdef123456",
+                                "needs": "offline", "ts": "2"}) + "\n")
+        lst, _ = kr_listed()
+        ok(bk in lst, "a known red implemented with an offline remainder still refuses")
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "needs", "id": kr, "to": "bridge", "ts": "3"}) + "\n")
+            f.write(json.dumps({"seat": "BENCH", "event": "needs", "id": kro, "to": "bridge", "ts": "3"}) + "\n")
+        lst, c = kr_listed()
+        ok(bk not in lst and kr in json.dumps(c) and "Stage 6" in json.dumps(c),
+           "a live decider whose known red is implemented and needs only the game runs, UNRUN and owed to Stage 6 "
+           "(%s)" % json.dumps(c)[:240])
+        ok(bo in lst, "an OFFLINE known red still refuses, whatever its item's needs")
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "live", "id": kr, "result": "broken", "ts": "4"}) + "\n")
+        lst, _ = kr_listed()
+        ok(bk in lst, "a reopen after the known red's implementation refuses again (the fix it rested on died)")
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "close", "id": kr, "ts": "5"}) + "\n")
+        lst, _ = kr_listed()
+        ok(bk not in lst, "a closed known red is red no longer: its live decider runs")
+        tk["tests"]["SELFTEST_KR"]["entry_exists"] = False
+        with open(tp, "w") as f:
+            json.dump(tk, f)
+        lst, _ = kr_listed()
+        ok(bk in lst, "a live known red whose entry does not exist is no check that runs")
+        with open(tp, "w") as f:
+            f.write(t_was)
         os.remove(sp)
         shutil.rmtree(os.path.join(root, "infrastructure"))
         cli = subprocess.run([sys.executable, os.path.join(HERE, "maturation.py"), "--root", root, "advance",
