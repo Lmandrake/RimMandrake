@@ -403,6 +403,12 @@
       "speaker": "agent",
       "text": "Fixed rm-coverage-judge-1794846217 gaps: g1 sc_gale_exposure now asserts the roofed organic and unroofed mechanoid gain no RM_GaleDeafened in the same Gale and rejects a roof/mechanoid-ignoring fixture; g2 sc_cuts control adds a drying-scar vaporator injection arm. Both checked against source. Advisory g12 stays neutral-fixer work. No proof claimed.",
       "source": "design/concepts/LeaningScrub/coverage_fixes.json"
+    },
+    {
+      "id": "stage4_exam_reuse_unchanged_inputs",
+      "speaker": "agent",
+      "text": "Run rm-role-designer-1794847684: the g1/g2 rework touched only scenes.json and coverage_fixes.json; tree and sheet hashes equal exam.json inputs, so the corrected-bar Cold Reader exam (rm-role-designercodex-1794843033) still governs. No helpers run or charged. No live proof, coverage signature, lock or certification inferred.",
+      "source": "design/concepts/LeaningScrub/exam.json"
     }
   ],
   "asks": [

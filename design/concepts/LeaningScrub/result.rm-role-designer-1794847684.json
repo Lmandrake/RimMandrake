@@ -1,0 +1,7 @@
+{
+  "run": "rm-role-designer-1794847684",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Exam stands without a rerun: the g1/g2 rework (run rm-role-designer-1794847391) edited only scenes.json and coverage_fixes.json; tree.json (c9fed9a9...) and sheet.md (d7dff6d4...) are byte-identical to the inputs frozen in exam.json, which are all a Reader, the Examiner, the Challenger and the Control saw. That exam (run rm-role-designercodex-1794843033): both Readers 18/18, zero core false accepts, all six Challenger cases matched, raid_weight control missed. No helpers spawned, nothing charged; no live acceptance, coverage signature, version lock or first-touch certification claimed.",
+  "quick_look": {"offer": false, "why": "no question to the owner; the exam is a reader test of unchanged tree and sheet text"}
+}
