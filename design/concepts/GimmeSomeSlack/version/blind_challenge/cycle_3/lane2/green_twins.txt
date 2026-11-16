@@ -1,0 +1,4 @@
+CAUGHT  C_TWIN_APART_ZERO  rc 1  ['FAIL geometry: twin leads: the six rooms that twinned draw no two leads under 0.1 cell apart: 6 twins, closest 0.031, 0 leads laid again (6+ expected)']
+CAUGHT  C_TWIN_PICKS_CLOSER  rc 1  ['FAIL geometry: twin leads: the six rooms that twinned draw no two leads under 0.1 cell apart: 6 twins, closest 0.031, 0 leads laid again (6+ expected)']
+RESULT: T_CORE caught 2 of 2 twin-pass faults; tree clean True
+rc 0

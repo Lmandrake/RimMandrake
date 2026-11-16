@@ -1,0 +1,162 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_CODE_PATHS_UNSEEN",
+   "class": "Problem",
+   "bar": "no_hose_in_gss, no_hose",
+   "criterion": "T_NO_HOSE (sole decider) must see any hose, reel or pipe GSS ships or draws (tree oracle: 'no ThingDef, texture or class for hoses or reels'; sheet: 'No hose, reel or pipe is drawn by this mod'; false pass: a scan too narrow to see where it hides)",
+   "evidence": [
+    "lane2/planted_results.jsonl NH_CALLER_HOSE_TEXTURE_LITERAL: a ContentFinder<Texture2D>.Get(\"RimMandrake/FlowWorks/Hose/HoseSegment\") added to Source/Aerial/AerialMaterials.cs: NOHOSE new failing [] (green); lane-1 row NH_SOURCE_NO_PIPE_TEXTURE_LITERALS caught it",
+    "lane2/planted_results.jsonl NH_CALLER_PIPEMATS_OWN_ART: PipeMats' contract replaced by a GSS-owned \"RimMandrake/GimmeSomeSlack/Aerial/\" + look + \"/PipeSpan\": NOHOSE and lane 1 both green",
+    "red: lane2/check_nohose_catches.py --rev 8e6c67eba7 -> 0 of 3 caught, rc 1"
+   ],
+   "would_pass": "the scan also reads every string literal holding a '/' in shipped C# (Source/ outside SelfTest/, which is a separate project) and refuses one naming hose|reel|pipe; mutants for a path literal and a concatenated path",
+   "smallest_fix": "selftest_gss_no_hose.py: LIT regex over comment-stripped Source/*.cs (SelfTest skipped), hits 'texpath: ...'; mutants M8, M9; green control G2 (a SelfTest string)",
+   "verdict_on_criterion": "sound: the criterion is the bar's own; the decider was narrower than it",
+   "status": "FIXED 9126ead2a413784b28f52878a466a5fdbd370101",
+   "miss_of": null,
+   "note": "selftest_gss_no_hose.py changed in cycle 2, so not a miss of 2"
+  },
+  {
+   "id": "RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_LABELLED_REEL_SLIPS",
+   "class": "Problem",
+   "bar": "no_hose_in_gss, no_hose",
+   "criterion": "as above: a ThingDef for a hose reel is refused whatever its defName",
+   "evidence": [
+    "lane2/planted_results.jsonl NH_DEF_LABEL_HOSE_REEL: a ThingDef RM_CordCoil labelled 'garden hose reel', texPath .../Aerial/Coil, in Defs/MapMeshFlagDefs.xml: NOHOSE green, lane 1 green (my scan also took the label as prose)",
+    "red: lane2/check_nohose_catches.py --rev 8e6c67eba7 -> missed NH_DEF_LABEL_HOSE_REEL, rc 1"
+   ],
+   "would_pass": "<label> is scanned like defName (no GSS def label names hose, reel or pipe today: measured, 0 hits)",
+   "smallest_fix": "selftest_gss_no_hose.py: 'label' added to the scanned tags; mutant M10",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 9126ead2a413784b28f52878a466a5fdbd370101",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_RUN_GSS_TWIN_CHECK_IN_ITS_OWN_DECIDER",
+   "class": "Problem",
+   "bar": "cords_never_repeat",
+   "criterion": "an offline decider of cords_never_repeat (test_table: T_CORE, sc_no_repeat) must go red when the twin pass that keeps equal leads apart is broken",
+   "evidence": [
+    "lane2/planted_results.jsonl C_TWIN_APART_ZERO and C_TWIN_PICKS_CLOSER (CordBuilder.cs, changed since cycle 2): CORE new failing [], GEOM ('--geometry-only') caught both",
+    "Program.cs ran CordGeometryChecks (TwinLeads included) only with --geometry, i.e. T_CORD_GEOMETRY_OFFLINE, which decides cord_slack_lay / cords_lie_slack / no_unforced_sharp_turn, not cords_never_repeat",
+    "red: lane2/check_core_catches_twins.py at 8e6c67eba7 -> 0 of 2 caught, rc 1"
+   ],
+   "would_pass": "T_CORE runs TwinLeads too",
+   "smallest_fix": "Program.cs: call CordGeometryChecks.TwinLeads() in the default run (made internal); no assertion changed",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 9126ead2a413784b28f52878a466a5fdbd370101",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_CARRY_GSS_GOODWILL_REMAINDER_TEST_DIVIDES_DAY",
+   "class": "Problem",
+   "bar": "tap_steals_and_costs_goodwill",
+   "criterion": "goodwill drains steadily: perDay for each whole day drained, the remainder carried (AerialMath.TheftGoodwillAccrue's own contract); T_CORE decides the bar offline",
+   "evidence": [
+    "lane2/planted_results.jsonl K_GOODWILL_REMAINDER_LOST (drainTicks -= days*ticksPerDay -> drainTicks = 0): CORE green; lane-1 row L1_GOODWILL_STEADY_CONSERVED caught it",
+    "TheftChecks.cs stepped 250 ticks, which divides 60000, so the remainder was always 0; the game caller (PowerTheftConsequences.OnDrained) passes CompPowerTap.drainTicksSinceEvent, a window of any length, so the loss is reachable in play",
+    "red: lane2/check_core_catches.py --only K_GOODWILL_REMAINDER_LOST --match theft: at 8e6c67eba7 -> 0 of 1, rc 1"
+   ],
+   "would_pass": "a check with windows that do not divide a day: total = -perDay x whole days, remainder carried exactly",
+   "smallest_fix": "TheftChecks.cs: one added check over ten uneven windows",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 9126ead2a413784b28f52878a466a5fdbd370101",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_NORTH_SOUTH_SPAN_RULER_STRAIGHT",
+   "class": "Polish",
+   "bar": "spans_above_everything",
+   "criterion": "'It must not read as ... a ruler-straight wire'; scene sc_spans expects 'sag above zero'",
+   "evidence": [
+    "lane-1 row L1_SPAN_VISIBLE_SAG_EVERY_BEARING: 124 of 2000 random spans at the default sag 0.06 show under 0.1 cell off their chord; shrunk: (0,0)->(0,8) draws every point on its chord",
+    "caller SpanMesh.Build (RM_MapComponent_Aerial.cs ~1030) draws AerialMath.SpanCurve unchanged: the droop is screen -Z, along a north-south chord",
+    "the orthographic view makes this the faithful projection of a hanging wire, and the shadow (SpanShadow) still bows; whether it reads strange is a look call",
+    "sc_spans' 'sag above zero' reads SagDepth, > 0 on every bearing, so it would pass a ruler-straight north-south span"
+   ],
+   "would_pass": "sc_spans also measures the drawn curve's off-chord distance on a north-south span, or the look is accepted as the projection",
+   "smallest_fix": "for the steward: re-pin sc_spans' expect to name the bearing; any sideways bow is an art change for a judge",
+   "verdict_on_criterion": "the criterion 'sag above zero' can pass vacuously on a north-south span (bar meaning kept)",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_FALLEN_WIRE_GRAZES_WALL_CORNER",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "a fallen wire lies on the ground",
+   "evidence": [
+    "lane-1 row L1_FALLEN_ON_GROUND_NOT_WALLS: shrunk to one wall (9,0), base (0.5,0.5), toward (10.34,1.03), seed 512077717",
+    "probe (same generator): 4 of 1500 lays put a grounded point on a wall cell, the deepest 0.028 cell in from the cell edge (about 2 px at 64 px a cell)"
+   ],
+   "would_pass": "LayFallen keeps its wander off unwalkable cells, as its doc says the bare line does",
+   "smallest_fix": "clip the seeded wander at an unwalkable cell in LayFallen (changes every fallen lay: a look judge first)",
+   "verdict_on_criterion": "sound",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_FALLEN_TIPS_NEARLY_MEET_RARELY",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "three wires fall as three (owner round 3, 2026-10-04); the kernel's doc: tips FallenSpread (1.15) apart",
+   "evidence": [
+    "lane-1 row L1_FALLEN_STRANDS_EACH_ITS_OWN: seed 8081 case 554, 3 wires over 9.1 cells, tips 0 and 2 end 0.045 cell apart",
+    "probe: 1 pair under 0.05 cell in 800 drops"
+   ],
+   "would_pass": "no two tips of one drop within ~0.3 cell",
+   "smallest_fix": "LayFallenStrands: separate tips after the lay when they meet",
+   "verdict_on_criterion": "the bar names no spacing; the kernel's own doc does",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_STATICS_CENSUS_READS_TEXT_ONLY",
+   "class": "Polish",
+   "bar": "statics_clear_between_games, game_statics_reset",
+   "criterion": "the census supports (does not decide) the bars; sc_statics_new_game decides at Stage 6",
+   "evidence": [
+    "lane2/planted_results.jsonl R_RESET_RETURNS_EARLY: 'if (resets > 0) return;' at the top of GssSessionReset's constructor, every reset line still in the text: CENSUS green",
+    "R_STEPTRACE_RESET_DROPPED (line removed) was caught"
+   ],
+   "would_pass": "the census also refuses an early return before the reset lines, or the live scene stays the decider (it is)",
+   "smallest_fix": "none owed offline; the live scene decides",
+   "verdict_on_criterion": "sound",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_PIPE_SPANS_DRAWN_BY_GSS_CODE",
+   "class": "Polish",
+   "bar": "no_hose_in_gss, no_hose",
+   "criterion": "sheet: 'No hose, reel or pipe is drawn by this mod'; record no_hose: 'GSS draws no hose or pipe'",
+   "evidence": [
+    "AerialMaterials.PipeMats and SpanMesh.Build (GSS code) draw FlowWorks pipe-pole spans, texture from FlowWorks' def (spanTexPath RimMandrake/FlowWorks/PipePole/{look}/PipeSpan; all four PNGs exist in FlowWorks, measured)",
+    "if that art were missing, PipeMats falls back to GSS's own wire texture at pipe width",
+    "the design is the owner's: record row pipe_pole_switch (approved, his 'Their own switch.'), AerialLineKind.Pipe in the kernel (lane-1 INFO L1_KERNEL_LAYS_PIPE_SPANS_INFO)",
+    "the tree oracle (no ThingDef, texture or class for hoses or reels) holds; the sheet's wording, read literally, does not"
+   ],
+   "would_pass": "the sheet line reads 'GSS ships no hose, reel or pipe def, texture or class; FlowWorks pipe spans drawn by GSS's span engine with FlowWorks' art are FlowWorks content'",
+   "smallest_fix": "for the neutral fixer: the sheet line's wording; no code change",
+   "verdict_on_criterion": "the bar's words are wider than its oracle and than the approved pipe-pole design",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_TWIN_GUARD_NEVER_EXERCISED",
+   "class": "Polish",
+   "bar": "no_unforced_sharp_turn, cords_never_repeat",
+   "criterion": "a twin must not add a fault (CordBuilder: StrandFaults(twin) <= own)",
+   "evidence": [
+    "lane2/planted_results.jsonl C_TWIN_MAY_ADD_FAULTS (<= own + 99): CORE and GEOM green; C_STRANDFAULTS_OVERFACE_ZERO (over-face strands score 0): CORE and GEOM green",
+    "the geometry run still measured 0 unforced bends and 0 taut strands with both, so no drawn defect was seen: the guards are unexercised on the test inputs, not shown wrong"
+   ],
+   "would_pass": "a case whose twin candidate adds a sharp bend, refused by the guard",
+   "smallest_fix": "a TwinLeads case with a candidate the guard must refuse",
+   "verdict_on_criterion": "sound",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+clean copy green at 9126ead2a413784b28f52878a466a5fdbd370101
+CAUGHT  NH_CALLER_HOSE_TEXTURE_LITERAL  ['texpath: RimMandrake/FlowWorks/Hose/HoseSegment (Source/Aerial/AerialMaterials.cs)']
+CAUGHT  NH_CALLER_PIPEMATS_OWN_ART  ['texpath: /PipeSpan (Source/Aerial/AerialMaterials.cs)']
+CAUGHT  NH_DEF_LABEL_HOSE_REEL  ['label: garden hose reel (Defs/MapMeshFlagDefs.xml)']
+RESULT rev 9126ead2a413784b28f52878a466a5fdbd370101: 3 of 3 planted faults caught
+rc 0

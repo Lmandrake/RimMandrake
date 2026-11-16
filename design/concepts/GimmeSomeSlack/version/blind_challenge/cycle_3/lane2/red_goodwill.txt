@@ -1,0 +1,3 @@
+MISSED  K_GOODWILL_REMAINDER_LOST  rc 0  []
+RESULT: T_CORE caught 0 of 1 planted faults, missed K_GOODWILL_REMAINDER_LOST; tree clean True
+rc 1

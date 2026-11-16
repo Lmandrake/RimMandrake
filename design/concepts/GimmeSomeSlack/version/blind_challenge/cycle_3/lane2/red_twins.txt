@@ -1,0 +1,4 @@
+MISSED  C_TWIN_APART_ZERO  rc 0  []
+MISSED  C_TWIN_PICKS_CLOSER  rc 0  []
+RESULT: T_CORE caught 0 of 2 twin-pass faults, missed C_TWIN_APART_ZERO,C_TWIN_PICKS_CLOSER; tree clean True
+rc 1

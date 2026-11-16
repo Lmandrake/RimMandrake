@@ -1,0 +1,53 @@
+{
+ "cycle": 3,
+ "edited": [
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+   "why": "strengthens: also scans <label> and texture-path string literals in shipped C# (SelfTest skipped); mutants M8 code literal, M9 concatenated path, M10 labelled reel; green control G2; nothing removed",
+   "before": {
+    "sha": "8e6c67eba7bd5cf0edb7ce9169b458ae14c83581",
+    "sha256_16": "e1d9f66d563b1707"
+   },
+   "after": {
+    "sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "sha256_16": "1d1a7f9b06b164df"
+   }
+  },
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
+   "why": "strengthens: the default run (T_CORE) also calls CordGeometryChecks.TwinLeads(); --geometry unchanged",
+   "before": {
+    "sha": "8e6c67eba7bd5cf0edb7ce9169b458ae14c83581",
+    "sha256_16": "6a0cd93e6e45409d"
+   },
+   "after": {
+    "sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "sha256_16": "cc562b114a7ca8b1"
+   }
+  },
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
+   "why": "TwinLeads private -> internal so Program can call it; no assertion changed",
+   "before": {
+    "sha": "8e6c67eba7bd5cf0edb7ce9169b458ae14c83581",
+    "sha256_16": "e370253a72a7d025"
+   },
+   "after": {
+    "sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "sha256_16": "58f42297914adef2"
+   }
+  },
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs",
+   "why": "strengthens: one check of ten drain windows that do not divide a day (total and carried remainder); nothing removed",
+   "before": {
+    "sha": "8e6c67eba7bd5cf0edb7ce9169b458ae14c83581",
+    "sha256_16": "2a84b505ca7ed646"
+   },
+   "after": {
+    "sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "sha256_16": "2e8626ec78d748de"
+   }
+  }
+ ]
+}
