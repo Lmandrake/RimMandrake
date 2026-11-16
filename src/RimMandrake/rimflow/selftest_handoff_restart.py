@@ -438,7 +438,7 @@ REPLAY_2055 = ("Wrapped up, Mandrake. All my helpers have finished and the live 
                "HANDOFF READY \u2014 Tue Nov 3, 12:55 PM PST\n- `D:\\x\\BENCH_REBOOT_HANDOFF_202611032054.md`\n")
 
 
-def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQUESTED"), lands=True):
+def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQUESTED"), lands=True, env=None):
     calls = []
 
     def _check(seat):
@@ -451,7 +451,8 @@ def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQ
         return req
     H.check, H.request = _check, _request
     out = io.StringIO()
-    did = H.on_stop({"session_id": "s1", "transcript_path": None, "last_assistant_message": text}, SEAT, fake, out)
+    did = H.on_stop({"session_id": "s1", "transcript_path": None, "last_assistant_message": text}, SEAT, fake, out,
+                    env=env or {})
     return did, calls, json.loads(out.getvalue()) if out.getvalue() else None
 
 
@@ -519,6 +520,11 @@ def test_hook():
     check(did == "requested" and calls == ["check", "request"] and blk is None, "the words + a passing check: requested")
     did, calls, _ = hook_case(Fake(), text="more to do")
     check(did == "no" and not calls, "no words: nothing runs")
+    # a Dispatcher role run (RM_ROLE_UNIT) is ended by its unit, never restarted as the seat: its words pass
+    f = Fake(cfg=dict(CFG, kind="conductor"))
+    did, calls, blk = hook_case(f, env={"RM_ROLE_UNIT": "rm-role-conductor-1"})
+    check(did == "role" and not calls and blk is None and not os.path.exists(f.refused_path(SEAT)),
+          "a role run's HANDOFF READY: no check, no request, no block")
     # CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES: the Conductor is served, always through --now
     CC = dict(CFG, kind="conductor")
     did, calls, _ = hook_case(Fake(cfg=CC))

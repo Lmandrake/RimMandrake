@@ -22,7 +22,7 @@ owner 2026-11-03: "I would like you to make it so that the Conductor window rebo
 present and the handoff is reached"): rm-restart-now.path ticks the Dispatcher back to back, so the kill follows the
 turn end by seconds, not by the 120 s timer. The words, not the owner's presence, are the trigger. With helpers alive the
 request is deferred; when the last ends, kick_now restarts the watcher's hold. His goodbye is unchanged (conductor_goodbye.py).
-A seat not on restarts passes. A crash in it is a refusal too (crashed), never a silent turn end.
+A seat not on restarts passes, and so does a headless Dispatcher role run (RM_ROLE_UNIT): it is not the seat's window. A crash in it is a refusal too (crashed), never a silent turn end.
 """
 import json
 import os
@@ -83,8 +83,10 @@ def live_helpers(SR, cfg, path):
     return True if hs is None else any(h.get("alive") for h in hs)
 
 
-def on_stop(hook, seat, SR, out=None):
+def on_stop(hook, seat, SR, out=None, env=None):
     """-> what was done: one word, for the selftest."""
+    if (os.environ if env is None else env).get("RM_ROLE_UNIT"):   # a Dispatcher role run: its unit ends it, and
+        return "role"                                               # seat_restart refuses a ROLE window anyway
     cfg = SR.config(SR._schedule()).get(seat)
     if not cfg:
         return "skip"
