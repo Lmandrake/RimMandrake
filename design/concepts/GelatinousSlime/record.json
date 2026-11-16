@@ -550,6 +550,98 @@
         "legacy_ground_flora"
       ],
       "evidence_against": []
+    },
+    {
+      "id": "stage3_flagship_proposal",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md",
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "src/RimMandrake/rimflow/roles/designer.md",
+        "CONDUCTOR:1794805789204977373",
+        "CONDUCTOR:1794810108456236688"
+      ],
+      "text": "Propose chosen_gene_friend_rescue as showcase 1. Follow the normal archive dialog, handheld localisation and marked-current extraction, then ordered injection, visible coma/accelerated absorption, completed friend-administered toxic antidote, and retained target/rider/social consequences. An untreated matched arm completes dissolution with victim belongings accounted for. This is a candidate for the required stage-2 flagship disposition.",
+      "proposed_flagship": "chosen_gene_friend_rescue",
+      "evidence_for": [
+        "The historical universal-body instruction makes the selected-gene expedition, coma and friend rescue a defining player journey.",
+        "The adopted root gives this deliberate bargain a complete player action and consequence.",
+        "The existing-content walk offered at stages 0, 1 and 2 already proposes this same sequence.",
+        "The recovered November answers settle existing health UI, so the candidate supplies an observable rescue race through the established interface."
+      ],
+      "evidence_against": [],
+      "delivery_gaps": [
+        "Existing seeker proofs bypass archive choice and ordered injection.",
+        "A completed untreated terminal arm, full rescue race and independently verified recovery need scene implementation.",
+        "Review-save identity remains unverified."
+      ],
+      "exercises_proposed": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection",
+        "slime_marked",
+        "slimification_ladder",
+        "warnings",
+        "antidote",
+        "dissolution"
+      ],
+      "alternatives_considered": [
+        {
+          "candidate": "useful_body_workday",
+          "reason": "Shows food, construction and poison relief through ordinary bills and ingestion. It supplies a later orthogonal showcase candidate alongside farm and solvent scenes."
+        },
+        {
+          "candidate": "titan_chunk_vault",
+          "reason": "Shows the giant, harvesting, weapon danger and campaign seal. It supplies a later orthogonal showcase candidate with separate normal weapon and actual-vault acceptance scenes."
+        }
+      ],
+      "routing": "Resolved by CONDUCTOR:1794825281765620778; stage 3 binds showcase 1 to stage2_flagship_chosen_gene_friend_rescue and the same source.",
+      "status": "selected_by_stage2_delegation",
+      "resolved_by": "stage2_flagship_chosen_gene_friend_rescue"
+    },
+    {
+      "id": "stage2_flagship_chosen_gene_friend_rescue",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": "CONDUCTOR:1794825281765620778",
+      "flagship": "chosen_gene_friend_rescue",
+      "text": "GelatinousSlime Designer stage 2, run rm-role-designercodex-1794825203: select chosen_gene_friend_rescue as showcase 1 (flagship_selection). Use the normal archive dialog to choose the target, handheld localisation and marked-current extraction to obtain the perishable dose, then ordered injection, visible coma and accelerated absorption, and completed friend-administered toxic antidote. Retain the target gene, unwanted rider and social consequences. An untreated matched arm completes dissolution with victim belongings accounted for. Record speaker conductor, delegated evidence-for-ask, flagship chosen_gene_friend_rescue. The adopted root and existing scope stand. The proposed existing-content walk remains offered; review-save identity and runtime delivery are unverified. Independent promises retain their own scenes. This decision supplies no runtime acceptance, owner art verdict, waiver or first-touch certification.",
+      "evidence_for": [
+        "The historical universal-body instruction makes the selected-gene expedition, coma and friend rescue a defining player journey.",
+        "The adopted root gives this deliberate bargain a complete player action and consequence.",
+        "The existing-content walk offered at stages 0, 1 and 2 already proposes this same sequence.",
+        "The recovered November answers settle existing health UI, so the candidate supplies an observable rescue race through the established interface."
+      ],
+      "evidence_against": [],
+      "argument": "design/concepts/GelatinousSlime/stage2_flagship.md",
+      "delivery_gaps": [
+        "Existing seeker proofs bypass archive choice and ordered injection.",
+        "A completed untreated terminal arm, full rescue race and independently verified recovery need scene implementation.",
+        "Review-save identity remains unverified."
+      ],
+      "exercises_proposed": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection",
+        "slime_marked",
+        "slimification_ladder",
+        "warnings",
+        "antidote",
+        "dissolution"
+      ],
+      "alternatives_considered": [
+        {
+          "candidate": "useful_body_workday",
+          "reason": "Shows food, construction and poison relief through ordinary bills and ingestion. It supplies a later orthogonal showcase candidate alongside farm and solvent scenes."
+        },
+        {
+          "candidate": "titan_chunk_vault",
+          "reason": "Shows the giant, harvesting, weapon danger and campaign seal. It supplies a later orthogonal showcase candidate with separate normal weapon and actual-vault acceptance scenes."
+        }
+      ],
+      "scope_boundary": "Select showcase 1 only. Preserve the adopted root, every built/authored capability and independent acceptance scenes. Runtime delivery, art review and first-touch certification remain outstanding."
     }
   ],
   "asks": [
@@ -1623,7 +1715,7 @@
   ],
   "schema": 1,
   "mod": "GelatinousSlime",
-  "run": "rm-role-designercodex-1794809122",
+  "run": "rm-role-designercodex-1794825203",
   "reading_limits": {
     "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
     "id": "bounded_grounding",
@@ -2277,15 +2369,15 @@
     }
   ],
   "next_stage_context": {
-    "id": "stage_three_input",
+    "id": "stage_three_after_flagship",
     "speaker": "agent",
     "source": [
+      "CONDUCTOR:1794825281765620778",
+      "design/concepts/GelatinousSlime/stage2_flagship.md",
       "design/concepts/GelatinousSlime/stage2_argument.md",
-      "design/concepts/GelatinousSlime/record.json",
-      "CONDUCTOR:1794805789204977373",
-      "CONDUCTOR:1794810108456236688"
+      "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
     ],
-    "text": "Use the adopted root and stage-2 edge arguments for stage-3 sheet/tree/plan/scenes/floor writing. All remaining faults are agent-owned implementation/instrumentation/proof obligations, not unanswered owner questions. Preserve every built capability for scene/showcase coverage even where it is not a separate core leaf; do not shrink the authored rain or archive snapshot obligations to match missing code. Independent weapon, actual campaign vault, archive procedure and changed-family outcomes need their own observation scenes plus interactions. Keep numbers labelled authored defaults, preserve curated resistance/charm/Reek/setting exceptions, and distinguish universal/campaign/optional-framework/DLC contexts. Resolve no faults by helper-only evidence. Existing-content live walk remains offered and unrun with unverified save identity. Flagship delegation, owner art review and first-touch certification remain outstanding; no live actions or game-state changes were performed in stage 2."
+    "text": "The missing flagship_selection is resolved: showcase 1 is chosen_gene_friend_rescue, decision stage2_flagship_chosen_gene_friend_rescue, source CONDUCTOR:1794825281765620778. On launcher acceptance resume stage 3 for sheet.md, tree.json, plan.md, scenes.json and floor.json. Keep ordinary archive choice/field extraction/ordered injection/completed friend treatment, visible cost and an untreated terminal comparison; helpers cannot accept the journey. Choose later showcases by orthogonal greedy coverage and retain independent scenes for every built/authored capability. Preserve all delivery/proof gaps, the unrun existing-content walk with unverified save identity, owner art review and first-touch obligations."
   },
   "root_proposal": {
     "id": "root_synthesis_stage1",
@@ -2744,7 +2836,7 @@
     "text": "Eleven claim clusters have explicit attacks, cheap wrong versions, counterexamples, reuse comparators, distinct transition variants, boundaries and source-backed dispositions. No evidence requires a new owner scope decision. Technical delivery gaps remain unresolved as such and carry finite paths to acceptance.",
     "owner_questions_sent": 0,
     "owner_waivers_created": 0,
-    "flagship_selected": false,
+    "flagship_selected": true,
     "first_touch_certified": false,
     "runtime_proof_supplied": false,
     "root_unchanged": true,
@@ -2753,6 +2845,63 @@
       "Explicit one released/bursting piece is spent once; normal launch accounting remains unobserved.",
       "Mid-vat pause is an agent implementation choice grounded in existing off UI and power-pause behaviour."
     ],
-    "delegated_source": "CONDUCTOR:1794810108456236688"
+    "delegated_source": "CONDUCTOR:1794810108456236688",
+    "flagship_decision": "stage2_flagship_chosen_gene_friend_rescue",
+    "flagship_source": "CONDUCTOR:1794825281765620778"
+  },
+  "stage3_readiness": {
+    "id": "stage3_flagship_prerequisite",
+    "speaker": "agent",
+    "source": [
+      "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "src/RimMandrake/rimflow/roles/designer.md",
+      "src/RimMandrake/rimflow/designer_stage.py:827",
+      "design/concepts/GelatinousSlime/record.json"
+    ],
+    "status": "flagship_resolved_ready_for_stage3",
+    "proposed_decision": "stage3_flagship_proposal",
+    "audit": {
+      "record_flagship_decisions": 0,
+      "merged_ledger_flagship_mentions": [
+        1794805789204977373,
+        1794810108456236688
+      ],
+      "working_and_origin_owner_flagship_mentions": [
+        1794805789204977373,
+        1794810108456236688
+      ],
+      "meaning": "Historical stage-3-return audit: both earlier events left the flagship outstanding. This stage-2 run resolves it with the separately recorded event CONDUCTOR:1794825281765620778.",
+      "open_recovery": []
+    },
+    "path_to_pass": "Stage 2 has recorded the flagship. On launcher acceptance, stage 3 writes and validates sheet/tree/plan/scenes/floor, binding showcase 1 to stage2_flagship_chosen_gene_friend_rescue and CONDUCTOR:1794825281765620778. Remaining implementation/proof gaps retain their independent coverage.",
+    "human_ask_sent": false,
+    "root_unchanged": true,
+    "live_walk": {
+      "id": "existing_gene_expedition_walk",
+      "source": [
+        "design/validation_walks/RimMandrake/GelatinousSlime.md",
+        "src/RimMandrake/GelatinousSlime/northstar_plan.py",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "OWNER:1792336679095161980"
+      ],
+      "status": "proposed_before_additional_design",
+      "offer": true,
+      "scene": "An already-built RM_GelatinousSlime review map on the composed biomes package, with a liquid current, blank seeker, two colonists and antidote. Use the archive dialog, follow the mark, complete extraction, inject and order the friend treatment through ordinary UI. A separate view can show stages-one-and-five Titanoslimes. The exact review save has not been verified in this read-only stage.",
+      "settles": [
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection",
+        "warnings",
+        "antidote",
+        "kit_art"
+      ],
+      "observations": "Measures current legibility of the chosen-gene journey, coma clock, real friend treatment and current art before design is extended. Technical archive reunion and chunk/vault scenes can follow with the already recorded owner answers.",
+      "recovery_requirement": "The authorised live runner records scene-begin recovery before state changes and either restores with scene-end or holds the review with scene-hold. This proposal performs no game action."
+    },
+    "runtime_proof_supplied": false,
+    "resolved_decision": "flagship_selection",
+    "decision": "stage2_flagship_chosen_gene_friend_rescue",
+    "resolution_source": "CONDUCTOR:1794825281765620778",
+    "resolved_by_run": "rm-role-designercodex-1794825203"
   }
 }
