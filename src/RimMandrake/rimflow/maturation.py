@@ -104,10 +104,31 @@ LINE = {s[0]: s[4] for s in STAGES}
 ROADS_BACK = {
     "preflight": ("designer",),
     "blind_challenge": ("blind_challenge",),
-    "in_game": ("offline_build", "blind_challenge"),
+    # in_game -> in_game: a failed line only the game can show stays Stage 6 work and opens the next visit (spec Stage 6
+    # road back, "the lowest stage that can show the fault"; RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
+    "in_game": ("offline_build", "blind_challenge", "in_game"),
     "pre_human": ("preflight", "offline_build", "blind_challenge", "in_game"),
     "his_walk": ("offline_build", "blind_challenge", "in_game"),
 }
+# "Offline stages never wait for a game" (spec §5). Only a Stage 6 record's runs may take the bridge or the game (Stage 8
+# is his walk on his machine); every other stage's holder, fixer and steward is offline
+# (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED).
+OFFLINE_STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge")
+LIVE_NEEDS = ("game-up", "bridge")      # the model.NEEDS windows only a live game opens
+
+
+def game_takeable(stage):
+    """True only at in-game acceptance (Stage 6): the one stage whose runs may take the bridge and the game."""
+    return stage == "in_game"
+
+
+def game_only_cmd(mod, ids):
+    """-> the move that returns a record parked at an offline stage to Stage 6 when its open road-back items are all
+    faults only the game can show."""
+    return ("python3 src/RimMandrake/rimflow/maturation.py advance %s --to in_game --game-only %s --by <SEAT> --why "
+            "\"every open road-back item is a fault only the game can show\"" % (mod, ",".join(ids)))
+
+
 CYCLE_LIMIT = 3     # his words, 2026-11-13: after three cycles the Conductor decides; a fourth never starts on its own
 
 
@@ -457,7 +478,7 @@ def certificate(root, mod, to="blind_challenge"):
                     type(e).__name__, e)]}
 
 
-def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, why=None, check_by=False):
+def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, why=None, check_by=False, game_only=None):
     """-> {"ok", "verdict", "hand_steps"}: every clause of the move, passed or refused, as a refusal-contract verdict."""
     rec = load(root, mod) or {}
     cur = rec.get("stage", UNM)
@@ -491,6 +512,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
     i_cur = WORDS.index(cur) if cur in WORDS else -1
     forward = i_cur >= 0 and to in WORDS and WORDS.index(to) == i_cur + 1
     back = to in ROADS_BACK.get(cur, ())
+    # the game-only road: a record sent to an offline stage from Stage 6 goes back to Stage 6 when every open item of its
+    # road back is a fault only the game can show (its `game_only` clause below checks the items)
+    back = back or bool(game_only and to == "in_game" and cur in OFFLINE_STAGES)
     nxt = WORDS[i_cur + 1] if 0 <= i_cur < len(WORDS) - 1 else None
     clause("order", "a mod moves forward one stage at a time, or back only along a road the spec draws",
            forward or back, [req_ref, rec_ref],
@@ -499,6 +523,25 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                ROADS_BACK[cur])) if cur in ROADS_BACK else ""),
            fix="run advance with --to %s, finishing %s first" % (nxt or cur, label(cur)),
            why_sound="the eight stages, their order and the roads back are his and carried rulings (spec §3)")
+    if game_only and to == "in_game" and cur in OFFLINE_STAGES:
+        ids = [str(i) for i in game_only]
+        need, ended = ledger_needs(root, ids), ledger_ended(root, ids)
+        offline = [i for i in ids if need.get(i) not in LIVE_NEEDS]
+        shut = [i for i in ids if i in ended]
+        was6 = any(m.get("from") == "in_game" for m in rec.get("moves") or [])
+        clause("game_only", "every item the move names is open and needs the live game (ledger needs game-up or "
+               "bridge), and the record came to this stage from Stage 6", bool(ids) and not offline and not shut
+               and was6, [req_ref, rec_ref],
+               observed="items %s; needs %s; closed %s; a move from in_game on the record: %s" % (
+                   ", ".join(ids), ", ".join("%s=%s" % (i, need.get(i)) for i in ids), ", ".join(shut) or "none",
+                   was6),
+               would_pass="--game-only naming only open road-back items whose needs is game-up or bridge, on a record "
+                          "sent here from Stage 6",
+               fix="work an item an offline test can show here (its offline test first, its in-game check recorded "
+                   "UNRUN with `maturation.py unrun`), or set its needs (`rimflow needs <ID> game-up`) only when no "
+                   "offline test can show it", cost="edit",
+               why_sound="the spec's Stage 6 road back: a failed line goes to the lowest stage that can show it, and "
+                         "offline stages never wait for a game")
     # by: RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: the move names the seat that makes it (a ledger seat's name)
     if check_by:     # a move (advance) names its mover; next and brief ask what a move needs, by no seat
         clause("by", "the move names the seat that makes it", bool(re.match(r"^[A-Z][A-Z0-9_]{2,}$", str(by))),
@@ -673,8 +716,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
 
 # ---- the move --------------------------------------------------------------------------------------------------------
 
-def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None):
-    res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True)
+def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None, game_only=None):
+    res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True,
+                   game_only=game_only)
     errs = RC.check(res["verdict"])
     if errs:
         res["malformed"] = errs
@@ -701,7 +745,7 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
     # the detached or role run that made the move; a move with no unit was made by a hand (maturation_hands.py)
     move = {"from": cur, "to": to, "at": iso(t), "by": by, "why": why, "unit": os.environ.get("RM_ROLE_UNIT") or None,
             "confirmed": {k: v for k, v in (("steward_confirms", steward), ("conductor_decision", conductor),
-                                            ("owner_said", owner)) if v},
+                                            ("owner_said", owner), ("game_only", ", ".join(game_only or ()))) if v},
             "checks_passed": [p["clause"] for p in res["verdict"]["passed"]]}
     if uncounted:
         move["cycle_not_counted"] = uncounted
@@ -2506,6 +2550,41 @@ def ingame_debts(root, mod, tt=None):
     return out
 
 
+UNRUN_FILE = INGAME_DIR + "/unrun.jsonl"
+
+
+def record_unrun(root, mod, item, check, command, offline, sha, by="BENCH"):
+    """Appends one row to version/in_game/unrun.jsonl: road-back item `item` closed at an offline stage on its offline
+    test (`offline`, green at `sha`); its in-game check `check` is UNRUN until Stage 6, with its exact `command` (spec
+    §4 Stage 3 exit: "Every in-game check exists and is listed UNRUN with its exact command until Stage 6"). -> the row.
+    Refuses (ValueError) a row missing any of them."""
+    row = {"item": item, "check": check, "command": command, "offline": offline, "sha": sha, "result": "UNRUN",
+           "by": by, "at": iso(now_ts())}
+    gone = [k for k in ("item", "check", "command", "offline", "sha") if not str(row[k] or "").strip()]
+    if gone:
+        raise ValueError("an UNRUN record needs %s" % ", ".join(gone))
+    p = os.path.join(mod_dir(root, mod), UNRUN_FILE)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    return row
+
+
+def read_unrun(root, mod):
+    """-> the UNRUN rows of version/in_game/unrun.jsonl (record_unrun), oldest first; [] when there is none."""
+    rows = _jsonl(os.path.join(mod_dir(root, mod), UNRUN_FILE)) or []
+    return [r for r in rows if isinstance(r, dict) and "_bad" not in r]
+
+
+def unrun_lines(root, mod):
+    """-> the Stage 6 brief's lines for the road-back items closed offline whose in-game check is still UNRUN."""
+    rows = read_unrun(root, mod)
+    if not rows:
+        return ["- none recorded"]
+    return ["- Item `%s` (closed offline on `%s` at %s): in-game check `%s` is UNRUN; run `%s`." % (
+        r.get("item"), r.get("offline"), r.get("sha"), r.get("check"), r.get("command")) for r in rows]
+
+
 def ingame_facts(root, mod):
     """-> what in-game acceptance owes now: visit (the moves into in_game so far), exit (read_ingame_exit of visit_N),
     checks (the stage-6 ids), testq (those carrying a testq block: what SteveDesktop's queue may admit), and owed:
@@ -2660,6 +2739,9 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
         L += ["", "The cycle's SUMMARY.md, \"Owed\", as written:", ""] + ["> " + x for x in debts["owed_text"].split("\n")]
     if debts.get("unsettled_text"):
         L += ["", "Its \"Unsettled\", as written:", ""] + ["> " + x for x in debts["unsettled_text"].split("\n")]
+    L += ["", "## Owed from the road back (UNRUN until this visit, `design/concepts/%s/%s`)" % (mod, UNRUN_FILE), "",
+          "Each item below closed at an offline stage on its offline test; its in-game check never ran. Run each "
+          "command and give it a row in `rows.jsonl`."] + unrun_lines(root, mod)
     L += ["", "## Beyond the checks", "",
           "Explore past the bars on the same maps: plentiful screenshots (`src/RimMandrake/Utils/system_screenshot.py` "
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "
@@ -2753,7 +2835,17 @@ def main(argv=None):
     a.add_argument("--owner-said")
     a.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     a.add_argument("--waits-on")
+    a.add_argument("--game-only", help="ID[,ID...]: back to in_game from an offline stage; every named road-back item "
+                                       "is open and needs the live game")
     a.add_argument("--json", action="store_true")
+    u = sub.add_parser("unrun", help="record a road-back item's in-game check UNRUN for Stage 6 (it closed offline)")
+    u.add_argument("mod")
+    u.add_argument("--item", required=True)
+    u.add_argument("--check", required=True, help="the test table's stage-6 check id")
+    u.add_argument("--command", required=True, help="its exact live command")
+    u.add_argument("--offline", required=True, help="the offline test it closed on")
+    u.add_argument("--sha", required=True, help="the sha that test is green at")
+    u.add_argument("--by", default="BENCH")
     g = sub.add_parser("gate", help="read-only: exit 0 when the move refuses nothing but its hand steps (a launch check)")
     g.add_argument("mod")
     g.add_argument("--to", required=True, choices=WORDS)
@@ -2855,7 +2947,8 @@ def main(argv=None):
             print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))
             return 1
         res = advance(root, o.mod, o.to, by=o.by, why=o.why, steward=o.steward_confirms,
-                      conductor=o.conductor_decision, owner=o.owner_said or (("per-ruling %s: %s" % (o.per_ruling, o.why)) if o.per_ruling else None), waits_on=o.waits_on)
+                      conductor=o.conductor_decision, owner=o.owner_said or (("per-ruling %s: %s" % (o.per_ruling, o.why)) if o.per_ruling else None), waits_on=o.waits_on,
+                      game_only=[x.strip() for x in (o.game_only or "").split(",") if x.strip()] or None)
         if res.get("malformed"):
             print("MALFORMED REFUSAL (a bug in maturation.py): %s" % "; ".join(res["malformed"]))
             return 3
@@ -2868,6 +2961,15 @@ def main(argv=None):
         else:
             print_refusal(res)
         return 0 if res["ok"] else 1
+    if o.cmd == "unrun":
+        try:
+            r = record_unrun(root, o.mod, o.item, o.check, o.command, o.offline, o.sha, by=o.by)
+        except ValueError as e:
+            print("REFUSED: %s" % e)
+            return 2
+        print("UNRUN %s %s: %s (closed offline on %s at %s); listed in %s" % (o.mod, r["check"], r["command"],
+                                                                             r["offline"], r["sha"], UNRUN_FILE))
+        return 0
     if o.cmd == "gate":     # GATE_FIRST (RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES): writes nothing
         if load(root, o.mod) is None:
             print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))

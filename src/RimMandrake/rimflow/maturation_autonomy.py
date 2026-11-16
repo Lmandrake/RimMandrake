@@ -689,6 +689,19 @@ def _road_back(s, row, open_items, now=None, moved=False):
         return True
     if items:
         rb["had_items"] = True      # a tick saw it hold items: its closing is a new state
+        # offline stages never wait for a game: at one, an item only the game can show gets no run; it is Stage 6 work
+        # (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
+        game = ([x for x in items if (x or {}).get("needs") in M.LIVE_NEEDS]
+                if row.get("stage") in M.OFFLINE_STAGES else [])
+        work = [x for x in items if x not in game]
+        if not work:
+            ids6 = [x["id"] for x in game]
+            row.update(decision="game_only", aut=None, why="every open road-back item (%s) is a fault only the game can "
+                       "show, and %s is an offline stage: none gets a run here" % (", ".join(ids6), row.get("stage")),
+                       need="%s: PAUSED, its open road-back items need the live game (%s); Stage 6 work, not %s's: %s"
+                       % (row.get("mod"), ", ".join(ids6), row.get("stage"), M.game_only_cmd(row.get("mod"), ids6)))
+            return True
+        items = work
         fixed = s.setdefault("fixers", {})
         todo = [x for x in items if x["id"] not in fixed]
         if todo:
@@ -920,7 +933,9 @@ PAUSE_WHY = {
     "no_cap": "no spend cap", "blind_off": "blind launches are off", "ingame_off": "in-game launches are off",
     "launch_failed": "a launch failed", "launch_retry": "a launch is retried", "auto_spent": "the automatic runs of this visit are spent",
     "hand_run_seen": "a hand-launched run worked here and wrote no record", "steward_spent": "the steward run is spent",
-    "fixer_spent": "the fixer runs are spent", "cycle_unfinished": "a cycle record has no exit block",
+    "fixer_spent": "the fixer runs are spent",
+    "game_only": "its open road-back items need the live game: Stage 6 work, the record goes back there",
+    "cycle_unfinished": "a cycle record has no exit block",
     "visit_unfinished": "a visit record has no exit block", "cycle_limit": "three blind cycles: the Conductor decides",
     "seed_refused": "its record cannot be seeded", "designer_blocked": "the Designer is blocked",
     "designer_unreadable": "its stage.json cannot be read", "disabled": "the step is disabled",
@@ -1010,6 +1025,22 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
 """ + M.SELF_FIX_RULE + "\n"
 
 
+# a Stage 6 failure goes to the lowest stage that can show it (spec Stage 6 road back; "Offline stages never wait for a
+# game"): RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED, after FlowWorks and Explosive Knockback sat at
+# Stage 3 with twelve items only the game could close
+STAGE6_ROAD = (
+    "Sort each failed line by the lowest stage that can show its fault, and say which in its item:\n"
+    "- An offline test can show it (a selftest against a fake bridge or map, a pure-function check, a criterion text): "
+    "file it with `--needs offline`; its body names that offline acceptance command (red on the old code), and its "
+    "in-game check (the test table's stage-6 id and its exact live command), which its fixer records UNRUN for Stage 6 "
+    "with `maturation.py unrun` when it closes the item on the offline test.\n"
+    "- Only the game can show it (the cause is unknown until a live experiment, or the fault lives in the engine's "
+    "behaviour no fake models): file it with `--needs game-up`; it is Stage 6 work, game-only, and is never sent to "
+    "Stage 3. When every failed line is game-only, advance --to in_game (the next visit), never --to offline_build.\n"
+    "- A mix: advance --to offline_build for the offline lines; the tick gives the game-only ones no run there, and "
+    "when only they are open the record goes back with `maturation.py advance <Mod> --to in_game --game-only <IDS>`.")
+
+
 def steward_brief(root, mod, row):
     try:
         nx = M.next_step(root, mod)
@@ -1026,11 +1057,12 @@ def steward_brief(root, mod, row):
                         "is refused at launch. Then send the mod down its road back (%s). If the reading says "
                         "a new blind judge is owed (its Problems were FIXED in the cycle), file nothing new: advance "
                         "--to blind_challenge, so a judge who did not see the fixes judges them. The tick launches "
-                        "one fixer per item, and the next visit or cycle when they close." % (
+                        "one fixer per item, and the next visit or cycle when they close.%s" % (
                             "in-game visit" if row.get("stage") == "in_game" else "blind cycle",
                             "advance --to offline_build, or --to blind_challenge when every failure is a check or "
-                            "scene of the blind lane" if row.get("stage") == "in_game" else
-                            "advance --to blind_challenge opens the next cycle"),
+                            "scene of the blind lane, or --to in_game when every failure is game-only; see below"
+                            if row.get("stage") == "in_game" else "advance --to blind_challenge opens the next cycle",
+                            "\n\n" + STAGE6_ROAD if row.get("stage") == "in_game" else ""),
         "exit_met": "The program reads the exit as met. Read SUMMARY.md and the rows yourself; if they bear it out, "
                     "advance with --steward-confirms naming the run and the verdict read; if not, file what is wrong "
                     "as named items caused by this item and do not advance.",
@@ -1091,13 +1123,14 @@ def steward_brief(root, mod, row):
         "saying what you read, what you moved or filed, and anything that is the owner's (as card text).", ""])
 
 
-LIVE_NEEDS = ("game-up", "bridge")      # the model.NEEDS windows only a live game opens
+LIVE_NEEDS = M.LIVE_NEEDS
 
 
 def live_only(items):
-    """True when there are items and every one needs the live game (its ledger `needs` in LIVE_NEEDS): a holder run on
-    them is given the live brief (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME: Explosive Knockback's first
-    holder run closed none of its three items, each needing the game its offline brief forbade)."""
+    """True when there are items and every one needs the live game (its ledger `needs` in LIVE_NEEDS): at a Stage 6
+    record (M.game_takeable) a holder run on them is given the live brief (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_
+    NEED_GAME); at an offline stage they get no run at all, the record goes back to Stage 6
+    (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)."""
     return bool(items) and all((x or {}).get("needs") in LIVE_NEEDS for x in items)
 
 
@@ -1119,6 +1152,18 @@ def live_rules(purpose, mod, seat="BENCH"):
                 "\n".join(rules), purpose))
 
 
+# the offline half of a road-back item (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED; spec Stage 3 exit and
+# Stage 6 road back): it closes on an offline test; its in-game check is recorded UNRUN for Stage 6, never run here
+OFFLINE_CLOSE = (
+    "This run is offline: the item closes on its OFFLINE acceptance test (an offline test that fails on the old code, "
+    "written first, run and seen passing on the fix). Its in-game check is Stage 6's: record it UNRUN with its exact "
+    "command, `python3 src/RimMandrake/rimflow/maturation.py unrun %(mod)s --item %(item)s --check <the test table's "
+    "stage-6 id> --command \"<its exact live command>\" --offline \"<the offline test>\" --sha <the sha it is green "
+    "at>`, land `design/concepts/%(mod)s/version/in_game/unrun.jsonl` with the fix, then close the item. If no offline "
+    "test can show the fault, say why in a note starting LEFT OPEN: and set `rimflow needs %(item)s --to game-up`: it is "
+    "Stage 6 work, and the record goes back there. Never take the bridge or a game.")
+
+
 def fixer_brief(item, mod, cap, fix_for=None, live=False):
     if fix_for == "blocked":
         return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
@@ -1137,7 +1182,7 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
             "nothing. %s\n%s\n" % (item, mod, item, cap, item, mod, "Its acceptance test needs the live game: use it "
                                     "as the section below says, and write a note starting LEFT OPEN: on what still "
-                                    "fails." if live else "Never take the bridge or a game.", M.SELF_FIX_RULE)
+                                    "fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item}, M.SELF_FIX_RULE)
             + (live_rules("%s holder run on %s" % (mod, item), mod) if live else ""))
 
 
@@ -1240,8 +1285,8 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if row["aut"] == "fixer":
         item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
         # a pilot's fixer on an item that needs the game is given the game (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
-        live = (row.get("fix_for") != "blocked" and MD.pilot_ledger(root, mod) and
-                live_only([{"needs": M.ledger_needs(root, [item]).get(item)}]))
+        live = (row.get("fix_for") != "blocked" and M.game_takeable(row.get("stage")) and MD.pilot_ledger(root, mod)
+                and live_only([{"needs": M.ledger_needs(root, [item]).get(item)}]))
         brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"), live=live)
         book = s.setdefault("fixers", {})
         key = item

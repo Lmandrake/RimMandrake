@@ -1336,12 +1336,21 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
                 return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
             rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"))
         elif opened:
-            ids = [x["id"] for x in opened]
-            item = item or ids[0]
-            # every open item needs the live game: the holder takes the bridge and the game, one holder at a time
-            # (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
-            have = M.ledger_needs(root, [i for i in ids if not any(x["id"] == i and x.get("needs") for x in opened)])
-            live = AUT.live_only([dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened])
+            have = M.ledger_needs(root, [x["id"] for x in opened if not x.get("needs")])
+            opened = [dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened]
+            # offline stages never wait for a game: at one, an item only the game can show is Stage 6 work, given no
+            # run here (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
+            game6 = [x["id"] for x in opened if x["needs"] in M.LIVE_NEEDS] if not M.game_takeable(stage) else []
+            ids = [x["id"] for x in opened if x["id"] not in game6]
+            if not ids:
+                return 2, ("REFUSED: %s stands at %s, an offline stage, and every open road-back item (%s) needs the "
+                           "live game: no offline run can close one, and none is given the game. They are Stage 6 "
+                           "work; return the record there: %s" % (mod, stage, ", ".join(game6),
+                                                                  M.game_only_cmd(mod, game6)))
+            item = item if item and item not in game6 else ids[0]
+            # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
+            # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
+            live = M.game_takeable(stage) and AUT.live_only(opened)
             if live:
                 ok, why_b = (fx.get("bridge") or M.bridge_idle)("%s live holder run" % mod)
                 if not ok:
@@ -1353,7 +1362,9 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
                 "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
                 "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
                 "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
-                % ("live " if live else "", ", ".join(ids))), stage=stage, now=now, fx=fx)
+                % ("live " if live else "", ", ".join(ids)) + (
+                "Not yours: %s need%s the live game, Stage 6 work; work none of them here.\n" % (
+                    ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "")), stage=stage, now=now, fx=fx)
             rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
                 item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"], **rkw)
             unit = unit if rc == 0 else None

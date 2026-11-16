@@ -56,6 +56,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_modledger_backfill.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_pilot_stage_runs.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_holder_live_brief.py", "seconds": 1.0},
+    {"test": "src/RimMandrake/rimflow/selftest_offline_stage_road_back.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_stop_steps_outlive_launcher.py", "seconds": 2.0}
   ],
   "live_excluded": {
