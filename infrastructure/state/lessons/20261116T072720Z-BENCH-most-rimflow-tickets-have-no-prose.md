@@ -1,0 +1,1 @@
+Most rimflow tickets have no prose file: of 66 Explosive Knockback tickets mined 2026-11-16, 45 exist only as ledger events (title, notes, close), all filed 2026-11-12..15. A miner or census that globs infrastructure/state/items/*.md and items/closed/*.md sees about a third of a mod's tickets; read the ledger's file events too (modledger_backfill.item_titles / ticket_events).
