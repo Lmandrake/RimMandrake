@@ -49,6 +49,7 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              other kill failure reads FAILED and the stop is still tried
 """
 import json
+import re
 import os
 import shutil
 import subprocess
@@ -823,7 +824,11 @@ def test_result_kept_whole():
           "cost: finish records claude's total_cost_usd and the tokens (%s, %s)" % (r2.get("cost_usd"), r2.get("tokens")))
     nt = non_systemctl(fcalls)[0][0]
     nt = nt[nt.index("--text") + 1]
-    check("USD 1.25" in nt, "cost: the note says the measured dollars (%s)" % nt[:120])
+    # the owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money." The record keeps its
+    # dollars; the note (and the Conductor log line, the same words) says weighted tokens and no dollar figure
+    # (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD)
+    check("weighted tokens" in nt and not re.search(r"USD|\$\s*\d", nt),
+          "cost: the note says weighted tokens, never a dollar figure (%s)" % nt[:160])
     # the pure readers
     check(DH.result_cost(json.loads(_claude_json(total=None))) == (1.25, "sum of modelUsage costUSD"),
           "cost: no total_cost_usd -> the sum of modelUsage costUSD (equal on the 10 whole files of 2026-11-15)")

@@ -3064,9 +3064,10 @@ def main(argv=None):
               % (o.mod, rec["version"], label(rec["stage"]), rec["since"], rec.get("cycles"),
                  rec.get("pre_human_arrivals"), len(rec.get("moves") or [])))
         for st, t in spend_by_stage({"spend": spend_rows(root, o.mod, rec)}).items():
-            print("  spend %s: %s tokens, USD %s, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
-                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"], t["usd"] if t["usd"] == UNM else
-                     "%.2f" % t["usd"], round(t["wall_s"]), t["entries"], t["estimates"], t["unmeasured"]))
+            # weighted tokens only (the owner, 2026-11-16: "Please speak in terms of weighted tokens not money.")
+            print("  spend %s: %s weighted tokens, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
+                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"], round(t["wall_s"]), t["entries"],
+                     t["estimates"], t["unmeasured"]))
         return 0
     if o.cmd == "next":
         nx = next_step(root, o.mod)

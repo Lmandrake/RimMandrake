@@ -407,7 +407,10 @@ def main():
         rd = none_launched(dict(base, advancing=["ExplosiveKnockback", "FlowWorks"], max_live=1),
                            "the Conductor's live builder on Explosive Knockback fills the one slot", "slots_full",
                            live={"ExplosiveKnockback": ["u-ek"]})
-        none_launched(one, "the stage's dollars past the ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 61.0}})
+        rd = none_launched(one, "the stage's dollars past the ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 61.0}})
+        ok("weighted tokens" in rd["mods"]["FlowWorks"]["why"] and not re.search(r"USD|\$\s*\d",
+                                                                                  rd["mods"]["FlowWorks"]["why"]),
+           "the ceiling pause says weighted tokens, never a dollar figure (%s)" % rd["mods"]["FlowWorks"]["why"][:160])
         # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the cap is reserved, and an unknown occupancy fails closed
         rd = none_launched(dict(one, stage_ceiling_usd=60, cap_usd=15), "USD 50 spent plus a USD 15 cap passes the "
                            "60 ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 50.0}})
@@ -447,7 +450,11 @@ def main():
             r = rd["mods"]["FlowWorks"]
             return "%s: %s" % (r["decision"], r.get("why"))
 
-        cmd = "maturation_dispatch.py release FlowWorks --stage offline_build --read-usd 50.00 --usd 5 --why"
+        # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The pause line and its release
+        # command say weighted tokens; the ceiling is still kept in list dollars inside (RIMMANDRAKE_ENACT_TOKENS_NOT_
+        # DOLLARS_NO_LIVE_HOLD)
+        cmd = ("maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens %d --tokens %d --why"
+               % (MD.to_wt(50.0), MD.to_wt(5)))
         rd = rtick([])
         ok(not launches() and fw(rd).startswith("stopped") and cmd in fw(rd), "no release record: USD 50 + a USD 15 cap "
            "past 60 stays paused, and the pause names the release command (%s)" % fw(rd))
@@ -458,11 +465,11 @@ def main():
            "release spent (%s; used %s)" % (fw(rd)[:40], sorted(used)))
         rd = rtick([rel()], spent=65.0, used={"rel-test-a": {"at": CLOCK}})
         ok(not launches() and fw(rd).startswith("stopped") and "its release is spent" in fw(rd)
-           and "--read-usd 65.00 --usd 20 " in fw(rd), "the released run's USD 15 spent (65): the spent release frees "
+           and "--read-tokens %d --tokens %d " % (MD.to_wt(65.0), MD.to_wt(20)) in fw(rd), "the released run's USD 15 spent (65): the spent release frees "
            "nothing and the mod re-pauses at the next ceiling, naming the next release (%s)" % fw(rd))
         for r, what, says in ((rel(mod="ExplosiveKnockback"), "a release for another mod", cmd),
                               (rel(stage="blind_challenge"), "a release for another stage", cmd),
-                              (rel(read_usd=40.0), "a release that read another spend (USD 40)", "the spend is now USD 50.00"),
+                              (rel(read_usd=40.0), "a release that read another spend (USD 40)", "the spend is now %s" % MD.wt(50.0)),
                               (rel(release_usd=2.0), "a release smaller than the cap needs (USD 2)", "does not cover")):
             rd = rtick([r])
             ok(not launches() and fw(rd).startswith("stopped") and says in fw(rd), "%s: still paused (%s)" % (what, fw(rd)))
@@ -745,6 +752,16 @@ def release_main():
            and (recs[0]["by"], recs[0]["read_usd"], recs[0]["release_usd"], recs[0]["why"]) == ("BENCH", 40, 30,
                                                                                                "selftest release"),
            "release writes one whole record: who, the spend read, the amount, why (%s)" % out[:90])
+        tp = os.path.join(tempfile.mkdtemp(dir=sd), "releases.jsonl")
+        rc, out = run("FlowWorks", "--stage", "in_game", "--read-tokens", str(MD.to_wt(40.0)), "--tokens",
+                      str(MD.to_wt(30)), "--why", "selftest tokens", "--by", "BENCH",
+                      RM_MATURATION_DISPATCH_DIR=os.path.dirname(tp))
+        tr = MD.read_releases(tp)[0]
+        ok(rc == 0 and len(tr) == 1 and abs(tr[0]["read_usd"] - 40) <= MD.READ_SLACK
+           and abs(tr[0]["release_usd"] - 30) <= MD.READ_SLACK and "weighted tokens" in out
+           and not re.search(r"USD|\$\s*\d", out),
+           "release takes the pause line's weighted tokens (--read-tokens/--tokens) and says tokens, never dollars (%s)"
+           % out[:160])
         args = ["--stage", "in_game", "--read-usd", "40", "--usd", "30", "--why", "x", "--by", "BENCH"]
         for a, what, e in ((["NotAMod"] + args, "a mod off the advancing list", {}),
                            (["FlowWorks"] + args[:4] + ["--usd", "0"] + args[6:], "a zero release", {}),
@@ -774,8 +791,8 @@ def release_main():
            "or its dollars, the page being token-blind (%s)" % [x for x in text.splitlines() if "FlowWorks" in x][:1])
         lst = subprocess.run([sys.executable, os.path.join(HERE, "maturation_dispatch.py"), "releases"],
                              capture_output=True, text=True, timeout=120, env=env)
-        ok(lst.returncode == 0 and "FlowWorks" in lst.stdout and "read USD 40.00" in lst.stdout
-           and "released USD 30" in lst.stdout and "selftest release" in lst.stdout and "1 malformed" in lst.stdout,
+        ok(lst.returncode == 0 and "FlowWorks" in lst.stdout and "read %s" % MD.wt(40) in lst.stdout
+           and "released %s" % MD.wt(30) in lst.stdout and not re.search(r"USD|\$\s*\d", lst.stdout) and "selftest release" in lst.stdout and "1 malformed" in lst.stdout,
            "`releases` lists each release with its spend, amount and why for the Conductor (%s)" % lst.stdout[:120])
     finally:
         shutil.rmtree(sd, ignore_errors=True)
@@ -975,7 +992,8 @@ def blind_main():
         # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the ceiling holds at the blind challenge too, cap reserved
         rd = none(dict(gss, stage_ceiling_usd=60, blind_cap_usd=20), "USD 45 spent at the blind challenge plus a USD 20 "
                   "cap passes the 60 ceiling", "ceiling", box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
-        ok("release GimmeSomeSlack --stage blind_challenge --read-usd 45.00 --usd 5 --why" in rd["mods"]["GimmeSomeSlack"]
+        ok("release GimmeSomeSlack --stage blind_challenge --read-tokens %d --tokens %d --why" % (
+            MD.to_wt(45.0), MD.to_wt(5)) in rd["mods"]["GimmeSomeSlack"]
            ["why"], "the blind ceiling pause names its release command (%s)" % rd["mods"]["GimmeSomeSlack"]["why"])
         # RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: a release is per stage
         c60 = dict(gss, stage_ceiling_usd=60, blind_cap_usd=20)

@@ -168,8 +168,8 @@ def collect(root, cfg, st, facts, now, fx=None):
     for r in recs:
         if not r.get("auto"):
             out.append(_act(r["id"], ts(r["ts"]) or now, "ceiling_release", r["mod"],
-                            "%s released USD %g past the ceiling at %s (read USD %.2f)" % (
-                                r["by"], r["release_usd"], r["stage"], r["read_usd"]), r["why"]))
+                            "%s released %s past the ceiling at %s (read %s)" % (
+                                r["by"], MD.wt(r["release_usd"]), r["stage"], MD.wt(r["read_usd"])), r["why"]))
     mods = st.get("mods") or {}
     names = list(dict.fromkeys(list(cfg.get("advancing") or []) + list(mods) + list(facts or {})))
     for mod in names:

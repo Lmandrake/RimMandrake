@@ -413,8 +413,19 @@ def p11_unmeasured(d_nolive_page):
     r = M.run_view({"unit": "u", "item": "X", "at": now - 100, "ended": now, "status": "finished",
                     "result": "success (exited 0)", "out": "/nonexistent"}, now)
     line = M.run_line(r, 1)
-    check("11 a run with no tokens and no cost reads UNMEASURED for both", "tokens UNMEASURED" in line and
-          "dollars UNMEASURED" in line and " 0 tokens" not in line, line)
+    check("11 a run with no tokens reads weighted tokens UNMEASURED, never 0", "weighted tokens UNMEASURED" in line
+          and " 0 " not in line, line)
+    # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." A run's line says weighted tokens
+    # and no dollar figure, measured, said or capped (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD)
+    r3 = dict(M.run_view({"unit": "u", "item": "X", "at": now - 100, "ended": now, "status": "finished",
+                          "result": "success (exited 0)", "out": "/nonexistent", "tokens": 2_400_000,
+                          "budget_usd": 15}, now), usd=4.25, said_usd=2.0, cap=15)
+    l3 = M.run_line(r3, 1)
+    check("11 a run line says weighted tokens, never dollars", "2.4 M weighted tokens" in l3
+          and not re.search(r"USD|\$\s*\d|dollar", l3), l3)
+    page = d_nolive_page
+    check("11 the page states no dollar figure", not re.search(r"USD ?\d|\$\s*\d", page),
+          [x for x in page.splitlines() if re.search(r"USD ?\d|\$\s*\d", x)][:2])
     r2 = M.run_view({"unit": "u", "item": "X", "status": "finished"}, now)
     check("11 a run with no times reads UNMEASURED wall time and outcome", r2["wall"] == "UNMEASURED" and r2["outcome"] == "UNMEASURED", "%r" % r2)
     check("11 no stage.json: Designer cycles UNMEASURED", M.designer_cycles(None) == "UNMEASURED")

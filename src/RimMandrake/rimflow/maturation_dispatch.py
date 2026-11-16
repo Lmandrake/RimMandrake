@@ -143,6 +143,28 @@ import modledger                # noqa: E402  the mod ledger: stage runs from it
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
 READ_SLACK = 0.5        # USD: a release read at this spend, give or take, is still a reading of it
+# The owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money. The money quotes don't
+# translate meaningfully." Every line a person reads states spend in weighted tokens (role_launch.TOKEN_WEIGHTS,
+# input-equivalent); the ceiling and the caps are still KEPT in list dollars inside, and wt() converts at the rate
+# measured 2026-11-16 over the finished Opus detached-run records holding both figures (172 runs, median 350,303
+# weighted tokens per list dollar; Sonnet runs read ~625k, so a stage that ran Sonnet reads a little high in tokens).
+# Moving the ceiling and caps themselves to tokens is RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS.
+WT_PER_USD = 350303
+
+
+def to_wt(usd):
+    """List dollars -> weighted tokens at WT_PER_USD (an int: a release command's exact argument)."""
+    return int(round(float(usd) * WT_PER_USD))
+
+
+def from_wt(tokens):
+    return float(tokens) / WT_PER_USD
+
+
+def wt(usd):
+    """List dollars -> the words a person reads: '≈17.5M weighted tokens'."""
+    n = to_wt(usd)
+    return "≈%s weighted tokens" % ("%.1fM" % (n / 1e6) if n >= 1e6 else "%dk" % round(n / 1e3) if n >= 1e3 else n)
 CFG_PATH = os.path.join(HERE, "maturation_dispatch.json")
 ALARM_NAME = "OPS_MATURATION_IDLE_ADVANCING_MOD"
 CLONE_ALARM_NAME = "OPS_DISPATCH_CLONE_BEHIND_UNSTICK"     # ops_watch_rules.json: maturation.clone_behind_min > 5
@@ -481,9 +503,9 @@ def over_ceiling(usd, cap, ceiling, where):
     if not (isinstance(ceiling, (int, float)) and not isinstance(ceiling, bool)):
         return None
     if usd >= ceiling:
-        return "USD %.2f spent at %s, at or past the %g ceiling" % (usd, where, ceiling)
+        return "%s spent at %s, at or past the %s ceiling" % (wt(usd), where, wt(ceiling))
     if usd + cap > ceiling:
-        return "USD %.2f spent at %s plus the next run's USD %g cap passes the %g ceiling" % (usd, where, cap, ceiling)
+        return "%s spent at %s plus the next run's %s cap passes the %s ceiling" % (wt(usd), where, wt(cap), wt(ceiling))
     return None
 
 
@@ -525,11 +547,12 @@ def read_releases(path=None):
 
 def release_cmd(mod, stage, usd, cap, ceiling):
     need = max(1, int(-(-(usd + cap - ceiling) // 1)))
-    return ('python3 src/RimMandrake/rimflow/maturation_dispatch.py release %s --stage %s --read-usd %.2f --usd %d '
-            '--why "..."' % (mod, stage, usd, need))
+    return ('python3 src/RimMandrake/rimflow/maturation_dispatch.py release %s --stage %s --read-tokens %d --tokens %d '
+            '--why "..."' % (mod, stage, to_wt(usd), to_wt(need)))
 
 
-CEILING_WHY = re.compile(r"^USD [0-9.]+ spent at ")      # over_ceiling's words: a stop written before the flag
+# over_ceiling's words, in dollars before 2026-11-16 and in weighted tokens since: a stop written before the flag
+CEILING_WHY = re.compile(r"^(USD [0-9.]+|≈[0-9.]+[kM]? weighted tokens) spent at ")
 
 
 def ceiling_stop(stop):
@@ -557,10 +580,10 @@ def ceiling_gate(cfg, s, mod, stage, usd, cap, where, releases):
     if mine and not fresh:
         notes.append("its release is spent")
     if stale:
-        notes.append("a release read USD %.2f, the spend is now USD %.2f" % (stale[-1]["read_usd"], usd))
+        notes.append("a release read %s, the spend is now %s" % (wt(stale[-1]["read_usd"]), wt(usd)))
     if len(fresh) > len(stale):
-        notes.append("a release of USD %g does not cover the next run's cap" % [r for r in fresh if r not in stale][-1]
-                     ["release_usd"])
+        notes.append("a release of %s does not cover the next run's cap" % wt([r for r in fresh if r not in stale][-1]
+                                                                             ["release_usd"]))
     if bad:
         notes.append("%d malformed release line(s) ignored" % bad)
     return "%s%s; release it: %s" % (over, " (%s)" % "; ".join(notes) if notes else "",
@@ -597,7 +620,7 @@ def refund(cfg, s, f, stage, usd, cap, unit):
         return None, ""
     need = round(usd + cap - ceiling, 2)
     if need > spent + READ_SLACK:
-        return None, "; the killed run %s spent USD %.2f, less than the USD %.2f missing" % (unit, spent, need)
+        return None, "; the killed run %s spent %s, less than the %s missing" % (unit, wt(spent), wt(need))
     word = (s.get("convergence") or {}).get(REFUND_STAGE.get(stage)) or UNM
     if word == "DIVERGING":
         return None, "; no refund of the killed run %s's dollars while the stage reads DIVERGING" % unit
@@ -616,10 +639,10 @@ def book_refunds(st, rows, now, path=None):
                "stage": ref["stage"], "by": "RUNNER", "read_usd": round(ref["read_usd"], 2),
                "release_usd": round(ref["usd"], 2), "auto": True,
                "why": "delegated: killed-run refund: run %s was killed from outside before it wrote a result (not a "
-                      "failed run); USD %.2f of the USD %.2f charged for it is given back once so the same %s can "
+                      "failed run); %s of the %s charged for it is given back once so the same %s can "
                       "finish; the stage's convergence reads %s (the Conductor's rule of 2026-11-15, "
                       "RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING)" % (
-                          ref["unit"], ref["usd"], ref["spent"],
+                          ref["unit"], wt(ref["usd"]), wt(ref["spent"]),
                           "cycle" if ref["stage"] == "blind_challenge" else "visit", ref["word"])}
         rec["id"] = "rel-%s" % hashlib.sha1(json.dumps(rec, sort_keys=True).encode()).hexdigest()[:12]
         with open(path or releases_path(), "a", encoding="utf-8") as fh:
@@ -628,7 +651,7 @@ def book_refunds(st, rows, now, path=None):
         s.setdefault("releases_used", {})[rec["id"]] = {"at": now, "stage": ref["stage"], "usd": ref["read_usd"],
                                                          "unit": r.get("unit")}
         s.setdefault("refunds", {})[ref["unit"]] = {"at": now, "usd": rec["release_usd"], "release": rec["id"]}
-        r["why"] = "%s; killed-run refund %s (USD %.2f)" % (r.get("why"), rec["id"], rec["release_usd"])
+        r["why"] = "%s; killed-run refund %s (%s)" % (r.get("why"), rec["id"], wt(rec["release_usd"]))
         out.append(rec["id"])
     return out
 
@@ -2624,8 +2647,10 @@ def main(argv=None):
     r = sub.add_parser("release", help="release MOD past the stage ceiling at STAGE once (the Conductor, told after)")
     r.add_argument("mod")
     r.add_argument("--stage", required=True, choices=RELEASE_STAGES)
-    r.add_argument("--read-usd", type=float, required=True, help="the stage's spend you read (the pause line's USD)")
-    r.add_argument("--usd", type=float, required=True, help="dollars released past the ceiling, for one more run")
+    r.add_argument("--read-tokens", type=int, help="the stage's spend you read, in the pause line's weighted tokens")
+    r.add_argument("--tokens", type=int, help="weighted tokens released past the ceiling, for one more run")
+    r.add_argument("--read-usd", type=float, help="the same reading in list dollars (the form before 2026-11-16)")
+    r.add_argument("--usd", type=float, help="the same release in list dollars (the form before 2026-11-16)")
     r.add_argument("--why", required=True)
     r.add_argument("--by", default=None, help="who releases (default: this window's seat)")
     pl = sub.add_parser("pilot-launch", help="start one pilot holder run from MOD's ledger packet at its current stage "
@@ -2676,6 +2701,18 @@ def main(argv=None):
         import model
         # a ledger seat key ("CONDUCTOR" -> BENCH): the digest's closed seat set drops any other name, losing "who"
         by = model.canonical((o.by or doorbell.seat_name() or "").strip())
+        # the pause line's weighted tokens, or the older dollar form; the record keeps dollars (the ceiling's unit)
+        pair = ("--read-tokens and --tokens" if (o.read_tokens is None) != (o.tokens is None) else
+                "--read-usd and --usd" if (o.read_usd is None) != (o.usd is None) else None)
+        if o.tokens is not None and o.usd is not None:
+            pair = "either --read-tokens/--tokens or --read-usd/--usd, not both"
+        elif o.tokens is None and o.usd is None and not pair:
+            pair = "--read-tokens and --tokens (the pause line's release command)"
+        if pair:
+            print("REFUSED: pass %s" % pair)
+            return 2
+        if o.tokens is not None:
+            o.read_usd, o.usd = from_wt(o.read_tokens), from_wt(o.tokens)
         bad = ("%s is not on the advancing list" % o.mod if o.mod not in (cfg.get("advancing") or []) else
                "--by %s is not a ledger seat (%s)" % (by, ", ".join(model.SEATS)) if by and by not in model.SEATS else
                "--usd must be above 0" if not _usd_ok(o.usd, True) else
@@ -2692,10 +2729,10 @@ def main(argv=None):
             f.write(json.dumps(rec, sort_keys=True) + "\n")
         last = ((_read(os.path.join(sdir(), "reading.json"), None) or {}).get("mods") or {}).get(o.mod) or {}
         seen = last.get("stage_usd") if last.get("stage") == o.stage else None
-        print("RELEASED %s at %s by USD %g (read USD %.2f, by %s; %s): the next tick may launch on it once%s" % (
-            o.mod, o.stage, o.usd, o.read_usd, by, rec["id"],
+        print("RELEASED %s at %s by %s (read %s, by %s; %s): the next tick may launch on it once%s" % (
+            o.mod, o.stage, wt(o.usd), wt(o.read_usd), by, rec["id"],
             "" if seen is None or abs(seen - o.read_usd) <= READ_SLACK else
-            "; WARNING the last reading shows USD %.2f there, so this release reads stale and frees nothing" % seen))
+            "; WARNING the last reading shows %s there, so this release reads stale and frees nothing" % wt(seen)))
         print(HAND_NOTE % rec["id"])
         return 0
     if o.cmd == "releases":
@@ -2703,8 +2740,8 @@ def main(argv=None):
         st = _read(os.path.join(sdir(), "state.json"), {})
         for r in recs:
             u = ((st.get("mods") or {}).get(r["mod"]) or {}).get("releases_used", {}).get(r["id"])
-            print("%s %s %-18s %-15s read USD %.2f, released USD %g, by %s: %s [%s]" % (
-                r["ts"], r["id"], r["mod"], r["stage"], r["read_usd"], r["release_usd"], r["by"], r["why"],
+            print("%s %s %-18s %-15s read %s, released %s, by %s: %s [%s]" % (
+                r["ts"], r["id"], r["mod"], r["stage"], wt(r["read_usd"]), wt(r["release_usd"]), r["by"], r["why"],
                 "spent by %s" % (u.get("unit") or "a launch") if u else "unspent"))
         print("%d release(s), %d malformed line(s) in %s" % (len(recs), bad, releases_path()))
         return 0

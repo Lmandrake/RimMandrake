@@ -1239,8 +1239,10 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     st, tokens, tail = outcome(rec, env)
     usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
     took = int(now - rec["at"])
-    text = ("DETACHED run %s ended %s after %d s, %s tokens, USD %s (model %s). Result: %s. Output %s; clone %s."
-            % (unit, st, took, "UNMEASURED" if tokens is None else tokens, _usd(usd), rec["model"], tail or "-",
+    # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The dollars stay in the record
+    # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (TOKEN_WEIGHTS, run_tokens)
+    text = ("DETACHED run %s ended %s after %d s, %s weighted tokens (model %s). Result: %s. Output %s; clone %s."
+            % (unit, st, took, "UNMEASURED" if tokens is None else "{:,}".format(tokens), rec["model"], tail or "-",
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -1275,8 +1277,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s tokens, USD %s. %s. READ: rimflow show %s.%s"
-                              % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else tokens, _usd(usd),
+        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens. %s. READ: rimflow show %s.%s"
+                              % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else "{:,}".format(tokens),
                                  fulltext.clip(tail, 200, rec["out"]) or "-", item,
                                  " OWED: " + owed + "." if owed else ""), now, log_path)
         steps.append("conductor log " + path)

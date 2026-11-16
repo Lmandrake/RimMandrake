@@ -768,7 +768,7 @@ def reactions(mods, now):
             if r["ok"] is False:
                 co.append("%s: the run of %s ended %s (%s)" % (L, r["start"], r["outcome"], st))
             if r["over_cap"] is True:
-                co.append("%s: the run of %s went over its $%s cap" % (L, r["start"], r["cap"]))
+                co.append("%s: the run of %s went over its spend cap" % (L, r["start"]))
         for x in m.get("iv_bad") or []:
             co.append("%s: an intervention line the page cannot read (%s): %s" % (L, x["source"], x["line"]))
         for x in m["disagree"]:
@@ -1286,12 +1286,11 @@ def stage_title(c):
 def run_line(r, k):
     """One run in plain words; every number measured or UNMEASURED."""
     span = r["start"] + (" to " + r["stop"] if r["stop"] else "")
-    usd = ("$%.2f" % r["usd"]) if r["usd"] != UNM else "dollars UNMEASURED"
-    said = (" (it said about $%g" % r["said_usd"] + (" of a $%g cap)" % r["cap"] if r["cap"] != UNM else ")")) \
-        if r["said_usd"] is not None else ""
-    tok = (tokens_word(r["tokens"]) + " tokens") if r["tokens"] != UNM else "tokens UNMEASURED"
+    # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The record keeps its dollars (the
+    # stage ceiling reads them); the page says weighted tokens only (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD)
+    tok = (tokens_word(r["tokens"]) + " weighted tokens") if r["tokens"] != UNM else "weighted tokens UNMEASURED"
     wall = r["wall"] + (" so far" if r["live"] else "")
-    return "run %d: %s, %s, %s, %s, %s%s" % (k, span, wall, r["outcome"], tok, usd, said)
+    return "run %d: %s, %s, %s, %s" % (k, span, wall, r["outcome"], tok)
 
 
 def box_lines(m, c, x):
@@ -1445,11 +1444,9 @@ HEADS = ("mod", "Design Version", "stands at", "waits on", "needs you", "last mo
 def unread_lines(d):
     out = ["Any mod's position inside Stages 2 to 8 beyond what its journal's \"Stage now\" line says: those stages are not "
            "built and keep no record of their own yet (spec §6, \"the mod record\").",
-           "Dollars per run, for some older runs: until 2026-11-15 a run's finish line was written over the head of its "
-           "result file, so claude's total_cost_usd was lost. Runs since then carry their measured dollars in the run "
-           "record; older ones were read back from what survived (detached_helper.py backfill-cost) and the rest say "
-           "UNMEASURED and count at their cap in the stage ceiling. A run's own \"spent about $N\" is shown as its "
-           "word, not a measurement. A live run's spend is unknown until it ends.",
+           "Weighted tokens per run, for some older runs: until 2026-11-15 a run's finish line was written over the head "
+           "of its result file, so its usage was lost; those read UNMEASURED, and count at their cap in the stage "
+           "ceiling. A live run's spend is unknown until it ends.",
            "His minutes per stage: nothing records them.",
            "A brief's \"Steward's decisions\" are not kept with the run record; they reach this page only through a "
            "\"CONDUCTOR INTERVENED\" journal line (spec §5).",
