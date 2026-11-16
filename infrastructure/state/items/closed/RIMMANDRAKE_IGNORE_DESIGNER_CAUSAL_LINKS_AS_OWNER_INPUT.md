@@ -22,3 +22,7 @@ Add the regression before implementation. After accepting stage 2 in a temporary
 - Explicit owner words naming the concept item still reopen the design, including words on related items.
 - Genuine same-item replies and authenticated delegated calls retain their existing intake and provenance behavior.
 - The real Stillsand result passes its stage-2 check with every built capability and adopted decision preserved.
+
+## Verification result
+
+Published at 5bd33427c674d643297a9a6674e366cfe25b9d77. The regression failed before implementation on causal-only intake and accepted-design staleness. The complete selftest_designer_stage.py passes after repair. All 35 affected pipeline tests and 14 whole-tree checks pass. Explicit related-item owner words, same-item replies and delegated-call provenance retain passing controls. The real Stillsand stage-2 result check accepts the run. Verification is offline L0.
