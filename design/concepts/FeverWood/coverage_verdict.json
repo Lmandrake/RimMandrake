@@ -1,0 +1,2035 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-16T12:53:16Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_package",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "wave-2 compose membership of mandrake.rm.biomes"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "standalone About identity reconciled with compose identity"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "local manifest/DLL hash vs installed runtime assembly (mismatch control)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "fw_placement",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "hand-placed biome, worker returns -100 (static check)"
+    },
+    {
+     "ok": true,
+     "scene": "retired_routes",
+     "what": "inert natural-placement setting removed"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_routes",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "boughways/causeways/bough-soil painted through the shared causeway profile, anchored to living boles and restricted to the ground allowlist, on a generated map"
+    },
+    {
+     "ok": true,
+     "scene": "branch_work",
+     "what": "daily routes shape actual harvest/haul work, interruption changes routes"
+    },
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "bough-soil fertility as built"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_foundations",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "GroundRefusal converts remaining Soil/SoilRich to MarshyTerrain on a generated FeverWood map"
+    },
+    {
+     "ok": true,
+     "scene": "foundations",
+     "what": "marsh refuses heavy construction"
+    },
+    {
+     "ok": true,
+     "scene": "foundations",
+     "what": "completed stilt platform grants Heavy through Bridge ancestry"
+    },
+    {
+     "ok": true,
+     "scene": "foundations",
+     "what": "mirror pools inherit deep-water foundation restrictions"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_trunks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "living_trunk",
+     "what": "mineable heartwood and living core"
+    },
+    {
+     "ok": true,
+     "scene": "living_trunk",
+     "what": "living regrowth on saved timers, reload neither forgets nor duplicates"
+    },
+    {
+     "ok": true,
+     "scene": "living_trunk",
+     "what": "Greentide toxin-sealed flooring blocks regrowth"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_pools",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "ScatterPools paints AND registers mirror-pool terrain on a generated map (all scenes start from an authored 'registered' pool)"
+    },
+    {
+     "ok": true,
+     "scene": "pool_size_reach",
+     "what": "TentacleWatch connected-cluster cache, merge/split identity"
+    },
+    {
+     "ok": true,
+     "scene": "eye_encounter",
+     "what": "largest-cluster set-piece eligibility"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "tentaclePoolsAreClusters setting off/on behaviour named and tested"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_shore_rescue",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "real_shore_rescue",
+     "what": "real Tenant exposure and snare callers seize a shore worker"
+    },
+    {
+     "ok": true,
+     "scene": "real_shore_rescue",
+     "what": "wild victim subtraction vs player/tame downing"
+    },
+    {
+     "ok": true,
+     "scene": "real_shore_rescue",
+     "what": "absolute rescue deadline, carrying clears it, no-help expiry loses victim"
+    },
+    {
+     "ok": true,
+     "scene": "real_shore_rescue",
+     "what": "near vs distant helper from the same start"
+    },
+    {
+     "ok": true,
+     "scene": "water_rescue_reload",
+     "what": "deadline survives reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_mirror_break",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "registered-pool mirror-break incident raises agitation at that pool"
+    },
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "mirror-break requests a timed CreatureBehaviors hush"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_mirror_list",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mirror_snapshot",
+     "what": "obtainable through a supported supply lane"
+    },
+    {
+     "ok": true,
+     "scene": "mirror_snapshot",
+     "what": "normal item-use job yields dated independent per-pool snapshot without writing agitation"
+    },
+    {
+     "ok": true,
+     "scene": "mirror_snapshot",
+     "what": "snapshot ages and expires, survives reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "the built agitation overlay shows what it claims (live state vs snapshot)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_limbs",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limb_ladder",
+     "what": "feeler/snare/lash/porter/sentinel via production weighted roll, bloom excluded"
+    },
+    {
+     "ok": true,
+     "scene": "limb_ladder",
+     "what": "live cap and linger"
+    },
+    {
+     "ok": true,
+     "scene": "limb_ladder",
+     "what": "damage retreat vs sever, exact flesh yield and respite"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_porter",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "porter_and_agitation",
+     "what": "unmolested porter places loot and withdraws"
+    },
+    {
+     "ok": true,
+     "scene": "porter_and_agitation",
+     "what": "attack removes porter service at that pool only and raises its hostility"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_great_emergence",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "eye_encounter",
+     "what": "large pool plus pressure escalates to multi-limb plus eye via eligibility path"
+    },
+    {
+     "ok": true,
+     "scene": "eye_encounter",
+     "what": "damage accumulates only inside withdrawal window"
+    },
+    {
+     "ok": true,
+     "scene": "eye_encounter",
+     "what": "moderate map-wide drive-off, severe durable defeat"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_suppression",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "normal_suppression",
+     "what": "free-tier RM_RadioactiveSuppressant machining recipe"
+    },
+    {
+     "ok": true,
+     "scene": "normal_suppression",
+     "what": "designator/workgiver/haul/dump with exact charge accounting, cancel and disable-in-transit return charges"
+    },
+    {
+     "ok": true,
+     "scene": "normal_suppression",
+     "what": "map-wide suppression clocks and optional withdrawal"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "campaign reagent lane (dangerous radioactive salvage) traced from an asserted start"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_tank",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "tank_upkeep",
+     "what": "meat feeding and flesh/spleen/cream on real clocks"
+    },
+    {
+     "ok": true,
+     "scene": "tank_upkeep",
+     "what": "teaching only after successful placement, blocked placement retried"
+    },
+    {
+     "ok": true,
+     "scene": "tank_exit_routes",
+     "what": "neglect/damage escape, KillFinalize breach survivor, quiet deconstruct release"
+    },
+    {
+     "ok": true,
+     "scene": "tank_upkeep",
+     "what": "legacy product clocks repaired"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_escape_install",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "only armed escapee reaching registered water installs"
+    },
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "faction gain disarms installation"
+    },
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "immediate defeat-clear replaced by establishment"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_maturation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "saved particular pool and several-day absolute deadline"
+    },
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "right poison at that pool prevents maturity; wrong pool/reagent/absent do not (free tier)"
+    },
+    {
+     "ok": true,
+     "scene": "return_disable_reload",
+     "what": "reload and disable preserve the timer"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "right poison obtainable in the campaign context (leaf: 'Verify free crafting and campaign acquisition separately')"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_brood",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "brood_tally",
+     "what": "tally over home tanks, cask stacks, player caravans, settlement keepers, counted once"
+    },
+    {
+     "ok": true,
+     "scene": "brood_tally",
+     "what": "tally modifies emergence MTB and snare/lash weights"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_return_gift",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "peaceful_return",
+     "what": "tank/cask release arms a peaceful young that picks reachable preferred water"
+    },
+    {
+     "ok": true,
+     "scene": "peaceful_return",
+     "what": "gift owed on arrival, survives disable/blocked placement/reload, places once"
+    },
+    {
+     "ok": true,
+     "scene": "ordinary_reload_walk",
+     "what": "serialized queue"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_display_campaign",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "campaign_display",
+     "what": "Sporefall display tank release, goodwill cost, enhanced gift, freed state persists"
+    },
+    {
+     "ok": false,
+     "scene": "campaign_display",
+     "what": "cask-trader hook: scene says only 'inspect normal cask-trader hooks separately', no expected outcome"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "story-line hook"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_lure_bait",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "normal_bait",
+     "what": "stake designation, nonlethal downing, haul, restraint through normal work"
+    },
+    {
+     "ok": true,
+     "scene": "normal_bait",
+     "what": "release and triggered lock"
+    },
+    {
+     "ok": true,
+     "scene": "two_front_journey",
+     "what": "bait value determines draw"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_two_fronts",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "two_front_journey",
+     "what": "random first front kurreth/Webwork with skreth fallback"
+    },
+    {
+     "ok": true,
+     "scene": "two_front_journey",
+     "what": "delayed second wave from opposite of actual entry, blocked edge"
+    },
+    {
+     "ok": true,
+     "scene": "two_front_journey",
+     "what": "sustained convergence on bait, pending wave saved"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_hive_geometry",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_geometry",
+     "what": "walled/roofed room chain, entrance to queen reachability"
+    },
+    {
+     "ok": true,
+     "scene": "hive_geometry",
+     "what": "painting-only setting arm"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_hive_reaction",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_reaction",
+     "what": "kurreth reaction sources, alarm responders, home tethers in generated hive"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_hive_farm",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_farm_guard",
+     "what": "generated thornbug herd placement and return"
+    },
+    {
+     "ok": true,
+     "scene": "hive_farm_guard",
+     "what": "fear-gated nectar in the dungeon"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_hive_guard",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_farm_guard",
+     "what": "bostrach at deep chokes, tethered"
+    },
+    {
+     "ok": true,
+     "scene": "hive_farm_guard",
+     "what": "refed while a wild feeder exists, hunger falls after the last"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_hive_sealing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_reaction",
+     "what": "matching alarm seals corridor behind intruder, changing retreat"
+    },
+    {
+     "ok": true,
+     "scene": "hive_reaction",
+     "what": "skips pawn cells, MoveAside for loose contents, plug expiry"
+    },
+    {
+     "ok": true,
+     "scene": "hive_alarm_farm",
+     "what": "alarm x farm x sealing interaction"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "fw_theft_retired",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "retired_routes",
+     "what": "absent and scoped out; absence check only (exam examiner_lure_kidnap rejects a stealing lure raid)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_glomvar_residual",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "retired_routes",
+     "what": "scoped out, built: race/art/tether/unseen-reaction extension still load (coverage_rest)"
+    },
+    {
+     "ok": true,
+     "scene": "retired_routes",
+     "what": "feeding parasite and hive placement absent (mutant control)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_nectar",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "calm-gated gather, local-only setting, hostile proximity fear, saved recovery"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_guild",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "vaulm seal, drommath swelling, deterministic cooldown"
+    },
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "ollareth alarm refusal without hediff"
+    },
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "damage and failed-tame triggers"
+    },
+    {
+     "ok": false,
+     "scene": "nectar_and_guild",
+     "what": "failed-training and general-fear triggers: expect is 'reported and reconciled', no pass/fail outcome"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_native_cast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_ambush_diet",
+     "what": "free roster loads and operates (kasselith, guild, birds, grolth, brathek, silloch)"
+    },
+    {
+     "ok": true,
+     "scene": "native_ambush_diet",
+     "what": "silloch ambush, tame filter, leash against moving prey"
+    },
+    {
+     "ok": true,
+     "scene": "native_water",
+     "what": "Tenant and snare truce exemption"
+    },
+    {
+     "ok": false,
+     "scene": "native_water",
+     "what": "natives drink their own environmental water (owner ruling): drinking integration/need never named, so the start cannot be asserted; no inventory unit records whether it is built"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_borer_diet",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_ambush_diet",
+     "what": "brathek tree eating with settings switch"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "explicit exclusion of wall/building/boughway damage"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "fw_borer_galleries",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "borer_gallery",
+     "what": "slow visible gallery frontier through inhabited living wood"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "galleries confined to living wood: boughways, colony walls and buildings untouched"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "fw_birds",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "flight defs: live flight deferred to owner attendance (floor flight line, standing rule)"
+    },
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "murrelith shearing yields plumage"
+    },
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "optional RimProperty skellick theft"
+    },
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "Thavrik absent"
+    },
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "individual living-bird calls"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "fw_chorus",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "crown hum retained"
+    },
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "sentinel and mirror-break hush, overlapping reasons in both orders (exam examiner_double_hush, challenger_overlapping_hush_order)"
+    },
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "living-bird calls thin with population"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_oil",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "oil_harvest",
+     "what": "weather temperature/commonality settings and condition"
+    },
+    {
+     "ok": true,
+     "scene": "oil_harvest",
+     "what": "seepril multiplier through normal harvest"
+    },
+    {
+     "ok": true,
+     "scene": "oil_ignition",
+     "what": "six real spark hooks flash connected exposed haze, end condition, clear weather, bare-ground fire curve"
+    },
+    {
+     "ok": true,
+     "scene": "oil_water_authority",
+     "what": "wake registered water, respecting adult quiet"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_flora",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "existing harvest products via normal jobs, fertility and nubrith light"
+    },
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "plennith soil, cistrel water, corvath fed-pool, skimmel mud cover"
+    },
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "ammeth/varnoth/sodderel harvest-free, descriptions aligned"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_wrecks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "wrecks_and_scanner",
+     "what": "Moderate wreck field, textures resolve, inherited salvage"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_scanner",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "wrecks_and_scanner",
+     "what": "optional scanner readings of limbs, core, resin, wrecks; graceful absence"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_tier_mapping",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "free content and ancient-danger suppression"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "campaign roster and dianoga juvenile/tank/limb remaps"
+    },
+    {
+     "ok": true,
+     "scene": "campaign_display",
+     "what": "campaign display runtime remap"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "fw_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "settings_and_heat",
+     "what": "settings screen clarity and non-default save/reload"
+    },
+    {
+     "ok": true,
+     "scene": "settings_and_heat",
+     "what": "all-off and re-enable with pending obligations"
+    },
+    {
+     "ok": false,
+     "scene": "settings_and_heat",
+     "what": "each existing toggle (bestiary, lure, tank, hive, oil, terrain generation, nectar fear, silence, tentaclePoolsAreClusters) with its named off behaviour: scene says only 'every supported major toggle'"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "toggles and off arms for newly delivered features (sink-mud, borer galleries, maturation, pool-size reach, living-bird calls, broken hives, mirror-list supply)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_proof_hooks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observation_control",
+     "what": "read-only, keyed, deceptive-adapter rejection and recovery"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json",
+    "exam.json"
+   ],
+   "id": "fw_persistence",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ordinary_reload_walk",
+     "what": "limb/watch/captive/hive/lure fields survive mid-action reload"
+    },
+    {
+     "ok": true,
+     "scene": "water_rescue_reload",
+     "what": "Tenant agitation and drowning deadlines persisted (exam challenger_reload_rescue_clock)"
+    },
+    {
+     "ok": true,
+     "scene": "return_disable_reload",
+     "what": "gift and maturation obligations survive disable/reload"
+    },
+    {
+     "ok": true,
+     "scene": "floor_checkout",
+     "what": "existing saves with absent fields"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_sink_mud",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sink_mud",
+     "what": "weight-scaled sticking with firm-ground control"
+    },
+    {
+     "ok": true,
+     "scene": "sink_mud",
+     "what": "no mud damage, self and assisted escape"
+    },
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "skimmel tell over trapping mud"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fw_abandoned_hives",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mirror_side_ruin",
+     "what": "lootable broken mirror-side ruin through its own profile, stays a ruin after reload"
+    },
+    {
+     "ok": true,
+     "scene": "mirror_side_ruin",
+     "what": "inland live hives unaffected"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "observation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observation_control",
+     "what": "pure keyed reads, deceptive adapters rejected, journal recovery"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md",
+    "exam.json"
+   ],
+   "id": "branch_home",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "branch_work",
+     "what": "ordinary work uses branch routes, interruption changes routes, 40 workers"
+    },
+    {
+     "ok": true,
+     "scene": "branch_work",
+     "what": "raider and colonist walk on/off crown without ascent gates"
+    },
+    {
+     "ok": true,
+     "scene": "foundations",
+     "what": "marsh refusal and completed stilt alternative"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "a generated FeverWood map actually leaves no untreated buildable soil (red and exam examiner_marsh_base_shortcut: heavy base on untreated marsh)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "mud_escape",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sink_mud",
+     "what": "learnable tell, weight-scaled sticking, harmless hold, self and companion escape, danger from water/enemies (exam examiner_heavy_pawn_mud, challenger_lone_mud_selfrelease)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "living_wood",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "living_trunk",
+     "what": "trunk regrowth and sealing"
+    },
+    {
+     "ok": true,
+     "scene": "borer_gallery",
+     "what": "borer gallery frontier advances with no-borer control"
+    },
+    {
+     "ok": true,
+     "scene": "native_ambush_diet",
+     "what": "tree-diet setting compared separately"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "gallery 'can change a wall or route' only within living wood"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "pool_reach",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "pool_size_reach",
+     "what": "size-scaled exposure and snare/lash reach, near/far/unregistered controls"
+    },
+    {
+     "ok": true,
+     "scene": "oil_water_authority",
+     "what": "raised worker still subject to genuine pool reach"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "shore_rescue",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "real_shore_rescue",
+     "what": "real strike, deadline, near/far/no helper, wild vs tame (exam examiner_distant_helper_late)"
+    },
+    {
+     "ok": true,
+     "scene": "water_rescue_reload",
+     "what": "reload keeps deadline"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "pool_memory",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "porter_and_agitation",
+     "what": "porter grievance and danger local to attacked pool, survive reload (exam examiner_porter_mapwide_loss, challenger_porter_grievance_global)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "crown_warning",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "crown_audio",
+     "what": "bird calls from living birds plus retained bed, hush of both, overlapping reasons"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "mirror_intel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mirror_snapshot",
+     "what": "obtain, read, independent dated snapshot, no danger write, expiry (exam control on the mirror_intel removal copy missed challenger_mirror_list_reader_bleed, so the leaf carries weight)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "driveoff_ladder",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limb_ladder",
+     "what": "ordinary five-role limbs and relief ladder with exact yields"
+    },
+    {
+     "ok": true,
+     "scene": "eye_encounter",
+     "what": "large-pool eye eligibility, moderate/severe outcomes, no ambient whole body"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "adult_quiet",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "normal_suppression",
+     "what": "normal suppression job charges, cancel/disable returns"
+    },
+    {
+     "ok": true,
+     "scene": "adult_authority",
+     "what": "shared strikes and limbs agree with defeat/quiet; bestiary-off narrow"
+    },
+    {
+     "ok": false,
+     "scene": "normal_suppression",
+     "what": "campaign suppression arm: start says 'Current campaign reagent mapping is unlocated'"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "captive_economy",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "tank_upkeep",
+     "what": "upkeep, products, teaching after placement"
+    },
+    {
+     "ok": true,
+     "scene": "tank_exit_routes",
+     "what": "neglect/damage/fatal/deconstruct occupant outcomes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "record.json",
+    "exam.json"
+   ],
+   "id": "delayed_establishment",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "several-day establishment at a particular pool, prior victory kept (exam examiner_wrong_pool_poison, challenger_poison_wrong_pool)"
+    },
+    {
+     "ok": true,
+     "scene": "young_establishment",
+     "what": "right poison at that pool only; wrong pool/reagent/absent do not"
+    },
+    {
+     "ok": true,
+     "scene": "normal_suppression",
+     "what": "free crafting of the right poison"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "campaign acquisition of the right poison"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "return_bargain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "brood_tally",
+     "what": "held-young tally pressure"
+    },
+    {
+     "ok": true,
+     "scene": "peaceful_return",
+     "what": "peaceful return and owed gift once"
+    },
+    {
+     "ok": true,
+     "scene": "campaign_display",
+     "what": "campaign display bargain once, persistent"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "bait_wager",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "normal_bait",
+     "what": "normal staking work chain and lock"
+    },
+    {
+     "ok": true,
+     "scene": "two_front_journey",
+     "what": "either first faction converges, delayed separated second front, lone-front danger"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "living_hive",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hive_geometry",
+     "what": "physical enclosure and queen reachability"
+    },
+    {
+     "ok": true,
+     "scene": "hive_reaction",
+     "what": "alarm and sealing change retreat"
+    },
+    {
+     "ok": true,
+     "scene": "hive_farm_guard",
+     "what": "farm and fed choke guards"
+    },
+    {
+     "ok": true,
+     "scene": "hive_alarm_farm",
+     "what": "alarm x farm interaction"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "broken_hives",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mirror_side_ruin",
+     "what": "mirror-side ruin beside separate live inland hive"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "crown_livelihood",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "fear-gated nectar and recovery"
+    },
+    {
+     "ok": true,
+     "scene": "nectar_and_guild",
+     "what": "vaulm/drommath/ollareth refusals from damage and failed tame"
+    },
+    {
+     "ok": false,
+     "scene": "nectar_and_guild",
+     "what": "failed-training/general-fear seams named in the leaf scenario have no pass/fail expectation"
+    },
+    {
+     "ok": true,
+     "scene": "flora_roles",
+     "what": "harvest products and four ecological roles, three stripped plants"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "record.json",
+    "sheet.md"
+   ],
+   "id": "native_life",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "native_water",
+     "what": "natives drink home water: no named drinking integration or need on any supported list"
+    },
+    {
+     "ok": true,
+     "scene": "native_water",
+     "what": "Tenant and snare truce exemption with non-native positive"
+    },
+    {
+     "ok": true,
+     "scene": "native_ambush_diet",
+     "what": "silloch ambush leash vs moving prey"
+    },
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "plumage and optional theft"
+    },
+    {
+     "ok": true,
+     "scene": "birds_and_optional_theft",
+     "what": "bird flight: waits for owner attendance (floor flight, standing rule)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "oil_opportunity",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "oil_harvest",
+     "what": "real seepril harvest multiplier"
+    },
+    {
+     "ok": true,
+     "scene": "oil_ignition",
+     "what": "real spark flashes connected exposed haze, exclusions, condition/weather clear (exam examiner_spark_haze)"
+    },
+    {
+     "ok": true,
+     "scene": "oil_water_authority",
+     "what": "wakes eligible water, respects adult quiet"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "supported_checkout",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_and_tiers",
+     "what": "composed package on minimal/full/campaign lists, all DLC"
+    },
+    {
+     "ok": true,
+     "scene": "wrecks_and_scanner",
+     "what": "wreck salvage and scanner payloads"
+    },
+    {
+     "ok": true,
+     "scene": "settings_and_heat",
+     "what": "geometry-only sun, ordinary ambient heat, forbidden heat fields absent"
+    },
+    {
+     "ok": true,
+     "scene": "floor_checkout",
+     "what": "floor lines"
+    },
+    {
+     "ok": false,
+     "scene": "settings_and_heat",
+     "what": "'all feature toggles keep their stated scope': toggles not enumerated, new features have none"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "retired_absence",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "retired_routes",
+     "what": "offline tier: no theft/raid-back/parasite/rite/ambient whole body, glomvar loads, stale text aligned, mutant controls (exam examiner_lure_kidnap, examiner_ambient_body)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "ordinary_walk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ordinary_reload_walk",
+     "what": "mid-consequence save/reload, repeat core trip, second order of actions"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-16T13:02:27Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 8,
+    "why": "refused all of its last 8 verdicts across 5 items"
+   }
+  ],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "coverage: given inputs in no passed or refused evidence: exam.json"
+ ],
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The stop rule is stated plainly in designer_scene_contract.md. Its numbers are UNMEASURED first guesses, but applied as written the rule decides this case.",
+   "evidence": [
+    "scenes.json:1285",
+    "scenes.json:1298",
+    "record.json:408",
+    "record.json:1385"
+   ],
+   "gid": "g1",
+   "ids": [],
+   "new_since": "first",
+   "observed": "coverage_rest lists fw_trunks ('cheaper than another whole-colony showcase'), fw_borer_galleries, fw_borer_diet and fw_sink_mud separately. A 'living wood and mud' group (living_trunk, borer_gallery, sink_mud) would newly exercise fw_trunks, fw_borer_galleries, fw_borer_diet and fw_sink_mud: 4 new, 0 shared. That is more than crown_provisions' 3 at position 5. A native-life group (native_water, native_ambush_diet, birds_and_optional_theft) offers fw_native_cast, fw_birds and possibly fw_borer_diet. The contract says to add showcases 'until no candidate would newly exercise at least min_new_after_first capabilities'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a showcase (e.g. living_wood_and_mud: living_trunk, borer_gallery, sink_mud) placed greedily before crown_provisions, re-evaluate the native-life group, and drop the matching coverage_rest rows; update record.json coverage_plan for those capabilities."
+   },
+   "what": "The showcase set stops before efficient coverage: candidate groups of existing scenes still newly exercise at least 3 capabilities with zero overlap, yet those capabilities were put in coverage_rest with 'cheaper' reasons.",
+   "where": "scenes.json showcases / coverage_rest",
+   "would_pass": "`designer_stage.py showcases design/concepts/FeverWood` accepts the set, and for every remaining coverage_rest entry no grouping of existing scenes newly exercises 3 or more uncovered capabilities within max_overlap 0.25. Any such group is either added in greedy order or its coverage_rest `why` names the overlap that disqualifies it."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each built capability's shipped behaviour must be exercised by a scene that has an asserted expectation, and generation is part of what these entries say ships.",
+   "evidence": [
+    "record.json:375",
+    "record.json:341",
+    "record.json:437",
+    "scenes.json:33",
+    "scenes.json:61",
+    "tree.json:58",
+    "exam.json"
+   ],
+   "gid": "g2",
+   "ids": [
+    "fw_foundations",
+    "fw_routes",
+    "fw_pools",
+    "branch_home"
+   ],
+   "new_since": "first",
+   "observed": "fw_foundations ships 'Ground-refusal converts remaining Soil/SoilRich to MarshyTerrain'. foundations only tests a cell already labelled 'untreated marsh', and its control expects 'Ordinary supported ground accepts the building'. branch_work's start says only 'snapshot the local generated terrain passes before furnishing', with no expected result. No scene checks that ScatterPools pools come out registered. exam.json scenario examiner_marsh_base_shortcut ('orders a heavy stone workshop ... placed directly on untreated marsh') is the very failure a broken GroundRefusal would cause on a real map while every scene passes.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a generated-map arm to foundations (or a new acceptance scene, e.g. generated_terrain) with these assertions and a GroundRefusal-off control; cite it in record.json coverage_plan for fw_foundations/fw_routes/fw_pools."
+   },
+   "what": "The output of the map-generation passes (GroundRefusal soil-to-marsh, causeway painting anchored to boles inside the ground allowlist, ScatterPools pool painting and registration) is never asserted by any scene. Every scene starts from an authored site with 'registered' pools.",
+   "where": "scenes.json foundations, branch_work, pool_size_reach; record.json fw_foundations, fw_routes, fw_pools",
+   "would_pass": "A scene (or arm of branch_work/foundations) generates a FeverWood map through its real gensteps and asserts: no Soil/SoilRich left outside the documented exceptions, causeway/boughway cells only on allowlisted ground and connected to living boles, and every ScatterPools mirror-pool cell registered with a cluster. A control map with GroundRefusal disabled shows buildable soil."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each named effect of a built capability needs a scene that asserts it.",
+   "evidence": [
+    "record.json:528",
+    "record.json:561",
+    "scenes.json:251",
+    "scenes.json:278"
+   ],
+   "gid": "g3",
+   "ids": [
+    "fw_mirror_break",
+    "fw_mirror_list"
+   ],
+   "new_since": "first",
+   "observed": "fw_mirror_break: 'raises agitation and requests a timed CreatureBehaviors hush'. crown_audio tests only the 'real mirror-break timed hush', and mirror_snapshot changes a pool 'through real activity' that is never named. fw_mirror_list: 'The usable mirror-list item and agitation overlay exist'. No scene says what the overlay shows, or whether it shows live agitation or the ageing snapshot.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a mirror-break agitation arm and control to porter_and_agitation or mirror_snapshot, and an overlay assertion to mirror_snapshot; update coverage_plan."
+   },
+   "what": "The mirror-break incident's agitation increase and the built agitation overlay have no scene.",
+   "where": "scenes.json crown_audio, mirror_snapshot; record.json fw_mirror_break, fw_mirror_list",
+   "would_pass": "A scene fires the real mirror-break incident on registered pool A and asserts that A's agitation (and effective strike chance, after gap_tenant_authority) rises while disconnected B is unchanged. The agitation overlay is asserted to show a stated source (live or snapshot), with a control in which the two differ."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf itself promises campaign acquisition; a scene whose start cannot be asserted cannot accept it.",
+   "evidence": [
+    "scenes.json:369",
+    "scenes.json:468",
+    "tree.json:323",
+    "record.json:1878"
+   ],
+   "gid": "g4",
+   "ids": [
+    "fw_suppression",
+    "fw_maturation",
+    "delayed_establishment",
+    "adult_quiet"
+   ],
+   "new_since": "first",
+   "observed": "normal_suppression start: 'Current campaign reagent mapping is unlocated, not invented here.' young_establishment exposes the 'reagent mapping explicitly ... as provisional'. Yet tree leaf delayed_establishment says 'Verify free crafting and campaign acquisition separately', and record gap_suppression_locality says the lane 'remains a required integration lane to establish in planning'. Stage 3 was that planning, and the lane is still not established.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Locate the campaign salvage-to-reagent lane in source; write it into record.json (gap_suppression_locality) and into the starts of normal_suppression and young_establishment, plus a campaign acquisition arm."
+   },
+   "what": "How the right poison or suppression reagent is obtained in the campaign is left unlocated, so the campaign arm and the leaf's 'campaign acquisition' check have no assertable start.",
+   "where": "scenes.json normal_suppression, young_establishment; tree.json delayed_establishment",
+   "would_pass": "record.json names the campaign reagent and how it is acquired (traced from dangerous radioactive salvage), or files it as a build item with that lane named. normal_suppression and young_establishment carry a campaign arm whose start asserts that item and lane and whose control is a campaign list without it. Only if no lane can be located from the evidence does the question go to stage 2 with that evidence."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An acceptance scene must define what passes; an open-ended report accepts anything.",
+   "evidence": [
+    "scenes.json:750",
+    "record.json:1318",
+    "tree.json:443"
+   ],
+   "gid": "g5",
+   "ids": [
+    "fw_guild",
+    "crown_livelihood"
+   ],
+   "new_since": "first",
+   "observed": "nectar_and_guild expect: 'Failed-training/general-fear missing behavior is reported and reconciled under the documented contract, not waived.' fw_guild: 'General fear and failed training remain uncovered.' The leaf scenario lists 'failed-training/general-fear seams', but 'reported and reconciled' is not an outcome a runner can pass or fail.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json nectar_and_guild expect/control and record.json fw_guild: replace 'reported and reconciled' with the concrete documented outcome per trigger, and name the build item if one is needed."
+   },
+   "what": "The guild's failed-training and general-fear refusal triggers have no pass/fail expectation.",
+   "where": "scenes.json nectar_and_guild; tree.json crown_livelihood",
+   "would_pass": "nectar_and_guild states, for failed training and for general fear, the documented refusal each species gives (or records with a source citation that these triggers are not promised), with a control in which the trigger is absent. If they are promised and missing, a build item is named."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A shipped exclusion must not silently regress when the new mechanic is built; the control has to rule out that alternative.",
+   "evidence": [
+    "record.json:1385",
+    "scenes.json:142",
+    "exam.json"
+   ],
+   "gid": "g6",
+   "ids": [
+    "fw_borer_diet",
+    "fw_borer_galleries",
+    "living_wood"
+   ],
+   "new_since": "first",
+   "observed": "fw_borer_diet: 'Current source explicitly excludes wall/building/boughway damage.' The living_wood leaf says galleries 'can change a wall or route'. borer_gallery's control (no borer, tree-diet off, painted cave) never puts a boughway, colony-built wall or building at the frontier, and exam.json's only borer scenario (examiner_static_trunk) tests a gallery that never forms, not one that spreads too far. A gallery mechanism that also chews boughways or the player's walls would pass.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json borer_gallery: add the non-living-wood adjacency arm to start/control/expect."
+   },
+   "what": "Nothing checks that borer galleries stay inside living wood, even though the shipped diet explicitly excludes wall, building and boughway damage.",
+   "where": "scenes.json borer_gallery; record.json fw_borer_diet, fw_borer_galleries; tree.json living_wood",
+   "would_pass": "borer_gallery has an arm with a boughway cell, a colony-built wall and a building adjacent to the gallery frontier. Across the same interval the living-wood frontier advances while those cells keep full HP and their terrain."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An owner ruling in scope must be an inventory unit with a scene whose start can actually be asserted.",
+   "evidence": [
+    "record.json:32",
+    "record.json:1355",
+    "scenes.json:801",
+    "tree.json:467",
+    "exam.json"
+   ],
+   "gid": "g7",
+   "ids": [
+    "fw_native_cast",
+    "native_life"
+   ],
+   "new_since": "first",
+   "observed": "native_water start: 'with operative drinking integration and low thirst needs'. The record and scenes never name which mod or need supplies thirst (grep for 'thirst' in record.json: 0 hits). fw_native_cast's text says nothing about drinking, and no inventory entry has an impl status for native drinking, although OWNER:1793542983826647230 rules 'natives should drink their own environmental water'. exam.json examiner_ambusher_chase takes 'Native animals drink from their home pools without dehydrating' as given rather than testing it.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json: add or extend the inventory entry for native drinking with source evidence; scenes.json native_water: name the integration in start."
+   },
+   "what": "The owner-ruled native drinking has no named drinking integration or need, and no inventory unit, so native_water's start cannot be asserted and its built status is unknown.",
+   "where": "scenes.json native_water; record.json fw_native_cast, owner_native_water; tree.json native_life",
+   "would_pass": "record.json has an inventory entry (or fw_native_cast text) naming the drinking integration and its need, the supported lists it loads on, and impl present/absent with evidence (plus a build item if absent). native_water's start asserts that need exists on the run's list, and a control in which it is absent yields UNMEASURED."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Owner ruling 2026-09-12: on/off per major feature and graceful all-off. A list nobody enumerates cannot be checked.",
+   "evidence": [
+    "scenes.json:981",
+    "scenes.json:990",
+    "record.json:1689",
+    "floor.json"
+   ],
+   "gid": "g8",
+   "ids": [
+    "fw_settings",
+    "fw_pools",
+    "supported_checkout"
+   ],
+   "new_since": "first",
+   "observed": "settings_and_heat start: 'every supported major toggle in all owning mods', with no list. fw_settings names bestiary, lure, tank, hive, oil, terrain generation, nectar fear and silence; fw_pools names tentaclePoolsAreClusters. sink_mud, borer_gallery (beyond the old tree-diet flag), pool_size_reach, young_establishment, crown_audio and mirror_side_ruin have no feature-off arm. The tree claims 'all feature toggles keep their stated scope'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json settings_and_heat: enumerate toggles and expected off behaviour; add off arms or a stated no-toggle reason to the new-feature scenes; file toggles as part of the existing build items where missing."
+   },
+   "what": "The settings coverage never enumerates the toggles and their named off behaviour, and no newly delivered mechanic has a planned toggle or off arm, against the every-mod Mod Settings ruling.",
+   "where": "scenes.json settings_and_heat; record.json fw_settings; tree.json supported_checkout; floor.json mod_settings",
+   "would_pass": "settings_and_heat (or floor.json mod_settings evidence) lists every toggle by setting name with its owning mod, the action it gates and its expected off behaviour. Each new mechanic either names its toggle (with an off arm in its scene) or cites why it has none."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Every named part of a built capability needs an asserted outcome; 'inspect' is not one.",
+   "evidence": [
+    "record.json:949",
+    "scenes.json:549",
+    "scenes.json:560"
+   ],
+   "gid": "g9",
+   "ids": [
+    "fw_display_campaign"
+   ],
+   "new_since": "first",
+   "observed": "fw_display_campaign: 'Generic keeper, display-tank, cask-trader and story-line hooks support the campaign's Sporefall display tank'. campaign_display action: 'inspect normal cask-trader hooks separately', which states no expectation. The story-line hook appears in no scene.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json campaign_display: add expect/control clauses for the cask-trader and story-line hooks."
+   },
+   "what": "The campaign display capability's cask-trader and story-line hooks have no expected outcome.",
+   "where": "scenes.json campaign_display; record.json fw_display_campaign",
+   "would_pass": "campaign_display's expect states what the cask-trader hook produces (e.g. a trader stocking young casks counted by the tally) and what the story-line hook does, each with a control (free list or no hook) showing its absence."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The judge brief requires that the sheet a player reads says what the tree tests.",
+   "evidence": [
+    "sheet.md:30",
+    "sheet.md:16",
+    "sheet.md:12",
+    "sheet.md:39",
+    "tree.json:491",
+    "tree.json:155",
+    "tree.json:58",
+    "tree.json:540",
+    "exam.json"
+   ],
+   "gid": "g10",
+   "ids": [],
+   "new_since": "first",
+   "observed": "sheet.md:30 reads 'Oil-boil rewards actual harvesting and real ignition flashes eligible ground haze.' The oil_opportunity leaf also tests that the flash will 'wake eligible water' and that 'adult quiet is respected'. sheet.md:16 leaves out 'Wild losses and player or tamed victims follow their distinct outcomes'. sheet.md:12 leaves out walking on/off the crown 'for colonists and raiders without ascent gates'. sheet.md:39 leaves out the stale arrival/creature text alignment that retired_absence tests. The exam (exam.json inputs hash both tree and sheet; 26 of 26 right) had readers who were given the tree as well, so its pass does not show that the sheet alone carries these outcomes.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "sheet.md: extend the oil_opportunity, shore_rescue, branch_home and retired_absence lines."
+   },
+   "what": "The sheet omits behaviour that the tree tests and that a player would meet: fire waking the water, wild-victim loss in shore strikes, crown walk-on/off for raiders, and alignment of stale theft/heat text.",
+   "where": "sheet.md does / does not",
+   "would_pass": "Each of those four sheet lines names the behaviour its tree leaf tests: water wake under quiet, wild vs tame outcomes, two-way crown access for raiders, text alignment. A fresh reader given only the sheet can predict each of those tested outcomes."
+  }
+ ],
+ "hashes": {
+  "dec:grounding_method": "816dc7a4a8c48ff7",
+  "dec:owner_rite_none": "ac86aaf9ecd0f5d4",
+  "dec:stage1_root_boundary": "b4750edbb45baa7c",
+  "dec:stage2_chorus_contract": "8318ba067d578685",
+  "dec:stage2_flagship": "08984a9740dc56e2",
+  "dec:stage2_material_rule": "1865bf9122427ca5",
+  "dec:stage2_scope_and_proof_boundary": "2f014d2642ea382d",
+  "dec:stage2_terrain_edges": "17c6913fd2fcd946",
+  "dec:stage2_water_state_contract": "b5e0d37b975a5ade",
+  "dec:stage3_root_traceability": "128d41d04641e2fc",
+  "dec:stage3_written_contract": "05db07c3bf9f6136",
+  "dec:stage4_independent_exam": "901cdeba6f9ebfad",
+  "exam": "d59dcf1ed6c5a2dd",
+  "floor": "4a640c0b6eb29bc7",
+  "inv:fw_abandoned_hives": "8fb3ae5fdf0111a0",
+  "inv:fw_birds": "7f2a33bc5fd2ea8e",
+  "inv:fw_borer_diet": "61ed4e2eeca0a1ab",
+  "inv:fw_borer_galleries": "170401ad614d84f4",
+  "inv:fw_brood": "fd97033aa574c06c",
+  "inv:fw_chorus": "d4448b919f566845",
+  "inv:fw_display_campaign": "cf510a35b2efb7a2",
+  "inv:fw_escape_install": "be558b1424d570da",
+  "inv:fw_flora": "46d42bdfb9c7bb7b",
+  "inv:fw_foundations": "0696f1f7cb0b4a48",
+  "inv:fw_glomvar_residual": "e4ff11aa7716b3f0",
+  "inv:fw_great_emergence": "14cbdeab9ecf094a",
+  "inv:fw_guild": "44b875837cd4c9a3",
+  "inv:fw_hive_farm": "d0d5dfe02f14eaf1",
+  "inv:fw_hive_geometry": "20d409b4a414550e",
+  "inv:fw_hive_guard": "f216cc9145ef38d8",
+  "inv:fw_hive_reaction": "956cfb904056a245",
+  "inv:fw_hive_sealing": "9269a5bbeaca4bbc",
+  "inv:fw_limbs": "d53bb600f1ab928d",
+  "inv:fw_lure_bait": "8bdd16eaa8ebc3ff",
+  "inv:fw_maturation": "4b2faf5ff91f2fd0",
+  "inv:fw_mirror_break": "c92977fbfd3401c2",
+  "inv:fw_mirror_list": "254229018172d09c",
+  "inv:fw_native_cast": "1ce5b46ed89fc724",
+  "inv:fw_nectar": "ea3d33b45187b9c2",
+  "inv:fw_oil": "46a5c5a59050d5f4",
+  "inv:fw_package": "31cb4028ffd31928",
+  "inv:fw_persistence": "83757ac950d2795f",
+  "inv:fw_placement": "d504ae71fbe4a45a",
+  "inv:fw_pools": "2ac1b89dcb0289ba",
+  "inv:fw_porter": "c1fc328222a94029",
+  "inv:fw_proof_hooks": "bc3b0690a759b4e0",
+  "inv:fw_return_gift": "8b7e9ec515ac9c4d",
+  "inv:fw_routes": "1eb0b09db8d86060",
+  "inv:fw_scanner": "4633a5c0a5d22a22",
+  "inv:fw_settings": "7f6e65f21f4b9cc4",
+  "inv:fw_shore_rescue": "1b62ed634ec19a4d",
+  "inv:fw_sink_mud": "5a05c10505554d88",
+  "inv:fw_suppression": "c333a783863d0726",
+  "inv:fw_tank": "5cfaae25d82c939d",
+  "inv:fw_theft_retired": "616cb5c8f055d64b",
+  "inv:fw_tier_mapping": "63465ac66c59bcf6",
+  "inv:fw_trunks": "eaf25f0c01b90fd8",
+  "inv:fw_two_fronts": "50de006bebd97fbd",
+  "inv:fw_wrecks": "b2f33a359ab24ed3",
+  "leaf:adult_quiet": "ddfbed4aec156176",
+  "leaf:bait_wager": "477382b29f15679e",
+  "leaf:branch_home": "fef3ee540979157b",
+  "leaf:broken_hives": "22bcad067c003655",
+  "leaf:captive_economy": "94c9751c0a25d368",
+  "leaf:crown_livelihood": "24ab2c2582706c39",
+  "leaf:crown_warning": "9a3da24bc533a4e9",
+  "leaf:delayed_establishment": "d9fe80b68f28c169",
+  "leaf:driveoff_ladder": "c599d26cad85319f",
+  "leaf:living_hive": "c6dd9c2bcef57ceb",
+  "leaf:living_wood": "c3a09d818dc701a8",
+  "leaf:mirror_intel": "56919238cfb71acc",
+  "leaf:mud_escape": "e0a3d11ce4bca321",
+  "leaf:native_life": "def7edda73bd2248",
+  "leaf:observation": "f949437cbc144876",
+  "leaf:oil_opportunity": "ef43132b6c3888ab",
+  "leaf:ordinary_walk": "2d4ea8baaf52ec05",
+  "leaf:pool_memory": "3e30876a5d930da2",
+  "leaf:pool_reach": "68e1f5a95943f4ef",
+  "leaf:retired_absence": "86402a488dca9290",
+  "leaf:return_bargain": "1add88bc45bfc7e2",
+  "leaf:shore_rescue": "84aac6b8e72d4da1",
+  "leaf:supported_checkout": "6d9d5ae08c1def64",
+  "record:scope": "4a4b021a116c2c80",
+  "rest:fw_birds": "4429adbbd4487928",
+  "rest:fw_borer_diet": "f4d6592ceb96773f",
+  "rest:fw_borer_galleries": "449ff057354c3d52",
+  "rest:fw_glomvar_residual": "0fc7474330ef5a74",
+  "rest:fw_lure_bait": "dd6e7984eb504c0d",
+  "rest:fw_native_cast": "675a068016cf4b69",
+  "rest:fw_oil": "ef36baa1b4d75372",
+  "rest:fw_package": "c613e4c15492205c",
+  "rest:fw_persistence": "bd488d1c65316d6d",
+  "rest:fw_placement": "22e9c848bfba2daf",
+  "rest:fw_proof_hooks": "7964b514c62743e9",
+  "rest:fw_scanner": "e66f30bb580b3524",
+  "rest:fw_settings": "b27f18058f7568d0",
+  "rest:fw_sink_mud": "a60b7194b9b64a9c",
+  "rest:fw_tier_mapping": "0c95e0407e2e98bf",
+  "rest:fw_trunks": "abba0a9de734a0bc",
+  "rest:fw_two_fronts": "e16708e6e5ece047",
+  "rest:fw_wrecks": "314f6285ad65124f",
+  "scene:adult_authority": "d09fade9e6e02eb5",
+  "scene:birds_and_optional_theft": "60153b9b8f16386a",
+  "scene:borer_gallery": "a78cc175140a7b11",
+  "scene:branch_work": "c4164393f4ae8bb7",
+  "scene:brood_tally": "baa7c516aa1b6eb4",
+  "scene:campaign_display": "36c9564f723d1049",
+  "scene:crown_audio": "48ea87a3a5d472f2",
+  "scene:eye_encounter": "de61abb8ea06d5f9",
+  "scene:floor_checkout": "97c6b4017c1f365a",
+  "scene:flora_roles": "708d7583d26dee1f",
+  "scene:foundations": "06444d8dfa9d73de",
+  "scene:hive_alarm_farm": "3f239b57ee1bb702",
+  "scene:hive_farm_guard": "07d6266a6a06ab30",
+  "scene:hive_geometry": "5d0e790e6ed3e5c1",
+  "scene:hive_reaction": "c9f17d85f1deed32",
+  "scene:limb_ladder": "20e9effdb44d85f8",
+  "scene:living_trunk": "b07f5a9a9d6f47bc",
+  "scene:mirror_side_ruin": "bc32fbcef885aa58",
+  "scene:mirror_snapshot": "b076d8b5b4fc0ef8",
+  "scene:native_ambush_diet": "a5b1cbb4620f901c",
+  "scene:native_water": "1b7d731b2ea90ae9",
+  "scene:nectar_and_guild": "7448729579462bee",
+  "scene:normal_bait": "9660067bd64f7e34",
+  "scene:normal_suppression": "1628c934ae678c0f",
+  "scene:observation_control": "0cc931bc92b71063",
+  "scene:oil_harvest": "aa39335f2a6e182a",
+  "scene:oil_ignition": "49f13cf83c60e460",
+  "scene:oil_water_authority": "72188bd4ba74380e",
+  "scene:ordinary_reload_walk": "21a9c69bae485f76",
+  "scene:package_and_tiers": "5a0ce82d0eafdd2d",
+  "scene:peaceful_return": "57729bece0c839fb",
+  "scene:pool_size_reach": "4936d0e570db8e94",
+  "scene:porter_and_agitation": "4280c8a37ff8b762",
+  "scene:real_shore_rescue": "853811e147d833ac",
+  "scene:retired_routes": "17726d6e112c810e",
+  "scene:return_disable_reload": "21bda909681df966",
+  "scene:settings_and_heat": "ba4f81183644d84d",
+  "scene:sink_mud": "7af7f4c10c9be33e",
+  "scene:tank_exit_routes": "60c3543afc9ea220",
+  "scene:tank_upkeep": "29b5ba008df29acf",
+  "scene:two_front_journey": "121ce37b9ab6f92c",
+  "scene:water_rescue_reload": "bcd6e3b3e6db8fb4",
+  "scene:wrecks_and_scanner": "865d704fde2123bc",
+  "scene:young_establishment": "36af21e8fd7ecb6c",
+  "sheet:": "ff0910482e325355",
+  "sheet:delegated": "5fd53ec840e24282",
+  "sheet:does": "b8520233e564c028",
+  "sheet:does not": "d8bf8642b6a2070c",
+  "sheet:his words": "ed5580e96a595ed0",
+  "sheet:later": "0c307c6649ec2983",
+  "sheet:open": "de48bbe6c3132aff",
+  "sheet:pruning": "db04fd414365bf6e",
+  "sheet:waived": "0fba3bb61beb51ee",
+  "showcase:branches_and_shore": "b49aa2f22c575a85",
+  "showcase:crown_provisions": "489b5bdbe77eb474",
+  "showcase:living_and_broken_hives": "0ba7e90de9da4b5a",
+  "showcase:prisoner_and_gift": "d19976e1cd8cc1ff",
+  "showcase:water_judgment": "9c7486b8886c27c6",
+  "tree:rest": "faaa69959a043098"
+ },
+ "inputs": {
+  "exam.json": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e",
+  "floor.json": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+  "record.json": "bd3e0e88b309a59e8bbba6c462f0f24615498c4672c6e22d665c702fe7b5b66c",
+  "scenes.json": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+  "sheet.md": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f"
+ },
+ "judge": "rm-coverage-judge-1794833596",
+ "mode": "full",
+ "prompt_chars": 4596,
+ "reasons": "Every in-scope or built capability and every leaf has at least one script-staged acceptance or interaction scene with an asserted start, a control with rules_out, and restoration. All entry points are missing but have filed entry_point_items, which the contract allows. Scoped-out glomvar and the retired theft are covered by retired_routes. Live flight waits for the owner, as the floor and the standing rule require. The flagship is a delegated Evidence-for-Ask pick, which designer_stage.py accepts (lines 839-851), so it is not a gap. exam.json (26 of 26 right, 17 core rejects) shows the contract is readable; it does not supply the scene coverage below.\n\nTen gaps remain, all fixable at stage 3 by edits:\n1. The showcase set stops early: a 'living wood and mud' group of existing scenes would add 4 new capabilities.\n2. Map-generation outputs (GroundRefusal, causeway allowlist and anchoring, ScatterPools registration) are never asserted.\n3. Mirror-break agitation and the agitation overlay are untested.\n4. The campaign poison/reagent lane is unlocated, so the campaign arm cannot start.\n5. The guild's failed-training and general-fear triggers have no pass/fail outcome.\n6. Nothing confines borer galleries to living wood, despite the shipped wall/boughway exclusion.\n7. Native drinking has no named integration and no inventory unit.\n8. Settings toggles are not enumerated, and the new features have none.\n9. The cask-trader and story-line hooks have no expected outcome.\n10. The sheet omits tested behaviour (water wake, wild-victim loss, raider walk-on/off access, text alignment).\n\nNo gap needs the owner's answer: gap 4 goes to stage 2 only if the lane cannot be located from the evidence.",
+ "sheet": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+ "signed": false,
+ "tokens": 971599,
+ "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d",
+ "verdict": "not_covered"
+}

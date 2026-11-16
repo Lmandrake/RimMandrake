@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 4,
-  "run": "rm-role-designercodex-1794830510",
+  "stage": 5,
+  "run": "rm-role-designercodex-1794837152",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -200,6 +200,31 @@
         "design/concepts/FeverWood/exam.json",
         "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json"
       ]
+    },
+    {
+      "id": "stage5_lock_return_root_validation",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_lock.md",
+        "design/validation_walks/RimMandrake/FeverWood.md:75",
+        "design/concepts/FeverWood/tree.json",
+        "design/concepts/FeverWood/coverage_verdict.json"
+      ],
+      "text": "The Lock gate reports a DRAFT north star and missing coverage signature. Follow Lock step 1 by returning to stage 2 for root validation. Preserve all ten stage-3 coverage gaps from rm-coverage-judge-1794833596, including every would_pass and smallest_fix, in this run result. The 68-row checklist has no unchecked rows. The current showcase command accepts the set, and the judge-requested greedy-set audit remains pending as g1.",
+      "coverage_judge": "rm-coverage-judge-1794833596",
+      "coverage_gaps": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5",
+        "g6",
+        "g7",
+        "g8",
+        "g9",
+        "g10"
+      ],
+      "return_to": 2
     }
   ],
   "asks": [
