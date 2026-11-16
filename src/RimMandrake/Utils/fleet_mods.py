@@ -124,7 +124,13 @@ def detached_done(hours, now=None, root=DETACHED, unit_state=None, item_state=No
     so the selftest runs offline."""
     now = time.time() if now is None else now
     unit_state = unit_state or (lambda u: sh("systemctl", "--user", "is-active", u) or "unknown")
-    item_state = item_state or _item_state
+    if item_state is None:  # one ledger replay for every row; a `rimflow show` per row (~1.8 s each) outran rm-running
+        states = []
+
+        def item_state(item):
+            if not states:
+                states.append(_ledger_states())
+            return states[0].get(item, "unknown")
     commits = commits or (lambda item, since: real_count(sh("git", "log", "origin/main", "--since=@%d" % int(since),
                                                             "--format=@@%h", "--name-only", "-F", "--grep=" + item)))
     out = []
@@ -150,6 +156,12 @@ def detached_done(hours, now=None, root=DETACHED, unit_state=None, item_state=No
         out.append({"item": r["item"], "status": status, "started": int(r["at"]), "finished_at": fin,
                     "commit_count": cs, "tokens": detached_tokens(r.get("out"))})
     return out
+
+
+def _ledger_states():
+    """{item id: state} from one replay of the ledger."""
+    _, world = ledger()
+    return {i: it.state for i, it in world.items.items()}
 
 
 def _item_state(item):

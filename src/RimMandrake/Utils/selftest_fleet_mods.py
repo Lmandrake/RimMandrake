@@ -110,6 +110,40 @@ check("detached_done: closed item is Done with commits and tokens", dd.get("D_DO
       and dd["D_DONE"]["commit_count"] == 2 and dd["D_DONE"]["tokens"] == 15)
 check("detached_done: no commits, not closed -> Stopped, tokens UNMEASURED", dd.get("D_QUIET", {}).get("status") == "Stopped"
       and dd["D_QUIET"]["tokens"] is None)
+    # RIMMANDRAKE_BATCH_DETACHED_ITEM_STATES_SEVENTY_EIGHT_REPLAYS: the default state reader replays the ledger ONCE
+    # per call, never a `rimflow show` subprocess per helper (78 of them took 140 s; rm-running's limit is 90 s)
+calls = {"states": 0, "show": 0}
+
+
+
+def fake_states():
+    calls["states"] += 1
+    return {"D_DONE": "closed"}
+
+
+def fake_show(item):
+    calls["show"] += 1
+    return "closed" if item == "D_DONE" else "doing"
+
+
+real_states, real_show = getattr(M, "_ledger_states", None), M._item_state
+M._ledger_states, M._item_state = fake_states, fake_show
+with tempfile.TemporaryDirectory() as td:
+    for name, item in (("a.json", "D_DONE"), ("d.json", "D_QUIET")):
+        with open(os.path.join(td, name), "w") as f:
+            json.dump({"unit": "u-" + name, "item": item, "at": now - 300}, f)
+    try:
+        dd = {r["item"]: r for r in M.detached_done(24, now=now, root=td, unit_state=lambda u: "inactive",
+                                                    commits=lambda i, since: 0)}
+    finally:
+        M._item_state = real_show
+        if real_states is None:
+            del M._ledger_states
+        else:
+            M._ledger_states = real_states
+check("detached_done: default item states come from one ledger replay, no per-item subprocess",
+      calls == {"states": 1, "show": 0} and dd.get("D_DONE", {}).get("status") == "Done"
+      and dd.get("D_QUIET", {}).get("status") == "Stopped")
 
 # Fleet Watch is retired (owner 2026-11-04: "Retire FleetWatch, we're not using it, and it saves tokens."):
 # its files stay gone and no live code, unit, rule or allowlist names them. History (ledger, lessons, handoffs,
