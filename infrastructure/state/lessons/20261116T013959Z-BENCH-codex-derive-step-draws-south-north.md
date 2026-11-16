@@ -1,0 +1,1 @@
+The codex derive step draws south/north of a long creature filling the canvas whatever the prompt says: 4 of 4 furnace-beast rounds (s1r1..s2r2) came back with S/N 1.5-1.7x the east height even with 'same body height as the east view' in the prompt. A facing-truth REGEN does not fix it; facing_scale_lint.rescale (the owner-carded scripted rescale) does, in one step.
