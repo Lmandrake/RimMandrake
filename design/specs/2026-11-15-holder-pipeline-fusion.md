@@ -1,7 +1,7 @@
 # Holder–pipeline fusion: the pipeline as a long-term holder's checklist
 
 Item: `RIMMANDRAKE_DESIGN_HOLDER_PIPELINE_FUSION_CHECKLIST_NOT_HANDOFF` · for Mandrake to choose, design helper, Sun 2026-11-15
-~9:35 PM PST (measured, GPT blind + critique, starred claims re-measured, merged). Design only: nothing here is built, and nothing is built until he picks.
+~9:20 PM PST (measured, GPT blind + critique, starred claims re-measured, merged). Design only: nothing here is built, and nothing is built until he picks.
 Run files (measurement, outside sources, GPT's blind answer and critique, status): `design/specs/2026-11-15-holder-pipeline-fusion/`.
 GPT's critique, verbatim: `design/specs/2026-11-15-holder-pipeline-fusion.gpt.md`.
 

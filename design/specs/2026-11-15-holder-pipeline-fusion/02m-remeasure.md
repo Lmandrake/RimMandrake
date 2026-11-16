@@ -1,4 +1,4 @@
-# Re-measure of the starred claims (2026-11-15 ~9:25 PM PST, this run, a different method from `00-measure.md`)
+# Re-measure of the starred claims (2026-11-15 ~9:15 PM PST, this run, a different method from `00-measure.md`)
 
 | claim | pass 1 | new value and method | moved? |
 |---|---|---|---|
