@@ -1420,7 +1420,8 @@ def ingame_main():
             from rimflow import model
             evs = [{"event": "spawn", "seat": "RUNNER", "for": model.read_name("RELENTLESS"), "needs": "game-up",
                     "from": MD.ITEM, "name": n}
-                   for n in (filed[0][0], MD.ingame_item_id("X" * 40, 2, set()))]
+                   # 28: the short form is exactly 64; a 40-char mod name has no name `file` takes (it once got 76)
+                   for n in (filed[0][0], MD.ingame_item_id("X" * 28, 2, set()))]
             return (model.RUNNER_INGAME_FROM == MD.ITEM and "IN_GAME_VISIT_TWO" in evs[1]["name"]
                     and all(model._who_refusal(e, None) is None for e in evs))
         chk(t_rule, "rimflow's RUNNER spawn rule admits the in-game item as file_and_publish spawns it")
@@ -1661,8 +1662,37 @@ def land_views_main():
     return 1 if FAILS else 0
 
 
+def item_names_main():
+    """RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD (2026-11-16 04:59): Gimme Some Slack's in-game visit 1
+    item stood filed, so the next launch wanted a second name; its 61-char base only got shortened when the base
+    itself was over 64, so every `_RUN_<N>` (69 chars, 10 words) was over and the launch read "no free item name"."""
+    FAILS.clear()
+    sys.path.insert(0, os.path.dirname(HERE))
+    from rimflow import model
+    for fn, mod, n in ((MD.ingame_item_id, "GimmeSomeSlack", 1), (MD.blind_item_id, "GimmeSomeSlack", 1),
+                       (MD.ingame_item_id, "Contagion", 2), (MD.blind_item_id, "ExplosiveKnockback", 3),
+                       (MD.item_id, "ExplosiveKnockback", 23), (MD.item_id, "Graffiti", 4)):
+        known, names = set(), []
+        for _ in range(4):
+            name = fn(mod, n, known)
+            if not name:
+                break
+            names.append(name)
+            known.add(name)
+        bad = [x for x in names if len(x) > model.NAME_MAX_LEN
+               or not model.NAME_MIN_WORDS <= len(x.split("_")) <= model.NAME_MAX_WORDS]
+        ok(len(names) == 4 and len(set(names)) == 4 and not bad,
+           "item names: %s %s %d gets four distinct names a rimflow file takes (%s; bad %s)" % (
+               fn.__name__, mod, n, names[-1:] or names, bad))
+        if fn is MD.ingame_item_id:
+            ok(all(MD._is_ingame_item(x) for x in names), "item names: every %s in-game name reads as an in-game run" % mod)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
 
 if __name__ == "__main__":
+    if "--item-names" in sys.argv[1:]:
+        sys.exit(item_names_main())
     if "--land-views" in sys.argv[1:]:
         sys.exit(land_views_main())
     if "--ingame" in sys.argv[1:]:
@@ -1674,4 +1704,5 @@ if __name__ == "__main__":
     rc = release_main() or rc
     rc = blind_main() or rc
     rc = land_views_main() or rc
+    rc = item_names_main() or rc
     sys.exit(ingame_main() or rc)

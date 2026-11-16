@@ -223,14 +223,11 @@ def word(n):
 
 
 def item_id(mod, count, known):
-    base = "RIMMANDRAKE_AUTOBUILD_%s_%s_BARS_LEFT" % (mod.upper(), word(count))
-    if base not in known:
-        return base
-    for k in range(2, 20):
-        cand = "%s_RUN_%s" % (base, ONES[k])
-        if cand not in known:
-            return cand
-    return None
+    """-> a rimflow name for a Stage 3 build item: RIMMANDRAKE_AUTOBUILD_<MOD>_<N>_BARS_LEFT, else shorter forms
+    (free_name), the last without the count so a long mod name still has room for _RUN_<N>."""
+    m, n = mod.upper(), word(count)
+    return free_name(["RIMMANDRAKE_AUTOBUILD_%s_%s_BARS_LEFT" % (m, n), "RIMMANDRAKE_AUTOBUILD_%s_%s_LEFT" % (m, n),
+                      "RIMMANDRAKE_AUTOBUILD_%s_BARS_LEFT" % m], known)
 
 
 def batch_of(bars, size):
@@ -1318,32 +1315,34 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     return True
 
 
+NAME_MAX_LEN, NAME_MAX_WORDS = 64, 9     # rimflow model's name grammar: `file` refuses anything longer
+
+
+def free_name(bases, known):
+    """-> the first of each base, then each base + _RUN_<N>, that is not in `known` and that rimflow `file` takes
+    (64 chars, 9 words at most), or None. A long base is still tried before a short one: its _RUN_<N> was over the
+    cap for every N while the short form had room (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD: Gimme
+    Some Slack's visit 1 read "no free item name" with its first item filed)."""
+    def fits(n):
+        return len(n) <= NAME_MAX_LEN and len(n.split("_")) <= NAME_MAX_WORDS and n not in known
+    cands = [b for b in bases] + ["%s_RUN_%s" % (b, ONES[k]) for b in bases for k in range(2, 20)]
+    return next((c for c in cands if fits(c)), None)
+
+
 def ingame_item_id(mod, visit, known):
-    """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (64 at most)."""
-    base = "RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_%s" % (mod.upper(), word(visit or 0))
-    if len(base) > 64:
-        base = "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (mod.upper(), word(visit or 0))
-    if base not in known:
-        return base
-    for k in range(2, 20):
-        cand = "%s_RUN_%s" % (base, ONES[k])
-        if cand not in known and len(cand) <= 64:
-            return cand
-    return None
+    """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N>, else the
+    shorter ..._IN_GAME_VISIT_<N>, each with _RUN_<N> once taken."""
+    m, n = mod.upper(), word(visit or 0)
+    return free_name(["RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_%s" % (m, n),
+                      "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (m, n), "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT" % m], known)
 
 
 def blind_item_id(mod, cycle, known):
-    """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST (64 chars at most)."""
-    base = "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s_TESTS_FIRST" % (mod.upper(), word(cycle or 0))
-    if len(base) > 64:
-        base = "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s" % (mod.upper(), word(cycle or 0))
-    if base not in known:
-        return base
-    for k in range(2, 20):
-        cand = "%s_RUN_%s" % (base, ONES[k])
-        if cand not in known and len(cand) <= 64:
-            return cand
-    return None
+    """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST, else the shorter
+    ..._BLIND_CYCLE_<N>, each with _RUN_<N> once taken."""
+    m, n = mod.upper(), word(cycle or 0)
+    return free_name(["RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s_TESTS_FIRST" % (m, n),
+                      "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s" % (m, n), "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE" % m], known)
 
 
 # ---- the acts -------------------------------------------------------------------------------------------------------
