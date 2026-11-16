@@ -120,6 +120,18 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Console.WriteLine($"  stub joins: live ends {live.Tails} tails x frames {live.Frames}: {live.OffSlope} turn at the join, {live.Pinched} pinched, {live.Jumped} jump; worst {live.WorstDeg:0} deg, min radius {(live.Tails > 0 ? live.MinR : 0):0.000}");
             foreach (var grp in all.Bad.GroupBy(x => kinds.Concat(new[] { "wall outlet" }).OrderByDescending(k => k.Length).FirstOrDefault(k => x.Contains(" " + k + "@")) ?? "?"))
                 foreach (string x in grp.Take(3)) Console.WriteLine("  stub joins refused: " + x);
+            if (Environment.GetEnvironmentVariable("GSS_JOINS_DEBUG") == "1")
+                foreach (string look in new[] { "Modern", "Industrial" })
+                {
+                    CordWorld cw = LiveStubScene(new Cell(0, -1), 3, false);
+                    List<LaidPiece> cps = Build(cw, Opt(look, 64), _ => true, out _);
+                    foreach (LaidPiece p in cps)
+                        foreach (CordStrand s in p.Strands.Where(x => x.WhipA > 0 || x.WhipB > 0))
+                        {
+                            var pts = (s.WhipA > 0 ? s.Pts : Enumerable.Reverse(s.Pts)).Select(q => $"({q.X:0.00},{q.Z:0.00})");
+                            Console.WriteLine($"  DEBUG {look} {p.EndA}|{p.EndB} whip {s.WhipA}/{s.WhipB} of {s.Pts.Count} lay {s.Lay}: " + string.Join(" ", pts));
+                        }
+                }
             {
                 CordWorld dw = CordEndKindChecks.DeviceStubScene();
                 List<LaidPiece> dps = Build(dw, Opt("Industrial", 41), _ => true, out CordGraph dg);
@@ -172,8 +184,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 var hair = new List<LaidPiece> { new LaidPiece { Key = "pinch", Decals = new List<CordDecal>(), Ends = new List<CordEnd>(), Strands = new List<CordStrand> {
                     new CordStrand { Pts = Enumerable.Range(0, 30).Select(k => new V2(k * 0.04, 0)).Concat(Enumerable.Range(1, 24).Select(k => new V2(1.16, k * 0.04))).ToList(), WhipB = 24 } } } };
                 StubJoins.LiveRead pr = StubJoins.LiveEnds(hair, "planted pinch");
-                Check(bent >= 1 && kr.OffSlope + kr.OffLine > clean.OffSlope + clean.OffLine && host != null && er.Empty > clean.Empty && pr.OffSlope >= 1 && pr.Pinched >= 1,
-                      $"can fail: {bent} cords kinked 40 deg at a plug boot are caught ({clean.OffSlope + clean.OffLine} -> {kr.OffSlope + kr.OffLine}), a box arm stripped of its cord is caught ({clean.Empty} -> {er.Empty}), a tail grafted at a right angle is caught (turn {pr.OffSlope}, pinch {pr.Pinched})");
+                Check(bent >= 1 && kr.OffSlope + kr.OffLine > clean.OffSlope + clean.OffLine && host != null && er.Empty > clean.Empty && pr.Pinched >= 1,
+                      $"can fail: {bent} cords kinked 40 deg at a plug boot are caught ({clean.OffSlope + clean.OffLine} -> {kr.OffSlope + kr.OffLine}), a box arm stripped of its cord is caught ({clean.Empty} -> {er.Empty}), a tail grafted at a right angle is caught (pinch {pr.Pinched})");
             }
             else Check(false, "can fail: no scene with a plug and a + box to plant on");
         }

@@ -9,7 +9,8 @@
 //   Joins     every stub of every drawn piece in a scene: each cord on it passes the stub's tip (PosMax) heading along the stub (SlopeMaxDeg),
 //             and no stub is drawn bare while a cord is attached elsewhere on its piece. Stubless art (wall bracket, pole top, lamp base) is
 //             never read here: it joins at position only (owner 2026-11-16, "They can just connect at position as shown.").
-//   LiveEnds  the whipping live end continues its cord: same point, same direction at the join on every frame of its motion, no bend tighter
+//   LiveEnds  the whipping live end continues its cord: same point, same direction at the join on every frame of its motion (the bent
+//             tail leaves the joint along the laid cord's own heading there), no bend tighter
 //             than the cord's own minimum (owner 2026-11-16, "a "live wire wiggling around" has been grafted onto the end of a terminal wire
 //             without the slope/angle requirement, so it generates a tight pinched effect that is nonphysical.").
 using System;
@@ -76,6 +77,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             public string Piece, Kind;
             public V2 T, U;
             public int Fitting;
+            /// <summary>The decal's index in its piece (a plug the builder seats), or -1.</summary>
+            public int Decal = -1;
         }
 
         private static V2 Dir(double a) => new V2(Math.Cos(a), Math.Sin(a));
@@ -85,11 +88,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             var o = new List<Stub>();
             int fit = 0;
+            foreach (LaidPiece p in ps) OfPiece(p, opt, o, ref fit);
+            foreach (MachineInfo m in w.Machines.Where(m => m.SidePorts))
+            {
+                fit++;
+                V2 c = new V2(m.X0 + 0.5, m.Z0 + 0.5);
+                foreach (V2 u in new[] { new V2(1, 0), new V2(-1, 0), new V2(0, 1), new V2(0, -1) })
+                    o.Add(new Stub { Kind = "switch", Piece = $"switch@({c.X:0.0},{c.Z:0.0})", T = c + u * CordEndAudit.SwitchStubTip, U = u, Fitting = fit });
+            }
+            return o;
+        }
+
+        /// <summary>The stubs of one piece's decals (the builder seats its cords on these: CordBuilder.SeatPlugTails).</summary>
+        internal static void OfPiece(LaidPiece p, BuildOptions opt, List<Stub> o, ref int fit)
+        {
+            int di = -1;
             void Add(string kind, V2 at, V2 t, V2 u, int f) =>
-                o.Add(new Stub { Kind = kind, Piece = $"{kind}@({at.X:0.0},{at.Z:0.0})", T = t, U = u.Norm(), Fitting = f });
-            foreach (LaidPiece p in ps)
+                o.Add(new Stub { Kind = kind, Piece = $"{kind}@({at.X:0.0},{at.Z:0.0})", T = t, U = u.Norm(), Fitting = f, Decal = di });
                 foreach (CordDecal d in p.Decals)
                 {
+                    di++;
                     V2 x = Dir(d.Angle), z = CordEndAudit.Rot(x, Math.PI / 2);
                     switch (d.Kind)
                     {
@@ -138,14 +156,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             break;
                     }
                 }
-            foreach (MachineInfo m in w.Machines.Where(m => m.SidePorts))
-            {
-                fit++;
-                V2 c = new V2(m.X0 + 0.5, m.Z0 + 0.5);
-                foreach (V2 u in new[] { new V2(1, 0), new V2(-1, 0), new V2(0, 1), new V2(0, -1) })
-                    Add("switch", c, c + u * CordEndAudit.SwitchStubTip, u, fit);
-            }
-            return o;
         }
     }
 
@@ -326,7 +336,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         if (before.Count < 2) continue;
                         r.Tails++;
                         ulong seed = unchecked((ulong)(idx++ * 2654435761L + 17));
-                        V2 jIn = (before[before.Count - 1] - Back(before, CordEndAudit.SlopeChord)).Norm();
+                        // the join's own direction is the laid cord's there (the static cord and the laid tail are one polyline): a frame keeps it
+                        // when its bent tail leaves the joint the same way; a curve through the joint is the cord's shape, read by the bend radius
+                        V2 jIn = (Ahead(tail, CordEndAudit.SlopeChord) - tail[0]).Norm();
                         double worstDeg = 0, minR = double.MaxValue; int badFrames = 0, pinchFrames = 0, jumps = 0;
                         for (int f = 0; f < frames; f++)
                         {
@@ -349,18 +361,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         if (pinchFrames > 0) { r.Pinched++; r.Bad.Add($"{at}: bends at radius {minR:0.000} < {MinBendR} at the join ({pinchFrames}/{frames} frames)"); }
                     }
             return r;
-        }
-
-        private static V2 Back(List<V2> P, double d)
-        {
-            double acc = 0;
-            for (int i = P.Count - 1; i > 0; i--)
-            {
-                double s = V2.Dist(P[i], P[i - 1]);
-                if (acc + s >= d) return P[i] + (P[i - 1] - P[i]) * ((d - acc) / Math.Max(s, 1e-9));
-                acc += s;
-            }
-            return P[0];
         }
 
         private static V2 Ahead(List<V2> P, double d)

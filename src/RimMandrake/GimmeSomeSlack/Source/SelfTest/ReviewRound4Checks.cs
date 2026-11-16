@@ -4,8 +4,8 @@
 //   plates   every cord wall plate / rock hole is mounted ON its wall face (nothing on the open floor, no deeper than the
 //            face allows: the south band, a side bevel, a sliver of a hidden north face), printed without the art's own
 //            curl of cord (station 6's hook)
-//   loose    (owner 2026-11-16 replaced the round-4 hanging wire) a run ending inside a wall is one loose end on the floor at the
-//            face: no plate, no wire hanging out of a hole
+//   loose    (owner 2026-11-16 replaced the round-4 hanging wire) a run ending inside a wall wears its plate as a run through it
+//            does: no loose end, no wire hanging out of a hole (station 12, "no emergent sparking for a terminal conduit")
 //   brackets each look x facing: the plate inside its wall face; the north-face bracket shows only its insulator over the
 //            wall's top edge (the torch rule)
 //   home     a wall-mounted device's cord ends beneath its WALL's centre, not short of it in the device's cell (station 19)
@@ -77,12 +77,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
             // ---- loose: the round-4 loose wire hanging out of the wall terminal's hole is gone (owner 2026-11-16: "both a hanging out
             //      sparking end as well as the wire plugging into the same point on the wall. That's not ok"); the run that ends inside the
-            //      west wall is ONE loose end on the floor against the face: no plate, no tail, its fray at the face (CordEndKindChecks)
+            //      west wall wears its plate like a run through it, no tail and no fray (owner 2026-11-16, station 12: "simply not show sparking
+            //      ends that are inside walls"; RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK; CordEndKindChecks, StubJoinChecks)
             List<CordStrand> tails = ps.SelectMany(p => p.Strands).Where(s => s.OverFace && s.Lifted).ToList();
             CordNode wt = b.Graph.Nodes.Values.FirstOrDefault(n => n.WallTerminal);
             bool frayAtFace = wt != null && ps.Any(p => p.Decals.Any(d => (d.Kind == DecalKind.FrayLive || d.Kind == DecalKind.FrayDead) && V2.Dist(d.Pos, wt.Face) < 0.35));
             bool plate = wt != null && ps.Any(p => p.Decals.Any(d => CordMaterialsIsFace(d.Kind) && V2.Dist(d.Pos, wt.Face) < 0.35));
-            Check(wt != null && tails.Count == 0 && frayAtFace && !plate,
+            Check(wt != null && tails.Count == 0 && !frayAtFace && plate,
                   $"loose: wall terminal {(wt == null ? "MISSING" : wt.Cell.ToString())}: {tails.Count} tails hanging out of a wall, fray at the face {frayAtFace}, plate {plate}");
 
             // ---- brackets: the generated per-look table under AerialMath's per-face inset
