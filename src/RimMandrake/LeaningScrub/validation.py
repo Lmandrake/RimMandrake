@@ -42,6 +42,9 @@ import re
 import sys
 import time
 
+if __name__ == "__main__":     # `python3 validation.py <offline scene>` runs without modcheck's driver on sys.path
+    for _p in ("modcheck", ""):
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils", _p))
 from modcheck import Suite, ExpectationFailed
 import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
 
@@ -4754,6 +4757,1080 @@ def scene_floor_recovery(t):
             _restore(t, RECOVERY_SETTING)        # unguarded: a failed component must not leave the setting moved
 
 
+# --------------------------------------------------------------------------- scenes batch 4: fire, dripping, felt, routes
+# RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_NINETY_FIVE_BARS_LEFT: sc_fire_bias, ix_fire_accountability, sc_dripping,
+# sc_felt_comfort, sc_home_routes and ix_route_growth (live; UNRUN in game until Stage 6) and sc_economy_observer
+# (offline: the accounting observer run on its fixtures). Contracts: design/concepts/LeaningScrub/scenes.json. Each live
+# scene keeps its verdict in a pure checker that a `*_checker_rejects_injections` row proves can fail.
+
+PADS["firebias"] = (40, 0)      # 32-cell pads: 40 + (32 + 8) / 2 = 60, inside the suite's anchor margin
+PADS["fireacct"] = (-40, 0)
+PADS["felt"] = (0, 40)
+PADS["routes"] = (0, 0)
+LEAN_DX = (0, 1, 1, 1, 0, -1, -1, -1)    # RM_LeanKernel.NeighbourDx / NeighbourDz
+LEAN_DZ = (1, 1, 0, -1, -1, -1, 0, 1)
+FIRE_ALIGNMENT = 0.3                      # RM_LeanKernel.FireAlignment: a neighbour above this counts as downwind
+FIRE_GRID, FIRE_STEP, FIRE_ROUNDS = 4, 7, 4   # 16 beds a round, 4 rounds: 64 spread opportunities per arm
+FIRE_WINDOW = 300                         # ticks a lit bed is watched for its first neighbour ignitions
+GRASS = "Plant_Grass"
+
+
+def _downwind_offsets(wind):
+    """The neighbour offsets RM_LeanKernel.DownwindNeighbours calls downwind of a fire for this Downwind vector."""
+    out = set()
+    for dx, dz in zip(LEAN_DX, LEAN_DZ):
+        if (dx * wind[0] + dz * wind[1]) / ((dx * dx + dz * dz) ** 0.5) > FIRE_ALIGNMENT:
+            out.add((dx, dz))
+    return out
+
+
+def _fire_bias_offences(arms, n_down, bias):
+    """The fire-bias checker, pure. arms {"on"|"off": {"down", "hits", "beds"}}: first-step neighbour ignitions landing
+    downwind, all of them, and the beds that spread at all; n_down of the 8 neighbours lie downwind; `bias` is the
+    leanFireBias the on arm ran. The thresholds follow RM_TheLeanProof.ProofFire, each arm judged against vanilla's
+    uniform share p0 = n_down / 8 (so a broken control cannot hide or fake the lift): the on share clears the floor
+    halfway to the production expectation bias + (1 - bias) * p0 at z >= 3 over p0, and the control (bias 0) stays
+    within 4 standard errors of p0. -> offences."""
+    out = []
+    p0 = n_down / 8.0
+    on, off = arms.get("on") or {}, arms.get("off") or {}
+    for k, a in (("on", on), ("off", off)):
+        if a.get("hits", 0) < 30 or a.get("beds", 0) < 8:
+            out.append("%s arm: %d neighbour ignitions from %d beds, a lucky few fires (need >= 30 from >= 8 beds)"
+                       % (k, a.get("hits", 0), a.get("beds", 0)))
+    if out:
+        return out
+    pon, poff = float(on["down"]) / on["hits"], float(off["down"]) / off["hits"]
+    if abs(poff - p0) > 4 * (p0 * (1 - p0) / off["hits"]) ** 0.5 + 1e-9:
+        out.append("control (bias 0) lands %.3f downwind against vanilla's uniform %.3f: the directional adjustment "
+                   "did not disappear" % (poff, p0))
+    pexp = bias + (1 - bias) * p0
+    se = (pon * (1 - pon) / on["hits"] + p0 * (1 - p0) / on["hits"]) ** 0.5
+    z = (pon - p0) / se if se > 0 else (99.0 if pon > p0 else 0.0)
+    floor = p0 + 0.5 * (pexp - p0)
+    if pon < floor or z < 3.0:
+        out.append("fire does not favour downwind cells: on %d/%d (%.3f) against vanilla %.3f (control read %.3f), "
+                   "expected %.3f, floor %.3f, z %.2f" % (on["down"], on["hits"], pon, p0, poff, pexp, floor, z))
+    return out
+
+
+def _fire_cells(t, rect):
+    return set((f.get("x"), f.get("z")) for f in _things(t, "Fire", _rs(rect), 500))
+
+
+def _lean_wind(t):
+    return _vec2(_ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_Lean", members="Downwind"),
+                     "map_comp_read(Lean)").get("values", {}).get("Downwind"))
+
+
+@suite.chain("scene_fire_bias")
+def scene_fire_bias(t):
+    """sc_fire_bias (downwind_fire): 16 isolated 3x3 grass beds a round on a cleared pad, each centre lit through
+    jawa/map_fire (RimWorld's own TryStartFireIn), the stampers switched off and no quench form staged; per bed the
+    FIRST neighbour cells to catch are read off the Fire things every 30 ticks. Four rounds per arm give 64 production
+    spread opportunities: the on arm at the shipped leanFireBias, the control at bias 0 on the same geometry, fuel and
+    bed order. The bridge reaches no Rand seed, so the count (and the bed spread) is the protection against a lucky fire,
+    not a fixed seed. RM_TheLeanProof.ProofFire stays the C# lean chain's row; this scene watches real fires."""
+    _prep(t, "firebias", 32)
+    x0, z0 = _rect(t, 32)[:2]
+    beds = [(x0 + 3 + i * FIRE_STEP, z0 + 3 + j * FIRE_STEP) for i in range(FIRE_GRID) for j in range(FIRE_GRID)]
+    got = {}
+
+    def bed_round():
+        """One round: beds laid and lit, watched FIRE_WINDOW ticks, then put out and cleared. -> {bed: first offsets}"""
+        t.bridge_call("jawa/set_plants", ops=";".join("%s:%d,%d,3,3" % (GRASS, bx - 1, bz - 1) for bx, bz in beds),
+                      growth=1.0)
+        for bx, bz in beds:
+            t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (bx, bz), fireSize=0.5)
+        first = {}
+        for _ in range(FIRE_WINDOW // 30):
+            t.wait_ticks(30)
+            cells = _fire_cells(t, _rect(t, 32))
+            for b in beds:
+                if b not in first:
+                    lit = set((dx, dz) for dx, dz in zip(LEAN_DX, LEAN_DZ) if (b[0] + dx, b[1] + dz) in cells)
+                    if lit:
+                        first[b] = lit
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 32)))
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 32)), categories="All")
+        return first
+
+    def arm(name):
+        down = hits = 0
+        spread = set()
+        for r in range(FIRE_ROUNDS):
+            for b, lit in bed_round().items():
+                spread.add((r, b))
+                hits += len(lit)
+                down += len(lit & got["down"])
+        got["arms"][name] = {"down": down, "hits": hits, "beds": len(spread)}
+
+    def body():
+        with _comp(t, "fire_bias_beds_staged", poison=True):
+            if _live(t):
+                got["wind"] = _lean_wind(t)
+                if not got["wind"] or not any(got["wind"]):
+                    _unmeasured(t, "RM_MapComponent_Lean.Downwind unreadable or zero: no heading to judge against")
+                got["down"] = _downwind_offsets(got["wind"])
+                got["bias"] = float(_get_setting(t, "leanFireBias"))
+                got["arms"] = {}
+                if not got["down"] or got["bias"] <= 0:
+                    _unmeasured(t, "%d downwind neighbours at bias %s promise no lift" % (len(got["down"]), got["bias"]))
+        with _comp(t, "fire_bias_downwind_lift", toggle="leanFireEnabled"):
+            if _live(t):
+                with _setting(t, "fireStampEnabled", False), _setting(t, "leanFireEnabled", True):
+                    arm("on")
+                    with _setting(t, "leanFireBias", 0.0):
+                        arm("off")
+                _note(t, "fire bias arms (first neighbour ignitions)", dict(got["arms"], wind=got["wind"],
+                                                                           downwind=sorted(got["down"])))
+                bad = [b for b in _fire_bias_offences(got["arms"], len(got["down"]), got["bias"])
+                       if "favour" in b or "on arm" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "fire_bias_control_plain"):
+            if _live(t):
+                bad = [b for b in _fire_bias_offences(got["arms"], len(got["down"]), got["bias"])
+                       if "did not disappear" in b or "off arm" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "fire_bias_checker_rejects_injections"):
+            if _live(t):
+                good = {"on": {"down": 88, "hits": 128, "beds": 60}, "off": {"down": 48, "hits": 128, "beds": 60}}
+                if _fire_bias_offences(good, 3, 0.5):
+                    _fail("the fire checker refuses a clean reading: %s" % _fire_bias_offences(good, 3, 0.5))
+                injected = {"no lift": dict(good, on={"down": 48, "hits": 128, "beds": 60}),
+                            "lucky single fire": dict(good, on={"down": 8, "hits": 8, "beds": 1}),
+                            "control keeps the lean": dict(good, off={"down": 88, "hits": 128, "beds": 60}),
+                            "control never spread": dict(good, off={"down": 0, "hits": 0, "beds": 0})}
+                missed = sorted(k for k, a in injected.items() if not _fire_bias_offences(a, 3, 0.5))
+                if missed:
+                    _fail("the fire checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_fire_bias", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: ix_fire_accountability
+
+STAMPER = "RSW_ShrublandGiant"     # the thunderstep: RM_FireStamperExtension is patch-added (RSW_ShrublandGiant_FireStamper.xml)
+STAMP_REACH = 6.0                  # cells: a stamper this close to the blaze has answered it (RM_BlazeKernel.StampRadius scale)
+PURSUIT_REACH = 3.0                # cells: a stamper this close to a pawn after contact broke is pursuing it
+
+
+def _accountability_offences(w, u):
+    """The fire-accountability checker, pure. w (the witnessed lighter's blaze) {"spread_downwind", "stampers_at_blaze",
+    "maker_pursued", "innocent_pursued", "pursuit_after_reload", "unrelated_visited"}; u (the unwitnessed control blaze)
+    {"stampers_at_blaze", "anyone_pursued"}. -> offences."""
+    out = []
+    if not w.get("spread_downwind"):
+        out.append("the lit fire never spread downwind")
+    if not w.get("stampers_at_blaze"):
+        out.append("the herd never answered the witnessed blaze")
+    if not w.get("maker_pursued"):
+        out.append("the witnessed maker was not pursued")
+    if w.get("innocent_pursued"):
+        out.append("blanket blame: the innocent bystander was pursued")
+    if w.get("maker_pursued") and not w.get("pursuit_after_reload"):
+        out.append("the pursuit did not survive a save and reload")
+    if w.get("unrelated_visited"):
+        out.append("the herd left the blaze to clean up an unrelated fire")
+    if not u.get("stampers_at_blaze"):
+        out.append("the unwitnessed control blaze drew no stampers")
+    if u.get("anyone_pursued"):
+        out.append("an unwitnessed blaze produced a maker pursuit")
+    return out
+
+
+def _near(rows, pid, pos, reach):
+    return any(_xz(r) and _dist(_xz(r), pos) <= reach for k, r in rows.items() if k == pid)
+
+
+@suite.chain("scene_ix_fire_accountability")
+def scene_ix_fire_accountability(t):
+    """ix_fire_accountability (fire_bias + stamping + maker, together on one live map): a colonist lights an open grass
+    field through the real Ignite job (the maker) with a second colonist (the innocent) beside it and three thunderstep
+    stampers 20 cells off; the fire spreads downwind, the herd comes and stamps, then the maker walks 40 cells away and
+    the innocent stays. A save and reload falls mid-pursuit. The control lights a second field with jawa/map_fire (no
+    lighter, no trail) with one colonist near it. A one-cell fire 30 cells off is the unrelated fire. The maker relation
+    is read as the stampers' movement (no bridge tool reads a pursuit target). The shared witness/violator service
+    (plan.md, SCRUB_PROVE_WIND_FIRE_AND_RITUAL) is not built yet, so maker pursuit is expected red at Stage 6 until it
+    is. Needs the composed list (the thunderstep comes from UtinniPatches). Hold: owner_review."""
+    _prep(t, "fireacct", 32)
+    x, z = t.anchor
+    field, ctrl, unrelated = (x - 12, z - 4, 9, 9), (x + 4, z - 14, 7, 7), (x + 14, z + 14)
+    got = {"w": {}, "u": {}}
+
+    def stampers():
+        return dict((k, r) for k, r in _rows(t).items() if r.get("kindDef") == STAMPER)
+
+    def body():
+        with _comp(t, "accountability_staged", poison=True):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="%s:%s;%s:%s;%s:%d,%d,1,1" % (GRASS, _rs(field), GRASS, _rs(ctrl),
+                                                                                  GRASS, unrelated[0], unrelated[1]),
+                              growth=1.0)
+                t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % unrelated, fireSize=0.1)
+                got["maker"] = _spawn(t, "Colonist", field[0] - 2, field[1] + 4, faction="player")
+                got["innocent"] = _spawn(t, "Colonist", field[0] - 3, field[1] + 6, faction="player")
+                for p in (got["maker"], got["innocent"]):
+                    _full(t, p)
+                got["herd"] = [_spawn(t, STAMPER, x - 8 + 2 * i, z + 14) for i in range(3)]
+                got["wind"] = _lean_wind(t)
+                if not got["wind"] or not any(got["wind"]):
+                    _unmeasured(t, "RM_MapComponent_Lean.Downwind unreadable or zero")
+                if len(stampers()) < 3:
+                    _unmeasured(t, "%s did not stand (the thunderstep ships in the composed list only)" % STAMPER)
+        with _comp(t, "accountability_blaze_answered", toggle="fireStampEnabled"):
+            if _live(t):
+                lit_at = (field[0] + 4, field[1] + 4)
+                grass = _things(t, GRASS, "%d,%d,1,1" % lit_at)
+                if not grass:
+                    _unmeasured(t, "no grass at the lighting cell %s" % (lit_at,))
+                _ok(t.bridge_call("jawa/ordered_job", pawnId=got["maker"], jobDef="Ignite", targetAId=grass[0]["id"],
+                                  waitTicks=60), "ordered_job(Ignite)")
+                fires = set()
+                for _ in range(10):
+                    t.wait_ticks(60)
+                    fires = _fire_cells(t, _rect(t, 32))
+                    if fires:
+                        break
+                if not fires:
+                    _unmeasured(t, "the Ignite job lit nothing in 600 ticks")
+                got["lit_at"] = lit_at
+                cells = set(fires)
+                for _ in range(10):      # the union: the herd may stamp a cell before a later read sees it
+                    t.wait_ticks(60)
+                    cells |= _fire_cells(t, field)
+                got["w"]["spread_downwind"] = len([c for c in cells if (c[0] - lit_at[0]) * got["wind"][0]
+                                                   + (c[1] - lit_at[1]) * got["wind"][1] > 0.5])
+                for _ in range(10):
+                    t.wait_ticks(300)
+                    rows = stampers()
+                    if any(_xz(r) and _dist(_xz(r), lit_at) <= STAMP_REACH + 4 for r in rows.values()):
+                        break
+                rows = stampers()
+                got["w"]["stampers_at_blaze"] = len([1 for r in rows.values()
+                                                     if _xz(r) and _dist(_xz(r), lit_at) <= STAMP_REACH + 4])
+                got["w"]["unrelated_visited"] = any(_xz(r) and _dist(_xz(r), unrelated) <= STAMP_REACH
+                                                    for r in rows.values())
+                _note(t, "witnessed blaze", got["w"])
+                bad = [b for b in _accountability_offences(got["w"], {"stampers_at_blaze": 1})
+                       if "spread" in b or "answered" in b or "unrelated" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "accountability_maker_not_innocent"):
+            if _live(t):
+                _order_goto(t, got["maker"], x - 12, z + 40)
+                track = []
+                for _ in range(8):
+                    t.wait_ticks(300)
+                    rows = _rows(t)
+                    m, i = _xz(rows.get(got["maker"])), _xz(rows.get(got["innocent"]))
+                    track.append({"maker": m, "innocent": i, "herd": [_xz(rows.get(h)) for h in got["herd"]]})
+                    if m and any(_xz(rows.get(h)) and _dist(_xz(rows.get(h)), m) <= PURSUIT_REACH for h in got["herd"]):
+                        got["w"]["maker_pursued"] = True
+                    if i and any(_xz(rows.get(h)) and _dist(_xz(rows.get(h)), i) <= PURSUIT_REACH for h in got["herd"]):
+                        got["w"]["innocent_pursued"] = True
+                name = "lscrub_ixfire_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                m0 = _xz(_rows(t).get(got["maker"]))
+                if not m0:
+                    _unmeasured(t, "the maker is not on the map after the reload")
+                _order_goto(t, got["maker"], m0[0] + 10, m0[1])     # a pursuer standing still beside him proves nothing
+                for _ in range(4):
+                    t.wait_ticks(300)
+                rows = _rows(t)
+                m = _xz(rows.get(got["maker"]))
+                if not m or _dist(m, m0) < 5:
+                    _unmeasured(t, "the maker did not move after the reload (%s -> %s): pursuit cannot be told from "
+                                   "standing" % (m0, m))
+                got["w"]["pursuit_after_reload"] = any(_xz(rows.get(h)) and _dist(_xz(rows.get(h)), m) <= PURSUIT_REACH
+                                                       for h in got["herd"])
+                _note(t, "maker / innocent track (every 300 ticks)", track[-4:])
+                bad = [b for b in _accountability_offences(got["w"], {"stampers_at_blaze": 1})
+                       if "maker" in b or "blame" in b or "reload" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "accountability_unwitnessed_no_pursuit"):
+            if _live(t):
+                t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(field))    # the control blaze stands alone
+                watcher = _spawn(t, "Colonist", ctrl[0] - 3, ctrl[1] + 3, faction="player")
+                _full(t, watcher)
+                cpos = (ctrl[0] + 3, ctrl[1] + 3)
+                t.bridge_call("jawa/map_fire", action="start", rect=_rs(ctrl), fireSize=1.0)
+                for _ in range(10):
+                    t.wait_ticks(300)
+                    rows = stampers()
+                    got["u"]["stampers_at_blaze"] = len([1 for r in rows.values()
+                                                         if _xz(r) and _dist(_xz(r), cpos) <= STAMP_REACH + 4])
+                    allr = _rows(t)
+                    if _xz(allr.get(watcher)) and any(_xz(r) and _dist(_xz(r), _xz(allr[watcher])) <= 1.5
+                                                      for r in rows.values()):
+                        got["u"]["anyone_pursued"] = True
+                _note(t, "unwitnessed control blaze", got["u"])
+                bad = [b for b in _accountability_offences({"spread_downwind": 1, "stampers_at_blaze": 1,
+                                                            "maker_pursued": True, "pursuit_after_reload": True},
+                                                           got["u"]) if "unwitnessed" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "accountability_checker_rejects_injections"):
+            if _live(t):
+                gw = {"spread_downwind": 6, "stampers_at_blaze": 2, "maker_pursued": True, "innocent_pursued": False,
+                      "pursuit_after_reload": True, "unrelated_visited": False}
+                gu = {"stampers_at_blaze": 2, "anyone_pursued": False}
+                if _accountability_offences(gw, gu):
+                    _fail("the accountability checker refuses a clean reading: %s" % _accountability_offences(gw, gu))
+                injected = {"nearest pawn blamed": (dict(gw, innocent_pursued=True), gu),
+                            "maker never pursued": (dict(gw, maker_pursued=False), gu),
+                            "pursuit lost on reload": (dict(gw, pursuit_after_reload=False), gu),
+                            "blaze destination counts as maker knowledge": (gw, dict(gu, anyone_pursued=True)),
+                            "unrelated fire cleaned": (dict(gw, unrelated_visited=True), gu),
+                            "no downwind spread": (dict(gw, spread_downwind=0), gu)}
+                missed = sorted(k for k, (a, b) in injected.items() if not _accountability_offences(a, b))
+                if missed:
+                    _fail("the accountability checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "ix_fire_accountability", "owner_review"):
+        try:
+            _stable(t, body)
+        finally:
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 40)))
+
+
+# --------------------------------------------------------------------------- scene: dripping
+
+DRIP, VENOM = "RM_DrippingVenomvine", "RM_RawVenom"
+# A clean-start arm is a session the operator launched with drippingRegrowEnabled SAVED to this value and no settings
+# write since ("false" | "true"); unset, the startup row is UNMEASURED with that recipe. A save reload is never startup.
+DRIP_STARTUP = os.environ.get("LSCRUB_DRIP_STARTUP", "").strip().lower()
+DRIP_RESET_MAX = 0.6       # a regrowing stand drops back to harvestAfterGrowth 0.3; above this it was not reset
+DRIP_REGROW_BUDGET = 6000  # ticks the scene waits for a regrown stand to be harvestable again
+
+
+def _drip_offences(rows):
+    """The dripping checker, pure. rows {arm: {"enabled", "applied_by" ("startup" | "write"), "job_done", "venom",
+    "same_stand", "growth_after", "second_venom"}}; arms named startup_* must carry applied_by "startup" (a later
+    settings write cannot stand in for the first harvest's evidence). -> offences."""
+    out = []
+    for arm, r in sorted(rows.items()):
+        if arm.startswith("startup") and r.get("applied_by") != "startup":
+            out.append("%s: applied by %s, not at startup: a later write cannot repair the first harvest's evidence"
+                       % (arm, r.get("applied_by")))
+        if not r.get("job_done") or not r.get("venom"):
+            out.append("%s: the harvest job did not complete with venom delivered (%s venom)" % (arm, r.get("venom")))
+            continue
+        if r.get("enabled"):
+            if not r.get("same_stand"):
+                out.append("%s: regrowth on but the harvested stand is gone" % arm)
+            elif r.get("growth_after") is None or r["growth_after"] > DRIP_RESET_MAX:
+                out.append("%s: the retained stand was not reset (%s grown after harvest)" % (arm, r.get("growth_after")))
+            if "second_venom" in r and not r["second_venom"]:
+                out.append("%s: the same stand gave no second harvest" % arm)
+        elif r.get("same_stand"):
+            out.append("%s: regrowth off but the stand outlived its harvest (not vanilla one-shot)" % arm)
+    return out
+
+
+@suite.chain("scene_dripping")
+def scene_dripping(t):
+    """sc_dripping (dripping_harvest): a mature dripping stand, a fed colonist, no raw venom on the pad. Rows: the
+    clean-start arm (LSCRUB_DRIP_STARTUP; first harvest before any settings write, checked against the def's live
+    harvestAfterGrowth); then the WriteSettings path, which is drippingRegrowEnabled set plus RM_RegrowingHarvest.Apply
+    (exactly what RM_LeaningScrubMod.WriteSettings runs), on: harvest, venom, same stand reset, save and reload, a
+    second harvest of that stand; off: vanilla one-shot. The second harvest needs the stand harvestable again inside
+    DRIP_REGROW_BUDGET ticks; growDays 12 does not get there and no bridge tool sets an existing plant's growth in
+    place, so live that row is UNMEASURED until a compression hook exists (named in the item note)."""
+    _prep(t, "dripping")
+    x, z = t.anchor
+    rows = {}
+
+    def harvest(at):
+        """Order the real Harvest job on the stand at `at`; -> (stand id, venom delivered, job done)."""
+        plant = _things(t, DRIP, "%d,%d,1,1" % at)
+        if not plant:
+            _unmeasured(t, "no dripping stand at %s to harvest" % (at,))
+        col = _spawn(t, "Colonist", at[0] - 3, at[1], faction="player")
+        _full(t, col)
+        v0 = _stack_total(t, VENOM, _rs(_rect(t)))
+        t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant", rect="%d,%d,1,1" % at)
+        t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Harvest", targetAId=plant[0]["id"], queue=True,
+                      waitTicks=60)
+        venom = 0
+        for _ in range(12):
+            t.wait_ticks(600)
+            venom = _stack_total(t, VENOM, _rs(_rect(t))) - v0
+            if venom >= 1:
+                break
+        done = venom >= 1 and _jobs(t).get(col) != "Harvest"
+        _vanish(t, col)
+        return plant[0]["id"], venom, done
+
+    def arm(name, at, enabled, applied_by, second=False):
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (DRIP, at[0], at[1]), growth=1.0)
+        sid, venom, done = harvest(at)
+        stand = _things(t, DRIP, "%d,%d,1,1" % at)
+        same = bool(stand) and stand[0].get("id") == sid
+        r = {"enabled": enabled, "applied_by": applied_by, "job_done": done, "venom": venom, "same_stand": same,
+             "growth_after": _growth(t, sid) if same else None}
+        if second and same:
+            name_s = "lscrub_drip_mid_%d" % int(time.time())
+            _ok(t.bridge_call("rimworld/save_game", saveName=name_s), "save_game")
+            _ok(t.bridge_call("rimworld/load_game_ready", saveName=name_s, timeoutMs=240000), "load_game_ready")
+            after = _things(t, DRIP, "%d,%d,1,1" % at)
+            if not after or after[0].get("id") != sid:
+                r["same_stand"] = False
+            else:
+                waited = 0
+                while waited < DRIP_REGROW_BUDGET and (_growth(t, sid) or 0) < 0.99:
+                    t.wait_ticks(1000)
+                    waited += 1000
+                if (_growth(t, sid) or 0) < 0.99:
+                    rows[name] = r
+                    _unmeasured(t, "the reset stand is %s grown after %d ticks: not harvestable again inside the budget "
+                                   "(no in-place growth hook)" % (_growth(t, sid), waited))
+                sid2, v2, done2 = harvest(at)
+                r["second_venom"] = v2 if (done2 and sid2 == sid) else 0
+        rows[name] = r
+        _note(t, "dripping arm %s" % name, r)
+
+    def body():
+        with _comp(t, "dripping_scene_startup_apply", toggle="drippingRegrowEnabled"):
+            if _live(t):
+                if DRIP_STARTUP not in ("false", "true"):
+                    _unmeasured(t, "not a clean-start arm: launch with drippingRegrowEnabled saved false (then true), "
+                                   "no settings write, LSCRUB_DRIP_STARTUP=<saved value>, and run this scene first")
+                saved = DRIP_STARTUP == "true"
+                if _as_bool(_get_setting(t, "drippingRegrowEnabled")) != saved:
+                    _unmeasured(t, "drippingRegrowEnabled reads %r, not the declared saved %s: not a clean start"
+                                   % (_get_setting(t, "drippingRegrowEnabled"), saved))
+                arm("startup_%s" % DRIP_STARTUP, (x - 6, z), saved, "startup")
+                bad = [b for b in _drip_offences({k: v for k, v in rows.items() if k.startswith("startup")})]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "dripping_scene_write_on_regrows", toggle="drippingRegrowEnabled"):
+            if _live(t):
+                with _setting(t, "drippingRegrowEnabled", True):
+                    _apply_regrow(t)
+                    arm("write_on", (x, z), True, "write", second=True)
+                _apply_regrow(t)
+                bad = _drip_offences({"write_on": rows["write_on"]})
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "dripping_scene_write_off_one_shot", toggle="drippingRegrowEnabled"):
+            if _live(t):
+                with _setting(t, "drippingRegrowEnabled", False):
+                    _apply_regrow(t)
+                    arm("write_off", (x + 6, z), False, "write")
+                _apply_regrow(t)
+                bad = _drip_offences({"write_off": rows["write_off"]})
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "dripping_checker_rejects_injections"):
+            if _live(t):
+                on = {"enabled": True, "applied_by": "write", "job_done": True, "venom": 3, "same_stand": True,
+                      "growth_after": 0.3, "second_venom": 3}
+                off = {"enabled": False, "applied_by": "write", "job_done": True, "venom": 3, "same_stand": False}
+                st = dict(off, applied_by="startup")
+                good = {"write_on": on, "write_off": off, "startup_false": st}
+                if _drip_offences(good):
+                    _fail("the dripping checker refuses a clean reading: %s" % _drip_offences(good))
+                injected = {"startup Apply omitted": dict(good, startup_false=dict(st, same_stand=True, growth_after=0.3)),
+                            "startup evidence from a write": dict(good, startup_false=dict(st, applied_by="write")),
+                            "canceled harvest passes regrowth": dict(good, write_on=dict(on, job_done=False, venom=0)),
+                            "stand not reset": dict(good, write_on=dict(on, growth_after=1.0)),
+                            "no second harvest": dict(good, write_on=dict(on, second_venom=0)),
+                            "off still regrows": dict(good, write_off=dict(off, same_stand=True))}
+                missed = sorted(k for k, a in injected.items() if not _drip_offences(a))
+                if missed:
+                    _fail("the dripping checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_dripping", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            _apply_regrow(t)     # the restored setting must reach the def too, or the next scene harvests a stale def
+
+
+def _apply_regrow(t):
+    """RM_RegrowingHarvest.Apply: what WriteSettings runs after a settings write (jawa/mod_settings_field alone moves
+    the static field, never the def's harvestAfterGrowth)."""
+    if t.session is None:
+        return
+    r = t.session.call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_RegrowingHarvest", method="Apply", args="")
+    if not isinstance(r, dict) or r.get("success") is False:
+        print("[lscrub] RM_RegrowingHarvest.Apply failed: %r" % (r,), file=sys.stderr, flush=True)
+
+
+# --------------------------------------------------------------------------- scene: felt_comfort
+
+FELT, FELT_THOUGHT, SEAT = "RM_SweetlineWool", "RM_SweetlineFeltApparel", "Armchair"
+FELT_GARMENTS = ("Apparel_BasicShirt", "Apparel_Pants")
+
+
+def _felt_offset():
+    """RM_SweetlineWool's shipped RM_StuffComfortExtension.comfortOffset (read offline; the class default 0.10 when the
+    def sets none), None when the def ships no extension."""
+    for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
+        with open(path, encoding="utf-8") as fh:
+            txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+        for m in re.finditer(r"<ThingDef\b[^>]*>(.*?)</ThingDef>", txt, re.S):
+            if re.search(r"<defName>%s</defName>" % FELT, m.group(1)):
+                if "RM_StuffComfortExtension" not in m.group(1):
+                    return None
+                d = re.search(r"<comfortOffset>([\d.]+)</comfortOffset>", m.group(1))
+                return float(d.group(1)) if d else 0.10
+    return None
+
+
+FELT_OFFSET = _felt_offset()
+
+
+def _felt_offences(r, offset):
+    """The felt checker, pure. r {"seat_delta", "felt_explained", "cloth_explained", "thoughts" {0|1|2 garments: count},
+    "off_furniture": {"seat_delta", "thoughts_2"}, "off_apparel": {"seat_delta", "thoughts_2"}}. -> offences."""
+    out = []
+    if r.get("seat_delta") is None or abs(r["seat_delta"] - offset) > 0.005:
+        out.append("a felt seat's comfort is cloth %+.2f, not the configured +%.2f" % (r.get("seat_delta") or 0, offset))
+    if not r.get("felt_explained") or r.get("cloth_explained"):
+        out.append("the comfort explanation does not name felt on the felt seat alone")
+    th = r.get("thoughts") or {}
+    if th.get(1) != 1 or th.get(2) != 1:
+        out.append("felt apparel thoughts one/two garments = %s/%s, not one each" % (th.get(1), th.get(2)))
+    if th.get(0):
+        out.append("the felt thought outlived the last felt garment (%s)" % th.get(0))
+    of, oa = r.get("off_furniture") or {}, r.get("off_apparel") or {}
+    if of.get("seat_delta") is None or abs(of["seat_delta"]) > 0.005 or of.get("thoughts_2") != 1:
+        out.append("furniture toggle off: seat delta %s, thoughts %s (want 0 and the apparel thought kept)"
+                   % (of.get("seat_delta"), of.get("thoughts_2")))
+    if oa.get("thoughts_2") or oa.get("seat_delta") is None or abs(oa["seat_delta"] - offset) > 0.005:
+        out.append("apparel toggle off: thoughts %s, seat delta %s (want none and the seat kept)"
+                   % (oa.get("thoughts_2"), oa.get("seat_delta")))
+    return out
+
+
+@suite.chain("scene_felt_comfort")
+def scene_felt_comfort(t):
+    """sc_felt_comfort (felt_comfort): two armchairs of the same quality, one sweetline felt and one cloth, read through
+    jawa/stat_explain (the value and the info card's own breakdown); a colonist stripped of apparel puts on a felt shirt,
+    then felt trousers, through the real Wear job, and takes both off through RemoveApparel; jawa/pawn_thoughts counts
+    the felt thought at zero, one and two garments. Controls: each toggle off alone (sweetlineFeltComfortEnabled,
+    sweetlineFeltApparelEnabled) removes only its own effect, the thought never multiplies."""
+    _prep(t, "felt", 16)
+    x, z = t.anchor
+    r = {"thoughts": {}}
+    got = {}
+
+    def seat_delta():
+        t.bridge_call("jawa/stat_cache_bust")
+        vals, expl = {}, {}
+        for k in ("felt", "cloth"):
+            e = _ok(t.bridge_call("jawa/stat_explain", subject=got[k], stats="Comfort"), "stat_explain(%s)" % k)
+            row = (e.get("stats") or [{}])[0]
+            if row.get("value") is None:
+                _unmeasured(t, "stat_explain(%s) carries no Comfort value: %r" % (k, e))
+            vals[k], expl[k] = float(row["value"]), str(row.get("explanation") or "")
+        return round(vals["felt"] - vals["cloth"], 4), expl
+
+    def felt_thoughts():
+        th = _ok(t.bridge_call("jawa/pawn_thoughts", pawn=got["col"]), "pawn_thoughts")
+        return len([1 for x_ in (th.get("thoughts") or []) if x_.get("def") == FELT_THOUGHT])
+
+    def wear(defn, i):
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (defn, x + 2 + i, z), stuff=FELT)
+        ap = _things(t, defn, "%d,%d,1,1" % (x + 2 + i, z))
+        if not ap:
+            _unmeasured(t, "no felt %s stood after spawn_batch" % defn)
+        got.setdefault("worn", []).append(ap[0]["id"])
+        _ok(t.bridge_call("jawa/ordered_job", pawnId=got["col"], jobDef="Wear", targetAId=ap[0]["id"], waitTicks=60),
+            "ordered_job(Wear %s)" % defn)
+        t.wait_ticks(600)
+
+    def body():
+        with _comp(t, "felt_scene_staged", poison=True):
+            if _live(t):
+                if FELT_OFFSET is None:
+                    _fail("RM_SweetlineWool ships no RM_StuffComfortExtension: no configured offset to observe")
+                for k, stuff, dx in (("felt", FELT, -3), ("cloth", "Cloth", 3)):
+                    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SEAT, x + dx, z - 4), stuff=stuff)
+                    seat = _things(t, SEAT, "%d,%d,1,1" % (x + dx, z - 4))
+                    if not seat:
+                        _unmeasured(t, "no %s armchair stood" % k)
+                    got[k] = seat[0]["id"]
+                    t.bridge_call("jawa/set_thing_props", thing=got[k], quality="Normal")
+                got["col"] = _spawn(t, "Colonist", x, z + 2, faction="player")
+                _full(t, got["col"])
+                t.bridge_call("jawa/pawn_gear", pawn=got["col"], action="clear", clearWhat="apparel")
+        with _comp(t, "felt_scene_seat_offset", toggle="sweetlineFeltComfortEnabled"):
+            if _live(t):
+                r["seat_delta"], expl = seat_delta()
+                r["felt_explained"] = "+%.2f" % FELT_OFFSET in expl["felt"]
+                r["cloth_explained"] = "+%.2f" % FELT_OFFSET in expl["cloth"]
+                _note(t, "felt vs cloth armchair", {"delta": r["seat_delta"], "felt": expl["felt"][-200:]})
+                bad = [b for b in _felt_offences(r, FELT_OFFSET) if "seat's comfort" in b or "explanation" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "felt_scene_single_thought", toggle="sweetlineFeltApparelEnabled"):
+            if _live(t):
+                for i, g in enumerate(FELT_GARMENTS):
+                    wear(g, i)
+                    r["thoughts"][i + 1] = felt_thoughts()
+                with _setting(t, "sweetlineFeltComfortEnabled", False):
+                    r["off_furniture"] = {"seat_delta": seat_delta()[0], "thoughts_2": felt_thoughts()}
+                with _setting(t, "sweetlineFeltApparelEnabled", False):
+                    r["off_apparel"] = {"seat_delta": seat_delta()[0], "thoughts_2": felt_thoughts()}
+                for aid in got["worn"]:
+                    t.bridge_call("jawa/ordered_job", pawnId=got["col"], jobDef="RemoveApparel", targetAId=aid,
+                                  waitTicks=60)
+                    t.wait_ticks(400)
+                r["thoughts"][0] = felt_thoughts()
+                _note(t, "felt thoughts by garment count / controls", {"thoughts": r["thoughts"],
+                                                                        "off_furniture": r["off_furniture"],
+                                                                        "off_apparel": r["off_apparel"]})
+                bad = [b for b in _felt_offences(r, FELT_OFFSET) if "apparel thoughts" in b or "outlived" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "felt_scene_toggles_independent"):
+            if _live(t):
+                bad = [b for b in _felt_offences(r, FELT_OFFSET) if "toggle off" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "felt_checker_rejects_injections"):
+            if _live(t):
+                good = {"seat_delta": 0.10, "felt_explained": True, "cloth_explained": False,
+                        "thoughts": {0: 0, 1: 1, 2: 1}, "off_furniture": {"seat_delta": 0.0, "thoughts_2": 1},
+                        "off_apparel": {"seat_delta": 0.10, "thoughts_2": 0}}
+                if _felt_offences(good, 0.10):
+                    _fail("the felt checker refuses a clean reading: %s" % _felt_offences(good, 0.10))
+                injected = {"higher quality passes as material": dict(good, seat_delta=0.25),
+                            "stacked thoughts": dict(good, thoughts={0: 0, 1: 1, 2: 2}),
+                            "thought outlives felt": dict(good, thoughts={0: 1, 1: 1, 2: 1}),
+                            "furniture toggle kills apparel": dict(good, off_furniture={"seat_delta": 0.0, "thoughts_2": 0}),
+                            "apparel toggle ignored": dict(good, off_apparel={"seat_delta": 0.10, "thoughts_2": 1}),
+                            "cloth explained as felt": dict(good, cloth_explained=True)}
+                missed = sorted(k for k, a in injected.items() if not _felt_offences(a, 0.10))
+                if missed:
+                    _fail("the felt checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_felt_comfort", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scenes: home_routes, ix_route_growth
+
+WALKER = "RM_WalkingVenomvine"
+ROUTE_SIZE = 40           # the pad: _prep clears 48 square
+ROUTE_DELIVERIES = 20     # the reference fixture's routine deliveries (scenes.json sc_home_routes)
+ROUTE_CREW = COLONY_SIZE  # 40 fed colonists, as the contract's start names
+ROUTE_SAMPLE = 250        # ticks between job / position samples
+GALE = "RM_Gale"
+
+
+def _route_geometry(x, z):
+    """The route site round anchor (x, z), pure (the selftest's fake reads the same cells). West to east: the source
+    pile, two 3-cell-wide routes 12 cells apart (A developed: floored, roofed and zoned; B dirt, kept by cutting),
+    the stockpile at the east end; emitters (mature thicket and walking stands) along the west edge of a wilderness
+    band north of B, upwind of everything when the wind blows east."""
+    w = ROUTE_SIZE // 2
+    a = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z - 8, z - 5)]
+    b = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z + 4, z + 7)]
+    wild = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z + 9, z + 15)]
+    return {"source": (x - w + 2, z - 3, 4, 4), "stock": (x + w - 6, z - 3, 4, 4), "a": a, "b": b, "wild": wild,
+            "a_rect": (x - w + 6, z - 8, 2 * w - 12, 3), "b_rect": (x - w + 6, z + 4, 2 * w - 12, 3),
+            "emit_thicket": [(x - w + 3, cz) for cz in range(z + 3, z + 15, 2)],
+            "emit_walker": [(x - w + 4, cz) for cz in range(z + 4, z + 15, 3)],
+            "detour_block": (x, z - 8, 1, 3), "inject_block": (x + 4, z + 5)}
+
+
+def _route_offences(r):
+    """The home-routes checker, pure. r {"requested", "deliveries", "developed_invaded" [cells], "maintained",
+    "dirt_invaded" [cells], "wild_growth", "cut_samples", "busy_samples", "other_samples", "blocked" [cells]} ->
+    offences. Endpoints are never enough: a blocked route cell is reported whatever arrived at the stockpile."""
+    out = []
+    if r.get("developed_invaded"):
+        out.append("growth invaded developed ground (zone/floor/roof): %s" % sorted(r["developed_invaded"])[:6])
+    if r.get("maintained") and r.get("dirt_invaded"):
+        out.append("the maintained dirt route was invaded: %s" % sorted(r["dirt_invaded"])[:6])
+    if r.get("blocked"):
+        out.append("route blocked at %s: work there waits, whatever reached the stockpile" % sorted(r["blocked"])[:4])
+    if not r.get("blocked") and r.get("deliveries", 0) < r.get("requested", ROUTE_DELIVERIES):
+        out.append("routine deliveries incomplete: %d of %d" % (r.get("deliveries", 0), r.get("requested", ROUTE_DELIVERIES)))
+    if r.get("busy_samples") and r.get("cut_samples", 0) >= r["busy_samples"]:
+        out.append("upkeep consumed all labour (%d of %d busy samples cutting)" % (r["cut_samples"], r["busy_samples"]))
+    if r.get("maintained") and not r.get("other_samples"):
+        out.append("no independent research/crafting work ran beside the upkeep")
+    if not r.get("wild_growth"):
+        out.append("unmaintained wilderness never grew: the growers were not active, nothing was tested")
+    return out
+
+
+def _route_growth_offences(r):
+    """The ix_route_growth checker, pure. r {"unauthorized" [(pawn, cell)], "developed_invaded" [cells],
+    "closed_deliveries", "closed_waiting", "reopened_deliveries", "after_cancel" [cells], "lane_blocked_by_growth"}
+    -> offences."""
+    out = []
+    if r.get("unauthorized"):
+        out.append("automatic work entered the hazard without an order: %s" % sorted(r["unauthorized"])[:4])
+    if r.get("developed_invaded"):
+        out.append("a grower invaded developed ground: %s" % sorted(r["developed_invaded"])[:6])
+    if not r.get("closed_deliveries") and not r.get("closed_waiting"):
+        out.append("with the safe route closed, supplies neither continued nor visibly waited")
+    if not r.get("reopened_deliveries"):
+        out.append("supplies never resumed after the detour reopened")
+    if r.get("after_cancel"):
+        out.append("the canceled expedition walked on into the hazard: %s" % sorted(r["after_cancel"])[:4])
+    if not r.get("lane_blocked_by_growth"):
+        out.append("withheld lane maintenance: natural growth never reached the lane, the control proves nothing")
+    return out
+
+
+def _vine_cells(t, rect):
+    return set((v.get("x"), v.get("z")) for d in (THICKET, WALKER) for v in _things(t, d, _rs(rect), 500))
+
+
+def _route_site(t, g, crew):
+    """Lay the route site: floors, roof and zone on route A, the stockpile, the source pile, the emitters, a research
+    bench and `crew` fed colonists at the east end. -> [colonist ids]."""
+    t.bridge_call("jawa/set_terrain_batch", ops="WoodPlankFloor:%s" % _rs(g["a_rect"]))
+    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(g["a_rect"]))
+    t.bridge_call("jawa/map_zones", action="createZone", zoneType="stockpile", rect=_rs(g["a_rect"]))
+    t.bridge_call("jawa/map_zones", action="createZone", zoneType="stockpile", rect=_rs(g["stock"]))
+    t.bridge_call("jawa/map_zones", action="paintArea", area="Home", rect=_rs(_rect(t, ROUTE_SIZE)), value=True)
+    sx, sz = g["source"][:2]
+    t.bridge_call("jawa/spawn_batch", ops=";".join("WoodLog:%d,%d,1" % (sx + i % 4, sz + i // 4 % 4)
+                                                   for i in range(ROUTE_DELIVERIES)))
+    t.bridge_call("jawa/set_plants", ops=";".join("%s:%d,%d,1,1" % (THICKET, cx, cz) for cx, cz in g["emit_thicket"]),
+                  growth=1.0)
+    t.bridge_call("jawa/set_plants", ops=";".join("%s:%d,%d,1,1" % (WALKER, cx, cz) for cx, cz in g["emit_walker"]),
+                  growth=1.0)
+    t.bridge_call("jawa/spawn_batch", ops="SimpleResearchBench:%d,%d" % (g["stock"][0], g["stock"][1] - 4), stuff="WoodLog")
+    crew_ids = []
+    for i in range(crew):
+        pid = _spawn(t, "Colonist", g["stock"][0] + i % 6, g["stock"][1] + 5 + i // 6 % 4, faction="player")
+        _full(t, pid)
+        crew_ids.append(pid)
+    return crew_ids
+
+
+def _route_phase(t, g, crew, ticks, cut=False, gale=False, ordered=None):
+    """Run `ticks` of colony time in ROUTE_SAMPLE steps. `cut`: designate CutPlant over route B each step (the
+    maintenance); `gale`: lock RM_Gale for the first half (one onset). -> {"cut", "busy", "other", "hazard" [(pawn,
+    cell)]} sampled from jawa/site_state jobs and list_pawns positions against the vine cells."""
+    s = {"cut": 0, "busy": 0, "other": 0, "hazard": []}
+    if gale:
+        _lock_weather(t, GALE)
+    for k in range(max(1, ticks // ROUTE_SAMPLE)):
+        if gale and k == ticks // ROUTE_SAMPLE // 2:
+            _lock_weather(t, "Clear")
+        if cut:
+            t.bridge_call("jawa/designate_batch", action="add", designation="CutPlant", rect=_rs(g["b_rect"]))
+        t.wait_ticks(ROUTE_SAMPLE)
+        jobs = _jobs(t)
+        vine = _vine_cells(t, _rect(t, ROUTE_SIZE + 8))
+        rows = _rows(t, _rs(_rect(t, ROUTE_SIZE + 8)))
+        for pid in crew:
+            j = jobs.get(pid)
+            if j and j not in _WANDER_JOBS:
+                s["busy"] += 1
+                s["cut"] += j == "CutPlant"
+                s["other"] += j in ("Research", "DoBill")
+            c = _xz(rows.get(pid))
+            if c in vine and pid != ordered:
+                s["hazard"].append((pid, c))
+    return s
+
+
+def _route_readings(t, g):
+    vine = _vine_cells(t, _rect(t, ROUTE_SIZE + 8))
+    walls = set((w.get("x"), w.get("z")) for w in _things(t, "Wall", _rs(_rect(t, ROUTE_SIZE + 8)), 200))
+    return {"deliveries": _stack_total(t, "WoodLog", _rs(g["stock"])), "developed_invaded": sorted(vine & set(g["a"])),
+            "dirt_invaded": sorted(vine & set(g["b"])), "wild_growth": len(vine & set(g["wild"])),
+            "blocked": sorted((walls | vine) & set(g["b"]))}
+
+
+@suite.chain("scene_home_routes")
+def scene_home_routes(t):
+    """sc_home_routes (dependable_home_routes): a developed home round two maintained 3-cell routes (A floored, roofed
+    and zoned; B plain dirt kept by CutPlant designations), 20 single wood logs to haul from the west source to the east
+    stockpile, a research bench, 40 fed colonists, active creep emitters and walking stands upwind in a wilderness band.
+    Creep is compressed (venomvineCreepDays 0.01, the cap at 1) and the wind brings two Gale onsets. Labour, deliveries
+    and invaded cells are read; the upkeep percentage is recorded, never claimed. Control: maintenance withheld and one
+    wall injected into route B; the checker must then report the invaded or blocked route, not pass on the stockpile.
+    The walking form's destination test (RM_VenomvineForms.cs Walk: no plant, no edifice, CanEverPlantAt) does not
+    exclude zoned or roofed soil as creep's NaturalFree does, so the developed-ground row may be red at Stage 6."""
+    _prep(t, "routes", ROUTE_SIZE)
+    x, z = t.anchor
+    g = _route_geometry(x, z)
+    got = {}
+
+    def body():
+        with _comp(t, "routes_site_staged", poison=True):
+            if _live(t):
+                got["crew"] = _route_site(t, g, ROUTE_CREW)
+                if len(_things(t, WALKER, _rs(_rect(t, ROUTE_SIZE + 8)))) < len(g["emit_walker"]):
+                    _unmeasured(t, "the walking stands did not stand after set_plants")
+                got["wind"] = _lean_wind(t)
+                if not got["wind"] or got["wind"][0] <= 0:
+                    _unmeasured(t, "the wind %s does not blow east across the site: the emitters are not upwind"
+                                   % (got["wind"],))
+        with _comp(t, "routes_maintained_carry_work", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
+                    s1 = _route_phase(t, g, got["crew"], 6000, cut=True, gale=True)
+                    s2 = _route_phase(t, g, got["crew"], 6000, cut=True, gale=True)
+                r = dict(_route_readings(t, g), requested=ROUTE_DELIVERIES, maintained=True,
+                         cut_samples=s1["cut"] + s2["cut"], busy_samples=s1["busy"] + s2["busy"],
+                         other_samples=s1["other"] + s2["other"])
+                got["maintained"] = r
+                _note(t, "maintained routes", r)
+                bad = _route_offences(r)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "routes_withheld_reported"):
+            if _live(t):
+                ix, iz = g["inject_block"]
+                t.bridge_call("jawa/spawn_batch", ops="Wall:%d,%d" % (ix, iz), stuff="WoodLog")
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
+                    _route_phase(t, g, got["crew"], 6000, cut=False, gale=True)
+                r = dict(_route_readings(t, g), requested=ROUTE_DELIVERIES, maintained=False)
+                _note(t, "withheld maintenance, one wall injected", r)
+                if not r["blocked"]:
+                    _fail("the injected wall and withheld upkeep left route B reading clear: the checker cannot see a "
+                          "blocked route")
+                if not [b for b in _route_offences(r) if "blocked" in b]:
+                    _fail("the checker accepted a blocked route from its endpoints: %s" % r)
+        with _comp(t, "routes_checker_rejects_injections"):
+            if _live(t):
+                good = {"requested": 20, "deliveries": 20, "developed_invaded": [], "maintained": True,
+                        "dirt_invaded": [], "wild_growth": 9, "cut_samples": 30, "busy_samples": 400,
+                        "other_samples": 40, "blocked": []}
+                if _route_offences(good):
+                    _fail("the routes checker refuses a clean reading: %s" % _route_offences(good))
+                injected = {"walking invades a zone": dict(good, developed_invaded=[(1, 2)]),
+                            "one cleared path while B invaded": dict(good, dirt_invaded=[(3, 4)]),
+                            "upkeep eats all labour": dict(good, cut_samples=400),
+                            "blocked accepted from endpoints": dict(good, blocked=[(5, 6)]),
+                            "deliveries short": dict(good, deliveries=12),
+                            "growers idle": dict(good, wild_growth=0)}
+                missed = sorted(k for k, a in injected.items() if not _route_offences(a))
+                if missed:
+                    _fail("the routes checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_home_routes", "immediate"):
+        _stable(t, body)
+
+
+@suite.chain("scene_ix_route_growth")
+def scene_ix_route_growth(t):
+    """ix_route_growth (home_routes + ordered_travel + creep + walking on one map): the home_routes site with its natural
+    corridor and real work queue, compressed creep and two Gale onsets. Phases: normal work with route B kept; the
+    safe route A closed by a wall across it and route B's upkeep withheld (supplies must continue or visibly wait,
+    never cross the vine); route A reopened (supplies resume); an ordered expedition across the wilderness band,
+    canceled through jawa/stop_job half way (the canceled pawn must not walk on into the hazard). Every sample checks
+    each colonist's cell against the vine cells; only the ordered expedition pawn, during its order, may stand in one."""
+    _prep(t, "routes", ROUTE_SIZE)
+    x, z = t.anchor
+    g = _route_geometry(x, z)
+    got = {"r": {"unauthorized": [], "after_cancel": []}}
+    r = got["r"]
+
+    def body():
+        with _comp(t, "ixroutes_site_staged", poison=True):
+            if _live(t):
+                got["crew"] = _route_site(t, g, ROUTE_CREW)
+                got["wind"] = _lean_wind(t)
+                if not got["wind"] or got["wind"][0] <= 0:
+                    _unmeasured(t, "the wind %s does not blow east across the site" % (got["wind"],))
+        with _comp(t, "ixroutes_only_authorized_in_hazard", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
+                    s = _route_phase(t, g, got["crew"], 6000, cut=True, gale=True)
+                    r["unauthorized"] += s["hazard"]
+                    sx, sz = g["source"][:2]
+                    t.bridge_call("jawa/spawn_batch", ops=";".join("WoodLog:%d,%d,1" % (sx + i % 4, sz + i // 4 % 4)
+                                                                   for i in range(ROUTE_DELIVERIES)))
+                    d0 = _stack_total(t, "WoodLog", _rs(g["stock"]))
+                    bx, bz = g["detour_block"][:2]
+                    t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (bx, bz + k) for k in range(3)),
+                                  stuff="WoodLog")
+                    s = _route_phase(t, g, got["crew"], 6000, cut=False, gale=True)
+                    r["unauthorized"] += s["hazard"]
+                    d1 = _stack_total(t, "WoodLog", _rs(g["stock"]))
+                    r["closed_deliveries"] = d1 - d0
+                    r["closed_waiting"] = _stack_total(t, "WoodLog", _rs(g["source"])) > 0
+                    r["lane_blocked_by_growth"] = bool(_vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["b"]))
+                    t.bridge_call("jawa/destroy_batch", rects=_rs(g["detour_block"]), categories="Building")
+                    s = _route_phase(t, g, got["crew"], 6000, cut=True)
+                    r["unauthorized"] += s["hazard"]
+                    r["reopened_deliveries"] = _stack_total(t, "WoodLog", _rs(g["stock"])) - d1
+                r["developed_invaded"] = sorted(_vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["a"]))
+                _note(t, "route growth phases", dict(r, unauthorized=r["unauthorized"][:6]))
+                bad = [b for b in _route_growth_offences(r) if "canceled" not in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "ixroutes_cancel_stops_expedition"):
+            if _live(t):
+                exp = got["crew"][0]
+                wild_vine = sorted(_vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["wild"]))
+                if not wild_vine:
+                    _unmeasured(t, "no vine stood in the wilderness band: the expedition would cross no hazard")
+                wx, wz = wild_vine[len(wild_vine) // 2]
+                _order_goto(t, exp, wx, wz)
+                t.wait_ticks(120)
+                _ok(t.bridge_call("jawa/stop_job", pawnId=exp), "stop_job(%s)" % exp)
+                for _ in range(6):
+                    t.wait_ticks(ROUTE_SAMPLE)
+                    c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(exp))
+                    if c in _vine_cells(t, _rect(t, ROUTE_SIZE + 8)):
+                        r["after_cancel"].append(c)
+                _note(t, "canceled expedition cells in the vine", r["after_cancel"])
+                bad = [b for b in _route_growth_offences(r) if "canceled" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "ixroutes_checker_rejects_injections"):
+            if _live(t):
+                good = {"unauthorized": [], "developed_invaded": [], "closed_deliveries": 0, "closed_waiting": True,
+                        "reopened_deliveries": 6, "after_cancel": [], "lane_blocked_by_growth": True}
+                if _route_growth_offences(good):
+                    _fail("the route-growth checker refuses a clean reading: %s" % _route_growth_offences(good))
+                injected = {"automatic crossing": dict(good, unauthorized=[("P1", (1, 1))]),
+                            "grower on developed ground": dict(good, developed_invaded=[(2, 2)]),
+                            "silent stall": dict(good, closed_waiting=False),
+                            "never resumed": dict(good, reopened_deliveries=0),
+                            "cancel ignored": dict(good, after_cancel=[(3, 3)]),
+                            "control never grew": dict(good, lane_blocked_by_growth=False)}
+                missed = sorted(k for k, a in injected.items() if not _route_growth_offences(a))
+                if missed:
+                    _fail("the route-growth checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "ix_route_growth", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: economy_observer (offline)
+
+def _economy_offences(before, after, events, reload=False):
+    """The economy observer, pure: accounts ONCE for every held object between two snapshots. A snapshot is
+    {"tick", "objects": [{"id", "def", "count", "owner", "due", "fraction", "fields": [saved field names]}]}; events
+    [{"kind": "consume" | "produce" | "pay", "id", "count"}] are the production events read between them (a payout is
+    a produce with its own payout id). `reload`: the second snapshot is the first one saved and loaded. It never
+    writes; it names each mismatch. -> offences."""
+    out = []
+    for name, snap in (("before", before), ("after", after)):
+        ids = [o["id"] for o in snap.get("objects") or []]
+        for i in sorted(set(i for i in ids if ids.count(i) > 1)):
+            out.append("duplicate object %s in the %s snapshot" % (i, name))
+    paid = [e["id"] for e in events if e.get("kind") == "pay"]
+    for i in sorted(set(i for i in paid if paid.count(i) > 1)):
+        out.append("payout %s paid twice" % i)
+    b = dict((o["id"], o) for o in before.get("objects") or [])
+    a = dict((o["id"], o) for o in after.get("objects") or [])
+    flow = {}
+    for e in events:
+        if e.get("id") not in b and e.get("kind") == "consume":
+            out.append("event consumes %s, which no snapshot held" % e.get("id"))
+        sign = -1 if e.get("kind") == "consume" else 1
+        flow[e.get("id")] = flow.get(e.get("id"), 0) + sign * float(e.get("count", 0))
+    for i, o in sorted(b.items()):
+        want = float(o.get("count", 0)) + flow.get(i, 0)
+        if i not in a:
+            if abs(want) > 1e-6:
+                out.append("%s (%s) missing: %g unaccounted" % (i, o.get("def"), want))
+            continue
+        n = a[i]
+        if abs(float(n.get("count", 0)) - want) > 1e-6:
+            out.append("%s count %g, accounted %g" % (i, float(n.get("count", 0)), want))
+        if n.get("owner") != o.get("owner"):
+            out.append("%s changed owner %s -> %s with no event" % (i, o.get("owner"), n.get("owner")))
+        for f in ("due", "fraction"):
+            if o.get(f) is not None and n.get(f) is None:
+                out.append("%s lost its saved %s field" % (i, f))
+            elif o.get(f) is not None and abs(float(n[f]) - float(o[f])) > 1e-6:
+                out.append("%s %s moved %s -> %s (a clock or fraction write)" % (i, f, o[f], n[f]))
+        lost = sorted(set(o.get("fields") or []) - set(n.get("fields") or []))
+        if lost:
+            out.append("%s dropped saved field(s) %s" % (i, lost))
+    produced = set(e.get("id") for e in events if e.get("kind") in ("produce", "pay"))
+    for i in sorted(set(a) - set(b)):
+        if i not in produced:
+            out.append("%s (%s) appeared with no production event (a replacement hides a loss)" % (i, a[i].get("def")))
+    if reload and after.get("tick") != before.get("tick"):
+        out.append("the clock moved across a save and reload: %s -> %s" % (before.get("tick"), after.get("tick")))
+    if not reload and (after.get("tick") or 0) < (before.get("tick") or 0):
+        out.append("the clock ran backwards: %s -> %s" % (before.get("tick"), after.get("tick")))
+    return out
+
+
+def _economy_fixture():
+    """A clean stream over the held kinds the scene names: a smother claim (due tick), a sweetline coat (fraction), a
+    vissler arm stack and the felt bank (fraction). Between the snapshots one arm is eaten and the coat pays one felt
+    (payout W1); the reload copy is identical."""
+    before = {"tick": 120000, "objects": [
+        {"id": "Claim_H1", "def": "RM_HollowVenomvine", "count": 1, "owner": "Colony", "due": 240000, "fraction": None,
+         "fields": ["claimTick", "dueTick", "blanket"]},
+        {"id": "Coat_T1", "def": "RM_SweetlineTree", "count": 1, "owner": None, "due": None, "fraction": 0.85,
+         "fields": ["coat"]},
+        {"id": "Arm_7", "def": "RM_VisslerArm", "count": 3, "owner": None, "due": None, "fraction": None,
+         "fields": ["stackCount"]},
+        {"id": "Bank_M", "def": "RM_SweetlineFeltBank", "count": 1, "owner": "Colony", "due": None, "fraction": 2.5,
+         "fields": ["banked"]}]}
+    after = {"tick": 126000, "objects": [dict(o) for o in before["objects"]]}
+    after["objects"][2] = dict(after["objects"][2], count=2)
+    after["objects"].append({"id": "W1", "def": "RM_SweetlineWool", "count": 1, "owner": None, "due": None,
+                             "fraction": None, "fields": ["stackCount"]})
+    events = [{"kind": "consume", "id": "Arm_7", "count": 1}, {"kind": "pay", "id": "W1", "count": 1}]
+    return before, after, events
+
+
+@suite.chain("scene_economy_observer", offline=True, inputs=[])
+def scene_economy_observer(t):
+    """sc_economy_observer (economy_observer): the observation instrument, offline. The observer accounts once for
+    resources consumed, held and paid, and for time, between two snapshots and the production events between them; it
+    never writes. Run on the clean fixture it must account with no offence; run on each corrupted stream the plan names
+    (a deleted saved claim field, a duplicated payout, a duplicated object, a reset clock, a replacement item, a swapped
+    owner, a clock moved across reload) it must name that mismatch. Command:
+    `python3 src/RimMandrake/LeaningScrub/validation.py scene_economy_observer` (exit 0 = every row PASS)."""
+    before, after, events = _economy_fixture()
+    with _comp(t, "economy_observer_accounts_once"):
+        bad = _economy_offences(before, after, events) + _economy_offences(before, dict(before), [], reload=True)
+        if bad:
+            _fail("the observer refuses a clean stream: %s" % bad)
+    with _comp(t, "economy_observer_rejects_corruption"):
+        def edit(i, **kw):
+            a = {"tick": after["tick"], "objects": [dict(o) for o in after["objects"]]}
+            a["objects"][i] = dict(a["objects"][i], **kw)
+            return a
+        dup = {"tick": after["tick"], "objects": after["objects"] + [dict(after["objects"][1])]}
+        swap = {"tick": after["tick"], "objects": [dict(o, id="Arm_8") if o["id"] == "Arm_7" else o
+                                                   for o in after["objects"]]}
+        cases = {"deleted claim field": ((before, edit(0, due=None), events, False), "lost its saved due"),
+                 "dropped saved field": ((before, edit(0, fields=["claimTick"]), events, False), "dropped saved field"),
+                 "duplicated payout": ((before, after, events + [dict(events[1])], False), "paid twice"),
+                 "duplicated object": ((before, dup, events, False), "duplicate object"),
+                 "reset clock": ((before, edit(0, due=126000 + 120000), events, False), "due moved"),
+                 "replacement item": ((before, swap, events, False), "appeared with no production event"),
+                 "swapped owner": ((before, edit(3, owner="Visitors"), events, False), "changed owner"),
+                 "clock moved across reload": ((before, dict(before, tick=before["tick"] + 1), [], True), "across a save"),
+                 "lost fraction": ((before, edit(1, fraction=None), events, False), "lost its saved fraction")}
+        blind = []
+        for name, (args, token) in sorted(cases.items()):
+            got = _economy_offences(*args)
+            if not any(token in g for g in got):
+                blind.append("%s (named %s)" % (name, got[:2]))
+        _note(t, "economy observer corruption cases", {"cases": len(cases), "blind": blind})
+        if blind:
+            _fail("the observer passed corrupted stream(s): %s" % blind)
+
+
+def _run_offline(name):
+    """`python3 validation.py <offline scene>`: run one offline chain with no game; exit 0 when every row PASSes."""
+    from suite import TestContext
+    fn = dict(suite.chains).get(name)
+    if fn is None or name not in suite.offline_chains:
+        print("no offline chain %r (offline: %s)" % (name, sorted(suite.offline_chains)), file=sys.stderr)
+        return 2
+    t = TestContext(None, anchor=(0, 0))
+    fn(t)
+    for c in t.components:
+        print("%s.%s %s %s" % (name, c.name, c.verdict, c.detail or ""))
+    return 0 if t.components and all(c.verdict == "PASS" for c in t.components) else 1
+
+
 # --------------------------------------------------------------------------- chain: the log (last)
 
 @suite.chain("log")
@@ -4775,3 +5852,7 @@ def log_chain(t):
                                   "bufferLines": buf.get("totalInBuffer")})
             if bad or xref:
                 _fail("log carries errors: %s" % [str(x)[:160] for x in (bad + xref)[:4]])
+
+
+if __name__ == "__main__":
+    sys.exit(_run_offline(sys.argv[1] if len(sys.argv) > 1 else "scene_economy_observer"))

@@ -12,6 +12,7 @@ shapes -- those are UNPROVEN until the first live run.
     python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py
 """
 import copy
+import random
 import importlib.util
 import os
 import re
@@ -31,6 +32,7 @@ V.time.sleep = lambda s: None                      # the fast-wait poll loop mus
 V.SCENE_RECORD = lambda *a: None                   # a fake scene must not write designer_stage's stage.json
 V.OWNER_PRESENT = True                             # the eruptor arm runs here: this game is fake, nothing flies
 V.CAST_TILES = (11, 12, 13)                        # sc_native_cast's three map-free fixture tiles
+V.DRIP_STARTUP = "true"                            # sc_dripping's clean-start arm: the fake starts with regrowth saved on
 
 from suite import TestContext                     # noqa: E402
 
@@ -102,6 +104,8 @@ class Fake(object):
         self.cur_map, self.gen_maps, self.letters, self.scanner = 0, {}, [], {}
         self.master_was_off, self.save_count = False, 0
         self.crown_forgets, self.roofed, self.floors, self.zones = False, set(), set(), set()
+        self.rng, self.pending_fire, self.pursuit, self.drip_applied = random.Random(7), [], None, True
+        self.last_blaze, self.cut_now = (0, 0), False
         self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
                                                        in self.broken else "")
 
@@ -144,6 +148,8 @@ class Fake(object):
             self.creep_tick(self.ticks - d, self.ticks)
             self.chunk(d)
             self.ripple_pass()
+            self.fire_pass()
+            self.route_pass()
 
     def chunk(self, d):
         b = self.broken
@@ -168,14 +174,16 @@ class Fake(object):
                     bl["stackCount"] -= n
                     fire["fuel_level"], fire["fuel_at"] = min(20.0, self.fuel(fire["id"]) + n * c), self.ticks
                     fire["burning"] = bl["def"]
-            if job["kind"] == "harvest":
+            if job["kind"] == "harvest" and job["a"] in self.things:
                 pl = self.things.get(job["a"])
                 if pl:
                     self.new("RM_RawVenom", pl["x"], pl["z"], stackCount=3)
-                    if "regrow_broken" in b:
+                    if "regrow_broken" in b or not (self.drip_applied or "regrow_ignores_write" in b):
                         del self.things[pl["id"]]
                     else:
                         pl["growth"] = 1.0 if "regrow_full" in b else 0.3
+        for pl in self.of("RM_DrippingVenomvine"):
+            pl["growth"] = min(1.0, pl.get("growth", 1.0) + d / 4000.0)
         # --- the Stall freeze and wandering
         self.crown_pass()
         self.graze_pass(d)
@@ -340,6 +348,8 @@ class Fake(object):
 
     def t_weather_set(self, weather=None, lockWeather=False, unlock=False, **k):
         if weather:
+            if weather == "RM_Gale" and self.weather != "RM_Gale":
+                self.walk_onset()
             self.weather = weather
         return {"success": True}
 
@@ -505,6 +515,9 @@ class Fake(object):
         if n not in cs_arities(type, method):
             return {"success": False, "message": "No public static %s with %d params." % (method, n),
                     "details": {"available": sorted(cs_arities(type, method))}}
+        if method == "Apply":       # RM_RegrowingHarvest.Apply: the setting reaches the def
+            self.drip_applied = self.on("drippingRegrowEnabled")
+            return {"success": True, "result": None}
         if method == "ProofStamp":
             # The suite must name the pad it cleared ("mode@x,z"): LIVE 2026-10-16 the wooded run map held no ambient
             # clear 22-cell disc, so a bare mode is the UNMEASURED the live hook returned.
@@ -723,11 +736,11 @@ class Fake(object):
             return {"success": True, "result": "REFUSED: no ball in its larder"}
         return {"success": True, "result": "ATE BIT left hind leg (0.05 nutrition)"}
 
-    def t_spawn_batch(self, ops="", **k):
+    def t_spawn_batch(self, ops="", stuff=None, **k):
         for op in ops.split(";"):
             d, nums = op.split(":")
             n = [int(v) for v in nums.split(",")]
-            self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1, born=self.ticks)
+            self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1, born=self.ticks, stuff=stuff)
         return {"success": True}
 
     def t_set_thing_props(self, thing=None, faction=None, **k):
@@ -1077,6 +1090,10 @@ class Fake(object):
             del pawns[min((p for p in pawns if pawns[p]["kind"] == V.RECOVERY_KIND), key=lambda p: int(p[1:]))]
         if "probe" in saveName and "restore_tick_drift" in self.broken:
             ticks += 1
+        if "pursuit_forgets_on_reload" in self.broken:     # the saved maker relation does not survive the load
+            self.pursuit = None
+            for t in things.values():
+                t.pop("instigator", None)
         if "crown_reload_forgets" in self.broken:
             self.crown_forgets = True
         self.ticks, self.pawns, self.things = ticks, pawns, things
@@ -1106,6 +1123,8 @@ class Fake(object):
             if "trip_never_returns" in self.broken and p["kind"] == "Colonist" and targetAX < p["x"]:
                 p["goto"] = None
             return {"success": True, "accepted": True}
+        if jobDef in ("Ignite", "Wear", "RemoveApparel"):
+            return self.instant_job(pawnId, jobDef, targetAId)
         kind = {"RM_SmotherVenomvine": "smother", "Refuel": "refuel", "Harvest": "harvest"}.get(jobDef)
         if kind == "refuel" and 20 - self.fuel(targetAId) < 1:   # JobDriver_Refuel ends on CompRefuelable.IsFull
             return {"success": False, "accepted": True, "afterJobDef": "Wait_MaintainPosture"}
@@ -1159,6 +1178,171 @@ class Fake(object):
         return {"success": True, "things": [{"id": t["id"], "label": label, "inspect": lines}]}
 
 
+    # ------------------------------------------------------------ scenes batch 4 (fire, dripping, felt, routes)
+    def lean_bias(self):
+        if not self.on("leanFireEnabled") or "fire_no_bias" in self.broken:
+            return 0.0
+        bias = float(self.settings.get("leanFireBias", 0))
+        return 0.5 if bias == 0 and "fire_bias_ignores_zero" in self.broken else bias
+
+    def light(self, x, z, instigator=None):
+        """A fire on a grass cell; it spreads to two neighbours 60 ticks later (RM_TheLean.TrySpread_Prefix: the
+        bias share picks a downwind neighbour of the fake's east wind, the rest is vanilla's uniform eight)."""
+        if any(t["def"] == "Fire" and (t["x"], t["z"]) == (x, z) for t in self.things.values()):
+            return
+        if not any(t["def"] == V.GRASS and (t["x"], t["z"]) == (x, z) for t in self.things.values()):
+            return
+        self.new("Fire", x, z, instigator=instigator, born=self.ticks)
+        down = [(dx, dz) for dx, dz in zip(V.LEAN_DX, V.LEAN_DZ) if dx > 0]
+        for _ in range(2):
+            dx, dz = (self.rng.choice(down) if self.rng.random() < self.lean_bias()
+                      else self.rng.choice(list(zip(V.LEAN_DX, V.LEAN_DZ))))
+            self.pending_fire.append((self.ticks + 60, x + dx, z + dz, instigator))
+
+    def t_map_fire(self, action="start", rect=None, fireSize=0.5, **k):
+        rr = V_rect(rect)
+        if action == "extinguish":
+            for tid in [i for i, t in self.things.items() if t["def"] == "Fire" and inrect(t["x"], t["z"], rr)]:
+                del self.things[tid]
+            self.pending_fire = [p for p in self.pending_fire if not inrect(p[1], p[2], rr)]
+            return {"success": True}
+        for cx in range(rr[0], rr[0] + rr[2]):
+            for cz in range(rr[1], rr[1] + rr[3]):
+                self.light(cx, cz)
+        return {"success": True}
+
+    def blazes(self):
+        """Fire clusters of 3 or more (RM_BlazeKernel.MinOpenFires): [(centre, instigator)]."""
+        fires = [t for t in self.things.values() if t["def"] == "Fire"]
+        out = []
+        for f in fires:
+            near = [g for g in fires if abs(g["x"] - f["x"]) <= 6 and abs(g["z"] - f["z"]) <= 6]
+            if len(near) >= 3 and not any(abs(c[0] - f["x"]) <= 6 and abs(c[1] - f["z"]) <= 6 for c, _i in out):
+                out.append(((f["x"], f["z"]), next((g.get("instigator") for g in near if g.get("instigator")), None)))
+        return out
+
+    def fire_pass(self):
+        due = [p for p in self.pending_fire if p[0] <= self.ticks]
+        self.pending_fire = [p for p in self.pending_fire if p[0] > self.ticks]
+        for _t, x, z, who in due:
+            self.light(x, z, who)
+        herd = [p for p in self.pawns.values() if p["kind"] == V.STAMPER]
+        if not herd:
+            return
+        cols = [p for p in self.pawns.values() if p["kind"] == "Colonist"]
+        for centre, who in (self.blazes() if self.on("fireStampEnabled") else []):
+            for i, p in enumerate(herd):
+                if self.pursuit and p is herd[0]:
+                    continue
+                p["x"], p["z"] = centre[0] + i, centre[1]
+            self.last_blaze = centre
+            for tid in [i for i, t in self.things.items() if t["def"] == "Fire" and self.ticks - t["born"] >= 300
+                        and abs(t["x"] - centre[0]) <= 6 and abs(t["z"] - centre[1]) <= 6]:
+                del self.things[tid]
+            if who and self.pursuit is None:
+                self.pursuit = who
+            if not who and "unwitnessed_pursues" in self.broken and cols:
+                self.pursuit = min(cols, key=lambda c: abs(c["x"] - centre[0]) + abs(c["z"] - centre[1]))["id"]
+        target = self.pursuit
+        if target and "blame_nearest" in self.broken and cols:     # the nearest pawn to the blaze takes the blame
+            lb = self.last_blaze
+            target = min(cols, key=lambda c: (c["x"] - lb[0]) ** 2 + (c["z"] - lb[1]) ** 2)["id"]
+        if target in self.pawns:
+            herd[0]["x"], herd[0]["z"] = self.pawns[target]["x"] + 1, self.pawns[target]["z"]
+
+    def instant_job(self, pid, job, target):
+        p, t = self.pawns.get(pid), self.things.get(target)
+        if p is None or (t is None and job != "RemoveApparel"):
+            return {"success": False, "message": "no pawn %s or thing %s" % (pid, target)}
+        if job == "Ignite":
+            self.light(t["x"], t["z"], pid)
+        elif job == "Wear":
+            p.setdefault("worn", []).append(t)
+            del self.things[target]
+        else:
+            p["worn"] = [w for w in p.get("worn") or [] if w["id"] != target]
+        return {"success": True, "accepted": True}
+
+    def t_pawn_gear(self, pawn=None, action=None, clearWhat="all", **k):
+        if action == "clear" and pawn in self.pawns:
+            self.pawns[pawn]["worn"] = []
+        return {"success": True}
+
+    def t_stat_explain(self, subject=None, stats=None, **k):
+        t = self.things.get(subject)
+        felt = (t or {}).get("stuff") == V.FELT and self.on("sweetlineFeltComfortEnabled") and "felt_no_comfort" not in self.broken
+        v = 0.5 + (V.FELT_OFFSET if felt else 0.0)
+        return {"success": True, "stats": [{"defName": "Comfort", "value": v, "explanation": "Base value: 0.50"
+                                            + ("\nSweetline felt: +%.2f" % V.FELT_OFFSET if felt else "")}]}
+
+    def t_pawn_thoughts(self, pawn=None, **k):
+        felt = [w for w in self.pawns[pawn].get("worn") or [] if w.get("stuff") == V.FELT]
+        on = self.on("sweetlineFeltApparelEnabled") or "felt_apparel_ignores_toggle" in self.broken
+        n = 0 if not (on and felt) else (len(felt) if "felt_thought_stacks" in self.broken else 1)
+        return {"success": True, "thoughts": [{"def": V.FELT_THOUGHT, "moodOffset": 2} for _ in range(n)]}
+
+    def t_stop_job(self, pawnId=None, **k):
+        if pawnId in self.pawns and "cancel_ignored" not in self.broken:
+            self.pawns[pawnId]["goto"] = None
+        return {"success": True}
+
+    def route_geo(self):
+        return V._route_geometry(100 + V.PADS["routes"][0], 100 + V.PADS["routes"][1])
+
+    def t_designate_batch(self, action=None, designation=None, rect=None, **k):
+        if designation == "CutPlant" and "upkeep_never_cuts" not in self.broken:
+            rr = V_rect(rect)
+            gone = [i for i, t in self.things.items() if t["def"] in (V.THICKET, V.WALKER) and inrect(t["x"], t["z"], rr)]
+            for i in gone:
+                del self.things[i]
+            self.cut_now = bool(gone) or getattr(self, "cut_now", False)
+        return {"success": True}
+
+    def walk_onset(self):
+        """RM_CompWalking on a Gale's onset: 8 runners east (downwind) along each stand's row, never onto a plant, a
+        building or developed ground (zone, floor, roof)."""
+        if not self.on("walkingEnabled"):
+            return
+        g = self.route_geo() if self.of(V.WALKER) else None
+        for w in list(self.of(V.WALKER)):
+            if w.get("runner"):
+                continue
+            for k in range(1, 9):
+                c = (w["x"] + k, w["z"])
+                if c in self.zones or c in self.floors or c in self.roofed:
+                    continue
+                if any((t["x"], t["z"]) == c for t in self.things.values()):
+                    continue
+                self.new(V.WALKER, c[0], c[1], growth=0.3, stackCount=1, runner=True)
+            if g and "walking_invades_developed" in self.broken:
+                self.new(V.WALKER, g["a"][0][0], g["a"][0][1], growth=0.3, stackCount=1, runner=True)
+
+    def route_pass(self):
+        """The colony's routine work on the route site: two logs a pass from the source pile to the stockpile while a
+        safe route stands (A without a wall, or B without vine or wall); otherwise they wait. Jobs: a hauler, a
+        researcher at a bench, a cutter while CutPlant work exists."""
+        g = self.route_geo()
+        src = [t for t in self.of("WoodLog") if inrect(t["x"], t["z"], g["source"])]
+        pad = V_rect("%d,%d,%d,%d" % (100 - V.ROUTE_SIZE // 2, 100 - V.ROUTE_SIZE // 2, V.ROUTE_SIZE, V.ROUTE_SIZE))
+        cols = [p for p in self.pawns.values() if p["kind"] == "Colonist" and inrect(p["x"], p["z"], pad)]
+        if not cols or not (src or any(inrect(t["x"], t["z"], g["stock"]) for t in self.of("WoodLog"))):
+            return
+        blocked = set((t["x"], t["z"]) for t in self.things.values() if t["def"] in ("Wall", V.THICKET, V.WALKER))
+        safe = not (blocked & set(g["a"])) or not (blocked & set(g["b"]))
+        for p in cols:
+            p["job"] = "Wait_Wander"
+        if src and (safe or "auto_work_crosses_vine" in self.broken):
+            for t in src[:2]:
+                t["x"], t["z"] = g["stock"][0], g["stock"][1]
+            cols[0]["job"] = "HaulToCell"
+            if not safe:
+                cols[0]["x"], cols[0]["z"] = sorted(blocked & set(g["b"]))[0]
+        if len(cols) > 1 and self.of("SimpleResearchBench"):
+            cols[1]["job"] = "Research"
+        if len(cols) > 2 and getattr(self, "cut_now", False):
+            cols[2]["job"] = "CutPlant"
+        self.cut_now = False
+
 def V_rect(s):
     return rect(s)
 
@@ -1201,7 +1385,7 @@ BREAKS = {
     "arm_not_rotting": "patches.vissler_arm_is_rotting_meat",
     "fuel_unpatched": ("patches.dead_venomvine_fuels_fire", "scene_cane_fuel.cane_accepted_by_wood_filter",
                        "scene_colony_walk.walk_order_a_trip_then_fuel"),
-    "setting_missing": ("settings.defaults", "scene_settings.settings_census"),
+    "setting_missing": ("settings.defaults", "scene_settings.settings_census", "scene_fire_bias.fire_bias_beds_staged"),
     "set_plants_drops": "flora.flora_spawns",
     "no_pollute": "flora.flora_spawns",          # LIVE 2026-10-07: RM_Grellspine on a clean cell
     "no_fly": "fauna.dustflutter_can_fly",
@@ -1219,8 +1403,8 @@ BREAKS = {
     "no_smother_bank": "smother.smother_claims_stands",
     "smother_ignores_toggle": "smother.smother_off_holds_claims",
     "no_mature": "smother.smother_matures_to_dead_wood",
-    "regrow_broken": "dripping.dripping_survives_harvest",
-    "regrow_full": "dripping.dripping_survives_harvest",
+    "regrow_broken": ("dripping.dripping_survives_harvest", "scene_dripping.dripping_scene_startup_apply"),
+    "regrow_full": ("dripping.dripping_survives_harvest", "scene_dripping.dripping_scene_startup_apply"),
     "crown_ignores_toggle": ("crown.crown_toggle_off_stays_away", "scene_crown.crown_scene_toggle_off_quiet"),
     "no_crown": ("crown.crown_mob_gathers", "scene_crown.crown_scene_arrivals_attributed"),
     "bloom_ignores_toggle": ("bloom.bloom_toggle_off_quiet", "scene_bloom.bloom_scene_toggle_off_quiet",
@@ -1348,6 +1532,21 @@ BREAKS.update({
     "dlc_missing": "scene_floor_payload.payload_running_list_and_defs",
     "restore_drops_bystander": "scene_floor_recovery.recovery_exact_state_returns",
     "restore_tick_drift": "scene_floor_recovery.recovery_exact_state_returns",
+    # batch 4 (RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_NINETY_FIVE_BARS_LEFT)
+    "fire_no_bias": "scene_fire_bias.fire_bias_downwind_lift",
+    "fire_bias_ignores_zero": "scene_fire_bias.fire_bias_control_plain",
+    "blame_nearest": "scene_ix_fire_accountability.accountability_maker_not_innocent",
+    "pursuit_forgets_on_reload": "scene_ix_fire_accountability.accountability_maker_not_innocent",
+    "unwitnessed_pursues": "scene_ix_fire_accountability.accountability_unwitnessed_no_pursuit",
+    "regrow_ignores_write": "scene_dripping.dripping_scene_write_off_one_shot",
+    "felt_no_comfort": "scene_felt_comfort.felt_scene_seat_offset",
+    "felt_thought_stacks": "scene_felt_comfort.felt_scene_single_thought",
+    "felt_apparel_ignores_toggle": "scene_felt_comfort.felt_scene_toggles_independent",
+    "walking_invades_developed": ("scene_home_routes.routes_maintained_carry_work",
+                                  "scene_ix_route_growth.ixroutes_only_authorized_in_hazard"),
+    "upkeep_never_cuts": "scene_home_routes.routes_maintained_carry_work",
+    "auto_work_crosses_vine": "scene_ix_route_growth.ixroutes_only_authorized_in_hazard",
+    "cancel_ignored": "scene_ix_route_growth.ixroutes_cancel_stops_expedition",
 })
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
