@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":7769,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=9b9913a0bb0731b19250c61476d75a174eab3abe49df534caad486921b5a7c79 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":8435,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=910dda691cac11074b5831b70314f064c82f2197336cfe336227be2aed57683f -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 450 events in 7 shards · reducer 1
-holder lease run-1794860741, token 6, last active 2026-11-16T20:29:02Z
+version 0.1.0 · stage offline_build · 452 events in 7 shards · reducer 1
+holder lease run-1794864080, token 7, last active 2026-11-16T21:21:35Z
 holder session 6dd13b7d-724a-4d6a-9410-bdfb2b563e8b, context 130317 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794860741, 2026-11-16T20:29:02Z)
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 450 events (views/history.md; never read whole)
+- the full history: 452 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T20:32:00Z.1794861120816700427 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:32:00Z.1794861120816700427 prints what changed after this packet)
+cursor: t=2026-11-16T21:21:36Z.1794864096356549695 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T21:21:36Z.1794864096356549695 prints what changed after this packet)

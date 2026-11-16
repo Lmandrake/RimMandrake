@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":7769,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=7459cef0274c55c970bc0815295471d1de4a629abbcfa2ed6fd0e2bfe0db9713 -->
-# ExplosiveKnockback — mod ledger history (450 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":8435,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=716f05a3cbb1abe39bc48f196ad45e1ebe57d25034d37b62350155a0935438d1 -->
+# ExplosiveKnockback — mod ledger history (452 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -451,3 +451,5 @@
 - 2026-11-16T20:29:02Z HOLDER.run-1794860741#1 session.checkpoint session v0.1.0: 
 - 2026-11-16T20:32:00Z DISPATCH#22 run.end run v0.1.0: 
 - 2026-11-16T20:32:00Z DISPATCH#23 session.id session v0.1.0: 
+- 2026-11-16T21:21:35Z DISPATCH#24 lease.grant lease v0.1.0: 
+- 2026-11-16T21:21:36Z DISPATCH#25 run.start run v0.1.0: 
