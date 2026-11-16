@@ -41,3 +41,11 @@ and closing the five owed builds, not rebuilding it. The tree is `tree.json`, th
 - Grown-limb costs, tuning and testing: RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT (0.2.0, his words
   2026-11-15). The limbs stay built; 0.1.0 checks only that one grows, shows and comes off.
 - Rawshade is designed and unbuilt, scope not opened: not in this version.
+
+## Rework against coverage verdict rm-coverage-judge-1794788108 (run rm-role-designer-1794819648)
+- limb_still_grows left the 0.1.0 tree (his 2026-11-15 ruling); the built limbs are covered offline by limbs_stay_built.
+- New offline leaves first: fauna_specials_declared, biome_def_declared, flora_yields_declared, limbs_stay_built.
+- New scenes, all owed in RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL: sc_sunbeam_fires, sc_wombpod_hatch, sc_helix_trade, sc_coalescence_forms, sc_mulched_soil; sc_zhooliza waits on ZHOOLIZA_BUILD_FROM_JELLY_RENDERS.
+- Owed art: RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (Blisterfloat, Gorekite flip-books).
+- shelter_in_lead tests the lead the tells give a player who orders his people in; no colonist shelter job is built or assumed.
+- Risk: arms that depend on open fix items (inject, Wombpod, Coalescence stage) record UNMEASURED until those items close.

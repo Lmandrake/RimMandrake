@@ -25,12 +25,17 @@
 - [leaf:coalescence_grows_and_breaks] A Coalescence absorbs Unfinished, grows a stage, and a Burn breaks it into Monstrous samples
 - [leaf:waiting_costs_more] Waiting for one more stage raises pressure from the creature itself
 - [leaf:genome_brings_tissue] A gestation shows its odds first and, when the wanted part misses, still brings matched tissue
-- [leaf:limb_still_grows] A Monstrous batch still yields a grown limb that shows on the colonist; its costs are 0.2.0
+- [leaf:limbs_stay_built] The five grown limbs, their recipes and removal still resolve and draw; their costs are 0.2.0
 - [leaf:prints_pay] A scanned draftprint answers a Helix contract for silver
 - [leaf:bodyprints_phased] A corpse becomes skin, then a lasting print, and a Bloody Mess eats the rest, owed
 - [leaf:flora_flesh] The plants read as grown flesh, and zhool haze turns plants in our biomes only
 - [leaf:cast_lives_here] The natives spawn at density and each reads as its own creature
 - [leaf:airborne_stats] Every flyer carries its stat, flags and flip-book; its flight is never live-tested without him
+- [leaf:fauna_specials_declared] Each native carries the death, flag, size or body its description promises
+- [leaf:biome_def_declared] The biome declares its own terrain, density, diseases and no forage; RustPuff only with TheRot
+- [leaf:flora_yields_declared] Each plant yields what its description says, and the flesh plants are not food
+- [leaf:zhooliza_lives_here] The new smaller Zhool'Iza lives here in both its variants, owed
+- [leaf:walk_red_lid] A reload mid-way and a second order of the main actions give the same Burn, body and harvest
 - [leaf:settings_superb] Every major feature has its switch and tuning, and each switch stops only its feature
 - [floor:mod_settings] Superb Mod Settings
 - [floor:biome_scope] Biome mechanics are promised inside our biomes only
@@ -72,7 +77,11 @@
 - coalescence_grows_and_breaks: yes, it once stuck at stage 1
 - waiting_costs_more: yes, his certified waiting pressure
 - genome_brings_tissue: yes, his other useful tissue card
-- limb_still_grows: no alone, the limbs are 0.2.0 work
+- limbs_stay_built: no alone, but a built limb that stops loading is broken
+- fauna_specials_declared: no alone, but a native without its special is a recolour
+- biome_def_declared: yes, vanilla forage or terrain is not this biome
+- flora_yields_declared: no alone, but edible flesh plants break the zero-forage biome
+- zhooliza_lives_here: no alone, he commissioned it
 - prints_pay: no alone, one reason for an expedition
 - bodyprints_phased: yes, his keep both in card
 - flora_flesh: yes, a flesh biome that looks like grass fails
@@ -82,3 +91,6 @@
 - no_vanilla_forest: yes, a recoloured forest is not this biome
 - no_magenta: yes, a missing texture is broken
 - walk_red_lid: yes, the walk is the mod in play
+
+## later
+- Design Version 0.2.0: what a grown limb costs, its tuning and testing, and the bar contagion_grown_limb_visible, by his 2026-11-15 word

@@ -4,8 +4,8 @@
  "kind": "mod",
  "authored_by": "concept",
  "root_ref": "design/validation_walks/RimMandrake/Contagion.md#north-star",
- "root_state": "DRAFT",
- "root_hash": null,
+ "root_state": "VALIDATED",
+ "root_hash": "d46c52671f8caceb8fe21aadbea217f85b7b6768ac59a22d1a5b75567f60d7e8",
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
@@ -72,7 +72,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "the near pair is in shade at Burn start; the far pair is not, and nothing moved them but their own jobs or the player's order",
+   "oracle_proposed": "at the first tell the player orders both pairs to the refuge; the near pair is in shade at Burn start, the far pair is not; with tells off and the same order at Burn start the near pair is still in the open",
    "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -83,11 +83,12 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player sees colonists within one dash of a planned refuge get inside during the tells lead, while a distant work party is caught in the open and must improvise.",
+   "experience": "The player who reads the tells and orders his people in sees those within one dash of a planned refuge get inside during the tells lead, while a distant work party is caught in the open and must improvise.",
    "scenario": "Saved site, two colonists working 8 cells from a roofed refuge and two 60 cells away; a natural Burn tells window opens; read positions when the Burn starts.",
    "false_pass": [
     "the near workers were already standing under the roof when the window opened",
-    "the Burn starts before any tell, so the lead was never offered"
+    "the Burn starts before any tell, so the lead was never offered",
+    "a colonist shelter job is assumed that no inventory entry builds"
    ],
    "red": "a build where colonists ignore the tells and keep working outdoors until burned, or where every pawn on the map is teleported to safety",
    "tier_proposed": "live_minimal",
@@ -404,7 +405,7 @@
    "id": "genome_brings_tissue",
    "by": "concept",
    "root": [
-    "contagion_grown_limb_visible"
+    "contagion_unfinished_read_malformed"
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
@@ -415,31 +416,6 @@
     "odds are written in a dev log only"
    ],
    "red": "a build where a missed batch yields nothing, the odds are hidden until after the stab, or an interrupted injection still spends the sample",
-   "tier_proposed": "live_minimal",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "one of the five limb items from a Monstrous batch; after install the render differs from the natural-armed pawn in at least the south facing",
-   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "limb_still_grows",
-   "by": "concept",
-   "root": [
-    "contagion_grown_limb_visible"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The player sees a Monstrous batch still yield one of the five grown limbs and a fitted colonist look different from one with a natural arm; what the limb costs is judged in Design Version 0.2.0, not here.",
-   "scenario": "Saved site: a Monstrous sample injected, gestation jumped; install the limb; screenshot the colonist in four facings beside a natural-armed one.",
-   "false_pass": [
-    "the limb is spawned by the test",
-    "the fitted pawn is never rendered"
-   ],
-   "red": "a build where the Monstrous branch falls back to an ordinary batch with limbs enabled, or the installed limb draws nothing",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },
@@ -497,7 +473,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every rostered plant renders its own RM art; conversions on the Contagion; none off-biome",
+   "oracle_proposed": "every rostered plant renders its own RM art and a judge agent reads each patch as grown flesh, not vanilla; convertible plants counted before the haze clock jump and converted after on the Contagion; none converted off-biome",
    "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -522,7 +498,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "at least half the roster rows spawn within the day; no species renders the missing texture",
+   "oracle_proposed": "every roster row spawns at least once within the day and is captured at play zoom; a judge agent names each capture as a distinct creature and none as another row's; no species renders the missing texture",
    "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -548,7 +524,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every flyer resolves MaxFlightTime above zero and its four-facing frame set; Gawpsack carries none",
+   "oracle_proposed": "every flyer resolves MaxFlightTime above zero and its four-facing frame set; Gawpsack carries none; Blisterfloat and Gorekite read FAIL until RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN lands",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -646,6 +622,131 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
+   "oracle_proposed": "every row of the table reads its field present with the expected value; a missing field fails by name",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fauna_specials_declared",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The tester reading defs sees each Contagion native carry the special its description promises: acid deaths on Bloody Mess, Scorchpod and Bulloo, slime deaths on the goo-buds, the Scorchpod leaker flag, pack and size on Gnashling and Meltgut, the Bloodlurk's pool habitat, and the Zhool's and Bulloo's custom bodies and render trees.",
+   "scenario": "Selftest over RM_ContagionFauna.xml, RM_ContagionBulloos.xml and RM_OcularJelly_Twitch.xml: read each race's death action, flags, herd and size fields and render tree against a table taken from its description.",
+   "false_pass": [
+    "the fields are read from the parent def only",
+    "a description that names no special is skipped silently"
+   ],
+   "red": "a build where a native loses its acid or slime death, or the Zhool loses its render tree and draws as a plain blob",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "each declared field present with its value; RustPuff present with TheRot and absent without; TentacularPlant absent from wildPlants; validate_patch reports every operation matched",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "biome_def_declared",
+   "by": "concept",
+   "root": [
+    "contagion_never_vanilla_forest"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The tester reading defs sees RM_Contagion declare its own terrain, plant density, disease table and zero forage, keep the RustPuff row only when TheRot is loaded, leave the legacy TentacularPlant off the roster, and the Acoustic Scanner payload patch match AcousticScanner's defs.",
+   "scenario": "Selftest over RM_Contagion.xml and RM_Contagion_DonorPorts.xml, the RustPuff guard parsed with and without TheRot's packageId, and validate_patch.py over RM_AcousticPayload_Contagion.xml with --defs.",
+   "false_pass": [
+    "counting <li> instead of parsing the elements",
+    "the guard read with TheRot present only"
+   ],
+   "red": "a build whose biome falls back to vanilla terrain or forage, lists RustPuff without its mod, or whose scanner payload matches nothing",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "each plant's yield thing and amount match its row; each inedible plant has no ingestible food value",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "flora_yields_declared",
+   "by": "concept",
+   "root": [
+    "contagion_flora_reads_as_flesh"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The tester reading defs sees each Contagion plant yield what its description says (Eyebark and Halfmade wood, red sap, seed-fists, the Wombpod sac) and the inedible ones carry no food nutrition.",
+   "scenario": "Selftest over RM_ContagionFlora.xml: harvestedThingDef, harvestYield and ingestible fields for Eyebark, Bleedleaf, Gorestalk, Sapblister, Bloody Fist, Halfmade Tree, Meatvine, Toothmoss and Wombpod.",
+   "false_pass": [
+    "a yield read from the abstract parent",
+    "inedibility inferred from a missing tag"
+   ],
+   "red": "a build where a flesh plant is edible forage or harvests nothing",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every limb def, item and recipe resolves; every declared texPath has a file; the emerge comp is on all five",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "limbs_stay_built",
+   "by": "concept",
+   "root": [
+    "contagion_never_magenta"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The tester reading defs sees the five grown limbs, their install recipes and the removal-emerge comp still resolve, with art for every one that draws; what they cost is Design Version 0.2.0 and is not judged here.",
+   "scenario": "Selftest over RM_GrownLimbHediffs.xml and the limb items and recipes: each def resolves, each texPath exists, HediffComp_UnfinishedEmerge is declared on each limb, grownLimbsEnabled exists.",
+   "false_pass": [
+    "Bellows counted as missing art though it declares no render node",
+    "a recipe checked without its ingredient"
+   ],
+   "red": "a build where a limb def or its recipe stops resolving, or a limb texture points at nothing",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "both variants spawn from the roster and a judge agent names each a Zhool'Iza distinct from the Zhool",
+   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "zhooliza_lives_here",
+   "by": "concept",
+   "root": [
+    "contagion_unfinished_read_malformed"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player at play zoom sees the new smaller Zhool'Iza in the Contagion in both of its whole-body variants, reading as its own creature beside the Zhool; it is owed work.",
+   "scenario": "Saved site after ZHOOLIZA_BUILD_FROM_JELLY_RENDERS lands: spawn by the biome roster over a day, capture each variant at play zoom beside a Zhool.",
+   "false_pass": [
+    "the test spawns it by hand",
+    "one variant shown twice"
+   ],
+   "red": "a build where the Zhool'Iza is absent from the roster or draws one variant only",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: one capture of both variants at play zoom"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
    "oracle_proposed": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same samples and letters; the repeated dash costs a dose again",
    "tier_reason": "the walk is the mod in play on the full list",
    "cannot_show": null,
@@ -656,8 +757,7 @@
     "contagion_bloom_reads_unwholesome",
     "contagion_burn_reads_as_danger",
     "contagion_repulsor_clears_sky",
-    "contagion_coalescence_reads_as_mass",
-    "contagion_grown_limb_visible"
+    "contagion_coalescence_reads_as_mass"
    ],
    "leaf_kind": "walk",
    "clause_kind": "preserve",

@@ -232,7 +232,7 @@
   },
   {
    "id": "d_walk_bars_delegated",
-   "text": "The walk's north-star bars (never validated, so all NEW) are validated as written under delegation_policy §2.1, except contagion_grown_limb_visible, which moves to Design Version 0.2.0 with the grown-limb work he moved there. The act is the Conductor's or the Arbiter's, not the Designer's: RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS, acceptance test infrastructure/state/acceptance/RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS.py (FAIL 3/3 on base). Why nothing argues against: his limb ruling settles the one line in doubt; the guess marks are what NEW bars are seeded with; the fresh review struck the ask to him.",
+   "text": "The walk's north-star bars (never validated, so all NEW) are validated as written under delegation_policy §2.1, except contagion_grown_limb_visible, which moves to Design Version 0.2.0 with the grown-limb work he moved there. The act is the Conductor's or the Arbiter's, not the Designer's: RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS, acceptance test infrastructure/state/acceptance/RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS.py (FAIL 3/3 on base). Why nothing argues against: his limb ruling settles the one line in doubt; the guess marks are what NEW bars are seeded with; the fresh review struck the ask to him. Enacted at db22459dac (walk state VALIDATED, judge verdict infrastructure/state/delegated/2026-11-16/Contagion_north_star_bars_r2.json; acceptance test PASS 3/3). Stage 3 re-stamps the tree against the new root hash and drops contagion_grown_limb_visible from leaves genome_brings_tissue, limb_still_grows and walk_red_lid.",
    "speaker": "conductor",
    "delegated": "evidence-for-ask",
    "source": "OWNER:1794816612487799110",
@@ -1379,8 +1379,9 @@
    "proof": "missing",
    "proof_note": "No flyer live test performed; owner-attended/state evidence still needed.",
    "scope": "not_opened",
-   "what": "Flight stats and race flags for Blisterfloat, Sparkleech, Skinflap and Gorekite; Skinflap/Sparkleech frame sets present; Gawpsack is a grounded floater.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "what": "Flight stats and race flags for Blisterfloat, Sparkleech, Skinflap and Gorekite; Skinflap/Sparkleech frame sets present; Gawpsack is a grounded floater. Blisterfloat and Gorekite have no flip-book frames: owed, RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (acceptance test FAIL 0/4 on base).",
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "description": ""
   },
   {
    "id": "flora_eyebark",
