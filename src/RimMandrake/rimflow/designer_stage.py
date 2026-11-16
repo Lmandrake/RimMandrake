@@ -1364,6 +1364,18 @@ def draft_line(st):
                 dr.get("path"), state, dr.get("by") or "another model"))
 
 
+def helper_line(st):
+    """A Codex Designer at the exam cannot spawn Claude subagents, and its examiners must not be its own model: the
+    packet tells it how to start them on Claude (item RIMMANDRAKE_START_CODEX_DESIGNER_EXAMINERS_ON_CLAUDE). None else."""
+    if st.get("runner") != "codex" or st.get("stage") != 4:
+        return None
+    return ("You run on Codex; your exam helpers do not. The Examiner, Challenger, both Readers and the Control are Claude "
+            "(Opus), so the maker and its examiners are different models. Start each as its own fresh process from the "
+            "repo root: `src/RimMandrake/Utils/claude_bounded.sh -p --model opus --output-format json \"<its brief>\"`, "
+            "give it only the files its rule allows, name it in exam.json by the session_id its JSON returns, and charge "
+            "its usage with `designer_stage.py charge --kind helper`. Never play a helper yourself.")
+
+
 def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=(), runner=None, draft=None,
          draft_by=None):
     """runner: the concept's own runner (claude|codex), read by every later launch of it, the tick's orphan sweep and
@@ -2255,6 +2267,8 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
         head.append("This stage has had %d rejected or unclosed run(s); read the last rejection in stage.json." % retries)
     if draft_line(st):
         head.append(draft_line(st))
+    if helper_line(st):
+        head.append(helper_line(st))
     held = [r for r in st.get("recovery") or [] if r.get("state") == "held"]
     if held:
         head.append("Held for his review: %s." % ", ".join("%s (until %s)" % (r["scene"], r.get("until")) for r in held))

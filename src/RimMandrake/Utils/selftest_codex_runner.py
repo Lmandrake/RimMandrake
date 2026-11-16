@@ -206,5 +206,19 @@ class CodexRunnerTests(unittest.TestCase):
                 DS.init(os.path.join(d, "P"), "P", draft=os.path.join(d, "missing.md"))
 
 
+    def test_codex_exam_helpers_on_claude(self):
+        """RIMMANDRAKE_START_CODEX_DESIGNER_EXAMINERS_ON_CLAUDE: a Codex concept's stage 4 packet starts its helpers on
+        Claude; a Claude concept's, or a Codex concept at another stage, carries no such line."""
+        with tempfile.TemporaryDirectory() as d:
+            c = os.path.join(d, "M")
+            st = DS.init(c, "M", runner="codex")
+            text = DS.packet(c, dict(st, stage=4), {}, 1000)
+            self.assertIn("claude_bounded.sh -p --model opus", text)
+            self.assertIn("Never play a helper yourself", text)
+            self.assertIsNone(DS.helper_line(dict(st, stage=3)))
+            self.assertIsNone(DS.helper_line(dict(st, stage=4, runner="claude")))
+            self.assertIsNone(DS.helper_line({"stage": 4}))
+
+
 if __name__ == "__main__":
     unittest.main()
