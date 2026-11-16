@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1794789873",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam retaken on the tree and sheet as edited by the furnace-beast body-9 build (6120bb02aa, his card OWNER:1794786804170379047): 23 frozen scenarios (Examiner abd12815cb1880bd4 e1-e17, three new on the twice-the-Zeer bar; Challenger ac15eed2b5fd7af54 c1-c6, all rejects; 17 rejects), Readers a327667c750d88e96 and a677c54087433ad4d match all 23, 23/23, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a7ccf3500aca03beb) accepted e2, e3, which both Readers reject, so the set discriminates. exam.json carries it.",
+ "quick_look": {
+  "offer": false,
+  "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+ }
+}
