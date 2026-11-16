@@ -149,6 +149,13 @@ try:
     check("past the ceiling: no --resume, a fresh holder from the packet", "session" not in kw3 and "reconcile" not in
           kw3 and ML.resume_plan(root, MOD)["action"] == "rotate", kw3)
 
+    # the landing carries every view, closed_<version>.md included (RIMMANDRAKE_LAND_EVERY_LEDGER_VIEW_CLOSED_WENT_STALE)
+    vd = os.path.join(ML.ledger_dir(root, MOD), "views")
+    open(os.path.join(vd, "closed_0.1.0.md"), "w").close()
+    got = MD.ledger_paths(root, [MOD])
+    check("ledger_paths lands every view, closed ones too", any(p.endswith("closed_0.1.0.md") for p in got) and
+          all(any(p.endswith("views/" + v) for p in got) for v in ML.VIEWS), got)
+
     # outside the pilot list nothing changes
     cap4, kw4 = MD.holder_launch(root, cfg, s, {"mod": "NotAPilotMod", "stage_usd": 0}, 15, fx)
     check("a mod outside pilot_mods keeps the per-run cap and no resume", cap4 == 15 and kw4 == {}, (cap4, kw4))

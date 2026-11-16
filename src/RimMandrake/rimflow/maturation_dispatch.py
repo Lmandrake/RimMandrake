@@ -1233,11 +1233,17 @@ def pilot_ledger(root, mod):
 
 
 def ledger_paths(root, mods):
-    """-> the DISPATCH shard and the views of each mod's ledger, repo-relative, that exist."""
+    """-> the DISPATCH shard and every view of each mod's ledger (closed_<version>.md too: landing only the three
+    fixed views left a closed view stale on origin/main, RIMMANDRAKE_LAND_EVERY_LEDGER_VIEW_CLOSED_WENT_STALE),
+    repo-relative, that exist."""
     out = []
     for mod in mods:
         d = modledger.ledger_dir(root, mod)
-        for rel in ["DISPATCH.jsonl"] + ["views/" + v for v in modledger.VIEWS]:
+        try:
+            views = sorted(set(modledger.VIEWS) | set(os.listdir(os.path.join(d, "views"))))
+        except OSError:
+            views = list(modledger.VIEWS)
+        for rel in ["DISPATCH.jsonl"] + ["views/" + v for v in views]:
             if os.path.exists(os.path.join(d, rel)):
                 out.append(os.path.relpath(os.path.join(d, rel), root))
     return out
