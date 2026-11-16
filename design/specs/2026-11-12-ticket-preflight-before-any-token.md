@@ -6,6 +6,22 @@ the decided design. The first three build tickets of section 7 are filed; the re
 Evidence (scripts, raw counts, the three GPT rounds): `D:\ClaudeWork\rimmandrake\conductor\ticket_preflight_20261112\`.
 Every number is tagged `[measured]` (a script in that folder produced it on 2026-11-12) or `[guess ~N%]` (my confidence).
 
+## Changed 2026-11-15 by `design/specs/2026-11-15-cheap-guards-at-every-door.md`
+
+This spec stands for the ticket doors. Three things changed:
+
+- **Relentless was retired by the owner on 2026-11-13.** Every clause below that keeps the preflight "out of
+  Relentless" guards a door that no longer opens, and ticket 11 (Relentless) is dead, not deferred.
+- **The helper-launch door gains a declared block.** An item may carry `## launch-checks` lines (`must-pass:`,
+  `must-fail:`), run by `detached_helper.launch` before the unit starts (the later spec, section 3.2, ticket
+  `RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES`). It is a declared fact, so it may refuse; the shadow run of
+  ticket 3 observes and times it like the door's other checks.
+- **Group F gains one check:** the acceptance command still fails on origin/main at launch. It is the `must-fail` line
+  of that block, not a new mechanism.
+
+Build order: the later spec's first three tickets come before tickets 1 to 3 here, because the waste measured on
+2026-11-15 sits at the stage doors. Tickets 1 to 3 are unchanged.
+
 ## 0. The order, and the short answer
 
 The owner, 2026-11-12 (verbatim in `OWNER_WORDS.md` in the evidence folder and in the item's filing event): *"Before a
