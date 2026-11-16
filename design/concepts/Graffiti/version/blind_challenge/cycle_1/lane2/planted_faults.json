@@ -1,0 +1,229 @@
+[
+ {
+  "id": "PF_K_WEATHER_ROOF_EQUAL",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "float days = outdoors ? 22f : 44f;",
+  "new": "float days = outdoors ? 44f : 44f;",
+  "bars": [
+   "weathering_bounds_marks",
+   "inv_weathering"
+  ]
+ },
+ {
+  "id": "PF_K_FADE_FROM_HALF",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "float f = (ageDays / lifeDays - 0.6f) / 0.4f;",
+  "new": "float f = (ageDays / lifeDays - 0.5f) / 0.5f;",
+  "bars": [
+   "weathering_bounds_marks"
+  ]
+ },
+ {
+  "id": "PF_K_FORCED_CLEAN_PROTECTED",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "if (forced || !settingOn) return false;",
+  "new": "if (!settingOn) return false;",
+  "bars": [
+   "scrub_protection",
+   "inv_scrub_protection"
+  ]
+ },
+ {
+  "id": "PF_K_EXIT_TAG_NOT_HOSTILE",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "return factionKnown && !factionIsPlayer && hostileToPlayer;",
+  "new": "return factionKnown && !factionIsPlayer;",
+  "bars": [
+   "raid_mark_troubles",
+   "inv_raid_marks"
+  ]
+ },
+ {
+  "id": "PF_K_FAR_SIDE_PAINTABLE",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "{ return side == 0 || side == 1 || side == 3; }",
+  "new": "{ return side >= 0 && side <= 3; }",
+  "bars": [
+   "sits_on_wall",
+   "inv_mark_on_wall"
+  ]
+ },
+ {
+  "id": "PF_K_MOCKERY_SUBJECT_SHRUGS",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "if (v.isSubject) return v.kind ? RM_Reaction.ShrugsOff : RM_Reaction.Humiliated;",
+  "new": "if (v.isSubject) return RM_Reaction.ShrugsOff;",
+  "bars": [
+   "mockery"
+  ]
+ },
+ {
+  "id": "PF_K_BUDGET_UNBOUNDED",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "return room >= offset ? 1f : room / offset;",
+  "new": "return 1f;",
+  "bars": [
+   "stories_not_tax",
+   "temperament"
+  ]
+ },
+ {
+  "id": "PF_K_VISIT_CAP_RECHARGES",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "if (delta < 0) return -Math.Min(-delta, Math.Max(0, VisitLossCap - lostSoFar));",
+  "new": "if (delta < 0) return delta;",
+  "bars": [
+   "visitors",
+   "inv_visitors"
+  ]
+ },
+ {
+  "id": "PF_K_PSYCHO_FEELS_GOOD",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "t.bad = t.good = t.fine = t.ugly = t.offended = 0f;",
+  "new": "t.bad = t.fine = t.ugly = t.offended = 0f;",
+  "bars": [
+   "temperament",
+   "inv_temperament"
+  ]
+ },
+ {
+  "id": "PF_K_CRAFT_NORMAL_NONZERO",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "case Normal: return 0f;",
+  "new": "case Normal: return 1f;",
+  "bars": [
+   "art_skill",
+   "inv_beauty_and_craft"
+  ]
+ },
+ {
+  "id": "PF_K_SCRAWL_CEILING_GOOD",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "case GraffitiForm.Scrawl: return Poor;",
+  "new": "case GraffitiForm.Scrawl: return Good;",
+  "bars": [
+   "ugliness_visible",
+   "art_skill"
+  ]
+ },
+ {
+  "id": "PF_K_FIGHT_FROM_NOTHING",
+  "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+  "old": "return Math.Min(ConfrontFightCap, ConfrontInsults * c * t);",
+  "new": "return Math.Min(ConfrontFightCap, ConfrontInsults * c * t + 0.1f);",
+  "bars": [
+   "fights_reasons"
+  ]
+ },
+ {
+  "id": "PF_G_PERMANENT_WEATHERS",
+  "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+  "old": "if (permanent || placedTick == -1 || !Spawned) return 0;",
+  "new": "if (placedTick == -1 || !Spawned) return 0;",
+  "bars": [
+   "weathering_bounds_marks",
+   "inv_weathering"
+  ]
+ },
+ {
+  "id": "PF_G_ROOF_BEAUTY_NOT_UNDONE",
+  "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+  "old": "return Spawned && Map.roofGrid.Roofed(Position) ? net / 0.3f : net;",
+  "new": "return net;",
+  "bars": [
+   "art_skill",
+   "inv_beauty_and_craft"
+  ]
+ },
+ {
+  "id": "PF_G_FORCED_CLEAN_DROPPED",
+  "file": "src/RimMandrake/Graffiti/Source/AutoCleanProtection.cs",
+  "old": "ProtectsFromAutoClean(forced, RM_GraffitiSettings",
+  "new": "ProtectsFromAutoClean(false, RM_GraffitiSettings",
+  "bars": [
+   "scrub_protection",
+   "inv_scrub_protection"
+  ]
+ },
+ {
+  "id": "PF_G_EXIT_TAG_ANY_FACTION",
+  "file": "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs",
+  "old": "faction != null && faction.HostileTo(Faction.OfPlayer)))",
+  "new": "faction != null))",
+  "bars": [
+   "raid_mark_troubles",
+   "inv_raid_marks"
+  ]
+ },
+ {
+  "id": "PF_G_RAID_TAGS_ROCK",
+  "file": "src/RimMandrake/Graffiti/Source/GraffitiJobUtility.cs",
+  "old": "def.Fillage == FillCategory.Full && def.building?.isNaturalRock != true && ",
+  "new": "def.Fillage == FillCategory.Full && ",
+  "bars": [
+   "raid_mark_troubles",
+   "inv_raid_marks"
+  ]
+ },
+ {
+  "id": "PF_G_SIGIL_WITHOUT_IDEO",
+  "file": "src/RimMandrake/Graffiti/Source/GraffitiPool.cs",
+  "old": "if (ext.sigilTierA && ideo == null && placer != null) return false;",
+  "new": "if (false && ext.sigilTierA && ideo == null && placer != null) return false;",
+  "bars": [
+   "ideo_sigil",
+   "inv_ideo_sigils",
+   "stands_alone_settings"
+  ]
+ },
+ {
+  "id": "PF_G_COMPULSIVE_CLEAN_ANY_NEAT",
+  "file": "src/RimMandrake/Graffiti/Source/GraffitiCompulsiveClean.cs",
+  "old": "if (GraffitiTemperament.Of(pawn).neat < 2 ||",
+  "new": "if (GraffitiTemperament.Of(pawn).neat < 1 ||",
+  "bars": [
+   "temperament"
+  ]
+ },
+ {
+  "id": "PF_G_VISIT_ALWAYS_NEW",
+  "file": "src/RimMandrake/Graffiti/Source/GraffitiSocial.cs",
+  "old": "now - start > RM_GraffitiKernel.VisitTicks)",
+  "new": "now - start >= 0)",
+  "bars": [
+   "visitors",
+   "inv_visitors"
+  ]
+ },
+ {
+  "id": "PF_S_PACE_DEFAULT_OFF_SLIDER",
+  "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+  "old": "public static int paintIntervalTicks = 250;",
+  "new": "public static int paintIntervalTicks = 2500;",
+  "bars": [
+   "stands_alone_settings",
+   "inv_settings"
+  ]
+ },
+ {
+  "id": "PF_S_EXIT_TAGGING_DEFAULT_OFF",
+  "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+  "old": "public static bool raidExitTaggingEnabled = true;",
+  "new": "public static bool raidExitTaggingEnabled = false;",
+  "bars": [
+   "stands_alone_settings",
+   "raid_mark_troubles"
+  ]
+ },
+ {
+  "id": "PF_D_VANDAL_NOT_SCRAWL",
+  "file": "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml",
+  "old": "<form>Scrawl</form>",
+  "new": "<form>Piece</form>",
+  "bars": [
+   "ugliness_visible",
+   "marks_various"
+  ]
+ }
+]

@@ -1,0 +1,65 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL",
+   "class": "Problem",
+   "bar": "raider_pressure",
+   "also_bars": [
+    "inv_raider_future_marks",
+    "stands_alone_settings",
+    "floor:mod_settings"
+   ],
+   "criterion": "tree.json raider_pressure: while a raider faction's mark stands, a letter names it and points at the mark, and its next raid comes sooner or larger by a setting; the last mark gone lifts it (control: the setting off gives equal points and no letter)",
+   "evidence": [
+    "grep -rni pressure src/RimMandrake/Graffiti/Source --include=*.cs (SelfTest aside): 0 hits [measured]",
+    "RM_GraffitiMod.cs ships 8 settings, none for the pressure; lane1 row settings_count_vs_bar (INFO) and sheet.md: '8 today, 11 with the raider pressure's switch, mode and size'",
+    "record.json inv_raider_future_marks: impl absent (no IncidentWorker_Raid, RaidStrategy or storyteller hook)",
+    "the build item named here is open on the ledger (infrastructure/state/items/RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL.md); scenes.json sc_raider_pressure names it as entry_point_item",
+    "the sole decider sc_raider_pressure (live, stage 6) cannot pass on this code: Stage 6 would spend a live run to rediscover it",
+    "Stage 3's exit let it through; the gate gap is filed as RIMMANDRAKE_GATE_STAGE_THREE_ON_UNBUILT_BEHAVIOUR_FROZEN_RECORD (fix unknown, handed off)"
+   ],
+   "would_pass": "the per-faction standing-mark record, letter, raid points or timing push and its three Mod Settings exist, with the offline kernel test and live scene the item names, and sc_raider_pressure passes at Stage 6",
+   "smallest_fix": "work the open build item RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL (Stage 3 work: a new behaviour, its settings and save/load; too large for a fix in place by the blind judge, and no second ticket is filed for it)",
+   "verdict_on_criterion": "sound: the owner's root and his card (OWNER:1794721657820999692, OWNER:1794728164229812842); the code is short of it",
+   "status": "PENDING"
+  },
+  {
+   "id": "RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS",
+   "class": "Problem",
+   "bar": "ugliness_visible",
+   "criterion": "tree.json ugliness_visible: 'a Beauty -15 vandal scrawl look worse than a Beauty -3 tally, so the stat and the picture agree'; control 'the beauty stats read -15 and -3 from the defs'",
+   "evidence": [
+    "Filth_Mark.NetBeauty: with hasCraft it returns RM_GraffitiKernel.CraftBeauty(craft); the def's Beauty stat is read only for a mark with no craft (Filth_Mark.cs:211-219)",
+    "the inspect line shows that craft beauty (Filth_Mark.cs:520, WallInspectPatch.cs:33)",
+    "craft is capped by form (Filth_Mark.cs:326, 426): scrawl at Poor, tally (Glyph) at Normal; a same-hand pair reads -6/-6 at Awful and -2.5/-2.5 at Poor (lane1 row ugliness_craft_vs_def_stat, kernel CraftBeauty)",
+    "held statement row 5 (walk_defects_2026-11-14_graffiti.md) saw the scrawl inspect at Beauty -2",
+    "standing ruling 2026-11-16 'A passing bar is an experience, never a tuning number': the bar pins two stat values"
+   ],
+   "would_pass": "the bar checks the beauty a player inspects (the painted pair's inspect lines) against the picture, with no stat value in its words",
+   "smallest_fix": "steward re-pins the criterion to the inspected beauty of a painted pair; neutral fixer drops the numbers from the bar's words; then decide in code whether a same-hand scrawl must inspect strictly uglier than a tally",
+   "verdict_on_criterion": "flawed: its control reads def stats the game no longer shows for painted marks, so it passes while stat and picture can disagree",
+   "status": "NOTED_FOR_CONDUCTOR"
+  },
+  {
+   "id": "RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_SIX_RULES_LANE_ONE_CAUGHT",
+   "class": "Polish",
+   "bar": "stories_not_tax",
+   "also_bars": [
+    "visitors",
+    "temperament",
+    "art_skill",
+    "ugliness_visible",
+    "fights_reasons"
+   ],
+   "criterion": "no bar: T_FUZZ supports these bars and decides none",
+   "evidence": [
+    "planted_results.jsonl: PF_K_BUDGET_UNBOUNDED, PF_K_VISIT_CAP_RECHARGES, PF_K_PSYCHO_FEELS_GOOD, PF_K_CRAFT_NORMAL_NONZERO, PF_K_SCRAWL_CEILING_GOOD, PF_K_FIGHT_FROM_NOTHING caught by LANE1 only",
+    "plant_faults.py --expect-caught --no-lane1 on those six: rc 1, 'EXPECT CAUGHT: FAIL, missed:' all six (base 8c4bced9e)"
+   ],
+   "would_pass": "plant_faults.py --expect-caught on the six exits 0",
+   "smallest_fix": "add the six properties (oracles: lane-1 rows mood_budget_conserved, visit_goodwill_capped, temper_psycho_sensitive_ordinary, craft_beauty_both_ways, craft_ceiling_scrawl_poor, fight_chance_bounded) to SelfTest/GraffitiFuzz.cs",
+   "verdict_on_criterion": "n/a (no criterion; test coverage)",
+   "status": "PENDING"
+  }
+ ]
+}
