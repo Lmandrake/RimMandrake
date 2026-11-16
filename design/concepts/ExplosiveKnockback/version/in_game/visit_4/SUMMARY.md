@@ -72,7 +72,21 @@ A p99 over ~480 window frames is the 5th-slowest frame. On SteveDesktop the mod-
 3 pairs flip and 9 pairs read +1% to +19% on one build. The 10% bar is about 4 ms, inside that spread. The 21-pair median
 is the decision; the per-blast excess above is the better reading of what the mod costs.
 
+## The acceptance (rows.jsonl)
+
+Full-list leg, Archmagi (bridge taken when free, ModsConfig backed up to
+`D:\ClaudeWork\backups\ModsConfig.pre_ek_walk_fullleg_20261116T091447.xml`, 316 mods, the same DLL 011a6a37, cold load
+09:15-09:28 PST): `--save EK_WALK_RAID_BASE_20261115T173148 --frame-evidence evidence/ek_frames_small_DECISIVE_21.json`
+exits 0, 18 of 18 rows PASS (evidence/sc_walk_raid_fulllist.json). CARRIER_TICK_COST is recorded, not judged, and its
+read found 0 carriers in the air (5.73 ms at rest, 5.57 ms after the shells): it measured nothing about carriers this time.
+
 ## Left
 
-The full-list leg (the walk's behaviour rows reading this FRAME_BUDGET by --frame-evidence) needs Archmagi with the
-proof DLL 011a6a37 deployed (the md5 must match) and the 316-mod list; command in the item's last note.
+- The first throw of a session still costs 8-18 ms in the request flush (cold JIT); one frame, once. Not filed: it did not
+  decide the row (the first on arm is the highest in every cold run, and the median absorbs it).
+- SteveDesktop crashed natively three times and ran one run at ~10 fps; noted on
+  RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START. Its force stop failed once:
+  RIMMANDRAKE_STOP_STEVE_GAME_FORCE_KILL_LEFT_IT_RUNNING.
+- SteveDesktop was left on the 34-mod list with the proof DLL 011a6a37 and Archmagi's FlowWorks, StructureInjections,
+  StructureInjectionsRUT (its old folders are in `~/rm/backups/ek_pilot_*` on SteveDesktop's WSL); the runner's next
+  deploy replaces them. Archmagi was left on the 316-mod list with the same proof DLL, the walk colony loaded.
