@@ -1,0 +1,24 @@
+{
+  "run": "rm-role-designercodex-1794823184",
+  "stage": 3,
+  "outcome": "done",
+  "summary": "Recovered the persisted stage-3 package after the prior transport timeout. Gate A and showcase validation pass. Rechecked all 50 source fingerprints, original sheet quotations, 44 planned scenes, seven filed build items, 44 built/in-scope coverage units and all 23 floor lines. Retained the prior agent-authored leaf grouping, scene designs and later-showcase order. Runtime experience remains unmeasured.",
+  "validation": {
+    "gate_a": "PASS",
+    "showcase_set": "PASS",
+    "source_fingerprints": "50 match",
+    "scene_item_coverage": "44 planned scenes mapped to seven filed items",
+    "floor_applicability": "23 applicable lines",
+    "runtime_acceptance": "UNMEASURED"
+  },
+  "recovered_from": "rm-role-designercodex-1794810374",
+  "artifacts": [
+    "sheet.md",
+    "tree.json",
+    "plan.md",
+    "scenes.json",
+    "floor.json",
+    "record.json",
+    "write_checks.json"
+  ]
+}

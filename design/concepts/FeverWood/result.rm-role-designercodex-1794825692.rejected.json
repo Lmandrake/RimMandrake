@@ -1,0 +1,30 @@
+{
+  "run": "rm-role-designercodex-1794825692",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Independent Claude Opus cold-reader exam passes 26/26, with 17 core reject scenarios and zero false accepts. The separate Control misses the mirror-intelligence mutation case after mirror_intel is removed. All five fresh processes are named by returned session UUID and charged 301165 weighted tokens. Frozen design inputs match. Runtime acceptance and stage-5 gates remain pending.",
+  "validation": {
+    "score": {
+      "right": 26,
+      "total": 26
+    },
+    "accept_where_reject_core": 0,
+    "control_missed_ids": [
+      "challenger_mirror_list_reader_bleed"
+    ],
+    "helpers_charged": 5,
+    "helper_weighted_tokens": 301165,
+    "runtime_acceptance": "UNMEASURED"
+  },
+  "agent_decisions": [
+    "Selected mirror_intel for the removed-leaf Control. Preserved every Examiner and Challenger scenario in the frozen set."
+  ],
+  "artifacts": [
+    "exam.json",
+    "exam_control/tree.json",
+    "exam_control/sheet.md",
+    "exam_control/copy.json",
+    "exam_runs/rm-role-designercodex-1794825692",
+    "record.json"
+  ]
+}

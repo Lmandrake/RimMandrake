@@ -23,10 +23,45 @@
     "ref": "rm-role-designercodex-1794805981:/root/edge_review round 2; conservative reviewer estimate; exact usage unavailable",
     "stage": 2,
     "tokens": 15000
+   },
+   {
+    "at": "2026-11-16T10:44:11Z",
+    "kind": "helper",
+    "ref": "rm-role-designercodex-1794825692:challenger:a107fb7d-4419-4cc9-882b-067ddfb6375b",
+    "stage": 4,
+    "tokens": 57634
+   },
+   {
+    "at": "2026-11-16T10:44:28Z",
+    "kind": "helper",
+    "ref": "rm-role-designercodex-1794825692:examiner:31f3f53a-eb71-4097-919a-1dbd4fde7f68",
+    "stage": 4,
+    "tokens": 38339
+   },
+   {
+    "at": "2026-11-16T10:46:06Z",
+    "kind": "helper",
+    "ref": "rm-role-designercodex-1794825692:reader_one:1268f476-1af6-4728-8b42-8fa8c5a89e26",
+    "stage": 4,
+    "tokens": 67907
+   },
+   {
+    "at": "2026-11-16T10:46:06Z",
+    "kind": "helper",
+    "ref": "rm-role-designercodex-1794825692:reader_two:524343bf-1a53-4099-af5b-d25cd82f9754",
+    "stage": 4,
+    "tokens": 68412
+   },
+   {
+    "at": "2026-11-16T10:46:06Z",
+    "kind": "helper",
+    "ref": "rm-role-designercodex-1794825692:control:35cbd080-cbb5-4d00-b5fe-779445573ebc",
+    "stage": 4,
+    "tokens": 68873
    }
   ],
   "reserve": 60000,
-  "spent": 165000
+  "spent": 466165
  },
  "draft_input": {
   "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.check.json)",
@@ -88,6 +123,30 @@
    "stage": 3,
    "what": "retry",
    "why": "run rm-role-designercodex-1794810374 result rejected: Codex transport failed: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: idle timeout waiting for websocket)'}"
+  },
+  {
+   "at": "2026-11-16T09:59:52Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794823184, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T10:02:08Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794823184: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T10:41:46Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794825692, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T10:48:45Z",
+   "stage": 4,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794825692 result rejected: decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam.json does not exist; decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json does not exist"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -185,6 +244,38 @@
    "why": [
     "Codex transport failed: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: idle timeout waiting for websocket)'}"
    ]
+  },
+  {
+   "at": "2026-11-16T10:02:08Z",
+   "inputs": {
+    "exam": null,
+    "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+    "sheet": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+    "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794823184",
+   "stage": 3,
+   "summary": "Recovered the persisted stage-3 package after the prior transport timeout. Gate A and showcase validation pass. Rechecked all 50 source fingerprints, original sheet quotations, 44 planned scenes, seven filed build items, 44 built/in-scope coverage units and all 23 floor lines. Retained the prior agent-authored leaf grouping, scene designs and later-showcase order. Runtime experience remains unmeasured."
+  },
+  {
+   "at": "2026-11-16T10:48:45Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794825692",
+   "stage": 4,
+   "why": [
+    "decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam.json does not exist",
+    "decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json does not exist"
+   ]
   }
  ],
  "runner": "codex",
@@ -220,10 +311,26 @@
     "input_tokens": 7548859,
     "output_tokens": 56431
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794823184",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 707381,
+    "output_tokens": 4520
+   }
+  },
+  {
+   "run": "rm-role-designercodex-1794825692",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 1807773,
+    "output_tokens": 10817
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready"
 }
