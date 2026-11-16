@@ -70,6 +70,7 @@ REPO_ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 CONFIG_PATH = os.path.join(HERE, "modledger.json")
 REDUCER_VERSION = 1
 VIEWS = ("state.md", "history.md", "state.json")
+INDEX_VERSION = 2           # bump when the index's tables or statuses change: a cached index then rebuilds
 WRITER_RE = re.compile(r"^(DISPATCH|OWNER|STEWARD|BACKFILL|(HOLDER|JUDGE)\.[A-Za-z0-9_-]{1,64})$")
 MOD_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]{0,63}$")
 REQUIRED = ("id", "key", "ts", "mod", "version", "writer", "kind", "subject", "body")
@@ -1348,7 +1349,7 @@ def index(root, mod):
     -> its path. Tables: ev (one row per event), subj (the reducer's state per subject), fts (FTS5 over subject, text,
     fix, said, evidence, content='ev'). Deleting it loses nothing."""
     path = index_path(root, mod)
-    stamp = _canon({"offsets": _offsets(root, mod), "reducer": REDUCER_VERSION})
+    stamp = _canon({"offsets": _offsets(root, mod), "reducer": REDUCER_VERSION, "index": INDEX_VERSION})
     if os.path.exists(path):
         try:
             con = sqlite3.connect(path)
