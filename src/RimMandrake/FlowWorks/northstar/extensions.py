@@ -65,6 +65,7 @@ FW_TOGGLES = [
     "swaleEnabled", "pitExposureEnabled",
     "pitDepthDrawOffsetEnabled",  # PIT_DEPTH_DRAW_OFFSET_1: toggle_pit_depth_draw existed, the name was missing here
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
+    "tossFlameOrderEnabled",     # RM_TossFlame (30cc533cf3): owed until sc_toss_flame runs live
     "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
     "viscosityEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)
     # 2026-10-05 build pass (belt_fwbuild): chains fire_explosion/fire_foam/fire_rain, pit_prison_room, liquid_pump, bottle_revert,
@@ -879,9 +880,9 @@ def plot_A_dug_channel(t):
 
 @suite.chain("plot_B_fill_tiers")
 def plot_B_fill_tiers(t):
-    """Plot B: five parallel 1x6 runs at D=5 filled to F=0..4 (dry, 0.5 .. 2 m of water; the bar's sixth look, under 25 cm,
-    is a fill of less than one notch that no bridge tool sets, so it is recorded UNMEASURED) with the engine frozen, so a
-    pulse cannot equalise them. The engine is restored in `finally` by `_setting`."""
+    """Plot B: five parallel 1x6 runs at D=5 filled to F=0..4 (dry, 0.5 .. 2 m of water) and a sixth holding 0.2 m (the
+    bar's under-25 cm look, staged through ProofFillWithFluid in metres) with the engine frozen, so a pulse cannot
+    equalise them. The engine is restored in `finally` by `_setting`. selftest_fill_scenes_dig_first pins it."""
     x0, z0 = _prep_plot(t, "B")
     runs = [_line(x0 + 3, z0 + 2 + 3 * i, 6) for i in range(FILL_TIERS)]
     for r in runs:
