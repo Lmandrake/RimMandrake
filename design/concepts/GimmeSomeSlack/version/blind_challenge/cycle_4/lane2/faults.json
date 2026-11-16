@@ -1,0 +1,66 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED",
+   "class": "Problem",
+   "bar": "no_hose, no_hose_in_gss",
+   "criterion": "tree.json no_hose_in_gss oracle: offline scan, no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack; false pass: the scan matching only def names, missing a texture folder",
+   "evidence": [
+    "lane2/planted_results.jsonl: NH1 (hose texture in topTexPath), NH2 (reel texture in texturePath), NH3 (FlowWorks hose def type under defName RM_Look_Scrapper), NH4 (RM_HoseReel defName literal in AerialDefOf.cs), NH5 (patch xpath into RM_HoseReel's graphicData) each left T_NO_HOSE green; lane 1's own scan caught all five",
+    "lane2/red_nohose.txt: check_nohose_catches.py on the parent tree: 2 of 7 caught, rc 1",
+    "cause: selftest_gss_no_hose.py read a fixed tag list (defName, label, thingClass, texPath, graphicClass, compClass, workerClass), never the element tag or xpath, and C# literals only when they held a '/'"
+   ],
+   "would_pass": "every planted hose/reel leftover NH1..NH7 turns the decider's tree row T1 red by name, and the clean tree stays green",
+   "smallest_fix": "read every non-prose element's text and its tag, and RM_/RSW_/RUT_ defName literals in shipped C#; pin the five as mutants M11..M15",
+   "verdict_on_criterion": "sound: the criterion is right, the decider was short of it",
+   "status": "FIXED 69e7d7f47e34bcdb498a785f4a6164773d7903aa",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground, cords_meet_walls_at_face",
+   "criterion": "sheet: cords end at the wall face, never drawn across a wall or rock; a killed mast's wire lies on the ground",
+   "evidence": [
+    "lane1/lane1_rows.jsonl row fallen_random_lies_on_ground: seed 4405, 22 of 2500 fallen wires put a grounded point inside an unwalkable cell, deepest 0.114 cell inside the edge, Blocked false; shrunk to one wall cell (26,35)",
+    "cause: AerialMath.LayFallen's clearTo samples the ground path every 0.2 cell, the cable is drawn every 0.1 (and coils), so a drawn point between two checks can clip a wall corner",
+    "why Polish: the ground wire draws at AltitudeLayer.Conduits + 0.004 (SectionLayer_RM_AerialGround.cs:44), under wall and rock art, so the clip is hidden; a shock contact listed on a wall cell is a cell no pawn stands on"
+   ],
+   "would_pass": "lane 1 row fallen_random_lies_on_ground PASS",
+   "smallest_fix": "clearTo steps 0.1 (the draw step)",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS",
+   "class": "Polish",
+   "bar": "no_hose_in_gss",
+   "criterion": "tree.json no_hose_in_gss experience: 'No hose, reel or pipe is drawn by this mod'",
+   "evidence": [
+    "lane1/lane1_rows.jsonl INFO row nohose_pipe_span_drawing: GSS code draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats with the FlowWorks def's spanTexPath, or the wire as stand-in)",
+    "bar settings_switch_cleanly (locked) requires pipe poles with their own switch; the decider's docstring reads the bar as 'no hose, reel or pipe thing of GSS's own'; the oracle and red name hoses and reels only",
+    "why Polish: both readings agree on today's tree (no hose/reel/pipe def, texture or class ships), so no player sees a difference; the words are what a cold reader would misread"
+   ],
+   "would_pass": "the bar words say what the decider checks",
+   "smallest_fix": "neutral fixer rewords: 'No hose, reel or pipe thing of its own is drawn by this mod; the overhead span of FlowWorks pipe poles is FlowWorks' (or the Conductor rules otherwise)",
+   "verdict_on_criterion": "ambiguous wording, meaning intact",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_CORRECT_GSS_DRIPLOOPS_COMMENT_SAYS_ON_SHIPS_OFF",
+   "class": "Polish",
+   "bar": "settings_switch_cleanly",
+   "criterion": "Mod Settings defaults = shipped behaviour (floor mod_settings)",
+   "evidence": [
+    "Source/Aerial/AerialSettings.cs:74 says 'Default ON (owner by card 2026-10-15...)'; the default is AerialMath.DripLoopsDefault = false (AerialMath.cs:283, off since the owner's 2026-11-08 sitting); behaviour is right, the comment is stale"
+   ],
+   "would_pass": "grep -c 'Default ON' AerialSettings.cs -> 0",
+   "smallest_fix": "correct the comment",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": 3
+  }
+ ]
+}

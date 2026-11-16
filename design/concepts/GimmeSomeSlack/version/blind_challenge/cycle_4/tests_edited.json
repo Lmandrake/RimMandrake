@@ -1,0 +1,17 @@
+{
+ "cycle": 4,
+ "edited": [
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+   "why": "strengthens: reads every non-prose def field and the element tag (was a fixed list of 7 tags), xpaths, and RM_/RSW_/RUT_ defName literals in shipped C#; mutants M11-M15 added (topTexPath, texturePath, def type tag, defName literal, patch xpath); nothing removed or loosened, every earlier mutant and green control kept",
+   "before": {
+    "sha": "46c33d40e29aa6facc39b0e44c8a18fdc135b173",
+    "sha256_16": "1d1a7f9b06b164df"
+   },
+   "after": {
+    "sha": "69e7d7f47e34bcdb498a785f4a6164773d7903aa",
+    "sha256_16": "2c377fca26958304"
+   }
+  }
+ ]
+}
