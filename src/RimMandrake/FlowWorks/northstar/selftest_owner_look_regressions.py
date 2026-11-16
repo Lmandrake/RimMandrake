@@ -15,14 +15,19 @@ PLAN = {
                ["BP5_brim", 60, 0, 8, None], ["BP6_tar", 80, 0, 3, "RM_Fluid_Tar"]],
     "things": [["furn", "furn:Bed", "Bed", "Core", [3, 3], 1], ["furn", "furn:SculptureGrand", "SculptureGrand", "Core", [8, 8], 1],
                ["item", "item:0:Steel", "Steel", "Core", [5, 5], 75], ["mini", "mini:0:Armchair", "Armchair", "Core", [6, 6], 1],
-               ["corpse", "corpse:0:Villager", "Villager", "Core", [10, 10], 1]],
+               ["corpse", "corpse:0:Villager", "Villager", "Core", [10, 10], 1],
+               ["furn", "furn:TableButcher", "TableButcher", "Core", [12, 12], 1]],
 }
-HEIGHT = {"Bed": 0.8, "SculptureGrand": 3.0, "Steel": 0.3, "MinifiedThing": 0.75, "Corpse_Human": 0.3}
+# TableButcher stands 2.0 m: in BP3 (2 m of water) its top is AT the line, as fill-0.5 things were at BP2_1m live 2026-11-15
+HEIGHT = {"Bed": 0.8, "SculptureGrand": 3.0, "Steel": 0.3, "MinifiedThing": 0.75, "Corpse_Human": 0.3, "TableButcher": 2.0}
 KIND = {"furn": "building", "item": "item", "mini": "minified", "corpse": "corpse"}
 
 
-def toy_world(fault=None):
-    """-> proof(x, z) for PLAN under a toy law (clarity 0.45 water, 0 tar; Seen = 1 - 0.5*(1 - c^(m + 0.35)))."""
+def toy_world(fault=None, queue=2448):
+    """-> proof(x, z) for PLAN under a toy law (clarity 0.45 water, 0 tar; Seen = 1 - 0.5*(1 - c^(m + 0.35))).
+    The floor shadow is the 11-12 design (RM_UnderLiquid.ThingShadow): its own alpha, drawn UNDER the liquid sheet
+    (shadowQueue < RM_FaceMaterial.SheetQueue 2449), none under tar. queue=None: the reply carries no shadowQueue (the
+    ProofSubmerge of 2026-11-15 does not report it)."""
     at = {}
     for key, x0, z0, f, fl, kind, dn, x, z in O.plan_rows(PLAN):
         at[(x, z)] = (key, f, fl, kind, "MinifiedThing" if kind == "mini" else "Corpse_Human" if kind == "corpse" else dn)
@@ -48,15 +53,19 @@ def toy_world(fault=None):
         sl, sf = (seen(c, line if line > 0 else 1e-4), seen(c, lv)) if share > 0 else (1.0, 1.0)
         if fault == "tar_seen" and fl:
             sl = sf = 0.3
-        shadow = 0.30 * seen(c, lv) if kind == "furn" else None
-        if fault == "shadow_dry_alpha" and kind == "furn" and f > 0:
-            shadow = 0.30
+        shadow = (0.0 if fl else 0.30) if kind == "furn" else None
+        if fault == "shadow_faded" and kind == "furn" and f > 0 and not fl:
+            shadow = 0.30 * seen(c, lv)      # the drawer fading it itself: the old shadow drawn OVER the sheet
+        if fault == "shadow_lost" and kind == "furn" and f > 0 and not fl:
+            shadow = 0.0                     # a full pit hiding shadows (owner 11-13: "transparent to them as usual")
+        q = 2450 if fault == "shadow_over_sheet" else queue
         label = (0.0 if seen(c, lv - h) < 0.05 else seen(c, lv - h)) if share > 0 else 1.0
         if fault == "label_bright" and share >= 1.0:
             label = 1.0
+        sq = "" if shadow is None or q is None else " shadowQueue=%d" % q
         return ("def=%s class=X kind=%s rot=0 depth=8 fill=%d level=%.2f share=%.3f clarity=%.3f seenLine=%.3f "
-                "seenFoot=%.3f printedLevel=- setting=on height=%.2f shadow=%s label=%.3f liquid=- tint=0.05,0.05,0.05"
-                % (dn, KIND[kind], f, f, share, c, sl, sf, h, "-" if shadow is None else "%.3f" % shadow, label))
+                "seenFoot=%.3f printedLevel=- setting=on height=%.2f shadow=%s%s label=%.3f liquid=- tint=0.05,0.05,0.05"
+                % (dn, KIND[kind], f, f, share, c, sl, sf, h, "-" if shadow is None else "%.3f" % shadow, sq, label))
     return proof
 
 
@@ -86,10 +95,44 @@ def main():
     # each planted fault reds its own family (and the build he saw reds the three he named)
     for fault, fam in (("old_build", {"OL_buildings_covered", "OL_goods_covered", "OL_corpses_covered"}),
                        ("corpse_refused", {"OL_corpses_covered"}), ("goods_dry", {"OL_goods_covered"}),
-                       ("tar_seen", {"OL_opaque_hides"}), ("shadow_dry_alpha", {"OL_no_surface_shadow"}),
+                       ("tar_seen", {"OL_opaque_hides"}), ("shadow_faded", {"OL_no_surface_shadow"}),
+                       ("shadow_lost", {"OL_no_surface_shadow"}), ("shadow_over_sheet", {"OL_no_surface_shadow"}),
                        ("label_bright", {"OL_labels_fade"}), ("non_monotone", {"OL_one_law_over_fill"})):
         red = families(O.judge_scene(PLAN, toy_world(fault)), "FAIL")
         check("planted %s goes red in %s" % (fault, sorted(fam)), fam <= red, red)
+    # the floor shadow (11-12 design: its own alpha UNDER the sheet, owner 11-13 "transparent to them as usual")
+    sh = [r for r in good if r[0].startswith("OL_no_surface_shadow_BP3_")]
+    check("shadow under the sheet in clear water at the dry alpha -> PASS", sh and all(r[1] == "PASS" for r in sh), sh[:3])
+    over = [r for r in O.judge_scene(PLAN, toy_world("shadow_over_sheet")) if r[0].startswith("OL_no_surface_shadow")]
+    check("planted shadow over the sheet -> its per-thing rows and the sheet row FAIL",
+          any(r[0] == "OL_no_surface_shadow_under_sheet" and r[1] == "FAIL" for r in over)
+          and any(r[0].startswith("OL_no_surface_shadow_BP3_") and r[1] == "FAIL" for r in over), over[:3])
+    noq = O.judge_scene(PLAN, toy_world(queue=None))
+    check("no shadowQueue in the reply: the sheet row is BLOCKED ON HOOK, never PASS",
+          [r[1] for r in noq if r[0] == "OL_no_surface_shadow_under_sheet"] == ["BLOCKED"], [r for r in noq if r[1] != "PASS"][:3])
+    check("tar: a shadow seen through it -> FAIL",
+          O.judge_shadow(O.kv_of("def=Bed kind=building share=1 clarity=0.000 shadow=0.300"), True)[0] == "FAIL")
+    # labels (RM_UnderLiquid.LabelAlpha: a label fades with its TOP; a top at the line is seen whole)
+    jl = O.judge_label
+    check("label: top exactly at the line, label 1 -> PASS",
+          jl(O.kv_of("share=1.000 clarity=0.450 level=2.00 height=1.00 label=1.000"))[0] == "PASS")
+    tb = [r for r in good if r[0] == "OL_labels_fade_BP3_furn_TableButcher"]
+    check("scene: TableButcher's top at the BP3 line reads PASS", tb and tb[0][1] == "PASS", tb)
+    check("label: 1 m over the top in clear water at full brightness -> FAIL",
+          jl(O.kv_of("share=1.000 clarity=0.450 level=4.00 height=1.00 label=1.000"))[0] == "FAIL")
+    check("label: under tar over the top but still shown -> FAIL",
+          jl(O.kv_of("share=1.000 clarity=0.000 level=4.00 height=1.00 label=0.300"))[0] == "FAIL")
+    # vacuous reads are UNMEASURED, never FAIL or PASS
+    for why, reply in (("no map", 'REFUSED: need a current map and "x,z"'),
+                       ("no engine", "REFUSED: cell off the map or no excavation engine"),
+                       ("no pit cell", "REFUSED: nothing drawn under liquid at 3,3 (depth=0 waterM=0.0000)"),
+                       ("thing not in a pit", "def=Bed class=X kind=building rot=0 depth=0 level=0.00 share=0.000 "
+                                              "clarity=0.000 seenLine=1 seenFoot=1 height=0.80 shadow=- label=1.000")):
+        rv = O.judge_scene(PLAN, lambda x, z, reply=reply: reply)
+        check("vacuous read (%s) -> every row UNMEASURED" % why, rv and all(r[1] == "UNMEASURED" for r in rv),
+              sorted({r[1] for r in rv}))
+    rv = O.judge_scene({"copies": [], "things": []}, lambda x, z: "")
+    check("empty plan -> one UNMEASURED row, not an empty PASS", [r[1] for r in rv] == ["UNMEASURED"], rv)
     # the dry copy never reds a covered row on share 0
     dry = [r for r in good if "_BP0_dry_" in r[0]]
     check("dry copy: covered rows PASS on share 0", dry and all(r[1] == "PASS" for r in dry), dry[:3])

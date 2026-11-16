@@ -27,10 +27,15 @@ Rows (one family per owner sentence; the pure judges below are selftested by sel
   OL_goods_covered          16:2x "Items (raw steel, minified furniture) never become covered" -> items, minified: share > 0.
   OL_corpses_covered        18:15 corpses drawn whole; 20:55 "ignore bodies" -> kind=corpse, share > 0.
   OL_opaque_hides           20:55 "deep tar seems to ignore bodies, torches ..." -> in tar every drowned part seenLine 0.
-  OL_no_surface_shadow      18:15 "Strange shadows are being cast by some items and not others" -> a building in a pit has
-                            ONE floor shadow, seen through by the law (tar: 0); never the dry-ground alpha.
-  OL_labels_fade            18:15 labels at full brightness over faded items -> label < 1 when wholly under clear liquid,
-                            0 under tar.
+  OL_no_surface_shadow      18:15 "Strange shadows are being cast by some items and not others"; 11-13 01:26Z "it should
+                            simply be transparent to them as usual" -> a building in a pit has ONE floor shadow at its own
+                            (dry) alpha in clear liquid, drawn UNDER the liquid's sheet so the sheet hides it by the law
+                            (RM_UnderLiquid.ThingShadow, RM_FaceMaterial.UnderSheetQueue); 0 under tar; 0 or a faded alpha
+                            in clear liquid is FAIL. The _under_sheet row reads shadowQueue < SheetQueue when ProofSubmerge
+                            reports it, else BLOCKED ON HOOK (it does not, 2026-11-16).
+  OL_labels_fade            18:15 labels at full brightness over faded items -> a label fades with its thing's TOP
+                            (RM_UnderLiquid.LabelAlpha): label < 1 once the line is over the top in clear liquid, 0 under
+                            tar; a top at the line is seen whole.
   OL_one_law_over_fill      16:2x "It's as though each case is independently set" -> per thing, BP0..BP5: share never
                             falls and seenFoot never rises as the water rises.
   OL_pour_never_no_room     20:49 "it always responded "No Room." It shouldn't do that. It should go ahead and overflow."
@@ -54,6 +59,9 @@ GL = "RimMandrake.FlowWorks.RM_GodLiquid"
 PW = 16
 SPARE = (140, 100, 6, 8)        # the spare dry test pit of the keeper save: SW corner, side, depth notches
 THING_SHADOW_ALPHA = 0.30       # RM_UnderLiquid.DefaultThingShadowAlpha (kept equal by selftest_flowworks_underliquid_parity)
+SHEET_QUEUE = 2449              # RM_FaceMaterial.SheetQueue: a floor shadow must draw before it (UnderSheetQueue 2448)
+NOTCH_M = 0.5                   # RM_Volume.MetresPerNotch: ProofSubmerge's level= is in notches
+LINE_TOL = 0.006                # level= and height= are printed F2
 EPS = 1e-6
 OVERLAY_HOOK = "RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS"
 LABEL_HOOK = "RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE"
@@ -73,6 +81,19 @@ def kv_of(text):
             k, v = tok.split("=", 1)
             out[k] = v
     return out
+
+
+def vacuous(text, kv):
+    """-> why the read cannot judge anything (no map, no engine, no pit cell), or None. A REFUSED "nothing drawn" over a
+    dug cell is not vacuous: the planned thing is drawn whole over the liquid (judge_covered's FAIL)."""
+    t = str(text or "")
+    if t.startswith("REFUSED"):
+        if "nothing drawn" not in t or "(depth=0 " in t:
+            return "vacuous read: " + t[:120]
+        return None
+    if kv and num(kv, "depth") == 0:
+        return "the thing is not in a pit cell (depth=0)"
+    return None
 
 
 def num(kv, k, dflt=None):
@@ -115,26 +136,36 @@ def judge_opaque(kv):
     return "PASS", "hidden (share=%s)" % kv.get("share")
 
 
-def judge_shadow(kv, wet):
-    """A building in a pit casts one floor shadow, seen through the liquid by the law: wet clear < the dry alpha, tar 0."""
-    s, cl = num(kv, "shadow"), num(kv, "clarity", 0.0)
+def judge_shadow(kv, wet, dry=None):
+    """A building in a pit casts one floor shadow (RM_UnderLiquid.ThingShadow): dry its alpha (the setting
+    pitThingShadowAlpha); in clear liquid the SAME alpha, drawn under the sheet, which hides it by the law; tar 0.
+    dry: the alpha the same def read in the dry copy, when known. A shadowQueue at or after the sheet is FAIL."""
+    s, cl, q = num(kv, "shadow"), num(kv, "clarity", 0.0), num(kv, "shadowQueue")
     if s is None:
         return "UNMEASURED", "shadow=%s (not a building in a pit?)" % kv.get("shadow")
-    if not wet:      # dry: the plain shadow (the setting pitThingShadowAlpha; default THING_SHADOW_ALPHA)
+    if not wet:
         return ("PASS", "dry shadow %s" % s) if s > EPS else ("FAIL", "no shadow at all in a dry pit")
     if cl == 0.0:
         return ("PASS", "tar: no shadow") if s <= EPS else ("FAIL", "shadow %s seen through tar" % s)
-    return ("PASS", "floor shadow %s seen through water" % s) if 0.0 <= s < THING_SHADOW_ALPHA - EPS else \
-        ("FAIL", "shadow %s is the dry alpha: not seen through the water" % s)
+    if s <= EPS:
+        return "FAIL", "no shadow under clear liquid: it should be transparent to it (owner 11-13), not hide it"
+    if q is not None and q >= SHEET_QUEUE:
+        return "FAIL", "shadow %s drawn OVER the liquid sheet (queue %d >= %d)" % (s, q, SHEET_QUEUE)
+    if dry is not None and abs(s - dry) > EPS:
+        return "FAIL", "shadow %s in clear liquid, %s dry: the drawer fades it itself (the old over-the-sheet shadow)" % (s, dry)
+    return "PASS", "own alpha %s under clear liquid%s" % (s, "" if q is None else ", queue %d under the sheet" % q)
 
 
 def judge_label(kv):
     """A label over a thing wholly under liquid fades (clear) or is hidden (opaque)."""
     lab, share, cl = num(kv, "label"), num(kv, "share"), num(kv, "clarity", 0.0)
+    lv, h = num(kv, "level"), num(kv, "height")
     if lab is None or share is None:
         return "UNMEASURED", "no label/share field"
     if share < 1.0 - EPS:
         return "PASS", "partly above (share %s): label %s" % (kv.get("share"), lab)
+    if lv is not None and h is not None and lv * NOTCH_M - h <= LINE_TOL:     # LabelAlpha fades with the TOP
+        return "PASS", "top at the line (level %s m, height %s m): label %s" % (lv * NOTCH_M, h, lab)
     if cl == 0.0:
         return ("PASS", "hidden under tar") if lab <= EPS else ("FAIL", "label %s over a thing hidden in tar" % lab)
     return ("PASS", "label %s" % lab) if lab < 1.0 - EPS else ("FAIL", "label at full brightness over a drowned thing")
@@ -192,12 +223,24 @@ WANT_KIND = {"furn": "building", "item": "item", "mini": "minified", "corpse": "
 
 def judge_scene(plan, proof):
     """plan: scene_plan.json; proof(x, z) -> ProofSubmerge text. -> list of (row, verdict, got). Pure but for proof()."""
-    rows, mono = [], {}
-    for key, _x0, _z0, f, fl, kind, dn, x, z in plan_rows(plan):
-        kv = kv_of(proof(x, z))
+    rows, mono, dry, queues = [], {}, {}, []
+    pr = plan_rows(plan)
+    if not pr:
+        return [("OL_scene", "UNMEASURED", "the plan has no things in its copies: nothing to read")]
+    reads = [(r, proof(r[7], r[8])) for r in pr]
+    for (_key, _x0, _z0, f, _fl, kind, dn, _x, _z), text in reads:
+        kv = kv_of(text)
+        if kind == "furn" and f == 0 and num(kv, "shadow") is not None and not vacuous(text, kv):
+            dry[dn] = num(kv, "shadow")
+    for (key, _x0, _z0, f, fl, kind, dn, x, z), text in reads:
+        kv = kv_of(text)
         wet = f > 0
         want_def = "MinifiedThing" if kind == "mini" else None if kind == "corpse" else dn
         fam = {"furn": "OL_buildings_covered", "corpse": "OL_corpses_covered"}.get(kind, "OL_goods_covered")
+        vac = vacuous(text, kv)
+        if vac:
+            rows.append(("%s_%s_%s_%s" % (fam, key, kind, dn), "UNMEASURED", vac))
+            continue
         v, why = judge_covered(kv, WANT_KIND[kind], wet, want_def)
         rows.append(("%s_%s_%s_%s" % (fam, key, kind, dn), v, why))
         if v != "PASS" or not wet:
@@ -209,11 +252,20 @@ def judge_scene(plan, proof):
         else:
             mono.setdefault((kind, dn), []).append((f, num(kv, "share", 0.0), num(kv, "seenFoot", 1.0)))
         if kind == "furn":
-            rows.append(("OL_no_surface_shadow_%s_%s" % (key, dn),) + judge_shadow(kv, True))
+            rows.append(("OL_no_surface_shadow_%s_%s" % (key, dn),) + judge_shadow(kv, True, dry.get(dn)))
+            if not fl and num(kv, "shadow", 0.0) > EPS:
+                queues.append((key, dn, num(kv, "shadowQueue")))
         rows.append(("OL_labels_fade_%s_%s_%s" % (key, kind, dn),) + judge_label(kv))
     for (kind, dn), seq in sorted(mono.items()):
         if len(seq) > 1:
             rows.append(("OL_one_law_over_fill_%s_%s" % (kind, dn),) + judge_monotone(seq))
+    if queues:
+        over = [q for q in queues if q[2] is not None and q[2] >= SHEET_QUEUE]
+        told = [q for q in queues if q[2] is not None]
+        rows.append(("OL_no_surface_shadow_under_sheet",) + (
+            ("FAIL", "drawn over the sheet: " + " ".join("%s/%s@%d" % (k, d, q) for k, d, q in over[:6])) if over else
+            ("BLOCKED", "ProofSubmerge reports no shadowQueue: a shadow drawn over the sheet is invisible to this read")
+            if len(told) < len(queues) else ("PASS", "%d shadows under the sheet (queue < %d)" % (len(told), SHEET_QUEUE))))
     return rows
 
 

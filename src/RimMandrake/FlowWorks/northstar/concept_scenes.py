@@ -540,22 +540,155 @@ def _one_surface(S):
     S.row('ONE_control_sluice_splits', len(set(S.dl(canal[:4]) + S.dl(canal[6:]))) > 1, (S.dl(canal[:4]), S.dl(canal[6:])))
 
 
+# sc_source_pays. Visit 1 (2026-11-15) read every row on 'OK -': the draft assumed a natural pond and an edge lake the calm
+# site does not have, never dug the pond, dug its moat two rows short of it, and passed SRC_flow_stops_when_empty on twenty
+# undug zeros (RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE). Now the pond is dug and filled brim-full
+# (a 20 x 10 basin: a 0.5 m shelf ring of 40 squares round a 2 m core, one surface; the litres are asserted), a dry 3 m moat
+# joined to its east side draws it, a sink at tap 0 is the control, an unlimited sink empties it, locked rain refills it
+# (read three times: some, not instant, rising). The bar (tree.json source_pays_and_refills, no_full_source_after_draw): the
+# pond's litres AND its wet-square count fall, an emptied pond stops paying, rain refills it with visible progress, an
+# edge body reads Endless and never drops. The calm site has no limitless body: that row reads UNMEASURED with its reason
+# (the read is owed on the river site), never a faked endless source. A vacuous read (REFUSED, all-zero, an event that never
+# happened: no draw, no rain) is UNMEASURED, never PASS. Offline half: selftest_source_pays_scene.py.
+SRC_MAPCTL = 'RimMandrake.FlowWorks.MapControls.RM_MapControls'
+SRC_CORE_LV, SRC_SHELF_LV, SRC_MOAT_LV, SRC_MOAT_N = 4, 1, 6, 60      # notches (0.5 m): core 2 m, shelf 0.5 m, moat 3 m
+SRC_LAKE_PROBES = ((105, 135), (100, 130), (38, 5))   # river site cells that read Endless (visit_1 sc_river__endless_read)
+
+
+def _src_wet(dls, wet_dl):
+    """How many squares stand wetter than wet_dl; None when the vector cannot carry a verdict (absent or all zero)."""
+    return None if _vacuous(tuple(dls)) or any(v is None for v in dls) else sum(1 for v in dls if v > wet_dl)
+
+
+def _src_drained(S, tid):
+    """The sink's own drained total from Report(); None when the report or its line is missing."""
+    import re
+    rep = S.sc(SRC_MAPCTL, 'Report')
+    m = re.search(r'sink %s\b[^\n]*?drained=([\d.]+)' % re.escape(tid), rep) if tid else None
+    return float(m.group(1)) if m else None
+
+
+def _src_sink(S, at, rate):
+    """Place an RM_FlowSink (rate < 0 = unlimited); its ThingID, or None with the reply when the game refused."""
+    rep = S.sc(SRC_MAPCTL, 'PlaceSink', '%d,%d|any|%g' % (at[0], at[1], rate))
+    parts = rep.split()
+    return (parts[2] if rep.startswith('OK sink ') and len(parts) > 2 else None), rep
+
+
+def _src_rain(S):
+    r = S.call('jawa/weather_get')
+    return ((r or {}).get('weather') or {}).get('rainRate')
+
+
+def _src_lake(S):
+    """SRC_lake_reads_endless: only on a map with a limitless body; the calm site has none, so it reads UNMEASURED."""
+    r = S.call('jawa/flowworks_pulse', count=1, x=0, z=0, w=0, h=0, includeBodies=True)
+    pulses = (r or {}).get('pulses') or []
+    bodies = (pulses[-1].get('bodies') if pulses else None)
+    if bodies is None:
+        return S.row('SRC_lake_reads_endless', False, 'no body census came back: %s' % str(r)[:200], unmeasured=True)
+    endless = [b for b in bodies if b.get('limitless')]
+    if not endless:
+        return S.row('SRC_lake_reads_endless', False, 'this map has no limitless body (%d bodies, none limitless): the calm site '
+                     'has no edge lake or river, so the Endless read is owed on the river site (visit_1/evidence/'
+                     'sc_river__endless_read.txt); never faked' % len(bodies), unmeasured=True)
+    reads = [(c, S.sc(NSP, 'ProofReadout', '%d,%d' % c)) for c in SRC_LAKE_PROBES]
+    hit = next((c for c, t in reads if 'ndless' in t), None)
+    if hit is None:
+        return S.row('SRC_lake_reads_endless', False, ('limitless bodies %s but no probe cell reads Endless' %
+                                                       [b.get('id') for b in endless], reads), unmeasured=True)
+    stock0 = {b.get('id'): b.get('stock') for b in endless}
+    moat = _line(hit[0] + 1, hit[1], 10)
+    S.dig(moat, 2)
+    r = S.call('jawa/flowworks_pulse', count=60, x=0, z=0, w=0, h=0, includeBodies=True)
+    pulses = (r or {}).get('pulses') or []
+    stock1 = {b.get('id'): b.get('stock') for b in (pulses[-1].get('bodies') or [] if pulses else [])}
+    took = S.dl(moat)
+    if _vacuous(tuple(took)):
+        return S.row('SRC_lake_reads_endless', False, ('the moat beside the Endless body took nothing: no draw to judge', took),
+                     unmeasured=True)
+    S.row('SRC_lake_reads_endless', all(stock1.get(k) is not None and stock1[k] >= v for k, v in stock0.items()),
+          (hit, stock0, stock1, sum(took)))
+
+
 def _source_pays(S):
-    pond = [(O[0] + i, O[1] + j) for i in range(20) for j in range(10)]
-    moat = _line(O[0], O[1] + 12, 60)
-    before = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5))
-    S.dig(moat, 4); S.pulse(60)
-    after = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5))
-    S.row('SRC_pond_drops', before != after, (before, after))
-    S.call('jawa/spawn_batch', ops='RM_FlowSink:%d,%d' % (O[0] + 19, O[1] + 9))
-    S.pulse(200)
-    S.row('SRC_flow_stops_when_empty', all(not v for v in S.dl(pond[:20])), S.dl(pond[:20]))
-    S.call('jawa/weather_set', weather='Rain', lockWeather=True)
-    S.ticks(5 * 60000)
-    S.row('SRC_refill_visible', any(S.dl(pond)), S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 10, O[1] + 5)))
+    core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
+    shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
+    pond = shelf + core
+    probe = (O[0] + 10, O[1] + 5)
+    moat = _line(O[0] + 20, O[1] + 5, SRC_MOAT_N)          # joined to the core square (O+19, O+5)
+    sink_at = (O[0] - 1, O[1] + 5)                         # undug, beside the core square (O, O+5): the sink reaches it
+    read = lambda: _litres(S.sc(NSP, 'ProofReadout', '%d,%d' % probe))
+    S.call('jawa/weather_set', weather='Clear', lockWeather=True)   # no rain while the draws are read
+    S.dig(shelf, SRC_SHELF_LV); S.dig(core, SRC_CORE_LV)
+    S.fill(shelf, SRC_SHELF_LV * 0.5, WATER); S.fill(core, SRC_CORE_LV * 0.5, WATER)
+    S.pulse(5)
+    full, d0 = read(), S.dl(pond)
+    require(full is None or full > 0, 'the filled pond reads no water at %s: %s' % (probe, full))
+    wet_dl = (max(v for v in d0 if v is not None) / (SRC_CORE_LV * 10.0)) if not _vacuous(tuple(d0)) and None not in d0 else 0
+    wet0 = _src_wet(d0, wet_dl)
+    S.dig(moat, SRC_MOAT_LV); S.pulse(200)
+    drawn, d1, took = read(), S.dl(pond), S.dl(moat)
+    wet1 = _src_wet(d1, wet_dl)
+    paid = not _vacuous(tuple(took)) and None not in took
+    blind = wet0 is None                                   # the filled pond's own squares read empty: the rect is blind
+    if full is None or drawn is None or blind:
+        S.row('SRC_pond_drops', False, ('the readout carried no litres or the pond squares read empty', full, drawn, d0[:4]),
+              unmeasured=True)
+    else:
+        S.row('SRC_pond_drops', paid and drawn < full, ('litres', full, drawn, 'moat took', sum(v or 0 for v in took)))
+    if wet0 is None or wet1 is None:
+        S.row('SRC_shore_recedes', False, ('the wet-square vector was empty or all zero', d0[:4], d1[:4]), unmeasured=True)
+    else:   # the bar's no_full_source_after_draw: fewer wet squares after the draw than before, not just a smaller number
+        S.row('SRC_shore_recedes', paid and wet1 < wet0, ('wet squares', wet0, wet1))
+    tid, rep = _src_sink(S, sink_at, 0)
+    if tid is None:
+        S.row('SRC_control_tap_zero', False, ('the tap-0 sink was not placed', rep), unmeasured=True)
+    else:
+        S.pulse(60)
+        held, dz = read(), _src_drained(S, tid)
+        if held is None or dz is None or drawn is None:
+            S.row('SRC_control_tap_zero', False, ('no litres or no drained total', drawn, held, dz), unmeasured=True)
+        else:   # scenes.json control: the Sink tap set to zero -> the pond does not drop beyond the moat's take
+            S.row('SRC_control_tap_zero', dz == 0 and held >= drawn * 0.98, ('litres', drawn, held, 'drained', dz))
+        S.sc(SRC_MAPCTL, 'Remove', tid)
+    tid, rep = _src_sink(S, sink_at, -1)
+    if tid is None:
+        S.row('SRC_flow_stops_when_empty', False, ('the unlimited sink was not placed', rep), unmeasured=True)
+    else:
+        for _ in range(5):
+            S.pulse(100)
+            if all(v is not None and v <= wet_dl for v in S.dl(pond)):
+                break
+        dr1, dp = _src_drained(S, tid), S.dl(pond)
+        S.pulse(50)
+        dr2, empty = _src_drained(S, tid), read()
+        if dr1 is None or dr2 is None or not dr1 > 0 or blind:
+            S.row('SRC_flow_stops_when_empty', False, ('no drained total, the sink drained nothing (the draw never happened) '
+                                                       'or the pond squares read empty when full', rep, dr1, dr2, blind),
+                  unmeasured=True)
+        else:
+            dry = all(v is not None and v <= wet_dl for v in dp)
+            S.row('SRC_flow_stops_when_empty', dry and dr2 == dr1, ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty))
+        rm = S.sc(SRC_MAPCTL, 'Remove', tid)
+        require(rm.startswith('OK removed'), 'the sink would not come off before the rain: %s' % rm)
     S.call('jawa/weather_set', unlock=True)
-    lake = S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] + 70, O[1]))
-    S.row('SRC_lake_reads_endless', 'ndless' in lake, lake)
+    S.call('jawa/weather_set', weather='Rain', lockWeather=True)
+    start = read()
+    S.ticks(4000)
+    rain, s1 = _src_rain(S), read()
+    S.ticks(5000); s2 = read()
+    S.ticks(5000); s3 = read()
+    S.call('jawa/weather_set', unlock=True)
+    series = (start, s1, s2, s3)
+    if not rain:
+        S.row('SRC_refill_visible', False, ('no rain fell (rainRate %s): the refill was never asked' % rain, series),
+              unmeasured=True)
+    elif None in series or full is None:
+        S.row('SRC_refill_visible', False, ('the readout carried no litres', series), unmeasured=True)
+    else:   # some water came back, not all at once (false_pass: refill is instant), and it kept rising
+        S.row('SRC_refill_visible', s3 > start and s1 < full and s1 <= s2 <= s3 and s3 > s1, ('litres', series, 'full', full))
+    _src_lake(S)
 
 
 # sc_pawn_height. Visit 1 (2026-11-15) dug each pad ONE row tall, so the shipped lip clamp (pitSinkClampEnabled, on) held the
@@ -756,18 +889,116 @@ def _hose_look(S):
           unmeasured=not states or None in states or C['powered'] is not None)
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF (visit 1, 2026-11-15): the draft read ProofCover, the pit-LID
+# probe (covered=True is a lid over a pit), so TR_trench_pawn_covered FAILED on a mod whose combat cover trench_cover_proof.py
+# read PASS the same day, and TR_no_raider_shelters_in_pit PASSED on an empty 2x2 rect while all 11 raiders stood elsewhere.
+# Now cover is combat cover, read the way trench_cover_proof.py reads it (RM_TrenchCover.ProofTrenchCover "target;shooter",
+# its parse / trench_bar / near_verdict / hit_falls_verdict / dug_to): square-on from a player gunner 10 squares off, against
+# a twin colonist on open ground with its own gunner at the same offset. Then the scene fires a raid placed south of the
+# trench and the cage pit beside it, runs every tick of it on RAID_STOP_ON (the moat and pit-trap waiver) and watches where
+# raiders stand. A REFUSED read, a read with no shot (hitNoTrench <= 0.05: the all-zero vector) or a raid that never came
+# within TR_NEAR squares of the trench or pit reads UNMEASURED, never PASS.
+#   trench: x O0..O0+10 at z O1, 2 notches (1 m, trench_bar's wall); target (O0+5, O1), gunner (O0+5, O1+10)
+#   pit: x O0+12..+13, z O1..O1+1, 8 notches (4 m: a cage); open-ground twin (O0+18, O1), gunner (O0+18, O1+10)
+#   raid: placed at (O0+6, O1-14), ImmediateAttack on the colonists north of the line
+TR_LEN, TR_NOTCHES, TR_PIT_NOTCHES = 11, 2, 8
+TR_SHOOTER = 'Mercenary_Gunner'                          # trench_cover_proof.SHOOTER_KIND: a ranged player pawn, nobody fights
+TR_SETTINGS = (('trenchCoverEnabled', True), ('trenchCoverStrength', 1.0), ('trenchCoverCap', 0.9))
+TR_RAID_POINTS, TR_RAID_AT = 400, (O[0] + 6, O[1] - 14)
+TR_POLL, TR_POLLS, TR_NEAR, TR_AFTER = 300, 20, 3, 6    # 6,000 ticks at most; 1,800 more once a raider is at the line
+
+
+def _tc():
+    """trench_cover_proof.py's pure readers: one cover bar for both drivers."""
+    if str(HERE) not in sys.path:
+        sys.path.insert(0, str(HERE))
+    import trench_cover_proof
+    return trench_cover_proof
+
+
+def _tr_dig(S, TC, cells, n):
+    """Dig and read the depth back (success alone is no dig: trench_cover_proof.dug_to)."""
+    bad = [c for c in cells if not TC.dug_to(S.call('jawa/flowworks_excavation_drive', x=c[0], z=c[1], deepenLevels=n,
+                                                    setBodyWaterM=-1) or {}, n)]
+    require(not bad, 'excavation_drive did not reach %d notches at %s' % (n, bad[:4]))
+
+
+def _tr_read(S, TC, tid, sid):
+    """One ProofTrenchCover read -> (kv | None, reply). None: no TRENCH reply (REFUSED), no trench field, or no shot to cover
+    (hitNoTrench missing or <= 0.05, the all-zero vector): a read no row may judge."""
+    txt = S.sc(TC.PROOF_TYPE, 'ProofTrenchCover', '%s;%s' % (tid, sid))
+    d = TC.parse(txt) if txt.startswith('TRENCH') else {}
+    h0 = TC.num(d, 'hitNoTrench')
+    return (d if h0 is not None and h0 > 0.05 and TC.num(d, 'trench') is not None else None), txt
+
+
+def _tr_watch(S, trench, pit):
+    """The raid in TR_POLL chunks (the caller narrowed the governor): where every live hostile stands each poll.
+    -> {reached, inPit {id: cell}, inTrench, raiders, polls, last}; reached: one came within TR_NEAR of the trench or pit."""
+    near = list(trench) + list(pit)
+    seen = {'reached': False, 'inPit': {}, 'inTrench': set(), 'raiders': 0, 'polls': 0, 'last': []}
+    at_line = None
+    for _ in range(TR_POLLS):
+        S.ticks(TR_POLL)
+        seen['polls'] += 1
+        live = [p for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+                if not p.get('dead') and p.get('x') is not None]
+        seen['raiders'] = max(seen['raiders'], len(live))
+        seen['last'] = [(p.get('id'), p.get('x'), p.get('z')) for p in live][:8]
+        for p in live:
+            at = (p['x'], p['z'])
+            if min(_cheb(at, c) for c in near) <= TR_NEAR:
+                seen['reached'] = True
+            if at in pit:
+                seen['inPit'][p.get('id')] = at
+            if at in trench:
+                seen['inTrench'].add(p.get('id'))
+        if seen['reached']:
+            at_line = seen['polls'] if at_line is None else at_line
+            if seen['polls'] - at_line >= TR_AFTER:
+                break
+    if seen['inPit']:
+        seen['reached'] = True
+    return seen
+
+
 def _trench_cover(S):
-    trench = _line(O[0], O[1], 6); pit = [(O[0] + 8 + i, O[1] + j) for i in range(2) for j in range(2)]
-    S.dig(trench, 4); S.dig(pit, 8)
-    col = S.pawn('Colonist', trench[2], 'player')
-    S.call('jawa/fire_raid', points=400, dryRun=False, strategy='ImmediateAttack')
-    S.ticks(2500)
-    cov = S.sc(EXC, 'ProofCover', '%d,%d' % trench[2])
-    S.row('TR_trench_pawn_covered', 'covered=True' in cov, cov)
-    inpit = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,2,2' % pit[0])
-    S.row('TR_no_raider_shelters_in_pit', not inpit.get('pawns'), inpit.get('pawns'))
-    S.walk(col, (O[0], O[1] + 4), 300)
-    S.row('TR_control_open_ground_no_cover', 'covered=True' not in S.sc(EXC, 'ProofCover', '%d,%d' % (O[0], O[1] + 4)), 'open ground')
+    TC = _tc()
+    for k, v in TR_SETTINGS:
+        S.setting(k, v)
+    trench = _line(O[0], O[1], TR_LEN)
+    pit = [(O[0] + 12 + i, O[1] + j) for i in range(2) for j in range(2)]
+    _tr_dig(S, TC, trench, TR_NOTCHES)
+    _tr_dig(S, TC, pit, TR_PIT_NOTCHES)
+    S.ticks(TC.SETTLE)
+    tgt, twin = (O[0] + 5, O[1]), (O[0] + 18, O[1])
+    col, gun = S.pawn('Colonist', tgt, 'player'), S.pawn(TR_SHOOTER, (tgt[0], tgt[1] + 10), 'player')
+    ctl, cgun = S.pawn('Colonist', twin, 'player'), S.pawn(TR_SHOOTER, (twin[0], twin[1] + 10), 'player')
+    d, txt = _tr_read(S, TC, col, gun)
+    bar = TC.trench_bar((d or {}).get('size'))
+    bar_from = 'size=%s' % (d or {}).get('size') if bar is not None else 'size unread: adult bar 0.441'
+    bar = 0.441 if bar is None else bar
+    S.row('TR_trench_pawn_covered', d is not None and TC.near_verdict(d, 'trench', bar, 0.02) == 'PASS',
+          {'bar': round(bar, 3), 'barFrom': bar_from, 'reply': txt}, unmeasured=d is None)
+    S.row('TR_trench_hit_falls', d is not None and TC.hit_falls_verdict(d, bar) == 'PASS',
+          {'bar': round(bar, 3), 'hit': (d or {}).get('hit'), 'hitNoTrench': (d or {}).get('hitNoTrench'), 'reply': txt},
+          unmeasured=d is None)
+    S.shot('trench_cover', (O[0], O[1] - 3), 20, 14)
+    c, ctxt = _tr_read(S, TC, ctl, cgun)
+    S.row('TR_control_open_ground_no_cover', c is not None and TC.near_verdict(c, 'trench', 0.0, 1e-3) == 'PASS',
+          {'reply': ctxt}, unmeasured=c is None)
+    S.call('jawa/fire_raid', points=TR_RAID_POINTS, dryRun=False, strategy='ImmediateAttack',
+           spawnCenter='%d,%d' % TR_RAID_AT)
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # the raid this scene fired is waived for every tick of it
+    try:
+        seen = _tr_watch(S, trench, pit)
+    finally:
+        S.B.stop_on = prior
+    S.row('TR_no_raider_shelters_in_pit', not seen['inPit'],
+          {'inPit': seen['inPit'], 'inTrench': sorted(seen['inTrench']), 'raidersSeen': seen['raiders'], 'polls': seen['polls'],
+           'last': seen['last']} if seen['reached'] else
+          'the raid never came within %d squares of the trench or pit (raiders seen %d, last %s)' % (
+              TR_NEAR, seen['raiders'], seen['last']), unmeasured=not seen['reached'])
 
 
 # RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE (visit 1, 2026-11-15): the draft passed '60,60,5,5;freeze' to
@@ -1185,12 +1416,14 @@ def _pit_trap(S, fall=True):
     return pit
 
 
-def _watch_trap(S, pit, until_ladder=True):
+def _watch_trap(S, pit, until_ladder=True, until_held=0):
     """Run the raid in TRAP_POLL chunks on the narrowed governor; each poll reads every live raider's place and trap state
-    (ProofTrap held=), and any portable ladder in or beside the trench. -> {reached, held, ladder, raiders, polls}.
-    reached: a raider came within 2 squares of the trench (the event the rows need); held: raider ids the trench holds."""
+    (ProofTrap held=), and any portable ladder in or beside the trench. -> {reached, held, ladder, raiders, polls, refused}.
+    reached: a raider came within 2 squares of the trench (the event the rows need); held: raider ids the trench holds;
+    refused: ProofTrap replies that were no TRAP read for a raider standing in the trench (a blind read, not a "not held").
+    until_held: stop once that many are held (sc_pit_trap_raid captures them before the fetch can take them out)."""
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
-    seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': []}
+    seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': [], 'refused': 0}
     rect = '%d,%d,%d,3' % (pit[0][0] - 1, pit[0][1] - 1, len(pit) + 2)
     try:
         for _ in range(TRAP_POLLS):
@@ -1203,13 +1436,19 @@ def _watch_trap(S, pit, until_ladder=True):
             for p in live:
                 if min(_cheb((p['x'], p['z']), c) for c in pit) <= 2:
                     seen['reached'] = True
-                if (p['x'], p['z']) in pit and 'held=True' in S.sc(NSP, 'ProofTrap', str(p['id'])):
-                    seen['held'].add(p['id'])
+                if (p['x'], p['z']) in pit:
+                    txt = S.sc(NSP, 'ProofTrap', str(p['id']))
+                    if not txt.startswith('TRAP '):
+                        seen['refused'] += 1
+                    elif 'held=True' in txt:
+                        seen['held'].add(p['id'])
             lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect=rect).get('things') or []
             if lad:
                 seen['ladder'] = lad
                 if until_ladder:
                     break
+            if until_held and len(seen['held']) >= until_held:
+                break
     finally:
         S.B.stop_on = prior
     if seen['held']:
@@ -1244,15 +1483,57 @@ def _fetch_fallen_scene(S):
            else '') + 'held %s ladder %s' % (sorted(seen['held']), seen['ladder']), unmeasured=not seen['reached'])
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID (visit 1, 2026-11-15): the draft fired its raid and ran
+# S.ticks(4000) on the default governor, which stopped at tick 60 on that same raid (GovernorStop hostile_arrival) and the
+# scene died with no rows; it also never ordered a capture, so prisoner=True could only ever read False. Now every tick from
+# the raid on runs on RAID_STOP_ON (the moat scene's waiver), the watch stops once two are held, a warden on the north lip is
+# ordered RM_CaptureDown on each (the moat's idiom), and each row needs its event: no raid at the trench, nobody fallen, a
+# reply that is no VERDICT/TRAP read reads UNMEASURED, never PASS.
+PTR_CAPTURE_TICKS = 900                              # one RM_CaptureDown from the lip (the moat's MOAT_CAPTURE_TICKS)
+
+
+def _ptr_prisoner(S, pid):
+    """One ProofCaptureDown read -> (True | False | None, reply); None: the reply was no VERDICT (a blind read)."""
+    txt = S.sc(NSP, 'ProofCaptureDown', str(pid))
+    return (None if not txt.startswith('VERDICT ') else 'prisoner=True' in txt), txt
+
+
 def _pit_trap_raid(S):
-    pit, seen = _fetch_fallen(S)
-    for pid in sorted(seen['held'])[:2]:
-        S.row('PTR_fallen_become_prisoners', 'prisoner=True' in S.sc(NSP, 'ProofCaptureDown', pid), pid)
-    if not seen['held']:
-        S.row('PTR_fallen_become_prisoners', False, 'nobody fell', unmeasured=True)
-    S.again(); pit = _pit_trap(S, fall=False)
-    seen = _watch_trap(S, pit, until_ladder=False)
-    S.row('PTR_control_open_pit_no_one_falls', not seen['held'], sorted(seen['held']), unmeasured=not seen['reached'])
+    for k in ('captureDownEnabled', 'superdeepRoomsEnabled'):
+        S.setting(k, True)
+    pit = _pit_trap(S)                              # fires the raid after its last tick
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # the raid this scene fired is waived for every tick of it, capture too
+    try:
+        seen = _watch_trap(S, pit, until_ladder=False, until_held=2)
+        no_raid = not seen['reached']
+        where = {'raidersSeen': seen['raiders'], 'polls': seen['polls'], 'refused': seen['refused'], 'last': seen['last']}
+        S.row('PTR_two_fall', len(seen['held']) >= 2, dict(where, held=sorted(seen['held'])),
+              unmeasured=no_raid or (len(seen['held']) < 2 and seen['refused'] > 0))
+        caught, warden = [], None
+        for pid in sorted(seen['held'])[:2]:
+            before, v = _ptr_prisoner(S, pid)
+            cell = kv(v).get('cell', '')
+            lip = (int(cell.split(',')[0]), O[1] + 1) if before is not None and ',' in cell else None
+            o = {'accepted': False, 'why': 'no pit cell in %r' % v[:80]}
+            if lip:
+                warden = warden or S.pawn('Colonist', lip, 'player')
+                o = S.call('jawa/ordered_job', pawnId=warden, jobDef='RM_CaptureDown', targetAId=pid,
+                           targetBX=lip[0], targetBZ=lip[1])
+                S.ticks(PTR_CAPTURE_TICKS)
+            after, a = _ptr_prisoner(S, pid)
+            caught.append({'pawn': pid, 'before': before, 'after': after, 'lip': lip, 'accepted': o.get('accepted'),
+                           'verdict': v[:120], 'reply': a[:120]})
+        S.row('PTR_fallen_become_prisoners', bool(caught) and all(c['before'] is False and c['after'] for c in caught),
+              {'captured': caught} if caught else 'nobody fell, so there was no one to capture',
+              unmeasured=not caught or any(c['before'] is None or c['after'] is None for c in caught))
+        S.again()
+        pit = _pit_trap(S, fall=False)              # control: no lid; the same raid must path round and nobody fall
+        seen = _watch_trap(S, pit, until_ladder=False)
+        S.row('PTR_control_open_pit_no_one_falls', not seen['held'],
+              {'held': sorted(seen['held']), 'raidersSeen': seen['raiders'], 'refused': seen['refused'], 'last': seen['last']},
+              unmeasured=not seen['reached'] or (not seen['held'] and seen['refused'] > 0))
+    finally:
+        S.B.stop_on = prior
 
 
 # RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE (visit 1, 2026-11-15): the draft spawned

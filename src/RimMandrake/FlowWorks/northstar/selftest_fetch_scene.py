@@ -128,6 +128,11 @@ class Fake:
             x, z, w, h = (int(v) for v in kw['rect'].split(','))
             return {'success': True, 'things': [t for t in g['ladders'] if t['def'] == kw['defName']
                                                 and x <= t['x'] < x + w and z <= t['z'] < z + h]}
+        if tool == 'jawa/ordered_job':                   # RM_CaptureDown from the lip: a held raider becomes a prisoner
+            h = g['hostile'].get(kw.get('targetAId'))
+            if kw.get('jobDef') == 'RM_CaptureDown' and h and h['held']:
+                h['prisoner'] = True
+            return {'success': True, 'accepted': bool(h and h['held'])}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}
         if tool == 'jawa/mod_settings_field':
@@ -146,8 +151,9 @@ class Fake:
             h = g['hostile'].get(arg)
             if h is None:
                 return 'REFUSED: no spawned pawn %s' % arg
-            return ('TRAP descents=1 pos=%d,%d held=%s' if method == 'ProofTrap' else 'VERDICT x cell=%d,%d held=%s prisoner=True') % (
-                h['x'], h['z'], h['held'])
+            if method == 'ProofCaptureDown':            # sc_pit_trap_raid orders the capture (selftest_pit_trap_raid_scene)
+                return 'VERDICT Allowed held=%s prisoner=%s cell=%d,%d' % (h['held'], bool(h.get('prisoner')), h['x'], h['z'])
+            return 'TRAP descents=1 pos=%d,%d held=%s' % (h['x'], h['z'], h['held'])
         raise AssertionError('unexpected static %s.%s' % (typ, method))
 
 
