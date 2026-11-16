@@ -396,6 +396,7 @@ class _Stage:
         self.B, self.r, self.prior = B, receipt, {}
         receipt.update({'scene': name, 'rows': [], 'calls': receipt.get('calls', [])})
         self.reload = None
+        self.save_mid = self.load_mid = None   # a second, mid-way save (scene_walk_moat_season); main passes them
 
     def again(self):
         """Back to the scene-begin snapshot for the control case (settings stay as poked; restored at the end)."""
@@ -478,9 +479,9 @@ def _line(x, z, n, dx=1, dz=0):
 
 def _run(name, body):
     """Every scene: snapshot, body(stage), restore (settings, then the snapshot reload) even on an assertion."""
-    def scene(B, snapshot, reload_snapshot, receipt):
+    def scene(B, snapshot, reload_snapshot, receipt, save_mid=None, load_mid=None):
         S = _Stage(B, receipt, name)
-        S.reload = reload_snapshot
+        S.reload, S.save_mid, S.load_mid = reload_snapshot, save_mid, load_mid
         snapshot()
         try:
             body(S)
@@ -716,17 +717,100 @@ def _islands(S):
     S.row('ISL_winch_destroyed_and_escape', len(gates) < 2 and not on, (len(gates), on))
 
 
+def _vacuous(v):
+    """A read that cannot carry a verdict: nothing, a REFUSED reply, or every field empty/zero. Its row is UNMEASURED."""
+    if v is None or (isinstance(v, str) and (not v.strip() or 'REFUSED' in v)):
+        return True
+    if isinstance(v, (tuple, list)):
+        return not v or any(_vacuous(x) for x in v if isinstance(x, str) or x is None) or not any(v)
+    return False
+
+
+def _litres(readout):
+    """'OK Hole 2 m · Water 1.00 m (2,000 L)' -> 2000.0; an 'OK Hole' line with no Water part -> 0.0; anything else None."""
+    import re
+    if not isinstance(readout, str) or not readout.startswith('OK Hole'):
+        return None
+    m = re.search(r'Water\s+[\d.]+\s*m\s*\(([\d,.]+)\s*L\)', readout)
+    return float(m.group(1).replace(',', '')) if m else (None if 'Water' in readout else 0.0)
+
+
+FW_MARKS = ('flowworks', 'rm_fluid', 'rm_mapcomponent_excavation', 'rm_liquid')   # a journal entry that names FlowWorks
+
+
 def _walk(S):
-    S.dig(_line(O[0] - 1, O[1], 21), 4); S.fill([(O[0] - 1, O[1])], 2.0, WATER); S.pulse(40)
-    # Stage 6 visit 1: the draft compared 'stock' and 'cells', keys engine_state never returns, so None == None passed.
+    """sc_walk on his full list. The bar: state digests match across a mid-way reload (control: a pre-fill reload differs);
+    the pond pays again after the reload and an off/on of the master switch; no leftovers; the log clean (FlowWorks lines).
+    Stage 6 visit 1 (RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED): the draft compared 'stock'/'cells', keys
+    engine_state never returns (None == None passed); and depthEngineEnabled snaps at game load unless depthEngineLiveForTests
+    is set, so its off/on never stopped anything. Every row below refuses a vacuous read (UNMEASURED, never PASS)."""
+    import validation_core as V
+    tap = V.tap_start(S.B)
+    pond = [(O[0] - 4 + i, O[1] - 1 + j) for i in range(3) for j in range(3)]
+    moat = _line(O[0] - 1, O[1], 21)
+    moat1, moat2 = moat[:10], moat[10:]
     keys = ('excavatedCellCount', 'superdeepCellCount', 'bodyCount', 'activeFluid')
+
+    def litres():
+        return _litres(S.sc(NSP, 'ProofReadout', '%d,%d' % (O[0] - 3, O[1])))
+
     def digest():
         e = S.call('jawa/flowworks_engine_state')
-        return tuple(e.get(k) for k in keys) + (S.sc(FLUIDID, 'ProofCensus').split('|')[0].strip(),)
+        return tuple(e.get(k) for k in keys) + (S.sc(FLUIDID, 'ProofCensus').split('|')[0].strip(), litres())
+
+    def pays(rid, p_before, cells):
+        p_after, wet = litres(), S.dl(cells)
+        bad = _vacuous((p_before,)) or p_after is None or None in wet
+        S.row(rid, not bad and p_after < p_before and any(wet), (p_before, p_after, wet), unmeasured=bad)
+        return p_after
+
+    S.setting('depthEngineLiveForTests', True)        # the off/on below must reach the running engine, not the next load
+    S.dig(pond, 4); S.fill(pond, 2.0, WATER)
+    p0 = litres()
+    S.dig(moat1, 4); S.pulse(40)
+    pays('WALK_pond_pays', p0, moat1)
+
     a = digest()
+    if S.save_mid is None:
+        S.row('WALK_reload_digest_matches', False, 'no mid-way save hook passed to the scene', unmeasured=True)
+    else:
+        S.save_mid(); S.ticks(600); S.load_mid()
+        b = digest()
+        S.row('WALK_reload_digest_matches', a == b, (a, b), unmeasured=_vacuous(a) or _vacuous(b))
+        S.again()                                      # the control: the scene-begin save, made before the fill
+        c = digest()
+        S.row('WALK_control_prefill_reload_differs', c != a, (c, a), unmeasured=_vacuous(a) or c[0] is None)
+        S.load_mid()
+        S.setting('depthEngineLiveForTests', True)     # a load does not reset a static, but say it again after one
+
+    a2 = digest()
     S.setting('depthEngineEnabled', False); S.ticks(600); S.setting('depthEngineEnabled', True); S.ticks(600)
-    b = digest()
-    S.row('WALK_toggle_off_on_digest_matches', None not in a and a[0] and a == b, (a, b))
+    b2 = digest()
+    S.row('WALK_toggle_off_on_digest_matches', a2 == b2, (a2, b2), unmeasured=_vacuous(a2) or _vacuous(b2))
+
+    # the switch took: off, a dry moat dug onto the wet one stays dry and the pond keeps its stock through two pulse intervals
+    p2 = litres()
+    S.setting('depthEngineEnabled', False)
+    S.dig(moat2, 4); S.ticks(600)
+    held, p_off = S.dl(moat2), litres()
+    bad = None in held or _vacuous((p2,)) or p_off is None
+    S.row('WALK_switch_off_holds_water', not bad and not any(held) and p_off == p2, (p2, p_off, held), unmeasured=bad)
+    S.setting('depthEngineEnabled', True); S.ticks(600); S.pulse(40)
+    pays('WALK_pond_pays_again', p2, moat2)
+
+    # no leftovers: every wet cell carries its fluid, water is the only fluid, and the bodies are the ones before the switch
+    e, census = S.call('jawa/flowworks_engine_state'), S.sc(FLUIDID, 'ProofCensus')
+    import re
+    m = re.search(r'unrecorded (\d+) \| fluids \[([^\]]*)\]', census)
+    bad = m is None or e.get('bodyCount') is None or a2[2] is None
+    S.row('WALK_no_leftovers', not bad and m.group(1) == '0' and m.group(2) == WATER and e.get('bodyCount') == a2[2],
+          (census, e.get('bodyCount'), a2[2]), unmeasured=bad)
+
+    # the log: no warning or error naming FlowWorks over the whole scene, on a journal proven live and read without a gap
+    alive = V.log_alive(S.B, 'sc_walk').get('alive')
+    ours = [str(x.get('Message', ''))[:160] for x in tap.since() if any(k in str(x.get('Message', '')).lower() for k in FW_MARKS)]
+    S.row('WALK_log_clean', not ours, {'flowworks_lines': ours[:5], 'lost': tap.lost, 'alive': alive, 'gaps': tap.gaps[:3],
+          'warn_plus_all_mods': len(tap.entries)}, unmeasured=bool(tap.lost) or not alive)
 
 
 def _garden(S):
@@ -824,7 +908,7 @@ def main():
             require(r['verified'], 'occupied reload failed: '+str(r))
             return r
         if a.scene != 'scene_hole_prison':
-            out = STAGE3_SCENES[a.scene](B, snapshot, reload_snapshot, res)
+            out = STAGE3_SCENES[a.scene](B, snapshot, reload_snapshot, res, save_mid=save_occupied, load_mid=load_occupied)
             require(out['status'] == 'PASS', 'rows not all PASS: %s' % [(x['id'], x['status']) for x in out['rows']])
             res['status'] = 'PASS'
             return 0
