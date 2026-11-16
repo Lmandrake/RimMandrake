@@ -220,6 +220,17 @@ def _filed_ids(root):
     return _FILED[root][1]
 
 
+def cited_file_exists(root, ref):
+    """A cited repo file exists: `ref` is a path, optionally typed `path:`, with a #locator or :line. An item prose file
+    moves to items/closed/ when its item closes, so a citation of items/<ID>.md also resolves there."""
+    ref = re.sub(r"^path:", "", ref).split("#")[0]
+    ref = re.sub(r":\d+$", "", ref)
+    if os.path.exists(os.path.join(root, ref)):
+        return True
+    d, f = os.path.split(ref)
+    return d == "infrastructure/state/items" and os.path.exists(os.path.join(root, d, "closed", f))
+
+
 def _finding_name_ok(name, root):
     """A finding keeps its ticket's name: any existing rimflow item (open or closed, with a prose file or filed in the
     rimflow ledger only), any legacy form, or a name the project namecheck would mint."""

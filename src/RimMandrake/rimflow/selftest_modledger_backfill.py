@@ -598,6 +598,17 @@ check("sample: a seeded draw of ticket-mined entries, each with its ticket and t
       any(x["same_ticket_entries"] for x in sm_) and all(any(r.startswith("item:") for r in e["evidence"]) for e in pop_),
       [(x["kind"], x["source_tickets"]) for x in sm_])
 
+_cr = tempfile.mkdtemp()
+os.makedirs(os.path.join(_cr, "infrastructure", "state", "items", "closed"))
+for _n, _d in (("OPEN_ONE.md", "items"), ("CLOSED_ONE.md", "items/closed")):
+    open(os.path.join(_cr, "infrastructure", "state", _d, _n), "w").write("x\n")
+_ok = lambda ref: M.cited_file_exists(_cr, ref)                  # noqa: E731
+check("citation: an item file cited at items/ still resolves after the item closes and moves to items/closed/",
+      _ok("path:infrastructure/state/items/OPEN_ONE.md") and _ok("path:infrastructure/state/items/CLOSED_ONE.md")
+      and _ok("infrastructure/state/items/CLOSED_ONE.md#L3") and _ok("path:infrastructure/state/items/CLOSED_ONE.md:7")
+      and not _ok("path:infrastructure/state/items/NEVER_FILED.md") and not _ok("path:infrastructure/state/other/CLOSED_ONE.md"))
+shutil.rmtree(_cr, ignore_errors=True)
+
 shutil.rmtree(root, ignore_errors=True)
 print("selftest_modledger_backfill: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))
 sys.exit(1 if FAIL else 0)

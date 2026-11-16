@@ -45,11 +45,7 @@ for mod in sys.argv[1:] or ["GimmeSomeSlack", "FlowWorks"]:
     evs = M.read(ROOT, mod)
     check("%s: the mod ledger holds events" % mod, len(evs) > 0, len(evs))
     bf = [e for e in evs if e.get("writer") == "BACKFILL"]
-    # evidence refs are typed since the entry standard (path:<repo path>); the old untyped form still reads
-    ref0 = lambda e: re.sub(r"^path:", "", e["evidence"][0])  # noqa: E731
-    bad = [e.get("subject") for e in bf if not e.get("evidence") or not os.path.exists(
-        os.path.join(ROOT, re.split(r"[#]", ref0(e))[0].rsplit(":", 1)[0]
-                     if re.search(r":\d+$", ref0(e).split("#")[0]) else ref0(e).split("#")[0]))]
+    bad = [e.get("subject") for e in bf if not e.get("evidence") or not M.cited_file_exists(ROOT, e["evidence"][0])]
     check("%s: every BACKFILL event cites an existing old file" % mod, bool(bf) and not bad, bad[:5])
     st = M.reduce(evs)
     check("%s: a version.open names the Design Version" % mod,
