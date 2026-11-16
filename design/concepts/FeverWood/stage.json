@@ -58,11 +58,62 @@
     "ref": "rm-role-designercodex-1794825692:control:35cbd080-cbb5-4d00-b5fe-779445573ebc",
     "stage": 4,
     "tokens": 68873
+   },
+   {
+    "at": "2026-11-16T13:00:24Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794833596",
+    "stage": 5,
+    "tokens": 815789
+   },
+   {
+    "at": "2026-11-16T13:02:27Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794833596",
+    "stage": 5,
+    "tokens": 155810
    }
   ],
   "reserve": 60000,
-  "spent": 466165
+  "spent": 1437764
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T12:53:16Z",
+   "error": null,
+   "gaps": 10,
+   "ids": [
+    "adult_quiet",
+    "branch_home",
+    "crown_livelihood",
+    "delayed_establishment",
+    "fw_borer_diet",
+    "fw_borer_galleries",
+    "fw_display_campaign",
+    "fw_foundations",
+    "fw_guild",
+    "fw_maturation",
+    "fw_mirror_break",
+    "fw_mirror_list",
+    "fw_native_cast",
+    "fw_pools",
+    "fw_routes",
+    "fw_settings",
+    "fw_suppression",
+    "living_wood",
+    "native_life",
+    "supported_checkout"
+   ],
+   "judge": "rm-coverage-judge-1794833596",
+   "late": [],
+   "tags": {
+    "first": 10
+   },
+   "tokens": 971599,
+   "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d",
+   "verdict": "not_covered"
+  }
+ ],
  "draft_input": {
   "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.check.json)",
   "path": "/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.designer_draft.md",
@@ -147,6 +198,30 @@
    "stage": 4,
    "what": "retry",
    "why": "run rm-role-designercodex-1794825692 result rejected: decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam.json does not exist; decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json does not exist"
+  },
+  {
+   "at": "2026-11-16T12:01:57Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794830510, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T12:06:45Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794830510: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T12:53:14Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794833581, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T13:03:40Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794833581 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -276,6 +351,37 @@
     "decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam.json does not exist",
     "decisions[stage4_independent_exam]: source path design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json does not exist"
    ]
+  },
+  {
+   "at": "2026-11-16T12:06:44Z",
+   "inputs": {
+    "exam": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e",
+    "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+    "sheet": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+    "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794830510",
+   "stage": 4,
+   "summary": "Recovered the persisted independent Claude Opus exam and published exam.json, its complete helper/protocol evidence and the program-made Control copy so the Dispatcher can resolve both rejected source paths. Recomputed 26/26 correct, zero core false accepts and the mirror_intel Control miss. All frozen design inputs match. Reused the five previously charged fresh helper processes. Runtime acceptance and stage-5 gates remain pending."
+  },
+  {
+   "at": "2026-11-16T13:03:40Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794833581",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
   }
  ],
  "runner": "codex",
@@ -327,10 +433,23 @@
     "input_tokens": 1807773,
     "output_tokens": 10817
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794830510",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 719508,
+    "output_tokens": 4967
+   }
+  },
+  {
+   "run": "rm-role-designercodex-1794833581",
+   "runner": "codex",
+   "usage": "UNMEASURED"
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }

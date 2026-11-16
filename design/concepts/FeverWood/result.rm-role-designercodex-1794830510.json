@@ -1,0 +1,40 @@
+{
+  "run": "rm-role-designercodex-1794830510",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Recovered the persisted independent Claude Opus exam and published exam.json, its complete helper/protocol evidence and the program-made Control copy so the Dispatcher can resolve both rejected source paths. Recomputed 26/26 correct, zero core false accepts and the mirror_intel Control miss. All frozen design inputs match. Reused the five previously charged fresh helper processes. Runtime acceptance and stage-5 gates remain pending.",
+  "validation": {
+    "score": {
+      "right": 26,
+      "total": 26
+    },
+    "accept_where_reject_core": 0,
+    "control_missed_ids": [
+      "challenger_mirror_list_reader_bleed"
+    ],
+    "previous_helpers_charged": 5,
+    "previous_helper_weighted_tokens": 301165,
+    "new_helpers": 0,
+    "runtime_acceptance": "UNMEASURED"
+  },
+  "agent_decisions": [
+    "Reused rm-role-designercodex-1794825692 exam evidence after auditing its original responses, input boundaries, hashes and charges. Retained its frozen scenarios and mirror_intel Control."
+  ],
+  "artifacts": [
+    "exam.json",
+    "exam_control/tree.json",
+    "exam_control/sheet.md",
+    "exam_control/copy.json",
+    "exam_runs/rm-role-designercodex-1794825692",
+    "record.json"
+  ],
+  "publication": {
+    "commit": "35fce8ed925266627266ccdc4ac5366a4fa8b989",
+    "verified_files": 33,
+    "remote": "origin/main",
+    "source_paths_resolved": [
+      "design/concepts/FeverWood/exam.json",
+      "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json"
+    ]
+  }
+}
