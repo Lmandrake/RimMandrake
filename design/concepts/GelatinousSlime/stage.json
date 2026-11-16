@@ -12,15 +12,72 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  },
+  {
+   "at": "2026-11-16T03:13:07Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794798778, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-16T03:27:45Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794798778: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
  "mod": "GelatinousSlime",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-16T03:27:44Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_grounding.md": "1cb7de3e0c7b1103a87fa57c7322967ff87a92cc2a0c613348195415805ab374",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "Existing RM_GelatinousSlime review map, blank seeker, liquid current, two colonists and antidote. Walk ordinary archive selection, marked extraction, injection and friend treatment, followed by stages-one-and-five Titanoslime art. Save identity awaits the authorised live runner.",
+    "settles": [
+     "seeker_scanner",
+     "seeker_extraction",
+     "gene_injection",
+     "warnings",
+     "antidote",
+     "kit_art"
+    ]
+   },
+   "run": "rm-role-designercodex-1794798778",
+   "stage": 0,
+   "summary": "Grounded the current source and specification, accounted for every required built reference, distinguished removed Glurro/Joining Water/cosmetics, recorded existing owner answers and neighbour ownership, audited all suite chains and specialised proof gates, and named three experience failure modes. Proposed an existing-content live walk. Offline suite and live-art instrument selftests passed. Offline art path check fails on its numbered Dwommo animation-prefix resolver and is recorded for stage-3 proof planning. Runtime proof remains stale or missing."
+  }
+ ],
  "runner": "codex",
+ "runner_spend": [
+  {
+   "run": "rm-role-designercodex-1794798778",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 4226926,
+    "output_tokens": 25548
+   }
+  }
+ ],
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
