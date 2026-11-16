@@ -1868,9 +1868,60 @@ def cert_rerun_main():
     return 1 if FAILS else 0
 
 
+def kill_clear_main():
+    """RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD, measured 2026-11-16: Gimme Some Slack's in-game visit 1 started
+    on try 3 (two launches had failed on a transient fault), the Conductor stopped it at 5:59 AM PST to stage his look,
+    and the tick read `stopped` for good: the kill was refused a retry because the launch faults' tries were counted
+    against it, and `clear` answered "was: not stopped" and released nothing, since it released only launches that
+    never started. Written before the fix and watched failing on the base d9fb01950b."""
+    cfg = {"launch_tries": 3}
+    u = "rm-detached-bench-drive-x-in-game-1"
+    killed = {u: {"why": "killed with no result JSON", "state": "finished", "returned": True}}
+    third = {"visit_id": "0.1.0#1", "visit": 1, "unit": u, "failed": None, "tries": 3, "filed": True,
+             "never_started": False}
+    ok(MD.retriable(cfg, third, killed), "a run that started on its third LAUNCH try and was then killed is retried: "
+                                         "launch faults are not kills")
+    worn = dict(third, tries=1, killed_before=["k1", "k2"])
+    ok(not MD.retriable(cfg, worn, {u: killed[u]}), "a run killed for the third time is not retried (launch_tries "
+                                                     "still bounds the kills)")
+    ok(not MD.retriable(cfg, dict(third, tries=1), {}), "a run that ended by itself with no record is not retried")
+
+    sd = tempfile.mkdtemp(prefix="maturation_dispatch_clear_")
+    was = (os.environ.get("RM_MATURATION_DISPATCH_DIR"), MD.DH.read_record)
+    try:
+        os.environ["RM_MATURATION_DISPATCH_DIR"] = sd
+        live = dict(third, unit="u-live", visit_id="0.1.0#2", visit=2)
+        with open(os.path.join(sd, "state.json"), "w") as f:
+            json.dump({"mods": {"X": {"ingame_auto": [third, live], "blind_auto": []}}}, f)
+        MD.DH.read_record = lambda unit, root=None: {"status": "finished" if unit == u else "running"}
+        import io
+        import contextlib
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = MD.main(["clear", "X", "--why", "selftest"])
+        st = json.load(open(os.path.join(sd, "state.json")))["mods"]["X"]
+        text = out.getvalue()
+        ok(rc == 0 and [x.get("unit") for x in st["ingame_auto"]] == ["u-live"],
+           "clear releases a started automatic run that has ENDED (the derived stop), keeps a live one (%s)"
+           % [x.get("unit") for x in st["ingame_auto"]])
+        ok("not stopped" not in text and u in text, "clear names the ended run it released, never 'was: not stopped' "
+                                                     "(%s)" % text.splitlines()[0][:200])
+    finally:
+        if was[0] is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was[0]
+        MD.DH.read_record = was[1]
+        shutil.rmtree(sd, ignore_errors=True)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
     if "--cert-rerun" in sys.argv[1:]:
         sys.exit(cert_rerun_main())
+    if "--kill-clear" in sys.argv[1:]:
+        sys.exit(kill_clear_main())
     if "--item-names" in sys.argv[1:]:
         sys.exit(item_names_main())
     if "--land-views" in sys.argv[1:]:
@@ -1886,4 +1937,5 @@ if __name__ == "__main__":
     rc = land_views_main() or rc
     rc = item_names_main() or rc
     rc = cert_rerun_main() or rc
+    rc = kill_clear_main() or rc
     sys.exit(ingame_main() or rc)

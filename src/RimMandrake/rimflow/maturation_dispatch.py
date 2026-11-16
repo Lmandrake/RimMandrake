@@ -1176,10 +1176,16 @@ def retriable(cfg, x, killed=None):
     (RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE). An older entry without tries reads as its first try.
     killed ({unit: ...}, killed_runs): a run that started and was KILLED before it wrote a result is retried the same
     way (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT); one that ended by itself with no record is not."""
-    if not isinstance(x, dict) or int(x.get("tries") or 1) >= int(cfg.get("launch_tries", 3)):
+    if not isinstance(x, dict):
         return False
     if x.get("unit"):
-        return not x.get("failed") and x["unit"] in (killed or {})
+        # a started run's retries count its KILLS (killed_before plus this one), not the launch faults before it
+        # started: Gimme Some Slack's visit 1 started on launch try 3, was stopped for his look, and stood stopped
+        # (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD, 2026-11-16)
+        kills = len(x.get("killed_before") or []) + 1
+        return not x.get("failed") and x["unit"] in (killed or {}) and kills < int(cfg.get("launch_tries", 3))
+    if int(x.get("tries") or 1) >= int(cfg.get("launch_tries", 3)):
+        return False
     if not (x.get("failed") and x.get("never_started", True)):
         return False
     # a launch that failed on a defect (a rule that refused the spawn, say) is tried again once the pipeline's code
@@ -1232,7 +1238,8 @@ def spent_tries(x):
 
 def retried(cfg, retry):
     return (", try %d of %d after %s" % (
-        int(retry.get("tries") or 1) + 1, int(cfg.get("launch_tries", 3)),
+        len(retry.get("killed_before") or []) + 2 if retry.get("unit") else int(retry.get("tries") or 1) + 1,
+        int(cfg.get("launch_tries", 3)),
         "a run killed before it wrote a result (%s)" % retry["unit"] if retry.get("unit")
         else "a failed launch, the pipeline's code having changed since" if code_changed(cfg, retry)
         and not AUT.transient(str(retry.get("failed") or ""))
@@ -2731,19 +2738,29 @@ def _clear(o):
             if AUT.releasable(s, k, x):
                 released.setdefault(book, {})[k] = s[book].pop(k)
     # so is a blind or in-game launch that never started (refused at the spawn, say): it judged nothing, and left
-    # in its book it stops the next tick again (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP); a run that
-    # started stays the visit's automatic run
+    # in its book it stops the next tick again (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP); and so is a
+    # run that started and has ENDED with no record: the tick derives `stopped` from it on every pass, so leaving it
+    # made clear answer "was: not stopped" and lift nothing (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD). A run
+    # still live (or whose record cannot be read) stays the visit's automatic run.
+    ended = []
     for book in ("blind_auto", "ingame_auto"):
-        gone = [x for x in s.get(book) or [] if isinstance(x, dict) and x.get("failed") and not x.get("unit")]
+        gone = [x for x in s.get(book) or [] if isinstance(x, dict) and (
+            (x.get("failed") and not x.get("unit"))
+            or (x.get("unit") and ((DH.read_record(x["unit"]) or {}).get("status") == "finished")))]
         if gone:
             s[book] = [x for x in s[book] if not any(x is g for g in gone)]
             released[book] = gone
+            ended += [x["unit"] for x in gone if x.get("unit")]
+    if ended and not was:
+        was = {"why": "the automatic run(s) %s ended and wrote no record" % ", ".join(ended)}
     s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was, "released": released})
     st.setdefault("mods", {})[o.mod] = s
     _write(p, st)
-    print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d never-started blind/in-game launch(es))" % (
-        o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
-        len(released.get("fixers") or {}), len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
+    print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d blind/in-game launch(es) that never started "
+          "or ended with no record)" % (
+              o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
+              len(released.get("fixers") or {}),
+              len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
     print(HAND_NOTE % ("clear-%s-%d" % (o.mod, s["cleared"][-1]["at"])))
     return 0
 
