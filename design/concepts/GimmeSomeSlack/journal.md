@@ -330,7 +330,7 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 11:33 PM PST).
 - Record: `version/stage_record.json`.
 
-## 2026-11-16 3:25 AM PST — steward: cycle 6 record is complete; the "no exit block" reading was a stale clone
+## 2026-11-16 3:15 AM PST — steward: cycle 6 record is complete; the "no exit block" reading was a stale clone
 - The tick filed RIMMANDRAKE_COMPLETE_GIMMESOMESLACK_CYCLE_SIX_RECORD_NO reading `/home/mandrake/rm/dispatch`, 51 behind origin/main for 51 min, whose `cycle_6/SUMMARY.md` was the 02:07 lane-1 copy (`## Exit (pending)`). On origin the record has had its exit block since 290ce0c736 (02:57): `exit_met: true`, 0 Problem, 6 Polish.
 - No record gap, criterion flaw or real miss in the reading; judge checked: `tests_edited.json` empty, the only GSS test change in the window (396433f04a, cycle 5's fix, before this cycle began) widens the decider and keeps its green cases; the decider `selftest_gss_no_hose.py` reran here rc 0, 25 PASS, last line `PASS  G0_clean_copy`, same as recorded.
 - Not advanced by this run: the exit-met confirmation (advance to Stage 6) is the next steward step, and it moves 3 lane-1 FAILs and 6 faults onto the Polish list, which his card answer says is confirmed with him.
