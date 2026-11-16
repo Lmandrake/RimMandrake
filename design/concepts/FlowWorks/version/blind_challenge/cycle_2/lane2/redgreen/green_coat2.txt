@@ -1,0 +1,2 @@
+CAUGHT XML_YELLOW_SLIME_NO_COAT | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc1 RED   the four slimes coat and icy water washes (the setting's own wor
+CAUGHT XML_ICY_WATER_NO_WASH | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc1 RED   the four slimes coat and icy water washes (the setting's own wor

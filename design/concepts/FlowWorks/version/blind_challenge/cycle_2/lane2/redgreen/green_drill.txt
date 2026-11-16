@@ -1,0 +1,2 @@
+CAUGHT CALLER_DRILL_CHARGES_ASKED | stock:CoverFloor*,DrillSurvey*,DrillWhyNot* rc1 DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds
+CAUGHT CALLER_DRILL_DESTROY_LOSES_PENDING | stock:CoverFloor*,DrillSurvey*,DrillWhyNot* rc1 DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds

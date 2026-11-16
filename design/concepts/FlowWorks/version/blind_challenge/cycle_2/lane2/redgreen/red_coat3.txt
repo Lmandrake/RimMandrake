@@ -1,0 +1,3 @@
+MISSED FLUIDDEF_EVERYTHING_COATS | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc0 
+MISSED FLUIDDEF_EVERYTHING_WASHES | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc0 
+MISSED FLUIDDEF_EVERYTHING_COATS,FLUIDDEF_EVERYTHING_WASHES

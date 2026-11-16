@@ -1,0 +1,763 @@
+{
+ "faults": [
+  {
+   "id": "SHEET_UNDO_DRY_ISLAND_FIX",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (s.Dl[j] == 0 && f < minNewHere && diff / 2 >= minNewHere) f = minNewHere;",
+   "new": "",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": "the cycle-1 changed line undone"
+  },
+  {
+   "id": "SHEET_SHEET_TIER_BOUNDARY",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (r < Tier.Sheet && dl >= p.SheetUpDl) r = Tier.Sheet;",
+   "new": "if (r < Tier.Sheet && dl > p.SheetUpDl) r = Tier.Sheet;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SHEET_CROP_REPORT_A_PULSE_LATE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (s.Stand[c] >= p.CropKillPulses) rep?.CropDrowning.Add((c, s.Stand[c]));",
+   "new": "if (s.Stand[c] > p.CropKillPulses) rep?.CropDrowning.Add((c, s.Stand[c]));",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SHEET_EVAPORATION_UNCOUNTED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (take > 0) { s.Dl[c] -= take; s.Evaporated += take; }",
+   "new": "if (take > 0) { s.Dl[c] -= take; }",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SHEET_ICED_LIP_TAKES_SPILL",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (s.Tiers[c] == Tier.Ice) continue; // D10: an iced lip takes no new spill; the next lip is tried",
+   "new": "",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SHEET_ICE_FLOWS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "\t\t\t\tif (s.Tiers[i] == Tier.Ice) continue;\n\t\t\t\tint mobile = s.Dl[i] - p.RetentionDl;\n\t\t\t\tif (mobile <= 0) continue;\n\t\t\t\tif (donors++",
+   "new": "\t\t\t\tint mobile = s.Dl[i] - p.RetentionDl;\n\t\t\t\tif (mobile <= 0) continue;\n\t\t\t\tif (donors++",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CONV_UNDO_CAP_HEADROOM",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return Math.Min(accrued, perTick > inputUnits ? perTick + inputUnits : inputUnits);",
+   "new": "return Math.Min(accrued, Math.Max((float)inputUnits, perTick));",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": "the cycle-1 changed line undone"
+  },
+  {
+   "id": "CONV_CLIP_NEVER_KEPT",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return Math.Max(0f, Math.Min(accrued - capped, perTick));",
+   "new": "return 0f;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CONV_ROTATION_ALWAYS_FROM_ZERO",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "int i = ((last < 0 ? -1 : last) + k) % n;",
+   "new": "int i = (k - 1) % n;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CONV_BLOCKED_KEEPS_SMALLEST_CAP",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "for (int i = 1; i < capped.Count; i++) if (capped[i] > best) best = capped[i];",
+   "new": "for (int i = 1; i < capped.Count; i++) if (capped[i] < best) best = capped[i];",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CONV_BATCH_IGNORES_OUTPUT_ROOM",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "n = Math.Min(n, outputRoom / outputUnits);",
+   "new": "n = Math.Min(n, int.MaxValue);",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "DRILL_SPENT_PLACEABLE",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "return reserve <= 0f ? Verdict.Spent : Verdict.Allowed;",
+   "new": "return Verdict.Allowed;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "DRILL_CHARGES_WHOLE_LEVELS",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "return (float)((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+   "new": "return (float)System.Math.Ceiling((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "DRILL_BLEED_WELL_NEEDS_POWER",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (s.needsPower && !s.powered) return Block.Unpowered;",
+   "new": "if (!s.powered) return Block.Unpowered;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SPRK_PARTIAL_PULSE_PAYS",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (available < need) return RM_SprinklerState.Dry;",
+   "new": "if (available <= 0) return RM_SprinklerState.Dry;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SPRK_UNDO_MAXCELLS_UPSEARCH",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "while (UnitsFor(n + 1, litresPerCellHour, unitsPerLitre) <= units) n++;",
+   "new": "",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": "the cycle-1 changed line undone"
+  },
+  {
+   "id": "SPRK_VALVE_WATERS_WET_CELLS",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "c.HasPlant && !c.Sealed && !c.AlreadyWet && c.Lit && !c.Exempt",
+   "new": "c.HasPlant && !c.Sealed && c.Lit && !c.Exempt",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SPRK_NO_GRACE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "public static int WetUntil(int now) => now + PulseTicks + GraceTicks;",
+   "new": "public static int WetUntil(int now) => now + PulseTicks;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SPRK_NO_PUMP_NEEDED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (!pressure) return RM_SprinklerState.NoPressure;",
+   "new": "",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "SPRK_SETTING_RADIUS_DEFAULT_DRIFT",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerSettings.cs",
+   "old": "public static float sprinklerNativeRadius = RM_SprinklerKernel.NativeRadius;",
+   "new": "public static float sprinklerNativeRadius = 3.9f;",
+   "bars": [
+    "inv_sprinklers",
+    "inv_settings"
+   ],
+   "stock": "Sprinkler*,MachinerySettings*,Settings*,SettingsReset*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
+    "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py"
+   ],
+   "why": ""
+  },
+  {
+   "id": "SPRK_SETTING_LABEL_29_AGAIN",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerSettings.cs",
+   "old": "(default 2.9: about 25 squares watered)",
+   "new": "(default 2.9: about 29 squares watered)",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": "the cycle-1 changed label undone"
+  },
+  {
+   "id": "THIRST_HEAT_UNCAPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return f > HeatCap ? HeatCap : f;",
+   "new": "return f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "THIRST_LAST_RESORT_ANY_TIME",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return lastResortAllowed && Desperate(level);",
+   "new": "return lastResortAllowed;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "THIRST_RESERVE_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return available > reserveUnits ? available - reserveUnits : 0;",
+   "new": "return available;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CALLER_SPRINKLER_IGNORES_DRINK_RESERVE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+   "old": "held = Thirst.RM_DrinkReserve.Spendable(head, l);",
+   "new": "held = parts.Find(kv => kv.Key == pick).Value;",
+   "bars": [
+    "inv_sprinklers",
+    "inv_bottles_thirst"
+   ],
+   "stock": "Sprinkler*,BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [],
+   "why": "new text replaced below"
+  },
+  {
+   "id": "CALLER_CONVERTER_EATS_CLIP",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "accrued += clipped;",
+   "new": "",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CALLER_DRILL_CHARGES_ASKED",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet), RM_LevelSolve.U, unitPerLevel);",
+   "new": "pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, beforeDl + addDl, RM_LevelSolve.U, unitPerLevel);",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CALLER_DRILL_DESTROY_LOSES_PENDING",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "?.ReturnUnits(pendingUnits);",
+   "new": "?.ReturnUnits(0f);",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CALLER_SHEET_CROP_AGE_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm)",
+   "new": "RM_SheetMath.CropDrowns(stand, int.MaxValue, pulseTicks, prm)",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": ""
+  },
+  {
+   "id": "CALLER_SHEET_CROP_DELAY_ONE_PULSE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);",
+   "new": "prm.CropKillPulses = 1;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "why": ""
+  },
+  {
+   "id": "CALLER_THIRST_IGNORES_HEAT_AND_LABOUR",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/Need_RM_Thirst.cs",
+   "old": "CurLevel -= RM_ThirstMath.FallPerInterval(FallPerDayNow);",
+   "new": "CurLevel -= RM_ThirstMath.FallPerInterval(RM_ThirstMath.BaseFallPerDay);",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "CALLER_SPRINKLER_NO_PRESSURE_CHECK",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+   "old": "bool pressure = enabled && switchOn && HasPressure(head);",
+   "new": "bool pressure = enabled && switchOn;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "FLUIDDEF_EVERYTHING_COATS",
+   "file": "src/RimMandrake/FlowWorks/Source/FluidDef.cs",
+   "old": "public bool coats;",
+   "new": "public bool coats = true;",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "FLUIDDEF_EVERYTHING_WASHES",
+   "file": "src/RimMandrake/FlowWorks/Source/FluidDef.cs",
+   "old": "public bool washesCoat;",
+   "new": "public bool washesCoat = true;",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "COAT_WASHING_LIQUID_COATS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs",
+   "old": "if (f != null && f.coats)",
+   "new": "if (f != null && f.washesCoat)",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "COAT_NEVER_FADES",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs",
+   "old": "\n\t\t\t|| ageTicks > Mathf.RoundToInt(RimMandrakeFlowWorksSettings.liquidCoatFadeDays * GenDate.TicksPerDay);",
+   "new": ";",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "TOSS_RANGE_ACROSS_THE_MAP",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs",
+   "old": "public const float TossRange = 4.9f;",
+   "new": "public const float TossRange = 49f;",
+   "bars": [
+    "inv_toss_flame",
+    "toss_flame_from_rim"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
+   ],
+   "why": ""
+  },
+  {
+   "id": "TOSS_RELIGHTS_BURNING",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs",
+   "old": "&& !ex.LiquidFire.IsBurning(map, c)",
+   "new": "",
+   "bars": [
+    "inv_toss_flame",
+    "toss_flame_from_rim"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
+   ],
+   "why": ""
+  },
+  {
+   "id": "FETCH_NEVER_UNDER_FIRE",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+   "old": "public const int UnderFireTicks = 600;",
+   "new": "public const int UnderFireTicks = 0;",
+   "bars": [
+    "inv_raider_fetch_fallen",
+    "raiders_fetch_their_fallen"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "FETCH_ANY_FACTION",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+   "old": "&& c.Faction == p.Faction;",
+   "new": "&& c.Faction != null;",
+   "bars": [
+    "inv_raider_fetch_fallen",
+    "raiders_fetch_their_fallen"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "TRENCH_LADDERJOB_PRIVATE_AGAIN",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+   "old": "internal static void Warn(Pawn p, string key)",
+   "new": "private static void Warn(Pawn p, string key)",
+   "bars": [
+    "inv_trench_cover",
+    "inv_raider_fetch_fallen"
+   ],
+   "stock": "RaiderTrench*,Trench*,TrenchStride*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": "a compile break in the DLL: a source law cannot see it"
+  },
+  {
+   "id": "TRENCH_DUTY_GIVER_DROPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+   "old": "public static JobDef RM_RaiderFetchFallen;",
+   "new": "public static JobDef RM_RaiderFetchFallenX;",
+   "bars": [
+    "inv_raider_fetch_fallen"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "EXCAVATION_COAT_TICK_NEVER_RUNS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+   "old": "\t\t\tRM_LiquidCoating.Tick(map, this);",
+   "new": "\t\t\tif (map == null) RM_LiquidCoating.Tick(map, this);",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": "a guard a source law matches around"
+  },
+  {
+   "id": "EXCAVATION_SLIME_TICK_GONE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+   "old": "\t\t\tRM_SlimeSlip.Tick(map, this);",
+   "new": "",
+   "bars": [
+    "inv_slime"
+   ],
+   "stock": "Slime*",
+   "py": [],
+   "why": ""
+  },
+  {
+   "id": "MOD_COAT_DEFAULT_OFF",
+   "file": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+   "old": "public static bool liquidCoatEnabled = true;",
+   "new": "public static bool liquidCoatEnabled = false;",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_settings"
+   ],
+   "stock": "MachinerySettings*,Settings*,SettingsReset*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
+    "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
+    "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py"
+   ],
+   "why": ""
+  },
+  {
+   "id": "MOD_TOSS_SCRIBE_DEFAULT_DRIFT",
+   "file": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+   "old": "Scribe_Values.Look(ref tossFlameOrderEnabled, \"tossFlameOrderEnabled\", true);",
+   "new": "Scribe_Values.Look(ref tossFlameOrderEnabled, \"tossFlameOrderEnabled\", false);",
+   "bars": [
+    "inv_toss_flame",
+    "inv_settings"
+   ],
+   "stock": "MachinerySettings*,Settings*,SettingsReset*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
+    "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
+    "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py"
+   ],
+   "why": ""
+  },
+  {
+   "id": "DEFOF_TOSS_UNBOUND",
+   "file": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+   "old": "public static JobDef RM_TossFlame;",
+   "new": "public static JobDef RM_TossFlameJob;",
+   "bars": [
+    "inv_toss_flame"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
+   ],
+   "why": ""
+  },
+  {
+   "id": "CSPROJ_DROPS_COATING",
+   "file": "src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj",
+   "old": "<Compile Include=\"RM_LiquidCoating.cs\" />",
+   "new": "",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": "file not compiled into the DLL"
+  },
+  {
+   "id": "XML_JOBDEF_TOSS_DRIVER_TYPO",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/JobDefs/FlowWorks_JobDefs.xml",
+   "old": "<driverClass>RimMandrake.FlowWorks.JobDriver_TossFlame</driverClass>",
+   "new": "<driverClass>RimMandrake.FlowWorks.JobDriver_TossFlam</driverClass>",
+   "bars": [
+    "inv_toss_flame"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_JOBDEF_FETCH_INTERRUPTIBLE",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/JobDefs/FlowWorks_RaiderTrench.xml",
+   "old": "<reportString>carrying TargetA out of a pit.</reportString>\n    <casualInterruptible>false</casualInterruptible>",
+   "new": "<reportString>carrying TargetA out of a pit.</reportString>\n    <casualInterruptible>true</casualInterruptible>",
+   "bars": [
+    "inv_raider_fetch_fallen"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_DUTY_FETCH_AFTER_FIGHT",
+   "file": "src/RimMandrake/FlowWorks/Patches/RaiderTrench/FlowWorks_RaiderTrenchDuties.xml",
+   "old": "<order>Prepend</order>\n    <value>\n      <li Class=\"RimMandrake.FlowWorks.JobGiver_RM_FetchFallen\" />",
+   "new": "<order>Append</order>\n    <value>\n      <li Class=\"RimMandrake.FlowWorks.JobGiver_RM_FetchFallen\" />",
+   "bars": [
+    "inv_raider_fetch_fallen",
+    "raiders_fetch_their_fallen"
+   ],
+   "stock": "RaiderTrench*,Trench*,TrenchStride*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_HEDIFF_COAT_PLAIN_CLASS",
+   "file": "src/RimMandrake/FlowWorks/Defs/Pits/HediffDefs/Pit_Hediffs.xml",
+   "old": "<hediffClass>RimMandrake.FlowWorks.Hediff_LiquidCoat</hediffClass>",
+   "new": "<hediffClass>HediffWithComps</hediffClass>",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_KEY_FETCH_WARNING_GONE",
+   "file": "src/RimMandrake/FlowWorks/Languages/English/Keyed/FlowWorks_Keys.xml",
+   "old": "<RMFlow_RaidersFetchFallen>Raiders of {0} are setting a ladder into your pit to fetch their fallen.</RMFlow_RaidersFetchFallen>",
+   "new": "",
+   "bars": [
+    "inv_raider_fetch_fallen"
+   ],
+   "stock": "",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_WATER_NO_LONGER_WASHES",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml",
+   "old": "<defName>RM_Fluid_Water</defName>\n    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->\n    <washesCoat>true</washesCoat>",
+   "new": "<defName>RM_Fluid_Water</defName>",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_YELLOW_SLIME_NO_COAT",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml",
+   "old": "<defName>RM_Fluid_SlimeYellow</defName>\n    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->\n    <coats>true</coats>",
+   "new": "<defName>RM_Fluid_SlimeYellow</defName>",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_OIL_NO_COAT",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml",
+   "old": "<defName>RM_Fluid_Oil</defName>\n    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->\n    <coats>true</coats>",
+   "new": "<defName>RM_Fluid_Oil</defName>",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  },
+  {
+   "id": "XML_ICY_WATER_NO_WASH",
+   "file": "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml",
+   "old": "<defName>RM_Fluid_IcyWater</defName>\n    <!-- bar inv_liquid_coating (RM_LiquidCoating) -->\n    <washesCoat>true</washesCoat>",
+   "new": "<defName>RM_Fluid_IcyWater</defName>",
+   "bars": [
+    "inv_liquid_coating",
+    "inv_liquid_roster"
+   ],
+   "stock": "FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating"
+   ],
+   "why": ""
+  }
+ ]
+}

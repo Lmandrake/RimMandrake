@@ -1,0 +1,3 @@
+MISSED XML_YELLOW_SLIME_NO_COAT | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc0 
+MISSED XML_ICY_WATER_NO_WASH | stock:FluidDef*,FluidsCompatible*,GateAcid*,ImmersionDamage*,NaturalTar*,P7* rc0 ; py:selftest_stage3_owed.py --only coating rc0 
+MISSED XML_YELLOW_SLIME_NO_COAT,XML_ICY_WATER_NO_WASH

@@ -1,0 +1,3 @@
+MISSED EXCAVATION_COAT_TICK_NEVER_RUNS | py:selftest_stage3_owed.py --only coating rc0 
+MISSED XML_HEDIFF_COAT_PLAIN_CLASS | py:selftest_stage3_owed.py --only coating rc0 
+MISSED EXCAVATION_COAT_TICK_NEVER_RUNS,XML_HEDIFF_COAT_PLAIN_CLASS

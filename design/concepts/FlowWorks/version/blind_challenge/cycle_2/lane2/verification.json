@@ -1,0 +1,1105 @@
+{
+ "code_sha": "4b33b22f003b",
+ "judge": "judge-1794833810",
+ "method": "one selftest_flowworks_stock.py run over every named or id-carrying C# case (68 cases ok) and each named or id-carrying python selftest (17, all rc 0); offline-bar claims checked by planted faults and lane 1",
+ "rulings": [
+  {
+   "subject": "finding:BOTTLE_STOCK_MEND_FREE_REFILLS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_bottle_fill_and_wash_pay_the_body_and_keep_wear (lane2 verify run).",
+   "cases": [
+    "GptA_bottle_fill_and_wash_pay_the_body_and_keep_wear"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:CANAL_SWIM_VERIFY_POISON_POOL_PARTY",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_fuel_moat.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_fuel_moat.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Concealed_cover_does_not_shield_the_pawn_beneath_it_from_the_fill (lane2 verify run).",
+   "cases": [
+    "Concealed_cover_does_not_shield_the_pawn_beneath_it_from_the_fill"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:COVER_DECK_TUNE_QUADRATIC_CENSUS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:DBH_WATER_MEND_ACID_ON_TAP",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_dbh_water_only_on_plain_water_and_full_dbh_gated (lane2 verify run).",
+   "cases": [
+    "GptA_dbh_water_only_on_plain_water_and_full_dbh_gated"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:DEEP_SAND_FIX_READS_AS_FRESHWATER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_liquid_defs_hazards.py, selftest_natives_drink_own_water.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py",
+    "src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_deep_stone_live.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_deep_stone_live.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:DEEP_STONE_FIX_PROBE_NEVER_NAMES_PAWN",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_deep_stone_live.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_deep_stone_live.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:DRILL_SURVEY_EXPLAIN_BEFORE_STEEL_IS_SPENT",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FILL_TERRAIN_FIX_HAZARDS_DRUNK_AS_WATER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_liquid_defs_hazards.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWPINS_FIX_PASS_ON_REGRESSION",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKSMOD_DOC_FIX_STALE_PHASE_NOTES",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_ALPHABIOMES_RETIRE_GHOST_TERRAINS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Gpt1016_bottle_jobs_never_lose_the_paid_container (lane2 verify run).",
+   "cases": [
+    "Gpt1016_bottle_jobs_never_lose_the_paid_container"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) FlowOrder_equal_depth_overflow_only_runs_away_from_the_source (lane2 verify run).",
+   "cases": [
+    "FlowOrder_equal_depth_overflow_only_runs_away_from_the_source"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_CHECKOUT_SCOPE_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_extensions.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_extensions.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_DONOR_AFFORDANCE_GAP_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_DOOR_FAMILY_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_northstar.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_HOSE_DEPLOY_DRAG_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_HOSE_FIX_NAN_WINDING_INSTANT",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Gpt1016_hose_nan_setting_reads_as_default (lane2 verify run).",
+   "cases": [
+    "Gpt1016_hose_nan_setting_reads_as_default"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_HOSE_FIX_PAUSE_REMESH_EVERY_FRAME",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_c.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_KEYS_PRUNE_DEAD_DRILL_STRINGS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_LABELS_POLISH_LEVELS_TO_METRES",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_LIQUID_FACES_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_LIQUID_KITS_WIRE_NO_REVIEW_ROW",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_NORTHSTAR_REVALIDATE_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_NORTHSTAR_SITE_PREP_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_northstar.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_NORTHSTAR_TRIAL_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_NORTHSTAR_WIRE_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_OWNER_RECONCILE_CUTOVER_STALE",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) SpanBase_cover_is_the_trap_tier_of_the_base (lane2 verify run).",
+   "cases": [
+    "SpanBase_cover_is_the_trap_tier_of_the_base"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_PIT_PAWN_ROWS_RED_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_PROBES_MEND_HOOK_HAZARDS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_c.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_RAIN_SETTING_CALLSITES_FIX_DRIFT",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Gpt1016_reactor_stalled_reaction_does_not_end_the_shift (lane2 verify run).",
+   "cases": [
+    "Gpt1016_reactor_stalled_reaction_does_not_end_the_shift"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) CollectBody_exact_cap_not_truncated, MachinerySettings_toggle_rows_scan_the_defs_once_not_every_frame (lane2 verify run).",
+   "cases": [
+    "CollectBody_exact_cap_not_truncated",
+    "MachinerySettings_toggle_rows_scan_the_defs_once_not_every_frame"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_SHARED_SOURCE_STALL_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) SharedSource_every_adjacent_channel_gets_the_source_either_dig_order (lane2 verify run).",
+   "cases": [
+    "SharedSource_every_adjacent_channel_gets_the_source_either_dig_order"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Sheet_save_load_continues_identically_through_the_wake_record (lane2 verify run).",
+   "cases": [
+    "Sheet_save_load_continues_identically_through_the_wake_record"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_STOCK_BISECT_RED_CHECK",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_stock.py --only Sprinkler* (22 cases) (lane2 verify run).",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) TAKEN_BY_LAND_SERVICE_1_kernel_decides_return_outcomes_and_schedules (lane2 verify run).",
+   "cases": [
+    "TAKEN_BY_LAND_SERVICE_1_kernel_decides_return_outcomes_and_schedules"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FLOWWORKS_TANK_LOOP_ROW_WRONG_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_c.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:FLOWWORKS_V2_FIX_PIT_ROWS_RESCUE_LADDER",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_VERYSHALLOW_FIX_RESIDUE_GAP",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Body_split_stale_body_vanilla_throws_mended_clean (lane2 verify run).",
+   "cases": [
+    "Body_split_stale_body_vanilla_throws_mended_clean"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:FWSHEET_CULL_MIXED_CONTAINER_ROWS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FWSHEET_UNIFY_COUPLED_STATE_ROWS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_falsepass_early.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_falsepass_early.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_falsepass_late.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_falsepass_late.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:FW_SELFTESTS_MEND_TWO_RED_AFTER_PARITY",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Drawbridge_raised_leaf_draws_without_its_winch (lane2 verify run).",
+   "cases": [
+    "Drawbridge_raised_leaf_draws_without_its_winch"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_joint_check.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_joint_check.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:HOSE_IMPORT_MEND_ONE_SHOT_MISS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_hose_import_marked_done_after_success (lane2 verify run).",
+   "cases": [
+    "GptA_hose_import_marked_done_after_success"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:HOSE_OFF_MEND_SLEEPWALKING_RETRACT",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_stock.py --only Sprinkler* (22 cases) (lane2 verify run).",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:HOSE_ORDERS_MEND_WAITING_FOREVER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_hose_orders_fresh_order_on_dropped_end_runs (lane2 verify run).",
+   "cases": [
+    "GptA_hose_orders_fresh_order_on_dropped_end_runs"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:HOSE_SELFTESTS_FIX_MISPLACED_DOC_NAMES",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:HOSE_SPILL_MEND_POND_GETS_NOTHING",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_hose_drain_and_spill_go_back_to_the_pond (lane2 verify run).",
+   "cases": [
+    "GptA_hose_drain_and_spill_go_back_to_the_pond"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_extensions.py, selftest_flowworks_northstar.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_extensions.py",
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Kernel_limitless_source_fills_its_component (lane2 verify run).",
+   "cases": [
+    "Kernel_limitless_source_fills_its_component"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:LIQUID_CONVERTER_FIX_PICKS_CRUDE_FIRST",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_liquid_defs_hazards.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:LIQUID_FIRE_MEND_COVER_AND_SAVE",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_liquid_fire_cover_flyers_save_and_blast_identity (lane2 verify run).",
+   "cases": [
+    "GptA_liquid_fire_cover_flyers_save_and_blast_identity"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:LIQUID_FIRE_QUEUE_ORIGIN_1",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_extensions.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_extensions.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:LIQUID_KIT_COMMENTS_CORRECT_GHOST_PATCHES",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:LIQUID_ROTATION_FIX_STARVED_STRANGER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_rotation_starved_stranger_on_another_store_never_stalls (lane2 verify run).",
+   "cases": [
+    "GptA_rotation_starved_stranger_on_another_store_never_stalls"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:LIQUID_THEFT_VERIFY_FALSE_ACCUSATION",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_stock.py --only Sprinkler* (22 cases) (lane2 verify run).",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:MAP_STATICS_PRUNE_GHOST_MAPS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_c.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:NATURAL_LIQUID_FIX_PUMPS_AS_FRESH_WATER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_liquid_defs_hazards.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_liquid_defs_hazards.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:PANNING_SPOT_VERIFY_EMPTY_RIVER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:PIPE_ADAPTER_FIX_DEBT_NEVER_PAID",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) GptA_adapter_send_debt_is_paid (lane2 verify run).",
+   "cases": [
+    "GptA_adapter_send_debt_is_paid"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:PIT_CHAINS_REPAIR_STALE_SINCE_RULING",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_extensions.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_extensions.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:PIT_FALL_MEND_SAVED_MIDAIR",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_cover_breaks.py, selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:PIT_PRISON_JUDGE_D3_ROOMS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:PIT_RAMP_FIX_WALKER_TAKES_FALL",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) PitRamp_walked_step_down_a_ramp_is_no_fall (lane2 verify run).",
+   "cases": [
+    "PitRamp_walked_step_down_a_ramp_is_no_fall"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:PIT_REACH_VERIFY_FLYERS_AND_GIANTS",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) StartPath_reach_answers_for_the_walker_not_the_person_band, Too_wide_pawn_is_not_walled_in_by_the_masks (lane2 verify run).",
+   "cases": [
+    "StartPath_reach_answers_for_the_walker_not_the_person_band",
+    "Too_wide_pawn_is_not_walled_in_by_the_masks"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:PIT_RESCUE_FIX_COUNTS_DOCTOR_OFF",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) PitRescue_only_a_colonist_assigned_Doctor_counts_as_a_rescuer (lane2 verify run).",
+   "cases": [
+    "PitRescue_only_a_colonist_assigned_Doctor_counts_as_a_rescuer"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:PLACEMENT_FAILURE_MEND_LOST_IN_POSTING",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_c.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:RAID_PLANK_FIX_SURFACE_HEIGHT_SUNKEN",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth (lane2 verify run).",
+   "cases": [
+    "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:REACH_VETO_FIX_ONE_END_ENOUGH",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Map_edge_island_ringed_by_a_trench_is_cut_off, Reach_veto_needs_a_way_at_both_ends (lane2 verify run).",
+   "cases": [
+    "Map_edge_island_ringed_by_a_trench_is_cut_off",
+    "Reach_veto_needs_a_way_at_both_ends"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:REVIEW_MAP_FIX_COVER_NEW_DEFS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_CORRECT_SPRINKLER_RADIUS_TEXT_SAYS_TWENTY_FIVE",
+   "ruling": "finding.verified",
+   "text": "Label and kernel comment say 25 at HEAD; lane 1 SPRK_RADIUS_CHOICES_CELLS counts 25 at 2.9. No test pins the label (planted '29' back survived): Polish RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED.",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_FIX_CONVERTER_RATE_REMAINDER_EATEN_BY_THE_CAP",
+   "ruling": "finding.verified",
+   "text": "Blind lane 1 CONV_LONG_RUN_RATE_NOTHING_EATEN PASS over the 0.1-5 slider (worst 0.006 batch unaccounted); planted CONV_UNDO_CAP_HEADROOM CAUGHT by T_CONVERT and lane 1.",
+   "cases": [
+    "Converter_rate_setting_delivers_its_rate"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_FIX_SHEET_DRY_ISLAND_UNDER_A_STANDING_POOL",
+   "ruling": "finding.verified",
+   "text": "Blind lane 1 SHEET_LIES_LEVEL PASS (120 basins, every square wet, one surface); planted SHEET_UNDO_DRY_ISLAND_FIX CAUGHT by T_SHEET (Sheet_dry_square_under_a_pool_is_wetted) and lane 1.",
+   "cases": [
+    "Sheet_dry_square_under_a_pool_is_wetted"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_PIN_CONVERTER_CALLER_KEEPS_CLIPPED_INCOME",
+   "ruling": "finding.verified",
+   "text": "Planted CALLER_CONVERTER_EATS_CLIP (accrued += clipped removed in CompLiquidConverter) is CAUGHT by T_CONVERT (Converter_caller_keeps_clipped_income); lane2/planted_results.jsonl.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE",
+   "ruling": "finding.verified",
+   "text": "Planted DRILL_CHARGES_WHOLE_LEVELS (SpentUnits rounds up) is now CAUGHT by T_DRILL (DrillSurvey_charge_is_only_what_landed) and lane 1. The caller variant (charge the asked dL) still survived T_DRILL: filed and fixed as RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN.",
+   "cases": [
+    "GptA1024_drill_spends_only_what_landed"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_PIN_SPRINKLER_CALLER_TO_A_WORKING_PUMP",
+   "ruling": "finding.verified",
+   "text": "Planted CALLER_SPRINKLER_NO_PRESSURE_CHECK (pressure without HasPressure in RM_Sprinkle) is CAUGHT by T_SPRINKLER (Sprinkler_caller_asks_for_a_pump); lane2/planted_results.jsonl.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) DeckCollapse_GSS_shock_seam_is_soft_and_load_safe (lane2 verify run).",
+   "cases": [
+    "DeckCollapse_GSS_shock_seam_is_soft_and_load_safe"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT",
+   "ruling": "finding.verified",
+   "text": "Blind lane 1 SPRK_UNITS_NEVER_FREE_SLIDER_SWEEP PASS (MaxCellsFor exact inverse over the slider); planted SPRK_UNDO_MAXCELLS_UPSEARCH CAUGHT by T_SPRINKLER (Sprinkler_max_cells_exact_fit).",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:RIVER_CURRENT_PROBE_LATE_GRAB",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_gpt_b.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) CollectBody_exact_cap_not_truncated, RiverSwitchFlip_riverWorksEnabled (lane2 verify run).",
+   "cases": [
+    "CollectBody_exact_cap_not_truncated",
+    "RiverSwitchFlip_riverWorksEnabled"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:SELFTEST_FILTER_BUILD_SERIAL_DLL",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Capacity_is_cells_times_bed_times_volumePerTile; selftest_flowworks_selftest_requests.py, selftest_flowworks_sheet.py (lane2 verify run).",
+   "cases": [
+    "Capacity_is_cells_times_bed_times_volumePerTile"
+   ],
+   "py": [
+    "src/RimMandrake/FlowWorks/selftest_flowworks_selftest_requests.py",
+    "src/RimMandrake/Utils/selftest_flowworks_sheet.py"
+   ],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) HoseTankFeed_refused_add_puts_back, MapControl_six_wiring, MapControl_wiring_and_master_switch (lane2 verify run).",
+   "cases": [
+    "HoseTankFeed_refused_add_puts_back",
+    "MapControl_six_wiring",
+    "MapControl_wiring_and_master_switch"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_northstar.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:SWIM_REAPPLY_FIX_LATE_TOGGLE_STAYS_DRY",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT",
+   "ruling": "finding.verified",
+   "text": "Named GptFixesA cases pass; Building_LiquidDrill.Destroy returns pending units. Its drill half had no test (planted ReturnUnits(0f) survived T_DRILL) until DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds at 4b33b22f.",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:TANK_SETTLE_FIX_DOUBLE_DIPPED",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_flowworks_stock.py --only Sprinkler* (22 cases) (lane2 verify run).",
+   "cases": [],
+   "py": [],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:TANK_STUB_HUNT_POINTS_AT_NOTHING",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:TAR_REFINERY_FIX_CAN_FALLBACK_DEAD",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "live"
+  },
+  {
+   "subject": "finding:TEST_SWITCH_FIX_NO_SCRIBE_NO_PEACE",
+   "ruling": "not_ruled",
+   "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+   "cases": [],
+   "py": [],
+   "kind": "none"
+  },
+  {
+   "subject": "finding:THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "ruling": "not_ruled",
+   "text": "Not ruled: the claim's test is the live thirst_live rows (recorded 'steve-targeted: FAIL x24'); offline cases carrying its id pass, which cannot verify a live claim. Owed to Stage 6.",
+   "cases": [
+    "CollectBody_exact_cap_not_truncated",
+    "ContainerStyle_dbh_bottles_masked",
+    "Thirst_small_pond_drink_admitted",
+    "Transfer_caller_coverage"
+   ],
+   "py": [
+    "src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+    "src/RimMandrake/FlowWorks/northstar/selftest_live_session.py"
+   ],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: selftest_thirst_live.py (lane2 verify run).",
+   "cases": [],
+   "py": [
+    "src/RimMandrake/FlowWorks/northstar/selftest_thirst_live.py"
+   ],
+   "kind": "py"
+  },
+  {
+   "subject": "finding:TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) RaiderTrench_wiring, TrenchStride_a_dig_on_one_map_leaves_the_other_maps_masks_alone, TrenchStride_underpass_views_compose +1 (lane2 verify run).",
+   "cases": [
+    "RaiderTrench_wiring",
+    "TrenchStride_a_dig_on_one_map_leaves_the_other_maps_masks_alone",
+    "TrenchStride_underpass_views_compose",
+    "TrenchStride_wiring_every_judge_reads_the_stride_view"
+   ],
+   "py": [],
+   "kind": "case"
+  },
+  {
+   "subject": "finding:UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT",
+   "ruling": "finding.verified",
+   "text": "The test carrying this finding passes at 4b33b22f003b: C# case(s) Underpass_shot_reopens_only_a_cliff_rejection_and_reasks_vanilla (lane2 verify run).",
+   "cases": [
+    "Underpass_shot_reopens_only_a_cliff_rejection_and_reasks_vanilla"
+   ],
+   "py": [],
+   "kind": "case"
+  }
+ ]
+}

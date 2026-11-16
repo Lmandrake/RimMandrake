@@ -1,11 +1,12 @@
 {
  "_view": {
-  "body_sha256": "e0effeda2af23433e2b2d062a67bac95ae654e5bcdcb56f50453e0d45ed47bc9",
+  "body_sha256": "386ca10db8ad2bf3ad1b5e5fd2fcb9ba0902a461a1794f35e30a2c9c892d050a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 881268,
    "DISPATCH": 2562,
    "HOLDER.run-1794816885": 928,
+   "JUDGE.judge-1794833810": 50782,
    "STEWARD": 2597
   }
  },
@@ -1668,7 +1669,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1110,
+  "events": 1201,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1765,12 +1766,12 @@
     "by": "BACKFILL",
     "claim": "Fill and wash now debit the body, spent bodies are skipped, and wear is carried across container transitions. Offline selftest GptFixesAChecks (selftest_flowworks_stock.py); no live proof run. (recorded on pre-landing a6ce6a54db; landed as 51bcdabdb8a0)",
     "class": "problem",
-    "code_sha": "51bcdabdb8a0",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Debit the body on fill and wash, skip spent bodies, and copy HitPoints across container transitions in MakeContainer.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Bottle/bucket/barrel fill (JobDriver_FillBottle, RM_LiquidBottleUtility.TryGetLiquidAt reads terrain only) and wash (JobDriver_WashBottle) never debit the body's RM_LiquidStock, so a limited pond creates liquid. MakeContainer builds a fresh Thing without HitPoints, healing containers.",
-    "ts": "2026-11-16T11:41:34Z",
+    "ts": "2026-11-16T16:24:17Z",
     "version": "0.1.0"
    },
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1813,12 +1814,12 @@
     "by": "BACKFILL",
     "claim": "Patches/Canals/FlowWorks_NoRecreationalSwim.xml marks 44 hazardous fill tiers (oil, poison, blood, chemfuel, astrofuel, boiling water, slimes, tar) with RM_NoRecreationalSwimExtension; plain and icy water stay swimmable. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Mark hazardous fill terrains with RM_NoRecreationalSwimExtension, which RM_Patch_JoyGiver_GoSwimming_NoSandSwim vetoes.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Poison/oil/fuel canal fills keep the Water tag and have no no-swim marker; JoyGiver_GoSwimming needs only IsWater+Standable, so colonists may swim recreationally in them.",
-    "ts": "2026-11-16T11:41:34Z",
+    "ts": "2026-11-16T16:24:17Z",
     "version": "0.1.0"
    },
    "finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL": {
@@ -1829,12 +1830,12 @@
     "by": "BACKFILL",
     "claim": "Chemfuel and astrofuel canal fluids wired (b0ec1721ff); also chemfuel inferno and astrofuel chained detonation (1a5a2ceee7) and the Utinni raid and Visibility rise (6238e06206). Offline green only. (recorded on pre-landing 6e4fc00401; landed as 35743b48eed2)",
     "class": "problem",
-    "code_sha": "35743b48eed2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Wire canalFluid onto the chemfuel/astrofuel rows (propane split to PROPANE_CANAL_WIRE_STILL_NO_FLUID).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_Liquid_Chemfuel (RM_LiquidDefRegistry.xml:458) and propane rows carry no canalFluid, though RM_Fluid_Chemfuel/Astrofuel exist (FlowWorks_PitFluids.xml:67,84). Fuel cannot be pumped into a moat; a liquid with no channel form spills (RM_LiquidSpill).",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:17Z",
     "version": "0.1.0"
    },
    "finding:CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID": {
@@ -1846,12 +1847,12 @@
     "by": "BACKFILL",
     "claim": "Fixed in source (e3b0a513a649 (pre-landing; landed as 8c8bd865f358)): a pawn beneath a concealed cover no longer gets zero splash share. Selftest red-then-green; live check owed.",
     "class": "problem",
-    "code_sha": "8c8bd865f358",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Make the concealed-cover case count in UnderDeck/SplashShare so a pawn beneath a lid is poisoned and drowned like an uncovered pawn.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "UnderDeck recognizes only InFloorBand pawns (RM_SuspensionPatches.cs:313-316), so a pawn beneath a solid concealed cover (IsBeneath) gets SplashShare 0. RM_PitFillEffects.Tick then skips poisoning and drowning, leaving it immune to toxic/fill around it.",
-    "ts": "2026-11-16T11:41:21Z",
+    "ts": "2026-11-16T16:24:17Z",
     "version": "0.1.0"
    },
    "finding:COVER_BLAST_FIX_DECK_LEFT_INTACT": {
@@ -1878,12 +1879,12 @@
     "by": "BACKFILL",
     "claim": "A cover with a lower-id cardinal neighbour returns before flooding (C4-F3); a mixed deck springs at its weakest cover's rating (C4-F5); the 400 cap on Deck() is removed (C4-F6). The inspect line still shows each cover's own rating. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Return early for covers with a lower-id cardinal neighbour so only local minima flood; spring a mixed deck at its weakest cover's rating; remove the 400 cap on Deck().",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Every pit cover floods its whole deck each scan (O(N^2) on big covered moats; CompPitCoverTrigger.cs:73-76 builds Deck before the lead check). A mixed-tier deck springs at the lowest-id lead's tier, and decks over 400 covers are truncated (Building_PitCover.cs:65), giving several leads and partial collapse.",
-    "ts": "2026-11-16T11:41:34Z",
+    "ts": "2026-11-16T16:24:18Z",
     "version": "0.1.0"
    },
    "finding:DBH_WATER_MEND_ACID_ON_TAP": {
@@ -1894,12 +1895,12 @@
     "by": "BACKFILL",
     "claim": "dbh_water now sits only on plain waters (generator + 15 terrain files); full DBH is gated in (strings verified in its 1.6 DLL). F5 (bucket value 5 versus capacityFactor 1.2/0.8) is not fixable in XML since WaterExt is per ThingDef. (recorded on pre-landing 80ac4bda4b; landed as 579306aad895)",
     "class": "problem",
-    "code_sha": "579306aad895",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Tag dbh_water only on plain waters (generator and terrain files) and gate full DBH in alongside Lite; the bucket value is not fixable in XML.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "19 hazardous liquid terrains (acid, propane, tar, slime, poisoned water) inherit the dbh_water tag, so with DBH they become wash/drink sources. DBH integration also fires only for 'Dubs Bad Hygiene Lite', not full DBH, and a bucket's DBH water value is fixed at 5.",
-    "ts": "2026-11-16T11:41:34Z",
+    "ts": "2026-11-16T16:24:18Z",
     "version": "0.1.0"
    },
    "finding:DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR": {
@@ -1924,14 +1925,14 @@
     "by": "BACKFILL",
     "claim": "Fixed the drink half only (bd36286c4795 (pre-landing; landed as 015b7892e833)): a thirsty pawn no longer drinks deep sand. The IsNaturalLiquid pond-source half was not fixed.",
     "class": "problem",
-    "code_sha": "015b7892e833",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Exclude RM_DeepSand from freshwater drinking identity and from RM_MapComponent_Excavation.IsNaturalLiquid as a pond source, so the fishing tag no longer makes it a reservoir.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "RM_DeepSand carries a Freshwater body and a Water tag (for fishing). RM_ThirstUtility.cs:138 (IsWater && !IsOcean) makes it drinkable, and RM_MapComponent_Excavation accepts any undug Water-tagged terrain as a pond source.",
-    "ts": "2026-11-16T11:41:21Z",
+    "ts": "2026-11-16T16:24:18Z",
     "version": "0.1.0"
    },
    "finding:DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL": {
@@ -1940,15 +1941,15 @@
     "by": "BACKFILL",
     "claim": "Added a job probe plus ordered_job (1edfffa47149 (pre-landing; landed as b61e5f66b486)). The order is accepted but the cut is still unmeasured: depth stayed 3->3 in 6000 ticks on the s5 rerun.",
     "class": "problem",
-    "code_sha": "b61e5f66b486",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Force a colonist onto the job (jawa/prioritized_work or ordered_job on the designation) instead of waiting on the AI scan, and read the job taken before the clock starts.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "other-mod"
     ],
     "text": "deep_stone_live.py --fresh-map leaves DS_superdeep_cut_turns_up_deep_stone UNMEASURED: no colonist takes the RM_DigCanal designation in 6000 ticks (depth stays 3, DIGFINDS 0), because the row waits on the AI scan.",
-    "ts": "2026-11-16T11:41:21Z",
+    "ts": "2026-11-16T16:24:18Z",
     "version": "0.1.0"
    },
    "finding:DEEP_STONE_FIX_PROBE_NEVER_NAMES_PAWN": {
@@ -1957,16 +1958,16 @@
     "by": "BACKFILL",
     "claim": "The probe call now passes pawnId= and a selftest scans kwargs against tool_schemas (14a3d414018f (pre-landing; landed as b06770af5568)). The live rerun's job_probe reply carries the workGiver and pawn blocks and the order is accepted, but depth stayed 3, so A1 is not verified.",
     "class": "problem",
-    "code_sha": "b06770af5568",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Pass pawnId=, and add a selftest that the probe kwargs match the tool signature. Then rerun --fresh-map.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "deep_stone_live.py:149 calls flowworks_job_probe with pawn= but the tool's parameter is pawnId= (JawaBenchFlowWorksJobProbeTools.cs:67). The pawn is dropped, the WorkGiver half never runs, and the job gate rejects a run whose order was taken.",
-    "ts": "2026-11-16T11:41:21Z",
+    "ts": "2026-11-16T16:24:18Z",
     "version": "0.1.0"
    },
    "finding:DEEP_STONE_PROOF_FIX_RERUN_LETTER_FAILS": {
@@ -2112,16 +2113,16 @@
     "by": "BACKFILL",
     "claim": "C6-F1 fixed: MapComponentTick rebuilds dirty works (rope/pool cells) at once, so undrafted routing sees a ferry after load or pairing. C6-F8 (same-bank pairing) not fixed. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Rebuild dirty works at once so routing sees the ferry; same-bank pairing needs an opposite-bank test.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "Ferry rope cells are derived and built only when something reads them (EnsureWorks via InPool/OnRope/RopeCellCount), so undrafted routing (ApplyRope reads RopeIndicesNoRebuild) can ignore a valid ferry after load or pairing. Posts also pair with the nearest unpaired post even on the same bank.",
-    "ts": "2026-11-16T11:41:34Z",
+    "ts": "2026-11-16T16:24:19Z",
     "version": "0.1.0"
    },
    "finding:FILL_TERRAIN_FIX_HAZARDS_DRUNK_AS_WATER": {
@@ -2133,12 +2134,12 @@
     "by": "BACKFILL",
     "claim": "24 hazard fill terrains switched to the inert RM_Liquid_NotDrinkable; selftest green. (recorded on pre-landing bd36286c4795; landed as 015b7892e833)",
     "class": "problem",
-    "code_sha": "015b7892e833",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Give hazard fill terrains a non-drinkable identity instead of the Water tags.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Chemfuel and other hazard canal fill terrains carry Water/WaterFreshShallow tags and no terrainSuite registers them, so RM_ThirstUtility falls back to fresh water and pawns drink them as potable, with the canal quantity unchanged.",
-    "ts": "2026-11-16T11:41:22Z",
+    "ts": "2026-11-16T16:24:19Z",
     "version": "0.1.0"
    },
    "finding:FIRE_BURN_PULSE_PROVE_REFILL_RACE": {
@@ -2195,16 +2196,16 @@
     "by": "BACKFILL",
     "claim": "C5-F11 fixed: CanFloodInto no longer refuses a wet DUG cell before the engine decides (ViaEngine/HandsOff). (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Drop the IsWater refusal so the engine decides (ViaEngine/HandsOff).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "Flood driver inputs are not saved, a flood's refusals are forgotten on reload, and CanFloodInto (Flood_FlowWorks.cs:290-294) rejected partly filled (IsWater) channel cells and anything beyond a wet inlet.",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:19Z",
     "version": "0.1.0"
    },
    "finding:FLOOD_SWITCH_RACE_MEND_ENGINE_OFF": {
@@ -2295,14 +2296,14 @@
     "by": "BACKFILL",
     "claim": "Implemented using the same proven helper as FillBottleFromTank C2-F6, so the bottle jobs no longer lose the paid container. (recorded on pre-landing f7e4ac67ce86; landed as e805da725ff8)",
     "class": "problem",
-    "code_sha": "e805da725ff8",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Use the same proven helper as FillBottleFromTank C2-F6 so the container is never lost when placement fails.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "The Fill, Empty and Wash bottle jobs lose the bottle (the paid container) when Near placement fails (JobDriver_FillBottle.cs:85 and two more sites).",
-    "ts": "2026-11-16T11:41:46Z",
+    "ts": "2026-11-16T16:24:20Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CHANNEL_OSCILLATION_1": {
@@ -2313,12 +2314,12 @@
     "by": "BACKFILL",
     "claim": "FlowWorks: fix east/north channel oscillation (FLOWWORKS_CHANNEL_OSCILLATION_1): rank-ordered flow, direction-independent, fills in length x depth pulses (recorded on pre-landing ddb4734162cf; landed as 64ff430d93db)",
     "class": "problem",
-    "code_sha": "64ff430d93db",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "none stated in the record; the spec is design/RimMandrake/flowworks_northstar_interrogation_2026-10-02.md.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A canal dug east or north from its water source never fills: water oscillates between cells forever. West and south canals fill normally.",
-    "ts": "2026-11-16T11:42:19Z",
+    "ts": "2026-11-16T16:24:20Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CHECKOUT_SCOPE_1": {
@@ -2327,16 +2328,16 @@
     "by": "BACKFILL",
     "claim": "Step 4 now runs on every checkout; ## extended holds E1-E3 (unbuilt); arrows added for dig, D=1..4 terrains and channel-constrained spread; false 'never calls SetTerrain' claim corrected; modcheck record --extensions stores step4 (FAIL->RED, missing->REFUSED/UNMEASURED). (recorded on pre-landing c9011d1b88fc",
     "class": "problem",
-    "code_sha": "88c2da130de3",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Run step 4 on every checkout after step 2; add a ## extended section (E1 removal, E2 loadAfter mods, E3 older-GSS clash); give each must-be-true line a → arrow to its row ids; record step 4 via modcheck record --extensions.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "The walk put step-4 feature chains (doors, spikes, ladders, prison room, pump, bottles, shores, river steam, fire) in on-request extension_proof.py, so a green core proof said nothing about them; five must-be-true lines had no coverage arrow.",
-    "ts": "2026-11-16T11:41:22Z",
+    "ts": "2026-11-16T16:24:20Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT": {
@@ -2483,12 +2484,12 @@
     "by": "BACKFILL",
     "claim": "Built RM_Sluice and RM_SecurityGrateDoor (Building_RM_FlowDoor, stuffable, Light affordance); the flood walk treats them as open; small creature = non-humanlike with RequiredWidth 1; chain flow_doors added. Live proof still owed. (recorded on pre-landing 6359e69b569b; landed as 084a1e16e9f0)",
     "class": "problem",
-    "code_sha": "084a1e16e9f0",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Build two stuffable defs, not three fixed tiers; the Flood_FlowWorks.CanFloodInto edifice exemption lets liquid pass; neither door opens for a pawn held in a superdeep cell.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Task: add two stuffable doors, Sluice (cheap, holds small creatures) and SecurityGrateDoor (holds a real prisoner), both passing liquid while closed, with stuff deciding armour, fire survival and prisoner toughness.",
-    "ts": "2026-11-16T11:41:35Z",
+    "ts": "2026-11-16T16:24:21Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY": {
@@ -2637,12 +2638,12 @@
     "by": "BACKFILL",
     "claim": "pure clamp, offline (recorded on pre-landing 8eeb3eaa7c97; landed as 90ae001609eb)",
     "class": "problem",
-    "code_sha": "90ae001609eb",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Make the clamp read a NaN setting as the default.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A NaN winding speed survives the clamp (RM_HoseLegacyMath.cs:128, JobDriver_CarryHoseEnd.cs:28).",
-    "ts": "2026-11-16T11:42:19Z",
+    "ts": "2026-11-16T16:24:21Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_HOSE_FIX_PAUSE_REMESH_EVERY_FRAME": {
@@ -2670,12 +2671,12 @@
     "by": "BACKFILL",
     "claim": "Cached the feed mesh per reel (C7a-F7), pulled the carry prefix over World(60) (C7a-F6), and cached TryFindLiquidCell per (pawn,map,pos,options,def,stuff) per tick (C2-F8). (recorded on pre-landing 72642d8cde; landed as 19b45b92e815)",
     "class": "problem",
-    "code_sha": "19b45b92e815",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Each CONFIRMED finding: a red-then-green case. Each PLAUSIBLE: run its check first and close as not-a-bug if green.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Hot-path perf: every connected reel builds a new feed Mesh every rendered frame (DrawFeed, RM_MapComponent_Hoses.cs:950-966), a hose carrier rebuilds the whole-map World() snapshot as its trail changes, and bottle work givers repeat a radial search per container.",
-    "ts": "2026-11-16T11:41:35Z",
+    "ts": "2026-11-16T16:24:22Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_KEYS_PRUNE_DEAD_DRILL_STRINGS": {
@@ -2855,9 +2856,9 @@
     "by": "BACKFILL",
     "claim": "FLOWWORKS_NORTHSTAR_SITE_PREP_1: golden rebuilt on the current DLL; JawaBench excavation_drive passes TrySetDriverFill's new 3rd arg A lone roofed cell collapses within 250 ticks even with a wall beside it, so the golden carries no roofed twin. (recorded on pre-landing 73d377946ff8; landed as f5292ce9a43f)",
     "class": "problem",
-    "code_sha": "f5292ce9a43f",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Build modset_builder tier `flowworks`, prep_site.py (golden read-only save, sidecar version contract, per-cell manifest) and preflight_flowworks.py implementing every §3.9 row, with ModsConfig/ModSettings byte-exact backup and restore.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -2865,7 +2866,7 @@
      "other-mod"
     ],
     "text": "Task: the FlowWorks trial needs a reproducible golden site and a preflight that refuses a dirty site, otherwise live runs start from an unknown state.",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:23Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_NORTHSTAR_TRIAL_1": {
@@ -2944,14 +2945,14 @@
     "by": "BACKFILL",
     "claim": "Building_PitCover.DeSpawn override drops every pawn on the cell via OnForcedDescent when the cover is killed. Live: descents +1, held, fall 9.7 on that square. (recorded on pre-landing 18d7683341fa; landed as bfc3623bced2)",
     "class": "problem",
-    "code_sha": "bfc3623bced2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Override Building_PitCover.DeSpawn: on KillFinalize/KillFinalizeLeavingsOnly of an uncollapsed cover, pawns on that cell (not dead/flying) take OnForcedDescent.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "A pit cover destroyed by damage gave pawns on its cell no fall: Building_PitCover.cs:161 let occupants stand unharmed over the opened pit.",
-    "ts": "2026-11-16T11:41:48Z",
+    "ts": "2026-11-16T16:24:23Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED": {
@@ -3080,9 +3081,9 @@
     "by": "BACKFILL",
     "claim": "HoseProbe.requestMap pins a command to a map (-1 = current), servicedMap reports it; filltank/ProofTank refuse bad requests first and restore stock on a refused refill; Tune re-applies every Members() terrain wearing the look; ProofFluidRow bounds w,h in 1..400; census reelTex/relayArt use MatAt's rule.",
     "class": "problem",
-    "code_sha": "6e9e9ed655d0",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Pin commands to a map; refuse bad refills before emptying; bound w,h in 1..400 before multiplying; make Tune re-apply all Members() terrains; census uses MatAt's rule. Check each PLAUSIBLE row first.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -3090,7 +3091,7 @@
      "other-mod"
     ],
     "text": "FlowWorks proof hooks misbehave: HoseProbe's mailbox runs a queued command on whichever map is current; filltank/ProofTank empty the tank before a refill can be refused; ProofFluidRow's area guard overflows; census reelTex misreports art.",
-    "ts": "2026-11-16T11:41:37Z",
+    "ts": "2026-11-16T16:24:24Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_PROOF_POKES_RESTORE_PRIOR": {
@@ -3255,14 +3256,14 @@
     "by": "BACKFILL",
     "claim": "Loop fix pinned at L0 by the call-site pin; the in-game A1 case was dropped from the criteria. (recorded on pre-landing 33c2aeda7d48; landed as 4525be4e7fa2)",
     "class": "problem",
-    "code_sha": "4525be4e7fa2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Replace the return with continue so a blocked reaction (e.g. product tank full) does not end the shift for the others.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "In RM_LiquidReaction.cs:187-191 a stalled reaction hits `return` where `continue` was intended, so later reactions in the reactor never run that shift.",
-    "ts": "2026-11-16T11:41:49Z",
+    "ts": "2026-11-16T16:24:25Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN": {
@@ -3291,12 +3292,12 @@
     "by": "BACKFILL",
     "claim": "Built at c17417919587 (pre-landing; landed as 463f9a23855e); the 2026-10-24 capture shows every section in the main window has 'Reset this section' plus Reset all and search.",
     "class": "problem",
-    "code_sha": "463f9a23855e",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add a shared reset helper plus per-screen section lists, as Hose and Machinery already do (RM_HoseSettings.ResetFields); defaults = shipped behaviour. Residue: make Quarry findable by name and add reset/search to the Water effects window, then re-capture.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Twelve FlowWorks settings screens (Kit, Quarry, Sprinkler, Thirst, Drawbridge, Suspension, WallClimb, RaiderTrench, Swim, WaterMend, MapControl, Rivers) have no Reset button and are not touched by Reset-all.",
-    "ts": "2026-11-16T11:41:24Z",
+    "ts": "2026-11-16T16:24:25Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_REVIEW_LOOKS_ROUND_1": {
@@ -3480,14 +3481,14 @@
     "by": "BACKFILL",
     "claim": "FlowWorks: fix shared-source stall (FLOWWORKS_SHARED_SOURCE_STALL_1): per-component source tracking; Northstar v2 GREEN live, 56 pass 0 fail in 1,030 ticks (recorded on pre-landing a8e179a4007f; landed as 1ca52175b919)",
     "class": "problem",
-    "code_sha": "1ca52175b919",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "none recorded",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "Two channels dug off one source cell: the second stalls at its inlet forever because the visited set is shared across components.",
-    "ts": "2026-11-16T11:42:20Z",
+    "ts": "2026-11-16T16:24:26Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES": {
@@ -3496,16 +3497,16 @@
     "by": "BACKFILL",
     "claim": "c1340e0dbc added the wake record fix (Sheet_save_load_continues_identically_through_the_wake_record).",
     "class": "problem",
-    "code_sha": "c1340e0dbc76",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Save the sheet wake record (c1340e0dbc), and make ClassifyCell read exact kernel temperatures (KernelTempAt/OutdoorExactC, indoors quantised to 1/16 C) instead of GenTemperature.GetTemperatureForCell.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "canal_overflow SAVE_LOAD_CONTINUES_IDENTICAL fails: hashes match at save/load but continuing 3 pulses differs from load+3 pulses, so some sheet state is not saved or reset on load (row in sheet_overflow_proof.py ~917).",
-    "ts": "2026-11-16T11:41:25Z",
+    "ts": "2026-11-16T16:24:26Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED": {
@@ -3564,15 +3565,15 @@
     "by": "BACKFILL",
     "claim": "not reproduced, 1036/1036 green; wrapper now surfaces failing check (976ccbd165 (pre-landing; landed as 3a1334ca93c6))",
     "class": "problem",
-    "code_sha": "3a1334ca93c6",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Run the selftest alone (exceeds a 540 s foreground) and find the failing line; wrapper echoes FAIL lines last (976ccbd165).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "test",
      "other-mod"
     ],
     "text": "Nightly selftest_flowworks_stock was RED at 991/992 and the failing check was not recorded because the nightly keeps only the tail.",
-    "ts": "2026-11-16T11:42:20Z",
+    "ts": "2026-11-16T16:24:26Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL": {
@@ -3581,14 +3582,14 @@
     "by": "BACKFILL",
     "claim": "2b8dddeaa181 (pre-landing; landed as 2ded3e8b2094) fixed the stride so the seam slot walk covers the network when n is a multiple of 7919.",
     "class": "problem",
-    "code_sha": "2ded3e8b2094",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Replace the bare 7919 stride so the slot walk covers the network at n=7919 (pure arithmetic).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "The kernel's fixed stride 7919 degenerates when n is a multiple of 7919 (RM_FlowKernel.cs:260), so the seam slot walk does not cover the network.",
-    "ts": "2026-11-16T11:41:50Z",
+    "ts": "2026-11-16T16:24:27Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES": {
@@ -3649,16 +3650,16 @@
     "by": "BACKFILL",
     "claim": "Heat-off now forces a rescan on re-enable (C4-F4); RM_RiverPathCost.Reapply runs on WriteSettings, delta-tracked with PerceptualSource grids re-read (C6-F3); breach-off ends the cascade (C6-F5). (recorded on pre-landing ec3e21b942; landed as 7496f5a6bbc4)",
     "class": "problem",
-    "code_sha": "7496f5a6bbc4",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Force a rescan on heat re-enable; re-apply river path cost on settings write; make breach-off end the running cascade (check breachEnabled before TickBreach, RM_Weir.cs:210/233).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "Toggling settings mid-game leaves stale state: heat-off skips terrain-change notes so re-enable reuses a stale naturalCells cache up to 15000 ticks; river avoidance path cost is baked at startup; RM_Weir TickBreach runs before the breachEnabled check.",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:27Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS": {
@@ -3734,9 +3735,9 @@
     "by": "BACKFILL",
     "claim": "Added the RM_WaterBodyTypeFlipFix prefix, which detaches the cell from the old-type body, fixing the vanilla CellCount drift on fresh/salt or liquid type flips (f7f2a6d30 (pre-landing; landed as 6db8549c513a)). Three repros (flip, flip-and-back, 4x1 strip) verified clean live.",
     "class": "problem",
-    "code_sha": "6db8549c513a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Prefix on WaterBodyTracker.Notify_TerrainChanged detaching the cell from its old-type body before vanilla adds it to the new one (RM_WaterBodyTypeFlipFix.cs); setting waterBodyTypeFlipFixEnabled, default on.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -3744,7 +3745,7 @@
      "other-mod"
     ],
     "text": "Laying soil threw 'Sequence contains no matching element' inside vanilla WaterBodyTracker.RemoveCellFromExistingBody after a water cell changed waterBodyType: the old body keeps the cell in CellCount, its rootCell reassignment's First(...) then throws.",
-    "ts": "2026-11-16T11:41:38Z",
+    "ts": "2026-11-16T16:24:28Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST": {
@@ -3972,9 +3973,9 @@
     "by": "BACKFILL",
     "claim": "All rows fixed: 3.1-3.6, 3.8, 3.9, 3.11-3.13 at 4e05e1f0a0; 4.1-4.4, 4.6-4.8, 5.1 at cd540d1ab5; 6.6, 6.7 at ea8d2a6fc9 (pre-landing; landed as 8e42411c169d).",
     "class": "problem",
-    "code_sha": "8e42411c169d",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Fix each listed finding per the table: make unread, truncated or unmeasured results fail or UNMEASURED, skip ride pawns in feeding, stage the medical bed, always use_map C, and so on.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -3983,7 +3984,7 @@
      "other-mod"
     ],
     "text": "FlowWorks proof drivers pass or exit 0 on unread rigs: e.g. truncated or unread results count as PASS (player_missions.py:795-797), reach_map_proof.py exits 0 with SITE/HARNESS UNMEASURED, and feed_colonists heals the ride pawn's thirst.",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:29Z",
     "version": "0.1.0"
    },
    "finding:FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS": {
@@ -3992,16 +3993,16 @@
     "by": "BACKFILL",
     "claim": "7.3-7.6 and 7.8-7.10 fixed at 244376ddac; 7.7, 8.1, 8.2 and 8.4-8.9 fixed in the close at 861069cb4a (pre-landing; landed as 1fdc27463451); 7.4 build() and the 7.5 ladder_set loop are now tested.",
     "class": "problem",
-    "code_sha": "1fdc27463451",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Fix each listed finding per the table: Counter multiplicity, record terrain/pawn/item failures, walls before Filling, move tanks and marks, fail on non-zero verdicts, skip explicit-look stations, and so on.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "FlowWorks review/matrix drivers false-PASS: e.g. run_live.py main returns 0 unless aborted, a truthy failure dict passes, review_map.py set membership hides multiplicity, and validation T3 is credited to a toggle that thirst_live sets OFF.",
-    "ts": "2026-11-16T11:41:39Z",
+    "ts": "2026-11-16T16:24:29Z",
     "version": "0.1.0"
    },
    "finding:FW_PROOF_TOOLS_HARDEN_READ_GAPS": {
@@ -4044,9 +4045,9 @@
     "by": "BACKFILL",
     "claim": "Harness-only fix at 0df38f45e0 (pre-landing; landed as 03aeb83202d1): selftest_drawbridge_proof is green with 4 cable cases listed; selftest_review_map has 0 uncovered (chop job and Dev fill/empty covered).",
     "class": "problem",
-    "code_sha": "03aeb83202d1",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add the missing case to DRAWBRIDGE_CASES and cover the uncovered job, setting and gizmo in selftest_review_map.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -4054,7 +4055,7 @@
      "other-mod"
     ],
     "text": "Two FlowWorks selftests red: validation.DRAWBRIDGE_CASES lacks Drawbridge_raised_leaf_draws_without_its_winch from DrawbridgeChecks.cs, and selftest_review_map leaves JobDef RM_RaiderTakeLadder, setting digDeepStoneEnabled and gizmo 'Repair breach' uncovered.",
-    "ts": "2026-11-16T11:41:51Z",
+    "ts": "2026-11-16T16:24:29Z",
     "version": "0.1.0"
    },
    "finding:FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT": {
@@ -4245,12 +4246,12 @@
     "by": "BACKFILL",
     "claim": "Added DrawCrossShadow (upper hose casts a deeper, wider, offset shadow onto lower strands over CrossSpans) and a `crossings` field {upper, lower, at, lifted} in the probe joints answer. Live: the one crossing (map 51, 175,89) reads lifts over, shadow faint; second-agent judgment owed (partial).",
     "class": "problem",
-    "code_sha": "3059cab7ee31",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Have the upper hose (B18 band) cast a deeper, wider crossing shadow onto the lower hose over the overlap, record CrossSpans, and report crossings in the HoseProbe joints answer for joint_check.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Two laid hoses on map R (382378 x 382379) cross flat, one painted over the other with no lift or crossing shadow.",
-    "ts": "2026-11-16T11:41:27Z",
+    "ts": "2026-11-16T16:24:30Z",
     "version": "0.1.0"
    },
    "finding:HOSE_IMPORT_MEND_ONE_SHOT_MISS": {
@@ -4261,12 +4262,12 @@
     "by": "BACKFILL",
     "claim": "The flag is now set after the read; covered by offline selftest GptFixesAChecks (selftest_flowworks_stock.py), no live proof run (8fb5afd51f (pre-landing; landed as e6409b3f6504)).",
     "class": "problem",
-    "code_sha": "e6409b3f6504",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Set the hoseSettingsImported flag after the read succeeds rather than before.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "The GSS hose-settings import in Hose/RM_HoseLegacy.cs:109-110 sets hoseSettingsImported=true before reading, so an I/O failure never retries; affects players upgrading from a GSS build that had hoses.",
-    "ts": "2026-11-16T11:41:39Z",
+    "ts": "2026-11-16T16:24:30Z",
     "version": "0.1.0"
    },
    "finding:HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES": {
@@ -4327,12 +4328,12 @@
     "by": "BACKFILL",
     "claim": "Gated the obstacle block in MapComponentTick on RM_HoseSettings.enabled, so switched-off hoses no longer reroute or retract. Offline selftest only; no live proof run. (recorded on pre-landing e46ed827b5; landed as 8866eeddf831)",
     "class": "problem",
-    "code_sha": "8866eeddf831",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Gate the obstacle rerouting/retract block in MapComponentTick on RM_HoseSettings.enabled so hoses keep their ends through off/on.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Hoses switched off still run obstacle rerouting, trail deletion and automatic retraction: MapComponentTick (Hose/RM_MapComponent_Hoses.cs ~430-470, r.Retract at :468) has no RM_HoseSettings.enabled guard; only drawing exits. Building over an invisible hose retracts it.",
-    "ts": "2026-11-16T11:41:40Z",
+    "ts": "2026-11-16T16:24:31Z",
     "version": "0.1.0"
    },
    "finding:HOSE_ORDERS_MEND_WAITING_FOREVER": {
@@ -4343,12 +4344,12 @@
     "by": "BACKFILL",
     "claim": "Fixed: fresh orders now run (F2), float-menu move uses the end path (F3), destination uses the end mode (F4), a refused forced job restores the pending order (F5), and port coupling takes the coupling time (F8). F6 was not changed. (recorded on pre-landing 944b9d1060; landed as 127605b1e92c)",
     "class": "problem",
-    "code_sha": "127605b1e92c",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Let fresh gizmo orders resume a dropped hose; check the end's reachability, not the reel's, in the float menu; make the order and driver use the same end mode; restore the pending order when a forced job is refused; give tank/pipe/machine ports the 90-tick coupling.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "With 'auto-resume dropped hose' off, the reel's Move/Retract gizmo orders on a dropped hose never run: HoseOrderRules.MayResume (HoseCarry.cs:270) refuses Dropped, and WorkGiver_HoseOrders says 'waiting for a new order' forever. Also float-menu/driver mismatches (reel reachability, Touch vs OnCell, coupling time).",
-    "ts": "2026-11-16T11:41:40Z",
+    "ts": "2026-11-16T16:24:31Z",
     "version": "0.1.0"
    },
    "finding:HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST": {
@@ -4461,12 +4462,12 @@
     "by": "BACKFILL",
     "claim": "A held drain now returns whole levels to a pond, a spill over its pond credits stock, and an end under a wall is blocked (F12 fixed by reading). (recorded on pre-landing 4ded2d06ec; landed as 176d6455be66)",
     "class": "problem",
-    "code_sha": "176d6455be66",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Return whole levels to an adjacent pond, credit stock for a spill over its pond, count unplaced spill instead of silently debiting, and block an Outflow end under a wall.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A stopped hose drains as filth instead of returning levels to an adjacent pond: PlaceHeld (RM_LiquidSpill.cs:149) accepts only RM_OutletKind.Channel, and Spill over water fails TryMakeFilth so units vanish. A spill no cell accepts still debits the source.",
-    "ts": "2026-11-16T11:41:40Z",
+    "ts": "2026-11-16T16:24:32Z",
     "version": "0.1.0"
    },
    "finding:HOSE_STYLES_FIX_RELOAD_DRIFT_SEEN": {
@@ -4565,12 +4566,12 @@
     "by": "BACKFILL",
     "claim": "S1 and X1 were widened to D 8/16 with a colonist, and plot H/B were widened. (recorded on pre-landing 7f585adf7; landed as 47ddee0286b6)",
     "class": "problem",
-    "code_sha": "47ddee0286b6",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Widen each row to the bar's ladder (D 0,1,2,3,4,8,16 notches; a colonist; F 0..4+ with the <25 cm rung; the joint grid), update site_spec footprints and mocks so the old ladder is a planted fault that goes red.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Rows claiming the metre-stated depth bars (S1_dig_ladder, X1_pawn_height_ladder with a Hare, plot H and plot B looks) still stage the old notch ladder stopping at 2 m.",
-    "ts": "2026-11-16T11:41:41Z",
+    "ts": "2026-11-16T16:24:32Z",
     "version": "0.1.0"
    },
    "finding:LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT": {
@@ -4645,15 +4646,15 @@
     "by": "BACKFILL",
     "claim": "Live mouth deferred in PickBand (cause: brim live mouth kept its band, so the source had no room and the shallow rim stayed dry), oracle mirrored; FillsFromLimitless 194/2000 -> 0/10000, 428/428 selftests, oracle 3000x3 PASS. (recorded on pre-landing c82dd1c08f55; landed as 4706f9eacdb9)",
     "class": "problem",
-    "code_sha": "4706f9eacdb9",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Defer the live mouth in PickBand and mirror it in the oracle.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "other-mod"
     ],
     "text": "FillsFromLimitless liveness failed 5/400 at shipped flags (levelBySurface+levelSet): a shallow cell beside a full wet cell stayed dry. Level-set kernel bug: the brim live mouth kept its band, so the source had no room.",
-    "ts": "2026-11-16T11:41:52Z",
+    "ts": "2026-11-16T16:24:32Z",
     "version": "0.1.0"
    },
    "finding:LEVEL_SET_SELFTEST_FIX_IDLE_PULSE_SETTLES": {
@@ -4697,12 +4698,12 @@
     "by": "BACKFILL",
     "claim": "Conversions were reordered highest tier first, so the industrial recipe is picked over the crude one for salt-water desal and toxic-water detox. (recorded on pre-landing bd36286c4795; landed as 015b7892e833)",
     "class": "problem",
-    "code_sha": "015b7892e833",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Order conversions highest tier first, or have StepFor select the highest eligible tier.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_LiquidDefRegistry.xml lists Crude distill before Industrial desalinate (93-108) and toxic equivalents (242-257), and CompLiquidConverter.StepFor (115-133) returns the first eligible conversion, so industrial recipes never run on desal and detox plants.",
-    "ts": "2026-11-16T11:41:28Z",
+    "ts": "2026-11-16T16:24:33Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD": {
@@ -4731,12 +4732,12 @@
     "by": "BACKFILL",
     "claim": "Carried and burning fluids are now saved, flyers and cover are respected by liquid fire effects, and blast hops are keyed by Explosion id instead of centre cell. (recorded on pre-landing 9bca729c18; landed as 86c093c8c5d1)",
     "class": "problem",
-    "code_sha": "86c093c8c5d1",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Save carried/burning fluid in ExposeData; make ApplyEffects respect an intact cover and flyers; key blast hops by Explosion id rather than centre cell.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_LiquidFire does not save carriedAcc/carriedTick/carriedFluid/burningFluid, so after load TakeCarried treats a null fluid as matching any. ApplyEffects ignores cover and Flying, and blastHops is keyed by centre cell only, so a later explosion inherits the 300-tick hop limit.",
-    "ts": "2026-11-16T11:41:41Z",
+    "ts": "2026-11-16T16:24:33Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_FIRE_QUEUE_ORIGIN_1": {
@@ -4748,12 +4749,12 @@
     "by": "BACKFILL",
     "claim": "Closed with A1-A3 rows passing live: blast origin/hops carried, offers can advance pending cells, carried burn scoped (provisional 600-tick expiry, 300-tick front-blast memory). (recorded on pre-landing e3f885330d; landed as de853778c885)",
     "class": "problem",
-    "code_sha": "de853778c885",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Carry origin/hops through blasts; use a keyed pending map so earlier offers can advance a pending cell; scope carried burn progress by fluid and expiry.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "NotifyExplosionAt queues every blast cell at hops 0, so a detonation re-seeds zero-hop ignition deeper into a body and SourceFireReach stops binding. TryQueue drops offers for already-pending cells, so a torch cannot advance a slow fuse. carriedAcc has no expiry or fluid identity.",
-    "ts": "2026-11-16T11:41:52Z",
+    "ts": "2026-11-16T16:24:33Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_KIT_COMMENTS_CORRECT_GHOST_PATCHES": {
@@ -4852,12 +4853,12 @@
     "by": "BACKFILL",
     "claim": "Rotation is keyed per store with forfeit after one yield (fixing the map-wide stall), and multi-input converters use NextRunnable (fixing first-liquid-only). (recorded on pre-landing 69a9a10adb; landed as 7e492a762f01)",
     "class": "problem",
-    "code_sha": "7e492a762f01",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Key rotation per store with a forfeit after one yield; replace FirstRunnable with NextRunnable so multi-input rotates per cycle.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "MayDraw (RM_LiquidNetKernel.cs:447) keys consumer rotation by LiquidDef only, so an isolated starved machine re-starves each cycle and a supplied machine is never served. FirstRunnable always returns the first positive liquid, so multi-input converters never rotate.",
-    "ts": "2026-11-16T11:41:41Z",
+    "ts": "2026-11-16T16:24:34Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_THEFT_FIX_TANK_HIDES_ITSELF": {
@@ -4884,16 +4885,16 @@
     "by": "BACKFILL",
     "claim": "Built so a foreign tank's stock change is charged only when PlayerReaches the tank, fixing false charges from owners' own machines/ruins. (recorded on pre-landing b7d2d03dd2; landed as bce8fc696030)",
     "class": "problem",
-    "code_sha": "bce8fc696030",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Charge only when the player reaches the tank (PlayerReaches), so owners' own machine/ruin stock changes are not counted as theft.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "RM_LiquidTheft.TheftTick compares stock snapshots only, so any change on a foreign tank (corrosion, heat, its owners' machines) charges goodwill as player theft; a balanced take+put between cycles escapes.",
-    "ts": "2026-11-16T11:41:41Z",
+    "ts": "2026-11-16T16:24:34Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET": {
@@ -4919,16 +4920,16 @@
     "by": "BACKFILL",
     "claim": "RM_MapComponent_FlowStatics prunes net state/rotation/hose links (C1-F2), pit grids, ladders and entry cache (C3-F2), and unpins the dig pool (C5-F3) on MapRemoved and FinalizeInit; RM_LiquidSurface.MapRemoved destroys pooled meshes (C5-F4). (recorded on pre-landing df46b3e3a9; landed as 1d77c1765101)",
     "class": "problem",
-    "code_sha": "1d77c1765101",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Prune/dispose per-map state on MapRemoved; destroy RM_LiquidSurface pooled meshes in MapRemoved; unpin the dig pool.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "Static per-Map tables (RM_LiquidNet dictionaries pruned only on a cache miss, RM_PitPathing NativeArray grids, RM_DigDiscovery poolMap) and RM_LiquidSurface pooled Unity meshes outlive removed maps, pinning memory and stale things.",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:34Z",
     "version": "0.1.0"
    },
    "finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
@@ -5042,12 +5043,12 @@
     "by": "BACKFILL",
     "claim": "Fixed for toxic water only (bd36286c4795 (pre-landing; landed as 015b7892e833)); salt, brine, acid, reaction liquor and coloured waters are not fixed.",
     "class": "problem",
-    "code_sha": "015b7892e833",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Give such liquids their own FluidDefs/canal forms (and fill ladders), or add a C# refuse-to-pump rule.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Natural liquids without canalFluid (ToxicWater in RM_LiquidDefRegistry.xml:215) are skipped by RM_FluidIdentity.cs:27 and default to RM_Fluid_Water in RM_LiquidStock.cs:143,232, so a pump on a toxic pond yields fresh water.",
-    "ts": "2026-11-16T11:41:29Z",
+    "ts": "2026-11-16T16:24:35Z",
     "version": "0.1.0"
    },
    "finding:NORTH_STAR_WALK_AUTHORING_1": {
@@ -5109,16 +5110,16 @@
     "by": "BACKFILL",
     "claim": "ShouldSkip now also needs PoolAny (re-measured at most every 2500 ticks), so panning is no longer offered once the placer pool is empty. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Make ShouldSkip also require the pool to be non-empty (PoolAny).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "Panning keeps being offered after every placer rock is mined (stock > 0, pool empty): ShouldSkip in RM_PlacerWorks.cs:487 reads stock only, while Draw returns null when the pool is empty.",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:35Z",
     "version": "0.1.0"
    },
    "finding:PIPE_ADAPTER_FIX_DEBT_NEVER_PAID": {
@@ -5129,12 +5130,12 @@
     "by": "BACKFILL",
     "claim": "Negative carry is now charged on the next Send, so partial accepts no longer create liquid. (recorded on pre-landing 3ddf921362; landed as 3f08277146eb)",
     "class": "problem",
-    "code_sha": "3f08277146eb",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Make the Send path charge negative carry (as Take does with Mathf.Max(0,carry)).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Adapter Send mode with a partial foreign accept: SettleSend refunds the whole unit and records -fraction in carry, but the Send path never consults negative carry (only Take does), so liquid is created.",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:35Z",
     "version": "0.1.0"
    },
    "finding:PIT_CHAINS_REPAIR_STALE_SINCE_RULING": {
@@ -5143,15 +5144,15 @@
     "by": "BACKFILL",
     "claim": "plot_G_pit, toggle_superdeep_capture and toggle_ladder_required now put pawns into the open pit only by force (_force_into via RM_PromotionProofs.ProofForcedFlyer); a launch that did not happen is UNMEASURED, and capture OFF forced in with no pit cell is UNMEASURED. (recorded on pre-landing 8931525e4b",
     "class": "problem",
-    "code_sha": "3a2dfdf4b15a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Force the entry (flyer, as v2 P3f) or cover the pit for hostiles.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "other-mod"
     ],
     "text": "Step-4 chains pit_captures_hostile, toggle_superdeep_capture and toggle_ladder_required _march() a pawn into an uncovered ladderless D=4 pit, which the 2026-10-06 ruling refuses; the harness expectation is stale.",
-    "ts": "2026-11-16T11:41:53Z",
+    "ts": "2026-11-16T16:24:36Z",
     "version": "0.1.0"
    },
    "finding:PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO": {
@@ -5193,16 +5194,16 @@
     "by": "BACKFILL",
     "claim": "TryJumpInto now resolves the arrival at once by the detector's own test (ResolveArrivalNow -> OnForcedDescent, which marks it handled), so a paused jump saved before unpausing still falls. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Resolve the arrival at once in TryJumpInto rather than deferring to the detector pass.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "A save in the same tick as a jump/forced fall loses the fall damage: RM_SuperdeepTrapState.lastCell is derived, never scribed, and TryJumpInto teleports and defers the descent to the next detector pass.",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:36Z",
     "version": "0.1.0"
    },
    "finding:PIT_PRISON_JUDGE_D3_ROOMS": {
@@ -5245,12 +5246,12 @@
     "by": "BACKFILL",
     "claim": "Fixed in source (e3b0a513a649 (pre-landing; landed as 8c8bd865f358)) so a walked step down a ramp is no fall; selftest red-then-green.",
     "class": "problem",
-    "code_sha": "8c8bd865f358",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Exempt a walked step down a ramp from the fall classification.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "IsFallingArrival judges by NaturalClimbLimitOf with no ramp exemption, and DescentFalls exempts only ladders/gear, so a captured hostile walking down a valid 3-notch ramp takes fall damage.",
-    "ts": "2026-11-16T11:41:29Z",
+    "ts": "2026-11-16T16:24:36Z",
     "version": "0.1.0"
    },
    "finding:PIT_REACH_VERIFY_FLYERS_AND_GIANTS": {
@@ -5261,12 +5262,12 @@
     "by": "BACKFILL",
     "claim": "StartPath now records its walker and the veto answers for it (C3-F4); masks and step floor step aside for a pawn too wide for its pocket (C3-F5). (recorded on pre-landing 009abe3c49; landed as 9b22587f388a)",
     "class": "problem",
-    "code_sha": "9b22587f388a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Have StartPath record its walker so the veto answers for it; make masks and step floor step aside for a pawn too wide for its pocket.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Vanilla StartPath runs a pawnless CanReach, so RelativeVeto used the person band with no flyer exemption (flyers and K3+ pawns refused valid routes); and cliff masks still walled in a pawn too wide for its hole.",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:36Z",
     "version": "0.1.0"
    },
    "finding:PIT_REROUTE_FIX_TIME_TRAVEL_FORGIVEN": {
@@ -5293,12 +5294,12 @@
     "by": "BACKFILL",
     "claim": "Batch C source fix so only a colonist assigned Doctor counts as a rescuer; selftest went red then green. Live check still owed. (recorded on pre-landing e3b0a513a649; landed as 8c8bd865f358)",
     "class": "problem",
-    "code_sha": "8c8bd865f358",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Count only colonists vanilla DoctorRescue would send, i.e. those assigned Doctor work, as available rescuers in AnyRescuerReaches, per its own doc at lines 155-159.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "AnyRescuerReaches (RM_PitAccess.cs:165-167) uses WorkTypeIsDisabled, which tests capability, not the Work-tab setting. A colonist with Doctor unticked counts as a rescuer and suppresses the rescue ladder indefinitely though they never take the rescue job.",
-    "ts": "2026-11-16T11:41:29Z",
+    "ts": "2026-11-16T16:24:37Z",
     "version": "0.1.0"
    },
    "finding:PIT_RESCUE_FIX_UNREACHABLE_SPARE_LADDER": {
@@ -5358,16 +5359,16 @@
     "by": "BACKFILL",
     "claim": "RM_LiquidBottleUtility.PlacePaidFor (Near, else spawn on the cell; revert-in-container drops to ground) fixed reaction/fill/revert; dig find charges the merged share; weir Deposit returns what merged. (recorded on pre-landing 8fdc692b89; landed as b7b7c3b3df58)",
     "class": "problem",
-    "code_sha": "b7b7c3b3df58",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Route placements through a paid-for placement helper that falls back when placement fails, and charge or return what actually merged for dig finds and weir catches.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "TryPlaceThing failures after a debit lose goods: reaction products (RM_LiquidReaction.Drop ignores the result), fill-from-tank and revert, dig finds merged partly into a stack (not charged to budget), weir catch (Deposit returns 0 after a partial merge, so fish stock is not debited).",
-    "ts": "2026-11-16T11:41:42Z",
+    "ts": "2026-11-16T16:24:37Z",
     "version": "0.1.0"
    },
    "finding:PLACER_SELFCHECK_FIX_LEAVES_MERGED_ORE": {
@@ -5508,12 +5509,12 @@
     "by": "BACKFILL",
     "claim": "Fixed in source (e3b0a513a649 (pre-landing; landed as 8c8bd865f358)): raid plank between sunken banks now lies at their depth; selftest went red then green. Live check still owed.",
     "class": "problem",
-    "code_sha": "8c8bd865f358",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Set deckNotches on the raid plank record in RM_RaidPlanks.TryLay (RM_DrawbridgeRaid.cs:295-303) to the banks' depth.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RaidPlankFits accepts equal banks at any depth but RM_RaidPlanks.TryLay never sets deckNotches (stays 0), so a plank between sunken banks registers at surface height, giving wrong access, draw height, underpass class and fall distance.",
-    "ts": "2026-11-16T11:41:30Z",
+    "ts": "2026-11-16T16:24:37Z",
     "version": "0.1.0"
    },
    "finding:REACH_VETO_FIX_ONE_END_ENOUGH": {
@@ -5525,12 +5526,12 @@
     "by": "BACKFILL",
     "claim": "ReachVetoed needs a way at both ends (C3-F8/C4-F2); map-edge veto cuts off a surface island (C3-F9); absolute-rule BFS stops at walls (C3-F12). (recorded on pre-landing 009abe3c49; landed as 9b22587f388a)",
     "class": "problem",
-    "code_sha": "9b22587f388a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Require a way at both ends in ReachVetoed; cut off a map-edge surface island (TouchesEdge); stop the absolute-rule BFS at walls.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_PocketGridMath.ReachVetoed vetoes only when BOTH ends lack a way, so a laddered pocket is approved into a sealed pocket (A* refuses, jobs loop on PatherFailed). CanReachMapEdge is not vetoed for a surface island ringed by an unclimbable trench. Absolute-rule trap BFS walks through walls.",
-    "ts": "2026-11-16T11:41:43Z",
+    "ts": "2026-11-16T16:24:38Z",
     "version": "0.1.0"
    },
    "finding:READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE": {
@@ -5779,12 +5780,12 @@
     "by": "BACKFILL",
     "claim": "Corrected the settings label and kernel comment from 29 to 25 squares watered, matching GenRadial.RadialCellsAround at radius 2.9.",
     "class": "polish",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Text only: change the label and kernel comment to say 25.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "The sprinkler settings label said 'default 2.9: about 29 squares watered' and the kernel comment said '29 cells', but RM_Sprinkle.Covered uses GenRadial.RadialCellsAround, which counts distance <= 2.9: 25 cells.",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:38Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_COVER_FLOWWORKS_REVIEW_MAP_THIRTY_NINE_STILL_UNSHOWN": {
@@ -6005,12 +6006,28 @@
     "by": "BACKFILL",
     "claim": "a34a529cc2 changed CapAccrued to carry the part-batch remainder when income beats a batch, fixing the rate loss at the converterRateMultiplier slider.",
     "class": "problem",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "RM_ConversionMath.CapAccrued: cap at perTick + inputUnits when perTick > inputUnits (else inputUnits), so the part-batch remainder carries.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_ConversionMath.CapAccrued capped accrued income at inputUnits, eating the part-batch remainder when income beats a batch, so converters ran short (Detox Works at 2x ran 4,000 of 6,667 units a tick; Desal Plant 20% short; 1x loses nothing).",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:38Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER": {
+    "accept": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only SheetCropWeek* -> rc 0, red before the fix",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "RM_SheetMath.cs: CropKillPulsesFor(pulsesAt250, interval); RM_MapComponent_Sheet.SyncParams uses it; RM_SheetSettings slider and Days() at the 250-tick base (Scribe key and default unchanged)",
+    "status": "open",
+    "tags": [],
+    "text": "Crop-drown delay is a raw pulse count (cropDrownPulses 1680) fed to the kernel, while the flow pulse is its own slider (60-2500 ticks); soak/evap/boil are per day, the crop timer is not. Pulse 60: crops drown in 1.68 days; 2500: 70 days. Bar: 'kills crops ... after a week'.",
+    "ts": "2026-11-16T13:23:29Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START": {
@@ -6041,12 +6058,12 @@
     "by": "BACKFILL",
     "claim": "a34a529cc2 made Sweep give a dry receiver with diff/2 >= its minimum that minimum, so the dry cell under a standing pool is wetted.",
     "class": "problem",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "RM_SheetMath.Sweep: a dry receiver with diff/2 >= its minimum gets that minimum (still f <= diff/2, no overshoot).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_SheetMath.Sweep's flux diff/5 (97 dL) falls under MinReceiveDl 100 and Level never adds a dry square, so a relief cell stays dry under a standing pool (24 of 25 wet, water 2.4 cm above its ground).",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:39Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE": {
@@ -6235,12 +6252,12 @@
     "by": "BACKFILL",
     "claim": "Added the SelfTest case Converter_caller_keeps_clipped_income to T_CONVERT; it catches the planted fault (rc 0 at d80300e83e, fix a34a529cc2).",
     "class": "problem",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add SelfTest case Converter_caller_keeps_clipped_income (a source law, since the caller is Verse-bound): red with the fault planted, green on the shipped caller.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Planted CALLER_CONV_DROPS_CLIPPED (accrued += clipped changed to += 0f in CompLiquidConverter) survived T_CONVERT and lane 1, so no case fails when the converter's caller drops clipped income.",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:39Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE": {
@@ -6251,12 +6268,60 @@
     "by": "BACKFILL",
     "claim": "Added DrillSurvey_charge_is_only_what_landed inside the T_DRILL glob; it catches the whole-level charge (rc 0 at d80300e83e, fix a34a529cc2).",
     "class": "problem",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add SelfTest case DrillSurvey_charge_is_only_what_landed (behaviour, random conservation, seed 13); the test table's glob is unchanged.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Planted DRILL_CHARGES_WHOLE_LEVEL (SpentUnits rounds up to a whole level) survived T_DRILL. The regression case GptA1024_drill_spends_only_what_landed exists but is outside T_DRILL's glob (CoverFloor*, DrillSurvey*, DrillWhyNot*).",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:39Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK": {
+    "accept": "plant_faults.py --require-caught --only EXCAVATION_COAT_TICK_NEVER_RUNS,XML_HEDIFF_COAT_PLAIN_CLASS,XML_YELLOW_SLIME_NO_COAT,XML_ICY_WATER_NO_WASH,FLUIDDEF_EVERYTHING_COATS,FLUIDDEF_EVERYTHING_WASHES -> rc 0",
+    "bars": [
+     "inv_liquid_coating"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "selftest_stage3_owed.py coating(): five laws (unguarded tick, hediff class, field defaults, slimes+icy water, csproj) with undo mutants",
+    "status": "open",
+    "tags": [],
+    "text": "T_LIQUID_COATING_OFFLINE stays green under 6 planted faults that kill the bar: a guarded tick, the HediffDef on HediffWithComps (cast throws), FluidDef.coats/washesCoat defaulting true, yellow slime losing coats, icy water losing washesCoat.",
+    "ts": "2026-11-16T15:47:32Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN": {
+    "accept": "plant_faults.py --require-caught --only CALLER_DRILL_CHARGES_ASKED,CALLER_DRILL_DESTROY_LOSES_PENDING -> rc 0",
+    "bars": [
+     "inv_drilling"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "SelfTest/CoverFloorSurveyChecks.cs: case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds",
+    "status": "open",
+    "tags": [],
+    "text": "T_DRILL proves SpentUnits but not its caller: planted 'charge the asked-for dL' and 'destroy loses pending units' in Building_LiquidDrill both left T_DRILL green (the law lives only in selftest_flowworks_gpt_batch_a.py, not a decider).",
+    "ts": "2026-11-16T15:47:31Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED": {
+    "accept": "none, Polish: not part of passing (lane2/faults.json)",
+    "bars": [
+     "inv_raider_fetch_fallen"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "add a law or case pinning it (see lane2/faults.json smallest_fix)",
+    "status": "open",
+    "tags": [],
+    "text": "Planted UnderFireTicks 0 (never leaves the fallen under fire), the RMFlow_RaidersFetchFallen key removed (raw key shown) and casualInterruptible true all left T_FETCH_FALLEN_OFFLINE green.",
+    "ts": "2026-11-16T15:47:45Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN": {
@@ -6274,6 +6339,86 @@
     "tags": [],
     "text": "sc_fill_front and sc_fill_tiers FAIL rows were fixed by harness-only changes (3ed7c2c5c0) with no red-before test: concept scenes filled undug head cells, and fill_tier_under_quarter_metre_look was hard-wired UNMEASURED.",
     "ts": "2026-11-16T11:41:58Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN": {
+    "accept": "lane2/plant_faults.py --require-caught --only CALLER_SHEET_CROP_AGE_IGNORED -> rc 0 (red before the new case)",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "SelfTest/SheetWaterChecks.cs: case SheetCropAge_the_caller_judges_each_crop_by_its_own_age pins CropDrowns(stand, plant.Age, pulseTicks, prm)",
+    "status": "open",
+    "tags": [],
+    "text": "T_SHEET proves CropDrowns per crop but not that the caller passes the crop's own age: planted CropDrowns(stand, int.MaxValue, ...) in RM_MapComponent_Sheet drowns a day-old crop in a week-old puddle with T_SHEET green.",
+    "ts": "2026-11-16T15:47:44Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY": {
+    "accept": "none, Polish: not part of passing (lane2/faults.json)",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "add a law or case pinning it (see lane2/faults.json smallest_fix)",
+    "status": "open",
+    "tags": [],
+    "text": "Planted '>' for '>=' at the 3 cm sheet tier (SheetUpDl) left T_SHEET green; only blind lane 1 caught it. A 1-dL boundary.",
+    "ts": "2026-11-16T15:47:45Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED": {
+    "accept": "none, Polish: not part of passing (lane2/faults.json)",
+    "bars": [
+     "inv_sprinklers"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "add a law or case pinning it (see lane2/faults.json smallest_fix)",
+    "status": "open",
+    "tags": [],
+    "text": "Planted sprinklerNativeRadius initialiser 3.9 (Scribe default 2.9) and the '29 squares' label back: no offline test saw either (validation_v2 O2 checks bool toggles only).",
+    "ts": "2026-11-16T15:47:45Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN": {
+    "accept": "plant_faults.py --require-caught --only CALLER_THIRST_IGNORES_HEAT_AND_LABOUR -> rc 0",
+    "bars": [
+     "inv_bottles_thirst"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "SelfTest/ThirstChecks.cs: case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider",
+    "status": "open",
+    "tags": [],
+    "text": "T_THIRST proves the ruled fall numbers in RM_ThirstMath but not that Need_RM_Thirst uses them: planted FallPerInterval(BaseFallPerDay) (no heat x3, labour, sleep or rate slider) left T_THIRST green.",
+    "ts": "2026-11-16T15:47:32Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED": {
+    "accept": "none, Polish: not part of passing (lane2/faults.json)",
+    "bars": [
+     "inv_toss_flame"
+    ],
+    "by": "JUDGE.judge-1794833810",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "add a law or case pinning it (see lane2/faults.json smallest_fix)",
+    "status": "open",
+    "tags": [],
+    "text": "Planted TossRange 49 (tossed from anywhere, not the rim) and dropping the IsBurning check left T_TOSS_FLAME_OFFLINE green; the range is a PROVISIONAL constant no law pins.",
+    "ts": "2026-11-16T15:47:45Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES": {
@@ -6300,12 +6445,12 @@
     "by": "BACKFILL",
     "claim": "Added T_SPRINKLER case Sprinkler_caller_asks_for_a_pump, so the planted CALLER_SPR_SPRAYS_WITHOUT_PUMP fault is now caught (red at bf8f5c7365 rc 1, green at d80300e83e rc 0).",
     "class": "problem",
-    "code_sha": "a34a529cc2",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add SelfTest case Sprinkler_caller_asks_for_a_pump (source law on RM_Sprinkle.Decide and HasPressure).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A planted fault where the sprinkler caller computes pressure = enabled && switchOn without HasPressure (sprays with no pump) survived T_SPRINKLER and lane 1; no case failed when the caller stopped asking for a pump.",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:39Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES": {
@@ -6586,12 +6731,12 @@
     "by": "BACKFILL",
     "claim": "cf6efc3055 re-pinned the check: it reads GSS's compiled DLL (type, the two entry points' parameter types, RebuildContacts -> ExternalContacts -> registered sources) not source text, so the new optional RebuildContacts parameter from GSS 63ac285403 no longer fails it.",
     "class": "problem",
-    "code_sha": "cf6efc3055",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Re-pin the signature prefix and the ExternalContacts call, following the four parameters FlowWorks relies on, instead of the whole old signature.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_PIT_COVER check DeckCollapse_GSS_shock_seam_is_soft_and_load_safe pinned GSS's whole old RebuildContacts source signature; GSS 63ac285403 added an optional HashSet<int> dropped parameter, so the pin reported 'missing' and the rerun failed.",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:40Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER": {
@@ -6689,12 +6834,12 @@
     "by": "BACKFILL",
     "claim": "MaxCellsFor in RM_SprinklerKernel.cs now steps up against UnitsFor after the floor, fixing the float 0.1f x 10 rounding that dropped an exact-fit cell (4b37a37db9). New SelfTest Sprinkler_max_cells_exact_fit is red on parent f2b926f78f, green on the fix.",
     "class": "polish",
-    "code_sha": "4b37a37db9",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "In MaxCellsFor, after the floor, step n up while UnitsFor(n + 1) <= units.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "MaxCellsFor(7 units, 0.1 L, 10) returns 6 though 7 cells cost exactly 7: float 0.1f x 10 = 1.0000000149, so the thirst valve waters one cell fewer on exact fits.",
-    "ts": "2026-11-16T11:41:20Z",
+    "ts": "2026-11-16T16:24:40Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_UNBLOCK_CONCEPTS_WHOSE_BLOCKER_CLOSED_DAYS_AGO": {
@@ -6792,12 +6937,12 @@
     "by": "BACKFILL",
     "claim": "C6-F10 fixed: a steam vent puffs only while its cell is still river (checked when due). C6-F6 left unchanged: the 250-tick scan cadence is the design's sampling. (recorded on pre-landing 0377b63928; landed as 17a082d2d09a)",
     "class": "problem",
-    "code_sha": "17a082d2d09a",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Recheck IsRiver for a steam vent's cell when it is due in RiverSteamHook so it stops puffing once the cell is not river. C6-F6: run the row's check (drafted pawn across a 4-cell fast lane right after a scan) and close as not-a-bug if it stays green.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "River entrants are registered only on the 250-tick scan (ScanIntervalTicks=250, nextMoveTick = now + CadenceFor), so a short fast-lane crossing may finish unshoved (C6-F6). River steam vents keep puffing from cells that stopped being river; the tick never rechecks IsRiver (C6-F10).",
-    "ts": "2026-11-16T11:41:43Z",
+    "ts": "2026-11-16T16:24:40Z",
     "version": "0.1.0"
    },
    "finding:RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN": {
@@ -6823,9 +6968,9 @@
     "by": "BACKFILL",
     "claim": "A5 was stale: the weir review 2026-10-23 removed weir drift rolls (owner: No auto fish capture); criterion now names the capture + flotsam proofs (recorded on pre-landing 82a1caaab17c; landed as 0eff53e3a4f4)",
     "class": "problem",
-    "code_sha": "0eff53e3a4f4",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Run the river toggle chains of extension_proof.py --live --chains (current/swept/works toggles + SeasonalFlood spawn) on a disposable river site, then verify and close.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "live",
      "test",
@@ -6833,7 +6978,7 @@
      "other-mod"
     ],
     "text": "The river settings toggles owed in validation.py and the river-walk lines lack live proof. Code is built at 82a1caaab17c, but live criteria A1-A7 remain unproven (A7, the flyer line, needs the owner watching at L4).",
-    "ts": "2026-11-16T11:42:18Z",
+    "ts": "2026-11-16T16:24:40Z",
     "version": "0.1.0"
    },
    "finding:SCENARIO_REELS_FIX_STILL_FACING_WEST": {
@@ -6875,15 +7020,15 @@
     "by": "BACKFILL",
     "claim": "Added the SelfTest --only filter and serialised stage/build/run; chains pass their own case names. First chain 58 s, later ones 2-3 s. (recorded on pre-landing 65ffd1270a; landed as f06f2f36d0ac)",
     "class": "problem",
-    "code_sha": "f06f2f36d0ac",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Add a SelfTest --only filter and serialise stage/build/run; validation chains pass their own case names.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "test",
      "other-mod"
     ],
     "text": "The FlowWorks C# SelfTest had no per-case filter, so a chain ran the full suite (~5 min per suite process); the DLL build was not serialised.",
-    "ts": "2026-11-16T11:42:02Z",
+    "ts": "2026-11-16T16:24:41Z",
     "version": "0.1.0"
    },
    "finding:SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": {
@@ -6892,15 +7037,15 @@
     "by": "BACKFILL",
     "claim": "Fixed in selftest_flowworks_selftest_requests.py so chains request the cases they read with their upstream cases; the rc=5 reason now carries the dotnet exception line. (recorded on pre-landing 63616d9abf; landed as 6873efad10a1)",
     "class": "problem",
-    "code_sha": "6873efad10a1",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Make the chains request the cases they read (plus upstream cases); put the dotnet exception line in the reason on rc=5.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "test",
      "other-mod"
     ],
     "text": "Three validation.py chains read a SelfTest case missing from their --only list (MapControl_wiring_and_master_switch, MapControl_six_wiring, HoseTankFeed_refused_add_puts_back) and fail 'case missing' without an earlier full SelfTest. A dotnet CLI crash (rc=5) under --no-build blinded pump_ports_one_per_side.",
-    "ts": "2026-11-16T11:42:02Z",
+    "ts": "2026-11-16T16:24:41Z",
     "version": "0.1.0"
    },
    "finding:SESSION_HURT_DIAGNOSE_BRUISED_AT_THE_BELL": {
@@ -6945,16 +7090,16 @@
     "by": "BACKFILL",
     "claim": "Deleted Building_RM_SluiceGate, its math and RM_SluiceGateSettings, plus the settings section, scribe, site_spec row, toggle floor and coverage regex (toggle count 211->210). Canal door RM_Sluice reads 'sluice gate'; river RM_SluiceBox reads 'sluice box'. Fixed a nested-section brace slip.",
     "class": "problem",
-    "code_sha": "93b24c3d9bef",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Delete the dead settings, or wire them to RM_Sluice; give the three sluice things distinct names.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "test",
      "settings",
      "other-mod"
     ],
     "text": "The 'Sluice gates' settings section drove Building_RM_SluiceGate, which no def uses; the player's sluice is RM_Sluice (Building_RM_FlowDoor). Three different things were called 'sluice'.",
-    "ts": "2026-11-16T11:41:43Z",
+    "ts": "2026-11-16T16:24:41Z",
     "version": "0.1.0"
    },
    "finding:SMALL_PUMP_HOSE_FIX_LAYS_UNCONNECTED": {
@@ -7116,12 +7261,12 @@
     "by": "BACKFILL",
     "claim": "Tank now spills on destroy, drill returns pending to the deposit, converter drops pending items; adapter carry loss is sub-unit and left unfixed. (recorded on pre-landing 682b968dc5; landed as 181f26b085bd)",
     "class": "problem",
-    "code_sha": "181f26b085bd",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Spill tank contents on destroy, return drill pending to its deposit, and drop converter pending items on destroy.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Building_LiquidTank has no Destroy/DeSpawn override, so a stocked tank's contents are silently deleted on deconstruct. CompLiquidConverter has no PostDestroy/PostDeSpawn, so pendingCount is never settled; drill pending is lost too.",
-    "ts": "2026-11-16T11:41:43Z",
+    "ts": "2026-11-16T16:24:42Z",
     "version": "0.1.0"
    },
    "finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
@@ -7149,12 +7294,12 @@
     "by": "BACKFILL",
     "claim": "A shared per-tank sent/recv budget now spans components, so a tank in two net components is no longer settled twice per cycle. (recorded on pre-landing 72185cbc4c; landed as 121eb90aa35e)",
     "class": "problem",
-    "code_sha": "121eb90aa35e",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Share one per-tank sent/recv budget across the components a tank belongs to.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "SettleTick (RM_LiquidNet.cs ~710) builds its view per component from live storedUnits while ComponentsOf(mover) can return several components for one tank, so that tank is settled twice per cycle, breaking the budget and epoch-stock rule. It is a rate issue, not mass.",
-    "ts": "2026-11-16T11:41:43Z",
+    "ts": "2026-11-16T16:24:42Z",
     "version": "0.1.0"
    },
    "finding:TANK_STUB_HUNT_POINTS_AT_NOTHING": {
@@ -7335,14 +7480,14 @@
     "by": "BACKFILL",
     "claim": "Harness fix c8701ef9c3 re-arms drafted bystanders (draft() for already-drafted pawns, ticks() for idle drafted pawns before 9k ticks) so vanilla AutoUndrafter no longer frees them to fill brine; T23 records othersInSettle. Live T23 PASS at ad2f5912e4.",
     "class": "problem",
-    "code_sha": "3d8f92419cb8",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Harness fix c8701ef9c3: draft() re-arms already-drafted pawns, ticks() re-arms idle drafted pawns before 9k ticks, T23 records othersInSettle; fake fault auto_undraft added.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "After a Fill tank was switched to Store, one brine bucket landed in the 900-tick settle (T23 FAIL, landedInSettle, inFlightAllowance 0) although the row's worker was on GotoWander at the switch.",
-    "ts": "2026-11-16T11:42:04Z",
+    "ts": "2026-11-16T16:24:43Z",
     "version": "0.1.0"
    },
    "finding:TIMBER_WINCH_FIX_POWERS_STEEL_BRIDGE": {
@@ -7385,14 +7530,14 @@
     "by": "BACKFILL",
     "claim": "Stride masks per view (deck/floor) compose with the underpass; strider astride a narrow trench steps onto a deck; CanonicalStride cached, DeriveCell alloc-free, cliff-bits test reads production bridged depth; raider ladder-null->fill fallback (unless waiting) and per-square reservation. Earlier minors in 4fa0cab561.",
     "class": "problem",
-    "code_sha": "c22de8bf0b58",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Mask stride per view (deck/floor) so it composes with the underpass; cache CanonicalStride, make DeriveCell alloc-free, add raider ladder-null->fill fallback and per-square reservation.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "other-mod"
     ],
     "text": "RM_TrenchStride Swap ignores the underpass view, so trench stride does not compose with the underpass; plus minors in RaiderTrench, PocketGrid and TrenchStride.",
-    "ts": "2026-11-16T11:42:04Z",
+    "ts": "2026-11-16T16:24:43Z",
     "version": "0.1.0"
    },
    "finding:UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT": {
@@ -7401,15 +7546,15 @@
     "by": "BACKFILL",
     "claim": "Batch C fix in source (e3b0a513a649 (pre-landing; landed as 8c8bd865f358)): the underpass shot postfix reopens only a cliff rejection and re-asks vanilla; selftest red-then-green. Live check owed.",
     "class": "problem",
-    "code_sha": "8c8bd865f358",
+    "code_sha": "4b33b22f003b",
     "proposed_fix": "Reopen only a cliff rejection and re-ask vanilla, so a shot refused by a wall or another mod stays refused.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [
      "test",
      "other-mod"
     ],
     "text": "RM_Patch_SuspensionBandShots.Postfix (RM_SuspensionPatches.cs:752-768) replaces a false CanHitTargetFrom result with only the cliff test when both ends are floor-side, so a wall-blocked shot under a deck becomes legal.",
-    "ts": "2026-11-16T11:41:33Z",
+    "ts": "2026-11-16T16:24:44Z",
     "version": "0.1.0"
    },
    "finding:UNIVERSAL_PIPE_FIX_LAST_RULING_STILL_RED": {
@@ -7552,6 +7697,30 @@
     "subject": "finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
     "text": "T_FETCH_FALLEN_OFFLINE: RED 9 at fc2ab0af91 (pinned laws added first), PASS at 636550d40b36, 10 undo mutants bite. Live sc_fetch_fallen gains FETCH_fallen_brought_out; recorded UNRUN in version/in_game/unrun.jsonl.",
     "ts": "2026-11-16T10:14:11Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "Not ruled: the claim and its reproduction are live; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+    "ts": "2026-11-16T16:25:14Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "Not ruled: no test is named and none carries its id; this offline judge cannot run it. Left claimed_fixed, owed to Stage 6 or the next judge.",
+    "ts": "2026-11-16T16:25:19Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "Not ruled: the claim's test is the live thirst_live rows (recorded 'steve-targeted: FAIL x24'); offline cases carrying its id pass, which cannot verify a live claim. Owed to Stage 6.",
+    "ts": "2026-11-16T16:25:24Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "subject": "judge",
+    "text": "Verification: 74 of 118 claimed fixes verified offline at 4b33b22f; 44 not ruled (live-only claims, or no test named or carrying the id): left claimed_fixed, owed to Stage 6 or the next judge. Each ruling and its method: lane2/verification.json.",
+    "ts": "2026-11-16T16:25:36Z"
    }
   ],
   "questions": {},
@@ -7567,6 +7736,7 @@
    "BACKFILL",
    "DISPATCH",
    "HOLDER.run-1794816885",
+   "JUDGE.judge-1794833810",
    "STEWARD"
   ],
   "spend_tokens": 24322723,
@@ -7816,6 +7986,42 @@
     "subject": "bar:inv_settings",
     "text": "visit_1 sc_walk UNMEASURED (runner None)",
     "ts": "2026-11-16T10:11:47Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "a395d97a1291",
+    "subject": "judge",
+    "text": "lane 1 blind, 60 rows: 39 PASS 0 FAIL 1 INFO 20 not_kernel UNSETTLED",
+    "ts": "2026-11-16T13:08:29Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "a395d97a1291",
+    "subject": "judge",
+    "text": "Reran the 8 offline-bar deciders: 8 PASS, 8 match their recorded result; T_DIG_TIME_ARITHMETIC not rerunnable (no command)",
+    "ts": "2026-11-16T16:25:46Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "kind": "test.run",
+    "result": "FAIL",
+    "sha": "a395d97a1291",
+    "subject": "judge",
+    "text": "Planted 57 faults (kernels, callers, every changed mod file): 37 caught, 20 missed; tree clean after",
+    "ts": "2026-11-16T16:25:46Z"
+   },
+   {
+    "by": "JUDGE.judge-1794833810",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "4b33b22f003b",
+    "subject": "judge",
+    "text": "At the fix sha: the 8 offline-bar deciders and 3 stage-6 coating/toss/fetch deciders all PASS; lane 1 rerun 39 PASS 0 FAIL",
+    "ts": "2026-11-16T16:25:46Z"
    }
   ],
   "traps": {

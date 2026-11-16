@@ -42,28 +42,104 @@ ranges) and the kernels `RM_SheetMath.cs`, `RM_ConversionMath.cs`, `RM_DrillSurv
   (`RM_SheetSettings.cs:21`, "until the Stage 4 live acceptance validates it"); radius choices water 9 / 25 / 45 squares.
 
 ## Lane 2 reruns
-(pending)
+`lane2/rerun_offline.py` (rows merge by id; a verdict compare first, then the last line with timings and the
+"N filtered out" count masked).
+
+- At `a395d97a12` (`lane2/reruns.jsonl`): **8 of 8 offline-bar deciders PASS and match their recorded result and last
+  line** [measured]: T_SHEET, PY_FLOWWORKS_SHEET_DROWN_MESSAGE, T_CONVERT, T_THIRST, PY_WATER_NOT_FOOD,
+  PY_NATIVES_DRINK_OWN_WATER, T_DRILL, T_SPRINKLER. T_DIG_TIME_ARITHMETIC has no command ("specified, not built"):
+  written UNRUN, not rerunnable, as recorded.
+- At the fix sha `4b33b22f00` (`lane2/reruns_after_fix.jsonl`): the same 8 PASS, plus T_LIQUID_COATING_OFFLINE,
+  T_TOSS_FLAME_OFFLINE and T_FETCH_FALLEN_OFFLINE PASS [measured]. T_SHEET, T_DRILL and T_THIRST read `match: false`
+  only because their case counts grew by the cases this cycle added (53->55, 6->7, 29->30).
+- `selftest_stage3_owed.py` run whole is RED on its `wetting`/`wetness_probe` sections (the bars that moved to 0.2.0, red
+  by design, "code absent"), identically on the parent [measured]; every section a 0.1.0 bar uses passes.
 
 ## Planted
-(pending)
+57 faults (`lane2/planted_faults.json`), run by `lane2/plant_faults.py` with `WINBUILD_ROOT` private, one at a time,
+restored byte for byte; baseline first, `{"tree_clean_after": true}` last (`lane2/planted_results.jsonl`).
+
+- **37 of 57 caught** [measured]. Offline kernels: **22 of 22** (lane 1 caught 21, the builder's deciders 21; each
+  missed one the other caught). Game-side callers: **4 of 8**. Other changed mod files (settings, FluidDef, coating,
+  toss flame, fetch fallen, trench, DefOf, csproj, defs, patches, keys): **11 of 27**.
+- Missed, and what came of it: the four caller faults (sheet crop age, drill charge, drill destroy, thirst fall) are
+  Problems against the offline-bar deciders, fixed below; six coating faults are a Problem against
+  T_LIQUID_COATING_OFFLINE, fixed below; the tier boundary, sprinkler radius default and label, toss range and relight,
+  fetch under-fire window, warning key and interruptible flag are Polish; the coat never fading is outside the bar
+  (no fault). Two are build breaks no offline test can see (Warn made private again, the coating file dropped from the
+  csproj): the mod DLL build (`winbuild.py`) catches them, so they are noted, not faults.
+- Lane 1's own blind spot: SPRK_VALVE_WATERS_WET_CELLS passed lane 1, whose valve oracle reused the kernel's
+  `ValveWants` (circular); the builder's T_SPRINKLER caught it.
+- After the fixes, the 13 previously missed faults the new tests target are all CAUGHT at `4b33b22f00`
+  (`lane2/redgreen_planted.jsonl`, outputs in `lane2/redgreen/`).
 
 ## Faults
-(pending)
+`lane2/faults.json`: **5 Problems (all FIXED), 4 Polish (PENDING, Polish list)** [measured]. `miss_of: 1` = material
+unchanged since cycle 1.
+
+| id | class | bar | miss_of | status |
+|---|---|---|---|---|
+| RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER | Problem | inv_overflow_sheet | 1 | FIXED 4b33b22f00 |
+| RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN | Problem (test) | inv_overflow_sheet | 1 | FIXED 4b33b22f00 |
+| RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN | Problem (test) | inv_drilling | 1 | FIXED 4b33b22f00 |
+| RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN | Problem (test) | inv_bottles_thirst | 1 | FIXED 4b33b22f00 |
+| RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK | Problem (test) | inv_liquid_coating (stage 6) | 0 | FIXED 4b33b22f00 |
+| RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY | Polish | inv_overflow_sheet | 1 | PENDING |
+| RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED | Polish | inv_sprinklers | 0 | PENDING |
+| RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED | Polish | inv_toss_flame | 0 | PENDING |
+| RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED | Polish | inv_raider_fetch_fallen | 0 | PENDING |
+
+The one code Problem: the crop-drown delay is stored as 1680 pulses and fed raw to the kernel, while the flow pulse is
+its own shipped slider (60-2500 ticks); soak, evaporation and boil are converted per day, the crop timer was not. At a
+60-tick pulse crops drowned after 1.68 days, at 2500 after 70 [measured, the red run]. Found in lane 2 by reading the
+caller of a kernel lane 1 had passed: the pilot's pattern again (the kernel right, the caller short).
+
+Each fault is filed as a rimflow item and as a `finding.open` on the mod ledger.
+
+Verification of the holder's claims (`maturation_dispatch.py judge-verify`, after lane 1): **118 claimed fixed; 74
+verified** at `4b33b22f00` by the named or id-carrying test passing (68 C# cases, 17 python selftests, all green) or,
+for the offline bars, by this cycle's planted faults and lane 1; **44 not ruled** (live-only claims, or no test named
+or carrying the id), each listed in `lane2/verification.json` and left claimed_fixed for Stage 6 [measured]. None
+reopened. THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY's own recorded test reads "steve-targeted: FAIL x24": not verified.
 
 ## Fixes
-(pending)
+`lane2/fixes.jsonl`, red on `a395d97a12`, green on `4b33b22f00` (`./publish`ed `4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67`):
+
+- Crop week (code): `RM_SheetMath.CropKillPulsesFor` + `CropDelayBasePulseTicks`; `RM_MapComponent_Sheet.SyncParams`
+  converts; `RM_SheetSettings` slider and `Days()` at the 250-tick base; Scribe key and default unchanged. Red:
+  `SheetCropWeek_a_week_at_every_flow_pulse_interval` "pulse 60 ticks: crops drown after 1.68 days" (rc 1); green rc 0.
+  Mod DLL rebuilt with `winbuild.py` (private `WINBUILD_ROOT`, 0 errors), committed with its `.srchash`, not deployed.
+- The four test Problems: red = `plant_faults.py --require-caught --only <faults>` rc 1 "MISSED" on the parent; green =
+  the same command rc 0 "CAUGHT" at the fix sha (coating: three runs each way).
+- Lane 1 rerun at the fix sha: 39 PASS, 0 FAIL, 1 INFO, 20 UNSETTLED (`lane2/lane1_rows_after_fix.jsonl`).
 
 ## Steward's decisions enacted
-(pending)
+None: no Conductor decisions were written for this cycle; the standing default was followed (every bar judged as locked, no bar or criterion edited, no NOTED_FOR_CONDUCTOR raised).
 
 ## Tests edited
-(pending)
+`tests_edited.json` (path, why, git blob before at `a395d97a12` and after at `4b33b22f00`): `SheetWaterChecks.cs` (+2
+cases), `FloodReleaseChecks.cs` (one pinned line moved to the converted SyncParams text: same claim, stricter),
+`CoverFloorSurveyChecks.cs` (+1 case), `ThirstChecks.cs` (+1 case), `selftest_stage3_owed.py` (+5 coating laws, +6
+mutants). No assertion removed, skipped or loosened.
 
 ## Unsettled
-(pending)
+- 20 lane-1 `not_kernel` rows (game-side bars, all proving at Stage 6): owed to Stage 6.
+- 44 holder claims not ruled offline (`lane2/verification.json`).
+- T_DIG_TIME_ARITHMETIC: specified, never built; no command to rerun.
+- INFO for the steward: the overflow master switch `sheetOverflowEnabled` ships OFF "until the Stage 4 live acceptance
+  validates it" (`RM_SheetSettings.cs:21`), so inv_overflow_sheet's behaviour is off in the shipped settings until a
+  live sign-off flips it.
 
 ## Exit
-(pending)
+offline_bars: {inv_overflow_sheet: green, inv_converters: green, inv_bottles_thirst: green, inv_drilling: green, inv_sprinklers: green}
+problems_open: 0
+exit_met: false
+
+Every offline bar's deciders PASS at the fix sha and no Problem is left open, but this cycle FIXED five Problems, so a
+new blind judge is owed (cycle 3 of this visit's count, the Conductor's call after three).
 
 ## Owed
-(pending)
+- A new blind judge (cycle 3): the five fixes above are this cycle's own and cannot pass its exit.
+- The 4 Polish items (Polish list, not part of passing).
+- The 44 unruled claims at Stage 6.
+- Cost of this run: about $18 of the $62.27 bound [measured, the session's budget line at the record].

@@ -1,0 +1,1 @@
+CAUGHT CALLER_THIRST_IGNORES_HEAT_AND_LABOUR | stock:BottleLoop*,ContainerStyle*,Thirst* rc1 Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider

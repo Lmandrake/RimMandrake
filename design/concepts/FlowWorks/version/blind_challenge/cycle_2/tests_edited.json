@@ -1,0 +1,41 @@
+{
+ "cycle": 2,
+ "run": "judge-1794833810",
+ "edited": [
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/SheetWaterChecks.cs",
+   "why": "added SheetCropWeek_a_week_at_every_flow_pulse_interval (red-first test of the crop-week Problem) and SheetCropAge_the_caller_judges_each_crop_by_its_own_age (caller law); no assertion removed",
+   "before": "60bc971b4c39b15fd0fad82c2e659393dfabd4b8",
+   "after": "37dd485f43542a695f44f6c955ee13c1ccce0980",
+   "commit": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/FloodReleaseChecks.cs",
+   "why": "Overflow_settings_ship_owner_defaults_master_off_every_field_saved pinned the old SyncParams text prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses); now pins the converted line (same claim, \"the kernel reads the settings\", stricter: it must convert to the current pulse)",
+   "before": "f12f331b024aced9df26bdd49ad4f6a1873df48f",
+   "after": "47801140ee4cd75c4ca1c275e5b679dcfa3401b8",
+   "commit": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/CoverFloorSurveyChecks.cs",
+   "why": "added DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds; no assertion removed",
+   "before": "5e5bbf4430df7ac59630949aa33d0c4f82ccc3b3",
+   "after": "878f4fc114b735112c124384810694b9f8c1f321",
+   "commit": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/ThirstChecks.cs",
+   "why": "added Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider; no assertion removed",
+   "before": "23c7d3a7d8fc3ef62bc4ab932563dd4f9a8e1a45",
+   "after": "50c78625e7a031399f4f0dc5762208529b8117d9",
+   "commit": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67"
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+   "why": "coating(): five laws added (unguarded tick, hediff class, FluidDef flag defaults, slimes and icy water, csproj) with 3 cs undo mutants, 1 xml mutant and 2 more def mutants; no law removed or loosened",
+   "before": "42cd2c6ffeab85eeb1cc962ecd05970673778f6d",
+   "after": "76bd59837dd3982830ff5f29948398ad3f55a3ce",
+   "commit": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67"
+  }
+ ]
+}

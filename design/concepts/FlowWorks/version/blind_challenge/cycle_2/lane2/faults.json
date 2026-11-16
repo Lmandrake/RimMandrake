@@ -1,0 +1,137 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "record.json inv_overflow_sheet: 'kills crops under standing overflow after a week', under the shipped settings swept through their ranges",
+   "evidence": [
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs SyncParams (at a395d97a12): prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses) - a raw pulse count",
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs: pulseIntervalTicks slider 60-2500 (default 250); soak, evaporation and boil are converted per day (pulsesPerDay), the crop timer is not",
+    "red: SheetCropWeek_a_week_at_every_flow_pulse_interval on a395d97a12 'pulse 60 ticks: crops drown after 1.68 days, not a week (7)'; at 2500 ticks it is 70 days",
+    "design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/fixes.jsonl"
+   ],
+   "would_pass": "the first CropDrowning lands one week (to one pulse) after the crop starts standing, at every flow-pulse interval the slider allows",
+   "smallest_fix": "RM_SheetMath.CropKillPulsesFor(pulsesAtBase, interval) converts the stored delay (pulses at the 250-tick base) to the current pulse; SyncParams uses it; the settings slider and Days() read and write at the base. Scribe key and default unchanged.",
+   "verdict_on_criterion": "sound: the bar's 'a week' is a time, and the code is wrong, not the criterion",
+   "status": "FIXED 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "T_SHEET decides inv_overflow_sheet; a planted behaviour fault must not survive a green decider (brief, 'Watch for this')",
+   "evidence": [
+    "planted CALLER_SHEET_CROP_AGE_IGNORED (RM_MapComponent_Sheet: CropDrowns(stand, int.MaxValue, ...)): T_SHEET rc 0, PY_FLOWWORKS_SHEET_DROWN_MESSAGE rc 0 (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)",
+    "Sheet_crop_drowning_is_each_crops_own_exposure_not_a_one_time_puddle tests the kernel only"
+   ],
+   "would_pass": "T_SHEET goes red when the caller stops handing CropDrowns the crop's own age",
+   "smallest_fix": "SelfTest/SheetWaterChecks.cs case SheetCropAge_the_caller_judges_each_crop_by_its_own_age (a law on the caller; the caller is Verse-bound)",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN",
+   "class": "Problem",
+   "bar": "inv_drilling",
+   "criterion": "T_DRILL decides inv_drilling; a planted behaviour fault must not survive a green decider",
+   "evidence": [
+    "planted CALLER_DRILL_CHARGES_ASKED (Building_LiquidDrill charges SpentUnits(beforeDl, beforeDl + addDl, ...)) and CALLER_DRILL_DESTROY_LOSES_PENDING (ReturnUnits(0f)): T_DRILL rc 0 for both (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)",
+    "the pin exists only in selftest_flowworks_gpt_batch_a.py, which decides no bar; cycle 1's RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE pinned the kernel, not this caller line"
+   ],
+   "would_pass": "T_DRILL goes red when the drill charges the asked-for dL or deletes its pending units on destroy",
+   "smallest_fix": "SelfTest/CoverFloorSurveyChecks.cs case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN",
+   "class": "Problem",
+   "bar": "inv_bottles_thirst",
+   "criterion": "T_THIRST decides inv_bottles_thirst; a planted behaviour fault must not survive a green decider",
+   "evidence": [
+    "planted CALLER_THIRST_IGNORES_HEAT_AND_LABOUR (Need_RM_Thirst falls at FallPerInterval(BaseFallPerDay): no heat x3, labour, sleep or rate slider): T_THIRST rc 0 (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)"
+   ],
+   "would_pass": "T_THIRST goes red when the need stops feeding the ruled factors into its fall",
+   "smallest_fix": "SelfTest/ThirstChecks.cs case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider",
+   "verdict_on_criterion": "sound",
+   "status": "FIXED 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK",
+   "class": "Problem",
+   "bar": "inv_liquid_coating",
+   "criterion": "T_LIQUID_COATING_OFFLINE is inv_liquid_coating's offline decider; a planted behaviour fault must not survive it",
+   "evidence": [
+    "six planted faults that kill the bar left it green (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl): EXCAVATION_COAT_TICK_NEVER_RUNS (guarded tick), XML_HEDIFF_COAT_PLAIN_CLASS (Coat's cast throws), FLUIDDEF_EVERYTHING_COATS, FLUIDDEF_EVERYTHING_WASHES, XML_YELLOW_SLIME_NO_COAT, XML_ICY_WATER_NO_WASH"
+   ],
+   "would_pass": "each of the six turns T_LIQUID_COATING_OFFLINE red",
+   "smallest_fix": "selftest_stage3_owed.py coating(): five laws (unguarded tick, hediff class, field defaults, slimes and icy water, csproj) with undo mutants",
+   "verdict_on_criterion": "sound; the bar is stage 6 and its live scene also decides it",
+   "status": "FIXED 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY",
+   "class": "Polish",
+   "bar": "inv_overflow_sheet",
+   "criterion": "T_SHEET pins the 3 cm sheet-tier boundary",
+   "evidence": [
+    "planted SHEET_SHEET_TIER_BOUNDARY ('>' for '>=' at SheetUpDl): T_SHEET rc 0; blind lane 1 SHEET_TIER_HYSTERESIS caught it (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)"
+   ],
+   "would_pass": "a T_SHEET case asserts NextTier(None, 3 cm) == Sheet",
+   "smallest_fix": "one assertion in Sheet_tier_hysteresis_does_not_flap",
+   "verdict_on_criterion": "sound; a 1-dL boundary, so Polish",
+   "status": "PENDING",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED",
+   "class": "Polish",
+   "bar": "inv_sprinklers",
+   "criterion": "a float setting's initialiser equals its Scribe default; the 25-square label stays right",
+   "evidence": [
+    "planted SPRK_SETTING_RADIUS_DEFAULT_DRIFT (initialiser 3.9, Scribe default 2.9) and SPRK_SETTING_LABEL_29_AGAIN: no offline test red, validation_v2 O2 checks bool toggles only (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)"
+   ],
+   "would_pass": "O2 (or a SelfTest case) compares float/int initialisers with Scribe defaults; a case pins the label's count",
+   "smallest_fix": "extend validation_v2.py --offline O2 to numeric settings",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED",
+   "class": "Polish",
+   "bar": "inv_toss_flame",
+   "criterion": "T_TOSS_FLAME_OFFLINE: the toss is from the rim, about five squares (the setting's own text), never on a square already alight",
+   "evidence": [
+    "planted TOSS_RANGE_ACROSS_THE_MAP (TossRange 49) and TOSS_RELIGHTS_BURNING: T_TOSS_FLAME_OFFLINE rc 0 (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)",
+    "TossRange is marked PROVISIONAL (auto-decided 2026-11-15)"
+   ],
+   "would_pass": "a law pins TossRange near 5 and the IsBurning guard",
+   "smallest_fix": "two laws in selftest_stage3_owed.py toss_flame()",
+   "verdict_on_criterion": "sound; the bar does not name a range, so Polish",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED",
+   "class": "Polish",
+   "bar": "inv_raider_fetch_fallen",
+   "criterion": "T_FETCH_FALLEN_OFFLINE: 'under fire -> retreat leaving the fallen'; the warning reads as text",
+   "evidence": [
+    "planted FETCH_NEVER_UNDER_FIRE (UnderFireTicks 0), XML_KEY_FETCH_WARNING_GONE (raw key shown), XML_JOBDEF_FETCH_INTERRUPTIBLE: T_FETCH_FALLEN_OFFLINE rc 0 (design/concepts/FlowWorks/version/blind_challenge/cycle_2/lane2/planted_results.jsonl)",
+    "a broken raid still leaves its fallen (the flee duty has no fetch giver), so the bar's 'leave them when driven off' holds"
+   ],
+   "would_pass": "laws pin UnderFireTicks > 0 and the RMFlow_RaidersFetchFallen key",
+   "smallest_fix": "two laws in selftest_stage3_owed.py fetch_fallen()",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": 0
+  }
+ ]
+}

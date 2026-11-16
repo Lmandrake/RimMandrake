@@ -1,0 +1,2 @@
+CAUGHT EXCAVATION_COAT_TICK_NEVER_RUNS | py:selftest_stage3_owed.py --only coating rc1 RED   the map tick calls it as a statement of its own (no guard in fro
+CAUGHT XML_HEDIFF_COAT_PLAIN_CLASS | py:selftest_stage3_owed.py --only coating rc1 RED   the coat's HediffDef runs Hediff_LiquidCoat (the code casts to i
