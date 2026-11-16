@@ -5876,7 +5876,7 @@ def scene_economy_observer(t):
 # --------------------------------------------------------------------------- scene: gale_drawing (batch 5)
 
 GALE = "RM_Gale"
-PADS.update(galedraw=(0, 40), stamping=(40, 0), maker=(0, 0), fuzzviper=(-40, 0), visual=(0, -40))   # 32-cell pads
+PADS.update(galedraw=(0, 40), stamping=(0, 0), maker=(0, 0), fuzzviper=(-40, 0), visual=(0, -40))   # stamping 48, rest 32
 GALE_SAMPLES = 6           # ProofGale reads 60 ticks apart: the overlay must tick, draw and stream downwind on every one
 GALE_TRANSITION = 4200     # vanilla WeatherManager ticks the LAST weather's overlays until its 4000-tick lerp ends
 GALE_SHOT = 24             # cells square: one fixed camera rect for the motion sequence the owner reads
@@ -6069,7 +6069,7 @@ def scene_gale_drawing(t):
 # --------------------------------------------------------------------------- scene: stamping (batch 5)
 
 STAMP_MIN_FIRES = 5          # RM_BlazeKernel.MinOpenFires (PROVISIONAL in RM_FireStamp.cs)
-STAMP_HERD_OFF = 26          # cells: the herd starts this far from the cluster, so an approach is a walk
+STAMP_HERD_OFF = 24          # cells: the herd starts this far from the cluster (inside the 48-cell pad's clear 56)
 STAMP_TELEPORT = 20          # cells in one 60-tick sample: no jog covers it; a jump this long is a teleport
 STAMP_WATCH = 3000           # ticks an arm is watched (50 samples of 60)
 
@@ -6106,7 +6106,7 @@ def _stamp_offences(arm):
     sample], "jump" largest single-sample move of any herd member, "peak", "after" open fires in the cluster}."""
     out = []
     tr = arm.get("track") or []
-    if not tr or arm.get("start", 0) < STAMP_HERD_OFF - 4:
+    if not tr or arm.get("start", 0) < STAMP_HERD_OFF - 6:
         out.append("the herd did not start a walk away (%s cells)" % arm.get("start"))
     elif min(tr) > STAMP_REACH + 4:
         out.append("no stamper converged: closest %.1f cells (reach %.1f)" % (min(tr), STAMP_REACH + 4))
@@ -6138,7 +6138,7 @@ def scene_stamping(t):
     four-cell (sub-threshold) cluster, a roofed cluster and the fireStampEnabled-off cluster must not draw the herd;
     a kind that does not stand is UNMEASURED (a base gap), never a passing negative. NOT DRIVEN: fueled-building fire
     overlays (no clean bridge fixture lights a building's fire as a Fire thing). Hold: immediate."""
-    _prep(t, "stamping", 32)
+    _prep(t, "stamping", 48)
     x, z = t.anchor
     kinds = _stamper_kinds()
     got = {"arms": {}, "ctrl": {}}
@@ -6173,8 +6173,8 @@ def scene_stamping(t):
         start = min(_dist(_xz(rows[h]), (x, z)) for h in herd if _xz(rows.get(h)))
         arm = watch(herd, (x, z), cluster)
         arm["start"] = round(start, 1)
-        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 32)))
-        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 32)), categories="All")    # no grass left to spread on
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 48)))
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 48)), categories="All")    # no grass left to spread on
         _vanish(t, *herd)
         return arm
 
@@ -6187,8 +6187,8 @@ def scene_stamping(t):
         t.bridge_call("jawa/map_fire", action="start", rect=_rs(cluster), fireSize=FIRE_SIZE)
         arm = watch(herd, (x, z), cluster)
         got["ctrl"][name] = min(arm["track"]) if arm["track"] else None
-        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 32)))
-        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 32)), categories="All")
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 48)))
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 48)), categories="All")
         if roofed:
             _open_sky(t, cluster)
         _vanish(t, *herd)
@@ -6255,7 +6255,7 @@ def scene_stamping(t):
         try:
             _stable(t, body)
         finally:
-            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 40)))
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 56)))
 
 
 # --------------------------------------------------------------------------- scene: maker (batch 5)
@@ -6294,7 +6294,8 @@ def _maker_offences(r):
 def scene_maker(t):
     """sc_maker (maker, fire_maker_witness_trail). Maker A lights a grass field through the real Ignite job with three
     campaign stampers 18 cells off (inside the 24-cell witness range, open sky) and innocent B standing as near the
-    fuel as A; when the herd is at the blaze, A walks 40 cells north and B 40 south: the herd's movement is the only
+    fuel as A; when the herd is at the blaze, A walks 40 cells north and B only 12 south (so nearest-pawn blame lands on
+    B): the herd's movement is the only
     reading of a pursuit target (no bridge tool reads one), so a stamper beside A and never beside B is the
     identification. A save and reload falls mid-pursuit and A walks on: the pursuit must follow. The no-event control
     lights a field with jawa/map_fire (no maker) beside colonist C: nobody may be pursued. The property arm calls the
@@ -6305,7 +6306,7 @@ def scene_maker(t):
     this scene is expected red at Stage 6 until SCRUB_PROVE_WIND_FIRE_AND_RITUAL lands it. Hold: immediate."""
     _prep(t, "maker", 32)
     x, z = t.anchor
-    field, ctrl = (x - 4, z - 4, 9, 9), (x + 30, z - 4, 7, 7)
+    field, ctrl = (x - 4, z - 4, 9, 9), (x + 10, z - 17, 7, 7)     # both inside the cleared 40: soil stops a spread
     got = {}
 
     def stampers():
@@ -6340,7 +6341,7 @@ def scene_maker(t):
                     if any(_xz(r) and _dist(_xz(r), (x, z)) <= STAMP_REACH + 6 for r in stampers().values()):
                         break
                 _order_goto(t, got["a"], field[0] - 2, z + 40)
-                _order_goto(t, got["b"], field[0] - 2, z - 40)
+                _order_goto(t, got["b"], field[0] - 2, z - 12)    # B stays the nearest pawn to the blaze
                 for _ in range(10):
                     t.wait_ticks(300)
                     rows = _rows(t)
@@ -6494,11 +6495,16 @@ def scene_fuzzviper(t):
     x, z = t.anchor
     walls = [(cx, z + dz) for cx in range(x - 10, x + 11) for dz in (-2, 2)]
     bare = (x, z - 12)
-    got = {"wall": [], "bare": []}
+    got = {"wall": [], "bare": [], "scars": {}}
+
+    def scars(prey):
+        """A spawned animal may carry old scars: a hit is a hediff beyond those."""
+        rows = _rows(t, health=True)
+        got["scars"].update((p, len(_hediffs(rows.get(p) or {}))) for p in prey)
 
     def sample(pid, prey):
         rows, jobs = _rows(t, health=True), _jobs(t)
-        hit = any(_hediffs(rows.get(p) or {}) for p in prey)
+        hit = any(len(_hediffs(rows.get(p) or {})) > got["scars"].get(p, 0) for p in prey)
         return {"pos": _xz(rows.get(pid)), "job": jobs.get(pid), "prey_hit": hit}
 
     def body():
@@ -6528,6 +6534,7 @@ def scene_fuzzviper(t):
         with _comp(t, "fuzzviper_strikes_from_wall"):
             if _live(t):
                 prey = [_spawn(t, VIPER_PREY, x - 10, z), _spawn(t, VIPER_PREY, x - 11, z)]
+                scars(prey)
                 for p in prey:
                     _order_goto(t, p, x + 10, z)
                 for _ in range(10):
@@ -6541,6 +6548,7 @@ def scene_fuzzviper(t):
         with _comp(t, "fuzzviper_bare_not_credited"):
             if _live(t):
                 prey = [_spawn(t, VIPER_PREY, bare[0] - 8, bare[1])]
+                scars(prey)
                 _order_goto(t, prey[0], bare[0] + 8, bare[1])
                 for _ in range(10):
                     t.wait_ticks(300)
@@ -6583,7 +6591,8 @@ def scene_fuzzviper(t):
 # sequence and the plain shot here; tree_landmark, twitcher, rearing, quench, sleeper are things).
 VISUAL_SUBJECTS = (("tree_landmark", TREE), ("twitcher", "RM_TwitcherVenomvine"), ("rearing", "RM_RearingVenomvine"),
                    ("quench", "RM_QuenchVenomvine"), ("sleeper", "RM_SleeperVenomvine"))
-ZOOMS = (("normal", 24.0), ("close", 11.0))     # camera rootSize: the shipping default and a close read
+ZOOMS = (("normal", 24.0), ("close", 11.0))
+VISUAL_DX = (-13, -2, 3, 8, 13)      # x offsets: the sweetline tree's crown (visualSizeRange to 16) spans ~8 either side     # camera rootSize: the shipping default and a close read
 # A blind reader (a judge agent that did not stage the shots) labels each capture with no captions; its answers file
 # is {"<shot path>": "<subject read>"}. Art evaluation is the art pipeline's verdict per def {"<defName>": "GREEN"|...}.
 # Unset, those rows are UNMEASURED with the recipe: a script cannot read a picture and must not pretend to.
@@ -6678,7 +6687,7 @@ def scene_floor_visual(t):
                 got["pawn"] = _spawn(t, "Colonist", x, z - 6, faction="player")
                 _full(t, got["pawn"])
                 for i, (_s, d) in enumerate(VISUAL_SUBJECTS):
-                    px = x - 12 + 6 * i
+                    px = x + VISUAL_DX[i]
                     t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, px, z), growth=1.0)
                     found = _things(t, d, "%d,%d,1,1" % (px, z))
                     got["ids"][d] = found[0]["id"] if found else None
@@ -6688,9 +6697,10 @@ def scene_floor_visual(t):
                 t.bridge_call("rimworld/clear_selection")
         with _comp(t, "visual_textures_own_and_distinct"):
             if _live(t):
-                for d, tid in got["ids"].items():
-                    r = t.bridge_call("jawa/thing_graphic", thingId=tid) or {}
-                    got["live"][d] = r.get("path") or r.get("mainTexture") or r.get("graphicPath")
+                for d, tid in got["ids"].items():    # live shape: {"things": [{id, resolvedPath, textureName, badTex}]}
+                    rows = (t.bridge_call("jawa/thing_graphic", thing=tid) or {}).get("things") or [{}]
+                    r = rows[0] if isinstance(rows[0], dict) else {}
+                    got["live"][d] = "BadTex" if r.get("badTex") else (r.get("resolvedPath") or r.get("textureName"))
                 _note(t, "resolved textures", got["live"])
                 bad = [o for o in _visual_offences(manifest, got["live"], dict((d, d) for d in manifest),
                                                    dict((d, "GREEN") for d in manifest)) if "blind" not in o
@@ -6703,7 +6713,7 @@ def scene_floor_visual(t):
                     t.bridge_call("rimworld/set_camera_zoom", rootSize=root)
                     for d, tid in got["ids"].items():
                         i = [s for s, dd in VISUAL_SUBJECTS if dd == d][0]
-                        px = x - 12 + 6 * [dd for _s, dd in VISUAL_SUBJECTS].index(d)
+                        px = x + VISUAL_DX[[dd for _s, dd in VISUAL_SUBJECTS].index(d)]
                         got["shots"].setdefault(d, []).append(_shot(t, (px - 3, z - 3, 7, 9), "visual_%s_%s" % (i, zname)))
                 got["shots"]["plain"] = [_shot(t, (x - 16, z - 16, 32, 32), "visual_plain")]
                 t.bridge_call("rimworld/set_camera_zoom", rootSize=ZOOMS[0][1])
@@ -6737,7 +6747,7 @@ def scene_floor_visual(t):
                 size = manifest[TREE].get("size")
                 if not size or size < 3:
                     _unmeasured(t, "%s draws %s cells: no overhang to click" % (TREE, size))
-                tx = x - 12
+                tx = x + VISUAL_DX[0]
                 r = {}
                 t.bridge_call("rimworld/clear_selection")
                 t.bridge_call("rimworld/click_cell", x=tx, z=z + 3)

@@ -1173,14 +1173,19 @@ class Fake(object):
                     q["hediffs"].append("Bite")
                     break
 
-    def t_thing_graphic(self, thingId=None, **k):
-        t = self.things.get(thingId)
-        if t is None:
-            return {"success": False, "message": "no thing"}
-        d = t["def"]
-        if "state_graphics_swapped" in self.broken and d in ("RM_RearingVenomvine", "RM_QuenchVenomvine"):
-            d = "RM_QuenchVenomvine" if d == "RM_RearingVenomvine" else "RM_RearingVenomvine"
-        return {"success": True, "path": (V._visual_manifest().get(d) or {}).get("texPath")}
+    def t_thing_graphic(self, thing=None, **k):
+        """The live shape (l1_donor_off_round.py): {"things": [{id, resolvedPath, textureName, badTex}]}."""
+        rows = []
+        for tid in str(thing or "").split(","):
+            t = self.things.get(tid)
+            if t is None:
+                continue
+            d = t["def"]
+            if "state_graphics_swapped" in self.broken and d in ("RM_RearingVenomvine", "RM_QuenchVenomvine"):
+                d = "RM_QuenchVenomvine" if d == "RM_RearingVenomvine" else "RM_RearingVenomvine"
+            tex = (V._visual_manifest().get(d) or {}).get("texPath")
+            rows.append({"id": tid, "resolvedPath": tex + "/" + tex.split("/")[-1] + "A", "badTex": False})
+        return {"success": True, "things": rows}
 
     def t_clear_selection(self, **k):
         self.selected = None
