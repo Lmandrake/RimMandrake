@@ -1,0 +1,3 @@
+An acceptance clause that asserts the ABSENCE of a later ticket's work ('no door calls ticket_preflight') outlives its ticket and, when a later test reruns it, makes two filed tests contradict: ticket 3's test required the call in detached_helper.launch and required ticket 1's test (which forbids it in detached_helper.py) to still pass. Scope such clauses to the ticket ('this ticket adds no call') or drop them once the later ticket is filed; route the conflict to a neutral fixer, not the blocked builder (RIMMANDRAKE_AMEND_SPINE_DOOR_CLAUSE_TICKET_THREE_MUST_BREAK).
+item: RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS
+home: src/RimMandrake/rimflow/acceptance/

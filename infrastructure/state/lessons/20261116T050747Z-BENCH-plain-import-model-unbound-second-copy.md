@@ -1,0 +1,3 @@
+A rimflow module that does a plain `import model` while running under cli.py gets a SECOND, unbound copy: cli.py loads the ledger module as `rimflow.model` and points that one at RIMFLOW_LEDGER / RIMFLOW_ITEMS, so the plain copy silently reads the REAL ledger and items folder inside a sandbox test. ticket_preflight.run_item and sweep did this; a sandboxed file door read no prose and reported E12 'no refs' on a ticket that had them. Resolve the bound module with sys.modules.get('rimflow.model') first (ticket_preflight._model).
+item: RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS
+home: src/RimMandrake/rimflow/ticket_preflight.py

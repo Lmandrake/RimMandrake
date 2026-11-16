@@ -1,0 +1,3 @@
+A test fixture that invents a name the real table lacks hides the defect it should catch: the preflight core acceptance fixture held a 'full' tier, so nobody saw that modset_builder has no small, wide or full tier, that `tier: full` (what C4 asks for) failed C1, and that the E12 and C4 repair texts proposed tiers C1 would refuse. Keep one clause that runs the repair text a check prints through the check itself against the REAL table (selftest_ticket_preflight 'a repair proposes only real tiers').
+item: RIMMANDRAKE_FIX_PREFLIGHT_TIER_FULL_ITS_OWN_REPAIR_FAILS
+home: src/RimMandrake/rimflow/selftest_ticket_preflight.py
