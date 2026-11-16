@@ -7,3 +7,4 @@
 02m remeasure | complete | this run | small | starred claim 4 withdrawn (not comparable across eras), claim 2 down from 6 to 3 copies + homonym, claim 8 widened (dispatcher.py already resumes)
 03 merge | complete | this run | | merged into ../2026-11-15-holder-pipeline-fusion.md (the spec is the merged file; 01-design.md is pass 1 as sent to GPT)
 optional second opus pass | not run | | | GPT available; budget
+02c context evidence | complete | sonnet (rm-fixer, read-only) + this run's conditional measure | 32k subagent tokens | Conductor addendum (owner's correction ~9:08 PM): no written 250k lesson found; measured from 3,260 Relentless transcripts; holder ceiling set to ~600k
