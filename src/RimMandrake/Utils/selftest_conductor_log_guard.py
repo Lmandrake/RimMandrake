@@ -103,7 +103,8 @@ def ops_watch_writer(path):
         if t.get("conductor_log"):
             t["conductor_log"] = path
     (TMP / "ops" / "alarms.json").unlink(missing_ok=True)
-    pt = {"testing.nightly_reds_overdue": {"t": 0, "v": 1, "m": "MEASURED", "x": {"said": "src/x/selftest_b.py red"}}}
+    line = next(t["value"] for t in rules["targets"] if t.get("key") == "testing.nightly_reds_overdue")   # the owner tunes it
+    pt = {"testing.nightly_reds_overdue": {"t": 0, "v": line + 1, "m": "MEASURED", "x": {"said": "src/x/selftest_b.py red"}}}
     OW.conductor_line_owed = lambda key, said: True     # the told ledger is its own test's; here the line is always owed
     OW.run_alarms(pt, rules, 1.0, set(), lambda todo, conf: {a["name"]: None for a in todo}, set())
 

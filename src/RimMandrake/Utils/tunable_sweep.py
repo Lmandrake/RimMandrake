@@ -5,7 +5,7 @@ RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS criterion A1: for each owner-tunable n
 the repo with that number changed to another sane value runs the selftests that read the config, and no new red is
 caused by the change alone. Selftests pin fixtures; at most one deliberate "shipped config is sane" range check each.
 
-    tunable_sweep.py <config.json> [--tests T ...] [--out report.json] [--jobs N] [--timeout S]
+    tunable_sweep.py <config.json> [--tests T ...] [--only GLOB] [--deep] [--out report.json] [--jobs N] [--timeout S]
 
 The scratch copy is a `git clone --shared` of HEAD in /tmp plus this tree's uncommitted edits to tracked files. Every
 numeric leaf (keys starting "_" skipped) is mutated at once (int n -> 2n, or n+1 below 2; a fraction in (0, 1)
@@ -17,6 +17,7 @@ Prints one line per red reader and `RESULT: CLEAN|PINNED n`; exit 0 clean, 1 pin
 """
 import argparse
 import concurrent.futures
+import fnmatch
 import json
 import os
 import re
@@ -103,12 +104,12 @@ def run_tests(root, tests, jobs, timeout):
         return dict(ex.map(one, tests))
 
 
-def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print, deep=False):
+def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print, deep=False, only=None):
     tmp, root = scratch_copy(repo)
     cfg_path = os.path.join(root, cfg_rel)
     raw = open(cfg_path, encoding="utf-8").read()
     cfg = json.loads(raw)
-    every = [p for p, _v in leaves(cfg)]
+    every = [p for p, _v in leaves(cfg) if not only or fnmatch.fnmatch("/".join(map(str, p)), only)]
     tests = tests or readers(root, cfg_rel, deep)
 
     def with_leaves(ps, ts):
@@ -162,6 +163,7 @@ def main(argv=None):
     ap.add_argument("--jobs", type=int, default=6)
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--repo", default=".")
+    ap.add_argument("--only", help="sweep only the leaves whose path (a/b/0/c) matches this glob")
     ap.add_argument("--deep", action="store_true", help="also the selftests importing a module that names the config")
     a = ap.parse_args(argv)
     repo = subprocess.run(["git", "-C", a.repo, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=60)
@@ -170,7 +172,7 @@ def main(argv=None):
         return 2
     repo = repo.stdout.strip()
     cfg_rel = os.path.relpath(os.path.abspath(a.config), repo)
-    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout, log=lambda m: print(m, flush=True), deep=a.deep)
+    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout, log=lambda m: print(m, flush=True), deep=a.deep, only=a.only)
     if a.out:
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(rep, f, indent=2)

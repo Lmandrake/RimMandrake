@@ -31,6 +31,14 @@ NOW = 1793050000.0
 H = 3600.0
 CLOG = TMP / "conductor_log.md"
 RULES = OW.load_rules()
+# Operations and the owner tune these alarm lines and steps: the cases run on the ones shipped 2026-11-15
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+PIN_TARGETS = {"accounts.*.runway": {"value": 1.0, "worse": {"factor": 2}}, "relentless.distressed": {"value": 0},
+               "steve.unowned_stall_min": {"value": 30, "worse": {"factor": 2}},
+               "disk.root_free_gb": {"value": 210, "worse": {"add": 50}}}
+for _t in RULES["targets"]:
+    if _t.get("key") in PIN_TARGETS:
+        _t.update(json.loads(json.dumps(PIN_TARGETS[_t["key"]])))
 for _t in RULES["targets"]:     # never the real Conductor log
     if _t.get("conductor_log"):
         _t["conductor_log"] = str(CLOG)

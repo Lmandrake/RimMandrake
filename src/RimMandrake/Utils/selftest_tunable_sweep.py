@@ -58,6 +58,9 @@ def main():
        "a reader red before any change is reported base red, not judged")
     ok(rep["pinned"].get("selftest_pair.py") == ["pair/lo", "pair/hi"],
        "a reader pinning two leaves names each: %s" % rep["pinned"].get("selftest_pair.py"))
+    rep3 = TS.sweep(d, "cfg.json", tests=["selftest_pinned.py", "selftest_pair.py"], jobs=2, timeout=60, log=lambda s: None,
+                    only="pair/*")
+    ok(rep3["leaves"] == 2 and list(rep3["pinned"]) == ["selftest_pair.py"], "--only sweeps just the matching leaves: %s" % rep3["pinned"])
     # an uncommitted fix in the tree is what gets swept
     open(os.path.join(d, "selftest_pinned.py"), "w").write(READ + "sys.exit(0 if c['cap'] > 0 else 1)\n")
     rep2 = TS.sweep(d, "cfg.json", tests=["selftest_pinned.py"], jobs=1, timeout=60, log=lambda s: None)
