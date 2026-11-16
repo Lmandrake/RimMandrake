@@ -1,14 +1,14 @@
 # LeaningScrub 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes when every deciding test passes. Every bar-to-test pair is read from the locked files (coverage_verdict.json checklist parts; scenes.json requirement, exercises, coverage_rest, showcases); none is hand-written.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:45:42Z. A bar passes when every deciding test passes. Every bar-to-test pair is read from the locked files (coverage_verdict.json checklist parts; scenes.json requirement, exercises, coverage_rest, showcases); none is hand-written.
 
 ## Counts
 
 - bars: 123 (locked: 123)
 - tests: 94 (11 built offline, 82 scene tests, 1 look)
-- scene entries present: 1, absent (Stage 3 work): 81
+- scene entries present: 5, absent (Stage 3 work): 77
 - built offline green today: 10, red: 1
-- bars with every decider runnable today: 0
+- bars with every decider runnable today: 8
 - bars with no deciding test: 0
 
 ## Bars
@@ -39,7 +39,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | hollow_passage | not_opened | 6 | sc_hollow | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_crown, sc_rearing, sc_hoard, sc_quench, sc_sworn, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure | - | no |
 | crown_mob | not_opened | 6 | sc_crown | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_hollow, sc_rearing, sc_hoard, sc_quench, sc_sworn, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure | - | no |
 | rearing | live_minimal | 6 | sc_rearing, floor_visual | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_hollow, sc_crown, sc_hoard, sc_quench, sc_sworn, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure | - | no |
-| walking | live_minimal | 6 | sc_walking, ix_route_growth | sc_working_wind, sc_home_routes, sc_ordered_travel, T_FUZZ | - | no |
+| walking | live_minimal | 6 | sc_walking, ix_route_growth | sc_working_wind, sc_home_routes, sc_ordered_travel, T_SELFTEST, T_FUZZ | - | no |
 | hoard | live_minimal | 6 | sc_hoard | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_hollow, sc_crown, sc_rearing, sc_quench, sc_sworn, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure, T_GPT_FIXES, T_FUZZ | - | no |
 | quench | live_minimal | 6 | sc_quench, floor_visual | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_hollow, sc_crown, sc_rearing, sc_hoard, sc_sworn, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure, T_FUZZ | - | no |
 | sworn | live_minimal | 6 | sc_sworn | sc_island_land, sc_vine_contact, sc_dripping, sc_twitcher, sc_hollow, sc_crown, sc_rearing, sc_hoard, sc_quench, sc_shedding, sc_strangler, sc_weeper, sc_sleeper, sc_lure, T_GPT_FIXES | - | no |
@@ -57,8 +57,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | sweetline_felt_bank | not_opened | 6 | sc_tree_bank | sc_tree_landmark, sc_tree_shed, sc_tree_scratch, sc_tree_healing, sc_felt_comfort, sc_tree_traces, sc_smother_claim, sc_cane_fuel, ix_materials | - | no |
 | felt_comfort | live_minimal | 6 | sc_felt_comfort | sc_tree_landmark, sc_tree_shed, sc_tree_scratch, sc_tree_healing, sc_tree_bank, sc_tree_traces, sc_smother_claim, sc_cane_fuel, ix_materials | - | no |
 | sweetline_visits | not_opened | 6 | sc_tree_traces | sc_tree_landmark, sc_tree_shed, sc_tree_scratch, sc_tree_healing, sc_tree_bank, sc_felt_comfort, sc_smother_claim, sc_cane_fuel, ix_materials | - | no |
-| runway_bloom | not_opened | 6 | sc_bloom | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
-| vissler_arm_food | not_opened | 6 | sc_arm_food | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
+| runway_bloom | not_opened | 6 | sc_bloom | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | yes |
+| vissler_arm_food | not_opened | 6 | sc_arm_food | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | yes |
 | thornhold_quills | not_opened | 6 | sc_thornhold_quill | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
 | thornhold_den_stand | not_opened | 6 | sc_thornhold_den | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
 | surrik_crustswim | not_opened | 6 | sc_surrik | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
@@ -85,9 +85,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | pillowmoss_wet_spot | approved | 6 | sc_pillowmoss | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
 | tanglefuzz_den_ecology | approved | 6 | sc_tanglefuzz | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
 | cruststar_grazing_ecology | approved | 6 | sc_cruststar | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_regrowth, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
-| vissler_finite_arm_regrowth | approved | 6 | sc_arm_regrowth | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | no |
-| bark_wardens_removed | out | 6 | sc_cuts | - | - | no |
-| farmer_camps_removed | out | 6 | sc_cuts | - | - | no |
+| vissler_finite_arm_regrowth | approved | 6 | sc_arm_regrowth | sc_stall_wait, sc_concealment, sc_lee_reveal, sc_stall_predation, sc_bloom, sc_arm_food, sc_thornhold_quill, sc_thornhold_den, sc_surrik, sc_shokka, sc_fuzzviper, sc_ribbon_route, sc_pillowmoss, sc_tanglefuzz, sc_cruststar, sc_shirrel_flight, sc_rollbug, ix_ecology_places | - | yes |
+| bark_wardens_removed | out | 6 | sc_cuts | - | - | yes |
+| farmer_camps_removed | out | 6 | sc_cuts | - | - | yes |
 | sweetline_scratching_healing | approved | 6 | sc_tree_healing | sc_tree_landmark, sc_tree_shed, sc_tree_scratch, sc_tree_bank, sc_felt_comfort, sc_tree_traces, sc_smother_claim, sc_cane_fuel, ix_materials | - | no |
 | route_observer | offline | 4-5 | sc_route_observer | - | - | no |
 | witness_observer | offline | 4-5 | sc_witness_observer | - | - | no |
@@ -120,9 +120,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | tree_bank | live_minimal | 6 | sc_tree_bank | - | - | no |
 | tree_traces | live_minimal | 6 | sc_tree_traces | - | - | no |
 | native_cast | live_minimal | 6 | sc_native_cast, floor_payload | - | - | no |
-| bloom | live_minimal | 6 | sc_bloom | T_SELFTEST, T_FAUNA_BEHAVIOURS, T_FUZZ | - | no |
-| arm_regrowth | live_minimal | 6 | sc_arm_regrowth | - | - | no |
-| arm_food | live_minimal | 6 | sc_arm_food | - | - | no |
+| bloom | live_minimal | 6 | sc_bloom | T_SELFTEST, T_FAUNA_BEHAVIOURS, T_FUZZ | - | yes |
+| arm_regrowth | live_minimal | 6 | sc_arm_regrowth | - | - | yes |
+| arm_food | live_minimal | 6 | sc_arm_food | - | - | yes |
 | thornhold_quill | live_minimal | 6 | sc_thornhold_quill | - | - | no |
 | thornhold_den | live_minimal | 6 | sc_thornhold_den | - | - | no |
 | surrik | live_minimal | 6 | sc_surrik | T_FAUNA_BEHAVIOURS | - | no |
@@ -196,9 +196,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | sc_felt_comfort | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_felt_comfort | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
 | sc_tree_traces | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_tree_traces | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
 | sc_native_cast | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_native_cast | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
-| sc_bloom | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_bloom | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
-| sc_arm_regrowth | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_arm_regrowth | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
-| sc_arm_food | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_arm_food | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
+| sc_bloom | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_bloom | entry present | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
+| sc_arm_regrowth | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_arm_regrowth | entry present | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
+| sc_arm_food | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_arm_food | entry present | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
 | sc_thornhold_quill | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_thornhold_quill | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
 | sc_thornhold_den | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_thornhold_den | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
 | sc_surrik | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_surrik | entry absent | SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS |
@@ -218,7 +218,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T17:10:34Z. A bar passes
 | sc_pyre_beliefs | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_pyre_beliefs | entry absent | SCRUB_PROVE_WIND_FIRE_AND_RITUAL |
 | sc_pyre_ritual | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_pyre_ritual | entry absent | SCRUB_PROVE_WIND_FIRE_AND_RITUAL |
 | sc_settings | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_settings | entry absent | SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY |
-| sc_cuts | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_cuts | entry absent | SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY |
+| sc_cuts | live_minimal | 6 | src/RimMandrake/LeaningScrub/validation.py::scene_cuts | entry present | SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY |
 | sc_route_observer | offline | 4-5 | src/RimMandrake/LeaningScrub/validation.py::scene_route_observer | entry absent | SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY |
 | sc_witness_observer | offline | 4-5 | src/RimMandrake/LeaningScrub/validation.py::scene_witness_observer | entry absent | SCRUB_PROVE_WIND_FIRE_AND_RITUAL |
 | sc_economy_observer | offline | 4-5 | src/RimMandrake/LeaningScrub/validation.py::scene_economy_observer | entry absent | SCRUB_PROVE_VINE_FORMS_AND_CRAFT |

@@ -11,6 +11,7 @@ shapes -- those are UNPROVEN until the first live run.
 
     python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py
 """
+import copy
 import importlib.util
 import os
 import re
@@ -27,6 +28,8 @@ spec = importlib.util.spec_from_file_location("lscrub_validation", os.path.join(
 V = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(V)
 V.time.sleep = lambda s: None                      # the fast-wait poll loop must not really sleep
+V.SCENE_RECORD = lambda *a: None                   # a fake scene must not write designer_stage's stage.json
+V.OWNER_PRESENT = True                             # the eruptor arm runs here: this game is fake, nothing flies
 
 from suite import TestContext                     # noqa: E402
 
@@ -63,6 +66,7 @@ def cs_arities(type_name, method):
 BODY = {"RM_Thornhold": 0.4, "RM_Shirrel": 0.7, "RM_Dustflutter": 0.08, "RM_Crustweevil": 0.05,
         "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0}
 BLOOM = {"RM_Crustweevil", "RM_Fuzzrunner", "RM_Dustflutter", "RM_Vissler"}
+MEAT_EATERS = ("RM_Surrik", "RM_Ribbonwhip")        # ProofArmScavengers' fake answer names these two
 SMALL_SPAWN_ONLY = None
 
 
@@ -93,6 +97,9 @@ class Fake(object):
         self.walker_until, self.bloom_done, self.tick_hist = -1, False, 0
         self.paths = {}
         self.polluted = set()
+        self.saves, self.walker_z = {}, None
+        self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
+                                                       in self.broken else "")
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -176,9 +183,12 @@ class Fake(object):
                     or ("crown_ignores_toggle" in b and p["kind"] == "RM_Dustflutter" and crown):
                 p["x"], p["z"] = crown[0]["x"] + 2, crown[0]["z"]
                 continue
+            if p.get("job") == "Ingest":     # the scenes: a hungry animal walking to its meal does not wander
+                continue
             p["job"] = "Wait_Wander" if frozen else "GotoWander"
-            if not frozen:
-                p["x"] += 1
+            walled = any(inrect(p["x"], p["z"], r) for r in self.rooms)
+            if not frozen and not walled:     # wander stays local (the scenes run thousands of ticks on one animal)
+                p["x"] += 1 if (self.ticks // 250) % 2 else -1
         # --- Gale: deafen
         if self.weather == "RM_Gale":
             gate = self.on("galeDeafenEnabled") or "deafen_ignores_toggle" in b
@@ -232,12 +242,48 @@ class Fake(object):
                 if "no_bloom" not in b:
                     self.bloom_done = True
                     arms = 0
+                    # cover: a bloom needs fuzz on the walker's row (the scenes' bare-ground control)
+                    cover = self.walker_z is None or "bloom_bare_ground" in b or any(
+                        t["def"] == "RM_Fuzz" and abs(t["z"] - self.walker_z) <= 2 for t in self.things.values())
                     for p in self.pawns.values():
-                        if p["kind"] in BLOOM and p["faction"] == "none":
+                        if not cover or p["faction"] != "none":
+                            continue
+                        if p["kind"] == "RM_Ribbonwhip":
+                            p["sway_until"] = self.ticks + (10 ** 9 if "sway_never_released" in b else 180)
+                        if p["kind"] == "RM_Surrik" and "hole_never" not in b:
+                            self.new(V.SURRIK_HOLE, p["x"], p["z"], stackCount=1)
+                        if p["kind"] in BLOOM:
                             p["flee_until"] = self.ticks + 300
-                            if p["kind"] == "RM_Vissler" and arms < 4:
+                            if p["kind"] == "RM_Dustflutter" and "eruptor_grounded" not in b:
+                                p["flying"] = True
+                            lost = p.setdefault("lost", [])
+                            if p["kind"] == "RM_Vissler" and arms < 4 and (len(lost) < V.VISSLER_ARMS
+                                                                          or "shed_without_loss" in b):
                                 arms += 1
-                                self.new("RM_VisslerArm", p["x"], p["z"], stackCount=1)
+                                self.new("RM_VisslerArm", p["x"], p["z"], stackCount=1, born=self.ticks)
+                                if "shed_without_loss" not in b:
+                                    lost.append(self.ticks)
+        # --- the scenes: a missing vissler arm regrows one 15-day season after its own loss
+        season = V.SEASON_TICKS // (2 if "regrow_early" in b else 1)
+        for p in self.pawns.values():
+            if p.get("lost") and "regrow_never" not in b:
+                p["lost"] = [l for l in p["lost"] if self.ticks < l + season]
+        # --- the scenes: a hungry meat eater walks to a reachable vissler arm and eats it (the toggle gates it)
+        for p in self.pawns.values():
+            if p.get("food", 1.0) >= 0.3 or p["faction"] != "none" or "arm_never_eaten" in b:
+                continue
+            if not (p["kind"] in MEAT_EATERS or ("arm_herbivore_eats" in b and p["kind"] == "Muffalo")):
+                continue
+            if not (self.on("visslerArmFoodEnabled") or "arm_eaten_off" in b):
+                continue
+            arms = [t for t in self.of("RM_VisslerArm") if abs(t["x"] - p["x"]) + abs(t["z"] - p["z"]) <= 30 and (
+                "arm_eaten_through_walls" in b or not any(inrect(t["x"], t["z"], r) != inrect(p["x"], p["z"], r)
+                                                          for r in self.rooms))]
+            if arms and p.get("job") == "Ingest":
+                del self.things[arms[0]["id"]]
+                p["food"], p["job"] = 0.8, "Wait_Wander"
+            elif arms:
+                p["job"] = "Ingest"
         # --- sweetline scratching (one ordered rub at a time)
         sc = getattr(self, "scratch", None)
         if sc and self.ticks >= sc["due"]:
@@ -327,7 +373,18 @@ class Fake(object):
             return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
         if want == ["ThingDef/%s" % V.TREE]:
             return {"success": True, "foundCount": 1, "notFound": [],
-                    "defs": [{"defName": V.TREE, "fields": {"label": "sweetline tree"}}]}
+                    "defs": [{"defName": V.TREE, "fields": {"label": "sweetline tree", "thingClass": "Plant", "comps": [
+                        "RimMandrake.LeaningScrub.RM_CompProperties_SweetlineStation"]}}]}
+        if want == ["GenStepDef/RM_ScrubInjections"]:
+            ff = "RM_Faction_CombHolds" if "farmer_camps_back" in self.broken else None
+            return {"success": True, "foundCount": 1, "notFound": [],
+                    "defs": [{"defName": "RM_ScrubInjections", "fields": {"genStep": {"farmerFaction": ff}}}]}
+        if fields == "description,label,hidden":
+            rows = [{"defName": w.split("/", 1)[1], "fields": {"description": "A plain thing.", "hidden": "False"}}
+                    for w in want]
+            if "guardian_text" in self.broken:
+                rows[0]["fields"]["description"] = "A guardian sleeps in its branches."
+            return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
         missing = [d for d in want if d.endswith("NoSuchDef_Probe")]
         if "missing_def" in self.broken and want and want[0] in V.SHIPPED:
             missing.append(want[3])
@@ -378,7 +435,8 @@ class Fake(object):
                    "downed": False, "intelligence": "Humanlike" if p["kind"] == "Colonist" else "Animal"}
             if includeHealth:
                 row["health"] = {"hediffs": [{"def": h, "part": "Torso" if h == "Cut" else None}
-                                             for h in p["hediffs"]]}
+                                             for h in p["hediffs"]]
+                                 + [{"def": "MissingBodyPart", "part": "front left leg"} for _l in p.get("lost") or []]}
             rows.append(row)
         return {"success": True, "pawns": rows}
 
@@ -668,6 +726,7 @@ class Fake(object):
         rr = V_rect(rects)
         if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
             return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
+        self.rooms = [r for r in self.rooms if not (inrect(r[0], r[1], rr) and inrect(r[0] + r[2] - 1, r[1] + r[3] - 1, rr))]
         for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
             del self.things[tid]
         self.claims = dict((s, t) for s, t in self.claims.items() if s in self.things)
@@ -695,7 +754,48 @@ class Fake(object):
 
     def t_pawn_flight(self, pawn=None, **k):
         return {"success": True, "pawns": [{"id": pawn, "canEverFly": "no_fly" not in self.broken,
-                                            "maxFlightTimeStat": 6.0}]}
+                                            "maxFlightTimeStat": 6.0,
+                                            "flying": bool((self.pawns.get(pawn) or {}).get("flying"))}]}
+
+    # ------------------------------------------------------------ the acceptance scenes (scene_* chains)
+    def t_pawn_need(self, pawn=None, action="list", need=None, level=0.5, **k):
+        p = self.pawns.get(pawn)
+        if p is None:
+            return {"success": False, "message": "no pawn %s" % pawn}
+        if action == "need" and need == "Food":
+            p["food"] = float(level)
+        f = p.get("food", 0.9)
+        return {"success": True, "needs": [{"need": "Food", "level": f, "pct": f}]}
+
+    def t_comp_read(self, thing=None, comp=None, members=None, **k):
+        t = self.things.get(thing)
+        if comp == "Rottable" and t:
+            return {"success": True, "values": {"RotProgress": str(
+                0 if "arm_never_rots" in self.broken else self.ticks - t.get("born", 0))}}
+        if comp == "SandSwim" and thing in self.pawns:
+            return {"success": True, "values": {"Submerged": "True"}}
+        return {"success": False, "message": "no comp %s on %s" % (comp, thing)}
+
+    def t_map_comp_read(self, comp=None, members=None, **k):
+        n = len([p for p in self.pawns.values() if self.ticks < p.get("sway_until", 0)])
+        return {"success": True, "values": {"swaying": "Count=%d" % n}}
+
+    def t_save_game(self, saveName=None, **k):
+        self.saves[saveName] = copy.deepcopy((self.ticks, self.pawns, self.things))
+        return {"success": True}
+
+    def t_load_game_ready(self, saveName=None, **k):
+        ticks, pawns, things = copy.deepcopy(self.saves[saveName])
+        if "missing_lost_on_reload" in self.broken:
+            for p in pawns.values():
+                p["lost"] = []
+        self.ticks, self.pawns, self.things = ticks, pawns, things
+        return {"success": True}
+
+    def t_get_terrain_batch(self, rects=None, **k):
+        dried = "vaporator_dries" in self.broken and any(
+            t["def"] == "RM_WindVaporator" and self.ticks - t.get("born", self.ticks) > 3000 for t in self.things.values())
+        return {"success": True, "ops": "Soil:%s" % rects + (";Sand:0,0" if dried else "")}
 
     def fuel(self, tid):
         """Campfire fuel: spawned full (20), burns 10 per day (Core CompProperties_Refuelable)."""
@@ -711,6 +811,7 @@ class Fake(object):
 
     def t_order_pawn(self, pawnId=None, x=None, z=None, **k):
         self.walker_until, self.bloom_done = self.ticks + 400, False
+        self.walker_z = self.pawns[pawnId]["z"]
         self.pawns[pawnId]["x"] += 0
         return {"success": True}
 
@@ -763,6 +864,7 @@ ROOF_STRIPS = []    # rects the suite opened to the sky (modcheck4 2026-10-16: u
 
 def run(broken=()):
     game = Fake(broken)
+    V._about_text = lambda: game.about
     results = {}
     for name, fn in V.suite.chains:
         t = TestContext(game, anchor=(100, 100))
@@ -780,7 +882,7 @@ def run(broken=()):
 BREAKS = {
     "missing_def": "defs.defs_resolve",
     "pyre_counts_fires": "edge_fixes.pyre_thin_line_follows_blaze",
-    "bloom_scares_manhunter": "edge_fixes.bloom_spares_manhunter",
+    "bloom_scares_manhunter": ("edge_fixes.bloom_spares_manhunter", "scene_bloom.bloom_scene_manhunter_keeps_its_state"),
     "genstep_tidies": "edge_fixes.map_step_refuses_pawn_cell",
     "arm_draws_none": "edge_fixes.vissler_arm_draws_meat_eaters",
     "arm_ignores_toggle": "edge_fixes.vissler_arm_off_draws_none",
@@ -812,8 +914,9 @@ BREAKS = {
     "regrow_full": "dripping.dripping_survives_harvest",
     "crown_ignores_toggle": "crown.crown_toggle_off_stays_away",
     "no_crown": "crown.crown_mob_gathers",
-    "bloom_ignores_toggle": "bloom.bloom_toggle_off_quiet",
-    "no_bloom": "bloom.bloom_answers_a_walker",
+    "bloom_ignores_toggle": ("bloom.bloom_toggle_off_quiet", "scene_bloom.bloom_scene_toggle_off_quiet",
+                             "scene_arm_regrowth.arm_regrowth_off_sheds_nothing"),
+    "no_bloom": ("bloom.bloom_answers_a_walker", "scene_bloom.bloom_scene_walk_answers"),
     "no_exit_hole": "bloom.bloom_sway_and_exit_hole",
     "dens_empty": "dens.thornhold_dens_in_venomvine",
     "dens_blind": "dens.thornhold_dens_in_venomvine",
@@ -875,6 +978,26 @@ BREAKS = {
     "lean_ignores_toggle": "windlean.lean_toggle_off_vanilla",
     "gale_no_overlay": "windlean.gale_dust_overlay",
 }
+# the acceptance scenes (scene_* chains, RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT)
+BREAKS.update({
+    "arm_never_eaten": "scene_arm_food.arm_food_meat_eater_eats_it",
+    "arm_herbivore_eats": "scene_arm_food.arm_food_herbivore_leaves_it",
+    "arm_eaten_off": "scene_arm_food.arm_food_toggle_off_uneaten",
+    "arm_eaten_through_walls": "scene_arm_food.arm_food_unreachable_uneaten",
+    "arm_never_rots": "scene_arm_food.arm_food_rots_on_real_ticks",
+    "shed_without_loss": "scene_arm_regrowth.arm_shed_costs_one_arm_each",
+    "missing_lost_on_reload": "scene_arm_regrowth.arm_missing_survives_reload",
+    "regrow_early": "scene_arm_regrowth.arm_still_missing_before_the_season",
+    "regrow_never": "scene_arm_regrowth.arm_regrows_after_one_season",
+    "bloom_bare_ground": "scene_bloom.bloom_scene_bare_ground_quiet",
+    "sway_never_released": "scene_bloom.bloom_scene_sway_released",
+    "hole_never": "scene_bloom.bloom_scene_exit_hole_only_from_under",
+    "eruptor_grounded": "scene_bloom.bloom_scene_eruptor_takes_off_owner_present",
+    "guardian_text": "scene_cuts.cuts_no_cut_content",
+    "about_promises_wardens": "scene_cuts.cuts_no_cut_content",
+    "farmer_camps_back": "scene_cuts.cuts_no_cut_content",
+    "vaporator_dries": "scene_cuts.cuts_vaporator_ground_kept",
+})
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
     BREAKS["%s_ignores_toggle" % _form] = "forms.%s_toggle_off" % _form
@@ -900,7 +1023,7 @@ def main():
     for brk, target in sorted(BREAKS.items()):
         res = run([brk])
         reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
-        if reds != [target]:
+        if reds != sorted([target] if isinstance(target, str) else target):
             bad.append("break %-24s expected only %s FAIL, got %s" % (brk, target, reds))
     print("selftest LeaningScrub: %d components healthy-PASS %d/%d; %d breaks each turn exactly "
           "their component red" % (n_comp, n_comp - len(notpass), n_comp,

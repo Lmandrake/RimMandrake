@@ -71,3 +71,7 @@ The corrected validated six-family tree/sheet passed the independent Claude Opus
 - Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-16 9:00 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": none
 - Record: `version/stage_record.json`.
+
+### 2026-11-16 9:52 AM PST, offline build: four scene entries (by BENCH)
+
+- RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT wrote `scene_arm_food`, `scene_arm_regrowth`, `scene_bloom` and `scene_cuts` in `src/RimMandrake/LeaningScrub/validation.py` (each with designer_stage scene-begin, a recovery save reloaded in finally, and its controls), proved against the fake game in `selftest_leaningscrub.py` (138/138 healthy, 17 new breaks each red on its own component), all UNRUN in game until Stage 6; bars not runnable 123 to 115. `sc_acoustic_payload` and `sc_native_cast` are not written: see the item's LEFT OPEN note.

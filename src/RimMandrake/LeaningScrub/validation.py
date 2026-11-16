@@ -2170,6 +2170,608 @@ def edge_fixes_chain(t):
         _unlock_weather(t)
 
 
+# --------------------------------------------------------------------------- acceptance scenes (scenes.json entries)
+# RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT: the Stage 3 entries the test table names `scene_<id>` (sc_<id> in
+# design/concepts/LeaningScrub/scenes.json, whose start/action/expect/control/restore each one follows). They run in
+# game at Stage 6 and are UNRUN until then; selftest_leaningscrub.py drives each against the fake game, healthy and
+# broken. Every scene: designer_stage.py scene-begin with its recovery save BEFORE the first mutation, the save, the
+# body, then (even on a throw) settings back by _setting, the save reloaded and its tick checked, and scene-end (an
+# owner_review scene saves its end state for him first and calls scene-hold). A failed reload leaves the recovery
+# open, which designer_stage refuses further runs on.
+
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+CONCEPT = os.path.join(REPO, "design", "concepts", "LeaningScrub")
+# Flight is never live-tested without the owner (CLAUDE.md, three times): an Erupt arm runs only in a joint sitting.
+OWNER_PRESENT = os.environ.get("LSCRUB_OWNER_PRESENT") == "1"
+ARM = "RM_VisslerArm"
+# RM_Vissler's body is vanilla BeetleLike (RM_LeaningScrubFauna.xml): six InsectLeg records and no part named arm. The
+# plan binds "arms" to the real body at implementation (plan.md, Vissler regrowth); until the regrowth code picks its
+# part, the scene counts the legs. Change this with that code, never alone.
+VISSLER_ARM_PART, VISSLER_ARMS = "leg", 6
+SEASON_TICKS = 15 * 60000        # plan.md: one 15-day engine season, the agent's reading of "regrows in a season"
+
+
+def _arm_rot_days():
+    """RM_VisslerArm's shipped daysToRotStart (the production boundary, read offline), None when it ships none."""
+    for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
+        with open(path, encoding="utf-8") as fh:
+            txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+        for m in re.finditer(r"<ThingDef\b[^>]*>(.*?)</ThingDef>", txt, re.S):
+            if re.search(r"<defName>%s</defName>" % ARM, m.group(1)):
+                d = re.search(r"<daysToRotStart>([\d.]+)</daysToRotStart>", m.group(1))
+                return float(d.group(1)) if d else None
+    return None
+
+
+ARM_ROT_DAYS = _arm_rot_days()
+
+
+def _designer_stage(*args):
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "rimflow", "designer_stage.py")]
+                       + list(args), capture_output=True, text=True, timeout=120)
+    if r.returncode:
+        raise ExpectationFailed("designer_stage %s refused: %s" % (args[0], (r.stderr or r.stdout)[-300:]))
+
+
+SCENE_RECORD = _designer_stage    # the selftest swaps in a recorder: a fake run must not write stage.json
+
+
+def _game_tick(t):
+    r = t.session.call("jawa/get_game_info") if t.session is not None else None
+    return (r or {}).get("ticksGame")
+
+
+@contextlib.contextmanager
+def _scene(t, sid, hold):
+    """scene-begin, recovery save, body, restore (settings by _setting, the save reloaded, its tick read back),
+    scene-end; `hold` "owner_review" saves the end state for him and calls scene-hold instead."""
+    if not _live(t):
+        yield
+        return
+    name = "lscrub_%s_%d" % (sid, int(time.time()))
+    SCENE_RECORD("scene-begin", CONCEPT, "--scene", sid, "--recovery",
+                 "rimworld/load_game_ready saveName=%s, then every LeaningScrub setting back to DEFAULTS" % name)
+    _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game(%s)" % name)
+    tick0 = _game_tick(t)
+    try:
+        yield
+    finally:
+        restored = False
+        try:
+            if hold == "owner_review":
+                t.session.call("rimworld/save_game", saveName=name + "_review")
+            ld = t.session.call("rimworld/load_game_ready", saveName=name, timeoutMs=240000)
+            restored = isinstance(ld, dict) and ld.get("success") is not False and _game_tick(t) == tick0
+        except Exception as ex:   # restoring must never mask the verdict that got us here
+            print("[lscrub] SCENE RESTORE FAILED %s: %s" % (sid, ex), file=sys.stderr, flush=True)
+        if not restored:
+            print("[lscrub] SCENE RESTORE FAILED %s: save %s not back at tick %s; the recovery stays open"
+                  % (sid, name, tick0), file=sys.stderr, flush=True)
+        elif hold == "owner_review":
+            SCENE_RECORD("scene-hold", CONCEPT, "--scene", sid, "--until", "the owner has looked at save %s_review" % name)
+        else:
+            SCENE_RECORD("scene-end", CONCEPT, "--scene", sid)
+
+
+def _food(t, pid):
+    """The pawn's Food need level (jawa/pawn_need list: needs[{need, level, pct}]), None when it has none."""
+    r = t.bridge_call("jawa/pawn_need", pawn=pid, action="list")
+    for n in (r or {}).get("needs") or []:
+        if n.get("need") == "Food":
+            return float(n.get("level"))
+    return None
+
+
+def _hungry(t, kind, x, z):
+    pid = _spawn(t, kind, x, z)
+    t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=0.05)
+    return pid
+
+
+def _vanish(t, *pids):
+    for p in pids:
+        if p:
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=p, action="vanish")
+
+
+def _arm_stacks(t):
+    """{arm id: stack} over 80 cells round the pad: a shedding vissler is fleeing, and its arm lands where it stands."""
+    return dict((a.get("id"), int(a.get("stackCount") or 1)) for a in _things(t, ARM, _rs(_rect(t, 80)), 500))
+
+
+def _arm_row(t, aid):
+    return next((a for a in _things(t, ARM, _rs(_rect(t, 80)), 500) if a.get("id") == aid), None)
+
+
+def _disturb(t, cx, cz):
+    """One real bloom over (cx, cz): the clock first runs past the bloom cooldown (RM_CoatKernel.CooldownTicks 1250
+    within 15 cells), then a fuzz strip is laid along row cz and a colonist WALKS it from 15 cells west to 14 east, and
+    the clock runs 480 ticks (answer delay and flee). The walker is removed after."""
+    t.wait_ticks(1300)
+    t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,30,3" % (cx - 15, cz - 1), growth=1.0)
+    walker = _spawn(t, "Colonist", cx - 15, cz, faction="player")
+    _full(t, walker)
+    t.bridge_call("jawa/order_pawn", pawnId=walker, x=cx + 14, z=cz, waitTicks=0, unpause=False)
+    for _ in range(16):
+        t.wait_ticks(30)
+    _vanish(t, walker)
+
+
+def _at(t, pid, default):
+    """(x, z) of a pawn now (it may have fled), else `default`."""
+    return _xz(_rows(t).get(pid)) or default
+
+
+def _missing_arms(t, pid):
+    row = _rows(t, health=True).get(pid)
+    if row is None:
+        return None
+    return len([h for h in _hediffs(row) if isinstance(h, dict) and h.get("def") == "MissingBodyPart"
+                and VISSLER_ARM_PART in str(h.get("part") or "").lower()])
+
+
+# --------------------------------------------------------------------------- scene: arm_food
+
+@suite.chain("scene_arm_food")
+def scene_arm_food(t):
+    """sc_arm_food (arm_food, vissler_arm_food): a naturally shed arm is found, approached and EATEN by a hungry ground
+    meat eater (its food rises, the arm is used up), and it rots on real ticks. Controls: a hungry herbivore beside it,
+    the food toggle off, and an arm walled off from the eater all leave it uneaten. Rules out: a food-search result
+    (ProofArmScavengers) standing in for eating that never completes."""
+    _prep(t, "bloom")
+    x, z = t.anchor
+    arms, state = [], {}
+
+    def eaten_within(eater, ticks):
+        """Runs the clock in 250-tick steps until some arm is used up. -> (Ingest seen, {arm id: units eaten}, food
+        before, food after). The eater picks its own arm (the nearest), so every arm is watched."""
+        s0, f0, ingest = _arm_stacks(t), _food(t, eater), False
+        used = {}
+        for _ in range(ticks // 250):
+            t.wait_ticks(250)
+            ingest = ingest or str(_jobs(t).get(eater) or "").startswith("Ingest")
+            now = _arm_stacks(t)
+            used = dict((i, n - now.get(i, 0)) for i, n in s0.items() if now.get(i, 0) < n)
+            if used:
+                break
+        return ingest, used, f0, _food(t, eater)
+
+    def body():
+        with _comp(t, "arm_food_shed_naturally", poison=True):
+            if _live(t):
+                vs = [_spawn(t, "RM_Vissler", x - 6 + 3 * (j % 4), z - 9 + 2 * (j // 4)) for j in range(8)]
+                for _s in range(3):
+                    _disturb(t, *_at(t, vs[0], (x, z - 8)))
+                    if len(_arm_stacks(t)) >= 2:
+                        break
+                _remove_pawns_in(t.bridge_call, _rs(_rect(t, PAD_SIZE + 8)))
+                arms[:] = sorted(_arm_stacks(t).items())
+                _note(t, "arm_food: shed arms (id, stack)", arms)
+                if not arms:
+                    _unmeasured(t, "no RM_VisslerArm shed by 8 visslers over 3 blooms: the scene needs a natural shed "
+                                   "(the bloom's own result is sc_bloom's)")
+        eaters = []
+        with _comp(t, "arm_food_eater_species", poison=True):
+            if _live(t):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_VisslerArmPatches",
+                                  method="ProofArmScavengers", args="on@%d,%d" % (x + 6, z + 8))
+                m = re.search(r"drawn=\[([^\]]*)\]", str((r or {}).get("result", "")))
+                eaters[:] = [k for k in (m.group(1).split(",") if m else []) if k]
+                _note(t, "arm_food: roster meat eaters the arm can feed", eaters)
+                if not eaters:
+                    _unmeasured(t, "no roster meat eater the engine would send to the arm: %r" % r)
+        aid = arms[0][0] if arms else None
+        with _comp(t, "arm_food_rots_on_real_ticks"):
+            if _live(t):
+                start = ARM_ROT_DAYS     # the shipped boundary is read offline; live shows the rot ticking
+                r0 = t.bridge_call("jawa/comp_read", thing=aid, comp="Rottable", members="RotProgress")
+                t.wait_ticks(2500)
+                r1 = t.bridge_call("jawa/comp_read", thing=aid, comp="Rottable", members="RotProgress")
+                try:
+                    p0, p1 = (float(((q or {}).get("values") or {}).get("RotProgress")) for q in (r0, r1))
+                except (TypeError, ValueError):
+                    _unmeasured(t, "CompRottable.RotProgress unreadable on %s: %r / %r" % (aid, r0, r1))
+                state["rot"] = (p0, p1, start)
+                _note(t, "arm_food: RotProgress before/after 2500 ticks, daysToRotStart", state["rot"])
+                if not p1 > p0:
+                    _fail("the arm's rot did not advance over 2500 real ticks (%.0f -> %.0f)" % (p0, p1))
+                if not start:
+                    _fail("RM_VisslerArm ships no daysToRotStart (Defs/ThingDefs_Items): it never rots")
+        with _comp(t, "arm_food_herbivore_leaves_it"):
+            if _live(t):
+                a = _arm_row(t, aid) or {}
+                h = _hungry(t, "Muffalo", a.get("x", x) + 1, a.get("z", z))
+                _ingest, used, _f0, _f1 = eaten_within(h, 2000)
+                _vanish(t, h)
+                if used:
+                    _fail("a hungry herbivore (Muffalo) used up vissler arm(s) %s: the arm is meat" % used)
+        with _comp(t, "arm_food_toggle_off_uneaten", toggle="visslerArmFoodEnabled"):
+            if _live(t):
+                a = _arm_row(t, aid) or {}
+                with _setting(t, "visslerArmFoodEnabled", False):
+                    e = _hungry(t, eaters[0], a.get("x", x) + 3, a.get("z", z))
+                    _ingest, used, _f0, _f1 = eaten_within(e, 2000)
+                    _vanish(t, e)
+                if used:
+                    _fail("visslerArmFoodEnabled OFF but a hungry %s used up arm(s) %s" % (eaters[0], used))
+        with _comp(t, "arm_food_unreachable_uneaten"):
+            if _live(t):
+                # the EATER is sealed in, so no arm on the map is reachable (sealing one arm in would leave the others)
+                a = _arm_row(t, aid) or {}
+                spots = [(a.get("x", x) + dx, a.get("z", z) + dz) for dx, dz in ((3, 0), (-3, 0), (0, 3), (0, -3), (4, 4))]
+                cells = set(_xz(r) for r in _things(t, ARM, _rs(_rect(t, 80)), 500))
+                ex, ez = next(((sx, sz) for sx, sz in spots
+                               if not any((sx + i, sz + j) in cells for i in (-1, 0, 1) for j in (-1, 0, 1))), spots[-1])
+                _ok(t.bridge_call("jawa/make_empty_room", rect="%d,%d,3,3" % (ex - 1, ez - 1), stuffDef="Steel"),
+                    "make_empty_room")
+                e = _hungry(t, eaters[0], ex, ez)
+                _ingest, used, _f0, _f1 = eaten_within(e, 2000)
+                _vanish(t, e)
+                t.bridge_call("jawa/destroy_batch", rects="%d,%d,3,3" % (ex - 1, ez - 1), categories="All")
+                if used:
+                    _fail("a %s sealed in a 1-cell room used up arm(s) %s through its walls" % (eaters[0], used))
+        with _comp(t, "arm_food_meat_eater_eats_it", toggle="visslerArmFoodEnabled"):
+            if _live(t):
+                a = _arm_row(t, aid)
+                if a is None:
+                    _unmeasured(t, "arm %s is gone before the eater arm: a control ate it or it rotted away" % aid)
+                e = _hungry(t, eaters[0], a["x"] + 4, a["z"])
+                ingest, used, f0, f1 = eaten_within(e, 6000)
+                _note(t, "arm_food: %s (Ingest seen, arms used up, food before, after)" % eaters[0], [ingest, used, f0, f1])
+                _vanish(t, e)
+                if not used:
+                    _fail("a hungry %s (food %.2f) did not eat the arm in 6000 ticks (Ingest seen %s)"
+                          % (eaters[0], f0 or 0, ingest))
+                if not ingest or f1 is None or f0 is None or not f1 > f0:
+                    _fail("the arm is gone but no eating was seen (Ingest %s, food %s -> %s)" % (ingest, f0, f1))
+    with _scene(t, "sc_arm_food", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: arm_regrowth
+
+@suite.chain("scene_arm_regrowth")
+def scene_arm_regrowth(t):
+    """sc_arm_regrowth (arm_regrowth, vissler_finite_arm_regrowth): one vissler disturbed again and again loses one arm
+    per arm item it sheds and sheds nothing once out of arms (no infinite bait); its missing arms survive a save and
+    reload, are still missing just before one 15-day season and regrown at it, and it sheds again after. Control: the
+    bloom off sheds nothing. Compression: jawa/time_set_ticks moves the clock to each side of the boundary (the plan's
+    compressed season); nothing else is warped."""
+    _prep(t, "bloom")
+    x, z = t.anchor
+    st = {}
+
+    def shed_once(v, strip):
+        before, miss0 = sum(_arm_stacks(t).values()), _missing_arms(t, v)
+        _disturb(t, *_at(t, v, (x, z)))
+        return sum(_arm_stacks(t).values()) - before, (_missing_arms(t, v) or 0) - (miss0 or 0)
+
+    def body():
+        with _comp(t, "arm_regrowth_whole_vissler", poison=True):
+            if _live(t):
+                st["v"] = _spawn(t, "RM_Vissler", x - 4, z - 9)
+                m = _missing_arms(t, st["v"])
+                if m != 0:
+                    _unmeasured(t, "the staged vissler is not whole (missing %r): it cannot show a first loss" % m)
+        with _comp(t, "arm_regrowth_off_sheds_nothing", toggle="runwayBloomEnabled"):
+            if _live(t):
+                with _setting(t, "runwayBloomEnabled", False):
+                    items, lost = shed_once(st["v"], 0)
+                if items or lost:
+                    _fail("runwayBloomEnabled OFF but a disturbance shed %d arm item(s), %d arm(s) lost" % (items, lost))
+        with _comp(t, "arm_shed_costs_one_arm_each", poison=True):     # the rest need an exhausted vissler
+            if _live(t):
+                trail, s = [], 1
+                while s <= 2 * VISSLER_ARMS + 4 and (_missing_arms(t, st["v"]) or 0) < VISSLER_ARMS:
+                    items, lost = shed_once(st["v"], s)
+                    trail.append((items, lost))
+                    if items and "first" not in st:
+                        st["first"] = _game_tick(t)
+                    if items != lost:
+                        _note(t, "arm_regrowth: (items, arms lost) per disturbance", trail)
+                        _fail("disturbance %d shed %d arm item(s) but the vissler lost %d arm(s): every item must be "
+                              "a real arm" % (s, items, lost))
+                    s += 1
+                _note(t, "arm_regrowth: (items, arms lost) per disturbance", trail)
+                if (_missing_arms(t, st["v"]) or 0) < VISSLER_ARMS:
+                    _unmeasured(t, "%d disturbances did not exhaust the %d arms (%r)" % (s - 1, VISSLER_ARMS, trail))
+        with _comp(t, "arm_exhausted_sheds_nothing"):
+            if _live(t):
+                for s in range(2):
+                    items, _lost = shed_once(st["v"], 20 + s)
+                    if items:
+                        _fail("a vissler with no arms left shed %d more arm item(s): infinite bait" % items)
+        with _comp(t, "arm_missing_survives_reload"):
+            if _live(t):
+                name = "lscrub_arm_regrowth_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game(%s)" % name)
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                m = _missing_arms(t, st["v"])
+                if m != VISSLER_ARMS:
+                    _fail("after save and reload the vissler reads %r missing arms, not %d" % (m, VISSLER_ARMS))
+        with _comp(t, "arm_still_missing_before_the_season"):
+            if _live(t):
+                if "first" not in st:
+                    _unmeasured(t, "no first shed was seen, so the season boundary is unknown")
+                _ok(t.bridge_call("jawa/time_set_ticks", ticks=st["first"] + SEASON_TICKS - 2500), "time_set_ticks")
+                t.wait_ticks(250)
+                m = _missing_arms(t, st["v"])
+                if m != VISSLER_ARMS:
+                    _fail("%r arms missing 2500 ticks before the 15-day season ends: an arm regrew early" % m)
+        with _comp(t, "arm_regrows_after_one_season"):
+            if _live(t):
+                _ok(t.bridge_call("jawa/time_set_ticks", ticks=st["first"] + SEASON_TICKS), "time_set_ticks")
+                t.wait_ticks(2500)
+                m = _missing_arms(t, st["v"])
+                st["regrown"] = VISSLER_ARMS - (m if m is not None else VISSLER_ARMS)
+                if st["regrown"] < 1:
+                    _fail("no arm regrew 2500 ticks past one 15-day season from the first shed (%r missing)" % m)
+        with _comp(t, "arm_regrown_sheds_again"):
+            if _live(t):
+                # one item per arm is arm_shed_costs_one_arm_each's: here the other arms are regrowing on their own
+                # timers inside the window, so the loss count cannot be matched item for item
+                for s in range(6):
+                    items, _lost = shed_once(st["v"], 30 + s)
+                    if items:
+                        m = _missing_arms(t, st["v"])
+                        if m is None or m > VISSLER_ARMS or not m:
+                            _fail("after shedding again the vissler reads %r missing arms" % m)
+                        break
+                else:
+                    _fail("a vissler with %d regrown arm(s) shed nothing over 6 disturbances" % st.get("regrown", 0))
+    with _scene(t, "sc_arm_regrowth", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: bloom
+
+# Each race's RM_RunwayBloomExtension <response> (Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml).
+SURRIK_HOLE = "RM_Filth_SurrikExitHole"     # the Surrik's exitFilth (RM_LeaningScrubFauna.xml)
+BLOOM_RESPONSES = {"RM_Crustweevil": "Scatter", "RM_Fuzzrunner": "Bolt", "RM_Ribbonwhip": "Sway",
+                   "RM_Surrik": "Surface", "RM_Vissler": "Shed", "RM_Dustflutter": "Erupt"}
+
+
+@suite.chain("scene_bloom")
+def scene_bloom(t):
+    """sc_bloom (bloom, runway_bloom): a colonist WALKING through marked cover sets off the bloom: scatterers flee, ribbonwhips sway and are released, only a surrik that was under the
+    crust leaves an exit hole, visslers shed a finite number of arms, and an eruptor's take-off waits for the owner.
+    Controls: the same walk over bare ground, a stationary colonist in cover, the toggle off, and a manhunter, none
+    answering (the manhunter keeps its state). Rules out a direct helper call or an invisible held sway passing."""
+    _prep(t, "bloom")
+    x, z = t.anchor
+    cohort, seen = {}, {}
+
+    def stage(eruptor=False):
+        """A fresh cohort; the eruptor (a flyer) only in the owner-present arm."""
+        for k in list(cohort):
+            _vanish(t, *cohort.pop(k))
+        for i, kind in enumerate(sorted(k for k, r in BLOOM_RESPONSES.items() if eruptor or r != "Erupt")):
+            n = 4 if kind == "RM_Vissler" else 2
+            cohort[kind] = [_spawn(t, kind, x - 12 + 4 * i + (j % 2), z - 1 + 2 * (j // 2)) for j in range(n)]
+
+    def swaying():
+        """How many animals the bloom component holds swaying now (its private `swaying` map, read, never driven)."""
+        r = t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_RunwayBloom", members="swaying")
+        m = re.search(r"\d+", str(((r or {}).get("values") or {}).get("swaying", "")))
+        return int(m.group(0)) if m else None
+
+    def watch(polls=16):
+        """-> ({kind: first poll index that saw Flee}, arm items shed) over polls of 30 ticks; the most animals seen
+        swaying, the swaying left at the end, the surrik exit holes made and whether a surrik was under the crust
+        before go to seen{}."""
+        arms0, first = sum(_arm_stacks(t).values()), {}
+        holes0 = _count(t, SURRIK_HOLE, _rs(_rect(t, PAD_SIZE + 8)))
+        under = [t.bridge_call("jawa/comp_read", thing=p, comp="SandSwim", members="Submerged")
+                 for p in cohort.get("RM_Surrik", [])]
+        seen["under"] = any("true" in json.dumps((u or {}).get("values") or {}).lower() for u in under)
+        seen["sway_max"] = 0
+        for i in range(polls):
+            t.wait_ticks(30)
+            jobs = _jobs(t)
+            for k, pids in cohort.items():
+                if k not in first and any(jobs.get(p) == "Flee" for p in pids):
+                    first[k] = i
+            seen["sway_max"] = max(seen["sway_max"], swaying() or 0)
+        seen["sway_end"] = swaying()
+        seen["holes"] = _count(t, SURRIK_HOLE, _rs(_rect(t, PAD_SIZE + 8))) - holes0
+        return first, sum(_arm_stacks(t).values()) - arms0
+
+    def walk(cover, still=False):
+        if cover:
+            t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,30,5" % (x - 15, z - 2), growth=1.0)
+        w = _spawn(t, "Colonist", x - 15, z + 1, faction="player")
+        _full(t, w)
+        if not still:
+            t.bridge_call("jawa/order_pawn", pawnId=w, x=x + 14, z=z + 1, waitTicks=0, unpause=False)
+        return w
+
+    def body():
+        with _comp(t, "bloom_scene_bare_ground_quiet"):
+            if _live(t):
+                stage()
+                w = walk(cover=False)
+                first, arms = watch()
+                _vanish(t, w)
+                if arms:
+                    _fail("a walk over BARE ground shed %d vissler arm(s): the bloom answered without cover" % arms)
+        with _comp(t, "bloom_scene_stationary_quiet"):
+            if _live(t):
+                stage()
+                w = walk(cover=True, still=True)
+                first, arms = watch()
+                _vanish(t, w)
+                if arms:
+                    _fail("a colonist STANDING in cover shed %d vissler arm(s): movement must set the bloom off" % arms)
+        with _comp(t, "bloom_scene_toggle_off_quiet", toggle="runwayBloomEnabled"):
+            if _live(t):
+                stage()
+                with _setting(t, "runwayBloomEnabled", False):
+                    w = walk(cover=True)
+                    first, arms = watch()
+                    _vanish(t, w)
+                if arms:
+                    _fail("runwayBloomEnabled OFF but the walk shed %d vissler arm(s)" % arms)
+        # The answer delay itself (delayTicks 15..45, RM_CoatKernel.AnswerTick) is finer than a 30-tick poll can see: the
+        # C# SelfTest (LeaningScrubFuzz2) owns it; here the walked bloom, not the delay, is the reading.
+        with _comp(t, "bloom_scene_walk_answers"):
+            if _live(t):
+                stage()
+                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Item")
+                w = walk(cover=True)
+                first, arms = watch()
+                _vanish(t, w)
+                _note(t, "bloom scene: first poll with Flee per species / arms shed", [first, arms])
+                silent = sorted(k for k, r in BLOOM_RESPONSES.items() if r in ("Scatter", "Bolt") and k not in first)
+                if silent:
+                    _fail("no Flee from scatterers %s after a colonist walked through cover" % silent)
+                if not 1 <= arms <= len(cohort.get("RM_Vissler", [])) * VISSLER_ARMS:
+                    _fail("%d arm item(s) from %d visslers: a shed is finite and real" % (arms, len(cohort["RM_Vissler"])))
+        # Read off the WALKED bloom above (ProofVisuals fires its own bloom: a direct call, which this scene rules out).
+        with _comp(t, "bloom_scene_sway_released"):
+            if _live(t):
+                _note(t, "bloom scene sway (most seen, left at the end; swayTicks 180)", [seen.get("sway_max"),
+                                                                                         seen.get("sway_end")])
+                if not seen.get("sway_max"):
+                    _fail("no ribbonwhip held swaying at any poll of the walked bloom")
+                if seen.get("sway_end") != 0:
+                    _fail("%r animal(s) still swaying 480 ticks after the bloom: the sway is never released"
+                          % seen.get("sway_end"))
+        with _comp(t, "bloom_scene_exit_hole_only_from_under"):
+            if _live(t):
+                _note(t, "bloom scene surrik (under the crust before, exit holes made)", [seen.get("under"),
+                                                                                         seen.get("holes")])
+                if seen.get("under") and not seen.get("holes"):
+                    _fail("a surrik under the crust broke out without an exit hole")
+                if not seen.get("under") and seen.get("holes"):
+                    _fail("%d exit hole(s) from surriks that were not under the crust" % seen["holes"])
+                if not seen.get("under"):
+                    _unmeasured(t, "no staged surrik was under the crust before the walk (sand-swim kit off?): "
+                                   "the hole arm cannot be shown")
+        with _comp(t, "bloom_scene_manhunter_keeps_its_state"):
+            if _live(t):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_MapComponent_RunwayBloom",
+                                  method="ProofManhunter", args="manhunter@%d,%d" % (x, z + 8))
+                txt = str((r or {}).get("result", ""))
+                if not txt.startswith("PASS"):
+                    _fail("bloom vs a manhunter: %s" % txt)
+        with _comp(t, "bloom_scene_eruptor_takes_off_owner_present"):
+            if _live(t):
+                if not OWNER_PRESENT:
+                    _unmeasured(t, "an Erupt arm launches a flyer: it runs only with the owner present "
+                                   "(LSCRUB_OWNER_PRESENT=1 in a joint sitting; CLAUDE.md flyer rule)")
+                stage(eruptor=True)
+                w = walk(cover=True)
+                watch()
+                _vanish(t, w)
+                fl = [t.bridge_call("jawa/pawn_flight", pawn=p) for p in cohort.get("RM_Dustflutter", [])]
+                flying = [f for f in fl if "flying" in json.dumps(f).lower() and '"flying": true' in json.dumps(f).lower()]
+                if not flying:
+                    _fail("no dustflutter's flight tracker reads flying after the bloom: %s" % json.dumps(fl)[:300])
+    with _scene(t, "sc_bloom", "owner_review"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: cuts
+
+# The cut content (SHRUBLAND_TREE_GUARDIAN_1's bark-wardens; the CombHolds farmer camps; a vaporator drying scar).
+CUT_WORDS = re.compile(r"\bguardians?\b|bark[- ]wardens?|farmer camps?|vaporator farmers|drying scar", re.I)
+CUT_COMPS = re.compile(r"Guard|Warden|Roost|Rage", re.I)
+
+
+def _about_text():
+    """The mod's About.xml description (the player reads it in the mod list), comments stripped."""
+    with open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8") as fh:
+        about = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    return " ".join(re.findall(r"<description>(.*?)</description>", about, re.S))
+
+
+def _cut_offences(tree_fields, genstep_fields, texts, terrain_before, terrain_after):
+    """The cuts checker, a pure function so the scene can show it rejecting injected manifests. -> list of offences."""
+    out = []
+    comps = json.dumps((tree_fields or {}).get("comps"))
+    if CUT_COMPS.search(comps) or CUT_COMPS.search(str((tree_fields or {}).get("thingClass"))):
+        out.append("the sweetline tree still carries guardian machinery: %s" % comps[:200])
+    ff = (genstep_fields or {}).get("genStep") or {}
+    if isinstance(ff, dict) and ff.get("farmerFaction") not in (None, "", "null"):
+        out.append("RM_ScrubInjections still names a farmerFaction (%s): farmer camps are built" % ff.get("farmerFaction"))
+    for where, txt in sorted(texts.items()):
+        m = CUT_WORDS.search(txt or "")
+        if m:
+            out.append("%s still promises cut content (%r)" % (where, m.group(0)))
+    if terrain_before is None or terrain_after is None:
+        out.append("the vaporator's ground was not read: a drying scar cannot be ruled out")
+    elif terrain_before != terrain_after:
+        out.append("the ground around a running vaporator changed: %s -> %s" % (terrain_before[:120], terrain_after[:120]))
+    return out
+
+
+@suite.chain("scene_cuts")
+def scene_cuts(t):
+    """sc_cuts (cuts, bark_wardens_removed, farmer_camps_removed): no guardian/roost/rage machinery on the sweetline tree,
+    no farmerFaction on the map step, no live text promising bark-wardens, farmer camps or a drying scar, and a
+    still-shipping vaporator leaves its ground as it found it. The retained tree station must still be there (deleting
+    the tree does not pass). Control: the same checker rejects each of three injected manifests (a stale guardian
+    promise, an active farmerFaction, a vaporator that dried its ground). The banned CombHolds faction is a hidden
+    save-only placeholder (RM_CombHolds.xml) and is not read as gameplay."""
+    _prep(t, "fuel")
+    x, z = t.anchor
+    got = {}
+
+    def body():
+        with _comp(t, "cuts_live_manifest", poison=True):
+            if _live(t):
+                defs, _r = _get_defs(t, ";".join(SHIPPED), "description,label,hidden", deep=False)
+                texts = dict(("%s.description" % n, str(f.get("description") or "")) for n, f in defs.items()
+                             if not _as_bool(f.get("hidden")))
+                texts["About.xml"] = _about_text()
+                tree, _r = _get_defs(t, "ThingDef/" + TREE, "comps,thingClass")    # shallow: comps as class names
+                gen, _r = _get_defs(t, "GenStepDef/RM_ScrubInjections", "genStep", deep=True)
+                got.update(texts=texts, tree=tree.get(TREE), gen=gen.get("RM_ScrubInjections"))
+                if not got["tree"] or not got["gen"]:
+                    _unmeasured(t, "get_defs did not return %s / RM_ScrubInjections" % TREE)
+                if "SweetlineStation" not in json.dumps(got["tree"].get("comps")):
+                    _fail("the sweetline tree lost its station comp: deleting retained tree systems does not pass cuts")
+        with _comp(t, "cuts_vaporator_ground_kept"):
+            if _live(t):
+                ring = "%d,%d,9,9" % (x - 4, z - 4)
+                b = _ok(t.bridge_call("jawa/get_terrain_batch", rects=ring), "get_terrain_batch").get("ops")
+                t.bridge_call("jawa/spawn_batch", ops="RM_WindVaporator:%d,%d" % (x, z), rot=0)
+                if not _count(t, "RM_WindVaporator", _rs(_rect(t))):
+                    _unmeasured(t, "no RM_WindVaporator on the pad after spawn_batch")
+                _wait(t, 6000)
+                a = _ok(t.bridge_call("jawa/get_terrain_batch", rects=ring), "get_terrain_batch").get("ops")
+                got["terrain"] = (b, a)
+                if b != a:
+                    _fail("the ground around a running RM_WindVaporator changed over 6000 ticks (a drying scar): "
+                          "%s -> %s" % (str(b)[:120], str(a)[:120]))
+        with _comp(t, "cuts_no_cut_content"):
+            if _live(t):
+                b, a = got.get("terrain") or (None, None)
+                bad = _cut_offences(got["tree"], got["gen"], got["texts"], b, a)
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "cuts_checker_rejects_injections"):
+            if _live(t):
+                # each injection alone on a clean manifest, so the live state cannot make a control pass for it
+                tree = {"comps": ["RimMandrake.LeaningScrub.RM_CompProperties_SweetlineStation"], "thingClass": "Plant"}
+                gen, ground = {"genStep": {"farmerFaction": None}}, "Soil:0,0,9,9"
+                clean = (tree, gen, {"About.xml": "A wind-scoured plain."}, ground, ground)
+                injected = {
+                    "stale guardian promise": (tree, gen, {"About.xml": "Two bark-wardens sleep in it."}, ground, ground),
+                    "active farmerFaction": (tree, {"genStep": {"farmerFaction": "RM_Faction_CombHolds"}}, {}, ground,
+                                             ground),
+                    "drying scar": (tree, gen, {}, ground, ground + ";Sand:4,4"),
+                }
+                if _cut_offences(*clean):
+                    _fail("the cuts checker refuses a clean manifest: %s" % _cut_offences(*clean))
+                missed = sorted(k for k, args in injected.items() if not _cut_offences(*args))
+                if missed:
+                    _fail("the cuts checker passed injected manifest(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_cuts", "immediate"):
+        _stable(t, body)
+
+
 # --------------------------------------------------------------------------- chain: the log (last)
 
 @suite.chain("log")
