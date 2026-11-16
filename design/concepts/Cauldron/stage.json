@@ -12,15 +12,60 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  },
+  {
+   "at": "2026-11-16T02:32:38Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794796348, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-16T02:51:29Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794796348: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
  "mod": "Cauldron",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-16T02:51:29Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_grounding.md": "1cb7de3e0c7b1103a87fa57c7322967ff87a92cc2a0c613348195415805ab374",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794796348",
+   "stage": 0,
+   "summary": "Grounded the current Cauldron capability inventory, accounted for every required built-evidence reference, incorporated the existing owner health/gas/settlement answers, audited every current proof chain and recorded three failure modes. Historical proof remains distinguished from current acceptance. The existing saved-site live walk is proposed for the next owner sitting."
+  }
+ ],
  "runner": "codex",
+ "runner_spend": [
+  {
+   "run": "rm-role-designercodex-1794796348",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 7266680,
+    "output_tokens": 33792
+   }
+  }
+ ],
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
