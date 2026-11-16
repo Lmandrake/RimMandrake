@@ -83,6 +83,54 @@ w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_STOP_FIXTU
   "# RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL\n\nFixtureMod's blast ray passes walls.\n")
 w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_FIX_OTHER_MOD_THING.md"),
   "# RIMMANDRAKE_FIX_OTHER_MOD_THING\n\nNot ours.\n")
+# closed tickets, a list-shaped red record, journal oddities, refuted causes (entry standard rule 10)
+w(os.path.join(v, "blind_challenge", "cycle_2", "lane2", "faults.json"), {"faults": [
+    {"id": "RIMMANDRAKE_RESET_FIXTURE_STATICS_CENSUS_CAUGHT", "class": "Problem", "bar": "bar_a",
+     "criterion": "statics reset between games", "evidence": ["census FAIL"], "smallest_fix": "reset the statics at load",
+     "status": "FIXED 1234abcd"}]})
+w(os.path.join(v, "blind_challenge", "cycle_2", "lane2", "fixes.jsonl"), json.dumps(
+    {"fault": "RIMMANDRAKE_RESET_FIXTURE_STATICS_CENSUS_CAUGHT",
+     "red": [{"on": "aaaa111", "cmd": "selftest_census.py", "rc": 1}, {"on": "bbbb222", "cmd": "selftest_census.py", "rc": 1}],
+     "green": {"on": "1234abcd", "cmd": "selftest_census.py", "rc": 0}, "sha": "1234abcd"}) + "\n")
+IT = os.path.join(root, "infrastructure", "state", "items")
+w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX.md"),
+  "## spec\n\nfile: Source/B.cs: clamp the arc; never drop a refuted cause.\n\nAcceptance test: selftest_b.py exit 0\n")
+w(os.path.join(IT, "RIMMANDRAKE_BACKFILL_FIXTUREMOD_LEDGER_IN_SHADOW.md"), "## spec\n\nBackfill FixtureMod's ledger.\n")
+w(os.path.join(IT, "closed", "RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL.md"),
+  "## spec\n\nfile: Source/C.cs: group the poles by kind.\n")
+w(os.path.join(IT, "closed", "RIMMANDRAKE_DROP_FIXTUREMOD_FILED_TWICE.md"), "## spec\n\nfile: Source/D.cs: same as B.\n")
+w(os.path.join(IT, "RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED.md"),
+  "## spec\n\nfile: Source/E.cs: drain the right faction.\n")
+w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM.md"), "## spec\n\nPost as the right team.\n")
+EVL = [
+    {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "title": "Arcs overshoot walls",
+     "tsn": 10},
+    {"seat": "BENCH", "event": "claim", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "tsn": 11},
+    {"seat": "BENCH", "event": "note", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "tsn": 12,
+     "text": "LIVE run at 5555eee: arc FAIL. False theory: the pool fix still breaks 20 ms (deployed DLL was stale, "
+             "src/RimMandrake/FixtureMod/Source/B.cs untouched)."},
+    {"seat": "CONDUCTOR", "event": "verify", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "result": "pass",
+     "config": "selftest_b.py (rc 0; rc 1 at 4444ddd)", "sha": "abcdef12", "tsn": 13},
+    {"seat": "CONDUCTOR", "event": "close", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "sha": "abcdef12",
+     "why": "detached run: red-first record kept", "tsn": 14},
+    {"seat": "OWNER", "event": "close", "id": "RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL", "sha": "abcdef34",
+     "noCode": "GPT re-read of current code: no defect remains (both paths group by kind)", "tsn": 20},
+    {"seat": "BENCH", "event": "drop", "id": "RIMMANDRAKE_DROP_FIXTUREMOD_FILED_TWICE", "reason": "duplicate of B",
+     "tsn": 30},
+    {"seat": "OWNER", "event": "implemented", "id": "RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED",
+     "sha": "abcdef56", "criteria": [{"id": "A1", "text": "selftest: drain A, charge only A"}], "tsn": 40},
+    {"seat": "BENCH", "event": "close", "id": "RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM", "sha": "abcdef78",
+     "tsn": 50}]
+with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:
+    for e_ in EVL:
+        fh.write(json.dumps(e_) + "\n")
+w(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl"), json.dumps(
+    {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL",
+     "ownerSaid": "Reopen it if it ever comes back, never file a new one.", "tsn": 21}) + "\n")
+with open(os.path.join(c, "journal.md"), "a", encoding="utf-8") as fh:
+    fh.write("\n1. **47, not 48.** `VERSION.json` says 47; the sum is 48 because one row is a leaf too. [measured]\n"
+             "2. **The old shock name is a mirror.** `AerialSettings.fallenWireShock` is derived; the setting is\n"
+             "   `shockReach`.\n\n### Questions for him\n\n1. Re-pin?\n")
 before = {}
 for d, _, fs in os.walk(c):
     for f in fs:
@@ -169,6 +217,47 @@ check("his words are printed once in the packet (his answers), not again under d
       txt.count("Shelves are open, period.") == 1, txt.count("Shelves are open, period."))
 check("the packet prints under budget and ends with what it left out", info["tokens"] <= info["budget"] and
       "## Left out" in txt, info)
+
+F = st["findings"]
+TEST = {e["subject"]: e["body"].get("test") or "" for e in bevs if e["kind"] == "finding.claimed_fixed"}
+fc = F.get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX") or {}
+check("a list-shaped red record is read (its last red command and rc)",
+      "selftest_census.py" in TEST.get("finding:RIMMANDRAKE_RESET_FIXTURE_STATICS_CENSUS_CAUGHT", ""), TEST)
+check("a closed ticket is mined: its finding, and its close as claimed_fixed on the close sha with the verify command",
+      fc.get("status") == "claimed_fixed" and fc.get("code_sha") == "abcdef12" and "selftest_b.py" in TEST.get(
+          "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "") and
+      "Source/B.cs" in (fc.get("proposed_fix") or "") and fc.get("text") == "Arcs overshoot walls", fc)
+fw = F.get("finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL") or {}
+check("a close with no code is a withdrawal by reading, on its sha", fw.get("status") == "withdrawn" and
+      fw.get("how_checked") == "reading", fw)
+check("a closed ticket whose closing cannot be stated (a drop with no sha) mines nothing and is counted, never left "
+      "looking open", "finding:RIMMANDRAKE_DROP_FIXTUREMOD_FILED_TWICE" not in F and
+      any("closed tickets" in n and "no sha" in n for n in res["notes"]), res["notes"])
+fi = F.get("finding:RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED") or {}
+check("a live ticket marked implemented is claimed_fixed on that sha", fi.get("status") == "claimed_fixed" and
+      fi.get("code_sha") == "abcdef56", fi)
+check("a pipeline ticket about the mod (a backfill) is not a finding in it",
+      "finding:RIMMANDRAKE_BACKFILL_FIXTUREMOD_LEDGER_IN_SHADOW" not in F, sorted(F))
+check("a closed ticket of another concept (SlackMaster) is not mined",
+      "finding:RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM" not in F, sorted(F))
+mined_items = [e for e in bevs if any(r == "item:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX" for r in e["evidence"])]
+check("lifecycle is never mined: the claim and the verify make no event of their own",
+      sorted(e["kind"] for e in mined_items) == ["cause.refuted", "finding.claimed_fixed", "finding.open"],
+      sorted(e["kind"] for e in mined_items))
+cr = [e for e in bevs if e["kind"] == "cause.refuted"]
+check("a 'False theory:' note is a refuted cause on its finding, with the sha and path it names",
+      len(cr) == 1 and cr[0]["body"]["finding"] == "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX" and
+      cr[0]["code_sha"] == "5555eee" and cr[0]["body"]["depends_on"] == ["src/RimMandrake/FixtureMod/Source/B.cs"]
+      and "pool fix" in cr[0]["body"]["text"], [e["body"] for e in cr])
+check("every mined ticket event cites item:<ticket>", all(any(r.startswith("item:") for r in e["evidence"])
+      for e in bevs if e["kind"] in ("finding.claimed_fixed", "finding.withdrawn", "cause.refuted")))
+tr = [e for e in bevs if e["kind"] == "trap.noted"]
+check("the journal's oddities are traps, one each, a wrapped line joined, the first backticked name as where",
+      len(tr) == 2 and tr[1]["body"]["where"] == "AerialSettings.fallenWireShock" and "shockReach" in tr[1]["body"]["text"],
+      [e["body"] for e in tr])
+check("his words on a closed ticket's ledger event become a decision on that finding",
+      any(e["kind"] == "decision" and e["subject"] == "finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL"
+          for e in bevs), [(e["kind"], e["subject"]) for e in bevs if e["kind"] == "decision"])
 
 shutil.rmtree(root, ignore_errors=True)
 print("selftest_modledger_backfill: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))

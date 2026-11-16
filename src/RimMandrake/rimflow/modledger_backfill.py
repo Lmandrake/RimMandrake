@@ -58,6 +58,46 @@ def _jsonl(p):
     return out
 
 
+def _last(rec):
+    """A red or green record is one dict or a list of them (one per commit it ran on): the last is the one that counts."""
+    if isinstance(rec, list):
+        rec = rec[-1] if rec else {}
+    return rec if isinstance(rec, dict) else {}
+
+
+SHA_RE = re.compile(r"\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{7,40}\b")
+PATH_RE = re.compile(r"(?<![\w/.-])((?:src|design|infrastructure|skills)/[\w./-]*\w\.[A-Za-z]{1,5})\b")
+# a sentence that STATES a refutation ('False theory: X', 'D7 refuted', 'was refuted', 'refuted by'), never the
+# adjective ('a refuted cause')
+REFUTED_RE = re.compile(r"(?i:false theor(?:y|ies)\s*:)|\b(?i:is|was|were|are|been|now)\s+(?i:refuted)\b|"
+                        r"\b[A-Z][A-Za-z0-9_]*\)?\s+refuted\b|\b(?i:refuted)\s*(?:by|at|on|:)")
+NOT_REFUTED_RE = re.compile(r"\b(?:not|never|un)[- ]?refuted\b", re.I)
+
+
+def ticket_events(root, names):
+    """-> {ticket id: [(shard path, line number, event)]} for the rimflow ledger events on those tickets, in tsn order."""
+    out = {}
+    for sp in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "*.jsonl"))):
+        with open(sp, encoding="utf-8", errors="replace") as fh:
+            for ln, line in enumerate(fh, 1):
+                m = re.search(r'"id": ?"([A-Z0-9_]+)"', line)
+                if not m or m.group(1) not in names:
+                    continue
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                if e.get("id") in names:
+                    out.setdefault(e["id"], []).append((sp, ln, e))
+    for v in out.values():
+        v.sort(key=lambda t: t[2].get("tsn") or 0)
+    return out
+
+
+def _sentences(text):
+    return [x.strip() for x in re.split(r"(?<=[.;])\s+(?=[A-Z(])", " ".join(str(text or "").split())) if x.strip()]
+
+
 def _words(mod):
     """CamelCase -> the spaced name ('ExplosiveKnockback' -> 'Explosive Knockback') and the item-name word."""
     spaced = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", mod)
@@ -130,6 +170,65 @@ def other_mod_words(root, mod):
         if len(last) >= 5:
             out.add(last)
     return out
+
+
+def _mine_finding(add, name, prose, titles, locked, S, src):
+    """One ticket's finding.open: its filer's title, its spec as the proposed fix, its acceptance test."""
+    paras = [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")]
+    m = re.search(r"^## spec\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
+    fix = (m.group(1).strip() if m and m.group(1).strip() else
+           "not written by its filer: read item:%s" % name)
+    acc = re.search(r"Acceptance test:\s*(.+)", prose) or re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose,
+                                                                     re.S | re.M)
+    named_bars = [b for b in locked if re.search(r"\b%s\b" % re.escape(b), prose)][:3]
+    add("finding.open", "finding:" + name, {
+        "class": "polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
+        else "problem", "bars": named_bars, "tags": [] if named_bars else _tags(prose),
+        "text": fit(titles.get(name) or (paras[0] if paras else name), S["text"]),
+        "proposed_fix": fit(fix, S["proposed_fix"]),
+        "accept": fit(acc.group(1).strip() if acc else "none, not written at filing", S["accept"])},
+        src)           # the old file first: evidence[0] is what the backfill came from
+
+
+def _final_state(name, evs, S):
+    """-> (kind, body, sha, ledger ref pattern) for a ticket's last state change in the rimflow ledger, or None.
+    close with noCode -> finding.withdrawn (by reading, or a test when it names one); close or implemented with a sha ->
+    finding.claimed_fixed, its test the last verify's command (a verify is lifecycle: it is read, never mined); a reopen
+    after them, a drop or a supersede states nothing a finding can carry."""
+    term, verify = None, None
+    for t in evs:
+        k = t[2].get("event")
+        if k in ("close", "implemented", "drop", "supersede", "reopen"):
+            term = t
+        elif k == "verify" and t[2].get("result") == "pass":
+            verify = t[2]
+    if not term:
+        return None
+    e = term[2]
+    sha = e.get("sha") if isinstance(e.get("sha"), str) and re.match(r"^[0-9a-f]{7,40}$", e.get("sha")) else None
+    if e["event"] not in ("close", "implemented") or not sha:
+        return None
+    ref = "ledger:%%s:%d" % term[1]
+    if e.get("noCode"):
+        nc = str(e["noCode"])
+        how = "reading+test" if re.search(r"\b(selftest|test)\b", nc, re.I) else "reading"
+        return ("finding.withdrawn", {"text": fit("No defect at %s: %s" % (sha, nc), S["text"]), "how_checked": how},
+                sha, ref)
+    if e["event"] == "implemented":
+        crit = "; ".join("%s %s" % (c.get("id"), c.get("text")) for c in e.get("criteria") or [] if isinstance(c, dict))
+        text = "Implemented at %s (%s); not closed. Criteria: %s" % (sha, e.get("seat"), crit or "none recorded")
+        test = crit or "none recorded with the implemented event"
+    else:
+        text = "Closed at %s by %s: %s" % (sha, e.get("seat"), e.get("reason") or e.get("why") or "no reason recorded")
+        test = ("%s (verify pass, %s)" % (verify.get("config"), verify.get("seat")) if verify and verify.get("config")
+                else "none recorded at close (live: %s)" % (e.get("live") or "-"))
+    return ("finding.claimed_fixed", {"text": fit(text, S["text"]), "test": fit(test, S["test"])}, sha, ref)
+
+
+def ref_path(state, tev, name):
+    """The shard path of the event a final state came from (the pattern carries its line)."""
+    line = int(state[3].rsplit(":", 1)[1])
+    return next(t[0] for t in tev.get(name, []) if t[1] == line)
 
 
 def plan(root, mod):
@@ -263,12 +362,12 @@ def plan(root, mod):
             if st.startswith("FIXED"):
                 sha = (st.split() + [None])[1]
                 x = fixes.get(f["id"]) or {}
-                red, green = x.get("red") or {}, x.get("green") or {}
+                red, green = _last(x.get("red")), _last(x.get("green"))
                 test = "red rc %s, green rc %s: %s" % (red.get("rc"), green.get("rc"), red.get("command") or
                                                        red.get("cmd") or green.get("command") or "see fixes.jsonl")
                 add("finding.claimed_fixed", "finding:" + f["id"], {
                     "text": "fixed by the blind cycle's fixer; no later judge verdict is recorded",
-                    "test": fit(test, S["test"])}, [P(fxp) if os.path.exists(fxp) else P(fp, i),
+                    "test": fit(test, S["test"])}, [P(fxp) if os.path.exists(fxp) else P(fp, i), "item:%s" % f["id"],
                                                     "sha:%s" % sha if sha else None], None, sha)
             elif st.startswith("NOTED"):
                 noted += 1
@@ -324,13 +423,48 @@ def plan(root, mod):
                         {"owner_said": said})
         else:
             notes.append("journal.md has no 'His words' section")
+        ostart = next((i for i, l in enumerate(lines) if l.startswith("### Oddities")), None)
+        odd, cur = [], None
+        for i in range(ostart + 1, len(lines)) if ostart is not None else []:
+            l = lines[i]
+            if l.startswith("#"):
+                break
+            mo = re.match(r"^\d+\.\s+(.*)", l)
+            if mo:
+                cur = [i + 1, mo.group(1).strip()]
+                odd.append(cur)
+            elif cur and l.strip():
+                cur[1] += " " + l.strip()
+        for at, b in odd:
+            head = re.match(r"\*\*(.+?)\*\*", b)
+            where = re.search(r"`([^`]{2,160})`", b)
+            add("trap.noted", "trap:" + slug(head.group(1) if head else b, 8),
+                {"text": fit(b.replace("**", ""), S["text"]), "where": where.group(1) if where else
+                 "%s:%d" % (_rel(root, jp), at), "tags": ["instrument"]}, ["path:%s:%d" % (_rel(root, jp), at)])
     # live items naming the mod: each mines to at most one finding.open (standard rule 10)
     spaced, word = _words(mod)
     words = M.config().get("backfill_item_words", {}).get(mod, [])
     items, dup_fault, elsewhere = [], 0, 0
     titles = item_titles(root)
     others = other_mod_words(root, mod) - set(words) - {word, mod.upper()}
-    for ip in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "items", "*.md"))):
+    idir = os.path.join(root, "infrastructure", "state", "items")
+    cands = [(p, False) for p in sorted(glob.glob(os.path.join(idir, "*.md")))] + \
+        [(p, True) for p in sorted(glob.glob(os.path.join(idir, "closed", "*.md")))]
+    tev = ticket_events(root, {os.path.basename(p)[:-3] for p, _ in cands})
+    sha_ok = {}
+
+    def resolves(sha):
+        """A sha cited must resolve on origin/main (a pre-landing sha can be rewritten at landing): checked when the
+        root is a git checkout, taken as written otherwise (a fixture)."""
+        if not os.path.exists(os.path.join(root, ".git")):
+            return True
+        if sha not in sha_ok:
+            sha_ok[sha] = M._sha_on(root, sha, "origin/main")
+        return sha_ok[sha]
+
+    claimed = {s for k, s, *_ in ev if k == "finding.claimed_fixed"}
+    closed_unstated, sha_dead, refuted_no_sha, causes_seen = [], 0, 0, set()
+    for ip, is_closed in cands:
         name = os.path.basename(ip)[:-3]
         with open(ip, encoding="utf-8") as fh:
             prose = fh.read()
@@ -341,37 +475,69 @@ def plan(root, mod):
         if not named and not (set(name.split("_")) & set(words) or
                               (word in name.split("_") and (mod in prose or spaced in prose))):
             continue
+        if set(name.split("_")) & set(M.config().get("backfill_item_skip_words", [])):
+            continue
         if set(name.split("_")) & others and not (mod.upper() in name or set(name.split("_")) & (set(words) | {word})):
             elsewhere += 1
             continue
+        state = _final_state(name, tev.get(name, []), S)
+        if state and state[2] and not resolves(state[2]):
+            sha_dead += 1
+            state = None
+        if is_closed and not state:
+            closed_unstated.append(name)
+            continue
         items.append(name)
+        src = [P(ip), "item:" + name]
         if name in fault_ids:
             dup_fault += 1
-            continue
-        paras = [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")]
-        m = re.search(r"^## spec\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
-        fix = (m.group(1).strip() if m and m.group(1).strip() else
-               "not written by its filer: read item:%s" % name)
-        acc = re.search(r"Acceptance test:\s*(.+)", prose) or re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose,
-                                                                         re.S | re.M)
-        named_bars = [b for b in locked if re.search(r"\b%s\b" % re.escape(b), prose)][:3]
-        add("finding.open", "finding:" + name, {
-            "class": "polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
-            else "problem", "bars": named_bars, "tags": [] if named_bars else _tags(prose),
-            "text": fit(titles.get(name) or (paras[0] if paras else name), S["text"]),
-            "proposed_fix": fit(fix, S["proposed_fix"]),
-            "accept": fit(acc.group(1).strip() if acc else "none, not written at filing", S["accept"])},
-            [P(ip), "item:" + name])           # the old file first: evidence[0] is what the backfill came from
+        else:
+            _mine_finding(add, name, prose, titles, locked, S, src)
+        if state and "finding:" + name not in claimed:
+            kind, body, sha, ref = state
+            add(kind, "finding:" + name, body, src + ["sha:" + sha, ref % _rel(root, ref_path(state, tev, name))],
+                None, sha)
+        # refuted causes: a 'False theory:' or 'X refuted' sentence in the ticket or its notes (rule 10: every cause)
+        texts = [(None, prose)] + [(t, e.get("text") or e.get("reason") or e.get("noCode") or "")
+                                   for t in tev.get(name, []) for e in [t[2]] if e.get("event") in
+                                   ("note", "close", "drop", "implemented")]
+        for t, txt in texts:
+            for sen in _sentences(txt):
+                if not REFUTED_RE.search(sen) or NOT_REFUTED_RE.search(sen):
+                    continue
+                key = " ".join(re.findall(r"[a-z0-9]+", sen.lower()))
+                if key in causes_seen:
+                    continue
+                causes_seen.add(key)
+                shas = [x for x in SHA_RE.findall(txt) if resolves(x)] or ([state[2]] if state else [])
+                if not shas:
+                    refuted_no_sha += 1
+                    continue
+                paths = PATH_RE.findall(sen) or PATH_RE.findall(txt) or [
+                    _rel(root, d) for d in [os.path.join(root, "src", "RimMandrake", mod)] if os.path.isdir(d)] or [
+                    _rel(root, ip)]
+                add("cause.refuted", "cause:" + slug(re.sub(r"(?i)^.*?false theor(?:y|ies):\s*", "", sen), 8),
+                    {"text": fit(sen, S["text"]), "finding": "finding:" + name, "depends_on": paths[:4]},
+                    src + (["ledger:%s:%d" % (_rel(root, t[0]), t[1])] if t else []), None, shas[0])
     if dup_fault:
         notes.append("left out: %d items that only repeat the blind fault of the same name" % dup_fault)
+    if closed_unstated:
+        notes.append("left out: %d closed tickets whose closing the ledger does not state with a sha on origin/main "
+                     "(a drop, a supersede, or no close event; no sha to withdraw on), so none is left looking open"
+                     % len(closed_unstated))
+    if sha_dead:
+        notes.append("left out: %d ticket final states whose sha does not resolve on origin/main" % sha_dead)
+    if refuted_no_sha:
+        notes.append("left out: %d refuted causes with no sha to pin them to" % refuted_no_sha)
     if elsewhere:
         notes.append("left out: %d items named for another mod that cite this one" % elsewhere)
     # his words and cards in the OWNER ledger shards, on the finding they bear on when it is one of ours
     mined = {s for k, s, *_ in ev if k == "finding.open"}
+    mined_items = set(items)
     for sp_ in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER*.jsonl"))):
         for i, e in enumerate(_jsonl(sp_), 1):
             blob = json.dumps(e, ensure_ascii=False)
-            if mod not in blob and spaced not in blob:
+            if mod not in blob and spaced not in blob and e.get("id") not in mined_items:
                 continue
             said, card = e.get("ownerSaid"), e.get("byCard")
             if not (said or card):
