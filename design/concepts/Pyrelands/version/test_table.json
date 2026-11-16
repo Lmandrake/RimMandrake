@@ -96,10 +96,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 14.5,
-    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.45s total -> OK",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "seconds": 12.88,
+    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 10.57s total -> OK",
+    "at": "2026-11-16T04:05:07Z",
+    "result": "PASS",
+    "build": "07c5ab3eaae230109c61"
    }
   },
   "T_LINT": {
@@ -117,10 +118,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 77.79,
+    "seconds": 66.87,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:14Z",
+    "result": "PASS",
+    "build": "8d10ae2648927a7c4dd2"
    }
   },
   "T_ALLOWLIST": {
@@ -137,10 +139,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.91,
+    "seconds": 1.2,
     "last": "PASS: the real Postfix meets the spec, 15 mutants red",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:15Z",
+    "result": "PASS",
+    "build": "d42afc44c6d0893bb6e6"
    }
   },
   "T_BURN_COST": {
@@ -156,11 +159,12 @@
    "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 0.07,
-    "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "rc": 1,
+    "seconds": 0.01,
+    "last": "selftest_pyrelands_burn_cost: 4 FAIL on the code as it stands",
+    "at": "2026-11-16T04:06:15Z",
+    "result": "FAIL",
+    "build": "9c5c455550074ca74390"
    }
   },
   "T_TRACKS": {
@@ -177,10 +181,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.33,
-    "last": "  px = list(im.getdata())",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "seconds": 0.24,
+    "last": "PASS",
+    "at": "2026-11-16T04:06:15Z",
+    "result": "PASS",
+    "build": "04bbe61acd244c3a751d"
    }
   },
   "T_FURNACE_WARMTH": {
@@ -197,10 +202,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.42,
+    "seconds": 1.9,
     "last": "8/8 passed",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:17Z",
+    "result": "PASS",
+    "build": "62555189ee75d10c5fec"
    }
   },
   "T_SITE": {
@@ -218,10 +224,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.59,
-    "last": "[pyre] 14:30:18 scorchfruit_produces PASS",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "seconds": 4.48,
+    "last": "PASS: 0 failure(s)",
+    "at": "2026-11-16T04:06:21Z",
+    "result": "PASS",
+    "build": "588fde50ec4b0c732ddd"
    }
   },
   "T_FRUIT_CLEAR": {
@@ -237,10 +244,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
-    "last": "[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "seconds": 0.02,
+    "last": "selftest_pyrelands_fruit_clear: PASS",
+    "at": "2026-11-16T04:06:21Z",
+    "result": "PASS",
+    "build": "c42545e9c049e5f27025"
    }
   },
   "T_SETTINGS_SCREENS": {
@@ -256,11 +264,12 @@
    "mod_rows": "Pyrelands:",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 2.15,
-    "last": "settings screens selftest: 851/856 ok; 14 rows for this mod, 0 red",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "rc": 0,
+    "seconds": 1.8,
+    "last": "settings screens selftest: 856/856 ok",
+    "at": "2026-11-16T04:06:23Z",
+    "result": "PASS",
+    "build": "259d172d5b9359df5bf3"
    }
   },
   "T_BARBSLINGER": {
@@ -277,10 +286,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:23Z",
+    "result": "PASS",
+    "build": "dedcfce6fa016830e928"
    }
   },
   "T_REVIEW_MAP": {
@@ -298,8 +308,9 @@
     "rc": 0,
     "seconds": 0.18,
     "last": "ALL PASS",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:23Z",
+    "result": "PASS",
+    "build": "679502de67d15169f624"
    }
   },
   "T_FH_LETTER": {
@@ -319,8 +330,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "selftest_pyrelands_firehawk_letter: PASS",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:24Z",
+    "result": "PASS",
+    "build": "69ac5460496cc0404653"
    }
   },
   "T_FH_CRESTFEATHER": {
@@ -338,10 +350,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.02,
     "last": "selftest_pyrelands_firehawk_crestfeather: PASS",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:24Z",
+    "result": "PASS",
+    "build": "a65ea351968aef5a58d5"
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -360,10 +373,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.39,
+    "seconds": 1.38,
     "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 10 of 10 mutants red, the clean copy green",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:06:25Z",
+    "result": "PASS",
+    "build": "b3e19e503e1ef73da61f"
    }
   },
   "T_DEFS_OFFLINE": {
@@ -382,10 +396,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 28.17,
-    "last": "PASS: 6 def facts hold, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "seconds": 43.16,
+    "last": "PASS: 7 def facts hold, 16 of 16 mutants red, the clean copy green",
+    "at": "2026-11-16T04:07:08Z",
+    "result": "PASS",
+    "build": "c588c5616b897f4d5b4a"
    }
   },
   "T_CUT_STAYS_CUT": {
@@ -405,10 +420,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.68,
+    "seconds": 0.61,
     "last": "PASS: the three cut legs stay cut, 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:07:09Z",
+    "result": "PASS",
+    "build": "beafc93377ba36cf0c67"
    }
   },
   "T_ULLAI_HERD_MIGRATES": {
@@ -427,10 +443,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.17,
+    "seconds": 5.02,
     "last": "PASS: RM_Ullai is a herd vanilla herd migration can pick, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:07:14Z",
+    "result": "PASS",
+    "build": "da68352b3d6018a38f1d"
    }
   },
   "T_ASH_PROBE_OFFLINE": {
@@ -448,10 +465,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.37,
+    "seconds": 1.17,
     "last": "PASS: the probe reads cells part by part and refuses with the ash field off; 8 mutants red",
-    "at": "2026-11-14T14:28:36-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:07:15Z",
+    "result": "PASS",
+    "build": "f33a0a9d25c70d1c14b6"
    }
   },
   "sc_burn_line_walks": {
@@ -1462,10 +1480,12 @@
    "command_why": "a record has no behaviour to rerun; its rerun checks the event is still on the ledger, unchanged (sha256 of its line pinned 2026-11-15, Pyrelands blind cycle 1 reconcile)",
    "runs_today": {
     "ran": true,
-    "result": "PASS",
     "rc": 0,
+    "seconds": 0.04,
     "last": "RECORD PASS OWNER.jsonl:646 tsn=1792122659817386516 id=PYRELANDS_SHIP_READINESS_1 sha256=4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8",
-    "at": "2026-11-15T01:38:35-08:00"
+    "at": "2026-11-16T04:07:15Z",
+    "result": "PASS",
+    "build": "e3b0c44298fc1c149afb"
    }
   },
   "LOOK_STAGE8": {
@@ -1494,7 +1514,16 @@
     "design/RimMandrake/retired_mutators_port_map.json"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
-   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS"
+   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.51,
+    "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled unsupported; 8 of 8 mutants red, the clean copy green",
+    "at": "2026-11-16T04:07:15Z",
+    "result": "PASS",
+    "build": "7265907164bab445f04f"
+   }
   },
   "T_ROUND6_GAPS": {
    "id": "T_ROUND6_GAPS",
@@ -1506,7 +1535,16 @@
     "design/concepts/Pyrelands/"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
-   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS"
+   "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.86,
+    "last": "PASS: 0 of 18 checks failed",
+    "at": "2026-11-16T04:07:17Z",
+    "result": "PASS",
+    "build": "59b1464d93b892a70179"
+   }
   }
  },
  "bars": [

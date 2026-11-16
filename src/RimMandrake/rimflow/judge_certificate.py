@@ -138,8 +138,20 @@ def run_offline(root, mod, runner=subprocess.run, now=None):
         total += secs
         if rc != 0:
             failed.append(tid)
-    _write_table(root, mod, tt)
+        _write_table(root, mod, tt)     # after each test: a run killed part way keeps the stamps it earned
     return {"ran": ran, "failed": failed, "seconds": round(total, 2)}
+
+
+def _ended_items(root, ids):
+    """-> the known_red items closed, dropped or superseded on the ledger (maturation.ledger_ended, 0.06 s measured);
+    an empty set when it cannot be read: the mark then refuses as written."""
+    if not ids:
+        return set()
+    try:
+        import maturation
+        return set(maturation.ledger_ended(root, ids))
+    except Exception:  # noqa: BLE001
+        return set()
 
 
 def certify(root, mod, to="blind_challenge"):
@@ -154,6 +166,8 @@ def certify(root, mod, to="blind_challenge"):
     run_fix = "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run (reruns the offline deciders and " \
               "stamps each with its build; no tokens)" % mod
     builds = {}
+    ended = _ended_items(root, {t.get("known_red") for t in tests.values() if isinstance(t, dict)
+                                and isinstance(t.get("known_red"), str)})
 
     def row(bar, test, clause, status, observed, would_pass, fix):
         rows.append({"bar": bar, "test": test, "clause": clause, "status": status, "observed": observed,
@@ -196,7 +210,15 @@ def certify(root, mod, to="blind_challenge"):
                 obs or "ran on build %s at %s" % (now, r.get("at")),
                 "runs_today.build == %s (the content of %s's reads and file now)" % (now, d), run_fix)
             kr = t.get("known_red")
-            if kr:
+            if kr and kr in ended:
+                # a mark whose item has closed: the test's own run says whether clearing it is the whole fix
+                fresh = r.get("ran") and r.get("build") == now and r.get("rc") == 0
+                obs = "tests.%s carries known_red %s, and that item is closed on the ledger; %s" % (
+                    d, json.dumps(kr), "the test ran green on this build (%s)" % r.get("last") if fresh else
+                    "its run on this build is not green (%s)" % (r.get("last") or "no run"))
+                fix = ("the mark is stale: delete tests.%s.known_red" % d) if fresh else (
+                    "delete the stale tests.%s.known_red, then fix the mod or the test and rerun (%s)" % (d, run_fix))
+            elif kr:
                 obs = "tests.%s carries known_red %s" % (d, json.dumps(kr))
                 fix = "work and close %s, then clear known_red and rerun (%s)" % (
                     kr if isinstance(kr, str) else json.dumps(kr), run_fix)

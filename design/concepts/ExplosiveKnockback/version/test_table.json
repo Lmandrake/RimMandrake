@@ -111,10 +111,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.23,
-    "last": "explosive knockback kernel: 180/180 passed",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "seconds": 2.43,
+    "last": "explosive knockback kernel: 184/184 passed",
+    "at": "2026-11-16T04:03:52Z",
+    "result": "PASS",
+    "build": "e0d07267eef7970c6465"
    }
   },
   "T_FUZZ": {
@@ -132,10 +133,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.64,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.35s total -> OK",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "seconds": 3.21,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.31s total -> OK",
+    "at": "2026-11-16T04:03:55Z",
+    "result": "PASS",
+    "build": "4aa82b6001e4be838fb6"
    }
   },
   "T_LINT": {
@@ -154,10 +156,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 1.64,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:03:57Z",
+    "result": "PASS",
+    "build": "361bed14413a29e22c66"
    }
   },
   "T_LINT_PLANTED": {
@@ -174,10 +177,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 34.81,
+    "seconds": 31.8,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:29Z",
+    "result": "PASS",
+    "build": "17f915b8d7cf62d40e08"
    }
   },
   "T_CENSUS": {
@@ -194,10 +198,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 9.65,
+    "seconds": 10.23,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:39Z",
+    "result": "PASS",
+    "build": "df82547c43856144b77b"
    }
   },
   "T_SCRIPT": {
@@ -216,10 +221,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.2,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:39Z",
+    "result": "PASS",
+    "build": "2342c46611797761437e"
    }
   },
   "T_PROOFGATE": {
@@ -237,10 +243,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.44,
+    "seconds": 4.1,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:43Z",
+    "result": "PASS",
+    "build": "852ae56963c684168a0a"
    }
   },
   "T_RESTORE": {
@@ -256,10 +263,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.52,
-    "last": "<unknown>:2344: SyntaxWarning: \"\\.\" is an invalid escape sequence. Such sequences will not work in the future. Did you mean \"\\\\.\"? A raw string is also an option.",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "seconds": 5.62,
+    "last": "selftest_proof_restore_check: PASS (0 failure(s))",
+    "at": "2026-11-16T04:04:49Z",
+    "result": "PASS",
+    "build": "4de13be8f62a4ece4b00"
    }
   },
   "T_SETTINGS_SCREEN": {
@@ -275,10 +283,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.8,
+    "seconds": 1.72,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:51Z",
+    "result": "PASS",
+    "build": "69f9d459a289bcdc1ac8"
    }
   },
   "T_FW_COVER": {
@@ -296,9 +305,10 @@
     "ran": true,
     "rc": 0,
     "seconds": 0.05,
-    "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the fa",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red",
+    "at": "2026-11-16T04:04:51Z",
+    "result": "PASS",
+    "build": "2402b18861ec6812061e"
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -320,10 +330,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.12,
+    "seconds": 0.96,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 4/4 switch faults caught | PASS",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:52Z",
+    "result": "PASS",
+    "build": "3401d22e273905cf3591"
    }
   },
   "T_GAS_TAG_CENSUS": {
@@ -342,10 +353,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.84,
+    "seconds": 0.8,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:53Z",
+    "result": "PASS",
+    "build": "163b4abb86a9ca27b61e"
    }
   },
   "T_GAS_CLUMP_ORDER": {
@@ -365,8 +377,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback gas clumps: PASS (0 faults, 6/6 planted faults caught)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:53Z",
+    "result": "PASS",
+    "build": "877522900adf4add171f"
    }
   },
   "T_HEAVY_KNOCK_RULE": {
@@ -386,10 +399,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.07,
-    "last": "explosive knockback kernel: 180/180 passed",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "seconds": 1.02,
+    "last": "explosive knockback kernel: 184/184 passed",
+    "at": "2026-11-16T04:04:54Z",
+    "result": "PASS",
+    "build": "e0d07267eef7970c6465"
    }
   },
   "T_STAGE3_SCENES": {
@@ -412,8 +426,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:54Z",
+    "result": "PASS",
+    "build": "0a8839f9d2dbb834376c"
    }
   },
   "T_ONLY_EXPLOSIONS_STATIC": {
@@ -432,10 +447,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.19,
+    "seconds": 0.17,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-15T15:12:28-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:04:54Z",
+    "result": "PASS",
+    "build": "118fbaba62814c8dcbb2"
    }
   },
   "sc_storeroom_bomb_pit": {

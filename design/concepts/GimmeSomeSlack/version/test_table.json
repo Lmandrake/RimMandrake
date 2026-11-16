@@ -208,10 +208,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 122.23,
-    "last": "4508/4508 checks passed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 173.07,
+    "last": "4514/4514 checks passed",
+    "at": "2026-11-16T04:22:50Z",
+    "result": "PASS",
+    "build": "54a4f02a7bbebafd21aa"
    }
   },
   "T_GATE": {
@@ -229,10 +230,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 157.38,
-    "last": "O4_python_oracle             PASS      44/44 checks passed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 194.11,
+    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"wall_s\": 169.2}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"57/57 checks passed (17 negative controls among them)\"], \"wall_s\": 8.7}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11",
+    "at": "2026-11-16T04:26:04Z",
+    "result": "PASS",
+    "build": "db7db09c2920c744a66e"
    }
   },
   "T_MATRIX": {
@@ -258,10 +260,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.17,
+    "seconds": 7.45,
     "last": "57/57 checks passed (17 negative controls among them)",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:12Z",
+    "result": "PASS",
+    "build": "f695554c102894a1148e"
    }
   },
   "T_NO_HOSE": {
@@ -279,10 +282,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.37,
+    "seconds": 1.11,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:13Z",
+    "result": "PASS",
+    "build": "575b00187519ff24b0b0"
    }
   },
   "T_SHOCK_OUTLIVES": {
@@ -329,8 +333,9 @@
     "rc": 0,
     "seconds": 0.07,
     "last": "ALL PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:13Z",
+    "result": "PASS",
+    "build": "e4fb222bb7ca32d9e854"
    }
   },
   "T_SHOCK_OUTLIVES_BINDING": {
@@ -375,10 +380,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.62,
+    "seconds": 7.88,
     "last": "ALL PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:21Z",
+    "result": "PASS",
+    "build": "b5ae22f8bc34f7d26db3"
    }
   },
   "T_SHOCK_BITES_BINDING": {
@@ -423,10 +429,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.4,
+    "seconds": 0.38,
     "last": "ALL PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:21Z",
+    "result": "PASS",
+    "build": "b1c2b19619fab3e74d14"
    }
   },
   "T_END_HEAP": {
@@ -461,10 +468,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.01,
+    "seconds": 0.02,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:21Z",
+    "result": "PASS",
+    "build": "9e354be6fb5c1060d001"
    }
   },
   "T_JUNCTION_ART": {
@@ -497,8 +505,9 @@
     "rc": 0,
     "seconds": 0.14,
     "last": "12/12 junction PNGs pass",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:21Z",
+    "result": "PASS",
+    "build": "f4ad821eaac05cf84d69"
    }
   },
   "T_STRIP_ART": {
@@ -517,8 +526,9 @@
     "rc": 0,
     "seconds": 0.05,
     "last": "PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:21Z",
+    "result": "PASS",
+    "build": "652afb30042fdfc3686e"
    }
   },
   "T_FW_PIT_DRAW_CENSUS": {
@@ -536,10 +546,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
-    "last": "  bright = max((max(p[:3]) for p in im.getdata() if p[3] > 10), default=0)",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 0.17,
+    "last": "PASS",
+    "at": "2026-11-16T04:26:22Z",
+    "result": "PASS",
+    "build": "9151527c964824e01264"
    }
   },
   "T_PROOF_LEAVES": {
@@ -556,10 +567,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.09,
+    "seconds": 0.08,
     "last": "GREEN: every row cites a leaf, every leaf has a row or a live item owing it (0 owed)",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:22Z",
+    "result": "PASS",
+    "build": "8960843737e7246f2bde"
    }
   },
   "T_H_RESTRING_PROOF": {
@@ -576,10 +588,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.15,
-    "last": "OK",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 0.13,
+    "last": "{\"fault\": null, \"row\": {\"id\": \"M15f_restring_joined_run_one_look\", \"status\": \"PASS\", \"class\": \"MOD\", \"detail\": {\"schema\": 1, \"jobDef\": \"RM_RestringSpan\", \"readings\": [{\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": ",
+    "at": "2026-11-16T04:26:22Z",
+    "result": "PASS",
+    "build": "cf30cff164913cc6c4e3"
    }
   },
   "T_H_KINETIC_SWAY": {
@@ -596,10 +609,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.45,
-    "last": "OK",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 0.39,
+    "last": "M22b_kinetic_sway_off_does_nothing FAIL      {'schema': 1, 'setting': 'kineticSway', 'enabled': False, 'damageSelector': 'RM_Repulse_Palm', 'damageDef': 'RM_Repulse_Palm', 'readings': [{'cmd': 'set:kineticSway=False', 'reply': {'success': True, 'cmd': 'set:kineticSway=False', '_probeSerial': 5, 'val",
+    "at": "2026-11-16T04:26:22Z",
+    "result": "PASS",
+    "build": "1338a068485080a3499e"
    }
   },
   "T_H_AERIAL_PROBE_BATCH": {
@@ -618,8 +632,9 @@
     "rc": 0,
     "seconds": 0.64,
     "last": "PASS: 0 failed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:23Z",
+    "result": "PASS",
+    "build": "63a6c9fbde3afe925f38"
    }
   },
   "T_H_EXPLODE_PARSE": {
@@ -636,10 +651,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.37,
+    "seconds": 2.66,
     "last": "failures=0",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "2edd6ba26c36901c5ff0"
    }
   },
   "T_H_NO_TWO_ALIKE_SHORT": {
@@ -658,8 +674,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "GREEN: 5 cases",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "2cf36faaca54b76e0284"
    }
   },
   "T_H_PLAYTEST_RUNNER": {
@@ -678,8 +695,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "12/12 passed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "c8092551c9e8d964006e"
    }
   },
   "T_H_PROOF_DRIVERS": {
@@ -696,10 +714,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.19,
+    "seconds": 0.16,
     "last": "gss proof drivers: all ok",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "cf23db6f421fbd6e55ca"
    }
   },
   "T_H_REVIEW_LEFTOVERS": {
@@ -716,10 +735,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.26,
-    "last": "OK",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 0.25,
+    "last": "PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out",
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "3a190cc79027e12ba9a9"
    }
   },
   "T_H_WEAKCLOSE_GUARDS": {
@@ -736,10 +756,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.01,
+    "seconds": 0.02,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "5d01af6d5dd1cdfb2a65"
    }
   },
   "T_H_HUMAN_REVIEW": {
@@ -758,8 +779,9 @@
     "rc": 0,
     "seconds": 0.04,
     "last": "41/41 checks passed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:26Z",
+    "result": "PASS",
+    "build": "17792a8c0a98e8c5fcf8"
    }
   },
   "T_H_PROOF_ALL": {
@@ -776,10 +798,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 19.19,
+    "seconds": 12.1,
     "last": "ALL PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:38Z",
+    "result": "PASS",
+    "build": "6c50eb91b1d180c2f64c"
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -813,10 +836,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.54,
+    "seconds": 2.32,
     "last": "PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:26:41Z",
+    "result": "PASS",
+    "build": "28d2b06d7c628d93cb80"
    }
   },
   "T_SHOCK_RULE_OFFLINE": {
@@ -864,11 +888,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 122.23,
-    "last": "4508/4508 checks passed",
-    "at": "2026-11-14T15:46:25-08:00",
+    "seconds": 175.75,
+    "last": "4514/4514 checks passed",
+    "at": "2026-11-16T04:29:36Z",
     "result": "PASS",
-    "via": "T_CORE"
+    "build": "7d6bf66777f025822383"
    }
   },
   "T_CORD_GEOMETRY_OFFLINE": {
@@ -907,12 +931,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 127.09,
-    "last": "4515/4515 checks passed",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "seconds": 180.26,
+    "last": "4523/4523 checks passed",
+    "at": "2026-11-16T04:32:37Z",
+    "result": "PASS",
+    "build": "2888a1046f41c04ae75b"
    },
-   "known_red": "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
+   "known_red_cleared": "2026-11-16 by RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN: its item RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR is done and the test ran green on build 2888a1046f41c04ae75b (4523/4523 checks passed)"
   },
   "T_STATICS_CENSUS": {
    "id": "T_STATICS_CENSUS",
@@ -1039,8 +1064,9 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "PASS",
-    "at": "2026-11-14T15:46:25-08:00",
-    "result": "PASS"
+    "at": "2026-11-16T04:32:37Z",
+    "result": "PASS",
+    "build": "57c6ff242b3a739b1948"
    }
   },
   "sc_conduit_invisible": {

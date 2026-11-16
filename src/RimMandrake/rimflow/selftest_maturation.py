@@ -267,6 +267,22 @@ def main():
         ok("judge_certificate" in [p["clause"] for p in e["verdict"]["passed"]],
            "an unreadable table: the certificate did not run and lets the move through")
         restore_table(root, "GimmeSomeSlack", tsaved)
+        # a known_red mark whose item has closed still refuses, and says the mark is stale
+        tt = json.loads(tsaved)
+        kid = next(d for b in tt["bars"] for d in b.get("offline_decides") or [] if d in tt["tests"])
+        tt["tests"][kid]["known_red"] = "SELFTEST_CLOSED_ITEM"
+        with open(os.path.join(root, "design", "concepts", "GimmeSomeSlack", "version", "test_table.json"), "w") as f:
+            json.dump(tt, f, indent=1)
+        shard = os.path.join(root, "infrastructure", "state", "ledger", "events", "SELFTEST.jsonl")
+        os.makedirs(os.path.dirname(shard), exist_ok=True)
+        with open(shard, "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "close", "id": "SELFTEST_CLOSED_ITEM", "tsn": 1}) + "\n")
+        e = M.evaluate(root, "GimmeSomeSlack", "in_game", steward="the cycle read")
+        jc = [r for r in e["verdict"]["refusals"] if r["clause"] == "judge_certificate"]
+        ok(jc and "stale" in str(jc[0]["smallest_fix"]["what"]) and "SELFTEST_CLOSED_ITEM" in str(jc[0]["observed"]),
+           "a known_red naming a closed item refuses with the fix: the mark is stale")
+        os.remove(shard)
+        restore_table(root, "GimmeSomeSlack", tsaved)
 
         # a hold: FlowWorks' real hold was released, so it is not held; a new hold line holds it
         ok(not M.held(read(root, "FlowWorks", "journal.md"), "offline_build"), "FlowWorks' released hold no longer holds")

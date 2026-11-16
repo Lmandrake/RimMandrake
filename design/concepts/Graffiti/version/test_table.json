@@ -124,11 +124,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.4,
-    "last": "graffiti fuzz: 136890 cases, 137238 steps, 1.47s total -> OK",
-    "at": "2026-11-16T01:10:37Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fuzz.txt",
-    "result": "PASS"
+    "seconds": 3.37,
+    "last": "graffiti fuzz: 136890 cases, 137238 steps, 1.57s total -> OK",
+    "at": "2026-11-16T04:07:32Z",
+    "result": "PASS",
+    "build": "73e6652effd15dcfecc1"
    }
   },
   "T_LINT": {
@@ -154,11 +154,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 27.4,
+    "seconds": 22.39,
     "last": "Graffiti lint planted-defect selftest: 14/14 ok",
-    "at": "2026-11-16T01:11:04Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_lint.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:07:54Z",
+    "result": "PASS",
+    "build": "e2365b647bf61785364e"
    }
   },
   "T_SIGIL_COVERAGE": {
@@ -184,11 +184,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 56.5,
+    "seconds": 31.51,
     "last": "RESULT: PASS (0 finding(s))",
-    "at": "2026-11-16T01:12:01Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/sigil_coverage.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:08:26Z",
+    "result": "PASS",
+    "build": "226c53bc76fed475a15b"
    }
   },
   "T_SETTINGS_SCREENS": {
@@ -212,16 +212,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.8,
+    "seconds": 1.71,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-16T01:12:03Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_settings_screens.txt",
-    "mod_rows": {
-     "tag": "Graffiti:",
-     "ok": 7,
-     "fail": 0
-    },
-    "result": "PASS"
+    "at": "2026-11-16T04:08:27Z",
+    "result": "PASS",
+    "build": "93be27eef38602e21413"
    }
   },
   "T_SHIP_CHECK": {
@@ -246,11 +241,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 71.9,
+    "seconds": 60.72,
     "last": "Drift found. Re-run with --apply to deploy.",
-    "at": "2026-11-16T01:13:15Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/ship_check.txt",
-    "result": "FAIL"
+    "at": "2026-11-16T04:09:28Z",
+    "result": "FAIL",
+    "build": "2626078c070f6eb0703b"
    }
   },
   "T_FULL_LIST_MODE": {
@@ -272,11 +267,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.9,
-    "last": "[modcheck] chain scene_walk_lived_in END 0s PASS=0 FAIL=1 UNMEASURED=12 NOT_RUN=0 hold=0.0s body=0.0s teardown=0.0s",
-    "at": "2026-11-16T01:13:17Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_full_list_mode.txt",
-    "result": "PASS"
+    "seconds": 1.7,
+    "last": "RESULT: PASS (0 failure(s))",
+    "at": "2026-11-16T04:09:30Z",
+    "result": "PASS",
+    "build": "42e7519f1777621eda90"
    }
   },
   "T_FRESH_QT": {
@@ -298,11 +293,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.2,
+    "seconds": 0.17,
     "last": "selftest_graffiti_fresh_quicktest: PASS",
-    "at": "2026-11-16T01:13:17Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_fresh_quicktest.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:30Z",
+    "result": "PASS",
+    "build": "833407a4c786838b1fd2"
    }
   },
   "T_PLAY_ZOOM": {
@@ -324,11 +319,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.2,
+    "seconds": 0.19,
     "last": "selftest graffiti play zoom: PASS (0 failure(s))",
-    "at": "2026-11-16T01:13:18Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_play_zoom.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:30Z",
+    "result": "PASS",
+    "build": "d69c269171a121372758"
    }
   },
   "T_SPREE_SURPRISE": {
@@ -350,11 +345,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.0,
+    "seconds": 0.03,
     "last": "selftest graffiti spree surprise: PASS",
-    "at": "2026-11-16T01:13:18Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_spree_surprise.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:30Z",
+    "result": "PASS",
+    "build": "2b13482ce91daa123659"
    }
   },
   "T_V1_LIVE_VERDICTS": {
@@ -376,11 +371,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.0,
+    "seconds": 0.82,
     "last": "PASS selftest_graffiti_v1_live",
-    "at": "2026-11-16T01:13:19Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_v1_live.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:31Z",
+    "result": "PASS",
+    "build": "7f9380ee6521690db786"
    }
   },
   "T_WEATHER_OFFLINE": {
@@ -406,11 +401,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 2.04,
     "last": "T_WEATHER_OFFLINE: PASS (kernel weather family green; permanent rule green)",
-    "at": "2026-11-16T01:13:20Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_weather.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:33Z",
+    "result": "PASS",
+    "build": "4312272f510a64a84f7d"
    }
   },
   "T_RAID_TAG_BUILT_WALL_ONLY": {
@@ -436,11 +431,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 9.6,
+    "seconds": 8.22,
     "last": "T_RAID_TAG_BUILT_WALL_ONLY: PASS - raid tags reach built walls only (watch: fixed copy green, 4 mutants red)",
-    "at": "2026-11-16T01:13:30Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/graffiti_preflight/runs/selftest_graffiti_raid_tag_wall.txt",
-    "result": "PASS"
+    "at": "2026-11-16T04:09:41Z",
+    "result": "PASS",
+    "build": "350ef9d9a71ce8bc504e"
    }
   },
   "T_MSG_COUNTERS_RESET": {
@@ -463,8 +458,13 @@
    ],
    "mods": [],
    "runs_today": {
-    "ran": false,
-    "why": "not written yet: Stage 3 work (RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME)"
+    "ran": true,
+    "rc": 2,
+    "seconds": 0.01,
+    "last": "python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN.det/src/RimMandrake/Utils/selftest_graffiti_message_counters.py': [Errno 2] No such file or directory",
+    "at": "2026-11-16T04:09:41Z",
+    "result": "FAIL",
+    "build": "616a95920d3808f876dd"
    }
   },
   "sc_spree_corridor": {
