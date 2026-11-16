@@ -1620,3 +1620,632 @@ def scene_ideo_removed_save_reload(t):
             if not after or after["def"] != before.get("def") or after["by"] != before.get("by"):
                 raise ExpectationFailed("the mark at %s (before %s) reads %s after the reload" % (cell, before, after))
             t._current.detail = "%s" % after
+
+
+# ------------------------------------------------- the social layer (scenes.json: sc_mockery, sc_answer_wall, sc_tribute_memorial, sc_fights,
+# sc_visitors). Same hands as above (RM_GraffitiSocialProof.cs): Feud (:20), Befriend (:31), Lovers (:109), Kill (:168), Fight (:139, which also
+# reads a's opinion of b), PlayLog (:119), Ledger (:269, whose "grudge <pawn> <answer> against <painter>" lines are each open answer and whose
+# trace carries every read, answer, confrontation and visitor charge, GraffitiSocial.cs:452/:466/:930/:1013/:644).
+
+TRIBUTE_DEF = "RM_Graffiti_Tribute"                  # ThingDefs_GraffitiSocial.xml:37, meaning Tribute
+MEMORIAL_DEF = "RM_Graffiti_Memorial"                # ThingDefs_GraffitiSocial.xml:68, meaning Memorial
+INSULT_DEF = "RM_Graffiti_FactionInsult"             # ThingDefs_GraffitiSocial.xml:99, meaning Insult
+SPREE_BREAK = "RM_GraffitiPaintingSpreeBreak"        # the break mental_break_spree forces
+CONFRONT_JOB = "RM_ConfrontPainter"                  # JobGiver_AnswerMark's confrontation (JobDrivers_AnswerMark.cs:51)
+ENEMY_OPINION, FRIEND_OPINION, HATED_OPINION = -15, 20, -30   # RM_GraffitiKernel.cs:777
+INSULT_GOODWILL, VISIT_LOSS_CAP = -12, 12            # RM_GraffitiKernel.GoodwillOf (:1263) and VisitLossCap (:1238)
+PLAIN = "Industriousness:1"                          # a trait with no temperament row of its own that bears on answers (TemperamentDefs_Graffiti.xml)
+HOT = "Brawler,Abrasive"                             # temper 1.5 x 1.5 (TemperamentDefs_Graffiti.xml:29-30); IsHot is temper x vanilla >= 1.5 (:922)
+_TRACE_READ = re.compile(r"^\d+ (\S+) reads (\w+)@\((-?\d+), 0, (-?\d+)\) by (\S+) about (\S+) -> (\w+)")
+_GRUDGE = re.compile(r"^grudge (\S+) (\w+) against ?(\S*)\s*$", re.M)
+
+
+def _story(t, acc):
+    """RM_GraffitiSocialProof.Ledger("trace"), appended to `acc` (the ring empties on each read). -> (new trace lines, {nick: ledger mood and
+    opinion lines}, {nick: (answer, against)} of the grudges open now)."""
+    text, _ = _static(t, SOCIAL_PROOF, "Ledger", "trace")
+    new = [ln[4:].strip() for ln in text.splitlines() if ln.startswith("  . ")]
+    acc.extend(new)
+    per, cur = {}, None
+    for ln in text.splitlines():
+        if ln and not ln.startswith(" ") and " [" in ln:
+            cur = ln.split(" ", 1)[0]
+            per[cur] = []
+        elif cur and (ln.startswith("  mood ") or ln.startswith("  opinion of ")):
+            per[cur].append(ln)
+        elif not ln.startswith("  "):
+            cur = None
+    return new, per, {m.group(1): (m.group(2), m.group(3)) for m in _GRUDGE.finditer(text)}
+
+
+def _reads(acc, nick, cell=None):
+    """[(def, (x, z), maker, about, reaction)] of `nick`'s first reads in the trace, at `cell` if given."""
+    out = []
+    for ln in acc:
+        m = _TRACE_READ.match(ln)
+        if m and m.group(1) == nick and (cell is None or (int(m.group(3)), int(m.group(4))) == tuple(cell)):
+            out.append((m.group(2), (int(m.group(3)), int(m.group(4))), m.group(5), m.group(6), m.group(7)))
+    return out
+
+
+def _fed(t, *nicks):
+    for nick in nicks:
+        t.bridge_call("jawa/pawn_need", pawn=nick, action="need", need="Food", level=1.0)
+        t.bridge_call("jawa/pawn_need", pawn=nick, action="need", need="Rest", level=1.0)
+
+
+def _recruit(t, nick, traits=PLAIN, art=""):
+    """A new colonist cast for the scene (RM_GraffitiSocialProof.Recruit), fed and rested; the traits are read back, never assumed."""
+    got, have = _cast(t, "Recruit", "%s/%s/%s" % (nick, traits, art))
+    want = [x for x in traits.split(",") if x]
+    if t._guard() and sorted(have) != sorted(want):
+        raise ExpectationFailed("SITE: %s cast with %s holds %s" % (nick, want, have))
+    _fed(t, nick)
+    return got
+
+
+def _opinion(t, a, b):
+    """a's opinion of b, as RM_GraffitiSocialProof.Fight reads it ('(opinion N)')."""
+    text, _ = _static(t, SOCIAL_PROOF, "Fight", "%s/%s" % (a, b))
+    m = re.search(r"\(opinion (-?\d+)\)", text)
+    if t._guard() and not m:
+        raise ExpectationFailed("RM_GraffitiSocialProof.Fight(%s/%s) gave no opinion: %r" % (a, b, text))
+    return int(m.group(1)) if m else 0
+
+
+def _hot(t, nick):
+    hot = _temper(t, nick).get("hot")
+    if t._guard() and hot != "True":
+        raise ExpectationFailed("SITE: %s cast %s reads hot %r (GraffitiTemperament.IsHot): the confront band is closed to it" % (nick, HOT, hot))
+
+
+def _mark_line(t, cell):
+    text, _ = _static(t, SOCIAL_PROOF, "Marks")
+    return next((ln for ln in text.splitlines() if ln.startswith("(%d, 0, %d) " % tuple(cell))), None)
+
+
+def _stage_pick(t, acc, want, painter, traits, art, cells, tag, friend=None, budget=3000):
+    """sc_answer_wall's staging: 'one answer is the pawn's pick (asserted: the answer chosen)'. A fresh subject per try, held drafted (a drafted
+    pawn reads but never answers, JobDrivers_AnswerMark.cs:20) 3 cells off its own cell, mocked there by `painter`; its grudge is read off the
+    ledger. The first subject whose pick is `want` is returned still drafted; every other one is vanished so it never acts.
+    -> (nick, mark id, mark, [(nick, pick)] of the tries)."""
+    tries = []
+    for i, (cx, cz) in enumerate(cells):
+        if not t._guard():
+            break
+        nick = "%s%d" % (tag, i)
+        _recruit(t, nick, traits, art)
+        _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (painter, nick))
+        if friend:
+            _static(t, SOCIAL_PROOF, "Befriend", "%s/%s" % (friend, nick))
+        _hold_at(t, nick, cx, cz - 3, ticks=300)
+        mid, m = _order_mark(t, painter, MOCKERY_DEF, nick, cx, cz)
+        pick, waited = None, 0
+        while waited < budget and t._guard():
+            t.wait_ticks(250)
+            waited += 250
+            _, _, gr = _story(t, acc)
+            if nick in gr or _reads(acc, nick, (cx, cz)):
+                pick = gr.get(nick)
+                break
+        tries.append((nick, pick[0] if pick else None))
+        if pick and pick[0] == want and pick[1] == painter:
+            return nick, mid, m, tries
+        t.bridge_call("jawa/pawn_force_incapacitate", pawn=nick, action="vanish")
+    if t._guard():
+        raise ExpectationFailed("SITE: no subject picked %s against %s in %d tries (nick, pick): %s" % (want, painter, len(tries), tries))
+    return None, None, None, tries
+
+
+@suite.chain("scene_mockery")
+def scene_mockery(t):
+    """sc_mockery (mockery): a feuding colonist paints a mockery of the other; its subject is hurt (Humiliated) and thinks less of the painter
+    (PaintedMe), a rival of the subject enjoys it, the mark's subject is the target, and a neutral viewer holds no amused thought. Control: a
+    plain tag by the same painter, read by the same subject first, moves no opinion off the walls. Restore: the runner destroys the quicktest map.
+    The scene's 'amused' for a mockery is the kernel's Gleeful (RM_Graffiti_EnjoyedIt): ReactionOf gives a mockery's reader with opinion of the
+    subject <= -15 Gleeful (RM_GraffitiKernel.cs:801); RM_Graffiti_Amused is a Jest's. The rest 'walk past' as viewers held in sight."""
+    x, z = t.anchor
+    painter, subject, rival, neutral, friend = "GrfMock", "GrfMocked", "GrfRival", "GrfPasser", "GrfPal"
+    tag_at, mock_at = (x - 3, z), (x + 3, z)          # floor cells on the south face of the wall row z + 1
+    acc, per = [], {}
+    with t.component("site_ready_mockery"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 8, z + 1, 17)
+        t.bridge_call("jawa/map_commit")
+        _recruit(t, painter, PLAIN, 10)
+        for nick in (subject, rival, neutral, friend):
+            _recruit(t, nick)
+        _no_cleaning(t)
+        feud, _ = _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (painter, subject))
+        _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (rival, subject))
+        _static(t, SOCIAL_PROOF, "Befriend", "%s/%s" % (friend, subject))
+        for nick, dx in ((subject, 0), (rival, 2), (neutral, -2), (friend, 4)):
+            _hold_at(t, nick, x + dx, z - 3, ticks=300)
+        if t._guard():
+            ops = {n: _opinion(t, n, subject) for n in (painter, rival, neutral, friend)}
+            if not (ops[painter] <= ENEMY_OPINION and ops[rival] <= ENEMY_OPINION and ENEMY_OPINION < ops[neutral] < FRIEND_OPINION
+                    and ops[friend] >= FRIEND_OPINION):
+                raise ExpectationFailed("SITE: opinions of %s %s (painter and rival <= %d, neutral between, friend >= %d)"
+                                        % (subject, ops, ENEMY_OPINION, FRIEND_OPINION))
+            t._current.detail = "%s; opinions of %s %s" % (feud, subject, ops)
+
+    with t.component("control_plain_tag_no_opinion_change"):
+        if t._guard():
+            _story(t, acc)
+            before = _opinion(t, subject, painter)
+            _order_mark(t, painter, VANDAL_DEF, "", *tag_at)
+            for _ in range(6):
+                t.wait_ticks(250)
+                _, per, _ = _story(t, acc)
+            seen = _reads(acc, subject, tag_at)
+            if not seen:
+                raise ExpectationFailed("SITE: %s never read the plain tag at %s in 1500 ticks: the control rules nothing out" % (subject, tag_at))
+            ours = [ln for ln in per.get(subject, []) if ln.startswith("  opinion of %s " % painter)]
+            if ours:
+                raise ExpectationFailed("a plain tag moved %s's opinion of its painter off the walls: %s (read %s)" % (subject, ours, seen))
+            t._current.detail = "read %s; game opinion %d -> %d (not judged: chitchat moves it)" % (seen[0], before, _opinion(t, subject, painter))
+
+    with t.component("mockery_names_its_subject"):
+        if t._guard():
+            _order_mark(t, painter, MOCKERY_DEF, subject, *mock_at)
+            line = _mark_line(t, mock_at)
+            if not line or not line.split(" ", 3)[3].startswith("Mockery ") or (" by %s about %s " % (painter, subject)) not in line:
+                raise ExpectationFailed("the ordered mockery at %s reads %r (want Mockery by %s about %s)" % (mock_at, line, painter, subject))
+            for _ in range(8):
+                t.wait_ticks(250)
+                _, per, _ = _story(t, acc)
+            t._current.detail = line
+
+    def reaction(nick):
+        r = _reads(acc, nick, mock_at)
+        return r[0][4] if r else None
+
+    with t.component("subject_hurt_and_thinks_less_of_painter"):
+        if t._guard():
+            th = [x for x in _graffiti_thoughts(t, subject) if x.get("def") == "RM_Graffiti_Humiliated"]
+            low = [ln for ln in per.get(subject, []) if ln.startswith("  opinion of %s -" % painter)]
+            if reaction(subject) != "Humiliated" or not th or not low:
+                raise ExpectationFailed("%s read the mockery as %r; Humiliated %s; opinion lines %s" % (subject, reaction(subject), th, per.get(subject)))
+            t._current.detail = "Humiliated %+.1f; %s" % (float(th[0].get("moodOffset") or 0), low[0].strip())
+
+    with t.component("rival_of_subject_enjoys_it"):
+        if t._guard():
+            th = [x for x in _graffiti_thoughts(t, rival) if x.get("def") == "RM_Graffiti_EnjoyedIt"]
+            if reaction(rival) != "Gleeful" or not th:
+                raise ExpectationFailed("%s (hates %s) read the mockery as %r; EnjoyedIt %s" % (rival, subject, reaction(rival), th))
+            t._current.detail = "Gleeful, EnjoyedIt %+.1f" % float(th[0].get("moodOffset") or 0)
+
+    with t.component("control_neutral_viewer_not_amused"):
+        if t._guard():
+            r = reaction(neutral)
+            fun = [x for x in _graffiti_thoughts(t, neutral) if x.get("def") in ("RM_Graffiti_EnjoyedIt", "RM_Graffiti_Amused", "RM_Graffiti_EnjoyedInsult")]
+            if r is None:
+                raise ExpectationFailed("SITE: the neutral viewer never read the mockery: its reads %s" % _reads(acc, neutral))
+            if r in ("Gleeful", "Amused") or fun:
+                raise ExpectationFailed("the neutral viewer read the mockery as %s and holds %s" % (r, fun))
+            t._current.detail = "neutral read it as %s" % r
+
+
+@suite.chain("scene_answer_wall")
+def scene_answer_wall(t):
+    """sc_answer_wall (answer_wall): four standing mockeries, each with its subject, a friend of the subject and the painter, each staged so its
+    subject's pick is one answer (_stage_pick: a Neurotic subject leans Scrub, RM_GraffitiKernel.cs:845 and TemperamentDefs_Graffiti.xml:42; a
+    Tortured Artist leans Reply (:46); a hot head is the only one the confront band opens to); each answer job then completes: the scrub
+    leaves the mark gone, the deface leaves it crossed out, the reply leaves the subject's mark beside it, the confront ends in a confrontation
+    subject against painter. The painted-out case: the painter's spree goes over a hot colonist's tags (unordered, so Notify_WentOver gives a
+    grudge, GraffitiSocial.cs:860) and that ends in a confrontation too. Control: a plain tag nobody minds gets no answer job and stands.
+    Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    painter, friend, tagger = "GrfAnsP", "GrfAnsPal", "GrfAnsTag"
+    rows = {"Scrub": z - 19, "Deface": z - 9, "Reply": z + 1, "Confront": z + 11}
+    cast = {"Scrub": ("Neurotic:1", 0, 2), "Deface": (PLAIN, 0, 20), "Reply": ("TorturedArtist", 12, 4), "Confront": (HOT, 0, 6)}
+    acc, picked = [], {}
+    with t.component("site_ready_answer_wall"):
+        _site_start(t)
+        _prep_site(t, 60)
+        for wz in rows.values():
+            _wall_run(t, x - 25, wz, 51)
+        t.bridge_call("jawa/map_commit")
+        _recruit(t, painter, PLAIN, 10)
+        _recruit(t, friend)
+        _recruit(t, tagger, PLAIN, 8)
+        _no_cleaning(t)
+        _hold_at(t, friend, x, z - 4, ticks=300)
+
+    for want in ("Scrub", "Deface", "Reply", "Confront"):
+        with t.component("pick_%s_staged" % want.lower()):
+            if t._guard():
+                traits, art, n = cast[want]
+                wz = rows[want]
+                cells = [(x - 24 + 2 * i, wz - 1) for i in range(n)]
+                nick, mid, m, tries = _stage_pick(t, acc, want, painter, traits, art, cells, "GrfAns%s" % want[:2], friend=friend)
+                if want == "Confront":
+                    _hot(t, nick)
+                picked[want] = (nick, mid, m)
+                t._current.detail = "tries (nick, pick): %s" % tries
+
+        with t.component("%s_job_completes" % want.lower()):
+            if t._guard() and want in picked:
+                nick, mid, m = picked[want]
+                cell = (m["x"], m["z"])
+                t.bridge_call("jawa/set_draft", pawnId=nick, drafted=False)
+                done, waited, line = None, 0, None
+                while waited < 9000 and t._guard() and not done:
+                    t.wait_ticks(500)
+                    waited += 500
+                    _fed(t, nick)
+                    _story(t, acc)
+                    if want == "Scrub":
+                        done = mid not in _all_marks(t, "%d,%d,1,1" % cell) and [l for l in acc if (" %s scrubbed away " % nick) in l]
+                    elif want == "Deface":
+                        line = _mark_line(t, cell)
+                        done = line and " DEFACED" in line and [l for l in acc if (" %s crossed out " % nick) in l]
+                    elif want == "Reply":
+                        mine = [ln for ln in _marks_by(t, nick)]
+                        near = [ln for ln in mine if abs(int(re.match(r"\((-?\d+)", ln).group(1)) - cell[0]) <= 6]
+                        done = near
+                    else:
+                        done = [l for l in acc if (" %s confronts %s:" % (nick, painter)) in l]
+                if t._guard():
+                    why = [l for l in acc if (" %s means to %s against %s" % (nick, want, painter)) in l]
+                    if not done:
+                        raise ExpectationFailed("%s picked %s against %s and %d ticks on it is not done (mark %s: %r; its story %s)"
+                                                % (nick, want, painter, waited, cell, _mark_line(t, cell), [l for l in acc if nick in l][-6:]))
+                    if not why or not _reads(acc, nick, cell):
+                        raise ExpectationFailed("%s's %s has no reason in the trace: read %s, meant %s" % (nick, want, _reads(acc, nick, cell), why))
+                    t._current.detail = "%s after %d ticks; because %s -> %s" % (done[0] if isinstance(done, list) else done, waited, _reads(acc, nick, cell)[0], why[0])
+
+    with t.component("painted_out_ends_in_confrontation"):
+        hit, rounds = None, []
+        for k in range(3):
+            if not t._guard() or hit:
+                break
+            owner, wx, wz = "GrfAnsOut%d" % k, x - 20 + 15 * k, z + 25
+            _recruit(t, owner, HOT, 3)                       # art 3: under CanReplyInPaint's 5, so a WorkDestroyed grudge is Confront or nothing
+            _hot(t, owner)
+            _wall_run(t, wx, wz, 4)
+            t.bridge_call("jawa/map_commit")
+            for cx in range(wx, wx + 4):
+                for cz in (wz - 1, wz + 1):
+                    _order_mark(t, owner, VANDAL_DEF, "", cx, cz)
+            _hold_at(t, owner, wx + 1, wz - 6, ticks=300)
+            _hold_at(t, painter, wx + 1, wz - 2, ticks=300)
+            t.bridge_call("jawa/set_draft", pawnId=painter, drafted=False)
+            r = t.bridge_call("jawa/pawn_force_mental_break", pawn=painter, breakDef=SPREE_BREAK)
+            if t._guard() and not (r or {}).get("started"):
+                raise ExpectationFailed("jawa/pawn_force_mental_break %s did not start the spree: %r" % (painter, r))
+            grudge = None
+            with _own_spree([painter]):
+                waited = 0
+                while waited < 12000 and t._guard():
+                    t.wait_ticks(500)
+                    waited += 500
+                    _fed(t, owner, painter)
+                    _, _, gr = _story(t, acc)
+                    grudge = gr.get(owner) or grudge
+            rounds.append((owner, grudge))
+            if not grudge or grudge[0] != "Confront":
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=owner, action="vanish")
+                continue
+            t.bridge_call("jawa/set_draft", pawnId=owner, drafted=False)
+            waited = 0
+            while waited < 20000 and t._guard() and not hit:
+                t.wait_ticks(500)
+                waited += 500
+                _fed(t, owner, painter)
+                _story(t, acc)
+                hit = next((l for l in acc if (" %s confronts %s:" % (owner, painter)) in l), None)
+        if t._guard():
+            if not hit:
+                raise ExpectationFailed("no painted-out colonist confronted %s: rounds (owner, grudge) %s; went-over lines %s"
+                                        % (painter, rounds, [l for l in acc if "painted over" in l or "GrfAnsOut" in l][-8:]))
+            t._current.detail = "%s; rounds %s" % (hit, rounds)
+
+    with t.component("control_unoffending_mark_no_answer"):
+        if t._guard():
+            cell = (x + 20, rows["Reply"] - 1)
+            mid, _ = _order_mark(t, tagger, VANDAL_DEF, "", *cell)
+            t.wait_ticks(6000)
+            _story(t, acc)
+            line = _mark_line(t, cell)
+            touched = [l for l in acc if ("@(%d, 0, %d)" % cell) in l and (" scrubbed away " in l or " crossed out " in l or " means to " in l)]
+            if mid not in _all_marks(t, "%d,%d,1,1" % cell) or (line and " DEFACED" in line) or touched:
+                raise ExpectationFailed("a plain tag nobody minds was answered: mark %s now %r; %s" % (mid, line, touched))
+            t._current.detail = line
+
+
+@suite.chain("scene_tribute_memorial")
+def scene_tribute_memorial(t):
+    """sc_tribute_memorial (tribute_memorial): a colonist whose friend died paints a memorial on its own and its grief eases
+    (RM_Graffiti_GriefEased, GraffitiSocial.cs:803); a colonist's partner paints it a tribute, which warms it (Honored) while its rival scoffs
+    (HonoredMyEnemy: ReactionOf gives a tribute's reader with opinion of the subject <= -30 Scoffs, RM_GraffitiKernel.cs:801; Jealous is the
+    maker's own lover's, and here that lover is the subject). Control: a colonist with no dead friend, painting through the same days, never
+    paints a memorial. Restore: the runner destroys the quicktest map. The memorial is the hand's own choice (SocialMark, GraffitiSocial.cs:658);
+    a tribute not chosen in the window is ordered, and that is recorded: what is judged of it is how it is read."""
+    x, z = t.anchor
+    mourner, dead, partner, beloved, rival, plain = "GrfMourn", "GrfGone", "GrfPartner", "GrfLoved", "GrfSpite", "GrfNoGrief"
+    acc, per = [], {}
+    memorial = tribute = None
+    with t.component("site_ready_tribute_memorial"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 12, z + 1, 25)
+        t.bridge_call("jawa/map_commit")
+        for nick, art in ((mourner, 8), (dead, ""), (partner, 8), (beloved, ""), (rival, ""), (plain, 8)):
+            _recruit(t, nick, PLAIN, art)
+        _no_cleaning(t)
+        _static(t, SOCIAL_PROOF, "Befriend", "%s/%s" % (mourner, dead))
+        lovers, _ = _static(t, SOCIAL_PROOF, "Lovers", "%s/%s" % (partner, beloved))
+        _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (rival, beloved))
+        _static(t, SOCIAL_PROOF, "Kill", dead)
+        for nick, dx in ((beloved, -2), (rival, 2)):
+            _hold_at(t, nick, x + dx, z - 3, ticks=300)
+        if t._guard():
+            mourns = {n: _temper(t, n).get("mourns") for n in (mourner, plain, partner)}
+            spite = _opinion(t, rival, beloved)
+            if mourns[mourner] != dead or mourns[plain] != "-" or mourns[partner] != "-" or "lovers=True" not in lovers or spite > HATED_OPINION:
+                raise ExpectationFailed("SITE: mourns %s (want %s for %s only); %s; %s of %s %d (want <= %d)"
+                                        % (mourns, dead, mourner, lovers, rival, beloved, spite, HATED_OPINION))
+            t._current.detail = "mourns %s; %s; rival opinion %d" % (mourns, lovers, spite)
+
+    with t.component("run_until_memorial_and_tribute"):
+        waited = 0
+        while waited < 60000 and t._guard() and not (memorial and tribute):
+            for nick in (mourner, partner, plain):
+                t.bridge_call("jawa/pawn_need", pawn=nick, action="need", need="Joy", level=0.2)
+            _fed(t, mourner, partner, plain, beloved, rival)
+            t.wait_ticks(1000)
+            waited += 1000
+            _, per, _ = _story(t, acc)
+            memorial = memorial or next((l for l in acc if (" %s painted Memorial@" % mourner) in l and ("about %s" % dead) in l), None)
+            tribute = tribute or next((l for l in acc if (" %s painted Tribute@" % partner) in l and ("about %s" % beloved) in l), None)
+        ordered = False
+        if t._guard() and tribute is None:
+            ordered = True
+            _order_mark(t, partner, TRIBUTE_DEF, beloved, x, z)
+            _story(t, acc)
+            tribute = next((l for l in acc if (" %s painted Tribute@" % partner) in l), None)
+        if t._guard():
+            t._current.detail = "after %d ticks: memorial %s; tribute %s%s" % (waited, memorial, tribute, " (ordered: not chosen in the window)" if ordered else "")
+
+    with t.component("memorial_eases_its_painters_grief"):
+        if t._guard():
+            if not memorial:
+                raise ExpectationFailed("%s, grieving %s, painted no memorial in 60000 ticks of low joy: its marks %s" % (mourner, dead, _marks_by(t, mourner)))
+            eased = [x for x in _graffiti_thoughts(t, mourner) if x.get("def") == "RM_Graffiti_GriefEased"]
+            if not eased:
+                raise ExpectationFailed("%s painted %r but holds no RM_Graffiti_GriefEased: %s" % (mourner, memorial, _graffiti_thoughts(t, mourner)))
+            t._current.detail = "%s; GriefEased %+.1f" % (memorial, float(eased[0].get("moodOffset") or 0))
+
+    with t.component("tribute_warms_subject_and_rival_scoffs"):
+        if t._guard():
+            if not tribute:
+                raise ExpectationFailed("no tribute by %s about %s stands: %s" % (partner, beloved, _marks_by(t, partner)))
+            cell = tuple(int(v) for v in re.search(r"Tribute@\((-?\d+), 0, (-?\d+)\)", tribute).groups())
+            for nick in (beloved, rival):
+                _hold_at(t, nick, cell[0] + (1 if nick == rival else -1), cell[1] - 3, ticks=300)
+            for _ in range(8):
+                t.wait_ticks(250)
+                _, per, _ = _story(t, acc)
+            rb, rr = _reads(acc, beloved, cell), _reads(acc, rival, cell)
+            warm = [x for x in _graffiti_thoughts(t, beloved) if x.get("def") == "RM_Graffiti_Honored"]
+            sour = [ln for ln in per.get(rival, []) if ln.startswith("  opinion of %s -" % partner)]
+            jealous = [x for x in _graffiti_thoughts(t, rival) if x.get("def") == "RM_Graffiti_JealousOfWall"]
+            if not rb or rb[0][4] != "Honored" or not warm:
+                raise ExpectationFailed("%s read the tribute as %s, Honored %s" % (beloved, rb, warm))
+            if not rr or rr[0][4] not in ("Scoffs", "Jealous") or not (sour or jealous):
+                raise ExpectationFailed("%s (hates %s) read the tribute as %s; opinion lines %s, jealous %s" % (rival, beloved, rr, per.get(rival), jealous))
+            t._current.detail = "%s Honored %+.1f; %s %s %s" % (beloved, float(warm[0].get("moodOffset") or 0), rival, rr[0][4], (sour or jealous)[0])
+
+    with t.component("control_no_dead_friend_no_memorial"):
+        if t._guard():
+            mine = _marks_by(t, plain)
+            if not mine:
+                raise ExpectationFailed("SITE: %s painted nothing in the window, so its not painting a memorial rules nothing out" % plain)
+            mem = [ln for ln in mine if " Memorial " in ln]
+            if mem:
+                raise ExpectationFailed("%s, who mourns nobody, painted a memorial: %s" % (plain, mem))
+            t._current.detail = "%d mark(s) by %s, none a memorial" % (len(mine), plain)
+
+
+@suite.chain("scene_fights")
+def scene_fights(t):
+    """sc_fights (fights_reasons): three subjects of one feud painter's mockeries, each staged to mean a confrontation (_stage_pick): one stays
+    drafted, one is area-restricted to a pen away from the painter, one is free, and an unrelated colonist stands by; three in-game days run
+    with all three at once (one window, not three sequential runs: the same three cases, a third of the clock). The free one confronts the
+    painter, the play log naming the mark as the reason; every confrontation is subject against painter; the drafted one never moves and the
+    penned one never leaves its pen. Control: the social layer off, a fresh hot subject under a fresh mockery confronts nobody.
+    Restore: the runner destroys the quicktest map; socialEnabled is put back here."""
+    x, z = t.anchor
+    painter, bystander = "GrfFightP", "GrfFightBy"
+    acc, subs, pen = [], {}, (x - 24, z - 24, 7, 7)
+    with t.component("site_ready_fights"):
+        _site_start(t)
+        _prep_site(t, 60)
+        _wall_run(t, x - 20, z + 1, 41)
+        t.bridge_call("jawa/map_commit")
+        _recruit(t, painter, PLAIN, 10)
+        _recruit(t, bystander)
+        _no_cleaning(t)
+        for i, role in enumerate(("drafted", "penned", "free")):
+            if t._guard():
+                cells = [(x - 20 + 14 * i + 2 * k, z) for k in range(7)]
+                nick, mid, m, tries = _stage_pick(t, acc, "Confront", painter, HOT, 0, cells, "GrfF%s" % role[:2].capitalize())
+                subs[role] = nick
+        if t._guard():
+            a = t.bridge_call("jawa/new_allowed_area", label="GrfPen") or {}
+            p = t.bridge_call("jawa/paint_area", area="GrfPen", ops="%d,%d,%d,%d" % pen) or {}
+            q = t.bridge_call("jawa/set_player_settings", pawnId=subs["penned"], area="GrfPen") or {}
+            if not (a.get("success") and p.get("success", True) and q.get("success")):
+                raise ExpectationFailed("SITE: the pen did not take: new_allowed_area %r; paint_area %r; set_player_settings %r" % (a, p, q))
+            t.bridge_call("jawa/order_pawn", pawnId=subs["penned"], x=pen[0] + 3, z=pen[1] + 3, waitTicks=0)
+            for role in ("penned", "free"):
+                t.bridge_call("jawa/set_draft", pawnId=subs[role], drafted=False)
+            _hold_at(t, bystander, x + 3, z - 5, ticks=0)
+            t.bridge_call("jawa/set_draft", pawnId=bystander, drafted=False)
+            t._current.detail = "subjects %s, pen %s" % (subs, pen)
+
+    where, jobs = {}, set()
+    with t.component("three_days_run"):
+        start, waited = None, 0
+        while waited < 180000 and t._guard():
+            _fed(t, painter, bystander, *subs.values())
+            t.wait_ticks(2500)
+            waited += 2500
+            _story(t, acc)
+            pawns = {p.get("name") or p.get("id"): p for p in _all_colonists(t)}
+            for role, nick in subs.items():
+                pp = pawns.get(nick) or {}
+                pos = pp.get("position") or {}
+                where.setdefault(role, []).append((pos.get("x", pp.get("x")), pos.get("z", pp.get("z"))))
+            who = _who(t)
+            jobs.update((n, (who.get(n) or {}).get("job")) for n in subs.values())
+        if t._guard():
+            t._current.detail = "%d polls; confront lines %s" % (len(where.get("free", [])), [l for l in acc if " confronts " in l])
+
+    lines = [l for l in acc if " confronts " in l]
+    with t.component("free_subject_confronts_painter_over_the_mark"):
+        if t._guard():
+            mine = [l for l in lines if (" %s confronts %s:" % (subs["free"], painter)) in l]
+            log, _ = _static(t, SOCIAL_PROOF, "PlayLog", "200")
+            why = [ln for ln in log.splitlines() if ("%s confronted %s about what %s painted about %s" % (subs["free"], painter, painter, subs["free"])) in ln]
+            if not mine or not why:
+                raise ExpectationFailed("%s (free, meant Confront) in three days: confront lines %s; play log reason %s" % (subs["free"], mine, why))
+            t._current.detail = "%s; %s" % (mine[0], why[0])
+
+    with t.component("every_confrontation_subject_against_painter"):
+        if t._guard():
+            bad = [l for l in lines if not any((" %s confronts %s:" % (s, painter)) in l for s in subs.values())]
+            if bad or any(bystander in l for l in lines):
+                raise ExpectationFailed("confrontations not subject against painter: %s" % (bad or lines))
+
+    with t.component("drafted_and_penned_subjects_stay"):
+        if t._guard():
+            d = set(where.get("drafted", []))
+            out = [c for c in where.get("penned", []) if c[0] is None or not (pen[0] <= c[0] < pen[0] + pen[2] and pen[1] <= c[1] < pen[1] + pen[3])]
+            went = [l for l in lines if (" %s confronts " % subs["drafted"]) in l or (" %s confronts " % subs["penned"]) in l]
+            if len(d) != 1 or out or went or (subs["drafted"], CONFRONT_JOB) in jobs:
+                raise ExpectationFailed("drafted cells %s; penned outside its pen at %s; their confrontations %s; jobs %s" % (sorted(d, key=str), out[:5], went, sorted(jobs, key=str)))
+            t._current.detail = "drafted at %s; penned stayed in %s over %d polls" % (sorted(d, key=str), pen, len(where.get("penned", [])))
+
+    with t.component("control_social_off_no_confrontation"):
+        try:
+            t.set_setting(SETTINGS, {"socialEnabled": False})
+            calm = "GrfFightOff"
+            _recruit(t, calm, HOT, 0)
+            _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (painter, calm))
+            _hold_at(t, calm, x + 16, z - 3, ticks=300)
+            t.bridge_call("jawa/set_draft", pawnId=calm, drafted=False)
+            _story(t, acc)
+            n0 = len(acc)
+            _order_mark(t, painter, MOCKERY_DEF, calm, x + 16, z)
+            seen, waited = set(), 0
+            while waited < 20000 and t._guard():
+                _fed(t, calm, painter)
+                t.wait_ticks(2000)
+                waited += 2000
+                _, _, gr = _story(t, acc)
+                seen.add((gr.get(calm), (_who(t).get(calm) or {}).get("job")))
+            if t._guard():
+                late = [l for l in acc[n0:] if " confronts " in l]
+                if late or any(g for g, _ in seen) or any(j == CONFRONT_JOB for _, j in seen):
+                    raise ExpectationFailed("social off: confront lines %s; (grudge, job) seen %s" % (late, sorted(seen, key=str)))
+                t._current.detail = "20000 ticks off: (grudge, job) seen %s" % sorted(seen, key=str)
+        finally:
+            t.set_setting(SETTINGS, {"socialEnabled": True})
+
+
+def _factions(t):
+    """{name: row} of jawa/list_factions (defName, name, isPlayer, hostile, goodwill, hidden)."""
+    r = t.bridge_call("jawa/list_factions") or {}
+    return {f.get("name"): f for f in (r.get("factions") or []) if f.get("name")}
+
+
+@suite.chain("scene_visitors")
+def scene_visitors(t):
+    """sc_visitors (visitors): an insult to the trader faction on a wall its caravan passes: the caravan walks past it many times and the
+    faction's goodwill moves once for the visit, by the insult's -12, never past VisitLossCap. Control: an insult to another faction on the
+    same wall moves that faction nothing and the trader's read of it is 'none of theirs, goodwill 0' (GraffitiSocial.cs:639). Restore: the
+    runner destroys the quicktest map. The caravan's pawns are declared to the stranger detector (they are the scene's visitors)."""
+    x, z = t.anchor
+    painter = "GrfInsult"
+    ours_at, other_at = (x - 3, z), (x + 3, z)
+    acc, trader, other = [], None, None
+    with t.component("site_ready_visitors"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 10, z + 1, 21)
+        t.bridge_call("jawa/map_commit")
+        _recruit(t, painter, PLAIN, 10)
+        _no_cleaning(t)
+        fs = _factions(t)
+        calm = [f for f in fs.values() if not f.get("isPlayer") and not f.get("hostile") and not f.get("hidden") and f.get("goodwill") is not None]
+        # list_pawns names a pawn's faction by its def (JawaBenchTerrainTools.cs:1243) and storyteller_fire takes a FactionDef: the trader
+        # must be the only faction of its def, and the other of another def, or a caravan or a read could not be told apart.
+        defs = [f.get("defName") for f in fs.values()]
+        alone = [f for f in calm if defs.count(f.get("defName")) == 1]
+        trader = alone[0] if alone else None
+        other = next((f for f in calm if trader and f.get("defName") != trader.get("defName")), None)
+        if t._guard() and not (trader and other):
+            raise ExpectationFailed("SITE: no non-hostile faction alone of its def plus another of a different def among %s"
+                                    % sorted((f.get("name"), f.get("defName")) for f in calm))
+        if t._guard():
+            _order_mark(t, painter, INSULT_DEF, trader["name"], *ours_at)
+            _order_mark(t, painter, INSULT_DEF, other["name"], *other_at)
+            _story(t, acc)
+            said = [l for l in acc if " painted FactionInsult@" in l]
+            if len([l for l in said if ("insulting %s" % trader["name"]) in l]) != 1 or len([l for l in said if ("insulting %s" % other["name"]) in l]) != 1:
+                raise ExpectationFailed("SITE: the two insults read %s (one each to %s and %s wanted)" % (said, trader["name"], other["name"]))
+            t._current.detail = "trader %s (%s), other %s; %s" % (trader["name"], trader.get("defName"), other["name"], said)
+
+    g0, caravan = {}, []
+    with t.component("caravan_arrives"):
+        if t._guard():
+            names = (trader["name"], trader.get("defName"))
+            t.expect("pawn", lambda p: p.get("faction") in names)
+            g0 = {n: (_factions(t).get(n) or {}).get("goodwill") for n in (trader["name"], other["name"])}
+            r = t.bridge_call("jawa/storyteller_fire", incidentDef="TraderCaravanArrival", faction=trader.get("defName"), dryRun=False) or {}
+            if not r.get("fired"):
+                raise ExpectationFailed("SITE: TraderCaravanArrival for %s did not fire: %s" % (trader.get("defName"), str(r)[:300]))
+            waited = 0
+            while waited < 6000 and t._guard() and not caravan:
+                t.wait_ticks(500)
+                waited += 500
+                rr = t.bridge_call("jawa/list_pawns", limit=500) or {}
+                caravan = [p["id"] for p in rr.get("pawns") or [] if p.get("faction") in names and not p.get("dead") and p.get("id")]
+            if not caravan:
+                raise ExpectationFailed("SITE: no pawn of %s on the map %d ticks after the caravan fired: %s" % (trader["name"], waited, str(r)[:200]))
+            t._current.detail = "goodwill before %s; caravan %s" % (g0, caravan)
+
+    with t.component("caravan_passes_the_wall"):
+        if t._guard():
+            for leg in range(10):
+                if not t._guard():
+                    break
+                t.bridge_call("jawa/order_pawn", pawnId=",".join(caravan), x=x + (8 if leg % 2 else -8), z=z - 2, waitTicks=0)
+                t.wait_ticks(1500)
+                _story(t, acc)
+            t._current.detail = "visitor lines %s" % [l for l in acc if (" of %s reads " % trader["name"]) in l]
+
+    charged = [l for l in acc if (" of %s reads " % trader["name"]) in l and re.search(r": goodwill -?\d+$", l) and "none of theirs" not in l]
+    with t.component("one_goodwill_change_per_visit_within_cap"):
+        if t._guard():
+            on_ours = [l for l in charged if ("FactionInsult@(%d, 0, %d)" % ours_at) in l]
+            total = sum(int(re.search(r"goodwill (-?\d+)$", l).group(1)) for l in charged)
+            g1 = (_factions(t).get(trader["name"]) or {}).get("goodwill")
+            if len(on_ours) != 1 or int(re.search(r"goodwill (-?\d+)$", on_ours[0]).group(1)) != INSULT_GOODWILL:
+                raise ExpectationFailed("the insult to %s charged %s over the visit (one charge of %d wanted)" % (trader["name"], on_ours, INSULT_GOODWILL))
+            if -total > VISIT_LOSS_CAP or g0.get(trader["name"]) is None or g1 is None or g1 - g0[trader["name"]] != total:
+                raise ExpectationFailed("the visit charged %d (cap %d); goodwill %s -> %s; lines %s" % (total, VISIT_LOSS_CAP, g0.get(trader["name"]), g1, charged))
+            t._current.detail = "%s; goodwill %s -> %s" % (on_ours[0], g0[trader["name"]], g1)
+
+    with t.component("control_other_factions_insult_moves_nothing"):
+        if t._guard():
+            read = [l for l in acc if (" of %s reads FactionInsult@(%d, 0, %d)" % ((trader["name"],) + other_at)) in l]
+            g1 = (_factions(t).get(other["name"]) or {}).get("goodwill")
+            if not read:
+                raise ExpectationFailed("SITE: the caravan never read the insult to %s: the control rules nothing out" % other["name"])
+            if not all("none of theirs, goodwill 0" in l for l in read) or g1 != g0.get(other["name"]):
+                raise ExpectationFailed("the insult to %s, read by %s: %s; %s goodwill %s -> %s" % (other["name"], trader["name"], read, other["name"], g0.get(other["name"]), g1))
+            t._current.detail = "%s; %s goodwill %s unchanged" % (read[0], other["name"], g1)
