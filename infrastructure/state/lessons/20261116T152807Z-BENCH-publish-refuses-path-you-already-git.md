@@ -1,0 +1,1 @@
+./publish refuses a path you already 'git rm'd (git add --all -- <path> finds it in neither tree nor index): delete with plain rm, or 'git reset -- <path>' after git rm, then name the path to ./publish (2026-11-16, RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT)
