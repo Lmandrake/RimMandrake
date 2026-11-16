@@ -90,3 +90,26 @@ The owner questions about health, water as a gas boundary, warning duration and 
 OWNER:1794807991321995397 records the Evidence-for-Ask call with `ranBy BENCH`, `perRuling` and an explicitly delegated `why`. Its decision is agent text and carries speaker `agent` in the working record. The event contains neither `ownerSaid` nor `byCard`. The stage-1 root keeps CONDUCTOR:1794804951784038130 as its authority.
 
 All core contradiction records now name their requirement resolution and their pending construction or proof dependency. Their resolution concerns the design requirement and ownership. The eight pending gap records continue into stage 3 for the build plan and acceptance scenes. Current proof flags remain stale or missing as recorded. First-touch certification remains the owner's later examination and lock work.
+
+## Stage 2 reopened, run rm-role-designercodex-1794824636
+
+### Input excerpt and provenance
+
+CONDUCTOR:1794817206876916259 is the delegated flagship call filed in OWNER.jsonl under the Evidence-for-Ask ruling. Its event text follows verbatim.
+
+> Designer stage 3 flagship pick: prepared_livelihood. Scenes will show the rainless mineral forest and chemically distinct pools, falter and exposed/roofed/sealed workers, thornwood work, a reachable ruined rig studied through research, and tapped condensate and dangerous water becoming useful supplies. The adopted root is unchanged. Record as speaker conductor, delegated evidence-for-ask, flagship prepared_livelihood; source this event. No owner question, live scene, bridge, restart or deploy.
+
+### Reconciliation
+
+The call supplies the flagship choice for the stage-3 showcase set. Decision `d_flagship_prepared_livelihood` records speaker `conductor`, delegation `evidence-for-ask`, flagship `prepared_livelihood` and the event source. The five-move review in `stage2_reopening` challenges a scenic tour that bypasses ordinary work, effective protection or actual input/output conversion. The existing eleven argument groups and eight pending construction/proof gaps carry forward with their independent acceptance observations.
+
+The registered-site quick-look offer remains available for the next owner sitting. The current run takes in the delegated input through repository records. Live timing, protection, pool chemistry and production still require measurement.
+
+The prior stage-3 run was rejected after ending without result.json and without a completed Codex transport result. This run writes its stage-2 result artifact, validates it with designer_stage.py check and ends for launcher collection.
+
+
+## Stage 4 Exam — rm-role-designercodex-1794834300
+
+The tree and sheet remained frozen. A fresh Opus Examiner and Challenger produced 30 scenarios covering all 17 leaves. Two fresh final Opus Readers each matched every expectation. The falter-warning control accepted e05 and c03 after that rule was removed, demonstrating discrimination. exam.json and exam_runs/rm-role-designercodex-1794834300/ retain the briefs, raw usage, verdicts, scoring and prompt audit. All helper usage including retries totals 424939 weighted tokens and has been charged.
+
+The prompt audit found launcher source appended from inherited stdin. The original Reader/control batch was superseded and three fresh processes were run with stdin closed. Their transcript user content exactly equals the frozen briefs. Examiner/Challenger launcher suffixes carried only infrastructure code, and the audit records that limitation. Reader one emitted a short draft before its complete final verdict object. Scoring uses the complete final object and retains the raw response. Acid single-case sampling and prior awake rhossak progress remain recorded scenario limitations. The live acceptance scenes remain unrun.

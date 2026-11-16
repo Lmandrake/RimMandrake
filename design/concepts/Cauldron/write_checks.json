@@ -1,0 +1,48 @@
+{
+  "run": "rm-role-designercodex-1794831672",
+  "at": "2026-11-16T12:23:02.366614+00:00",
+  "gate_a": "PASS",
+  "scene_contracts": "PASS",
+  "floor_applicability": "PASS",
+  "showcase_set": "PASS",
+  "mandatory_units": 67,
+  "showcase_covered": 56,
+  "coverage_rest": 11,
+  "planned_scenes": 35,
+  "runtime_scenes_run": 0,
+  "entry_points_missing_and_filed": 35,
+  "build_items_filed": 7,
+  "final_stage_check": "PASS in BENCH and actual Dispatcher checkout: result.json would be accepted",
+  "designer_stage_selftest": "ALL PASS, including cross-clone resolution and genuine missing-source refusal",
+  "rejection_resolution": {
+    "system_item": "DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE",
+    "source_paths": [
+      "design/concepts/Cauldron/plan.md",
+      "design/concepts/Cauldron/scenes.json"
+    ],
+    "root_id": "cauldron_experience",
+    "root_ref": "design/concepts/Cauldron/root.md#north-star",
+    "leaves": [
+      "scene_observer",
+      "mineral_forest",
+      "pool_chemistry",
+      "falter_warning",
+      "ambient_protection",
+      "persistent_metal",
+      "permanent_acid",
+      "thornwood_work",
+      "rhossak_renewal",
+      "wildlife_livelihood",
+      "vent_competition",
+      "connected_gas",
+      "explosive_displacement",
+      "filter_industry",
+      "settings_control",
+      "prepared_day",
+      "cauldron_walk"
+    ],
+    "resolved_reason_count": 19,
+    "bench_errors": [],
+    "dispatcher_errors": []
+  }
+}

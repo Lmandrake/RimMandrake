@@ -1,0 +1,122 @@
+[
+  {
+    "id": "e01",
+    "text": "Before a scene begins, the tester lowers a colonist's blood-loss health value through normal play damage. The observer's report then lists that colonist's health as the original undamaged value. The report draws this value from a stored expected-value table rather than reading the game."
+  },
+  {
+    "id": "e02",
+    "text": "A reader arrives on an untouched registered Cauldron site at ordinary play zoom. Through a dry thunderstorm, lightning flashes repeatedly and rain particles fall across the map. Puddle overlays also appear on the dark plain."
+  },
+  {
+    "id": "e03",
+    "text": "A reader arrives on an untouched site with no pad clearing and views it at play zoom. Crystalline thornwood and mineral animals stand above a wet dark plain and a visibly different rich soil. Lightning crosses the sky with no rain. Dusk, vapour bank, dewfall, bloom and dry storm each look different from one another."
+  },
+  {
+    "id": "e04",
+    "text": "A colonist touches a green Cauldron pool and their apparel corrodes. A pump then draws from that same pool into a tank. The tank's contents read as fresh water, and that water goes into water_works."
+  },
+  {
+    "id": "e05",
+    "text": "A worker standing outside receives the first bloom metal dose. About 300 ticks later, vent breathing visibly diminishes and nearby idle rhossak hold still."
+  },
+  {
+    "id": "e06",
+    "text": "The optional warning message is turned off. Vent breathing visibly drops and nearby idle natives freeze roughly 2500 ticks before full-output bloom, while a sleeping native keeps sleeping. A worker walks to a roofed room and arrives before the first dose. The vent lull is then visible at play zoom."
+  },
+  {
+    "id": "e07",
+    "text": "A worker wearing the full vexxith set works through an ambient bloom with an exposure opportunity confirmed. The set keeps full item hit points. The wearer's heavy-metal severity, however, rises from 0 to 0.12."
+  },
+  {
+    "id": "e08",
+    "text": "During bloom and ambient acid, an exposed matched colonist gains metal load and acid burns. A roofed colonist and a fully sealed colonist both keep their starting health. A helmet-only colonist takes reduced harm, matching the partial-equipment rule."
+  },
+  {
+    "id": "e09",
+    "text": "A bloom-poisoned colonist rests indoors under ordinary doctor care with no purge bill. Their metal severity falls slowly to zero over 25 in-game days. The health tab labels the condition 'permanent' throughout."
+  },
+  {
+    "id": "e10",
+    "text": "After a reload, a colonist with a low saved metal trace receives an advanced purge bill through the normal health tab. A doctor completes the operation and the advanced medicine is consumed from the stock count. The hediff is then gone."
+  },
+  {
+    "id": "e11",
+    "text": "Ambient acid burns a colonist's eye and reduces their Sight. After ordinary wound healing and a reload, the eye injury is gone. Sight returns to its pre-exposure baseline, and no disfigurement remains."
+  },
+  {
+    "id": "e12",
+    "text": "A colonist completes a slow harvest of a mature twisting thornwood. Their stock rises by wood only, and steel stays unchanged. The inspect panel had shown a rich assay with dense flecks."
+  },
+  {
+    "id": "e13",
+    "text": "Three seed-bearing rhossak bound to one thornwood sleep together beside it, and a young thornwood roots at their resting spot. A galled rhossak binds to the same tree and drops galls. A colonist eats a gall, and no new plant appears where the galled animal slept."
+  },
+  {
+    "id": "e14",
+    "text": "A colonist shoots a suush with a rifle from range. The suush falls dead. No blast occurs, no toxic gas appears, and nearby bystanders take no effect."
+  },
+  {
+    "id": "e15",
+    "text": "A wild vexxiss walks to a lined vent tap and makes repeated pry attempts. The lined tap's hit points drop from 300 to 180."
+  },
+  {
+    "id": "e16",
+    "text": "A wild vexxiss drinks from an ordinary tap, and the bank output from that tap falls; it recovers after the animal leaves. Separately, a colonist shears a tame vexxiss and stock gains vexxith. The animal stays alive."
+  },
+  {
+    "id": "e17",
+    "text": "One spark ignites a thick vent cloud. Fire carries over ground and water cells until it reaches a sealed diagonal wall corner. Flame then appears in gas on the far side of the corner."
+  },
+  {
+    "id": "e18",
+    "text": "ExplosiveKnockback is loaded and a gas clump is ignited once. A large flame burst fills the screen. Every tracked nearby steel and medicine stack keeps its exact original cell."
+  },
+  {
+    "id": "e19",
+    "text": "A powered Filter-Works is processing toxic water when its power is cut. Work stops. The input bank count drops by 200 L, and no fresh water or other product appears anywhere."
+  },
+  {
+    "id": "e20",
+    "text": "The player turns all Cauldron settings off. A metal-poisoned colonist's hediff disappears, and the stored toxic water in banks drops to 0 L."
+  },
+  {
+    "id": "e21",
+    "text": "Forty fed colonists with shelter and full gear finish forestry, hauling, food and water work through a bloom. They gain no new ambient injury and stock reconciles. During the same bloom, an ungeared expedition member gains metal load, and a wild vexxiss lowers one tap's output."
+  },
+  {
+    "id": "e22",
+    "text": "The player saves mid-production with a rhossak group bound to a thornwood, then reloads that same save. The rhossak show no bound tree and wander the map. The tap and works production resumes."
+  },
+  {
+    "id": "c01",
+    "text": "A colonist gets heavy-metal poisoning from a real bloom. They then stay indoors under a roof, with bed rest and ordinary doctor care, and never leave the base. The severity drops slowly and steadily. After about 50 in-game days the poisoning disappears from the Health tab. No advanced treatment bill was ever completed. The health tooltip calls the condition 'persistent'."
+  },
+  {
+    "id": "c02",
+    "text": "A worker takes real ambient acid exposure that injures one eye. After ordinary wound healing and a save/reload, the Health tab shows a permanent 'acid scar' on the eye and a disfigured mood thought. The worker's sight capacity reads the same value it had before the exposure."
+  },
+  {
+    "id": "c03",
+    "text": "At default settings, the optional warning message appears about 2500 ticks before full-output bloom. The visible vent breathing lull and the stillness of nearby idle native animals only begin about 500 ticks before full bloom. A worker who leaves when the message appears reaches shelter before the first dose."
+  },
+  {
+    "id": "c04",
+    "text": "During a bloom with ambient acid, a roofed worker without protective gear is placed next to an exposed control. The exposed control gains metal load and acid injury. The roofed worker gains no metal load but takes minor acid burns over several samples. A worker in a full vexxith set outdoors keeps their starting health."
+  },
+  {
+    "id": "c05",
+    "text": "One spark ignites a thick vent cloud. The fire travels across bare ground and over several water cells, consumes the gas and leaves toxic smoke. It stops at a straight sealed wall. Where the barrier meets at a diagonal sealed corner, the flame passes through and lights the gas on the far side. A mid-burn reload keeps the front and its instigator."
+  },
+  {
+    "id": "c06",
+    "text": "With ExplosiveKnockback loaded, goods with recorded Thing ids sit next to a gas clump, which is ignited once. A large blast plays. The recorded stacks vanish from their cells. Stacks of the same type and count appear four to six cells away, carrying new Thing ids. Ignition attribution is kept."
+  },
+  {
+    "id": "c07",
+    "text": "A save contains a colonist with heavy-metal poisoning and a tank of banked toxic water. The player turns all Cauldron features off in the normal settings menu and reloads. The tank still holds its liquid, but the colonist's poisoning is gone. After re-enabling everything, blooms resume normally and the poisoning does not come back."
+  },
+  {
+    "id": "c08",
+    "text": "Workers complete ordinary slow harvest jobs on a young RM_TwistingThornwood and a fully grown one, with no nearby loose steel. Each harvest produces wood stacks plus exactly 12 steel. The young tree's assay grade and flecks show a lower rating than the mature tree's."
+  }
+]

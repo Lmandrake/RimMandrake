@@ -1,0 +1,187 @@
+{
+  "verdicts": [
+    {
+      "id": "e01",
+      "verdict": "reject",
+      "leaf": "scene_observer",
+      "reason": "The observer must read the game independently. A report that prints stored expected values and misses a changed health value is a named false pass and red condition."
+    },
+    {
+      "id": "e02",
+      "verdict": "reject",
+      "leaf": "mineral_forest",
+      "reason": "The sky must have lightning without rain. A supposed dry storm that rains is the red condition."
+    },
+    {
+      "id": "e03",
+      "verdict": "accept",
+      "leaf": "mineral_forest",
+      "reason": "This untouched site shows mineral flora and fauna, distinguishable soils, a rainless lightning sky and five distinct weather states, as the leaf requires."
+    },
+    {
+      "id": "e04",
+      "verdict": "reject",
+      "leaf": "pool_chemistry",
+      "reason": "Hazardous pool liquid must keep its chemistry through pumping. A pump that outputs fresh water from a green pool is a named false pass."
+    },
+    {
+      "id": "e05",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "No supplied requirement governs when the vent lull or native stillness happens relative to the first dose. An exposed worker receiving a dose is consistent with ambient_protection."
+    },
+    {
+      "id": "e06",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "No supplied requirement governs warning, lull or native timing. The worker reaching a roof before any dose agrees with ambient_protection."
+    },
+    {
+      "id": "e07",
+      "verdict": "reject",
+      "leaf": "ambient_protection",
+      "reason": "A fully sealed worker must not take an ambient metal dose. Item survival while the wearer accumulates metal is a named false pass."
+    },
+    {
+      "id": "e08",
+      "verdict": "accept",
+      "leaf": "ambient_protection",
+      "reason": "The exposed control is harmed, roofed and sealed workers keep their starting health, and partial equipment follows its actual rule."
+    },
+    {
+      "id": "e09",
+      "verdict": "reject",
+      "leaf": "persistent_metal",
+      "reason": "Metal must persist until an advanced purge. Slow natural decay labelled permanent is a named false pass."
+    },
+    {
+      "id": "e10",
+      "verdict": "accept",
+      "leaf": "persistent_metal",
+      "reason": "A saved low trace is purged through the normal health bill, with ingredient use and a completed operation."
+    },
+    {
+      "id": "e11",
+      "verdict": "reject",
+      "leaf": "permanent_acid",
+      "reason": "Acid sensory damage must survive ordinary healing and reload. Here the injury heals away fully, which is the red condition."
+    },
+    {
+      "id": "e12",
+      "verdict": "reject",
+      "leaf": "thornwood_work",
+      "reason": "A completed harvest must pay growth-scaled metal, and flecks must follow the payout. Paying no metal is the red condition."
+    },
+    {
+      "id": "e13",
+      "verdict": "accept",
+      "leaf": "rhossak_renewal",
+      "reason": "Three resting seed-bearers root a young thornwood. The galled animal binds, drops edible galls and remains seedless."
+    },
+    {
+      "id": "e14",
+      "verdict": "reject",
+      "leaf": "wildlife_livelihood",
+      "reason": "A ranged hit on a suush must start a toxic detonation. A shot suush that simply dies is the red condition."
+    },
+    {
+      "id": "e15",
+      "verdict": "reject",
+      "leaf": "vent_competition",
+      "reason": "Lined taps must resist prying. A lined tap taking pry damage is the red condition."
+    },
+    {
+      "id": "e16",
+      "verdict": "accept",
+      "leaf": "vent_competition",
+      "reason": "Wild drinking suppresses output, which then recovers, and tame shearing supplies vexxith without killing the animal."
+    },
+    {
+      "id": "e17",
+      "verdict": "reject",
+      "leaf": "connected_gas",
+      "reason": "Sealed diagonal barriers must stop the chain. Fire leaking through a sealed corner is the red condition."
+    },
+    {
+      "id": "e18",
+      "verdict": "reject",
+      "leaf": "explosive_displacement",
+      "reason": "A gas blast must throw identified nearby goods. A dramatic blast that throws none of them is the red condition."
+    },
+    {
+      "id": "e19",
+      "verdict": "reject",
+      "leaf": "filter_industry",
+      "reason": "Work must pause without losing stock when power is missing. Here input silently vanishes."
+    },
+    {
+      "id": "e20",
+      "verdict": "reject",
+      "leaf": "settings_control",
+      "reason": "All-off must not destroy stock or cure lasting health. Erasing poisoned pawns or banked liquids is a named false pass."
+    },
+    {
+      "id": "e21",
+      "verdict": "accept",
+      "leaf": "prepared_day",
+      "reason": "Prepared workers complete routine work without ambient injury or stock loss, while the exposed expedition and wild vent competition still carry danger."
+    },
+    {
+      "id": "e22",
+      "verdict": "reject",
+      "leaf": "cauldron_walk",
+      "reason": "Reload must preserve grove binding. Losing grove bindings is the red condition."
+    },
+    {
+      "id": "c01",
+      "verdict": "reject",
+      "leaf": "persistent_metal",
+      "reason": "Metal must not clear on its own. Slow decay under ordinary care without an advanced purge is the red condition, whatever the label says."
+    },
+    {
+      "id": "c02",
+      "verdict": "reject",
+      "leaf": "permanent_acid",
+      "reason": "Sensory capacity must retain the injury's consequence. A permanent sensory injury that restores the original capacity is the red condition, and a scar label alone is a named false pass."
+    },
+    {
+      "id": "c03",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "No supplied requirement fixes when the vent lull or native stillness must begin. The worker still reaches shelter before the first dose."
+    },
+    {
+      "id": "c04",
+      "verdict": "reject",
+      "leaf": "ambient_protection",
+      "reason": "Roofed workers must keep their starting health from both bloom and acid. Roof protection that works for only one ambient route is the red condition."
+    },
+    {
+      "id": "c05",
+      "verdict": "reject",
+      "leaf": "connected_gas",
+      "reason": "Straight and diagonal sealed barriers must both stop the chain. Leaking through a sealed corner is the red condition."
+    },
+    {
+      "id": "c06",
+      "verdict": "reject",
+      "leaf": "explosive_displacement",
+      "reason": "Goods must be thrown with their identity kept. Destroying them and respawning copies elsewhere with new ids is a named false pass."
+    },
+    {
+      "id": "c07",
+      "verdict": "reject",
+      "leaf": "settings_control",
+      "reason": "All-off must not cure lasting health. Erasing poisoned pawns is a named false pass."
+    },
+    {
+      "id": "c08",
+      "verdict": "reject",
+      "leaf": "thornwood_work",
+      "reason": "Metal must scale with growth, and assay must follow the payout. An identical 12 steel from young and mature trees, despite different grades, violates both."
+    }
+  ],
+  "ambiguities": [
+    "Scenarios e05, e06 and c03 concern bloom warning, vent lull and native stillness timing. The supplied sheet and tree contain no requirement governing these, so they were accepted with no controlling leaf."
+  ]
+}

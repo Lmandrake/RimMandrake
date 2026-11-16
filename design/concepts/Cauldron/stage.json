@@ -79,11 +79,76 @@
     "ref": "be3bb52a-cdcc-403b-8d04-718f6800e12f control closed-stdin retry stage 4 run rm-role-designercodex-1794834300",
     "stage": 4,
     "tokens": 51530
+   },
+   {
+    "at": "2026-11-16T14:12:49Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794838039",
+    "stage": 5,
+    "tokens": 670036
+   },
+   {
+    "at": "2026-11-16T14:13:04Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794838039",
+    "stage": 5,
+    "tokens": 354901
    }
   ],
   "reserve": 60000,
-  "spent": 474939
+  "spent": 1499876
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T14:07:19Z",
+   "error": null,
+   "gaps": 12,
+   "ids": [
+    "acid_air",
+    "aerosol_neighbour",
+    "ambient_protection",
+    "assay",
+    "biome_identity",
+    "campaign_cast",
+    "cauldron_walk",
+    "connected_gas",
+    "containers_gates",
+    "eskith",
+    "explosive_displacement",
+    "falter_warning",
+    "fire_warden",
+    "flora_base",
+    "forestry",
+    "growth_stalled",
+    "ixalith_beauty",
+    "mineral_forest",
+    "oomo_shrine",
+    "prepared_day",
+    "scanner_payload",
+    "shared_cast",
+    "shore_gardens",
+    "suush_ecology",
+    "suush_flight",
+    "thornwood_work",
+    "trunk_deposit_coat",
+    "vent_competition",
+    "vent_cycle_falter",
+    "vent_drinking",
+    "vent_gardens",
+    "vent_sites",
+    "vexxith_door",
+    "vexxith_gear"
+   ],
+   "judge": "rm-coverage-judge-1794838039",
+   "late": [],
+   "tags": {
+    "first": 12
+   },
+   "tokens": 1024937,
+   "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-16T01:30:42Z",
@@ -192,6 +257,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794834300: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T14:07:15Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794838000, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T14:13:50Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794838000 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -380,6 +457,16 @@
    "run": "rm-role-designercodex-1794834300",
    "stage": 4,
    "summary": "Cold Reader exam passed against frozen tree and sheet hashes. Both independent final Opus Readers matched all 30 expectations, zero core false accepts, no Challenger misses. The program-generated falter-warning control missed e05 and c03. Inherited-stdin prompt contamination was corrected with fresh Reader/control retries and exact-prompt audits. All helper usage including retries was charged. Runtime scenes remain unrun and scenario caveats are recorded."
+  },
+  {
+   "at": "2026-11-16T14:13:50Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794838000",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
   }
  ],
  "runner": "codex",
@@ -449,6 +536,11 @@
     "input_tokens": 3267965,
     "output_tokens": 17991
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794838000",
+   "runner": "codex",
+   "usage": "UNMEASURED"
   }
  ],
  "running": null,

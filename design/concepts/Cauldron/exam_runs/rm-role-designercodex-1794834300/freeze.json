@@ -1,0 +1,21 @@
+{
+  "run": "rm-role-designercodex-1794834300",
+  "author": "rm-role-designercodex-1794827705",
+  "inputs": {
+    "exam": null,
+    "floor": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
+    "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
+    "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff"
+  },
+  "independence": {
+    "maker": "Codex",
+    "helpers": "five fresh Claude Opus processes",
+    "scenario_input": "Frozen sheet and tree only. Examiner and Challenger independently create expectations from leaves.",
+    "reader_input": "Frozen sheet, tree and id/text scenarios only. Tools, MCP, hooks, slash commands and auto-memory disabled.",
+    "control_input": "Program-generated copy with selected leaf and rule paraphrases removed, plus same id/text scenarios.",
+    "non_input": "Reader processes cannot access expectations, working record, logs or author notes. Frozen original artifacts are immutable throughout the exam."
+  }
+}

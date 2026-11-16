@@ -1,0 +1,90 @@
+{
+  "lines": {
+    "tick_cost": {
+      "status": "applicable",
+      "evidence_mode": "measured",
+      "establishes": "Bounded candidate measurement only; this uncalibrated inherited line remains advisory."
+    },
+    "long_stall": {
+      "status": "applicable",
+      "evidence_mode": "measured",
+      "establishes": "Bounded candidate measurement only; this uncalibrated inherited line remains advisory."
+    },
+    "latency": {
+      "status": "applicable",
+      "evidence_mode": "measured",
+      "establishes": "Bounded candidate measurement only; this uncalibrated inherited line remains advisory."
+    },
+    "memory": {
+      "status": "applicable",
+      "evidence_mode": "decomposed",
+      "establishes": "Bounded allocation/retention cycles over gas, tracks, gardens, jobs and reload plus texture MB establish cycle behavior and bounded counts. A full 30-day heap-flat claim remains inferred; no long soak is requested."
+    },
+    "load_time": {
+      "status": "applicable",
+      "evidence_mode": "measured",
+      "establishes": "Bounded candidate measurement only; this uncalibrated inherited line remains advisory."
+    },
+    "save_size": {
+      "status": "applicable",
+      "evidence_mode": "compressed",
+      "establishes": "Serialized grid/metadata/save deltas over repeated compressed emit/expire/reload cycles establish bounded growth at measured occupancy. Long-horizon behavior stays inferred; compressed rates are restored and read back."
+    },
+    "save_compat": {
+      "status": "applicable"
+    },
+    "load_order": {
+      "status": "applicable"
+    },
+    "log": {
+      "status": "applicable"
+    },
+    "mod_settings": {
+      "status": "applicable"
+    },
+    "multiplayer": {
+      "status": "applicable",
+      "evidence": "Standing exclusion: spend no support effort and make no multiplayer promise."
+    },
+    "art": {
+      "status": "applicable"
+    },
+    "reads_as": {
+      "status": "applicable"
+    },
+    "clickable": {
+      "status": "applicable"
+    },
+    "order_taken": {
+      "status": "applicable"
+    },
+    "motion": {
+      "status": "applicable"
+    },
+    "text": {
+      "status": "applicable"
+    },
+    "dlc": {
+      "status": "applicable",
+      "evidence": "All DLC assumed; no degraded-mode or gating work."
+    },
+    "worldgen": {
+      "status": "applicable",
+      "evidence": "Standing exclusion: no world creation or new placement work; the pre-existing score worker is inventoried and receives an isolated offline check only."
+    },
+    "biome_scope": {
+      "status": "applicable",
+      "evidence": "Owned biome and delivered painted world are the promised context; zero tiles elsewhere is expected."
+    },
+    "flight": {
+      "status": "applicable",
+      "evidence": "Unattended proof is state-only. Visible suush or other cast motion review requires owner present."
+    },
+    "naming": {
+      "status": "applicable"
+    },
+    "test_isolation": {
+      "status": "applicable"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "broken_leaf": "falter_warning",
+  "manual_scrub": [
+    {
+      "file": "tree.json",
+      "leaf": "cauldron_walk",
+      "field": "scenario",
+      "change": "Removed reference to saving midway through warning."
+    }
+  ],
+  "inspection": "Removed leaf id and its sheet lines were scrubbed by exam-control. No remaining pre-bloom lull, native hush or warning-interval rule in the control documents. Other independent bloom, protection and water-conversion warning requirements retained.",
+  "hashes": {
+    "tree.json": "f96a0379111108f40952c75a86e5ad6f1784bc7354b4457998654fb789c9b096",
+    "sheet.md": "a73689a0ae322b6050b7ee45c136d8701a2004bf91ca692eed5cfb31e8138c4e"
+  }
+}

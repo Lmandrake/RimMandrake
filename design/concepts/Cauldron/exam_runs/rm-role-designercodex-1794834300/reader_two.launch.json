@@ -1,0 +1,31 @@
+{
+  "cwd": "/home/mandrake/rm/bench",
+  "args": [
+    "src/RimMandrake/Utils/claude_bounded.sh",
+    "-p",
+    "--model",
+    "opus",
+    "--output-format",
+    "json",
+    "--tools",
+    "",
+    "--strict-mcp-config",
+    "--disable-slash-commands",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"autoMemoryEnabled\":false,\"disableAllHooks\":true,\"claudeMdExcludes\":[\"**\"]}",
+    "--system-prompt",
+    "Use only the task and input documents provided in this prompt. You are an independent design examination helper. Return the requested JSON without additional prose."
+  ],
+  "prompt": "reader_two.brief.txt",
+  "stdin": "DEVNULL",
+  "env_changes": {
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+    "unset": [
+      "CLAUDE_SCOPE_UNIT",
+      "CLAUDE_SCOPE_RUNTIME_MAX",
+      "CLAUDE_CODE_SIMPLE"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "examiner_notes": "The sheet does not calibrate how close 'about one in-game hour' must be, beyond the nominal 2500 ticks and the rule that 4000 ticks from weather blending alone is excluded. It names no advanced medicine grade. permanent_acid says acid 'can' leave permanent harm, but gives no required frequency. cauldron_walk appears in the sheet's pruning and in the tree, but not in the sheet's 'does' list. Partial-equipment and native outcomes are deferred to 'their actual rules', which the documents do not provide.",
+  "challenger_notes": "'About one in-game hour' (nominally 2500 ticks) has no calibrated tolerance, so borderline intervals near that value would be ambiguous; c03 is deliberately far outside it. The grade of 'advanced medicine' and its ingredient counts are deferred construction tuning. Permanent acid only requires that permanent harm 'can' occur, and no rate is given. Eligible-pawn displacement is delegated to ExplosiveKnockback's shared policy and is not specified in these documents. The pruning reason given for prepared_day repeats the settings_control text, which looks like a copy error.",
+  "reader_ambiguities": {
+    "reader_one": [
+      "The permanent_acid leaf says acid 'can' leave permanent harm, and permanence is shown by a finite batch rather than a fixed rate. A single case that fully heals, as in e11, is read as the red condition, but it could alternatively be one non-permanent sample within a batch."
+    ],
+    "reader_two": [
+      "c08: the 12 steel figure is candidate tuning for full growth only. The rejection rests on the absence of growth scaling, not on the number itself."
+    ],
+    "control": [
+      "e05, e06 and c03: the supplied documents set no rule for the bloom warning, vent lull or native-stillness timing. These were accepted with no controlling leaf."
+    ]
+  },
+  "limits": [
+    "The permanent-acid scenarios test the stated consequence. A finite runtime batch still needs to distinguish possible permanent harm from a claim that every individual acid injury persists.",
+    "Scenario e13 omits prior awake grove progress. It does not independently discriminate the sleep-hold timing boundary, which remains in the rhossak_cycle acceptance scene.",
+    "Cold-reader agreement measures interpretation of the frozen design. The thirty-five planned live scenes retain their unrun status."
+  ],
+  "startup_recovery": "Two initial processes made no inference because minimal-mode authentication failed. Both have zero-usage helper charges. The first read batch was superseded after inherited launch-code stdin was found. The final two Readers and control have exact supplied-prompt equality.",
+  "response_parsing": "Final reader_one emitted an incomplete three-scenario JSON draft followed by a complete thirty-scenario JSON object. Scoring uses the final complete object. Both objects remain in the raw response."
+}

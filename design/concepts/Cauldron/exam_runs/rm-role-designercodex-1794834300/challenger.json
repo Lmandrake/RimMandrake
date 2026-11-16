@@ -1,0 +1,61 @@
+{
+  "scenarios": [
+    {
+      "id": "c01",
+      "text": "A colonist gets heavy-metal poisoning from a real bloom. They then stay indoors under a roof, with bed rest and ordinary doctor care, and never leave the base. The severity drops slowly and steadily. After about 50 in-game days the poisoning disappears from the Health tab. No advanced treatment bill was ever completed. The health tooltip calls the condition 'persistent'.",
+      "expect": "reject: metal poisoning must persist through shelter and ordinary care until an advanced medical purge removes it; slow natural decay to zero is self-clearance, however long it takes",
+      "expect_source": "leaf:persistent_metal",
+      "by": "challenger"
+    },
+    {
+      "id": "c02",
+      "text": "A worker takes real ambient acid exposure that injures one eye. After ordinary wound healing and a save/reload, the Health tab shows a permanent 'acid scar' on the eye and a disfigured mood thought. The worker's sight capacity reads the same value it had before the exposure.",
+      "expect": "reject: the acid must leave lasting sensory-organ damage; a permanent scar label and a disfigurement thought with sight fully restored is a cosmetic stand-in",
+      "expect_source": "leaf:permanent_acid",
+      "by": "challenger"
+    },
+    {
+      "id": "c03",
+      "text": "At default settings, the optional warning message appears about 2500 ticks before full-output bloom. The visible vent breathing lull and the stillness of nearby idle native animals only begin about 500 ticks before full bloom. A worker who leaves when the message appears reaches shelter before the first dose.",
+      "expect": "reject: the readable vent lull and native stillness must themselves give about one in-game hour; the optional message only supplements those cues and cannot supply the interval",
+      "expect_source": "leaf:falter_warning",
+      "by": "challenger"
+    },
+    {
+      "id": "c04",
+      "text": "During a bloom with ambient acid, a roofed worker without protective gear is placed next to an exposed control. The exposed control gains metal load and acid injury. The roofed worker gains no metal load but takes minor acid burns over several samples. A worker in a full vexxith set outdoors keeps their starting health.",
+      "expect": "reject: a roof must protect against both ambient bloom and ambient acid; protection that works for only one ambient route fails",
+      "expect_source": "leaf:ambient_protection",
+      "by": "challenger"
+    },
+    {
+      "id": "c05",
+      "text": "One spark ignites a thick vent cloud. The fire travels across bare ground and over several water cells, consumes the gas and leaves toxic smoke. It stops at a straight sealed wall. Where the barrier meets at a diagonal sealed corner, the flame passes through and lights the gas on the far side. A mid-burn reload keeps the front and its instigator.",
+      "expect": "reject: straight and diagonal sealed barriers must both stop the chain; passing through a sealed diagonal corner is a leak",
+      "expect_source": "leaf:connected_gas",
+      "by": "challenger"
+    },
+    {
+      "id": "c06",
+      "text": "With ExplosiveKnockback loaded, goods with recorded Thing ids sit next to a gas clump, which is ignited once. A large blast plays. The recorded stacks vanish from their cells. Stacks of the same type and count appear four to six cells away, carrying new Thing ids. Ignition attribution is kept.",
+      "expect": "reject: the blast must visibly throw the identified nearby goods; removing the items and creating new stacks elsewhere is not displacement of the same goods",
+      "expect_source": "leaf:explosive_displacement",
+      "by": "challenger"
+    },
+    {
+      "id": "c07",
+      "text": "A save contains a colonist with heavy-metal poisoning and a tank of banked toxic water. The player turns all Cauldron features off in the normal settings menu and reloads. The tank still holds its liquid, but the colonist's poisoning is gone. After re-enabling everything, blooms resume normally and the poisoning does not come back.",
+      "expect": "reject: all-off must stop new optional effects without curing lasting health; removing existing poisoning breaks health preservation",
+      "expect_source": "leaf:settings_control",
+      "by": "challenger"
+    },
+    {
+      "id": "c08",
+      "text": "Workers complete ordinary slow harvest jobs on a young RM_TwistingThornwood and a fully grown one, with no nearby loose steel. Each harvest produces wood stacks plus exactly 12 steel. The young tree's assay grade and flecks show a lower rating than the mature tree's.",
+      "expect": "reject: metal payout must scale with growth and follow the assay grade; an identical metal yield for young and mature trees is not growth-scaled",
+      "expect_source": "leaf:thornwood_work",
+      "by": "challenger"
+    }
+  ],
+  "notes": "'About one in-game hour' (nominally 2500 ticks) has no calibrated tolerance, so borderline intervals near that value would be ambiguous; c03 is deliberately far outside it. The grade of 'advanced medicine' and its ingredient counts are deferred construction tuning. Permanent acid only requires that permanent harm 'can' occur, and no rate is given. Eligible-pawn displacement is delegated to ExplosiveKnockback's shared policy and is not specified in these documents. The pruning reason given for prepared_day repeats the settings_control text, which looks like a copy error."
+}

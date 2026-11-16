@@ -1,0 +1,75 @@
+{
+  "processes": [
+    {
+      "role": "examiner",
+      "session_id": "864162f4-4d0e-46ff-ba92-24a72a415fa4",
+      "model": [
+        "claude-opus-5-5"
+      ],
+      "prompt_sha256": "37b62ddf4fe9b315f7114d9711f21a429c68a43eb3d16919808e7579d5dc6ec6",
+      "exact_supplied_prompt": false,
+      "inherited_launch_code_suffix_characters": 1306,
+      "tools": [],
+      "auto_memory_or_claude_md_attachments": false,
+      "weighted_tokens": 58732
+    },
+    {
+      "role": "challenger",
+      "session_id": "02cb3985-73c5-443e-a39b-65e8e58b6f23",
+      "model": [
+        "claude-opus-5-5"
+      ],
+      "prompt_sha256": "1d829b1685ebf560fd38357b9b12e28c957e036b9fb6aad34ee42ee25e12d1bf",
+      "exact_supplied_prompt": false,
+      "inherited_launch_code_suffix_characters": 1306,
+      "tools": [],
+      "auto_memory_or_claude_md_attachments": false,
+      "weighted_tokens": 47280
+    },
+    {
+      "role": "reader_one",
+      "session_id": "2c3b6a33-1fa1-43a4-b6ae-c6a691c5586c",
+      "model": [
+        "claude-opus-5-5"
+      ],
+      "prompt_sha256": "cbb22fc0209fbeb0b31ea7143fa77c589b0247099657811db09240e1cea3a7e2",
+      "exact_supplied_prompt": true,
+      "inherited_launch_code_suffix_characters": 0,
+      "tools": [],
+      "auto_memory_or_claude_md_attachments": false,
+      "weighted_tokens": 54392
+    },
+    {
+      "role": "reader_two",
+      "session_id": "02f38b34-a959-4725-be4e-0cbd5820b494",
+      "model": [
+        "claude-opus-5-5"
+      ],
+      "prompt_sha256": "cbb22fc0209fbeb0b31ea7143fa77c589b0247099657811db09240e1cea3a7e2",
+      "exact_supplied_prompt": true,
+      "inherited_launch_code_suffix_characters": 0,
+      "tools": [],
+      "auto_memory_or_claude_md_attachments": false,
+      "weighted_tokens": 52352
+    },
+    {
+      "role": "control",
+      "session_id": "be3bb52a-cdcc-403b-8d04-718f6800e12f",
+      "model": [
+        "claude-opus-5-5"
+      ],
+      "prompt_sha256": "f48b7c41ef49ae957fe302d89893db17fb0678f98664b7246eaf8e536b63e6f0",
+      "exact_supplied_prompt": true,
+      "inherited_launch_code_suffix_characters": 0,
+      "tools": [],
+      "auto_memory_or_claude_md_attachments": false,
+      "weighted_tokens": 51530
+    }
+  ],
+  "helper_weighted_tokens_including_retries": 424939,
+  "inputs_unchanged": true,
+  "scenarios_frozen_before_readers": true,
+  "startup_failures": 2,
+  "superseded_reader_batch": "stdin_retry",
+  "note": "Examiner and Challenger received harmless launcher Python appended by inherited stdin. It held no scenario expectations, author notes or additional design. Both final Readers and the final control were rerun with DEVNULL stdin and exact supplied-prompt equality verified."
+}
