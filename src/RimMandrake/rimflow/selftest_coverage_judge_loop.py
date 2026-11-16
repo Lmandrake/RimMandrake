@@ -128,7 +128,7 @@ def granted(root, rounds):
     """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE: "fix first, then exactly one more look" as data. A release granted
     now with --after waits on its items closing and the re-pin landing, then counts as one final look."""
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted")
-    d = concept(os.path.join(root, "granted"))
+    d = locked(concept(os.path.join(root, "granted")))
     judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
     for i in range(3):
         CJ.run(d, os.path.join(root, "granted"), judge, now=1794400000 + 1200 * i)
@@ -186,12 +186,55 @@ def granted(root, rounds):
         CJ.item_states = saved
 
 
+def locked(d, state="locked"):
+    """The concept's Design Version file (designer_stage.VERSION_FILE), so the re-pin rule sees a locked version."""
+    os.makedirs(os.path.join(d, "version"), exist_ok=True)
+    with open(os.path.join(d, DS.VERSION_FILE), "w") as f:
+        json.dump({"state": state}, f)
+    return d
+
+
+def granted_unlocked(root, rounds):
+    """RIMMANDRAKE_FREE_GRANT_FROM_REPIN_ON_UNLOCKED_CONCEPT: Contagion, 2026-11-16. Its version is open, not locked,
+    so `designer_stage.py repin` refuses ("an unlocked concept's changed inputs reopen its stages") and no
+    locked_change can ever be written: a grant that waits on the re-pin never applies. On an unlocked concept the grant
+    waits on its items only; a missing version file is not locked either (repin refuses it the same way)."""
+    for name, state in (("granted_open", "open: admitted to the Designer; no locked design yet"), ("granted_noversion", None)):
+        os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_" + name)
+        d = concept(os.path.join(root, name))
+        if state:
+            locked(d, state)
+        judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
+        for i in range(3):
+            CJ.run(d, os.path.join(root, name), judge, now=1794800000 + 1200 * i)
+        states = {"FIX_D": "proposed"}
+        saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
+        try:
+            CJ.release(d, "per d_w: one final look after FIX_D", after=["FIX_D"])
+            try:
+                CJ.release(d, "the chain's release")
+                check("granted unlocked (%s): a release while FIX_D is open is refused" % name, False)
+            except DS.Refused as e:
+                check("granted unlocked (%s): a release while FIX_D is open is refused" % name,
+                      "FIX_D" in str(e) and "re-pin" not in str(e), str(e))
+            states["FIX_D"] = "done"
+            st = CJ.release(d, "the chain's release")
+            rel = (st.get("coverage_releases") or [{}])[-1]
+            check("granted unlocked (%s): FIX_D closed, no re-pin possible -> the grant applies as the final look" % name,
+                  rel.get("final") is True and rel.get("after") == ["FIX_D"] and st["status"] == "ready", (rel, st["status"]))
+        except DS.Refused as e:
+            check("granted unlocked (%s): FIX_D closed, no re-pin possible -> the grant applies as the final look" % name,
+                  False, str(e))
+        finally:
+            CJ.item_states = saved
+
+
 def granted_late(root, rounds):
     """RIMMANDRAKE_ACCEPT_REPIN_BEFORE_GRANT_RECORDED_FIVE_MINUTES_LATE: Pyrelands, 2026-11-15. The fixes and their
     re-pin (locked_change 21:06:06Z) landed after the stop, and the grant was written at 21:11:14Z; the re-pin the grant
     waits on is one since the stop it lifts, not one since the grant, or the one look never applies."""
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted_late")
-    d = concept(os.path.join(root, "granted_late"))
+    d = locked(concept(os.path.join(root, "granted_late")))
     judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
     for i in range(3):
         CJ.run(d, os.path.join(root, "granted_late"), judge, now=1794600000 + 1200 * i)
@@ -212,7 +255,7 @@ def granted_late(root, rounds):
               False, str(e))
     finally:
         CJ.item_states = saved
-    d = concept(os.path.join(root, "granted_stale_repin"))
+    d = locked(concept(os.path.join(root, "granted_stale_repin")))
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted_stale")
     st = DS.load_state(d)
     DS.hist(st, "locked_change", "an older re-pin, before the stop")
@@ -344,6 +387,7 @@ def main():
             release(d, judge, root, ops, rounds)
             granted(root, rounds)
             granted_late(root, rounds)
+            granted_unlocked(root, rounds)
             healthy(root)
             legacy(root, rounds)
             units()

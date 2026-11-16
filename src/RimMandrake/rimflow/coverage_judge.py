@@ -477,11 +477,14 @@ def item_states(ids):
     return {i: getattr(w.items.get(i), "state", None) for i in ids}
 
 
-def grant_waits(st, item_state=None):
+def grant_waits(st, item_state=None, d=None):
     """RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE -> what the standing granted release still waits on ([] when due), or
     None when no grant stands. Due: every item it names is closed, and a locked_change (the re-pin) was written after
     the stop the grant lifts (RIMMANDRAKE_ACCEPT_REPIN_BEFORE_GRANT_RECORDED_FIVE_MINUTES_LATE: Pyrelands' re-pin
-    landed five minutes before its grant was written, and "after the grant" kept the one look from ever applying)."""
+    landed five minutes before its grant was written, and "after the grant" kept the one look from ever applying).
+    The re-pin is owed only by a LOCKED concept (RIMMANDRAKE_FREE_GRANT_FROM_REPIN_ON_UNLOCKED_CONCEPT, Contagion
+    2026-11-16): `designer_stage.py repin` refuses an unlocked one, whose changed inputs reopen its stages instead, so
+    with D given and its version file not locked the grant waits on its items only."""
     import model
     g = st.get("coverage_release_granted")
     if not isinstance(g, dict):
@@ -492,7 +495,8 @@ def grant_waits(st, item_state=None):
     hs = [h for h in st.get("history") or [] if isinstance(h, dict)]
     at = max((n for n, h in enumerate(hs) if h.get("what") == "coverage_release_granted"), default=-1)
     stop = max((n for n, h in enumerate(hs[:at + 1]) if h.get("what") == "coverage_stop"), default=at)
-    if not any(h.get("what") == "locked_change" for h in hs[stop + 1:]):
+    unlocked = d is not None and (DS.read_json(os.path.join(d, DS.VERSION_FILE)) or {}).get("state") != "locked"
+    if not unlocked and not any(h.get("what") == "locked_change" for h in hs[stop + 1:]):
         waits.append("the re-pin (a locked_change after the stop the grant at %s lifts: designer_stage.py repin)"
                      % g.get("at"))
     return waits
@@ -530,7 +534,7 @@ def release(d, why, now=None, after=None, item_state=None):
         return st
     rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))}
     if isinstance(g, dict):
-        waits = grant_waits(st, item_state)
+        waits = grant_waits(st, item_state, d)
         if waits:
             raise DS.Refused("the release granted at %s waits on: %s" % (g.get("at"), "; ".join(waits)))
         rec.update(granted_at=g.get("at"), granted_why=g.get("why"), after=list(g.get("after") or []), final=True)
