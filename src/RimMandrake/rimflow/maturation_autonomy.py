@@ -56,12 +56,17 @@ WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_u
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
-                       r"ingest/publish holds")
+                       r"ingest/publish holds|systemd-run did not answer")
+# a refusal no retry can pass: the clone is held by a run whose finish never ran (detached_helper.clone_holders). It
+# read transient when the filing's own publish line said "publish stopped", and three tries went in two minutes
+# (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD, 2026-11-16)
+NEVER_TRANSIENT = re.compile(r"finish step never ran")
 
 
 def transient(text):
-    """-> True when a launch failure's text names a transient fault (a lock, an unpublished shard)."""
-    return bool(text) and bool(TRANSIENT.search(str(text)))
+    """-> True when a launch failure's text names a transient fault (a lock, an unpublished shard, a silent
+    systemd-run that left no unit), and no refusal a retry cannot pass."""
+    return bool(text) and bool(TRANSIENT.search(str(text))) and not NEVER_TRANSIENT.search(str(text))
 
 
 def releasable(s, key, x):

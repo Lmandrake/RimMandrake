@@ -41,6 +41,10 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              from its prose or the spec of the event that filed it in the run's clone, runs before any unit: a must-fail
              that passes refuses (exit 2, nothing started, no record); --skip-launch-checks launches and is recorded;
              a check that cannot run launches with one "did not run" line on the output and the record
+  timeout    RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD (2026-11-16: the tick's systemd-run passed its
+             60 s, the launch raised, its record stayed "launching" with no unit and held the clone, so the next two
+             launches were refused): a systemd-run that does not answer ends launch_failed when systemd reads no unit,
+             holding nothing; running when the unit is up after all; never a traceback
   scopegone  RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE: a scope systemd already collected reads clean; any
              other kill failure reads FAILED and the stop is still tried
 """
@@ -1028,6 +1032,43 @@ def test_launch_checks():
     check(rc == 2 and "28 of 42" in text and not units, "gate: a spawn's --spec block is read from the clone's shard")
 
 
+def timeout_runner(state):
+    """systemd-run never answers (TimeoutExpired); systemctl show reads `state` for the unit; the origin check passes."""
+    calls = []
+
+    def run(argv, **kw):
+        if argv[:2] in (["git", "fetch"], ["git", "grep"]):
+            return fake_origin_git(argv, kw)
+        calls.append((list(argv), kw))
+        if argv and argv[0].endswith("systemd-run"):
+            raise subprocess.TimeoutExpired(argv, kw.get("timeout") or 60)
+        if argv[:3] == ["systemctl", "--user", "show"]:
+            return R(0, state + "\n") if "ActiveState" in argv else R(0, ("not-found" if state == "inactive"
+                                                                           else "loaded") + "\n")
+        return R(0, "")
+    return calls, run
+
+
+def test_launch_timeout():
+    for n, (state, want_rc, want_status) in enumerate((("inactive", 1, "launch_failed"), ("active", 0, "running"))):
+        calls, run = timeout_runner(state)
+        try:
+            rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5, now=T0 + 900 + n, runner=run,
+                                 known=KNOWN, clone=CLONE)
+        except Exception as e:  # noqa: BLE001
+            check(False, "timeout: a systemd-run past its timeout raised %s out of launch" % type(e).__name__)
+            continue
+        unit = next(c[0][c[0].index("--unit") + 1] for c in calls if c[0][0].endswith("systemd-run"))
+        rec = DH.read_record(unit)
+        check(rc == want_rc and rec["status"] == want_status,
+              "timeout: unit %s after a silent systemd-run -> rc %s, record %s (%s)" % (state, rc, rec["status"],
+                                                                                      text[:90]))
+        if state == "inactive":
+            check("did not answer" in (rec.get("why") or ""), "timeout: the record says systemd-run did not answer")
+            later = DH.clone_holders(CLONE, run, now=T0 + 900 + DH.LAUNCH_GRACE_S + 60)
+            check(not any(h[0] == unit for h in later), "timeout: the failed launch holds no clone (%d other holder(s))" % len(later))
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1040,6 +1081,7 @@ def main():
     test_midreturn()
     test_result_kept_whole()
     test_scope_quiet_when_gone()
+    test_launch_timeout()
     test_owed_close()
     test_hook_points_here()
     test_windows_path()

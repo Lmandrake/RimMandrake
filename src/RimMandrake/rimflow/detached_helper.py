@@ -912,8 +912,28 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)
-    r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
-               stdin=subprocess.DEVNULL)
+    try:
+        r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
+                   stdin=subprocess.DEVNULL)
+    except (subprocess.SubprocessError, OSError) as e:
+        # systemd-run did not answer (2026-11-16 04:15: past its 60 s, the launch raised and its record stayed
+        # "launching" with no unit, holding the clone; the next two launches were refused on it). Ask systemd.
+        import role_launch as RL
+        st = RL.unit_state(unit, runner=runner)
+        if st in DEAD_STATES:
+            try:    # no unit now: make sure a start still queued in systemd never runs behind a launch_failed record
+                runner(["systemctl", "--user", "stop", "--no-block", unit], capture_output=True, text=True, timeout=30,
+                       stdin=subprocess.DEVNULL)
+            except (subprocess.SubprocessError, OSError):
+                pass
+            rec["status"] = "launch_failed"
+            rec["why"] = "systemd-run did not answer (%s); systemd reads the unit %s" % (type(e).__name__, st)
+            write_record(rec, root)
+            return 1, "LAUNCH FAILED %s: %s" % (unit, rec["why"])
+        if st == "unknown":
+            return 1, ("LAUNCH UNCONFIRMED %s: systemd-run did not answer (%s) and systemd cannot be read; the record "
+                       "stays 'launching' (`detached_helper.py status` resolves it)" % (unit, type(e).__name__))
+        r = subprocess.CompletedProcess([], 0, "", "")      # the unit is up after all: recorded running below
     if r.returncode:
         rec["status"] = "launch_failed"
         rec["why"] = ((r.stdout or "") + (r.stderr or "")).strip()

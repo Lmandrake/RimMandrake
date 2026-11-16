@@ -227,6 +227,15 @@ def union_paths(g: Git, paths: list[str]) -> set[str]:
     return {f[i] for i in range(0, len(f) - 2, 3) if f[i + 2] == "union"}
 
 
+def derived_paths(g: Git, paths: list[str]) -> set[str]:
+    """The paths .gitattributes marks rm-derived (a mod ledger's views, printed from the ledger): a dirty one that does not
+    merge cleanly takes upstream's bytes at a move instead of stranding the branch; the next append prints it again."""
+    if not paths:
+        return set()
+    f = g.run("check-attr", "-z", "--stdin", "rm-derived", inp="\0".join(paths) + "\0").split("\0")
+    return {f[i] for i in range(0, len(f) - 2, 3) if f[i + 2] == "set"}
+
+
 def union_delta(ours: bytes, base: bytes, theirs: bytes) -> bytes | None:
     """The bytes to APPEND so `ours` also holds everything in `theirs`, or None if these are not plain appends (a base
     line gone from either side, or a torn last line that no line of `theirs` finishes). Counted, not collapsed, but a
@@ -313,6 +322,7 @@ def dirty_merges(g: Git, head: str, target: str, keep: list[str]) -> tuple[list[
         return [], []
     dirty = set(g.lines("diff", "--name-only", "-z", "--no-renames", "HEAD")) & changing
     union = union_paths(g, sorted(changing))
+    derived = derived_paths(g, sorted(dirty))
     paths = sorted(dirty | union)
     if not paths:
         return [], []
@@ -344,7 +354,7 @@ def dirty_merges(g: Git, head: str, target: str, keep: list[str]) -> tuple[list[
             stuck.append(p)                             # a third version sits in the index: not ours to drop
             continue
         it = {"path": p, "mode": there and there[0], "blob": there and there[1], "base": here and here[1],
-              "index": idx.get(p), "union": p in union, "dirty": p in dirty}
+              "index": idx.get(p), "union": p in union, "dirty": p in dirty, "derived": p in derived}
         if there and wt_sha == there[1] and there[0].startswith("100") and (not here or here[0] == there[0]):
             items.append(it)                            # already upstream's bytes: only the index moves
             continue
@@ -361,6 +371,8 @@ def dirty_merges(g: Git, head: str, target: str, keep: list[str]) -> tuple[list[
         base, theirs = _blob(g, here[1]), _blob(g, there[1])
         if union_delta(ours, base, theirs) is not None if p in union else merge3(ours, base, theirs) is not None:
             items.append(it)
+        elif p in derived:
+            items.append(it)                            # a view: _carry gives it upstream's bytes
         elif p in dirty:
             stuck.append(p)
         # else a clean shard rewritten upstream, not appended to: plain reset is right (shards are append-only by
@@ -452,6 +464,8 @@ def _carry(g: Git, it: dict, park: Path) -> None:
     for _ in range(5):
         cur = _read_wt(g, p)
         merged = None if cur is None else (cur if cur == theirs else merge3(cur, base, theirs))
+        if merged is None and cur is not None and it.get("derived"):
+            merged = theirs                             # a view printed from the ledger: the next append prints it again
         if merged is None:
             raise DirtyConflict([p])
         if merged == cur:

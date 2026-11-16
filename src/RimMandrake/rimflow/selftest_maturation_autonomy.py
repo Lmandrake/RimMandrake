@@ -192,6 +192,14 @@ def launch_retry_checks(root):
        "(read %s, %d launches)" % (g("A").get("klass"), len(briefs(w))))
     tr = getattr(AUT, "transient", None)
     ok(tr and tr("ingest.lock stayed busy; nothing filed") and not tr("LAUNCH FAILED pool full") and not tr(None), "transient(): a lock or an unpublished shard is transient, a full pool is not")
+    # RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD (2026-11-16): a clone held by a dead run read transient
+    # because the filing's own publish line said "publish stopped", and three tries were spent on it in two minutes
+    held = ("retry 3 of X, filed earlier; publish: publish stopped: ledger_lint refuses HEAD, the commit stays local; "
+            "refused: clone /c/X.det is held: run u is recorded running but its unit is gone, so its finish step never "
+            "ran; to pass: detached_helper.py finish --unit u, then return --unit u, then launch again")
+    ok(tr and not tr(held), "transient(): a clone held by a dead run is not transient, whatever the publish line said")
+    ok(tr and tr("LAUNCH FAILED u: systemd-run did not answer (TimeoutExpired); systemd reads the unit inactive"),
+       "transient(): a systemd-run that did not answer (no unit, record launch_failed) is transient")
 
 
 AGAINST = "version/VERSION.json state reads 'not started: waits for Pyrelands 0.1.0 to pass'"

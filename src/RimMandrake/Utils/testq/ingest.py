@@ -799,6 +799,11 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
                 "retries): " + why
         if stranded:
             note = "this clone's branch did not move (a dirty file overlaps origin's change): %s; " % stranded
+        if git("merge-base", "--is-ancestor", head, "origin/main").returncode == 0:
+            # nothing of this clone's left to push: linting it against origin would only read origin's newer lines as
+            # removed (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD: refused forever over d9d006f762)
+            # ("; pushed": every caller reads that suffix as success, and all of this clone's work is on origin)
+            return note + "nothing left to push, all of it is on origin/main; pushed"
         bad = lint_refusal(head)
         if bad:
             return "publish stopped: ledger_lint refuses HEAD, the commit stays local (the next ingest retries): " + bad
