@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -254,6 +253,12 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designercodex-1794837471: stage 2 blocked"
+  },
+  {
+   "at": "2026-11-16T14:11:35Z",
+   "stage": 2,
+   "what": "unblock",
+   "why": "RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS fixed at 95c5d7512e15 (was blocked on RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -563,5 +568,5 @@
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "blocked"
+ "status": "ready"
 }
