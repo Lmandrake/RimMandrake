@@ -1,0 +1,3 @@
+PINNED src/RimMandrake/Utils/selftest_known_reds.py <- targets/64/value, targets/66/value, targets/67/value
+PINNED src/RimMandrake/Utils/selftest_ops_churn.py <- targets/35/value
+PINNED src/RimMandrake/Utils/selftest_ops_health.py <- targets/63/value

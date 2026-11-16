@@ -1,0 +1,9 @@
+PINNED src/RimMandrake/Utils/selftest_restart_reconcile.py <- restart_reconcile_pass_s
+BASE RED src/RimMandrake/Utils/selftest_running_now.py (red before any change: not judged)
+BASE RED src/RimMandrake/rimflow/selftest_coverage_delta.py (red before any change: not judged)
+BASE RED src/RimMandrake/rimflow/selftest_judge_brief_records.py (red before any change: not judged)
+BASE RED src/RimMandrake/rimflow/selftest_relentless.py (red before any change: not judged)
+BASE RED src/RimMandrake/rimflow/selftest_relentless_tick_stamp.py (red before any change: not judged)
+BASE RED whittle/amend_hook_harden_swept_a_neighbour/evidence/draft/selftest_promised_hooks_wired.py (red before any change: not judged)
+src/RimMandrake/rimflow/dispatcher_schedule.json: 154 leaves, 295 readers, 6 base red, 0 timeout, 0 flaky
+RESULT: PINNED 1

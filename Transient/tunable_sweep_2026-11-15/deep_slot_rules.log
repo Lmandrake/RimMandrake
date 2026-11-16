@@ -1,0 +1,5 @@
+PINNED .claude/hooks/selftest_block_agent_over_slots.py <- conductor_window/open_min, conductor_window/cap_n
+PINNED src/RimMandrake/rimflow/selftest_dispatcher.py <- lent_accounts/steven/max_used_by_us_pct
+BASE RED src/RimMandrake/Utils/selftest_running_now.py (red before any change: not judged)
+src/RimMandrake/Utils/slot_rules.json: 60 leaves, 83 readers, 1 base red, 0 timeout, 0 flaky
+RESULT: PINNED 2

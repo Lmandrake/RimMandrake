@@ -1,0 +1,3 @@
+PINNED src/RimMandrake/rimflow/selftest_audit_prescreen.py <- min_sample, prior_rate
+src/RimMandrake/rimflow/audit_prescreen_rules.json: 27 leaves, 2 readers, 0 base red, 0 timeout
+RESULT: PINNED 1

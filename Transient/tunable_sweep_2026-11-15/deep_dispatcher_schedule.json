@@ -1,0 +1,21 @@
+{
+  "config": "src/RimMandrake/rimflow/dispatcher_schedule.json",
+  "leaves": 154,
+  "tests": 295,
+  "base_red": [
+    "src/RimMandrake/Utils/selftest_running_now.py",
+    "src/RimMandrake/rimflow/selftest_coverage_delta.py",
+    "src/RimMandrake/rimflow/selftest_judge_brief_records.py",
+    "src/RimMandrake/rimflow/selftest_relentless.py",
+    "src/RimMandrake/rimflow/selftest_relentless_tick_stamp.py",
+    "whittle/amend_hook_harden_swept_a_neighbour/evidence/draft/selftest_promised_hooks_wired.py"
+  ],
+  "base_timeout": [],
+  "mut_timeout": [],
+  "pinned": {
+    "src/RimMandrake/Utils/selftest_restart_reconcile.py": [
+      "restart_reconcile_pass_s"
+    ]
+  },
+  "flaky": []
+}

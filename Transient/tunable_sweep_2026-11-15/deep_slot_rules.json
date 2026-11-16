@@ -1,0 +1,20 @@
+{
+  "config": "src/RimMandrake/Utils/slot_rules.json",
+  "leaves": 60,
+  "tests": 83,
+  "base_red": [
+    "src/RimMandrake/Utils/selftest_running_now.py"
+  ],
+  "base_timeout": [],
+  "mut_timeout": [],
+  "pinned": {
+    ".claude/hooks/selftest_block_agent_over_slots.py": [
+      "conductor_window/open_min",
+      "conductor_window/cap_n"
+    ],
+    "src/RimMandrake/rimflow/selftest_dispatcher.py": [
+      "lent_accounts/steven/max_used_by_us_pct"
+    ]
+  },
+  "flaky": []
+}

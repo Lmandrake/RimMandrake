@@ -1,0 +1,17 @@
+{
+  "config": "src/RimMandrake/rimflow/maturation_dispatch.json",
+  "leaves": 13,
+  "tests": 128,
+  "base_red": [
+    "src/RimMandrake/Utils/selftest_running_now.py",
+    "whittle/amend_hook_harden_swept_a_neighbour/evidence/draft/selftest_promised_hooks_wired.py"
+  ],
+  "base_timeout": [],
+  "mut_timeout": [],
+  "pinned": {
+    "src/RimMandrake/rimflow/selftest_maturation_dispatch.py": [
+      "blind_auto_cycles_per_visit"
+    ]
+  },
+  "flaky": []
+}

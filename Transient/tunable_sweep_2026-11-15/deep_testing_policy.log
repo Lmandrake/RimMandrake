@@ -1,0 +1,4 @@
+PINNED src/RimMandrake/Utils/selftest_nightly_catchup.py <- params/selftest.nightly_full_hour_local/value
+BASE RED src/RimMandrake/Utils/selftest_running_now.py (red before any change: not judged)
+src/RimMandrake/rimflow/testing_policy.json: 22 leaves, 66 readers, 1 base red, 0 timeout, 0 flaky
+RESULT: PINNED 1

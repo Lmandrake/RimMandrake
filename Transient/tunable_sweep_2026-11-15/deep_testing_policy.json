@@ -1,0 +1,16 @@
+{
+  "config": "src/RimMandrake/rimflow/testing_policy.json",
+  "leaves": 22,
+  "tests": 66,
+  "base_red": [
+    "src/RimMandrake/Utils/selftest_running_now.py"
+  ],
+  "base_timeout": [],
+  "mut_timeout": [],
+  "pinned": {
+    "src/RimMandrake/Utils/selftest_nightly_catchup.py": [
+      "params/selftest.nightly_full_hour_local/value"
+    ]
+  },
+  "flaky": []
+}

@@ -1,0 +1,5 @@
+PINNED src/RimMandrake/rimflow/selftest_maturation_dispatch.py <- blind_auto_cycles_per_visit
+BASE RED src/RimMandrake/Utils/selftest_running_now.py (red before any change: not judged)
+BASE RED whittle/amend_hook_harden_swept_a_neighbour/evidence/draft/selftest_promised_hooks_wired.py (red before any change: not judged)
+src/RimMandrake/rimflow/maturation_dispatch.json: 13 leaves, 128 readers, 2 base red, 0 timeout, 0 flaky
+RESULT: PINNED 1

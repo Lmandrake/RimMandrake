@@ -1,0 +1,3 @@
+BASE RED src/RimMandrake/rimflow/selftest_relentless.py (red before any change: not judged)
+src/RimMandrake/rimflow/alarm_routes.json: 18 leaves, 5 readers, 1 base red, 0 timeout
+RESULT: CLEAN
