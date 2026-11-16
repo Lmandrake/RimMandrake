@@ -1259,13 +1259,17 @@ def land_ledger(root, mods, what, fx=None):
     return land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)" % what))
 
 
-def ledger_open(root, mod, role, brief, stage=None, now=None):
-    """A pilot holder's run begins: modledger.launch grants the lease and records run.start; -> {"brief": the packet
-    and holder lines, then `brief`, "env": the unit's RM_MODLEDGER_WRITER/TOKEN, "run", "stage"}."""
+def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None):
+    """A pilot holder's run begins: modledger.launch grants the lease and records run.start, and the ledger lands
+    before any launch cuts the holder's clone from origin/main (RIMMANDRAKE_LAND_HOLDER_GRANT_BEFORE_LAUNCH_CLONE_BLIND:
+    landed after, the clone lacks its own grant and the holder's first append is refused "lease never granted");
+    -> {"brief": the packet and holder lines, then `brief`, "env": the unit's RM_MODLEDGER_WRITER/TOKEN, "run",
+    "stage", "landed"}."""
     now = now or time.time()
     lease = "run-%d" % int(now)
     out = modledger.launch(root, mod, lease, role, stage=stage)
-    return {"run": lease, "stage": out["stage"], "packet": out["brief"],
+    landed = land_ledger(root, [mod], "run %s on %s granted" % (lease, mod), fx)
+    return {"run": lease, "stage": out["stage"], "packet": out["brief"], "landed": landed,
             "brief": out["brief"].rstrip("\n") + ("\n\n---\n\n" + brief if brief else ""),
             "env": {"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}}
 
@@ -1294,7 +1298,7 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
         return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
     try:
-        led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now)
+        led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
     rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=led["brief"],
@@ -1337,7 +1341,7 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
             led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap) + (
                 "\nThis is the mod's holder run: work every open road-back item together, from the packet above: %s. "
                 "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
-                % ", ".join(ids)), stage=stage, now=now)
+                % ", ".join(ids)), stage=stage, now=now, fx=fx)
             rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
                 item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"])
             unit = unit if rc == 0 else None

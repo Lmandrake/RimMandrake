@@ -677,7 +677,8 @@ def append(root, mod, writer, kind, subject, body=None, version=None, evidence=(
             lease = writer_suffix(writer)
             g = by.get(lease)
             if g is None:
-                raise ModLedgerError("lease %r was never granted (the dispatcher grants: modledger grant)" % lease)
+                raise ModLedgerError("lease %r was never granted (the dispatcher grants: modledger grant; a clone cut before its "
+                                     "grant landed lacks it: ./sync, then retry)" % lease)
             if g["token"] != token:
                 raise ModLedgerError("token %d is not lease %r's token" % (token, lease))
             if current != lease:
