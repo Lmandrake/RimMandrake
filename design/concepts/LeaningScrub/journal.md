@@ -11,6 +11,7 @@ RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF.
 
 ## The mod as it stands
 
+- **Stage now:** Stage 2, preflight, since 2026-11-16 9:00 AM PST (`version/stage_record.json`).
 - **Current work:** Designer Stage 3 rework completed against OWNER:1794835478275153823, pending launcher acceptance of this run's result. Gate A, scenes/floor and showcase structure pass; no implementation or play is certified.
 - **Next:** fresh Stage 4 exam of the rewritten artifacts, then coverage/Lock. Prior exam is historical. Owner first-touch certification remains owed.
 - **Mod:** src/RimMandrake/LeaningScrub, the RM_LeaningScrub biome in the composed package. No Design Version is locked or handed off.
@@ -53,3 +54,10 @@ Bound the official tree to the corrected validated canonical root, preserving de
 ## Stage 4 fresh exam — rm-role-designercodex-1794843033
 
 The corrected validated six-family tree/sheet passed the independent Claude Opus Cold Reader exam: 18/18, zero core false accepts. Twelve fresh Examiner scenarios and six Challenger scenarios were frozen before either Reader. Both full Readers matched every case. The program-created control removed raid_weight and every statement of its rule; the Control accepted the non-raid spillover case that the full Readers rejected. Five actual session UUIDs, exact prompts, raw JSON, parsed verdicts, hashes and charges are retained in design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033. Helpers consumed 468259 weighted tokens, fully charged. The prior exam/control are archived there as historical evidence. No main design inputs changed; delegated approval, corrected owner bar, advisory gaps and neutral g12 routing are preserved. This is a contract readability exam only. Live acceptance, coverage signature, owner first-touch certification and Lock remain pending. The launcher alone closes/advances.
+
+### 2026-11-16 9:00 AM PST, version change: UNMEASURED to 0.1.0 (by BENCH)
+
+- Why: delegated: steward: the stage record was seeded 2026-11-15 before the 0.1.0 lock and reads version UNMEASURED; opening 0.1.0 (VERSION.json, locked 2026-11-16 by the pipeline per RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME); first version of a new mod, no ordering contest
+- The UNMEASURED record (at Designer (Stage 1)) is kept as `version/stage_record_UNMEASURED.json`.
+- Was, "Stage now": none
+- Record: `version/stage_record.json`.

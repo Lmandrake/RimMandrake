@@ -1,24 +1,33 @@
 {
   "schema": 1,
   "mod": "LeaningScrub",
-  "version": "UNMEASURED",
-  "stage": "designer",
-  "stage_label": "Designer (Stage 1)",
-  "since": "UNMEASURED",
-  "since_from": "no dated journal heading names it",
+  "version": "0.1.0",
+  "stage": "preflight",
+  "stage_label": "Preflight (Stage 2)",
+  "since": "2026-11-16T09:00:54-08:00",
+  "since_from": "next-version by BENCH",
   "at_door": false,
   "seeded": {
-    "at": "2026-11-15T17:06:53-08:00",
-    "by": "maturation.py seed",
-    "stage_read_from": "Designer record (stage.json); no Design Version named yet",
-    "stage_line": "Designer step 0 Read, status ready",
-    "run_records": "read"
+    "at": "2026-11-16T09:00:54-08:00",
+    "by": "maturation.py next-version",
+    "from_version": "UNMEASURED",
+    "previous": "version/stage_record_UNMEASURED.json"
   },
   "cycles": {
     "visit": 0,
     "total": 0
   },
   "pre_human_arrivals": 0,
-  "moves": [],
-  "spend": []
+  "spend": [],
+  "moves": [
+    {
+      "from": "UNMEASURED at designer",
+      "to": "preflight",
+      "at": "2026-11-16T09:00:54-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward: the stage record was seeded 2026-11-15 before the 0.1.0 lock and reads version UNMEASURED; opening 0.1.0 (VERSION.json, locked 2026-11-16 by the pipeline per RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME); first version of a new mod, no ordering contest",
+      "version_from": "UNMEASURED",
+      "version_to": "0.1.0"
+    }
+  ]
 }
