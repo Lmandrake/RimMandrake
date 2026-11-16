@@ -54,6 +54,7 @@
     <Compile Include="Core\SliceWindow.cs" />
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordEndAudit.cs" />
+    <Compile Include="Core\StubJoinAudit.cs" />
     <Compile Include="Core\CordShape.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />

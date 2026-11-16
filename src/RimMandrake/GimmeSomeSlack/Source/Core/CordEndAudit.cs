@@ -34,7 +34,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         // ------------------------------------------------------------------ the ends rule
         internal sealed class EndRead
         {
-            public int Ends, Both, None, FitSparks, FitTails, TerminalsFitted, WallTerminalsFitted, StubsLoose;
+            public int Ends, Both, None, FitSparks, FitTails, TerminalsFitted, WallTerminalsLoose, StubsLoose;
             public readonly List<string> Bad = new List<string>();
         }
 
@@ -69,7 +69,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (fit > 0 && tails > 0) r.FitTails++;
                 if (fit == 0 && loose == 0) { r.None++; r.Bad.Add($"{where}: drawn as nothing (no fitting, no loose end)"); }
                 if (term && fit > 0) { r.TerminalsFitted++; r.Bad.Add($"{where}: a conduit end wears a fitting"); }
-                if (stub && nd.WallTerminal && fit > 0) { r.WallTerminalsFitted++; r.Bad.Add($"{where}: a run that ends inside the wall is drawn plugged in"); }
+                // owner 2026-11-16 (station 12): "We should have the mod simply not show sparking ends that are inside walls" and "Rock and wall
+                // should act the same: no emergent sparking for a terminal conduit." A run ending inside a wall or rock wears only its fitting
+                if (stub && nd.WallTerminal && (loose > 0 || tails > 0 || sparks > 0)) { r.WallTerminalsLoose++; r.Bad.Add($"{where}: a run that ends inside the wall or rock shows a loose or sparking end ({loose} loose, {sparks} spark ends)"); }
                 if (stub && !nd.WallTerminal && loose > 0) { r.StubsLoose++; r.Bad.Add($"{where}: a cord through the wall frays at its entry"); }
             }
             return r;

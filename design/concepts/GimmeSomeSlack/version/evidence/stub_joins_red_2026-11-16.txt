@@ -1,0 +1,28 @@
+# stub joins, RED before the fix: python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only (2026-11-16 06:51 PST, base 9285470d74)
+  stub joins: 524 scenes; box T: 258 cords on 198 stubs, 0 off line, 0 off slope, 0 bare, box X: 132 cords on 96 stubs, 0 off line, 0 off slope, 0 bare, plug: 1044 cords on 1044 stubs, 0 off line, 0 off slope, 0 bare, rock hole: 86 cords on 80 stubs, 0 off line, 0 off slope, 0 bare, strip lead: 30 cords on 30 stubs, 0 off line, 0 off slope, 0 bare, strip plug: 68 cords on 68 stubs, 0 off line, 3 off slope, 0 bare, switch: 432 cords on 816 stubs, 0 off line, 0 off slope, 412 bare, wall outlet: 8 cords on 8 stubs, 0 off line, 0 off slope, 0 bare, wall plate: 114 cords on 108 stubs, 0 off line, 0 off slope, 0 bare, wall plug: 28 cords on 28 stubs, 0 off line, 11 off slope, 0 bare
+  stub joins: live ends 36 tails x frames 3240: 19 turn at the join, 25 pinched, 0 jump; worst 28 deg, min radius 0.049
+  stub joins refused: Modern box3 s0 [(0,1) (1,0) (0,-1)] strip plug@(19.4,14.6) stub (0.1,-0.99) cord junction:19,14|consumer:19,14: leaves the stub 41 deg off its slope
+  stub joins refused: Modern box3 s1 [(0,1) (0,-1) (-1,0)] strip plug@(14.6,18.5) stub (-0.99,0.15) cord junction:14,18|consumer:14,18: leaves the stub 25 deg off its slope
+  stub joins refused: Modern box3 s1 [(0,1) (1,0) (-1,0)] strip plug@(14.6,18.5) stub (-0.99,0.15) cord junction:14,18|consumer:14,18: leaves the stub 25 deg off its slope
+  stub joins refused: Modern switch4 s0 [(0,1) (1,0) (0,-1) (-1,0)] switch@(16.5,16.5): stub (0,1) drawn with no cord on it
+  stub joins refused: Modern switch4 s0 [(0,1) (1,0) (0,-1) (-1,0)] switch@(16.5,16.5): stub (0,-1) drawn with no cord on it
+  stub joins refused: Modern switch3 s0 [(1,0) (0,-1) (-1,0)] switch@(16.5,16.5): stub (0,1) drawn with no cord on it
+  stub joins refused: Modern wall[(0,1) through lat1 Wall] wall plug@(15.5,16.3) stub (-0,1) cord consumer:15,19|stub_wall:15,16: leaves the stub 19 deg off its slope
+  stub joins refused: Modern wall[(0,1) through corner lat-2 Wall] wall plug@(15.5,19.3) stub (-0,1) cord consumer:15,19|stub_wall:15,19: leaves the stub 23 deg off its slope
+  stub joins refused: Modern wall[(0,1) through corner lat1 Wall] wall plug@(15.5,19.3) stub (-0,1) cord consumer:15,19|stub_wall:15,19: leaves the stub 22 deg off its slope
+  stub joins: device stub scene nodes HiddenEnd@(12,10) StubDevice@(11,10) Battery@(4,10) | decals Plug/0.55 FrayLive/0.50
+  live end refused: Modern live stub (0,-1) len2 bend live end @(18.86,14.50) cord junction:16,16|terminal:18,14: turns 15 deg at the join (31/90 frames)
+  live end refused: Modern live stub (0,-1) len2 bend live end @(18.86,14.50) cord junction:16,16|terminal:18,14: bends at radius 0.054 < 0.1 at the join (90/90 frames)
+  live end refused: Modern live stub (0,-1) len3 live end @(16.50,13.14) cord terminal:16,13|junction:16,16: turns 13 deg at the join (4/90 frames)
+  live end refused: Modern live stub (0,-1) len3 live end @(16.50,13.14) cord terminal:16,13|junction:16,16: bends at radius 0.076 < 0.1 at the join (31/90 frames)
+  live end refused: Modern live stub (0,-1) len3 bend live end @(18.86,13.50) cord junction:16,16|terminal:18,13: turns 28 deg at the join (90/90 frames)
+  live end refused: Modern live stub (0,1) len2 bend live end @(18.86,18.50) cord junction:16,16|terminal:18,18: turns 12 deg at the join (2/90 frames)
+  dead end refused: Modern wall[(0,1) ends-in lat-2 Wall] StubWall(ends in wall)@(15,14): a run that ends inside the wall or rock shows a loose or sparking end (1 loose, 1 spark ends)
+  dead end refused: Modern wall[(0,1) ends-in lat-2 Rock] StubRock(ends in wall)@(15,14): a run that ends inside the wall or rock shows a loose or sparking end (1 loose, 1 spark ends)
+  dead end refused: Modern wall[(0,1) ends-in lat1 Wall] StubWall(ends in wall)@(15,14): a run that ends inside the wall or rock shows a loose or sparking end (1 loose, 1 spark ends)
+  dead end refused: Modern wall[(0,1) ends-in lat1 Rock] StubRock(ends in wall)@(15,14): a run that ends inside the wall or rock shows a loose or sparking end (1 loose, 1 spark ends)
+FAIL stub joins: position AND slope: 2200 cords at stubs over 524 scenes, 0 off the stub's line, 14 off its slope (worst 0.07 cell, 63 deg)
+FAIL stub joins: no bare stub: 412 stubs drawn with no cord while their piece has one
+FAIL stub joins: live end continues its cord: 36 tails, 19 turning at the join, 25 pinched under radius 0.1, 0 leaving the cord
+FAIL stub joins: wall and rock dead ends: 116 runs ending inside a wall or rock, 112 drawn with a loose or sparking end, 0 drawn as nothing
+2/6 checks passed (stub joins only)

@@ -15,7 +15,7 @@ Designer's five gap fixes (`910f69411e`, 15:13 PST), which stood when he said "l
 | `design/concepts/GimmeSomeSlack/scenes.json` | `f1517819fd63e0d874a21d6fa553cafc2045e3ac` | the acceptance scenes and showcases the leaves are proven by; re-pinned 2026-11-14 for the eased settings bar (sc_settings' expect); re-pinned 2026-11-14 9:55 PM for sc_cords_under_items (his card: the cords bar gets a scene) |
 | `design/concepts/GimmeSomeSlack/floor.json` | `c1d425ed7da4dd6f54a6f8eb296bda78e8d2cd4e` | the quality floor lines every mod meets |
 | `design/concepts/GimmeSomeSlack/exam.json` | `edef19a6668cdfb69592a3b7985562c64ad6b4b7` | the Cold Reader exam of tree and sheet; re-pinned 2026-11-14 9:55 PM for the owed exam on the locked tree (24/24) |
-| `design/concepts/GimmeSomeSlack/record.json` | `ba0adf8eb6b4cb45b4d7d4038be4db9422bb160a` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added (journal, kind bar-added), and again for the eased settings row; re-pinned 2026-11-14 9:55 PM: his lock-hold and card events taken in, the bar's entry to schema |
+| `design/concepts/GimmeSomeSlack/record.json` | `c5011846fa6c43c1a324822dfd10f614d6bf885e` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added (journal, kind bar-added), and again for the eased settings row; re-pinned 2026-11-14 9:55 PM: his lock-hold and card events taken in, the bar's entry to schema; re-pinned 2026-11-16 for bar cords_join_stubs_on_position_and_slope (journal, kind bar-added) |
 | `design/concepts/GimmeSomeSlack/plan.md` | `2021a347392bfbb57a37820a7963249446820983` | the build and proof plan |
 | `design/concepts/GimmeSomeSlack/stage.json` | `403ef858733385aae13902459ae5ec9645e5b7c5` | the Designer's stage, budget and judge rounds (state, not a bar); re-pinned 2026-11-14 9:55 PM: locked |
 
@@ -23,7 +23,7 @@ Tree hash (`concept_tree.py hash`): `e80c7f93fa487266c314df629cadc0944afc5c02007
 
 ## Counts at the lock
 
-- Bars (the coverage checklist): **48** = 23 inventory rows + 26 tree leaves, `shock_reach_setting` both (47 at the lock; `cords_draw_under_things` added by his card 2026-11-14).
+- Bars (the coverage checklist): **49** = 24 inventory rows + 26 tree leaves, `shock_reach_setting` both (47 at the lock; `cords_draw_under_things` added by his card 2026-11-14; `cords_join_stubs_on_position_and_slope` added 2026-11-16 under the lock rule).
 - Floor lines: 23 (21 applicable; not applicable: biome_scope, flight).
 - Exam: 26 of 26 scenarios right (tree `5e3aa0d4`, sheet `33b1cddc`: the pinned text).
 - Waived lines: 1.
@@ -82,3 +82,4 @@ Tree hash (`concept_tree.py hash`): `e80c7f93fa487266c314df629cadc0944afc5c02007
 - `floor_end_shock`
 - `shock_reach_setting`
 - `cords_draw_under_things` (added 2026-11-14, his card)
+- `cords_join_stubs_on_position_and_slope` (added 2026-11-16, his words, the fourth ask; journal kind bar-added)

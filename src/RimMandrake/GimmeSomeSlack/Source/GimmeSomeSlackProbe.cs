@@ -101,6 +101,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "statics") return Statics();
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
+            if (cmd.StartsWith("joins:")) return Joins(comp, cmd.Substring(6));       // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK
             if (cmd.StartsWith("under:")) return UnderAt(map, comp, cmd.Substring(6));   // sc_cords_under_items (bar cords_draw_under_things)
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
@@ -705,11 +706,39 @@ namespace RimMandrake.GimmeSomeSlack
             var sb = new StringBuilder("{\"success\":true,\"cmd\":\"endkind\"");
             void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
             F("ends", e.Ends.ToString()); F("both", e.Both.ToString()); F("fitSparks", e.FitSparks.ToString()); F("none", e.None.ToString());
-            F("terminalsFitted", e.TerminalsFitted.ToString()); F("wallTerminalsFitted", e.WallTerminalsFitted.ToString()); F("stubsLoose", e.StubsLoose.ToString());
+            F("terminalsFitted", e.TerminalsFitted.ToString()); F("wallTerminalsLoose", e.WallTerminalsLoose.ToString()); F("stubsLoose", e.StubsLoose.ToString());
             F("arms", s.Arms.ToString()); F("taken", s.Taken.ToString()); F("offLine", s.OffLine.ToString()); F("offSlope", s.OffSlope.ToString());
             F("short", s.Short.ToString()); F("empty", s.Empty.ToString()); F("emptyAllowed", s.EmptyAllowed.ToString());
             F("worstDeg", J.D(s.WorstDeg)); F("worstPos", J.D(s.WorstPos));
             F("bad", J.Arr(e.Bad.Concat(s.Bad).Take(8).Select(J.S)));
+            return sb.Append('}').ToString();
+        }
+
+        /// <summary>RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): the position-and-slope rule on the live pieces in a rect
+        /// (x,z,w,h), through the offline instrument (Core/StubJoinAudit.cs): stubs, live ends, and runs ending inside a wall or rock.</summary>
+        private static string Joins(RM_MapComponent_CordGraph comp, string args)
+        {
+            if (comp.Graph == null || comp.LastWorld == null) return "{\"success\":false,\"error\":\"no graph\"}";
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            bool In(V2 q) => q.X >= a[0] && q.X <= a[0] + a[2] && q.Z >= a[1] && q.Z <= a[1] + a[3];
+            List<LaidPiece> ps = comp.Pieces.ToList();
+            // each run's plug boot follows its look, as the component's own build reads it
+            Dictionary<Cell, Aerial.CellStyle> st = Aerial.ConduitStylePicker.CellStyles(comp.map);
+            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            opt.PlugBootAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
+            StubJoins.JoinRead j = StubJoins.Joins(comp.LastWorld, ps, opt, "live", In);
+            StubJoins.LiveRead l = StubJoins.LiveEnds(ps, "live", keep: In);
+            CordEndAudit.EndRead e = CordEndAudit.Ends(comp.Graph, ps, "live", In);
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"joins\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("stubs", j.Stubs.ToString()); F("taken", j.Taken.ToString()); F("offLine", j.OffLine.ToString()); F("offSlope", j.OffSlope.ToString());
+            F("empty", j.Empty.ToString()); F("worstDeg", J.D(j.WorstDeg)); F("worstPos", J.D(j.WorstPos));
+            F("byKind", "{" + string.Join(",", j.ByKind.Select(kv => J.S(kv.Key) + ":[" + string.Join(",", kv.Value) + "]")) + "}");
+            F("liveTails", l.Tails.ToString()); F("liveOffSlope", l.OffSlope.ToString()); F("livePinched", l.Pinched.ToString());
+            F("liveWorstDeg", J.D(l.WorstDeg)); F("liveMinR", J.D(l.Tails > 0 ? l.MinR : 0));
+            F("wallTerminalsLoose", e.WallTerminalsLoose.ToString());
+            F("bad", J.Arr(j.Bad.Concat(l.Bad).Concat(e.Bad.Where(x => x.Contains("inside the wall or rock"))).Take(16).Select(J.S)));
             return sb.Append('}').ToString();
         }
 

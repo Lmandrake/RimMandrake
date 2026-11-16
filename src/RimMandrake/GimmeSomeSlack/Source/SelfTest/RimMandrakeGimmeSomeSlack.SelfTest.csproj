@@ -37,6 +37,7 @@
     <Compile Include="WaterStubChecks.cs" />
     <Compile Include="JunctionStripChecks.cs" />
     <Compile Include="CordEndKindChecks.cs" />
+    <Compile Include="StubJoinChecks.cs" />
     <Compile Include="CordShapeChecks.cs" />
     <Compile Include="..\Core\CordShape.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="..\Core\CordReach.cs" />
     <Compile Include="..\Core\CordAudit.cs" />
     <Compile Include="..\Core\CordEndAudit.cs" />
+    <Compile Include="..\Core\StubJoinAudit.cs" />
     <Compile Include="..\Core\LegacyName.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
     <Compile Include="..\Core\ConduitTargets.cs" />

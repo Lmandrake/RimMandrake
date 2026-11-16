@@ -136,7 +136,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                                         scenes++; ends += r.Ends;
                                         wallTerminals += g.Nodes.Values.Count(n => n.WallTerminal);
                                         all.Both += r.Both; all.None += r.None; all.FitSparks += r.FitSparks; all.TerminalsFitted += r.TerminalsFitted;
-                                        all.WallTerminalsFitted += r.WallTerminalsFitted; all.StubsLoose += r.StubsLoose; all.FitTails += r.FitTails;
+                                        all.WallTerminalsLoose += r.WallTerminalsLoose; all.StubsLoose += r.StubsLoose; all.FitTails += r.FitTails;
                                         bad.AddRange(r.Bad);
                                         if (plantOn == null && !terminal && pile == PileArt.Junctions && kind == BlockKind.Wall) { plantOn = ps; plantG = g; }
                                     }
@@ -150,14 +150,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     CordEndAudit.EndRead r = CordEndAudit.Ends(g, ps, "oracle " + sc.GetProperty("name").GetString());
                     scenes++; ends += r.Ends;
                     all.Both += r.Both; all.None += r.None; all.FitSparks += r.FitSparks; all.TerminalsFitted += r.TerminalsFitted;
-                    all.WallTerminalsFitted += r.WallTerminalsFitted; all.StubsLoose += r.StubsLoose; all.FitTails += r.FitTails;
+                    all.WallTerminalsLoose += r.WallTerminalsLoose; all.StubsLoose += r.StubsLoose; all.FitTails += r.FitTails;
                     bad.AddRange(r.Bad);
                 }
             Check(scenes >= 100 && ends >= scenes + scenes / 2 && wallTerminals > 0 && all.Both == 0 && all.FitSparks == 0,
                   $"ends: {ends} ends over {scenes} scenes ({wallTerminals} runs ending inside a wall); {all.Both} drawn as BOTH a fitting and a loose end, {all.FitSparks} fitted ends throwing sparks" +
                   (bad.Count > 0 ? " | " + string.Join("; ", bad.Take(4)) : ""));
-            Check(all.None == 0 && all.TerminalsFitted == 0 && all.WallTerminalsFitted == 0 && all.StubsLoose == 0,
-                  $"ends: every end is one kind: {all.None} drawn as nothing, {all.TerminalsFitted} conduit ends with a fitting, {all.WallTerminalsFitted} runs ending in a wall drawn plugged in, {all.StubsLoose} through-wall entries fraying");
+            Check(all.None == 0 && all.TerminalsFitted == 0 && all.WallTerminalsLoose == 0 && all.StubsLoose == 0,
+                  $"ends: every end is one kind: {all.None} drawn as nothing, {all.TerminalsFitted} conduit ends with a fitting, {all.WallTerminalsLoose} runs ending in a wall or rock drawn loose or sparking, {all.StubsLoose} through-wall entries fraying");
             // can fail: a fray planted on a wall plate (the owner's 2026-11-16 picture) and a spark end planted on it
             if (plantOn != null)
             {

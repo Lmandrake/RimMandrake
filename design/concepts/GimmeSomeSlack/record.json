@@ -752,6 +752,26 @@
    "speaker": "owner",
    "card": "owner by card 2026-11-14",
    "proof_note": "offline half green (T_CORE slideunder: under; northstar/selftest_gss_cords_under_items.py); the in-game draw-order read, sc_cords_under_items, is UNRUN until Stage 6"
+  },
+  {
+   "id": "cords_join_stubs_on_position_and_slope",
+   "what": "Every art piece that draws a stub or connector at a fixed angle (junction box arms, the power switch's stubs in every look, a plug's boot, a strip plug, the strip's own lead, a wall plate, a rock hole, a wall outlet) receives each cord at the stub's position AND along the stub's direction, in every look and rotation; no stub is drawn bare while a cord is attached elsewhere on its piece. Stubless art (wall bracket, pole top, lamp base) joins at position only and is never failed for angle. The whipping live end continues its cord: same point and direction at the join on every frame, no bend tighter than the cord's minimum. A conduit ending inside a wall or rock draws no loose or sparking end, only its fitting on the face. Which pieces have stubs, and where, is one per-art table the mod reads (StubArt in Core/StubJoinAudit.cs).",
+   "impl": "partial",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+   ],
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1794242437721637229",
+   "source": [
+    "OWNER:1794242437721637229",
+    "design/RimMandrake/validation_holding/owner_look_defects_2026-11-16_gimme_some_slack.md"
+   ],
+   "speaker": "owner",
+   "quote": "The position-slope rule should be hard wired into the mod and be part of its acceptance checks.",
+   "note": "Asked 2026-10-23 and 2026-10-24 (hoses), 2026-11-09 (this mod: \"You're not matching both position and slope. That's what it takes.\", OWNER:1794242437721637229) and four times on 2026-11-16 (rows 2, 4, 5, 6, 8, 10 of the holding file). Added under the lock rule (maturation spec section 4, Stage 1 item 4, a bar added because of a discovery) by RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK: Convergent, it fixes a Problem, so it stays in 0.1.0.",
+   "proof_note": "offline: selftest_gimmesomeslack.py --joins-only (Source/SelfTest/StubJoinChecks.cs) and selftest_gss_stub_art_census.py; live: northstar/live_stub_joins.py on the review map save GSS_OWNER_LOOK_20261116 (probe joins:)"
   }
  ],
  "contradictions": [

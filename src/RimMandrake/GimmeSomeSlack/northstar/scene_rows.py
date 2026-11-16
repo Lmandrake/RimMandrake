@@ -528,9 +528,9 @@ def end_kind_and_slope(B, V, rows):
     B.probe("rebuild")
     r = B.probe("endkind:%d,%d,%d,%d" % (x - 1, z - 2, 62, 36))
     ends_ok = bool(r.get("success")) and (r.get("ends") or 0) >= 6 and r.get("both") == 0 and r.get("fitSparks") == 0 and r.get("none") == 0 \
-        and r.get("wallTerminalsFitted") == 0 and r.get("terminalsFitted") == 0 and r.get("stubsLoose") == 0
+        and r.get("wallTerminalsLoose") == 0 and r.get("terminalsFitted") == 0 and r.get("stubsLoose") == 0
     V.row(rows, "SC_cord_end_one_kind", "PASS" if ends_ok else "FAIL", "MOD",
-          {k: r.get(k) for k in ("ends", "both", "fitSparks", "none", "terminalsFitted", "wallTerminalsFitted", "stubsLoose", "bad", "error")})
+          {k: r.get(k) for k in ("ends", "both", "fitSparks", "none", "terminalsFitted", "wallTerminalsLoose", "stubsLoose", "bad", "error")})
     slope_ok = bool(r.get("success")) and (r.get("taken") or 0) >= 10 and r.get("offLine") == 0 and r.get("offSlope") == 0 \
         and r.get("short") == 0 and r.get("empty") == 0
     V.row(rows, "SC_box_stub_slope", "PASS" if slope_ok else "FAIL", "MOD",

@@ -36,7 +36,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         internal static string CheckEndKinds(CordWorld w, CordGraph g, List<LaidPiece> ps)
         {
             CordEndAudit.EndRead e = CordEndAudit.Ends(g, ps, "fuzz");
-            if (e.Both + e.FitSparks + e.None + e.TerminalsFitted + e.WallTerminalsFitted + e.StubsLoose > 0) return e.Bad.FirstOrDefault() ?? "end kind";
+            if (e.Both + e.FitSparks + e.None + e.TerminalsFitted + e.WallTerminalsLoose + e.StubsLoose > 0) return e.Bad.FirstOrDefault() ?? "end kind";
             if (!SlopeGate) return null;
             CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, g, ps, "fuzz");
             if (sl.OffLine + sl.OffSlope + sl.Short + sl.Empty > 0) return sl.Bad.FirstOrDefault() ?? "slope";

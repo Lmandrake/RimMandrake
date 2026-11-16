@@ -47,6 +47,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
             if (args.Contains("--scale-bench")) { CordScaleBench.Run(args); return 0; }
@@ -122,6 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
             CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
             SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
+            StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs
             JunctionStripChecks.Run();     // d_modern_junction_strip (owner 2026-11-05): JunctionStripChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs

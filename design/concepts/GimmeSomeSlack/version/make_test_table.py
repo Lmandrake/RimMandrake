@@ -44,6 +44,17 @@ OFF = {
                             "planner, slack laying, shape no-two-alike, junction strips, dead/live end poses, style per run, theft "
                             "and tap window maths, aerial switch flips, determinism, rebuild slice budgets, seeded fuzz",
                    reads=CORE + AERIAL + SELFTEST + [G + "selftest_gimmesomeslack.py" if os.path.exists(G + "selftest_gimmesomeslack.py") else "src/RimMandrake/Utils/selftest_gimmesomeslack.py"]),
+    # RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (2026-11-16): the position-and-slope rule at every stubbed piece
+    "T_STUB_JOINS": dict(stage="4-5", file="src/RimMandrake/Utils/selftest_gimmesomeslack.py", args=["--no-export", "--joins-only"],
+                         observes="Core/StubJoinAudit over 524 generated scenes (four looks x boxes, switches with 1-4 cords, wall/rock faces "
+                                  "through and dead-ending, his stations 12 and 25): each cord on a stub passes its tip on its line and heading, "
+                                  "no bare stub, the live end continues its cord over 90 frames, no loose end on a wall or rock dead end; "
+                                  "planted kink, bare arm and pinched tail go red",
+                         reads=[G + "Source/Core/StubJoinAudit.cs", G + "Source/SelfTest/StubJoinChecks.cs", G + "Source/Core/CordBuilder.cs"]),
+    "T_STUB_ART_CENSUS": dict(stage="4-5", file=G + "selftest_gss_stub_art_census.py",
+                              observes="every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); "
+                                       "a planted unknown texture goes red",
+                              reads=[G + "Source/Core/StubJoinAudit.cs", G + "Textures"]),
     "T_GATE": dict(stage="2", file=G + "northstar/proof_all.py", args=["--offline-gate"],
                    observes="the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity "
                             "with planted faults, review-round art, GPT fix shapes, lamp mast register; plus the matrix and "
@@ -141,6 +152,8 @@ OFF_DECIDES = {
     "floor_end_shock": ["T_SHOCK_RULE_OFFLINE"],
     # added by his card 2026-11-14 (OWNER:1794693278631337978): T_CORE's slideunder "under" check (cord layer below Building)
     "cords_draw_under_things": ["T_CORE"],
+    # added 2026-11-16 under the lock rule (RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK)
+    "cords_join_stubs_on_position_and_slope": ["T_STUB_JOINS", "T_STUB_ART_CENSUS"],
 }
 OFF_SUPPORTS = {
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
@@ -264,6 +277,14 @@ tests["sc_cords_under_items"] = dict(
             "python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof result json>",
     runs_today=dict(ran=False, why="UNRUN: offline only, never the game in this run; entry built 2026-11-14 (scene_rows.cords_under_items, probe under:), "
                                    "its offline half northstar/selftest_gss_cords_under_items.py green, its pit row a Stage 6 driver"))
+tests["sc_stub_joins"] = dict(
+    id="sc_stub_joins", kind="live_minimal", stage="6", tier="gimmesomeslack", file=G + "northstar/live_stub_joins.py", entry="main",
+    entry_exists=True, new=True, observes="on his review map (save GSS_OWNER_LOOK_20261116) the probe joins: runs Core/StubJoinAudit on the live "
+    "pieces of every station: stubs off line or slope, bare stubs, live ends turning or pinched at the join, wall/rock dead ends drawn loose",
+    reads=[G + "Source/GimmeSomeSlackProbe.cs", G + "Source/Core/StubJoinAudit.cs"],
+    why_game="the drawn pieces come from the running map's graph, looks and settings, not a generated scene",
+    command="python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\live_stub_joins.py (game up on the gimmesomeslack tier, bridge held)",
+    runs_today=dict(ran=False, why="live: see the item's notes for its last run"))
 tests["LOOK_STAGE8"] = dict(id="LOOK_STAGE8", kind="look", stage="8", file=None, entry=None, entry_exists=False,
                             observes="his walk of a scavenger base on his full list, with a mid-way reload",
                             reads=[C + "sheet.md", C + "version/vision.md"], why_game="his eye is the instrument",
@@ -333,6 +354,8 @@ for bid in ids:
         decides.append("LOOK_STAGE8")
     if bid == "cords_draw_under_things":  # his card 2026-11-14: the in-game draw-order read decides, his walk supports
         decides.append("sc_cords_under_items")
+    if bid == "cords_join_stubs_on_position_and_slope":  # 2026-11-16: the live read on his review map decides with the offline sweep
+        decides.append("sc_stub_joins")
     leaves_here = [bid] if is_leaf else sorted({r for s in sc for r in (SCENE[s].get("requirement") or [])})
     sup = list(OFF_SUPPORTS.get(bid, []))
     for l in leaves_here:
