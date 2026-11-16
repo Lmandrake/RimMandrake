@@ -1706,7 +1706,171 @@ def item_names_main():
     return 1 if FAILS else 0
 
 
+def cert_rerun_main():
+    """RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT (2026-11-16 12:28 PM PST): Explosive Knockback waited on
+    its certificate with 11 of 44 bars refused only because their deciders' runs were stamped on an older build, no
+    decider red; cert_red_decide returned None and nothing ran `certificate <Mod> --run`. A stale-only certificate gets
+    ONE zero-token rerun per build (a detached unit, not inside the tick), never a builder, never a loop. Written before
+    the code and watched failing on the base."""
+    FAILS.clear()
+    cfg = dict(load_cfg(), advancing=["ExplosiveKnockback"], max_live=0, launch_tries=3)
+    now = CLOCK
+
+    def stale(tests, build="b1"):
+        return [{"bar": "bar_" + t.lower(), "test": t, "clause": "ran_on_this_build", "status": "REFUSED",
+                 "observed": "the recorded run (2026-11-15T01:00:00Z) was on build old; ... hash to %s-%s now" % (t, build),
+                 "would_pass": "runs_today.build == %s-%s (the content of %s's reads and file now)" % (t, build, t),
+                 "smallest_fix": "python3 src/RimMandrake/rimflow/maturation.py certificate ExplosiveKnockback --run"}
+                for t in tests]
+
+    def facts(rows, result=None, live=()):
+        return {"ExplosiveKnockback": {
+            "stage": "offline_build", "owed": "certificate", "live_units": list(live), "stage_runs": {}, "run_usd": {},
+            "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows},
+            "certificate_why": "refused: 11 of 44 bars", "certificate_fix": "certificate --run", "bar_fp": "fp",
+            "cert_rerun_result": result}}
+    calls, filed, briefs = [], [], []
+
+    def fake_rerun(mod, key):
+        calls.append((mod, key))
+        return 0, "STARTED rm-cert-rerun-%d" % len(calls), "rm-cert-rerun-%d" % len(calls)
+    fx = {"cert_rerun": fake_rerun, "file": lambda *a, **k: filed.append(a) or (True, "filed"),
+          "launch_brief": lambda *a, **k: briefs.append(a) or (0, "DETACHED x", "x"), "known": lambda: set(),
+          "launch": lambda *a, **k: briefs.append(a) or (0, "DETACHED y", "y")}
+    two = stale(["PY_KNOCK_A", "PY_KNOCK_B"])
+    st = {"mods": {}}
+    has = all(hasattr(MD, n) for n in ("stale_key", "cert_rerun_unit", "cert_rerun_worker", "rerun_result"))
+    ok(has, "cert rerun: maturation_dispatch has stale_key, cert_rerun_unit, cert_rerun_worker and rerun_result")
+    rows, la = MD.decide(cfg, st, facts(two), now, (True, "ok"), releases=[])
+    r = rows[0]
+    ok(la == ["ExplosiveKnockback"] and r.get("decision") == "launch" and r.get("cert_rerun_key") and not r.get("cert_reds"),
+       "cert rerun: stale stamps alone, no red decider, slots full (max_live 0): the tick owes one zero-token rerun "
+       "(%s: %s)" % (r.get("decision"), r.get("why")))
+    key = r.get("cert_rerun_key")
+    try:
+        MD.execute(".", cfg, st, rows, la, now, fx)
+    except Exception as e:      # noqa: BLE001  the base falls through to a Stage 3 builder and dies on refused_ids
+        r["decision"] = "crashed: %s: %s" % (type(e).__name__, e)
+    ok(calls == [("ExplosiveKnockback", key)] and not filed and not briefs and r.get("decision") == "launched",
+       "cert rerun: execute starts exactly one rerun unit, files no item and briefs no builder (%s; %s; %s)" % (
+           calls, filed, r.get("decision")))
+    book = (st["mods"].get("ExplosiveKnockback") or {}).get("cert_rerun") or {}
+    ok(book.get("key") == key and book.get("unit") == "rm-cert-rerun-1",
+       "cert rerun: the run is booked against its build key (%s)" % book)
+    rows, la = MD.decide(cfg, st, facts(two), now + 60, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
+       "cert rerun: the next tick on the same build, the unit still running, launches nothing (%s: %s)" % (
+           rows[0].get("decision"), rows[0].get("why")))
+    done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
+            "error": "publish refused: hook", "end": now + 600}
+    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 900, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in str(rows[0].get("need")),
+       "cert rerun: it ended and the same build is still stale: never a second run, a Needs Conductor line naming it "
+       "(%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
+    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 7200, (True, "ok"), releases=[])
+    ok(not la, "cert rerun: still none two hours later on that build (%s)" % rows[0].get("decision"))
+    new = stale(["PY_KNOCK_A", "PY_KNOCK_B"], build="b2")
+    rows, la = MD.decide(cfg, st, facts(new, result=done), now + 7300, (True, "ok"), releases=[])
+    ok(la == ["ExplosiveKnockback"] and rows[0].get("cert_rerun_key") not in (None, key),
+       "cert rerun: a new build (someone landed a change) gets its own one rerun (%s)" % rows[0].get("decision"))
+    own = {"unit": "rm-cert-rerun-2", "key": "kprev", "key_after": MD.stale_key({"rows": new}) if has else None,
+           "ok": False, "published": "abc1234", "end": now + 7000}
+    st2 = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": "kprev", "unit": "rm-cert-rerun-2", "at": now + 6000}}}}
+    rows, la = MD.decide(cfg, st2, facts(new, result=own), now + 7300, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("need") and "stale" in str(rows[0].get("need")),
+       "cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a Needs "
+       "Conductor line (%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
+    red = two + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
+                  "smallest_fix": "fix"}]
+    rows, la = MD.decide(dict(cfg, max_live=4), {"mods": {}}, facts(red), now, (True, "ok"), releases=[])
+    ok(rows[0].get("cert_reds") == ["T_RED"] and not rows[0].get("cert_rerun_key"),
+       "cert rerun: stale stamps beside a red decider stay cert_red_decide's builder (it reruns first)")
+    reg = two + [{"bar": "bar_r", "test": "T_GONE", "clause": "registered", "status": "REFUSED", "observed": "no file",
+                  "smallest_fix": "build it"}]
+    rows, la = MD.decide(cfg, {"mods": {}}, facts(reg), now, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("decision") == "certificate",
+       "cert rerun: a refusal a rerun cannot pass (registered) is no rerun: the certificate wait stands")
+    rows, la = MD.decide(cfg, {"mods": {}}, facts(two, live=["rm-builder"]), now, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("decision") == "live", "cert rerun: nothing while a run is live on the mod")
+    failed = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": key, "unit": None, "at": now, "tries": 1,
+                                                             "failed": "systemd-run exit 1: bad unit", "code": "t1"}}}}
+    rows, la = MD.decide(dict(cfg, _code="t1"), failed, facts(two), now + 120, (True, "ok"), releases=[])
+    ok(not la and rows[0].get("need"), "cert rerun: a start refused on a defect is not retried on the same code (%s)"
+       % rows[0].get("decision"))
+    rows, la = MD.decide(dict(cfg, _code="t2"), failed, facts(two), now + 120, (True, "ok"), releases=[])
+    ok(la == ["ExplosiveKnockback"], "cert rerun: it is retried once the pipeline's code changed (%s)" % rows[0].get("decision"))
+    if not has:
+        print("%d failed" % len(FAILS))
+        return 1
+    # through the autonomy layer: no road back, the rerun stays the tick's launch (no steward or fixer takes it); an open
+    # road-back item gets its fixer first (the road back's items before any launch), the rerun on a later tick
+    aut_fx = {"open_items": lambda ids: [], "designer_state": lambda m: None, "version_locked": lambda m: True,
+              "version_evidence": lambda m: None}
+    st3 = {"mods": {}}
+    rows, la = MD.decide(cfg, st3, facts(two), now, (True, "ok"), releases=[])
+    rows, la = MD.AUT.resolve(".", cfg, st3, facts(two), rows, la, now, aut_fx)
+    ok(la == ["ExplosiveKnockback"] and rows[0].get("cert_rerun_key") and not rows[0].get("aut"),
+       "cert rerun: the autonomy layer leaves the rerun the tick's own launch (%s: %s)" % (
+           rows[0].get("decision"), rows[0].get("why")))
+    st4 = {"mods": {"ExplosiveKnockback": {"road_back": {"caused_by": "RIMMANDRAKE_STEWARD_X", "opened": now - 600}}}}
+    rows, la = MD.decide(dict(cfg, max_live=4), st4, facts(two), now, (True, "ok"), releases=[])
+    rows, la = MD.AUT.resolve(".", dict(cfg, max_live=4), st4, facts(two), rows, la, now, dict(
+        aut_fx, open_items=lambda ids: [{"id": "RIMMANDRAKE_BREAK_X", "needs": "offline"}]))
+    ok(rows[0].get("aut") == "fixer" and rows[0].get("fix_item") == "RIMMANDRAKE_BREAK_X",
+       "cert rerun: an open road-back item gets its fixer before the rerun (%s: %s)" % (
+           rows[0].get("decision"), rows[0].get("why")))
+    d = tempfile.mkdtemp(prefix="cert_rerun_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = d
+    # the unit: systemd-run, detached, zero tokens, bounded
+    seen = []
+    rc, text, unit = MD.cert_rerun_unit("ExplosiveKnockback", key, runner=lambda argv, **k: seen.append(argv) or
+                                        subprocess.CompletedProcess(argv, 0, "", ""), now=now)
+    a = seen[0] if seen else []
+    ok(rc == 0 and unit and a[:2] == ["systemd-run", "--user"] and "--collect" in a and unit in a
+       and any(str(x).startswith("RuntimeMaxSec=") for x in a) and "cert-rerun" in a and "ExplosiveKnockback" in a
+       and key in a and not any(os.path.basename(str(x)) == "claude" for x in a),
+       "cert rerun: the unit is a bounded systemd-run of `maturation_dispatch.py cert-rerun`, no claude (%s)" % a)
+    # the worker: its own clone, `certificate --run`, publish the table, a result the tick reads
+    clone = os.path.join(d, "clone")
+    tdir = os.path.join(clone, "design", "concepts", "ExplosiveKnockback", "version")
+    os.makedirs(tdir)
+    open(os.path.join(tdir, "test_table.json"), "w").write("{}")
+    ran = []
+
+    def runner(argv, **k):
+        ran.append(argv)
+        if "certificate" in argv:
+            return subprocess.CompletedProcess(argv, 0, json.dumps({"ok": True, "rows": [], "run": {"ran": 2}}), "")
+        if argv[:2] == ["git", "status"] or "status" in argv:
+            return subprocess.CompletedProcess(argv, 0, " M design/concepts/ExplosiveKnockback/version/test_table.json\n", "")
+        if argv and argv[0] == "./publish":
+            return subprocess.CompletedProcess(argv, 0, "PUBLISHED 0123abcd\n", "")
+        return subprocess.CompletedProcess(argv, 0, "", "")
+    try:
+        res = MD.cert_rerun_worker("ExplosiveKnockback", key, "rm-cert-rerun-1", runner=runner,
+                                   take=lambda name: (clone, "made"), now=lambda: now)
+        got = MD.rerun_result("ExplosiveKnockback")
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(d, ignore_errors=True)
+    cert = [x for x in ran if "certificate" in x]
+    pub = [x for x in ran if x and x[0] == "./publish"]
+    ok(cert and "--run" in cert[0] and pub and "design/concepts/ExplosiveKnockback/version/test_table.json" in pub[0]
+       and "-A" not in pub[0], "cert rerun: the worker runs `certificate --run` and publishes the table by path (%s)" % ran)
+    ok(got and got.get("unit") == "rm-cert-rerun-1" and got.get("key") == key and got.get("published") == "0123abcd"
+       and got.get("ok") is True and got.get("key_after") is None and res == got,
+       "cert rerun: the result the tick reads names the unit, the key, the sha and the key after (%s)" % got)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
+    if "--cert-rerun" in sys.argv[1:]:
+        sys.exit(cert_rerun_main())
     if "--item-names" in sys.argv[1:]:
         sys.exit(item_names_main())
     if "--land-views" in sys.argv[1:]:
@@ -1721,4 +1885,5 @@ if __name__ == "__main__":
     rc = blind_main() or rc
     rc = land_views_main() or rc
     rc = item_names_main() or rc
+    rc = cert_rerun_main() or rc
     sys.exit(ingame_main() or rc)

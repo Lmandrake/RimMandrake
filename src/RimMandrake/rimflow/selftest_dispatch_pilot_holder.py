@@ -11,7 +11,8 @@ nothing in the repo is written. Written before the code and watched failing on t
 2. a pilot whose road-back fixers are spent, ledger ready and nothing live gets ONE holder run on all its open road-back
    items from the tick; again only when the open set shrank; a non-pilot stays fixer_spent.
 3. a mod at the offline build waiting on its certificate with red deciders and no open item gets one item filed per red
-   decider and one builder on them; never a second try at the same reds; stale stamps alone stay a certificate wait.
+   decider and one builder on them; never a second try at the same reds; stale stamps alone get no builder
+   (their one zero-token rerun is selftest_maturation_dispatch.py --cert-rerun).
 4. the ledger part of a launch (packet plus holder lines) fits packet_budget_tokens (trimmed), and a packet that cannot
    fit is refused with its lease revoked (FlowWorks launched at 15,093 tokens against 15,000, 12:15 AM PST).
 5. a blind judge on a pilot writes as JUDGE.<run>, not as the holder: its verdicts append (a) with no lease to lapse (b);
@@ -352,8 +353,9 @@ def t3_cert_reds():
     check("3 red deciders with no open item: the tick launches on them", la == ["FlowWorks"] and
           rows[0].get("cert_reds") == ["T_FETCH_FALLEN_OFFLINE", "T_TOSS_FLAME_OFFLINE"], rows[0])
     rows2, la2 = MD.decide(cfg, {"mods": {}}, off_facts(cert([], stale=["PY_A"])), NOW, (True, "ok"), releases=[])
-    check("3 control: stale stamps alone stay a certificate wait", not la2 and rows2[0]["decision"] == "certificate",
-          rows2[0])
+    check("3 control: stale stamps alone get no builder, only the zero-token certificate rerun "
+          "(RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT)", not rows2[0].get("cert_reds")
+          and rows2[0].get("cert_rerun_key") and la2 == ["FlowWorks"], rows2[0])
     filed, launched = [], []
 
     def fake_file(item, title, why, needs="offline", spec=None):

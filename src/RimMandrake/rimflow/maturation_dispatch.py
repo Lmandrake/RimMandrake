@@ -71,6 +71,8 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
                 count (cycle_decision); a pilot whose road-back fixers are spent gets ONE holder run on all its open
                 road-back items, another only once that set shrank (pilot_holders); red deciders with no open item at
                 the certificate get an item each and one builder (cert_red_decide, never twice at the same reds); a
+                certificate refusing only stale stamps gets one zero-token `certificate --run` unit per build key, never a
+                builder and never a loop (cert_rerun_decide; RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT); a
                 blind judge on a pilot writes JUDGE.<run>, starts with no packet and never in the holder's session,
                 and is sealed at its end (judge_open, end_judge_run; `judge-verify MOD` is its verification list);
                 the ledger part of a launch fits packet_budget_tokens or is refused (modledger.launch)
@@ -363,6 +365,7 @@ def add_cert(root, mod, f):
     tt, _ = JC.read_table(root, mod)
     f["known_red"] = {tid: t["known_red"] for tid, t in ((tt or {}).get("tests") or {}).items()
                       if isinstance(t, dict) and isinstance(t.get("known_red"), str)}
+    f["cert_rerun_result"] = rerun_result(mod)
     return f
 
 
@@ -749,8 +752,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             continue
         if owed == "certificate":
             got = cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap if cap_ok else 0, releases)
+            got = got or cert_rerun_decide(cfg, s, f, row, put, now)
             if got == "launch":
-                live_total += 1
+                live_total += 0 if row.get("cert_rerun_key") else 1     # a zero-token rerun takes no builder slot
                 launches.append(mod)
             elif not got:
                 cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
@@ -909,6 +913,155 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
         "one builder on them%s (%s)" % (len(reds), ", ".join(reds), ", a retry after a transient fault" if retry
                                        else "", account[1]))
     return "launch"
+
+
+RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); FlowWorks' C# suite alone ran 531 s
+
+
+def stale_key(cv):
+    """-> a key for a certificate whose every refusal is a stale stamp (clause ran_on_this_build): the stale deciders and
+    the build each must carry now (would_pass names it), so a new build is a new key. None when it does not refuse, or
+    refuses on anything a rerun cannot pass (a red decider, an unregistered one, a bar with no decider)."""
+    if not isinstance(cv, dict):
+        return None
+    ref = [r for r in cv.get("rows") or [] if isinstance(r, dict) and r.get("status") == "REFUSED"]
+    if not ref or any(r.get("clause") != "ran_on_this_build" for r in ref):
+        return None
+    want = sorted({(str(r.get("test")), str(r.get("would_pass"))) for r in ref})
+    return hashlib.sha1(json.dumps(want).encode("utf-8")).hexdigest()[:12]
+
+
+def cert_rerun_decide(cfg, s, f, row, put, now):
+    """At the offline build waiting on a certificate that refuses only stale stamps (no red decider: cert_red_decide
+    returned None) -> "launch" (row["cert_rerun_key"]: execute starts ONE detached zero-token `certificate <Mod> --run`,
+    cert_rerun_unit), "decided" (the row put), or None (not stale-only: the certificate wait stands). Once per build key,
+    never a loop: the same key again is a Needs Conductor line once its run ended; a run whose own result left the new
+    key stale (a decider that rewrites what it reads) is one too. A start that failed is tried again on a transient
+    fault or once the pipeline's code changed, within launch_tries (RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT:
+    Explosive Knockback waited for a hand on 11 stale bars, 2026-11-16 12:28 PM PST)."""
+    key = stale_key(f.get("certificate"))
+    if not key:
+        return None
+    mod = row["mod"]
+    row["stale_key"] = key
+    prior = s.get("cert_rerun") if isinstance(s.get("cert_rerun"), dict) else None
+    res = f.get("cert_rerun_result") if isinstance(f.get("cert_rerun_result"), dict) else None
+    mine = res if res and prior and prior.get("unit") and res.get("unit") == prior["unit"] else None
+    lift = "`maturation_dispatch.py clear %s --why ...` lets it run once more" % mod
+
+    def wait(said):
+        cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
+                 "the move into the blind challenge")
+        row["need"] = "%s; %s, and the step never reruns the same build (%s)" % (row.get("need"), said, lift)
+        return "decided"
+    if prior and prior.get("key") == key:
+        if prior.get("unit"):
+            age = now - float(prior.get("at") or 0)
+            if not mine and 0 <= age < RERUN_MAX_S:
+                put("live", "certificate rerun %s (zero tokens) started %d s ago on this build" % (prior["unit"], age))
+                return "decided"
+            return wait("the zero-token certificate rerun %s on this build %s" % (prior["unit"], (
+                "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
+                                                   ", error: %s" % mine["error"] if mine.get("error") else "")
+                if mine else "left no result within %d s" % RERUN_MAX_S)))
+        retry = int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)) and (
+            AUT.transient(str(prior.get("failed") or "")) or code_changed(cfg, prior))
+        if not retry:
+            return wait("the certificate rerun on this build did not start (%s)" % prior.get("failed"))
+    elif mine and mine.get("key_after") == key:
+        return wait("the certificate rerun %s left its own build stale (a decider that changes what it reads?)"
+                    % prior["unit"])
+    row["cert_rerun_key"] = key
+    n = len({r.get("test") for r in (f.get("certificate") or {}).get("rows") or [] if r.get("status") == "REFUSED"})
+    put("launch", "its certificate refuses only stale stamps (%d decider(s) last run on an older build), no decider "
+        "red: one zero-token `maturation.py certificate %s --run`, detached, for this build" % (n, mod))
+    return "launch"
+
+
+def cert_rerun_launch(cfg, st, row, now, fx):
+    """execute's act for cert_rerun_decide's launch: start the unit, book it against the build key. -> True when up."""
+    mod, s, key = row["mod"], st["mods"][row["mod"]], row["cert_rerun_key"]
+    prior = s.get("cert_rerun") if isinstance(s.get("cert_rerun"), dict) else {}
+    try:
+        rc, text, unit = (fx.get("cert_rerun") or cert_rerun_unit)(mod, key)
+    except Exception as e:      # noqa: BLE001  a start that raised is a start that failed
+        rc, text, unit = 1, "%s: %s" % (type(e).__name__, e), None
+    unit = unit if rc == 0 else None
+    s["cert_rerun"] = {"key": key, "unit": unit, "at": now, "failed": None if unit else str(text), "code": cfg.get("_code"),
+                       "tries": int(prior.get("tries") or 1) + 1 if prior.get("key") == key and not prior.get("unit")
+                       else 1}
+    if unit:
+        row.update(decision="launched", unit=unit, why=text)
+        return True
+    row.update(decision="launch_failed", why=str(text), need="%s: the zero-token certificate rerun did not start (%s)"
+               % (mod, text))
+    return False
+
+
+def rerun_dir():
+    d = os.path.join(sdir(), "cert_rerun")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def rerun_result(mod):
+    """-> the last certificate rerun's result for mod (cert_rerun_worker writes it), or None."""
+    r = _read(os.path.join(rerun_dir(), "%s.json" % mod), None)
+    return r if isinstance(r, dict) else None
+
+
+def cert_rerun_unit(mod, key, runner=subprocess.run, now=None):
+    """Start `maturation_dispatch.py cert-rerun MOD` as its own transient user unit (bounded by RERUN_MAX_S; the 60 s
+    tick never waits on it). -> (rc, text, unit)."""
+    unit = "rm-cert-rerun-%s-%d" % (re.sub(r"[^a-z0-9]+", "-", mod.lower()).strip("-"), int(now or time.time()))
+    log = os.path.join(rerun_dir(), "%s.log" % mod)
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit, "-p", "RuntimeMaxSec=%d" % RERUN_MAX_S,
+            "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log, "--working-directory", REPO,
+            "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"), "--setenv", "RM_MATURATION_DISPATCH_DIR=" + sdir(),
+            "--", sys.executable, os.path.abspath(__file__), "cert-rerun", mod, "--key", key, "--unit", unit]
+    try:
+        r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return 1, "systemd-run failed: %s: %s" % (type(e).__name__, e), None
+    if r.returncode:
+        return r.returncode, "systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()), None
+    return 0, "STARTED %s: certificate %s --run, zero tokens (log %s)" % (unit, mod, log), unit
+
+
+def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time.time):
+    """The unit's body: in its own pool clone (synced to origin/main), `maturation.py certificate MOD --run --resume`,
+    publish the table by path when it changed, and write the result the tick reads (rerun_result). -> the result."""
+    res = {"mod": mod, "unit": unit, "key": key, "at": now(), "ok": None, "key_after": None, "published": None,
+           "error": None}
+    rel = "design/concepts/%s/version/test_table.json" % mod
+    kw = {"capture_output": True, "text": True, "stdin": subprocess.DEVNULL}
+    try:
+        clone, said = (take or DH.take_clone)("RIMMANDRAKE_RERUN_%s_CERTIFICATE" % mod.upper())
+        res["clone"] = clone
+        r = runner([sys.executable, os.path.join("src", "RimMandrake", "rimflow", "maturation.py"), "certificate", mod,
+                    "--run", "--resume", "--json"], cwd=clone, timeout=RERUN_MAX_S, **kw)
+        try:
+            cv = json.loads(r.stdout or "")
+        except ValueError:
+            raise RuntimeError("certificate --run exit %d printed no verdict: %s" % (
+                r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:]))
+        res.update(ok=bool(cv.get("ok")), key_after=stale_key(cv), ran=cv.get("run"))
+        g = runner(["git", "status", "--porcelain", "--", rel], cwd=clone, timeout=120, **kw)
+        if (g.stdout or "").strip():
+            p = runner(["./publish", "-m", "maturation: %s certificate rerun on its build (dispatch, zero tokens)" % mod,
+                        rel], cwd=clone, timeout=900, **kw)
+            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", (p.stdout or "") + (p.stderr or ""))
+            if m:
+                res["published"] = m.group(1)
+            else:
+                res["error"] = "publish exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or ""))[-300:])
+        else:
+            res["note"] = "the table did not change"
+    except Exception as e:      # noqa: BLE001  the result says what failed; the tick reads it
+        res["error"] = "%s: %s" % (type(e).__name__, e)
+    res["end"] = now()
+    _write(os.path.join(rerun_dir(), "%s.json" % mod), res)
+    return res
 
 
 def cert_item_id(mod, test, known):
@@ -1957,6 +2110,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 row.update(decision="launch_failed", why=text, need="%s: the holder run on its road-back items did not "
                            "start (%s); never retried on its own" % (mod, text))
             continue
+        if row.get("cert_rerun_key"):   # stale stamps only: one zero-token certificate rerun (cert_rerun_launch)
+            if cert_rerun_launch(cfg, st, row, now, fx):
+                done.append(row)
+            continue
         if row.get("cert_reds"):        # red deciders: their items and one builder (cert_launch)
             if cert_launch(root, cfg, st, row, now, fx, known, do_file):
                 done.append(row)
@@ -2474,7 +2631,16 @@ def main(argv=None):
     jv = sub.add_parser("judge-verify", help="a blind judge's verification list: MOD's findings claimed fixed (finding "
                                              "text, reproduction, the claim's test; never the holder's story)")
     jv.add_argument("mod")
+    cr = sub.add_parser("cert-rerun", help="the certificate rerun unit's body: certificate MOD --run in a pool clone, "
+                                           "publish the table, write the result the tick reads (zero tokens)")
+    cr.add_argument("mod")
+    cr.add_argument("--key", required=True)
+    cr.add_argument("--unit", required=True)
     o = ap.parse_args(argv)
+    if o.cmd == "cert-rerun":
+        res = cert_rerun_worker(o.mod, o.key, o.unit)
+        print(json.dumps(res, indent=1))
+        return 1 if res.get("error") else 0
     cfg = load_cfg()
     if o.cmd == "tick":
         rd = tick(os.path.abspath(o.root), cfg, o.apply, page=not o.no_page)
@@ -2554,6 +2720,9 @@ def _clear(o):
     if s.get("cert_red"):       # a stop on red deciders (cert_red_decide) lifts the same way
         was = was or {"cert_red": s.pop("cert_red")}
         s.pop("cert_red", None)
+    if s.get("cert_rerun"):     # a certificate rerun spent on a build (cert_rerun_decide) may run once more
+        was = was or {"cert_rerun": s.pop("cert_rerun")}
+        s.pop("cert_rerun", None)
     # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
     # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
     released = {}
