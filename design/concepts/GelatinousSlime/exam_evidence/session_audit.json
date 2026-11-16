@@ -1,0 +1,217 @@
+{
+  "run": "rm-role-designercodex-1794835379",
+  "helpers": [
+    {
+      "role": "examiner",
+      "session_id": "d91f047c-588e-488e-8f5d-865751dba090",
+      "modelUsage": [
+        "claude-opus-5-5"
+      ],
+      "user_prompt_exact": true,
+      "user_messages": 1,
+      "tool_uses": 0,
+      "brief_sha256": "0472320d914a4da48fb667a5bf5007e34a81c2c7978ce977916486c65700fe4a",
+      "raw_result_sha256": "91ad6139de45819f30ed5d6800c245dc0dbeb7a953fb6120e32f113ccdb96fdf",
+      "weighted_tokens": 218995,
+      "attachment_keyword_hits": [
+        {
+          "type": "hook_success",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "hook_additional_context",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "instructions",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "session_context",
+          "keywords": [
+            "record.json",
+            "log.md",
+            "GelatinousSlime"
+          ]
+        }
+      ],
+      "attachment_review": "Keyword hits are generic workflow instructions and a git-status path listing; no concept record/log contents, answer key, or removed-rule wording was supplied. session_context contains user identity and git status/recent commit subjects only."
+    },
+    {
+      "role": "challenger",
+      "session_id": "b1d30312-9d7f-4997-9c46-274f0e3f11e9",
+      "modelUsage": [
+        "claude-opus-5-5"
+      ],
+      "user_prompt_exact": true,
+      "user_messages": 1,
+      "tool_uses": 0,
+      "brief_sha256": "053a438ad1fc08cbdce2d3b35fd23480fb670d4d050e63db6dc43b8542e8252b",
+      "raw_result_sha256": "2cfc362e60cf19febbdbb3b9c3e2d8b2a7e9e87990c096c834fddc03a45cbd93",
+      "weighted_tokens": 195545,
+      "attachment_keyword_hits": [
+        {
+          "type": "hook_success",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "hook_additional_context",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "instructions",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "session_context",
+          "keywords": [
+            "record.json",
+            "log.md",
+            "GelatinousSlime"
+          ]
+        }
+      ],
+      "attachment_review": "Keyword hits are generic workflow instructions and a git-status path listing; no concept record/log contents, answer key, or removed-rule wording was supplied. session_context contains user identity and git status/recent commit subjects only."
+    },
+    {
+      "role": "reader_one",
+      "session_id": "504a1786-73ae-48d4-9142-19881f1bdcdb",
+      "modelUsage": [
+        "claude-opus-5-5"
+      ],
+      "user_prompt_exact": true,
+      "user_messages": 1,
+      "tool_uses": 0,
+      "brief_sha256": "3477e6fb98897f9ae465f5651872f03ebba641608f5b25ff4ef13e99306a79a7",
+      "raw_result_sha256": "951c0b9a42e4248a27356369992232c65f50989b605725c465501971cfff284e",
+      "weighted_tokens": 117194,
+      "attachment_keyword_hits": [
+        {
+          "type": "hook_success",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "hook_additional_context",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "instructions",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "session_context",
+          "keywords": [
+            "record.json",
+            "log.md",
+            "GelatinousSlime"
+          ]
+        }
+      ],
+      "attachment_review": "Keyword hits are generic workflow instructions and a git-status path listing; no concept record/log contents, answer key, or removed-rule wording was supplied. session_context contains user identity and git status/recent commit subjects only."
+    },
+    {
+      "role": "reader_two",
+      "session_id": "1aba8f10-fa5d-471e-b1c9-c16e7389f2ce",
+      "modelUsage": [
+        "claude-opus-5-5"
+      ],
+      "user_prompt_exact": true,
+      "user_messages": 1,
+      "tool_uses": 0,
+      "brief_sha256": "3477e6fb98897f9ae465f5651872f03ebba641608f5b25ff4ef13e99306a79a7",
+      "raw_result_sha256": "8360066366a5f148f3579ff7d796f2dfd48e5c3e551c248313876c877c0760ed",
+      "weighted_tokens": 116634,
+      "attachment_keyword_hits": [
+        {
+          "type": "hook_success",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "hook_additional_context",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "instructions",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "session_context",
+          "keywords": [
+            "record.json",
+            "log.md",
+            "GelatinousSlime"
+          ]
+        }
+      ],
+      "attachment_review": "Keyword hits are generic workflow instructions and a git-status path listing; no concept record/log contents, answer key, or removed-rule wording was supplied. session_context contains user identity and git status/recent commit subjects only."
+    },
+    {
+      "role": "control",
+      "session_id": "f67fb588-0ae2-4ab9-80cd-a448cbc71eb4",
+      "modelUsage": [
+        "claude-opus-5-5"
+      ],
+      "user_prompt_exact": true,
+      "user_messages": 1,
+      "tool_uses": 0,
+      "brief_sha256": "18715949df4bff290e779fc56e07a57e092929b16c42a23f50cd894694b1b08e",
+      "raw_result_sha256": "376091d670bb0d190e48f4a30a68fba9b224f89d3b28f6b6d66d2f38355233c2",
+      "weighted_tokens": 115659,
+      "attachment_keyword_hits": [
+        {
+          "type": "hook_success",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "hook_additional_context",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "instructions",
+          "keywords": [
+            "log.md"
+          ]
+        },
+        {
+          "type": "session_context",
+          "keywords": [
+            "record.json",
+            "log.md",
+            "GelatinousSlime"
+          ]
+        }
+      ],
+      "attachment_review": "Keyword hits are generic workflow instructions and a git-status path listing; no concept record/log contents, answer key, or removed-rule wording was supplied. session_context contains user identity and git status/recent commit subjects only."
+    }
+  ],
+  "total_weighted_tokens": 764027,
+  "meaning": "Independent interpretation/discrimination of frozen design text; no runtime acceptance, art verdict, waiver or first-touch certification."
+}

@@ -1,0 +1,60 @@
+{
+  "scenarios": [
+    {
+      "id": "c01",
+      "text": "A colonist injected through the ordinary injection order with a field-extracted dose goes into a coma and shows accelerated absorption in the health tab. A friend is given the toxic antidote treatment order. The moment the friend takes the job, while they are still walking toward the patient, the absorption hediff is removed and the scene log records 'rescued'. The friend's UseItem job never completes and the antidote is still in their inventory afterwards. The patient survives.",
+      "expect": "reject: the rescue is counted when the order is taken, not when the friend actually completes the antidote administration and the item is consumed, so it does not show that a friend can complete toxic antidote treatment before dissolution",
+      "expect_source": "leaf:friend_rescue",
+      "by": "challenger"
+    },
+    {
+      "id": "c02",
+      "text": "A giant chunk is butchered from an eligible Titanoslime corpse by the normal route, equipped and thrown through normal targeting into a melee. Unarmoured and armoured enemies within the burst are impaired at once. A non-resistant colonist ally standing in the same burst radius takes no film and no impairment, and the log shows the burst skipped every pawn of the player's faction. The piece is consumed once and the ground film expires on its finite timer.",
+      "expect": "reject: the burst filters out allies, so the weapon is enemy-only and not dangerous to nearby allies as promised, even though consumption and expiry behave correctly",
+      "expect_source": "leaf:harvested_chunk",
+      "by": "challenger"
+    },
+    {
+      "id": "c03",
+      "text": "A colonist touches slime on day 10 at Shooting 6 with no scars. They then train to Shooting 12 and lose an eye away from any slime, and die on day 40. The player pays for and powers normal archive growth, and the vat finishes. The returned pawn has the right name and appearance, Shooting 12 and the missing eye. The archive menu displayed the day-10 entry as the one being grown.",
+      "expect": "reject: the return uses death-time fields instead of the life recorded at the last eligible slime contact, which is the wrong recorded life even though the menu, payment and power path all worked",
+      "expect_source": "leaf:last_touch_return",
+      "by": "challenger"
+    },
+    {
+      "id": "c04",
+      "text": "A married colonist dies after their last slime contact. Their spouse later remarries in the colony. A year on, the player pays for and powers normal archive growth, and the recorded person returns with the fields from their last contact. The former spouse stays married to the new partner, and the returnee's relation to them shows the ended state. The returnee carries the recorded grief mood adjustment, children born in between are still present, and colony history is unchanged. A reviewer marks this a failure because 'the resurrected person did not get their marriage back'.",
+      "expect": "accept: the return is promised not to resume a superseded marriage or erase later colony life, and the recorded grief answer is the intended adjustment, so the reviewer's rejection is wrong",
+      "expect_source": "leaf:last_touch_return",
+      "by": "challenger"
+    },
+    {
+      "id": "c05",
+      "text": "On an authored slime-biome map, a visiting outsider predator, partly absorbed and showing film, hunts a colonist's pet using the ordinary predation job. A matched non-absorbed predator of the same species on a control pad does the same against the same prey under the same hunger conditions. The absorbed predator's faction is unchanged, it has no manhunter state, and no new hostile job type appears in its job log. A tester rejects the scene because 'a slimed animal attacked the colony'.",
+      "expect": "accept: absorption itself created no hostility, and the attack comes from existing predation with its ordinary cause, which the promise explicitly keeps, so rejecting it misreads the boundary",
+      "expect_source": "leaf:living_ecology",
+      "by": "challenger"
+    },
+    {
+      "id": "c06",
+      "text": "Using the universal archive, the player chooses a gene in the ordinary archive dialog, follows a handheld seeker to the marked current and extracts one perishable dose; this works. With the campaign priority archive, the same dialog choice finishes by placing a loaded dose in the archive's home output slot after a timer. No seeker localisation or field extraction job happens. The dose has the chosen gene and expires normally.",
+      "expect": "reject: the campaign archive delivers the dose through a remote home factory instead of the field journey, and both universal and campaign archives must support the same handheld localisation and field extraction path",
+      "expect_source": "leaf:chosen_gene_journey",
+      "by": "challenger"
+    },
+    {
+      "id": "c07",
+      "text": "A prepared colony runs a full day of normal compressor, pit and solvent bills, builds slime blocks and eats slime meals. Its workers are resistant and its floors are prepared. The paired health reads show no film on any worker all day. In a separate arm, a poisoned colonist eats raw slime and the poison clears while film accrues. A reviewer rejects the workday because 'the slime posed no danger to the workers'.",
+      "expect": "accept: prepared work with resistant workers is promised to remain viable, raw slime's poison relief carries its film fee, and rejecting a safe prepared workday applies an invented perpetual-danger rule",
+      "expect_source": "leaf:useful_body",
+      "by": "challenger"
+    },
+    {
+      "id": "c08",
+      "text": "A paid archive vat is halfway through growing a recorded person when the player turns the archive feature off in Mod Settings. The vat's inspect text changes to 'Idle', and the setter returns success. Tick-stamped reads show the vat still drawing power and its progress counter still advancing. When the setting is turned back on, the vat reports completion and the person emerges at once.",
+      "expect": "reject: the setting advertises disabling while its consumer keeps running behind an 'Idle' label, so the paid vat does not actually pause and resume with its saved progress",
+      "expect_source": "leaf:settings_and_scope",
+      "by": "challenger"
+    }
+  ]
+}

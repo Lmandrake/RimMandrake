@@ -1,0 +1,14 @@
+{
+  "run": "rm-role-designercodex-1794835379",
+  "author": "rm-role-designercodex-1794829244",
+  "inputs": {
+    "exam": null,
+    "floor": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "23cfc23f4265f52ff71148df4f63e96b89cf3ed38d3bd3f89f535d6ceccd05e7",
+    "scenes": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+    "sheet": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d",
+    "tree": "73a427218f9b65b4ad03c58cba26b209beb2e5900ee0d48bddb25e6df9d3eac8"
+  },
+  "boundary": "Tree/sheet/scenes/floor are frozen NON-INPUTS to edits during this exam. Examiner and Challenger independently generate scenarios from sheet/tree only. Readers and Control receive only the corresponding sheet/tree and scenario id/text, never expectations, record, log or maker notes. All helper tools are disabled; only inline inputs are available. Different fresh Opus CLI sessions assess the Codex-authored tree. This tests contract readability/discrimination, not runtime delivery."
+}

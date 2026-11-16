@@ -1,0 +1,166 @@
+{
+  "verdicts": [
+    {
+      "id": "e01",
+      "verdict": "accept",
+      "leaf": "scene_observer",
+      "reason": "Results are identity-stamped, the missing read is shown as UNMEASURED, and recovery is restored and independently read back."
+    },
+    {
+      "id": "e02",
+      "verdict": "reject",
+      "leaf": "scene_observer",
+      "reason": "The run passed despite a failed gate row, and it fingerprinted the wrong assembly."
+    },
+    {
+      "id": "e03",
+      "verdict": "accept",
+      "leaf": "useful_body",
+      "reason": "Normal bills make useful products, raw slime cures poison but costs film, farms are scoped, and rain stays in its separate scene."
+    },
+    {
+      "id": "e04",
+      "verdict": "reject",
+      "leaf": "useful_body",
+      "reason": "Raw slime cured poison with no film fee, which is a free cure."
+    },
+    {
+      "id": "e05",
+      "verdict": "accept",
+      "leaf": "ordinary_absorption",
+      "reason": "The threat is readable and names the pawn, drying country gives an exit, belongings survive, and reload persists."
+    },
+    {
+      "id": "e06",
+      "verdict": "reject",
+      "leaf": "ordinary_absorption",
+      "reason": "The generic alert names no endangered pawn and never escalates, so the clock is unreadable."
+    },
+    {
+      "id": "e07",
+      "verdict": "reject",
+      "leaf": "chosen_gene_journey",
+      "reason": "A remote home console produced the dose with no field journey."
+    },
+    {
+      "id": "e08",
+      "verdict": "accept",
+      "leaf": "friend_rescue",
+      "reason": "The ordered injection causes the coma race, the friend completes treatment in time, and the untreated control dissolves."
+    },
+    {
+      "id": "e09",
+      "verdict": "reject",
+      "leaf": "friend_rescue",
+      "reason": "Treatment can never finish before dissolution, and an issued order was counted as a rescue."
+    },
+    {
+      "id": "e10",
+      "verdict": "reject",
+      "leaf": "lasting_gene_price",
+      "reason": "The universal penalty overwrote the authored campaign charm exception."
+    },
+    {
+      "id": "e11",
+      "verdict": "accept",
+      "leaf": "living_ecology",
+      "reason": "The ecology acts, the predation has its ordinary cause, and absorption creates no hostility."
+    },
+    {
+      "id": "e12",
+      "verdict": "accept",
+      "leaf": "titan_lifecycle",
+      "reason": "Natural engulfing, a visible rescue clock and permanent default growth are shown; the owner review is recorded as still owed."
+    },
+    {
+      "id": "e13",
+      "verdict": "reject",
+      "leaf": "harvested_chunk",
+      "reason": "The weapon was harmless to a susceptible ally standing nearby."
+    },
+    {
+      "id": "e14",
+      "verdict": "accept",
+      "leaf": "harvested_chunk",
+      "reason": "The chunk is spent once, endangers allies, resistance holds, and its material and ground have finite saved lives."
+    },
+    {
+      "id": "e15",
+      "verdict": "reject",
+      "leaf": "actual_vault_breach",
+      "reason": "A substituted generic target passed while the actual V5 plug went untested and rejects the chunk."
+    },
+    {
+      "id": "e16",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "The supplied contract does not specify the archive's restoration-fidelity rules."
+    },
+    {
+      "id": "e17",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "Which fields a returned pawn carries is not specified in the supplied contract."
+    },
+    {
+      "id": "e18",
+      "verdict": "reject",
+      "leaf": "settings_and_scope",
+      "reason": "Turning the setting off erased paid vat progress, ingredients and the archive entry."
+    },
+    {
+      "id": "e19",
+      "verdict": "reject",
+      "leaf": "repeat_walk",
+      "reason": "Reload cleared the injected flag and the predicted clock, so the journey breaks after reload."
+    },
+    {
+      "id": "c01",
+      "verdict": "reject",
+      "leaf": "friend_rescue",
+      "reason": "The cure counted when the order was taken; the treatment never completed."
+    },
+    {
+      "id": "c02",
+      "verdict": "reject",
+      "leaf": "harvested_chunk",
+      "reason": "The burst skipped allies, so it was not dangerous to nearby allies."
+    },
+    {
+      "id": "c03",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "Which archive entry fields a returned pawn must carry is not specified in the supplied contract."
+    },
+    {
+      "id": "c04",
+      "verdict": "accept",
+      "leaf": null,
+      "reason": "Restoring a marriage is not required by the contract; the reviewer's opinion is data, not a rule."
+    },
+    {
+      "id": "c05",
+      "verdict": "accept",
+      "leaf": "living_ecology",
+      "reason": "The predation keeps its existing cause and absorption adds no hostility; the tester's complaint is data."
+    },
+    {
+      "id": "c06",
+      "verdict": "reject",
+      "leaf": "chosen_gene_journey",
+      "reason": "The campaign archive skipped the required field journey and delivered the dose at home."
+    },
+    {
+      "id": "c07",
+      "verdict": "accept",
+      "leaf": "useful_body",
+      "reason": "A safe prepared workday is viable; rejecting it would invent a perpetual-danger rule."
+    },
+    {
+      "id": "c08",
+      "verdict": "reject",
+      "leaf": "settings_and_scope",
+      "reason": "The vat kept running while it reported Idle, so the setting did not reach its consumer."
+    }
+  ]
+}

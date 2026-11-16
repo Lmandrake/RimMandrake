@@ -1,0 +1,37 @@
+[
+  {
+    "role": "control",
+    "session_id": "f67fb588-0ae2-4ab9-80cd-a448cbc71eb4",
+    "user_exact_brief": true
+  },
+  {
+    "role": "examiner",
+    "session_id": "d91f047c-588e-488e-8f5d-865751dba090",
+    "user_exact_brief": true
+  },
+  {
+    "role": "reader_two",
+    "session_id": "1aba8f10-fa5d-471e-b1c9-c16e7389f2ce",
+    "user_exact_brief": true
+  },
+  {
+    "role": "reader_one",
+    "session_id": "1aba8f10-fa5d-471e-b1c9-c16e7389f2ce",
+    "user_exact_brief": true
+  },
+  {
+    "role": "challenger",
+    "session_id": "b1d30312-9d7f-4997-9c46-274f0e3f11e9",
+    "user_exact_brief": true
+  },
+  {
+    "role": "reader_two",
+    "session_id": "504a1786-73ae-48d4-9142-19881f1bdcdb",
+    "user_exact_brief": true
+  },
+  {
+    "role": "reader_one",
+    "session_id": "504a1786-73ae-48d4-9142-19881f1bdcdb",
+    "user_exact_brief": true
+  }
+]

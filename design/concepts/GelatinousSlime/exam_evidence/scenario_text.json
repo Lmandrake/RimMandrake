@@ -1,0 +1,110 @@
+[
+  {
+    "id": "e01",
+    "text": "A tester runs the friend-rescue scene on the composed Biomes package with all DLC loaded. Every capture and result row carries the game tick, the patient's and friend's pawn IDs, the dose item ID, a fingerprint of the deployed assembly (which matches the package the game loaded) and a hash of the active settings. One terrain read times out, and the results list it as UNMEASURED instead of filling in an expected value. Partway through cleanup the run is killed. On restart the runner replays its durable journal. It restores the tester's custom entry settings and removes the held test pawn. An independent read compares the restored state with the entry snapshot, finds them equal, and only then closes recovery."
+  },
+  {
+    "id": "e02",
+    "text": "A Titanoslime proof run reports PASS and exits with code zero. Its log shows that one classified gate row, the held-prey release row, failed. The runner's assembly fingerprint was taken from the repository build output. The game had actually loaded an older copy from the Mods folder. Cleanup did restore the entry settings, and an independent readback confirmed it."
+  },
+  {
+    "id": "e03",
+    "text": "In a prepared slime colony at play zoom, workers carry out ordinary compressor, pit and solvent bills. Each product's output count matches its consumed inputs. The colonists build with the slime blocks and eat the slime meals. A poisoned colonist eats raw slime: the poison clears and film severity rises in the health tab. A matched poisoned colonist who eats nothing keeps the poison. Slime grass that is cultivated under the scoped farm rule changes, and an uncultivated control plot does not. Resistant workers on prepared floors finish a full workday with only managed, readable exposure. Loot from an existing drowned farm is hauled and used in a bill. Rain collection is not exercised in this scene; it stays assigned to its separate service scene."
+  },
+  {
+    "id": "e04",
+    "text": "A colonist poisoned by a toxic plant eats raw slime through the ordinary ingest order. The poison hediff clears within an hour. The health tab shows no film hediff then or at any later read, and a resistance check confirms the colonist is susceptible. The compressor, pit and solvent bills all work normally in the same session."
+  },
+  {
+    "id": "e05",
+    "text": "Desh, a susceptible colonist, walks across tagged slime ground at play zoom. The health tab shows contact film that grows into impairment. An escalating alert reads \"Desh is being absorbed\" and names the stage. Desh is moved to drying country, and the early film recedes off-body. A matched patient left untreated in a bed advances to terminal absorption. The body is removed, and the labelled armour, rifle and carried medicine drop on the bed tile, together with slime products. A third patient is saved mid-progression and reloaded, and their severity carries on from the saved value."
+  },
+  {
+    "id": "e06",
+    "text": "A susceptible colonist builds up advanced film on ordinary slime ground. The health tab shows the hediff and its severity. The only alert is a generic yellow \"Slime contact on map\" message. It names no pawn and does not change as severity climbs to the terminal stage. Drying country and toxic treatment both work as exits, and belongings survive terminal dissolution."
+  },
+  {
+    "id": "e07",
+    "text": "A player selects a gene in the ordinary archive dialog. The handheld seeker shows a world-tile mark. Instead of travelling there, the player queues a \"remote extraction\" bill at a home console. The bill produces a loaded dose of the chosen gene in the stockpile, and that dose spoils on schedule without refrigeration. Nobody visits the marked current."
+  },
+  {
+    "id": "e08",
+    "text": "A field-extracted dose is given through an ordinary injection order. The gene tab shows the target gene and an unwanted rider gene as endogenes. The patient falls into a coma, and the health tab shows accelerated absorption with a predicted time remaining. A capable friend two rooms away gets a treatment order, walks over and finishes the antidote UseItem job. The antidote item is consumed, toxicity is applied, and the film is removed. A matched untreated recipient runs on to terminal dissolution. In a separate arm with no capable friend, an existing-UI message warns of the time left just after injection."
+  },
+  {
+    "id": "e09",
+    "text": "With default settings, an injected comatose recipient's absorption completes 0.8 in-game hours after injection. The closest capable friend stands in the next room and takes the antidote treatment order right away. Walking plus the treatment job's work time comes to 1.1 in-game hours. Repeated across five pawns, every recipient dissolves before any treatment finishes. The run's report counts the issued treatment order as a rescue."
+  },
+  {
+    "id": "e10",
+    "text": "After a successful rescue, a universal-archive recipient keeps the target gene, the rider and its felt effect, and the lasting mark with its opinion penalty, through the antidote and a reload. A campaign recipient takes the authored charm variant. Their social tab shows the same universal mark opinion penalty, and the authored charm exception does not appear among the relationship factors. A child born to a universal recipient inherits only eligible parental endogenes."
+  },
+  {
+    "id": "e11",
+    "text": "On an existing authored-biome map at play zoom, native flora is grazed and resistant gelatid and wuum families feed and move beside a partly absorbed visiting deer. Greater gappos harden channel terrain, and a terrain read shows the change. A fubbum stalks and kills the absorbed deer through its ordinary hunting job, which the observer logs with a hunting cause. The deer's faction stays neutral throughout. It gets no manhunter state and no hostile job, and it has none in a matched unabsorbed control."
+  },
+  {
+    "id": "e12",
+    "text": "Under default settings, a wild Titanoslime engulfs an eligible colonist in natural melee. The held-prey countdown is visible on click, and a rescue party frees the colonist before it runs out. Later the giant finishes digesting prey and crosses into its next body stage. Its body size and prey capacity rise, and after a save and reload it keeps the grown stage. In a separate run with the \"reversible growth\" setting switched on, starvation shrinks the giant, and its settings label calls this non-default. The owner's in-game review of stages one and five has not happened yet."
+  },
+  {
+    "id": "e13",
+    "text": "A colonist butchers a Titanoslime corpse through the supported route, equips the chunk and throws it at a raider group through normal targeting. The burst impairs movement and fighting in the unarmoured, susceptible raiders. An unarmoured, susceptible colonist ally stands inside the same burst radius and gets no film or impairment. The chunk is consumed, and the ground hazard expires on schedule."
+  },
+  {
+    "id": "e14",
+    "text": "A colonist butchers a giant corpse, equips the chunk and throws it. When the chunk is released, the inventory count drops by one and a second throw attempt is refused. The single burst impairs both an armoured raider and an adjacent susceptible ally, while a native-resistant pawn and a gene-resistant pawn stay unaffected. The ally's film persists on the ordinary clock after leaving the area. The temporary slime ground reverts when its timer expires. A second chunk is saved mid-shelf-life and reloaded, and it spoils at its original remaining age while held in a caravan."
+  },
+  {
+    "id": "e15",
+    "text": "The breach test runs on a debug map. An authored generic RM_SlimeBreachable plug blocks pathing, absorbs rifle fire, and opens when a player throws a harvested chunk at it, consuming the chunk and leaving contamination. The report marks the campaign vault breach as passed. In the actual V5 layout, the placed RUT_VaultFleshSeal was never loaded or tested, and a separate note says the V5 doorway rejects chunk targeting."
+  },
+  {
+    "id": "e16",
+    "text": "Rook touches slime twice: before and after learning Construction 8. Off-body, Rook then gains Construction 10, marries Vel, and later dies. A player researches the gate, pays the growth cost through the archive menu and powers a vat. A brownout pauses growth, which resumes from its saved progress after reload. Rook returns with Construction 8 and the relationships recorded at the second touch. A second vat started for Rook is refused. Rook's earlier spouse, Ama, had remarried and stays married to their new partner. Rook carries the recorded lasting adjustment mood, and colony buildings and other pawns' histories are unchanged."
+  },
+  {
+    "id": "e17",
+    "text": "A recorded colonist's last slime touch came while they had Shooting 6 and no scar. Off-body they reached Shooting 12, took a scar, and then died. A player pays for powered vat growth through the normal archive menu, and it completes once. The returned pawn has the correct name and appearance, with Shooting 12 and the scar. Family relations are handled correctly."
+  },
+  {
+    "id": "e18",
+    "text": "A player has paid for archive growth and the vat is 60% done. They open the searchable Mod Settings, find the archive switch, and turn the archive off. The vat's inspect panel then reads \"Idle\". The paid ingredients are deleted without refund. After the archive is switched back on, the vat's progress is zero and the archive entry for the person is gone. The film and held-prey switches correctly change their consumers."
+  },
+  {
+    "id": "e19",
+    "text": "In a 40-colonist prepared colony, a player saves while one seeker is loaded with a dose and an injected patient is comatose. After reload the loaded seeker still names the chosen gene. The patient's coma remains, but the injected flag has cleared: the friend's antidote order completes while the health tab shows no gene-recipient absorption state, and the predicted clock has disappeared. A fresh two-pawn save, the alternate production-first order and a repeated fresh-item run all succeed."
+  },
+  {
+    "id": "c01",
+    "text": "A colonist injected through the ordinary injection order with a field-extracted dose goes into a coma and shows accelerated absorption in the health tab. A friend is given the toxic antidote treatment order. The moment the friend takes the job, while they are still walking toward the patient, the absorption hediff is removed and the scene log records 'rescued'. The friend's UseItem job never completes and the antidote is still in their inventory afterwards. The patient survives."
+  },
+  {
+    "id": "c02",
+    "text": "A giant chunk is butchered from an eligible Titanoslime corpse by the normal route, equipped and thrown through normal targeting into a melee. Unarmoured and armoured enemies within the burst are impaired at once. A non-resistant colonist ally standing in the same burst radius takes no film and no impairment, and the log shows the burst skipped every pawn of the player's faction. The piece is consumed once and the ground film expires on its finite timer."
+  },
+  {
+    "id": "c03",
+    "text": "A colonist touches slime on day 10 at Shooting 6 with no scars. They then train to Shooting 12 and lose an eye away from any slime, and die on day 40. The player pays for and powers normal archive growth, and the vat finishes. The returned pawn has the right name and appearance, Shooting 12 and the missing eye. The archive menu displayed the day-10 entry as the one being grown."
+  },
+  {
+    "id": "c04",
+    "text": "A married colonist dies after their last slime contact. Their spouse later remarries in the colony. A year on, the player pays for and powers normal archive growth, and the recorded person returns with the fields from their last contact. The former spouse stays married to the new partner, and the returnee's relation to them shows the ended state. The returnee carries the recorded grief mood adjustment, children born in between are still present, and colony history is unchanged. A reviewer marks this a failure because 'the resurrected person did not get their marriage back'."
+  },
+  {
+    "id": "c05",
+    "text": "On an authored slime-biome map, a visiting outsider predator, partly absorbed and showing film, hunts a colonist's pet using the ordinary predation job. A matched non-absorbed predator of the same species on a control pad does the same against the same prey under the same hunger conditions. The absorbed predator's faction is unchanged, it has no manhunter state, and no new hostile job type appears in its job log. A tester rejects the scene because 'a slimed animal attacked the colony'."
+  },
+  {
+    "id": "c06",
+    "text": "Using the universal archive, the player chooses a gene in the ordinary archive dialog, follows a handheld seeker to the marked current and extracts one perishable dose; this works. With the campaign priority archive, the same dialog choice finishes by placing a loaded dose in the archive's home output slot after a timer. No seeker localisation or field extraction job happens. The dose has the chosen gene and expires normally."
+  },
+  {
+    "id": "c07",
+    "text": "A prepared colony runs a full day of normal compressor, pit and solvent bills, builds slime blocks and eats slime meals. Its workers are resistant and its floors are prepared. The paired health reads show no film on any worker all day. In a separate arm, a poisoned colonist eats raw slime and the poison clears while film accrues. A reviewer rejects the workday because 'the slime posed no danger to the workers'."
+  },
+  {
+    "id": "c08",
+    "text": "A paid archive vat is halfway through growing a recorded person when the player turns the archive feature off in Mod Settings. The vat's inspect text changes to 'Idle', and the setter returns success. Tick-stamped reads show the vat still drawing power and its progress counter still advancing. When the setting is turned back on, the vat reports completion and the person emerges at once."
+  }
+]

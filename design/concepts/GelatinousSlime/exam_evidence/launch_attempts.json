@@ -1,0 +1,21 @@
+{
+  "attempts": [
+    {
+      "roles": [
+        "examiner",
+        "challenger"
+      ],
+      "attempt": "initial-uncompleted",
+      "outcome": "background subprocesses did not survive command closure; stdout and stderr empty; no result or usage returned"
+    },
+    {
+      "roles": [
+        "examiner",
+        "challenger"
+      ],
+      "attempt": "no-prompt",
+      "outcome": "CLI exited 1 before model invocation: variadic --tools consumed trailing prompt argument; retained stderr and empty stdout; no model usage"
+    }
+  ],
+  "correction": "Use foreground managed exec session, stdin DEVNULL, and positional brief before --tools empty argument."
+}

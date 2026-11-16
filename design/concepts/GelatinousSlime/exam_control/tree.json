@@ -1,0 +1,336 @@
+{
+ "schema_version": 1,
+ "subject": "GelatinousSlime",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/concepts/GelatinousSlime/root.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "412bc5f4c6f4c02148e3a0fe197803a10140a85e58398cd18ff39f053d2b9dfa",
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "Numeric inherited floor thresholds remain advisory until calibrated.",
+  "All acceptance scenes are planned. No current runtime proof or art verdict is supplied.",
+  "Showcase 1 uses the separately recorded delegated flagship pick. Later showcase grouping and test staging are agent choices.",
+  "Historical rain collection/flood/drain obligations remain delivery reconciliation work."
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "Tick-stamped read-only observations, source/deployed/list fingerprints, independent census, lossless log tap and can-fail controls. Missing or stale reads are UNMEASURED. Restoration equality is independently read back before closing recovery.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "scene_observer",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The tester can associate every result and capture with the actual scene, tick, pawn/item identity, loaded package and settings. A missing observation and an interrupted recovery remain visible in the results.",
+   "scenario": "Validate job/item/health/held-pawn/archive/terrain observers against changed and missing states, consume classified Titanoslime gate rows, interrupt a persistent mutation and recover the exact entry snapshot from a durable journal.",
+   "false_pass": [
+    "Expected values are printed without reading the running state",
+    "The runner exits zero while a classified gate row fails",
+    "Cleanup replaces custom settings with defaults or leaves a held pawn behind"
+   ],
+   "red": "The proof runner reports success after observing the wrong assembly, losing its log or failing to restore state.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Observe bills, completed work, input/output identities and quantities, normal construction/ingestion and paired health/terrain reads. Capture the useful workday and its managed exposure.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "useful_body",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom, the player watches workers make and use slime meals, blocks and solvent products. A poisoned raw-slime eater gains film as poison clears. Cultivated slime grass changes under the scoped farm rule, while prepared floors and resistant workers support a viable routine.",
+   "scenario": "Run normal compressor/pit/solvent bills, build and eat their outputs, compare raw-slime ingestion to untreated poison, and compare cultivated/uncultivated and opted-in/ordinary plots. Inspect an existing drowned farm and follow its loot into use. Retain the authored rain collection/flood/drain obligation in a separate service scene.",
+   "false_pass": [
+    "Finished products are spawned and poison is cleared by helper",
+    "Raw slime cures poison without its film fee",
+    "Every safe prepared workday is rejected by an invented perpetual-danger rule"
+   ],
+   "red": "The biome supplies recipes and scenery while normal work cannot produce useful outputs or raw slime gives a free cure.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Contact/time/location health reads, named letter/alert/health captures, completed treatment consumption, matched survivor/terminal arms and independent pawn/corpse/item census. Current default rates supply measured predictions, with no new deadline.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ordinary_absorption",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "Following a susceptible colonist at play zoom and in existing health UI, the player sees contact film become impairment and a named escalating threat. Early film recedes off-body, advanced ordinary film holds in ordinary country, and drying country or completed toxic treatment offers the established exit. Untreated terminal absorption removes the body and leaves the recorded belongings and slime products.",
+   "scenario": "Observe actual tagged-ground contact against resistant controls, the finite early/advanced ordinary/injected location matrix on map and in caravan, existing alerts, and a completed terminal bed/coma arm with labelled gear and carried inventory. Save and reload a progressing patient.",
+   "false_pass": [
+    "Severity is seeded and only a rate calculation is checked",
+    "An alert type exists but names no endangered pawn",
+    "The victim vanishes together with their equipment"
+   ],
+   "red": "A colonist advances under an unreadable clock, the geographic exit fails, or dissolution destroys their belongings.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Record ordinary UI actions, chosen GeneDef and seeker identities, work/reservation completion, consumed inputs, dose output and expiry transitions. Direct effect calls remain diagnostic.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": "A remote home console or directly loaded helper dose cannot accept the selected-gene field journey.",
+   "wall_expect_h": null,
+   "id": "chosen_gene_journey",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At play zoom and in the ordinary archive dialog, the player chooses a gene, follows a handheld seeker to its marked current and finishes extraction into one perishable dose. Blank, primed and loaded states expose the chosen identity and relevant expiry. Universal and campaign archives each support the same field journey.",
+   "scenario": "Craft a blank seeker and use selection, world-tile localisation and in-map scan/work orders in the universal archive context, then repeat with the campaign priority archive. Exercise expired/cancelled marks, interrupted extraction, loaded spoilage/refrigeration and an intermediate reload.",
+   "false_pass": [
+    "A helper preloads the chosen gene at home",
+    "The extraction job starts but creates a different target or duplicates its device",
+    "A still image of the mark accepts expired or unreachable work"
+   ],
+   "red": "The desired gene can be injected only through a helper because archive choice, localisation or field extraction fails.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Observe order uptake, target/rider endogenes, coma, injected flag, predicted clock, completed UseItem and item consumption, toxicity, and exact untreated terminal result. Compare available time with actual travel/work.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "friend_rescue",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom and in existing health UI, the player sees an ordered injection grant the target and rider, coma and accelerated absorption. A capable friend reaches the patient and completes toxic antidote administration in time. A matched untreated recipient completes dissolution, making the benefit, urgency and rescue action visible together.",
+   "scenario": "Use ordinary injection and UseItem treatment from a field-extracted dose. Compare timely, late and untreated arms, the post-injection warning when no capable friend exists, and a shared-friend contention case. Read the actual job and antidote consumption before accepting film removal.",
+   "false_pass": [
+    "Inject and cure functions are invoked back to back",
+    "A treatment order is counted as cure before it finishes",
+    "The comparison stops before terminal absorption"
+   ],
+   "red": "The advertised friend treatment cannot be ordered or completed before a comatose gene recipient dissolves.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read endogenes, meaningful rider effects, mark severity, independent opinion/romance factors and saved state. Match a real inheritance result to eligible parental endogenes.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "lasting_gene_price",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "In the gene, health and social views after rescue, the player can identify the target, unwanted rider and its felt effect. The established mark/opinion consequence survives treatment and reload, with Reek and charm following their authored exceptions. A child inheritance observation demonstrates the endogene bargain.",
+   "scenario": "Observe an ordinary universal acquisition, repeated marks and a baseline relationship pair, campaign Reek/charm variants, antidote/reload persistence and an actual inherited-gene outcome with parentage recorded.",
+   "false_pass": [
+    "Only gene names exist while the rider has no effect",
+    "Antidote erases the lasting mark",
+    "A universal penalty overwrites the campaign charm exception"
+   ],
+   "red": "The chosen gene becomes pure upside after cure or the curated social exceptions disappear.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Capture natural jobs, contact/resistance progression, channel terrain/smear deltas, species-specific actions and controlled death bursts. Compare matched neutral outsiders and explicit hunting/grounding/VEF alternatives.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": "Slimification itself supplies no faction change, manhunter state or hostile job. Existing predation and acid bursts retain their causes.",
+   "wall_expect_h": null,
+   "id": "living_ecology",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom, the observer sees native flora and resistant families living beside partly absorbed outsiders. Grazing, channel hardening, predation and the attended Dwommo movement sequence make their differences visible. Absorption changes the outsider body without itself creating hostility.",
+   "scenario": "Use an existing authored-biome map for native/flora and visitor behaviour, then separate species pads for gelatid, each oomb size, wuum, each gappo size, greater-gappo terrain work, fubbum hunting and owner-attended Dwommo flight/grounded states. Observe optional VEF feeding/fission/reproduction in its declared context.",
+   "false_pass": [
+    "A labelled animal lineup stands in for ecological behaviour",
+    "A converted outsider receives a new manhunter job",
+    "Optional framework behaviour is claimed while its framework is absent"
+   ],
+   "red": "The living body is inert scenery or absorption itself turns outsiders into enemies.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: attend Dwommo live movement and judge native/outsider life at play zoom"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read actual attack/held identity/timer, release and digestion results, feeding-derived mass/stage/body size and footprint before/after reload. Consume classified g1-g8 rows. Use in-game motion/click captures and the owner review for art.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "titan_lifecycle",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "Following the giant at play zoom, the player sees a natural melee engulf, a visible held-prey countdown and a supported struggle, rescue or release. Completed feeding grows its locked body stage and prey capacity permanently under defaults. Wounding can shed gelatids, and stages one and five remain legible and selectable in game.",
+   "scenario": "Observe natural eligible and oversized encounters, rescue/release and completed digestion with victim belongings. Feed across a stage boundary, then dry-ground/starvation/wounding and reload. Compare reversible, growth-off, stage-cap, shedding-off and held-prey death/off release. Retain the owner stage-one/five review.",
+   "false_pass": [
+    "Helpers force held prey and stage five",
+    "The process exits successfully with failed gate rows",
+    "Reload shrinks a grown default giant or leaves an occupied footprint after cleanup"
+   ],
+   "red": "The giant cannot naturally engulf or release prey, hides its rescue clock, or loses permanent feeding growth.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: judge stages one and five in the in-game review save"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Observe acquisition/input counts, projectile/source identity at release, completed impairment actions, faction/armour/resistance controls, exact expiry age and terrain ownership before/after restoration.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "harvested_chunk",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At play zoom, the player obtains a real giant chunk by the supported butcher route and throws it. One burst immediately impairs susceptible enemy and nearby ally movement/fighting, while native/gene resistance holds. The released piece is expended once, its ordinary-clock film persists, and both shelf age and temporary ground have finite saved lives.",
+   "scenario": "Butcher an eligible corpse, equip and launch through normal targeting, inspect release accounting and a second attempt. Compare armoured enemy/ally/resistant recipients, post-exit film, ground restoration and holder-specific expiry with a mid-life reload.",
+   "false_pass": [
+    "A burst helper coats only an unarmoured enemy",
+    "A retained source launches the same piece repeatedly",
+    "A generic seal use proves throw consumption or a map-only sweep proves every holder"
+   ],
+   "red": "The weapon is harmless to allies, reusable after its released burst, or remains useful indefinitely through a holder/restore loophole.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read placed def/component/layout identity, hit/path results, ordered target/projectile route, chunk consumption and doorway terrain/filth plus opened path. Reconcile both component APIs in the implementation item.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "actual_vault_breach",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At the actual campaign V5 doorway, the player sees the authored plug block movement and absorb ordinary attacks, then spends a giant chunk through the supported player route to open the passage with the established contamination hazard. The universal generic breach and campaign settings each honour their own scope.",
+   "scenario": "Inspect the placed RUT_VaultFleshSeal in the actual V5 layout, test ordinary damage/path rejection, use a harvested chunk, and traverse the opened doorway. Separately test an authored generic RM_SlimeBreachable target and both layers of disabling, plus a second plug to expose double use.",
+   "false_pass": [
+    "A substituted extended dummy passes while V5 remains blocked",
+    "Direct DissolveAround is called without a player action",
+    "Proximity dissolves two plugs without spending a piece"
+   ],
+   "red": "The advertised piece fails at the actual vault or opens it without its finite material and hazard cost.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read every shipped setting and its observable consumer, UI search/reset/scope labels and active-state/reload transitions. Use offline source/def checks for prohibited generation and absent optional integrations, and the canonical list for basic checkout.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": "Support follows shipped authored biome/tag/framework contracts. Arbitrary third-party biome retrofit is outside the adopted scope.",
+   "wall_expect_h": null,
+   "id": "settings_and_scope",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "In searchable Mod Settings and normal play, the player sees shipped defaults, reset and each advertised switch affect its actual consumer. Existing film, held prey and a paid vat transition safely. The paid vat pauses and resumes with its saved progress and entry preserved. Authored biome and optional service contexts remain explicit.",
+   "scenario": "Enumerate settings against consumers, compare disabled-before-use and disabled-mid-state, reload and reset to authored defaults, then restore the exact entry settings with independent readback. Inspect composition, supported legacy terrain, world-map data, optional scanner/liquid hooks and the canonical supported list.",
+   "false_pass": [
+    "A successful setter is counted as a changed consumer and successful recovery",
+    "A paid vat continues while archive-off says idle",
+    "Every slime-labelled foreign terrain is silently added to support"
+   ],
+   "red": "Settings advertise safety or disabling while their consumers continue or erase paid state, or the package claims unsupported scope.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Record ordinary actions and exact saved/resumed identities, item/health/job counts, next-order uptake and continuing routine. Capture player-readable urgency and record contention/performance against the advisory inherited floor.",
+   "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "repeat_walk",
+   "by": "concept",
+   "root": [
+    "living_body_bargain"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom, the player can resume a mid-journey save, repeat the chosen-gene rescue and carry on with a prepared colony. The body stays useful and its costs stay legible through a different order of the main actions.",
+   "scenario": "Save mid-way with a primed/loaded seeker and active patient, reload and complete extraction/injection/friend rescue. Repeat the core chosen-gene action with fresh accounted items. Use a second order of main actions, production before expedition and expedition before production. Resume a representative 40-colonist routine with shared-friend contention, native activity and alerts.",
+   "false_pass": [
+    "Only a fresh two-pawn save works",
+    "A repeated job reuses a consumed sample or loses the injected flag on reload",
+    "The walk skips the alternate order and every ongoing colony task"
+   ],
+   "red": "The core journey fails after reload, on repeat or when ordinary colony work changes the order of actions.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  }
+ ]
+}
