@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":4023,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":580} body_sha256=e49678296c7704e293f6a103de6bfc7dc6f1b567f79df38d5b30e5af28033aa5 -->
-# ExplosiveKnockback — mod ledger history (433 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":4023,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788} body_sha256=12a02aae8f7c04a3c15e03ae8092dec6fabcd588f25cf5355749169875d59f77 -->
+# ExplosiveKnockback — mod ledger history (435 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -430,7 +430,9 @@
 - 2026-11-16T11:37:22Z BACKFILL#411 decision finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 - 2026-11-16T11:37:22Z BACKFILL#412 cause.refuted cause:colonist-weight-band-60-76-kg-suggested-by v0.1.0: Colonist weight band 60-76 kg suggested by the judge was wrong: 60-63 kg throws 6 cells at the higher damage and ties the capped rat, so the band was set to 64-76 kg.
 - 2026-11-16T11:37:22Z BACKFILL#413 cause.refuted cause:the-melee-shove-into-pit-contest-masses-and v0.1.0: The melee shove-into-pit contest (masses and melee skills) does not belong in Explosive Knockback; it goes to FlowWorks as its own item.
+- 2026-11-16T11:38:49Z HOLDER.run-1794824768#3 lease.renew lease v0.1.0: 
 - 2026-11-16T11:45:05Z BACKFILL#414 trap.noted trap:it-is-held-for-rimmandrake-recertify-knockback-tree v0.1.0: It is held for RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING.
 - 2026-11-16T11:45:05Z BACKFILL#415 finding.open finding:RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED v0.1.0: RM_FrameProbe.Begin/Stop are internal and jawa/static_call reaches only public static methods, so walk_storeroom_raid's FRAME_BUDGET row is UNMEASURED by construction and the walk can never PASS.
 - 2026-11-16T11:45:06Z BACKFILL#416 finding.open finding:RIMMANDRAKE_READ_WALK_TICK_COST_RUNNING_PAUSED_READ_ZERO v0.1.0: Walk row CARRIER_TICK_COST scored PASS on 0.0/0.0 ms in all 9 runs on record because jawa/time_perf reads 0 on a paused clock (perfprobe paused 0.0, speed 1 4.29 ms).
 - 2026-11-16T11:45:06Z BACKFILL#417 trap.noted trap:carrier-tick-cost-pass-in-all-9-recorded v0.1.0: CARRIER_TICK_COST PASS in all 9 recorded walk runs was green for the wrong reason: it compared 0.0 to 0.0 ms because jawa/time_perf returns 0 on a paused clock; real reading at speed 1 was 4.29 ms.
+- 2026-11-16T11:56:38Z HOLDER.run-1794824768#4 session.checkpoint session v0.1.0: 

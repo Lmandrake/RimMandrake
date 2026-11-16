@@ -1,0 +1,26 @@
+PASS W0   a sound world passes every row, FRAME_BUDGET included (code 0, not PASS: [])
+PASS W1   no game refuses with exit 2 (got 2)
+PASS W2   the release DLL exits 3 (got 3)
+PASS W3   no closed container: preconditions INVALID, the rest UNMEASURED (INVALID)
+PASS W4   dup_on_reload flips ['A_RELOAD_NO_DUP_LOST'] to FAIL (got ['FAIL'])
+PASS W5   gas_at_once flips ['A_GAS_CLUMP_BY_CLUMP', 'B_GAS_CLUMP_BY_CLUMP'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W6   orphan flips ['A_REQUESTS_MATCH_PLAN', 'B_REQUESTS_MATCH_PLAN'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W7   off_throws flips ['C_OFF_IMPACTS_NO_THROWS'] to FAIL (got ['FAIL'])
+PASS W8   cover_stays flips ['A_COVER_BROKEN_ONE_DESCENT', 'B_COVER_BROKEN_ONE_DESCENT'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W9   unjournalled flips ['A_REACHED_ACCOUNTED'] to FAIL (got ['FAIL'])
+PASS W11  a load one tick late in a moving wave is still a sound save (got PASS)
+PASS W12  no rider: ['UNMEASURED', 'UNMEASURED']
+PASS W13  rider killed: cover ['UNMEASURED', 'UNMEASURED'], plan ['PASS', 'PASS']
+PASS W14  living rider, no descent: ['FAIL', 'FAIL']
+PASS W15  a storeroom shell that breaks the cover cannot pre-empt the grenade, thrown first (live 2026-11-16): ['PASS', 'PASS']
+PASS W16  the cover already gone when the grenade comes: UNMEASURED naming it, not FAIL: ['UNMEASURED', 'UNMEASURED']
+PASS W17  a thing born after the save, re-numbered by the load, is neither lost nor new (live 2026-11-16): PASS
+PASS W18  a thing born after the save lands on another cell after a load (the RNG; live 2026-11-16: WoodLog 101,42 live, 102,42 loaded): still PASS: PASS
+PASS W19  a 75 ms 99th-percentile frame in the real-time window fails FRAME_BUDGET (code 1, got FAIL)
+PASS W20  a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code 1, got UNMEASURED)
+PASS W22  a frame window over the bar with the mod off too is UNMEASURED (code 1, got UNMEASURED)
+PASS W23  a frame window with nothing in the air is UNMEASURED (code 1, got UNMEASURED)
+PASS W24  unpauses that a load undoes are retried until the clock moves (FRAME_BUDGET PASS, CARRIER_TICK_COST PASS)
+PASS W21  a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code 1, got UNMEASURED)
+PASS W10  --live without a leaf (2) and with no reachable game (2) refuse
+PASS walk_storeroom_raid leaf: 0 failed

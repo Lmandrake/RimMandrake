@@ -1,12 +1,12 @@
 {
  "_view": {
-  "body_sha256": "6bcfee31e6992e23237619f716f24210be9915dbf2a6cfaa763584b28b1fb265",
+  "body_sha256": "7290419d6d5c941adbddb697b8b74399eb8e3db0c928f21f34d77a7c0336850e",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
    "DISPATCH": 4023,
    "HOLDER.run-1794813483": 1382,
-   "HOLDER.run-1794824768": 580
+   "HOLDER.run-1794824768": 1788
   }
  },
  "state": {
@@ -630,11 +630,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794813483",
-   "done": "3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)",
-   "next": "on the next game-up visit run the 3 live acceptance commands named in the item notes and fix what answers false",
-   "ruled_out": "RM_PitPathing TryPlan/OutsiderBarredFromFloor and portable-ladder Reaches as the dry-pit cause (read)",
-   "ts": "2026-11-16T07:33:24Z"
+   "by": "HOLDER.run-1794824768",
+   "done": "visit 3: 54 PASS, 1 FAIL (storeroom cover, open MOD finding), 1 UNMEASURED (walk FRAME_BUDGET: on 83.1 / off 80.2 ms) of 56; 6 fixes landed, listed in visit_3/SUMMARY.md; walk save EK_VISIT3_WALK_CLEAR_20261116",
+   "next": "Conductor: rule on the walk frame clause (judge vs its mod-off arm, or lighten the colony); route the storeroom cover finding",
+   "ruled_out": "pit_fetch regression (SITE: earlier scenes crowded its stockpiles); walk frame over bar as mod cost (mod-off arm over too); blotches as a draw fault (smoke, gone in 1500 ticks)",
+   "ts": "2026-11-16T11:56:38Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -822,7 +822,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 433,
+  "events": 435,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2138,7 +2138,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T11:18:02Z",
+   "last": "2026-11-16T11:56:38Z",
    "lease": "run-1794824768",
    "released": false,
    "token": 4

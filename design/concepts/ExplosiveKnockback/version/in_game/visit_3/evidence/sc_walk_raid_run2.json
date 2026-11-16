@@ -1,0 +1,814 @@
+{
+ "rows": {
+  "W_PRECONDITIONS": [
+   "PASS",
+   "full list, FlowWorks, Cauldron gas, shelves, closed container, cover"
+  ],
+  "A_COVER_BROKEN_ONE_DESCENT": [
+   "PASS",
+   "grenade ok; cover left none; riders ['Human41802'] (killed []); 1 descent(s) {'Human41802': 1}, twice []"
+  ],
+  "A_SAVE_MIDAIR": [
+   "PASS",
+   "2 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261116T034247; triplet IDENTICAL"
+  ],
+  "A_RELOAD_NO_DUP_LOST": [
+   "PASS",
+   "at tick 13237: live 7, load 7, reload 7 things; dup {}; lost [] new [] (load vs live); live, load and reload agree at tick 13237"
+  ],
+  "A_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 42 request(s) centred in the storeroom, 11 throw(s)"
+  ],
+  "A_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "A_GAS_CLUMP_BY_CLUMP": [
+   "PASS",
+   "28 bursts on 5 ticks, 28 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.3, 3.4, 4.3, 5.2]; burst again {}"
+  ],
+  "A_GAS_GOODS_MOVED": [
+   "PASS",
+   "7 throw(s) from 28 burst(s)"
+  ],
+  "A_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "88 requests, 0 mismatch(es): []; answered by a corpse: []"
+  ],
+  "FRAME_BUDGET": [
+   "FAIL",
+   "99th-percentile unpaused frame 59.3 ms (bar 50) over 554 rows, 10 s at speed 1 (2 s before 3 shell(s)): FRAME frames=605 probeRows=605 paused=2 wall=10.36s worstMs=93.0 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=554 windowP99Ms=59.3 path=C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T"
+  ],
+  "B_COVER_BROKEN_ONE_DESCENT": [
+   "UNMEASURED",
+   "SITE: the grenade killed every rider, and a corpse never descends; grenade ok; cover left none; riders ['Human41802'] (killed ['Human41802']); 0 descent(s) {}, twice []"
+  ],
+  "B_GAS_CLUMP_BY_CLUMP": [
+   "PASS",
+   "30 bursts on 5 ticks, 30 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.3, 5.2]; burst again {}"
+  ],
+  "B_GAS_GOODS_MOVED": [
+   "PASS",
+   "25 throw(s) from 30 burst(s)"
+  ],
+  "B_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 22 request(s) centred in the storeroom, 9 throw(s)"
+  ],
+  "B_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "B_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "124 requests, 0 mismatch(es): []; answered by a corpse: ['Human41802 as Corpse_Human43822', 'Human38765 as Corpse_Human43916']"
+  ],
+  "C_OFF_IMPACTS_NO_THROWS": [
+   "PASS",
+   "mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved"
+  ],
+  "CARRIER_TICK_COST": [
+   "PASS",
+   "meanTickTime 3.30976844 ms at rest, 3.49322867 ms 1 s after the shells with 0 carrier(s) in the air, clock running (recorded, not judged)"
+  ]
+ },
+ "ev": {
+  "args": {
+   "storeroom": "97,37,7,7",
+   "cover": "102,36",
+   "gas": "100,41",
+   "lit": null,
+   "save": "EK_WALK_RAID_BASE_20261115T173148",
+   "site": null,
+   "shelf_defs": "Shelf,ShelfSmall",
+   "shells": 3,
+   "settle": 120,
+   "frame_seconds": 8.0,
+   "gas_ticks": 900,
+   "raid_points": 300.0,
+   "full_min": 100,
+   "out": "design/concepts/ExplosiveKnockback/version/in_game/visit_3/evidence/sc_walk_raid_run2.json",
+   "stamp": "20261116T034247"
+  },
+  "active_mods": 316,
+  "pre": {
+   "shelves": [
+    "Shelf",
+    "ShelfSmall"
+   ],
+   "closed": [
+    "LWM_WeaponsLocker"
+   ],
+   "goods": 11,
+   "cover": "RM_PitCover_WovenScrap"
+  },
+  "saves": [
+   "EK_WALK_RAID_BASE_20261116T034247",
+   "EK_WALK_RAID_MIDAIR_20261116T034247"
+  ],
+  "tick_rest": 0.0,
+  "raid": {
+   "success": true,
+   "blockedByDialog": false,
+   "pawnsArrivedTotal": 4,
+   "exc": null
+  },
+  "grenade": {
+   "A": {
+    "riders": [
+     "Human41802"
+    ],
+    "killed": [],
+    "descents": {
+     "Human41802": 1
+    },
+    "coverBefore": [
+     "RM_PitCover_WovenScrap"
+    ],
+    "earlierDescents": [
+     "Human41802"
+    ],
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 13106,
+      "exp": 42821,
+      "thing": "Human41802",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     },
+     {
+      "type": "descent",
+      "tick": 13106,
+      "exp": 0,
+      "thing": "Human41802",
+      "def": "Human",
+      "at": [
+       102,
+       36
+      ]
+     },
+     {
+      "type": "skip",
+      "tick": 13106,
+      "exp": 42821,
+      "thing": "Human41802",
+      "def": "Human",
+      "reason": "in_pit",
+      "at": [
+       102,
+       36
+      ]
+     }
+    ]
+   },
+   "B": {
+    "riders": [
+     "Human41802"
+    ],
+    "killed": [
+     "Human41802"
+    ],
+    "descents": {},
+    "coverBefore": [
+     "RM_PitCover_WovenScrap"
+    ],
+    "earlierDescents": [],
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 13107,
+      "exp": 43821,
+      "thing": "Human41802",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     }
+    ]
+   }
+  },
+  "tick_air": 0.0,
+  "midair_flights": [
+   "RM_ThingFlyer_Knockback42832 inner=WoodLog x8 innerId=WoodLog38776 at=99,41 dest=97,43 left=13 bounces=0",
+   "RM_ThingFlyer_Knockback42833 inner=Steel x75 innerId=Steel38761 at=101,41 dest=103,43 left=13 bounces=0"
+  ],
+  "reload_born": [
+   {
+    "WoodLog": 2
+   },
+   {
+    "WoodLog": 2
+   },
+   {
+    "WoodLog": 2
+   }
+  ],
+  "reload_census": {
+   "verdict": "IDENTICAL",
+   "why": "live, load and reload agree at tick 13237",
+   "target": 13237,
+   "loadedAt": {
+    "A": null,
+    "B": 13228,
+    "C": 13228
+   },
+   "count": {
+    "A": 7,
+    "B": 7,
+    "C": 7
+   },
+   "dup": {
+    "A": [],
+    "B": [],
+    "C": []
+   },
+   "lost": [],
+   "new": [],
+   "BC": {}
+  },
+  "gas": [
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   },
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   }
+  ],
+  "gas_bursts": {
+   "A": [
+    [
+     13614,
+     [
+      98,
+      41
+     ],
+     -1,
+     4
+    ],
+    [
+     13614,
+     [
+      99,
+      41
+     ],
+     -2,
+     2
+    ],
+    [
+     13614,
+     [
+      99,
+      40
+     ],
+     -3,
+     2
+    ],
+    [
+     13614,
+     [
+      99,
+      42
+     ],
+     -4,
+     2
+    ],
+    [
+     13644,
+     [
+      100,
+      41
+     ],
+     -5,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      40
+     ],
+     -6,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      42
+     ],
+     -7,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      39
+     ],
+     -8,
+     0
+    ],
+    [
+     13644,
+     [
+      98,
+      39
+     ],
+     -9,
+     4
+    ],
+    [
+     13644,
+     [
+      99,
+      43
+     ],
+     -10,
+     0
+    ],
+    [
+     13644,
+     [
+      100,
+      43
+     ],
+     -11,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      41
+     ],
+     -12,
+     1
+    ],
+    [
+     13674,
+     [
+      101,
+      40
+     ],
+     -13,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      42
+     ],
+     -14,
+     1
+    ],
+    [
+     13674,
+     [
+      101,
+      43
+     ],
+     -15,
+     1
+    ],
+    [
+     13674,
+     [
+      100,
+      38
+     ],
+     -16,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      38
+     ],
+     -17,
+     0
+    ],
+    [
+     13674,
+     [
+      99,
+      38
+     ],
+     -18,
+     1
+    ],
+    [
+     13674,
+     [
+      98,
+      38
+     ],
+     -19,
+     3
+    ],
+    [
+     13704,
+     [
+      102,
+      41
+     ],
+     -20,
+     2
+    ],
+    [
+     13704,
+     [
+      102,
+      40
+     ],
+     -21,
+     2
+    ],
+    [
+     13704,
+     [
+      102,
+      42
+     ],
+     -22,
+     4
+    ],
+    [
+     13704,
+     [
+      102,
+      39
+     ],
+     -23,
+     1
+    ],
+    [
+     13704,
+     [
+      102,
+      43
+     ],
+     -24,
+     3
+    ],
+    [
+     13704,
+     [
+      100,
+      37
+     ],
+     -25,
+     2
+    ],
+    [
+     13734,
+     [
+      103,
+      41
+     ],
+     -26,
+     2
+    ],
+    [
+     13734,
+     [
+      103,
+      40
+     ],
+     -27,
+     2
+    ],
+    [
+     13734,
+     [
+      103,
+      39
+     ],
+     -28,
+     1
+    ]
+   ],
+   "B": [
+    [
+     13254,
+     [
+      98,
+      41
+     ],
+     -1,
+     6
+    ],
+    [
+     13254,
+     [
+      99,
+      41
+     ],
+     -2,
+     6
+    ],
+    [
+     13254,
+     [
+      98,
+      40
+     ],
+     -3,
+     4
+    ],
+    [
+     13254,
+     [
+      99,
+      40
+     ],
+     -4,
+     5
+    ],
+    [
+     13254,
+     [
+      99,
+      42
+     ],
+     -5,
+     4
+    ],
+    [
+     13284,
+     [
+      100,
+      41
+     ],
+     -6,
+     5
+    ],
+    [
+     13284,
+     [
+      100,
+      40
+     ],
+     -7,
+     3
+    ],
+    [
+     13284,
+     [
+      100,
+      42
+     ],
+     -8,
+     4
+    ],
+    [
+     13284,
+     [
+      99,
+      39
+     ],
+     -9,
+     4
+    ],
+    [
+     13284,
+     [
+      100,
+      39
+     ],
+     -10,
+     2
+    ],
+    [
+     13284,
+     [
+      99,
+      43
+     ],
+     -11,
+     1
+    ],
+    [
+     13284,
+     [
+      100,
+      43
+     ],
+     -12,
+     2
+    ],
+    [
+     13314,
+     [
+      101,
+      41
+     ],
+     -13,
+     2
+    ],
+    [
+     13314,
+     [
+      101,
+      40
+     ],
+     -14,
+     2
+    ],
+    [
+     13314,
+     [
+      101,
+      42
+     ],
+     -15,
+     4
+    ],
+    [
+     13314,
+     [
+      101,
+      39
+     ],
+     -16,
+     3
+    ],
+    [
+     13314,
+     [
+      101,
+      43
+     ],
+     -17,
+     4
+    ],
+    [
+     13314,
+     [
+      99,
+      38
+     ],
+     -18,
+     1
+    ],
+    [
+     13314,
+     [
+      98,
+      38
+     ],
+     -19,
+     3
+    ],
+    [
+     13314,
+     [
+      101,
+      38
+     ],
+     -20,
+     3
+    ],
+    [
+     13344,
+     [
+      102,
+      41
+     ],
+     -21,
+     2
+    ],
+    [
+     13344,
+     [
+      102,
+      42
+     ],
+     -22,
+     6
+    ],
+    [
+     13344,
+     [
+      102,
+      39
+     ],
+     -23,
+     3
+    ],
+    [
+     13344,
+     [
+      102,
+      43
+     ],
+     -24,
+     5
+    ],
+    [
+     13374,
+     [
+      102,
+      40
+     ],
+     -25,
+     2
+    ],
+    [
+     13374,
+     [
+      103,
+      40
+     ],
+     -26,
+     2
+    ],
+    [
+     13374,
+     [
+      103,
+      42
+     ],
+     -27,
+     4
+    ],
+    [
+     13374,
+     [
+      103,
+      43
+     ],
+     -28,
+     3
+    ],
+    [
+     13374,
+     [
+      103,
+      39
+     ],
+     -29,
+     2
+    ],
+    [
+     13374,
+     [
+      103,
+      38
+     ],
+     -30,
+     2
+    ]
+   ]
+  },
+  "tick_rest_running": 3.30976844,
+  "tick_air_running": 3.49322867,
+  "in_air_at_tick_read": 0,
+  "frame_probe": "FRAME frames=605 probeRows=605 paused=2 wall=10.36s worstMs=93.0 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=554 windowP99Ms=59.3 path=C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T034400.csv",
+  "killed_by_blast": {
+   "B": [
+    "Human41802 as Corpse_Human43822",
+    "Human38765 as Corpse_Human43916"
+   ]
+  }
+ }
+}
