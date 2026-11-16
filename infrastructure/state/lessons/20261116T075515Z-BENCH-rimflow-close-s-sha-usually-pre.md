@@ -1,0 +1,1 @@
+A rimflow close's sha is usually the pre-landing sha ./publish rewrote: 170 of 188 FlowWorks ticket final states named a commit not on origin/main (measured 2026-11-15). Map it to its landed twin (the one origin/main commit with the same author date and subject: modledger_backfill.landed_sha) before treating it as dead.
