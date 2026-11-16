@@ -582,8 +582,17 @@ def _supervise(args, deadline_s):
     return got, cut
 
 
+def runs_file(runs_path=None):
+    """The timing file: the caller's, else $RIMFLOW_PREFLIGHT_RUNS, else beside a redirected (sandbox) ledger, so a
+    test's doors never count in the real metric, else ~/.local/state/rimmandrake/preflight/runs.jsonl."""
+    if runs_path or os.environ.get("RIMFLOW_PREFLIGHT_RUNS"):
+        return runs_path or os.environ["RIMFLOW_PREFLIGHT_RUNS"]
+    led = os.environ.get("RIMFLOW_LEDGER")
+    return os.path.join(os.path.dirname(os.path.abspath(led)), "preflight_runs.jsonl") if led else DEFAULT_RUNS
+
+
 def _append_run(runs_path, line):
-    path = runs_path or os.environ.get("RIMFLOW_PREFLIGHT_RUNS") or DEFAULT_RUNS
+    path = runs_file(runs_path)
     try:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "a", encoding="utf-8") as fh:

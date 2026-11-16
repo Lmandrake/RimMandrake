@@ -100,5 +100,12 @@ except SystemExit:
     last = json.loads(open(SRUNS).read().splitlines()[-1])
     check(len(open(SRUNS).read().splitlines()) == n0 + 1 and last["checks"][0] == {"id": "I2", "ms": last["checks"][0]["ms"],
           "status": "FAIL", "origin": "gate"}, "shadow: a gate's refusal is re-raised unchanged, and its attempt is a line")
+saved = {k: os.environ.pop(k, None) for k in ("RIMFLOW_PREFLIGHT_RUNS", "RIMFLOW_LEDGER")}
+os.environ["RIMFLOW_LEDGER"] = os.path.join(os.path.dirname(RUNS), "sandbox", "events.jsonl")
+check(TP.runs_file() == os.path.join(os.path.dirname(RUNS), "sandbox", "preflight_runs.jsonl"),
+      "a sandbox ledger's doors write beside it, never into the real timing file")
+del os.environ["RIMFLOW_LEDGER"]
+check(TP.runs_file() == TP.DEFAULT_RUNS, "the real ledger's doors write the real timing file")
+os.environ.update({k: v for k, v in saved.items() if v is not None})
 print("PASS" if not FAILS else "FAILED %d" % len(FAILS))
 sys.exit(1 if FAILS else 0)
