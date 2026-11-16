@@ -884,15 +884,250 @@ def _walk(S):
           'warn_plus_all_mods': len(tap.entries)}, unmeasured=bool(tap.lost) or not alive)
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED (visit 1, 2026-11-15): the draft spawned drill, pump, head,
+# tank and faucet side by side with no pipe between them (nothing could fill the tank), ran one 60,000-tick advance on a colony
+# nobody fed (the governor stopped at tick 480 on "starving"), and read only the tank: it had no converter or still, so none
+# of the five owed blind-challenge cases nor the planted faults CALLER_CONV_DROPS_CLIPPED, CALLER_SPR_SPRAYS_WITHOUT_PUMP and
+# DEF_STILL_RATE_TENFOLD could turn a row red. Now: five separate nets, each in the layout a live walk proved (tank, one
+# unbroken pipe run, the pump and every machine built OVER the pipe: sprinkler_live.py's docstring), and a drill pouring into
+# its dug outlet (a drill writes the cell it faces, never a pipe); one 60,000-tick window in governed 2,500-tick chunks (one
+# sprinkler pulse each) with the colonists fed between chunks; every row UNMEASURED when its read is vacuous.
+#   W  garden: tank, pump, head over potatoes             -> GARDEN_head_draws_its_net (spr_net_draw)
+#   P  the same head with no pump on its net              -> GARDEN_no_pump_no_spray (CALLER_SPR_SPRAYS_WITHOUT_PUMP)
+#   F  tank, pipe, faucet; a thirsty colonist beside it   -> GARDEN_faucet_drinks_from_its_tank (bottle_jobs: the faucet half)
+#   C  toxic tank, drip filter, fresh tank                -> GARDEN_filter_keeps_its_rate (CONVERTER_RATE_REMAINDER_EATEN_BY_
+#                                                            THE_CAP, CALLER_CONV_DROPS_CLIPPED)
+#   S  salt tank, sun-pan still, fresh tank, open sky     -> GARDEN_still_within_its_def_rate (DEF_STILL_RATE_TENFOLD)
+#   D  drill, its dug outlet, a set subsurface yield      -> GARDEN_drill_pours_its_yield, GARDEN_drill_charges_what_landed
+#   Y  walled 5x5 yard, 3 cm poured at its centre         -> GARDEN_walled_yard_lies_level (SHEET_DRY_ISLAND_UNDER_A_POOL)
+# Not here: bottle fill/empty/wash jobs and material choice (the faucet drink is the only bottle_jobs half staged); the
+# subsurface survey roll (the scene SETS the yield, so it proves the pour, not which maps hold what).
+GARDEN_W = 60000                       # ticks: 240 rare ticks, the converter's two-batch margin (selftest_garden_scene.py)
+GARDEN_CHUNK = 2500                    # one sprinkler pulse (sprinkler_live.PULSE); colonists fed between chunks
+CONV_MULT = 4.1                        # converterRateMultiplier for the scene (shipped slider 0.1..5): 820 units a rare tick
+                                       # for the filter, so 6,000-unit batches leave a remainder each time (at 1.0 they divide
+                                       # exactly and a caller dropping the clipped income could not show)
+FILTER = dict(per=4800 * 10 / 240.0, inp=6000, out=2000)    # RM_DripFilter, ToxicWater filter step 600 L -> 200 L
+STILL = dict(per=6000 * 10 / 240.0, inp=4000, out=2000)     # RM_SunPanStill, SaltWater distill 400 L -> 200 L
+SPR_UNITS_PER_CELL = 5                 # sprinkler_live.UNITS_PER_CELL
+DRILL_PER_CYCLE = 0.3                  # drillUnitsPerCycle: part levels, so a whole-level charge would burn the rest
+MACH = 'RimMandrake.FlowWorks.Machinery.RM_MachinerySettings'
+SHEET, SHEET_SET = 'RimMandrake.FlowWorks.Sheet.RM_SheetProofs', 'RimMandrake.FlowWorks.Sheet.RM_SheetSettings'
+FRESH, TOXIC, SALT = 'RM_Liquid_FreshWater', 'RM_Liquid_ToxicWater', 'RM_Liquid_SaltWater'
+
+
+def _conv_batches(rare, per, inp, keep=True, a0=0.0):
+    """Batches a converter with ample input and room runs in `rare` rare ticks: CompLiquidConverter.CompTickRare's budget
+    (one candidate; CapAccrued, ClippedIncome, AccruedAfterPick). keep=False is the planted CALLER_CONV_DROPS_CLIPPED."""
+    acc, n = a0, 0
+    for _ in range(rare):
+        acc += per
+        cap = min(acc, per + inp if per > inp else inp)
+        clipped = max(0.0, min(acc - cap, per))
+        acc = cap
+        k = int(acc // inp)
+        if k > 0:
+            acc -= k * inp
+            acc += clipped if keep else 0.0
+            n += k
+    return n
+
+
+def _conv_window(dt, c, mult):
+    """[lo, hi] batches a healthy converter may run in dt ticks (one rare tick of phase either way; up to one budget
+    accrued before the fill)."""
+    per, r = c['per'] * mult, int(dt // 250)
+    return _conv_batches(max(r - 1, 0), per, c['inp']), _conv_batches(r + 1, per, c['inp'], a0=per + 1)
+
+
+def _num(txt, key):
+    import re
+    m = re.search(r'\b%s=(-?[\d.Ee+-]+)' % key, txt or '')
+    return float(m.group(1)) if m else None
+
+
 def _garden(S):
-    # The canal wetting rows left 0.1.0 with the wetting bars (owner by card 2026-11-14, OWNER:1794721673433243094); the
-    # garden keeps its field and pumped network. _wetting and scene_wetting stay for FlowWorks 0.2.0.
-    S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,12,5' % (O[0], O[1] - 3), density=1.0, growth=0.1)
-    S.call('jawa/spawn_batch', ops='RM_LiquidDrill:%d,%d;RM_LiquidPump:%d,%d;RM_SprinklerHead:%d,%d;RM_LiquidTank:%d,%d;RM_PipeFaucet:%d,%d'
-           % (O[0] + 14, O[1], O[0] + 15, O[1], O[0] + 14, O[1] - 3, O[0] + 16, O[1] + 2, O[0] + 17, O[1] + 2))
-    S.ticks(60000)
-    t = S.sc(NSP, 'ProofTank', '%d,%d' % (O[0] + 16, O[1] + 2))
-    S.row('GARDEN_hose_fills_tank', 'units=0' not in t and 'REFUSED' not in t, t)
+    ox, oz = O
+    W, P, F, Cn, St = (ox, oz), (ox, oz + 6), (ox, oz + 12), (ox, oz + 18), (ox, oz + 24)
+    D, Y = (ox + 16, oz), (ox + 16, oz + 10)
+    S.call('jawa/destroy_batch', rects='%d,%d,30,32' % (ox - 4, oz - 6), categories='Building,Plant,Item,Filth')
+    S.call('jawa/set_terrain_batch', ops='Soil:%d,%d,30,32' % (ox - 4, oz - 6))
+    S.call('jawa/set_roof_batch', ops='None:%d,%d,30,32' % (ox - 4, oz - 6))
+    S.call('jawa/weather_set', weather='Clear', lockWeather=True)     # the still needs sun; the reload drops the lock
+    S.setting('converterRateMultiplier', CONV_MULT, typ=MACH)
+    S.setting('drillUnitsPerCycle', DRILL_PER_CYCLE)
+    S.setting('sheetOverflowEnabled', True, typ=SHEET_SET)
+
+    def build(ops, **kw):
+        return S.call('jawa/build_batch', ops=';'.join(ops), faction='player', wipeExisting=False, **kw)
+
+    def pipe(at, n):
+        return ['RM_UniversalPipe:%d,%d' % (at[0] + i, at[1]) for i in range(2, 2 + n)]
+
+    build(['RM_LiquidTank:%d,%d' % W] + pipe(W, 5) + ['RM_LiquidTank:%d,%d' % P] + pipe(P, 4)
+          + ['RM_LiquidTank:%d,%d' % F] + pipe(F, 4) + ['RM_LiquidTankTall:%d,%d' % Cn] + pipe(Cn, 5)
+          + ['RM_LiquidTank:%d,%d' % (Cn[0] + 7, Cn[1])] + ['RM_LiquidTankTall:%d,%d' % St] + pipe(St, 6)
+          + ['RM_LiquidTank:%d,%d' % (St[0] + 8, St[1])])
+    build(['RM_LiquidPump:%d,%d' % (W[0] + 3, W[1]), 'RM_SprinklerHead:%d,%d' % (W[0] + 5, W[1]),
+           'RM_SprinklerHead:%d,%d' % (P[0] + 5, P[1]), 'RM_PipeFaucet:%d,%d' % (F[0] + 5, F[1]),
+           'RM_DripFilter:%d,%d' % (Cn[0] + 4, Cn[1]), 'RM_SunPanStill:%d,%d' % (St[0] + 3, St[1]),
+           'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 1), 'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 2),
+           'Battery:%d,%d,0' % (W[0] + 3, W[1] - 4), 'RM_LiquidDrill:%d,%d,0' % D,
+           'PowerConduit:%d,%d' % (D[0] - 1, D[1]), 'Battery:%d,%d,0' % (D[0] - 2, D[1] - 1)])
+    build(['Wall:%d,%d' % (Y[0] + i, Y[1] + j) for i in range(-1, 6) for j in range(-1, 6) if i in (-1, 5) or j in (-1, 5)],
+          stuff='Steel')
+    for b in ((W[0] + 3, W[1] - 4), (D[0] - 2, D[1] - 1)):
+        S.call('jawa/gss_stage', ops='kind=gss_charge|x=%d|z=%d' % b)
+    S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,5,3' % (W[0] + 4, W[1] + 1), density=1.0, growth=0.1)
+
+    def tank(at, liquid=None, units=None):
+        """(units, ticksGame) through ProofTank (its read form sets Store, the mode every tank here runs in)."""
+        arg = '%d,%d;Store' % at + ('' if liquid is None else ';%s;%d' % (liquid, units))
+        r = S.B.call('jawa/static_call', type=NSP, method='ProofTank', args=arg) or {}
+        S.r['calls'].append({'tool': 'jawa/static_call', 'args': [NSP, 'ProofTank', arg], 'result': r})
+        txt = str(r.get('result', ''))
+        u = _num(txt, 'units') if txt.startswith('TANK') else None
+        return (int(u) if u is not None else None), r.get('ticksGame')
+
+    def thing(defn, at):
+        th = S.call('jawa/list_things', defName=defn, rect='%d,%d,1,1' % at, limit=2).get('things') or []
+        return th[0].get('id') if th else None
+
+    def inspect(tid):
+        if tid is None:
+            return None
+        for t in S.call('jawa/inspect_string', thingIds=tid).get('things') or []:
+            return ' | '.join(t.get('inspect') or [])
+        return None
+
+    ids = {k: thing(d, at) for k, d, at in (('headW', 'RM_SprinklerHead', (W[0] + 5, W[1])),
+                                           ('headP', 'RM_SprinklerHead', (P[0] + 5, P[1])),
+                                           ('pump', 'RM_LiquidPump', (W[0] + 3, W[1])),
+                                           ('faucet', 'RM_PipeFaucet', (F[0] + 5, F[1])),
+                                           ('filter', 'RM_DripFilter', (Cn[0] + 4, Cn[1])),
+                                           ('still', 'RM_SunPanStill', (St[0] + 3, St[1])), ('drill', 'RM_LiquidDrill', D))}
+    missing = sorted(k for k, v in ids.items() if not v)
+    require(not missing, 'not built: %s' % missing)
+    drill = S.sc(NSP, 'ProofDrill', '%d,%d;%s;200' % (D[0], D[1], FRESH))
+    require(drill.startswith('DRILL'), 'drill yield: %s' % drill)
+    outlet = tuple(int(v) for v in drill.split('outlet=')[1].split()[0].split(','))
+    S.dig([outlet], 8)
+    S.ticks(250)                                   # sprinkler_live.COLD_WAIT: the pump's power switches on first
+
+    fill = {'W': tank(W, FRESH, 100000), 'P': tank(P, FRESH, 100000), 'F': tank(F, FRESH, 100000),
+            'C': tank(Cn, TOXIC, 250000), 'S': tank(St, SALT, 250000)}
+    require(all(v[0] for v in fill.values()), 'a tank would not fill: %s' % fill)
+    spill = S.sc(SHEET, 'ProofSheetSpill', '%d,%d;15000;Pump' % (Y[0] + 2, Y[1] + 2))
+    drinker = S.pawn('Colonist', (F[0] + 5, F[1] + 1), 'player')
+    S.call('jawa/pawn_need', pawn=drinker, action='need', need='RM_Thirst', level=0.05)
+    d0 = S.sc(NSP, 'ProofDrill', '%d,%d' % D)
+
+    def feed():
+        for p in S.call('jawa/list_pawns', faction='player').get('pawns') or []:
+            needs = dict((x.get('need'), x.get('level')) for x in
+                         (S.B.call('jawa/pawn_need', pawn=p['id'], action='list') or {}).get('needs') or [])
+            if needs.get('Food', 1.0) < 0.5:
+                S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='Food', level=1.0)
+            if p['id'] != drinker and needs.get('RM_Thirst', 1.0) < 0.3:
+                S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='RM_Thirst', level=1.0)
+
+    log = []                                       # one entry a chunk: tank units, drill read, yard read, head lines
+    stop = None
+    for k in range(GARDEN_W // GARDEN_CHUNK):
+        feed()
+        try:
+            S.ticks(GARDEN_CHUNK)
+        except Exception as e:                     # noqa: BLE001 - a GovernorStop: the window is broken, rows say so
+            stop = repr(e)[:300]
+            break
+        log.append({'t': {n: tank(at) for n, at in (('W', W), ('P', P), ('F', F), ('C', Cn), ('C2', (Cn[0] + 7, Cn[1])),
+                                                      ('S', St), ('S2', (St[0] + 8, St[1])))},
+                    'drill': S.sc(NSP, 'ProofDrill', '%d,%d' % D),
+                    'yard': S.sc(SHEET, 'ProofSheetRect', '%d;%d;5;5' % Y),
+                    'headW': inspect(ids['headW']), 'headP': inspect(ids['headP'])})
+    S.r['garden_log'] = log
+    why = ('the clock stopped: %s; ' % stop) if stop else ''
+    _garden_rows(S, fill, log, d0, spill, why, full=stop is None)
+
+
+def _garden_rows(S, fill, log, d0, spill, why, full):
+    import re
+    u = lambda e, n: (e['t'][n][0] if e and e['t'].get(n) else None)            # noqa: E731
+    tk = lambda e, n: (e['t'][n][1] if e and e['t'].get(n) else None)           # noqa: E731
+    last = log[-1] if log else None
+
+    # W: one pulse a chunk; chunk 0 holds the cold pulse, so chunks 1 -> 2 are one clean pulse
+    if len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')):
+        m = re.search(r'(\d+) cells', log[2]['headW'] or '')
+        drop, cells = u(log[1], 'W') - u(log[2], 'W'), (int(m.group(1)) if m else None)
+        S.row('GARDEN_head_draws_its_net', cells is not None and drop == cells * SPR_UNITS_PER_CELL
+              and 'Spraying' in (log[2]['headW'] or ''), {'drop': drop, 'cells': cells, 'head': log[2]['headW']},
+              unmeasured=cells is None or drop == 0)
+    else:
+        S.row('GARDEN_head_draws_its_net', False, why + 'fewer than three chunk reads', unmeasured=True)
+    sprayed = len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')) and u(log[1], 'W') > u(log[2], 'W')
+
+    # P: the same head with no pump on its net never sprays (and only means something when W's head did)
+    p_end = u(last, 'P')
+    S.row('GARDEN_no_pump_no_spray', p_end == fill['P'][0] and (last['headP'] or '').startswith('No pressure'),
+          why + str({'filled': fill['P'][0], 'end': p_end, 'head': last and last['headP'], 'pumpedHeadSprayed': sprayed}),
+          unmeasured=p_end is None or not sprayed or not full)
+
+    # F: the faucet's tank is drawn by the thirsty colonist (no other fixture on its net)
+    f_end = u(last, 'F')
+    S.row('GARDEN_faucet_drinks_from_its_tank', f_end is not None and f_end < fill['F'][0],
+          why + str({'filled': fill['F'][0], 'end': f_end}), unmeasured=f_end is None or not full)
+
+    # C: input drawn in whole batches, the output made to match, the count inside the healthy window
+    c_end, c2_end = u(last, 'C'), u(last, 'C2')
+    if None in (c_end, c2_end, tk(last, 'C'), fill['C'][1]) or not full:
+        S.row('GARDEN_filter_keeps_its_rate', False, why + 'unreadable %s' % [c_end, c2_end], unmeasured=True)
+    else:
+        took, dt = fill['C'][0] - c_end, tk(last, 'C') - fill['C'][1]
+        lo, hi = _conv_window(dt, FILTER, CONV_MULT)
+        n = took / float(FILTER['inp'])
+        S.row('GARDEN_filter_keeps_its_rate', n == int(n) and lo <= n <= hi and c2_end == int(n) * FILTER['out'],
+              {'batches': n, 'window': [lo, hi], 'made': c2_end, 'ticks': dt}, unmeasured=took == 0)
+
+    # S: no chunk draws more than the def's rate could at full sun; it must have run at all
+    drops, bad = [], []
+    for a, b in zip([{'t': {'S': fill['S']}}] + log, log):
+        if None in (u(a, 'S'), u(b, 'S'), tk(a, 'S'), tk(b, 'S')):
+            bad.append('unreadable'); continue
+        dt, d = tk(b, 'S') - tk(a, 'S'), u(a, 'S') - u(b, 'S')
+        cap = (int(((dt // 250) + 1) * STILL['per'] * CONV_MULT + STILL['inp']) // STILL['inp']) * STILL['inp']
+        drops.append(d)
+        if d > cap:
+            bad.append('chunk drew %d over %d ticks, the def allows %d' % (d, dt, cap))
+    made = u(last, 'S2')
+    S.row('GARDEN_still_within_its_def_rate', not bad and made == sum(drops) // STILL['inp'] * STILL['out'],
+          why + str({'drops': drops, 'bad': bad[:3], 'made': made}), unmeasured=not drops or not sum(drops) or 'unreadable' in bad)
+
+    # D: the drill pours, and the reserve it spent is what landed plus what it still holds
+    reads = [d0] + [e['drill'] for e in log]
+    r0 = _num(d0, 'reserve')
+    pick = next((x for x in reads[1:] if (_num(x, 'outletUnits') or 0) > 0), None)
+    S.row('GARDEN_drill_pours_its_yield', pick is not None, why + str(reads[-1])[:200],
+          unmeasured=not log or r0 is None)
+    if pick is None or r0 is None:
+        S.row('GARDEN_drill_charges_what_landed', False, why + 'nothing landed: %s' % str(reads[-1])[:200], unmeasured=True)
+    else:
+        # deltas from the baseline read: the drill may already have poured during the staging ticks
+        spent = r0 - _num(pick, 'reserve')
+        landed = _num(pick, 'outletUnits') - (_num(d0, 'outletUnits') or 0.0)
+        pend = _num(pick, 'pending')
+        gain = pend - (_num(d0, 'pending') or 0.0)
+        S.row('GARDEN_drill_charges_what_landed', abs(spent - landed - gain) <= 0.02 + 0.01 * spent and pend >= -1e-4,
+              {'spent': spent, 'landed': landed, 'pendingGain': gain, 'base': d0[:200], 'read': pick[:200]},
+              unmeasured=spent <= 0)
+
+    # Y: the walled yard's 3 cm lies level over all 25 squares (no dry island); the latest read still holding half of it
+    took = _num(spill, 'accepted') if str(spill).startswith('SPILL') else None
+    good = [e['yard'] for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
+    y = good[-1] if good else (log[-1]['yard'] if log else None)
+    dl, wet, mx = _num(y, 'dl'), _num(y, 'wet'), _num(y, 'maxDl')
+    S.row('GARDEN_walled_yard_lies_level', bool(good) and wet == 25 and mx <= dl / wet + 2,
+          why + str({'spill': spill[:80], 'read': y}), unmeasured=not good)
 
 
 def _geyser_tub(S):

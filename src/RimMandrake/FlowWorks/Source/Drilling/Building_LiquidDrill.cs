@@ -34,6 +34,10 @@ namespace RimMandrake.FlowWorks.Drilling
 		/// uses for light rain.</summary>
 		private float pendingUnits;
 
+		/// <summary>Read-only, for RM_NorthstarProofs.ProofDrill (sc_garden's landed-charge row): units taken from the reserve
+		/// and not yet poured.</summary>
+		public float PendingUnits => pendingUnits;
+
 		private static readonly RM_LiquidDrillExtension DefaultExtension = new RM_LiquidDrillExtension();
 
 		private RM_LiquidDrillExtension Ext => def.GetModExtension<RM_LiquidDrillExtension>() ?? DefaultExtension;

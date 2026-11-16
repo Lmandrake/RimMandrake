@@ -97,6 +97,46 @@ namespace RimMandrake.FlowWorks
 				+ " units=" + tank.storedUnits;
 		}
 
+		/// <summary>RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED (sc_garden's drill rows). arg "x,z" (a cell of
+		/// the drill) reads; "x,z;LiquidDef;units" WRITES the current map's subsurface survey first (what the dev menu's "Give this
+		/// map a subsurface yield" does, with a chosen reserve) and then reads. "DRILL yield=D reserve=r pending=p outletUnits=o
+		/// outlet=x,z block=B", every amount in fill-units (outletUnits = the outlet's water in levels x the canal fluid's
+		/// volumePerTile, the unit the drill charges in), or "REFUSED: ...".</summary>
+		public static string ProofDrill(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || (a.Length != 1 && a.Length != 3) || !Cell(a[0], out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z or x,z;LiquidDef;units on the current map";
+			}
+			Drilling.Building_LiquidDrill drill = c.GetFirstThing<Drilling.Building_LiquidDrill>(map);
+			Drilling.RM_MapComponent_SubsurfaceLiquid survey = map.GetComponent<Drilling.RM_MapComponent_SubsurfaceLiquid>();
+			RM_MapComponent_Excavation excavation = map.GetComponent<RM_MapComponent_Excavation>();
+			if (drill == null || survey == null || excavation == null)
+			{
+				return "REFUSED: no RM_LiquidDrill at " + c + (survey == null ? " (no survey component)" : "");
+			}
+			if (a.Length == 3)
+			{
+				LiquidDef liquid = DefDatabase<LiquidDef>.GetNamedSilentFail(a[1]);
+				if (liquid == null || liquid.canalFluid == null || !float.TryParse(a[2], System.Globalization.NumberStyles.Float,
+					System.Globalization.CultureInfo.InvariantCulture, out float units) || units < 0f)
+				{
+					return "REFUSED: bad liquid/units " + a[1] + "/" + a[2] + " (the liquid needs a canal fluid)";
+				}
+				survey.DebugSetYield(liquid, units);
+			}
+			IntVec3 outlet = drill.OutletCell;
+			FluidDef fluid = survey.YieldedLiquid?.canalFluid;
+			float upl = fluid != null && fluid.volumePerTile > 0f ? fluid.volumePerTile : 1f;
+			double outletUnits = outlet.InBounds(map) ? excavation.WaterDlAt(outlet) / (double)RM_LevelSolve.U * upl : 0d;
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			return "DRILL yield=" + (survey.HasYield ? survey.YieldedLiquid.defName : "none") + " reserve=" + survey.ReserveRemaining.ToString("R", inv)
+				+ " pending=" + drill.PendingUnits.ToString("R", inv) + " outletUnits=" + outletUnits.ToString("R", inv)
+				+ " outlet=" + outlet.x + "," + outlet.z + " block=" + drill.CurrentBlock();
+		}
+
 		/// <summary>WRITES. LIQUID_BOTTLE_LOOP_1 A1/A3 (the "use" half): arg "pawnId;x,z". The pawn drinks the filled
 		/// container at x,z through vanilla Thing.Ingested, so IngestionOutcomeDoer_BottleResidue runs exactly as a real
 		/// drink job reaches it (the outcome doers are called from Ingested). The job's walking and carrying are NOT
