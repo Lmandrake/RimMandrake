@@ -1796,13 +1796,15 @@ def lift_park(st, d, repo=REPO):
     return True
 
 
-def _gap_lines(gaps):
+def _gap_lines(gaps, advisory=False):
     out = []
     for i, g in enumerate(gaps or []):
         if isinstance(g, dict):
-            out.append("%d. %s (%s; ids %s; returns to stage %s)" % (
+            route = ("neutral criteria fixer" if g.get("criterion_verdict") in ("flawed", "unattainable") else
+                     ("advisory: proposed stage %s" if advisory else "returns to stage %s") % g.get("return_to"))
+            out.append("%d. %s (%s; ids %s; %s)" % (
                 i + 1, " ".join(str(g.get("what") or "").split()), " ".join(str(g.get("where") or "").split()),
-                ", ".join(g.get("ids") or []) or "none", g.get("return_to")))
+                ", ".join(g.get("ids") or []) or "none", route))
     return out
 
 
@@ -1816,6 +1818,7 @@ def park_summary(d, st, kind, why):
     gaps = [g for g in verdict.get("gaps") or [] if isinstance(g, dict)] if verdict.get("verdict") == "not_covered" else []
     cov_line = CT.coverage_summary(d, clone_of(d) or REPO)
     owner_passed = cov_line.startswith("passed on the owner's word")
+    advisory = bool(verdict.get("advisory") or (verdict.get("contract") or {}).get("advisory"))
     if owner_passed:
         gaps = []       # his certificate stands past them: they are not refusals, and the line below says so
     sent = [a for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
@@ -1827,7 +1830,11 @@ def park_summary(d, st, kind, why):
     if code:
         L += ["## QUICK LOOK OFFERED", "",
               "Enough code exists (%d built capabilities: %s). A short look in game could settle %s at once." % (
-                  len(code), ", ".join(code), "these %d gaps" % len(gaps) if gaps else "the questions below"), ""]
+                  len(code), ", ".join(code), "the questions below"), ""]
+        for a in sent:
+            look = a.get("quick_look") or {}
+            if look.get("offer") and CT.txt(look.get("scene")):
+                L += [" ".join(look["scene"].split()), ""]
     L += ["## Settled", "",
           "- Stages accepted: %s." % (", ".join("%s %s" % (s, STAGE_NAMES.get(s, "?")) for s in done) or "none"),
           "- Root: %s" % (" ".join(str((rec.get("root") or {}).get("text") or "not yet approved").split())),
@@ -1838,26 +1845,42 @@ def park_summary(d, st, kind, why):
     if owner_passed:
         L += ["Coverage: %s." % cov_line]
     elif gaps:
-        L += ["The coverage judge (%s) says not covered: %s" % (verdict.get("judge"), " ".join(
-            str(verdict.get("reasons") or "").split()))] + _gap_lines(gaps)
+        if advisory:
+            L += ["Coverage findings from %s are advisory, not a binding refusal (%s). All findings are retained:" % (
+                verdict.get("judge"), (verdict.get("contract") or {}).get("calibration") or
+                verdict.get("advisory"))] + _gap_lines(gaps, advisory=True)
+        else:
+            L += ["The coverage judge (%s) says not covered: %s" % (verdict.get("judge"), " ".join(
+                str(verdict.get("reasons") or "").split()))] + _gap_lines(gaps)
     elif rejected:
         L += ["The last rejected result (%s): %s" % (rejected[-1].get("run"), "; ".join(
             str(w) for w in rejected[-1].get("why") or []))]
     else:
         L += ["Nothing refused; this step ends in your certification."]
     L += ["", "## Smallest fixes", ""]
-    fix = [g for g in gaps if g.get("return_to") == 3]
-    L += (["- The Designer can fix %d gap(s) at stage 3 without you: %s." % (len(fix), ", ".join(
-        str(i + 1) for i, g in enumerate(gaps) if g.get("return_to") == 3))] if fix else
-          ["- None the Designer can make without you."])
+    suspect = [g for g in gaps if g.get("criterion_verdict") in ("flawed", "unattainable")]
+    fix = [g for g in gaps if g.get("return_to") == 3 and g not in suspect]
+    if fix:
+        ids = ", ".join(str(i + 1) for i, g in enumerate(gaps) if g in fix)
+        L += (["- The Designer can review %d advisory Stage 3 correction candidates without an owner choice: %s." % (
+            len(fix), ids)] if advisory else ["- The Designer can fix %d gap(s) at stage 3 without you: %s." % (
+                len(fix), ids)])
+    else:
+        L += ["- No Stage 3 corrections listed."]
+    if suspect:
+        L += ["- Flawed or unattainable criteria go to the neutral criteria fixer, not an owner question: %s." %
+              ", ".join(str(i + 1) for i, g in enumerate(gaps) if g in suspect)]
     L += ["", "## What you must decide", ""]
     for i, g in enumerate(gaps):
-        if g.get("return_to") == 2:
+        if not advisory and g not in suspect and g.get("return_to") == 2:
             L.append("- Gap %d needs your answer: %s" % (i + 1, " ".join(str(g.get("what") or "").split())))
     for a in sent:
         L.append("- Ask %s: %s" % (a.get("id"), " ".join(str(a.get("text") or "").split())))
-    L += ["- Then one note on %s (your words, or a card): rework it, certify it as it stands, waive a gap, or stop." %
-          st.get("item"), ""]
+    if sent:
+        L += ["- Reply on %s to the question above; no answer or certification is inferred." % st.get("item"), ""]
+    else:
+        L += ["- Then one note on %s (your words, or a card): rework it, certify it as it stands, waive a gap, or stop." %
+              st.get("item"), ""]
     return "\n".join(L)
 
 
