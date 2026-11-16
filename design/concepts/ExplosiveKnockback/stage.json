@@ -1725,6 +1725,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN: barrage bar reworded to the p99 frame in the 0.9-8.25 s window (his '1 agree.'), tree re-certified on that event (fab7999d8f); his earlier certificate card is superseded by it; re-pinned stage 2 (owner); stage 3 (sheet, tree); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, owner changed): the next open retakes it; sources OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33, OWNER:1794748823561950419"
+  },
+  {
+   "at": "2026-11-16T13:06:43Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his card 2026-11-16 'Compare to mod-off': the walk's frame row is judged against the same run's mod-off arm (+10% max); tree.json walk_storeroom_raid and scenes.json sc_walk_raid reworded, tree re-certified on that card; the 50 ms barrage bar is unchanged (the two older sources are cited again only because stage 4 stays void from the last re-pin); re-pinned stage 3 (tree, scenes); stage 5 (tree); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794834159094900561@65eb8bf28a, OWNER:1794799770273329641@3aa7e5c15d, OWNER:1794748823561950419"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -2018,9 +2024,9 @@
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "346b20d4fdad2ccbc5cddc62b5765d2072d7137db3a741a3e8e8a2939aca59bb",
+    "scenes": "4d0d4c0c23f21edf6040ce346d447259bb3f3be277dce0652466fafef20cb2c1",
     "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
-    "tree": "9cf213032f6d0cd308d8d930c2817e2deeb65db81db547d92840c4452481271b"
+    "tree": "743e234b354db00c93dba97b007884bf113774384b7e99ac1135bea55c0fe94a"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2065,6 +2071,18 @@
      ],
      "sources": [
       "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
+     ]
+    },
+    {
+     "at": "2026-11-16T13:06:43Z",
+     "inputs": [
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
       "OWNER:1794748823561950419"
      ]
     }
@@ -2141,6 +2159,21 @@
       "OWNER:1794748823561950419"
      ],
      "why": "its exam ran against another tree or sheet: retake it"
+    },
+    {
+     "at": "2026-11-16T13:06:43Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
+      "OWNER:1794748823561950419"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
     }
    ]
   },
@@ -2153,7 +2186,7 @@
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "d16a2aec414a6dd250a9036c95005753f87ae1bf29dcd1e00986d4ed8753baba",
     "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
-    "tree": "9cf213032f6d0cd308d8d930c2817e2deeb65db81db547d92840c4452481271b"
+    "tree": "743e234b354db00c93dba97b007884bf113774384b7e99ac1135bea55c0fe94a"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2186,6 +2219,17 @@
      ],
      "sources": [
       "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
+     ]
+    },
+    {
+     "at": "2026-11-16T13:06:43Z",
+     "inputs": [
+      "tree"
+     ],
+     "sources": [
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
       "OWNER:1794748823561950419"
      ]
     }
