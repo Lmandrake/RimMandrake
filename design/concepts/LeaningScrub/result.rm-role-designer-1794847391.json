@@ -1,0 +1,10 @@
+{
+  "run": "rm-role-designer-1794847391",
+  "stage": 3,
+  "outcome": "done",
+  "summary": "Reworked stage 3 for coverage judge rm-coverage-judge-1794846217: g1 (sc_gale_exposure now asserts roofed organic and mechanoid are spared, with a roof-ignoring mutant control) and g2 (sc_cuts control adds a drying-scar injection arm). Claims in coverage_fixes.json; lint and showcases pass. Advisory g12 remains with the neutral criteria fixer.",
+  "quick_look": {
+    "offer": false,
+    "why": "no question to the owner; both gaps were scene-contract edits"
+  }
+}

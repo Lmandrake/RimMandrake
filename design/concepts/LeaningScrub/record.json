@@ -397,6 +397,12 @@
         "design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033/score.json"
       ],
       "text": "Fresh independent Claude Opus exam of the corrected validated six-family tree/sheet: both Readers matched 18/18, zero core false accepts; all six Challenger cases matched. Program-created raid_weight control missed its non-raid spillover case after all rule mentions were removed. Five actual CLI session UUIDs and raw usage retained; helper usage 468259 weighted tokens fully charged. Delegated sentence approval and owner corrections preserved. Historical exam archived; no design edits, live acceptance, coverage signature, version lock or owner first-touch certification."
+    },
+    {
+      "id": "stage3_coverage_g1_g2",
+      "speaker": "agent",
+      "text": "Fixed rm-coverage-judge-1794846217 gaps: g1 sc_gale_exposure now asserts the roofed organic and unroofed mechanoid gain no RM_GaleDeafened in the same Gale and rejects a roof/mechanoid-ignoring fixture; g2 sc_cuts control adds a drying-scar vaporator injection arm. Both checked against source. Advisory g12 stays neutral-fixer work. No proof claimed.",
+      "source": "design/concepts/LeaningScrub/coverage_fixes.json"
     }
   ],
   "asks": [

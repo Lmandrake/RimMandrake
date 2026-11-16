@@ -177,20 +177,21 @@
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Healthy organic actors outdoors/roofed and mechanoid outdoors; no prior Gale hediff."
+        "Healthy organic actor unroofed, healthy organic actor under a roof and an unroofed mechanoid, all in the same Gale map; roof state of each cell asserted; no prior Gale hediff."
       ],
       "action": "Enter Gale, sample through one application interval, leave and observe expiry.",
-      "expect": "The observer sees unroofed living non-mechanoids gain RM_GaleDeafened and reduced hearing/speech, then recover.",
+      "expect": "In the same Gale application interval the observer sees the unroofed living non-mechanoid gain RM_GaleDeafened and reduced hearing/speech, while the roofed organic and the unroofed mechanoid gain no RM_GaleDeafened; after Gale ends the deafened actor recovers.",
       "control": {
-        "case": "galeDeafenEnabled off with same weather/roof.",
-        "expect": "No Scrub deafening is added.",
-        "rules_out": "Heatstroke or an old hearing injury passes Gale exposure."
+        "case": "Arm A: galeDeafenEnabled off with same weather/roof. Arm B: isolated fixture whose deafen hook ignores roof and mechanoid gates (applies to every spawned pawn).",
+        "expect": "Arm A: no Scrub deafening is added. Arm B: the checker rejects it because the roofed organic or the mechanoid gains RM_GaleDeafened.",
+        "rules_out": "Heatstroke or an old hearing injury passing as Gale exposure, and a penalty applied to every pawn regardless of roof or mechanoid status."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml",
         "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:78",
-        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml"
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:85"
       ],
       "exercises": [
         "gale_exposure"
@@ -2240,19 +2241,20 @@
       "action": "Inspect tree/camp generation and current About/tooltips for guardian/farmer/drying-scar promises; inspect local terrain effects of any still-shipping deferred vaporator without accepting its next-version technology chain. Preserved shed/scratch/healing are tested separately.",
       "expect": "No active guardian/roost/rage, farmer camps or drying scar and no text promising them. Retained tree systems still work; deleting them does not pass cuts. No loadable tombstone is required.",
       "control": {
-        "case": "Inject stale guardian promise or active farmerFaction in isolated manifest.",
-        "expect": "Both stale guardian promise and active farmerFaction are rejected; preserved tree features remain required independently.",
-        "rules_out": "Deleting retained tree behavior instead of removing active cut content, or mistaking a save-only placeholder for required gameplay."
+        "case": "Three isolated-manifest injections: a stale guardian promise; an active farmerFaction; a still-shipping vaporator fixture that converts or dries its surrounding terrain (a drying scar).",
+        "expect": "All three are rejected: the guardian promise, the active farmerFaction and the drying-scar terrain change each fail the checker; preserved tree features remain required independently.",
+        "rules_out": "Deleting retained tree behavior instead of removing active cut content, mistaking a save-only placeholder for required gameplay, and a check blind to drying scars that passes 'no drying scar' without looking."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
-        "design/RimMandrake/fluff_cuts_2026-10-23.md:86",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33",
         "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
+        "OWNER:1794835478275153823",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:86",
         "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25",
-        "OWNER:1794835478275153823"
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:6",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33"
       ],
       "exercises": [
         "bark_wardens_removed",

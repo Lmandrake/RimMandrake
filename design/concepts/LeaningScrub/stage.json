@@ -142,10 +142,17 @@
     "ref": "run rm-role-designercodex-1794846206",
     "stage": 5,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-16T16:45:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794847391",
+    "stage": 3,
+    "tokens": 302081
    }
   ],
   "reserve": 60000,
-  "spent": 3383282
+  "spent": 3685363
  },
  "coverage_rounds": [
   {
@@ -380,6 +387,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794846206: stage 5 return"
+  },
+  {
+   "at": "2026-11-16T16:43:23Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794847391, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T16:45:45Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794847391: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -721,6 +740,32 @@
    "run": "rm-role-designercodex-1794846206",
    "stage": 5,
    "to": 3
+  },
+  {
+   "at": "2026-11-16T16:45:45Z",
+   "inputs": {
+    "exam": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "0e1e605a3edf72075ce791895f9878b335f232d011485cc3b0f5b5b0002df71c",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": false,
+    "why": "no question to the owner; both gaps were scene-contract edits"
+   },
+   "run": "rm-role-designer-1794847391",
+   "stage": 3,
+   "summary": "Reworked stage 3 for coverage judge rm-coverage-judge-1794846217: g1 (sc_gale_exposure now asserts roofed organic and mechanoid are spared, with a roof-ignoring mutant control) and g2 (sc_cuts control adds a drying-scar injection arm). Claims in coverage_fixes.json; lint and showcases pass. Advisory g12 remains with the neutral criteria fixer."
   }
  ],
  "runner": "claude",
@@ -821,7 +866,7 @@
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
