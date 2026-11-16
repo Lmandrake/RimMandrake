@@ -1,6 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081} body_sha256=36afc3a13c81b6853c55c0e0e015b568305f9ae3e764011bbc00b99aab3f9ba9 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081,"DISPATCH":648} body_sha256=32eeb9dcc0d0ed9ea643b34c6f29a5b3519bb69a4a165d4e4f730c3744aec784 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 891 events in 1 shards · reducer 1
+version 0.1.0 · stage offline_build · 893 events in 2 shards · reducer 1
+holder lease run-1794816885, token 1, last active 2026-11-16T08:14:45Z
 
 ## Open findings (338)
 (claimed fixes, awaiting a judge, on one line each with the oldest 128 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -569,6 +570,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - claimed fixes in brief: 210 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 128 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 891 events (views/history.md; never read whole)
+- the full history: 893 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:51:26Z.1794815486386234837 (modledger.py since --mod FlowWorks t=2026-11-16T07:51:26Z.1794815486386234837 prints what changed after this packet)
+cursor: t=2026-11-16T08:14:46Z.1794816886736030842 (modledger.py since --mod FlowWorks t=2026-11-16T08:14:46Z.1794816886736030842 prints what changed after this packet)

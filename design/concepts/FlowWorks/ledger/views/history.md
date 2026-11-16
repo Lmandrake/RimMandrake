@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081} body_sha256=ee4e3efb64c267ba824d3a942425da88e65c5ecb28ceadf61c0569866a0c15a8 -->
-# FlowWorks — mod ledger history (891 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081,"DISPATCH":648} body_sha256=557ab97fc2ff74991a887944d87cd819f4b524397256210a1cbd1f8b2013acad -->
+# FlowWorks — mod ledger history (893 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -892,3 +892,5 @@
 - 2026-11-16T07:51:23Z BACKFILL#889 finding.open finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE v0.1.0: Retire MineralsFramework; reproduce whatever map step of it we rely on inside our own mods
 - 2026-11-16T07:51:23Z BACKFILL#890 finding.claimed_fixed finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE v0.1.0: Implemented at 41d00f21000b (pre-landing; landed as 55ea29af63a2) (FOUNDRY); not closed. Criteria: none recorded
 - 2026-11-16T07:51:26Z BACKFILL#891 decision finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE v0.1.0: May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings
+- 2026-11-16T08:14:45Z DISPATCH#1 lease.grant lease v0.1.0: 
+- 2026-11-16T08:14:46Z DISPATCH#2 run.start run v0.1.0: 

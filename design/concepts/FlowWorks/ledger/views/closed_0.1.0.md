@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081} body_sha256=71345142754a357f7d29d47544c98d0acc4e39f3e1e239fa41df9cddd64a78be -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081,"DISPATCH":648} body_sha256=71345142754a357f7d29d47544c98d0acc4e39f3e1e239fa41df9cddd64a78be -->
 # FlowWorks — closed in Design Version 0.1.0 (5)
 
 - finding:RIMMANDRAKE_LAUNCH_FLOWWORKS_REALIGNMENT_PROMISED_NEVER_LAUNCHED withdrawn 18ad3228eb (2026-11-16T07:29:22Z)
