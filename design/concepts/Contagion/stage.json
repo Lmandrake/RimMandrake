@@ -142,10 +142,17 @@
     "ref": "run rm-role-designer-1794816366",
     "stage": 2,
     "tokens": 640000
+   },
+   {
+    "at": "2026-11-16T09:00:50Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794819505",
+    "stage": 2,
+    "tokens": 250743
    }
   ],
   "reserve": 60000,
-  "spent": 7469629
+  "spent": 7720372
  },
  "coverage_rounds": [
   {
@@ -428,6 +435,24 @@
    "stage": 2,
    "what": "unblock",
    "why": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS fixed at db22459dac4d (was blocked on RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS)"
+  },
+  {
+   "at": "2026-11-16T08:58:37Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "7469629 of 4000000 spent; run rm-role-designer-1794819505 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T08:58:37Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1794819505, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:00:51Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1794819505: stage 2 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -697,12 +722,39 @@
    "run": "rm-role-designer-1794816366",
    "stage": 2,
    "summary": "Root validation decided without asking him: the drafted ask was struck by a fresh review because the walk's bars are NEW (never validated) and delegable under delegation_policy §2.1, and his 2026-11-15 ruling moves the one doubtful line (grown limb) to 0.2.0. Logged delegated (OWNER:1794816612487799110, evidence-for-ask), recorded as d_walk_bars_delegated. The Designer may not bind bars, so the act is filed for the Conductor as RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS with its acceptance test (FAIL 3/3 on base). Once it passes and the concept is unblocked, stage 3 writes against the validated root and works the 31 coverage gaps of rm-coverage-judge-1794788108 (g27: take limb_still_grows out of the 0.1.0 tree)."
+  },
+  {
+   "at": "2026-11-16T09:00:51Z",
+   "inputs": {
+    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "No question goes to him: the decision is enacted, and what remains is stage-3 tree writing."
+   },
+   "run": "rm-role-designer-1794819505",
+   "stage": 2,
+   "summary": "The root-validation decision that sent the concept back is settled: the walk design/validation_walks/RimMandrake/Contagion.md is VALIDATED (db22459dac, delegated new bars under delegation_policy §2.1, grown-limb bar parked for 0.2.0 per OWNER:1794772416196929336; acceptance test PASS 3/3). No ask is sent; every contradiction carries its resolution. The gate's 'root is not VALIDATED' count is gone. What it still refuses is stage-3 work: the tree cites the old root hash, three leaves (genome_brings_tissue, limb_still_grows, walk_red_lid) cite the parked bar contagion_grown_limb_visible, and there is no coverage signature. Stage 3 re-stamps root_hash, takes limb_still_grows out of the 0.1.0 tree, fixes coverage gaps g1-g26 and g28-g31 from rm-coverage-judge-1794788108 in coverage_fixes.json, and sends g27 to the criteria fixer."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 2,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
