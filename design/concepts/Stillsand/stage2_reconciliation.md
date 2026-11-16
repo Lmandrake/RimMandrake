@@ -52,3 +52,11 @@ The following is the exact E7 from the previous stage-2 run before this correcti
 
 **Costs and observation.** Water input is consumed, production takes sun and time, and pouring can attract swimmers. My assumption is one declared source and no undeclared replenishment during a consumption control. Observe item quantities, wet-source availability and the visible result through normal jobs. Tier-inert RM ledger behaviour and real campaign ritual behaviour each require their own proof.
 
+
+## Reopened intake, run rm-role-designercodex-1794832693
+
+The new input OWNER:1794831087978003730 is the system filing for the completed cross-clone validation repair. It records BENCH acting under a standing ruling. Its caused_by field links the repair to the Stillsand Designer item. The event supplies no ownerSaid or byCard text. Its evidence supports the pipeline repair already recorded in d_stage3_rejection_repair.
+
+The adopted design decisions continue to follow their existing authority. CONDUCTOR:1794824429827934950 preserves every built current water capability and places shared agricultural film integration later. The FlowWorks version card remains scoped to FlowWorks. CONDUCTOR:1794824436177586321 separately selects expedition_harbour_fortune as showcase 1. The root, E1-E8, inventory and finite observation obligations remain adopted. The recoverable existing-code live walk remains proposed and all runtime observations remain unrun.
+
+The intake regression reproduced a causal-only system filing making an accepted design stale. RIMMANDRAKE_IGNORE_DESIGNER_CAUSAL_LINKS_AS_OWNER_INPUT excludes the caused_by field from the event-content match. Its controls preserve explicit owner words on related items, same-item replies and authenticated delegated calls. This run records the evidence assessment and prepares a stage-2 result for launcher validation.

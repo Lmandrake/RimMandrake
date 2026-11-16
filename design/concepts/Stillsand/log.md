@@ -91,3 +91,13 @@ The package, adopted root, separate flagship and current-water/later-film scope 
 Gate A, showcase coverage and result checks pass with both BENCH and Dispatcher repository arguments. All 35 affected pipeline tests passed. selftest_maturation_dispatch.py initially detected the concurrent package write in its repository-immutability snapshot and passed on a standalone rerun after writing stopped. The stage regression was red before repair and green afterward. The package root and every inventory entry were independently compared with their adopted records.
 
 Published the package and pipeline repair at 45e3f2d4c7e65f7489397b60d1119c041c01843e. The actual Dispatcher-checkout designer_stage.py check against this BENCH folder reports that result.json would be accepted. Recorded an L0 pass and closed DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE at that published commit. Its source now lives under infrastructure/state/items/closed. The stage-3 result is written for the current run; the launcher retains stage advancement.
+
+## Stage 2 reopened intake, rm-role-designercodex-1794832693
+
+Read OWNER:1794831087978003730 in full. It is BENCH's standing-ruling filing of DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE, linked by caused_by to this concept. That repair was completed and published in the prior run. The event contains no ownerSaid or byCard. Its storage in OWNER.jsonl conveys ruling provenance. The assessment is agent reasoning in d_stage2_reopened_intake.
+
+The water scope decision remains CONDUCTOR:1794824429827934950. Current production/use/accounting, pour/wet-line/bloom/attraction, charged-thumper wetting/draw, expiry/reload/gale clearing and tier-owned Debt/Return retain coverage. Shared agricultural consumption and FlowWorks agreement remain later under the one-film design. The flagship decision remains the separate CONDUCTOR:1794824436177586321 selecting expedition_harbour_fortune. The existing owner answers and all inventory fields retain their sources.
+
+The launcher matched this concept's item id solely inside the causal metadata of a system filing. Filed RIMMANDRAKE_IGNORE_DESIGNER_CAUSAL_LINKS_AS_OWNER_INPUT, added a regression before implementation and excluded caused_by from the intake-content match. The regression also preserves actual owner words naming the concept from related items. The original selftest failed on the causal link and accepted-design staleness cases before repair.
+
+The proposed existing-code walk retains its disposable scene and recovery obligations. Every runtime observation remains unrun. The stage-2 intake adds no design requirement or new decision requiring an owner answer. The launcher retains stage advancement.

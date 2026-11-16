@@ -666,6 +666,25 @@ def evidence_for_ask_intake(tmp, repo):
     check("intake: stage 2 closes after recording its own delegated flagship without an OWNER citation",
           ok and DS.load_state(d)["stage"] == 3, errs)
 
+    repo.tsn += 1
+    with open(repo.owner, "a") as f:
+        f.write(json.dumps({"tsn": str(repo.tsn), "id": "INTAKE_SYSTEM_REPAIR", "seat": "OWNER",
+                            "event": "file", "kind": "system", "caused_by": item,
+                            "perRuling": "PIPELINE_FIXES_ITS_OWN_DEFECTS",
+                            "why": "delegated: self-fix: resolve artifact paths", "ranBy": "BENCH"}) + "\n")
+    check("intake: another item's causal link supplies no new design input",
+          DS.owner_uncited(repo.root, item, d) == [], DS.owner_uncited(repo.root, item, d))
+    check("intake: a causally linked repair leaves the accepted design current",
+          DS.stale_stage(d, DS.load_state(d), repo.root) == (None, []))
+
+    related_src = repo.said("Correction for " + item + ": keep the climb usable", item="INTAKE_RELATED_ITEM")
+    check("intake: explicit words on a related item remain new design input",
+          DS.owner_uncited(repo.root, item, d) == [related_src.split(":")[1]],
+          DS.owner_uncited(repo.root, item, d))
+    rec["decisions"].append({"id": "related_correction", "speaker": "owner", "source": related_src,
+                             "text": "keep the climb usable"})
+    put(d, "record.json", rec)
+
     owner_src = repo.said("Intake owner correction must still be read", item=item)
     rec["decisions"].append({"id": "correction", "source": owner_src.replace("OWNER:", "CONDUCTOR:")})
     put(d, "record.json", rec)

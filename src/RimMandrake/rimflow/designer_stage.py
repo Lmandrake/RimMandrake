@@ -156,6 +156,7 @@ def manifest_hashes(stage, path=MANIFEST):
 def owner_uncited(repo, item, d=None):
     """tsns of the OWNER.jsonl events naming this concept's item that neither record.json nor tree.json cites yet:
     his words not yet taken in. A reply he gives adds one; the Designer citing it (OWNER:<tsn>) takes it out again.
+    A caused_by link alone records a dependency, without adding design input on its parent item.
     Evidence-for-Ask calls share that shard but are cited as CONDUCTOR:<tsn>, never as his words. Recognize those
     citations only for recorded delegated calls, so recording a call inside a run does not invalidate that run.
     None = the shard is unreadable."""
@@ -173,6 +174,10 @@ def owner_uncited(repo, item, d=None):
         except ValueError:
             continue
         if isinstance(ev, dict) and ev.get("tsn"):
+            input_fields = dict(ev)
+            input_fields.pop("caused_by", None)
+            if item not in json.dumps(input_fields):
+                continue
             tsn = str(ev["tsn"])
             tsns.append(tsn)
             if ev.get("perRuling") == EVIDENCE_FOR_ASK and str(ev.get("why") or "").startswith(EFA_WHY):
