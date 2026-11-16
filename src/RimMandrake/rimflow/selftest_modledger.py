@@ -279,17 +279,79 @@ commit_all(r8, "base")
 git(r8, "branch", "published")
 check("against its published form, an unchanged ledger lints clean", M.lint(r8, MOD, base="published")[0] == [],
       M.lint(r8, MOD, base="published")[0])
+# Delete on sight (his ruling 2026-11-15 ~10:16 PM PST, via the Conductor: "Delete on sight. I really don't think
+# that's going to be abused to pass a judge. But we can monitor."): a whole-line deletion by any writer passes the lint;
+# a line changed in place is still refused (a correction is delete + append).
 dp = M.shard_path(r8, MOD, "STEWARD")
 with open(dp, encoding="utf-8") as fh:
     lines = fh.readlines()
 with open(dp, "w", encoding="utf-8") as fh:
-    fh.writelines(lines[1:])
-check("lint refuses a shard that lost a published line", "NOT_APPEND" in codes(M.lint(r8, MOD, base="published")[0]),
-      M.lint(r8, MOD, base="published")[0])
-with open(dp, "w", encoding="utf-8") as fh:
     fh.writelines([lines[0].replace("radius 6", "radius 5")] + lines[1:])
-check("lint refuses a published line edited in place",
-      "NOT_APPEND" in codes(M.lint(r8, MOD, base="published")[0]), M.lint(r8, MOD, base="published")[0])
+check("lint refuses a published line edited in place", "EDITED_IN_PLACE" in codes(M.lint(r8, MOD, base="published")[0]),
+      M.lint(r8, MOD, base="published")[0])
+e0 = json.loads(lines[0])
+with open(dp, "w", encoding="utf-8") as fh:
+    fh.writelines([lines[0].replace("radius 6", "radius 5").replace(e0["ts"], ts(40))] + lines[1:])
+check("lint refuses an in-place edit that also moved its timestamp",
+      "EDITED_IN_PLACE" in codes(M.lint(r8, MOD, base="published")[0]), M.lint(r8, MOD, base="published")[0])
+with open(dp, "w", encoding="utf-8") as fh:
+    fh.writelines(lines)
+st8 = M.reduce(M.read(r8, MOD))
+dead = [e for e in M.read(r8, MOD) if e["kind"] == "decision" and e["subject"] == "D_RADIUS" and
+        "radius 6" in e["body"]["text"]][0]["id"]
+gone = M.delete(r8, MOD, [dead])
+check("delete removes the named entry (a superseded one here)", gone and gone[0]["id"] == dead, gone)
+check("the reducer treats a supersedes of a deleted id as absent",
+      M.reduce(M.read(r8, MOD))["decisions"]["D_RADIUS"]["text"] == "radius 4, per his answer")
+check("a deletion lints clean against the published form", M.lint(r8, MOD, base="published")[0] == [],
+      M.lint(r8, MOD, base="published")[0])
+blast = [e for e in M.read(r8, MOD) if e["kind"] == "finding.open" and e["subject"] == "F_BLAST"][0]["id"]
+os.environ["RM_MODLEDGER_WRITER"] = "HOLDER.L2"
+try:
+    gone = M.delete(r8, MOD, [blast])
+finally:
+    del os.environ["RM_MODLEDGER_WRITER"]
+check("any writer may delete anyone's entry: a holder deletes a sealed judge's finding", gone and
+      gone[0]["shard"] == "JUDGE.J1", gone)
+check("a deletion from a sealed judge shard is not SEALED_CHANGED", "SEALED_CHANGED" not in
+      codes(M.lint(r8, MOD, base="published")[0]), M.lint(r8, MOD, base="published")[0])
+check("a deletion commit by any writer passes the lint", M.lint(r8, MOD, base="published")[0] == [],
+      M.lint(r8, MOD, base="published")[0])
+grant_id = [e for e in M.read(r8, MOD) if e["kind"] == "lease.grant"][0]["id"]
+why = refuses(M.delete, r8, MOD, [grant_id])
+check("delete refuses the fencing bookkeeping (a lease.grant)", why and "lease.grant" in why, why)
+why = refuses(M.delete, r8, MOD, ["DISPATCH:0000000000000000"])
+check("delete of an id the ledger does not hold is refused", why and "no entry" in why, why)
+commit_all(r8, "holder deletes a judge finding and a superseded decision")
+dl = M.deletions(r8, since=None)
+rows = {(x["shard"], x["subject"]): x for x in dl["deleted"]}
+check("the monitor sees both deletions from git", ("JUDGE.J1", "F_BLAST") in rows and ("STEWARD", "D_RADIUS") in rows,
+      sorted(rows))
+check("the monitor flags the judge finding (another writer's, and open when deleted) for the digest",
+      rows.get(("JUDGE.J1", "F_BLAST"), {}).get("flag") and rows[("JUDGE.J1", "F_BLAST")]["was_open"] is True,
+      rows.get(("JUDGE.J1", "F_BLAST")))
+check("the monitor does not flag a steward's own decision", not rows.get(("STEWARD", "D_RADIUS"), {}).get("flag"),
+      rows.get(("STEWARD", "D_RADIUS")))
+check("the monitor counts deletions per mod and per writer", dl["counts"].get(MOD, {}).get("JUDGE") == 1 and
+      dl["counts"][MOD].get("STEWARD") == 1, dl["counts"])
+ans = [e for e in M.read(r8, MOD) if e["kind"] == "question.answer"][0]["id"]
+M.delete(r8, MOD, [ans])
+dpp = M.shard_path(r8, MOD, "DISPATCH")
+with open(dpp, encoding="utf-8") as fh:
+    dl_lines = fh.readlines()
+with open(dpp, "w", encoding="utf-8") as fh:
+    fh.writelines(list(reversed(dl_lines)))         # every line moved, none deleted
+commit_all(r8, "his answer deleted; dispatch lines reordered")
+dl = M.deletions(r8, since=None)
+check("the monitor flags a deleted OWNER answer for the digest",
+      any(x["shard"] == "OWNER" and x["kind"] == "question.answer" and x["flag"] for x in dl["deleted"]), dl["deleted"])
+check("a line moved within its commit is not a deletion", not any(x["shard"] == "DISPATCH" for x in dl["deleted"]),
+      [x for x in dl["deleted"] if x["shard"] == "DISPATCH"])
+with open(M.shard_path(r8, MOD, "JUDGE.J1"), "a", encoding="utf-8") as fh:
+    fh.write(json.dumps(dict(json.loads(open(M.shard_path(r8, MOD, "DISPATCH"), encoding="utf-8").readline()),
+                             writer="JUDGE.J1", run="J1", kind="note", subject="added_after_seal")) + "\n")
+check("a line added to a sealed judge shard is still SEALED_CHANGED", "SEALED_CHANGED" in
+      codes(M.lint(r8, MOD, base="published")[0]), M.lint(r8, MOD, base="published")[0])
 
 # ---- packet budget ------------------------------------------------------------------------------------------------
 r9 = fresh(); roots.append(r9)

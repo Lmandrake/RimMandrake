@@ -14,6 +14,11 @@ PIPE_BUF bound), the merged read is `model.canonical_order`, and the per-shard a
 `ledger_lint.lint_blob` (MALFORMED, NO_NEWLINE, NOT_APPEND, DUP_DIFFERENT). What is new is per-mod: who may write which
 kind, the holder's fencing token, sealed judge shards, the reducer, the packet and the views.
 
+Delete on sight (his ruling 2026-11-15 ~10:16 PM PST, via the Conductor: "Delete on sight. I really don't think that's
+going to be abused to pass a judge. But we can monitor."): any writer deletes a wrong or useless entry, anyone's, with
+`delete`; the lint accepts whole-line deletions and refuses a line changed in place (a correction is delete + append);
+`deletions` reads git and lists for the Conductor's digest every deleted JUDGE or OWNER entry and open finding.
+
 Every number comes from `modledger.json` (the 400k holder ceiling, the 15k packet budget, the lease idle minutes).
 
     modledger.py append --mod M --writer W --kind K --subject S [--text T] [--fix F] [--token N] [--run R] ...
@@ -24,6 +29,8 @@ Every number comes from `modledger.json` (the 400k holder ceiling, the 15k packe
     modledger.py packet --mod M [--budget N] [--strict]
     modledger.py views  --mod M                      regenerate the views (append does it by itself)
     modledger.py lint   [--mod M] [--base origin/main]   exit 0 clean, 1 findings, 2 could not run
+    modledger.py delete --mod M --id ID [--id ...]   delete on sight: any writer, anyone's entry; git is the archive
+    modledger.py deletions [--mod M] [--since DATE] [--json]   the monitor: what was deleted, what goes on the digest
 
 Root: `--root`, else $RM_MODLEDGER_ROOT, else this repo. A process started as one writer sets
 $RM_MODLEDGER_WRITER (the launcher does), and append refuses any other shard: a holder cannot write a judge's finding
@@ -431,10 +438,161 @@ def seal(root, mod, run, ts=None, views=True):
     shard = "JUDGE.%s" % run
     _check_writer(shard)
     data = _shard_bytes(root, mod, shard)
-    eid, _ = append(root, mod, "DISPATCH", "judge.sealed", shard,
-                    body={"shard": shard, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
-                          "lines": data.count(b"\n")}, ts=ts, views=views)
+    body = {"shard": shard, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
+            "lines": data.count(b"\n"), "line_sha": [_line_sha(l) for l in data.split(b"\n") if l.strip()]}
+    if len(_canon(body).encode("utf-8")) > model.PIPE_BUF // 2:
+        del body["line_sha"]          # too many lines to list: the seal then detects growth by count only
+    eid, _ = append(root, mod, "DISPATCH", "judge.sealed", shard, body=body, ts=ts, views=views)
     return eid
+
+
+def _line_sha(line):
+    return hashlib.sha256(line.strip()).hexdigest()[:12]
+
+
+def _edited_in_place(rel, data, base_data):
+    """A line on the base whose event id now carries different content: a change in place (a correction is delete +
+    append, so the old value never survives a union merge beside the new one)."""
+    if not base_data:
+        return []
+    def by_id(blob):
+        out = {}
+        for l in (blob or b"").decode("utf-8", errors="replace").split("\n"):
+            try:
+                e = json.loads(l)
+            except ValueError:
+                continue
+            if isinstance(e, dict) and isinstance(e.get("id"), str):
+                out.setdefault(e["id"], set()).add(_canon(e))
+        return out
+    base, now = by_id(base_data), by_id(data)
+    return [("EDITED_IN_PLACE", rel, 0, "entry %s changed in place; to correct it, delete it (modledger.py delete) and "
+             "append the right value" % i) for i in sorted(now) if i in base and not now[i] & base[i]]
+
+
+DELETE_REFUSED = ("lease.grant", "judge.sealed")
+
+
+def delete(root, mod, ids):
+    """Delete on sight (his ruling 2026-11-15 ~10:16 PM PST: "Delete on sight. I really don't think that's going to be
+    abused to pass a judge. But we can monitor."): any writer removes a wrong or useless entry, anyone's, physically;
+    git history is the archive and `deletions` is the monitor. No event is written. -> [{id, shard, kind, subject}].
+    Refused: an id the ledger does not hold, and the fencing bookkeeping (lease.grant, judge.sealed), which the lint's
+    stale-token and seal checks stand on."""
+    ids = list(ids)
+    lk = _lock(root, mod, "append")
+    try:
+        evs = {e.get("id"): e for e in read(root, mod)}
+        for i in ids:
+            if i not in evs:
+                raise ModLedgerError("no entry %r in %s's ledger" % (i, mod))
+            if evs[i].get("kind") in DELETE_REFUSED:
+                raise ModLedgerError("%s is a %s, the fencing bookkeeping the lint stands on; it is not deleted"
+                                     % (i, evs[i]["kind"]))
+        gone = []
+        for shard in sorted({evs[i]["_shard"] for i in ids}):
+            path = os.path.join(ledger_dir(root, mod), shard + ".jsonl")
+            keep = []
+            for line in model._read_lines(path):
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    e = None
+                if isinstance(e, dict) and e.get("id") in ids:
+                    continue
+                keep.append(line if line.endswith("\n") else line + "\n")
+            if keep:
+                tmp = path + ".del%d" % os.getpid()
+                with open(tmp, "w", encoding="utf-8") as fh:
+                    fh.writelines(keep)
+                os.replace(tmp, path)
+            else:
+                os.remove(path)
+        for i in ids:
+            gone.append({"id": i, "shard": evs[i]["_shard"], "kind": evs[i].get("kind"), "subject": evs[i].get("subject")})
+    finally:
+        _unlock(lk)
+    write_views(root, mod)
+    return gone
+
+
+def _git_text(root, *args):
+    r = ledger_lint._git(root, *args)
+    if r.returncode != 0:
+        raise ModLedgerError("git %s failed: %s" % (" ".join(args[:2]), r.stderr.decode(errors="replace").strip()))
+    return r.stdout.decode("utf-8", errors="replace")
+
+
+def _events_at(root, rev, mod):
+    rel_d = os.path.relpath(ledger_dir(root, mod), root)
+    out = []
+    names = [p for p in _git_text(root, "ls-tree", "--name-only", rev, rel_d + "/").splitlines() if p.endswith(".jsonl")]
+    for p in names:
+        blob = ledger_lint.blob_at(root, rev, p) or b""
+        for l in blob.decode("utf-8", errors="replace").split("\n"):
+            try:
+                e = json.loads(l)
+            except ValueError:
+                continue
+            if isinstance(e, dict):
+                out.append(e)
+    return model.canonical_order(out)
+
+
+def deletions(root, since=None, mod=None):
+    """The monitor (his "But we can monitor"): every mod-ledger line deleted in git history, per mod and per writer of
+    the deleted entry. `flag` marks what goes on the Conductor's daily digest: a deleted JUDGE or OWNER entry, and any
+    deleted finding that was open. The deleter is the commit (git carries no seat; every commit has his git identity),
+    so the commit's sha, time and subject are listed, with the shards that commit also wrote. Never a refusal.
+    -> {"deleted": [...], "counts": {mod: {writer class: n}}, "flagged": [...]}"""
+    spec = ":(glob)design/concepts/%s/ledger/*.jsonl" % (mod or "*")
+    args = ["log", "--reverse", "--format=%x1e%H %ct %s", "-p", "--unified=0", "--no-renames"]
+    if since:
+        args.append("--since=%s" % since)
+    text = _git_text(root, *args, "--", spec)
+    out, counts = [], {}
+    for chunk in text.split("\x1e")[1:]:
+        head, _, body = chunk.partition("\n")
+        sha, ct, subject = (head.split(" ", 2) + ["", ""])[:3]
+        removed, added, wrote, cur = [], set(), set(), None
+        for line in body.split("\n"):
+            if line.startswith("diff --git "):
+                m = re.search(r" b/(design/concepts/([^/]+)/ledger/([^/]+)\.jsonl)$", line)
+                cur = (m.group(2), m.group(3)) if m else None
+            elif cur and line.startswith("-") and not line.startswith("---"):
+                removed.append((cur, line[1:]))
+            elif cur and line.startswith("+") and not line.startswith("+++"):
+                try:
+                    added.add(json.loads(line[1:]).get("id"))
+                except (ValueError, AttributeError):
+                    pass
+                wrote.add(cur[1])
+        parent_state = {}
+        for (m_, shard), raw in removed:
+            try:
+                e = json.loads(raw)
+            except ValueError:
+                continue
+            if not isinstance(e, dict) or e.get("id") in added:
+                continue              # a line moved or rewritten in the same commit is not a deletion
+            was_open = None
+            if e.get("kind") == "finding.open":
+                if m_ not in parent_state:
+                    try:
+                        parent_state[m_] = reduce(_events_at(root, sha + "^", m_))
+                    except ModLedgerError:
+                        parent_state[m_] = None
+                f = (parent_state[m_] or {}).get("findings", {}).get(e.get("subject"))
+                was_open = None if parent_state[m_] is None else bool(f and f["status"] != "verified")
+            cls = writer_class(shard)
+            row = {"mod": m_, "shard": shard, "id": e.get("id"), "kind": e.get("kind"), "subject": e.get("subject"),
+                   "was_open": was_open, "commit": sha, "time": int(ct or 0), "commit_subject": subject,
+                   "commit_also_wrote": sorted(wrote - {shard}),
+                   "flag": cls in ("JUDGE", "OWNER") or bool(was_open)}
+            out.append(row)
+            counts.setdefault(m_, {})
+            counts[m_][cls] = counts[m_].get(cls, 0) + 1
+    return {"deleted": out, "counts": counts, "flagged": [r for r in out if r["flag"]]}
 
 
 # ---- reduce ---------------------------------------------------------------------------------------------------------
@@ -790,13 +948,16 @@ def _lint_mod(root, mod, base):
     for shard in names:
         rel = "%s/%s.jsonl" % (rel_d, shard)
         data = _shard_bytes(root, mod, shard) if os.path.exists(os.path.join(root, rel)) else None
-        out += ledger_lint.lint_blob(rel, data, ledger_lint.blob_at(root, base, rel) if base else None)
+        base_data = ledger_lint.blob_at(root, base, rel) if base else None
+        # Delete on sight (his ruling 2026-11-15 ~10:16 PM PST): a whole line gone is allowed, so rimflow's NOT_APPEND
+        # and DUP_DIFFERENT do not apply here; a line CHANGED in place is still refused (EDITED_IN_PLACE, below).
+        out += [f for f in ledger_lint.lint_blob(rel, data, base_data) if f[0] not in ("NOT_APPEND", "DUP_DIFFERENT")]
+        out += _edited_in_place(rel, data, base_data)
         if not WRITER_RE.match(shard):
             out.append(("BAD_SHARD_NAME", rel, 0, "a shard is named for its writer: DISPATCH, OWNER, STEWARD, "
                         "BACKFILL, HOLDER.<lease>, JUDGE.<run>"))
     events = read(root, mod)
     by, _ = leases(events)
-    ids = {e.get("id") for e in events}
     keys = {}
     for e in events:
         rel = "%s/%s.jsonl" % (rel_d, e["_shard"])
@@ -834,13 +995,17 @@ def _lint_mod(root, mod, base):
             out.append(("NO_AUTHORITY", rel, e["_seq"], "an OWNER event carries his words, card or ruling"))
         if cls == "BACKFILL" and not e.get("evidence"):
             out.append(("NO_EVIDENCE", rel, e["_seq"], "a BACKFILL event cites the old file it came from"))
-        if e.get("supersedes") and e["supersedes"] not in ids:
-            out.append(("BAD_SUPERSEDES", rel, e["_seq"], "supersedes an id this ledger does not hold"))
     for shard, s in seals(events).items():
         data = _shard_bytes(root, mod, shard)
-        if hashlib.sha256(data).hexdigest() != s.get("sha256"):
-            out.append(("SEALED_CHANGED", "%s/%s.jsonl" % (rel_d, shard), 0, "the judge shard changed after its "
-                        "seal (%d bytes sealed, %d now)" % (s.get("bytes", -1), len(data))))
+        if hashlib.sha256(data).hexdigest() == s.get("sha256"):
+            continue
+        lines = [l for l in data.split(b"\n") if l.strip()]
+        sealed = set(s.get("line_sha") or [])
+        grew = ([l for l in lines if _line_sha(l) not in sealed] if s.get("line_sha") is not None
+                else (lines if len(lines) > s.get("lines", 0) else []))
+        if grew:                      # a line deleted after the seal is allowed (delete on sight); one added is not
+            out.append(("SEALED_CHANGED", "%s/%s.jsonl" % (rel_d, shard), 0, "%d line(s) in the judge shard are not "
+                        "in its seal: added or changed after the run ended" % len(grew)))
     if names:
         out += _lint_views(root, mod)
     return out
@@ -924,6 +1089,13 @@ def main(argv=None):
     p.add_argument("--strict", action="store_true", help="exit 1 on an empty ledger or a packet over budget")
     v = sub.add_parser("views")
     v.add_argument("--mod", required=True)
+    de = sub.add_parser("delete", help="delete wrong or useless entries on sight (any writer, anyone's)")
+    de.add_argument("--mod", required=True)
+    de.add_argument("--id", action="append", required=True)
+    dl = sub.add_parser("deletions", help="the deletion monitor: deleted entries from git, per mod and writer")
+    dl.add_argument("--mod")
+    dl.add_argument("--since", help="git --since (e.g. 2026-11-15)")
+    dl.add_argument("--json", action="store_true")
     li = sub.add_parser("lint")
     li.add_argument("--mod")
     li.add_argument("--base", default="origin/main", help="'' for none")
@@ -966,6 +1138,21 @@ def main(argv=None):
         elif o.verb == "views":
             for pth in write_views(root, o.mod):
                 print("wrote " + os.path.relpath(pth, root))
+        elif o.verb == "delete":
+            for g in delete(root, o.mod, o.id):
+                print("DELETED %s (%s %s) from %s" % (g["id"], g["kind"], g["subject"], g["shard"]))
+        elif o.verb == "deletions":
+            d = deletions(root, o.since, o.mod)
+            if o.json:
+                print(json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False))
+                return 0
+            for m_, c in sorted(d["counts"].items()):
+                print("%s: %s" % (m_, ", ".join("%s %d" % kv for kv in sorted(c.items()))))
+            for r in d["flagged"]:
+                print("FLAG %s %s %s %s%s, deleted in %s (%s)" % (r["mod"], r["shard"], r["kind"], r["subject"],
+                                                                  " (open)" if r["was_open"] else "", r["commit"][:10],
+                                                                  r["commit_subject"]))
+            print("deletions: %d, %d for the digest" % (len(d["deleted"]), len(d["flagged"])))
         elif o.verb == "lint":
             findings, notes = lint(root, o.mod, o.base or None)
             for n in notes:
