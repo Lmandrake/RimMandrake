@@ -53,6 +53,14 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       above 0 (W0); a perf that always reads 0.0 leaves CARRIER_TICK_COST UNMEASURED, never PASS
   W16 the cover already gone when the grenade comes: COVER rows UNMEASURED naming it, never a mod FAIL read off an empty
       journal
+  The frame arms run on the smallest list that shows the mod (owner, 2026-11-16 5:43 AM PST: "the smallest list to observe
+  it is the best idea"), so W19-W30 and W23 run --frames-only on 34 active mods, and W0 is the two-step walk:
+  W31 --frames-only on the small list judges only W_PRECONDITIONS and FRAME_BUDGET, in 3 interleaved pairs, no order acts
+  W32 --frames-only on the full list: W_PRECONDITIONS INVALID, FRAME_BUDGET UNMEASURED, no arm run
+  W33 the full-list walk with no --frame-evidence: FRAME_BUDGET UNMEASURED naming the small list, no mod-off frame arm on
+      the full list (one unjudged on arm reads CARRIER_TICK_COST), every other row PASS
+  W34 --frame-evidence carries a small-list FAIL as FAIL; a frames file from the full list, another deployed DLL, a missing
+      file, or a walk that is not --frames-only reads UNMEASURED
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py
 """
@@ -63,6 +71,7 @@ import math
 import os
 import subprocess
 import sys
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -294,19 +303,38 @@ class Fake:
         return {"success": True}
 
 
-def run(**brk):
-    V.active_mods = lambda path=None: list(V.MODS_NEEDED) + ["m%d" % i for i in range(300)]
+SMALL_MODS = 34                             # the Explosive Knockback tier (visit 3's env_minimal2: 34 mods, every DLC)
+
+
+def run(frames=False, args=None, n_mods=None, md5="cca4f0d4", **brk):
+    """One walk against the fake. frames=True is the small-list frame run (--frames-only on SMALL_MODS active mods);
+    otherwise the full-list walk (316 mods). `args` are appended (argparse: a later --out wins)."""
+    n = n_mods if n_mods is not None else (SMALL_MODS if frames else 316)
+    V.active_mods = lambda path=None: list(V.MODS_NEEDED) + ["m%d" % i for i in range(n - len(V.MODS_NEEDED))]
+    V.DLL_MD5 = lambda: md5
     f = Fake(**brk)
+    LAST.append(f)
     V.TRIPLET_SEAMS = {"saves_stat": lambda: dict((n + ".rws", (1, 1)) for n in f.saves), "wait_saved": lambda name: True}
     V.SLEEP = lambda s: None                # the frame act's real-time wait
     out = io.StringIO()
-    code = V.walk_storeroom_raid(list(ARGS), bridge=f, wait=lambda B: (True, 0), out=out)
+    argv = list(ARGS) + (["--frames-only"] if frames else []) + list(args or [])
+    code = V.walk_storeroom_raid(argv, bridge=f, wait=lambda B: (True, 0), out=out)
     rows = {}
     for line in out.getvalue().splitlines():
         p = line.split(None, 2)
         if len(p) >= 2 and p[0] in V.WALK_ROWS:
             rows[p[0]] = p[1]
     return code, rows, out.getvalue()
+
+
+LAST = []                                   # every Fake run() made, newest last
+
+
+def frames_file(tmp, name, **kw):
+    """A small-list frame run written to tmp/name.json -> (code, rows, path)."""
+    path = os.path.join(tmp, name + ".json")
+    code, rows, _ = run(frames=True, args=["--out", path], **kw)
+    return code, rows, path
 
 
 def main():
@@ -317,10 +345,13 @@ def main():
         if not ok:
             fails.append(cid)
 
-    code, rows, txt = run()
+    tmp = tempfile.mkdtemp(prefix="ek_walk_selftest_")
+    fcode, frows, fpath = frames_file(tmp, "sound")
+    code, rows, txt = run(args=["--frame-evidence", fpath])
     not_pass = sorted(r for r in V.WALK_ROWS if rows.get(r) != "PASS")
-    check("W0", code == 0 and not_pass == [],
-          "a sound world passes every row, FRAME_BUDGET included (code %s, not PASS: %s)" % (code, not_pass))
+    check("W0", fcode == 0 and code == 0 and not_pass == [],
+          "a sound world: the small-list frame run (code %s) and the full-list walk reading it (code %s) pass every row, "
+          "FRAME_BUDGET included (not PASS: %s)" % (fcode, code, not_pass))
     if not_pass:
         print(txt)
     code, rows, _ = run(no_game=True)
@@ -367,25 +398,25 @@ def main():
     check("W18", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
           "a thing born after the save lands on another cell after a load (the RNG; live 2026-11-16: WoodLog 101,42 live,"
           " 102,42 loaded): still PASS: %s" % rows.get("A_RELOAD_NO_DUP_LOST"))
-    code, rows, txt = run(slow_frames=True)
+    code, rows, txt = run(frames=True, slow_frames=True)
     check("W19", code == 1 and rows.get("FRAME_BUDGET") == "FAIL",
           "a 75 ms 99th-percentile frame in the real-time window fails FRAME_BUDGET (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
-    code, rows, txt = run(probe_blind=True)
+    code, rows, txt = run(frames=True, probe_blind=True)
     check("W20", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
-    code, rows, txt = run(slow_noise=True)
+    code, rows, txt = run(frames=True, slow_noise=True)
     check("W22", rows.get("FRAME_BUDGET") == "PASS",
           "both arms 75 ms (the colony's own floor over 50 ms) PASS against the mod-off arm (got %s)" % rows.get("FRAME_BUDGET"))
-    code, rows, txt = run(p99_on=83.1, p99_off=80.2)
+    code, rows, txt = run(frames=True, p99_on=83.1, p99_off=80.2)
     check("W25", code == 0 and rows.get("FRAME_BUDGET") == "PASS",
           "visit 3 run 4's arms, on 83.1 / off 80.2 ms (+3.6%%), PASS (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
-    code, rows, txt = run(p99_on=88.3, p99_off=80.2)
+    code, rows, txt = run(frames=True, p99_on=88.3, p99_off=80.2)
     check("W26", code == 1 and rows.get("FRAME_BUDGET") == "FAIL",
           "on 88.3 / off 80.2 ms (+10.1%%) FAILs (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
-    code, rows, txt = run(probe_blind_off=True)
+    code, rows, txt = run(frames=True, probe_blind_off=True)
     check("W27", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "no mod-off reading leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
-    code, rows, txt = run(p99_on=24.0, p99_off=0.0)
+    code, rows, txt = run(frames=True, p99_on=24.0, p99_off=0.0)
     got = [rows.get("FRAME_BUDGET")]
     for off_p99 in (-5.0, 0.0):
         fw = object.__new__(V._Walk)
@@ -401,7 +432,7 @@ def main():
     got = []
     for brk in ({"p99_on": 91.3, "p99_off": 37.1, "rows_on": 498, "rows_off": 863},
                 {"p99_on": 37.1, "p99_off": 40.0, "rows_on": 863, "rows_off": 498}):
-        code, rows, txt = run(**brk)
+        code, rows, txt = run(frames=True, **brk)
         got.append((code, rows.get("FRAME_BUDGET")))
     check("W29", got == [(1, "UNMEASURED")] * 2,
           "arms with 498 and 863 window frames are not like for like, either way round (got %s)" % got)
@@ -413,24 +444,60 @@ def main():
         order.append(self)
     Fake.__init__ = keep
     try:
-        code, rows, txt = run(p99_seq_on=[55.2, 40.0, 41.0], p99_seq_off=[38.1, 39.0, 40.0])
+        code, rows, txt = run(frames=True, p99_seq_on=[55.2, 40.0, 41.0], p99_seq_off=[38.1, 39.0, 40.0])
         seen = order[-1].frame_order if order else []
         r1 = (code, rows.get("FRAME_BUDGET"))
-        code, rows, txt = run(p99_seq_on=[50.0, 51.0, 52.0], p99_seq_off=[38.1, 39.0, 40.0])
+        code, rows, txt = run(frames=True, p99_seq_on=[50.0, 51.0, 52.0], p99_seq_off=[38.1, 39.0, 40.0])
         r2 = (code, rows.get("FRAME_BUDGET"))
-        code, rows, txt = run(p99_seq_off=[38.1, 39.0, 40.0], probe_blind_off_once=True)
+        code, rows, txt = run(frames=True, p99_seq_off=[38.1, 39.0, 40.0], probe_blind_off_once=True)
         r3 = (code, rows.get("FRAME_BUDGET"))
     finally:
         Fake.__init__ = orig
     check("W30", seen == ["on", "off"] * 3 and r1 == (0, "PASS") and r2 == (1, "FAIL") and r3 == (1, "UNMEASURED"),
           "interleaved pairs %s; one on outlier %s; slow in every on arm %s; one off arm unread %s" % (seen, r1, r2, r3))
-    code, rows, txt = run(nothing_flies=True)
+    code, rows, txt = run(frames=True, nothing_flies=True)
     check("W23", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a frame window with nothing in the air is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(frames=True, pause_on_load=True)
+    fb = rows.get("FRAME_BUDGET")
     code, rows, txt = run(pause_on_load=True)
-    check("W24", rows.get("FRAME_BUDGET") == "PASS" and rows.get("CARRIER_TICK_COST") == "PASS",
-          "unpauses that a load undoes are retried until the clock moves (FRAME_BUDGET %s, CARRIER_TICK_COST %s)"
-          % (rows.get("FRAME_BUDGET"), rows.get("CARRIER_TICK_COST")))
+    check("W24", fb == "PASS" and rows.get("CARRIER_TICK_COST") == "PASS",
+          "unpauses that a load undoes are retried until the clock moves (FRAME_BUDGET %s on the small list, "
+          "CARRIER_TICK_COST %s on the full list)" % (fb, rows.get("CARRIER_TICK_COST")))
+    # W31-W34: the frame arms run on the small list (owner 2026-11-16, 5:43 AM PST: "the smallest list to observe it is
+    # the best idea"); the full-list walk reads that run's FRAME_BUDGET from --frame-evidence and runs no frame pair.
+    code, rows, txt = run(frames=True)
+    f = LAST[-1]
+    judged = sorted(r for r in rows)
+    check("W31", code == 0 and judged == ["FRAME_BUDGET", "W_PRECONDITIONS"] and f.frame_order == ["on", "off"] * 3
+          and not any("MIDAIR" in n for n in f.saves) and "34 active mods" in txt,
+          "--frames-only on the small list: only W_PRECONDITIONS and FRAME_BUDGET, 3 interleaved pairs, no order acts "
+          "(code %s, rows %s, arms %s, saves %s)" % (code, judged, f.frame_order, sorted(f.saves)))
+    code, rows, txt = run(frames=True, n_mods=316)
+    check("W32", code == 1 and rows.get("W_PRECONDITIONS") == "INVALID" and rows.get("FRAME_BUDGET") == "UNMEASURED"
+          and LAST[-1].frame_order == [],
+          "--frames-only on the full list is refused: preconditions INVALID, FRAME_BUDGET UNMEASURED, no arm run (code %s, %s)"
+          % (code, rows))
+    code, rows, txt = run()
+    f = LAST[-1]
+    rest = sorted(r for r in V.WALK_ROWS if r != "FRAME_BUDGET" and rows.get(r) != "PASS")
+    check("W33", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED" and "small list" in txt and rest == []
+          and "off" not in f.frame_order,
+          "the full-list walk with no --frame-evidence: FRAME_BUDGET UNMEASURED naming the small list, no mod-off frame arm "
+          "on the full list, every other row PASS (code %s, arms %s, not PASS %s)" % (code, f.frame_order, rest))
+    got = {}
+    _, _, slow = frames_file(tmp, "slow", slow_frames=True)
+    _, _, big = frames_file(tmp, "big", n_mods=316)
+    walk = os.path.join(tmp, "walk.json")
+    run(args=["--out", walk])
+    for name, path, md5 in (("fail", slow, "cca4f0d4"), ("full_list", big, "cca4f0d4"), ("other_build", fpath, "deadbeef"),
+                            ("missing", os.path.join(tmp, "nope.json"), "cca4f0d4"), ("not_frames", walk, "cca4f0d4")):
+        code, rows, txt = run(args=["--frame-evidence", path], md5=md5)
+        got[name] = (code, rows.get("FRAME_BUDGET"))
+    want = {"fail": (1, "FAIL"), "full_list": (1, "UNMEASURED"), "other_build": (1, "UNMEASURED"),
+            "missing": (1, "UNMEASURED"), "not_frames": (1, "UNMEASURED")}
+    check("W34", got == want, "--frame-evidence carries a small-list FAIL as FAIL; a frame file from the full list, another "
+          "deployed DLL, a missing file or a walk that is not --frames-only reads UNMEASURED (got %s)" % got)
     code, rows, txt = run(perf_blind=True)
     check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
           "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))

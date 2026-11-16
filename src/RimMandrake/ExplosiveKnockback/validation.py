@@ -348,6 +348,14 @@ def mock_run():
 # the off arm's in the same run, FAIL over it; UNMEASURED unless both arms are read, something flew, and the arms ran at
 # like frame counts (a p99 over frames falls as the frame rate rises; live run 5 2026-11-16, an uncapped off arm). The
 # 50 ms barrage bar is sc_barrage_perf's, not the walk's. CARRIER_TICK_COST is read in the on arm on a running clock.
+# The frame arms run on the SMALLEST list that shows the mod, never the full list (owner, 2026-11-16 5:43 AM PST: "The game
+# pause has been a consistent issue well beyond this mod. While it's laudable to try and figure it out, it really is
+# different than getting this mod to pass. And the smallest list to observe it is the best idea."): the full list's own
+# 50-300 ms freezes decided runs 4-7's p99s. So the walk is two runs of this leaf. On the Explosive Knockback tier
+# (visit 3's env_minimal2, every DLC) `--frames-only` loads the colony and runs only the interleaved arm pairs and
+# FRAME_BUDGET; on the full list the behaviour rows run as before, one unjudged mod-on arm reads CARRIER_TICK_COST, and
+# FRAME_BUDGET is read from `--frame-evidence <the frames-only run's json>` (UNMEASURED unless that file is a frames-only
+# run below --full-min active mods with the same deployed DLL).
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
@@ -356,6 +364,8 @@ SLEEP = None                 # the frame act's real-time wait (time.sleep; the o
 FRAME_OVER_OFF = 0.10        # the walk's frame row: mod-on p99 at most 10% over the same run's mod-off p99 (owner card 2026-11-16)
 FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
 FRAME_ROWS_LIKE = 1.25       # arms whose window frame counts differ by more than this ratio are not like for like
+FRAME_ONLY_ROWS = ("W_PRECONDITIONS", "FRAME_BUDGET")   # what a --frames-only run judges (the small list)
+DLL_MD5 = None               # the deployed DLL's md5 reader (deployed_dll_md5; the offline selftest passes a fake)
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
              "B_GAS_CLUMP_BY_CLUMP", "B_GAS_GOODS_MOVED", "B_IMPACTS_IN_ROOM", "B_COVER_BROKEN_ONE_DESCENT",
@@ -400,6 +410,22 @@ def active_mods(path=None):
     if not os.path.isfile(path):
         return None
     return [li.text.strip().lower() for li in ET.parse(path).find("activeMods") if li.text]
+
+
+def deployed_dll_md5():
+    """md5 of the Explosive Knockback DLL the game loads (the Mods folder, not this repo), or None when unreadable. A
+    --frame-evidence file measured on another build is no reading of this one."""
+    if DLL_MD5 is not None:
+        return DLL_MD5()
+    import glob
+    import hashlib
+    try:
+        sys.path.insert(0, _UTILS)
+        from game_paths import LOCAL_MODS
+        dlls = sorted(glob.glob(os.path.join(LOCAL_MODS, "ExplosiveKnockback", "Assemblies", "*.dll")))
+        return hashlib.md5(open(dlls[0], "rb").read()).hexdigest()[:8] if dlls else None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def pool_arms(readings):
@@ -499,9 +525,20 @@ class _Walk:
             miss.append("ModsConfig.xml unreadable")
         else:
             miss += ["%s not in ModsConfig activeMods" % m for m in MODS_NEEDED if m not in mods]
-            if len(mods) < self.a.full_min:
+            if self.a.frames_only and len(mods) >= self.a.full_min:
+                miss.append("%d active mods: the frame arms run on the smallest list that shows the mod, not the full "
+                            "list (owner 2026-11-16; --full-min %d)" % (len(mods), self.a.full_min))
+            elif not self.a.frames_only and len(mods) < self.a.full_min:
                 miss.append("%d active mods: not the full list (--full-min %d)" % (len(mods), self.a.full_min))
             self.ev["active_mods"] = len(mods)
+        self.ev["mode"] = "frames_only" if self.a.frames_only else "full"
+        self.ev["dll_md5"] = deployed_dll_md5()
+        if self.a.frames_only:              # the frame arms need only the stocked storeroom the shells go off over
+            goods = self.haulables(self.room)
+            if len(goods) < 3:
+                miss.append("%d haulable stacks in the storeroom (want >= 3)" % len(goods))
+            self.ev["pre"] = {"goods": len(goods)}
+            return miss
         self.kp("Plant", "reset")
         if "gasreg=True" not in self.kp("Plant", "gasreg=on")[1]:
             miss.append("Cauldron vent gas not registered with the gas chain (Plant gasreg)")
@@ -792,7 +829,7 @@ class _Walk:
             recs += g
         self.judge_plan(tag, recs)
 
-    def frame_act(self, arm):
+    def frame_act(self, arm, key="frame_arms"):
         """FRAME_BUDGET arm `on` or `off` (the mod off), each on a fresh baseline reload: the clock runs at speed 1, the
         shells go off over the stocked storeroom, and the probe reads real frames. The order acts step paused ticks and
         hold no real frames; an arm at the end of order A met an emptied room and measured nothing in the air (live,
@@ -800,7 +837,7 @@ class _Walk:
         import time
         wait = SLEEP or time.sleep
         secs = float(self.a.frame_seconds)
-        readings = self.ev.setdefault("frame_arms", {}).setdefault(arm, [])
+        readings = self.ev.setdefault(key, {}).setdefault(arm, [])
         b = self.kp("Frame", "begin")[1]
         if not b.startswith("BEGUN"):
             readings.append({"why": "Frame begin answered %r" % b[:200]})
@@ -876,6 +913,39 @@ class _Walk:
             over = on["p99"] / off["p99"] - 1.0
             self.row("FRAME_BUDGET", "PASS" if over <= FRAME_OVER_OFF else "FAIL", "%+.1f%% over mod off; %s" % (over * 100, det))
 
+    def frame_row_from_evidence(self):
+        """FRAME_BUDGET on the full list: read from the small-list --frames-only run (owner 2026-11-16, the smallest
+        list). UNMEASURED, never PASS, unless that file is a frames-only run, below --full-min active mods, with a
+        FRAME_BUDGET row, measured on the DLL deployed now."""
+        path = self.a.frame_evidence
+        if not path:
+            self.row("FRAME_BUDGET", "UNMEASURED", "the frame arms run on the small list (owner 2026-11-16): run this leaf "
+                     "with --frames-only on the Explosive Knockback tier, then pass its json as --frame-evidence")
+            return
+        try:
+            with open(path, encoding="utf-8") as fh:
+                d = json.load(fh)
+        except (OSError, ValueError) as e:
+            self.row("FRAME_BUDGET", "UNMEASURED", "--frame-evidence %s unreadable (%s)" % (path, e))
+            return
+        ev, rows = d.get("ev") or {}, d.get("rows") or {}
+        n, row = ev.get("active_mods"), rows.get("FRAME_BUDGET")
+        here = self.ev.get("dll_md5")
+        why = None
+        if ev.get("mode") != "frames_only":
+            why = "not a --frames-only run (mode %s)" % ev.get("mode")
+        elif not isinstance(n, int) or n >= self.a.full_min:
+            why = "measured on %s active mods, not the small list (--full-min %d)" % (n, self.a.full_min)
+        elif not row:
+            why = "it holds no FRAME_BUDGET row"
+        elif not here or ev.get("dll_md5") != here:
+            why = "measured on DLL %s, the deployed DLL is %s" % (ev.get("dll_md5"), here)
+        self.ev["frame_evidence"] = {"path": path, "active_mods": n, "dll_md5": ev.get("dll_md5"), "row": row}
+        if why:
+            self.row("FRAME_BUDGET", "UNMEASURED", "--frame-evidence %s: %s" % (path, why))
+        else:
+            self.row("FRAME_BUDGET", row[0], "small list (%d active mods, %s): %s" % (n, os.path.basename(path), row[1]))
+
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
         before = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
@@ -896,9 +966,11 @@ class _Walk:
         miss = self.preconditions()
         if miss == "RELEASE":
             return 3
-        self.row("W_PRECONDITIONS", "INVALID" if miss else "PASS", "; ".join(miss) or "full list, FlowWorks, Cauldron gas, shelves, closed container, cover")
+        self.row("W_PRECONDITIONS", "INVALID" if miss else "PASS", "; ".join(miss) or (
+            "small list, %s active mods, storeroom stocked (frame arms only)" % self.ev.get("active_mods")
+            if self.a.frames_only else "full list, FlowWorks, Cauldron gas, shelves, closed container, cover"))
         if miss:
-            self.unmeasured(WALK_ROWS, "UNMEASURED: preconditions not met")
+            self.unmeasured(FRAME_ONLY_ROWS if self.a.frames_only else WALK_ROWS, "UNMEASURED: preconditions not met")
             return 1
         snap = {}
         for f in sorted(settings_fields()):
@@ -913,11 +985,17 @@ class _Walk:
             if self.a.raid_points > 0:
                 rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
-            self.order("A", gas_first=False)
             # the frame arms run as interleaved pairs (on, off, on, off, ...): one pair's p99 is decided by one random
-            # stall (live 2026-11-16, runs 4-6: the off arm alone read 80.2, 37.1 and 38.1 ms); frame_row takes medians
+            # stall (live 2026-11-16, runs 4-6: the off arm alone read 80.2, 37.1 and 38.1 ms); frame_row takes medians.
+            # They run only with --frames-only (the small list); the full list runs one unjudged on arm for the tick cost.
             arms = [("FRAME_ON", lambda: self.frame_act("on")), ("FRAME_OFF", lambda: self.frame_act("off"))]
-            for tag, fn in [("B", lambda: self.order("B", gas_first=True)), ("C", self.control)] + arms * max(1, self.a.frame_pairs):
+            if self.a.frames_only:
+                steps = arms * max(1, self.a.frame_pairs)
+            else:
+                self.order("A", gas_first=False)
+                steps = [("B", lambda: self.order("B", gas_first=True)), ("C", self.control),
+                         ("TICK", lambda: self.frame_act("on", key="tick_arm_unjudged"))]
+            for tag, fn in steps:
                 ok, why = self.load(base)
                 if not ok:
                     self.unmeasured([r for r in WALK_ROWS if r.startswith(tag)], "UNMEASURED: baseline reload failed (%s)" % why)
@@ -936,13 +1014,16 @@ class _Walk:
             self.load(base)
             for f, v in snap.items():
                 self.c("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=f, value=str(v))
+        if self.a.frames_only:
+            self.frame_row()
+            return 0
         air, rest = self.ev.get("tick_air_running"), self.ev.get("tick_rest_running")
         seen = isinstance(air, (int, float)) and isinstance(rest, (int, float)) and air > 0 and rest > 0
         self.row("CARRIER_TICK_COST", "PASS" if seen else "UNMEASURED",
                  "meanTickTime %s ms at rest, %s ms 1 s after the shells with %s carrier(s) in the air, clock running "
                  "(recorded, not judged)%s" % (rest, air, self.ev.get("in_air_at_tick_read"),
                                                 "" if seen else ": a reading of 0 or none is a blind instrument"))
-        self.frame_row()
+        self.frame_row_from_evidence()
         return 0
 
 
@@ -961,6 +1042,10 @@ def _walk_args(argv):
     ap.add_argument("--settle", type=int, default=120, help="ticks after each blast")
     ap.add_argument("--frame-seconds", type=float, default=8.0, help="real seconds at speed 1 for FRAME_BUDGET")
     ap.add_argument("--frame-pairs", type=int, default=3, help="interleaved mod-on/mod-off frame arm pairs for FRAME_BUDGET")
+    ap.add_argument("--frames-only", action="store_true",
+                    help="the small-list run: only the frame arm pairs and FRAME_BUDGET (owner 2026-11-16)")
+    ap.add_argument("--frame-evidence", default=None,
+                    help="the full-list run: FRAME_BUDGET is read from this --frames-only run's json")
     ap.add_argument("--gas-ticks", type=int, default=900)
     ap.add_argument("--raid-points", type=float, default=300.0, help="0 skips the real raid")
     ap.add_argument("--full-min", type=int, default=100, help="active mods below this are not the full list")
@@ -1019,11 +1104,12 @@ def walk_storeroom_raid(argv=None, bridge=None, wait=None, out=sys.stdout):
     except OSError as e:
         path = "NOT WRITTEN (%s)" % e
     print("%-28s %-10s %s" % ("ROW", "STATUS", "DETAIL"), file=out)
-    for rid in WALK_ROWS:
+    judged = FRAME_ONLY_ROWS if a.frames_only else WALK_ROWS
+    for rid in judged:
         st, det = w.rows.get(rid, ("UNMEASURED", "not reached"))
         print("%-28s %-10s %s" % (rid, st, det), file=out)
     print("evidence: %s   throwaway saves: %s" % (path, w.ev.get("saves")), file=out)
-    return 0 if all(w.rows.get(r, ("",))[0] == "PASS" for r in WALK_ROWS) else 1
+    return 0 if all(w.rows.get(r, ("",))[0] == "PASS" for r in judged) else 1
 
 
 LIVE_LEAVES = {"walk_storeroom_raid": walk_storeroom_raid}
