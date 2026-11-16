@@ -612,6 +612,73 @@ def tree_checks(top, changed):
     return _run_tree_checks(top, cfg)
 
 
+PIPELINE_TESTS = os.path.join("src", "RimMandrake", "Utils", "pipeline_tests.json")
+
+
+def door_inputs(top, test):
+    """-> repo-relative paths a pipeline test's verdict is taken to depend on: the test, the repo .py files it imports or
+    names (transitively; run_selftests' reader, without its whole-directory sweep, which would tie every rimflow test to
+    every rimflow file), and each one's same-stem .json beside it (red_dispatch.json, maturation_dispatch.json)."""
+    from pathlib import Path
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import run_selftests as RS
+    root = Path(top).resolve()
+    t = (root / test).resolve()
+    seen, todo = set(), [t]
+    while todo:
+        f = todo.pop()
+        if f in seen or not f.is_file():
+            continue
+        seen.add(f)
+        todo += [c for c in RS._direct_deps(f, root) if c not in seen]
+    out = set()
+    for f in seen:
+        out.add(f.relative_to(root).as_posix())
+        j = f.with_suffix(".json")
+        if j.is_file():
+            out.add(j.relative_to(root).as_posix())
+    return out
+
+
+def pipeline_selection(top, changed, cfg):
+    """-> the pipeline tests (not live_excluded) whose door_inputs the change touches; [] when it touches no pipeline
+    file."""
+    if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
+        return []
+    live = set(cfg.get("live_excluded", {}))
+    ch = set(changed)
+    return [c for c in cfg.get("tests", ()) if c["test"] not in live and door_inputs(top, c["test"]) & ch]
+
+
+def pipeline_checks(top, changed):
+    """The Maturation Pipeline's tests at the door (pipeline_tests.json; owner by card 2026-11-15, nightly is the wrong
+    phase for fluid code): a change touching a pipeline file runs the pipeline tests whose inputs it touches and
+    refuses on a red. -> seconds added (0.0 when nothing ran), or raises Refuse."""
+    cfg_path = os.path.join(top, PIPELINE_TESTS)
+    if not os.path.isfile(cfg_path) or not changed:
+        return 0.0
+    skip = os.environ.get("RM_PUBLISH_SKIP_PIPELINE_CHECKS", "").strip()
+    if skip:
+        print("pipeline checks SKIPPED by RM_PUBLISH_SKIP_PIPELINE_CHECKS: %s" % skip)
+        return 0.0
+    cfg = json.load(open(cfg_path, encoding="utf-8"))
+    if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
+        return 0.0
+    if is_sparse(top):
+        with full_head_tree(top) as full:
+            return _run_pipeline_checks(full, changed, cfg)
+    return _run_pipeline_checks(top, changed, cfg)
+
+
+def _run_pipeline_checks(top, changed, cfg):
+    sel = pipeline_selection(top, changed, cfg)
+    if not sel:
+        print("pipeline checks: a pipeline file changed, no pipeline test reads it")
+        return 0.0
+    wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", 180)}, what="pipeline check")
+    return wall
+
+
 def is_sparse(top):
     """True when some tracked file is not checked out (skip-worktree: a sparse clone, scratch_clone.py's default)."""
     r = run(top, "ls-files", "-t", check=False)
@@ -654,7 +721,7 @@ def full_head_tree(top):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def _run_tree_checks(top, cfg):
+def _run_tree_checks(top, cfg, what="tree check"):
     limit = cfg.get("timeout_s", 60)
 
     def one(c):
@@ -672,7 +739,7 @@ def _run_tree_checks(top, cfg):
     slow = [c["test"] for c, rc, _o, _t in res if rc is None]
     red = [(c, o) for c, rc, o, _t in res if rc not in (0, None)]
     for t in slow:
-        print("WARNING: tree check %s ran past %d s: UNMEASURED, not refused" % (t, limit))
+        print("WARNING: %s %s ran past %d s: UNMEASURED, not refused" % (what, t, limit))
     if red:
         lines = []
         for c, o in red:
@@ -680,9 +747,9 @@ def _run_tree_checks(top, cfg):
             lines.append("  %s\n    %s\n    fix: %s\n    rerun: python3 %s"
                          % (c["test"], "\n    ".join(fails) or (o.strip().splitlines() or ["(no output)"])[-1],
                             c.get("fix", "see the test's FAIL line"), c["test"]))
-        raise Refuse("%d whole-tree check(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
-                     % (len(red), "\n".join(lines)))
-    print("tree checks: %d green in %.1f s" % (len(res) - len(slow), wall))
+        raise Refuse("%d %s(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
+                     % (len(red), "whole-tree check" if what == "tree check" else what, "\n".join(lines)))
+    print("%ss: %d green in %.1f s" % (what, len(res) - len(slow), wall))
     return wall
 
 
@@ -703,7 +770,9 @@ def _publish(top, paths, msg, cwd=None):
         if not made:
             print("no change in the named paths; pushing any local commits")
         warn_owner_shard(top, named)
-    tree_checks(top, _changed_since_origin(top))
+    changed = _changed_since_origin(top)
+    tree_checks(top, changed)
+    pipeline_checks(top, changed)
     run(top, "fetch", "-q", REMOTE)
     _, track, label = target_ref(top)
     head = out(top, "rev-parse", "HEAD")

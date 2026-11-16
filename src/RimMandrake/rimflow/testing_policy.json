@@ -73,7 +73,7 @@
   "selftest.nightly_full_hour_local": {
    "value": 3,
    "unit": "hour of day, America/Los_Angeles",
-   "why": "rm-selftests-nightly.timer (owner by card 2026-10-14)",
+   "why": "rm-selftests-nightly.timer (owner by card 2026-10-14); it sweeps finished mods only and is held until one passes (owner by card 2026-11-15, nightly_scope.py)",
    "provenance": "C",
    "signal": "owner only"
   },

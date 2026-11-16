@@ -1,0 +1,45 @@
+{
+  "_doc": "The Maturation Pipeline's own tests, checked AT THE DOOR, not nightly (item RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED). The owner, by card 2026-11-15: nightly tests check mods with finished versions, 'not mods in production. Code is too fluid otherwise. Wrong phase.' He then asked 'Keep nightly tests for Pipeline elements perhaps though?'; the Conductor's answer, his to overrule: the pipeline's machinery is the most fluid code in the repo, so the nightly is the wrong phase for it too. So: when a publish's local commits touch a pipeline_files path, ./publish runs every test below whose inputs the change touches (the test, the repo .py files it imports or names, transitively, and each one's same-stem .json beside it) and refuses on a red, as it does for publish_tree_checks.json. A change touching no pipeline file adds no tests. live_excluded tests read live state and never run at the door. nightly: false keeps this set out of the nightly sweep; true puts it back in (one line). Bypass once: RM_PUBLISH_SKIP_PIPELINE_CHECKS='<why>' (printed). Code: publish.py pipeline_checks(). seconds = one run alone on archmagi 2026-11-15 (measured).",
+  "nightly": false,
+  "timeout_s": 180,
+  "pipeline_files": [
+    "src/RimMandrake/rimflow/maturation*.py",
+    "src/RimMandrake/rimflow/maturation*.json",
+    "src/RimMandrake/Utils/maturation*.py",
+    "src/RimMandrake/rimflow/coverage_judge*.py",
+    "src/RimMandrake/rimflow/designer_stage*.py",
+    "src/RimMandrake/rimflow/detached_helper*.py",
+    "src/RimMandrake/rimflow/seat_restart*.py",
+    "src/RimMandrake/rimflow/conductor_closeout*.py",
+    "src/RimMandrake/rimflow/red_dispatch*.py",
+    "src/RimMandrake/rimflow/red_dispatch*.json",
+    "src/RimMandrake/rimflow/refusal_contract*.py",
+    "src/RimMandrake/Utils/systemd/rm-maturation-dispatch.*",
+    "src/RimMandrake/Utils/pipeline_tests.json"
+  ],
+  "tests": [
+    {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
+    {"test": "src/RimMandrake/rimflow/selftest_codex_review_fixes.py", "seconds": 0.9},
+    {"test": "src/RimMandrake/rimflow/selftest_coverage_judge.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_coverage_judge_loop.py", "seconds": 0.6},
+    {"test": "src/RimMandrake/rimflow/selftest_designer_stage.py", "seconds": 3.3},
+    {"test": "src/RimMandrake/rimflow/selftest_designer_stage_land.py", "seconds": 5.6},
+    {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
+    {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},
+    {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy.py", "seconds": 36.3},
+    {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
+    {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_red_dispatch.py", "seconds": 0.3},
+    {"test": "src/RimMandrake/rimflow/selftest_refusal_contract.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart.py", "seconds": 5.2},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_answered_replay.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_death.py", "seconds": 7.4},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_held.py", "seconds": 1.7},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_queued_wait.py", "seconds": 0.4},
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_send_again.py", "seconds": 0.1}
+  ],
+  "live_excluded": {
+    "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",
+    "src/RimMandrake/rimflow/selftest_conductor_closeout.py": "its sanity probe reads the real ledger for quotes"
+  }
+}

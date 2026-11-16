@@ -738,7 +738,9 @@ def _parser():
     ap.add_argument("--nightly", action="store_true",
                     help="the nightly sweep: stored answers stand, except a fixed sampled share "
                          "(known_results.AUDIT_RATE) that runs for real; a PASS that comes back anything else is a "
-                         "false hit: an alarm and a red run. The declared cache is off, as it always was overnight")
+                         "false hit: an alarm and a red run. The declared cache is off, as it always was overnight. Runs only "
+                         "the tests of mods with a passed Design Version (nightly_scope.py; owner by card 2026-11-15); "
+                         "none -> 'nothing finished yet', green")
     ap.add_argument("--quick", action="store_true",
                     help="leave out slow tests (last run > $RM_SELFTEST_QUICK_S s, default 20) ONLY when their "
                          "last run PASSED and their source/dependency hash is unchanged since; each is printed "
@@ -1176,8 +1178,17 @@ def _suite(args) -> int:
         # a file outside discovery (e.g. a planted fixture) is still run when named
         tests += sorted(w for w in want if w.is_file() and w not in {t.resolve() for t in tests})
         excluded = []
+    elif args.nightly:
+        # the owner, by card 2026-11-15: the nightly checks mods with a passed Design Version only (nightly_scope.py)
+        import nightly_scope
+        want = {(REPO_ROOT / t).resolve() for t in nightly_scope.tests_for(str(REPO_ROOT))["tests"]}
+        if not want:
+            print(nightly_scope.nothing_line())
+            return 0
+        tests = [t for t in tests if t.resolve() in want]
+        excluded = [(p, why) for p, why in excluded if p.resolve() in want]
     _evidence_start(tests)
-    missing = set() if args.only else REQUIRED - {p.resolve().as_posix()[len(str(REPO_ROOT.resolve())) + 1:] for p in tests}
+    missing = set() if (args.only or args.nightly) else REQUIRED - {p.resolve().as_posix()[len(str(REPO_ROOT.resolve())) + 1:] for p in tests}
     if missing:
         print("REQUIRED lint selftest(s) not discovered: " + ", ".join(sorted(missing)))
         return 1

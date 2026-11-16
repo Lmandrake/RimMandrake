@@ -1065,9 +1065,38 @@ def c_testing(now, rules, ctx):
     return out
 
 
+def nightly_held():
+    """The owner, by card 2026-11-15: the nightly checks finished mods only and waits, stopped, until one has passed
+    (nightly_scope.py): while timers_guard's finished-mod hold waits. Pinned by RM_NIGHTLY_HELD=0|1 in the selftests."""
+    if os.environ.get("RM_NIGHTLY_HELD") in ("0", "1"):
+        return os.environ["RM_NIGHTLY_HELD"] == "1"
+    import timers_guard
+    return timers_guard.hold_waits("finished-mod")
+
+
+HELD_SAID = "nightly held: no mod has a passed Design Version (owner by card 2026-11-15, nightly_scope.py)"
+
+
+def held_nightly(keys, state=None):
+    """While the nightly waits: every nightly reading 0 (a held reading is no outage), and every build-cop group the
+    alarms still hold reads 0, so it clears."""
+    out = {k: M(0, "nightly held", said=HELD_SAID) for k in keys}
+    if state is None:
+        p = ops_dir() / "alarms.json"
+        state = read_json(p) if p.exists() else {}
+    for aid in (state if isinstance(state, dict) else {}):
+        if aid.startswith("NIGHTLY_RED:testing.red_"):
+            out[aid.split(":", 1)[1]] = M(0, "nightly reds with one first error line, no entry parking them",
+                                          said=HELD_SAID)
+    out["testing.nightly_reds_rerun_green"] = M(0, "nightly red groups green on one rerun", said=HELD_SAID)
+    return out
+
+
 def nightly_catchup_reading():
     """nightly_catchup.py's verdict: 1 when a night stopped being retried, so what the nightly feeds is reading an old night.
     Its age is deadman_check's; a reading that cannot be read holds the alarm."""
+    if nightly_held():
+        return {"testing.nightly_gave_up": M(0, "nights the sweep stopped being retried", said=HELD_SAID)}
     p = ops_dir() / "nightly_catchup.json"
     try:
         r = json.loads(p.read_text(encoding="utf-8"))
@@ -1082,6 +1111,8 @@ def nightly_news(now, ctx):
     """TE1: the nightly's news, the only part of it that alarms (known_reds.py). A blind reading holds the alarm."""
     import known_reds
     keys = ("testing.nightly_news", "testing.nightly_known_reds", "testing.nightly_unparked_reds", "testing.nightly_reds_overdue")
+    if nightly_held():
+        return held_nightly(keys)
     try:
         v = known_reds.measure(ctx.get("open_ids"), now, with_cop=True)
     except Exception as e:  # noqa: BLE001  a list that cannot be read costs these readings, not the family's
@@ -1112,6 +1143,8 @@ def rerun_reds(now=None, rules=None):
     selftest.red_rerun_budget_s, saving each verdict in nightly_rerun.json; it files nothing and writes no status.
     Its own lock, so a sense pass is never Busy behind a rerun."""
     import fcntl
+    if nightly_held():
+        return "rerun-reds: " + HELD_SAID
     now = now or time.time()
     rules = rules or load_rules()
     ops_dir().mkdir(parents=True, exist_ok=True)

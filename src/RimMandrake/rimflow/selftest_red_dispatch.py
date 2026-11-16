@@ -244,5 +244,16 @@ check("rm-red-dispatch.service runs red_dispatch.py tick --apply from the dispat
       "red_dispatch.py tick --apply" in svc and "WorkingDirectory=/home/mandrake/rm/dispatch" in svc)
 check("rm-red-dispatch.timer fires every 10 min", "OnUnitActiveSec=10min" in tmr)
 
+# RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED: while the finished-mod hold waits, no fixer at all
+WORLD.update(items=open_items(), runs={}, night={})
+CALLS["launch"].clear()
+for p_ in ("state.json", "reading.json"):
+    if os.path.exists(os.path.join(TMP, p_)):
+        os.remove(os.path.join(TMP, p_))
+rd = RD.tick(CFG, apply=True, fx=dict(fx(), held=lambda: True), now=NOW)
+check("held (no mod has a passed version): an --apply pass launches no fixer and says held",
+      not CALLS["launch"] and "held" in [v["decision"] for v in rd["items"].values()]
+      and "launch" not in [v["decision"] for v in rd["items"].values()], rd["items"])
+
 print("RESULT: %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)

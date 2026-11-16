@@ -10,6 +10,7 @@ a fire that never happened; it cannot see a run that never finished.
 So this reads the outcome, not the schedule. A night is DONE when Transient/selftests_nightly.log (known_reds.log_path, the
 file every consumer reads) holds a section with a RESULT line that began at or after that night's start hour. Each pass
 (rm-selftests-nightly-catchup.timer, after boot and hourly) starts the sweep's own unit when the night is not done, unless:
+  held      no mod has a passed Design Version yet (nightly_scope.py): nothing to sweep, so nothing to catch up
   disabled  the nightly timer is off: whoever turned it off meant it, so this does not bring it back
   running   the sweep is up (`systemctl start` on a running oneshot would only wait on it)
   quiet     the next scheduled fire is close, and it will do the same job
@@ -68,6 +69,14 @@ def sections(text):
         elif out and ln.startswith("RESULT:"):
             out[-1]["finished"] = True
     return out
+
+
+def nightly_held():
+    """The owner, by card 2026-11-15: the nightly checks finished mods only, and waits until there is one."""
+    if os.environ.get("RM_NIGHTLY_HELD") in ("0", "1"):     # the selftests' pin
+        return os.environ["RM_NIGHTLY_HELD"] == "1"
+    import timers_guard
+    return timers_guard.hold_waits("finished-mod")
 
 
 def decide(now, log_text, state, enabled, started, hour, cap, quiet_s=QUIET_S):
@@ -145,6 +154,8 @@ def one_pass(now, act, ctl=systemctl, log=None, out=None):
         r.update(state="blind", why="log readable=%s, is-active=%s, is-enabled=%s" % (text is not None, state, on))
     else:
         go, st, why = decide(now, text, state, on in ON, started, hour, cap)
+        if go and nightly_held():
+            go, st, why = False, "held", "no mod has a passed Design Version: the nightly waits (nightly_scope.py)"
         r.update(state=st, why=why)
         if go and act:
             r["started"] = started + 1     # counted even if the start fails: a start that cannot work stops at the cap

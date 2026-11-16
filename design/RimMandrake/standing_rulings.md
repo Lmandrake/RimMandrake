@@ -701,3 +701,28 @@ a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
 - Where the tick still hands a line to the Conductor, and whether it self-fixes now: the prose of
   `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
   `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".
+
+## The nightly checks finished mods only — owner, 2026-11-15 (card)
+
+Asked what should happen to the nightly run (evidence: `D:\ClaudeWork\rimmandrake\conductor\nightly_reds_report_20261115.md`
+§5), he chose *"Pause nightly and fixers until a mod passes"* and typed: *"(3) because I think Nightly tests should check
+mods with finished versions, not mods in production. Code is too fluid otherwise. Wrong phase."* (Sun 2026-11-15, on the
+ledger 4:10 PM PST: item `RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED`, file event tsn
+1794787827067966182). He then asked *"Keep nightly tests for Pipeline elements perhaps though?"*; the Conductor's answer,
+his to overrule: the pipeline's machinery is the most fluid code there is, so it is checked at the door instead.
+
+- **The nightly set** is the tests of mods with a passed Design Version (`design/concepts/<Mod>/version/stage_record.json`
+  at `passed`, or a kept older record that is): `src/<tier>/<Mod>/**/selftest*.py` and
+  `src/RimMandrake/Utils/selftest_<mod>_*.py`. A mod in production is never in it; process machinery is never in it.
+  None passed: the run says "nothing finished yet", green. `python3 src/RimMandrake/Utils/nightly_scope.py show`.
+- **Held until the first pass.** rm-selftests-nightly, its catch-up, rm-ops-reds and rm-red-dispatch are stopped by
+  `timers_guard.py hold --until finished-mod` (a recorded, ruling-backed stop: no outage, no alarm). The timer guard
+  starts them again by itself the pass after a mod's version passes; nobody has to remember.
+- **When it runs**, it runs on a clean clone of origin/main (`/home/mandrake/rm/nightly`) with `~/.local/bin` on PATH, and
+  no fixer launches on a red until it has been rerun red on current origin/main (the build cop's RerunGate files the item
+  only then; red_dispatch launches only on filed items).
+- **The pipeline's own tests run at the door:** a publish touching a Maturation Pipeline file runs the pipeline tests whose
+  inputs it touches and refuses on a red (`src/RimMandrake/Utils/pipeline_tests.json`, `publish.py pipeline_checks`);
+  tests that read live state are listed there and excluded. `"nightly": true` in that file puts them back in the nightly.
+- **What stays:** the 13 publish tree checks; agents run the tests for what they changed before a commit; every item is
+  built with its tests (2026-11-13); no test is deleted.

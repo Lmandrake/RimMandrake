@@ -14,6 +14,13 @@ inactive, that is the alarm.
     timers_guard.py install [--apply]
     timers_guard.py pause --hours H TIMER [TIMER...]     arm restart (systemd-run --on-calendar) THEN stop, one step
     timers_guard.py pause --hours H --all                every enabled watched timer
+    timers_guard.py hold --until COND --per-ruling ID --why "..." TIMER...   an indefinite planned stop: record it THEN
+                                                         stop; each `run` starts them again once COND no longer waits
+
+A hold (timers_held.json beside the pauses) is a stop with no due time, tied to a ruling and a condition in CONDITIONS:
+covered while the condition waits, started again by `run` the pass after it stops waiting (finished-mod: the nightly and
+what feeds on it, until a mod's Design Version has passed; owner by card 2026-11-15, nightly_scope.py). A hold whose
+condition is unknown or cannot be read covers nothing: an outage stays an outage.
 """
 import argparse
 import json
@@ -50,6 +57,89 @@ def reading_file():
 
 def pauses_file():
     return ops_dir() / "timers_pauses.json"
+
+
+def held_file():
+    return ops_dir() / "timers_held.json"
+
+
+def _finished_mod_waits():
+    import nightly_scope
+    return nightly_scope.held()
+
+
+CONDITIONS = {"finished-mod": _finished_mod_waits}   # name -> () -> True while the hold still waits
+
+
+def load_held():
+    """{timer: {"until", "per_ruling", "why", "at"}} as recorded by hold(); {} when absent or unreadable."""
+    try:
+        d = json.loads(held_file().read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _waits(rec, conds):
+    """True / False / None (unknown condition, or it could not be read)."""
+    f = conds.get(rec.get("until")) if isinstance(rec, dict) else None
+    if f is None:
+        return None
+    try:
+        return bool(f())
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def held_covered(conds=None):
+    """-> timers a recorded hold still covers (its condition still waits)."""
+    conds = CONDITIONS if conds is None else conds
+    return {t for t, r in load_held().items() if _waits(r, conds) is True}
+
+
+def hold_waits(until, conds=None):
+    """True while a recorded hold on UNTIL still waits: what the gates read (ops_watch, red_dispatch, nightly_catchup),
+    so they follow the one record the timers follow, and a test's own ops dir holds nothing."""
+    conds = CONDITIONS if conds is None else conds
+    return any(isinstance(r, dict) and r.get("until") == until and _waits(r, conds) is True for r in load_held().values())
+
+
+def hold(names, until, per_ruling, why, runner=subprocess.run, conds=None):
+    """Record the hold FIRST, then stop. -> {"names", "until"}."""
+    conds = CONDITIONS if conds is None else conds
+    names = list(names)
+    if not names or not all(WATCH_RE.match(n) for n in names):
+        raise ValueError("hold takes rm-*/testq-* .timer names, got %r" % names)
+    if until not in conds:
+        raise ValueError("hold --until must be one of %s, got %r" % (sorted(conds), until))
+    if not (per_ruling or "").strip() or not (why or "").strip():
+        raise ValueError("a hold names its ruling (--per-ruling) and says why (--why)")
+    if _waits({"until": until}, conds) is not True:
+        raise ValueError("%s no longer waits: nothing to hold for" % until)
+    from ops_watch import atomic_json
+    rec = load_held()
+    for n in names:
+        rec[n] = {"until": until, "per_ruling": per_ruling, "why": why, "at": iso(time.time())}
+    atomic_json(held_file(), rec)
+    r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+    if r.returncode:
+        raise RuntimeError("stop failed (the hold stays recorded): %s" % (r.stderr or ""))
+    return {"names": names, "until": until}
+
+
+def resume_due(runner=subprocess.run, conds=None):
+    """Holds whose condition no longer waits: start their timers, then drop the records. -> [timers started]."""
+    conds = CONDITIONS if conds is None else conds
+    rec = load_held()
+    due = sorted(t for t, r in rec.items() if _waits(r, conds) is False)
+    if not due:
+        return []
+    r = _sc(["start"] + due, runner)
+    if r.returncode:
+        raise RuntimeError("could not start held timers %s: %s" % (due, (r.stderr or "")))
+    from ops_watch import atomic_json
+    atomic_json(held_file(), {t: v for t, v in rec.items() if t not in due})
+    return due
 
 
 def load_pauses():
@@ -149,7 +239,7 @@ def read_states(runner=subprocess.run):
                if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
     rec = load_pauses()
     covered = {n for u in pending if isinstance(rec.get(u), list) for n in rec[u]}
-    return states, covered | hand_armed(t.stdout, runner)
+    return states, covered | hand_armed(t.stdout, runner) | held_covered()
 
 
 def judge(states, covered=()):
@@ -308,7 +398,17 @@ def main(argv=None):
     pp.add_argument("--hours", type=float, required=True)
     pp.add_argument("--all", action="store_true")
     pp.add_argument("timers", nargs="*")
+    hh = sub.add_parser("hold")
+    hh.add_argument("--until", required=True, choices=sorted(CONDITIONS))
+    hh.add_argument("--per-ruling", required=True)
+    hh.add_argument("--why", required=True)
+    hh.add_argument("timers", nargs="+")
     a = ap.parse_args(argv)
+    if a.cmd == "hold":
+        res = hold(a.timers, a.until, a.per_ruling, a.why)
+        print("held %d timers until %s (%s); `run` starts them again when it no longer waits"
+              % (len(res["names"]), res["until"], ", ".join(res["names"])))
+        return 0
     if a.cmd == "install":
         return install(a.apply, a.deploy)
     if a.cmd == "pause":
@@ -319,6 +419,11 @@ def main(argv=None):
         print("paused %d timers; restart armed as %s in %ds" % (len(res["names"]), res["unit"], res["resume_in_s"]))
         return 0
     import ops_watch as OW
+    try:
+        for t in resume_due():
+            print("timers_guard: hold lifted, started %s" % t)
+    except RuntimeError as e:
+        print("timers_guard: %s" % e)
     st = check(time.time(), OW.real_filer if a.file_alarms else None)
     print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)))
     if "_state" in st:

@@ -22,6 +22,7 @@ Per red item, in due order, one decision:
   attempted     this night's one attempt was made: nothing
   stopped       an attempt ended and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
                 the Conductor log, once. There is no automatic reject-and-retry loop (the owner's condition, 2026-11-14).
+  held          no mod has a passed Design Version yet (nightly_scope.py; owner by card 2026-11-15): no fixer at all
   night_cap | slots_full | account_hold | disabled   caps: max_launches_per_night, max_live, the Dispatcher's account pick
   launch        write the brief, detached_helper.py launch it (sonnet when the red selftest proves the fix, opus when an
                 opus_if rule matches; that model's cap). The fixer's first step is `rimflow start <item> --seat BENCH`
@@ -350,7 +351,20 @@ def reading(rows, now, night):
                       for r in rows}}
 
 
+def nightly_held():
+    """The owner, by card 2026-11-15 ("Pause nightly and fixers until a mod passes"): no fixer launches while no mod has
+    a passed Design Version (nightly_scope.py): while timers_guard's finished-mod hold waits. Unreadable -> held: a
+    fixer is never the default."""
+    try:
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+        import timers_guard
+        return timers_guard.hold_waits("finished-mod")
+    except Exception:  # noqa: BLE001
+        return True
+
+
 def tick(cfg, apply, fx=None, now=None):
+    held = fx["held"]() if fx and "held" in fx else (not fx and nightly_held())   # injected facts: the test says
     fx = fx or {}
     now = now or time.time()
     d = sdir()
@@ -358,6 +372,11 @@ def tick(cfg, apply, fx=None, now=None):
     facts = fx["facts"]() if "facts" in fx else gather()
     account = fx["account"]() if "account" in fx else account_gate()
     rows, launches = decide(cfg, st, facts, now, account)
+    if held:
+        for r in rows:
+            if r["item"] in launches:
+                r["decision"] = "held"
+        launches = []
     if not apply:
         for r in rows:
             if r["item"] in launches:

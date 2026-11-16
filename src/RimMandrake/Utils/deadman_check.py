@@ -278,13 +278,16 @@ def promises(items, baseline, retired=()):
 
 
 def excused(line, runner=subprocess.run):
-    """A timer paused with its own restart armed (timers_guard), or a role the schedule has switched off."""
+    """A timer paused with its own restart armed, or held on a condition that still waits (timers_guard), or a role the
+    schedule has switched off."""
     import live_line
     p = live_line.parse(line)
     if p["kind"] == "unit":
         import timers_guard
         if live_line._systemctl("is-active", p["unit"], runner) != "inactive":
             return False                       # running needs no second look; failed or unread is no pause (timers_guard.judge)
+        if p["unit"] in timers_guard.held_covered():
+            return True                        # a recorded hold whose condition still waits (timers_guard.hold)
         try:
             t = runner(["systemctl", "--user", "list-timers", "--no-legend", "--no-pager"], capture_output=True, text=True,
                        timeout=60, stdin=subprocess.DEVNULL)

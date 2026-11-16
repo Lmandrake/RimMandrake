@@ -355,8 +355,9 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 rimflow …                                           the ledger: file/claim/close/drop/verify
 rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
-                                                     the FULL sweep runs nightly 03:00 (rm-selftests-nightly.timer,
-                                                     Transient/selftests_nightly.log) — owner by card 2026-10-14
+                                                     the nightly checks FINISHED mods only, and is held until one
+                                                     passes (owner by card 2026-11-15; `nightly_scope.py show`);
+                                                     pipeline tests run at ./publish (pipeline_tests.json)
 python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>   OS desktop capture — always OK,
                                                      no asking (owner 2026-09-09)
 python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click for dialogs a
