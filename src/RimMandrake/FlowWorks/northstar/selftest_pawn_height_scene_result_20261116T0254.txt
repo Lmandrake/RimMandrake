@@ -1,0 +1,24 @@
+== fix (working tree)
+ok    every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z) 
+ok    healthy fake (sink by depth to the cap, flat past it, same both ways; swims and tires at 2 m): every row PASS 
+ok    a sink that never applies (17 zeros): the offset row UNMEASURED, never PASS; the control cannot rule anything out 
+ok    a sink that falls with depth past D4: the offset row FAILs 
+ok    the walk back reads a different sink: the offset row FAILs 
+ok    a pawn that never reaches the pads: the offset row UNMEASURED, never PASS 
+ok    2 m of water and no swim: the swim row FAILs 
+ok    swims, never tires: the swim row FAILs 
+ok    a pool that holds no water: the swim row UNMEASURED, never PASS 
+ok    a sink on undug ground: the control FAILs 
+selftest_pawn_height_scene: ok
+== draft at c70d62615c (concept_scenes.py before the fix)
+ok    every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z) 
+FAIL  healthy fake (sink by depth to the cap, flat past it, same both ways; swims and tires at 2 m): every row PASS {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+FAIL  a sink that never applies (17 zeros): the offset row UNMEASURED, never PASS; the control cannot rule anything out {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+FAIL  a sink that falls with depth past D4: the offset row FAILs {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+FAIL  the walk back reads a different sink: the offset row FAILs {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+FAIL  a pawn that never reaches the pads: the offset row UNMEASURED, never PASS {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+ok    2 m of water and no swim: the swim row FAILs 
+ok    swims, never tires: the swim row FAILs 
+FAIL  a pool that holds no water: the swim row UNMEASURED, never PASS {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+FAIL  a sink on undug ground: the control FAILs {'PH_offset_follows_depth': 'FAIL', 'PH_swims_and_tires_at_2m': 'FAIL', 'PH_control_undug_no_offset': 'PASS'}
+selftest_pawn_height_scene: FAIL

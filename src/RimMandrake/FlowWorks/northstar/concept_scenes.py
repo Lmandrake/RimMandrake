@@ -558,21 +558,104 @@ def _source_pays(S):
     S.row('SRC_lake_reads_endless', 'ndless' in lake, lake)
 
 
+# sc_pawn_height. Visit 1 (2026-11-15) dug each pad ONE row tall, so the shipped lip clamp (pitSinkClampEnabled, on) held the
+# colonist at sink 0 on every pad: its feet sat on the south lip (RM_PitDrawMath.ClampSinkToLip, room 0), and 17 zeros PASSED
+# because a flat vector is sorted. The swim row read ProofReadout (a cell readout, no swim state) on a staircase whose water
+# had run to the deep end, and the control read the pawn still down in the flooded pit (RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_
+# HEIGHT_SCENE_ZEROS_PASSED). Now each pad is a PH_ROWS-tall column walked on its north row (room PH_ROWS - 1 cells: the
+# shipped clamp never binds, no setting is poked), every read is checked against the pad it claims, the swim is a separate
+# 4 m pool held at 2 m and read by RM_Swim.ProofSwim (deepCell, exhaustion), and a vacuous read is UNMEASURED, never PASS.
+PH_PADS, PH_ROWS, PH_WAIT, PH_SWIM_M, PH_SWIM_TICKS = 17, 3, 400, 2.0, 1500
+
+
+def _ph_read(S, pid):
+    """ProofPawnSink as a dict (cell as an (x, z) tuple, sink/drawDz as floats); None for a reply that cannot carry a verdict."""
+    txt = S.sc(EXC, 'ProofPawnSink', pid)
+    d = kv(txt)
+    if not txt.startswith('SINK ') or d.get('id') != pid:
+        return None
+    try:
+        return {'cell': tuple(int(v) for v in d['cell'].split(',')), 'depth': int(d['depth']), 'sink': float(d['sink']),
+                'drawDz': float(d['drawDz']), 'enabled': d.get('enabled')}
+    except (KeyError, ValueError):
+        return None
+
+
+def _ph_walk(S, pid, cells):
+    """Walk pid to each cell in turn; the read there, or None when it did not arrive or the read is vacuous."""
+    out = []
+    for c in cells:
+        S.walk(pid, c, PH_WAIT)
+        r = _ph_read(S, pid)
+        out.append(r if r and r['cell'] == tuple(c) else None)
+    return out
+
+
+def _ph_swim(S, pid, pool):
+    """(ProofSwim kv, raw) for pid wherever it is in the pool; (None, why) when it is not there or the read is not its own."""
+    r = _ph_read(S, pid)
+    if not r or r['cell'] not in pool:
+        return None, 'not in the pool: %s' % (r and r['cell'])
+    txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % r['cell'])
+    return (kv(txt) if txt.startswith('SWIM ' + pid + ' ') else None), txt
+
+
 def _pawn_height(S):
-    pads = _line(O[0], O[1], 17)
-    for i, c in enumerate(pads):
-        S.dig([c], i)
-    col = S.pawn('Colonist', (O[0] - 2, O[1]), 'player')
-    got = []
-    for i, c in enumerate(pads):
-        S.walk(col, c, 400); got.append(kv(S.sc(EXC, 'ProofPawnSink', col)).get('sink'))
-    S.row('PH_offset_follows_depth', all(g is not None for g in got) and [float(g) for g in got] == sorted(float(g) for g in got), got)
-    S.fill(pads[1:], 2.0, WATER); S.walk(col, pads[-1], 1500)   # pads[0] is undug ground: a fill needs an excavated cell
-    sw = S.sc(NSP, 'ProofReadout', '%d,%d' % pads[-1])
-    S.row('PH_swims_and_tires_at_2m', 'swim' in sw.lower(), sw)
-    S.walk(col, (O[0], O[1] - 3), 400)
-    ctl = kv(S.sc(EXC, 'ProofPawnSink', col)).get('sink')
-    S.row('PH_control_undug_no_offset', ctl is not None and abs(float(ctl)) < 1e-3, ctl)
+    x0, z0 = O
+    walk_z = z0 + PH_ROWS - 1
+    for i in range(PH_PADS):
+        S.dig([(x0 + i, z0 + j) for j in range(PH_ROWS)], i)       # pad i: D=i half-metre levels (D0 is undug ground)
+    pads = [(x0 + i, walk_z) for i in range(PH_PADS)]
+    col = S.pawn('Colonist', (x0 - 2, walk_z), 'player')
+    out = _ph_walk(S, col, pads)
+    back = _ph_walk(S, col, pads[::-1])[::-1]
+    got = [None if r is None else r['sink'] for r in out]
+    detail = {'out': got, 'back': [None if r is None else r['sink'] for r in back],
+              'depths': [None if r is None else r['depth'] for r in out]}
+    unreached = [i for i in range(PH_PADS) if out[i] is None or back[i] is None
+                 or out[i]['depth'] != i or back[i]['depth'] != i]
+    seen = [r for r in out + back if r is not None]
+    flat = bool(seen) and all(abs(r['sink']) < 1e-3 for r in seen)
+    ok = (not unreached and abs(got[0]) < 1e-3 and all(s > 1e-3 for s in got[1:])
+          and all(b >= a - 1e-4 for a, b in zip(got, got[1:]))
+          and all(abs(o['sink'] - k['sink']) < 1e-3 for o, k in zip(out, back))
+          and all(abs(r['drawDz'] + r['sink']) < 0.05 for r in seen))
+    if unreached:
+        detail['unreached'] = unreached
+    if flat:
+        detail['why'] = 'every sink read 0: the instrument has not shown it can see a sink'
+    S.row('PH_offset_follows_depth', ok, detail, unmeasured=bool(unreached) or flat)
+    S.walk(col, (x0 - 2, walk_z), PH_WAIT)                              # off the pads, onto ground the pool never touches
+
+    pool = [(x0 + 4 + i, z0 + PH_ROWS + 3 + j) for i in range(3) for j in range(3)]
+    S.dig(pool, 8)                                                     # 4 m: room for 2 m of water and nothing to stand on
+    S.fill(pool, PH_SWIM_M, WATER)
+    S.pulse(5)
+    lv = S.sc(NSP, 'ProofReadout', '%d,%d' % pool[4])
+    import re
+    m = re.search(r'Water\s+([\d.]+)\s*m', lv)
+    water = float(m.group(1)) if m else None
+    swimmer = S.pawn('Colonist', pool[4], 'player')
+    k0, t0 = _ph_swim(S, swimmer, pool)
+    S.ticks(PH_SWIM_TICKS)
+    k1, t1 = _ph_swim(S, swimmer, pool)
+    try:
+        e0, e1 = float(k0['exhaustion']), float(k1['exhaustion'])
+    except (TypeError, KeyError, ValueError):
+        e0 = e1 = None
+    swam = bool(k0 and k1) and k0.get('deepCell') == 'True' and k1.get('deepCell') == 'True'
+    S.row('PH_swims_and_tires_at_2m', swam and e1 > e0 if e0 is not None else False,
+          {'water': water, 'readout': lv, 'before': t0, 'after': t1},
+          unmeasured=water is None or abs(water - PH_SWIM_M) > 0.2 or e0 is None)
+
+    lane = [(x0 + i, z0 - 3) for i in range(0, PH_PADS, 4)]           # the same walk, on undug ground south of the pads
+    S.walk(col, (x0 - 2, z0 - 3), PH_WAIT)
+    ctl = _ph_walk(S, col, lane) + _ph_walk(S, col, lane[::-1])
+    sw = S.sc(SWIMP, 'ProofSwim', '%d,%d' % lane[0])
+    dry = kv(sw).get('deepCell') == 'False' if sw.startswith('SWIM ' + col + ' ') else None
+    S.row('PH_control_undug_no_offset', all(abs(r['sink']) < 1e-3 and r['depth'] == 0 for r in ctl if r) and bool(dry),
+          {'sinks': [None if r is None else r['sink'] for r in ctl], 'swim': sw},
+          unmeasured=None in ctl or dry is None or flat or not seen)
 
 
 # sc_hose_look, staged from proof_hose.py's realflow plot (scene 0, measured live): a 3-cell channel dug 2 and filled 1 m, the
