@@ -566,6 +566,11 @@ def exam_gate_checks(root):
     brief = A.steward_brief(root, "P", r) if r.get("aut") else ""
     ok("roles/designer_exam.md" in brief and "Challenger" in brief and "no control copy" in brief,
        "exam gate: the retake brief names roles/designer_exam.md and the gate's errors")
+    # RIMMANDRAKE_UNPIN_RETAKE_DONE_FROM_A_RESULT_NEVER_WRITTEN: `designer_stage.py check` validates an open
+    # Designer run's result.json; a steward retake opens no run, so no correct retake could ever meet that clause
+    ok("designer_stage.py check" not in brief and "coverage_judge.py status" in brief,
+       "exam gate: the retake brief's done clause is the exam gate a steward can meet (coverage_judge.py status), "
+       "never `designer_stage.py check` (an open run's result.json)")
     name = A.item_name(dict(r, mod="Pyrelands"), set()) if r.get("aut") else ""
     ok(name == "RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_FAILING_ITS_GATE", "exam gate: its item is named for it (read %s)" %
        name)

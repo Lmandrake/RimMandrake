@@ -117,6 +117,15 @@ def hook_checks():
        "hook: the Designer's allowance full -> it waits, the reason slots_full, never paused nor the Conductor's "
        "budget (read %s: %s)" % (dec, why[:200]))
     helpers("designer1", 0)
+    # RIMMANDRAKE_ALLOW_STEWARD_EXAM_RETAKE_ITS_OWN_FIVE_READERS: the steward's detached exam retake (its unit named for
+    # RIMMANDRAKE_RETAKE_<MOD>_EXAM_*, maturation_autonomy) runs the same five-agent exam, so it gets the same allowance
+    budget(0)
+    dec, why = hook("rm-detached-bench-rimmandrake-retake-contagion-exam-failin-1794848893", "steward1")
+    ok(dec is None, "hook: CONDUCTOR N=0, three window helpers running, a steward's exam retake asks for its control "
+       "reader -> allowed under its own allowance (read %s: %s)" % (dec, why[:160]))
+    dec, why = hook("rm-detached-bench-rimmandrake-fix-contagion-sheet-1794848893", "steward2")
+    ok(dec == "deny" and "N=0" in why, "hook: any other detached run is still gated by the Conductor budget (N=0 -> "
+       "deny; read %s: %s)" % (dec, why[:160]))
     budget(0)
     dec, why = hook("rm-role-operations-1794775000", "ops1")
     ok(dec == "deny" and "N=0" in why, "hook: any other role run is still gated by the Conductor budget (N=0 -> deny; "

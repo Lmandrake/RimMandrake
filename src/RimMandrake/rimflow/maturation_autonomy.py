@@ -1079,10 +1079,10 @@ def steward_brief(root, mod, row):
                        "Readers, and the control copy (`designer_stage.py exam-control design/concepts/%s --leaf <id>`, "
                        "its control Reader's missed_ids). Its Examiner, Challenger, Readers and control Reader are "
                        "fresh subagents you start (opus or sonnet), as that file says; they are not pipeline runs. "
-                       "Never edit tree.json, the sheet or the scenes. Done when `designer_stage.py check "
-                       "design/concepts/%s` passes and `coverage_judge.py status design/concepts/%s` no longer reads "
-                       "\"the exam does not pass\"; land exam.json and exam_control/ with ./publish." % (
-                           row.get("steward_need") or row.get("why"), mod, mod, mod),
+                       "Never edit tree.json, the sheet or the scenes. Done when `coverage_judge.py status "
+                       "design/concepts/%s` no longer reads \"the exam does not pass\" (it runs the exam gate; a "
+                       "retake opens no Designer run, so there is no result.json to check); land exam.json and exam_control/ with ./publish." % (
+                           row.get("steward_need") or row.get("why"), mod, mod),
         "cycle_unfinished": "The blind cycle's record has no Exit block and nothing is live on it, so no program can "
                             "read whether it was met. Read the record folder (SUMMARY.md, lane1, lane2, "
                             "tests_edited.json) and `maturation.py next`. If the judging is all there and only its "
