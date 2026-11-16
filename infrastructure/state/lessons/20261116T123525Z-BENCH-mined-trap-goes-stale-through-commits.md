@@ -1,0 +1,1 @@
+A mined trap goes stale through commits the ticket never mentions: in the round-4 mining judge, all 4 WRONG traps were overtaken by a commit (the trap's own fix, or another ticket's) touching the file, scene or constant the trap names; checking only later notes on the trap's own ticket misses them. Check the named thing in today's tree.
