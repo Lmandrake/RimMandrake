@@ -1498,6 +1498,16 @@ def _describe(ev):
     return "%s  %-6s %-9s %s" % (ev.get("ts", "?"), ev.get("seat", "?"), verb, tail)
 
 
+def cmd_preflight(args, seat):
+    """Read-only, report-only: the ticket preflight spine over one item's declared facts. Always exits 0."""
+    import ticket_preflight
+    if args.build_index:
+        print("installed-mod scan cached: %d mods" % ticket_preflight.build_installed())
+        return
+    rep = ticket_preflight.run_item(args.id, trigger=args.trigger)
+    print(json.dumps(rep, indent=1) if args.json else ticket_preflight.render(rep))
+
+
 def cmd_pilot(args, seat):
     """Read-only. No id: every item the Test Pilot rule routes. An id: the ticket to spawn, on a free host."""
     evs, w = load()
@@ -4340,6 +4350,13 @@ def build_parser():
     s.add_argument("id", nargs="?")
     s.add_argument("--host", choices=("auto",) + testpilot_route.HOSTS, default="auto")
 
+    s = add("preflight", "report-only ticket preflight: are the declared files, defs and tiers real? (never refuses)",
+            cmd_preflight)
+    s.add_argument("id", nargs="?")
+    s.add_argument("--build-index", action="store_true", help="prepare the installed-mod scan (outside any door)")
+    s.add_argument("--json", action="store_true")
+    s.add_argument("--trigger", choices=("create", "pickup"), default="pickup")
+
     s = add("why", "why is this item not being offered", cmd_why)
     s.add_argument("id")
 
@@ -4655,7 +4672,7 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "incidents",
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "preflight", "incidents",
              "namecheck")  # namecheck: a pure read the seatless nightly calls (NIGHTLY_COP_FIX_RED_MTJJIN_ODMC)
 
 
