@@ -2158,6 +2158,7 @@ def reading(cfg, rows, now):
 
 
 CLONE_FETCH_S = 30          # the tick's fetch of its own clone
+CLONE_STALE_MIN = 5.0     # the OPS_DISPATCH_CLONE_BEHIND_UNSTICK alarm's threshold: past it the tick launches nothing
 CLONE_BLIND_S = 900         # a refused fetch with origin/main's ref unmoved this long is no reading, not "level"
 
 
@@ -2284,6 +2285,17 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             if r["mod"] in launches:
                 r.update(decision="disabled", why="the step is disabled in maturation_dispatch.json")
         launches = []
+    # measured before any launch: a clone behind past the alarm's threshold read an old tree, so it launches nothing
+    # (RIMMANDRAKE_HOLD_TICK_LAUNCHES_ON_STALE_CLONE_GHOST_STEWARD: 51 min behind, it launched a steward run for a
+    # blind record whose exit block had landed 5 min before)
+    clone = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))()) if apply else None
+    stale = bool(clone and clone.get("measured") and (clone.get("behind_min") or 0) > CLONE_STALE_MIN)
+    if stale:
+        for r in rows:
+            if r["mod"] in launches:
+                r.update(decision="stale_clone", why="this clone is %s; nothing launches on its reading" % clone_line(
+                    clone)[len("clone: "):])
+        launches = []
     if not apply:
         for r in rows:
             if r["mod"] in launches:
@@ -2316,7 +2328,10 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         if mod in st.get("mods", {}) and isinstance(c, dict):
             st["mods"][mod]["convergence"] = {k: (v or {}).get("verdict") for k, v in c.items()}
     if apply:
-        rd["clone"] = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))())
+        rd["clone"] = clone
+        if stale:
+            rd.setdefault("needs_conductor", []).append(
+                "stale_clone: nothing launched; %s (OPS_DISPATCH_CLONE_BEHIND_UNSTICK)" % clone_line(clone))
         rd["spend_rows"] = record_spend(root, facts, fx)
         rd["ledger_runs"] = end_ledger_runs(root, st, facts, now, fx)
         if aut:

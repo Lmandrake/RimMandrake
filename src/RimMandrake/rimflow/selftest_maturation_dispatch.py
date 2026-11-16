@@ -196,6 +196,29 @@ def main():
         cfg = dict(base, advancing=list(FOUR) + ["Graffiti", "PyrelandsMechanics"])
         world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
 
+        # ---- a clone behind past the alarm's 5 min reads an old tree: it launches nothing --------------------------
+        # (RIMMANDRAKE_HOLD_TICK_LAUNCHES_ON_STALE_CLONE_GHOST_STEWARD: 51 min behind, it filed a steward run for a
+        # blind record whose exit block had landed 5 min before)
+        os.makedirs(sd, exist_ok=True)
+        with open(os.path.join(sd, "state.json"), "w") as f:
+            json.dump({"clone": {"behind_since": CLOCK - 600}}, f)
+        world["clone"] = (3, 0)
+        rd = tick()
+        ok(not launches() and rd["mods"]["FlowWorks"]["decision"] == "stale_clone"
+           and any("stale_clone" in x or "behind origin/main" in x for x in rd["needs_conductor"]),
+           "a clone 10 min behind launches nothing: FlowWorks reads stale_clone, a Needs Conductor line (%s)"
+           % rd["mods"]["FlowWorks"].get("decision"))
+        world["clone"] = (3, 0)
+        reset()
+        world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
+        rd = tick()
+        ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "launched",
+           "the first tick behind (0 min) still launches: a lag under the alarm holds nothing (%s)"
+           % rd["mods"]["FlowWorks"].get("decision"))
+        world["clone"] = (0, 0)
+        reset()
+        world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
+
         # ---- the first tick: one launch, on FlowWorks only ----------------------------------------------------------
         rd = tick()
         d = {m: r["decision"] for m, r in rd["mods"].items()}
