@@ -112,7 +112,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		{
 			// Stage 3: the kernel's numbers are the Mod Settings (defaults = shipped). A lowered cap or wet-square limit only
 			// refuses NEW water (the kernel never cuts a cell down to a cap: D10, §6 item 5).
-			prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);
+			prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
 			prm.SheetCapDl = Math.Max(DlPerCm, RM_SheetSettings.sheetCapCm * DlPerCm);
 			prm.MaxWetCells = Math.Max(1, RM_SheetSettings.maxWetSquares);
 			prm.RetentionDl = Math.Max(1, Mathf.RoundToInt(RM_SheetSettings.retentionCm * DlPerCm));

@@ -40,6 +40,17 @@ namespace RimMandrake.FlowWorks
 
 		public const int TicksPerWeek = 7 * 60000;
 
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER (blind cycle 2): the crop-drown delay is stored as pulses
+		/// at this shipped pulse length (RM_SheetSettings.cropDrownPulses, 1680 = one week); the kernel counts pulses of the
+		/// CURRENT flow pulse, which is its own Mod Setting (60-2500 ticks). Unconverted, that slider made the week 1.7 to 70 days.</summary>
+		public const int CropDelayBasePulseTicks = 250;
+
+		/// <summary>The kernel's <see cref="Params.CropKillPulses"/> for a delay stored as <paramref name="pulsesAtBase"/> pulses of
+		/// <see cref="CropDelayBasePulseTicks"/>, at a flow pulse of <paramref name="pulseIntervalTicks"/>: the same time, rounded up
+		/// to whole pulses, never below one.</summary>
+		public static int CropKillPulsesFor(int pulsesAtBase, int pulseIntervalTicks) =>
+			Math.Max(1, PulsesFor((int)Math.Min(int.MaxValue, (long)Math.Max(1, pulsesAtBase) * CropDelayBasePulseTicks), pulseIntervalTicks));
+
 		/// <summary>What a cell is to the sheet. The engine maps the map onto these (Stage 1); the kernel never reads Verse.</summary>
 		public enum Kind : byte
 		{

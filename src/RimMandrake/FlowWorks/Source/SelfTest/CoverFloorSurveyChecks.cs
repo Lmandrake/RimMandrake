@@ -102,6 +102,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // can-fail: the bleed well (RM_LiquidTap) must carry it too, not only the drill
                 Assert(n >= 2 && defs.Contains("<defName>RM_LiquidTap</defName>"), "both the drill and the bleed well carry the PlaceWorker (" + n + ")");
             });
+
+            // RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN (blind cycle 2): DrillSurvey_charge_is_only_what_landed proves
+            // the kernel; the drill must hand it what LANDED (the outlet's level read after the write) and give back what it
+            // holds when it is taken down. Planted: charging the asked-for dL, and destroying the pending units, both left T_DRILL green.
+            Case("DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds", () =>
+            {
+                string drill = Src("Drilling", "Building_LiquidDrill.cs");
+                Assert(drill.Contains("pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet), RM_LevelSolve.U, unitPerLevel);"),
+                    "the reserve is charged the outlet's level read after the write");
+                int write = drill.IndexOf("excavation.TrySetDriverWaterDl(outlet, beforeDl + addDl, canalFluid)", StringComparison.Ordinal);
+                int charge = drill.IndexOf("RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet)", StringComparison.Ordinal);
+                Assert(write > 0 && charge > write, "the charge follows the write it measures");
+                Assert(drill.Contains("Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>()?.ReturnUnits(pendingUnits);"),
+                    "a destroyed drill gives its pending units back to the deposit");
+            });
         }
     }
 }

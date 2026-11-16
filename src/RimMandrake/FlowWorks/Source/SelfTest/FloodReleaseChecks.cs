@@ -340,7 +340,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
 				Assert(sheet.Contains("prm.SheetCapDl = Math.Max(DlPerCm, RM_SheetSettings.sheetCapCm * DlPerCm);")
-					&& sheet.Contains("prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);"), "the kernel reads the settings");
+					&& sheet.Contains("prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RimMandrakeFlowWorksSettings.PulseIntervalTicks);"), "the kernel reads the settings");
 				Assert(sheet.Contains("RM_SheetSettings.SpillsFrom(from)"), "every spill asks the per-inflow switch");
 			});
 

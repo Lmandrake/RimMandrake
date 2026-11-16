@@ -170,6 +170,22 @@ def coating(cs, xml):
              for d, f in (("RM_Fluid_Oil", "coats"), ("RM_Fluid_Tar", "coats"), ("RM_Fluid_Blood", "coats"),
                           ("RM_Fluid_Water", "washesCoat")))),
         ("the coat is named for its liquid", _any(cs, r"class Hediff_LiquidCoat[\s\S]{0,300}?LabelBase => \"coated in \" \+")),
+        # RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK (blind cycle 2): planted faults that kill the bar stayed green
+        # above (a guarded tick, the HediffDef on a plain class, every liquid coating or washing by default, a slime or icy
+        # water losing its flag, the file left out of the build); each law below has an undo mutant in COAT_MUTANTS or
+        # COAT_XML_MUTANTS
+        ("the map tick calls it as a statement of its own (no guard in front)",
+         _any(cs, r"[;{}]\s*RM_LiquidCoating\.Tick\(map, this\);")),
+        ("the coat's HediffDef runs Hediff_LiquidCoat (the code casts to it)",
+         re.search(r"<defName>RM_LiquidCoat</defName>[\s\S]{0,400}?<hediffClass>RimMandrake\.FlowWorks\.Hediff_LiquidCoat</hediffClass>", xml)),
+        ("a FluidDef neither coats nor washes unless its def says so",
+         re.search(r"public bool coats;", cs.get(SRC / "FluidDef.cs", "")) and re.search(r"public bool washesCoat;", cs.get(SRC / "FluidDef.cs", ""))),
+        ("the four slimes coat and icy water washes (the setting's own words: oil, tar, blood and slime)",
+         all(re.search(r"<defName>%s</defName>[\s\S]{0,200}?<%s>true</%s>" % (d, f, f), xml)
+             for d, f in (("RM_Fluid_SlimeRed", "coats"), ("RM_Fluid_SlimeGreen", "coats"), ("RM_Fluid_SlimeWhite", "coats"),
+                          ("RM_Fluid_SlimeYellow", "coats"), ("RM_Fluid_IcyWater", "washesCoat")))),
+        ("the file is compiled: the csproj lists it",
+         re.search(r'<Compile Include="RM_LiquidCoating\.cs" />', CSPROJ.read_text(encoding="utf-8", errors="replace"))),
     ]
 
 
@@ -181,6 +197,12 @@ COAT_MUTANTS = {
     "water never washes": (COAT_FILE, "Wash(p, f);", ""),
     "wash keeps the coat": (COAT_FILE, "p.health.RemoveHediff(h);", ""),
     "nameless coat": (COAT_FILE, 'LabelBase => "coated in " +', 'LabelBase => "x" +'),
+    "tick behind a guard": (SRC / "RM_MapComponent_Excavation.cs", "RM_LiquidCoating.Tick(map, this);", "if (map == null) RM_LiquidCoating.Tick(map, this);"),
+    "every liquid coats": (SRC / "FluidDef.cs", "public bool coats;", "public bool coats = true;"),
+    "every liquid washes": (SRC / "FluidDef.cs", "public bool washesCoat;", "public bool washesCoat = true;"),
+}
+COAT_XML_MUTANTS = {
+    "plain hediff class": ("<hediffClass>RimMandrake.FlowWorks.Hediff_LiquidCoat</hediffClass>", "<hediffClass>HediffWithComps</hediffClass>"),
 }
 
 
@@ -284,11 +306,15 @@ def main():
                     continue
                 if not [w for w, ok in coating({**cs, p: cs[p].replace(old, new)}, xml) if not ok]:
                     faults.append("coating mutant %r stayed green (blind law)" % m)
-            for d, f in (("RM_Fluid_Water", "washesCoat"), ("RM_Fluid_Oil", "coats")):
+            for m, (old, new) in COAT_XML_MUTANTS.items():
+                bad = xml.replace(old, new)
+                if bad == xml or not [w for w, ok in coating(cs, bad) if not ok]:
+                    faults.append("coating mutant %s stayed green (blind law)" % m)
+            for d, f in (("RM_Fluid_Water", "washesCoat"), ("RM_Fluid_Oil", "coats"), ("RM_Fluid_SlimeYellow", "coats"), ("RM_Fluid_IcyWater", "washesCoat")):
                 bad = re.sub(r"(<defName>%s</defName>[\s\S]{0,200}?)<%s>true</%s>" % (d, f, f), r"\1", xml, count=1)
                 if bad == xml or not [w for w, ok in coating(cs, bad) if not ok]:
                     faults.append("coating mutant %s loses %s stayed green (blind law)" % (d, f))
-            print("  %d undo mutants checked" % (len(COAT_MUTANTS) + 2))
+            print("  %d undo mutants checked" % (len(COAT_MUTANTS) + len(COAT_XML_MUTANTS) + 4))
     print(("RED %d: " % len(faults) + "; ".join(faults)) if faults else "PASS")
     return 1 if faults else 0
 

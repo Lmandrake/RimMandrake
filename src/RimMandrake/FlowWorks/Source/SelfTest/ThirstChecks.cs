@@ -552,6 +552,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(jobs, @"!patient\.HostileTo\(pawn\)", "B3: no water for downed hostiles");
                 Assert(!jobs.Contains("patient.guest != null"), "can-fail: the vacuous guest test is gone (every humanlike has a guest tracker)");
             });
+
+            // RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN (blind cycle 2): the ruled numbers (heat x3 cap, labour 1.3,
+            // asleep 0.5, the rate slider) live in RM_ThirstMath; the need must feed them in. Planted: the need falling at the
+            // bare base rate left T_THIRST green.
+            Case("Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider", () =>
+            {
+                string need = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "Need_RM_Thirst.cs"));
+                Assert(need.Contains("CurLevel -= RM_ThirstMath.FallPerInterval(FallPerDayNow);"), "the interval falls at FallPerDayNow");
+                Assert(need.Contains("RM_ThirstMath.FallPerDay(RM_ThirstSettings.RateMultiplier, heat, IsHardLabour(pawn), !pawn.Awake())"),
+                    "FallPerDayNow carries the rate slider, the heat factor, hard labour and sleep");
+                Assert(need.Contains("heat = RM_ThirstMath.HeatFactor(pawn.AmbientTemperature, pawn.GetStatValue(StatDefOf.ComfyTemperatureMax),"),
+                    "heat is the pawn's ambient temperature over its comfortable maximum");
+                Assert(need.Contains("if (RM_ThirstSettings.thirstHeatScaling)"), "the heat switch is honoured");
+            });
         }
     }
 }

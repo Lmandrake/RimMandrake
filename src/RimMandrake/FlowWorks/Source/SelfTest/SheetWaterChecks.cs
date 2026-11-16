@@ -1062,6 +1062,42 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(ex.Contains("releaseLostDl += dl;") && ex.Contains("Scribe_Values.Look(ref releaseLostDl"), "it is counted and saved");
 				Assert(sheet.Contains("released floods with nowhere to go lost"), "the liquid ledger readout shows it");
 			});
+
+			// RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER (blind cycle 2): "kills crops under standing overflow after a
+			// week" must hold at every flow pulse the shipped slider allows (60-2500 ticks), not only at 250. The stored delay is
+			// pulses at the shipped 250-tick pulse; the kernel counts pulses of the current interval.
+			Case("SheetCropWeek_a_week_at_every_flow_pulse_interval", () =>
+			{
+				var conv = typeof(RM_SheetMath).GetMethod("CropKillPulsesFor");
+				Func<int, int, int> kill = conv != null
+					? (a, b) => (int)conv.Invoke(null, new object[] { a, b })
+					: (a, b) => a;   // the unconverted path: the stored pulse count is used as it is
+				foreach (int interval in new[] { 60, 100, 250, 600, 1000, 2500 })
+				{
+					long ticks = (long)kill(1680, interval) * interval;
+					Assert(ticks >= TicksPerWeek && ticks < TicksPerWeek + interval,
+						$"pulse {interval} ticks: crops drown after {ticks / 60000.0:0.##} days, not a week (7)");
+				}
+				Assert(kill(1680, 250) == 1680, "the shipped pulse keeps its 1680");
+				Assert(kill(0, 250) >= 1 && kill(1, 2500) >= 1, "never zero pulses");
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				string set = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_SheetSettings.cs"));
+				Assert(sheet.Contains("prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RimMandrakeFlowWorksSettings.PulseIntervalTicks);"),
+					"SyncParams converts the stored delay to the current pulse");
+				Assert(!set.Contains("cropDrownPulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks")
+					&& set.Contains("RM_SheetMath.CropDelayBasePulseTicks"), "the slider reads and writes the delay at the 250-tick base");
+			});
+
+			// RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN (blind cycle 2): the kernel's per-crop exposure rule
+			// (Sheet_crop_drowning_is_each_crops_own_exposure...) only holds if the caller hands it THAT crop's age; a caller
+			// passing anything else (a planted int.MaxValue) drowned a day-old crop in a week-old puddle with T_SHEET green.
+			Case("SheetCropAge_the_caller_judges_each_crop_by_its_own_age", () =>
+			{
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				Assert(sheet.Contains("RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm)"), "the drown test reads the plant's own Age");
+				Assert(sheet.Contains("int pulseTicks = RimMandrakeFlowWorksSettings.PulseIntervalTicks;"), "at the current pulse length");
+				Assert(sheet.Contains("if (RM_SheetSettings.cropsDrownEnabled && rep.CropDrowning.Count > 0)"), "only with crops-drown on, on the kernel's report");
+			});
 		}
 	}
 }

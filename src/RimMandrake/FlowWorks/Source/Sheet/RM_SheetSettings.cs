@@ -103,8 +103,10 @@ namespace RimMandrake.FlowWorks.Sheet
 			Scribe_Values.Look(ref sheetPathCost, "sheetPathCost", 30);
 		}
 
+		// the delay is stored at the shipped 250-tick pulse (RM_SheetMath.CropDelayBasePulseTicks) and converted to the current flow
+		// pulse in RM_MapComponent_Sheet.SyncParams, so moving the flow-pulse slider leaves the days unchanged
 		private static string Days(int pulses) =>
-			(pulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks / GenDate.TicksPerDay).ToString("0.#");
+			(pulses * (float)RM_SheetMath.CropDelayBasePulseTicks / GenDate.TicksPerDay).ToString("0.#");
 
 		public static void DoSettingsSection(Listing_Standard list)
 		{
@@ -156,10 +158,10 @@ namespace RimMandrake.FlowWorks.Sheet
 				sweepsPerPulse, 1f, 6f, 0.5f));
 			doorLeakPercent = Mathf.RoundToInt(list.SliderLabeled("Water leaking under a door: " + doorLeakPercent + "% of open ground",
 				doorLeakPercent, 0f, 50f, 0.5f));
-			float days = cropDrownPulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks / GenDate.TicksPerDay;
+			float days = cropDrownPulses * (float)RM_SheetMath.CropDelayBasePulseTicks / GenDate.TicksPerDay;
 			days = Mathf.Round(list.SliderLabeled("Crops drown after standing in water for: " + Days(cropDrownPulses) + " days", days,
 				0.5f, 30f, 0.5f) * 2f) / 2f;
-			cropDrownPulses = Mathf.Max(1, RM_SheetMath.PulsesFor(Mathf.RoundToInt(days * GenDate.TicksPerDay), RimMandrakeFlowWorksSettings.PulseIntervalTicks));
+			cropDrownPulses = Mathf.Max(1, RM_SheetMath.PulsesFor(Mathf.RoundToInt(days * GenDate.TicksPerDay), RM_SheetMath.CropDelayBasePulseTicks));
 			soakCmPerDaySand = Mathf.Round(list.SliderLabeled("Soaks into sand: " + soakCmPerDaySand.ToString("0.0") + " cm a day",
 				soakCmPerDaySand, 0f, 20f, 0.5f) * 2f) / 2f;
 			soakCmPerDaySoil = Mathf.Round(list.SliderLabeled("Soaks into soil: " + soakCmPerDaySoil.ToString("0.0") + " cm a day",
