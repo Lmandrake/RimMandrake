@@ -2324,6 +2324,10 @@ BRIDGE_RULES = (
     "up the Saves folder before you write the labelled savegame.",
     "- A site is asserted, never hoped: check each test site (open sky, no stray animals, the biome the check needs) "
     "before a row counts, and write `site_checked` on the row.",
+    "- The game is never held for his look while he is away (owner, 2026-11-16: \"Do not hold live testing when I can't "
+    "go to the desktop such as now.\"): a staged look is a kept save, re-staged from that save when he sits down, so "
+    "never wait on one and never leave the game parked for one. Keep every save a look was staged on (`*OWNER_LOOK*` "
+    "and any save his item's notes name): load your own site over it, never delete or overwrite it.",
 )
 INGAME_DEFAULT = ("No Conductor decisions are written for this visit, so the standing default holds: run every stage-6 "
                   "check above and the owed cases, look beyond them, and fix in the sitting what a small fix can fix. "

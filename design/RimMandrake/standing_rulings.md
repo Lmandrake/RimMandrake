@@ -763,3 +763,23 @@ his to overrule: the pipeline's machinery is the most fluid code there is, so it
   tests that read live state are listed there and excluded. `"nightly": true` in that file puts them back in the nightly.
 - **What stays:** the 13 publish tree checks; agents run the tests for what they changed before a commit; every item is
   built with its tests (2026-11-13); no test is deleted.
+
+## Spend in weighted tokens; the live game is never held for his look while he is away — owner, 2026-11-16
+
+His words (Mon 2026-11-16, ~1:08 PM PST, on the ledger 21:10Z under `RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD`):
+*"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live
+testing when I can't go to the desktop such as now."*
+
+- **Weighted tokens, never money.** Every line a person reads states spend in weighted tokens (input-equivalent,
+  `role_launch.TOKEN_WEIGHTS`): the DETACHED RUN ENDED lines and notes, `maturation_dispatch.py` status, pause, release
+  and `releases` lines, the maturation status page, `maturation_hands.py list`, and the Conductor's own words to him.
+  List dollars stay only inside, where a tool needs them (claude's `--max-budget-usd`, the run record's `cost_usd`, the
+  stage ceiling and caps); a line about a dollar-kept limit converts at `maturation_dispatch.WT_PER_USD` (measured
+  2026-11-16) and marks the figure `≈`. Moving the ceiling and caps themselves into tokens:
+  `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`.
+- **No live hold for his look while he is away.** A staged owner look is never a reason the pipeline holds, parks or
+  pauses the game: the look is kept as a save, the game goes back to the tick, and the look is re-staged from that save
+  when he sits down. Stopping a live run to stage a look is a kill, which the tick retries like any kill
+  (`maturation_dispatch.retriable` counts kills, not launch faults), and `maturation_dispatch.py clear` lifts the stop
+  an ended automatic run left. The in-game driver's brief keeps every `*OWNER_LOOK*` save. His own OWNER bridge hold
+  while he is walking a look stays his (§The bridge is passed through one file).

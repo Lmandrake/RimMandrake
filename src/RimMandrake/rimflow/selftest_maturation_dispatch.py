@@ -1904,6 +1904,12 @@ def kill_clear_main():
                                                      "still bounds the kills)")
     ok(not MD.retriable(cfg, dict(third, tries=1), {}), "a run that ended by itself with no record is not retried")
 
+    # the owner, 2026-11-16: "Do not hold live testing when I can't go to the desktop such as now." The live driver's
+    # brief says a staged look is kept as a save and never waited on, and keeps the saves a look was staged on
+    rules = " ".join(MD.M.BRIDGE_RULES)
+    ok("staged look" in rules and "never wait" in rules and "OWNER_LOOK" in rules,
+       "the in-game brief: a staged owner look is a kept save, never a reason to hold or wait on the game")
+
     sd = tempfile.mkdtemp(prefix="maturation_dispatch_clear_")
     was = (os.environ.get("RM_MATURATION_DISPATCH_DIR"), MD.DH.read_record)
     try:

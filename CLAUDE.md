@@ -260,6 +260,10 @@ workaround without the permanent fix is not allowed. A mod's gaps still go throu
 
 *"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.
 
+## 🔴 Spend in weighted tokens; never hold the game for his look while he is away — owner, 2026-11-16
+
+*"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now."* Every line a person reads states spend in weighted tokens, never dollars. A staged owner look is kept as a save and re-staged when he sits down; the game goes back to the tick. Full text: `standing_rulings.md` §Spend in weighted tokens.
+
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
 User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.
