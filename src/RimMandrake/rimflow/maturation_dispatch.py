@@ -1103,7 +1103,7 @@ def _ingest():
     return ing
 
 
-def file_and_publish(item, title, why, needs="offline"):
+def file_and_publish(item, title, why, needs="offline", spec=None):
     """Spawn the build item as RUNNER under this item (the way ops_watch files its alarms: DISPATCHER only notes) and
     publish the RUNNER shard, under the dispatch clone's ingest lock; detached_helper refuses an item not filed on
     origin/main. -> (ok, text)."""
@@ -1114,7 +1114,7 @@ def file_and_publish(item, title, why, needs="offline"):
     try:
         ing = _ingest()
         rc, out = ing.rimflow("spawn", "--from", ITEM, "--for", "RELENTLESS", "--needs", needs, "--name", item,
-                              "--title", title, "--why", why)
+                              "--title", title, *(["--spec", spec] if spec else []), "--why", why)
         if rc:
             return False, "spawn refused: %s" % out
         pub = ing.publish(1, message="ledger: maturation dispatch filed %s" % item)

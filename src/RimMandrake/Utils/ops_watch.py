@@ -70,6 +70,7 @@ import math
 import os
 os.environ.setdefault("RIMFLOW_MACHINE_MINT", "1")  # machine minter: fixed alarm prefixes, see rimflow/model.py mint_problems
 import re
+import shlex
 import shutil
 import signal
 import statistics
@@ -1208,6 +1209,21 @@ def rerun_tree_dirty(root):
     return "working tree differs from origin/main: %s" % ", ".join(dirty[:3]) if dirty else None
 
 
+def red_launch_checks(pt):
+    """-> the `## launch-checks` block a fixer item filed from a red group carries (`must-fail: <its rerun>`: a fixer whose
+    red already passes is refused at launch, GATE_FIRST, RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES), or None
+    for an alarm that names no tests."""
+    tests = ((pt or {}).get("x") or {}).get("tests")
+    if not tests or not isinstance(tests, list):
+        return None
+    rimflow = str(Path(__file__).resolve().parents[1] / "rimflow")
+    if rimflow not in sys.path:
+        sys.path.insert(0, rimflow)
+    import launch_checks
+    return launch_checks.block_for("fix_red", cmd="python3 src/RimMandrake/Utils/run_selftests.py --only "
+                                   + " ".join(shlex.quote(str(t)) for t in tests))
+
+
 def rerun_at_main(tests, timeout, root=None):
     """NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: one plain rerun (run_selftests --only, no LLM) of a red group's tests in
     this checkout, brought to origin/main first by a fast-forward pull (as testq-tick/testq-sweep already do to the
@@ -1350,7 +1366,8 @@ def red_groups(c, night, state=None, rerun="default", budget=None):
             fresh += 1
         out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
                           subject=red_subject(g["tests"]), said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"],
-                          titled={"%s (due %s)" % (t, g["due"]): Path(t).name for t in g["tests"][:30]})
+                          titled={"%s (due %s)" % (t, g["due"]): Path(t).name for t in g["tests"][:30]},
+                          tests=list(g["tests"]))
     live = {g["key"] for g in c["groups"]}
     for k in sorted(held - live):
         out[k] = M(0, "nightly reds with one first error line, no entry parking them", night=night, said="green or parked")
@@ -4342,6 +4359,7 @@ def real_filer(todo, conf):
                 else:
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
+                                          *(["--spec", a["spec"]] if a.get("spec") else []),
                                           "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
                     if rc != 0 and already_filed(out, a["name"]):
                         # the filing clone's ledger holds it: an earlier pass filed it and this tree's ledger read lags
@@ -4708,7 +4726,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 # real, so keep retrying the filing under the name and title it got when it crossed
                 todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen")),
                              "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1],
-                             "expedite": cur.get("expedite") or [], "cause": cur.get("cause")})
+                             "expedite": cur.get("expedite") or [], "cause": cur.get("cause"), "spec": cur.get("spec")})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -4772,8 +4790,10 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         cur["noted"] = titled_names(cur["title"], pt, tg)   # what the title shows is told; a name it cut, the first note says
         cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
+        cur["spec"] = red_launch_checks(pt)
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
-                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners, "cause": cur.get("cause")})
+                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners, "cause": cur.get("cause"),
+                     "spec": cur["spec"]})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)

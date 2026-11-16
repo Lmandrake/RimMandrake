@@ -60,6 +60,7 @@ class World:
         self.facts, self.dstate, self.items = facts, dstate or {}, open_items or {}
         self.locked, self.found, self.bridge = locked, list(found), bridge
         self.filed, self.launched, self.briefs, self.cards, self.seeded = [], [], [], [], []
+        self.specs = {}
         self.fail_launch = False
         self.fail_texts = []        # launcher failures to return, one per launch, before it succeeds
         self.published = []
@@ -86,8 +87,9 @@ class World:
                 return 1, "LAUNCH FAILED pool full", None
             return 0, "DETACHED rm-fake-%d" % len(self.launched), "rm-fake-%d" % len(self.launched)
 
-        def file(item, title, why, needs="offline"):
+        def file(item, title, why, needs="offline", spec=None):
             self.filed.append(item)
+            self.specs[item] = spec
             return True, "filed %s" % item
 
         def seed(root, mod):
@@ -631,6 +633,10 @@ def main():
         ok(g("A").get("klass") == "launch" and any("ADVANCE_A_PAST_OFFLINE_BUILD" in x[1] for x in w.launched[n0:]),
            "wait 5: when the road-back items close, ready-to-advance is a steward advance, not a Conductor line")
         ok(not rd.get("needs_conductor"), "no Needs Conductor line for a ready mod")
+        adv = [i for i in w.specs if "ADVANCE_A_PAST_OFFLINE_BUILD" in i]
+        ok(adv and w.specs[adv[0]] == "## launch-checks\nmust-pass: python3 src/RimMandrake/rimflow/maturation.py gate A "
+           "--to blind_challenge\n" and not any(v for k, v in w.specs.items() if "ROUTE_A" in k),
+           "the advance steward's item is filed with its gate as a launch check (GATE_FIRST); a routing steward's is not")
         # (1) a locked change newer than every look: the chain
         fresh_state()
         ds = {"status": "blocked", "stage": 5, "history": [

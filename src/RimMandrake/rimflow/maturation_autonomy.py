@@ -1107,6 +1107,19 @@ def fixer_brief(item, mod, cap, fix_for=None):
             "nothing. Never take the bridge or a game.\n%s\n" % (item, mod, item, cap, item, mod, M.SELF_FIX_RULE))
 
 
+ADVANCE_KINDS = ("ready",)     # a steward that only advances; designer_locked's own steps (lock-bars, next-version) can
+                               # turn the gate's version clause, so a launch check there would refuse a good run
+
+
+def advance_checks(row):
+    """-> the `## launch-checks` block for a steward item that advances the mod one stage, or None."""
+    stage = row.get("stage")
+    if row.get("steward_kind") not in ADVANCE_KINDS or stage not in M.WORDS or M.WORDS.index(stage) + 1 >= len(M.WORDS):
+        return None
+    import launch_checks
+    return launch_checks.block_for("advance", mod=row["mod"], to=M.WORDS[M.WORDS.index(stage) + 1])
+
+
 def item_name(row, known):
     mod = row["mod"].upper()
     n = M_word(row.get("visit") if row.get("stage") == "in_game" else row.get("cycle"))
@@ -1203,7 +1216,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
             title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
                 mod, row.get("steward_kind"), row.get("stage"))
             why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why")), MD.pac(now))
-            ok, text = do_file(item, title, why) if item else (False, "no free item name")
+            spec = advance_checks(row)      # the launch re-reads the gate first (GATE_FIRST)
+            ok, text = (do_file(item, title, why, **({"spec": spec} if spec else {})) if item else
+                        (False, "no free item name"))
         filed = ok
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
                  if ok else "")

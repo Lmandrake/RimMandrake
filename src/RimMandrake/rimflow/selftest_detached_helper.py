@@ -37,6 +37,10 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              the item in the clone and, for a success with the item open and no such note since the run began, puts one
              plain line in the note, the Conductor log and the record; the status page lists it while the item stays open;
              a closed item, a LEFT OPEN note, a failed run and an unreadable ledger flag nothing
+  gate       GATE_FIRST (RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES): the item's `## launch-checks` block, read
+             from its prose or the spec of the event that filed it in the run's clone, runs before any unit: a must-fail
+             that passes refuses (exit 2, nothing started, no record); --skip-launch-checks launches and is recorded;
+             a check that cannot run launches with one "did not run" line on the output and the record
   scopegone  RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE: a scope systemd already collected reads clean; any
              other kill failure reads FAILED and the stop is still tried
 """
@@ -988,6 +992,42 @@ def test_windows_path():
           "argv: WSL_INTEROP set exactly when a socket is alive")
 
 
+def test_launch_checks():
+    gclone = os.path.join(TMP, "gate_clone")
+    items = os.path.join(gclone, "infrastructure", "state", "items")
+    os.makedirs(items)
+    with open(os.path.join(items, "SOME_ITEM_TO_BUILD.md"), "w", encoding="utf-8") as fh:
+        fh.write("## spec\nmust-pass: false (prose never refuses)\n\n## launch-checks\nmust-fail: echo still green; true\n")
+
+    def go(t, **kw):
+        calls, run = recorder()
+        rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build.", "sonnet", 600, 5, now=T0 + t, runner=run, known=KNOWN,
+                             clone=gclone, **kw)
+        unit = text.split()[1] if text.startswith("DETACHED ") else None
+        return rc, text, [c for c in calls if c[0][0] == "systemd-run"], DH.read_record(unit) if unit else None
+    rc, text, units, rec = go(700)
+    check(rc == 2 and text.startswith("refused: launch check") and "still green" in text and "already passes" in text
+          and "smallest fix" in text and not units, "gate: a must-fail that passes refuses before any unit (%s)" % text[:60])
+    rc, text, units, rec = go(701, skip_launch_checks="Conductor: rerun wanted anyway")
+    check(rc == 0 and units and (rec or {}).get("launch_checks_skipped") == "Conductor: rerun wanted anyway",
+          "gate: --skip-launch-checks launches and the why is on the record")
+    os.remove(os.path.join(items, "SOME_ITEM_TO_BUILD.md"))
+    ev = os.path.join(gclone, *DH.EVENTS_REL.split("/"))
+    os.makedirs(ev)
+    with open(os.path.join(ev, "RUNNER.jsonl"), "w", encoding="utf-8") as fh:
+        fh.write(json.dumps({"event": "spawn", "from": "X", "for": "RELENTLESS", "name": "SOME_ITEM_TO_BUILD",
+                             "spec": "## launch-checks\nmust-pass: /no/such/gate --to x\n"}) + "\n")
+    rc, text, units, rec = go(702)
+    check(rc == 0 and units and "launch check did not run" in text
+          and len((rec or {}).get("launch_checks_did_not_run") or []) == 1,
+          "gate: a check that cannot run (exit 127) launches, said on the output and the record")
+    with open(os.path.join(ev, "RUNNER.jsonl"), "w", encoding="utf-8") as fh:
+        fh.write(json.dumps({"event": "spawn", "from": "X", "for": "RELENTLESS", "name": "SOME_ITEM_TO_BUILD",
+                             "spec": "## launch-checks\nmust-pass: echo 28 of 42 bars not runnable; false\n"}) + "\n")
+    rc, text, units, rec = go(703)
+    check(rc == 2 and "28 of 42" in text and not units, "gate: a spawn's --spec block is read from the clone's shard")
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1003,6 +1043,7 @@ def main():
     test_owed_close()
     test_hook_points_here()
     test_windows_path()
+    test_launch_checks()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

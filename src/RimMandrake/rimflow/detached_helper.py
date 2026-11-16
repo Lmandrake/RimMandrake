@@ -615,6 +615,50 @@ def card_footer(item, events_dir=None):
             % "; ".join(owed))
 
 
+def launch_check_refusal(item_text, cwd, runner=subprocess.run, timeout_s=120):
+    """-> (refusal text or None, notes): the item's `## launch-checks` block run in the run's clone before the unit starts
+    (GATE_FIRST, RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES). notes: one "launch check did not run: ..." line
+    per check that could not run; those never refuse."""
+    import launch_checks as LC
+    res = LC.run(LC.parse(item_text), cwd, timeout_s=timeout_s, runner=runner)
+    notes = ["launch check did not run: " + d for d in res["did_not_run"]]
+    if res["ok"]:
+        return None, notes
+    out = ["refused: launch check: %d of the item's declared checks refuse this launch (%d ms)"
+           % (len(res["refusals"]), res["ms"])]
+    for r in res["refusals"]:
+        out += ["- %s" % r["check"], "  evidence: %s" % r["evidence"].replace("\n", "\n    "),
+                "  would pass: %s" % r["would_pass"], "  smallest fix: %s" % r["smallest_fix"]]
+    return "\n".join(out + notes), notes
+
+
+def item_text(clone, item):
+    """-> the item's live prose as the run's clone holds it, then the `spec` of each event that filed it (a program's
+    filer writes its `## launch-checks` block there: spawn --spec). "" when neither exists: no launch checks."""
+    out = []
+    try:
+        with open(os.path.join(clone, "infrastructure", "state", "items", item + ".md"), encoding="utf-8") as fh:
+            out.append(fh.read())
+    except OSError:
+        pass
+    for rel in local_shards(item, clone):
+        try:
+            with open(os.path.join(clone, rel), encoding="utf-8", errors="replace") as fh:
+                for ln in fh:
+                    if item not in ln:
+                        continue
+                    try:
+                        ev = json.loads(ln)
+                    except ValueError:
+                        continue
+                    if (isinstance(ev, dict) and ev.get("spec") and item in filed_ids([ln])
+                            and item in (ev.get("id"), ev.get("name"))):
+                        out.append(str(ev["spec"]))
+        except OSError:
+            continue
+    return "\n".join(out)
+
+
 def parse_max_s(v):
     """None, 0, "", "none", "0" -> None (unbounded); else whole seconds (ValueError on junk)."""
     if v is None or str(v).strip().lower() in ("", "none", "0", "infinity", "unbounded"):
@@ -623,7 +667,7 @@ def parse_max_s(v):
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
-           events_dir=None):
+           events_dir=None, skip_launch_checks=None):
     """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     a clone another run still holds (after waiting for one that is being given back)."""
     now = now or time.time()
@@ -654,10 +698,10 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     if held:
         return 2, held
     with clone_lock(dest):
-        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest)
+        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks)
 
 
-def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest):
+def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None):
     held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
     if held:
         return 2, "refused: clone %s was taken while this launch waited: %s" % (dest, " | ".join(h[2] for h in held))
@@ -668,9 +712,18 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
             clone, how = take_clone(item, runner=runner)
         except Exception as e:  # noqa: BLE001
             return 1, "clone failed: %s" % e
+    notes = []
+    if not skip_launch_checks:      # the item's declared checks, in the clone the run will use (GATE_FIRST)
+        refused, notes = launch_check_refusal(item_text(clone, item), clone)
+        if refused:
+            return 2, refused + "\n(the Conductor's bypass: --skip-launch-checks \"<why>\")"
     root = state_dir()
     rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
+    if skip_launch_checks:
+        rec["launch_checks_skipped"] = skip_launch_checks
+    if notes:
+        rec["launch_checks_did_not_run"] = notes
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
                                          bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound", budget="%g" % budget)
@@ -694,8 +747,10 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         rec["status"] = "running"
         write_record(rec, root)
     return 0, ("DETACHED %s\n  item %s, model %s, bound %s, $%g\n  clone %s (%s)\n  record %s\n"
-               "  it ends with a note on %s and a line in the Conductor log; `detached_helper.py status` lists runs"
-               % (unit, item, model, ("%d s" % max_s) if max_s else "none", budget, clone, how, record_path(unit, root), item))
+               "  it ends with a note on %s and a line in the Conductor log; `detached_helper.py status` lists runs%s"
+               % (unit, item, model, ("%d s" % max_s) if max_s else "none", budget, clone, how, record_path(unit, root), item,
+                  "".join("\n  " + n for n in notes + (["launch checks skipped: " + skip_launch_checks]
+                                                       if skip_launch_checks else []))))
 
 
 LEFT_OPEN = "LEFT OPEN:"    # a run's note saying what it left (RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN)
@@ -1044,6 +1099,8 @@ def main(argv=None):
     a.add_argument("--max-s", default=DEFAULT_MAX_S, help="seconds, or none/0 for no wall-time limit (default)")
     a.add_argument("--budget-usd", type=float, default=DEFAULT_BUDGET_USD)
     a.add_argument("--clone", help="an existing clone to run in (default: a pool clone <ITEM>.det)")
+    a.add_argument("--skip-launch-checks", metavar="WHY",
+                   help="the Conductor's bypass of the item's ## launch-checks block; WHY is recorded on the run record")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
@@ -1064,7 +1121,7 @@ def main(argv=None):
             with open(args.brief_file, encoding="utf-8") as fh:
                 brief = fh.read()
         rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model, args.max_s, args.budget_usd,
-                          clone=args.clone)
+                          clone=args.clone, skip_launch_checks=args.skip_launch_checks)
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)
