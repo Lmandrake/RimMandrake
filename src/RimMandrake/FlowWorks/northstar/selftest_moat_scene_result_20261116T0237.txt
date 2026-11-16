@@ -1,0 +1,28 @@
+# green on the fix (this commit)
+ok    every staging call keeps its tool contract (placed raid; proof args; a pump, a door and a leaf where asked) 
+ok    the scene leaves the governor as it found it 
+ok    healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it burns; over the lowered leaf they walk): every row PASS 
+ok    no row PASSes on a REFUSED reply 
+ok    fire_raid answering success (visit 1): no row PASSes on a REFUSED reply, and the healthy rows still PASS 
+ok    raiders that stop at the bank: the swim FAILs, the capture (nobody swam) UNMEASURED 
+ok    a lifted sluice that drains nothing: the drain FAILs, capture and chemfuel UNMEASURED, none PASS on a wet moat 
+ok    a dry ring that holds nobody: the capture FAILs 
+ok    a raid that is gone at the first poll: swim, capture and control UNMEASURED, none of them PASS 
+ok    a REFUSED swim read: the swim and the control UNMEASURED, never PASS 
+ok    a pump that never runs: the chemfuel UNMEASURED and the burn (no chemfuel square) UNMEASURED 
+selftest_moat_scene: ok
+rc=0
+# red on the draft at 2b4bffe212
+FAIL  every staging call keeps its tool contract (placed raid; proof args; a pump, a door and a leaf where asked) ['RM_Sluice (a stuffed flow door) placed without build_batch stuff', 'fire_raid: an unplaced map-edge raid (refused outright when no Pirate factio
+ok    the scene leaves the governor as it found it 
+FAIL  healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it burns; over the lowered leaf they walk): every row PASS ({'scene_moat_raid_staging': 'UNMEASURED'}, ['AssertionError(\'jawa/fire_raid refused: {\\\'success\\\': False, \\\'message\\
+ok    no row PASSes on a REFUSED reply 
+FAIL  fire_raid answering success (visit 1): no row PASSes on a REFUSED reply, and the healthy rows still PASS [('MOAT_chemfuel_pumped', 'PASS', 'REFUSED: arg must be x,z;Mode or x,z;Mode;LiquidDef;units on the current map')]
+FAIL  raiders that stop at the bank: the swim FAILs, the capture (nobody swam) UNMEASURED {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a lifted sluice that drains nothing: the drain FAILs, capture and chemfuel UNMEASURED, none PASS on a wet moat {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a dry ring that holds nobody: the capture FAILs {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a raid that is gone at the first poll: swim, capture and control UNMEASURED, none of them PASS {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a REFUSED swim read: the swim and the control UNMEASURED, never PASS {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a pump that never runs: the chemfuel UNMEASURED and the burn (no chemfuel square) UNMEASURED {'scene_moat_raid_staging': 'UNMEASURED'}
+selftest_moat_scene: FAIL
+rc=1

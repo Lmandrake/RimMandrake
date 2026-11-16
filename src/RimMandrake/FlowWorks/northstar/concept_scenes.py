@@ -818,36 +818,220 @@ def _ice(S):
         S.row('ICE_melts_back_into_pond', not left and lg1 - lg0 == made * MELT_DL, mdet)
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED (visit 1, 2026-11-15): the draft dug a 20-square ditch anyone
+# walks round, fired an unplaced map-edge raid (refused once: no Pirate faction in the world), spawned a bare drawbridge gate
+# and a sluice beyond the ditch's end, "opened" it with ProofDrainGate (a read of the edge-sink gate: no verb), staged 400
+# tank units (one pump level is 10,000) with no pump and no power, and read the tank with a one-part arg ProofTank refuses,
+# so MOAT_chemfuel_pumped PASSED on "REFUSED: arg must be ...". Now the moat is a closed ring round the colony plot, the
+# leaf is a real drawbridge (ProofMakeDrawbridge, read back, raised by ProofDevSet), the sluice is a player-built flow door
+# lifted with RM_FlowDoorRules.ProofSetGate onto a drain pit deep enough to take the whole moat, six melee raiders stand on
+# the south bank under an assault lord (the governor narrowed for them), swimming is RM_Swim.ProofSwim's deepCell and
+# exhaustion, the capture is the RM_CaptureDown order from the lip, and the chemfuel is a powered pump pouring a Dump
+# tank's two levels into the drained moat, read on the moat's own cells. Each row needs its event: no raider read, no
+# swimmer, nothing drained, no chemfuel cell reads UNMEASURED, never PASS.
+#   ring: x O0..O0+11, z O1..O1+11, two squares wide, 8 notches dug, 2 m water; plot inside x/z +2..+9
+#   leaf: x O0+6 from z O1+2 (colony bank, winch at O1+3) to O1-1; sluice (O0+12, O1+5); drain pit x +13..+19, z +2..+8
+#   west bank: pump (O0+2, O1+5) beside the moat, tank (2x2) at (O0+3, O1+5), battery (O0+4, O1+7); raiders z O1-6
+MOAT_N, MOAT_DEEP, MOAT_WATER_M = 12, 8, 2.0
+MOAT_PIT_DEEP = 16                                   # 4 m below the moat floor x 49 squares holds the ring's 80 x 2 m
+MOAT_KIND, MOAT_RAIDERS = 'Mercenary_Slasher', 6     # melee: they must cross to reach the colonist
+MOAT_POLL, MOAT_POLLS = 120, 25                      # 3,000 ticks a watch
+MOAT_DRAIN_PULSES, MOAT_CAPTURE_TICKS = 80, 900
+MOAT_TANK_UNITS = 20000                              # two pump levels (RM_PumpMath.TankUnitsPerLevel = 10,000)
+SWIMP = 'RimMandrake.FlowWorks.Swimming.RM_Swim'
+SWIMSET = 'RimMandrake.FlowWorks.Swimming.RM_SwimSettings'
+DOORS = 'RimMandrake.FlowWorks.RM_FlowDoorRules'
+
+
+def _moat_geom():
+    x0, z0 = O
+    ring = [(x0 + i, z0 + j) for i in range(MOAT_N) for j in range(MOAT_N)
+            if i < 2 or i >= MOAT_N - 2 or j < 2 or j >= MOAT_N - 2]
+    return {'ring': ring, 'leaf': ((x0 + 6, z0 + 2), (x0 + 6, z0 - 1)), 'deck': (x0 + 6, z0), 'winch': (x0 + 6, z0 + 3),
+            'sluice': (x0 + MOAT_N, z0 + 5), 'pit': [(x0 + 13 + i, z0 + 2 + j) for i in range(7) for j in range(7)],
+            'pump': (x0 + 2, z0 + 5), 'tank': (x0 + 3, z0 + 5), 'battery': (x0 + 4, z0 + 7), 'col': (x0 + 7, z0 + 6),
+            'raiders_at': [(x0 + 3 + k, z0 - 6) for k in range(MOAT_RAIDERS)]}
+
+
+def _moat_stage(S, raised=True):
+    """Ring, drain pit, shut sluice, drawbridge (raised or lowered, read back), the west-bank pump plant, one colonist in the
+    plot and six raiders on the south bank under an assault lord. -> the staged state."""
+    G = _moat_geom()
+    for k in ('deepSwimEnabled',):
+        S.setting(k, True, typ=SWIMSET)
+    for k in ('captureDownEnabled', 'superdeepRoomsEnabled', 'liquidPumpEnabled', 'tossFlameOrderEnabled'):
+        S.setting(k, True)
+    S.dig(G['ring'] + [G['sluice']], MOAT_DEEP)
+    S.dig(G['pit'], MOAT_PIT_DEEP)
+    b = S.call('jawa/build_batch', ops='RM_Sluice:%d,%d' % G['sluice'], stuff='WoodLog', faction='player', wipeExisting=False)
+    require(int(b.get('survived') or 0) >= 1, 'the sluice was not built: %s' % b)
+    shut = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|false' % G['sluice'])
+    require('lifted=False' in shut, 'the sluice does not read lowered: %s' % shut)
+    S.fill(G['ring'], MOAT_WATER_M, WATER)
+    txt = S.sc(DPROOF, 'ProofMakeDrawbridge', '%d,%d;%d,%d;timber;A;winch' % (G['leaf'][0] + G['leaf'][1]))
+    d = kv(txt)
+    require(d.get('ok') == 'True' and d.get('leaves') == '1', 'the drawbridge was not built as one leaf: %s' % txt)
+    leaf = _moat_leaf(S, G)
+    require(leaf.get('progress') == '0' and leaf.get('winch') == 'True', 'the drawbridge does not read lowered: %s' % leaf)
+    if raised:
+        txt = S.sc(DPROOF, 'ProofDevSet', '%d,%d;raise;instant' % G['deck'])
+        require(kv(txt).get('target') == 'raised' and kv(txt).get('progress', '0') != '0', 'the leaf did not go up: %s' % txt)
+    ops = ['RM_LiquidPump:%d,%d' % G['pump'], 'RM_LiquidTank:%d,%d' % G['tank'], 'Battery:%d,%d' % G['battery']]
+    b = S.call('jawa/build_batch', ops=';'.join(ops), faction='player', wipeExisting=False)
+    require(int(b.get('survived') or 0) >= len(ops), 'build_batch built less than asked: %s' % b)
+    tank = S.sc(NSP, 'ProofTank', '%d,%d;Dump;RM_Liquid_Chemfuel;%d' % (G['tank'] + (MOAT_TANK_UNITS,)))
+    require(tank.startswith('TANK') and kv(tank).get('units') == str(MOAT_TANK_UNITS), 'the tank was not staged: %s' % tank)
+    S.ticks(2)
+    bid = ((S.call('jawa/list_things', defName='Battery', rect='%d,%d,1,2' % G['battery'], limit=2).get('things') or [{}])[0]).get('id')
+    require(bid is not None, 'no battery at %s' % (G['battery'],))
+    S.call('jawa/battery_set', thing=bid, mode='setPct', value=1.0)
+    G['colonist'] = S.pawn('Colonist', G['col'], 'player')
+    fac = _isl_hostile_faction(S)
+    G['raiders'] = []
+    for at in G['raiders_at']:
+        r = S.call('jawa/spawn_pawn', kindDef=MOAT_KIND, x=at[0], z=at[1], faction=fac, count=1)
+        pid = ((r.get('pawns') or [{}])[0]).get('id')
+        require(pid, 'raider not spawned at %s: %s' % (at, r))
+        G['raiders'].append(pid)
+    S.call('jawa/lord_assault_spawn', pawns=','.join(G['raiders']), sappers=False)
+    return G
+
+
+def _moat_leaf(S, G):
+    txt = S.sc(DPROOF, 'ProofLeaf', '%d,%d' % G['deck'])
+    d = kv(txt)
+    require('winch' in d and 'progress' in d, 'leaf unreadable: %s' % txt)
+    return d
+
+
+def _moat_live(S, G):
+    """Our raiders alive on the map: [(id, x, z)]."""
+    mine = set(G['raiders'])
+    return [(p['id'], p['x'], p['z']) for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+            if p.get('id') in mine and not p.get('dead') and p.get('x') is not None]
+
+
+def _moat_watch(S, G, polls=MOAT_POLLS, until_swimmers=2):
+    """MOAT_POLL chunks (the caller narrowed the governor). Each poll reads RM_Swim.ProofSwim under every live raider of ours: who read
+    deepCell=True (a swim square) and the most exhaustion each reached; who stood inside the ring's outer box (got there)."""
+    ring = set(G['ring'])
+    seen = {'polls': 0, 'read': set(), 'swam': {}, 'reached': set(), 'last': [], 'refused': 0}
+    for _ in range(polls):
+        S.ticks(MOAT_POLL)
+        seen['polls'] += 1
+        live = _moat_live(S, G)
+        seen['last'] = live
+        now = 0
+        for pid, x, z in live:
+            if O[0] <= x < O[0] + MOAT_N and O[1] <= z < O[1] + MOAT_N:
+                seen['reached'].add(pid)
+            txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % (x, z))
+            if not txt.startswith('SWIM ' + pid + ' '):
+                seen['refused'] += 1
+                continue
+            seen['read'].add(pid)
+            d = kv(txt)
+            if d.get('deepCell') == 'True' and (x, z) in ring:
+                now += 1
+                try:
+                    ex = float(d.get('exhaustion'))
+                except (TypeError, ValueError):
+                    ex = None                    # a swim square with no exhaustion field: swum, tiredness unread
+                had = seen['swam'].get(pid)
+                seen['swam'][pid] = ex if had is None else (had if ex is None else max(had, ex))
+        if until_swimmers and now >= until_swimmers:
+            break
+    return seen
+
+
+def _moat_lip(G, at):
+    """An undug square of the plot or the bank beside the raider at `at` (the warden's stand), nearest first."""
+    dug = set(G['ring']) | set(G['pit']) | {G['sluice']}
+    near = [(at[0] + dx, at[1] + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1) if (dx, dz) != (0, 0)]
+    near = [c for c in near if c not in dug] + [(at[0] + dx, at[1] + dz) for dx in (-2, 2) for dz in (-2, 0, 2)
+                                               if (at[0] + dx, at[1] + dz) not in dug]
+    return near[0] if near else None
+
+
 def _moat_raid(S):
-    moat = [(O[0] + i, O[1]) for i in range(20)] + [(O[0] + i, O[1] + 1) for i in range(20)]
-    S.dig(moat, 8); S.fill(moat, 2.0, WATER)
-    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d' % (O[0] + 10, O[1]))
-    S.call('jawa/spawn_batch', ops='RM_Sluice:%d,%d' % (O[0] + 20, O[1]))
-    S.call('jawa/spawn_batch', ops='RM_LiquidTank:%d,%d' % (O[0] + 5, O[1] + 4))
-    S.sc(NSP, 'ProofTank', '%d,%d;Store;RM_Liquid_Chemfuel;400' % (O[0] + 5, O[1] + 4))
-    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack')
-    S.ticks(3000)
-    swim = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,20,2' % O, includeHealth=True)
-    S.row('MOAT_raiders_swim', bool(swim.get('pawns')), swim.get('pawns'))
-    S.sc(NSP, 'ProofDrainGate', '%d,%d;open' % (O[0] + 20, O[1])); S.pulse(80)
-    S.row('MOAT_drains_fast', all(not v for v in S.dl(moat)), S.dl(moat)[:8])
-    held = [S.sc(NSP, 'ProofCaptureDown', p['id']) for p in (swim.get('pawns') or [])[:2]]
-    S.row('MOAT_two_held_and_captured', len(held) == 2 and all('prisoner=True' in h for h in held), held)
-    S.sc(NSP, 'ProofPump', '%d,%d;pour' % (O[0] + 5, O[1] + 3)); S.pulse(40)
-    S.row('MOAT_chemfuel_pumped', any(S.dl(moat)), S.sc(NSP, 'ProofTank', '%d,%d' % (O[0] + 5, O[1] + 4)))
-    _toss(S, moat[3], 'MOAT_moat_burns')
-    S.again()                                                  # control: the drawbridge lowered, nobody swims
-    S.dig(moat, 8); S.fill(moat, 2.0, WATER)
-    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d' % (O[0] + 10, O[1]))
-    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack'); S.ticks(3000)
-    S.row('MOAT_control_bridge_down_no_swim', 'swim' not in S.sc(NSP, 'ProofReadout', '%d,%d' % moat[10]).lower(), 'bridge down')
+    G = _moat_stage(S, raised=True)                 # its raiders spawn after its last tick
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # a raid hurts, downs and kills by design: narrowed for every tick of it
+    try:
+        _moat_rows(S, G)
+    finally:
+        S.B.stop_on = prior
 
 
-def _toss(S, target, rid, want_fire=True):
+def _moat_rows(S, G):
+    w = _moat_watch(S, G)
+    swimmers = sorted(w['swam'])
+    tired = [p for p in swimmers if (w['swam'][p] or 0) > 0]
+    S.row('MOAT_raiders_swim', bool(tired),
+          {'swimmers': swimmers, 'exhaustion': w['swam'], 'polls': w['polls'], 'read': sorted(w['read']), 'last': w['last']},
+          unmeasured=not w['read'] or (bool(swimmers) and all(w['swam'][p] is None for p in swimmers)))
+    # open the sluice onto the dry pit: every ring square must read dry within MOAT_DRAIN_PULSES pulses
+    up = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|true' % G['sluice'])
+    require('lifted=True' in up, 'the sluice did not lift: %s' % up)
+    dry_at, dl = None, None
+    for k in range(1, MOAT_DRAIN_PULSES + 1):
+        S.pulse(1)
+        dl = S.dl(G['ring'])
+        if None not in dl and not any(dl):
+            dry_at = k
+            break
+    S.row('MOAT_drains_fast', dry_at is not None, {'dryAfterPulses': dry_at, 'bound': MOAT_DRAIN_PULSES,
+                                                   'wetSquares': None if dl is None else sum(1 for v in dl if v)},
+          unmeasured=dl is None or None in dl)
+    # the drained ring holds the swimmers; capture two from the lip
+    S.ticks(60)
+    held = []
+    for pid, x, z in _moat_live(S, G):
+        if (x, z) in set(G['ring']):
+            v = S.sc(NSP, 'ProofCaptureDown', pid)
+            if 'held=True' in v:
+                held.append((pid, (x, z), v))
+    caught = []
+    for pid, at, v in held[:2]:
+        lip = _moat_lip(G, at)
+        o = S.call('jawa/ordered_job', pawnId=G['colonist'], jobDef='RM_CaptureDown', targetAId=pid,
+                   targetBX=lip[0], targetBZ=lip[1]) if lip else {'accepted': False, 'why': 'no lip'}
+        S.ticks(MOAT_CAPTURE_TICKS)
+        caught.append({'pawn': pid, 'verdict': v.split()[1] if len(v.split()) > 1 else v, 'lip': lip,
+                       'accepted': o.get('accepted'), 'after': S.sc(NSP, 'ProofCaptureDown', pid)})
+    S.row('MOAT_two_held_and_captured', len(caught) == 2 and all('prisoner=True' in c['after'] for c in caught),
+          {'held': [h[0] for h in held], 'captured': caught},
+          unmeasured=not swimmers or dry_at is None)
+    # chemfuel from the Dump tank, through the powered pump, into the drained moat
+    _poll_ticks(S, lambda: 'running=True' in S.sc(NSP, 'ProofPump', '%d,%d' % G['pump']), 400)
+    p0 = S.sc(NSP, 'ProofPump', '%d,%d;pour' % G['pump'])
+    S.ticks(4 * 250); S.pulse(10)
+    p1 = S.sc(NSP, 'ProofPump', '%d,%d' % G['pump'])
+    rows = S.cells(G['ring'])
+    fuel = [c for c, q in zip(G['ring'], rows) if q.get('fluid') == FUEL and q.get('dl')]
+    t0, t1 = kv(p0).get('tank', ''), kv(p1).get('tank', '')
+    units = [int(t.rsplit(':', 1)[1]) if t.rsplit(':', 1)[-1].isdigit() else None for t in (t0, t1)]
+    blind = (_vacuous(p0) or _vacuous(p1) or 'running=True' not in p0 or None in units or not rows
+             or all(not q for q in rows) or dry_at is None)
+    S.row('MOAT_chemfuel_pumped', bool(fuel) and units[1] < units[0],
+          {'pumpBefore': p0, 'pumpAfter': p1, 'chemfuelSquares': len(fuel), 'drained': dry_at is not None}, unmeasured=blind)
+    if fuel:
+        _toss(S, fuel[0], 'MOAT_moat_burns', at=_moat_lip(G, fuel[0]))
+    else:
+        S.row('MOAT_moat_burns', False, 'no chemfuel square in the moat to light', unmeasured=True)
+    # control: the same raid with the leaf lowered -- they walk over the bridge and nobody swims
+    S.again()
+    G = _moat_stage(S, raised=False)
+    c = _moat_watch(S, G, until_swimmers=0)
+    S.row('MOAT_control_bridge_down_no_swim', bool(c['reached']) and not c['swam'],
+          {'swimmers': sorted(c['swam']), 'reachedTheRing': sorted(c['reached']), 'read': sorted(c['read']), 'polls': c['polls']},
+          unmeasured=not c['read'] or not c['reached'])
+
+
+def _toss(S, target, rid, want_fire=True, at=None):
     """The toss-flame order (RM_TossFlame.cs): the colonist walks to the rim and tosses. A lit canal or pond carries the
     liquid-fire engine's own flame, not a vanilla Fire, and chemfuel can burn out within the wait, so the row polls the
     engine's cell report (burning=True) and a vanilla Fire on the square every 60 ticks and keeps the first sight."""
-    col = S.pawn('Colonist', (target[0], target[1] + 4), 'player')
+    col = S.pawn('Colonist', at or (target[0], target[1] + 4), 'player')
     r = S.call('jawa/ordered_job', pawnId=col, jobDef='RM_TossFlame', targetAX=target[0], targetAZ=target[1])
     lit, seen = False, None
     for _ in range(20):
