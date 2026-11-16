@@ -239,6 +239,13 @@ put(r, MOD, "HOLDER.L2", "finding.claimed_fixed", FB,
          token=2, ts=ts(13), now=ts(13))
 check("the new holder appends with the current token", M.reduce(M.read(r, MOD))["findings"][FB]["status"]
       == "claimed_fixed")
+# RIMMANDRAKE_RENEW_LEASE_TWICE_SECOND_SAID_ALREADY: the brief's renew command is the same text every 35 minutes; the
+# idempotency key held no time, so the second renew read ALREADY, was never written, and the lease lapsed on a holder
+# that had done what it was told (live, visit 3, 2026-11-16)
+_r1 = put(r, MOD, "HOLDER.L2", "lease.renew", "session", token=2, ts=ts(13, 10), now=ts(13, 10))
+_r2 = put(r, MOD, "HOLDER.L2", "lease.renew", "session", token=2, ts=ts(13, 20), now=ts(13, 20))
+check("two identical lease renews at different times are both written", isinstance(_r1, tuple) and isinstance(_r2, tuple)
+      and _r1[1] is True and _r2[1] is True and _r1[0] != _r2[0], (_r1, _r2))
 _pk = M.packet(r, MOD)[0].split("\n")
 _at = next(i for i, l in enumerate(_pk) if l.startswith("- " + FB + " "))
 _fb = [l for l in _pk[_at + 1:] if l.startswith("  ")][:3]

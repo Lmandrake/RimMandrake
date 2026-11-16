@@ -149,6 +149,10 @@ def _canon(obj):
 def derive_key(ev):
     fields = {k: ev.get(k) for k in ("kind", "subject", "version", "body", "evidence", "supersedes", "code_sha",
                                      "run", "token", "authority")}
+    if ev.get("kind") == "lease.renew":
+        # a renew's whole content is its time: without it the brief's same command, run again, read ALREADY and the
+        # lease lapsed (RIMMANDRAKE_RENEW_LEASE_TWICE_SECOND_SAID_ALREADY, live 2026-11-16)
+        fields["ts"] = ev.get("ts")
     return hashlib.sha256(_canon(fields).encode("utf-8")).hexdigest()[:16]
 
 
