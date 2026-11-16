@@ -45,6 +45,19 @@
    ],
    "session": "a46da9a1edac4fdf8181572b07d73d53",
    "why": "debugged offline 2026-11-15 (heap_ratchet --session a46da9a1, verdict reload_ratchet): 1036.6 MB/h against 1024 is the known reload ratchet, not a new leak. Post-GC floor 3193 -> 4098 MB over 7 game loads while things fell 55685 -> 33579; floor flat after the last load (4132, 4098); peak 4730 under the 6144 line. Retainer bisect is HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE (built, waits on its live proofs)"
+  },
+  {
+   "at": "2026-11-16T21:15:27Z",
+   "item": "RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS",
+   "keys": [
+    "log.errors",
+    "mem.managed_growth_mb_per_h",
+    "mem.managed_peak_mb",
+    "mem.private_growth_mb_per_h",
+    "mem.private_peak_mb"
+   ],
+   "session": "dc55a1095512450da3377ac72992847d",
+   "why": "explain names every key: mem.* = reload ratchet over 57 loads (heap_ratchet reload_ratchet r2 0.993; HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE, growth scope RIMMANDRAKE_SCOPE_HEAP_GROWTH_TO_ONE_GAME_SIX_LOADS); log.errors = 780 Pawn.Tick + 447 PawnTweener NREs in the knockback raid walk (this item)"
   }
  ]
 }
