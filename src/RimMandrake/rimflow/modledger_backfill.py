@@ -64,64 +64,150 @@ def _words(mod):
     return spaced, spaced.split()[-1].upper()
 
 
+def fit(text, cap):
+    """One paragraph of at most `cap` chars. A longer text keeps its leading sentences and ends with ' […]': the
+    whole is in the old file every backfilled event cites, so the cut loses nothing (standard rule 3)."""
+    t = " ".join(str(text or "").split())
+    if len(t) <= cap:
+        return t
+    head = t[:cap - 4]   # cut-ok: the event cites the old file that holds the whole text
+    stop = max(head.rfind(". "), head.rfind("; "))
+    head = head[:stop + 1] if stop > cap // 2 else head[:head.rfind(" ")] if " " in head else head
+    return head.rstrip() + " […]"
+
+
+def slug(text, words=6):
+    return "-".join(re.findall(r"[a-z0-9]+", str(text or "").lower())[:words]) or "untitled"
+
+
+QUOTE_RE = re.compile(r"[\"“]([^\"”]{2,})[\"”]")
+
+
+def _said(text):
+    """His words from a line that quotes them: the quoted parts, verbatim, joined by ' · ' (the journal's own
+    separator); the line itself when it quotes nothing."""
+    q = QUOTE_RE.findall(text or "")
+    return " · ".join(x.strip() for x in q) if q else " ".join(str(text or "").split())
+
+
+def _tags(prose):
+    p = prose.lower()
+    out = [t for t, words in (("live", ("live", "in-game", "in game", "bridge")), ("test", ("selftest", "proof", "test")),
+                              ("settings", ("setting",)), ("perf", ("perf", "tick budget")),
+                              ("art", ("sprite", "texture", " art ")), ("other-mod", ("flowworks", "cauldron")))
+           if any(w in p for w in words)]
+    return out or ["code"]
+
+
+def item_titles(root):
+    """-> {item id: the one-line title its filer wrote}: rimflow's `file` events (a title is the filer's own statement
+    of the item; an item's first paragraph is often shared boilerplate, e.g. 'Step N of plan.md (...)')."""
+    out = {}
+    for sp in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "*.jsonl"))):
+        with open(sp, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                if '"file"' not in line or '"title"' not in line:
+                    continue
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                if e.get("event") == "file" and isinstance(e.get("id"), str) and isinstance(e.get("title"), str):
+                    out[e["id"]] = e["title"]
+    return out
+
+
+def other_mod_words(root, mod):
+    """The item-name words that name ANOTHER concept mod (its squashed name, its last CamelCase word when it is 5+
+    letters): an item named for another mod is that mod's, even when it cites this one as a precedent."""
+    out = set()
+    for m in os.listdir(os.path.join(root, "design", "concepts")) if os.path.isdir(
+            os.path.join(root, "design", "concepts")) else []:
+        if m == mod or not re.match(r"^[A-Za-z][A-Za-z0-9_]*$", m):
+            continue
+        out.add(m.upper().replace("_", ""))
+        last = _words(m)[1]
+        if len(last) >= 5:
+            out.add(last)
+    return out
+
+
 def plan(root, mod):
-    """-> ([(kind, subject, body, evidence, authority)], notes). Pure read of the old stores; writes nothing."""
+    """-> ([(kind, subject, body, evidence, authority, code_sha)], notes). A pure read of the old stores, mined under
+    the entry standard (design/specs/2026-11-15-mod-ledger-entry-standard.md): facts, not history; one fact per entry;
+    every text fitted to its cap with the old file cited for the whole; subjects from the classes; lifecycle never.
+    Left out on purpose, and counted in the notes: the derived per-bar test summaries (no command, no sha), a
+    checkpoint whose `next` the stores never recorded, fault status notes, live rows that decide no locked bar, his
+    words already quoted under another source, and an item that only repeats a blind fault of the same name."""
     cdir = os.path.join(root, "design", "concepts", mod)
     vdir = os.path.join(cdir, "version")
-    ev, notes = [], []
+    S = M.config()["standard"]["caps"]
+    ev, notes, said_seen = [], [], []
 
-    def add(kind, subject, body, evidence, authority=None):
-        ev.append((kind, subject, body, evidence, authority))
+    def add(kind, subject, body, evidence, authority=None, code_sha=None):
+        ev.append((kind, subject, body, [e for e in evidence if e][:6], authority, code_sha))
+
+    def his(said):
+        n = " ".join(re.findall(r"[a-z0-9]+", said.lower()))
+        if any(n in o or o in n for o in said_seen):
+            return False
+        said_seen.append(n)
+        return True
+
+    def P(path, row=None):
+        rel = _rel(root, path)
+        return "path:%s%s" % (rel, ("#%s" % row) if row is not None else "")
 
     vj = _load(os.path.join(vdir, "VERSION.json"))
+    vjp = os.path.join(vdir, "VERSION.json")
     if vj:
-        p = _rel(root, os.path.join(vdir, "VERSION.json"))
-        add("version.open", "version", {"version": vj.get("version"), "text": "Design Version %s, %s on %s by %s; "
-                                        "%s of %s bars met at the lock" % (vj.get("version"), vj.get("state"),
-                                                                          vj.get("locked_on"), vj.get("locked_by"),
-                                                                          vj.get("bars_met"), vj.get("bars_total")),
-                                        "as_of": vj.get("locked_on")}, [p])
+        add("version.open", "version", {"version": vj.get("version"), "text": fit(
+            "Design Version %s, %s on %s by %s; %s of %s bars met at the lock" % (
+                vj.get("version"), vj.get("state"), vj.get("locked_on"), vj.get("locked_by"), vj.get("bars_met"),
+                vj.get("bars_total")), S["text"])}, [P(vjp)])
         if vj.get("owner_words"):
-            add("decision", "version_lock", {"text": vj["owner_words"], "as_of": vj.get("locked_on")}, [p],
-                {"owner_said": vj["owner_words"]})
+            said = fit(_said(vj["owner_words"]), S["said"])
+            his(said)
+            add("decision", "version", {"said": said}, [P(vjp)], {"owner_said": said})
         if vj.get("tokens_spent"):
-            add("spend", "designer_tokens", {"tokens": vj["tokens_spent"], "usd": None,
-                                             "text": "Designer and judging tokens to the lock (%s)"
-                                             % "; ".join(vj.get("caveats") or [])}, [p])
+            add("spend", "spend", {"tokens": vj["tokens_spent"], "run": "designer and judging, to the lock"}, [P(vjp)])
     else:
         notes.append("version/VERSION.json absent")
-    sr = _load(os.path.join(vdir, "stage_record.json"))
+    srp = os.path.join(vdir, "stage_record.json")
+    sr = _load(srp)
     if sr:
-        p = _rel(root, os.path.join(vdir, "stage_record.json"))
         for i, mv in enumerate(sr.get("moves") or []):
             add("stage.accepted", "stage", {"from": mv.get("from"), "to": mv.get("to"), "by": mv.get("by"),
-                                            "text": mv.get("why") or "", "as_of": mv.get("at")},
-                ["%s#moves[%d]" % (p, i)])
-        add("stage.enter", "stage", {"stage": sr.get("stage"), "text": "%s since %s (%s)"
-                                     % (sr.get("stage_label"), sr.get("since"), sr.get("since_from")),
-                                     "as_of": sr.get("since")}, [p])
-        last = (sr.get("moves") or [{}])[-1]
-        add("session.checkpoint", "checkpoint",
-            {"done": "last stage move (%s, %s -> %s): %s" % (last.get("at"), last.get("from"), last.get("to"),
-                                                            last.get("why")),
-             "next": "not recorded in the old stores (journal.md 'Waiting on' reads 'not yet written for this stage')",
-             "ruled_out": "none recorded in a readable store", "as_of": last.get("at")}, [p])
+                                            "text": fit("%s -> %s: %s" % (mv.get("from"), mv.get("to"),
+                                                                          mv.get("why") or ""), S["text"]),
+                                            "as_of": mv.get("at")}, [P(srp, "moves[%d]" % i)])
+        add("stage.enter", "stage", {"stage": sr.get("stage"), "text": fit("%s since %s (%s)" % (
+            sr.get("stage_label"), sr.get("since"), sr.get("since_from")), S["text"]), "as_of": sr.get("since")},
+            [P(srp)])
+        notes.append("left out: the checkpoint (the stores never recorded a next step)")
     else:
         notes.append("version/stage_record.json absent")
-    tt = _load(os.path.join(vdir, "test_table.json")) or {}
-    lb = _load(os.path.join(vdir, "locked_bars.json")) or {}
-    ttp = _rel(root, os.path.join(vdir, "test_table.json"))
+    ttp = os.path.join(vdir, "test_table.json")
+    tt = _load(ttp) or {}
+    lbp = os.path.join(vdir, "locked_bars.json")
+    lb = _load(lbp) or {}
     bars = {b["id"]: b for b in tt.get("bars") or [] if isinstance(b, dict) and b.get("id")}
-    for bid in lb.get("ids") or sorted(bars):
+    locked = list(lb.get("ids") or sorted(bars))
+    decider = {}
+    for bid in locked:
         b = bars.get(bid, {})
-        add("bar.locked", bid, {"text": "%s bar from %s, proves at stage %s" % (b.get("kind"), b.get("source"),
-                                                                                b.get("proves_at")),
-                                "decides": b.get("decides") or []},
-            [_rel(root, os.path.join(vdir, "locked_bars.json")), "%s#bars.%s" % (ttp, bid)])
+        for d in b.get("decides") or []:
+            decider.setdefault(d, bid)
+        add("bar.locked", "bar:" + bid, {"text": fit("%s bar from %s, proves at stage %s" % (
+            b.get("kind"), b.get("source"), b.get("proves_at")), S["text"]),
+            "decides": fit("; ".join(b.get("decides") or []), S["decides"])}, [P(lbp), P(ttp, "bars.%s" % bid)])
     if not lb:
         notes.append("version/locked_bars.json absent")
-    # live results, last row per scene per visit
-    live = {}
+    if bars:
+        notes.append("left out: %d derived per-bar test summaries (no command, no sha; test_table.json is the artifact)"
+                     % len(locked))
+    # live results: the last row per scene per visit, on the first locked bar the scene decides
+    no_bar = no_sha = 0
     for vp in sorted(glob.glob(os.path.join(vdir, "in_game", "visit_*", "rows.jsonl"))):
         visit = os.path.basename(os.path.dirname(vp))
         last = {}
@@ -129,48 +215,66 @@ def plan(root, mod):
             if row.get("test"):
                 last[row["test"]] = (i, row)
         for test, (i, row) in sorted(last.items()):
-            live[test] = (visit, row.get("verdict"))
-            add("live.run", test, {"result": row.get("verdict"), "visit": visit,
-                                   "text": "%s %s (runner %s)" % (visit, row.get("verdict"), row.get("runner_verdict"))},
-                ["%s:%d" % (_rel(root, vp), i)], None)
-    for bid in lb.get("ids") or sorted(bars):
-        b = bars.get(bid, {})
-        dec = [d for d in b.get("decides") or [] if d in live]
-        if dec:
-            ok = sum(1 for d in dec if live[d][1] == "PASS")
-            res = "live %d of %d deciding scenes PASS (%s)" % (ok, len(dec), live[dec[0]][0])
-        else:
-            res = "offline green today" if b.get("offline_green_today") else "no deciding run green"
-        add("test.run", "bar:" + bid, {"bar": bid, "result": res, "text": "from %s and the visit rows"
-                                       % ttp, "as_of": tt.get("made")}, ["%s#bars.%s" % (ttp, bid)])
-    # blind challenge faults: the finder's smallest_fix IS the proposed fix
+            bid = decider.get(test)
+            if not bid:
+                no_bar += 1
+                continue
+            res = row.get("verdict") if row.get("verdict") in ("PASS", "FAIL", "UNMEASURED", "UNRUN") else "UNMEASURED"
+            sha = (row.get("mod_sha") or "")[:12] or None
+            if not sha and res != "UNRUN":
+                no_sha += 1
+                continue
+            add("live.run", "bar:" + bid, {"result": res, "bar": bid,
+                                           "command": fit("%s · scene %s" % (row.get("command") or "?", test),
+                                                          S["command"]),
+                                           "text": fit("%s %s %s (runner %s)" % (visit, test, row.get("verdict"),
+                                                                                row.get("runner_verdict")), S["text"])},
+                [P(vp, i)], None, sha)
+    if no_sha:
+        notes.append("left out: %d live rows that record no mod sha (a result without the code it ran on)" % no_sha)
+    if no_bar:
+        notes.append("left out: %d live rows whose scene decides no locked bar (the visit rows keep them)" % no_bar)
+    # blind challenge faults: the finder's smallest_fix IS the proposed fix; its criterion is the acceptance
+    fault_ids, noted = set(), 0
     for fp in sorted(glob.glob(os.path.join(vdir, "blind_challenge", "cycle_*", "lane2", "faults.json"))):
         d = _load(fp)
         faults = d if isinstance(d, list) else (d or {}).get("faults") or []
-        cyc = fp.split(os.sep)[-3]
+        fxp = os.path.join(os.path.dirname(fp), "fixes.jsonl")
+        fixes = {x.get("fault"): x for x in _jsonl(fxp)}
         for i, f in enumerate(faults):
             if not isinstance(f, dict) or not f.get("id"):
                 continue
-            src = ["%s#%d" % (_rel(root, fp), i)]
-            fix = f.get("smallest_fix") or "not written by its finder (backfill; see the fault record)"
+            src = [P(fp, i), "item:%s" % f["id"]]
+            fix = f.get("smallest_fix") or "not written by its finder; read the fault record"
             if not isinstance(fix, str):
                 fix = json.dumps(fix, ensure_ascii=False)
             if len(fix.strip()) < M.config()["proposed_fix_min_chars"]:
                 fix = "%s (the finder's smallest_fix as written, a pointer rather than a fix; read the fault record)" % fix
-            ev_txt = (f.get("evidence") or [""])[0] if isinstance(f.get("evidence"), list) else f.get("evidence")
-            add("finding.open", f["id"], {"text": "%s [%s, bar %s, %s] %s" % (f.get("criterion") or "",
-                                                                                f.get("class"), f.get("bar"), cyc,
-                                                                                ev_txt or ""),
-                                          "proposed_fix": fix, "cycle": cyc, "class": f.get("class"),
-                                          "bar": f.get("bar")}, src)
+            seen = (f.get("evidence") or [""])[0] if isinstance(f.get("evidence"), list) else f.get("evidence")
+            bar = f.get("bar") if f.get("bar") in locked else None
+            add("finding.open", "finding:" + f["id"], {
+                "class": "polish" if str(f.get("class")).lower() == "polish" else "problem",
+                "bars": [bar] if bar else [], "tags": [] if bar else _tags(json.dumps(f)),
+                "text": fit(seen or f.get("criterion") or f["id"], S["text"]),
+                "proposed_fix": fit(fix, S["proposed_fix"]),
+                "accept": fit(f.get("criterion") or "none, the fault record names no criterion", S["accept"])}, src)
+            fault_ids.add(f["id"])
             st = f.get("status") or ""
             if st.startswith("FIXED"):
-                add("finding.claimed_fixed", f["id"], {"text": "%s (fixed by the blind cycle's fixer under the "
-                                                       "11-13 rule; no later judge verdict is recorded)" % st},
-                    src)
+                sha = (st.split() + [None])[1]
+                x = fixes.get(f["id"]) or {}
+                red, green = x.get("red") or {}, x.get("green") or {}
+                test = "red rc %s, green rc %s: %s" % (red.get("rc"), green.get("rc"), red.get("command") or
+                                                       red.get("cmd") or green.get("command") or "see fixes.jsonl")
+                add("finding.claimed_fixed", "finding:" + f["id"], {
+                    "text": "fixed by the blind cycle's fixer; no later judge verdict is recorded",
+                    "test": fit(test, S["test"])}, [P(fxp) if os.path.exists(fxp) else P(fp, i),
+                                                    "sha:%s" % sha if sha else None], None, sha)
             elif st.startswith("NOTED"):
-                add("note", f["id"], {"text": "fault status %s" % st}, src)
-    # criterion repairs
+                noted += 1
+    if noted:
+        notes.append("left out: %d fault status notes (NOTED_*: the finding.open carries the fact)" % noted)
+    # criterion repairs: a decision on the bar whose scene was repaired
     for cp in sorted(glob.glob(os.path.join(vdir, "criterion_repairs", "*"))):
         if not os.path.isdir(cp):
             continue
@@ -182,44 +286,50 @@ def plan(root, mod):
                     paras = [x.strip() for x in fh.read().split("\n\n") if x.strip() and not x.startswith("#")]
                 txt = paras[0] if paras else ""
                 break
-        add("decision", "criterion_repair:" + os.path.basename(cp),
-            {"text": txt or "criterion repair folder (files: %s)" % ", ".join(sorted(os.listdir(cp)))},
-            [_rel(root, cp)], {"why": "backfill: a criterion repair recorded in its folder"})
+        scene = re.sub(r"_\d{4}-\d\d-\d\d$", "", os.path.basename(cp))
+        bid = decider.get(scene) or next((b for b in locked if b == scene), None)
+        add("decision", "bar:" + bid if bid else "q:criterion-repair-" + slug(scene, 8),
+            {"text": fit(txt or "criterion repair of %s (files: %s)" % (scene, ", ".join(sorted(os.listdir(cp)))),
+                         S["text"])}, [P(cp)], {"why": "backfill: a criterion repair recorded in its folder"})
     # spend
     sp = os.path.join(vdir, "run_spend.jsonl")
     for i, row in enumerate(_jsonl(sp), 1):
         usd = row.get("usd") if isinstance(row.get("usd"), (int, float)) else None
-        add("spend", "run:%s" % (row.get("unit") or i), {"usd": usd, "tokens": row.get("tokens"), "stage":
-                                                         row.get("stage"), "text": "%s tokens, usd %s"
-                                                         % (row.get("tokens"), row.get("usd"))},
-            ["%s:%d" % (_rel(root, sp), i)])
+        add("spend", "spend", {"usd": usd, "tokens": row.get("tokens"), "stage": row.get("stage"),
+                               "run": str(row.get("unit") or i)}, [P(sp, i)])
     # his words, as the journal lists them
     jp = os.path.join(cdir, "journal.md")
     if os.path.exists(jp):
         with open(jp, encoding="utf-8") as fh:
             lines = fh.read().split("\n")
         start = next((i for i, l in enumerate(lines) if l.startswith("### His words")), None)
+        bullets, cur, at = [], [], None
         if start is not None:
-            cur, at = [], None
             for i in range(start + 1, len(lines)):
                 l = lines[i]
                 if l.startswith("#"):
                     break
                 if l.startswith("- "):
                     if cur:
-                        add("decision", "his_words:%d" % at, {"text": " ".join(cur)},
-                            ["%s:%d" % (_rel(root, jp), at)], {"owner_said": " ".join(cur)})
+                        bullets.append((at, " ".join(cur)))
                     cur, at = [l[2:].strip()], i + 1
                 elif cur and l.strip():
                     cur.append(l.strip())
             if cur:
-                add("decision", "his_words:%d" % at, {"text": " ".join(cur)}, ["%s:%d" % (_rel(root, jp), at)],
-                    {"owner_said": " ".join(cur)})
+                bullets.append((at, " ".join(cur)))
+            for at, b in bullets:
+                said = fit(_said(b), S["said"])
+                if his(said):
+                    add("decision", "q:" + slug(said), {"said": said}, ["path:%s:%d" % (_rel(root, jp), at)],
+                        {"owner_said": said})
         else:
             notes.append("journal.md has no 'His words' section")
-    # live items naming the mod
+    # live items naming the mod: each mines to at most one finding.open (standard rule 10)
     spaced, word = _words(mod)
     words = M.config().get("backfill_item_words", {}).get(mod, [])
+    items, dup_fault, elsewhere = [], 0, 0
+    titles = item_titles(root)
+    others = other_mod_words(root, mod) - set(words) - {word, mod.upper()}
     for ip in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "items", "*.md"))):
         name = os.path.basename(ip)[:-3]
         with open(ip, encoding="utf-8") as fh:
@@ -231,13 +341,33 @@ def plan(root, mod):
         if not named and not (set(name.split("_")) & set(words) or
                               (word in name.split("_") and (mod in prose or spaced in prose))):
             continue
+        if set(name.split("_")) & others and not (mod.upper() in name or set(name.split("_")) & (set(words) | {word})):
+            elsewhere += 1
+            continue
+        items.append(name)
+        if name in fault_ids:
+            dup_fault += 1
+            continue
         paras = [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")]
         m = re.search(r"^## spec\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
         fix = (m.group(1).strip() if m and m.group(1).strip() else
-               "not written by its filer (backfilled from the item prose; read the item)")
-        add("finding.open", name, {"text": paras[0] if paras else name, "proposed_fix": " ".join(fix.split()),
-                                   "source": "rimflow item"}, [_rel(root, ip)])
-    # his words and cards in the OWNER ledger shards
+               "not written by its filer: read item:%s" % name)
+        acc = re.search(r"Acceptance test:\s*(.+)", prose) or re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose,
+                                                                         re.S | re.M)
+        named_bars = [b for b in locked if re.search(r"\b%s\b" % re.escape(b), prose)][:3]
+        add("finding.open", "finding:" + name, {
+            "class": "polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
+            else "problem", "bars": named_bars, "tags": [] if named_bars else _tags(prose),
+            "text": fit(titles.get(name) or (paras[0] if paras else name), S["text"]),
+            "proposed_fix": fit(fix, S["proposed_fix"]),
+            "accept": fit(acc.group(1).strip() if acc else "none, not written at filing", S["accept"])},
+            [P(ip), "item:" + name])           # the old file first: evidence[0] is what the backfill came from
+    if dup_fault:
+        notes.append("left out: %d items that only repeat the blind fault of the same name" % dup_fault)
+    if elsewhere:
+        notes.append("left out: %d items named for another mod that cite this one" % elsewhere)
+    # his words and cards in the OWNER ledger shards, on the finding they bear on when it is one of ours
+    mined = {s for k, s, *_ in ev if k == "finding.open"}
     for sp_ in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER*.jsonl"))):
         for i, e in enumerate(_jsonl(sp_), 1):
             blob = json.dumps(e, ensure_ascii=False)
@@ -246,31 +376,62 @@ def plan(root, mod):
             said, card = e.get("ownerSaid"), e.get("byCard")
             if not (said or card):
                 continue
-            auth = {"owner_said": said} if said else {"by_card": card if isinstance(card, str) else json.dumps(card)}
-            add("decision", "owner:%s" % (e.get("tsn") or e.get("ts")), {"text": said or (card if isinstance(card, str)
-                                                                                         else json.dumps(card)),
-                                                                        "item": e.get("id"), "as_of": e.get("ts")},
-                ["%s:%d" % (_rel(root, sp_), i)], auth)
+            card = card if isinstance(card, str) or card is None else json.dumps(card, ensure_ascii=False)
+            words_ = fit(said or card, S["said"])
+            if not his(words_):
+                continue
+            iid = e.get("id") if isinstance(e.get("id"), str) else None
+            subj = ("finding:" + iid) if iid and "finding:" + iid in mined else "q:" + slug(iid or words_, 12)
+            auth = {"owner_said": words_} if said else {"by_card": words_}
+            add("decision", subj, {"said": words_} if said else {"text": words_},
+                ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
     return ev, notes
 
 
 def run(root, mod, dry=False):
+    """Write the plan through `modledger.append` (the standard's refusals included). An event the standard still
+    refuses is left out and counted, never forced. A BACKFILL line already in the shard that the plan no longer holds
+    is deleted (delete on sight: it failed the standard, or the old stores no longer say it); a line the plan still
+    holds is kept as it is (same key, same id)."""
     ev, notes = plan(root, mod)
     if dry:
-        return {"planned": len(ev), "written": 0, "already": 0, "notes": notes}
-    version = None
-    for kind, subject, body, evidence, auth in ev:
-        if kind == "version.open":
-            version = body.get("version")
-            break
+        return {"planned": len(ev), "written": 0, "already": 0, "deleted": 0, "refused": [], "near_duplicates": [],
+                "notes": notes}
+    version = next((b.get("version") for k, s, b, *_ in ev if k == "version.open"), None)
+    want = set()
+    for kind, subject, body, evidence, auth, sha in ev:
+        e = {"kind": kind, "subject": subject, "version": version, "body": body, "evidence": evidence,
+             "supersedes": None, "code_sha": sha, "run": None, "token": None,
+             "authority": {k: v for k, v in (auth or {}).items() if v} or None}
+        want.add(M.derive_key(e))
+    old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("key") not in want]
+    if old:
+        M.delete(root, mod, [e["id"] for e in old])
     written = already = 0
-    for kind, subject, body, evidence, auth in ev:
-        _, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
-                              authority=auth, views=False)
+    refused, near = [], []
+    for kind, subject, body, evidence, auth, sha in ev:
+        try:
+            _, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
+                                  authority=auth, code_sha=sha, views=False)
+        except M.Refusal as r:
+            if r.field == "subject" and "looks like" in r.measured:
+                near.append((subject, r.measured))
+                try:
+                    _, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
+                                          authority=auth, code_sha=sha, views=False,
+                                          new_subject="a separate source record (%s); the near-duplicate is listed in "
+                                                      "the backfill report" % (evidence[0] if evidence else "?"))
+                except M.Refusal as r2:
+                    refused.append((kind, subject, str(r2)))
+                    continue
+            else:
+                refused.append((kind, subject, str(r)))
+                continue
         written += created
         already += not created
     M.write_views(root, mod)
-    return {"planned": len(ev), "written": written, "already": already, "notes": notes}
+    return {"planned": len(ev), "written": written, "already": already, "deleted": len(old), "refused": refused,
+            "near_duplicates": near, "notes": notes}
 
 
 def compare(root, mod):
@@ -322,8 +483,13 @@ def main(argv=None):
         res = run(root, o.mod, o.dry)
         for n in res["notes"]:
             print("note: " + n)
-        print("backfill %s: %d planned, %d written, %d already there" % (o.mod, res["planned"], res["written"],
-                                                                          res["already"]))
+        for kind, subject, why in res["refused"]:
+            print("refused, left out: %s %s: %s" % (kind, subject, why))
+        for subject, why in res["near_duplicates"]:
+            print("near-duplicate, kept with --new-subject: %s" % why)
+        print("backfill %s: %d planned, %d written, %d already there, %d old lines deleted, %d refused, %d "
+              "near-duplicates" % (o.mod, res["planned"], res["written"], res["already"], res["deleted"],
+                                   len(res["refused"]), len(res["near_duplicates"])))
     else:
         rows = compare(root, o.mod)
         for what, old, new, ok in rows:

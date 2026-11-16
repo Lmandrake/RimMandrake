@@ -110,7 +110,7 @@ Envelope fields are written by the tool (`id`, `key`, `ts`, `tsn`, `mod`, `versi
 
 | kind | required body | also required |
 |---|---|---|
-| `finding.open` | `class` (problem / polish), `bars` (list; may be empty only with facet `instrument` or `test`), `text`, `proposed_fix`, `accept` | ≥ 1 evidence ref |
+| `finding.open` | `class` (problem / polish), `bars` (list; may be empty only with a facet tag, §5 "Limits"), `text`, `proposed_fix`, `accept` | ≥ 1 evidence ref |
 | `finding.claimed_fixed` | `text` (what changed; the causes it fixed, named in a clause each), `test` (the command, red and green) | `code_sha` |
 | `finding.verified` / `finding.reopened` | `text` | `code_sha`; writer JUDGE |
 | `finding.withdrawn` *(new)* | `text` (why it is not a defect), `how_checked` (`test` / `repro` / `reading`; `reading` alone is shown as weak) | `code_sha` |
@@ -206,8 +206,9 @@ His 10:16 PM ruling replaces the fusion spec's "nothing is ever edited or delete
   - `cause:<kebab-slug>` (with its `finding`), `trap:<kebab-slug>`, `q:<kebab-slug>`: minted by their first event.
   - singletons: `stage`, `version`, `session`, `lease`.
 - **Who mints, and how duplicates are prevented.** Any writer allowed the kind mints by writing the subject's first
-  event. At mint, `append` runs the new text against the index's live subjects of the same class; if the best match
-  clears a threshold (BM25 rank, tuned on the backfill) it refuses with the candidates (`trap:x looks like
+  event. At mint, `append` runs the new text against the live subjects of the same class: FTS5 BM25 ranks the
+  candidates and token containment decides (`modledger.json` `standard.mint_duplicate_overlap`, 0.7; raw BM25 is not
+  comparable across ledgers of different size); a match refuses with the candidates (`trap:x looks like
   trap:geometry-check-reads-seven-oracle-scenes (live, BACKFILL seq 18): write to it, or pass --new-subject "<why it
   differs>"`). The override is recorded in the body, so a near-duplicate is a searchable decision.
 - **Tags** are two closed sets: `bars` (the mod's own ids) and eight facets fixed in `modledger.json`. No per-mod free
@@ -215,9 +216,10 @@ His 10:16 PM ruling replaces the fusion spec's "nothing is ever edited or delete
 
 ### 4.2 The index: generated, disposable
 
-`modledger index --mod <Mod>` builds `/tmp/modledger-index/<Mod>.sqlite` (a program reads it, so `/tmp`, never the
-repo). Every query command checks the shards' byte offsets against the ones stored in the index and rebuilds whole when
-they differ; deleting it loses nothing. Never committed, never cited, never a second source of truth.
+`modledger index --mod <Mod>` builds `/tmp/modledger-index/<root hash>/<Mod>.sqlite` (a program reads it, so `/tmp`,
+never the repo; one folder per clone root, so the clones never share one). Every query command checks the shards' byte
+offsets and the reducer version against the ones stored in the index and rebuilds whole when they differ; deleting it
+loses nothing. Never committed, never cited, never a second source of truth.
 
 - `ev(id, shard, seq, ts, writer, kind, subject, class, bars, tags, code_sha, authority, text, fix, accept, said,
   evidence, supersedes, superseded_by)`: one row per event;
@@ -231,7 +233,7 @@ they differ; deleting it loses nothing. Never committed, never cited, never a se
 | Has this cause been refuted? | `modledger find --mod GimmeSomeSlack --class cause "planner kinks the lead"` → each match with its status now: refuted, *stale* (its files changed since), tried, reopened |
 | What did he say about X? | `modledger find --mod GimmeSomeSlack --his "shock"` → OWNER events and answers only, `said` verbatim, with ledger id and authority |
 | Open findings on bar N | `modledger open --mod GimmeSomeSlack --bar no_unforced_sharp_turn` → open and claimed-fixed findings with proposed fix and accept |
-| What changed since I last looked? | `modledger since --mod GimmeSomeSlack <cursor>` → status changes only, grouped by subject; the cursor is the offset set the packet prints on its last line (or an event id, or a time) |
+| What changed since I last looked? | `modledger since --mod GimmeSomeSlack <cursor>` → status changes only, grouped by subject; the cursor is the time the packet prints on its last line (`t=<ts>.<tsn>`; a deletion on sight shifts offsets, never a time), or an event id, or a time. An entry another clone wrote before the cursor and published after it is not listed (`show` has it) |
 | Any trap where I am about to work? | `modledger find --mod GimmeSomeSlack --class trap --path src/RimMandrake/GimmeSomeSlack/Source/Aerial/` → live traps whose `where` or evidence is under that path |
 | Was this found before (reopen, don't re-file)? | `modledger find --mod GimmeSomeSlack --class finding --all "illegal characters in path"` → including withdrawn and verified |
 | The whole trail of one subject | `modledger show --mod GimmeSomeSlack finding:<NAME>` (exists today) |
@@ -301,7 +303,13 @@ the lint lets it through.
 
 ---
 
-## 6. Changes owed in `modledger` and the fusion spec (for the builder; nothing here was edited)
+## 6. Changes owed in `modledger` and the fusion spec
+
+Built by `RIMMANDRAKE_ADOPT_ENTRY_STANDARD_IN_MODLEDGER_FOURTEEN_OWED` (2026-11-15): all of the list below, with
+`selftest_modledger.py` holding a refusal case for each rule. Where the build differs from the text: an empty `bars`
+needs any facet tag (not only `instrument`/`test`, §2.2); the mint check decides by token containment over BM25-ranked
+candidates (§4.1); the cursor is a time (§4.3); the index lives under a per-root folder (§4.2); `sha:` refs and
+`code_sha` resolve on the base, `path:` refs exist, at lint only (append has no base to check against).
 
 In `src/RimMandrake/rimflow/modledger.py` and `modledger.json`:
 

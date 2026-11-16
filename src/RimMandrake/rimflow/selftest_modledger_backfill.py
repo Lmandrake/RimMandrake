@@ -6,8 +6,12 @@
 Shadow mode: the backfill writes only the mod's ledger (every event BACKFILL, every one citing its old file), leaves
 every old file byte for byte, is idempotent, turns a blind fault's smallest_fix into the finding's proposed fix, keeps
 a FIXED fault open as claimed (no judge verdict), counts his words as answers, and `compare` names a stale journal.
+Under the entry standard: every event passes `append`'s checks (a source that cannot is left out and reported, never
+forced), an item repeating a fault mines nothing new, a live row with no mod sha is left out, and an old BACKFILL line
+the plan no longer holds is deleted on the re-run while the lines it still holds are kept byte for byte.
 """
 import hashlib
+import re
 import json
 import os
 import shutil
@@ -51,21 +55,32 @@ w(os.path.join(v, "locked_bars.json"), {"ids": ["bar_a", "bar_b"]})
 w(os.path.join(v, "test_table.json"), {"made": "2026-11-14", "bars": [
     {"id": "bar_a", "kind": "experience", "source": "tree.json", "proves_at": "6", "decides": ["sc_a"],
      "offline_green_today": True},
-    {"id": "bar_b", "kind": "inventory", "source": "record.json", "proves_at": "3", "decides": [],
+    {"id": "bar_b", "kind": "inventory", "source": "record.json", "proves_at": "3", "decides": ["sc_b"],
      "offline_green_today": False}]})
 w(os.path.join(v, "in_game", "visit_1", "rows.jsonl"),
-  json.dumps({"test": "sc_a", "verdict": "FAIL"}) + "\n" + json.dumps({"test": "sc_a", "verdict": "PASS"}) + "\n")
+  json.dumps({"test": "sc_a", "verdict": "FAIL", "mod_sha": "abc1234"}) + "\n" +
+  json.dumps({"test": "sc_a", "verdict": "PASS", "mod_sha": "def5678", "command": "runner.py --scenes a"}) + "\n" +
+  json.dumps({"test": "sc_b", "verdict": "PASS"}) + "\n")
 w(os.path.join(v, "blind_challenge", "cycle_1", "lane2", "faults.json"), {"faults": [
-    {"id": "FAULT_ONE", "class": "Problem", "bar": "bar_a", "criterion": "a thrown pawn stops at a wall",
-     "evidence": ["row L1 FAIL"], "smallest_fix": "stop the ray at the first impassable cell", "status": "FIXED abc"},
-    {"id": "FAULT_TWO", "class": "Polish", "bar": "bar_b", "criterion": "short", "evidence": ["e"],
+    {"id": "RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL", "class": "Problem", "bar": "bar_a", "criterion": "a thrown pawn stops at a wall",
+     "evidence": ["row L1 FAIL"], "smallest_fix": "stop the ray at the first impassable cell", "status": "FIXED abc1234"},
+    {"id": "RIMMANDRAKE_POINT_FIXTURE_FIX_AT_A_REFERENCE", "class": "Polish", "bar": "bar_b", "criterion": "short", "evidence": ["e"],
      "smallest_fix": "K-1", "status": "PENDING"}]})
 w(os.path.join(c, "journal.md"), "# j\n\n## The mod as it stands\n\n- **Stage now:** Stage 3, offline build.\n"
   "- Every in-game scene is UNRUN (Stage 6).\n- **Waiting on:** not yet written for this stage.\n\n"
   "### His words on this mod (verbatim)\n\n- 2026-11-10: \"Throw it far.\"\n- 2026-11-12: \"Shelves are open,\n"
   "  period.\"\n\n### Oddities\n")
 w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE.md"),
-  "# RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE\n\nFixtureMod drops goods.\n\n## spec\n\nfile: Source/A.cs — keep the goods.\n")
+  "# RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE\n\nFixtureMod drops goods.\n\n## spec\n\nfile: Source/A.cs — keep the goods.\n\nAcceptance test: selftest_a.py exit 0\n")
+os.makedirs(os.path.join(root, "design", "concepts", "OtherMod"))
+w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_BACKFILL_OTHERMOD_LEDGER_LIKE_THE_FIRST.md"),
+  "# RIMMANDRAKE_BACKFILL_OTHERMOD_LEDGER_LIKE_THE_FIRST\n\nFixtureMod was backfilled first; do OtherMod the same way.\n")
+w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_FLING_FIXTUREMOD_STEP_TWO.md"),
+  "# RIMMANDRAKE_FLING_FIXTUREMOD_STEP_TWO\n\nStep 2 of plan.md (FixtureMod Designer pass).\n")
+w(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"),
+  json.dumps({"event": "file", "id": "RIMMANDRAKE_FLING_FIXTUREMOD_STEP_TWO", "title": "Goods fly 1.6x a person"}) + "\n")
+w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL.md"),
+  "# RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL\n\nFixtureMod's blast ray passes walls.\n")
 w(os.path.join(root, "infrastructure", "state", "items", "RIMMANDRAKE_FIX_OTHER_MOD_THING.md"),
   "# RIMMANDRAKE_FIX_OTHER_MOD_THING\n\nNot ours.\n")
 before = {}
@@ -74,31 +89,74 @@ for d, _, fs in os.walk(c):
         p = os.path.join(d, f)
         before[p] = hashlib.sha256(open(p, "rb").read()).hexdigest()
 
+# an old backfill line the standard now refuses, written before the re-run (a pasted log, an untyped ref)
+M.append(root, MOD, "DISPATCH", "version.open", "version", body={"version": "0.1.0"}, version="0.1.0")
+oldp = M.shard_path(root, MOD, "BACKFILL")
+with open(oldp, "w", encoding="utf-8") as fh:
+    fh.write(json.dumps({"id": M.derive_id("BACKFILL", "old1"), "key": "old1", "ts": "2026-11-15T20:00:00Z", "tsn": 1,
+                         "mod": MOD, "version": "0.1.0", "writer": "BACKFILL", "run": None, "kind": "note",
+                         "subject": "FAULT_ONE", "body": {"text": "fault status NOTED\n  at Verse.X.Y()"},
+                         "evidence": ["see the log"]}) + "\n")
 res = B.run(root, MOD)
 check("backfill writes events", res["written"] > 0, res)
+check("the re-run deletes the old line the standard refuses (delete on sight, not grandfathered)",
+      res["deleted"] == 1 and not [e for e in M.read(root, MOD) if e.get("key") == "old1"], res)
+check("nothing the plan holds is refused by the standard on the fixture", res["refused"] == [], res["refused"])
+check("the report names what it left out on purpose", any("no mod sha" in n for n in res["notes"]) and
+      any("repeat the blind fault" in n for n in res["notes"]) and any("derived per-bar" in n for n in res["notes"]),
+      res["notes"])
+before_bytes = open(oldp, "rb").read()
 res2 = B.run(root, MOD)
-check("a second backfill writes nothing (idempotent)", res2["written"] == 0 and res2["already"] == res["written"], res2)
+check("a second backfill writes nothing (idempotent)", res2["written"] == 0 and res2["already"] == res["written"]
+      and res2["deleted"] == 0, res2)
+check("a re-run keeps the lines it still holds byte for byte", open(oldp, "rb").read() == before_bytes)
 after = {p: hashlib.sha256(open(p, "rb").read()).hexdigest() for p in before}
 check("shadow mode: every old file is unchanged byte for byte", after == before)
 evs = M.read(root, MOD)
-check("every event is BACKFILL and cites an existing old file",
-      all(e["writer"] == "BACKFILL" and e["evidence"] and
-          os.path.exists(os.path.join(root, e["evidence"][0].split("#")[0].rsplit(":", 1)[0])) for e in evs),
-      [e["evidence"] for e in evs if not e["evidence"]])
+bevs = [e for e in evs if e["_shard"] == "BACKFILL"]
+
+
+def cited(e):
+    r = [x for x in e["evidence"] if x.startswith("path:")] or [""]
+    return os.path.exists(os.path.join(root, re.sub(r"(#.*|:\d+)$", "", r[0][5:])))
+
+
+def std_probs(e):
+    return M.check_entry("BACKFILL", e["kind"], e["subject"], e["body"], e["evidence"], e.get("code_sha"),
+                         e.get("authority"), root)
+
+
+check("every backfilled event cites an existing old file (a typed path: ref)", bevs and all(cited(e) for e in bevs),
+      [e["evidence"] for e in bevs if not cited(e)])
+check("every backfilled event passes the standard's shape checks", all(not std_probs(e) for e in bevs),
+      [(e["subject"], str(std_probs(e)[:1])) for e in bevs if std_probs(e)])
+check("no derived per-bar test summary and no empty checkpoint are mined",
+      not [e for e in bevs if e["kind"] in ("test.run", "session.checkpoint")], [e["kind"] for e in bevs])
 st = M.reduce(evs)
 check("stage and version come from the stage record and VERSION.json", st["stage"] == "offline_build" and
       st["version"] == "0.1.0", (st["stage"], st["version"]))
-check("bars: two locked, bar_a's verdict from the last live row", len(st["bars"]) == 2 and
-      "1 of 1" in (st["bars"]["bar_a"]["verdict"] or ""), st["bars"])
-f1 = st["findings"].get("FAULT_ONE") or {}
-check("a FIXED fault stays open as claimed, its smallest_fix as the proposed fix",
-      f1.get("status") == "claimed_fixed" and "impassable" in (f1.get("proposed_fix") or ""), f1)
-f2 = st["findings"].get("FAULT_TWO") or {}
+check("bars: two locked, bar_a's verdict from the last live row, on its sha", len(st["bars"]) == 2 and
+      st["bars"]["bar:bar_a"]["verdict"] == "PASS" and [t["sha"] for t in st["tests"] if t["subject"] == "bar:bar_a"]
+      == ["def5678"], (st["bars"], st["tests"]))
+f1 = st["findings"].get("finding:RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL") or {}
+check("a FIXED fault stays open as claimed, its smallest_fix as the proposed fix, its criterion as accept",
+      f1.get("status") == "claimed_fixed" and "impassable" in (f1.get("proposed_fix") or "") and
+      "stops at a wall" in (f1.get("accept") or "") and f1.get("code_sha") == "abc1234", f1)
+check("an item that only repeats a fault mines no second finding.open",
+      len([e for e in bevs if e["kind"] == "finding.open" and
+           e["subject"] == "finding:RIMMANDRAKE_STOP_FIXTURE_RAY_AT_WALL_CELL"]) == 1)
+f2 = st["findings"].get("finding:RIMMANDRAKE_POINT_FIXTURE_FIX_AT_A_REFERENCE") or {}
 check("a pointer-sized smallest_fix is kept and labelled, not padded", (f2.get("proposed_fix") or "").startswith("K-1 ")
       and "pointer" in f2["proposed_fix"], f2)
 check("the item naming the mod is a finding with its spec as the fix, the other mod's is not",
-      "file: Source/A.cs" in (st["findings"].get("RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE") or {}).get("proposed_fix", "")
-      and "RIMMANDRAKE_FIX_OTHER_MOD_THING" not in st["findings"], sorted(st["findings"]))
+      "file: Source/A.cs" in (st["findings"].get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE") or {}).get(
+          "proposed_fix", "") and "selftest_a.py" in (st["findings"]["finding:RIMMANDRAKE_FIX_FIXTUREMOD_THING_ONE"].get(
+              "accept") or "") and "finding:RIMMANDRAKE_FIX_OTHER_MOD_THING" not in st["findings"], sorted(st["findings"]))
+check("an item named for another mod that only cites this one is not mined",
+      "finding:RIMMANDRAKE_BACKFILL_OTHERMOD_LEDGER_LIKE_THE_FIRST" not in st["findings"], sorted(st["findings"]))
+check("an item's text is its filer's one-line title, not its boilerplate first paragraph",
+      (st["findings"].get("finding:RIMMANDRAKE_FLING_FIXTUREMOD_STEP_TWO") or {}).get("text") == "Goods fly 1.6x a person",
+      st["findings"].get("finding:RIMMANDRAKE_FLING_FIXTUREMOD_STEP_TWO"))
 check("his words count as his answers, a wrapped bullet joined", any("Shelves are open, period." in a["answer"]
                                                                     for a in st["answers"].values()), st["answers"])
 check("the views exist and the mod ledger lints clean", M.lint(root, MOD, None)[0] == [], M.lint(root, MOD, None)[0])

@@ -68,7 +68,7 @@ check("a run that wrote no checkpoint is flagged NO_CHECKPOINT", flags is not No
       err or flags)
 out2, err = attempt(lambda: M.launch(root, MOD, "L2", "builder"))
 if out2:
-    M.append(root, MOD, "HOLDER.L2", "session.checkpoint", "checkpoint", token=out2["token"],
+    M.append(root, MOD, "HOLDER.L2", "session.checkpoint", "session", token=out2["token"],
              body={"done": "built", "next": "judge", "ruled_out": "the tick cause"})
 flags2, err2 = attempt(lambda: M.end_run(root, MOD, (out2 or {}).get("run"), "ok"))
 check("a run that wrote a full checkpoint ends with no flags", flags2 == [], err or err2 or flags2)

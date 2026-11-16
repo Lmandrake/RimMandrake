@@ -1,5 +1,5 @@
 {
-  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green. packet_line_chars: one text in the packet past this many characters is clipped with a pointer to the command that prints it whole (fulltext.clip); the ledger keeps it whole. backfill_item_words: per mod, the item-name words that alone mark a live rimflow item as that mod's at backfill (an item naming the mod in its name or opening lines needs none); a short word is listed only where it names nothing else.",
+  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green; finding.withdrawn (not a defect) is JUDGE, STEWARD or a HOLDER with a test (standard.holder_withdrawn_needs). BACKFILL writes fact kinds only: lifecycle kinds are never mined (standard rule 10). packet_line_chars: one text in the packet past this many characters is clipped with a pointer to the command that prints it whole (fulltext.clip); the ledger keeps it whole. backfill_item_words: per mod, the item-name words that alone mark a live rimflow item as that mod's at backfill (an item naming the mod in its name or opening lines needs none); a short word is listed only where it names nothing else. standard: the entry standard (design/specs/2026-11-15-mod-ledger-entry-standard.md, his 2026-11-15 'so it is not arbitrary in size and pedantic detail' and 'we must resist unlimited provenance'): field caps in chars, the whole line in bytes, typed evidence refs, the eight facets, the narration openers, the required body fields per kind, which kinds need code_sha, the subject classes and singletons, the closed value sets, the lifecycle kinds refused as noise, and the mint-time duplicate check (FTS5 BM25 picks the candidates, token containment >= mint_duplicate_overlap decides: raw BM25 is not comparable across ledgers of different size). bars may be empty only when the entry carries a facet tag (§5: 'a miner that cannot tell writes bars: [] with a facet').",
   "holder_context_ceiling_tokens": 400000,
   "packet_budget_tokens": 15000,
   "packet_line_chars": 500,
@@ -36,7 +36,10 @@
       "question.withdrawn",
       "decision",
       "spend",
-      "note"
+      "note",
+      "trap.noted",
+      "trap.cleared",
+      "finding.withdrawn"
     ],
     "JUDGE": [
       "finding.open",
@@ -45,7 +48,10 @@
       "stage.exit_confirmed",
       "test.run",
       "live.run",
-      "note"
+      "note",
+      "trap.noted",
+      "trap.cleared",
+      "finding.withdrawn"
     ],
     "OWNER": [
       "question.answer",
@@ -68,15 +74,294 @@
       "question.withdrawn",
       "finding.open",
       "version.open",
-      "note"
+      "note",
+      "trap.noted",
+      "trap.cleared",
+      "finding.withdrawn"
     ],
     "BACKFILL": [
-      "*"
+      "version.open",
+      "stage.enter",
+      "stage.accepted",
+      "bar.locked",
+      "bar.added",
+      "bar.eased",
+      "bar.deferred",
+      "test.run",
+      "live.run",
+      "finding.open",
+      "finding.claimed_fixed",
+      "finding.verified",
+      "finding.withdrawn",
+      "finding.reopened",
+      "finding.disputed",
+      "cause.tried",
+      "cause.refuted",
+      "cause.reopened",
+      "trap.noted",
+      "trap.cleared",
+      "question.ask",
+      "question.answer",
+      "question.withdrawn",
+      "decision",
+      "spend",
+      "note"
     ]
   },
   "backfill_item_words": {
     "ExplosiveKnockback": [
       "KNOCKBACK"
     ]
+  },
+  "standard": {
+    "caps": {
+      "text": 320,
+      "proposed_fix": 320,
+      "done": 320,
+      "counter": 320,
+      "obvious": 320,
+      "against": 320,
+      "accept": 240,
+      "command": 240,
+      "test": 240,
+      "decides": 240,
+      "said": 600,
+      "next": 160,
+      "where": 160,
+      "how_checked": 40,
+      "new_subject_why": 160
+    },
+    "line_bytes": 1536,
+    "evidence_max": 6,
+    "evidence_ref_chars": 160,
+    "evidence_types": [
+      "sha",
+      "path",
+      "ext",
+      "test",
+      "run",
+      "item",
+      "ledger",
+      "card"
+    ],
+    "facets": [
+      "code",
+      "instrument",
+      "test",
+      "live",
+      "settings",
+      "art",
+      "perf",
+      "other-mod"
+    ],
+    "narration_openers": [
+      "I ",
+      "We ",
+      "Now ",
+      "Started",
+      "Began",
+      "Working on",
+      "Looking at",
+      "Continuing"
+    ],
+    "required": {
+      "finding.open": [
+        "class",
+        "bars",
+        "text",
+        "proposed_fix",
+        "accept"
+      ],
+      "finding.claimed_fixed": [
+        "text",
+        "test"
+      ],
+      "finding.verified": [
+        "text"
+      ],
+      "finding.reopened": [
+        "text"
+      ],
+      "finding.withdrawn": [
+        "text",
+        "how_checked"
+      ],
+      "finding.disputed": [
+        "text",
+        "counter"
+      ],
+      "cause.tried": [
+        "text",
+        "finding",
+        "decides"
+      ],
+      "cause.refuted": [
+        "text",
+        "finding",
+        "depends_on"
+      ],
+      "cause.reopened": [
+        "text"
+      ],
+      "trap.noted": [
+        "text",
+        "where"
+      ],
+      "trap.cleared": [
+        "text",
+        "where"
+      ],
+      "question.ask": [
+        "text",
+        "obvious",
+        "against"
+      ],
+      "question.withdrawn": [
+        "text"
+      ],
+      "test.run": [
+        "result",
+        "command"
+      ],
+      "live.run": [
+        "result",
+        "command"
+      ],
+      "session.checkpoint": [
+        "done",
+        "next",
+        "ruled_out"
+      ],
+      "note": [
+        "text",
+        "about"
+      ],
+      "stage.exit_claimed": [
+        "text"
+      ],
+      "stage.rejected": [
+        "text"
+      ],
+      "bar.locked": [
+        "text"
+      ],
+      "bar.added": [
+        "text"
+      ],
+      "bar.eased": [
+        "text"
+      ],
+      "bar.deferred": [
+        "text"
+      ],
+      "lease.grant": [
+        "lease",
+        "token"
+      ],
+      "lease.revoke": [
+        "lease"
+      ],
+      "judge.sealed": [
+        "shard",
+        "sha256"
+      ],
+      "session.id": [
+        "session_id"
+      ],
+      "version.open": [
+        "version"
+      ],
+      "spend": [],
+      "stage.enter": [
+        "stage"
+      ],
+      "stage.accepted": [
+        "to"
+      ],
+      "stage.exit_confirmed": [],
+      "run.start": [],
+      "run.end": [],
+      "lease.renew": [],
+      "lease.release": [],
+      "question.answer": [],
+      "decision": []
+    },
+    "said_or_text": [
+      "question.answer",
+      "decision"
+    ],
+    "authority_required": [
+      "question.answer",
+      "decision"
+    ],
+    "evidence_required": [
+      "finding.open"
+    ],
+    "code_sha_required": [
+      "finding.claimed_fixed",
+      "finding.verified",
+      "finding.reopened",
+      "finding.withdrawn",
+      "cause.refuted"
+    ],
+    "code_sha_unless_unrun": [
+      "test.run",
+      "live.run"
+    ],
+    "values": {
+      "class": [
+        "problem",
+        "polish"
+      ],
+      "result": [
+        "PASS",
+        "FAIL",
+        "UNMEASURED",
+        "UNRUN"
+      ],
+      "how_checked": [
+        "test",
+        "repro",
+        "reading",
+        "reading+test",
+        "repro+test"
+      ]
+    },
+    "holder_withdrawn_needs": "test",
+    "subject_classes": [
+      "bar",
+      "finding",
+      "cause",
+      "trap",
+      "q"
+    ],
+    "singletons": [
+      "stage",
+      "version",
+      "session",
+      "lease",
+      "judge",
+      "spend",
+      "run"
+    ],
+    "lifecycle_kinds": [
+      "claim",
+      "lease",
+      "lease.grant",
+      "lease.renew",
+      "lease.release",
+      "lease.revoke",
+      "reassign",
+      "raise",
+      "start",
+      "run.start",
+      "run.end",
+      "verify",
+      "session.id",
+      "judge.sealed"
+    ],
+    "mint_duplicate_overlap": 0.7,
+    "mint_duplicate_min_tokens": 4,
+    "find_limit": 10
   }
 }

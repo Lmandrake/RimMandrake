@@ -51,8 +51,15 @@ M.append(root, MOD, "DISPATCH", "version.open", "version", body={"version": "0.1
 p, err = plan(root, MOD)
 check("no session recorded: start from the packet", p.get("action") == "packet", err or p)
 tok = M.grant(root, MOD, lease="H1")
-M.append(root, MOD, "HOLDER.H1", "cause.refuted", "C_TICK", token=tok, body={"text": "not the tick"})
-M.append(root, MOD, "OWNER", "question.answer", "Q_R", body={"text": "radius 4"}, authority={"owner_said": "radius 4"})
+# fixture inputs in the entry standard's shape (subjects with their class, the per-kind fields; adopted by
+# RIMMANDRAKE_ADOPT_ENTRY_STANDARD_IN_MODLEDGER_FOURTEEN_OWED); the checks below are unchanged
+F = "finding:RIMMANDRAKE_TRACE_TICK_FIXTURE_FOR_RESUME"
+M.append(root, MOD, "JUDGE.J1", "finding.open", F, run="J1", evidence=["run:J1"],
+         body={"class": "problem", "bars": [], "tags": ["code"], "text": "the comp does not tick",
+               "proposed_fix": "tick the comp from CompTickLong", "accept": "none, fixture"})
+M.append(root, MOD, "HOLDER.H1", "cause.refuted", "cause:c-tick", token=tok, code_sha="abc123",
+         body={"text": "not the tick (C_TICK)", "finding": F, "depends_on": ["Source/Comp.cs"]})
+M.append(root, MOD, "OWNER", "question.answer", "q:r", body={"said": "radius 4"}, authority={"owner_said": "radius 4"})
 M.append(root, MOD, "HOLDER.H1", "session.id", "session", token=tok, body={"session_id": "s-1", "context_tokens": 120000})
 p, err = plan(root, MOD)
 check("under the ceiling: resume that session", p.get("action") == "resume" and p.get("session_id") == "s-1", err or p)

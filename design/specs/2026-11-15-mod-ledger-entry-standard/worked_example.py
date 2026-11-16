@@ -2,8 +2,10 @@
 """Measurement for design/specs/2026-11-15-mod-ledger-entry-standard.md §5 (throwaway; NOT the lint).
 
 Mines ten real Gimme Some Slack tickets into mod-ledger events under the entry standard, appends them through the real
-`modledger.append` into a temporary root (BACKFILL writer, views off), checks each against the standard's caps with a
-prototype checker, feeds the checker five deliberately bad entries to watch it refuse, and prints bytes before/after.
+`modledger.append` into a temporary root (BACKFILL writer, views off; the bars they cite locked first in a STEWARD
+shard that is not measured), checks each with the real standard (`modledger.check_entry`, since the standard was
+adopted in modledger: item RIMMANDRAKE_ADOPT_ENTRY_STANDARD_IN_MODLEDGER_FOURTEEN_OWED), feeds it five deliberately bad
+entries to watch it refuse, and prints bytes before/after.
 
     python3 design/specs/2026-11-15-mod-ledger-entry-standard/worked_example.py
 """
@@ -196,8 +198,7 @@ E = [
      [item(9)], {}),
 ]
 
-# Today's modledger has no trap.* or finding.withdrawn; map them so the real append takes them (§6 owes the kinds).
-MAP = {"trap.noted": "note", "finding.withdrawn": "note"}
+MAP = {}          # the standard's kinds are real now (trap.noted, finding.withdrawn); nothing is mapped onto note
 
 # The standard's caps (§2 and the rule sheet).
 CAP = {"text": 320, "proposed_fix": 320, "accept": 240, "said": 600, "command": 240, "test": 240, "where": 160}
@@ -219,7 +220,14 @@ REQUIRED = {
 
 
 def check(kind, body, evidence, extra):
-    """-> list of refusals, each 'field: what, smallest fix'. Empty = passes the standard."""
+    """-> the standard's refusals for one entry (modledger.check_entry). Empty = passes the standard."""
+    return [str(r) for r in modledger.check_entry("BACKFILL", kind, extra.get("subject", "finding:" + TICKETS[0]),
+                                                  body, list(evidence), extra.get("code_sha"),
+                                                  extra.get("authority"), REPO)]
+
+
+def _prototype_check(kind, body, evidence, extra):
+    """The design-time prototype (kept to show what the standard was drafted from; main() no longer calls it)."""
     out = []
     for f in REQUIRED.get(kind, ("text",)):
         if f not in body:
@@ -282,7 +290,7 @@ def before_bytes():
 def main():
     fails = 0
     for kind, subj, body, evidence, extra in E:
-        why = check(kind, body, evidence, extra)
+        why = check(kind, body, evidence, dict(extra, subject=subj))
         if why:
             fails += 1
             print("STANDARD REFUSES good entry %s %s: %s" % (kind, subj, why))
@@ -292,6 +300,11 @@ def main():
         print("  %-22s -> %s" % (b[0], "; ".join(check(b[0], b[2], b[3], b[4]))[:150]))
     root = tempfile.mkdtemp(prefix="mlstd-")
     os.environ.pop("RM_MODLEDGER_WRITER", None)
+    cited = sorted({b for _k, s_, body, _e, _x in E for b in (body.get("bars") or []) + [body.get("bar")] +
+                    ([s_[4:]] if s_.startswith("bar:") else []) if b})
+    for b in cited:
+        modledger.append(root, MOD, "STEWARD", "bar.locked", "bar:" + b, body={"text": "locked for the measurement"},
+                         version="0.1.0", views=False)
     for kind, subj, body, evidence, extra in E:
         b = dict(body)
         if kind in MAP:

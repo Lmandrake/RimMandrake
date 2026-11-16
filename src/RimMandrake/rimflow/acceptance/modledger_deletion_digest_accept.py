@@ -59,9 +59,13 @@ g = lambda *a: subprocess.run(["git", "-C", root, *a], capture_output=True, chec
 g("init", "-q", "-b", "main"); g("config", "user.email", "t@t"); g("config", "user.name", "t")
 os.makedirs(os.path.join(root, "design", "concepts", MOD))
 M.append(root, MOD, "DISPATCH", "version.open", "version", body={"version": "0.1.0"}, version="0.1.0")
-fid, _ = M.append(root, MOD, "JUDGE.J1", "finding.open", "F_SECRET_SUBJECT", run="J1",
-                  body={"text": "SECRET FINDING TEXT", "proposed_fix": "the precise fix, also secret"})
-did, _ = M.append(root, MOD, "STEWARD", "decision", "D_OWN", body={"text": "own decision"}, authority={"why": "t"})
+# fixture inputs in the entry standard's shape (adopted by RIMMANDRAKE_ADOPT_ENTRY_STANDARD_IN_MODLEDGER_FOURTEEN_OWED);
+# the subject still carries SECRET, so the page check below is unchanged in strength
+fid, _ = M.append(root, MOD, "JUDGE.J1", "finding.open", "finding:RIMMANDRAKE_KEEP_SECRET_SUBJECT_OFF_DIGEST_PAGE",
+                  run="J1", evidence=["run:J1"],
+                  body={"class": "problem", "bars": [], "tags": ["code"], "text": "SECRET FINDING TEXT",
+                        "proposed_fix": "the precise fix, also secret", "accept": "none, fixture"})
+did, _ = M.append(root, MOD, "STEWARD", "decision", "q:own", body={"text": "own decision"}, authority={"why": "t"})
 g("add", "-A"); g("commit", "-q", "-m", "base")
 M.delete(root, MOD, [fid, did])
 g("add", "-A"); g("commit", "-q", "-m", "SECRET COMMIT SUBJECT")

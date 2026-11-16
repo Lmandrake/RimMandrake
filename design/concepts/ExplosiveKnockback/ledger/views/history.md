@@ -1,386 +1,252 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226641} body_sha256=bce48a699cf98c59acb82e67f3552e2f797e4e0e61ca0b114743ef7d40a47b04 -->
-# ExplosiveKnockback — mod ledger history (383 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763} body_sha256=e720afd5bc86fb39b4cc9a7bb93a193d9e3d470f22006c373154794e5dc6fe9f -->
+# ExplosiveKnockback — mod ledger history (249 events, merged across shards)
 
-- 2026-11-16T06:07:59Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
-- 2026-11-16T06:07:59Z BACKFILL#2 decision version_lock v0.1.0: "Yes, fix it like that, and then please record this as an actual Pass." (owner, 2026-11-13T22:24:09Z, ledger OWNER:1794608649743135329); the Designer Lock stage landed on it in 1a52342277 (run bench-ek-owner-lock-st5-20261113, locked 2026-11-13T22:49:02Z)
-- 2026-11-16T06:07:59Z BACKFILL#3 spend designer_tokens v0.1.0: Designer and judging tokens to the lock (29 of the budget charges are kind 'unmeasured' (estimates, 86476989 tokens of the 97196907 total); the measured part is 10719918; the judge said gaps g2-g6 'look fixed' but counted them open because no claim was written; claims for g2-g6 were written after (coverage_fixes.json), g1 has none)
-- 2026-11-16T06:07:59Z BACKFILL#4 stage.accepted stage v0.1.0: Stage 3 exit: all 59 bars have a check that runs after tonight's builder; the one walk bar proves at Stage 8
-- 2026-11-16T06:07:59Z BACKFILL#5 stage.accepted stage v0.1.0: Cycle 1 of the blind challenge did not meet the exit (inv_proof_scenes red, four notes for the Conductor); cycle 2 starts with the Conductor's rulings in its brief
-- 2026-11-16T06:07:59Z BACKFILL#6 stage.accepted stage v0.1.0: Blind challenge cycle 2 exit met by the program's reading after a neutral reconcile (ed645c5495, 709c740f76); night order of 2026-11-15
-- 2026-11-16T06:07:59Z BACKFILL#7 stage.accepted stage v0.1.0: steward run, visit 1 exit not met: 4 FAIL (sc_pit_fetch; gas chain sc_gas_chain/sc_cauldron_gas/P_gas_clumps, one scene) and 5 UNMEASURED (sc_storeroom_bomb_pit, sc_gas_shove_into_pit, sc_goods_obstacles, sc_walk_raid: no entry; sc_closed_containers heavy lane unstageable); not every failure is a blind-lane check (pit_fetch and the gas chain are MOD or Cauldron behaviour), so the road back is offline_build; 8 items filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES
-- 2026-11-16T06:07:59Z BACKFILL#8 stage.accepted stage v0.1.0: steward run: Stage 3 exit met after the visit-1 road back; all 9 items caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES closed with L0 verifies; every live row UNRUN and owed to Stage 6
-- 2026-11-16T06:07:59Z BACKFILL#9 stage.accepted stage v0.1.0: delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); his road back sends a fixed mod to a new blind judgement pass; judge's exit_met true came from the brief defect fixed in 228cb916de; nothing new filed (3 Polish already filed by the judge)
-- 2026-11-16T06:07:59Z BACKFILL#10 stage.accepted stage v0.1.0: delegated: steward advance: blind cycle 4 exit met, verified against its own files; Polish call on L1_PATH_RANDOM_CONSERVATION concurred (his confirmation of the Polish-list move asked by card)
-- 2026-11-16T06:07:59Z BACKFILL#11 stage.accepted stage v0.1.0: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks
-- 2026-11-16T06:07:59Z BACKFILL#12 stage.enter stage v0.1.0: Offline build (Stage 3) since 2026-11-15T17:50:11-08:00 (advance by BENCH)
-- 2026-11-16T06:07:59Z BACKFILL#13 session.checkpoint checkpoint v0.1.0: 
-- 2026-11-16T06:07:59Z BACKFILL#14 bar.locked inv_kernel v0.1.0: inventory bar from record.json, proves at stage 4-5
-- 2026-11-16T06:07:59Z BACKFILL#15 bar.locked inv_hook v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#16 bar.locked inv_pawn_flyer v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#17 bar.locked inv_which_blasts v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#18 bar.locked inv_items_teleport v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#19 bar.locked inv_shelf_skip v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#20 bar.locked inv_who_is_spared v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#21 bar.locked inv_shield v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#22 bar.locked inv_recovery v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#23 bar.locked inv_caps v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#24 bar.locked inv_settings v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#25 bar.locked inv_pits_receive v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#26 bar.locked inv_pit_floor_haul v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#27 bar.locked inv_hose_drop v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#28 bar.locked inv_proof_scenes v0.1.0: inventory bar from record.json, proves at stage 4-5
-- 2026-11-16T06:07:59Z BACKFILL#29 bar.locked inv_gas_chain v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#30 bar.locked inv_goods_fly v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#31 bar.locked inv_closed_guard v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#32 bar.locked inv_container_shove v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#33 bar.locked inv_heavy_knock v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#34 bar.locked inv_gas_tags v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#35 bar.locked inv_perf_all_fly v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#36 bar.locked inv_weapon_ext_fields v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#37 bar.locked inv_killed_corpse v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#38 bar.locked inv_pit_floor_goods_stay v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#39 bar.locked inv_big_corpse_spared v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#40 bar.locked inv_mass_limit_skip v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#41 bar.locked inv_too_weak_skip v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#42 bar.locked inv_creature_mass_limit v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#43 bar.locked inv_blast_power_damage v0.1.0: inventory bar from record.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#44 bar.locked people_thrown_three_cells v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#45 bar.locked pawn_flight_arc v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#46 bar.locked the_spared v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#47 bar.locked heavier_flies_less v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#48 bar.locked recovery_immunity v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#49 bar.locked hose_drops_at_takeoff v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#50 bar.locked wall_stops_dead v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#51 bar.locked pawn_hits_pawn_stops v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#52 bar.locked doors_and_deep_water_stop v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#53 bar.locked shield_belt_holds v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#54 bar.locked goods_arc_spin_rebound v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#55 bar.locked every_good_moves v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#56 bar.locked open_shelf_scatters v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#57 bar.locked closed_container_holds v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#58 bar.locked heavy_stack_knocks v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#59 bar.locked every_harmful_blast_throws v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#60 bar.locked only_explosions_throw v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#61 bar.locked per_weapon_tuning v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#62 bar.locked gas_goes_clump_by_clump v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#63 bar.locked our_gases_burn v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#64 bar.locked blast_breaks_pit_cover v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#65 bar.locked thrown_into_pit_falls v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#66 bar.locked pit_goods_fetched v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#67 bar.locked no_teleport v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#68 bar.locked no_careless_fall v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#69 bar.locked settings_scale_and_switch v0.1.0: experience bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#70 bar.locked barrage_frame_budget v0.1.0: constraint bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#71 bar.locked frame_time_probe v0.1.0: instrument bar from tree.json, proves at stage 6
-- 2026-11-16T06:07:59Z BACKFILL#72 bar.locked walk_storeroom_raid v0.1.0: walk bar from tree.json, proves at stage 8
-- 2026-11-16T06:07:59Z BACKFILL#73 live.run P_body_override v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#74 live.run P_container_thrown v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#75 live.run P_corpse_into_pit v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#76 live.run P_emp_no_throw v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#77 live.run P_fire_half v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#78 live.run P_gas_clumps v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#79 live.run P_goods_fly_lands v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#80 live.run P_goods_fly_midair v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#81 live.run P_goods_fly_off v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#82 live.run P_goods_fly_rebound v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#83 live.run P_goods_fly_wall v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#84 live.run P_harmful_unpatched v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#85 live.run P_heavy_skip v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#86 live.run P_impact_factor v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#87 live.run P_in_pit_skip v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#88 live.run P_items v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#89 live.run P_land_no_bump v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#90 live.run P_land_no_bump_pit v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#91 live.run P_lookup_zero_wins v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#92 live.run P_no_cross v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#93 live.run P_shelf v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#94 live.run sc_all_fly_no_cap v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#95 live.run sc_barrage_perf v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#96 live.run sc_blast_kinds v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#97 live.run sc_cauldron_gas v0.1.0: visit_1 FAIL (runner FAIL)
-- 2026-11-16T06:07:59Z BACKFILL#98 live.run sc_closed_containers v0.1.0: visit_1 UNMEASURED (runner INVALID)
-- 2026-11-16T06:07:59Z BACKFILL#99 live.run sc_cover_breaks v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#100 live.run sc_door_water v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#101 live.run sc_frame_probe_check v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#102 live.run sc_gas_chain v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#103 live.run sc_gas_shove_into_pit v0.1.0: visit_1 UNMEASURED (runner INVALID)
-- 2026-11-16T06:07:59Z BACKFILL#104 live.run sc_goods_obstacles v0.1.0: visit_1 UNMEASURED (runner INVALID)
-- 2026-11-16T06:07:59Z BACKFILL#105 live.run sc_heavy_knock v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#106 live.run sc_hose_drop v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#107 live.run sc_killed_thrown v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#108 live.run sc_lookup v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#109 live.run sc_mass_and_power v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#110 live.run sc_mortar_throw v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#111 live.run sc_no_careless_fall v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#112 live.run sc_only_explosions v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#113 live.run sc_open_storage v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#114 live.run sc_over_sandbags v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#115 live.run sc_pawn_arc v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#116 live.run sc_pawn_hits_pawn v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#117 live.run sc_pit_enemy v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#118 live.run sc_pit_fall v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#119 live.run sc_pit_fetch v0.1.0: visit_1 FAIL (runner FAIL)
-- 2026-11-16T06:07:59Z BACKFILL#120 live.run sc_recovery v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#121 live.run sc_settings_off v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#122 live.run sc_settings_sweep v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#123 live.run sc_shield v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#124 live.run sc_spared v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#125 live.run sc_storeroom_bomb_pit v0.1.0: visit_1 UNMEASURED (runner INVALID)
-- 2026-11-16T06:07:59Z BACKFILL#126 live.run sc_storeroom_mortar v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#127 live.run sc_walk_raid v0.1.0: visit_1 UNMEASURED (runner NO_ENTRY)
-- 2026-11-16T06:07:59Z BACKFILL#128 live.run sc_wall_stop v0.1.0: visit_1 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#129 live.run P_body_override v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#130 live.run P_container_thrown v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#131 live.run P_corpse_into_pit v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#132 live.run P_emp_no_throw v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#133 live.run P_fire_half v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#134 live.run P_gas_clumps v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#135 live.run P_goods_fly_lands v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#136 live.run P_goods_fly_midair v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#137 live.run P_goods_fly_off v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#138 live.run P_goods_fly_rebound v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#139 live.run P_goods_fly_wall v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#140 live.run P_harmful_unpatched v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#141 live.run P_heavy_skip v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#142 live.run P_impact_factor v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#143 live.run P_in_pit_skip v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#144 live.run P_items v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#145 live.run P_land_no_bump v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#146 live.run P_land_no_bump_pit v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#147 live.run P_lookup_zero_wins v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#148 live.run P_no_cross v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#149 live.run P_shelf v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#150 live.run sc_all_fly_no_cap v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#151 live.run sc_barrage_perf v0.1.0: visit_2 FAIL (runner FAIL)
-- 2026-11-16T06:07:59Z BACKFILL#152 live.run sc_blast_kinds v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#153 live.run sc_cauldron_gas v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#154 live.run sc_closed_containers v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#155 live.run sc_cover_breaks v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#156 live.run sc_door_water v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#157 live.run sc_frame_probe_check v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#158 live.run sc_gas_chain v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#159 live.run sc_gas_shove_into_pit v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#160 live.run sc_goods_obstacles v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#161 live.run sc_heavy_knock v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#162 live.run sc_hose_drop v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#163 live.run sc_killed_thrown v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#164 live.run sc_lookup v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#165 live.run sc_mass_and_power v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#166 live.run sc_mortar_throw v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#167 live.run sc_no_careless_fall v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#168 live.run sc_only_explosions v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#169 live.run sc_open_storage v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#170 live.run sc_over_sandbags v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#171 live.run sc_pawn_arc v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#172 live.run sc_pawn_hits_pawn v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#173 live.run sc_pit_enemy v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#174 live.run sc_pit_fall v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#175 live.run sc_pit_fetch v0.1.0: visit_2 FAIL (runner FAIL)
-- 2026-11-16T06:07:59Z BACKFILL#176 live.run sc_recovery v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#177 live.run sc_settings_off v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#178 live.run sc_settings_sweep v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#179 live.run sc_shield v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#180 live.run sc_spared v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#181 live.run sc_storeroom_bomb_pit v0.1.0: visit_2 UNMEASURED (runner INVALID)
-- 2026-11-16T06:07:59Z BACKFILL#182 live.run sc_storeroom_mortar v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#183 live.run sc_walk_raid v0.1.0: visit_2 FAIL (runner FAIL)
-- 2026-11-16T06:07:59Z BACKFILL#184 live.run sc_wall_stop v0.1.0: visit_2 PASS (runner PASS)
-- 2026-11-16T06:07:59Z BACKFILL#185 test.run bar:inv_kernel v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#186 test.run bar:inv_hook v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#187 test.run bar:inv_pawn_flyer v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#188 test.run bar:inv_which_blasts v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#189 test.run bar:inv_items_teleport v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#190 test.run bar:inv_shelf_skip v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#191 test.run bar:inv_who_is_spared v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#192 test.run bar:inv_shield v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#193 test.run bar:inv_recovery v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#194 test.run bar:inv_caps v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#195 test.run bar:inv_settings v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#196 test.run bar:inv_pits_receive v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#197 test.run bar:inv_pit_floor_haul v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#198 test.run bar:inv_hose_drop v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#199 test.run bar:inv_proof_scenes v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#200 test.run bar:inv_gas_chain v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#201 test.run bar:inv_goods_fly v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#202 test.run bar:inv_closed_guard v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#203 test.run bar:inv_container_shove v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#204 test.run bar:inv_heavy_knock v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#205 test.run bar:inv_gas_tags v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#206 test.run bar:inv_perf_all_fly v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#207 test.run bar:inv_weapon_ext_fields v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#208 test.run bar:inv_killed_corpse v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#209 test.run bar:inv_pit_floor_goods_stay v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#210 test.run bar:inv_big_corpse_spared v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#211 test.run bar:inv_mass_limit_skip v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#212 test.run bar:inv_too_weak_skip v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#213 test.run bar:inv_creature_mass_limit v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#214 test.run bar:inv_blast_power_damage v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#215 test.run bar:people_thrown_three_cells v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#216 test.run bar:pawn_flight_arc v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#217 test.run bar:the_spared v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#218 test.run bar:heavier_flies_less v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#219 test.run bar:recovery_immunity v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#220 test.run bar:hose_drops_at_takeoff v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#221 test.run bar:wall_stops_dead v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#222 test.run bar:pawn_hits_pawn_stops v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#223 test.run bar:doors_and_deep_water_stop v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#224 test.run bar:shield_belt_holds v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#225 test.run bar:goods_arc_spin_rebound v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#226 test.run bar:every_good_moves v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#227 test.run bar:open_shelf_scatters v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#228 test.run bar:closed_container_holds v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#229 test.run bar:heavy_stack_knocks v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#230 test.run bar:every_harmful_blast_throws v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#231 test.run bar:only_explosions_throw v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#232 test.run bar:per_weapon_tuning v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#233 test.run bar:gas_goes_clump_by_clump v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#234 test.run bar:our_gases_burn v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#235 test.run bar:blast_breaks_pit_cover v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#236 test.run bar:thrown_into_pit_falls v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#237 test.run bar:pit_goods_fetched v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#238 test.run bar:no_teleport v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#239 test.run bar:no_careless_fall v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#240 test.run bar:settings_scale_and_switch v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#241 test.run bar:barrage_frame_budget v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#242 test.run bar:frame_time_probe v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#243 test.run bar:walk_storeroom_raid v0.1.0: from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
-- 2026-11-16T06:07:59Z BACKFILL#244 finding.open RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED v0.1.0: sheet.md: loose goods and corpses fly wild, about 1.6 times as far as a person; tree.json advisory and scenes.json sc_storeroom_mortar: each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio 1.3 to 2.0 [Problem, bar goods_arc_spin_rebound, cycle_1] lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
-- 2026-11-16T06:07:59Z BACKFILL#245 finding.claimed_fixed RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED v0.1.0: FIXED 81392aea384e9105a92263aea39b2d08c844c1f4 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:07:59Z BACKFILL#246 finding.open RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE v0.1.0: sheet.md delegated: one gas clump burst throws goods at most 2 cells (gasBurstGoodsCells); settings_scale_and_switch oracle: each changed setting changes only its own outcome [Problem, bar gas_goes_clump_by_clump, settings_scale_and_switch, cycle_1] RM_MapComponent_Knockback.cs GasBurst builds KbConfig{ownCap = gasBurstGoodsCells}; Execute calls Kernel(cfg) -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale), so the 'weapons with their own maximum' scale (slider 0.25..2) rescales the gas goods cap: at 2.0 burning gas throws goods 4 cells, at 0.25 one [measured, read; kernel arithmetic CapFor(2, 6, 2) = 4]
-- 2026-11-16T06:07:59Z BACKFILL#247 finding.claimed_fixed RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE v0.1.0: FIXED 81392aea384e9105a92263aea39b2d08c844c1f4 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:07:59Z BACKFILL#248 finding.open RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT v0.1.0: kernel comment on ReboundCells: 'rounded DOWN so a throw always runs out' [Polish, bar goods_arc_spin_rebound, cycle_1] lane 1 L1_sweep_rebound_keep_slider_chain_ends: at goodsReboundKeepPercent 100 (slider top) ReboundCells(6,100) = 6, the kernel never ends the chain [measured]
-- 2026-11-16T06:07:59Z BACKFILL#249 finding.claimed_fixed RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT v0.1.0: FIXED 81392aea384e9105a92263aea39b2d08c844c1f4 (kernel comment; the settings field comment too) (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:07:59Z BACKFILL#250 finding.open RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL v0.1.0: the kernel is the tested rule as shipped (RM_KnockbackMath.cs header) [Polish, bar closed_container_holds, cycle_1] RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter named lightMassLimit) is called by no game code; ThrowContainer throws the container ThrowCells cells with its own loop [measured, grep]
-- 2026-11-16T06:07:59Z BACKFILL#251 note RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#252 finding.open RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK v0.1.0: a selftest's verdict is about the clone that ran it [Polish, bar inv_kernel (test infrastructure), cycle_1] selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide D:\ClaudeWork\rimmandrake\build\ExplosiveKnockbackSelfTest BEFORE taking its flock; two clones running it together can each test the other's kernel (a planted fault in one clone can turn another clone red, or a real fault green) [measured, read; not observed]
-- 2026-11-16T06:07:59Z BACKFILL#253 finding.open RIMMANDRAKE_RECORD_FULL_LAST_LINE_IN_TEST_TABLE_RUNS v0.1.0: a recorded run can be compared with a rerun [Polish, bar (record format), cycle_1] test_table.json runs_today.last is truncated at 200 characters (T_FW_COVER) and, for T_RESTORE, is a Python SyntaxWarning from stderr rather than the verdict line [measured, reruns.jsonl]
-- 2026-11-16T06:07:59Z BACKFILL#254 note RIMMANDRAKE_RECORD_FULL_LAST_LINE_IN_TEST_TABLE_RUNS v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#255 finding.open RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER v0.1.0: Every mod ships superb Mod Settings: tuning where a number is the experience (CLAUDE.md); sc_settings_sweep's action must name every saved setting (T_STAGE3_SCENES F1/F2) [Polish, bar settings_scale_and_switch, goods_arc_spin_rebound, cycle_1] the wild factor shipped as a constant 1.6 because adding a saved setting turns T_STAGE3_SCENES red until sc_settings_sweep's locked action text names it [measured: F1/F2 failed with goodsThrowWild saved]
-- 2026-11-16T06:07:59Z BACKFILL#256 note RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#257 finding.open RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS v0.1.0: scenes.json sc_storeroom_mortar: 'every wild-to-kernel ratio between 1.3 and 2.0' [Problem (criterion), bar goods_arc_spin_rebound (scene sc_storeroom_mortar), cycle_1] integer cells: a good whose kernel raw is 1.5 cells throws 2 kernel cells and round(2.4) = 2 wild cells (ratio 1.0); a 1-cell rim good gets 1 or 2; any good at the blast's maximum gets ratio 1.0. Any correct build fails the band per good [measured: arithmetic of RM_KnockbackMath.Cells; lane 1 L1_goods_fly_wild checks the batch ratio instead, measured 1.3..2.0]
-- 2026-11-16T06:07:59Z BACKFILL#258 note RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#259 finding.open RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST v0.1.0: scenes.json: 'each good's request line carries its kernel cells and its wild cells' [Polish, bar goods_arc_spin_rebound (scene sc_storeroom_mortar), cycle_1] the request line is written at Enqueue, before the good's mass and throw are known; the fix journals kernelCells and wildCells on item_move (and too_weak skips carry dist and mass) [measured, read]
-- 2026-11-16T06:07:59Z BACKFILL#260 note RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#261 finding.open RIMMANDRAKE_COVER_FOUR_GAME_SIDE_FAULTS_NO_OFFLINE_TEST_SEES v0.1.0: planted faults: can the tests fail? [Polish, bar closed_container_holds, the_spared, every_harmful_blast_throws, cycle_1] planted_results.jsonl: 39 of 43 planted faults caught by the builder's offline tests; missed: PF_CLOSED_GUARD_OFF (HeldReason never closed), PF_CONTAINER_IGNORES_LIMIT, PF_GOODS_IN_PIT_THROWN, PF_FLAME_FULL_FORCE (Patches Flame force 1.0) [measured]
-- 2026-11-16T06:07:59Z BACKFILL#262 note RIMMANDRAKE_COVER_FOUR_GAME_SIDE_FAULTS_NO_OFFLINE_TEST_SEES v0.1.0: fault status NOTED_FOR_CONDUCTOR
-- 2026-11-16T06:07:59Z BACKFILL#263 finding.open RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS v0.1.0: T_RESTORE: selftest_proof_restore_check.py prints RESULT: GREEN [Problem, bar inv_proof_scenes, cycle_2] lane2/reruns.jsonl T_RESTORE FAIL
-- 2026-11-16T06:07:59Z BACKFILL#264 finding.claimed_fixed RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:07:59Z BACKFILL#265 finding.open RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED v0.1.0: goods in the air off, goods unthrown, never the old hop [Problem, bar settings_scale_and_switch, cycle_2] RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)
-- 2026-11-16T06:07:59Z BACKFILL#266 finding.claimed_fixed RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#267 finding.open RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED v0.1.0: closed guard off, container goods thrown loose; fire at half off, fire throws nothing [Problem, bar settings_scale_and_switch, cycle_2] RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)
-- 2026-11-16T06:08:00Z BACKFILL#268 finding.claimed_fixed RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#269 finding.open RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL v0.1.0: else a jolt (sc_closed_containers: a drawn offset above zero for each jolt) [Problem, bar closed_container_holds, cycle_2] ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container
-- 2026-11-16T06:08:00Z BACKFILL#270 finding.claimed_fixed RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#271 finding.open RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG v0.1.0: the kernel tests test the rule the game runs [Problem, bar closed_container_holds, cycle_2] ContainerShove/KbShove called by nothing in the game
-- 2026-11-16T06:08:00Z BACKFILL#272 finding.claimed_fixed RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#273 finding.open RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE v0.1.0: EMP, smoke, stun, extinguish and toxic gas at 0, fire at half [Problem, bar every_harmful_blast_throws, cycle_2] T_LINT rc 0 on a copy with Flame 0.7
-- 2026-11-16T06:08:00Z BACKFILL#274 finding.claimed_fixed RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#275 finding.open RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR v0.1.0: the walk row reports against its bar [Problem, bar settings_scale_and_switch, cycle_2] validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move
-- 2026-11-16T06:08:00Z BACKFILL#276 finding.claimed_fixed RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:00Z BACKFILL#277 finding.open RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR v0.1.0: a thing at the rim whose kernel throw rounds to 0 cells is not thrown (skip too_weak); every_good_moves: reached = kernel throw >= 1 [Problem, bar inv_too_weak_skip, cycle_2] lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1
-- 2026-11-16T06:08:00Z BACKFILL#278 finding.claimed_fixed RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR v0.1.0: FIXED 587529cee173 (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#279 finding.open RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER v0.1.0: T_KERNEL/T_FUZZ decide inv_kernel [Problem, bar inv_kernel, cycle_2] planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ
-- 2026-11-16T06:08:19Z BACKFILL#280 finding.claimed_fixed RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER v0.1.0: FIXED 04bb4c93faca (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#281 finding.open RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: the offline deciders see breaks of the shipped wiring [Problem, bar inv_proof_scenes, cycle_2] 6 planted faults MISSED (planted_results.jsonl)
-- 2026-11-16T06:08:19Z BACKFILL#282 finding.claimed_fixed RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: FIXED 04bb4c93faca (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#283 finding.open RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST v0.1.0: proof_restore_check sees every settings poke [Polish, bar inv_proof_scenes, cycle_2] storeroom_pit_proof.py arm(): Settings(args=kv) is invisible (py_poke_kind falls back to the tool name)
-- 2026-11-16T06:08:19Z BACKFILL#284 finding.open RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER v0.1.0: T_RESTORE baseline [Polish, bar (FlowWorks, not this mod), cycle_2] pump_outflow_live.py:174, tank_theft_live.py:80
-- 2026-11-16T06:08:19Z BACKFILL#285 finding.open RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR v0.1.0: sheet.md: "fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)"; the patch and the caller both name Anomaly's ElectricalBurn as fire [Problem, bar settings_scale_and_switch, cycle_3] Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName="Flame"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)
-- 2026-11-16T06:08:19Z BACKFILL#286 finding.claimed_fixed RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR v0.1.0: FIXED bace1c29cc (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#287 finding.open RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN v0.1.0: inv_proof_scenes: the live scenes and the runner that drives them; T_PROOFGATE G1 claims the gate reads release vs proof answers [Problem, bar inv_proof_scenes, cycle_3] planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)
-- 2026-11-16T06:08:19Z BACKFILL#288 finding.claimed_fixed RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN v0.1.0: FIXED f181d3b6ea (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#289 finding.open RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST v0.1.0: T_RESTORE (decider of inv_proof_scenes): a live proof undoes every Mod Settings poke on every exit path, putting back the value it found [Problem, bar inv_proof_scenes, cycle_3] storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust
-- 2026-11-16T06:08:19Z BACKFILL#290 finding.claimed_fixed RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST v0.1.0: FIXED f181d3b6ea (fixed by the blind cycle's fixer under the 11-13 rule; no later judge verdict is recorded)
-- 2026-11-16T06:08:19Z BACKFILL#291 finding.open RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN v0.1.0: the proof scenes' live verdicts check what their scenes promise [Polish, bar inv_proof_scenes, cycle_3] PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP: missed offline
-- 2026-11-16T06:08:19Z BACKFILL#292 finding.open RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME v0.1.0: a colonist thrown mid-haul goes back to its haul [Polish, bar pawn_flight_arc, cycle_3] RM_PawnFlyerPatches.cs: static Dictionary<Pawn,Job> Hauling, set at every launch, removed only at a knockback landing; never cleared on load, not saved
-- 2026-11-16T06:08:19Z BACKFILL#293 finding.open RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED v0.1.0: JoltOffset's own doc: a decaying shake (no bar requires decay) [Polish, bar closed_container_holds, cycle_3] planted PF_MATH_JOLT_NO_DECAY passed T_KERNEL and lane 1 (fx_jolt_bounded tests only the bound)
-- 2026-11-16T06:08:19Z BACKFILL#294 finding.open RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT v0.1.0: A thrown person stops at another pawn in the way and takes an impact hit, as at a wall (sheet leaf pawn_hits_pawn_stops); inv_kernel: the path walk goes over sandbags [Polish, bar pawn_hits_pawn_stops, cycle_4] lane-1 row L1_PATH_RANDOM_CONSERVATION (lane1/lane1_rows.jsonl): FAIL, 42 of 30000 random grids, seed 20261115, one violation kind: 'pawn stop without the hit pawn next to it'
-- 2026-11-16T06:08:19Z BACKFILL#295 decision criterion_repair:closed_containers_thrown_2026-11-15 v0.1.0: criterion repair folder (files: tree_sheet_rewording.patch)
-- 2026-11-16T06:08:19Z BACKFILL#296 decision criterion_repair:sc_barrage_perf_2026-11-15 v0.1.0: Item `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN`, filed 2026-11-15 by the fixer of `RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO`.
-- 2026-11-16T06:08:19Z BACKFILL#297 decision criterion_repair:sc_storeroom_mortar_2026-11-15 v0.1.0: criterion repair folder (files: calibrate.py, calibrate_cap6.txt, criteria_new.json, criteria_old.json, diffguard.json, refusal.json)
-- 2026-11-16T06:08:19Z BACKFILL#298 spend run:rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794709218 v0.1.0: 299821 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#299 spend run:rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794716718 v0.1.0: 85228 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#300 spend run:rm-detached-bench-rimmandrake-build-knockback-stage-three-1794718887 v0.1.0: 2417231 tokens, usd 6.8
-- 2026-11-16T06:08:19Z BACKFILL#301 spend run:rm-detached-bench-rimmandrake-pilot-blind-challenge-on-kno-1794720577 v0.1.0: 3416406 tokens, usd 9.0
-- 2026-11-16T06:08:19Z BACKFILL#302 spend run:rm-detached-bench-rimmandrake-challenge-knockback-blind-tw-1794731732 v0.1.0: 5100345 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#303 spend run:rm-detached-bench-rimmandrake-challenge-knockback-blind-tw-1794735599 v0.1.0: 3013781 tokens, usd 7.8
-- 2026-11-16T06:08:19Z BACKFILL#304 spend run:rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1794748869 v0.1.0: 7991915 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#305 spend run:rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1794760232 v0.1.0: 449459 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#306 spend run:rm-detached-bench-rimmandrake-advance-explosiveknockback-p-1794762165 v0.1.0: 317482 tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#307 spend run:rm-detached-bench-rimmandrake-judge-explosiveknockback-bli-1794771710 v0.1.0: UNMEASURED tokens, usd UNMEASURED
-- 2026-11-16T06:08:19Z BACKFILL#308 spend run:rm-detached-bench-rimmandrake-judge-explosiveknockback-bli-1794775024 v0.1.0: 2298311 tokens, usd 6.425914200000001
-- 2026-11-16T06:08:19Z BACKFILL#309 spend run:rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1794780263 v0.1.0: 366014 tokens, usd 1.135777
-- 2026-11-16T06:08:19Z BACKFILL#310 spend run:rm-detached-bench-rimmandrake-judge-explosiveknockback-bli-1794780864 v0.1.0: 2739035 tokens, usd 7.666473600000002
-- 2026-11-16T06:08:19Z BACKFILL#311 spend run:rm-detached-bench-rimmandrake-confirm-explosiveknockback-c-1794784057 v0.1.0: 575548 tokens, usd 1.7644936
-- 2026-11-16T06:08:19Z BACKFILL#312 spend run:rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1794784770 v0.1.0: 8739368 tokens, usd 20.972116799999984
-- 2026-11-16T06:08:19Z BACKFILL#313 spend run:rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1794793602 v0.1.0: 422013 tokens, usd 1.3496203999999998
-- 2026-11-16T06:08:19Z BACKFILL#314 spend run:rm-detached-bench-rimmandrake-repair-barrage-frame-criteri-1794799758 v0.1.0: 1414149 tokens, usd 4.0930268
-- 2026-11-16T06:08:19Z BACKFILL#315 spend run:rm-detached-bench-rimmandrake-recertify-knockback-tree-bar-1794803212 v0.1.0: 1364184 tokens, usd 3.734312799999999
-- 2026-11-16T06:08:19Z BACKFILL#316 decision his_words:33 v0.1.0: 2026-10-06: "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall."
-- 2026-11-16T06:08:19Z BACKFILL#317 decision his_words:34 v0.1.0: 2026-11-10: "1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly."
-- 2026-11-16T06:08:19Z BACKFILL#318 decision his_words:35 v0.1.0: 2026-11-11: "(1) but the closed containers may themselves get shoved a bit" · "2 and remember the gas in the Cauldron"
-- 2026-11-16T06:08:19Z BACKFILL#319 decision his_words:36 v0.1.0: 2026-11-12, the flagship: "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
-- 2026-11-16T06:08:19Z BACKFILL#320 decision his_words:38 v0.1.0: 2026-11-12, 4:05 PM PST: "1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers."
-- 2026-11-16T06:08:19Z BACKFILL#321 decision his_words:40 v0.1.0: 2026-11-13: "We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well." · "with a single scene we can check ALL these things together" · "Melee shove is a great idea, but it belongs in FlowWorks, not here."
-- 2026-11-16T06:08:19Z BACKFILL#322 decision his_words:43 v0.1.0: 2026-11-13, the lock: "Yes, fix it like that, and then please record this as an actual Pass." (OWNER:1794608649743135329)
-- 2026-11-16T06:08:19Z BACKFILL#323 decision his_words:44 v0.1.0: 2026-11-13, on the settings sweep: "can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?"
-- 2026-11-16T06:08:19Z BACKFILL#324 finding.open RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS v0.1.0: What the donor does (design/RimMandrake/explosion_mods_characterized_2026-11-12.md, section 1): a Postfix on GenExplosion.DoExplosion adds, for Bomb blasts, extra blast flecks, lingering smoke, dirt or stone debris, soot, a crater and orange sparks; for big blasts (damage over 300 or radius 2 or more) a shockwave and screen quake; for Stun, sparks and ripples. It changes no damage, radius or trigger.
-- 2026-11-16T06:08:19Z BACKFILL#325 finding.open RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY v0.1.0: Explosive Knockback sc_storeroom_bomb_pit expects "the stack aimed at the covered cell falls through it with one descent and the cover is destroyed". No code does it: Building_SpanDeck's load sums living walking pawns only (FlowWorks `Pits/Building_SpanDeck.cs` ~256) and `RM_ThingFlyer_Knockback` never touches a cover.
-- 2026-11-16T06:08:19Z BACKFILL#326 finding.open RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN v0.1.0: Owner, by card 2026-11-14 about 2:40 PM PST, answering journal question 8 (`design/concepts/ExplosiveKnockback/journal.md`): "Bruise in the next version".
-- 2026-11-16T06:08:19Z BACKFILL#327 finding.open RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: <!-- answered 2026-11-15T05:45:48Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
-- 2026-11-16T06:08:19Z BACKFILL#328 finding.open RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS v0.1.0: Step 4 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#329 finding.open RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN v0.1.0: Before deploying, a full-file review is owed: code_review_status.py reads DIRTY for RM_KnockbackCompat.cs, RM_KnockbackMod.cs, RM_MapComponent_Knockback.cs, RM_KnockbackProof.cs and proof/storeroom_pit_proof.py (edits were comments, a UI label, and the proof-only IsClosed/LWM_WeaponsLocker staging).
-- 2026-11-16T06:08:19Z BACKFILL#330 finding.open RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC v0.1.0: Owner, 2026-11-14 about 2:40 PM PST, answering journal question 7 (`design/concepts/ExplosiveKnockback/journal.md`): "For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories."
-- 2026-11-16T06:08:19Z BACKFILL#331 finding.open RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD v0.1.0: Step 1 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#332 finding.open RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS v0.1.0: No test tier may load a creature the owner's full mod list cuts. Today every modset_builder tier loads Core and the DLC without Cherry Picker, so the vanilla beasts the full list removes (VANILLA_BEAST_EXCISION_1) come back on every test load. On tier `evening_20261113` that put a vanilla Thrumbo in the Explosive Knockback proof scene `mass_and_power`.
-- 2026-11-16T06:08:19Z BACKFILL#333 finding.open RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS v0.1.0: Step 5 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#334 finding.open RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED v0.1.0: Step 2 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#335 finding.open RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF v0.1.0: Step 6 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#336 finding.open RIMMANDRAKE_PROVE_KNOCKBACK_HIDING_LOCKER_LIVE v0.1.0: The earlier live pass (note on RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED, Station 5, 10/10) staged a ShelfSmall tagged closed by the proof build's CloseStorage. That staging is now invalid; CloseStorage is gone (RM_KnockbackProof.cs has a read-only IsClosed instead).
-- 2026-11-16T06:08:19Z BACKFILL#337 finding.open RIMMANDRAKE_PROVE_KNOCKBACK_OUTERRIM_BLAST_LANES v0.1.0: RIMMANDRAKE_PROVE_KNOCKBACK_OUTERRIM_BLAST_LANES
-- 2026-11-16T06:08:19Z BACKFILL#338 finding.open RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE v0.1.0: Step 7 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
-- 2026-11-16T06:08:19Z BACKFILL#339 finding.open RIMMANDRAKE_READ_CONTAINER_JOLT_OFFSET_IN_PROOF v0.1.0: Explosive Knockback, sc_closed_containers (`design/concepts/ExplosiveKnockback/scenes.json`) expects "a drawn offset above zero on at least one tick in the thing trace" for each jolted container. The jolt is drawn since steward decision 6 of blind cycle 2 (587529cee1; `RM_MapComponent_Knockback.cs` MapComponentUpdate, `RM_KnockbackMath.JoltOffset`), so 0.1.0 owes this row (journal question 13, answered 2026-11-15 11:45 AM PST under the Evidence-for-Ask ruling).
-- 2026-11-16T06:08:19Z BACKFILL#340 finding.open RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS v0.1.0: Step 8 of `design/concepts/ExplosiveKnockback/plan.md`. The 17-row `script_audit` in `design/concepts/ExplosiveKnockback/record.json` lists what each existing scene in `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` lacks and which scene in `scenes.json` it becomes. Each scene asserts its start (INVALID otherwise) and runs the control named in scenes.json.
-- 2026-11-16T06:08:19Z BACKFILL#341 finding.open RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE v0.1.0: Why: Explosive Knockback's scenes live in RM_KnockbackProof, compiled only under RM_PROOFS (csproj `-p:RmProofs=true`; owner 2026-11-12 "Agreed for Explosive Knockback": the release DLL carries no proof code, and a proof DLL is never committed). The worker (`infrastructure/stevedesktop/worker.py`) deploys the committed (release) DLL through `deploy_custom_mods.py`, and neither it, `testq.py submit` nor `deploy_custom_mods.py` has a proof-build route (grep for RmProofs/proof_build in all three: none, measured). A queued EK job would only read PROOF BUILD REQUIRED (`proof_build_gate.py`) on every row after a whole load. A `live-proof` line cannot swap the DLL either: it runs after the game has loaded.
-- 2026-11-16T06:08:19Z BACKFILL#342 finding.open RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES v0.1.0: Cause, two commits that each pass on their own: - 899aeb728f (convergence) makes `tick()` call `maturation_convergence.annotate_reading(root, rd)` (maturation_dispatch.py ~1296). That appends one Needs Conductor line per DIVERGING stage of every mod under `root/design/concepts`. - 455fb5eec8 (launch retry) asserts `not r1["needs_conductor"]` (selftest line ~431). Its temp root carries the ExplosiveKnockback fixtures pinned at FIXTURE_SHA, and their offline_build rounds really do read DIVERGING.
-- 2026-11-16T06:08:19Z BACKFILL#343 decision owner:1794373318813726012 v0.1.0: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly. 2:1 3:Each gas unit that ignites should create its own weak explosion that then whooshes along, detonating each gas cloud along the entire pattern. The backwash should scatter items not just in the cloud but within the radius of any of the individual explosions. Like 3:3 but I want to make sure each of the individual gas clumps gets it, not just "the centroid of the large gas cloud"
-- 2026-11-16T06:08:19Z BACKFILL#344 decision owner:1794378745022165965 v0.1.0: 1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1
-- 2026-11-16T06:08:19Z BACKFILL#345 decision owner:1794470697182934051 v0.1.0: Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.
-- 2026-11-16T06:08:19Z BACKFILL#346 decision owner:1794470702467936205 v0.1.0: Approve the 16 Explosive Knockback north-star bars? → Approve as written
-- 2026-11-16T06:08:19Z BACKFILL#347 decision owner:1794527885746395760 v0.1.0: Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
-- 2026-11-16T06:08:19Z BACKFILL#348 decision owner:1794530555364831060 v0.1.0: We should decide if we need those other explosion mods we have or they should be absorbed into this one.
-- 2026-11-16T06:08:19Z BACKFILL#349 decision owner:1794533165141036707 v0.1.0: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
-- 2026-11-16T06:08:19Z BACKFILL#350 decision owner:1794549024074656898 v0.1.0: Extra Explosion Effects → Absorb the idea into Knockback
-- 2026-11-16T06:08:19Z BACKFILL#351 decision owner:1794549029062972077 v0.1.0: explosion mods → Extra Explosion Effects: Absorb the idea into Knockback; Better Explosions, Dynamic Effects Forge: Keep both for good; Custom Gas Types: Keep it as a separate mod
-- 2026-11-16T06:08:19Z BACKFILL#352 decision owner:1794556366219202085 v0.1.0: EK sign-off → One judge run
-- 2026-11-16T06:08:19Z BACKFILL#353 decision owner:1794592407312114138 v0.1.0: SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.
-- 2026-11-16T06:08:19Z BACKFILL#354 decision owner:1794608649743135329 v0.1.0: Yes, fix it like that, and then please record this as an actual Pass.
-- 2026-11-16T06:08:19Z BACKFILL#355 decision owner:1794608827666872544 v0.1.0: Yes, fix it like that, and then please record this as an actual Pass.
-- 2026-11-16T06:08:19Z BACKFILL#356 decision owner:1794610188062865138 v0.1.0: Yes, fix it like that, and then please record this as an actual Pass.
-- 2026-11-16T06:08:19Z BACKFILL#357 decision owner:1794610881684982445 v0.1.0: Yes, we're going to do what you recommend. But we need to do much more too. This is becoming a new Pipeline, much better than Relentless Pipeline. It is a Maturation Pipeline with a work unit that's a whole versioned Mod. Relentless pipeline is done, we're not going back to that idea. But we need a pipeline.
-- 2026-11-16T06:08:19Z BACKFILL#358 decision owner:1794611160236416532 v0.1.0: Yes, we're going to do what you recommend.
-- 2026-11-16T06:08:19Z BACKFILL#359 decision owner:1794611165682386979 v0.1.0: Yes, we're going to do what you recommend.
-- 2026-11-16T06:08:19Z BACKFILL#360 decision owner:1794611171307640419 v0.1.0: Yes, we're going to do what you recommend.
-- 2026-11-16T06:08:19Z BACKFILL#361 decision owner:1794611176582091058 v0.1.0: Yes, we're going to do what you recommend.
-- 2026-11-16T06:08:19Z BACKFILL#362 decision owner:1794684145222248287 v0.1.0: It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).
-- 2026-11-16T06:08:19Z BACKFILL#363 decision owner:1794684151016212874 v0.1.0: (2) and we should track CODEX quota the same way.
-- 2026-11-16T06:08:19Z BACKFILL#364 decision owner:1794684224649600708 v0.1.0: How many mods should advance at once? → All four now, offline only
-- 2026-11-16T06:08:19Z BACKFILL#365 decision owner:1794684231976620880 v0.1.0: How many mods should advance at once? → All four now, offline only
-- 2026-11-16T06:08:19Z BACKFILL#366 decision owner:1794684238949922350 v0.1.0: How many mods should advance at once? → All four now, offline only
-- 2026-11-16T06:08:19Z BACKFILL#367 decision owner:1794693272920017102 v0.1.0: When should the held look statements go into the mods' tables? -> Per mod, as it advances
-- 2026-11-16T06:08:19Z BACKFILL#368 decision owner:1794696195350158091 v0.1.0: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
-- 2026-11-16T06:08:19Z BACKFILL#369 decision owner:1794696200830316763 v0.1.0: Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version
-- 2026-11-16T06:08:19Z BACKFILL#370 decision owner:1794696650663248428 v0.1.0: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
-- 2026-11-16T06:08:19Z BACKFILL#371 decision owner:1794696661272423650 v0.1.0: Thrown pawn lands on another pawn → Bruise in the next version
-- 2026-11-16T06:08:19Z BACKFILL#372 decision owner:1794748404753740828 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#373 decision owner:1794748415052250163 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#374 decision owner:1794748823561950419 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#375 decision owner:1794790774946941507 v0.1.0: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
-- 2026-11-16T06:08:19Z BACKFILL#376 decision owner:1794790800032152388 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#377 decision owner:1794790805830479356 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#378 decision owner:1794790816821560212 v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- 2026-11-16T06:08:19Z BACKFILL#379 decision owner:1794790840066819225 v0.1.0: Which release do you want? (two mods stopped at the USD 60 stage spend guard) -> Raise the limit to $100; Who should be allowed to use the per-mod release from now on? -> Conductor, told after
-- 2026-11-16T06:08:19Z BACKFILL#380 decision owner:1794790846695484960 v0.1.0: Which release do you want? → Raise the limit to $100
-- 2026-11-16T06:08:19Z BACKFILL#381 decision owner:1794799770273329641 v0.1.0: 1 agree.
-- 2026-11-16T06:08:19Z BACKFILL#382 decision owner:1794807835796372627 v0.1.0: Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.
-- 2026-11-16T06:08:19Z BACKFILL#383 decision owner:1794808666152584814 v0.1.0: I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.
+- 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
+- 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
+- 2026-11-16T06:51:51Z BACKFILL#3 spend spend v0.1.0: 
+- 2026-11-16T06:51:51Z BACKFILL#4 stage.accepted stage v0.1.0: offline_build -> blind_challenge: Stage 3 exit: all 59 bars have a check that runs after tonight's builder; the one walk bar proves at Stage 8
+- 2026-11-16T06:51:51Z BACKFILL#5 stage.accepted stage v0.1.0: blind_challenge -> blind_challenge: Cycle 1 of the blind challenge did not meet the exit (inv_proof_scenes red, four notes for the Conductor); cycle 2 starts with the Conductor's rulings in its brief
+- 2026-11-16T06:51:51Z BACKFILL#6 stage.accepted stage v0.1.0: blind_challenge -> in_game: Blind challenge cycle 2 exit met by the program's reading after a neutral reconcile (ed645c5495, 709c740f76); night order of 2026-11-15
+- 2026-11-16T06:51:51Z BACKFILL#7 stage.accepted stage v0.1.0: in_game -> offline_build: steward run, visit 1 exit not met: 4 FAIL (sc_pit_fetch; gas chain sc_gas_chain/sc_cauldron_gas/P_gas_clumps, one scene) and 5 UNMEASURED (sc_storeroom_bomb_pit, sc_gas_shove_into_pit, sc_goods_obstacles, sc_walk_raid: no entry; sc_closed_containers heavy lane unstageable); […]
+- 2026-11-16T06:51:51Z BACKFILL#8 stage.accepted stage v0.1.0: offline_build -> blind_challenge: steward run: Stage 3 exit met after the visit-1 road back; all 9 items caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES closed with L0 verifies; every live row UNRUN and owed to Stage 6
+- 2026-11-16T06:51:51Z BACKFILL#9 stage.accepted stage v0.1.0: blind_challenge -> blind_challenge: delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); […]
+- 2026-11-16T06:51:51Z BACKFILL#10 stage.accepted stage v0.1.0: blind_challenge -> in_game: delegated: steward advance: blind cycle 4 exit met, verified against its own files; Polish call on L1_PATH_RANDOM_CONSERVATION concurred (his confirmation of the Polish-list move asked by card)
+- 2026-11-16T06:51:51Z BACKFILL#11 stage.accepted stage v0.1.0: in_game -> offline_build: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks
+- 2026-11-16T06:51:51Z BACKFILL#12 stage.enter stage v0.1.0: Offline build (Stage 3) since 2026-11-15T17:50:11-08:00 (advance by BENCH)
+- 2026-11-16T06:51:51Z BACKFILL#13 bar.locked bar:inv_kernel v0.1.0: inventory bar from record.json, proves at stage 4-5
+- 2026-11-16T06:51:51Z BACKFILL#14 bar.locked bar:inv_hook v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#15 bar.locked bar:inv_pawn_flyer v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#16 bar.locked bar:inv_which_blasts v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#17 bar.locked bar:inv_items_teleport v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#18 bar.locked bar:inv_shelf_skip v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#19 bar.locked bar:inv_who_is_spared v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#20 bar.locked bar:inv_shield v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#21 bar.locked bar:inv_recovery v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#22 bar.locked bar:inv_caps v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#23 bar.locked bar:inv_settings v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#24 bar.locked bar:inv_pits_receive v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#25 bar.locked bar:inv_pit_floor_haul v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#26 bar.locked bar:inv_hose_drop v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#27 bar.locked bar:inv_proof_scenes v0.1.0: inventory bar from record.json, proves at stage 4-5
+- 2026-11-16T06:51:51Z BACKFILL#28 bar.locked bar:inv_gas_chain v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#29 bar.locked bar:inv_goods_fly v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#30 bar.locked bar:inv_closed_guard v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#31 bar.locked bar:inv_container_shove v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#32 bar.locked bar:inv_heavy_knock v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#33 bar.locked bar:inv_gas_tags v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#34 bar.locked bar:inv_perf_all_fly v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#35 bar.locked bar:inv_weapon_ext_fields v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#36 bar.locked bar:inv_killed_corpse v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#37 bar.locked bar:inv_pit_floor_goods_stay v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#38 bar.locked bar:inv_big_corpse_spared v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#39 bar.locked bar:inv_mass_limit_skip v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#40 bar.locked bar:inv_too_weak_skip v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#41 bar.locked bar:inv_creature_mass_limit v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#42 bar.locked bar:inv_blast_power_damage v0.1.0: inventory bar from record.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#43 bar.locked bar:people_thrown_three_cells v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#44 bar.locked bar:pawn_flight_arc v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#45 bar.locked bar:the_spared v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#46 bar.locked bar:heavier_flies_less v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#47 bar.locked bar:recovery_immunity v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#48 bar.locked bar:hose_drops_at_takeoff v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#49 bar.locked bar:wall_stops_dead v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#50 bar.locked bar:pawn_hits_pawn_stops v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#51 bar.locked bar:doors_and_deep_water_stop v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#52 bar.locked bar:shield_belt_holds v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#53 bar.locked bar:goods_arc_spin_rebound v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#54 bar.locked bar:every_good_moves v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#55 bar.locked bar:open_shelf_scatters v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#56 bar.locked bar:closed_container_holds v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#57 bar.locked bar:heavy_stack_knocks v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#58 bar.locked bar:every_harmful_blast_throws v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#59 bar.locked bar:only_explosions_throw v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#60 bar.locked bar:per_weapon_tuning v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#61 bar.locked bar:gas_goes_clump_by_clump v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#62 bar.locked bar:our_gases_burn v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#63 bar.locked bar:blast_breaks_pit_cover v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#64 bar.locked bar:thrown_into_pit_falls v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#65 bar.locked bar:pit_goods_fetched v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#66 bar.locked bar:no_teleport v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#67 bar.locked bar:no_careless_fall v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#68 bar.locked bar:settings_scale_and_switch v0.1.0: experience bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#69 bar.locked bar:barrage_frame_budget v0.1.0: constraint bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#70 bar.locked bar:frame_time_probe v0.1.0: instrument bar from tree.json, proves at stage 6
+- 2026-11-16T06:51:51Z BACKFILL#71 bar.locked bar:walk_storeroom_raid v0.1.0: walk bar from tree.json, proves at stage 8
+- 2026-11-16T06:51:51Z BACKFILL#72 live.run bar:inv_caps v0.1.0: visit_1 sc_all_fly_no_cap PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#73 live.run bar:inv_perf_all_fly v0.1.0: visit_1 sc_barrage_perf PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#74 live.run bar:inv_which_blasts v0.1.0: visit_1 sc_blast_kinds PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#75 live.run bar:inv_gas_tags v0.1.0: visit_1 sc_cauldron_gas FAIL (runner FAIL)
+- 2026-11-16T06:51:51Z BACKFILL#76 live.run bar:inv_closed_guard v0.1.0: visit_1 sc_closed_containers UNMEASURED (runner INVALID)
+- 2026-11-16T06:51:51Z BACKFILL#77 live.run bar:inv_pits_receive v0.1.0: visit_1 sc_cover_breaks PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#78 live.run bar:doors_and_deep_water_stop v0.1.0: visit_1 sc_door_water PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#79 live.run bar:frame_time_probe v0.1.0: visit_1 sc_frame_probe_check PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#80 live.run bar:inv_items_teleport v0.1.0: visit_1 sc_gas_chain PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#81 live.run bar:inv_heavy_knock v0.1.0: visit_1 sc_heavy_knock PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#82 live.run bar:inv_hose_drop v0.1.0: visit_1 sc_hose_drop PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#83 live.run bar:inv_killed_corpse v0.1.0: visit_1 sc_killed_thrown PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#84 live.run bar:inv_weapon_ext_fields v0.1.0: visit_1 sc_lookup PASS (runner PASS)
+- 2026-11-16T06:51:51Z BACKFILL#85 live.run bar:inv_creature_mass_limit v0.1.0: visit_1 sc_mass_and_power PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#86 live.run bar:inv_hook v0.1.0: visit_1 sc_mortar_throw PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#87 live.run bar:no_careless_fall v0.1.0: visit_1 sc_no_careless_fall PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#88 live.run bar:only_explosions_throw v0.1.0: visit_1 sc_only_explosions PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#89 live.run bar:inv_shelf_skip v0.1.0: visit_1 sc_open_storage PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#90 live.run bar:people_thrown_three_cells v0.1.0: visit_1 sc_over_sandbags PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#91 live.run bar:inv_pawn_flyer v0.1.0: visit_1 sc_pawn_arc PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#92 live.run bar:pawn_hits_pawn_stops v0.1.0: visit_1 sc_pawn_hits_pawn PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#93 live.run bar:thrown_into_pit_falls v0.1.0: visit_1 sc_pit_enemy PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#94 live.run bar:inv_pits_receive v0.1.0: visit_1 sc_pit_fall PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#95 live.run bar:inv_pit_floor_haul v0.1.0: visit_1 sc_pit_fetch FAIL (runner FAIL)
+- 2026-11-16T06:51:52Z BACKFILL#96 live.run bar:inv_recovery v0.1.0: visit_1 sc_recovery PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#97 live.run bar:inv_settings v0.1.0: visit_1 sc_settings_off PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#98 live.run bar:inv_settings v0.1.0: visit_1 sc_settings_sweep PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#99 live.run bar:inv_shield v0.1.0: visit_1 sc_shield PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#100 live.run bar:inv_who_is_spared v0.1.0: visit_1 sc_spared PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#101 live.run bar:inv_items_teleport v0.1.0: visit_1 sc_storeroom_mortar PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#102 live.run bar:walk_storeroom_raid v0.1.0: visit_1 sc_walk_raid UNMEASURED (runner NO_ENTRY)
+- 2026-11-16T06:51:52Z BACKFILL#103 live.run bar:inv_pawn_flyer v0.1.0: visit_1 sc_wall_stop PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#104 live.run bar:inv_caps v0.1.0: visit_2 sc_all_fly_no_cap PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#105 live.run bar:inv_perf_all_fly v0.1.0: visit_2 sc_barrage_perf FAIL (runner FAIL)
+- 2026-11-16T06:51:52Z BACKFILL#106 live.run bar:inv_which_blasts v0.1.0: visit_2 sc_blast_kinds PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#107 live.run bar:inv_gas_tags v0.1.0: visit_2 sc_cauldron_gas PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#108 live.run bar:inv_closed_guard v0.1.0: visit_2 sc_closed_containers PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#109 live.run bar:inv_pits_receive v0.1.0: visit_2 sc_cover_breaks PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#110 live.run bar:doors_and_deep_water_stop v0.1.0: visit_2 sc_door_water PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#111 live.run bar:frame_time_probe v0.1.0: visit_2 sc_frame_probe_check PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#112 live.run bar:inv_items_teleport v0.1.0: visit_2 sc_gas_chain PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#113 live.run bar:inv_heavy_knock v0.1.0: visit_2 sc_heavy_knock PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#114 live.run bar:inv_hose_drop v0.1.0: visit_2 sc_hose_drop PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#115 live.run bar:inv_killed_corpse v0.1.0: visit_2 sc_killed_thrown PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#116 live.run bar:inv_weapon_ext_fields v0.1.0: visit_2 sc_lookup PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#117 live.run bar:inv_creature_mass_limit v0.1.0: visit_2 sc_mass_and_power PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#118 live.run bar:inv_hook v0.1.0: visit_2 sc_mortar_throw PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#119 live.run bar:no_careless_fall v0.1.0: visit_2 sc_no_careless_fall PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#120 live.run bar:only_explosions_throw v0.1.0: visit_2 sc_only_explosions PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#121 live.run bar:inv_shelf_skip v0.1.0: visit_2 sc_open_storage PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#122 live.run bar:people_thrown_three_cells v0.1.0: visit_2 sc_over_sandbags PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#123 live.run bar:inv_pawn_flyer v0.1.0: visit_2 sc_pawn_arc PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#124 live.run bar:pawn_hits_pawn_stops v0.1.0: visit_2 sc_pawn_hits_pawn PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#125 live.run bar:thrown_into_pit_falls v0.1.0: visit_2 sc_pit_enemy PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#126 live.run bar:inv_pits_receive v0.1.0: visit_2 sc_pit_fall PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#127 live.run bar:inv_pit_floor_haul v0.1.0: visit_2 sc_pit_fetch FAIL (runner FAIL)
+- 2026-11-16T06:51:52Z BACKFILL#128 live.run bar:inv_recovery v0.1.0: visit_2 sc_recovery PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#129 live.run bar:inv_settings v0.1.0: visit_2 sc_settings_off PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#130 live.run bar:inv_settings v0.1.0: visit_2 sc_settings_sweep PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#131 live.run bar:inv_shield v0.1.0: visit_2 sc_shield PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#132 live.run bar:inv_who_is_spared v0.1.0: visit_2 sc_spared PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#133 live.run bar:inv_items_teleport v0.1.0: visit_2 sc_storeroom_mortar PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#134 live.run bar:walk_storeroom_raid v0.1.0: visit_2 sc_walk_raid FAIL (runner FAIL)
+- 2026-11-16T06:51:52Z BACKFILL#135 live.run bar:inv_pawn_flyer v0.1.0: visit_2 sc_wall_stop PASS (runner PASS)
+- 2026-11-16T06:51:52Z BACKFILL#136 finding.open finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED v0.1.0: lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
+- 2026-11-16T06:51:52Z BACKFILL#137 finding.claimed_fixed finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#138 finding.open finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE v0.1.0: RM_MapComponent_Knockback.cs GasBurst builds KbConfig{ownCap = gasBurstGoodsCells}; Execute calls Kernel(cfg) -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale), so the 'weapons with their own maximum' scale (slider 0.25..2) rescales the gas goods cap: at 2.0 burning gas throws goods 4 cells, at 0.25 […]
+- 2026-11-16T06:51:52Z BACKFILL#139 finding.claimed_fixed finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#140 finding.open finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT v0.1.0: lane 1 L1_sweep_rebound_keep_slider_chain_ends: at goodsReboundKeepPercent 100 (slider top) ReboundCells(6,100) = 6, the kernel never ends the chain [measured]
+- 2026-11-16T06:51:52Z BACKFILL#141 finding.claimed_fixed finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#142 finding.open finding:RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL v0.1.0: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter named lightMassLimit) is called by no game code; ThrowContainer throws the container ThrowCells cells with its own loop [measured, grep]
+- 2026-11-16T06:51:52Z BACKFILL#143 finding.open finding:RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK v0.1.0: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide D:\ClaudeWork\rimmandrake\build\ExplosiveKnockbackSelfTest BEFORE taking its flock; […]
+- 2026-11-16T06:51:52Z BACKFILL#144 finding.open finding:RIMMANDRAKE_RECORD_FULL_LAST_LINE_IN_TEST_TABLE_RUNS v0.1.0: test_table.json runs_today.last is truncated at 200 characters (T_FW_COVER) and, for T_RESTORE, is a Python SyntaxWarning from stderr rather than the verdict line [measured, reruns.jsonl]
+- 2026-11-16T06:51:52Z BACKFILL#145 finding.open finding:RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER v0.1.0: the wild factor shipped as a constant 1.6 because adding a saved setting turns T_STAGE3_SCENES red until sc_settings_sweep's locked action text names it [measured: F1/F2 failed with goodsThrowWild saved]
+- 2026-11-16T06:51:52Z BACKFILL#146 finding.open finding:RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS v0.1.0: integer cells: a good whose kernel raw is 1.5 cells throws 2 kernel cells and round(2.4) = 2 wild cells (ratio 1.0); a 1-cell rim good gets 1 or 2; any good at the blast's maximum gets ratio 1.0. Any correct build fails the band per good [measured: arithmetic of RM_KnockbackMath.Cells; […]
+- 2026-11-16T06:51:52Z BACKFILL#147 finding.open finding:RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST v0.1.0: the request line is written at Enqueue, before the good's mass and throw are known; the fix journals kernelCells and wildCells on item_move (and too_weak skips carry dist and mass) [measured, read]
+- 2026-11-16T06:51:52Z BACKFILL#148 finding.open finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS v0.1.0: lane2/reruns.jsonl T_RESTORE FAIL
+- 2026-11-16T06:51:52Z BACKFILL#149 finding.claimed_fixed finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#150 finding.open finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED v0.1.0: RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)
+- 2026-11-16T06:51:52Z BACKFILL#151 finding.claimed_fixed finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#152 finding.open finding:RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED v0.1.0: RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)
+- 2026-11-16T06:51:52Z BACKFILL#153 finding.claimed_fixed finding:RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#154 finding.open finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL v0.1.0: ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container
+- 2026-11-16T06:51:52Z BACKFILL#155 finding.claimed_fixed finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#156 finding.open finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG v0.1.0: ContainerShove/KbShove called by nothing in the game
+- 2026-11-16T06:51:52Z BACKFILL#157 finding.claimed_fixed finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#158 finding.open finding:RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE v0.1.0: T_LINT rc 0 on a copy with Flame 0.7
+- 2026-11-16T06:51:52Z BACKFILL#159 finding.claimed_fixed finding:RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#160 finding.open finding:RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR v0.1.0: validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move
+- 2026-11-16T06:51:52Z BACKFILL#161 finding.claimed_fixed finding:RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#162 finding.open finding:RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR v0.1.0: lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1
+- 2026-11-16T06:51:52Z BACKFILL#163 finding.claimed_fixed finding:RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#164 finding.open finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER v0.1.0: planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ
+- 2026-11-16T06:51:52Z BACKFILL#165 finding.claimed_fixed finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#166 finding.open finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: 6 planted faults MISSED (planted_results.jsonl)
+- 2026-11-16T06:51:52Z BACKFILL#167 finding.claimed_fixed finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#168 finding.open finding:RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST v0.1.0: storeroom_pit_proof.py arm(): Settings(args=kv) is invisible (py_poke_kind falls back to the tool name)
+- 2026-11-16T06:51:52Z BACKFILL#169 finding.open finding:RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER v0.1.0: pump_outflow_live.py:174, tank_theft_live.py:80
+- 2026-11-16T06:51:52Z BACKFILL#170 finding.open finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR v0.1.0: Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName="Flame"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)
+- 2026-11-16T06:51:52Z BACKFILL#171 finding.claimed_fixed finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#172 finding.open finding:RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN v0.1.0: planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)
+- 2026-11-16T06:51:52Z BACKFILL#173 finding.claimed_fixed finding:RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#174 finding.open finding:RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST v0.1.0: storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust
+- 2026-11-16T06:51:52Z BACKFILL#175 finding.claimed_fixed finding:RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST v0.1.0: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- 2026-11-16T06:51:52Z BACKFILL#176 finding.open finding:RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN v0.1.0: PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP: missed offline
+- 2026-11-16T06:51:52Z BACKFILL#177 finding.open finding:RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME v0.1.0: RM_PawnFlyerPatches.cs: static Dictionary<Pawn,Job> Hauling, set at every launch, removed only at a knockback landing; never cleared on load, not saved
+- 2026-11-16T06:51:52Z BACKFILL#178 finding.open finding:RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED v0.1.0: planted PF_MATH_JOLT_NO_DECAY passed T_KERNEL and lane 1 (fx_jolt_bounded tests only the bound)
+- 2026-11-16T06:51:52Z BACKFILL#179 finding.open finding:RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT v0.1.0: lane-1 row L1_PATH_RANDOM_CONSERVATION (lane1/lane1_rows.jsonl): FAIL, 42 of 30000 random grids, seed 20261115, one violation kind: 'pawn stop without the hit pawn next to it'
+- 2026-11-16T06:51:52Z BACKFILL#180 decision q:criterion-repair-closed-containers-thrown v0.1.0: criterion repair of closed_containers_thrown (files: tree_sheet_rewording.patch)
+- 2026-11-16T06:51:52Z BACKFILL#181 decision bar:inv_perf_all_fly v0.1.0: Item `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN`, filed 2026-11-15 by the fixer of `RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO`.
+- 2026-11-16T06:51:52Z BACKFILL#182 decision bar:inv_items_teleport v0.1.0: criterion repair of sc_storeroom_mortar (files: calibrate.py, calibrate_cap6.txt, criteria_new.json, criteria_old.json, diffguard.json, refusal.json)
+- 2026-11-16T06:51:52Z BACKFILL#183 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#184 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#185 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#186 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#187 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#188 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#189 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#190 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#191 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#192 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#193 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#194 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#195 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#196 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#197 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#198 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#199 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#200 spend spend v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#201 decision q:you-can-t-fall-in-by v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#202 decision q:1-1-totally-even-better-if v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#203 decision q:1-but-the-closed-containers-may v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#204 decision q:just-put-a-bomb-into-a v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#205 decision q:1-anything-that-draws-its-contents v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#206 decision q:we-really-shouldn-t-blow-back v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#207 decision q:can-t-we-actually-simulate-that v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#208 decision q:rimmaster-run-codex-designer-to-questions-23-mods v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#209 decision q:rimmandrake-design-knockback-first-touch v0.1.0: Approve the 16 Explosive Knockback north-star bars? → Approve as written
+- 2026-11-16T06:51:52Z BACKFILL#210 decision q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops v0.1.0: Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
+- 2026-11-16T06:51:52Z BACKFILL#211 decision q:rimmandrake-decide-explosion-mods-keep-absorb v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#212 decision q:rimmandrake-decide-explosion-mods-keep-absorb v0.1.0: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
+- 2026-11-16T06:51:52Z BACKFILL#213 decision finding:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS v0.1.0: Extra Explosion Effects → Absorb the idea into Knockback
+- 2026-11-16T06:51:52Z BACKFILL#214 decision q:rimmandrake-design-knockback-first-touch v0.1.0: EK sign-off → One judge run
+- 2026-11-16T06:51:52Z BACKFILL#215 decision q:rimmandrake-design-knockback-first-touch v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#216 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#217 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#218 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#219 decision q:rimmandrake-advance-flowworks-offline-beside-the-pilot v0.1.0: How many mods should advance at once? → All four now, offline only
+- 2026-11-16T06:51:52Z BACKFILL#220 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: When should the held look statements go into the mods' tables? -> Per mod, as it advances
+- 2026-11-16T06:51:52Z BACKFILL#221 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#222 decision q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit v0.1.0: Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version
+- 2026-11-16T06:51:52Z BACKFILL#223 decision finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN v0.1.0: Thrown pawn lands on another pawn → Bruise in the next version
+- 2026-11-16T06:51:52Z BACKFILL#224 decision q:rimmandrake-recertify-knockback-tree-after-his-own-rewording v0.1.0: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
+- 2026-11-16T06:51:52Z BACKFILL#225 decision finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
+- 2026-11-16T06:51:52Z BACKFILL#226 decision q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob v0.1.0: Which release do you want? (two mods stopped at the USD 60 stage spend guard) -> Raise the limit to $100; Who should be allowed to use the per-mod release from now on? -> Conductor, told after
+- 2026-11-16T06:51:52Z BACKFILL#227 decision q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob v0.1.0: Which release do you want? → Raise the limit to $100
+- 2026-11-16T06:51:52Z BACKFILL#228 decision q:rimmandrake-repair-barrage-frame-criterion-baseline-fails-too v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#229 decision q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff v0.1.0: 
+- 2026-11-16T06:51:52Z BACKFILL#230 decision q:rimmandrake-build-mod-ledger-holders-three-pilots-at-once v0.1.0: 
+- 2026-11-16T06:56:09Z BACKFILL#231 finding.open finding:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS v0.1.0: Explosive Knockback: absorb Extra Explosion Effects' idea, our own blast flecks, smoke, debris and big-blast shockwave
+- 2026-11-16T06:56:09Z BACKFILL#232 finding.open finding:RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY v0.1.0: ExplosiveKnockback sc_storeroom_bomb_pit expects 'the stack aimed at the covered cell falls through it with one descent and the cover is destroyed', but no code does it: Building_SpanDeck's load sums living walking pawns only (FlowWorks Pits/Building_SpanDeck.cs ~256) and RM_ThingFlyer_Knockback never touches a […]
+- 2026-11-16T06:56:09Z BACKFILL#233 finding.open finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN v0.1.0: Explosive Knockback 0.2.0: a thrown pawn landing on a pawn bruises both, scaled by its weight
+- 2026-11-16T06:56:09Z BACKFILL#234 finding.open finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: Explosive Knockback 0.1.0 Stage 3: build the checks for the 11 bars that are not runnable, offline
+- 2026-11-16T06:56:09Z BACKFILL#235 finding.open finding:RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS v0.1.0: Explosive Knockback: flammable gas goes off clump by clump, each clump scattering goods and shoving people 1 cell (no damage, once per 2 s, never breaks pit covers); opt-in flammable tag on our gases incl. the Cauldron's
+- 2026-11-16T06:56:09Z BACKFILL#236 finding.open finding:RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN v0.1.0: Explosive Knockback: review the 5 DIRTY files, then deploy so the game copy loses the closed-tag patch on Cold Storage lockers
+- 2026-11-16T06:56:09Z BACKFILL#237 finding.open finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC v0.1.0: Explosive Knockback 0.2.0: a thrown pawn's carried thing flies its own trajectory
+- 2026-11-16T06:56:09Z BACKFILL#238 finding.open finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD v0.1.0: Explosive Knockback: thrown goods truly fly (wild): arc, fast spin, rebound off walls until spent at ~70%; replaces the despawn-and-replace teleport at RM_MapComponent_Knockback.cs:474
+- 2026-11-16T06:56:09Z BACKFILL#239 finding.open finding:RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS v0.1.0: Test tiers load the creatures the full list cuts (Thrumbo in the Knockback scene)
+- 2026-11-16T06:56:09Z BACKFILL#240 finding.open finding:RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS v0.1.0: Explosive Knockback: a flying heavy stack that hits a person gives a small blunt hit and a stagger; light goods pass through
+- 2026-11-16T06:56:09Z BACKFILL#241 finding.open finding:RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED v0.1.0: Explosive Knockback: drop the every-storage exemption (RM_MapComponent_Knockback.cs:399); only closed containers keep contents, and the container itself gets a small shove; flip walk row light_things.item_on_a_shelf_stays
+- 2026-11-16T06:56:09Z BACKFILL#242 finding.open finding:RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF v0.1.0: Explosive Knockback: prove all-fly (no overflow cap) holds at most 50 ms per frame on a mortar barrage and a long gas chain on Archmagi; owns the walk scene walk_storeroom_raid
+- 2026-11-16T06:56:09Z BACKFILL#243 finding.open finding:RIMMANDRAKE_PROVE_KNOCKBACK_HIDING_LOCKER_LIVE v0.1.0: Explosive Knockback: re-prove closed containers live with LWM's Deep Storage weapons locker, no shelf or hopper tagged closed; delete or restage the two misleading sitting saves
+- 2026-11-16T06:56:09Z BACKFILL#244 finding.open finding:RIMMANDRAKE_PROVE_KNOCKBACK_OUTERRIM_BLAST_LANES v0.1.0: Explosive Knockback: stage and prove sc_blast_kinds' Outer Rim sonic and plasma grenade lanes
+- 2026-11-16T06:56:09Z BACKFILL#245 finding.open finding:RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE v0.1.0: Explosive Knockback: prove goods thrown into a pit stay retrievable (a colonist fetches one from the pit floor down the ladder)
+- 2026-11-16T06:56:09Z BACKFILL#246 finding.open finding:RIMMANDRAKE_READ_CONTAINER_JOLT_OFFSET_IN_PROOF v0.1.0: ExplosiveKnockback sc_closed_containers jolt rows print drawnOffset=UNMEASURED (RM_KnockbackProof_StageThree.cs) though the jolt is drawn since 587529cee1; the only counters (RM_MapComponent_Knockback JoltFrames/JoltMaxOffset) are map-wide and per frame: add a per-container drawn-offset read and make the row pass […]
+- 2026-11-16T06:56:09Z BACKFILL#247 finding.open finding:RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS v0.1.0: Explosive Knockback: rewrite the proof scenes so each asserts its start and runs a real control (17-row script audit)
+- 2026-11-16T06:56:09Z BACKFILL#248 finding.open finding:RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE v0.1.0: Test queue: a proof-build job route (build -p:RmProofs=true and deploy it on SteveDesktop); Explosive Knockback's live scenes cannot run without it
+- 2026-11-16T06:56:09Z BACKFILL#249 finding.open finding:RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES v0.1.0: selftest_maturation_dispatch red on main: convergence lines break the launch-retry check's no-Needs-Conductor assertion
