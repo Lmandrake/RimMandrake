@@ -392,11 +392,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.43,
-    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 10 of 10 mutants red, the clean copy green",
-    "at": "2026-11-16T16:00:08Z",
+    "seconds": 2.95,
+    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 16 of 16 mutants red, the clean copy green",
+    "at": "2026-11-16T22:26:54Z",
     "result": "PASS",
-    "build": "b3e19e503e1ef73da61f",
+    "build": "4e928c46e52818dc4dc7",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py"
    }
   },
@@ -416,11 +416,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 42.73,
-    "last": "PASS: 7 def facts hold, 16 of 16 mutants red, the clean copy green",
-    "at": "2026-11-16T16:00:50Z",
+    "seconds": 71.76,
+    "last": "PASS: 7 def facts hold, 18 of 18 mutants red, the clean copy green",
+    "at": "2026-11-16T22:28:06Z",
     "result": "PASS",
-    "build": "c588c5616b897f4d5b4a",
+    "build": "14077de0128bf69f92b3",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py"
    }
   },
@@ -1691,11 +1691,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.78,
+    "seconds": 4.58,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-16T16:01:00Z",
+    "at": "2026-11-16T22:28:10Z",
     "result": "PASS",
-    "build": "472fb0981664405bb586",
+    "build": "7d3b2e3afba7f12999e7",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py"
    }
   }

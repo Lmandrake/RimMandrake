@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T12:40:27-08:00",
+  "since": "2026-11-16T14:28:16-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 1,
-    "total": 2
+    "visit": 2,
+    "total": 3
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -85,6 +85,25 @@
         "hold",
         "every_bar_has_a_check_that_runs",
         "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T14:28:16-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward: blind cycle 2 exit_met false only because three Problems (all test-strength) were FIXED at b7b77c929e; a new blind judge is owed to judge the two edited tests; certificate re-stamped on this build (record gap)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-two-fa-1794867953",
+      "confirmed": {
+        "steward_confirms": "read cycle_2/SUMMARY.md, faults.json, tests_edited.json and the diff 85c4d61bee..b7b77c929e of both edited tests: stricter only (one regex replaced by a stricter fact, sweep facts and mutants added), weakened false verified; 0 Problems open, 6 offline bars green; certificate --run on this build: OK 16 bars. Verdict: open cycle 3, file nothing new"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
         "fourth_cycle",
         "judge_certificate"
       ]
