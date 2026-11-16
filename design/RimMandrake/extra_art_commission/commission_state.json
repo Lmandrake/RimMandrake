@@ -619,6 +619,9 @@
     "xart_RM_Nuudal_young_v1_east",
     "xart_RM_Nuudal_young_v1_north",
     "xart_RM_Nuudal_young_v1_south",
+    "xart_RSW_ColoClawFish_young_v1_east",
+    "xart_RSW_ColoClawFish_young_v1_north",
+    "xart_RSW_ColoClawFish_young_v1_south",
     "xart_RSW_Faa_variant_v1_east",
     "xart_RSW_Faa_variant_v1_north",
     "xart_RSW_Faa_variant_v1_south",
@@ -626,7 +629,7 @@
     "xart_RSW_Mee_variant_v1_north",
     "xart_RSW_Mee_variant_v1_south"
    ],
-   "rows_sha": "664d97f2317f1fb32aa46fddbc4ef4e961d4470d5c17bceb4922815e2e7442d1"
+   "rows_sha": "959a9bd836d6ece1dde7bb3bf0211c897c5e97dfced30f17b369b34ea24b9870"
   },
   "RM_Warscar": {
    "filed": "2026-11-03T13:22:45Z",

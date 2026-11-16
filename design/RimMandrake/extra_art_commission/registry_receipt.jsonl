@@ -344,6 +344,9 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Clodhopper_young_v1_east", "notes": "", "target": "xart_RSW_Clodhopper_young/east", "ts": 1793712283.4001265}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Clodhopper_young_v1_north", "notes": "", "target": "xart_RSW_Clodhopper_young/north", "ts": 1793712283.6400108}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Clodhopper_young_v1_south", "notes": "", "target": "xart_RSW_Clodhopper_young/south", "ts": 1793712283.5197504}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_ColoClawFish_young_v1_east", "notes": "", "target": "xart_RSW_ColoClawFish_young/east", "ts": 1794732731.050142}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_ColoClawFish_young_v1_north", "notes": "", "target": "xart_RSW_ColoClawFish_young/north", "ts": 1794732731.5046568}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_ColoClawFish_young_v1_south", "notes": "", "target": "xart_RSW_ColoClawFish_young/south", "ts": 1794732731.2626944}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Corinathoth_variant_v1_east", "notes": "", "target": "xart_RSW_Corinathoth_variant/east", "ts": 1793712290.6461613}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Corinathoth_variant_v1_north", "notes": "", "target": "xart_RSW_Corinathoth_variant/north", "ts": 1793712290.9042947}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xart_RSW_Corinathoth_variant_v1_south", "notes": "", "target": "xart_RSW_Corinathoth_variant/south", "ts": 1793712290.7851694}
