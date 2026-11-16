@@ -1,0 +1,1 @@
+scratch_stranded excuses only files byte-identical to origin/main; a dead session clone whose edits landed on main in a later, reworded form (same ticket, closed) still reads stranded and rings disk.pool_breach. Check the ticket named in the edits is closed on main, save the patch to agent storage retired-trees, then revert the clone.
