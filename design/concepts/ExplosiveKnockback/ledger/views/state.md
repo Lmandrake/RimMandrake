@@ -1,6 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763} body_sha256=a4222463b8328723ac7c7832a769ca38d7ed471d3040b2f5743bdc59f174823b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763,"DISPATCH":666} body_sha256=0627564e52ad6c8e299a528004ae3511c90b4a16ed166b5425632a060bd257d3 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 249 events in 1 shards · reducer 1
+version 0.1.0 · stage offline_build · 251 events in 2 shards · reducer 1
+holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 
 ## Open findings (47)
 - finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars goods_arc_spin_rebound: lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
@@ -310,6 +311,6 @@ spend recorded: USD 70.74, 138207197 tokens
 - 2026-11-16T06:51:52Z live.run bar:walk_storeroom_raid: UNMEASURED on 1a593788b36d visit_1 sc_walk_raid UNMEASURED (runner NO_ENTRY)
 
 ## Left out
-- the full history: 249 events (views/history.md; never read whole)
+- the full history: 251 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T06:56:09Z.1794812169990330912 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T06:56:09Z.1794812169990330912 prints what changed after this packet)
+cursor: t=2026-11-16T07:18:18Z.1794813498462216657 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:18:18Z.1794813498462216657 prints what changed after this packet)

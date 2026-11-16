@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763} body_sha256=e720afd5bc86fb39b4cc9a7bb93a193d9e3d470f22006c373154794e5dc6fe9f -->
-# ExplosiveKnockback — mod ledger history (249 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763,"DISPATCH":666} body_sha256=e29060db1d45bdd9f3a35ad5b17134627a11f5cda53cff8e72181af06871da4c -->
+# ExplosiveKnockback — mod ledger history (251 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -250,3 +250,5 @@
 - 2026-11-16T06:56:09Z BACKFILL#247 finding.open finding:RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS v0.1.0: Explosive Knockback: rewrite the proof scenes so each asserts its start and runs a real control (17-row script audit)
 - 2026-11-16T06:56:09Z BACKFILL#248 finding.open finding:RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE v0.1.0: Test queue: a proof-build job route (build -p:RmProofs=true and deploy it on SteveDesktop); Explosive Knockback's live scenes cannot run without it
 - 2026-11-16T06:56:09Z BACKFILL#249 finding.open finding:RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES v0.1.0: selftest_maturation_dispatch red on main: convergence lines break the launch-retry check's no-Needs-Conductor assertion
+- 2026-11-16T07:18:18Z DISPATCH#1 lease.grant lease v0.1.0: 
+- 2026-11-16T07:18:18Z DISPATCH#2 run.start run v0.1.0: 
