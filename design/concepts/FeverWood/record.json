@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "stage": 2,
-  "run": "rm-role-designercodex-1794837471",
+  "run": "rm-role-designercodex-1794845723",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -240,6 +240,18 @@
         "design/validation_walks/RimMandrake/FeverWood.md:75"
       ],
       "text": "Strike the repeated owner preference ask and route the separate binding act for the two NEW north-star bars to authorized Conductor/Arbiter validation under delegation_policy section 2.1. The independent authority/ask review found no earlier validated baseline and no contrary design evidence. The Designer does not bind the bars or supply the final bar judge verdict. Stage 2 remains blocked on RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS; no root hash or frozen artifact is changed. All ten stage-3 coverage gaps retain their exact paths to pass."
+    },
+    {
+      "id": "stage2_root_validation_verified",
+      "speaker": "agent",
+      "source": [
+        "CONDUCTOR:1794838259873987749",
+        "design/validation_walks/RimMandrake/FeverWood.md:75",
+        "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+        "design/concepts/FeverWood/coverage_verdict.json",
+        "design/concepts/FeverWood/stage.json"
+      ],
+      "text": "Verified the separately published delegated NEW-bar validation at commit 95c5d7512e15. northstar.parse reports VALIDATED, with matching nonempty recorded/current hash c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418 and both feverwood_branch_home and feverwood_water_memory. The published independent PASS verdict names that final section hash; CONDUCTOR:1794838259873987749 records the fresh judge and validation. No core intent or unanswered ask remains. Stage 3 must restamp the root and reconcile stale DRAFT prose, fix all ten coverage gaps and write coverage_fixes.json against rm-coverage-judge-1794833596, then repeat the exam and coverage review for changed artifacts. This run supplies no new validation, coverage signature, runtime acceptance, owner first-touch or implementation."
     }
   ],
   "asks": [
@@ -3936,5 +3948,51 @@
       "g10"
     ],
     "next_after_binding": "Authorized validator publishes actual validation and unblocks stage 2. Stage 3 must restamp root_hash, address all ten gaps with coverage_fixes.json against the recorded judge, then repeat the exam and coverage review. Existing Preflight admission ceiling remains."
+  },
+  "stage2_root_validation_completion": {
+    "run": "rm-role-designercodex-1794845723",
+    "at": "2026-11-16T16:17:26.737609+00:00",
+    "source": [
+      "CONDUCTOR:1794838259873987749",
+      "design/validation_walks/RimMandrake/FeverWood.md:75",
+      "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+      "design/concepts/FeverWood/coverage_verdict.json",
+      "design/concepts/FeverWood/stage.json"
+    ],
+    "binding_commit": "95c5d7512e159cb0a0fba772381a49e64163eed1",
+    "walk_state": "VALIDATED",
+    "recorded_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+    "current_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+    "must_show": [
+      "feverwood_branch_home",
+      "feverwood_water_memory"
+    ],
+    "judge_verdict": "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+    "judge_independence": "Published verdict declares its judge did not author or reword the bars; the Conductor ledger note records a fresh rm-judge Opus round 1 PASS. No judge was started by this run.",
+    "prior_review": "stage2_root_validation_review above is the historical pre-binding observation, superseded by this completion.",
+    "pending_decision": "root validation resolved by the published authority act; frozen tree still DRAFT/null until stage 3 restamps it.",
+    "coverage_verdict_sha256": "324ae6821cff717cbd31422dda9fbe8a00c35cc4caee8ec079fabe3d5658fdd1",
+    "coverage_gap_ids": [
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "g5",
+      "g6",
+      "g7",
+      "g8",
+      "g9",
+      "g10"
+    ],
+    "frozen_artifacts_sha256": {
+      "tree.json": "0c794f5da02ef604af5b4d024fec35708c5f2b2d6c9adae91a2592a68a5d8e79",
+      "sheet.md": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+      "scenes.json": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+      "floor.json": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+      "exam.json": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e"
+    },
+    "remaining": "All ten gaps remain open without alteration, including each would_pass and smallest_fix. No stage-3 artifact changed. Stage 3, a new exam and a new coverage review remain required.",
+    "recovery": "No active recovery records, no scene or game mutation.",
+    "draft_use": "No claim in this completion relies on the supplied third-party draft."
   }
 }
