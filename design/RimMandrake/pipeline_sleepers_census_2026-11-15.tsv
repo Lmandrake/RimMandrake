@@ -1,0 +1,561 @@
+id	state	blocked	owner_words	age_days	idle_days	title
+ISHKO_NINEFOLD_MERGE_ONE_GOD_ONE_HOME	built	-	O	24	24	Fold IshkoDarkLandmarks into the religion mod of the Nine: options (a) Ninefold (b) Rites (c) concept only, in
+RUNNERCLONE_FIX_STRANDED_BY_HISTORY_REWRITE	proposed	-	-	17	17	Other SteveDesktop clones (~/rm/bench, ~/mutation/RimMandrake) likely still on pre-excise history; ~/rm/runner
+ACCOUNTPICK_HOLD_RESTORE_WHEN_HE_LANDS	proposed	B	O	18	14	Restore dispatcher_schedule account_pick hold [role_launch, ring, recover] when the owner is back (Thu evening
+ACCOUNT_MOVE_FIX_ADVICE_WITH_NO_HANDS	proposed	-	O	14	14	His card says burn system to about 10% then move to lukas, but account_pick only recommends and his 2026-10-28
+ACCOUNT_SWITCH_FIX_HAND_STEP_BEFORE_MONDAY	proposed	-	O	14	14	Hand account switch off system before 2026-11-02 04:00Z (OP-20261101T0240Z): the Conductor's step, no owner de
+CLOSE_GATE_ENFORCE_DONE_IS_EARNED	ready	B	O	14	14	rimflow close refuses without a sha or --no-code, owed checks on that sha, a non-maker verdict, and no newer f
+DOORBELL_ARM_HARDEN_TWO_NARROW_RACES	proposed	B	O	14	14	doorbell.py: _disarm_if_mine removes a newer arm between PID check and remove; take_ring validates then rename
+DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS	proposed	B	O	14	14	A fresh window waits for a ring: idle clock starts after restart_verified, then stall_after_s plus a 120 s tic
+HELPER_RECEIPTS_FOREGROUND_FIX_UNREAD_SKIP	proposed	B	O	14	14	helper_receipts.harvest: any Agent tool_result enters rows[done], so a foreground helper whose parent died rig
+HOLD_SELFTEST_FIX_RED_ONLY_WHEN_ISOLATED	proposed	B	O	14	14	Two selftests red in an isolated checkout at their claim sha, blocking Arbiter passes
+PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT	proposed	B	O	15	14	Maximise reliable parallel subagent work: every limiting decision must defend itself; design review of all tes
+PLANNING_BUILD_DAYS_OF_ORDERS_NO_HOME	proposed	-	O	14	14	Owner's planning sessions that set many days of dispatching have no mechanism; nearest is priority_list.json p
+SCRATCHREAP_FIX_SELFTEST_BLINDS_OTHER_RUNS	proposed	B	O	14	14	concurrent scratch_reap selftests, and any live fixture with an undumpable process or unreadable alternates, b
+SCRATCHREAP_MUTANTS_FINISH_SERIAL_RUN	proposed	B	O	14	14	mutants cannot be sharded (fixtures blind each other) and serial costs ~3 min each under load; 134 remain; IDE
+SCRATCHREAP_REVIEW_FINISH_PATH_SHAPE_TAIL	proposed	B	O	14	14	scratch_reap.py + selftest stay DIRTY: Codex rounds r10-r18 each found shallow argv/env path shapes hiding a l
+SCRATCH_AGE_FIX_FIFTY_SIX_YEARS_YOUNG	proposed	B	O	14	14	Scratch cleaner's oldest_h reads 498214 h (an epoch mtime) after b89e198b6b, holding disk.scratch_dirty_* open
+SCRATCH_REAP_SELFTEST_FIX_NEVER_ENDS	proposed	B	O	14	14	selftest_scratch_reap reaches no verdict: killed at 280, 530, 590 and 900 s
+SEAT_RESTART_FIX_TAKEN_REQUEST_LOST	proposed	B	O	15	14	A tick that consumes a restart request and dies before saving state forgets the request; if the window then di
+SEAT_RESTART_REPAIR_TORN_TAIL_AT_GOODBYE	proposed	B	O	14	14	seat_restart.py goodbye (~1490): a torn final transcript record after the kill makes _wake_conductor refuse to
+SEAT_SYNC_FIX_LATE_SAVE_DELETED_PARK	proposed	B	O	14	14	seat_sync deletes the park once no late write shows, but an editor still holding a displaced inode can save af
+SELFTEST_CLOCK_BUILD_INJECTED_TIME	proposed	B	O	14	14	Injected clock for selftests: wall-clock reads refuse about 62 of 90 refused tests, including scratch_reap, fr
+SELFTEST_DISPATCHER_FIX_NINE_RED_BEFORE_ME	proposed	B	O	15	14	selftest_dispatcher fails 9 rows at HEAD cd7a8ff7bb (Arbiter pending_work, cutoff, pre_launch_max_s), same row
+SLOT_HOOK_FIX_TEXT_STILL_OWNER_ONLY	proposed	B	O	14	14	block_agent_over_slots.py message says only the owner's word raises N; a Conductor instruction now does too (s
+THEFT_HAULER_WIDEN_MINIFY_GONE	proposed	-	-	14	14	Theft hauler gates on Minifiable, so since Minify Everything left it reaches only what a colonist can; prove i
+WARLAB_GATES_JUDGE_ROOM_WITH_NO_JUDGE	proposed	-	-	14	14	War lab: run the opus §4 judge on dungeons_arc_spec.md §2.3 gate order
+CONDUCTOR_RESTART_REDESIGN_NEVER_FREEZE_HIM	doing	-	O	13	13	The hard-limit restart froze the Conductor's spawns while the owner was typing (fixed in the slot hook). Deepe
+LANDFORMS_JUDGE_REPLICATE_OR_KEEP_BIG_LIFT	proposed	-	-	14	13	Geological Landforms: replicate or keep (owner C06 2026-10-10, 'Experiments required to validate'); same-tile 
+PROOF_TIERS_WIDEN_FOUR_FULL_LIST_HOLDOUTS	proposed	-	-	13	13	Four places still assume the full mod list (per small-lists-first ruling): FOUNDRY preflight_flowworks P-O4, p
+SETTINGS_AUDIT_REFRESH_ONE_GROUP_TOO_MANY	proposed	-	-	13	13	selftest_settings_screens.py RED on origin/main 7ec1b04602: WreckedMachines 5 groups found, expected 4; WasteR
+ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING	ready	B	O	18	12	Standard switching plan: data-driven account engine, pool pacing, ops skill
+ACCOUNT_KEEPALIVE_VERIFY_STILL_BREATHING	proposed	B	O	21	12	Prove claude-account keep-alive renews dormant logins on SteveDesktop: after the 04:28 warm runs past an acces
+ACCOUNT_PICK_HARDEN_UNRESOLVED_CURRENT	proposed	B	O	19	12	account_pick.py:113: an unresolved machine account (current None) still keeps with hold=False; hold it like a 
+ALLOCATOR_ENFORCE_LENT_BURN_ACCOUNT	proposed	B	O	19	12	slot_allocator: a lent account's off-limits window/floor is consulted only for spares, never for the burn acco
+ALPHA_BIOMES_FIX_UNDECIDED_TOKENS	proposed	-	-	12	12	selftest_alpha_biomes_census red: UNDECIDED_TOKEN AB_Fern/AB_Grass/AB_Grass_Polluted in selftest_donor_retire_
+ALPHA_BIOMES_MIGRATE_DISEASES_AND_CODE	built	-	O	30	12	Replace the 3 AB_Disease incidents in Miasma; remove sarg.alphabiomes strings from C# (WarmGround, Pollination
+ANCIENT_WAR_LAB_1	ready	B	O	70	12	The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians
+ART_RULINGS_FIX_FLYER_COLUMN_BASELINE	proposed	-	-	12	12	selftest_flyer_variants + selftest_drawn_art_ruled red: RM_FleetFlier C south ruling column mismatch; baseline
+AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE	built	-	O	36	12	GeneratePawn awareness hook installs lazily (on arm, from the main thread) unless awareness_settings.json sets
+BAZAAR_BANTER_LINES_1	ready	B	O	63	12	The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERI
+BELT_WATER_HARNESS_1	built	-	O	42	12	Bland-map water cell helper: Miasma return proof and Greentide vurrak need water; paint via set_terrain_batch 
+BIG_CREATURES_DESIGN_WALLS_AND_SLOTS	built	-	O	28	12	Design pass + GPT review: big creatures vs narrow slots, thin walls, roofs, squeezing
+BOUNDED_TMPDIR_FIX_RUN_DIR_OVERWRITTEN	proposed	-	-	12	12	claude_bounded.sh replaces the per-run TMPDIR from 11312ebfc6 with the shared ~/.seat-tmp/BENCH, so unwalled w
+BRIDGE_LOCK_CROSS_CLONE_RACE_1	built	-	O	39	12	rimflow bridge take can't see the other clone's unpushed take: BENCH and FOUNDRY both held the bridge 2026-10-
+BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID	built	-	O	36	12	exclusive driver lock keyed on process identity with O_EXCL acquisition, heartbeat/PID liveness, loud failure 
+BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD	built	-	O	36	12	Game/map epoch guards: reserved call arguments expectGameEpoch / expectMapId / expectCurrentMapId refused at t
+BRIDGE_TPS_CAPTURE_FIXES_1	validated	-	O	36	12	TPS record fixes from the Opus+GPT reviews: auto-start at load, keep stalls, correct window maths, dependable 
+BRIDGE_TPS_REGULAR_REPORT_1	built	-	O	36	12	Bridge regularly samples and reports game TPS during use: continuous gathering, a rolling record on disk, and 
+BRIDGE_TPS_REVIEW2_FIXES_1	built	-	O	36	12	Repair TPS record build 2 per second GPT review: 17 MUST fixes (profiler skip-safety, measurement boundaries, 
+CATHEDRAL_KIT_COMMENTS_FIX_SPLICED_SUMMARY	proposed	-	O	14	12	RustCathedral Hum/Walls settings: Walls Group() summary has Cathedral scope text spliced in mid-word; both kit
+CATHEDRAL_STAGE_COMMENTARY_POOLS_1	built	-	O	63	12	Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
+CAULDRON_KEPT_ART_JUDGE_FOR_OWNER_DIGEST	proposed	-	O	22	12	CAULDRON: 8 owner-kept rows GPT disputes - for owner digest, no action
+CLASS_REFS_FIX_UNRESOLVED_PIPESYSTEM	proposed	-	-	12	12	selftest_lint_def_type_refs + selftest_paint_list red: UNRESOLVED PipeSystem.Building_Pipe in Absorbed_Kotorco
+CLOSE_EVIDENCE_HARDEN_MUTATION_SURVIVORS	proposed	B	O	19	12	close_evidence.py: 460 of 1130 mutants survive selftest_close_evidence (score 58.9%, 5 timeouts); add red-firs
+CLOSE_EVIDENCE_WIRE_RUNNER_SEAT	proposed	B	O	19	12	close_evidence records carry seat None (all 8 in the 7-day window), so arbiter G6_independent is UNMEASURED an
+CLOSE_SHA_FIX_HEAD_FALLBACK_CLAIM_COMMITS	proposed	B	O	17	12	close --sha fell back to HEAD: FOUNDRY_CLONE_SYNC_STALE_TIMERS and FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS closed
+COMMIT_SESSION_FIX_NAMES_WINDOW_NOT_HELPER	proposed	B	O	19	12	The Claude-Session commit trailer names the seat WINDOW's bridge session, shared by every helper it launches (
+COMPACTION_LOG_FIX_HELPERS_COUNTED_AS_SEAT	proposed	B	O	20	12	compactions.jsonl: 435/435 BENCH-clone compactions read handoff MISSING (203 on 10-26); helpers sharing the cw
+COMPACTION_RESTORE_OPEN_ITEMS_FROM_LEDGER	proposed	B	O	20	12	Real compactions keep only 34/66 open item IDs exactly (some shortened past grep); a SessionStart(compact) hoo
+CONTAGION_KEPT_ART_JUDGE_FOR_OWNER_DIGEST	proposed	-	O	22	12	CONTAGION: 4 owner-kept rows GPT disputes - for owner digest, no action
+CONTAGION_REVIEW_STAGE_JUDGE_LOOKS_FIRST	proposed	-	O	23	12	Contagion owner review prep: judge-agent LOOK at Coalescence stages, drawn tells, Burn vs Bloom, grown limbs x
+CORPSE_VISITORS_FIX_NEVER_ARRIVE	proposed	-	-	12	12	Corpse-site visitors stall: camp (LordJob_VisitColony, 2 pawns) sat at east edge ~6000 ticks; 3 RSW_PustuleHor
+CORPSE_YIELD_TUNE_SPOILAGE_OUTRUNS_EATING	proposed	-	O	12	12	Corpse-site meat: 100000 at birth (round, maybe a clamp, untraced); spoilage 15%/day (84999->72181) vs visitor
+CREATURE_BEHAVIOR_LAST_OUTCOME_1	validated	-	O	37	12	CB-7: Ambushers, lures and alarms record last outcome
+CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE	proposed	-	-	12	12	True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's bod
+CRITERIA_TEXT_FIX_CUT_AT_CAP	proposed	-	O	13	12	model.CRITERION_TEXT_MAX cuts criterion text at 160 chars on the ledger; 655 of 2570 criteria sit at the cap a
+DIGEST_LEFTOVERS_FIX_DROWNS_THE_READER	proposed	B	O	14	12	Delegated digest prints one line per leftover deletion: 1593 of 1782 records today, 102 KB, the real calls bur
+DISPATCHER_VERIFY_SAME_SECOND_HANDOFF	proposed	B	O	17	12	dispatcher.py:239 verifies a ring's handoff with strict > on whole-second ledger timestamps; a lease take in t
+DRAWBRIDGE_DECK_FIX_STEEL_READS_TIMBER	proposed	-	-	12	12	Lowered steel drawbridge deck draws the bridge look's deck atlas (rust plates + rope rails, default look) and 
+ENVHAZARDS_HAZARD_CLOCK_READOUTS_1	built	-	O	37	12	EH-4: EnvironmentalHazards: show the hazard clocks (venomvine contact and next scratch, wet-bulb ramp, warm gr
+ENV_WEATHER_GATE_SCOPE_1	built	-	O	38	12	EnvironmentalHazards: Environmental weather mechanic gate leaves ambient effects live
+ESCAPE_RECORD_BUILD_PLAIN_TAGS	proposed	-	O	12	12	Record every escape (passed then broke live, reopened, or owner caught) with a plain one-sentence tag a human 
+EVENT_TRACE_PROPS_LIBRARY_1	ready	B	O	61	12	Design a props library of event traces: blaster marks, burn/scorch marks, floor scrapings, drag trails, impact
+EVIDENCE_KEY_HARDEN_AGENTS_CANNOT_READ	proposed	B	O	19	12	close_evidence v3 mac key (~/.config/rimmandrake/close_evidence.key) is readable by the same Unix user every a
+FACING_NORMVIEW_FIX_SHRINKS_SNAKES_TO_PEAS	proposed	-	-	12	12	facing_backlog drv.py norm_view scales every new N/S to east's HEIGHT; for long low bodies drawn high-angle (D
+FALL_GUARDRAILS_BUILD_REAL_OBJECT	validated	-	O	28	12	Deep falls can kill (V3 lethal); guardrail building as a real object, existing fences act as rails
+FLOWWORKS_RAIN_DIAGNOSE_E6_OUT_OF_SYNC	proposed	-	O	15	12	SteveDesktop core_live_rows E6_rain_fills_unroofed FAILs 7x (10-28..10-31, latest 10-31T10:03Z, 0 passes since
+FOCUS_CAP_FIX_LIST_CANNOT_REACH	proposed	B	O	14	12	At focus cap next offers only focus items, so a listed FOUNDRY item cannot reach a ring: all 3 focus items wer
+FOUNDRY_RETIRE_REVIEW_DIRTY_FILES	proposed	-	O	12	12	Full-file code review owed (code_review_status DIRTY) for step 1-3 files: cli.py, priority.py, relentless*.py,
+FUEL_FIRE_SELFTEST_FIX_SQUARE_COVERAGE	proposed	-	O	22	12	[MINOR] Detonation coverage checks a square instead of the actual blast radius
+GAME_OBSERVER_BUILD_OUTSIDE_LOOKING_IN	ready	B	O	36	12	Persistent Windows-side health observer (python.exe, stdlib/ctypes): process identity pid+creation, process an
+GELATINOUSSLIME_PIT_SOLVENT_1	built	B	O	44	12	Slime pit as a solvent: renders toxic or indigestible food safe (Rot's finest in the campaign)
+GREYSEA_FLOOR_FLORA_ZERO_1	built	-	O	37	12	Grey Sea floor grows ZERO flora: plants above the lowest wildOrder need lower-order neighbours and the lowest-
+GREYSEA_USELESS_ARTIFACT_PLOT_1	proposed	-	O	48	12	The Elders' sixth treasure - 'a beautifully useless artifact whose significance only becomes apparent much lat
+GREY_LAMP_ANSWER_RETRY_1	built	-	O	38	12	TerminalBiomes: Grey lamp giant response latches on dispatch, not on completion
+HEALTH_METRICS_JUDGE_EARN_THEIR_KEEP	proposed	-	O	36	12	Post-hoc review: evaluate each game-health metric's worth and measured cost from the metrics ledger in game_he
+HELPER_BUDGET_GATE_ENFORCE_NOT_ASKING_NICELY	proposed	B	O	23	12	One launcher for helpers and claude -p judges enforcing budgets from a shared ledger
+HELPER_CAPTURE_HARDEN_FWALK_SWAP_PIN	proposed	B	O	16	12	Mutant r2_fwalk_follows IS killable and is not equivalent: kill_fwalk.py hooks os.lstat to swap a checked dir 
+HELPER_IDS_RESTORE_AFTER_COMPACTION	proposed	B	O	20	12	Summaries keep a helper's task but its agentId only 4/20 (the harness labels the ID 'do not mention to user');
+HELPER_WAITS_FIX_CACHE_COLD_REWRITES	proposed	B	O	19	12	Helper foreground waits longer than the prompt-cache lifetime rewrite the whole cached context; keep each wait
+ISOLATED_EVIDENCE_HARDEN_MUTATION_SURVIVORS	proposed	B	O	19	12	isolated_evidence.py: 294 of 704 mutants survive selftest_isolated_evidence (score 58.2%); add red-first tests
+JUNK_RESKIN_REDO_REDRAW_NINE_LIVES	proposed	-	-	12	12	Redraw the Star Wars junk slots that shipped empty: judge REDO on AncientTank_07, AncientWarwalkerShell_05, An
+KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES	built	-	O	36	12	save-guard wrapper: hash-backup Saves keepers before any save-capable run, refuse current-slot overwrite, post
+L1_DONOR_SELFTEST_FIX_READS_A_GHOST	proposed	-	O	12	12	selftest_l1_donor_off_round FAILs 'donor rename names read for the save row' in a fresh clone: l1_donor_off_ro
+L1_DONOR_SELFTEST_FIX_SARLACC_GONE_MISSING	proposed	-	-	12	12	selftest_l1_donor_off_round.py fails 'donor rename names read for the save row' (man['donorNames']['old'] lack
+LADDER_PARITY_BUILD_NO_KEYS_REQUIRED	validated	-	O	23	12	Ladder/trench parity (owner card 2026-10-23, option 4 'full parity'): both sides build ladders on demand, use 
+LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT	proposed	-	O	22	12	[MINOR] Lake-access ruler accepts wet neighbours without checking the final height difference
+LEANINGSCRUB_KEPT_ART_JUDGE_FOR_OWNER_DIGEST	proposed	-	O	22	12	LEANINGSCRUB: 28 owner-kept rows GPT disputes - for owner digest, no action
+LEDGER_LEASE_HARDEN_ATTEMPT_TOKEN	proposed	B	O	20	12	[M] per-attempt token; ledger refuses moves/closes from a stale token; bridge workers off until bridge checks 
+LEDGER_MOD_FIELD_DECIDE_OR_DROP	proposed	B	O	20	12	Decide whether rimflow items get a mod field; close-from-proposed inflates throughput
+LEFTOVERS_CHECK_FIX_SAFE_ON_UNSAFE_FOLDER	proposed	-	O	14	12	leftovers checker reads SAFE on a backup folder holding foreign, unjudged-review and referenced saves, and on 
+LESSONS_BACKLOG_DRAIN_SINCE_SEPTEMBER	proposed	B	O	17	12	One-time drain of the ~1,089-file lessons inbox (last emptied 2026-09-23) into owning skills/facts; per the Ar
+LESSONS_RETIRE_INBOX_AS_QUEUE	ready	B	O	14	12	P0: No role file, KPI or Auditor duty treats the lessons count or age as owed work
+LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT	built	-	O	23	12	HARNESS: pipe_levelling_perf_proof --rehearsal on a fresh quicktest map (after walk_gaps --fresh-map) hit a go
+LEVEL_SET_SELFTEST_FIX_IDLE_PULSE_SETTLES	proposed	-	O	22	12	[MINOR] Integer-water tests accept a single idle final pulse as settling
+LIGHT_LEDGER_ONE_1	validated	-	O	37	12	X-3/TB-5: one light ledger; every GlowRadius writer registers a modifier (10 files, 6 mods); fixes SUN_SPHERE_
+METRICS_FOLLOWUPS_FINISH_STILL_STRETCHING	proposed	B	O	20	12	rimflow_metrics follow-ups: cold-load numbers into script, --now flag, RimPulse row group
+MODCHECK_SUITE_CORRECTIONS_1	ready	B	O	63	12	MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence
+MODS_ACCEPTED_DECIDE_ZERO_OF_THE_LOT	proposed	-	-	12	12	The page's 'mods accepted' is modcheck GREEN at today's code: 0 of 133 (6 green at older code, 60 red, 4 draft
+MOVINGDUNES_WATER_BANKS_SAND_1	built	-	O	38	12	MovingDunes: sand hopping onto water banks on the shore (owner card: water banks the sand)
+NEEDS_YOU_DRAIN_NINE_ALREADY_ANSWERED	proposed	-	-	12	12	Nine open items routed to the owner already hold his later note, so the page lists them as answered: route eac
+ONE_PATH_SEAM_FIX_LOCALSLOW_LITERAL	proposed	-	-	12	12	selftest_one_path_seam red: no_new_localslow_literal_outside_the_seam (6/7)
+OWNER_CARDS_HARDEN_DECISION_RECEIPTS	proposed	-	O	20	12	[M] cards carry decision id, revision, addressee; each answer gets an enactment receipt. Confirm: 0 already-ru
+PATCHES_EFFECTFLOOR_FIX_FIVE_DONORS_NAPPING	proposed	-	O	13	12	selftest_mandrakepatches 'shipped fixes vs the load-14 dump' FAILs on HEAD: floor checked>=15 but only 12 chec
+PHONE_SENDS_ENFORCE_STILL_HONOR_SYSTEM	proposed	B	O	23	12	Phone images (chat_review.py PNGs sent with SendUserFile) have no mechanical pre-review gate; propose a PreToo
+PIGMENT_JOB_PAYMENT_ALLOCATION_1	built	-	O	38	12	LuminousPigment: Deepfire jobs: allocate pigment across queued jobs and validate payment
+PIT_SUPERDEEP_COLLAPSE_1	ready	-	O	59	12	Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room for prisoner storage
+PREFLIGHT_BUILD_85_ROWS_OF_HINDSIGHT	validated	-	O	36	12	preflight.py: ordered fail-fast pre-flight (offline before launch + --live first five minutes), PASS/FAIL/UNME
+PRESS_GATE_BUILDABLE_RESEARCH_1	built	-	O	38	12	LuminousPigment: "Buildable" press gate must not finish the research project
+PRODUCER_CAPS_DECIDE_EVENT_ROOM	proposed	B	O	19	12	Producer daily cap leaves no room for event runs after a large 09:00 run; decide the caps before the Producer 
+PROMISED_GIFT_NEVER_LOST_1	built	-	O	37	12	FV-2: owed deep-gifts not dequeued before ransom setting / placement checks
+PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND	built	-	O	26	12	Proof scripts score site/harness failures as mod FAIL: three fresh reviews (d85e8a410c, 966a0b922f) each found
+PYDANTIC_CONTRACTS_DESIGN_ONE_SCHEMA_TWICE	proposed	B	O	19	12	Deep design pass (GPT) on RimFlow v3 + existing validation + Pydantic models as both runtime contract and LLM 
+QUOTA_ENFORCE_UNUSED_AT_RESET_WASTE	proposed	B	O	19	12	Quota unused at reset counts as waste like running dry: in the Operations success test/forecast and in the slo
+QUOTA_LEFT_AT_RESET_MEASURE_PER_ACCOUNT	proposed	B	O	20	12	Record usable quota left unspent at each limit reset, per account, over several reset cycles; the one number t
+RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT	built	-	O	36	12	Reclamation trigger: rewire the built 45-day chain delay to a woken-ancients count (owner card 13, 2026-10-10)
+REPLAN_REQUEST_BUILD_CLOSED_RECORD	proposed	B	O	19	12	The Producer reads REPLAN REQUEST / CUT notes through blind_view show --prefix, which now shows only time, sea
+RESOURCE_SIM_BUILD_WAITS_FOR_REAL_DATA	proposed	-	O	12	12	Resource model (disk, /tmp tmpfs, 16-clone pool, 70 GB cap) fitted to >=7 days of real readings (scratch_reap 
+REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES	proposed	-	O	22	12	owner_review_stage: bars rows off a 250 map, held-open gates read shut, trench shooter unarmed (HARNESS)
+RIMPULSE_PACKETS_BUILD_ANSWERED_NOT_APPLIED	proposed	B	O	22	12	Review-packet lifecycle for the agent side (not the widget): preparing->ready->opened->answered->applied->veri
+ROLE_DUTIES_FIX_CARRY_MISSED_SLOTS	proposed	B	O	14	12	P1: A role slot marked owed that misses its window runs once on the next eligible tick
+ROLE_HEADERS_RETIRE_ENABLED_PROSE	proposed	B	O	14	12	P1: No rimflow/roles/*.md states enabled/disabled, a clock time or a cap
+ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS	proposed	B	O	18	12	role_launch.py: kill the decide_roles.one / _supervise_one / after_ready / _signal_marked mutation survivors l
+ROLE_RUNS_ENFORCE_STOP_AT_TWICE_CAP	proposed	B	O	14	12	P1: Every role launch passes a hard budget stop at 2x its run allowance
+ROLE_RUN_NOW_FIX_ELEVEN_SLOT_RED	proposed	B	O	14	12	selftest_role_run_now red on HEAD: 'the next tick runs the 11:00 slot as before' fails (2026-11-01 17:20Z and 
+ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS	built	-	O	24	12	The Rot: a carrier that leaves the world releases the swallowed core; the next hwelgrue that checks may claim 
+RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS	proposed	B	O	19	12	Ruling-vs-state reconciler in the Dispatcher measuring arm: holds each enact item open until state matches
+RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1	proposed	-	O	44	12	The Stranger's Overhaul, for Ohm: repair a free droid, capture it mid-repair or release it (Rust Cathedral rit
+SCALD_GALLERY_SCHEMATIC_UNLOCK_1	proposed	B	O	43	12	Return Gallery: what the immersion-engineering schematic unlocks (RM_ImmersionSchematic is an inert item today
+SCAN_MARKED_HARDEN_YOUNG_SIBLING_BLINDS	proposed	B	O	19	12	role_launch.scan_marked goes blind (procs_of -> None) whenever any same-uid non-dumpable process started withi
+SCHEDULEDOC_CORRECT_PRIORITY_RANK	proposed	B	O	18	12	dispatcher_schedule.json account_pick block still says rank soonest_reset and its _doc describes use-it-or-los
+SCHEDULE_HARDEN_FAIL_CLOSED_NO_DEFAULTS	proposed	B	O	14	12	P1: Loading dispatcher_schedule.json with a required key missing refuses (no fallback)
+SCRAPNEST_BIRD_BASE_THEFT_1	built	-	O	55	12	owner card: should scrap-nest birds steal from player bases?
+SCRATCHREAP_FIX_HUNGRY_FOR_FOUR_GIGS	proposed	B	O	17	12	rm-scratch-reap.service ran its full 30 min at 17:30 on 2026-10-28, peaked at 3.9 G memory and was killed (fai
+SCRATCH_ENACT_REPAIR_SELFTEST_CRUMB_TRAIL	proposed	B	O	15	12	Enact selftests leave enact_* clones in scratch/BENCH (248 dirs since 10-20, not reaped); scratch/BENCH is 108
+SEAT_GOODBYE_FIX_QUEUED_PROMPT_LOST	proposed	B	O	15	12	Conductor goodbye kill: re-check a prompt queued before the goodbye cursor; owner called typing-at-goodbye acc
+SEAT_GOODBYE_FIX_REPLACEMENT_DIED_UNREAD	proposed	B	O	15	12	Goodbye recovery: a replacement window that takes his message and dies before running wake leaves its transcri
+SEAT_MEMORY_PROVE_HARNESS_SLICE_OOM_KILLS	proposed	B	O	17	12	rm-harness.slice oom_kill rose 31 to 32 with no toast; add memwatch toast and a live per-seat OOM before/after
+SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN	proposed	B	O	22	12	[MINOR] Shared numeric assertion silently accepts NaN
+SELFTEST_SLOW_FOUR_SHRINK_BY_SPLIT	proposed	B	O	18	12	4 selftests at ~600 s (property_fabric, seashores, reclamation_trigger, skeleton_burial) are 41% of nightly te
+SETTINGSAUDIT_FIX_DEAD_KIT_SCRIBES	proposed	-	O	15	12	selftest_settings_screens audits RustCathedral Hum/Walls against the never-called kit ExposeData, not the hum_
+SETTINGS_SCREENS_FIX_FIVE_OUTGREW_GROUPS	proposed	-	-	12	12	selftest_settings_screens RED on 5 mods: WreckedMachines/UtinniPatches/WasteRun/DivingInteraction one more gro
+SETTINGS_SCREENS_FIX_TWO_OUTGREW_AUDIT	proposed	-	O	13	12	selftest_settings_screens.py red on main: WreckedMachines has 5 groups (audit expects 4), WasteRun 4 (expects 
+SHIPPING_NAME_CANDIDATES_1	proposed	-	O	36	12	Draft 3 invented exotic names each for the 5 wasteland + 2 greentide working names (plus bezoar), put them on 
+SLIME_SELFTEST_FIX_SKIPS_MISSING_COST	proposed	-	O	22	12	[MINOR] Slime path-cost check silently skips a missing authored field
+SLOT_HOOK_MEASURE_REFUSALS_AND_PEAK	proposed	B	O	20	12	[S] block_agent_over_slots.py logs each refusal and peak running (logs nothing today). Confirm: peak <=N in >=
+SLOT_SITTING_FIX_UNMEASURED_START	proposed	B	O	19	12	slot_allocator sitting_step: a sitting that starts UNMEASURED still under-counts its drop (review U F9 part 2,
+SLOT_STREAMS_BUILD_SPLIT_R1_R7	proposed	B	O	20	12	Per-stream split R1-R7 of the allocator's per-seat N
+SOUNDSCAPE_PAUSED_SWITCH_FIX_HUM_LEAKS	proposed	-	O	14	12	OnCamera PerTick soundscapes keep playing over another map after a paused map switch: RM_MapComponent_Proximit
+SPEND_CENSUS_REFUSE_MISSING_USAGE_NOT_ZERO	proposed	B	O	16	12	spend_census.scan_file reads a missing/null usage count as 0 (u.get(k) or 0), and drops an assistant line with
+STARWARS_FIX_WEATHER_DEFS_LEATHER	proposed	-	-	12	12	selftest_starwarspatches_semantics + selftest_leather_factors red: weather_defs_are_all_attached check FAIL in
+STASIS_PROVISIONS_BUILD_RUT_LOOT_TOGGLE	proposed	-	O	14	12	RUT Mod Setting: stasis-held provisions in vault/war-lab loot on/off (design cold_storage_line §6; symbol RUT_
+STEVEDESKTOP_DIAGNOSE_CPU18_FLUNKS_MATH	proposed	B	-	20	12	SteveDesktop's logical CPU 18 computes SIMD results wrongly: Windows python.exe pinned to CPU 18 (start /affin
+STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES	built	-	O	18	12	The SteveDesktop-Runner Claude session commits into ~/rm/runner (the no-LLM dispatcher's pinned clone), which 
+STEWARD_ESCALATION_REWIRE_TO_ENGINE	proposed	B	O	20	12	(S) steward T+10 items --for FOUNDRY, LLM wake off
+SURFACE_HOME_MAP_HELPER_1	built	-	O	37	12	X-1: one helper returns a surface home map (skips RM_SeabedLayer); swap the five Find.AnyPlayerHomeMap call si
+TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO	validated	B	O	34	12	Colony vitals as telemetry: per map, # colonists alive, # in distress (downed / mental break / bleeding out / 
+TELEMETRY_FAKE_DEPLOYS_EXCISE_NOT_REWRITE	proposed	B	O	20	12	Telemetry: 159 fake deploy rows (ModA x143, ModNew x16; 2026-10-11T21:26..10-26T10:05Z) from selftest dummy mo
+TERMINALBIOMES_REVIEW_FIXES_1	built	-	O	49	12	TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glowe
+TERRAIN_BATCH_FIX_READBACK_REFUSES_PLOTS	proposed	-	O	21	12	modcheck staging: jawa/set_terrain_batch reports 325/1200 cells did not read back, so plot_A_dug_channel, plot
+TIMERS_PAUSE_DIAGNOSE_WHO_HIT_THE_BRAKES	proposed	B	O	18	12	Someone ran timers_guard pause --hours 4 --all at 18:36:50 PDT, 40 s after the steven fleet relaunch; dispatch
+TITAN_BREAKTHROUGH_CLEARING_1	built	-	O	38	12	Titans smash THROUGH built obstacles and eligible giant plants instead of detouring, as card #1 rules (B3.4/C3
+TITAN_ROOF_AVOIDANCE_1	built	-	O	38	12	Titans never path under thick roof, footprint-wide, as card #1 rules (B3.5/D3.1/D1.4; fix B2.6 comment)
+TOKEN_PACE_MEASURE_USAGE_SERIES	proposed	B	O	20	12	[S 2 h] append each pulse/usage.py reading to a series; compute pace ratio P per account and %-of-week per hel
+TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS	built	-	O	36	12	Fix the TPS-code hazards in GPT review 2.3: global state in TmuPrefix/Postfix, LePrefix/LeFinalizer and _tickI
+TWILIGHTSEA_FLORA_PASS_1	built	-	O	49	12	Twilight Sea underwater flora pass: own strange-flora roster in the light-economy register (decision taken by 
+WAKE_LIST_FIX_OLD_MAIL_MARKED_LATE	proposed	B	O	14	12	seat_restart wake lists messages as sent after the goodbye that all predate it: gen bb0f4b7d0d25 showed nine d
+WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS	proposed	-	O	14	12	Build the early-blast garrison, Route 6 clock and codes gate (design note §8)
+WARMTIMER_HARDEN_SPARE_LIVE	proposed	B	O	18	12	claude-account-warm.timer (daily 04:48) warms every account, including the LIVE login when no claude process r
+WARSCAR_VALIDATION_FIDELITY_1	built	-	O	38	12	Scarlands: Warscar validation proves less than it claims
+WAR_LAB_CRATER_HOOK_1	built	B	O	68	12	Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprin
+WASTERUN_SETTINGS_MEND_ONE_GROUP_TOO_MANY	proposed	-	O	14	12	selftest_settings_screens red: WasteRun has 4 groups, the audit table expects 3
+WASTE_CONSEQUENCES_PROVE_FOUR_STUBS_LIVE	proposed	-	O	14	12	Live read of the waste-run consequences: ProofGate per destination, crater Triggered after IgnitePropaneLake w
+WATER_LEDGER_DOUBLE_CHARGE_1	built	-	O	38	12	Stillsand: Still water is booked to the ledger twice
+WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES	built	-	O	29	12	Plan P3: level-surface solver (flowworks_level_surface_2026-10-17.md Option 1): each connected body holds exac
+WATER_TERRAINS_FIX_EIGHT_NAME_NO_LIQUID	proposed	-	O	12	12	selftest_water_terrains_name_liquid red: 8 Water-tagged terrain(s) name no liquid (drunk as Potable FreshWater
+WEBWORK_EGG_WEAPON_VERSION_1	proposed	-	O	52	12	Future: free-form egg-planting sabotage weapon (mechanism A hatcher-variant, must re-answer the farm ban) - fi
+WEEPINGSTONES_STOCK_JOB_LOOP_1	built	-	O	42	12	WeepingStones: bland colonists restart RM_StockPoolPen up to 10x per tick (JobGiver_Work) and the stock/net/fe
+WINSTAGE_CULL_THREE_GIGS_PER_KERNEL	proposed	-	-	12	12	selftest_winstage.windows_project_path still rsyncs the whole 3 GB src with --checksum for 12 callers (flowwor
+DRAWBRIDGE_SWING_DESIGN_LESS_RIDICULOUS	proposed	-	O	12	11	Design how a drawbridge leaf and gate move when opening and shutting, in all four directions, so it does not l
+GRAFFITI_PUNK_ART_REVIEW_1	proposed	-	O	37	11	Graffiti: owner looks at the rendered punk set + 27 meme glyphs + sigil frame in game (keeper save), criterion
+SBXD_FARMS_HUNT_MAKER_NOBODY_ADMITS	proposed	-	-	11	11	~/.seat-tmp/BENCH/sbxd0..7 (made 2026-11-04 01:59) are symlink farms into /home/mandrake/rm/bench (.git is a s
+VITALS_PROOF_ENFORCE_TIER_DECLARED	proposed	-	-	11	11	VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL proof printed WRONG_TIER/WRONG_LIST then exited 1 on A1 and A2: the ite
+BAZAAR_HAGGLE_DUEL_1	ready	B	O	63	10	The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits giv
+BUILT_ORPHANS_WIRE_NOBODY_LEFT_TO_CHECK	proposed	-	-	10	10	~20 system items sit in built/validated (seat builds before Relentless); the pool takes only proposed/ready an
+FIRST_TOUCH_DECIDE_HARNESS_NAMES_A_MOD	proposed	-	-	10	10	first-touch hold keeps ~16-32 system harness/selftest repairs (HARNESS_REPAIR_CAUSE_*, NIGHTLY_COP_FIX_*) wait
+FLANGE_GIRTH_FIX_OTHER_LOOKS_STILL_SKINNY	proposed	-	-	10	10	Scrapper/Industrial/Futuristic Joins Flange.png (33 px) and Coupler.png (31 px) rings at FlangeSize 0.5 are 0.
+GC_EARLYLOAD_DUMPS_PROBE_SHOW_VALUE_FIRST	proposed	B	O	36	10	Conditional spikes, each kept unbuilt-by-default until it shows useful evidence on a known case: GC timing (gc
+HEALTH_BANDS_WIRE_QUEUED_BEHIND_OVERHEAD	proposed	B	O	36	10	Minimal in-game health extension to the TPS record: frame-interval histogram from existing Root.Update timesta
+L1DONOROFF_FIX_SARLACC_LEFT_THE_PIT	proposed	-	-	10	10	selftest_l1_donor_off_round.py fails 1/76: 'donor rename names read for the save row' (man['donorNames']['old'
+LAUNCHER_READY_HARDEN_OLD_LOG_LINES_LIE	built	-	O	36	10	launch_and_wait.sh succeeds only on a current-process readiness receipt (PID+start time, fresh token line afte
+MOCK_PULSE_FIX_NO_DL_STILL_RED	proposed	-	-	10	10	HARNESS: validation_v2 MockBridge.flowworks_pulse sends no per-cell dl, so a clean --mock run is red (A0_instr
+PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES	built	B	-	12	10	pit_prison_room capture_down_from_the_lip FAIL (valid) again in testq J20261101T083051Z-386617 (runner bd365fe
+PIT_TRAVEL_SELFTEST_FIX_DOUBLE_COUNT	built	-	O	22	10	[MINOR] One arrival detector is counted twice as proof that both are guarded
+RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP	proposed	B	O	36	10	Full-list overhead protocol C0-C5 (off; external collector only; sampler without attribution; full recorder; +
+REVIEW_MAP_SELFTEST_FIX_SIZELESS_STATION	proposed	-	-	10	10	selftest_falsepass_late.py t_review_map fails KeyError 'size': a review_map.py station/extras entry lacks 'siz
+SCENARIOS_MAP_FIX_PIPE_LONG_RUN_HOMELESS	proposed	-	-	10	10	selftest_scenarios_map.py fails at HEAD a1534a108e: 'every old station lands in a scenario or its stated home 
+SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN	proposed	-	-	10	10	The canonical saves name Biomes! creatures deleted by BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: R3 (world/ASHKA
+WARSCAR_CHOTRIX_SIGNS_1	validated	-	O	43	10	Chotrix readable signs: track-grid prints and dragged-kill marks (needs FOOTPRINT_TRACK_GRID_1), tetchik silen
+ADVANCEUNTIL_WIRE_PER_TICK_STOP	proposed	B	O	9	9	Bridge conditions T3 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T3; acceptance
+ART_XDELETE_FIX_UNLINK_BEFORE_RECEIPT_TOO	proposed	-	-	9	9	artledger.x_delete unlinks game slots and store bytes before flushing its live/release/purge events (ban is fl
+AUDITOR_IMPORTS_VET_PIL_THEN_LXML_MISSING	proposed	-	-	9	9	Auditor rule candidate: a validation script that imports a third-party package (PIL, lxml) with no UNMEASURED 
+BOXTOOLS_HARDEN_IMPORTS_PLANTED_CV2	proposed	-	-	9	9	evidence.box_tools probes run '<py> -c import cv2, numpy' with the caller's cwd and no -I: a checkout-controll
+CONDWATCH_BUILD_OWNED_RINGS	proposed	B	O	9	9	Bridge conditions T5 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T5; acceptance
+CUTCRIT_RESTORE_173_BUILT_MID_SENTENCE	proposed	-	-	9	9	173 of 622 built/validated items owe a live clause whose ledger text is cut at 160 chars with no prose or .cri
+DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING	proposed	-	-	9	9	Archmagi D: NVMe (Kingston SFYRD4000G, root port 0:6.3) throws WHEA-17 corrected PCIe AER, 3-17/day since 10-2
+DEWBACK_PIN_FIX_NORTH_REDRAWN_UNDER_IT	proposed	-	-	9	9	src/RimStarWars/SWBestiary/selftest_dewback_owned.py fails 2 rows: Dewback_north.png no longer matches the pin
+DISPATCHER_FIX_INCIDENT_BELLS_OVERWRITE	proposed	-	-	9	9	dispatcher.py Codex round 4: refusal lost on log failure, incident bells overwrite, wrong session, early rung_
+EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE	ready	-	O	12	9	An expedite tier above everything, the priority list and live testing included, for: threats to machine health
+FLYERPIN_FIX_DERIVED_ONE_AHEAD_OF_PIN	proposed	-	-	9	9	selftest_donor_off_w4_verdict and selftest_l1_donor_off_round FAIL: 'flyers: derived 25, pin expects 24 (re-pi
+GAMEPHASE_UNBLOCK_HELD_GAME_SITS_IDLE	proposed	-	-	9	9	Items wait on a game phase another item holds while the game does nothing: 246 of 450 item-hours of game wait 
+HEAP_READ_BISECT_ROWS_NAME_THE_RETAINERS	proposed	-	-	9	9	Once HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE's six live proofs have run, collect their HEAP_ROW lines (testq 
+HOOKS_SCANGUARD_WIDEN_FOUR_SIBLINGS_SLIP	proposed	-	-	9	9	block_blind_scan misses bash -lc, a background &, a subshell and $(...)
+LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR	built	B	O	22	9	ProofLevelPerf on the 250 rehearsal (8 rigs, 6 links, calls=200): allocKBAvg 8747.8 KB per levelling cycle aga
+LIVEVERDICT_REBUILD_ALLOWLIST_MEETS_OPENLANE	proposed	-	-	9	9	Live verdict rules 1-5 (identity binding, fail closed, proof allowlist, child reaping, keyed fakes + mutants) 
+MODSWAP_FIX_REORDERED_LIST_READS_FOREIGN	proposed	-	-	9	9	modset_builder.take_before_copy refuses every tier swap when the live ModsConfig holds the before-copy's exact
+OPS_WATCH_FIX_BLIND_READINGS_STILL_ZERO	proposed	-	-	9	9	ops_watch.py Codex round 4: truncated rows, torn state and future-dated WHEA read as measured zero
+OTHER_BLOCKS_MIGRATE_HUNDRED_EIGHTY_STANDING	proposed	-	-	9	9	One-time sweep of the 180 open kind=other blocks into item edges or owner, a named lift for new judge/external
+PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP	built	-	O	20	9	S7 RM_CaptureDown: warden at the pit lip hurt (Scratch, Crack) while the held undowned hostile is 4 m below; c
+REPLAY_BANK_STALE_BUILD_RED_AT_HEAD	proposed	-	-	9	9	selftest_validator_mutants red on an unmutated bank at 0d00d9543c: STALE_BUILD outcome is NOT_ADMITTED, the ba
+RESTARTREQ_GUARD_RENAME_NO_HARDLINK_RACE	proposed	-	-	9	9	seat_restart.consume_request: when os.link is unsupported, the exists-then-rename fallback can overwrite a req
+RETIRED_UNITS_PRUNE_PULSE_STILL_TICKING	proposed	-	-	9	9	Retired machinery still live: RimPulse pulse timers and pulse-deploy clone still run; stale FOUNDRY references
+RINGPROBES_WIDEN_MESSAGES_RING	proposed	B	O	9	9	Adapt to Lightspeed (no LLM; vet_leftovers.md §3): new capability: a Messages source for the owned-cursor ring
+RINGPROBES_WIRE_EVENT_CURSORS	proposed	B	O	9	9	Bridge conditions T6 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T6; acceptance
+RUN_SELFTESTS_FIX_STDERR_EATS_MARKER	proposed	-	-	9	9	run_selftests.py Codex round 4: quick reuse before quarantine, unterminated stderr hides the report marker
+SCRATCH_REAP_FIX_ROUND_TEN_STILL_FINDS	proposed	-	-	9	9	scratch_reap.py Codex round 4: transient units, template specifiers, path_forms memory
+SLOTS_RENAME_FOUNDRY_KEY_RELENTLESS_READS_IT	proposed	-	-	9	9	Rename the allocator's FOUNDRY seat key (slot_allocator split/SEAT_NAMES, slot_rules seats/enforce_seats/fallb
+SOORRAK_REPAIR_EAST_TIP_SHEARS_NEAR_LEGS	proposed	-	-	9	9	RM_Soorrak east frame 3: lowest wing tip shears into a thin hook, tip sits within falloff 120 of the legs so i
+STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1	built	-	O	38	9	modcheck Stillsand sandswim/vekka_submerges_on_sand FAILS live on acc_biomes-15: a vekka on Gravel is RM_SandS
+SUMP_TAR_FIRE_NETWORK_1	built	-	O	50	9	Network fire with gate firebreaks; wire belch to glass-cooling
+TESTPILOT_FIX_ABORT_WRONG_SCENARIO	built	-	-	16	9	Pilot.abort marks invalid the first scenario with no evidence, not the in-flight/decided one
+TESTPILOT_FIX_LAUNCH_FAIL_HOLDS_BRIDGE	built	-	-	16	9	testpilot: an exception from a reload (launch timeout/failure, or stop_game failing during a mid-launch owner 
+TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND2	built	-	-	16	9	testpilot selftest: 18 of 31 independent mutants survive (M5 crash/quarantine, L10 live-fail park, L9a carry g
+TRACE_MKDIR_HARDEN_STAT_OUTLIVES_IT	proposed	-	-	9	9	known_results.py: the shim does not note mkdir/mkdirat as W, so os.makedirs(p) (stat p absent, then mkdir p) r
+TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS	built	B	O	23	9	dry golden trial site fails preflight on the 14-mod list (stale sidecar, half pond capacity); 3.3 unmeasured
+WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1	built	B	O	38	9	modcheck Wasteland live on acc_biomes-15: 8 FAIL: sloghog/sootgrazer on polluted ground read 'off feed ground:
+WTPROFILE_FIX_TESTS_STILL_ASK_FOUNDRY	proposed	-	-	9	9	selftest_seat_restart crashes: test_g9_wt_bench_keeps_the_conductor_wake_under_seat_loop and test_wt_profile_w
+BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS	built	-	-	9	8	Full-list session ee0fbaa8 logged 'AllowedToTakeScheduledEver on non-drug Beer' 3200x during the first two RM_
+LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS	built	-	O	9	8	Deterministic Python staging: deploy/restart without an LLM (fast-testing #2)
+LONGSHADE_STAMPEDE_LIVECHECK_1	built	-	O	37	8	Live check: stampede for your roof incident
+LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS	built	-	O	9	8	Plain-message spam evicts Verse.Log during play, so log.errors is a lower bound for a reason besides the cold 
+NOW_FLAG_FIX_NAMED_TWICE_OOPS	proposed	-	-	11	8	selftest_restart_now is RED on main: src/RimMandrake/rimflow/roles/conductor.md names --now twice, the test wa
+OPS_ARTPIPE_UNSTICK_RBLV	ready	-	-	12	8	Ops alarm QUEUE_STALLED: queues.artpipe.stalled_min = 26.2 min pending > 0 with no claim, finish or heartbeat 
+PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT	ready	-	-	17	8	rm-pulse-update.service fails when 'git pull --ff-only' on /mnt/d/ClaudeWork/rimmandrake/pulse-deploy passes i
+PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN	ready	-	-	12	8	pulse-deploy checkout got writer edits (CANON_MATERIALS_BUILD_1 files and ledger shards, ~12:38Z 11-03, all al
+PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT	ready	-	O	13	8	rm-pulse-update fails every run: pulse-deploy (/mnt/d/ClaudeWork/rimmandrake/pulse-deploy) stuck at 78cebf065a
+RIMMASTER_FIX_GAMEB_TIER_REFUSES_AFTER_ITS_OWN_SYNC	proposed	-	-	8	8	Game B's tier refused on a swap marker after a sync; the marker is per clone and tracked
+RIMMASTER_REPAIR_SEAT_FILE_CHECK_RED_BEFORE_THIS_TOO	proposed	-	-	8	8	selftest_bridge_seat_relentless: 'nobody files for RELENTLESS' is red on main
+RIMMASTER_SETTLE_HANDOFF_CULL_AGE_TWO_RULINGS_DISAGREE	proposed	-	-	8	8	Settle the handoff cull age: project handoff.py says 30 days (owner 2026-09-18), Lodestar's handoff skill says
+RIMMASTER_TRIAGE_MOD_OWED_CENSUS_120_STILL_UNREAD	proposed	-	-	8	8	Finish the mod-owed census: triage the 120 queue items whose cited files changed since filing
+RIMMASTER_TRIAGE_ORPHAN_POINTERS_FROM_CULLED_HANDOFFS	proposed	-	-	8	8	334 pointers that only culled handoffs named, carried to one table: close, drop or file each
+STILLSAND_SAND_SWIM_REMAINDER_1	validated	-	O	45	8	Sand-swim kit remainder: thumper, sand fishing, the Listening, wake track records, drift depth, Drazzik/Sarlac
+TESTQ_MODS_WIRE_BEYOND_FLOWWORKS	ready	-	O	20	8	[L ~8 h for first 5 mods] 1 of 132 harnessed mods is selectable by testq; wire the next mods by bridge backlog
+AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED	ready	-	O	11	6	A deterministic wrap-up check runs after EVERY agent finishes (worker, helper, role run, window): census what 
+BRIDGE_RECONCILE_WIRE_CLOSED_NOT_CURED	built	-	O	9	6	Live proofs still die on rimbridge_client IndeterminateError ('earlier mutating call(s) have an UNKNOWN outcom
+CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES	ready	-	O	12	6	A Conductor handoff waits for the Dispatcher's timer (3 min 18 s on 2026-11-03): handoff_restart.py skips kind
+CONDUCTOR_RESET_FIX_KILLED_MID_READ	ready	-	O	12	6	The Conductor window's context-limit restart fires 20 s after a turn ends, so it wiped the reply he was readin
+DELEGATED_CARDS_FIX_HELD_OUT_RECALL	ready	-	O	15	6	block_delegated_cards held-out recall 0.87 < 0.9, red since d187d227bf (2026-10-26) when the gate was delibera
+GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT	ready	-	O	14	6	A peer session's message cancelled the goodbye restart, silently, and nothing re-armed it
+HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS	ready	-	-	11	6	handoff_restart.py Stop hook takes the HANDOFF READY line inside the verbatim 'Last reply from the old window'
+HANDOFF_RESTART_AUDIT_FILES_OWED	ready	-	-	14	6	Full-file review owed on files HANDOFF_FIX_RESTART_TWENTY_SECONDS left DIRTY: seat_restart.py, doorbell.py, ha
+HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL	ready	-	-	9	6	Defer block_blind_scan's measure import until a scanner is named
+HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS	ready	-	O	19	6	Many .claude/settings.json hook registrations end in '2>/dev/null || true', which turns an exit-code refusal i
+MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL	built	-	O	10	6	Run health_minidump.py's utility spike (its docstring list: a dump that identifies a deliberately blocked main
+MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS	ready	-	O	17	6	modcheck validate binds a north-star hash only with --owner-said/--by-card, but NEW bars are delegated (owner 
+OPS_TESTQ_UNSTICK_ECPK	ready	-	-	11	6	Ops alarm QUEUE_STALLED: queues.testq.stalled_min = 24.0 min pending > 0 with no claim, finish or heartbeat (M
+RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING	proposed	-	O	7	6	Phone alerts that actually ring: Pushover primary, Todoist urgent backup, outside watchdog; design at D:\Claud
+SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP	ready	-	O	12	6	BENCH survives as a seat key shared by the Conductor window and Relentless workers, a clone path, role files, 
+SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP	ready	-	-	14	6	Interactive Conductor exemption returns before slot_override.json, so recent typing bypasses an owner cap of N
+STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN	ready	-	O	11	6	Send-a-note box per station: note reaches the running worker at its next turn, kept in the record; test delive
+WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF	built	-	O	10	6	Wrap-up settings debts (storyteller off, threat scale, shovelRequired) outlive their dead pids; 11 rows stand.
+CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES	built	-	O	9	5	Config errors left on every full-list load after the wildGroupSize fix (384d33cecd): duplicate thingCategory o
+HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE	built	-	O	9	5	The full list retains about 59 MB per reload of one save (floors 3024 to 3321 over 5 loads, session ee0fbaa8) 
+LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW	built	-	O	22	5	HARNESS: a full live_session cannot finish inside a 540 s foreground call, so driver 7 ran it as --only B0,<bl
+RIMMASTER_TRACE_FULL_LIST_LOG_CRUD_SIX_OFFENDERS	proposed	-	-	5	5	Owner asked what generates the crud in the full list log. Attribution in D:\ClaudeWork\rimmandrake\logspam\REP
+SLUICE_BOX_PROVE_THE_DAILY_WASH	built	-	O	15	5	Split from FLOWWORKS_QUARRY_DIGGING_1 (owner 2026-10-31, split so each can be checked and debugged alone). Slu
+LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE	ready	-	-	13	4	Live promise broken: rm-arteval-autojudge.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_ARTPIPE_IDLE_FILL	ready	-	-	13	4	Live promise broken: rm-artpipe-idle-fill.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_MEMWATCH	ready	-	-	13	4	Live promise broken: rm-memwatch.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_MIRROR	ready	-	-	13	4	Live promise broken: rm-mirror.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_OBJSTORE	ready	-	-	13	4	Live promise broken: rm-objstore.timer: is-active says 'inactive', wanted 'active'
+RIMMANDRAKE_LEARN_REVIEW_CORRECTIONS_FROM_OWNER	proposed	-	-	4	4	Build a source-linked review-correction corpus for the existing findings judge and Friday curation: preserve v
+RIMMASTER_FIX_HUGETHINGS_GPT_REVIEW_THREE_P1_FOUND	proposed	-	O	5	4	HugeThings: fix the GPT deep review's findings (3 P1: trunk-closure trapping is only checked locally, unbounde
+RIMMASTER_RUN_CODEX_DESIGNER_TO_QUESTIONS_23_MODS	proposed	-	O	5	4	Codex Designer dry runs (stages 0-1) on 22 Baroque biomes + AtmosphericBase: outputs in D:\ClaudeWork\rimmandr
+STEWARD_FIX_LEAVES_THE_LIGHTS_ON	ready	-	-	16	4	steward never closes its STEVE_LANE_UNSTICK_* incident (or its PAUSED_OWNER escalation) when the lane goes RUN
+TITAN_CAMPS_SCAVENGERS_EVENTS_1	validated	-	O	38	4	Huge Things titans: corpse camps, scavenger draw, footfall-warned titan events. Ruled by cards #4/#5 2026-09-0
+TITAN_WAKE_FIXES_1	built	-	O	38	4	Titan wake step fixes from the full GPT review (B3.6 per-step dedup, B3.7 real-move only, B3.8 flying, B2.4 ga
+AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR	ready	-	-	23	3	The commit-pathspec PreToolUse hook lets a bare 'git commit --amend' through; in a shared seat clone it sweeps
+CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK	ready	-	-	17	3	conductor_closeout.py check: program check of B2 step 1 (his rulings and answers in the window vs the ledger) 
+FASCINATING_WORLD_JUNK_1	ready	-	O	64	3	Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wrecka
+HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST	ready	-	-	9	3	block_blind_scan misses a scan when a quoted argument holds a separator
+LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT	ready	-	O	9	3	Enforce inferred live-mods needs at the gate (derived, never written into the proof), with an explicit live-wi
+RIMMANDRAKE_FADE_DEEP_PIT_HALO_DARKENS_THE_BANK	proposed	-	-	3	3	A pit holding 3.5 m or more of liquid (water or tar) gets a dark halo on the ground round its rim, about a cel
+RIMMANDRAKE_FIX_GIVEQUEST_DEFS_TWO_SILENT_LOAD_TRAPS	proposed	-	-	3	3	KyberTradePlot quests: defaultChallengeRating on non-root quests (load config error); 11 RUT GiveQuest inciden
+RIMMANDRAKE_FIX_LIP_COVER_STRIPES_A_SWIMMER	proposed	-	-	3	3	A colonist standing in a 4 m pit holding 2.5 m of water was drawn as a dark striped staircase block (the near-
+RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE	proposed	-	-	3	3	A colonist stranded in a sealed 4 m pit reads trapped=False; no rescue queues
+RIMMANDRAKE_HEAD_SELFTESTS_RED_NOT_DESIGNER	proposed	-	-	3	3	Four selftests red on HEAD, none touching designer code: incident (bindjudge alarm kinds unrouted), entrypoint
+RIMMANDRAKE_KEY_TESTQ_SKIP_CACHE_ON_INPUTS	proposed	-	-	3	3	T7 piecemeal revalidation: testq skip-when-unchanged cache keyed (line, criterion hash, inputs hash, build) an
+RIMMANDRAKE_RECORD_GATE_REFUSALS_DROP_DEAD_MARKER	proposed	-	-	3	3	T3 evidence_gate.py before the flip: reasons become refusal records, producer-liveness check, the no-Marker cl
+RIMMANDRAKE_REMOVE_FILL_STEPS_EXACT_WATER_ONLY_EVERYWHERE	proposed	-	O	3	3	Water is stored and spoken only as true height / true decilitres; delete every whole-step fill N for water in 
+RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG	proposed	-	-	3	3	jawa/health tps.frame-hist: (1) the session/merged JSON string is malformed (the slow array is never closed be
+RIMMANDRAKE_UNHANG_ARTPIPE_STATE_FIND	proposed	-	-	3	3	python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find swale hung past 60 s (timeout exit 124) on 2026-11
+RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET	proposed	-	-	3	3	rimworld/load_game_ready says 'map data available' before Find.CurrentMap is set: the first jawa/map_info read
+STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING	ready	-	O	14	3	P0: A steward incident closes only on a DONE job with the canary on after the incident's start
+ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK	ready	-	O	9	2	At steven's weekly reset (~2026-11-11 13:59 PST) remove ~/.config/systemd/user/account-plan.service.d/week.con
+AGENT_IMPROVE_INSTALL_DAILY_TIMER	ready	-	-	13	2	rm-agent-improve.timer runs the daily agent-improvement pass at 06:40 local
+ALARM_FILING_FIX_NO_ROOM_AT_INN	ready	B	-	10	2	ops_watch files no new alarm items since the sense phase moved into the metronome beat: 8 nightly reds PENDING
+ALARM_RANGES_BUILD_CLASSES_AS_DATA	ready	-	-	14	2	A ranges block in ops_watch_rules.json: idle, sane, distressed, emergency classes with owner, ack_within_min, 
+ALARM_REPEAT_FIX_BREAK_ON_WORSE	ready	-	O	14	2	P1: A repeat alarm of the same kind inside the 6 h window is re-raised when its severity rises or its impact m
+ARCHMAGI_BACKFILL_WIRE_UNIT_RUNNER_WANTED	ready	B	-	10	2	[S 1 h] switch the §2 trial on: create the archmagi runner clone (~/rm/archrunner, not a pool or agent clone) 
+ARENA_TRIAL_RETIRE_HUNDRED_GIGS_IDLE	ready	B	O	9	2	End the arena trial: drop its items, remove arena code/selftests/units, delete ~105 GB of arena clones, then g
+ARTPIPE_ORPHAN_UNSTICK_WEDGE	ready	-	-	12	2	artpipe sat IDLE 17 h with 37 pending: latched codex sandbox preflight plus startup-only reconcile of orphaned
+ASSAILANT_WARLAB_BUILD_MERGE	ready	B	O	36	2	Assailant complex IS the war lab: fold ASSAILANT_DUNGEON_BUILD_1 and ANCIENT_WAR_LAB_1 into one build, reconci
+BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN	ready	-	O	25	2	Delete the 25 frozen RUT_ twin BiomeDefs (0 dev-world tiles, MEASURED 2026-10-21; keep RUT_Umbra and RUT_Jawa_
+BLINDCHECK_PROVE_VERDICTS_EATEN_BY_DISK	ready	B	-	13	2	Re-run the blind checks for HOT_RELEASE_FIX_OWN_WET_TERRAIN and WALK_SAVE_SILENCE_ABSENT_BIOME_OBJECTS: their 
+BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT	ready	-	O	12	2	books_stale recurs daily (engine runs stale code); ops_watch cannot see it, Relentless sends one alarm. Class 
+BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK	ready	-	-	14	2	A seat waiting on a lease reads busy, so the Dispatcher never rings it: FOUNDRY idle about 4 hours with 424 re
+CANON_BUILD_SWEEP_WHEN_CANON_MOVES	ready	-	O	19	2	check_canon.py sweep when canon.yml moves, on commit, and nightly
+CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD	ready	-	-	12	2	Nothing alarms when walled checkers die at launch across items: 29 of 29 died over 2.5 h and each item only re
+CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER	ready	-	O	11	2	Per-item deterministic churn watch in ops_watch: name each item bouncing (returns/same-class repeats), each wh
+CLEANER_SANITY_REVIEW_FINISH_FULL_FILES	ready	-	-	14	2	full-file review owed: scratch_reap.py and the other files in 5015555778, b1b65e04fa, d97b4bb8b6 are DIRTY per
+COLDLOAD_PROVE_DEFLOADCACHE_HALF_INSTALLED	ready	B	-	9	2	Trial DefLoadCache (Workshop, RimWorld 1.6, needs Prepatcher: zetrith.prepatcher is already in our Workshop fo
+DEAD_FIXES_REPAIR_TEN_NOT_WORKING	ready	-	O	15	2	10 of 39 sampled implemented fixes are not working and 16 are unproven; repair or drop each; 4 of 4 Operations
+DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY	ready	-	-	10	2	A Designer concept at status=waiting_owner whose owner has answered (designer_stage.owner_moved true) for >1 h
+DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN	ready	B	O	27	2	Move the live D:\Luke\dev\_* runtime dirs (artpipe, artstore, rmscratch, rmbuild, obs, rmdashboard) under one 
+DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP	ready	-	-	14	2	Add disk.scratch_outside_cap to ops_watch and the digest, from the scratch_reap sanity record
+DRVFS_ENOMEM_FIX_ORDER_SEVEN_RUNS_DRY	ready	B	-	12	2	WSL kernel runs out of order-7 blocks (9p needs them for drvfs): 36 'page allocation failure: order:7' in 38 h
+FLYER_STABLE_BODY_GATE_1	ready	B	O	38	2	Flyer-ready static gate + stable-body flip-book regeneration for every flyer
+FUNGALWEEVIL_LABEL_JUDGE_PROPOSES_NEW	ready	B	O	22	2	Fungal weevil (RSW_FungalWeevil, label 'grellik') needs a new label before it moves with the Biomes-team folde
+GUARD_GATE_FIX_CURE_IN_THE_TEST	ready	B	-	10	2	close gate _guard_refusals (cli.py) demands the guard file's committed hash at the close sha equal its hash wh
+HANDOFF_FIX_RESTART_TWENTY_SECONDS	ready	-	O	14	2	A seat saying HANDOFF READY is restarted about 20 s after its helpers finish: the handoff ends in seat_restart
+HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT	ready	-	-	8	2	Wake prints only next actions, open items and the last reply; then a one-screen state file generated from the 
+HARNESS_REPAIR_CAUSE_4F477502	ready	B	-	9	2	harness fault, no verdict (testq J20261106T122857Z-88bde4.a1, Graffiti): LOAD: CFBEE (mono-#-bdwgc) mono_profi
+HARNESS_REPAIR_CAUSE_B338C64C	ready	B	-	9	2	harness fault, no verdict (testq J20261106T134317Z-55ba0d.a1, DivingInteraction): CRASH: FileNotFoundError in 
+HELPER_RECEIPTS_FIX_KILL_READS_CRASH	ready	B	-	12	2	selftest_helper_receipts red: a kill with no record reads as 'before the last boot: the restart, or a quit or 
+HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS	ready	-	-	14	2	Helper registry and durable receipts: a dead parent's helper results survive; wake and handoff read them (PLAN
+IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK	ready	-	-	14	2	Dispatcher brings an idle seat with ready work back: one restart after idle_bringback_after_min, then an incid
+IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST	ready	-	-	14	2	Add seats.idle_with_work_min to ops_watch and the digest, from dispatcher.jsonl
+INCIDENT_FIX_BROKER_FAULT_ROUTELESS	ready	B	-	9	2	selftest_incident red at origin/main 3e1d97efb4: alarm kind broker_fault (relentless_broker.py:132) is missing
+INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED	ready	-	-	14	2	One incident lifecycle: told.jsonl, doorbell ring, ack verb, sustained-recovery close, escalation chain, routi
+ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT	ready	-	O	9	2	is_system reads ~10+ real pipeline items as content (subject words missing from system_words); under the owner
+LAUNCHREADY_FIX_CRITERION_STEAM_REVIVES	ready	B	-	15	2	LAUNCHER_READY A2's premise is false: the steam:// URL restarts a closed Steam, which starts the game in 9 s, 
+LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK	ready	-	-	17	2	ops_watch: judge a lent account's alarm against its lent window and cap in slot_rules.json lent_accounts, not 
+LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED	ready	B	O	9	2	Lightspeed rollout step 1 (spec §4): 112 mods are testq-selectable but never queued (2,966 modcheck rows). Ext
+LIVE_MODS_MEASURE_WEEK_AFTER_ROLL_CALL	ready	-	-	10	2	After 2026-11-12: count runs.jsonl rows failing on a mod-list cause since LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_B
+LIVE_RESTORE_DISPATCHER	ready	-	-	8	2	Live promise broken: dispatcher last ran 147 min ago (limit 15 min)
+LIVE_RESTORE_OPS_WATCH	ready	-	-	14	2	Live promise broken: ops_watch last ran 70 min ago (limit 50 min)
+LIVE_RESTORE_RM_DISPATCHER	ready	-	-	13	2	Live promise broken: rm-dispatcher.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_OPS_WATCH	ready	-	-	14	2	Live promise broken: rm-ops-watch.timer: is-active says 'inactive', wanted 'active'
+LIVE_RESTORE_RM_RESTART_RECONCILE	ready	-	-	11	2	Live promise broken: rm-restart-reconcile.timer: is-enabled says 'disabled', wanted 'enabled'
+LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY	ready	-	O	10	2	game_health limit log.errors_lower_bound breaches on EVERY full-list session: the cold load overflows Verse.Lo
+MIRROR_PACK_REPAIR_STILL_GRUMBLING	ready	B	-	11	2	rm-scratch-reap journal logs 'error: wrong index v2 file size in /home/mandrake/rm/mirror.' (111 lines since 1
+NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING	ready	-	O	11	2	Before ops_watch files a nightly-red item, rerun the group's tests once at origin/main with no LLM (run_selfte
+NORTHSTAR_SITUATIONAL_ROLLOUT_1	ready	B	-	45	2	Flip modcheck --situational to default after an abort-only pass over every suite
+OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE	ready	-	O	14	2	P0: With a stale or unreadable status.json, role_launch starts Operations in degraded mode (reading marked UNM
+OPS_ALARMS_FIX_FIXED_ITEM_ID	ready	-	-	15	2	ops_watch mint_name gives each alarm a random OPS_*_XXXX id, so a repeat is a new item and is not counted. Use
+OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT	ready	B	O	10	2	ops_watch.run_alarms l.3646-3657: an OPEN alarm whose item was closed, reading still crossed, nothing fresh or
+OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY	ready	-	O	13	2	Strategy §8 step 0: Operations timers run code from six clones (dispatch, bench, foundry, pulse-deploy, relent
+OPS_DEADMAN_REVIVE_17EC	ready	-	-	17	2	Dead man: dispatcher last ran 21 min ago (limit 15 min)
+OPS_DISK_DRAIN_XPPR	ready	-	-	11	2	Ops alarm DISK_LOW: disk.root_free_gb = 197.1 GB free on / (MEASURED), line < 210
+OPS_ERROR_BUDGET_DIAGNOSE_CIRG	ready	B	-	12	2	Ops alarm ERROR_BUDGET: health.spent_slis = 1 SLIs with a spent budget (MEASURED), line > 0
+OPS_FINDINGS_DIAGNOSE_17B4	ready	-	-	15	2	Ops alarm UNTRIAGED: flow.untriaged_findings = 143 findings UNTRIAGED, not yet items (MEASURED), line > 0
+OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY	ready	-	O	10	2	ops_health.verdict l.270-274: unusable health rules give b={} so state=healthy and content_paused False. Publi
+OPS_HEALTH_RANK_FIX_GLOB_OUTVOTES_EXACT	ready	-	-	10	2	ops_health.is_system l.229: a system_rank family glob (SELFTEST_*) beats an exact health.not_system id, so SEL
+OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS	ready	-	-	9	2	ops_health reads instrument_incidents.json, class PROOFLESS item system
+OPS_JUDGE_NOTES_MEASURE_VS_NO_CHANGE	ready	-	O	13	2	Strategy §3/§8 step 7: episodes list (14 d, folded repeats, unresolved never evicted) and typed judge notes gr
+OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH	ready	-	O	13	2	Strategy §8 step 1 follow-up: ops_memory.py (b0bec3746d2d) is DIRTY (GPT code review timed out after 4 finding
+OPS_METRONOME_MIGRATE_CLOCKS_FENCED	ready	-	O	13	2	Strategy §8 step 6: cut Operations clocks over to the beat one a day with ownership fencing: restart reconcile
+OPS_PLAN_READING_RESTORE_QOOF	proposed	-	-	2	2	Ops alarm PLAN_BLIND: last measured 2026-11-07T02:14:14Z, 9012 min ago: older than the round robin allows (55 
+OPS_QUEUES_READING_RESTORE_HQXV	ready	-	-	12	2	Ops alarm QUEUE_BLIND: queues.blind = 1 queues not seen (MEASURED), line > 0
+OPS_RAISE_REWIRE_WITH_DEATH_LADDER	ready	-	O	13	2	Strategy §4/§8 step 4: raise with memory (life number, last ending, its progress file), single-flight raise af
+OPS_REFUSAL_REWIRE_TO_CONDUCTOR	ready	-	O	13	2	Strategy §4/§5: a cap-refused Operations incident run moved plan-20261101164253 (a mechanical plan-list cause)
+OPS_RESTART_UNSTICK_BENCH_YCVY	ready	-	-	10	2	Restart request of BENCH unmatched 3925 s (no restart_verified): hard context limit: 206821 tokens >= 200000
+OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS	ready	-	O	13	2	Operations role can't keep up: ~400k weighted per run vs 1.65M daily cap (~4 runs/day), a frozen run charged a
+OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC	ready	B	-	13	2	Ops alarm SCRATCH_OUTSIDE_BLIND: sanity record frozen: last stamped 2026-11-02T05:10:32Z, 376 min ago, limit 1
+OPS_STEVE_UNSTICK_VHRP	ready	-	-	13	2	Ops alarm STEVE_STALL: steve.unowned_stall_min = 347.5 min stalled with nobody escalating (MEASURED), line > 3
+OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP	ready	B	O	23	2	Audit the 59 open needs=owner items against delegation_policy.md s2; return non-reserved ones to agents, fold 
+PIPELINE_RETHINK_OWNER_STOPPED_BURN	proposed	-	O	8	2	Pipeline stopped by the owner until he works on it in person. Undo only at that sitting: delete D:\ClaudeWork\
+PRIORITY_LIST_BUILD_ONE_SHORT_FILE	ready	-	-	14	2	infrastructure/state/priority_list.json: Producer and Conductor write, relentless pool and Dispatcher ring rea
+PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS	ready	-	-	9	2	relentless_live.proof_scripts treats any repo-shaped .py/.sh token as a script it must find and ignores cd: 'p
+QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS	ready	-	-	12	2	Wire the remaining claim/lease queues (arena, fleet, replay watchers) into ops_watch's 'queues' family (stalle
+REAPER_SESSION_DIRS_MEASURE_END_LINE_YOUNG	ready	B	-	10	2	Reaper end line session_dirs 300 unreachable while sessions are young
+RED_COP_BUILD_NO_ORPHAN_REDS	ready	-	O	12	2	Every new nightly selftest red auto-files a top-priority item with a deadline; an overdue red alarms whether o
+REGRADE_SAMPLE_BUILD_NOISE_GUARDED	ready	B	O	12	2	Independent regrade of a few closed items/day; disagreements recorded not chased; act only on two-grader agree
+RELAPSE_OPS_WATCH_FIX_DIED_TWICE	ready	-	-	10	2	Incident ops_watch-20261104035601 relapsed 2 times in 24 h: each ack's fix died; make the fix structural
+RELAPSE_QUEUES_FIX_DIED_TWICE	ready	-	-	9	2	Incident queues-20261105210826 relapsed 2 times in 24 h: each ack's fix died; make the fix structural
+RELAPSE_TIMERS_FIX_DIED_TWICE	ready	-	-	9	2	Incident timers-20261106020038 relapsed 2 times in 24 h: each ack's fix died; make the fix structural
+RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM	ready	B	O	12	2	Full-file code review owed after 2026-11-03 fixes (c5a80db3, 7c16acb1, 72954d63): ops_watch.py, relentless.py,
+RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK	ready	B	-	9	2	role_launch.py WP-15: unlocked cause-book load/attach/save loses concurrent updates; stage_close exception aft
+REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN	ready	-	-	12	2	Design idea 5 rule not yet enforced: a twice-seen alarm (rimflow live_repeats>=1) must close only with a class
+RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS	ready	-	O	14	2	Join every restart request to restart_verified from outside the code path; an unmatched one alarms in 10 min
+RIMFLOW_AUDIT_SIX_ZERO_ENTRY_MODULES_LEFT	ready	B	-	9	2	Judge the six rimflow modules the entry-point inventory says nothing reaches
+RIMFLOW_BUILD_ONE_EVIDENCE_RECORD	ready	B	-	9	2	Evidence predicate in cli.py close gate, shadow (redesign 09b)
+RIMFLOW_RETIRE_DEAD_MODULES	ready	B	O	9	2	Retire dead rimflow modules, keep close_audit (deferred WP-14)
+RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS	proposed	-	-	2	2	Proof hook: overlays, ropes, flames and the corpse cover report the alpha they drew vs the under-liquid law (P
+RIMMANDRAKE_ADMIT_PAUSED_FLYER_READS_AT_BRIDGE_TAKE	proposed	-	O	2	2	Rule 11 follow-through: the delegated bridge take (cli._delegated_gate, flight_purpose) refuses ANY purpose wi
+RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS	proposed	-	O	3	2	Every refusal by a judge or gate carries detail equal to the evidence, an attainable path to pass and an asses
+RIMMANDRAKE_BUILD_NEUTRAL_CRITERIA_FIXER_WITH_GUARD	proposed	-	-	3	2	T5 neutral criteria fixer: roles/criteria_fixer.md, refusal_contract.py repair and diffguard, the recording pa
+RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE	proposed	-	O	2	2	Standing ruling 2026-11-13: every built item ships its offline test AND its live (bridge) test in the same run
+RIMMANDRAKE_CORRECT_INVENTORY_SKIPPED_MEANS_TIER_NOT_CACHE	proposed	-	-	2	2	validation_inventory_2026-11-12.md §2 defines SKIPPED as 'skipped on unchanged evidence', but the 3 SKIPPED of
+RIMMANDRAKE_COVER_BOOKS_UNDER_LIQUID_NOVEL_READS_THROUGH_TAR	proposed	-	-	2	2	Books (class Book) draw crisp under liquid. Live 2026-11-12: Novel at 82,100 in BP6 (1.5 m tar) draws fully cr
+RIMMANDRAKE_COVER_REALTIME_MINIFIED_UNDER_LIQUID	proposed	-	-	3	2	MinifiedThingRealtimeDraw (drawerType RealtimeOnly) is not covered by the map-mesh PrintPlane split in RM_Subm
+RIMMANDRAKE_DIAGNOSE_STEVE_GAME_VANISHES_FIVE_BEFORE_BREAKFAST	proposed	-	-	2	2	SteveDesktop test game dies or half-starts with no crash record, braking the lane twice on 2026-11-13. Measure
+RIMMANDRAKE_LABEL_CHANGED_SINCE_LAST_LOOK_IN_REVIEW_SAVES	proposed	-	O	2	2	Rule 2f tooling: a review save's builder labels every cell whose inputs changed since his last look 'changed s
+RIMMANDRAKE_LET_FOLD_MEMORY_KEEP_THE_WORK_COVER	proposed	-	-	2	2	findings_fold.py decide: the latest decision wins (latest_decision, findings_fold.py:391), so a weekly-sweep '
+RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES	proposed	-	O	2	2	Rule 2e tooling: the notes of his next look list EVERY pinned line (a pass he gave, stored with its value) who
+RIMMANDRAKE_PIN_OWNER_LOOK_DEFECTS_AS_NAMED_TESTS	proposed	-	O	2	2	Every defect the owner reported in the 2026-11-12 pit looks gets a named regression check that fails on the bu
+RIMMANDRAKE_RECONCILE_SHADOW_JUDGE_WITH_TINT_SHEET_130_RED	proposed	-	-	2	2	Floor shadows under water stay at the dry alpha 0.3: the regression judge says FAIL and the look shows dark pa
+RIMMANDRAKE_RECOUNT_INVENTORY_KERNELS_ONE_FILTER_THREE_ANSWERS	proposed	-	-	2	2	validation_inventory_2026-11-12.md quotes kernel/fuzz counts from three different filters (§0: 72 ran, 71 pass
+RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION	proposed	B	-	2	2	rimflow close refuses an owner-reported defect without --regression <path::row> or --no-regression "<reason>".
+RIMMANDRAKE_REPAIR_CODEX_SEATS_FIXTURE_UNLISTED_RED_TWIST	proposed	-	-	2	2	selftest_codex_seats dies on its bridge take fixture
+RIMMANDRAKE_RESTORE_EK_FUZZ_MUTANTS_TWO_TARGETS_VANISHED	proposed	-	-	2	2	mutate_explosiveknockback_fuzz.py: mutants 'budget never resets' and 'budget allows cap + 1' print MUTATION TA
+RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP	proposed	-	O	2	2	Lift every pause (Dispatcher PAUSE, testq, Relentless, Whittle, disabled roles and timers) and keep every spen
+RIMMANDRAKE_RETIRE_SPIKE_SUBMERGED_ALPHA	proposed	-	-	3	2	RM_SpikeDrawMath.SubmergedAlpha is dead in production since RM_UnderLiquid (441c321a20dc) but still used by Sp
+RIMMANDRAKE_REWORD_STOPPED_A_FREEZE_IS_NOT_A_PAUSE	proposed	-	-	2	2	validation_inventory_2026-11-12.md labels three schemes 'STOPPED with Relentless on 2026-11-06', mixing the 20
+RIMMANDRAKE_SPEED_BRAKE_RELEASE_PASS_MISSES_ITS_BEAT	proposed	-	-	2	2	brake_release.py takes 145 s, so its 15 s metronome beat never completes and brake_release.json goes stale
+RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE	proposed	-	O	2	2	Under-liquid water look (RM_UnderLiquid, 441c321a20dc): deep water ends about twice too opaque (halve the opac
+ROLE_TOKENS_REPAIR_DESIGNER_ARTIST_CAPS	ready	B	-	13	2	selftest_role_tokens RED again: Designer/Artist _caps_why lack [A] record, Artist cap 300000 below measured x1
+ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED	ready	-	-	14	2	Report roles.<role>.acted_share, runs and silent_days per week, from the ledger; report-only
+SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF	ready	-	-	12	2	scratch_stranded counts landed ledger shards as stranded work (pool_breach 5th outage)
+SEAT_MEMORY_STANDARD_FALLBACK_1	ready	B	O	38	2	If the home-made seat-memory pieces misbehave (hook, seat sub-cgroup, harness admission), switch to the standa
+SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE	ready	B	-	11	2	/home/mandrake/.seat-tmp/BENCH holds 44G in 17275 entries; selftest fixtures (wallsha256*, tmp*/unreadable_alt
+SEKKULAATH_RISING_DESIGN_CRATER_EVENT	ready	B	O	36	2	Sekkulaath rises in the crater event: Wildsteam site damage, closed world sites (owner card 19, 2026-10-10)
+SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS	ready	-	O	18	2	Nightly selftest RED 14/14 nights (75 distinct reds, handoff red 14/14): known-red list after 3 nights, each w
+SITESAVES_FIX_BACKUP_FILLS_REPO	ready	B	O	14	2	test_site_saves.py build backs up the whole Saves folder (2.5 GB) into repo Transient/ instead of D:\ClaudeWor
+SKILLS_TESTING_POLICY_ABSORB_INTO_CURATION	ready	B	O	18	2	Curation session: absorb design/RimMandrake/testing_policy_2026-10-28.md into the testing-related skills (muta
+STALLREPRO_RETHINK_ABSENCE_IS_THE_PASS	ready	B	-	11	2	LEANINGSCRUB_STALL_SHARED_MOVE_1's A1 demands the 10-07 shared Stall move reproduce and calls a miss exit 1. I
+STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE	ready	B	-	12	2	Operations owns Steve-lane unsticking. Today the testq filler BRAKED on two non-DONE jobs that were both known
+STEVE_LANE_MONITOR_PAUSE_FINDINGS	ready	-	O	20	2	Standing host for SteveDesktop lane pauses: testq ingest records each red canary / refused runner pull as a fa
+STEVE_RETEST_TIMER_RETIRE_WHEN_CPUS_SPEAK	ready	B	-	11	2	Uninstall steve-cpu-retest.timer (audit 2026-11-03 RETIRE verdict, ~1,424 no-op ticks/day at state END_FAULT) 
+TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD	ready	B	O	19	2	testq: 2140 of 6858 rows (31%) UNMEASURED and 12 chains never measured; testq found 36 of 1280 defects in 30 d
+TMP_SCRATCH_PRUNE_SIXTEEN_GIGS_NOBODY_CLAIMS	ready	-	-	11	2	Agent scratch copies of src (mutation/judge runs) are left in /tmp (an 18 GB tmpfs) and fill it
+WORKER_CLONES_MONITOR_POOL_NOT_RABBITS	ready	-	O	14	2	Owner approved a bounded pool of about 10 reused clones for writers above 4; git worktree stays banned; cap, d
+OPS_DEPLOY_UPDATE_UNSTICK_RDHQ	ready	-	-	11	1	Ops alarm DEPLOY_STALE: timers.deploy_update_age_min = 99.0 min since the deploy checkout last fast-forwarded 
+OPS_FINDINGS_DIAGNOSE_XZLM	ready	-	-	12	1	Ops alarm UNTRIAGED: flow.untriaged_findings = 1 findings with no outcome yet (MEASURED), line > 0
+OPS_PLAN_LIST_FIX_VMIV	ready	-	-	14	1	Ops alarm PLAN_DISTRESS: priority list missing -- plan.distressed = 1 1 when the plan list is distressed or wo
+OPS_STEVE_SEATS_RESTORE_QTWK	ready	-	-	15	1	Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 12.8 min a Steve seat has been absent (MEASURED
+RIMMANDRAKE_BUDGET_SECOND_GAME_MUTANTS_PAST_FIVE_HUNDRED_SECONDS	proposed	-	-	2	1	selftest_second_game_mutants ran past 500 s on 2026-11-12 (killed, rc 124) and the 03:00 nightly saw 1 of 79 p
+RIMMANDRAKE_BUILD_MATURATION_SPINE_WHILE_DESIGN_STILL_MOVES	proposed	-	O	1	1	Start building the Maturation Pipeline's settled spine (per-mod stage record, next-step command, journal, spen
+RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS	proposed	-	O	2	1	One clean-up of the always-red nightly sweep (RED 29 of 29 nights; 44 reds on 2026-11-12: 26 repo-wide guards 
+RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS	proposed	-	O	2	1	DESIGN pass (Designer, not a build): liquid dirtying of pawns (blood, oil, tar coverings) is graphically crude
+RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE	proposed	-	O	1	1	Designer pass: all game wetness becomes one thin film (DECIDED by owner 12:01 PM); wet mud under drained natur
+RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO	proposed	-	-	1	1	SteveDesktop: AlienRace.HarmonyPatches static ctor dies intermittently ('Token 0x0 is not a valid MethodBase t
+RIMMANDRAKE_FIX_METAL_EATER_HUNGER_JOB_EXPECTATIONS	proposed	-	-	2	1	metal_eater: a hungry RM_Khorrak beside Steel gets no RM_EatMetal job, and a fed one still seeks metal. Parked
+RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH	proposed	-	-	1	1	testq admits the rest of a queued batch after the first dies of a delivery fault (17 companion_stale deaths in
+RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED	proposed	B	-	2	1	Ingest the held owner-look defects into the regenerated validation ladder, where and how each belongs, then em
+RIMMANDRAKE_JUDGE_PIT_SINK_BODY_DRAWN_OVER_SOUTH_GRASS	proposed	-	O	1	1	A colonist on a pit floor draws its lower body over the grass south of the pit (lip occlusion not hiding it)
+RIMMANDRAKE_RECHECK_PULSE_PROOF_P2_BUILT_FOR_NOTCHES	proposed	-	-	1	1	bridgetools/prove_flowworks_pulse.py P2 expects notch-era behaviour (1-cell pond stock 5->4, recededCount 1, o
+RIMMANDRAKE_RECONCILE_RESEARCHRETAG_WORKSHOP_TREE_WITH_DUMP	proposed	-	-	2	1	ResearchRetag: RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying patch says RUT_Tree_Workshop, the raw du
+RIMMANDRAKE_REPAIR_NORTHSTAR_DRIVER_FIXTURES_COUNTS_DRIFTED	proposed	-	-	2	1	Northstar driver fixtures drifted: graffiti mock rolls up 33 bars not 22, record_status sees a sinking FAIL ro
+RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN	ready	-	O	2	1	Conductor window sat 7 h 50 m on '403 Attention Required | Cloudflare' (labelled authentication_failed / 'Plea
+RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED	proposed	-	-	1	1	worker.py keeps a game process whose quicktest map can never generate: after a job ends with readiness 'mapDat
+RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE	proposed	-	-	1	1	A shut sluice gate keeps its own square dry (water 0.0) inside a full pit
+RIMMANDRAKE_SET_CONDUCTOR_WINDOW_TO_FABLE_POLICY_ALREADY_SAID	proposed	-	O	2	1	Every launcher that starts or restarts the Conductor window starts it on Fable 5.2 (policy already says so; th
+RIMMANDRAKE_STOP_FILLING_GRAFFITI_REFUSED_AT_ITS_GATE	proposed	-	-	1	1	testq: Graffiti refused at modcheck's gate (unclaimed must-show lines) is recorded INVALID/HARNESS and re-fill
+RIMMANDRAKE_TRIPLE_FIREHAWK_REACH_PREFERS_FARTHEST_FUEL	proposed	-	O	2	1	Fire-hawk stays spread-only; scan radius 18->54 and carry distance 6->18 (x3 each); it picks the FARTHEST lawf
+RIMMANDRAKE_UNHOOK_SELFTESTS_FROM_LIVE_HOST_STATE_ON_WSL	proposed	-	-	2	1	Three selftests read live host state (net.exe pre-launch guard sees a Linux sandbox, tasklist.exe absent, a 31
+STEVE_FILLER_MONITOR_FAIL_FINDINGS	ready	-	-	11	1	Standing host for the testq filler's FAIL rows: ingest records each item-less job with a FAIL row as a failed 
+TICKBURST_PROVE_MANY_TICKS_ONE_FRAME	built	B	O	9	1	Experiment: a JawaBench tool that runs N Find.TickManager.DoSingleTick() calls inside one frame with a per-fra
+CAULDRON_VENT_ENRICHMENT_HOOKS_1	built	-	O	45	0	Cauldron enrichment pieces that hang on vents: weather vent multipliers + vent-local exposure + falter, vexxis
+FEVERWOOD_BROOD_RANSOM_1	validated	-	O	44	0	Fever Wood giant story: ransom of its young (world tally, release gift, young cask trade, Sporefall tank)
+OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV	ready	-	-	10	0	Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 60.4 min pending > 0 with no claim, finish or heartbeat
+OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW	proposed	-	-	0	0	Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 7.0 min (MEASURED), line > 5
+OPS_GAME_HEALTH_DEBUG_PXQI	ready	-	O	11	0	Ops alarm GAME_HEALTH: log.errors_lower_bound=True (limit == True) -- tps.health_breaches = 1 limits crossed b
+OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ	proposed	-	-	0	0	Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 514 min (MEASURED), line > 60
+OPS_MATURATION_MOD_PAUSED_FYEB	proposed	-	-	0	0	Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0
+OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ	ready	-	-	10	0	Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 5 sanity problems at the end of the last run (MEASURED),
+OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF	ready	-	-	14	0	Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 5 sanity problems at the start of the last run (MEAS
+OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI	ready	-	-	9	0	Ops alarm SCRATCH_OUTSIDE_CAP: 13 clones outside the pool cap at the end of the reaper run of 2026-11-06T13:43
+OPS_SLI_DRIFT_DIAGNOSE_BSUI	proposed	-	-	0	0	Ops alarm SLI_DRIFT: nightly_reds -- health.drifted_slis = 1 SLIs whose point changed unit under them (MEASURE
+OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG	proposed	-	-	1	0	Ops alarm STEVE_INVALID_SHARE: steve.invalid_share_24h = 0.241 share of jobs INVALID, 24 h (MEASURED), line >=
+OPS_STEVE_UNSTICK_UNCLAIMED_ETBS	ready	-	-	15	0	Ops alarm STEVE_INCIDENT_UNCLAIMED: steve.incident_unclaimed_min = 17.8 min the oldest unclaimed steward incid
+OPS_WORKER_CLONE_POOL_RESTORE_HMOQ	ready	-	-	14	0	Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 1 pool breaches: over count, over bytes, stranded unpushed clo
+OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN	ready	-	-	11	0	Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 2 filed wrap-up rows still standing (MEASURED), line > 0
+RIMFLOW_V3_BUILD_DISPATCHER_FIRST	ready	B	O	19	0	RimFlow v3.0: build the Dispatcher (no AI) per design/RimMandrake/rimflow_v3_2026-10-26.md §6 — schedule file,
+RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND	proposed	-	-	0	0	Cauldron enters the pipeline at the Designer, run on Codex
+RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND	proposed	-	-	0	0	FeverWood enters the pipeline at the Designer, run on Codex, seeded with its lane-E draft
+RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH	proposed	-	-	0	0	GelatinousSlime enters the pipeline at the Designer, run on Codex
+RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF	proposed	-	-	0	0	LeaningScrub enters the pipeline at the Designer, run on Codex (first proof of the Codex Designer)
+RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD	proposed	-	-	0	0	Stillsand enters the pipeline at the Designer, run on Codex
+RIMMANDRAKE_ADOPT_MOD_DESIGN_VERSIONS_SO_JUDGE_CAN_PASS	proposed	-	O	2	0	Mod Design Versions: Semantic Versioning adopted (rulings doc, CLAUDE.md, LEXICON done 2026-11-13). Open: his 
+RIMMANDRAKE_ADVANCE_GRAFFITI_LOCKED_VERSION_TO_PREFLIGHT	proposed	-	O	0	0	Graffiti: maturation steward run, designer_locked at designer (launched by the Dispatch step)
+RIMMANDRAKE_APPLY_FACING_RESCALE_NOT_REGEN_FOUR_ALL_TALL	proposed	-	-	0	0	art_eval: a facing-truth FLAG whose fixes are all rescale/reseat should apply facing_scale_lint.rescale and ju
+RIMMANDRAKE_AUTOBUILD_GRAFFITI_THIRTY_THREE_BARS_LEFT	doing	-	-	0	0	Graffiti Stage 3: build the checks for the 33 bars not runnable, offline (launched by the Dispatch step)
+RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS	proposed	B	-	2	0	Preflight shadow at file/claim/start/helper launch (not Relentless) and the section 8 backtest
+RIMMANDRAKE_CARRY_STAGE_FIVE_BY_PROGRAM_TEN_RELAY_RUNS	proposed	-	-	0	0	Stage 5 with nothing to decide is closed by a program result, no Designer run
+RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN	proposed	-	-	0	0	Pre-judgement certificate: per bar, deciders registered, run on this build, green; no judge or visit launch wi
+RIMMANDRAKE_CHECK_DESIGNER_RESULT_BEFORE_EXIT_EIGHT_REJECTED	proposed	-	-	0	0	Designer run cannot end until designer_stage check passes; a cited path on origin/main is not missing
+RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT	proposed	-	-	0	0	Graffiti site preflight checks 6 of 8 settings; social layer can be off unseen
+RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE	proposed	-	-	1	0	Graffiti: 12 validated must-show lines no component claims; modcheck refuses every run, 3 INVALIDs on SteveDes
+RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS	proposed	-	-	0	0	designer_stage.py sets stage.json pending_decision on a return (line 1636) and never clears it: the Graffiti s
+RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS	proposed	-	-	0	0	maturation.py advance refusals go through refusal_contract.submit (plan slice 2), so a stage refused again and
+RIMMANDRAKE_CUT_DESIGNER_RUN_COST_TEN_RAISES_NO_ITEM	proposed	-	-	0	0	Designer runs overrun their advisory budget (10 Conductor-log raises, no item) and chained Contagion 8 times: 
+RIMMANDRAKE_DECIDE_COVERAGE_LOOK_BEFORE_EXAM_SIX_EXAMS_RETAKEN	proposed	-	-	0	0	Decide: coverage judge before the exam (exam passes 13 of 16, judge signs 3 of 14; six retakes, USD 18.79)
+RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT	proposed	-	-	0	0	Contagion Design Version 0.2.0 (Divergent): design, tune and test what a grown limb costs (Pillar Arm, Lash, E
+RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED	proposed	-	-	0	0	Drain the 45 items blocked on Relentless's binding-repair judge, which retired with it: close on landed shas, 
+RIMMANDRAKE_DRAIN_LIVE_RUNS_BEFORE_ACCOUNT_SWITCH_NOT_AFTER	proposed	-	-	0	0	claude-account use should drain or checkpoint live detached runs before it SIGTERMs every Claude process (the 
+RIMMANDRAKE_DRAIN_NIGHTLY_REDS_WHILE_PIPELINE_SLEEPS	doing	-	O	1	0	Launch one rm-fixer (Sonnet) on the 2026-11-14 nightly reds: 42 FAIL + 4 CRASH of 1626 (Transient/selftests_ni
+RIMMANDRAKE_DRAW_CONTAINER_JOLT_AS_MOVE_NOT_GHOST	proposed	-	-	0	0	ExplosiveKnockback container jolt draws a second copy of the graphic at the offset over the unmoved original (
+RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST	proposed	-	-	0	0	ExplosiveKnockback 0.1.0 Stage 6: in-game acceptance visit 1 (56 stage-6 checks), live driver via maturation.p
+RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS	proposed	-	-	0	0	Let a judge brief sign either way only when calibrated; calibrate checks its cases ran and has a read-only sta
+RIMMANDRAKE_EXEMPT_QUEUE_PROJECTIONS_FROM_DEBRIS_EVERY_HELPER	proposed	-	-	0	0	wrapup check_clone files untracked rimflow queue projections as debris; exempt them like conversations/
+RIMMANDRAKE_EXTEND_PREFLIGHT_CORE_KINDS_IDS_SHAS_FULL_REASON	proposed	-	-	2	0	Preflight CORE rest: strict refs parse, kinds, item ids, shas, Full Mod reason, declared block, sweep
+RIMMANDRAKE_FEED_STEVE_GAME_PIPELINE_VISITS_SECOND_DRIVER	proposed	-	-	0	0	Maturation Dispatch tick submits pipeline mods' stage-6 checks to SteveDesktop's testq so two games run visits
+RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR	proposed	-	-	0	0	E3: owed.py sync-sources on the Dispatcher tick files one kind:owed item per maturation Conductor hand step an
+RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT	proposed	-	-	1	0	Fit the Dispatcher tick inside its 20 s metronome beat (25 of 608 beats killed in 24 h)
+RIMMANDRAKE_FIX_DESIGNER_DELEGATION_UNREAD_REPLY	proposed	-	-	0	0	Designer: cited Evidence-for-Ask CONDUCTOR calls must leave the unread reply feed; retain real owner and uncit
+RIMMANDRAKE_FIX_DISPATCHER_R2_GREEN_BY_HAND_RED_NIGHTLY	proposed	-	-	0	0	selftest_dispatcher_r2.py is red in every nightly since 2026-10-28 (due 10-31, the only overdue red; testing.r
+RIMMANDRAKE_GUARD_PIPELINE_DOORS_CHEAPLY_NO_CEREMONY	doing	-	O	0	0	Review every pipeline door and design the cheapest evidence-backed guard at each: deterministic checks first, 
+RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP	proposed	-	O	0	0	Parent: every pipeline defect worked around by hand on 2026-11-15 gets a permanent fix in the pipeline's own c
+RIMMANDRAKE_HOLD_CODEX_DESIGNER_AT_THE_QUARTER_LEFT_LINE	proposed	-	-	0	0	The Codex Designer lane holds its launches under 25% of the Codex week left, after the run that set the line h
+RIMMANDRAKE_HOLD_DET_CLONE_UNTIL_RETURNED	proposed	-	-	1	0	Detached launch reuses a .det clone while the previous run is still returning it (clone deleted under the new 
+RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_THREE	proposed	-	-	0	0	ExplosiveKnockback Stages 4 and 5: blind challenge cycle 3, tests first, offline (launched by the Dispatch ste
+RIMMANDRAKE_LAND_DESIGNER_OWNER_SHARD_ITEMS_WITH_HARVEST	proposed	-	-	0	0	Designer run rm-role-designer-1794773367 filed RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT into OW
+RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE	proposed	-	-	0	0	E1: rimflow queue CONDUCTOR --owed lists only open kind:owed items (actionable, LATE past 2 h, WAITING with tr
+RIMMANDRAKE_MEASURE_SPEND_IN_WEEK_SHARE_NOT_LIST_DOLLARS	proposed	-	O	0	0	Pipeline spend is counted in API list-price dollars (claude's total_cost_usd, costBasis list), which he never 
+RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS	ready	-	-	0	0	selftests pin fixtures instead of reading shipped owner-tunable numbers
+RIMMANDRAKE_PROBE_GRAFFITI_BREACH_PICK_HOOK_NEVER_READ_LIVE	proposed	-	-	0	0	Graffiti: a probe reading FindBuildingToBreach's pick and a breaching lord's target
+RIMMANDRAKE_PROBE_GRAFFITI_CLEAN_BREAK_GATE_FORCE_SKIPS_IT	proposed	-	-	0	0	Graffiti: a probe that reads the cleaning break's gate (forcing skips it)
+RIMMANDRAKE_RENAME_INGEST_REPAIR_ITEMS_MINT_REFUSES_THEM	proposed	-	-	0	0	testq ingest names harness repairs HARNESS_REPAIR_CAUSE_<hex>; the mint rule refuses them, so no repair is fil
+RIMMANDRAKE_RETAIN_SAVES_BACKUPS_NOTHING_REAPS_THEM	proposed	-	O	0	0	Retention for Saves, Saves backups, save_keepers, leftovers, Transient and Showing_ saves: no timer reaps them
+RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT	proposed	-	O	0	0	Maturation tick and detached runs: a run killed by an account switch (claude-account use SIGTERMs every Claude
+RIMMANDRAKE_REVALIDATE_INPUTS_BEFORE_REFUSAL_STALE_THIRD_STRIKE	proposed	-	-	0	0	Codex review finding (confirmed, NOT fixed): coverage_judge applies a not_covered verdict judged on inputs tha
+RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE	proposed	-	-	2	0	Test queue: a proof-build job route (build -p:RmProofs=true and deploy it on SteveDesktop); Explosive Knockbac
+RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES	proposed	-	-	0	0	detached_helper.launch runs an item's declared must-pass / must-fail commands before the unit starts
+RIMMANDRAKE_SCAN_PIPELINE_SLEEPER_TICKETS_ANYWHERE_THEY_HIDE	doing	-	O	0	0	Scan every place Pipeline work can hide (items, specs, handoffs, logs, bundles, clones) for sleeper tickets; e
+RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED	proposed	B	-	0	0	Light scan experiment: capped Sonnet reads bar and scene, fixed questions, refusal record; kept only if it fin
+RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES	proposed	-	-	0	0	selftest_maturation_dispatch red on main: convergence lines break the launch-retry check's no-Needs-Conductor 
+RIMMANDRAKE_SEED_DESIGNER_WITH_DRAFT_AS_INPUT_NOT_OUTPUT	proposed	-	-	0	0	designer_stage init takes no draft: a Codex first-touch draft cannot enter the Designer as input to verify
+RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED	proposed	-	O	0	0	Graffiti: enter the Maturation Pipeline with a Designer first touch (concept folder, Design Version); the mod 
+RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB	proposed	-	O	0	0	Contagion gestation: show the batch odds (normal 2-4 natural parts, Monstrous one of five limbs, the miss outc
+RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL	proposed	-	-	0	0	E2: promise_scan.py finds the Conductor's untracked promise sentences; the per-prompt notice shows them, a bac
+RIMMANDRAKE_SKIP_WRAPUP_ROWS_A_LIVE_UNIT_CARRIES	proposed	-	-	0	0	wrapup.standing counts a dead unit's clone row as debris while a live rm-detached unit carries that pool clone
+RIMMANDRAKE_STOP_CONDUCTOR_RESTARTS_LOSING_ITEMS_ASK_GPT	doing	-	O	0	0	Measure what Conductor window restarts lose and design where owed work is written so it is seen; GPT consulted
+RIMMANDRAKE_TRACE_PHONE_IMAGE_TMP_FILE_VANISHED_ONCE	proposed	-	-	0	0	maturation_now.py: regenerating the page raised FileNotFoundError on a phone .png.tmp.png once, then passed on
+RIMMANDRAKE_UNGATE_STEWARD_EXAM_HELPERS_WINDOW_BUDGET_AT_ZERO	proposed	-	-	0	0	slot hook: a detached steward's exam helpers draw on the Conductor window budget, N=0 when he is away
+RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE	proposed	-	O	0	0	designer_stage standing_park: a second refusal while he is away no longer parks when every open gap's smallest
+RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY	proposed	-	-	0	0	A finished detached run reaches the live Conductor window at once; today it only writes a log line the window 
+RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST	proposed	-	-	0	0	proof_restore_check.py: a proof's static_call Settings with a variable args= (storeroom_pit_proof.py arm(): ar
+RIMMANDRAKE_WRAPUP_CARRY_LIVE_HELPER_CLONES_NOT_DEBRIS	proposed	-	-	0	0	wrapup.py: a clone a live detached unit works in is carried, not filed; ignore untracked queue/*.md views. Acc
+SCARLANDS_CHATRAK_LIVE_RERUN_1	built	-	O	37	0	Live re-run of modcheck Scarlands chatrak_snap/snap_stage_0_2 after harness fix e0732bd98 (py_compile only)
+CREATURE_CARRIER_FIX_OLLOPOM_NOT_OURS	proposed	-	-	9	-1	CreatureBehaviors perceivedBeauty_wired_and_gated lists ThingDef/RSW_Ollopom as a carrier 'this mod itself shi
+CUISINE_LXML_MEND_STEVE_HAS_NONE	proposed	-	-	9	-1	Cuisine validation.py static_checks imports lxml (lines 63, 101) with no UNMEASURED fallback; SteveDesktop run
+OPS_MATURATION_MOD_STALLED_KHOT	proposed	-	-	0	-1	Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0
+RIMMANDRAKE_DIAGNOSE_OPS_RUNS_OVER_BUDGET_FOUR_OF_ELEVEN	proposed	-	-	2	-1	Operations runs: 4 of 11 over budget in 7 days; rm-role-operations-1794602238 (run mode) hit run_max_s 1800 at
+RIMMANDRAKE_FIX_GREY_ROSTER_PROBE_SALLIK_CUT_LEFT_NINE	proposed	-	-	2	-1	DivingInteraction grey_roster_read_offline FAILs '17 plants, 9 animals': its sanity floor wants >=10 animals (
+RIMMANDRAKE_FIX_LACQUER_ROW_PREFIX_LIST_FORGOT_THE_BILL	proposed	-	-	0	-1	LuminousPigment lacquer_bill/bill_returns_the_same_item_with_one_more_coat FAILs 'no Deepfire debug action mat
+RIMMANDRAKE_GUARD_ATLAS_SHRINE_ROWS_RITES_DEF_ABSENT	proposed	-	-	2	-1	Atlas research_lights/unlit_before and detection_off/poll_lights_nothing_when_off FAIL live (testq J20261113T0
+RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FOUR_TESTS_FIRST	proposed	-	-	0	-1	GimmeSomeSlack Stages 4 and 5: blind challenge cycle 4, tests first, offline (launched by the Dispatch step)
+RIMMANDRAKE_QUIET_CURED_RED_SERIES_GONE_MEANS_GREEN	proposed	-	-	1	-1	ops_watch andon: a nightly red series that stops being reported (cured or deleted) is not a silent instrument
+RIMMANDRAKE_TRACE_DEPLOY_SHARD_CUT_TO_ONE_LINE	proposed	-	-	1	-1	Something wrote infrastructure/state/ledger/events/BENCH.jsonl inside the pulse-deploy checkout (D:\ClaudeWork
