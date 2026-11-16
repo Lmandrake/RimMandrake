@@ -958,7 +958,8 @@ def floor_errors(fl, tree=None, floor=None, owner_ev=None):
 
 # An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so identity is the id a string names,
 # never its words: a free-text author cannot be told from a labelled Reader, so everyone in the exam must name an id.
-_HELPER_ID = re.compile(r"(?<![\w-])a[0-9a-f]{16}(?![\w-])")
+# Agent helpers use a-prefixed hex ids; fresh Claude CLI processes return session UUIDs.
+_HELPER_ID = re.compile(r"(?<![\w-])(?:a[0-9a-f]{16}|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})(?![\w-])")
 _RUN_ID = re.compile(r"(?<![\w-])rm-role-[a-z-]+-\d+(?![\w-])")
 _ROLE = r"self[- ]?read\w*|designer|author|examiner|challenger"
 _DENIED_ROLE = re.compile(r"(?<![\w-])not (?:a |an |the )?(?:%s)(?![\w-])" % _ROLE)

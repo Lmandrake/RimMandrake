@@ -963,6 +963,30 @@ def refusals_exam(tmp, d, repo, exam):
         e.update(kw)
         return DS.exam_errors(e, d, st, repo.root)
     check("refusal table: the exam baseline is clean", ex() == [], ex())
+    # Fresh Claude CLI processes identify themselves by session UUID, unlike Agent helpers.
+    sessions = ["0d637ed2-077b-49ce-a7b8-1a7f3f91f6ff", "37bef0d9-b179-4370-b17b-99ff1ef1c753",
+                "ec9476e1-1037-4801-851a-242d32a87bd7", "8e761ab3-4490-472b-a72e-dacbe20f72dc"]
+    cli_exam = dict(exam, examiner=sessions[0], challenger=sessions[1], readers=sessions[2:])
+    cli_errors = DS.reader_errors(cli_exam, st)
+    check("exam: fresh CLI session UUID identities pass", cli_errors == [], cli_errors)
+    check("exam: session UUID is preserved as its exact identity", DS.agent_ids(sessions[0]) == [sessions[0]],
+          DS.agent_ids(sessions[0]))
+    check("exam: UUID case differences retain one identity",
+          DS.same_agent(sessions[0].upper(), sessions[0]), DS.agent_ids(sessions[0].upper()))
+    for role in ("author", "examiner", "challenger"):
+        same = dict(cli_exam, **{role: sessions[2]})
+        check("exam: UUID reader sharing %s is refused" % role,
+              any("is the " + role in e for e in DS.reader_errors(same, st)), DS.reader_errors(same, st))
+    duplicated = dict(cli_exam, readers=[sessions[2], "session " + sessions[2]])
+    check("exam: duplicate UUID readers are refused",
+          any("same agent" in e for e in DS.reader_errors(duplicated, st)), DS.reader_errors(duplicated, st))
+    mixed = dict(cli_exam, examiner="agent:a0123456789abcdef session " + sessions[2])
+    check("exam: UUID reader embedded beside a legacy helper id is refused",
+          any("is the examiner" in e for e in DS.reader_errors(mixed, st)), DS.reader_errors(mixed, st))
+    check("exam: UUID is stripped before interpreting identity labels", DS.declared_role(sessions[2]) is None)
+    for malformed in ("x" + sessions[0], sessions[0] + "-tail", "0d637ed2-077b-49ce-a7b8-1a7f3f91f6f"):
+        check("exam: malformed session identity is refused " + malformed, DS.agent_ids(malformed) == [],
+              DS.agent_ids(malformed))
     refuses("exam: no exam.json and no waiver is refused", DS.exam_errors(None, d, st, repo.root), "no exam.json")
     s9 = exam["scenarios"][:9]
     refuses("exam: fewer than ten scenarios is refused", ex(scenarios=s9, scenarios_hash=CT.sha(s9)), "fewer than 10")
