@@ -425,7 +425,9 @@ def main(argv=None):
     except RuntimeError as e:
         print("timers_guard: %s" % e)
     st = check(time.time(), OW.real_filer if a.file_alarms else None)
-    print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)))
+    held = sorted(held_covered())
+    print("timers_guard: %s%s" % ("no watched timer stopped without a pending restart or hold" if not st
+                                   else json.dumps(st, sort_keys=True), "; held: %s" % ", ".join(held) if held else ""))
     if "_state" in st:
         return 1                          # an unreadable state file must fail the unit, not hide as success
     OW.atomic_json(reading_file(), {"at": iso(time.time()), "state": st.get("state") or "clear"})
