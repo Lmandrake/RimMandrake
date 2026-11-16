@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":384722,"DISPATCH":2943,"JUDGE.judge-1794822890":2037} body_sha256=c2967e5371396bd59ef222eb695187c5f818a1e3fe2a13712dd4e88c4c64c6d8 -->
-# GimmeSomeSlack — mod ledger history (509 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":384722,"DISPATCH":3367,"JUDGE.judge-1794822890":2037} body_sha256=7807bc1eb0ca8a4078deda66b60518f25773a9a2478e67ea0d40193db2df4425 -->
+# GimmeSomeSlack — mod ledger history (510 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -510,3 +510,4 @@
 - 2026-11-16T10:23:29Z BACKFILL#499 decision finding:RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR v0.1.0: Short cords (2 to 3 tiles) fail the 1.4x slack bar: what should happen? -> Loosen the short cords
 - 2026-11-16T10:25:13Z DISPATCH#7 judge.sealed judge v0.1.0: 
 - 2026-11-16T10:25:13Z DISPATCH#8 run.end run v0.1.0: 
+- 2026-11-16T10:30:16Z DISPATCH#9 judge.sealed judge v0.1.0: 
