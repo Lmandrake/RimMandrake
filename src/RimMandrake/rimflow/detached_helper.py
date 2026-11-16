@@ -79,6 +79,9 @@ MODEL_IDS = {"fable": "claude-fable-5-2"}
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
+# Linux refuses any one argument over 128 KB (MAX_ARG_STRLEN, E2BIG): Gimme Some Slack's in-game brief (94.5 KB) plus
+# its holder packet passed it and every launch failed (2026-11-16). A brief past this goes in by file on stdin.
+ARG_BRIEF_MAX = 100_000
 DEAD_STATES = ("inactive", "failed", "not-found")   # a unit in one of these runs nothing; "unknown" is not proof of death
 KILL_STATUSES = ("HUP", "INT", "KILL", "TERM", "129", "130", "137", "143")   # systemd's EXIT_STATUS of a signal stop
 LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its unit yet
@@ -672,7 +675,9 @@ def launch_argv(rec, msg, claude):
     wrapup = "-+" + shlex.join(stop_resolver(stop_candidates(rec, "wrapup.py"),
                                              ["unit", "--unit", unit, "--seat", seat, "--clone", clone]))
     back = "-" + shlex.join(return_argv(rec))
-    cmd = [bounded, "-p", msg, "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
+    via_file = rec.get("brief_file")    # a long brief: claude -p reads it from stdin (StandardInput=file:)
+    cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
+           "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
@@ -681,6 +686,7 @@ def launch_argv(rec, msg, claude):
             # head of claude's JSON (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER); finish also moves its own
             # output off these files (keep_off_result), so the JSON stays whole and alone
             "-p", "StandardOutput=append:" + rec["out"], "-p", "StandardError=append:" + rec["err"],
+            *(["-p", "StandardInput=file:" + via_file] if via_file else []),
             "-p", "ExecStopPost=" + finish,
             "-p", "ExecStopPost=" + wrapup,     # the census of what it left (wrapup.py), after finish recorded it
             "-p", "ExecStopPost=" + back,       # last: the pool clone goes back, bundled (return_clone)
@@ -912,12 +918,22 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)
+    if len(msg.encode("utf-8")) > ARG_BRIEF_MAX:
+        rec["brief_file"] = os.path.join(runs_dir(root), unit + ".brief.md")
+        with open(rec["brief_file"], "w", encoding="utf-8") as fh:
+            fh.write(msg)
+        write_record(rec, root)
     try:
         r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
                    stdin=subprocess.DEVNULL)
-    except (subprocess.SubprocessError, OSError) as e:
-        # systemd-run did not answer (2026-11-16 04:15: past its 60 s, the launch raised and its record stayed
-        # "launching" with no unit, holding the clone; the next two launches were refused on it). Ask systemd.
+    except OSError as e:                # it never ran (E2BIG, ENOENT): no unit can exist, nothing to ask systemd
+        rec["status"] = "launch_failed"
+        rec["why"] = "systemd-run could not be started: %s" % e
+        write_record(rec, root)
+        return 1, "LAUNCH FAILED %s: %s" % (unit, rec["why"])
+    except subprocess.SubprocessError as e:
+        # systemd-run did not answer (2026-11-16: the launch raised and its record stayed "launching" with no unit,
+        # holding the clone; the next two launches were refused on it). Ask systemd.
         import role_launch as RL
         st = RL.unit_state(unit, runner=runner)
         if st in DEAD_STATES:

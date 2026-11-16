@@ -289,7 +289,8 @@ def gather(root, cfg, live=True):
             # for maturation_hands (who launched what) and slow_chores (a dead run whose finish never ran)
             f["runs_seen"] = [{"unit": r["unit"], "item": r.get("item"), "at": r.get("at"), "end": r.get("end")}
                               for r in runs if r.get("unit")]
-            f["dead_unfinished"] = [r["unit"] for r in runs if r.get("unit") and not r.get("live") and r.get("end") is None]
+            f["dead_unfinished"] = [r["unit"] for r in runs if r.get("unit") and not r.get("live") and r.get("end") is None
+                                    and ran(r)]
         else:
             f["live_units"] = UNM
         out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
@@ -333,6 +334,13 @@ def _is_ingame_item(item):
     return bool(re.search(r"IN_GAME_(ACCEPTANCE|VISIT)", str(item or "").upper()))
 
 
+def ran(r):
+    """False for a run record whose launch failed (systemd-run never started a unit): it worked on nothing, so it is
+    neither an in-game or blind run of the visit nor a dead run whose finish never ran (2026-11-16: Gimme Some Slack
+    paused hand_run_seen on its own failed launch)."""
+    return r.get("state") != "launch_failed"
+
+
 def add_ingame(root, mod, f, runs):
     """ingame_live (every mod): the live runs whose item names an in-game run (_is_ingame_item), for the one-driver rule.
     At in-game acceptance also maturation.ingame_facts (visit, exit reading, owed) and ingame_runs, the in-game runs
@@ -343,7 +351,7 @@ def add_ingame(root, mod, f, runs):
     f.update(M.ingame_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "in_game")
     t0 = _ts(f.get("opened"))
-    f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item"))
+    f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item")) and ran(r)
                         and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
 
@@ -368,7 +376,7 @@ def add_blind(root, mod, f, runs):
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
-    f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper()
+    f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper() and ran(r)
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
 

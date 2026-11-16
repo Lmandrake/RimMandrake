@@ -1686,6 +1686,22 @@ def item_names_main():
                fn.__name__, mod, n, names[-1:] or names, bad))
         if fn is MD.ingame_item_id:
             ok(all(MD._is_ingame_item(x) for x in names), "item names: every %s in-game name reads as an in-game run" % mod)
+    # 2026-11-16 05:05: the tick's own launch_failed record (systemd-run never ran) read as "a hand-launched run worked
+    # here" (hand_run_seen) and paused Gimme Some Slack: a run that never started is no run
+    saved = MD.M.ingame_facts, MD.M.certificate
+    try:
+        MD.M.ingame_facts = lambda root, mod: {"opened": "2026-11-16T03:25:09-08:00"}
+        MD.M.certificate = lambda root, mod, stage: {}
+        t0 = MD._ts("2026-11-16T03:25:09-08:00")
+        runs = [{"unit": "u-failed", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE", "at": t0 + 60, "end": None,
+                 "live": False, "state": "launch_failed"},
+                {"unit": "u-ran", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE_RUN_TWO", "at": t0 + 120, "end": t0 + 900,
+                 "live": False, "state": "finished"}]
+        f = MD.add_ingame(".", "X", {"stage": "in_game"}, runs)
+        ok(f.get("ingame_runs") == ["u-ran"], "never ran: a launch_failed record is not an in-game run that worked (%s)"
+           % f.get("ingame_runs"))
+    finally:
+        MD.M.ingame_facts, MD.M.certificate = saved
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

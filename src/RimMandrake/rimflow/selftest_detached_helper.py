@@ -1069,6 +1069,42 @@ def test_launch_timeout():
             check(not any(h[0] == unit for h in later), "timeout: the failed launch holds no clone (%d other holder(s))" % len(later))
 
 
+def test_long_brief():
+    """2026-11-16: Gimme Some Slack's in-game brief (94.5 KB) plus its holder packet passed Linux's 128 KB cap on one
+    argument, so systemd-run failed with E2BIG on every launch. A brief that long goes in by file on stdin."""
+    calls, run = recorder()
+    brief = "Long brief. " + "x" * 150000
+    rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", brief, "sonnet", 600, 5, now=T0 + 950, runner=run, known=KNOWN,
+                         clone=CLONE)
+    argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
+    big = max((len(a.encode()) for a in argv), default=0)
+    stdin = [a for a in argv if a.startswith("StandardInput=file:")]
+    path = stdin[0][len("StandardInput=file:"):] if stdin else ""
+    body = open(path, encoding="utf-8").read() if path and os.path.isfile(path) else ""
+    check(rc == 0 and big < DH.ARG_BRIEF_MAX and stdin and brief in body,
+          "longbrief: a 150 KB brief goes in by file on stdin, no argument over the cap (rc %s, biggest %d bytes, %s)"
+          % (rc, big, stdin[:1]))
+    calls, run = recorder()
+    DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Short brief.", "sonnet", 600, 5, now=T0 + 951, runner=run, known=KNOWN,
+              clone=CLONE)
+    argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
+    check(not any(a.startswith("StandardInput=") for a in argv) and any("Short brief." in a for a in argv),
+          "longbrief: a short brief still goes in as the -p argument")
+
+    def e2big(argv, **kw):
+        if argv[:2] in (["git", "fetch"], ["git", "grep"]):
+            return fake_origin_git(argv, kw)
+        if argv and argv[0].endswith("systemd-run"):
+            raise OSError(7, "Argument list too long")
+        if argv[:3] == ["systemctl", "--user", "show"]:
+            return R(0, "inactive\n") if "ActiveState" in argv else R(0, "not-found\n")
+        return R(0, "")
+    rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5, now=T0 + 952, runner=e2big, known=KNOWN,
+                         clone=CLONE)
+    check(rc == 1 and "Argument list too long" in text and "did not answer" not in text,
+          "longbrief: an exec failure is recorded with its own words, not as a silent systemd-run (%s)" % text[:120])
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1082,6 +1118,7 @@ def main():
     test_result_kept_whole()
     test_scope_quiet_when_gone()
     test_launch_timeout()
+    test_long_brief()
     test_owed_close()
     test_hook_points_here()
     test_windows_path()
