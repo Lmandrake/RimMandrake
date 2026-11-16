@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6762,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=8d33284af60267068eab2f47fb3d1fd1247e2024f18b9a98b45b49cb4afba127 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":7068,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=2539ddb810e936d2c538485cccea34e0f3f581cb1663c634b5ca4356202cc4ad -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 446 events in 6 shards · reducer 1
-holder lease run-1794860741, token 6, last active 2026-11-16T20:26:24Z
+version 0.1.0 · stage offline_build · 448 events in 7 shards · reducer 1
+holder lease run-1794860741, token 6, last active 2026-11-16T20:29:02Z
 holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794830532, 2026-11-16T12:05:27Z)
-- done: walk raid: the six visit-2 rows all resolved by earlier runs (visit 3 run 4, 17 of 17 judged rows PASS); only FRAME_BUDGET is UNMEASURED; filed as q:walk-frame-clause-list-floor-already-eighty; no live rerun
-- next: Conductor: answer q:walk-frame-clause-list-floor-already-eighty, then rerun the sc_walk_raid row command with --save EK_WALK_RAID_BASE_20261115T173148
-- ruled out: a live rerun now: src/RimMandrake/ExplosiveKnockback unchanged since harness f04232e629 (run 4), so it reads the same UNMEASURED
+## Last checkpoint (HOLDER.run-1794860741, 2026-11-16T20:29:02Z)
+- done: visit 3 read: 54 PASS, sc_storeroom_bomb_pit FAIL (cover half, REAL MISS), sc_walk_raid UNMEASURED (resolved later by the pilot, 18/18 PASS); filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (needs offline, replaces RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY); advanced to offline_build
+- next: Fixer: build the cover break on a thrown stack landing on a covered pit cell, offline check red then green, live row UNRUN
+- ruled out: a criterion flaw in the cover half: the certified leaf thrown_into_pit_falls demands it; the goods-half harness fix 6ab864cf7e is not a weakening (too_weak skips are the inv_too_weak_skip rule, listed apart)
 
 ## Open findings (56)
 (claimed fixes, awaiting a judge, on one line each with the oldest 5 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 446 events (views/history.md; never read whole)
+- the full history: 448 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T20:26:24Z.1794860784432115773 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:26:24Z.1794860784432115773 prints what changed after this packet)
+cursor: t=2026-11-16T20:29:02Z.1794860942590125800 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:29:02Z.1794860942590125800 prints what changed after this packet)

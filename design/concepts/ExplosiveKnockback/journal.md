@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 1:18 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-16 12:28 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:18 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:28 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -358,4 +358,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Game only: RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT, RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 5:50 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:50 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 12:28 PM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: steward run: visit 3 exit not met; the one FAIL (sc_storeroom_bomb_pit cover half, REAL MISS: no code breaks a cover under a landing stack) is offline-fixable C#, filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE --needs offline; sc_walk_raid UNMEASURED already resolved by closed RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (773b9baea3, 18/18 PASS), the next visit reruns it
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_3 SUMMARY.md and rows.jsonl last rows: 54 PASS, sc_storeroom_bomb_pit FAIL (cover gone=False; goods half harness fix 6ab864cf7e judged a repair aligned with inv_too_weak_skip, not a weakening), sc_walk_raid UNMEASURED (later PASS by the pilot); verdict: road back to offline_build for one MOD fix
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward run: visit 3 exit not met; the one FAIL (sc_storeroom_bomb_pit cover half, REAL MISS: no code breaks a cover under a landing stack) is offline-fixable C#, filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE --needs offline; sc_walk_raid UNMEASURED already resolved by closed RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (773b9baea3, 18/18 PASS), the next visit reruns it
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 1:18 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:18 AM PST).
 - Record: `version/stage_record.json`.

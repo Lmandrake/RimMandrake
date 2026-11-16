@@ -1,13 +1,14 @@
 {
  "_view": {
-  "body_sha256": "ebc8d1c3cf35b78936fb0f45785694cf3e6c7c62c28d1c5ee7b4dbfc3aee55c9",
+  "body_sha256": "2aa1c7082be4d65ed2dd504ece855d55eb15bfe634ac9efee3a7b6f2caf90126",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
-   "DISPATCH": 6762,
+   "DISPATCH": 7068,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
+   "HOLDER.run-1794860741": 975,
    "OWNER": 1207
   }
  },
@@ -640,11 +641,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794830532",
-   "done": "walk raid: the six visit-2 rows all resolved by earlier runs (visit 3 run 4, 17 of 17 judged rows PASS); only FRAME_BUDGET is UNMEASURED; filed as q:walk-frame-clause-list-floor-already-eighty; no live rerun",
-   "next": "Conductor: answer q:walk-frame-clause-list-floor-already-eighty, then rerun the sc_walk_raid row command with --save EK_WALK_RAID_BASE_20261115T173148",
-   "ruled_out": "a live rerun now: src/RimMandrake/ExplosiveKnockback unchanged since harness f04232e629 (run 4), so it reads the same UNMEASURED",
-   "ts": "2026-11-16T12:05:27Z"
+   "by": "HOLDER.run-1794860741",
+   "done": "visit 3 read: 54 PASS, sc_storeroom_bomb_pit FAIL (cover half, REAL MISS), sc_walk_raid UNMEASURED (resolved later by the pilot, 18/18 PASS); filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (needs offline, replaces RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY); advanced to offline_build",
+   "next": "Fixer: build the cover break on a thrown stack landing on a covered pit cell, offline check red then green, live row UNRUN",
+   "ruled_out": "a criterion flaw in the cover half: the certified leaf thrown_into_pit_falls demands it; the goods-half harness fix 6ab864cf7e is not a weakening (too_weak skips are the inv_too_weak_skip rule, listed apart)",
+   "ts": "2026-11-16T20:29:02Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -832,7 +833,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 446,
+  "events": 448,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2148,7 +2149,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T20:26:24Z",
+   "last": "2026-11-16T20:29:02Z",
    "lease": "run-1794860741",
    "released": false,
    "token": 6
@@ -2180,11 +2181,12 @@
    "HOLDER.run-1794813483",
    "HOLDER.run-1794824768",
    "HOLDER.run-1794830532",
+   "HOLDER.run-1794860741",
    "OWNER"
   ],
   "spend_tokens": 140077376,
   "spend_usd": 98.2416,
-  "stage": "in_game",
+  "stage": "offline_build",
   "superseded": [],
   "tests": [
    {
