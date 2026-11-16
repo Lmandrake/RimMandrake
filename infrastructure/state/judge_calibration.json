@@ -56,15 +56,15 @@
      "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
     ]
    },
-   "hash": "66337fdd01cd92b1",
+   "hash": "18aadb1a0e3479fc",
    "last_run": {
-    "at": "2026-11-16T15:02:34Z",
+    "at": "2026-11-16T15:46:15Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "bad_scene_no_control   expect refuse got refuse sc_light, the only acceptance scene for leaf light and inventory inv_light, has no control, so nothing rules out the cells being lit by daylight or another lamp; sc_light's start is not an asserted state that fits the leaf's scenario (dark roofed room at midnight, no other light source), and sc_oil_out reuses that room",
+    "out": "bad_scene_no_control   expect refuse got refuse Acceptance scene sc_light has no control, so nothing rules out the leaf's own false_pass (light from daylight or another lamp); sc_light's start is not an asserted state appropriate to a light test, and sc_oil_out inherits it for its 'glow 0' reading; The player sheet does not say what the light leaf tests: it says 'the cells around it' where the tree and inventory test 'within two' at 50%",
     "results": [
      {
-      "cost_usd": 0.41559419999999997,
+      "cost_usd": 0.45140160000000007,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -72,23 +72,24 @@
       "verdict": "covered"
      },
      {
-      "cost_usd": 0.44415720000000003,
+      "cost_usd": 0.446103,
       "expect": "refuse",
       "gaps": [
-       "Leaf oil_out (live experience leaf) has no acceptance scene",
-       "inv_oil is exercised by no showcase and absent from coverage_rest; the flagship showcase drops the 'going out' half of his pick",
-       "inv_oil's burn-rate claim 'one oil per day' is tested by nothing"
+       "Leaf oil_out and inventory capability inv_oil have no acceptance scene, no showcase and no coverage_rest entry: the oil burn and go-dark behaviour is tested by nothing",
+       "The flagship showcase leaves out half of the owner's pick: he chose a lantern lighting a dark room AND then going out, but lantern_night stages and exercises only the lighting",
+       "The sheet does not say what the light leaf tests: it says the lantern lights 'the cells around it', but the tree and its scene test a radius of two cells at 50% or more"
       ],
       "got": "refuse",
       "id": "bad_leaf_no_scene",
       "verdict": "not_covered"
      },
      {
-      "cost_usd": 0.4612674,
+      "cost_usd": 0.4825084,
       "expect": "refuse",
       "gaps": [
-       "sc_light, the only acceptance scene for leaf light and inventory inv_light, has no control, so nothing rules out the cells being lit by daylight or another lamp",
-       "sc_light's start is not an asserted state that fits the leaf's scenario (dark roofed room at midnight, no other light source), and sc_oil_out reuses that room"
+       "Acceptance scene sc_light has no control, so nothing rules out the leaf's own false_pass (light from daylight or another lamp)",
+       "sc_light's start is not an asserted state appropriate to a light test, and sc_oil_out inherits it for its 'glow 0' reading",
+       "The player sheet does not say what the light leaf tests: it says 'the cells around it' where the tree and inventory test 'within two' at 50%"
       ],
       "got": "refuse",
       "id": "bad_scene_no_control",
@@ -119,10 +120,10 @@
      "id": "bad_scene_no_control"
     }
    ],
-   "reset_at": "2026-11-16T14:59:28Z",
+   "reset_at": "2026-11-16T15:46:15Z",
    "status": "CALIBRATED",
    "timeout_s": 1800,
-   "was": "UNTESTED"
+   "was": "CALIBRATED"
   },
   "evidence_gate": {
    "brief": [

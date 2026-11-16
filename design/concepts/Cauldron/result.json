@@ -1,0 +1,116 @@
+{
+  "run": "rm-role-designercodex-1794843525",
+  "stage": 5,
+  "outcome": "return",
+  "to": 3,
+  "summary": "The current brief passed three planted calibration cases. Its full coverage review found fourteen sound gaps, all fixable at stage 3, with a complete checklist and no owner decision. The frozen tree, sheet, scenes and floor remain intact. Lock has no coverage signature. The unchanged-advisory pipeline defect is repaired and published.",
+  "decision": "rm-coverage-judge-1794844087 returned not_covered. Resolve all fourteen Stage-3 gaps together, then write coverage_fixes.json against this judge and rerun the exam. g1: Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'. g2: The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test. g3: The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent. g4: Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control. g5: The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control. g6: biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts. g7: falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised. g8: The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition. g9: thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat. g10: Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades. g11: Vexxith door, containers, gear and acid air ship parts no scene exercises. g12: Suush ecology and ixalith ship traits no scene asserts. g13: The walk leaf promises that returning still offers risky expeditions, but resume_walk has no expedition or risk arm. g14: Three built parts appear only in a scene's action or in no scene, with no expect: zisska herd behaviour, vexxiss native art and variant, and gas section rendering.",
+  "coverage": {
+    "judge": "rm-coverage-judge-1794844087",
+    "verdict": "not_covered",
+    "calibration": "CALIBRATED",
+    "contract_ok": true,
+    "signed": false,
+    "gaps": [
+      {
+        "gid": "g1",
+        "what": "Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g2",
+        "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g3",
+        "what": "The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g4",
+        "what": "Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g5",
+        "what": "The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g6",
+        "what": "biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g7",
+        "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g8",
+        "what": "The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g9",
+        "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g10",
+        "what": "Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g11",
+        "what": "Vexxith door, containers, gear and acid air ship parts no scene exercises.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g12",
+        "what": "Suush ecology and ixalith ship traits no scene asserts.",
+        "return_to": 3,
+        "new_since": "unfixed"
+      },
+      {
+        "gid": "g13",
+        "what": "The walk leaf promises that returning still offers risky expeditions, but resume_walk has no expedition or risk arm.",
+        "return_to": 3,
+        "new_since": "late"
+      },
+      {
+        "gid": "g14",
+        "what": "Three built parts appear only in a scene's action or in no scene, with no expect: zisska herd behaviour, vexxiss native art and variant, and gas section rendering.",
+        "return_to": 3,
+        "new_since": "late"
+      }
+    ],
+    "unchecked": [],
+    "source": "design/concepts/Cauldron/coverage_verdict.json"
+  },
+  "pipeline_repair": {
+    "item": "RIMMANDRAKE_CHECK_ADVISORY_VERDICT_STILL_RAN_DESIGNER_TWICE",
+    "sha": "dafd3583e303aa623368ad1293443c80612e5d94",
+    "calibration_cases": 3,
+    "calibration_helper_tokens": 359939,
+    "coverage_review_tokens": 1055715
+  },
+  "checks": {
+    "gate": "REFUSED: no coverage signature",
+    "showcases": "accepted, five showcases",
+    "recovery": "empty",
+    "frozen_artifacts": "unchanged"
+  }
+}

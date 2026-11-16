@@ -1,11 +1,11 @@
 {
- "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
- "at": "2026-11-16T14:07:19Z",
+ "at": "2026-11-16T15:48:07Z",
  "checklist": [
   {
    "evidence": [
     "record.json:294",
-    "scenes.json:36"
+    "scenes.json:36",
+    "scenes.json:917"
    ],
    "id": "biome_identity",
    "parts": [
@@ -15,14 +15,19 @@
      "what": "owned biome reads as the Cauldron at play zoom"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "world-map texture resolves"
+     "ok": true,
+     "scene": "arrival_identity",
+     "what": "roster weights resolve as the current roster"
     },
     {
      "ok": true,
-     "scene": "arrival_identity",
-     "what": "roster weights resolve as current roster"
+     "scene": "legacy_floor",
+     "what": "ships through the Baroque Biomes composition"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "world-map texture resolves"
     },
     {
      "ok": false,
@@ -37,12 +42,7 @@
     {
      "ok": false,
      "scene": "",
-     "what": "travel/movement properties"
-    },
-    {
-     "ok": true,
-     "scene": "legacy_floor",
-     "what": "ships through Baroque Biomes composition"
+     "what": "travel properties"
     }
    ]
   },
@@ -56,7 +56,7 @@
     {
      "ok": true,
      "scene": "arrival_identity",
-     "what": "own plain/rich terrain defs with distinct dark textures"
+     "what": "own plain and rich terrain defs with distinct dark textures"
     },
     {
      "ok": true,
@@ -68,14 +68,15 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json:67"
+    "scenes.json:67",
+    "scenes.json:36"
    ],
    "id": "weather",
    "parts": [
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "scatter-dusk, vapour bank, dewfall, bloom distinct sky/visibility/wind"
+     "what": "scatter-dusk, vapour bank, dewfall and bloom give distinct sky, visibility and wind"
     },
     {
      "ok": true,
@@ -85,7 +86,7 @@
     {
      "ok": true,
      "scene": "arrival_identity",
-     "what": "dry thunderstorm retained"
+     "what": "dry thunderstorm kept in the weather table"
     }
    ]
   },
@@ -100,20 +101,19 @@
     {
      "ok": true,
      "scene": "legacy_floor",
-     "what": "tile-score worker gates as isolated legacy check (worldgen floor exempts new placement)"
+     "what": "tile-score worker gates, checked only as an isolated legacy check (worldgen floor: no new placement)"
     },
     {
      "ok": true,
      "scene": "legacy_floor",
-     "what": "rarity setting persistence / rarity zero control"
+     "what": "rarity setting persists; rarity-zero control"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json",
-    "floor.json"
+    "scenes.json:772"
    ],
    "id": "settings",
    "parts": [
@@ -125,7 +125,7 @@
     {
      "ok": true,
      "scene": "settings_effects",
-     "what": "scroll/search/collapse/reset UI and timing labels"
+     "what": "scroll, search, collapse and reset UI, plus timing labels"
     },
     {
      "ok": true,
@@ -137,7 +137,8 @@
   {
    "evidence": [
     "record.json:370",
-    "scenes.json:97",
+    "scenes.json:67",
+    "scenes.json:96",
     "scenes.json:381"
    ],
    "id": "flora_base",
@@ -145,7 +146,7 @@
     {
      "ok": true,
      "scene": "arrival_identity",
-     "what": "ten-species base roster visible in the intact forest"
+     "what": "ten-species base roster in the intact forest"
     },
     {
      "ok": true,
@@ -155,7 +156,7 @@
     {
      "ok": false,
      "scene": "",
-     "what": "selected chemotrophs grow with zero light requirement"
+     "what": "selected chemotrophs grow at zero light (only an 'observations' note, no expect or control)"
     }
    ]
   },
@@ -186,7 +187,7 @@
   {
    "evidence": [
     "record.json:404",
-    "scenes.json:289"
+    "scenes.json:296"
    ],
    "id": "assay",
    "parts": [
@@ -198,7 +199,7 @@
     {
      "ok": false,
      "scene": "",
-     "what": "all four distinctions unripe/fair/rich/lode staged and asserted"
+     "what": "all four grades (unripe, fair, rich, lode) staged and asserted"
     }
    ]
   },
@@ -212,12 +213,12 @@
     {
      "ok": true,
      "scene": "thornwood_harvest",
-     "what": "light/heavy fleck overlays follow grade"
+     "what": "light and heavy fleck overlays follow grade"
     },
     {
      "ok": true,
      "scene": "thornwood_harvest",
-     "what": "remesh on settings change without camera move"
+     "what": "remesh on a settings change without a camera move"
     }
    ]
   },
@@ -231,12 +232,12 @@
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "dew filth during dewfall outside home area"
+     "what": "dew filth during dewfall outside the home area"
     },
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "bounded density and expiry, no dose"
+     "what": "bounded density, expiry and no added dose"
     }
    ]
   },
@@ -250,7 +251,7 @@
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "five dew variants swap and revert with weather"
+     "what": "five dew variants swap and revert with the weather"
     }
    ]
   },
@@ -258,19 +259,19 @@
    "evidence": [
     "record.json:470",
     "scenes.json:67",
-    "scenes.json:98"
+    "scenes.json:96"
    ],
    "id": "shore_gardens",
    "parts": [
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "nettles colonise toxic shores by slow sampling, zones respected"
+     "what": "nettles colonise toxic shores by slow sampling; zones respected"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "colonisation at map creation"
+     "what": "colonisation at map creation (only an observation)"
     }
    ]
   },
@@ -278,24 +279,24 @@
    "evidence": [
     "record.json:487",
     "scenes.json:67",
-    "scenes.json:98"
+    "scenes.json:96"
    ],
    "id": "vent_gardens",
    "parts": [
     {
      "ok": true,
      "scene": "weather_gardens",
-     "what": "crystal/blood bouquet/toxic flower rings follow stable/leak/blowout"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "mapgen replaces eligible wild non-trees"
+     "what": "crystal, blood bouquet and toxic flower rings follow stable, leak and blowout vents"
     },
     {
      "ok": true,
      "scene": "weather_gardens",
      "what": "later fills empty space"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "mapgen replaces eligible wild non-trees (only an observation)"
     }
    ]
   },
@@ -314,14 +315,14 @@
     {
      "ok": true,
      "scene": "flora_uses",
-     "what": "stove roast recipe gives safe food, raw-food thought corrected"
+     "what": "stove roast gives safe food; raw-food thought corrected"
     }
    ]
   },
   {
    "evidence": [
     "record.json:522",
-    "scenes.json:381"
+    "scenes.json:390"
    ],
    "id": "ixalith_beauty",
    "parts": [
@@ -333,7 +334,7 @@
     {
      "ok": false,
      "scene": "",
-     "what": "fragility (low HP / easily destroyed)"
+     "what": "fragility (named in the action, asserted nowhere)"
     }
    ]
   },
@@ -352,7 +353,7 @@
     {
      "ok": true,
      "scene": "flora_uses",
-     "what": "contact scratch/toxic hediff vs clean path"
+     "what": "contact scratch and toxic hediff, against a clean path"
     },
     {
      "ok": true,
@@ -385,7 +386,7 @@
     },
     {
      "ok": true,
-     "scene": "flora_uses",
+     "scene": "settings_effects",
      "what": "expansion roster switch"
     }
    ]
@@ -400,7 +401,7 @@
     {
      "ok": true,
      "scene": "flora_uses",
-     "what": "toxic gas on external violence and on cutting, none untriggered"
+     "what": "toxic gas on violence and on cutting; none untriggered"
     }
    ]
   },
@@ -421,14 +422,14 @@
   {
    "evidence": [
     "record.json:589",
-    "scenes.json:450"
+    "scenes.json:460"
    ],
    "id": "suush_ecology",
    "parts": [
     {
      "ok": true,
      "scene": "suush_burst",
-     "what": "docile, tamable"
+     "what": "docile and tameable"
     },
     {
      "ok": true,
@@ -455,20 +456,21 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json:863",
-    "floor.json"
+    "scenes.json:854",
+    "floor.json",
+    "tree.json"
    ],
    "id": "suush_flight",
    "parts": [
     {
      "ok": true,
      "scene": "supported_integrations",
-     "what": "flight stats/race state read only (flight floor exempts unattended motion)"
+     "what": "flight stats and race state read only (flight floor exempts unattended motion)"
     },
     {
      "ok": false,
      "scene": "supported_integrations",
-     "what": "tested by a scene whose cited requirement describes it"
+     "what": "tested by a scene whose cited requirement leaf describes it"
     }
    ]
   },
@@ -482,48 +484,54 @@
     {
      "ok": true,
      "scene": "suush_burst",
-     "what": "Bullet/Bomb start wick"
+     "what": "Bullet and Bomb hits start the wick"
     },
     {
      "ok": true,
      "scene": "suush_burst",
-     "what": "death backstop and toxic gas blast with trace"
+     "what": "death backstop and an attributed toxic gas blast"
     },
     {
      "ok": true,
      "scene": "suush_burst",
-     "what": "melee not a trigger"
+     "what": "melee is not a trigger"
     }
    ]
   },
   {
    "evidence": [
-    "record.json",
-    "scenes.json"
+    "record.json:639",
+    "scenes.json:479",
+    "scenes.json:488"
    ],
    "id": "vexxiss_shear",
    "parts": [
     {
      "ok": true,
      "scene": "vexxiss_products",
-     "what": "tame-only shear of vexxith, animal survives"
+     "what": "tame-only shear of vexxith; the animal survives"
     },
     {
      "ok": true,
      "scene": "vexxiss_products",
-     "what": "solid giant, no explosive comp"
+     "what": "solid giant with no explosive comp"
     },
     {
      "ok": true,
      "scene": "vexxiss_products",
-     "what": "native art/variant, ordinary feeding/handling"
+     "what": "ordinary feeding and handling"
+    },
+    {
+     "ok": false,
+     "scene": "vexxiss_products",
+     "what": "native art and variant: named in the action, asserted in no expect"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:536"
    ],
    "id": "water_poisoning",
    "parts": [
@@ -547,8 +555,8 @@
   {
    "evidence": [
     "record.json:669",
-    "scenes.json:516",
-    "record.json:136"
+    "scenes.json:536",
+    "scenes.json:517"
    ],
    "id": "fire_warden",
    "parts": [
@@ -560,28 +568,27 @@
     {
      "ok": true,
      "scene": "water_fire_tracks",
-     "what": "attacks recorded hostile igniter, spares same faction"
+     "what": "attacks the recorded hostile igniter, spares the same faction, bounded job"
     },
     {
      "ok": false,
      "scene": "vent_competition",
-     "what": "bounded attack job; toggle-off cancels an already-issued retaliation melee job"
+     "what": "toggle-off cancels an already-issued retaliation melee job: observed, no pass condition"
     }
    ]
   },
   {
    "evidence": [
-    "record.json",
-    "scenes.json:516",
-    "scenes.json:517",
-    "record.json:136"
+    "record.json:685",
+    "scenes.json:507",
+    "scenes.json:517"
    ],
    "id": "vent_drinking",
    "parts": [
     {
      "ok": true,
      "scene": "vent_competition",
-     "what": "wild vexxiss seek and drink vents, suppression to silence and recovery"
+     "what": "wild vexxiss seek and drink vents; suppression to silence and recovery"
     },
     {
      "ok": true,
@@ -591,46 +598,46 @@
     {
      "ok": false,
      "scene": "vent_competition",
-     "what": "toggle effect on existing melee job has a pass criterion"
+     "what": "toggle effect on an existing melee job has a pass criterion"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:536"
    ],
    "id": "vexxiss_tracks",
    "parts": [
     {
      "ok": true,
      "scene": "water_fire_tracks",
-     "what": "prints written, maker on hover, expiry, saved metadata"
+     "what": "prints written; maker on hover; expiry; saved metadata"
     }
    ]
   },
   {
    "evidence": [
     "record.json:716",
-    "scenes.json:98",
-    "scenes.json:140"
+    "scenes.json:133",
+    "scenes.json:96"
    ],
    "id": "vent_sites",
    "parts": [
     {
      "ok": true,
      "scene": "falter_hour",
-     "what": "live vent used for bloom/falter"
+     "what": "a live vent used for bloom and falter"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "natural vents generated on new Cauldron maps with safe start/spacing"
+     "what": "natural vents on new maps with safe start and spacing"
     },
     {
      "ok": false,
      "scene": "",
-     "what": "mixed stable/leaking states and recent-blowout memory at generation"
+     "what": "mixed stable and leaking states, recent-blowout memory at generation"
     },
     {
      "ok": false,
@@ -654,12 +661,12 @@
     {
      "ok": true,
      "scene": "falter_hour",
-     "what": "falter on bloom transition, native hush jobs"
+     "what": "falter on the bloom transition; native hush jobs"
     },
     {
      "ok": true,
      "scene": "falter_hour",
-     "what": "optional warning (message off arm)"
+     "what": "optional warning (message-off arm)"
     },
     {
      "ok": true,
@@ -683,12 +690,12 @@
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "roofed and natives exempt"
+     "what": "roofed pawns and natives exempt"
     },
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "resistance stats scale dose"
+     "what": "resistance stats scale the dose"
     },
     {
      "ok": true,
@@ -707,40 +714,46 @@
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "near/far, recovering, residual floor and no-vent fallback"
+     "what": "near/far, recovering-vent, residual floor and no-vent fallback"
     }
    ]
   },
   {
    "evidence": [
-    "record.json",
-    "scenes.json"
+    "record.json:788",
+    "scenes.json:566",
+    "scenes.json:575"
    ],
    "id": "gas_grid",
    "parts": [
     {
      "ok": true,
      "scene": "gas_transport",
-     "what": "separate persistent grid, emission/diffusion/dissipation, rendering"
+     "what": "separate persistent grid with emission, diffusion and dissipation"
     },
     {
      "ok": true,
      "scene": "gas_transport",
      "what": "vanilla gas storage untouched"
+    },
+    {
+     "ok": false,
+     "scene": "gas_transport",
+     "what": "section rendering: 'cloud rendering' in the action, asserted in no expect"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:566"
    ],
    "id": "gas_drift",
    "parts": [
     {
      "ok": true,
      "scene": "gas_transport",
-     "what": "wind drift, daily seeded heading, diagonal corner guard, centroid"
+     "what": "wind drift, daily seeded heading, diagonal-corner guard, centroid"
     }
    ]
   },
@@ -759,21 +772,21 @@
     {
      "ok": true,
      "scene": "gas_chain",
-     "what": "flame front continues after fuel-less fire, survives reload"
+     "what": "flame front continues after a fuel-less fire and survives reload"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:686"
    ],
    "id": "gas_tap",
    "parts": [
     {
      "ok": true,
      "scene": "tap_refine",
-     "what": "caps emission, banks condensate, 200 L whole units to touching tank"
+     "what": "caps emission, banks condensate, delivers whole 200 L units to a touching tank"
     }
    ]
   },
@@ -787,42 +800,43 @@
     {
      "ok": true,
      "scene": "vent_competition",
-     "what": "ordinary scaffold pry damage; lined pry-proof; prying off keeps drinking"
+     "what": "ordinary scaffold takes pry damage; lined is pry-proof; prying off keeps drinking"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:657"
    ],
    "id": "ruin_site",
    "parts": [
     {
      "ok": true,
      "scene": "rig_study",
-     "what": "natural corroded rig with once-only dressing, kept-clear ring, no duplicate on reload"
+     "what": "natural corroded rig, once-only dressing, kept-clear ring, no duplicate on reload"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:657"
    ],
    "id": "study_research",
    "parts": [
     {
      "ok": true,
      "scene": "rig_study",
-     "what": "in-place study unlocks research, prerequisite, then build"
+     "what": "in-place study unlocks research, then the prerequisite, then the build"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:686",
+    "scenes.json:715"
    ],
    "id": "filter_works",
    "parts": [
@@ -839,7 +853,7 @@
     {
      "ok": true,
      "scene": "water_works",
-     "what": "power/cartridge pause, machine toggle"
+     "what": "power and cartridge pause; machine toggle"
     }
    ]
   },
@@ -853,7 +867,7 @@
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "acid immunity vs steel, guarded AcidBurn/BloomAcid"
+     "what": "acid immunity against steel; guarded AcidBurn and BloomAcid"
     },
     {
      "ok": true,
@@ -865,7 +879,7 @@
   {
    "evidence": [
     "record.json:947",
-    "scenes.json:198"
+    "scenes.json:205"
    ],
    "id": "vexxith_door",
    "parts": [
@@ -877,7 +891,7 @@
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "startup architect-menu gate, built doors preserved"
+     "what": "startup architect-menu gate; built doors preserved"
     },
     {
      "ok": false,
@@ -894,67 +908,58 @@
   {
    "evidence": [
     "record.json:963",
-    "scenes.json:198"
+    "scenes.json:205"
    ],
    "id": "containers_gates",
    "parts": [
     {
      "ok": false,
      "scene": "",
-     "what": "dedicated bottle/bucket/barrel crafted by their recipes preserving material"
+     "what": "bottle, bucket and barrel made by their recipes keep material identity"
     },
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "FlowWorks recognizes containers; fill/use"
+     "what": "FlowWorks recognizes the containers; fill and use"
     },
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "canal-gate acid damage through immunity hook"
+     "what": "canal-gate acid damage through the immunity hook"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:743"
    ],
    "id": "lined_machines",
    "parts": [
     {
      "ok": true,
      "scene": "lined_stock",
-     "what": "quarter cartridge use per equal work, acid immunity"
+     "what": "quarter cartridge use per equal work; acid immunity"
     },
     {
      "ok": true,
      "scene": "lined_stock",
-     "what": "lined tap acid/pry protection"
+     "what": "lined tap acid and pry protection"
     }
    ]
   },
   {
    "evidence": [
     "record.json:1000",
-    "scenes.json:165"
+    "scenes.json:172",
+    "scenes.json:772"
    ],
    "id": "vexxith_gear",
    "parts": [
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "worn sealing protects wearer"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "suit/helmet crafting recipes"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "heat protection"
+     "what": "worn sealing protects the wearer"
     },
     {
      "ok": true,
@@ -965,30 +970,40 @@
      "ok": true,
      "scene": "settings_effects",
      "what": "startup availability switch"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "suit and helmet crafting recipes"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "heat protection"
     }
    ]
   },
   {
    "evidence": [
     "record.json:1018",
-    "scenes.json:165"
+    "scenes.json:172"
    ],
    "id": "acid_air",
    "parts": [
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "hourly AcidBurn on unroofed unsealed non-native pawns"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "all factions (raider/visitor, not only colonists)"
+     "what": "hourly AcidBurn on unroofed, unsealed non-native pawns"
     },
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "native/condition immunity and strength toggle"
+     "what": "native and condition immunity; strength toggle"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "all factions (raider or visitor, not only colonists)"
     }
    ]
   },
@@ -1002,19 +1017,19 @@
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "ship substructure buildings burn to 30% floor, warning once"
+     "what": "ship-substructure buildings burn to a 30% floor; warning once"
     },
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "vexxith or hull liner stops damage"
+     "what": "vexxith or one hull liner stops sampled damage"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:350"
    ],
    "id": "rhossak_bind",
    "parts": [
@@ -1028,7 +1043,7 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:350"
    ],
    "id": "rhossak_sprout",
    "parts": [
@@ -1042,54 +1057,60 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:350"
    ],
    "id": "rhossak_grove",
    "parts": [
     {
      "ok": true,
      "scene": "rhossak_cycle",
-     "what": "trio accumulate, sleep hold, separation reset, root with cooldown/bind/message"
+     "what": "trio accumulate, hold asleep, reset apart, root with cooldown, bind and message"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:350"
    ],
    "id": "galled_food",
    "parts": [
     {
      "ok": true,
      "scene": "rhossak_cycle",
-     "what": "seedless galled sheds edible galls, attributed producer"
+     "what": "seedless galled animal sheds edible galls from an attributed producer"
     }
    ]
   },
   {
    "evidence": [
-    "record.json",
-    "scenes.json"
+    "record.json:1112",
+    "scenes.json:423"
    ],
    "id": "zisska",
    "parts": [
     {
      "ok": true,
      "scene": "animal_products",
-     "what": "toxic valued meat eaten, trace steel on butcher"
+     "what": "toxic valued meat eaten; trace steel on butcher"
     },
     {
      "ok": true,
      "scene": "animal_products",
      "what": "guarded VEF fire-spit"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "'Herd mineral rasper': herd behaviour asserted nowhere"
     }
    ]
   },
   {
    "evidence": [
     "record.json:1130",
-    "scenes.json:140"
+    "scenes.json:140",
+    "scenes.json:414"
    ],
    "id": "eskith",
    "parts": [
@@ -1108,7 +1129,7 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:414"
    ],
    "id": "bedbug",
    "parts": [
@@ -1122,7 +1143,7 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:414"
    ],
    "id": "crystalmit",
    "parts": [
@@ -1136,21 +1157,22 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:414",
+    "floor.json"
    ],
    "id": "garsulix",
    "parts": [
     {
      "ok": true,
      "scene": "animal_products",
-     "what": "jelly, asexual reproduction, death explosion; floating state-only"
+     "what": "jelly, asexual reproduction, death explosion; floating read as state only (flight floor)"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:414"
    ],
    "id": "ossrith",
    "parts": [
@@ -1164,20 +1186,20 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:414"
    ],
    "id": "sikka",
    "parts": [
     {
      "ok": true,
      "scene": "animal_products",
-     "what": "eggs/hatching, silk shearing, lifecycle"
+     "what": "eggs and hatching, silk shearing, lifecycle"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1211",
+    "record.json",
     "scenes.json:854",
     "tree.json"
    ],
@@ -1186,18 +1208,18 @@
     {
      "ok": true,
      "scene": "supported_integrations",
-     "what": "visceral, decay drake, bileworm, mullgoth in roster with guards"
+     "what": "visceral, decay drake, bileworm and mullgoth in the roster with guards"
     },
     {
      "ok": false,
      "scene": "supported_integrations",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1225",
+    "record.json",
     "scenes.json:854",
     "tree.json"
    ],
@@ -1206,18 +1228,18 @@
     {
      "ok": true,
      "scene": "supported_integrations",
-     "what": "Utinni patch cast in native role, guarded"
+     "what": "Utinni patch cast in its native role; prized-meat layer stays external"
     },
     {
      "ok": false,
      "scene": "supported_integrations",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1243",
+    "record.json",
     "scenes.json:854",
     "tree.json"
    ],
@@ -1226,18 +1248,18 @@
     {
      "ok": true,
      "scene": "supported_integrations",
-     "what": "shrine in ruin slot, meditation use, lore"
+     "what": "shrine in the ruin slot; meditation use; lore"
     },
     {
      "ok": false,
      "scene": "supported_integrations",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1260",
+    "record.json",
     "scenes.json:886",
     "tree.json"
    ],
@@ -1246,18 +1268,18 @@
     {
      "ok": true,
      "scene": "optional_services",
-     "what": "AcousticScanner payloads for vents/fauna/resin/cavities"
+     "what": "AcousticScanner payloads for vents, fauna, resin and cavities"
     },
     {
      "ok": false,
      "scene": "optional_services",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1273",
+    "record.json",
     "scenes.json:886",
     "tree.json"
    ],
@@ -1266,18 +1288,18 @@
     {
      "ok": true,
      "scene": "optional_services",
-     "what": "ExplosiveGrowth stalled terminator band via shared engine"
+     "what": "ExplosiveGrowth stalled terminator band through the shared engine"
     },
     {
      "ok": false,
      "scene": "optional_services",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:1286",
+    "record.json",
     "scenes.json:886",
     "tree.json"
    ],
@@ -1286,12 +1308,12 @@
     {
      "ok": true,
      "scene": "optional_services",
-     "what": "Scarlands aerosol screen sees Cauldron as polluted"
+     "what": "Scarlands aerosol screen sees the Cauldron as polluted"
     },
     {
      "ok": false,
      "scene": "optional_services",
-     "what": "tested under a requirement whose leaf text describes it"
+     "what": "tested under a requirement leaf whose text describes it"
     }
    ]
   },
@@ -1300,8 +1322,7 @@
     "record.json:1299",
     "scenes.json:319",
     "scenes.json:329",
-    "tree.json:217",
-    "tree.json:218"
+    "tree.json:210"
    ],
    "id": "trunk_deposit_coat",
    "parts": [
@@ -1313,21 +1334,22 @@
     {
      "ok": false,
      "scene": "trunk_coat_check",
-     "what": "its acceptance scene is attached to in-scope leaves thornwood_work and mineral_forest with an undefined verdict when UNBUILT"
+     "what": "its scene is attached to in-scope leaves thornwood_work and mineral_forest, with no leaf verdict defined when UNBUILT"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:103",
+    "scenes.json:715"
    ],
    "id": "acid_pool_binding",
    "parts": [
     {
      "ok": true,
      "scene": "pool_identity",
-     "what": "site pool chemistry survives fill/pump/tank/works"
+     "what": "site pool chemistry survives fill, pump, tank and works"
     },
     {
      "ok": true,
@@ -1339,28 +1361,28 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:229"
    ],
    "id": "lasting_metal_poisoning",
    "parts": [
     {
      "ok": true,
      "scene": "metal_purge",
-     "what": "persists through care/departure/reload; advanced purge"
+     "what": "persists through care, departure and reload; advanced purge"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json"
+    "scenes.json:259"
    ],
    "id": "permanent_acid_injuries",
    "parts": [
     {
      "ok": true,
      "scene": "acid_injuries",
-     "what": "enduring disfigurement and sensory loss after healing/reload"
+     "what": "enduring disfigurement and sensory loss after healing and reload"
     }
    ]
   },
@@ -1379,14 +1401,14 @@
     {
      "ok": true,
      "scene": "gas_displacement",
-     "what": "eligible pawn displacement by shared policy"
+     "what": "eligible-pawn displacement by the shared policy"
     }
    ]
   },
   {
    "evidence": [
     "tree.json:48",
-    "scenes.json",
+    "scenes.json:10",
     "exam.json"
    ],
    "id": "scene_observer",
@@ -1394,25 +1416,25 @@
     {
      "ok": true,
      "scene": "observer_recovery",
-     "what": "independent reads, fingerprint match, UNMEASURED on withheld read, interrupted recovery"
+     "what": "independent reads, fingerprint match, UNMEASURED on a withheld read, recovery after interruption"
     }
    ]
   },
   {
    "evidence": [
+    "tree.json:58",
     "tree.json:73",
     "scenes.json:36",
     "scenes.json:67",
-    "scenes.json:97",
-    "sheet.md:9",
-    "exam.json"
+    "scenes.json:96",
+    "sheet.md"
    ],
    "id": "mineral_forest",
    "parts": [
     {
      "ok": true,
      "scene": "arrival_identity",
-     "what": "mineral plants/animals over distinguishable soils, rainless lightning sky"
+     "what": "mineral plants and animals over distinguishable soils; rainless lightning sky"
     },
     {
      "ok": true,
@@ -1433,21 +1455,21 @@
   },
   {
    "evidence": [
-    "tree.json:98",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:103",
+    "scenes.json:715"
    ],
    "id": "pool_chemistry",
    "parts": [
     {
      "ok": true,
      "scene": "pool_identity",
-     "what": "pool liquid identity through contact, fill, pump, processing"
+     "what": "pool liquid identity through contact, fill, pump and processing"
     },
     {
      "ok": true,
      "scene": "pool_identity",
-     "what": "clean-water control on same route"
+     "what": "clean-water control on the same route"
     },
     {
      "ok": true,
@@ -1459,20 +1481,19 @@
   {
    "evidence": [
     "tree.json:123",
-    "scenes.json:133",
-    "exam.json"
+    "scenes.json:133"
    ],
    "id": "falter_warning",
    "parts": [
     {
      "ok": true,
      "scene": "falter_hour",
-     "what": "cue ~2500 ticks before bloom, worker reaches shelter"
+     "what": "cue about 2500 ticks before bloom; worker reaches shelter"
     },
     {
      "ok": true,
      "scene": "falter_hour",
-     "what": "hush/message off, ordinary transition, reload"
+     "what": "hush off, message off, ordinary transition, reload"
     },
     {
      "ok": false,
@@ -1485,20 +1506,19 @@
    "evidence": [
     "tree.json:148",
     "scenes.json:165",
-    "scenes.json:198",
-    "exam.json"
+    "scenes.json:198"
    ],
    "id": "ambient_protection",
    "parts": [
     {
      "ok": true,
      "scene": "ambient_routes",
-     "what": "roof and full seal protect vs bloom and acid; exposed positive"
+     "what": "roof and full seal protect against bloom and acid; exposed positive control"
     },
     {
      "ok": true,
      "scene": "material_routes",
-     "what": "material immunity separately"
+     "what": "material immunity tested separately"
     },
     {
      "ok": false,
@@ -1509,24 +1529,22 @@
   },
   {
    "evidence": [
-    "tree.json:174",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:229"
    ],
    "id": "persistent_metal",
    "parts": [
     {
      "ok": true,
      "scene": "metal_purge",
-     "what": "persistence and advanced purge incl. saved low trace"
+     "what": "persistence and advanced purge, incl. a saved low trace"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:200",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:259"
    ],
    "id": "permanent_acid",
    "parts": [
@@ -1539,47 +1557,46 @@
   },
   {
    "evidence": [
-    "tree.json:217",
-    "tree.json:218",
+    "tree.json:210",
     "scenes.json:289",
     "scenes.json:319",
-    "sheet.md:15",
-    "exam.json"
+    "sheet.md:15"
    ],
    "id": "thornwood_work",
    "parts": [
     {
      "ok": true,
      "scene": "thornwood_harvest",
-     "what": "slow work pays wood and growth-scaled metal; assay/flecks truthful"
+     "what": "slow work pays wood and growth-scaled metal; truthful assay and flecks"
     },
     {
      "ok": false,
      "scene": "trunk_coat_check",
-     "what": "'separately specified age coat remains distinct from assay' accepted on absent, unopened content with no defined pass when UNBUILT, and absent from the sheet line"
+     "what": "'separately specified age coat remains distinct from assay': accepted on absent, unopened content with no defined pass when UNBUILT; the sheet line is silent on the coat"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:252",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:350"
    ],
    "id": "rhossak_renewal",
    "parts": [
     {
      "ok": true,
      "scene": "rhossak_cycle",
-     "what": "bind, seed, trio grove, galled seedless galls"
+     "what": "bind, seed, trio grove, seedless galls"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:278",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:381",
+    "scenes.json:414",
+    "scenes.json:450",
+    "sheet.md:17"
    ],
    "id": "wildlife_livelihood",
    "parts": [
@@ -1596,24 +1613,25 @@
     {
      "ok": true,
      "scene": "suush_burst",
-     "what": "suush ranged burst vs melee"
+     "what": "suush ranged burst, against melee"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:304",
+    "tree.json",
     "scenes.json:507",
     "scenes.json:517",
-    "sheet.md:18",
-    "exam.json"
+    "scenes.json:479",
+    "scenes.json:536",
+    "sheet.md:18"
    ],
    "id": "vent_competition",
    "parts": [
     {
      "ok": true,
      "scene": "vent_competition",
-     "what": "wild drink/suppress/pry, lined resists"
+     "what": "wild drink, suppress and pry; lined resists"
     },
     {
      "ok": true,
@@ -1629,6 +1647,11 @@
      "ok": false,
      "scene": "vent_competition",
      "what": "melee-job cancellation (oracle) has an expect and control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "sheet line names the water poisoning, fire response and tracks the leaf tests"
     }
    ]
   },
@@ -1636,24 +1659,24 @@
    "evidence": [
     "tree.json:330",
     "scenes.json:597",
-    "exam.json"
+    "scenes.json:566"
    ],
    "id": "connected_gas",
    "parts": [
     {
      "ok": true,
      "scene": "gas_chain",
-     "what": "connected burn over ground and water, smoke, gaps and barriers"
+     "what": "connected burn over ground and water; smoke; gaps and barriers"
     },
     {
      "ok": true,
      "scene": "gas_transport",
-     "what": "transport, other gases separate"
+     "what": "transport; other gases kept separate"
     },
     {
      "ok": true,
      "scene": "gas_chain",
-     "what": "mid-chain reload with instigator"
+     "what": "mid-chain reload keeps the instigator"
     },
     {
      "ok": false,
@@ -1665,8 +1688,7 @@
   {
    "evidence": [
     "tree.json:355",
-    "scenes.json:627",
-    "exam.json"
+    "scenes.json:627"
    ],
    "id": "explosive_displacement",
    "parts": [
@@ -1684,9 +1706,11 @@
   },
   {
    "evidence": [
-    "tree.json:381",
-    "scenes.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:657",
+    "scenes.json:686",
+    "scenes.json:715",
+    "scenes.json:743"
    ],
    "id": "filter_industry",
    "parts": [
@@ -1708,23 +1732,22 @@
     {
      "ok": true,
      "scene": "lined_stock",
-     "what": "lined vessel quarter cartridge"
+     "what": "lined vessel uses a quarter cartridge"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:407",
-    "scenes.json",
-    "floor.json",
-    "exam.json"
+    "tree.json",
+    "scenes.json:772",
+    "scenes.json:917"
    ],
    "id": "settings_control",
    "parts": [
     {
      "ok": true,
      "scene": "settings_effects",
-     "what": "every field's effect at its application point, all-off/re-enable"
+     "what": "every field's effect at its application point; all-off and re-enable"
     },
     {
      "ok": true,
@@ -1737,14 +1760,14 @@
    "evidence": [
     "tree.json:433",
     "scenes.json:800",
-    "exam.json"
+    "scenes.json:1002"
    ],
    "id": "prepared_day",
    "parts": [
     {
      "ok": true,
      "scene": "routine_day",
-     "what": "forty-colonist routine with prepared work and exposed contrast"
+     "what": "forty-colonist routine with prepared work and an exposed contrast"
     },
     {
      "ok": true,
@@ -1760,22 +1783,28 @@
   },
   {
    "evidence": [
+    "tree.json:443",
     "tree.json:458",
     "scenes.json:826",
-    "sheet.md:62",
-    "exam.json"
+    "scenes.json:835",
+    "sheet.md"
    ],
    "id": "cauldron_walk",
    "parts": [
     {
      "ok": true,
      "scene": "resume_walk",
-     "what": "resume, repeat, second order without state loss"
+     "what": "resume, repeat and second order without state loss"
     },
     {
      "ok": true,
      "scene": "gas_chain",
      "what": "mid-flame reload"
+    },
+    {
+     "ok": false,
+     "scene": "resume_walk",
+     "what": "'Returning still offers dependable work and risky expeditions': resume_walk has no expedition or risk arm"
     },
     {
      "ok": false,
@@ -1791,22 +1820,22 @@
   }
  ],
  "contract": {
-  "advisory": true,
+  "advisory": false,
   "alarms": [
    {
     "family": "coverage_judge",
     "first_at": "2026-11-15T09:32:09Z",
     "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-16T14:13:04Z",
+    "last_at": "2026-11-16T15:53:50Z",
     "open": true,
     "subject": "family:coverage_judge",
     "told_at": "2026-11-15T09:32:09Z",
-    "trips": 9,
-    "why": "refused all of its last 8 verdicts across 5 items"
+    "trips": 12,
+    "why": "refused all of its last 8 verdicts across 6 items"
    }
   ],
   "cached": [],
-  "calibration": "UNTESTED",
+  "calibration": "CALIBRATED",
   "counted": true,
   "may_judge": true,
   "ok": true,
@@ -1815,7 +1844,7 @@
  "gaps": [
   {
    "criterion_verdict": "sound",
-   "criterion_why": "The contract defines hold as whether a scene stays up for his review, and a leaf that promises his inspection with no held scene cannot deliver it.",
+   "criterion_why": "The contract defines hold as whether a scene stays up for his review, and a leaf that names his part needs a scene that stays up for it.",
    "evidence": [
     "tree.json:73",
     "tree.json:123",
@@ -1836,58 +1865,55 @@
     "prepared_day",
     "cauldron_walk"
    ],
-   "new_since": "first",
-   "observed": "Seven leaves carry owner_part \"yes: ...\" (e.g. tree.json:458 \"yes: perform the resumed work and second action order\"), yet all 35 scenes in scenes.json set \"hold\": \"immediate\". So none of them stays up for his look, and the contract makes hold the field that decides this.",
+   "new_since": "unfixed",
+   "observed": "tree.json gives owner_part 'yes: inspect the forest at play zoom', 'yes: watch the connected over-water burn', 'yes: perform the resumed work and second action order' and four more; all 35 scenes carry \"hold\": \"immediate\". Every entry hash matches the round-1 verdict, so this is still open.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json: set hold 'owner_review' on the seven scenes named (and state a keeper save/review end); or edit tree.json owner_part where his look is not actually wanted"
+    "what": "scenes.json: set hold 'owner_review' on the seven named scenes, stating the keeper save and review end; or edit tree.json owner_part where his look is not actually wanted"
    },
-   "what": "Leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
-   "where": "tree.json owner_part on mineral_forest, falter_warning, ambient_protection, connected_gas, explosive_displacement, prepared_day, cauldron_walk; scenes.json hold fields",
-   "would_pass": "For each of the seven leaves, at least one of its acceptance scenes (arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day, resume_walk) has hold 'owner_review' with a named review end, or the leaf's owner_part is changed to 'no' with a reason. A script can check that every owner_part != 'no' leaf has a cited scene with hold == 'owner_review'."
+   "what": "Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
+   "where": "scenes.json (every scene's hold field) against tree.json owner_part",
+   "would_pass": "For each of the seven leaves, at least one of its acceptance scenes (arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day, resume_walk) has hold 'owner_review' with a keeper save and a named review end; or the leaf's owner_part reads 'no' with a recorded reason. A script can check that every owner_part 'yes' leaf has an owner_review scene."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "The brief requires the player sheet to say what the tree tests, and a walk leaf with no 'does' line breaks that directly.",
+   "criterion_why": "The judging brief requires the sheet to say what the tree tests, and a leaf missing from it is checkable.",
    "evidence": [
-    "sheet.md:9",
     "sheet.md:18",
-    "sheet.md:62",
-    "tree.json:304",
-    "tree.json:458"
+    "sheet.md",
+    "tree.json:443",
+    "scenes.json:536",
+    "exam.json"
    ],
    "gid": "g2",
    "ids": [
-    "cauldron_walk"
+    "cauldron_walk",
+    "vent_competition"
    ],
-   "new_since": "first",
-   "observed": "sheet.md 'does' lists 15 leaves; cauldron_walk appears only under pruning (sheet.md:62). sheet.md:18 reads \"Wild vexxiss compete for vents and pry ordinary taps; lined taps resist, while tame shearing supplies vexxith\". The tree leaf says \"Water poisoning and fire response remain distinct causal behaviors\" and its scenario tests tracks. The sheet also never mentions the integrations (scanner, stalled growth, aerosol screen, campaign/shared cast, Oomo shrine) or ship-hull acid that scenes test.",
+   "new_since": "unfixed",
+   "observed": "sheet.md 'does' has 15 leaf lines and none is [leaf:cauldron_walk]; the walk appears only under 'pruning'. sheet.md:18 says only 'Wild vexxiss compete for vents and pry ordinary taps; lined taps resist, while tame shearing supplies vexxith', while the leaf adds 'Water poisoning and fire response remain distinct causal behaviors' and leaves tracks to water_fire_tracks. exam.json passed 30/30 on this sheet, so the exam did not catch the omission.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "sheet.md: add a cauldron_walk line; extend the vent_competition, ambient_protection (ship hull) and integration-owning lines"
+    "what": "sheet.md: add a cauldron_walk line; extend the vent_competition line"
    },
-   "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits water poisoning, fire-warden retaliation and tracks, which its leaf and scenes test.",
+   "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test.",
    "where": "sheet.md 'does' section",
-   "would_pass": "sheet.md 'does' has a [leaf:cauldron_walk] line, and each leaf line names every behaviour its tree experience text tests (vent_competition: water poisoning, fire response, tracks), plus a line for whichever leaf takes the integrations (see the integrations gap). A fresh judge diffing sheet lines against leaf experience text finds no tested behaviour missing."
+   "would_pass": "sheet.md 'does' carries a [leaf:cauldron_walk] line stating resume, repeat and second order, and the vent_competition line names water poisoning, fire response to igniters and tracks. A script can check that every tree leaf of kind experience or walk has a 'does' line."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "The scene contract ties a scene's intent to its cited requirement, so a requirement that does not describe the tested behaviour leaves that behaviour with no stated pass meaning.",
+   "criterion_why": "The contract says a scene's intent is the approved requirement it cites; a requirement that does not describe the capability gives the scene no stated intent.",
    "evidence": [
     "scenes.json:854",
-    "scenes.json:863",
+    "scenes.json:879",
     "scenes.json:886",
-    "scenes.json:893",
-    "tree.json:73",
-    "tree.json:278",
-    "tree.json:407",
-    "record.json:1211",
-    "record.json:1243",
-    "record.json:1260"
+    "scenes.json:910",
+    "tree.json",
+    "record.json"
    ],
    "gid": "g3",
    "ids": [
@@ -1899,27 +1925,27 @@
     "aerosol_neighbour",
     "suush_flight"
    ],
-   "new_since": "first",
-   "observed": "optional_services tests \"AcousticScanner, ExplosiveGrowth and Scarlands aerosol-screen\" but cites mineral_forest and settings_control, and neither leaf's experience or scenario names the scanner, stalled growth or aerosol screen. supported_integrations tests the shared cast, the Utinni campaign cast, the Oomo shrine and suush flight state under wildlife_livelihood/mineral_forest, whose text mentions none of them. The contract says \"The intent behind a scene is the approved requirement it cites\".",
+   "new_since": "unfixed",
+   "observed": "supported_integrations cites requirement [wildlife_livelihood, mineral_forest] and optional_services cites [mineral_forest, settings_control]; no leaf's experience mentions the shared cast, the Utinni cast, the Oomo shrine, AcousticScanner, ExplosiveGrowth, the aerosol screen or suush flight. Unchanged since round 1.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "tree.json: add a leaf for supported/optional integrations (or extend wildlife_livelihood and mineral_forest text); repoint the requirement fields of supported_integrations and optional_services; add a sheet line"
+    "what": "tree.json: add a leaf for supported and optional integrations (or extend wildlife_livelihood and mineral_forest); repoint the requirement fields of supported_integrations and optional_services; add a sheet.md line"
    },
    "what": "The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent.",
-   "where": "scenes.json supported_integrations (requirement wildlife_livelihood, mineral_forest) and optional_services (requirement mineral_forest, settings_control)",
-   "would_pass": "Every capability in these two scenes is named in the experience or scenario text of a leaf the scene cites. This can be a new leaf (e.g. neighbour_services) or extended text in wildlife_livelihood and mineral_forest, with matching sheet lines. A script finds each scene's exercised capability, or its subject, in its cited leaves' text."
+   "where": "scenes.json supported_integrations and optional_services requirement fields; tree.json leaves",
+   "would_pass": "Each of these seven capabilities is named in the experience or scenario text of a leaf that the testing scene cites in its requirement (e.g. a new 'supported_integrations' leaf, or extended mineral_forest and wildlife_livelihood text), and the sheet carries that leaf."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "An observation without expect or control cannot accept a capability under the contract, and these are built map-creation behaviours, distinct from the excluded worldgen.",
+   "criterion_why": "An observation without a pass condition accepts nothing, and map creation on a disposable map is no worldgen.",
    "evidence": [
-    "scenes.json:98",
-    "scenes.json:140",
+    "scenes.json:96",
+    "record.json:716",
     "record.json:470",
     "record.json:487",
-    "record.json:716"
+    "scenes.json:140"
    ],
    "gid": "g4",
    "ids": [
@@ -1927,33 +1953,33 @@
     "shore_gardens",
     "vent_gardens"
    ],
-   "new_since": "first",
-   "observed": "record.json vent_sites ships \"Natural chemical vents on new Cauldron maps, safe start/spacing, mixed stable/leaking states and recent-blowout memory. generation idempotent and setting-gated\"; shore_gardens colonise \"at map creation\"; vent_gardens \"mapgen replaces eligible wild non-trees\". The only scene text is the weather_gardens observation \"Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence\", which has no expect or control. falter_hour uses an already-existing vent.",
+   "new_since": "unfixed",
+   "observed": "weather_gardens 'observations' reads 'Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence'; no scene expect asserts vent safe start or spacing, mixed states, blowout memory, idempotence, the setting gate, nettle colonisation at map creation, or mapgen replacement of wild non-trees. falter_hour only uses an existing vent.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json: add a mapgen_vents_gardens scene (or move the observation into weather_gardens expect/control) citing mineral_forest"
+    "what": "scenes.json: add a mapgen_vents_gardens scene citing mineral_forest (or move the observation into weather_gardens expect and control)"
    },
    "what": "Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control.",
    "where": "scenes.json weather_gardens observations; falter_hour",
-   "would_pass": "An acceptance scene (new or extended weather_gardens/falter_hour) whose expect asserts the vent count/spacing/safe start, the mixed states and blowout memory, the shore and vent-ring garden placement at map creation, and no duplicates on a second generation pass. Its control is the generation setting off, plus non-eligible cells. This is map generation on the fixed tile, not world generation."
+   "would_pass": "An acceptance scene (new, or weather_gardens extended) has an expect asserting vent count, spacing and safe start, mixed stable/leaking states, blowout memory, idempotence on rerun, shore nettles and vent rings at map creation, plus a control: generation off, or a second run producing no duplicates."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "A shipped plant property needs an asserted outcome and a control to be accepted, not just a recorded observation.",
+   "criterion_why": "A shipped def property and a leaf's own oracle need a pass condition.",
    "evidence": [
     "record.json:370",
-    "scenes.json:97",
-    "tree.json:73"
+    "scenes.json:96",
+    "tree.json:58"
    ],
    "gid": "g5",
    "ids": [
     "flora_base",
     "mineral_forest"
    ],
-   "new_since": "first",
-   "observed": "flora_base ships \"selected chemotrophs declare zero light requirements\", and the mineral_forest oracle lists \"light-growth readbacks\". The only scene text is the observation \"Record low-light growth and survival of current roster plants ... do not infer a blanket zero-glow promise\", with no pass condition.",
+   "new_since": "unfixed",
+   "observed": "record.json flora_base ships 'selected chemotrophs declare zero light requirements'; the mineral_forest oracle names 'light-growth readbacks', but weather_gardens only records an observation: 'Record low-light growth and survival ... do not infer a blanket zero-glow promise'.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
@@ -1961,66 +1987,67 @@
     "what": "scenes.json weather_gardens: move the low-light item into expect and add a light-requiring control species"
    },
    "what": "The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control.",
-   "where": "scenes.json weather_gardens observations; record.json flora_base",
-   "would_pass": "weather_gardens (or arrival_identity) expect: the named chemotrophs grow in measured darkness while a light-requiring control species stalls, with per-species loaded growMinGlow read back."
+   "where": "scenes.json weather_gardens observations; tree.json mineral_forest oracle",
+   "would_pass": "weather_gardens (or another scene) expects named zero-light species to grow and survive at measured zero light, with a control in which a light-requiring species does not."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "These are built, shipping properties of the unit, and the scene claimed to exercise them asserts none of them.",
+   "criterion_why": "Built parts named in the inventory text are units, and a def readback is cheap.",
    "evidence": [
     "record.json:294-296",
-    "scenes.json:36-58"
+    "scenes.json:36-46"
    ],
    "gid": "g6",
    "ids": [
     "biome_identity"
    ],
-   "new_since": "first",
-   "observed": "record.json:296 says biome_identity is an \"Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties\". arrival_identity lists biome_identity under \"exercises\" (scenes.json:54), but its expect (scenes.json:47) asserts only that \"terrain fertility, roster/appearance and current owned names agree\". Nothing in that scene reads diseases, foraging, travel or the world-map texture.",
+   "new_since": "unfixed",
+   "observed": "record.json:296 reads \"Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties\"; arrival_identity's expect at scenes.json:46 reads \"A reader recognizes mineral bodies, wet dark distinguishable soils and rainless dusk with no placeholder art; terrain fertility, roster/appearance and current owned names agree\". It names no diseases, foraging, travel properties or world-map texture, and no other scene does either.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json: extend arrival_identity (or floor_checkout) expect/control with readbacks of diseases, foraging, travel properties and world-map texture"
+    "what": "scenes.json: extend the arrival_identity (or floor_checkout) expect and control with these readbacks"
    },
    "what": "biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts.",
-   "where": "record.json biome_identity; scenes.json arrival_identity",
-   "would_pass": "A scene (arrival_identity or floor_checkout) whose expect reads the loaded BiomeDef's disease list, forage value, movement difficulty and world-map texture path, and checks each against an independent engine effect or resolved asset. Its control is a different biome's values, which do not match. No tile count is used as evidence. A fresh judge can find all four properties named in that scene's expect and control."
+   "where": "scenes.json arrival_identity, floor_checkout",
+   "would_pass": "arrival_identity or floor_checkout reads back the biome's disease list, foraging and travel/movement values and world-map texture path against the def, with a control (a nonexistent field fails loudly, or the values differ from a donor biome)."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "A showcase may claim only capabilities it really exercises, and a 'preferably' start cannot guarantee that.",
+   "criterion_why": "A showcase may claim only the capabilities it really uses, and 'preferably' does not guarantee use.",
    "evidence": [
     "scenes.json:140",
-    "scenes.json:133",
+    "scenes.json:1066",
     "record.json:733",
-    "record.json:1130"
+    "record.json:1130",
+    "scenes.json:414"
    ],
    "gid": "g7",
    "ids": [
     "eskith",
     "vent_cycle_falter"
    ],
-   "new_since": "first",
-   "observed": "falter_hour start reads \"an eligible idle wild native, preferably eskith\", so a run with a different native passes while prepared_livelihood lists eskith as exercised. Eskith's \"Ground-sensing small flock\" behaviour is untested. vent_cycle_falter ships \"Weather changes scale vent output\", but falter_hour expect asserts only the falter interval and hush.",
+   "new_since": "unfixed",
+   "observed": "falter_hour's start reads 'an eligible idle wild native, preferably eskith'; prepared_livelihood exercises 'eskith'. vent_cycle_falter ships 'Weather changes scale vent output', but no expect reads output per weather. animal_products names no eskith.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json falter_hour: change 'preferably eskith' to a required eskith, add per-weather output to expect; add eskith flock behaviour to animal_products"
+    "what": "scenes.json falter_hour: require eskith and add per-weather output to expect; add eskith flock behaviour to animal_products"
    },
-   "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output.",
-   "where": "scenes.json falter_hour; showcases.prepared_livelihood",
-   "would_pass": "falter_hour start requires an identified eskith in the hush arm, and its expect includes vent output read per weather state, with ordered values per the source multiplier. Eskith flock/ground-sensing is asserted in falter_hour or animal_products, or removed from the showcase's exercises list."
+   "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised.",
+   "where": "scenes.json falter_hour start and expect; animal_products",
+   "would_pass": "falter_hour requires an eskith among its subjects and expects measured vent output under at least two weathers; an eskith flock and its art are asserted in falter_hour or animal_products."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "A 'report' with no expected outcome cannot pass or fail, so the toggle behaviour stays unaccepted.",
+   "criterion_why": "'Report' is not a pass condition.",
    "evidence": [
-    "scenes.json:516",
     "scenes.json:517",
-    "record.json:136",
-    "tree.json:304"
+    "tree.json",
+    "record.json:669",
+    "record.json:685"
    ],
    "gid": "g8",
    "ids": [
@@ -2028,24 +2055,23 @@
     "fire_warden",
     "vent_competition"
    ],
-   "new_since": "first",
-   "observed": "vent_competition says \"Observe an already-issued fire retaliation melee job separately\" and \"report melee toggle behavior independently of old walk evidence\". d_toggle_scope records \"Instant cancellation of an existing AttackMelee job is still unverified\". The leaf oracle says the walk receipt \"does not certify melee cancellation\", but no expected outcome is written.",
+   "new_since": "unfixed",
+   "observed": "vent_competition's expect says 'report melee toggle behavior independently of old walk evidence', and the leaf oracle says 'The old walk cancellation receipt does not certify melee cancellation'; no expect or control states what melee cancellation must do.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
     "what": "scenes.json vent_competition (or water_fire_tracks): add the melee-cancel expect and control"
    },
-   "what": "The melee-cancellation half of the toggles is observed with no pass condition.",
-   "where": "scenes.json vent_competition action/expect",
-   "would_pass": "A scene expect states that turning the warden/retaliation toggle off ends an already-issued AttackMelee job within N ticks, with a toggle-on control whose job continues. Or the record states that existing jobs finish, with a matching expect."
+   "what": "The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition.",
+   "where": "scenes.json vent_competition expect",
+   "would_pass": "vent_competition expects an already-issued retaliation melee job to end within N ticks when its toggle goes off, with a control in which the toggle stays on and the job continues."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "A leaf's acceptance must have a determinate verdict, and tying it to unbuilt, unopened content with no pass rule leaves it undetermined.",
+   "criterion_why": "An in-scope leaf cannot be accepted on content the record says is absent and unopened.",
    "evidence": [
-    "tree.json:217",
-    "tree.json:218",
+    "tree.json:210",
     "scenes.json:319",
     "scenes.json:329",
     "record.json:1299",
@@ -2056,53 +2082,53 @@
     "thornwood_work",
     "trunk_deposit_coat"
    ],
-   "new_since": "first",
-   "observed": "trunk_deposit_coat is impl \"absent\", scope \"not_opened\", yet trunk_coat_check has requirement [mineral_forest, thornwood_work] and expect \"If implementation remains absent report UNBUILT\". The leaf says \"the separately specified age coat remains distinct from assay\", while sheet.md:15 mentions only wood, metal, assay and flecks.",
+   "new_since": "unfixed",
+   "observed": "record.json lists trunk_deposit_coat as 'absent not_opened'; thornwood_work's experience says 'the separately specified age coat remains distinct from assay'; trunk_coat_check cites [mineral_forest, thornwood_work] and expects 'If implementation remains absent report UNBUILT'. sheet.md:15 mentions only 'truthful assay and flecks'.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "tree.json thornwood_work text and scenes.json trunk_coat_check requirement (and sheet.md:15 if option a)"
+    "what": "tree.json thornwood_work text and scenes.json trunk_coat_check requirement (and sheet.md:15 if option b)"
    },
-   "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, not-opened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
-   "where": "tree.json thornwood_work; scenes.json trunk_coat_check; record.json trunk_deposit_coat",
-   "would_pass": "Either (a) the coat is declared in scope and the sheet says so, with trunk_coat_check's UNBUILT result stated to fail thornwood_work; or (b) trunk_coat_check is detached from leaf requirements (kept as a dependency check) and the leaf text drops the coat clause. A script finds no in-scope leaf citing a scene for an inventory entry that is impl absent and scope not_opened."
+   "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
+   "where": "tree.json thornwood_work; scenes.json trunk_coat_check; sheet.md:15",
+   "would_pass": "Either (a) the coat clause is removed from thornwood_work and trunk_coat_check cites no in-scope leaf (or is removed), or (b) the coat is opened in scope, with an implementation item, a sheet line and a defined pass/fail for the leaf."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "Each shipped distinction in the inventory text needs a scene that can observe it, and these need only a readback.",
+   "criterion_why": "Named built parts are units.",
    "evidence": [
     "record.json:386",
     "record.json:404",
-    "scenes.json:289"
+    "scenes.json:296"
    ],
    "gid": "g10",
    "ids": [
     "forestry",
     "assay"
    ],
-   "new_since": "first",
-   "observed": "forestry ships \"elevated harvest work and the vanilla smithing sound\". assay ships \"unripe/fair/rich/lode distinctions\". thornwood_harvest stages \"unripe, eligible younger and full growth\" (three trees), asserts no sound, and does not require each of the four grades to appear.",
+   "new_since": "unfixed",
+   "observed": "assay ships 'unripe/fair/rich/lode distinctions', but thornwood_harvest's start names only 'unripe, eligible younger and full growth'; forestry ships 'the vanilla smithing sound', which nothing reads.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json thornwood_harvest start/expect"
+    "what": "scenes.json thornwood_harvest start and expect"
    },
    "what": "Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades.",
-   "where": "scenes.json thornwood_harvest",
-   "would_pass": "thornwood_harvest start stages trees reaching each of unripe, fair, rich and lode (by growth or factor arm), and expect checks each grade label against its paid metal. The harvest effecter/sound def read back as the smithing sound, against a vanilla tree's default."
+   "where": "scenes.json thornwood_harvest start and expect",
+   "would_pass": "thornwood_harvest stages trees at all four grades and expects each grade's inspect label, and reads the harvest sound def on completion."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "The parts are in the built inventory's text, and the scenes that claim the capabilities never exercise them.",
+   "criterion_why": "Named built parts are units.",
    "evidence": [
     "record.json:947",
     "record.json:963",
     "record.json:1000",
     "record.json:1018",
-    "scenes.json:198",
-    "scenes.json:165"
+    "scenes.json:205",
+    "scenes.json:172"
    ],
    "gid": "g11",
    "ids": [
@@ -2111,34 +2137,34 @@
     "vexxith_gear",
     "acid_air"
    ],
-   "new_since": "first",
-   "observed": "vexxith_door is \"Plate-only\" and its proof note says \"normal placement, opening ... not established\". containers_gates has \"Dedicated vexxith bottle, bucket and barrel recipes\" but material_routes only fills and uses them. vexxith_gear ships \"recipes with sealing, heat protection\" and no scene crafts gear or reads heat insulation. acid_air applies to \"all factions\" but ambient_routes uses only ordinary colonist bodies.",
+   "new_since": "unfixed",
+   "observed": "The door is 'Plate-only' but material_routes only stages 'Ordinary and vexxith walls/door' (no stuff restriction, placement or opening); containers ship 'Dedicated vexxith bottle, bucket and barrel recipes' but are only filled and used; gear ships 'recipes with sealing, heat protection' and no scene crafts it or reads heat; acid_air hits 'all factions', but ambient_routes uses only 'matched ordinary bodies'.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json material_routes and ambient_routes start/action/expect"
+    "what": "scenes.json material_routes and ambient_routes start, action and expect"
    },
    "what": "Vexxith door, containers, gear and acid air ship parts no scene exercises.",
    "where": "scenes.json material_routes and ambient_routes",
-   "would_pass": "material_routes expect: the door accepts only vexxith (a steel stuff choice is refused), is placed by a normal build and opens for a pawn, and the containers are crafted by their dedicated bills and keep vexxith stuff. ambient_routes or lined_stock crafts the suit/helmet by bill and reads worn heat insulation. ambient_routes includes a non-colony faction pawn exposed to acid air, with a roofed control."
+   "would_pass": "material_routes expects the door to refuse non-plate stuff, to be placed normally and to open; containers and suit/helmet are made by their recipes; ambient_routes reads gear heat insulation and includes a raider or visitor under ambient acid."
   },
   {
    "criterion_verdict": "sound",
-   "criterion_why": "Built traits in the inventory text need a scene readback, and these are cheap state reads.",
+   "criterion_why": "Named built parts are units.",
    "evidence": [
     "record.json:589",
     "record.json:522",
-    "scenes.json:450",
-    "scenes.json:381"
+    "scenes.json:460",
+    "scenes.json:390"
    ],
    "gid": "g12",
    "ids": [
     "suush_ecology",
     "ixalith_beauty"
    ],
-   "new_since": "first",
-   "observed": "suush_ecology ships \"no attack tools, solitary native and directional art\". suush_burst asserts no-food and taming only, and animal_products' facings check excludes suush. ixalith is a \"Fragile iridescent beauty plant\", but flora_uses checks only beauty and no yield.",
+   "new_since": "unfixed",
+   "observed": "suush_ecology ships 'no attack tools, solitary native and directional art', but suush_burst expects only 'Docile tameable atmospheric feeder requires no feed'; flora_uses says 'inspect fragile ixalith', yet its expect asserts no fragility.",
    "return_to": 3,
    "smallest_fix": {
     "attainable": "yes",
@@ -2146,8 +2172,63 @@
     "what": "scenes.json suush_burst and flora_uses expect"
    },
    "what": "Suush ecology and ixalith ship traits no scene asserts.",
-   "where": "scenes.json suush_burst, animal_products, flora_uses",
-   "would_pass": "suush_burst expect reads that the suush has no melee tools and spawns as a solitary group, with a facing/scale check in suush_burst or animal_products. flora_uses expect reads ixalith's low HP/fragility against an ordinary plant."
+   "where": "scenes.json suush_burst and flora_uses expect",
+   "would_pass": "suush_burst expects an empty tools list, a solitary wild group size and four-facing art; flora_uses expects ixalith's low hit points or easy destruction against a sturdier control plant."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each clause of a walk leaf needs a scene that asserts it.",
+   "evidence": [
+    "tree.json:443",
+    "scenes.json:826",
+    "scenes.json:835"
+   ],
+   "gid": "g13",
+   "ids": [
+    "cauldron_walk"
+   ],
+   "late_why": "The round-1 judge passed resume_walk on resume, repeat and order, but did not read the leaf's last clause against it; resume_walk is unchanged.",
+   "new_since": "late",
+   "observed": "cauldron_walk's experience ends 'Returning still offers dependable work and risky expeditions'; resume_walk's action ('Reload save, repeat ordinary thornwood harvest and tap/works conversion, then execute a second order...') and expect mention no expedition, exposure or hazard after reload.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json resume_walk: add an exposed-expedition arm to action and expect"
+   },
+   "what": "The walk leaf promises that returning still offers risky expeditions, but resume_walk has no expedition or risk arm.",
+   "where": "scenes.json resume_walk action and expect",
+   "would_pass": "resume_walk includes an exposed expedition after reload whose attributable hazard (dose or injury) appears, against a sheltered control in the same reloaded save."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An action with no expect accepts nothing, and the same rule was applied to sibling rows in round 1.",
+   "evidence": [
+    "record.json:1112",
+    "record.json:639",
+    "record.json:788",
+    "scenes.json:423",
+    "scenes.json:488",
+    "scenes.json:575"
+   ],
+   "gid": "g14",
+   "ids": [
+    "zisska",
+    "vexxiss_shear",
+    "gas_grid"
+   ],
+   "late_why": "The round-1 judge passed these rows on the action text alone, although it refused the same pattern for ixalith fragility and eskith flock; the scenes are unchanged.",
+   "new_since": "late",
+   "observed": "zisska is a 'Herd mineral rasper', but animal_products asserts no herd; vexxiss_products' action says 'inspect native art/variant', but its expect is silent on art; gas_grid ships 'section rendering', and gas_transport only lists 'cloud rendering' in its action.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json animal_products, vexxiss_products and gas_transport expect"
+   },
+   "what": "Three built parts appear only in a scene's action or in no scene, with no expect: zisska herd behaviour, vexxiss native art and variant, and gas section rendering.",
+   "where": "scenes.json animal_products, vexxiss_products, gas_transport",
+   "would_pass": "animal_products expects wild zisska in groups of the def's herd size; vexxiss_products expects the native texture and variant to resolve with no placeholder; gas_transport expects the gas section mesh to draw density-matching cells, with a control (no gas, no drawn cells)."
   }
  ],
  "hashes": {
@@ -2322,10 +2403,15 @@
   "scenes.json": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
   "sheet.md": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec"
  },
- "judge": "rm-coverage-judge-1794838039",
+ "judge": "rm-coverage-judge-1794844087",
+ "late": [
+  "zisska",
+  "vexxiss_shear",
+  "gas_grid"
+ ],
  "mode": "full",
- "prompt_chars": 4836,
- "reasons": "All 67 mandatory units are listed in some showcase or in coverage_rest, and every scene has the contract's structure: script-staged, with an entry-point item, an asserted start, a control with rules_out, and restore. Coverage still fails at the part level, with twelve gaps, all fixable at stage 3:\n- Seven owner-part leaves have no owner_review hold.\n- The sheet omits the walk leaf and tested vexxith behaviours.\n- The integration scenes cite leaves that never describe them.\n- Map-generation of vents and gardens, and the chemotroph light claim, exist only as observations with no expect or control.\n- The biome properties (diseases, forage, travel, world texture) are untested.\n- eskith is only 'preferred' in falter_hour, and weather-scaled vent output is unasserted.\n- Melee-job cancellation has no pass condition.\n- thornwood_work is tied to the absent, unopened trunk coat with no defined verdict.\n- Smaller inventory parts are unexercised: smithing sound, the four assay grades, the door's plate-only rule and opening, container and gear crafting, gear heat protection, acid air on all factions, suush traits, ixalith fragility.",
+ "prompt_chars": 5344,
+ "reasons": "Nothing has changed since the round-1 verdict (rm-coverage-judge-1794838039). Every per-entry hash, and the input hashes of scenes.json, record.json, sheet.md, exam.json and floor.json, match exactly, and there is no coverage_fixes.json. So all twelve round-1 gaps are still open (unfixed). Each one is still accurate when checked against the text. Structurally, coverage holds: all 67 mandatory units are in a showcase or in coverage_rest (checked by script, none uncovered). Every scene is script-staged with an entry-point item, an asserted start, a control with rules_out, and restore. The greedy order and overlap of the showcases is within the rules. The flagship was picked by the Conductor under the Evidence-for-Ask and Conductor-authority rulings, and I did not count that as a gap. Two late misses are added: the walk's 'risky expeditions' clause has no arm in resume_walk, and zisska herd, vexxiss art and gas section rendering appear only in scene actions. All 14 gaps can be fixed by the Designer at stage 3 with scenes.json, tree.json and sheet.md edits; none needs his answer. Not checked: whether the painted or delivered pool site that pool_identity requires exists yet (it is a delivery question, not coverage).",
  "rows_reasked": [
   [
    "biome_identity"
@@ -2333,7 +2419,7 @@
  ],
  "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
  "signed": false,
- "tokens": 1024937,
+ "tokens": 1055715,
  "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
  "verdict": "not_covered"
 }

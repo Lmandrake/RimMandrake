@@ -12,4 +12,4 @@ Cauldron run `rm-role-designercodex-1794843525` reproduced the unchanged-advisor
 
 The refusal-record fixture now supplies its own calibrated status so the live registry cannot alter its intended repeated-review cases. Its suite passes alongside coverage judge, loop, calibration and stage-five program suites. The delta fixture also accounts for the existing exam entry.
 
-The repaired brief must pass the three planted calibration cases before the Cauldron review runs. Calibration and live coverage evidence will be recorded in the closing ledger entry.
+The repaired brief passed all three planted cases at its current hash. Live review `rm-coverage-judge-1794844087` ran in full mode on unchanged Cauldron inputs and produced a valid calibrated refusal with fourteen Stage-3 gaps, a complete checklist, and no unchecked rows. Its 1,055,715 review tokens and the calibration helpers' 359,939 weighted tokens were charged to Cauldron. The accepted return result is checked by `designer_stage.py check design/concepts/Cauldron`.
