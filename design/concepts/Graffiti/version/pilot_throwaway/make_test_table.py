@@ -268,12 +268,24 @@ for t in T.values():
                            "why": "Stage 6 game test; Stage 2 checks only that its entry exists"}
 
 
+sys.path.insert(0, str(ROOT / "src/RimMandrake/rimflow"))
+import maturation as M  # noqa: E402
+
+
+def red_is_live_only(item):
+    """The pipeline's rule (maturation.live_known_red_owed): a known red that is closed, or implemented on main with a
+    remainder that needs the live game, leaves a live check that runs, UNRUN and owed to Stage 6."""
+    r = str(ROOT)
+    return item in M.ledger_ended(r, [item]) or (
+        item in M.ledger_implemented(r, [item]) and M.ledger_needs(r, [item]).get(item) in M.LIVE_NEEDS)
+
+
 def runnable(tid):
     t = T[tid]
     if t["kind"] == "offline":
         return bool(t["runs_today"].get("ran")) and t["runs_today"].get("result") == "PASS"
     if t["kind"] in ("live_minimal", "live_full"):
-        return bool(t["entry_exists"]) and not t.get("known_red")
+        return bool(t["entry_exists"]) and (not t.get("known_red") or red_is_live_only(t["known_red"]))
     return False
 
 

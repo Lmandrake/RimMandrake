@@ -1,6 +1,6 @@
 # Graffiti 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T01:13:30Z. A bar passes when every deciding test passes.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T21:17:51Z. A bar passes when every deciding test passes.
 
 ## Counts
 
@@ -8,14 +8,14 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T01:13:30Z. A bar passes
 - tests: 46 (12 built offline, 1 new offline, 32 live, 1 look)
 - scene entries present: 29, absent: 1
 - built offline green today: 11, red: 1
-- bars with every decider runnable today: 45
+- bars with every decider runnable today: 47
 - known red: P_A9 = RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
 
 ## Bars
 
 | bar | proves at | decides | supports | held | runnable today |
 |---|---|---|---|---|---|
-| inv_mark_on_wall | 6 | sc_wall_closeup, P_A9 | sc_spree_corridor, T_FUZZ | - | no |
+| inv_mark_on_wall | 6 | sc_wall_closeup, P_A9 | sc_spree_corridor, T_FUZZ | - | yes |
 | inv_mark_art_set | 6 | sc_gallery, sc_spree_variety | T_LINT, T_SHIP_CHECK, sc_beauty_pair | - | yes |
 | inv_beauty_and_craft | 6 | sc_beauty_pair, sc_art_skill | sc_spree_corridor, LOOK_STAGE8 | 5 | yes |
 | inv_ideo_sigils | 6 | sc_sigil, T_SIGIL_COVERAGE | T_LINT, T_FUZZ | - | yes |
@@ -36,7 +36,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T01:13:30Z. A bar passes
 | inv_weathering | 6 | sc_weathered_raid_mark, T_WEATHER_OFFLINE | - | - | yes |
 | mark_appears | 6 | sc_spree_wall | sc_spree_corridor, T_FRESH_QT, T_SPREE_SURPRISE, T_FUZZ | - | yes |
 | reads_at_play_zoom | 6 | sc_gallery | T_PLAY_ZOOM, LOOK_STAGE8 | - | yes |
-| sits_on_wall | 6 | sc_wall_closeup, P_A9 | T_FUZZ | - | no |
+| sits_on_wall | 6 | sc_wall_closeup, P_A9 | T_FUZZ | - | yes |
 | marks_various | 6 | sc_spree_variety | sc_spree_corridor, T_FUZZ | - | yes |
 | ideo_sigil | 6 | sc_sigil | T_FUZZ, T_SIGIL_COVERAGE | - | yes |
 | punk_register | 6 | sc_gallery | LOOK_STAGE8 | - | yes |
