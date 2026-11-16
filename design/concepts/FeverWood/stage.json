@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-16T04:47:02Z",
+    "kind": "review",
+    "ref": "rm-role-designercodex-1794804230:/root/root_review; conservative estimate, exact usage unavailable; inherited context plus review reads",
+    "stage": 1,
+    "tokens": 100000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 100000
  },
  "draft_input": {
   "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.check.json)",
@@ -30,6 +38,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designercodex-1794794776: stage 0 done"
+  },
+  {
+   "at": "2026-11-16T04:43:59Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794804230, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-16T04:51:04Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794804230: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -57,6 +77,36 @@
    "run": "rm-role-designercodex-1794794776",
    "stage": 0,
    "summary": "Verified FeverWood source/spec/ledger inventory with separate implementation, proof and scope fields, complete built-evidence accounting, three failure modes, neighboring ownership and every staged proof-chain audit. Corrected stale draft claims about tank destruction, ordinary settings restoration and oil proof coverage. Existing offline suite and campaign wiring selftests passed. Recorded source gaps and an existing-code live-walk proposal for the next design stage. Current in-game experience remains unmeasured."
+  },
+  {
+   "at": "2026-11-16T04:51:04Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "Use a disposable authored FeverWood colony scene whose biome, branch routes, marsh, trunk and registered pools have been asserted. No existing save is claimed available. Run ordinary harvest/haul trips between two crown destinations, then a shore job with a nearby companion and a real snare/rescue deadline. Compare from the same start with the helper across the holding. Use the existing read-only limb/hive readouts to inspect what is already present.",
+    "settles": [
+     "fw_routes",
+     "fw_shore_rescue",
+     "gap_pool_reach"
+    ]
+   },
+   "run": "rm-role-designercodex-1794804230",
+   "stage": 1,
+   "summary": "Recorded the source-backed branch-home and remembering-water root through Evidence-for-Ask delegation, CONDUCTOR:1794804413045937607. Fresh review struck the redundant human question and passed root accuracy. Existing-code quick look offered first and remains unrun; all delivery gaps and built capabilities retained. No flagship pick, owner quotation, first-touch certification, code, art, bridge, restart or deployment. Stage 2 edges remain for the launcher."
   }
  ],
  "runner": "codex",
@@ -68,10 +118,18 @@
     "input_tokens": 8549285,
     "output_tokens": 30724
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794804230",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2331668,
+    "output_tokens": 9440
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready"
 }
