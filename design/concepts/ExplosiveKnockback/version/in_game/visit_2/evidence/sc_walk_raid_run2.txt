@@ -1,0 +1,23 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       full list, FlowWorks, Cauldron gas, shelves, closed container, cover
+A_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 23 request(s) centred in the storeroom, 11 throw(s)
+A_SAVE_MIDAIR                PASS       2 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261115T173148: {'success': True, 'saveName': 'EK_WALK_RAID_MIDAIR_20261115T173148', 'path': 'C:
+A_RELOAD_NO_DUP_LOST         FAIL       11 things before the save, 7 after the reload; dup [] lost ['38751', '38752', '38753', '38754', '38759'] new ['38758', '42822']
+A_COVER_BROKEN_ONE_DESCENT   FAIL       grenade ok; cover left none; 0 descent(s), twice []
+A_GAS_CLUMP_BY_CLUMP         FAIL       31 bursts on 5 ticks, 23 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.0, 3.2, 3.1, 4.7]
+A_GAS_GOODS_MOVED            PASS       9 throw(s) from 31 burst(s)
+A_REQUESTS_MATCH_PLAN        PASS       70 requests, 0 mismatch(es): []
+A_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+B_GAS_CLUMP_BY_CLUMP         FAIL       34 bursts on 5 ticks, 25 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.0, 3.3, 3.6, 5.4]
+B_GAS_GOODS_MOVED            PASS       23 throw(s) from 34 burst(s)
+B_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 25 request(s) centred in the storeroom, 9 throw(s)
+B_COVER_BROKEN_ONE_DESCENT   FAIL       grenade ok; cover left none; 0 descent(s), twice []
+B_REQUESTS_MATCH_PLAN        FAIL       133 requests, 1 mismatch(es): ['Human38765 exp 42887: no outcome']
+B_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+C_OFF_IMPACTS_NO_THROWS      PASS       mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved
+CARRIER_TICK_COST            PASS       meanTickTime 0.0 ms at rest, 0.0 ms with carriers in the air (recorded, not judged)
+FRAME_BUDGET                 UNMEASURED RM_FrameProbe.Begin/Stop are internal: no bridge read of frame time yet
+evidence: design/concepts/ExplosiveKnockback/version/in_game/visit_2/evidence/sc_walk_raid_run2.json   throwaway saves: ['EK_WALK_RAID_BASE_20261115T173148', 'EK_WALK_RAID_MIDAIR_20261115T173148']
+[bridge split] 90.4 s wall: load 2.5 / ticks 16.6 / reads 34.1 / other 7.8 / outside calls 29.3 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.0 s): batch them
+[bridge split] WARN 56 calls of jawa/static_call (2.6 s): batch them
