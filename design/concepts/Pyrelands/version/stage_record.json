@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-15T07:26:26-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-16T12:40:27-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -16,7 +16,7 @@
   },
   "cycles": {
     "visit": 1,
-    "total": 1
+    "total": 2
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -65,6 +65,28 @@
         "order",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T12:40:27-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16",
+      "unit": "rm-detached-bench-rimmandrake-advance-pyrelands-past-offli-1794861550",
+      "confirmed": {
+        "steward_confirms": "Read maturation.py next (no not-met reason, so nothing to sort as RECORD GAP/CRITERION FLAW/REAL MISS), certificate OK (16 bars' offline deciders green on this build; red_seen UNPROVEN warn only, ticket RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN open), all 6 visit-1 road-back items closed (black rain fix 24a2069d18 red at dousing 0, green at 40 in the fuzz model), cycle_1 tests_edited.json: 0 weakened; bar 43 added by his card OWNER:1794748469904049550, not by an agent. Owed live at Stage 6: rain_fire.py UNRUN. Verdict: advance.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ],

@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 3, offline build, since 2026-11-15 7:26 AM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 12:40 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,11 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` (his card 2026-11-15 12:22 PM PST, OWNER:1794774724955142310):
-  the 17 round-6 gaps fixed and committed, then ONE `designer_stage.py repin`. Judging stays stopped until that re-pin.
-  The re-pin owes the chain steward (Cold Reader exam retake, ONE `coverage_judge.py release`, ONE look). That look is
-  the last: a not_covered stops judging and pauses Pyrelands for him again, with its verdict as the evidence. No second
-  release is given without his word.
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:40 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -381,3 +377,14 @@ so the Conductor takes it. These are Conductor decisions, not his.
   infrastructure/state/art_eval/fauna_installs.jsonl).
 - He was asked it twice more after answering (6:11 and 6:42 PM PST, from a stale incident plan); the guard is
   RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM.
+
+### 2026-11-16 12:40 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: Read maturation.py next (no not-met reason, so nothing to sort as RECORD GAP/CRITERION FLAW/REAL MISS), certificate OK (16 bars' offline deciders green on this build; red_seen UNPROVEN warn only, ticket RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN open), all 6 visit-1 road-back items closed (black rain fix 24a2069d18 red at dousing 0, green at 40 in the fuzz model), cycle_1 tests_edited.json: 0 weakened; bar 43 added by his card OWNER:1794748469904049550, not by an agent. Owed live at Stage 6: rain_fire.py UNRUN. Verdict: advance.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16
+- Blind cycle 1 of this visit (2 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 7:26 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` (his card 2026-11-15 12:22 PM PST, OWNER:1794774724955142310): the 17 round-6 gaps fixed and committed, then ONE `designer_stage.py repin`. Judging stays stopped until that re-pin. The re-pin owes the chain steward (Cold Reader exam retake, ONE `coverage_judge.py release`, ONE look). That look is the last: a not_covered stops judging and pauses Pyrelands for him again, with its verdict as the evidence. No second release is given without his word.
+- Record: `version/stage_record.json`.
