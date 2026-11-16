@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6115,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=10d05f18b67e655e77e9f73c5dd84f4110e7b4d17d0185207f7e0675cbae9e5f -->
-# FlowWorks — mod ledger history (1280 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6767,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=884e546ecdb43d9cb84097de1d47cd68f28d91da256af797374c49a65db86e97 -->
+# FlowWorks — mod ledger history (1282 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1281,3 +1281,5 @@
 - 2026-11-16T20:34:42Z JUDGE.judge-1794849236#62 test.run bar:inv_converters v0.1.0: blind cycle 3 rerun of T_CONVERT after the fix
 - 2026-11-16T20:38:02Z DISPATCH#17 judge.sealed judge v0.1.0: 
 - 2026-11-16T20:38:02Z DISPATCH#18 run.end run v0.1.0: 
+- 2026-11-16T20:41:10Z DISPATCH#19 lease.grant lease v0.1.0: 
+- 2026-11-16T20:41:15Z DISPATCH#20 run.start run v0.1.0: 

@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6115,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=f6f14916aaef84adf2852acb8613128f74562e448f7f3256912720e069a466f3 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6767,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=0f50cf1d6484d92d6e335bddaa7dfc2fd42d35221361e7ae3be7214e9e70bdda -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1280 events in 7 shards · reducer 1
-holder lease run-1794848129, token 3, last active 2026-11-16T17:08:01Z
+version 0.1.0 · stage blind_challenge · 1282 events in 7 shards · reducer 1
+holder lease run-1794861652, token 4, last active 2026-11-16T20:41:10Z
 holder session 014e863d-f9f9-45c0-af41-7f39afdcf454, context 118003 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794848129, 2026-11-16T17:08:01Z)
@@ -467,6 +467,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1280 events (views/history.md; never read whole)
+- the full history: 1282 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T20:38:02Z.1794861482557084966 (modledger.py since --mod FlowWorks t=2026-11-16T20:38:02Z.1794861482557084966 prints what changed after this packet)
+cursor: t=2026-11-16T20:41:15Z.1794861675368170405 (modledger.py since --mod FlowWorks t=2026-11-16T20:41:15Z.1794861675368170405 prints what changed after this packet)
