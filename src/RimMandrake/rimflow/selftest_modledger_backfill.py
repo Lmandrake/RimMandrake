@@ -274,6 +274,104 @@ w(os.path.join(v, "blind_challenge", "cycle_4", "lane2", "faults.json"), {"fault
 w(os.path.join(v, "blind_challenge", "cycle_4", "lane2", "fixes.jsonl"), json.dumps(
     {"fault": "RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED", "red": {"cmd": "check_nohose.py", "rc": 1},
      "green": {"cmd": "check_nohose.py", "rc": 0}, "sha": "abcd0055"}) + "\n")
+# --- the round-2 judge's rulings (D:\ClaudeWork\rimmandrake\conductor\mining_samples\<Mod>_round2.judge.json): one
+# fixture ticket per WRONG / NARRATION / MISSED ruling, read by the (faked) reader the way the real tickets were ---
+J = {k: "RIMMANDRAKE_%s_FIXTUREMOD_%s" % tuple(v.split(":")) for k, v in dict(
+    twin="TRACE:CACHE_KEY_TWICE", built="PROVE:DROWNING_IN_SHALLOWS", own="PROVE:GRAPH_SUSTAINED_CHANGE",
+    nochange="PROBE:HIDDEN_CONDUIT_HOOKUP", boiler="FIX:TAP_MIXED_NET", order="ADVANCE:OFFLINE_BESIDE_PILOT",
+    cycle="CHALLENGE:BLIND_RESTS_ON_ONE", unrun="BUILD:STAGE_THREE_SCENES", status="PROVE:HIDING_LOCKER",
+    shove="DESIGN:FIRST_TOUCH", doc="SWEEP:WATER_SOLVERS", run5="FIX:STICKY_OFF_NEVER_FORMS",
+    later="BUILD:MOAT_WITH_MANNERS", said="SUBMERGE:PIT_FITTINGS", subj="FIX:LATE_TOGGLE_STAYS_DRY").items()}
+SUBJ = {"abcd1002": "lesson: live proof tracebacks must exit UNMEASURED",
+        "abcd1005": "power tap picks its own-faction transmitter, guard stops futile re-queues",
+        "abcd1016": "a late deep-swim toggle recomputes path costs"}
+B.SUBJECT_OF = lambda root_, sha: SUBJ.get(sha)
+LONG_SAID = ("Live game grid: Tar is not nearly dark enough (fix). It reads grey. It should be dark indeed by the vent. "
+             "Ramp: slowly becomes immersed but invisible beneath the water (not transparent water, fix) but the cover "
+             "line is good (pass). Items (raw steel, minified furniture) never become covered (fix). I'm not sure how to "
+             "judge the swale (what is expected behavior here?). Sometimes water is transparent, sometimes it isn't. "
+             "Sometimes items are cut off, sometimes they are not. Sometimes the colour gets paler, sometimes it does "
+             "not. It's as though each case is independently set in these variables, badly (major fix). Shadows surround "
+             "the deepest pit even though it's entirely filled, and shadows are shown outside the pit rather than "
+             "inside (major fix). Planks over pit are correctly always shown on top (fix: please ensure they can only "
+             "be placed where there are two sides adjacent to solid ground).")
+EV3 = [{"seat": "BENCH", "event": "file", "id": J[k], "title": t, "why": w, "tsn": 300 + i} for i, (k, t, w) in enumerate((
+    ("twin", "FixtureMod cords heap: the cache key may miss the block kind", ""),
+    ("built", "FixtureMod: prove a rat-sized pawn drowns in the shallows", ""),
+    ("own", "FixtureMod graph job: prove the sustained-change bound, de-flake the wall-clock gate",
+     "FixtureGates.cs GraphWorker (1) always ends in a quiet map, so it never exercises sustained change. Also "
+     "FixtureGates.cs GraphWorker (3) bounds wall-clock ms on a loaded machine, so it can flake"),
+    ("nochange", "FixtureMod render checks: a hookup to a hidden conduit may print a visible cable (B13)", ""),
+    ("boiler", "FixtureMod: power-tap connect guards disagree on mixed-faction nets", ""),
+    ("order", "Maturation Pipeline: take FixtureMod 0.1.0 through the offline stages by hand", ""),
+    ("cycle", "FixtureMod 0.1.0: blind challenge cycle 1", ""),
+    ("unrun", "FixtureMod Stage 3: build the scene leaves for the open bars", ""),
+    ("status", "FixtureMod: prove the hiding locker live", ""),
+    ("shove", "FixtureMod Designer first touch", ""),
+    ("doc", "FixtureMod: sweep the water solvers on big maps", ""),
+    ("run5", "FixtureMod body classify: sticky off never forms", ""),
+    ("later", "FixtureMod drawbridge: a moat with manners", ""),
+    ("said", "FixtureMod: submerge pit fittings by level", ""),
+    ("subj", "FixtureMod swim reapply: a late toggle stays dry", "")))]
+EV3 += [
+    {"seat": "BENCH", "event": "close", "id": J["twin"], "sha": "abcd1001", "reason": "A6 refuted offline "
+     "(incremental == fresh); cord heaps fixed at the door cell", "tsn": 330},
+    {"seat": "BENCH", "event": "implemented", "id": J["built"], "sha": "abcd1002", "tsn": 331,
+     "why": "relentless: blind offline PASS; the game clauses stay owed",
+     "criteria": [{"id": "A1", "text": "on a quicktest map a Jawa drafted mid-pool reads ProofDrown H=0.50"}]},
+    {"seat": "BENCH", "event": "verify", "id": J["built"], "result": "fail", "sha": "abcd1002", "tsn": 332,
+     "config": "relentless-live: python.exe jawa_shallows_proof.py --cell 120,120"},
+    {"seat": "BENCH", "event": "verify", "id": J["built"], "result": "fail", "sha": "abcd1002", "tsn": 333,
+     "config": "relentless-live: python.exe jawa_shallows_proof.py --cell 120,120"},
+    {"seat": "BENCH", "event": "close", "id": J["own"], "sha": "abcd1003", "tsn": 334,
+     "reason": "relentless: blind PASS at abcd1003: the gate takes the ms bound on the best of 3 attempts"},
+    {"seat": "BENCH", "event": "note", "id": J["nochange"], "tsn": 335, "text": "Both findings PLAUSIBLE and both need "
+     "the live game; no code change to drawing. Live row B13 added to validation.py."},
+    {"seat": "BENCH", "event": "close", "id": J["nochange"], "sha": "abcd1004", "tsn": 336, "why": "the live pass on "
+     "current code: proof_all core block B13_hidden_conduit_hookup_not_drawn PASS (printed [0,0], moved 0)"},
+    {"seat": "BENCH", "event": "implemented", "id": J["boiler"], "sha": "abcd1005", "tsn": 337},
+    {"seat": "BENCH", "event": "verify", "id": J["boiler"], "result": "pass", "sha": "abcd1005", "tsn": 338,
+     "config": "min-15", "criterion": "A1", "level": "L2"},
+    {"seat": "BENCH", "event": "close", "id": J["later"], "sha": "abcd1006", "tsn": 339, "why": "moat built"},
+    {"seat": "BENCH", "event": "close", "id": J["subj"], "sha": "abcd1016", "tsn": 340},
+    {"seat": "OWNER", "event": "note", "id": J["shove"], "tsn": 341, "ownerSaid": "Melee shove into a vent pit is a "
+     "great idea, but it belongs in OtherMod, not here. Drop this recommendation from FixtureMod."},
+    {"seat": "OWNER", "event": "note", "id": J["said"], "tsn": 342, "ownerSaid": LONG_SAID}]
+for e_ in EV3:
+    with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "%s.jsonl" % (
+            "OWNER" if e_["seat"] == "OWNER" else "BENCH")), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(e_) + "\n")
+READ_EXTRA = {
+    J["twin"]: {"causes_refuted": [{"text": "A6 (cache key misses BlockKind) refuted offline: the incremental result "
+                                            "equals the fresh result."}]},
+    J["own"]: {"traps": [{"text": "GraphWorker (1) always ends in a quiet map, so it never exercises sustained change; "
+                                  "GraphWorker (3) bounds wall-clock ms and can flake on a loaded machine.",
+                          "where": "FixtureGates.cs GraphWorker (1) and (3)"}]},
+    J["unrun"]: {"traps": [{"text": "Scenes sc_a and sc_b are recorded UNRUN in version/test_table.json; nothing has "
+                                    "run in game, so runnable does not mean passing.", "where": "test_table.json"}]},
+    J["status"]: {"traps": [
+        {"text": "walk_storeroom_raid is still unwritten (validation.py::walk_storeroom_raid). It is held by "
+                 "walk_bars_confirmed, which waits for --steward-confirms.", "where": "validation.py"},
+        {"text": "The game copy still holds Patches/RM_Fixture_Closed.xml, which tags the lockers closed; deploy "
+                 "first.", "where": "game copy Patches"},
+        {"text": "The census reads a cached count, so a green census says nothing about this tick.", "where": "census"},
+        {"text": "11 vs 7 was a harness defect: the census ran while shell 1's wave was still spreading.",
+         "where": "census"}]},
+    J["shove"]: {"traps": [{"text": "The melee shove into a vent pit contest is not part of this mod; it belongs to "
+                                    "OtherMod.", "where": "design"}]},
+    J["doc"]: {"traps": [{"text": "The decision doc once said the engine was only an agent recommendation; that text "
+                                  "was false and removed. The owner chose local_inertial_frcap by card 2026-11-14.",
+                          "where": "design/specs/water.md"}]},
+    J["run5"]: {"traps": [{"text": "The modcheck run5 core replay PASSED S5 once after the run4 fail, but the ticket is "
+                                   "not closed until validation_v2 --live --fresh-map passes it again. The run4 probe "
+                                   "ran with sticky back ON, so it reflects the later setting.", "where": "run4"}]},
+    J["later"]: {"causes_refuted": [
+        {"text": "The live8 FAIL MOD on LOWER_ONLY_FROM_WINCH was later resolved: the belt run passed 12/12."},
+        {"text": "Stale reachability masks: spawn and despawn bump the climb generation, so a stale mask lasts one "
+                 "tick at most."}]},
+    J["subj"]: {"changed": "Fixed in abcd1016; the record does not say how."}}
+w(os.path.join(v, "test_table.json"), {"made": "2026-11-14", "tests": {"sc_b": {"command": "runner.py --scenes sc_b"}},
+                                       "bars": json.load(open(os.path.join(v, "test_table.json")))["bars"]})
 _states0 = getattr(B, "rimflow_states", None)       # the test stands in for rimflow's fold on one ticket
 if _states0:
     B.rimflow_states = lambda root_, names, tev: dict(_states0(root_, names, tev), **{RO: "ready"})
@@ -539,6 +637,9 @@ def fake_call(prompt, model, system=None):
                                       ["src/RimMandrake/NoSuchMod/X.cs"]}],
                   "traps": [{"text": "Reading: T_GEOM reads seven scenes only (%s)" % n, "where": "T_GEOM"},
                             {"text": "Reading: helper notes sit on branch ralph (%s)" % n, "where": "branch ralph"}]}
+        if n in READ_EXTRA:
+            x_ = READ_EXTRA[n]
+            ans[n] = dict(ans[n], **{k: (x_[k] + ans[n][k]) if isinstance(ans[n].get(k), list) else x_[k] for k in x_})
     for n, block in re.findall(r"=== KEEP (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):
         ans[n] = [int(i) for i, w in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "branch ralph" not in w]
     for n, block in re.findall(r"=== OWNER WORDS (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):
@@ -587,6 +688,90 @@ check("keep reading: a trap it finds would change nothing a holder does (agent-p
 DECr = [e["body"].get("said") or "" for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["kind"] == "decision"]
 check("owner reading: on a read ticket only his words it marks as a ruling about the mod stay decisions",
       any("chain through every vent" in x for x in DECr) and not any("staying interactive" in x for x in DECr), DECr)
+# --- the round-2 judge's rulings, one check each (GSS = Gimme Some Slack, EK = Explosive Knockback, FW = FlowWorks) ---
+ALL = [e for e in M.read(root, MOD) if e["_shard"] == "BACKFILL"]
+Fj = M.reduce(M.read(root, MOD))["findings"]
+
+
+def onj(k, kinds=None):
+    return [e for e in ALL if "item:" + J[k] in e["evidence"] and (kinds is None or e["kind"] in kinds)]
+
+
+def texts(k, kinds):
+    return [e["body"].get("text") or "" for e in onj(k, kinds)]
+
+
+cz = [t for t in texts("twin", ("cause.refuted",)) if t.startswith("A6")]
+check("judge GSS 3 (rule 5): one ruled-out cause per hypothesis on a ticket: the regex 'A6 refuted' line beside the "
+      "reading's A6 is not mined", len(cz) == 1 and "BlockKind" in cz[0], cz)
+cb = onj("built", ("finding.claimed_fixed",))
+check("judge GSS 96 (rule 4): a lifecycle reason ('relentless: …') is no fix text; a bookkeeping commit's subject is no "
+      "fix either: the claim states the build and its failed live verifies, its test the command they ran",
+      cb and not cb[-1]["body"]["text"].startswith("relentless") and "lesson:" not in cb[-1]["body"]["text"] and
+      "FAIL 2 times" in cb[-1]["body"]["text"] and "jawa_shallows_proof.py" in cb[-1]["body"]["test"],
+      [e["body"] for e in cb])
+check("judge GSS 257 (rule 1): a trap restating the defect its ticket's fix removed is not mined",
+      not [t for t in texts("own", ("trap.noted",)) if "GraphWorker" in t], texts("own", ("trap.noted",)))
+fn = Fj.get("finding:" + J["nochange"]) or {}
+check("judge GSS 259 (rule 3): done, 'no code change', closing rows PASS -> withdrawn after a test, never claimed fixed",
+      fn.get("status") == "withdrawn" and fn.get("how_checked") == "test" and
+      not onj("nochange", ("finding.claimed_fixed",)), fn)
+tb = texts("boiler", ("finding.verified",))
+check("judge GSS 321 (rule 4): 'the record names no change' gives way to the landed commit's subject, and the verify "
+      "names its criterion and level, not only the mod list", tb and "own-faction transmitter" in tb[-1] and
+      "names no change" not in tb[-1] and "A1 L2 PASS" in tb[-1], tb)
+check("judge GSS 325: a pipeline work order ('Maturation Pipeline: take …') mines no finding",
+      not onj("order", ("finding.open",)), [e["body"] for e in onj("order")])
+check("judge GSS 331: a blind challenge cycle ticket mines no finding", not onj("cycle", ("finding.open",)),
+      [e["body"] for e in onj("cycle")])
+st_j = M.reduce(M.read(root, MOD))
+lb_ = [t for t in st_j["tests"] if t["subject"] == "bar:bar_b" and t["kind"] == "live.run"]
+check("judge EK 53 (rule 1): an UNRUN status line is no trap; the UNRUN scene of a bar with no live row becomes its "
+      "live.run UNRUN with the scene's command, and a bar with live rows keeps them",
+      not [t for t in texts("unrun", ("trap.noted",)) if "UNRUN" in t] and lb_ and lb_[-1].get("result") == "UNRUN" and
+      st_j["bars"]["bar:bar_a"]["verdict"] == "PASS" and
+      [e for e in ALL if e["kind"] == "live.run" and "runner.py --scenes sc_b" in e["body"]["command"]],
+      (texts("unrun", ("trap.noted",)), lb_))
+ts_ = texts("status", ("trap.noted",))
+check("judge EK 54 (rule 1): 'still unwritten' and the 'It is held by …' sentence about it are no trap",
+      not [t for t in ts_ if "walk_storeroom_raid" in t or "walk_bars_confirmed" in t], ts_)
+check("judge EK 82 (rule 1): 'the game copy still holds …' is a deploy status, no trap",
+      not [t for t in ts_ if "still holds" in t], ts_)
+check("rule 1 control: an instrument trap and a past reading ('wave was still spreading') on the same ticket stay",
+      [t for t in ts_ if "cached count" in t] and [t for t in ts_ if "wave was still spreading" in t], ts_)
+check("judge EK 133: a trap restating his ruling on the same ticket is not mined (his words are the decision)",
+      not [t for t in texts("shove", ("trap.noted",)) if "melee shove" in t.lower()] and
+      [e for e in onj("shove", ("decision",)) if "Melee shove" in (e["body"].get("said") or "")],
+      (texts("shove", ("trap.noted",)), [e["body"] for e in onj("shove", ("decision",))]))
+check("judge FW 386: a doc correction already made and 'the owner chose … by card' are no trap",
+      not [t for t in texts("doc", ("trap.noted",)) if "decision doc" in t or "owner chose" in t],
+      texts("doc", ("trap.noted",)))
+check("judge FW 690 (rule 1): a run result with a closing condition leaves the trap; only the probe-condition clause "
+      "stays", "The run4 probe ran with sticky back ON, so it reflects the later setting." in
+      texts("run5", ("trap.noted",)) and not [t for t in texts("run5", ("trap.noted",)) if "not closed until" in t],
+      texts("run5", ("trap.noted",)))
+cl_ = texts("later", ("cause.refuted",))
+check("judge FW 74 (rule 2): 'later resolved' is a state change, never a ruled-out cause; a 'hypothesis: what refuted "
+      "it' cause stays", not [t for t in cl_ if "later resolved" in t] and [t for t in cl_ if "Stale reachability" in t],
+      cl_)
+sd_ = [e["body"].get("said") or "" for e in onj("said", ("decision",))]
+check("judge FW 13: his words past 600 chars keep his deciding sentences ('major fix', 'please ensure'), joined by "
+      "' · ', never a leading cut with a marker", sd_ and "please ensure" in sd_[0] and "(major fix)" in sd_[0] and
+      " · " in sd_[0] and "[…]" not in sd_[0] and len(sd_[0]) <= 600, sd_)
+tsj = texts("subj", ("finding.claimed_fixed",))
+check("judge FW 1028 (rule 4): a reading's 'the record does not say how' gives way to the landed commit's subject",
+      tsj and tsj[-1].startswith("a late deep-swim toggle recomputes path costs"), tsj)
+# rule 5: an earlier mining's line restating a fact in other words (a '[…]' cut) is replaced on the re-mine, not held
+d0 = onj("shove", ("decision",))[0]
+M.delete(root, MOD, [d0["id"]])
+M.append(root, MOD, "BACKFILL", "decision", d0["subject"], body=dict(d0["body"], said=d0["body"]["said"] + " […]"),
+         version="0.1.0", evidence=["path:design/concepts/FixtureMod/journal.md", "item:" + J["shove"]],
+         authority={"owner_said": d0["body"]["said"] + " […]"}, views=False)
+r5_ = B.run(root, MOD)
+saids_ = [e["body"].get("said") for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["subject"] == d0["subject"]]
+check("judge rule 5: a re-mine replaces an earlier mining's line that restates its fact in other words",
+      d0["body"]["said"] in saids_ and not [x for x in saids_ if x and "[…]" in x] and not r5_["refused"],
+      (saids_, r5_["refused"]))
 subj_probs = [x for x in M.lint(root, MOD, None)[0] if "REFUSED subject" in str(x)]
 check("re-mine: a subject whose old first line was deleted after the new lines were written still passes the "
       "duplicate-subject check (lint clean)", not subj_probs, subj_probs[:2])

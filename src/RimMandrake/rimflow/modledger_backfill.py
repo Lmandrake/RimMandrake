@@ -98,6 +98,56 @@ PROVENANCE_RE = re.compile(r"(?i)^\W*(?:found[- ]by\b|found by\b|verdict:|writte
                            r"status at filing|step \d+ of\b|detached run\b[:,]?|relentless:)")
 LEAD_NOISE_RE = re.compile(r"(?i)^(?:detached run(?: ended \w+)?|closed?(?: at [0-9a-f]+)?(?: by \w+)?)\s*[:;,.-]\s*")
 CAUSE_LINE_RE = re.compile(r"(?i)\b(?:root )?cause(?: \[[^\]]*\])?\s*:\s*(.+)")
+# --- the round-2 judge's rules (RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY, verdicts
+# D:\ClaudeWork\rimmandrake\conductor\mining_samples\<Mod>_round2.judge.json) ---
+# rule 1: a sentence carrying a status word is a status line, false the day it changes, never a trap ('wave was still
+# spreading' is a past reading, not a status, and stays)
+STATUS_RE = re.compile(r"(?i)(?<!was )(?<!were )\bstill\b|\bun-?run\b|\bowed\b|\bnot yet\b|\bis not closed\b|"
+                       r"\bnot closed until\b|\bnever (?:been )?run\b|\bwas not run\b|\bnot done\b|\bunwritten\b|"
+                       r"\bremains? (?:unverified|open|owed)\b")
+UNRUN_RE = re.compile(r"(?i)\bun-?run\b")
+PRONOUN_RE = re.compile(r"^(?:It|This|That|They|These|Those|Its|Both)\b")
+# a doc correction already made is history (git has it), and a trap never restates his ruling without his authority
+HISTORY_RE = re.compile(r"(?i)\b(?:text|line|claim|sentence|wording|doc)\b[^.;]{0,40}\b(?:was|were|is|has been)\s+"
+                        r"(?:false and\s+)?(?:removed|corrected|deleted|rewritten)\b")
+OWNER_RESTATE_RE = re.compile(r"(?i)(?<!not )\b(?:the |if the )?owner (?:has |had |then )?(?:chose|ruled|decided|picked|said|"
+                              r"wants|asked|kept)\b|\bby card\b")
+# a past reading of a result ('earlier passes were swims', 'the earlier PASS rows came from harness fixes') stays true
+# after the fix, so it is never dropped as the ticket's own defect
+PAST_READING_RE = re.compile(r"(?i)\b(?:earlier|previous|prior|older)\b[^.;]{0,60}\b(?:pass|passes|fail|fails|rows?|"
+                             r"runs?|reads?|readings?)\b")
+# rule 2: a ruled-out cause is mined only from a sentence that rules it out; 'later resolved' / 'passed later' is a
+# state change, never a refutation
+RULED_OUT_RE = re.compile(r"(?i)\bruled out\b|\bnot (?:the|a) (?:cause|culprit|bug|defect)\b|\b(?:was|were|is|are)"
+                          r"(?:n't| not)\b|\bno (?:[\w-]+ )?(?:bug|defect|fault)\b|\brefut|\bfalse theor|\bexplained\b|"
+                          r"\bturned out\b|\brather than\b|\binstead\b|\bred herring\b|\b(?:did|does|do)(?:n't| not)\b|"
+                          r"\bharness\b|\bnot (?:caused|due)\b|\bcorrection\b|\bdisprov|\bexclud|\bcleared\b|"
+                          r"\binnocent\b|\bnever\b|\bunrelated\b|\bnot responsible\b|\bmatched\b|\bcorrect(?:ly)?\b|"
+                          r"\bfault was in\b|\b(?:checker|harness|proof|test|site|instrument)\b[^.;]{0,30}\bfault\b|"
+                          r"\b(?:CHECKER|HARNESS|PROOF|SITE)\b|\bwrong\b|^\W*(?:not|no)\b|\balready\b|\btheory\b|\bhypothes[ie]s\b|"
+                          r"\brejected\b|\bre-read\b|\bnot reproduced\b")
+STATE_CHANGE_RE = re.compile(r"(?i)\blater (?:resolved|passed|fixed)\b|\bwas (?:later )?resolved\b|\bresolved later\b|"
+                             r"\bpassed later\b|\bsince (?:passed|fixed)\b")
+# a cause the ticket FOUND (the defect's mechanism) is no refuted cause
+FOUND_CAUSE_RE = re.compile(r"(?i)\b(?:was|is|were|are) caused by\b|\bthe (?:root )?cause (?:is|was)\b|\bsettled as\b|"
+                            r"\ba real\b[^.;]{0,40}\b(?:bug|defect)\b")
+# the reader's list form: 'the hypothesis: what refuted it'
+HYPOTHESIS_RE = re.compile(r"^[^:]{3,140}:\s+\S")
+EXPLICIT_REFUTED_RE = re.compile(r"(?i)\bnot (?:the|a) (?:cause|culprit)\b|\bruled out\b|\brefut|\bfalse theor")
+# rule 3: a done ticket whose record says nothing needed changing, closed on passing rows, is withdrawn after a test
+NO_CHANGE_RE = re.compile(r"(?i)\bno code change\b|\bdid not occur\b|\bno (?:code )?fix (?:was )?needed\b|"
+                          r"\bnothing to fix\b|\bno defect (?:remains|found)\b")
+# rule 4: a fix text that is boilerplate (lifecycle, 'the record does not say how') is replaced by the landed commit's
+# subject; a bookkeeping commit (lesson, ledger) names no fix
+BOILER_RE = re.compile(r"(?i)record (?:does not|doesn't) say|names no change|beyond its title|^relentless:|"
+                       r"^published[;,]|^selftest green\.?$|^the fault's smallest_fix, shipped")
+BOOKKEEP_RE = re.compile(r"(?i)^(?:ledger|lessons?|modledger|handoff|notes?|chore|journal)\b[:(]")
+# work orders: a pipeline ticket that takes the mod through a stage or a blind cycle names nothing wrong with the mod
+WORK_ORDER_RE = re.compile(r"(?i)^maturation pipeline: take\b|\bblind (?:offline )?challenge cycle \d+\b")
+_STOP = set("this that with from have been were what when then than they them their there which while into onto over "
+            "under also only once does done each every same some more most much such very will would could should "
+            "about after before because being both here just like make made many must never none other ours read "
+            "reads says said shall since still these those through until upon whose where".split())
 
 
 def _closed_like(state):
@@ -283,6 +333,77 @@ def fit(text, cap):
     return head[:head.rfind(" ")].rstrip(" ,;:") if " " in head else head[:cap]
 
 
+SAID_KEY1_RE = re.compile(r"(?i)\bmajor fix\b|\bplease ensure\b|\bmust\b|\bnever\b|\balways\b|\bdo not\b|\bdon't\b")
+SAID_KEY2_RE = re.compile(r"(?i)\bfix\b|\bshould\b")
+
+
+def fit_said(text, cap):
+    """His words past the cap: his deciding sentences ('major fix', 'please ensure', must/never/always first, then 'fix'
+    and 'should'), verbatim and in his order, joined by ' · ' (the journal's own separator), never a leading prefix cut
+    with a marker (the round-2 judge, FlowWorks index 13); a text with no such sentence is fitted as any other."""
+    t = " ".join(str(text or "").split())
+    if len(t) <= cap:
+        return t
+    sents = [s for s in re.split(r"(?<=[.!?])\s+", t) if s]
+    pick = set()
+    for rx in (SAID_KEY1_RE, SAID_KEY2_RE):
+        for i, s in enumerate(sents):
+            if i in pick or not rx.search(s):
+                continue
+            trial = pick | {i}
+            if len(" · ".join(sents[j] for j in sorted(trial))) <= cap:
+                pick = trial
+    if not pick:
+        return fit(t, cap)
+    return " · ".join(sents[j] for j in sorted(pick))
+
+
+def content_words(text):
+    return {w for w in re.findall(r"[a-z0-9_]{4,}", str(text or "").lower()) if w not in _STOP}
+
+
+def coverage(a, b):
+    """The share of a's content words that b holds (0 when a has fewer than 3)."""
+    ca = content_words(a)
+    return len(ca & content_words(b)) / len(ca) if len(ca) >= 3 else 0.0
+
+
+def _label(text):
+    """A hypothesis label a ticket names its causes by ('A6 refuted', 'D7 (…) refuted'): -> the label or None."""
+    m = re.match(r"\W*([A-Z]{1,3}\d{1,3}[a-z]?)\b", str(text or ""))
+    return m.group(1) if m else None
+
+
+def filter_trap(text, decisions=(), defects=(), fixed=False):
+    """-> (kept text or None, [(reason, sentence)] dropped, [UNRUN sentences]). A trap's sentences are kept unless one
+    is a status line (rule 1; a following 'It …' sentence about it leaves with it), a doc correction already made, a
+    restatement of his ruling on the same ticket, or, on a ticket closed by a fix, the ticket's own defect (the
+    round-2 judge's GSS 257, EK 53/54/82/133, FlowWorks 386/690)."""
+    kept, dropped, unrun, prev = [], [], [], False
+    for s in _sentences(text):
+        why = None
+        if STATUS_RE.search(s):
+            why = "status"
+            if UNRUN_RE.search(s):
+                unrun.append(s)
+        elif prev and PRONOUN_RE.match(s):
+            why = "status"
+        elif HISTORY_RE.search(s):
+            why = "history"
+        elif OWNER_RESTATE_RE.search(s) or any(coverage(s, d) >= 0.6 for d in decisions):
+            why = "restates a decision"
+        elif fixed and not PAST_READING_RE.search(s) and any(coverage(s, d) >= OWN_DEFECT_COVER for d in defects):
+            why = "the ticket's own defect, fixed"
+        prev = bool(why)
+        if why:
+            dropped.append((why, s))
+        else:
+            kept.append(s)
+    out = " ".join(kept).strip()
+    out = re.sub(r";$", ".", out)
+    return (out if len(out) >= 25 else None), dropped, unrun
+
+
 def words_of(text):
     """The words of a ticket section: code fences unwrapped (a fenced command is words), cut at the first pasted
     stack or traceback (the standard refuses one; the event cites the ticket that holds it)."""
@@ -400,7 +521,7 @@ def changed_text(evs, sha):
     return "; ".join(parts) if parts else "Fixed at %s; the record names no change beyond its title" % sha
 
 
-def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None):
+def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None, subject_of=None):
     """-> (kind, body, sha, ledger ref pattern) for a ticket's FINAL rimflow state (the judges' rule 1), or None.
     `state` is rimflow's fold of the ticket: proposed / ready / doing (reopened included) state no fix; dropped and
     superseded nothing. done with noCode -> finding.withdrawn; done, built or validated with a verify pass ->
@@ -424,6 +545,16 @@ def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None):
         how = "reading+test" if re.search(r"\b(selftest|test)\b", nc, re.I) else "reading"
         return ("finding.withdrawn", {"text": fit("No defect at %s: %s" % (sha, nc), S["text"]), "how_checked": how},
                 sha, "ledger:%%s:%d" % close[1])
+    # rule 3: done, no builder's fix, a note or the close says nothing needed changing, and the close reads PASS
+    if state == "done" and close and isinstance(close[2].get("sha"), str) and not [
+            t for t in evs if t[2].get("event") == "implemented" and str(t[2].get("sha") or "")[:12] not in bulk]:
+        said_ = [str(t[2].get(k) or "") for t in evs if t[2].get("event") in ("note", "close") for k in
+                 ("text", "reason", "why")]
+        why_ = clean_lead(close[2].get("reason") or close[2].get("why") or "")
+        if any(NO_CHANGE_RE.search(x) for x in said_) and re.search(r"\bPASS\b", why_) and \
+                not re.search(r"\bFAIL\b", why_):
+            return ("finding.withdrawn", {"text": fit("No defect, no code change: %s" % why_, S["text"]),
+                                          "how_checked": "test"}, close[2]["sha"], "ledger:%%s:%d" % close[1])
     pick = None
     for t in reversed(term):
         if t[2]["sha"][:12] not in bulk and landed(t[2]["sha"]):
@@ -436,15 +567,35 @@ def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None):
     sha = pick[2]["sha"]
     ref = "ledger:%%s:%d" % pick[1]
     did = reading.get("changed") or changed_text(evs, sha)
+    fails = [t[2] for t in evs if t[2].get("event") == "verify" and t[2].get("result") == "fail" and
+             (t[2].get("tsn") or 0) > (pick[2].get("tsn") or 0)]
+    if BOILER_RE.search(did):
+        # rule 4: the landed commit's subject says what changed; a bookkeeping commit or none says nothing, so the
+        # text states the build and what its live verifies read after it
+        subj = subject_of(sha) if subject_of else None
+        if subj and not BOOKKEEP_RE.match(subj):
+            did = subj
+        else:
+            did = "%s at %s; no change named by its record or commit" % (
+                "Fixed" if state == "done" else "Built", sha)
+            if fails:
+                did = "%s at %s; its live verify read FAIL %d time%s after it (%s)" % (
+                    "Fixed" if state == "done" else "Built", sha, len(fails), "" if len(fails) == 1 else "s",
+                    clean_lead(fails[-1].get("config")) or "a verify")
     impl = next((t[2] for t in reversed(evs) if t[2].get("event") == "implemented" and t[2].get("criteria")), {})
     crit = "; ".join("%s %s" % (c.get("id"), c.get("text")) for c in impl.get("criteria") or [] if isinstance(c, dict))
     if verify:
         v = verify[-1]
-        return ("finding.verified", {"text": fit("%s; verified: %s" % (did, clean_lead(v.get("config")) or
-                                                                       "a verify pass"), S["text"])},
+        how = " ".join(str(v.get(k)) for k in ("criterion", "level") if v.get(k))
+        cfg = clean_lead(v.get("config")) or "a verify pass"
+        return ("finding.verified", {"text": fit("%s; verified: %s" % (did, ("%s PASS (%s)" % (how, cfg)) if how else
+                                                                       cfg), S["text"])},
                 sha, ref)
-    test = crit or "none recorded at %s (live: %s)" % ("close" if state == "done" else "build",
-                                                       (close[2].get("live") if close else None) or "-")
+    if fails:       # the command its live verify ran, and what it read, is the test (never the criterion prose)
+        test = "%s: FAIL x%d" % (clean_lead(fails[-1].get("config")), len(fails))
+    else:
+        test = crit or "none recorded at %s (live: %s)" % ("close" if state == "done" else "build",
+                                                           (close[2].get("live") if close else None) or "-")
     return ("finding.claimed_fixed", {"text": fit(did, S["text"]), "test": fit(test, S["test"])}, sha, ref)
 
 
@@ -505,14 +656,26 @@ def _base(root):
     if root not in _BASE:
         r = subprocess.run(["git", "-C", root, "log", "origin/main", "--format=%H%x09%aI%x09%s"], capture_output=True,
                            text=True, timeout=120)
-        idx, twin = {}, {}
+        idx, twin, subj = {}, {}, {}
         for line in r.stdout.split("\n"):
             parts = line.split("\t", 2)
             if len(parts) == 3:
                 idx.setdefault(parts[0][:7], []).append(parts[0])
                 twin.setdefault((parts[1], parts[2]), []).append(parts[0])
-        _BASE[root] = (idx, twin)
+                subj[parts[0][:12]] = parts[2]
+        _BASE[root] = (idx, twin, subj)
     return _BASE[root]
+
+
+def commit_subject(root, sha):
+    """-> the subject of `sha`'s landed commit on origin/main (rule 4's fallback for a boilerplate fix text), or None."""
+    tw = landed_sha(root, sha)
+    if not tw or not os.path.exists(os.path.join(root, ".git")):
+        return None
+    return _base(root)[2].get(tw[:12])
+
+
+SUBJECT_OF = commit_subject      # the selftest stands a fake in here (its fixture root is no git checkout)
 
 
 def landed_sha(root, sha):
@@ -523,7 +686,7 @@ def landed_sha(root, sha):
         return None
     if not os.path.exists(os.path.join(root, ".git")):
         return sha                  # not a git checkout (a fixture): taken as written
-    idx, twin = _base(root)
+    idx, twin, _subj = _base(root)
     hit = [f for f in idx.get(sha[:7], ()) if f.startswith(sha)]
     if len(hit) == 1:
         return hit[0][:12]
@@ -579,7 +742,7 @@ def plan(root, mod):
                 vj.get("version"), vj.get("state"), vj.get("locked_on"), vj.get("locked_by"), vj.get("bars_met"),
                 vj.get("bars_total")), S["text"])}, [P(vjp)])
         if vj.get("owner_words"):
-            said = fit(_said(vj["owner_words"]), S["said"])
+            said = fit_said(_said(vj["owner_words"]), S["said"])
             his(said)
             add("decision", "version", {"said": said}, [P(vjp)], {"owner_said": said})
         if vj.get("tokens_spent"):
@@ -744,7 +907,7 @@ def plan(root, mod):
             if cur:
                 bullets.append((at, " ".join(cur)))
             for at, b in bullets:
-                said = fit(_said(b), S["said"])
+                said = fit_said(_said(b), S["said"])
                 if his(said):
                     add("decision", "q:" + slug(said), {"said": said}, ["path:%s:%d" % (_rel(root, jp), at)],
                         {"owner_said": said})
@@ -803,7 +966,8 @@ def plan(root, mod):
             sha_ok[sha] = landed_sha(root, sha)
         return sha_ok[sha]
 
-    rebased = 0
+    rebased = work_orders = 0
+    ticket_ctx = {}
     claimed = {s for k, s, *_ in ev if k == "finding.claimed_fixed"}
     closed_unstated, sha_dead, refuted_no_sha, causes_seen = [], 0, 0, set()
     for ip, is_closed in cands:
@@ -834,7 +998,9 @@ def plan(root, mod):
         fr = fault_raw.get(name) or (None, None, None)
         RECORDS[mod][name] = R.record_text(name, titles.get(name), states.get(name), prose if ip else None,
                                            tev.get(name, []), fr[0], fr[1], _rel(root, ip) if ip else fr[2])
-        state = _final_state(name, tev.get(name, []), S, states.get(name), landed, bulk, rd)
+        wo = bool(WORK_ORDER_RE.search(titles.get(name) or ""))
+        state = None if wo else _final_state(name, tev.get(name, []), S, states.get(name), landed, bulk, rd,
+                                             lambda x: SUBJECT_OF(root, x))
         if state and state[2]:
             tw = landed(state[2])
             if not tw:
@@ -847,17 +1013,23 @@ def plan(root, mod):
                 t_ = (t_.replace(said_, "%s (pre-landing; landed as %s)" % (said_, tw), 1) if said_ in t_ else
                       "%s (recorded on pre-landing %s; landed as %s)" % (t_, said_[:12], tw))
                 state = (kind_, dict(body_, text=fit(t_, S["text"])), tw, ref_)
-        if is_closed and not state:
+        if is_closed and not state and not wo:
             closed_unstated.append(name)
             continue
+        if wo:
+            work_orders += 1
         items.append(name)
+        ticket_ctx[name] = {"fixed": bool(state) and state[0] in ("finding.claimed_fixed", "finding.verified"),
+                            "defects": [titles.get(name) or "", rd.get("defect") or ""] + [
+                                str(t[2].get(k) or "") for t in tev.get(name, []) if t[2].get("event") == "file"
+                                for k in ("why", "reason", "title")]}
         fe = next((t for t in tev.get(name, []) if t[2].get("event") == "file"), None)
         src = [P(ip) if ip else "path:%s:%d" % (_rel(root, fe[0]), fe[1]), "item:" + name]
         etexts = [str(t[2].get(k) or "") for t in tev.get(name, []) for k in ("text", "why", "reason", "title")
                   if t[2].get("event") in ("file", "note", "close", "implemented")]
         if name in fault_ids:
             dup_fault += 1
-        else:
+        elif not wo:           # a work order names nothing wrong with the mod: its facts are its traps
             _mine_finding(add, name, prose, titles, locked, S, src, etexts, rd)
         if state and "finding:" + name not in claimed:
             kind, body, sha, ref = state
@@ -903,7 +1075,7 @@ def plan(root, mod):
             lref = ["ledger:%s:%d" % (_rel(root, t[0]), t[1])] if t else []
             shas = [landed(x) for x in SHA_RE.findall(txt) if landed(x)] or ([state[2]] if state else [])
             subj = slug(re.sub(r"(?i)^.*?(?:false theor(?:y|ies)|correction|ruled out[^:]*):\s*", "", sen), 8)
-            if kind_ == "cause" and shas:
+            if kind_ == "cause" and shas and not wo:
                 paths = deps or PATH_RE.findall(txt) or [
                     _rel(root, d) for d in [os.path.join(root, "src", "RimMandrake", mod)] if os.path.isdir(d)] or [
                     re.sub(r":\d+$", "", src[0][5:])]
@@ -982,13 +1154,18 @@ def plan(root, mod):
             if n_ not in orr["owner"]:
                 not_ruling += 1
                 continue
-        words_ = fit(said, S["said"]) if said else fit(card, S["text"])
+        words_ = fit_said(said, S["said"]) if said else fit(card, S["text"])
         if not his(words_):
             continue
         subj = ("finding:" + iid) if iid and "finding:" + iid in mined else "q:" + slug(iid or words_, 12)
         auth = {"owner_said": words_} if said else {"by_card": words_}
         add("decision", subj, {"said": words_} if said else {"text": words_},
             ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+    ev = apply_judge_rules(ev, ticket_ctx, decider, tt.get("tests") if isinstance(tt.get("tests"), dict) else {}, S,
+                           notes)
+    if work_orders:
+        notes.append("%d pipeline work-order tickets (a stage take, a blind cycle) mine no finding: their traps stand"
+                     % work_orders)
     if dropped_keep:
         notes.append("left out: %d traps and ruled-out causes the keep reader found would change nothing a holder "
                      "does" % dropped_keep)
@@ -999,6 +1176,79 @@ def plan(root, mod):
         notes.append("left out: %d owner words riding lifecycle or fleet-wide events (authority for an act, not a "
                      "statement about the mod)" % lifecycle_words)
     return ev, notes
+
+
+OWN_DEFECT_COVER = 0.6      # a trap sentence this much of whose words are the fixed ticket's own defect restates it
+TWIN_COVER = 0.7            # two lines of one kind on one ticket this much alike are one fact
+
+
+def apply_judge_rules(ev, ctx, decider, tests, S, notes):
+    """The round-2 judge's rules over a whole plan, after the keep pass (so no reading's hash moves): a trap keeps only
+    its sentences that are no status line, doc history, restated ruling or (on a ticket closed by a fix) its own
+    defect (rule 1); a status sentence naming an UNRUN scene of a bar with no live row becomes that bar's live.run
+    UNRUN; a cause.refuted needs a sentence that rules it out (rule 2); a later twin of a line on the same ticket leaves
+    (rule 5: the re-mine's leftovers, e.g. a regex 'A6 refuted' beside the reading's A6). `ctx` is {ticket: {"fixed":
+    bool, "defects": [texts]}}. -> the new plan; what left is counted in `notes`."""
+    dec = {}
+    for kind, subject, body, evidence, auth, sha in ev:
+        if kind == "decision":
+            for r in evidence:
+                if r and r.startswith("item:"):
+                    dec.setdefault(r[5:], []).append(body.get("said") or body.get("text") or "")
+    live_bars = {s for k, s, *_ in ev if k == "live.run"}
+    out, counts, unrun_rows, seen = [], {}, [], {}
+
+    def count(why):
+        counts[why] = counts.get(why, 0) + 1
+
+    for e in ev:
+        kind, subject, body, evidence, auth, sha = e
+        tick = next((r[5:] for r in evidence if r and r.startswith("item:")), None)
+        if tick is None or kind not in ("trap.noted", "cause.refuted"):
+            out.append(e)
+            continue
+        c = ctx.get(tick) or {}
+        text = body.get("text") or ""
+        if kind == "cause.refuted":
+            if STATE_CHANGE_RE.search(text) or (FOUND_CAUSE_RE.search(text) and not EXPLICIT_REFUTED_RE.search(text)) \
+                    or not (RULED_OUT_RE.search(text) or HYPOTHESIS_RE.match(text)):
+                count("cause.refuted with no sentence ruling it out")
+                continue
+        else:
+            kept, dropped, unrun = filter_trap(text, dec.get(tick, ()), c.get("defects", ()), c.get("fixed"))
+            for why, _s in dropped:
+                count("trap sentence: " + why)
+            unrun_rows += [(s_, evidence) for s_ in unrun]
+            if not kept:
+                continue
+            if kept != text:
+                body = dict(body, text=fit(kept, S["text"]))
+                subject = "trap:" + slug(kept, 8)
+        twins = seen.setdefault((tick, kind), [])
+        t2 = body["text"]
+        if any((_label(p) and _label(p) == _label(t2)) or coverage(t2, p) >= TWIN_COVER or coverage(p, t2) >= TWIN_COVER
+               for p in twins):
+            count("%s twin of an earlier line on its ticket" % kind)
+            continue
+        twins.append(t2)
+        out.append((kind, subject, body, evidence, auth, sha))
+    for s_, evd in unrun_rows:
+        for scene, bid in sorted(decider.items()):
+            if re.search(r"(?<![\w])%s(?![\w])" % re.escape(scene), s_) and "bar:" + bid not in live_bars:
+                live_bars.add("bar:" + bid)
+                cmd = (tests.get(scene) or {}).get("command") if isinstance(tests.get(scene), dict) else None
+                out.append(("live.run", "bar:" + bid, {
+                    "result": "UNRUN", "bar": bid, "command": fit("%s · scene %s" % (cmd or "?", scene), S["command"]),
+                    "text": fit("%s UNRUN, as its ticket records it" % scene, S["text"])}, evd, None, None))
+                count("UNRUN scene named by a ticket made its bar's live.run UNRUN")
+    if counts:
+        notes.append("judge rules (round 2): " + "; ".join("%d %s" % (n, w) for w, n in sorted(counts.items())))
+    return out
+
+
+def _bare(body):
+    """A body as its facts: without the writer's own stamps."""
+    return {k: v for k, v in (body or {}).items() if k not in ("by", "ts", "new_subject_why")}
 
 
 def _fit_line(body, auth, measured):
@@ -1068,6 +1318,7 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
     version = next((b.get("version") for k, s, b, *_ in ev if k == "version.open"), None)
     written = already = 0
     refused, near, held, seq = [], [], set(), {}
+    replaced = 0
     for idx, (kind, subject, body, evidence, auth, sha) in enumerate(ev):
         apart = fit("a separate source record (%s); listed in the backfill report" % (
             evidence[0] if evidence else "?"), 160)
@@ -1092,12 +1343,25 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                                           authority=auth, code_sha=sha, views=False, new_subject=apart)
                 except M.Refusal as r2:
                     same = re.search(r"restates (BACKFILL:[0-9a-f]+)", str(r2))
-                    if same:                # an older mine holds the same fact under other evidence: keep that line
+                    olde = next((e for e in M.read(root, mod) if e.get("id") == same.group(1)), None) if same else None
+                    if same and olde is not None and _bare(olde.get("body")) != _bare(body):
+                        # rule 5: an earlier mining's line whose words this re-mine changed (a '[…]' cut, a
+                        # boilerplate text) is replaced, never held beside the fact it restates
+                        M.delete(root, mod, [olde["id"]])
+                        try:
+                            eid, created = M.append(root, mod, W, kind, subject, body=body, version=version,
+                                                    evidence=evidence, authority=auth, code_sha=sha, views=False)
+                            replaced += 1
+                        except M.Refusal as r3:
+                            refused.append((kind, subject, str(r3)))
+                            continue
+                    elif same:              # an older mine holds the same fact under other evidence: keep that line
                         held.add(same.group(1))
                         already += 1
                         continue
-                    refused.append((kind, subject, str(r2)))
-                    continue
+                    else:
+                        refused.append((kind, subject, str(r2)))
+                        continue
             else:
                 refused.append((kind, subject, str(r)))
                 continue
@@ -1159,8 +1423,11 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                     refused.append((e["kind"], subject, str(r)))
             near.append((subject, "re-minted apart after its old first line was deleted"))
     M.write_views(root, mod)
+    if replaced:
+        notes.append("%d lines of an earlier mining restating a fact in other words were replaced by the re-mine's"
+                     % replaced)
     return {"planned": len(ev), "written": written, "already": already, "deleted": len(old), "refused": refused,
-            "near_duplicates": near, "notes": notes}
+            "near_duplicates": near, "notes": notes, "replaced": replaced}
 
 
 def compare(root, mod):
