@@ -1,0 +1,1 @@
+One rimflow note child costs 6-9 s (full ledger replay for check + queue render, measured 2026-11-16 at load ~5): anything with a time budget (a 20 s metronome beat) must budget a note by its measured cost, never start one with 1 s left on a 120 s timeout.
