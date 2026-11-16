@@ -110,21 +110,27 @@ def _last_line(*texts):
     return ""
 
 
-def run_offline(root, mod, runner=subprocess.run, now=None):
+def run_offline(root, mod, runner=subprocess.run, now=None, resume=False):
     """Run every offline test of the mod's table (its `command`, cwd root), and any other test a bar names among its
     offline deciders (a `record` read), and write back its runs_today with the build it ran on.
-    -> {"ran": n, "failed": [ids], "seconds": total}; {"ran": 0, "failed": [], "error": why} when the table cannot be
-    read. In-game tests are left alone."""
+    resume (RIMMANDRAKE_RESUME_CERTIFICATE_RERUN_KILLED_AFTER_THIRTY_EIGHT): keep, unrun, a test whose stamp is green on
+    the build and command it has now (the evidence a rerun would write); a red, stale or unstamped test still runs.
+    -> {"ran": n, "failed": [ids], "seconds": total, "skipped": kept}; {"ran": 0, "failed": [], "error": why} when the
+    table cannot be read. In-game tests are left alone."""
     tt, err = read_table(root, mod)
     if tt is None:
         return {"ran": 0, "failed": [], "error": err}
     dec = {d for b in tt["bars"] if isinstance(b, dict) and isinstance(b.get("offline_decides"), list)
            for d in b["offline_decides"]}
-    ran, failed, total = 0, [], 0.0
+    ran, failed, total, skipped = 0, [], 0.0, 0
     for tid, t in tt["tests"].items():
         if not isinstance(t, dict) or not t.get("command") or not (t.get("kind") == "offline" or tid in dec):
             continue
         build = test_build(root, t)      # the content the run reads, taken before it runs
+        old = t.get("runs_today") if isinstance(t.get("runs_today"), dict) else {}
+        if resume and old.get("rc") == 0 and old.get("build") == build and old.get("command") == t["command"]:
+            skipped += 1
+            continue
         t0 = time.time()
         try:
             r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S)
@@ -142,7 +148,7 @@ def run_offline(root, mod, runner=subprocess.run, now=None):
         if rc != 0:
             failed.append(tid)
         _write_table(root, mod, tt)     # after each test: a run killed part way keeps the stamps it earned
-    return {"ran": ran, "failed": failed, "seconds": round(total, 2)}
+    return {"ran": ran, "failed": failed, "seconds": round(total, 2), "skipped": skipped}
 
 
 def _ended_items(root, ids):

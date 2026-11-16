@@ -2911,6 +2911,8 @@ def main(argv=None):
     c.add_argument("mod")
     c.add_argument("--to", default="blind_challenge", choices=WORDS)
     c.add_argument("--run", action="store_true", help="rerun the offline deciders first and stamp their build (no tokens)")
+    c.add_argument("--resume", action="store_true", help="with --run: keep a decider already green on its current build "
+                   "and command (a rerun killed part way picks up where it stopped)")
     c.add_argument("--json", action="store_true")
     la = sub.add_parser("launch")
     la.add_argument("mod")
@@ -3021,14 +3023,15 @@ def main(argv=None):
         ran = None
         if o.run:
             t0 = time.time()
-            ran = JC.run_offline(root, o.mod)
+            ran = JC.run_offline(root, o.mod, resume=o.resume)
             ran["wall_s"] = round(time.time() - t0, 1)
         cv = certificate(root, o.mod, o.to)
         if o.json:
             print(json.dumps(dict(cv, run=ran), indent=2, ensure_ascii=False))
         else:
             if ran is not None:
-                print("RAN %s: %d offline tests in %.1f s%s" % (o.mod, ran["ran"], ran["wall_s"], (
+                print("RAN %s: %d offline tests in %.1f s%s%s" % (o.mod, ran["ran"], ran["wall_s"], (
+                    "; kept %d already green on this build" % ran["skipped"]) if ran.get("skipped") else "", (
                     "; failed: %s" % ", ".join(ran["failed"])) if ran["failed"] else "") + (
                     "; %s" % ran["error"] if ran.get("error") else ""))
             JC.print_certificate(cv)
