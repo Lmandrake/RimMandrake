@@ -74,6 +74,21 @@ REFUTED_RE = re.compile(r"(?i:false theor(?:y|ies)\s*:)|\b(?i:is|was|were|are|be
 NOT_REFUTED_RE = re.compile(r"\b(?:not|never|un)[- ]?refuted\b", re.I)
 
 
+TOOLING_RE = re.compile(r"\bmod ledger\b", re.I)
+
+
+def _closed_in_ledger(evs):
+    """A ticket with no prose file is closed when its last close, drop or supersede has no reopen after it."""
+    state = False
+    for t in evs:
+        k = t[2].get("event")
+        if k in ("close", "drop", "supersede"):
+            state = True
+        elif k == "reopen":
+            state = False
+    return state
+
+
 def ticket_events(root, names):
     """-> {ticket id: [(shard path, line number, event)]} for the rimflow ledger events on those tickets, in tsn order."""
     out = {}
@@ -450,7 +465,22 @@ def plan(root, mod):
     idir = os.path.join(root, "infrastructure", "state", "items")
     cands = [(p, False) for p in sorted(glob.glob(os.path.join(idir, "*.md")))] + \
         [(p, True) for p in sorted(glob.glob(os.path.join(idir, "closed", "*.md")))]
-    tev = ticket_events(root, {os.path.basename(p)[:-3] for p, _ in cands})
+    cfg = M.config()
+    lead = re.compile(r"^(?:polish\W*)?(?:%s)\b" % "|".join(
+        re.escape(n) for n in [mod, spaced] + cfg.get("backfill_title_names", {}).get(mod, [])), re.I)
+    include = set(cfg.get("backfill_item_include", {}).get(mod, []))
+    exclude = set(cfg.get("backfill_item_exclude", {}).get(mod, []))
+
+    def id_or_title_names(name):
+        """A closed or prose-less ticket is the mod's only when its id or its filer's title leads with the mod (a
+        closed pipeline ticket that cites the mod in passing is the pipeline's)."""
+        return name in include or mod.upper() in name or bool(set(name.split("_")) & set(words)) or bool(
+            lead.search(titles.get(name) or ""))
+
+    # most tickets have no prose file: their rimflow events (title, notes, close) are the whole record
+    have = {os.path.basename(p)[:-3] for p, _ in cands}
+    cands += [(None, n) for n in sorted(titles) if n not in have and id_or_title_names(n)]
+    tev = ticket_events(root, have | {n for p, n in cands if p is None})
     sha_ok = {}
 
     def resolves(sha):
@@ -465,11 +495,19 @@ def plan(root, mod):
     claimed = {s for k, s, *_ in ev if k == "finding.claimed_fixed"}
     closed_unstated, sha_dead, refuted_no_sha, causes_seen = [], 0, 0, set()
     for ip, is_closed in cands:
-        name = os.path.basename(ip)[:-3]
-        with open(ip, encoding="utf-8") as fh:
-            prose = fh.read()
+        if ip is None:
+            name, prose, ip = is_closed, titles[is_closed], None
+            is_closed = _closed_in_ledger(tev.get(name, []))
+        else:
+            name = os.path.basename(ip)[:-3]
+            with open(ip, encoding="utf-8") as fh:
+                prose = fh.read()
+        if name in exclude or TOOLING_RE.search(titles.get(name) or ""):
+            continue                       # the mod ledger's own machinery stays a rimflow ticket (fusion spec 3.2)
+        if (is_closed or ip is None) and not id_or_title_names(name):
+            continue
         head = "\n".join(prose.split("\n")[:6])
-        named = mod.upper() in name or mod in head or spaced in head
+        named = mod.upper() in name or mod in head or spaced in head or id_or_title_names(name)
         # a short word (KNOCKBACK, SLACK) alone is too wide (SLACK also names SlackMaster work): it counts only when the
         # mod's configured item words list it, or the mod is named somewhere in the prose
         if not named and not (set(name.split("_")) & set(words) or
@@ -488,7 +526,8 @@ def plan(root, mod):
             closed_unstated.append(name)
             continue
         items.append(name)
-        src = [P(ip), "item:" + name]
+        fe = next((t for t in tev.get(name, []) if t[2].get("event") == "file"), None)
+        src = [P(ip) if ip else "path:%s:%d" % (_rel(root, fe[0]), fe[1]), "item:" + name]
         if name in fault_ids:
             dup_fault += 1
         else:
@@ -515,7 +554,7 @@ def plan(root, mod):
                     continue
                 paths = PATH_RE.findall(sen) or PATH_RE.findall(txt) or [
                     _rel(root, d) for d in [os.path.join(root, "src", "RimMandrake", mod)] if os.path.isdir(d)] or [
-                    _rel(root, ip)]
+                    re.sub(r":\d+$", "", src[0][5:])]
                 add("cause.refuted", "cause:" + slug(re.sub(r"(?i)^.*?false theor(?:y|ies):\s*", "", sen), 8),
                     {"text": fit(sen, S["text"]), "finding": "finding:" + name, "depends_on": paths[:4]},
                     src + (["ledger:%s:%d" % (_rel(root, t[0]), t[1])] if t else []), None, shas[0])
@@ -527,11 +566,10 @@ def plan(root, mod):
                      % len(closed_unstated))
     if sha_dead:
         notes.append("left out: %d ticket final states whose sha does not resolve on origin/main" % sha_dead)
-    have = {os.path.basename(p)[:-3] for p, _ in cands}
-    nofile = [t for t in titles if t not in have and (mod.upper() in t or set(t.split("_")) & set(words))]
-    if nofile:
-        notes.append("left out: %d tickets of this mod have no item file (ledger-only, from before item prose; the "
-                     "owner's mining scope is items/*.md and items/closed/*.md)" % len(nofile))
+    nofile = [n for n in items if not os.path.exists(os.path.join(idir, n + ".md")) and
+              not os.path.exists(os.path.join(idir, "closed", n + ".md"))]
+    notes.append("tickets mined: %d, %d of them with no item file (their rimflow events are the whole record)"
+                 % (len(items), len(nofile)))
     if refuted_no_sha:
         notes.append("left out: %d refuted causes with no sha to pin them to" % refuted_no_sha)
     if elsewhere:

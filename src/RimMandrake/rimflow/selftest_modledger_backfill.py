@@ -122,6 +122,27 @@ EVL = [
      "sha": "abcdef56", "criteria": [{"id": "A1", "text": "selftest: drain A, charge only A"}], "tsn": 40},
     {"seat": "BENCH", "event": "close", "id": "RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM", "sha": "abcdef78",
      "tsn": 50}]
+# tickets with no prose file at all (most tickets: their rimflow events are the whole record), a closed prose ticket
+# that only mentions the mod in passing, and a mining ticket about the mod's ledger itself
+LO, LP, LS, LX, LM, LG = ("RIMMANDRAKE_TRACE_FIXTUREMOD_LEDGER_ONLY_GAS", "RIMMANDRAKE_SHORTEN_LANE_READS_SHORT",
+                          "RIMMANDRAKE_FIX_FIXTUREMOD_OLD_LANE_READING", "RIMMANDRAKE_ISOLATE_SELFTEST_FROM_PILOT",
+                          "RIMMANDRAKE_MINE_FIXTUREMOD_TICKETS_INTO_IT", "RIMMANDRAKE_ADD_OTHERLIST_AFTER_FIXTURE")
+w(os.path.join(IT, "closed", LG + ".md"), "# %s\n\nAdd OtherMod to the list. FixtureMod was added the day before.\n" % LG)
+EVL += [
+    {"seat": "BENCH", "event": "file", "id": LO, "title": "FixtureMod sc_gas FAIL: the chain stops at five of seventeen",
+     "tsn": 60},
+    {"seat": "BENCH", "event": "claim", "id": LO, "why": "detached run", "tsn": 61},
+    {"seat": "BENCH", "event": "note", "id": LO, "text": "Started looking at the gas chain again.", "tsn": 62},
+    {"seat": "BENCH", "event": "close", "id": LO, "sha": "abcdef90", "why": "the chain's step limit was 5; raised",
+     "tsn": 63},
+    {"seat": "BENCH", "event": "file", "id": LP, "title": "Polish, FixtureMod: the lane reads short", "tsn": 64},
+    {"seat": "BENCH", "event": "file", "id": LS, "title": "FixtureMod: the old lane reading", "tsn": 65},
+    {"seat": "BENCH", "event": "supersede", "id": LS, "by": LP, "why": "the polish ticket carries it", "tsn": 66},
+    {"seat": "BENCH", "event": "file", "id": LX, "title": "selftest_x RED; FixtureMod is the pilot it broke on",
+     "tsn": 67},
+    {"seat": "BENCH", "event": "file", "id": LM, "title": "Mine FixtureMod's tickets into its mod ledger", "tsn": 68},
+    {"seat": "BENCH", "event": "file", "id": LG, "title": "Add OtherMod to the full list", "tsn": 69},
+    {"seat": "BENCH", "event": "close", "id": LG, "sha": "abcdef91", "why": "added", "tsn": 70}]
 with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:
     for e_ in EVL:
         fh.write(json.dumps(e_) + "\n")
@@ -218,6 +239,24 @@ check("compare: a journal claiming every scene UNRUN against live rows is a DIFF
 _fx = rows["blind faults marked FIXED in faults.json"]
 check("compare: the FIXED-faults row counts the blind faults, not every claimed ticket", _fx[1] == 2 and
       "2 claimed_fixed" in str(_fx[2]), _fx)
+F = st["findings"]
+lo = [e for e in bevs if "item:" + LO in e["evidence"]]
+check("a ticket with no prose file is mined from its rimflow events: its title as the finding, its close as claimed "
+      "fixed; its claim and narration never", sorted(e["kind"] for e in lo) == ["finding.claimed_fixed",
+                                                                              "finding.open"] and
+      (F.get("finding:" + LO) or {}).get("text", "").startswith("FixtureMod sc_gas FAIL") and
+      (F.get("finding:" + LO) or {}).get("code_sha") == "abcdef90", [(e["kind"], e["body"]) for e in lo])
+check("a ledger-only ticket cites the shard line its file event sits on first (the old file the oracle checks)",
+      bool(lo) and all(e["evidence"][0].startswith("path:infrastructure/state/ledger/events/BENCH.jsonl:") for e in lo),
+      [e["evidence"][0] for e in lo])
+check("an open ledger-only ticket whose title leads with the mod is an open finding; a Polish title is polish",
+      (F.get("finding:" + LP) or {}).get("status") == "open" and (F.get("finding:" + LP) or {}).get("class") == "polish",
+      F.get("finding:" + LP))
+check("a superseded ledger-only ticket mines nothing (never left looking open)", "finding:" + LS not in F, sorted(F))
+check("a title that cites the mod mid-sentence, a mining ticket about its ledger, and a closed ticket that mentions it "
+      "in passing are not its findings", not [t for t in (LX, LM, LG) if "finding:" + t in F],
+      [t for t in (LX, LM, LG) if "finding:" + t in F])
+
 txt, info = M.packet(root, MOD)
 check("his words are printed once in the packet (his answers), not again under decisions",
       txt.count("Shelves are open, period.") == 1, txt.count("Shelves are open, period."))
@@ -242,9 +281,9 @@ check("a closed ticket whose closing cannot be stated (a drop with no sha) mines
 fi = F.get("finding:RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED") or {}
 check("a live ticket marked implemented is claimed_fixed on that sha", fi.get("status") == "claimed_fixed" and
       fi.get("code_sha") == "abcdef56", fi)
-check("a ticket with no item file (ledger-only, pre-prose) is counted as left out, not mined",
-      "finding:FIXTUREMOD_OLD_TICKET_WITH_NO_FILE_1" not in F and any("1 tickets of this mod have no item file" in n
-                                                                      for n in res["notes"]), res["notes"])
+check("a ticket with no item file is mined from its rimflow events (most tickets have none), and counted",
+      (F.get("finding:FIXTUREMOD_OLD_TICKET_WITH_NO_FILE_1") or {}).get("text") == "ledger-only" and
+      any(re.search(r"\b\d+ of them with no item file", n) for n in res["notes"]), res["notes"])
 check("a pipeline ticket about the mod (a backfill) is not a finding in it",
       "finding:RIMMANDRAKE_BACKFILL_FIXTUREMOD_LEDGER_IN_SHADOW" not in F, sorted(F))
 check("a closed ticket of another concept (SlackMaster) is not mined",

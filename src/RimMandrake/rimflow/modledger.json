@@ -1,5 +1,5 @@
 {
-  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green; finding.withdrawn (not a defect) is JUDGE, STEWARD or a HOLDER with a test (standard.holder_withdrawn_needs). BACKFILL writes fact kinds only: lifecycle kinds are never mined (standard rule 10). packet_line_chars: one text in the packet past this many characters is clipped with a pointer to the command that prints it whole (fulltext.clip); the ledger keeps it whole. backfill_item_words: per mod, the item-name words that alone mark a live rimflow item as that mod's at backfill (an item naming the mod in its name or opening lines needs none); a short word is listed only where it names nothing else. backfill_item_skip_words: an item whose name holds one of these is pipeline work ABOUT the mod (its ledger backfill, a process retro), never a finding IN it, and is not mined. standard: the entry standard (design/specs/2026-11-15-mod-ledger-entry-standard.md, his 2026-11-15 'so it is not arbitrary in size and pedantic detail' and 'we must resist unlimited provenance'): field caps in chars, the whole line in bytes, typed evidence refs, the eight facets, the narration openers, the required body fields per kind, which kinds need code_sha, the subject classes and singletons, the closed value sets, the lifecycle kinds refused as noise, and the mint-time duplicate check (FTS5 BM25 picks the candidates, token containment >= mint_duplicate_overlap decides: raw BM25 is not comparable across ledgers of different size). bars may be empty only when the entry carries a facet tag (§5: 'a miner that cannot tell writes bars: [] with a facet'). pilot_mods: the mods whose stage runs the dispatcher starts from the packet (modledger.launch / end_run; his card 2026-11-15: all three pilots, side by side).",
+  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green; finding.withdrawn (not a defect) is JUDGE, STEWARD or a HOLDER with a test (standard.holder_withdrawn_needs). BACKFILL writes fact kinds only: lifecycle kinds are never mined (standard rule 10). packet_line_chars: one text in the packet past this many characters is clipped with a pointer to the command that prints it whole (fulltext.clip); the ledger keeps it whole. backfill_item_words: per mod, the item-name words that alone mark a live rimflow item as that mod's at backfill (an item naming the mod in its name or opening lines needs none); a short word is listed only where it names nothing else. backfill_item_skip_words: an item whose name holds one of these is pipeline work ABOUT the mod (its ledger backfill, a process retro), never a finding IN it, and is not mined. backfill_title_names: per mod, short names a filer's title may lead with ('EK: ...'); a closed ticket, or one with no prose file, is the mod's only when its id or its title leads with the mod. backfill_item_include / backfill_item_exclude: per mod, ticket ids a miner judged by hand to be (or not be) the mod's, where id and title mislead. standard: the entry standard (design/specs/2026-11-15-mod-ledger-entry-standard.md, his 2026-11-15 'so it is not arbitrary in size and pedantic detail' and 'we must resist unlimited provenance'): field caps in chars, the whole line in bytes, typed evidence refs, the eight facets, the narration openers, the required body fields per kind, which kinds need code_sha, the subject classes and singletons, the closed value sets, the lifecycle kinds refused as noise, and the mint-time duplicate check (FTS5 BM25 picks the candidates, token containment >= mint_duplicate_overlap decides: raw BM25 is not comparable across ledgers of different size). bars may be empty only when the entry carries a facet tag (§5: 'a miner that cannot tell writes bars: [] with a facet'). pilot_mods: the mods whose stage runs the dispatcher starts from the packet (modledger.launch / end_run; his card 2026-11-15: all three pilots, side by side).",
   "pilot_mods": [
     "ExplosiveKnockback",
     "GimmeSomeSlack",
@@ -123,6 +123,24 @@
     ],
     "GimmeSomeSlack": [
       "GSS"
+    ]
+  },
+  "backfill_title_names": {
+    "ExplosiveKnockback": [
+      "EK"
+    ]
+  },
+  "backfill_item_include": {
+    "ExplosiveKnockback": [
+      "RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB"
+    ]
+  },
+  "backfill_item_exclude": {
+    "ExplosiveKnockback": [
+      "RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS",
+      "RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE",
+      "RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES",
+      "RIMMANDRAKE_ADMIT_TEN_WORD_FAULT_ID_INTO_KNOCKBACK_LEDGER"
     ]
   },
   "standard": {
