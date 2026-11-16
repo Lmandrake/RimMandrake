@@ -84,7 +84,7 @@ SETTINGS = {
         "pitSubmergeCutEnabled": True,   # liquid in a cut covers what stands in it (RM_UnderLiquid)
         "underLiquidDeepOpacity": 0.9, "underLiquidFullMetres": 4.0, "underLiquidDarken": 0.6, "pitThingShadowAlpha": 0.3,   # RM_UnderLiquid.Default*
         "flowDoorsSealedFromPitEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
-        "canalFireEnabled": True, "burnDaysPerNotch": 1.0,   # Phase 6 (ruling 7); one rate since LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD
+        "canalFireEnabled": True, "tossFlameOrderEnabled": True, "burnDaysPerNotch": 1.0,   # Phase 6 (ruling 7); one rate since LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD
         "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,                                  # Phase 6 (PROVISIONAL)
         "liquidHeatPushEnabled": True, "liquidHeatStrength": 1.0,                                 # LIQUID_HEAT_PUSH_1 (PROVISIONAL)
         "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "pitDrowningHeadFraction": 0.9, "pitDrowningLyingFraction": 0.2, "poisonFillEnabled": True,   # P7 V2;   # PIT_FILL_EFFECTS_1

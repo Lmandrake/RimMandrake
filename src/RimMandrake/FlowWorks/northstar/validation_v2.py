@@ -145,6 +145,7 @@ BOOL_DEFAULTS = {
                trapTriggerEnabled=True, fallDamageEnabled=True, pitRelativeClimbEnabled=True, pitRampsEnabled=True,
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
+               tossFlameOrderEnabled=True,      # RM_TossFlame (30cc533cf3)
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
                viscosityEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),

@@ -1651,7 +1651,9 @@ EXTENSION_TOGGLES_OWED = ["liquidDrillingEnabled", "liquidWorksRuinStockEnabled"
                           "typedLiquidShoresEnabled",
                           "machineDigEnabled",   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: needs a staged colony mech (design §8)
                           # review 7.10 (2026-10-26): THIRST_LIVE T3 runs with heat scaling OFF, so no row claims ON
-                          "thirstHeatScaling"]
+                          "thirstHeatScaling",
+                          # RM_TossFlame (30cc533cf3): sc_toss_flame is a concept scene, not an extension component; unrun live
+                          "tossFlameOrderEnabled"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDeathEnabled", "pitGuardrailEnabled", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",
