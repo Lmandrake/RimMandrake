@@ -1,0 +1,24 @@
+== fix (working tree)
+ok    every staging call keeps its tool contract (no ProofStageBasin verb, cuts designated before ordered) 
+ok    the scene orders real cuts (both ponds deepened) 
+ok    healthy fake (frozen cut leaves crushed ice, it thaws to 10,000 dL): every row PASS 
+ok    no crushed ice from a frozen cut: the cut FAILs, the melt UNMEASURED (never PASS), the control PASS 
+ok    crushed ice on every cut: the control FAILs 
+ok    the ice gone before the cut lands: the cut and the melt UNMEASURED, none PASS 
+ok    a site that never gets above 0 C: the melt UNMEASURED, the cut still judged 
+ok    warm, the pile never melts: the melt FAILs 
+ok    the work giver refuses the frozen square: the cut FAILs (MOD), the melt UNMEASURED 
+selftest_ice_scene: ok
+rc=0
+== base 2b4bffe212
+FAIL  every staging call keeps its tool contract (no ProofStageBasin verb, cuts designated before ordered) ["ProofStageBasin given '60,60,5,5;freeze' (its contract is x;z;w;h;levels;waterM;FluidDef)"]
+FAIL  the scene orders real cuts (both ponds deepened) ['jawa/flowworks_excavation_drive', 'jawa/flowworks_excavation_drive', 'jawa/flowworks_excavation_drive', 'jawa/flowworks_excavation_drive', 'jawa/flowworks_excavation_drive', 'jawa/flo
+FAIL  healthy fake (frozen cut leaves crushed ice, it thaws to 10,000 dL): every row PASS {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  no crushed ice from a frozen cut: the cut FAILs, the melt UNMEASURED (never PASS), the control PASS {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  crushed ice on every cut: the control FAILs {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  the ice gone before the cut lands: the cut and the melt UNMEASURED, none PASS {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  a site that never gets above 0 C: the melt UNMEASURED, the cut still judged {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  warm, the pile never melts: the melt FAILs {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+FAIL  the work giver refuses the frozen square: the cut FAILs (MOD), the melt UNMEASURED {'ICE_cut_leaves_crushed_ice': 'FAIL', 'ICE_melts_back_into_pond': 'PASS'}
+selftest_ice_scene: FAIL
+rc=0
