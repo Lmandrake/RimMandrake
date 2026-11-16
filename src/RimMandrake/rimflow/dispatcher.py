@@ -180,6 +180,21 @@ def step_limit(step, until):
         signal.signal(signal.SIGALRM, prev)
 
 
+def cut_where(e, keep=5):
+    """The innermost frames of our own code a StepCut was raised in ("module.function > ..."), so a cut says which part
+    of the step was slow; frames of the standard library and of step_limit itself are left out."""
+    import traceback
+    try:
+        fr = [f for f in traceback.extract_tb(e.__traceback__) if f.filename.startswith(SRC_ROOT)
+              and f.name not in ("cut", "step_limit")]
+    except Exception:  # noqa: BLE001 - a measurement must never fail the tick
+        return None
+    return " > ".join("%s.%s" % (os.path.splitext(os.path.basename(f.filename))[0], f.name) for f in fr[-keep:]) or None
+
+
+SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def record_steps(root, rec):
     """Append one tick's step timings to STEPS_FILE (rolled to .1 past STEPS_MAX_BYTES). Never raises."""
     p = os.path.join(root, STEPS_FILE)
@@ -2429,7 +2444,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             # a step past its end: given back as a killed tick gives back, but the tick goes on and ends by itself
             steps[e.step] = "cut"
             back = unreserve(st) + unreleased(st, acts, now)
-            rec = {"at": iso(now), "do": "step_cut", "step": e.step,
+            rec = {"at": iso(now), "do": "step_cut", "step": e.step, "where": cut_where(e),
                    "why": "%s ran past its end in the beat (%.1f s before the kill) and was cut; the next beat runs it "
                           "again; given back: %s" % (e.step, beat_end - time.time(), ", ".join(back) or "none")}
             journal(root, rec)

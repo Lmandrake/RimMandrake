@@ -356,6 +356,15 @@ def test_slow_observe_is_cut():
     check("ring" not in (st.get("seats", {}).get("A") or {}), "slow decide: the ring it decided is given back")
 
 
+def test_cut_names_where_it_was():
+    def slow_designer_close(sch, st, o, now, apply, out=None):
+        time.sleep(6)
+    out, took, end, root = _cut_tick("where", slow_designer_close)
+    cut = [x for x in journal(root) if x.get("do") == "step_cut"]
+    check(cut and "slow_designer_close" in str(cut[0].get("where")),
+          "a step_cut names the function it was cut in (which part of decide is slow): %s" % [x.get("where") for x in cut])
+
+
 def test_slow_execute_is_cut():
     hb = []
     out, took, end, root = _cut_tick("execute", ring_then(0, alarm_first=True),
@@ -497,7 +506,7 @@ def test_designer_launch_fetches_once():
 def main():
     for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
               test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
-              test_slow_observe_is_cut, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
+              test_slow_observe_is_cut, test_cut_names_where_it_was, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
               test_killed_publish_leaves_the_helper_budget_its_slot, test_note_that_cannot_fit_is_not_started,
               test_note_child_is_bounded_by_the_deadline, test_note_and_publish_costs_are_measured,
               test_starved_publish_keeps_its_floor, test_designer_launch_fetches_once):
