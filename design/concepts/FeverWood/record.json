@@ -1,0 +1,2304 @@
+{
+  "schema": 1,
+  "stage": 1,
+  "run": "rm-role-designercodex-1794804230",
+  "grounded_at": "2026-11-16T02:22:44.174396+00:00",
+  "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
+  "scope": [
+    {
+      "id": "owner_november_routes_rescue_maturation",
+      "speaker": "owner",
+      "source": "OWNER:1794374372850231423",
+      "words": "1:2 and a little 3 when tentacles emerge from the water 2:1 3:1 but the only thing you could do is poison the water of that pool if you have the right poison on hand",
+      "text": "The answered question card selects branch routes governing daily work and travel, nearby-companion rescue, and several days before escaped young matures. Its pool-specific poison intervention requires the right poison on hand. The event supplies these answers and carries no approval of this run's root or flagship.",
+      "context_source": [
+        "design/RimMandrake/designer_codex_2026-11-09/FeverWood/QUESTIONS_OWNER.md",
+        "design/RimMandrake/designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md"
+      ]
+    },
+    {
+      "id": "owner_geometry_heat",
+      "speaker": "owner",
+      "source": "OWNER:1792410159136516913",
+      "text": "The all-biome Direct Sun ruling requires geometry-based sun and ordinary ambient heat. FeverWood's heatKind and heatOffsetC fields conflict with this later ruling."
+    },
+    {
+      "id": "owner_current_art_accepted",
+      "speaker": "owner",
+      "source": "OWNER:1792374240816575285",
+      "text": "Current biome art is accepted as-is with later review. This grounding adds no art approval gate."
+    },
+    {
+      "id": "owner_native_water",
+      "speaker": "owner",
+      "source": "OWNER:1793542983826647230",
+      "text": "Every Baroque Biome native can drink its own environmental water. Drinking integration and the Tenant's exposure exemption are separate mechanisms requiring their own evidence."
+    },
+    {
+      "id": "documentary_north_star",
+      "speaker": "agent",
+      "text": "The walk records the treetop-home and remembering-water experience as chosen by card, while its north-star block remains DRAFT with an empty validated hash. Use this as context alongside the November OWNER event. A source-backed root still belongs to stage 1.",
+      "source": [
+        "design/validation_walks/RimMandrake/FeverWood.md:75",
+        "design/RimMandrake/biome_experiences_2026-10-20.md:12"
+      ]
+    },
+    {
+      "id": "documentary_constraints",
+      "speaker": "agent",
+      "text": "The frozen definition and its September amendment describe terrain-based crown access, marsh building refusal, the nectar fear contract, living bait, ordinary limb encounters and plot-reserved whole-body emergence. Their legacy card summaries are documentary evidence. This record stores them as agent readings and reserves direct owner attribution for verified OWNER events.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/the_fever_wood.md:127",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525"
+      ]
+    },
+    {
+      "id": "documented_exclusions",
+      "speaker": "agent",
+      "text": "The September amendment dismisses crown-versus-floor density mechanics. The kit parks moving lanes for a later encroachment engine. October cuts retire theft/raidback and hive parasitism. Existing dormant creature content retains inventory coverage.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:737",
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:29"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "owner_rite_none",
+      "speaker": "owner",
+      "source": "OWNER:1790968079652964812",
+      "words": "none, move on",
+      "text": "Fever Wood teaches no rite. This settled decision stays discharged."
+    },
+    {
+      "id": "grounding_method",
+      "speaker": "agent",
+      "text": "Implementation is established from current source and local wiring. Historic ledger closure is preserved separately from current live proof. All built capabilities default to scope not_opened. Missing behavior is distinguished from its already-present content.",
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_grounding.md",
+        "src/RimMandrake/rimflow/roles/designer.md"
+      ]
+    },
+    {
+      "id": "stage1_root_boundary",
+      "speaker": "agent",
+      "source": [
+        "CONDUCTOR:1794804413045937607",
+        "log.md#L1"
+      ],
+      "text": "The root prioritizes ordinary branch work and travel with water interruptions. It does not reduce or put up for removal any built capability. Rescuability, pool locality, saved memory and escaped-young maturity remain the existing delivery obligations and contradictions. Stage 2 must resolve core edges from evidence; no stage-2 disposition or flagship is granted by this run."
+    }
+  ],
+  "asks": [
+    {
+      "id": "a_root",
+      "text": "Which core promise should define FeverWood: branch routes governing ordinary life above water with consequences, or a different experience missing from the recorded answers?",
+      "decision": "The stage-1 root wording; root approval is separate from selecting a flagship and certifying first touch.",
+      "about": [
+        "fw_routes",
+        "fw_pools",
+        "fw_shore_rescue",
+        "fw_maturation"
+      ],
+      "owner_cites": [
+        "OWNER:1794374372850231423"
+      ],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794804230",
+      "status": "answered",
+      "recommended_answer": "Make a home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans.",
+      "evidence_against": [],
+      "why_no_pause": "The November OWNER event selects daily branch routes with occasional tentacle interruptions. The October documented experience supplies the remembering black water. Implementation gaps attack delivery of this promise, not the obvious choice of promise. No evidence yet found for replacing that experience.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "design/RimMandrake/designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md:3",
+        "design/RimMandrake/biome_experiences_2026-10-20.md:12",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127",
+        "CONDUCTOR:1794804413045937607"
+      ],
+      "answer": "Make a home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans.",
+      "answer_source": "CONDUCTOR:1794804413045937607",
+      "resolution": "delegated: evidence-for-ask; human question struck, never sent",
+      "review": {
+        "by": "/root/root_review",
+        "verdict": "struck",
+        "why": "Do not send: the alternative names no concrete competing experience. November OWNER answers already select daily branch routes and occasional tentacle interruptions; documentary October context supplies remembering water. No evidence against the obvious root was found. The proposed root itself passed accuracy and scope review."
+      }
+    }
+  ],
+  "inventory": [
+    {
+      "id": "fw_package",
+      "text": "FeverWood source, compiled assembly and biome registration ship as a wave-2 member of mandrake.rm.biomes. The development About file retains its standalone package identity. Current local manifest and DLL hashes agree. Installed-game agreement remains unmeasured.",
+      "source": [
+        "src/RimMandrake/FeverWood/About/About.xml",
+        "src/RimMandrake/Biomes.compose.json:41",
+        "src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/About/About.xml",
+        "src/RimMandrake/Biomes.compose.json:41",
+        "src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_RM_MOD_BUILD_1",
+        "ITEM:BAROQUE_BIOMES_WAVE2_FOLD_1"
+      ]
+    },
+    {
+      "id": "fw_placement",
+      "text": "The biome is hand-placed. Its worker returns -100 and the inert natural-placement setting has been removed.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_BiomeWorker_FeverWood.cs:11",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:27"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_BiomeWorker_FeverWood.cs:11",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:27"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_NATURAL_TOGGLE_1"
+      ]
+    },
+    {
+      "id": "fw_routes",
+      "text": "Boughways, ground causeways and fertile bough-soil are painted through the shared causeway profile anchored to living boles. The pass restricts painting to its ground allowlist. Daily routes and the resulting branch-home experience require a live walk.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs:114",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_Boughway.xml:54",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_BoughSoil.xml:44"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "approved",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs:114",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_Boughway.xml:54",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_BoughSoil.xml:44"
+      ],
+      "scope_source": "OWNER:1794374372850231423"
+    },
+    {
+      "id": "fw_foundations",
+      "text": "Ground-refusal converts remaining Soil/SoilRich to MarshyTerrain. Stilt platforms grant Heavy construction through the Bridge ancestry, while mirror pools inherit the deep-water foundation restrictions. Normal construction refusal and the usable stilt alternative remain live-scene obligations.",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:164",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:54"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:164",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:54"
+      ]
+    },
+    {
+      "id": "fw_trunks",
+      "text": "Mineable fever-trunk heartwood and a living core opt into EnvironmentalHazards living regrowth. The profile reuses Greentide toxin-sealed flooring and saved regrowth timers.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkHeartwood.xml",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkHeartwood.xml",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248"
+      ]
+    },
+    {
+      "id": "fw_pools",
+      "text": "ScatterPools paints the registered mirror-pool terrain. TentacleWatch caches connected water clusters and uses largest-cluster size for set-piece eligibility under tentaclePoolsAreClusters.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWood_ScatterPoolsGenStep.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs:38",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWood_ScatterPoolsGenStep.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs:38",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214"
+      ],
+      "history": [
+        "ITEM:FEVER_WOOD_MECHANICS_1"
+      ]
+    },
+    {
+      "id": "fw_shore_rescue",
+      "text": "The shared Tenant scans water adjacency, subtracts wild victims and downs colonist/player victims with a 2500-tick rescue deadline. Being carried clears the deadline. Snare limbs call this same service. Fair nearby rescue has owner backing and remains unmeasured in play.",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:310",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185"
+      ],
+      "impl": "present",
+      "proof": "missing",
+      "scope": "approved",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:310",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185"
+      ],
+      "scope_source": "OWNER:1794374372850231423"
+    },
+    {
+      "id": "fw_mirror_break",
+      "text": "A registered-pool mirror-break incident raises agitation and requests a timed CreatureBehaviors hush.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/IncidentDefs/RM_FeverWood_MirrorBreak.xml:31",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs:33"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/IncidentDefs/RM_FeverWood_MirrorBreak.xml:31",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs:33"
+      ]
+    },
+    {
+      "id": "fw_mirror_list",
+      "text": "The usable mirror-list item and agitation overlay exist. Its read effect writes agitation around the reader using the reader's local value. Acquisition and an independent per-pool snapshot are incomplete.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:53",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:32",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:144"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:53",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:32",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:144"
+      ],
+      "gaps": [
+        "gap_mirror_intel"
+      ]
+    },
+    {
+      "id": "fw_limbs",
+      "text": "Ordinary ambient rolls spawn feeler, snare, lash, porter or sentinel limbs, with a live cap and linger behavior. Damage starts retreat or severing, with flesh and respite consequences. Bloom is excluded from the ordinary weighted table.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:80",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:277",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:129",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:282",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:77"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:80",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:277",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:129",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:282",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:77"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_TENTACLE_BESTIARY_1"
+      ]
+    },
+    {
+      "id": "fw_porter",
+      "text": "An unmolested porter places loot and withdraws. Attacking it ends future porter rolls through a saved map-wide anger flag. Locality and increased pool hostility require correction against the documented porter consequences.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:216",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:293",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:216",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:293",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531"
+      ],
+      "gaps": [
+        "gap_porter_locality"
+      ]
+    },
+    {
+      "id": "fw_great_emergence",
+      "text": "A qualifying large pool and accumulated encounter pressure can escalate into multiple limbs plus the eye. Eye damage accumulates during a withdrawal window, with moderate map-wide drive-off and severe map-wide permanent defeat.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:156",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:318",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:24"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:156",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:318",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:24"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_TENTACLE_SETPIECE_TUNING_1"
+      ]
+    },
+    {
+      "id": "fw_suppression",
+      "text": "The uranium suppressant, machining recipe, designator, workgiver and haul/dump job exist. The job checks feature state and surviving designation before consumption. Suppression updates map-wide clocks and optionally withdraws all limbs.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_Designator_FoulPool.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:17",
+        "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_Designator_FoulPool.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:17",
+        "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml"
+      ],
+      "gaps": [
+        "gap_suppression_locality",
+        "gap_foul_proof"
+      ]
+    },
+    {
+      "id": "fw_tank",
+      "text": "The meat-fed prison tank produces flesh, spleen chemicals and cream, teaches after successful product placement, and risks escape through damage or neglect. Current destruction routes spawn a breach-injured escapee on KillFinalize and quietly release on deconstruction. Older product-clock defaults are repaired lazily.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:130",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:221",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_TankKernel.cs:116",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:88"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:130",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:221",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_TankKernel.cs:116",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:88"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_DIANOGA_PRISON_1",
+        "ITEM:FEVERWOOD_DIANOGA_TANK_TUNING_1",
+        "ITEM:SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY"
+      ]
+    },
+    {
+      "id": "fw_escape_install",
+      "text": "Only an armed tank escapee reaching registered water installs a tenant. Gaining a faction disarms installation. Current installation immediately clears the map-wide defeat flag and destroys the escapee.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:63",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:63",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
+      ],
+      "gaps": [
+        "gap_maturation"
+      ]
+    },
+    {
+      "id": "fw_maturation",
+      "text": "The owner-approved several-day establishment/maturity interval with poisoning of that particular pool remains absent. The current water-arrival path immediately reinstates the ambient adult.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:22",
+        "OWNER:1794374372850231423"
+      ],
+      "impl": "absent",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1794374372850231423",
+      "search_scope": "Read the full escaped-captive tick/install/release paths and TentacleWatch state/ExposeData. Searched src for Sekkulaath maturation and pool establishment timers, and checked the FeverWood roster/spec. Found armed/released flags and immediate installation with no saved pool-specific maturity state.",
+      "gaps": [
+        "gap_maturation"
+      ]
+    },
+    {
+      "id": "fw_brood",
+      "text": "The world tally combines occupied home tanks, home cask stacks, player caravans and settlement keepers. Tally modifies emergence MTB and snare/lash weights through production kernels.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:161",
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:80",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:170",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:161",
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:80",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:170",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs"
+      ]
+    },
+    {
+      "id": "fw_return_gift",
+      "text": "Tank/cask release arms a peaceful young that selects reachable water, prefers FeverWood pools, and schedules a gift on arrival. Due gifts remain queued while disabled, and unplaced rolls retry. State is serialized and queue lengths repaired on load.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:452",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:213",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:279",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:452",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:213",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:279",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
+      ]
+    },
+    {
+      "id": "fw_display_campaign",
+      "text": "Generic keeper, display-tank, cask-trader and story-line hooks support the campaign's Sporefall display tank, enhanced gift and goodwill cost. Freed-display state persists. A pure static campaign-wiring selftest passed this run.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:529",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:529",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml"
+      ],
+      "offline_check": "offline_broodcampaign"
+    },
+    {
+      "id": "fw_lure_bait",
+      "text": "Stake designations, nonlethal downing, hauling, restraint and release exist for living bait. Bait value determines draw, and a triggered stake can lock voluntary release. Normal designator/workgiver flow is absent from the existing demonstration.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_Designator_StakeLure.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_StunForStaking.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_HaulToStake.cs",
+        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:43",
+        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:181"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_Designator_StakeLure.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_StunForStaking.cs",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_HaulToStake.cs",
+        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:43",
+        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:181"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_TWO_FRONT_LURE_1",
+        "ITEM:FEVERWOOD_TWO_FRONT_LURE_TUNING_1"
+      ]
+    },
+    {
+      "id": "fw_two_fronts",
+      "text": "The first front is randomly kurreth or the loaded Webwork front, with free skreth fallback. A possible second wave is delayed and uses the first actual entry edge for opposite arrival under true-fronts settings. Raiders receive an initial goto toward the stake followed by an assault lord. Pending wave state is saved.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:35",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:216",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:35",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:216",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296"
+      ],
+      "gaps": [
+        "gap_lure_targeting",
+        "gap_lure_proof"
+      ]
+    },
+    {
+      "id": "fw_hive_geometry",
+      "text": "The real-geometry path builds a kernel-planned walled/roofed room chain with an entrance and queen room. The old painting-only path remains setting-selectable. Physical enclosure and reachability have readout methods, with no complete live geometry scene in validation.py.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:74",
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:125",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_HiveLayoutKernel.cs",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:28"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:74",
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:125",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_HiveLayoutKernel.cs",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:28"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_ANT_HIVE_DUNGEON_1",
+        "ITEM:ANT_HIVE_REAL_GEOMETRY_1"
+      ]
+    },
+    {
+      "id": "fw_hive_reaction",
+      "text": "Kurreth workers and queen opt into CreatureBehaviors reaction sources, alarm responders and home tethers. The proof script stages a line of ants for hop/rally behavior, separate from generated dungeon geometry.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140",
+        "src/RimMandrake/FeverWood/validation.py:1732",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140",
+        "src/RimMandrake/FeverWood/validation.py:1732",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs"
+      ]
+    },
+    {
+      "id": "fw_hive_farm",
+      "text": "A shallow worker-room thornbug herd is placed by the hive generator and herded back by the saved hive component. This implements placement and return-to-room behavior. Nectar production and a functioning dungeon farm remain live proof obligations.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:388",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:388",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59"
+      ]
+    },
+    {
+      "id": "fw_hive_guard",
+      "text": "Adult bostrach guards are stationed at deeper corridor chokes, tethered and refed while a wild worker of the feeder race exists. Worker-to-guard rally has a pad proof. Generated choke use, hunger and feeder-removal controls remain unproven.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:428",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:107",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Bostrach_Race.xml:110",
+        "src/RimMandrake/FeverWood/validation.py:1856"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:428",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:107",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Bostrach_Race.xml:110",
+        "src/RimMandrake/FeverWood/validation.py:1856"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_HIVE_GUARD_CHAMBER_1"
+      ]
+    },
+    {
+      "id": "fw_hive_sealing",
+      "text": "A matching alarm seals the corridor behind the intruder with temporary resin plugs, skipping pawn cells and using MoveAside for loose contents. Actual retreat-route change needs a generated-hive interaction scene.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:29",
+        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:67"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:29",
+        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:67"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_HIVE_SEALED_PASSAGES_1"
+      ]
+    },
+    {
+      "id": "fw_theft_retired",
+      "text": "Historical kurreth live theft and column/hive raid-back were subsequently cut. The current raid lord disables theft and kidnapping. Deleted mechanics receive absence coverage in the later plan.",
+      "source": [
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238"
+      ],
+      "impl": "absent",
+      "proof": "stale",
+      "scope": "out",
+      "search_scope": "Searched src C#/XML for RM_KurrethTheft, RM_LordJob_KurrethTheft, RM_Quest_KurrethColumn, KurrethColumnCamp and their former source files. Checked git log -S for the theft class and current SpawnRaidWave. Matches retain comments, with current ordinary assault as the executable path.",
+      "history": [
+        "ITEM:FEVERWOOD_ANT_THEFT_RAIDBACK_1",
+        "ITEM:FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1"
+      ]
+    },
+    {
+      "id": "fw_glomvar_residual",
+      "text": "RM_Glomvar race, art references, home tether and unseen-reaction extension remain shipped. Its feeding parasite comp and hive placement were cut. Later coverage must check retained definitions and absence of the retired mechanic.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:35",
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "out",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:35",
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_HIVE_PARASITE_CHAMBER_1"
+      ]
+    },
+    {
+      "id": "fw_nectar",
+      "text": "Thornbug gatherability is gated by saved calm. The shared comp scans hostile proximity, with a local-only setting, then recovers calm over time. Fear suppresses the standard gather interface. Existing FeverWood validation has no nectar/fear scene.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml:159",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:90",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:123"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml:159",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:90",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:123"
+      ]
+    },
+    {
+      "id": "fw_guild",
+      "text": "Vaulm sealing and drommath swelling use deterministic cooldown hediffs. Ollareth has an alarm refusal with no refusal hediff. Damage and failed tame paths exist, with a Harmony hook for the latter. General fear and failed training remain uncovered.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:18",
+        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:50",
+        "src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs:24",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:18",
+        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:50",
+        "src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs:24",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_SAP_SUCKER_GUILD_1",
+        "ITEM:FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1",
+        "ITEM:FEVERWOOD_SAP_SUCKER_TUNING_1"
+      ]
+    },
+    {
+      "id": "fw_native_cast",
+      "text": "The free-tier roster carries kasselith, the sap guild, the retained birds, grolth, brathek and silloch. Silloch has a wait-ambush comp and tame-hostility filter. Its pursuit leash is measured from the current position and needs a moving-prey check.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
+        "src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs:121"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
+        "src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs:121"
+      ]
+    },
+    {
+      "id": "fw_borer_diet",
+      "text": "Brathek tree eating and its settings switch exist through the vanilla Tree food flag. Current source explicitly excludes wall/building/boughway damage.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml:143"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml:143"
+      ]
+    },
+    {
+      "id": "fw_borer_galleries",
+      "text": "Slow visible extension of galleries through inhabited living wood is documented, while current brathek behavior is limited to eating trees. Its rate and steerability remain documentary open parameters.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750",
+        "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7"
+      ],
+      "impl": "absent",
+      "proof": "missing",
+      "scope": "open_question",
+      "search_scope": "Read brathek definition, food flag settings adapter and the living-bole regrowth path. Searched src for Brathek plus gallery/boring/wall damage callers and the roster row. Found the diet adapter and no live gallery-extension mechanism."
+    },
+    {
+      "id": "fw_birds",
+      "text": "Chellow, murrelith and skellick definitions have flight. Murrelith shearing yields plumage. Skellick theft is owned by the optional RimProperty patch. Thavrik was deleted and is absent from the current wild roster.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:13",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:195",
+        "src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml:25"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:13",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:195",
+        "src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml:25"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_ALIEN_BIRD_CHORUS_1"
+      ]
+    },
+    {
+      "id": "fw_chorus",
+      "text": "The biome crown-hum sound and sentinel-triggered hush exist. Hush reasons are consolidated in CreatureBehaviors, so overlapping reasons preserve silence. Individual living-bird calls are absent from this implementation.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:59",
+        "src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:619",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:102"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:59",
+        "src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:619",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:102"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_CROWN_SOUND_HEAT_1"
+      ],
+      "gaps": [
+        "gap_chorus"
+      ]
+    },
+    {
+      "id": "fw_oil",
+      "text": "Oil-boil weather has temperature/commonality settings and an active condition. Seepril YieldNow is patched for the multiplier. Projectile, explosive, fire, burning pawn and lightning paths can flash connected exposed ground haze, end it, clear the weather and wake nearby registered water. Bare ground has an explicit fire-start curve.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:52",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:92",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:190",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:314"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:52",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:92",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:190",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:314"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_OIL_BOIL_WEATHER_1",
+        "ITEM:FEVERWOOD_OIL_FLASH_BARE_GROUND_1"
+      ]
+    },
+    {
+      "id": "fw_flora",
+      "text": "The planted free-tier flora roster, harvest products, fertility constraints and nubrith light exist. Plennith soil-making, cistrel potable supply, fed-pool corvath indication and skimmel sink-mud behavior lack functional local wiring. Ammeth, varnoth and sodderel also declare zero harvest and an empty harvestedThingDef despite their material-resource descriptions.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:388",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:388",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_FLORA_ROSTER_1",
+        "ITEM:FEVERWOOD_PLANT_DANGLING_REFS_1"
+      ],
+      "gaps": [
+        "gap_flora_roles",
+        "gap_resource_plants"
+      ]
+    },
+    {
+      "id": "fw_wrecks",
+      "text": "A registered Moderate overgrown wreck field uses Wreckage family children. Hull and carapace graphics point to their installed texture families. Salvage behavior is inherited from the composed Wreckage service.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml:14",
+        "src/RimMandrake/FeverWood/Patches/RM_FeverWood_WreckField_Register.xml"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml:14",
+        "src/RimMandrake/FeverWood/Patches/RM_FeverWood_WreckField_Register.xml"
+      ],
+      "history": [
+        "ITEM:WRECK_ART_WIRE_RENDERS_NOBODY_POINTS_AT"
+      ]
+    },
+    {
+      "id": "fw_scanner",
+      "text": "An optional Acoustic Scanner patch contributes readings for live limbs, living trunk core, resin plugs and wrecks.",
+      "source": [
+        "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15"
+      ],
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15"
+      ]
+    },
+    {
+      "id": "fw_tier_mapping",
+      "text": "The free biome carries its own content and ancient-danger suppression. Campaign roster and conditional dianoga remapping patches augment it externally, including juvenile/tank products and limbs.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:48",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:75",
+        "src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml",
+        "src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:48",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:75",
+        "src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml",
+        "src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_DIANOGA_GIANT_MAP_1",
+        "ITEM:FEVERWOOD_TIER_LEAKS_FIX_1"
+      ]
+    },
+    {
+      "id": "fw_settings",
+      "text": "A saved FeverWood settings screen controls bestiary, lure, tank, hive and oil mechanics. Terrain generation, nectar fear, silence and shared behavior also depend on their owning mods' settings. The suite checks field roundtrips and selected effects. Full all-off behavior and screen quality remain unmeasured.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:278",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:135",
+        "src/RimMandrake/FeverWood/validation.py:999"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:278",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:135",
+        "src/RimMandrake/FeverWood/validation.py:999"
+      ]
+    },
+    {
+      "id": "fw_proof_hooks",
+      "text": "Read-only limb, hive and hive-geometry methods exist. The limb snapshot exposes counts, pressure, sentinel hush and cooldown. It lacks full per-pool danger, rescue deadlines, owed-gift and pending-wave observations needed for complete acceptance scenes.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:7",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:523"
+      ],
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:7",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:523"
+      ],
+      "history": [
+        "ITEM:FEVERWOOD_LIMB_PROOF_HOOK_1"
+      ]
+    },
+    {
+      "id": "fw_persistence",
+      "text": "Limb timers, watch cooldowns/anger/defeat/gifts, captive flags/product clocks, hive data and pending lure-wave fields have serialization paths. Shared Tenant agitation and drowning deadlines are transient. Existing saves and mid-action reloads need dedicated proof.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:349",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:499",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:148",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353"
+      ],
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:349",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:499",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:148",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353"
+      ],
+      "gaps": [
+        "gap_tenant_persistence"
+      ]
+    },
+    {
+      "id": "fw_sink_mud",
+      "text": "The documented weight-scaled sink-mud, self-release and assisted escape mechanism is absent from the inspected implementation. Ground-refusal only paints marsh terrain. The shared water rescue cannot itself establish mud trapping.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55"
+      ],
+      "impl": "absent",
+      "proof": "missing",
+      "scope": "open_question",
+      "search_scope": "Searched all src C#/XML for SinkMud, sink-mud, MudStuck, mud stuck and StuckInMud, read all local terrain definitions and GroundRefusal, and checked the flora/fauna rosters. References describe the idea but provide no weight-based sticking or mud-rescue caller."
+    },
+    {
+      "id": "fw_abandoned_hives",
+      "text": "The September amendment specifies lootable broken hives beside mirrors, separate from inland reactive hives. The local hive generator fills living chambers. A distinct broken-hive profile or staging route remains unlocated.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772",
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118"
+      ],
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "open_question",
+      "search_scope": "Read current FeverWood hive genstep and map component, searched src filenames and C#/XML for abandoned/broken/ruined hive profiles. A generic external ruin path has not been established."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "gap_maturation",
+      "speaker": "agent",
+      "text": "The November answered card supersedes the old immediate-install interpretation. Arrival currently clears permanent defeat immediately. There is no saved pool identity plus establishment/maturity schedule or matching pool-poison intervention. This is settled behavior awaiting implementation planning.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
+      ],
+      "status": "open",
+      "resolution_owner_needed": false
+    },
+    {
+      "id": "gap_suppression_locality",
+      "speaker": "agent",
+      "text": "The job targets a designated cell, but its suppression call passes only duration and updates map-wide clocks. This cannot implement the approved intervention at the particular escaped-young pool. Ordinary adult suppression locality must retain its own documented scope. Poison availability in the campaign requires checking the existing radioactive-salvage lane before choosing a reagent mapping.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:79",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_tenant_authority",
+      "speaker": "agent",
+      "text": "Shared Tenant.ScanExposure independently scans registered water with body-size MTB and a taught-warning modifier. It never consults TentacleWatch permanent defeat, chemical suppression or the bestiary toggle. It also never reads agitation for strike probability. The two danger systems can disagree about quiet/defeated water. The documentary description of agitation raising danger is unimplemented in this path.",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:478",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:589",
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_porter_locality",
+      "speaker": "agent",
+      "text": "The documented porter consequence is increased hostility and loss of treasure at that pool. Current anger is one saved boolean that suppresses porter selection across the map, with no increase to hostility in this method.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:160",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_tenant_persistence",
+      "speaker": "agent",
+      "text": "Shared Tenant saves only taughtWarning. Agitation and drowning deadlines are explicitly unsaved, so reload discards water evidence and cancels the active rescue obligation. Other FeverWood queues being serialized does not settle this path.",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_mirror_intel",
+      "speaker": "agent",
+      "text": "The mirror list promises independent intelligence about agitated pools. Its use effect copies agitation at the reader into nearby registered cells with a longer expiry. The item also has tradeability None, and the global special-name search found no stocking path. Actual information acquisition and snapshot semantics remain missing.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:31",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:45"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_chorus",
+      "speaker": "agent",
+      "text": "September explicitly records individual animal calls and forbids a map-wide chorus track. October's build-first card includes crown ambient sound. Current source implements biome ambience and hushes biome sustainers. Individual-call delivery and silence have no local implementation. Stage 1-2 should resolve how the later ambience decision relates to the earlier animal-call contract from the existing documents and a live look.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:520",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:19",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:163"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_heat_fields",
+      "speaker": "agent",
+      "text": "The biome still declares heatKind ambient and heatOffsetC 8. Its biome_roster check demands that extension. The later OWNER geometry-only ruling rejects these per-biome fields. Both source and this proof expectation need a stage-3 plan under the existing ruling.",
+      "source": [
+        "OWNER:1792410159136516913",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:185",
+        "src/RimMandrake/FeverWood/validation.py:904"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_foul_proof",
+      "speaker": "agent",
+      "text": "The foul_pool fixture paints Concrete and directly orders a job without adding its required designation. Its off arm expects charge consumption, while production returns carried charges when disabled. The existing check can reject correct production behavior.",
+      "source": [
+        "src/RimMandrake/FeverWood/validation.py:1387",
+        "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_lure_proof",
+      "speaker": "agent",
+      "text": "The lure_raid fixture watches only Kurreth, declares only that faction as expected hostile and disables the second wave. Production may pick the Webwork front first. This scene does not decide staggered two-front behavior.",
+      "source": [
+        "src/RimMandrake/FeverWood/validation.py:1643",
+        "src/RimMandrake/FeverWood/validation.py:1694",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_lure_targeting",
+      "speaker": "agent",
+      "text": "The documented lure spares the colony by drawing raiders to living bait. Current raiders get an initial goto with an assault-colony lord taking over. An opposed-edge fallback can also choose any edge. Sustained bait targeting, travel and front separation require an observational interaction check.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:288",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:225",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_flora_roles",
+      "speaker": "agent",
+      "text": "Plennith has no soil-making comp, cistrel no drinking resource, corvath no fed-pool gate and skimmel no trapping mechanism in the inspected XML or src special-name callers. Their ecological roles remain descriptions. Existing bough-soil terrain and ordinary flora spawning must remain recorded as built.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_flora_roster_2026-09-23.md:100",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:591"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_resource_plants",
+      "speaker": "agent",
+      "text": "The draft misses an additional material-economy gap. Varnoth, ammeth and sodderel describe usable timber or panels but locally set harvestYield 0 and an empty harvestedThingDef. Any alternate source of those goods must be established before claiming these plants deliver them.",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:113",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:401",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:513"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_native_truce",
+      "speaker": "agent",
+      "text": "The shared Tenant exemption requires a PawnKindDef RM_TenantTruceExtension. A complete src C#/XML search finds the extension class and the scanner read, with no XML attachment. The current native roster therefore lacks this exemption. The snare target finder has no native truce filter either. Native water doctrine needs explicit integration coverage.",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_TenantTruceExtension.cs:5",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:221",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:252",
+        "design/Jawa/worldbuilding/biomes/the_fever_wood.md:131"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_pool_reach",
+      "speaker": "agent",
+      "text": "The September amendment makes reach scale with pool size. Shared exposure currently checks only the current cell and eight neighbors. Limb ranges are fixed comp properties. Cluster size gates set-piece eligibility but does not establish scaled reach.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:251",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:193",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_cut_text",
+      "speaker": "agent",
+      "text": "Arrival text still promises kurreth carrying things off and a per-biome ambient heat treatment. Theft/raidback are cut, and the heat model has a later global ruling. Retained glomvar descriptive history also needs alignment with its current dormant status.",
+      "source": [
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:194",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24",
+        "OWNER:1792410159136516913"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "gap_fatal_limb_yield",
+      "speaker": "agent",
+      "text": "Current ordinary/eye comps retain the pre-damage map and explicitly place flesh on severe or fatal damage. XML also carries killed leavings. Exact fatal yield needs engine-callback or in-game quantity evidence before alleging duplication. Existing tests assert presence only.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:276",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:321",
+        "src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:55",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:55",
+        "src/RimMandrake/FeverWood/validation.py:1123"
+      ],
+      "status": "open",
+      "status_detail": "unmeasured quantity"
+    }
+  ],
+  "failure_modes": [
+    "The branches fail to govern ordinary work and travel. The crown reads as painted ground, while the promised mud defense and living-wood decisions never affect daily play.",
+    "Water consequences fail to remain legible and consistent. Unrelated pools share anger or treatment, a defeated creature still strikes through the shared Tenant, reload erases a rescue deadline, or an escapee skips the owner-approved intervention interval.",
+    "The mod passes isolated mock fixtures while the player cannot complete its promised journeys. Real shore rescue, prisoner upkeep/return/gift, living-bait two-front tension, hive retreat and oil harvest/ignition need observable actions, useful controls and complete recovery."
+  ],
+  "built_reviewed": [
+    {
+      "ref": "src/RimMandrake/FeverWood",
+      "covered_by": "fw_package"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_ALIEN_BIRD_CHORUS_1",
+      "covered_by": "fw_birds"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_ANT_HIVE_DUNGEON_1",
+      "covered_by": "fw_hive_geometry"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_ANT_THEFT_RAIDBACK_1",
+      "covered_by": "fw_theft_retired"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_CROWN_SOUND_HEAT_1",
+      "covered_by": "fw_chorus"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_DIANOGA_GIANT_MAP_1",
+      "covered_by": "fw_tier_mapping"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_DIANOGA_PRISON_1",
+      "covered_by": "fw_tank"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_DIANOGA_TANK_TUNING_1",
+      "covered_by": "fw_tank"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_FLORA_ROSTER_1",
+      "covered_by": "fw_flora"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_HIVE_GUARD_CHAMBER_1",
+      "covered_by": "fw_hive_guard"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_HIVE_PARASITE_CHAMBER_1",
+      "covered_by": "fw_glomvar_residual"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_HIVE_SEALED_PASSAGES_1",
+      "covered_by": "fw_hive_sealing"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1",
+      "covered_by": "fw_theft_retired"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_LIMB_PROOF_HOOK_1",
+      "covered_by": "fw_proof_hooks"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_NATURAL_TOGGLE_1",
+      "covered_by": "fw_placement"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_OIL_BOIL_WEATHER_1",
+      "covered_by": "fw_oil"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_OIL_FLASH_BARE_GROUND_1",
+      "covered_by": "fw_oil"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_PLANT_DANGLING_REFS_1",
+      "covered_by": "fw_flora"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_RM_MOD_BUILD_1",
+      "covered_by": "fw_package"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_SAP_SUCKER_GUILD_1",
+      "covered_by": "fw_guild"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1",
+      "covered_by": "fw_guild"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_SAP_SUCKER_TUNING_1",
+      "covered_by": "fw_guild"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_TENTACLE_BESTIARY_1",
+      "covered_by": "fw_limbs"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_TENTACLE_SETPIECE_TUNING_1",
+      "covered_by": "fw_great_emergence"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_TIER_LEAKS_FIX_1",
+      "covered_by": "fw_tier_mapping"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_TWO_FRONT_LURE_1",
+      "covered_by": "fw_lure_bait"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_TWO_FRONT_LURE_TUNING_1",
+      "covered_by": "fw_two_fronts"
+    },
+    {
+      "ref": "ITEM:FEVERWOOD_SCORING_SITTING_1",
+      "not_a_capability": "Completed design sitting. Its no-rite decision is recorded as owner_rite_none. Follow-on built capabilities have their own inventory entries."
+    }
+  ],
+  "grounding_resolution": [
+    {
+      "id": "verify_pool_authority",
+      "source": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
+      "status": "settled_for_stage0",
+      "finding": "Map-wide watch flags, immediate installation, independent Tenant strikes and transient Tenant rescue state are recorded in the named gaps."
+    },
+    {
+      "id": "verify_draft_missing_capabilities",
+      "source": "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
+      "status": "settled_for_stage0",
+      "finding": "Present content and missing mechanics are distinguished. Gallery and mud implementations are absent within the recorded search scope. Broken-hive implementation remains explicitly unknown."
+    },
+    {
+      "id": "verify_cut_history",
+      "source": "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
+      "status": "settled_for_stage0",
+      "finding": "git log -S class checks show theft and parasite additions followed by removal. Current generator fills farm and guard chambers and current raids disable stealing. Retained glomvar remains shipped."
+    },
+    {
+      "id": "verify_scene_contract",
+      "source": "src/RimMandrake/FeverWood/validation.py:461",
+      "status": "settled_for_stage0",
+      "finding": "Every registered proof chain is audited below. Shared Suite settings restoration was inspected to correct the draft's incomplete cleanup account."
+    }
+  ],
+  "draft_review": [
+    {
+      "id": "draft_tank_destroy_corrected",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475",
+        "src/RimMandrake/FeverWood/Source/Kernel/RM_TankKernel.cs:116"
+      ],
+      "finding": "The proposed tank fatal-hit release gap is stale. RouteOnDestroy now handles occupied player tanks through Escape or Release. The older related item title describes the pre-fix state."
+    },
+    {
+      "id": "draft_settings_restore_corrected",
+      "source": [
+        "src/RimMandrake/Utils/modcheck/suite.py:178",
+        "src/RimMandrake/Utils/modcheck/suite.py:568",
+        "src/RimMandrake/Utils/modcheck/suite.py:1089",
+        "src/RimMandrake/FeverWood/validation.py:538"
+      ],
+      "finding": "Local helpers reset to shipped defaults, but Suite.chain wraps setting writes, remembers prior values and restores them in its outer finally. Ordinary chain-exit settings restoration already exists. Process interruption, unreadable-prior values and complete map/weather restoration remain gaps."
+    },
+    {
+      "id": "draft_oil_proof_narrowed",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:400",
+        "src/RimMandrake/FeverWood/validation.py:1944"
+      ],
+      "finding": "ProofYield calls real Plant.YieldNow off/on through the production Harmony path. It does not perform a worker harvest. ProofSpark calls production TrySpark directly, bypassing projectile/fire/lightning entry points. Preserve the distinction between code-path evidence and the full player action."
+    },
+    {
+      "id": "draft_tank_tuning_updated",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:88",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:122"
+      ],
+      "finding": "Current tank feed consumption is 1 per day and cream MTB is 2 days. Historical walk prose about older production rates is stale. This stage records current file values without inferring a measured net economy."
+    },
+    {
+      "id": "draft_bird_roster_corrected",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:13",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:233"
+      ],
+      "finding": "Current bird content lists chellow, murrelith and skellick. Thavrik is recorded as deleted and has no current ThingDef in that file. Its old nest role receives no new built-capability claim."
+    },
+    {
+      "id": "draft_gaps_added",
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:221",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:401",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772"
+      ],
+      "finding": "Added missing truce attachment, pool-scaled reach, zero-yield material plants, and the unlocated broken-hive profile. Existing deferred moving lanes and dismissed density asymmetry are kept outside new core scope."
+    },
+    {
+      "id": "draft_authority_repaired",
+      "source": [
+        "infrastructure/state/ledger/events/OWNER.jsonl:7353",
+        "infrastructure/state/ledger/events/OWNER.jsonl:199",
+        "src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash"
+      ],
+      "finding": "Verified OWNER events independently for November answers and no rite. Legacy documentary quotations remain agent observations where no tsn is available. Local manifest hashes were rechecked and agree. The draft's count claims and its proposed root/tree/showcase choices were not adopted."
+    },
+    {
+      "id": "draft_stage1_root_verified",
+      "source": [
+        "OWNER:1794374372850231423",
+        "design/RimMandrake/biome_experiences_2026-10-20.md:12",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353",
+        "CONDUCTOR:1794804413045937607"
+      ],
+      "finding": "Independently checked the draft root map against the November OWNER event, original documentary experience and current branch/rescue/persistence wiring. Adopted a synthesis with occasional water interruptions explicit; did not adopt the draft as authority. The draft root and proposed flagship had no owner approval. Root authority now comes only from the recorded Evidence-for-Ask call; flagship remains unresolved. The October documentary sentence stays distinct from an OWNER quotation and the DRAFT north-star stays DRAFT."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "neighbor_environmentalhazards",
+      "source": [
+        "src/RimMandrake/FeverWood/About/About.xml",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:115",
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:65"
+      ],
+      "owner": "EnvironmentalHazards",
+      "service": "Tenant exposure/rescue/agitation, scatter pools, root causeways, ground refusal, living-bole/regrowth and calm-gated gatherability. FeverWood opts in with biome/terrain/thing profiles. Its separate TentacleWatch must reconcile danger authority with this service."
+    },
+    {
+      "id": "neighbor_creaturebehaviors",
+      "source": [
+        "src/RimMandrake/FeverWood/About/About.xml",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:648"
+      ],
+      "owner": "CreatureBehaviors",
+      "service": "Reaction event bus, alarm/rally, home tether, sap-sucker alarm, water-seeking behavior and reason-based silence. Settings and active reasons belong to the shared owner."
+    },
+    {
+      "id": "neighbor_greentide",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77",
+        "src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Greentide_SpineTerrains.xml"
+      ],
+      "owner": "Greentide content plus EnvironmentalHazards behavior",
+      "service": "Fever trunks reuse RM_ToxinSealedFloor/RM_ToxinSealant and living-regrowth behavior. Ordinary pool poison explicitly excludes this sealant in the September amendment."
+    },
+    {
+      "id": "neighbor_wreckage",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml:14",
+        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml"
+      ],
+      "owner": "Wreckage",
+      "service": "Family inheritance, weathering, salvage and generated wreck field. Both are composed members."
+    },
+    {
+      "id": "neighbor_property",
+      "source": "src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml:25",
+      "owner": "RimProperty",
+      "service": "Optional skellick theft wiring. A base-biome proof cannot claim that optional behavior without the Property checkout."
+    },
+    {
+      "id": "neighbor_scanner",
+      "source": "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15",
+      "owner": "AcousticScanner",
+      "service": "Optional FindMod-gated acoustic payload. Strings resolve against loaded defs at pulse time."
+    },
+    {
+      "id": "neighbor_campaign",
+      "source": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:75",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+        "src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml"
+      ],
+      "owner": "UtinniPatches and SWBestiary",
+      "service": "Canon roster additions, giant-dianoga mapping, display-tank/settlement lore and products. Whole-body rising stays with the separate crater-event campaign design."
+    },
+    {
+      "id": "neighbor_biomes",
+      "source": "src/RimMandrake/Biomes.compose.json:41",
+      "owner": "Biomes compose",
+      "service": "Runtime packaging and integrated load identity. Standalone development package presence is insufficient proof of the deployed composed mod."
+    },
+    {
+      "id": "neighbor_heat_water",
+      "source": [
+        "OWNER:1792410159136516913",
+        "OWNER:1793542983826647230",
+        "design/RimMandrake/standing_rulings.md:141"
+      ],
+      "owner": "Shared Direct Sun and native-water framework",
+      "service": "Use global heat geometry and native drinking rules. Existing local heat fields and Tenant truce integration need explicit reconciliation."
+    },
+    {
+      "id": "neighbor_vanilla",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:84",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:87"
+      ],
+      "owner": "RimWorld vanilla",
+      "service": "Bridge affordances already implement foundation alternatives, CompRefuelable already hauls raw-meat feed, and gatherability Active gates resource work. These existing mechanisms determine the implementation seam. No external mod comparison was needed to change a design choice."
+    }
+  ],
+  "proof_runs": [
+    {
+      "id": "offline_suite",
+      "source": "src/RimMandrake/FeverWood/selftest_feverwood.py:1",
+      "command": "python3 src/RimMandrake/FeverWood/selftest_feverwood.py",
+      "exit_code": 0,
+      "result": "all FeverWood suite selftests passed",
+      "kind": "offline suite/mock plus source mutation checks",
+      "limits": "The healthy mock and planted breaks test the checks against their encoded contracts. The mock still encodes outdated foul-pool behavior. This cannot establish current gameplay, loaded response shapes or restoration after process death."
+    },
+    {
+      "id": "offline_broodcampaign",
+      "source": "src/RimMandrake/FeverWood/selftest_feverwood_broodcampaign.py:1",
+      "command": "python3 src/RimMandrake/FeverWood/selftest_feverwood_broodcampaign.py",
+      "exit_code": 0,
+      "result": "All shipped wiring and planted-break checks passed",
+      "kind": "offline static campaign wiring",
+      "limits": "C# regex and XML agreement checks establish specific links. Live release, goodwill, produced items, doubled gifts and reload outcomes remain unmeasured."
+    },
+    {
+      "id": "local_manifest",
+      "source": "src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash",
+      "kind": "offline sha256 comparison",
+      "result": "DLL digest and every listed source digest agree with the current local files",
+      "limits": "The installed game and referenced dependency assemblies were not compared."
+    },
+    {
+      "id": "production_kernel_fuzz_review",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/SelfTest/RimMandrakeFeverWood.SelfTest.csproj",
+        "src/RimMandrake/Utils/selftest_feverwood_fuzz.py"
+      ],
+      "kind": "script audit",
+      "result": "The fuzz project links production Brood/Tank/Pool/HiveLayout/Lure kernels. This run read that wiring and did not invoke its build/run wrapper.",
+      "limits": "Historic L0 ledger proof is stale for current whole-feature acceptance."
+    }
+  ],
+  "historic_proof_review": {
+    "source": [
+      "ITEM:FEVERWOOD_ANT_HIVE_DUNGEON_1",
+      "ITEM:FEVERWOOD_LIMB_PROOF_HOOK_1",
+      "ITEM:FEVERWOOD_RM_MOD_BUILD_1"
+    ],
+    "ledger_readable": true,
+    "built_evidence_notes": [],
+    "finding": "Ledger replay and individual file/note/close/verify records were read for the required and title-related items. Historic load and limb-hook checks remain separate from current feature proof. The local file Transient/belt_acc2_sitting2_fever_notes.md cited by the limb-hook verify is unavailable here, so no current proof is inferred from that citation.",
+    "related_items_reviewed": [
+      "ANT_HIVE_REAL_GEOMETRY_1",
+      "BAROQUE_BIOMES_WAVE2_FOLD_1",
+      "BIOME_KITS_PUSH_TO_TEST_1",
+      "CUT_BY_NOBODY_SOURCE_1",
+      "FEVER_WOOD_MECHANICS_1",
+      "FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO",
+      "MIASMA_FEVERWOOD_GREENTIDE_BMT_1",
+      "NIGHTLY_COP_FIX_RED_AQJSGV_CFVH",
+      "SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY",
+      "SHEET_SUBMEASURE_REFRESH_1",
+      "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05",
+      "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_968D",
+      "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_9C4E",
+      "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283",
+      "WALK_SAVE_SILENCE_ABSENT_BIOME_OBJECTS",
+      "WRECK_ART_WIRE_RENDERS_NOBODY_POINTS_AT"
+    ],
+    "disposition": "Operational lane, log-residue and walkthrough-save items supply historical context. They add no new gameplay capability. Geometry, packaging, cuts, tank fix and wreck wiring are reflected in the inventory."
+  },
+  "live_walk_proposal": {
+    "id": "walk_existing_first",
+    "source": [
+      "src/RimMandrake/rimflow/roles/designer.md",
+      "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:7",
+      "OWNER:1794374372850231423"
+    ],
+    "offer": true,
+    "kind": "exploration",
+    "scene": "Use a disposable authored FeverWood colony scene whose biome, branch routes, marsh, trunk and registered pools have been asserted. No existing save is claimed available. Run ordinary harvest/haul trips between two crown destinations, then a shore job with a nearby companion and a real snare/rescue deadline. Compare from the same start with the helper across the holding. Use the existing read-only limb/hive readouts to inspect what is already present.",
+    "settles": [
+      "fw_routes",
+      "fw_shore_rescue",
+      "gap_pool_reach"
+    ],
+    "before_additional_design": true,
+    "recovery": "Before any future persistent mutation, record scene-begin with the original save/settings/weather and a reload recovery path. Restore and scene-end, or explicitly scene-hold for owner_review.",
+    "status": "QUICK LOOK OFFERED before the stage-1 root decision; not run. This headless seat is forbidden to take the bridge, restart or deploy. No existing ready save is claimed."
+  },
+  "script_audit": {
+    "source": [
+      "src/RimMandrake/FeverWood/validation.py",
+      "src/RimMandrake/FeverWood/northstar_site.py:49",
+      "src/RimMandrake/Utils/modcheck/suite.py:1089"
+    ],
+    "contract_source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+    "status": "complete stage-0 source audit",
+    "run_mode": "Offline review. Acceptance scenes were not run.",
+    "site": {
+      "asserted": [
+        "Minimum map dimensions",
+        "DLC availability",
+        "settings at shipped defaults",
+        "compose plan drift check"
+      ],
+      "gaps": [
+        "preflight does not assert current biome RM_FeverWood, registered pools, boughway topology, hive or the proper ecological start",
+        "preflight locks Clear weather without a recorded original-weather recovery path",
+        "_reset_pad requests clearing, terrain and unfogging, but does not independently assert all resulting conditions"
+      ],
+      "source": [
+        "src/RimMandrake/FeverWood/northstar_site.py:49",
+        "src/RimMandrake/FeverWood/validation.py:461"
+      ]
+    },
+    "shared_restoration": {
+      "status": "partial",
+      "source": [
+        "src/RimMandrake/FeverWood/validation.py:471",
+        "src/RimMandrake/Utils/modcheck/suite.py:178",
+        "src/RimMandrake/Utils/modcheck/suite.py:585"
+      ],
+      "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+    },
+    "read_only_checks": [
+      {
+        "id": "log_clean",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::log_clean",
+        "source": "src/RimMandrake/FeverWood/validation.py:610",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "missing",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Reads the session log for named errors. It has a session-shape probe, with no injected error discrimination in this live chain."
+      },
+      {
+        "id": "source_guards",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::source_guards",
+        "source": "src/RimMandrake/FeverWood/validation.py:640",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "offline mutants",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Static wiring/text/guard checks. The selftest plants breaks. This supplies source evidence for its exact patterns."
+      },
+      {
+        "id": "dianoga_mapping",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::dianoga_mapping",
+        "source": "src/RimMandrake/FeverWood/validation.py:760",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "partial",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Checks loaded text against whether RSW_Dianoga resolves. Each run covers only its loaded tier."
+      },
+      {
+        "id": "defs_resolve",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::defs_resolve",
+        "source": "src/RimMandrake/FeverWood/validation.py:781",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "present",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Pairs a real definition with a deliberately absent name. Checks runtime identity and package ownership."
+      },
+      {
+        "id": "biome_roster",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::biome_roster",
+        "source": "src/RimMandrake/FeverWood/validation.py:817",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "present probe, source-following expected content",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Checks explicit source roster values and absent probe. Its per-biome heat requirement is stale against the geometry ruling."
+      },
+      {
+        "id": "registrations",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::registrations",
+        "source": "src/RimMandrake/FeverWood/validation.py:928",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "partial",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Reads registration and uses vanilla Hunt/component recipe as positive probes. Installed failed-tame patch presence leaves actual failed-tame behavior untested."
+      },
+      {
+        "id": "bough_soil",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::bough_soil",
+        "source": "src/RimMandrake/FeverWood/validation.py:1036",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "missing ecological control",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Checks resolved fertility/affordances. It leaves actual planting, growth and crown-route use untested."
+      },
+      {
+        "id": "rottable_items_tick",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::rottable_items_tick",
+        "source": "src/RimMandrake/FeverWood/validation.py:1067",
+        "start": "Loaded context/source readability is checked in portions of the chain. No physical scene is created.",
+        "control": "missing time control",
+        "restore": "No direct state mutation in this chain. Common preflight weather mutation is separate.",
+        "hold": "No declared scene hold policy.",
+        "finding": "Checks tickerType field. It leaves actual spoilage with time, temperature and preservation controls untested."
+      }
+    ],
+    "scenes": [
+      {
+        "id": "settings",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::settings",
+        "source": "src/RimMandrake/FeverWood/validation.py:999",
+        "start": {
+          "status": "present for field roundtrip",
+          "finding": "Reads fields and verifies shipped defaults before toggling."
+        },
+        "control": {
+          "status": "partial",
+          "finding": "Flips each boolean and reads it back. Individual behavior effects and all-off behavior require feature-specific scenes."
+        },
+        "restore": {
+          "status": "present for ordinary chain exit",
+          "source": [
+            "src/RimMandrake/Utils/modcheck/suite.py:568",
+            "src/RimMandrake/FeverWood/validation.py:1018"
+          ],
+          "finding": "The local finally restores defaults, and Suite.chain outer finally restores pre-chain values. Interrupted-process recovery and restore read-failure handling remain unproven."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "gameplay_controls",
+          "persistent_recovery",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Keep existing field checks, add all-off/individual-effect checks under each owning feature, and declare recovery/hold."
+      },
+      {
+        "id": "tentacle_ladder",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::tentacle_ladder",
+        "source": "src/RimMandrake/FeverWood/validation.py:1089",
+        "start": {
+          "status": "partial",
+          "finding": "Clears Concrete pad, asserts a spawned limb, no preexisting flesh and a subfatal severe hit size. Terrain and complete threat-free state are requested without readback."
+        },
+        "control": {
+          "status": "present for retreat/sever distinction",
+          "finding": "Mild damage must retreat with no flesh, severe damage must sever with flesh, and a fatal hit must leave flesh. Quantity and cooldown/state consequences are untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "complete_asserted_start",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Add terrain/HP readbacks, exact flesh deltas and watch cooldown observations, then snapshot recovery."
+      },
+      {
+        "id": "tentacle_porter",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::tentacle_porter",
+        "source": "src/RimMandrake/FeverWood/validation.py:1158",
+        "start": {
+          "status": "partial",
+          "finding": "Clears pad and asserts spawned porter. Loot absence is inferred from reset. No distinct pool is asserted."
+        },
+        "control": {
+          "status": "present for interrupted delivery",
+          "finding": "Peaceful porter delivers and withdraws, hit porter must vanish and leave no loot. Future porter behavior at two distinct pools and hostility are untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "complete_asserted_start",
+          "pool_locality_control",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Assert empty loot baseline, porter timer and two registered pools. Compare later rolls and danger at attacked versus untouched pool."
+      },
+      {
+        "id": "tentacle_lash",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::tentacle_lash",
+        "source": "src/RimMandrake/FeverWood/validation.py:1201",
+        "start": {
+          "status": "partial",
+          "finding": "Stages drafted fed/rested pawns, checks the near pawn is uncut and the lash exists during the far arm. Terrain/initial far-pawn health and external hazard absence are incomplete."
+        },
+        "control": {
+          "status": "present for range",
+          "finding": "Only a far pawn stands during the negative arm, followed by a near pawn. This avoids a near target masking far-range damage. Line-of-sight and native-exemption controls remain missing."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "complete_asserted_start",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Preserve the isolated far arm. Add initial health and threat readback, blocker/native controls and complete recovery."
+      },
+      {
+        "id": "tank",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::tank",
+        "source": "src/RimMandrake/FeverWood/validation.py:1263",
+        "start": {
+          "status": "partial",
+          "finding": "Asserts parsed HP, a subfatal heavy hit, new tank occupant/fed inspection and clears escapee fixtures."
+        },
+        "control": {
+          "status": "present for damage gate",
+          "finding": "Below-threshold and toggle-off arms compare with forced-chance heavy damage. Production, starvation, KillFinalize, deconstruction, empty occupancy and older-save clocks are untested by this chain."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "production_and_lifecycle_controls",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Extend the existing tank chain through real feed/product placement, blocked placement, neglect, destruction/deconstruction and empty-state checks, with saved-clock variants."
+      },
+      {
+        "id": "brood_ransom",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::brood_ransom",
+        "source": "src/RimMandrake/FeverWood/validation.py:1342",
+        "start": {
+          "status": "partial",
+          "finding": "Asserts one spawned cask and its inspection readout. Known world tally and held-young locations are not staged."
+        },
+        "control": {
+          "status": "present for inspection toggle only",
+          "finding": "Disabling ransom removes the tally sentence. The chain does not measure tally arithmetic, encounter boldness, release or gift obligations."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "asserted_world_tally_start",
+          "behavior_control",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Stage known tanks/casks/caravan/keeper inputs and read applied encounter-rate changes, then separately exercise return and gift."
+      },
+      {
+        "id": "foul_pool",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::foul_pool",
+        "source": "src/RimMandrake/FeverWood/validation.py:1387",
+        "start": {
+          "status": "invalid for current job contract",
+          "finding": "Concrete target, direct job order and no foul-pool designation. Required registered water and surviving designation are missing."
+        },
+        "control": {
+          "status": "wrong expectation",
+          "finding": "Off arm expects consumed charges. Current production returns charges when disabled or designation is absent."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "asserted_start",
+          "discriminating_control",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Use actual registered pool and the normal designation/workgiver entry. Assert charge deltas and suppression state. Cancellation and mid-haul disabling must return charges."
+      },
+      {
+        "id": "sap_RM_Vaulm",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::_sap_chain",
+        "source": "src/RimMandrake/FeverWood/validation.py:1467",
+        "start": {
+          "status": "partial",
+          "finding": "Asserts fresh pawn exists without its refusal hediff."
+        },
+        "control": {
+          "status": "present for damage cooldown",
+          "finding": "Damage adds hediff, manual removal plus immediate damage must leave it absent, and post-cooldown damage restores it. Actual failed tame, fear, training and tame-owner paths remain untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "other_trigger_controls",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Keep deterministic damage/cooldown arms and add normal failed-tame and tame-animal handling triggers. Ollareth needs a distinct alarm behavior scene."
+      },
+      {
+        "id": "sap_RM_Drommath",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::_sap_chain",
+        "source": "src/RimMandrake/FeverWood/validation.py:1467",
+        "start": {
+          "status": "partial",
+          "finding": "Asserts fresh pawn exists without its refusal hediff."
+        },
+        "control": {
+          "status": "present for damage cooldown",
+          "finding": "Damage adds hediff, manual removal plus immediate damage must leave it absent, and post-cooldown damage restores it. Actual failed tame, fear, training and tame-owner paths remain untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "other_trigger_controls",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Keep deterministic damage/cooldown arms and add normal failed-tame and tame-animal handling triggers. Ollareth needs a distinct alarm behavior scene."
+      },
+      {
+        "id": "lure_stake",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::lure_stake",
+        "source": "src/RimMandrake/FeverWood/validation.py:1526",
+        "start": {
+          "status": "partial",
+          "finding": "Stages an empty stake, handler and neutral colonist bait. It force-downs bait and directly orders haul, bypassing valid player-animal/prisoner designation selection."
+        },
+        "control": {
+          "status": "partial",
+          "finding": "Empty/baited text and destruction releasing restraint are checked. Invalid ownership, prey-quality floor, normal downing/hauling, occupied stake and locked voluntary release are untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "normal_entry_start",
+          "eligibility_and_quality_controls",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Start with eligible living animal or prisoner and use designation/workgivers. Assert restraint, bait location/value and release/lock outcomes with invalid-bait controls."
+      },
+      {
+        "id": "flora_harvest",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::flora_harvest",
+        "source": "src/RimMandrake/FeverWood/validation.py:1596",
+        "start": {
+          "status": "partial",
+          "finding": "Stages mature plants on SoilRich, asserts planted IDs and absence of product. The source-selected group is RM_-product Standard harvest flora, which leaves other roster roles outside coverage."
+        },
+        "control": {
+          "status": "missing depleted/control plant arm",
+          "finding": "Orders real vanilla Harvest jobs and looks for products. It does not compare depleted plants, exact yield, special roles or ordinary-material plants."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "discriminating_control",
+          "full_resource_start",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Preserve actual worker harvest. Add depleted-plant controls and exact products, then separate ecological-role scenes where implementation exists."
+      },
+      {
+        "id": "lure_raid",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::lure_raid",
+        "source": "src/RimMandrake/FeverWood/validation.py:1643",
+        "start": {
+          "status": "partial and mismatched faction baseline",
+          "finding": "Asserts no Kurreth and that bait is staked. It does not assert absence of either possible front or a pending second wave."
+        },
+        "control": {
+          "status": "partial and incomplete",
+          "finding": "Off arm expects no Kurreth. On arm disables the second wave and still expects Kurreth even when production randomly chooses skreth/campaign brood. It never observes separated arrivals or bait targeting."
+        },
+        "restore": {
+          "status": "partial",
+          "source": "src/RimMandrake/FeverWood/validation.py:1707",
+          "finding": "Kills listed Kurreth raid pawns and clears fixture pad, with shared prior-setting restoration. It leaves the alternate front, corpses, active lords, pending state and prior map state outside complete recovery."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "asserted_start",
+          "two_front_control",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Stage production-valid bait, both front identities and opposite accessible entries. Observe either first front and actual delayed second front. Save/reload while pending. Cleanup both factions and pending obligations."
+      },
+      {
+        "id": "hive_rally",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::hive_rally",
+        "source": "src/RimMandrake/FeverWood/validation.py:1732",
+        "start": {
+          "status": "partial",
+          "finding": "Stages three ants at known spacing and a colonist. Sleeping is classified after failure, and awake/LOS state is not asserted at start."
+        },
+        "control": {
+          "status": "present for detection",
+          "finding": "With detection disabled the same line must not rally. Positive arm reads each causedByPawn and the alarm message. Generated geometry, budget saturation, home tether and sealing remain untested."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "complete_asserted_start",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Assert awake sentries, LOS and clean mental states. Keep the disabled-detection control, then exercise generated-hive routing separately."
+      },
+      {
+        "id": "hive_guard",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::hive_guard",
+        "source": "src/RimMandrake/FeverWood/validation.py:1856",
+        "start": {
+          "status": "partial",
+          "finding": "Static guard wiring plus a worker/guard/colonist line. No generated choke, known hunger or live feeder state is staged."
+        },
+        "control": {
+          "status": "missing guard-specific negative",
+          "finding": "Reads worker and guard rally and intruder identity. No disconnected alarm, absent worker or disabled guard control discriminates the full chamber behavior."
+        },
+        "restore": {
+          "status": "partial",
+          "source": [
+            "src/RimMandrake/FeverWood/validation.py:471",
+            "src/RimMandrake/Utils/modcheck/suite.py:178",
+            "src/RimMandrake/Utils/modcheck/suite.py:585"
+          ],
+          "finding": "Local finally destroys fixture things/pawns. Shared Suite.chain remembers and restores prior settings on normal/exceptional chain exit. Original terrain, fog, destroyed preexisting contents, persistent map-component changes and elapsed-time effects have no local snapshot recovery. Abrupt process termination has no persisted scene recovery entry."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "asserted_chamber_start",
+          "discriminating_control",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Use the generated deeper choke and read guard home/food, compare worker present/absent and alarm connected/disconnected, and restore hive registry/state."
+      },
+      {
+        "id": "oil_boil",
+        "entry_point": "src/RimMandrake/FeverWood/validation.py::oil_boil",
+        "source": "src/RimMandrake/FeverWood/validation.py:1893",
+        "start": {
+          "status": "partial",
+          "finding": "ProofGate reads the current map. ProofYield spawns a mature seepril. ProofSpark selects a hazed cell. Real FeverWood biome, weather opportunity, raised/roofed cells and adjacent pool are not asserted by the Python chain."
+        },
+        "control": {
+          "status": "partial",
+          "finding": "ProofYield calls actual production YieldNow off/on, but bypasses worker harvest. Spark directly calls TrySpark, bypassing shot/fire/lightning hooks. No raised, roofed, melee or disconnected-haze negative arms."
+        },
+        "restore": {
+          "status": "missing complete recovery",
+          "source": [
+            "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:400",
+            "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:427"
+          ],
+          "finding": "ProofYield ends any existing condition then deletes its plant. ProofSpark replaces the active condition, can leave fires and water encounters, and clears weather. Neither restores the original condition/weather nor records interrupted-scene recovery."
+        },
+        "hold": {
+          "status": "missing",
+          "finding": "No declared immediate/owner_review scene policy and no designer_stage scene-begin/end/hold lifecycle."
+        },
+        "missing_parts": [
+          "asserted_ecological_start",
+          "normal_entry_controls",
+          "restoration",
+          "hold"
+        ],
+        "smallest_fix_for_stage3": "Use worker harvesting and real projectile/fire/lightning entry points beside asserted ground/raised/roofed/pool cells. Save original weather/condition and all affected terrain/fire state before running."
+      }
+    ],
+    "missing_entry_points": [
+      {
+        "capabilities": [
+          "fw_routes",
+          "fw_foundations",
+          "fw_trunks"
+        ],
+        "finding": "A normal branch-home work route, build-refusal/stilt alternative and mine/regrow/seal journey have no dedicated entry points in the current FeverWood script."
+      },
+      {
+        "capabilities": [
+          "fw_shore_rescue",
+          "fw_pools",
+          "fw_great_emergence",
+          "fw_mirror_break",
+          "fw_mirror_list"
+        ],
+        "finding": "Pool generation/reach, ordinary real shore exposure, near/far rescue, set-piece eye outcomes, mirror-break and usable intelligence have no full acceptance scenes."
+      },
+      {
+        "capabilities": [
+          "fw_return_gift",
+          "fw_maturation",
+          "fw_display_campaign",
+          "fw_brood"
+        ],
+        "finding": "World tally, escape establishment, the approved maturity window, deliberate return, owed-gift retries and campaign display consequences lack complete live scenes."
+      },
+      {
+        "capabilities": [
+          "fw_hive_geometry",
+          "fw_hive_farm",
+          "fw_hive_sealing"
+        ],
+        "finding": "Generated dungeon route, farm tending and alarm sealing need a full hive journey. Existing rally/guard pad scenes cover their isolated links."
+      },
+      {
+        "capabilities": [
+          "fw_nectar",
+          "fw_guild",
+          "fw_native_cast",
+          "fw_borer_diet",
+          "fw_birds",
+          "fw_chorus"
+        ],
+        "finding": "Fear-gated nectar, ollareth alarm, failed-tame behavior, silloch prey leash, borer diet, bird flight/products/theft and overlapping hush reasons lack behavior scenes."
+      },
+      {
+        "capabilities": [
+          "fw_wrecks",
+          "fw_scanner",
+          "fw_flora",
+          "fw_theft_retired",
+          "fw_glomvar_residual"
+        ],
+        "finding": "Generated salvage, scanner optional checkouts, ecological plant roles and retired-mechanic absence need ordinary coverage checks."
+      },
+      {
+        "capabilities": [
+          "fw_persistence",
+          "fw_settings",
+          "fw_proof_hooks"
+        ],
+        "finding": "Mid-action reload/retry/reordered-action walk, whole-feature all-off behavior and a discriminating observation/recovery instrument remain unimplemented scene coverage."
+      }
+    ]
+  },
+  "root": {
+    "text": "Make a home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans.",
+    "source": "CONDUCTOR:1794804413045937607",
+    "speaker": "conductor",
+    "delegated": "evidence-for-ask",
+    "answers": "a_root",
+    "basis_sources": [
+      "OWNER:1794374372850231423",
+      "design/RimMandrake/biome_experiences_2026-10-20.md:12"
+    ],
+    "interpretation": "The branch-led daily-life and consequential-water promise. This wording is the delegated agent synthesis. It is not an owner quotation or a claim of delivered live behavior. It supplies no flagship pick or first-touch certification."
+  },
+  "stage1_review": {
+    "id": "root_independent_review",
+    "by": "/root/root_review",
+    "source": "log.md#L1",
+    "ask_verdict": "struck",
+    "root_accuracy": "pass",
+    "evidence_against": [],
+    "scope_expansion": false,
+    "optional_safety_implication": false,
+    "why": "Implementation gaps challenge delivery of the root, not the root choice. The DRAFT walk and November card did not themselves approve this wording. The later Evidence-for-Ask ruling authorizes the separately recorded delegated call.",
+    "usage": {
+      "weighted_tokens": 100000,
+      "measurement": "conservative estimate; exact reviewer usage unavailable",
+      "charged_as": "review"
+    }
+  }
+}
