@@ -1699,7 +1699,31 @@ def c_disk(now, rules, ctx):
                                     stranded=pr["stranded"] + ss["stranded"], unpushed=pr["unpushed"])
     except Exception as e:
         out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e))
+    out.update(seat_dirt_reading())
     return out
+
+
+SEAT_TIDY = False    # set by `run --file-alarms` only: a selftest calling c_disk never lands anything
+
+
+def seat_dirt_reading():
+    """disk.seat_dirt (RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR): paths dirty in the seat clone for over an
+    hour that no safe class covers, i.e. a writer working in the seat clone instead of its own. A live pass first lands
+    the safe classes (seat_dirt.tidy: conversation records, filed item prose). Unreadable is 9999, never silence."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import seat_dirt
+        landed = None
+        if SEAT_TIDY and os.path.isdir(seat_dirt.SEAT_CLONE):
+            try:
+                landed = seat_dirt.tidy()
+            except Exception as e:  # noqa: BLE001 - said in the reading; the count below still measures
+                landed = "tidy failed: %s" % str(e)[:200]
+        r = seat_dirt.reading()
+        return {"disk.seat_dirt": M(r["stale"], "paths dirty in the seat clone over %d min" % seat_dirt.STALE_MIN,
+                                    paths=r["stale_paths"], fresh=r["fresh"], landed=landed)}
+    except Exception as e:
+        return {"disk.seat_dirt": M(9999, "paths dirty in the seat clone", why="unreadable: %s" % str(e)[:200])}
 
 
 def systemctl_json(*args):
@@ -5122,7 +5146,7 @@ companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
 disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_outside_blind disk.scratch_outside_cap
 disk.scratch_outside_distressed disk.scratch_refused_gb disk.scratch_total_gb
-disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h
+disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h disk.seat_dirt
 disk.whea_blind disk.whea_corrected_24h disk.whea_severe_24h
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d
@@ -5833,6 +5857,8 @@ def main(argv=None):
                    help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "run":
+        global SEAT_TIDY
+        SEAT_TIDY = bool(a.file_alarms)
         if a.family and not a.compose and a.file_alarms:
             print("ops_watch: REFUSED: --family without --compose files no alarms (STATUS_FIX_HALF_PASS_ATE_THE_SLOT)")
             return 2
