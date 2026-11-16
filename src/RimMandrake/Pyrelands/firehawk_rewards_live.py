@@ -153,6 +153,64 @@ def register(suite, V):
         V._fire(t, (x - 2, z - 2, 4, 4), size=0.5)
         return x
 
+    def _r6_stat(fields, stat):
+        """A stat's value out of a get_defs `statBases` read (a list of {stat, value} rows, or 'Stat: v' strings)."""
+        rows = (fields or {}).get("statBases") or []
+        for row in rows if isinstance(rows, list) else []:
+            name = row.get("stat") if isinstance(row, dict) else str(row).split(":")[0]
+            val = row.get("value") if isinstance(row, dict) else str(row).split(":")[-1]
+            if str(name).split("/")[-1].strip() == stat:
+                try:
+                    return float(val)
+                except (TypeError, ValueError):
+                    return None
+        return None
+
+    def _r6_letter_words(t, label, hawk):
+        """sc_firehawk_rewards (g11): the first letter's label is RM_FireHawkSightedLabel's text and its text names the
+        hawk (its LabelShortCap, read off the live pawn row) and the ember (RM_FireHawkEmberFromPlant with the source
+        plant's label, or RM_FireHawkEmberFromBurn). jawa/letter_list carries no text, so rimworld/list_letters is read;
+        a reply with no letter text is UNMEASURED."""
+        with V._comp(t, "firehawk_letter_words"):
+            r = t.bridge_call("rimworld/list_letters") or {}
+            row = V._pawn_row(t, hawk) or {}
+            if not V._live(t):
+                return
+            txt = lambda v: v.get("RawText") if isinstance(v, dict) else v  # noqa: E731
+            rows = [l for l in (r.get("letters") or []) if txt(l.get("label")) == label]
+            body = [txt(l.get("text") or l.get("Text") or l.get("body")) for l in rows]
+            name = row.get("labelShortCap") or row.get("label") or row.get("name")
+            burn = keyed("RM_FireHawkEmberFromBurn")
+            plant = (keyed("RM_FireHawkEmberFromPlant") or "").split("{0}")[0]
+            V._note(t, "the sighting letter's words", {"label": label, "texts": [str(b)[:400] for b in body],
+                                                       "hawkLabel": name})
+            if not rows:
+                V._fail("no %r letter in the stack for its words" % label)
+            if not body or not body[0]:
+                V._unmeasured(t, "rimworld/list_letters gives no letter text: %r" % sorted((rows[0] or {}).keys()))
+            if not name or str(name).lower() not in str(body[0]).lower():
+                V._fail("the letter text does not name the hawk (LabelShortCap %r)" % name)
+            if burn not in body[0] and not (plant and plant in body[0]):
+                V._fail("the letter text names no ember (%r or %r...)" % (burn, plant))
+
+    def _r6_trophy_worth(t):
+        """sc_firehawk_rewards (g11): the live RM_PristineFirehawkCrestfeather's MarketValue is above the live
+        RM_FireHawk's own and its Beauty above 0 (get_defs statBases, the game's loaded defs). A hawk whose MarketValue
+        is not in its statBases is UNMEASURED."""
+        with V._comp(t, "crestfeather_worth_over_hawk"):
+            d = V._get_defs(t, "ThingDef/%s;ThingDef/RM_FireHawk" % TROPHY, "statBases")
+            if not V._live(t):
+                return
+            tv, tb, hv = _r6_stat(d.get(TROPHY), "MarketValue"), _r6_stat(d.get(TROPHY), "Beauty"), \
+                _r6_stat(d.get("RM_FireHawk"), "MarketValue")
+            V._note(t, "live MarketValue and Beauty", {"trophy": [tv, tb], "hawkMarketValue": hv})
+            if hv is None or tv is None or tb is None:
+                V._unmeasured(t, "a stat is not in the live statBases: trophy %r/%r, hawk %r" % (tv, tb, hv))
+            if not tv > hv:
+                V._fail("the crestfeather's MarketValue %.1f is not above the fire-hawk's %.1f" % (tv, hv))
+            if not tb > 0:
+                V._fail("the crestfeather's Beauty %.1f is not above 0" % tb)
+
     @suite.chain("firehawk_first_sighting_letter")
     @V._teardown(fire=True)
     def firehawk_first_sighting_letter(t):
@@ -161,6 +219,7 @@ def register(suite, V):
         rect = V._rect(t)
         x, z = t.anchor
         label = keyed("RM_FireHawkSightedLabel")
+        seen = {}
         with V._comp(t, "firehawk_first_sighting_letter_once"):
             V._set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True, "fireHawkSightingLetterEnabled": True})
             t.bridge_call("jawa/set_fog", action="unfog", rect=V._whole(t))
@@ -170,6 +229,7 @@ def register(suite, V):
             base = len(letters(t, label))
             stage_fire(t, rect)
             a = V._spawn_wild(t, "RM_FireHawk", x + 8, z)
+            seen["hawk"] = a
             if V._live(t) and not until_carrying(t, a):
                 V._unmeasured(t, "hawk %s never carried an ember in 6000 ticks beside a live fire: no sighting to letter" % a)
             V._wait(t, LOOK_WAIT)
@@ -205,6 +265,8 @@ def register(suite, V):
             V._note(t, "state with the toggle off", state)
             if V._live(t) and (len(letters(t, label)) != before or "announced=True" in str(state)):
                 V._fail("the toggle is off and a letter was sent (%d new; %s)" % (len(letters(t, label)) - before, state))
+        V._independent(t)
+        _r6_letter_words(t, label, seen.get("hawk"))   # the first letter is still in the stack
         t.screenshot(rect=rect)
 
     @suite.chain("firehawk_crestfeather_yield")
@@ -222,6 +284,8 @@ def register(suite, V):
                 V._unmeasured(t, why)
             if not ok:
                 V._fail(why)
+        V._independent(t)
+        _r6_trophy_worth(t)
 
     @suite.chain("firehawk_mapwide_carry")
     @V._teardown(fire=True)

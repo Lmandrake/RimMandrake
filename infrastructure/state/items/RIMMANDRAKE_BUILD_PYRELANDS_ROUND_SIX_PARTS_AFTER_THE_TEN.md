@@ -36,3 +36,19 @@ The table below is the work list (scene, entry point, owed parts, gap). It is fi
 item has its entry point in its script); watched it fail on the filing base (sc_furnace_hide_bank's furnace_hide_bank is
 not in validation.py). It proves the entry points, not the reads: the live half of each row is the scene's
 `live_command`, recorded UNRUN until a sitting runs it with the bridge.
+
+## built (2026-11-16, RIMMANDRAKE_AUTOBUILD_PYRELANDS_ZERO_LEFT, offline)
+
+Every row above has its parts in src/RimMandrake/Pyrelands/validation.py: existing chains end with `_r6_<chain>(t)`;
+furnace_hide_bank, roof_withers and herd_thirst are new chains; the letter words and the trophy worth are
+`_r6_letter_words` / `_r6_trophy_worth` in firehawk_rewards_live.py. Offline test: selftest_pyrelands_round6_parts.py
+(watched fail on the base, 29 of 38; passes 48 of 48); the acceptance test above passes (13 scenes, none missing);
+`modcheck run Pyrelands --dry-run` declares every new row. Live halves UNRUN: each scene's `live_command`.
+
+Reads recorded UNMEASURED, never invented (lesson 20261116T152944Z-BENCH-pyrelands-round6-reads-no-bridge-tool):
+sc_no_rain's forced Rain (no setter for GameCondition_ForceWeather.weather; WeatherController starts on Fog);
+sc_furnace_giant's classic restore (RestoreClassicFurnaceBeast is private); the toggle-off and plantDensity 1.0 same-seed
+maps (sc_ash_ground, sc_herd_thirst, sc_grass_regreens: no same-seed regeneration tool); sc_firehawk_rewards' letter
+text is read through rimworld/list_letters, whose text field is unverified (UNMEASURED if absent). Script choices a
+sitting should know: sc_furnace_hide_bank places the bank with build_batch and sets its 60 hide aside (no colonist
+hauls it); sc_burn_compounds keeps pad A dry under a roof; sc_roof_withers walls both patches against grazers.

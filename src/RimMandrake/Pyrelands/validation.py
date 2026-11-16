@@ -270,6 +270,7 @@ def _comp(t, name, **kw):
     names the real reason, and the chain is not poisoned for an independent next component."""
     before = t.upstream_failed
     t._why = None
+    _r6_log_calls(t)
     _on_site(t)
     pre = _vitals(t)
     if pre is not None and name not in NEEDS_ROWS:
@@ -1092,6 +1093,9 @@ def grass_cover(t):
             plantable -= built
             covered = sum(v for k, v in census.items() if k in PLANT_MANIFEST)
             ratio = float(covered) / plantable if plantable > 0 else None
+            dens = (_get_defs(t, "BiomeDef/RM_Pyrelands", "plantDensity", deep=False).get("RM_Pyrelands") or {})
+            _GEN["grass_census"] = {"mutationsBefore": list(_GEN.get("mutations") or []), "ratio": ratio,
+                                    "plantDensity": dens.get("plantDensity")}   # sc_grass_regreens reads it
             _note(t, "coverage", {"covered": covered, "plantableCells": plantable,
                                   "buildingsExcluded": built, "ratio": ratio,
                                   "roofedCells": "not excluded (no whole-map roof read)"})
@@ -1181,6 +1185,7 @@ def burn_line(t):
                   "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
         t.screenshot()
         _extinguish(t)
+    _r6_burn_line(t)
 
 
 OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the first watch interval; a few for slack
@@ -1281,6 +1286,7 @@ def startup_and_def_wiring(t):
 
 
 @suite.chain("ground_deep_ash")
+@_teardown(fire=True, weather=True)
 def ground_deep_ash(t):
     """Gen-time terrain census of the whole map (pyre_ground_deep_ash): deep ash >= DEEP_ASH_MIN of open land, no stock
     vanilla ground, no retired rung, unburned pockets present, standing water ringed with richer ground."""
@@ -1307,6 +1313,7 @@ def ground_deep_ash(t):
                 _fail("standing water with no rich-soil / mud ring: %r" % ring)
         t.screenshot()
     _ten_ground_deep_ash(t)
+    _r6_ground_deep_ash(t)
 
 
 ASH_STRIP_W, ASH_STRIP_H = 12, 3
@@ -1442,6 +1449,7 @@ def fresh_burn_bonus(t):
             if rained["fertility"] < rained["wateredFertility"] + rained["bonus"] - 0.01:
                 _fail("the bonus did not stack on the watered lift: %r" % rained)
         t.screenshot(rect=burn)
+    _r6_fresh_burn_bonus(t)
 
 
 @suite.chain("ambient_ash_drift")
@@ -1857,6 +1865,7 @@ def soaked_map_stays_smooth(t):
 
 
 @suite.chain("no_ordinary_rain")
+@_teardown(weather=True)
 def no_ordinary_rain(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "cannot_ordinary_rain", shows=["pyre_cannot_ordinary_rain"]):
@@ -1869,6 +1878,7 @@ def no_ordinary_rain(t):
             rain = [w for w in table if w.get("weather") in ORDINARY_RAIN and (w.get("commonality") or 0) > 0]
             if rain:
                 _fail("post-patch weather table holds ordinary rain: %r" % rain)
+    _r6_no_ordinary_rain(t)
 
 
 # --------------------------------------------------------------------------- scorch-fruit
@@ -1907,6 +1917,7 @@ def scorchfruit_fire_born(t):
                 _fail("ScorchFruit on unburned land (outside every fire pad) at the census: %r"
                       % wild)
         t.screenshot(rect=rect)
+    _r6_scorchfruit_fire_born(t)
 
 
 @suite.chain("scorchfruit_produces")
@@ -2620,6 +2631,7 @@ def heat_dome(t):
         if _live(t) and off.get("burrowed") == "True" and off.get("fireNear") != "True":
             _fail("burrowDomeOnHeatHit off, yet a Burn hit with no fire near domed the ashwallow: %r" % off)
         t.screenshot(rect=(x - 6, z - 6, 12, 12))
+    _r6_heat_dome(t)
 
 
 # --------------------------------------------------------------------------- long waits last
@@ -2681,6 +2693,7 @@ def embergrass_regrow(t):
                 _fail("not largely green again within about a week: %r" % (fracs,))
         t.screenshot(rect=regrow)
     _ten_embergrass_regrow(t)
+    _r6_embergrass_regrow(t)
 
 
 def _live_setting(t, field):
@@ -2954,6 +2967,7 @@ def ullai_and_giant(t):
     _independent(t)
     with _comp(t, "herd_follows_two_day_old_burn"):
         herd_follows_drive(t)
+    _r6_ullai_and_giant(t)
 
 
 # --------------------------------------------------------------------------- GPT pre-release hunt: PLAUSIBLE findings
@@ -3565,6 +3579,7 @@ def walk_season(t):
             if errs:
                 _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
     _ten_walk_season(t)
+    _r6_walk_season(t)
 
 
 # ---- RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED: the owed parts of twelve scenes ----
@@ -4437,6 +4452,980 @@ def _ten_ruins(t):
                 _unmeasured(t, "the vanilla control map generated no unowned walls")
             if charred:
                 _fail("%d walls on the vanilla control carry RM_FE_Charred paint" % len(charred))
+
+
+# ---- RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN: the owed parts of the round-6 gap scenes ----
+# Each existing chain ends with `_r6_<chain>(t)`; furnace_hide_bank, roof_withers and herd_thirst are new chains. As with the
+# _ten_ parts: a read no bridge tool can make is `_unmeasured(...)` with its reason, every part is `_independent`, and
+# offline (the declaration probe) every bridge call is a no-op. Selftest: selftest_pyrelands_round6_parts.py.
+R6_PLAY_PPC = 64                 # play zoom (px per cell on the PNG, play_zoom.py), as Graffiti's PLAY_PPC
+R6_HALF_DAY = 30000
+R6_FRONT_HOURS = 24              # sc_burn_line_walks: one capture per game hour for a day
+R6_FRONT_SAVE_HOUR = 12          # the kept walking-front save is made at this capture
+R6_FRONT_MIN_SHIFT = 3.0         # cells the front's centroid must move over the day (a walking line, not one standing blaze)
+R6_FRONT_CROP = 30               # largest side of the capture rect around the front
+R6_HOUR_TOL = 0.6                # a capture's clock hour may sit this far from its expected hour
+R6_ASH_EPS = 1e-3
+R6_PAD_ASH_DRAW = (190, 95)      # sc_ash_ground's ten ash-laden ember-grass cells (free of every other pad)
+R6_PAD_COMPOUND = (160, 30)      # sc_burn_compounds' three pads (PAD_BURN 35 cells west, PAD_SPRAY 65 east)
+R6_PAD_WITHER = (95, 125)        # roof_withers' two walled patches
+R6_COMPOUND_DAYS = 7
+R6_DRY_FRESH, R6_WET_OLD, R6_WET_FRESH = 1.2, 1.4, 1.9   # sc_burn_compounds' "about" fertilities (evidence only)
+R6_WITHER_HOURS = 48
+R6_WITHER_GONE_BY = 36
+R6_BANK_HOURS = 12
+R6_BANK_FROM_HOUR = 6
+R6_BANK_MARGIN = 5.0             # room A at least this far above room B from R6_BANK_FROM_HOUR
+R6_BANK_CEILING = 21.5           # RM_FurnaceHideBank heatPushMaxTemperature 21, plus a reading's slack
+R6_BANK_COST = 60                # RM_FurnaceHideBank costList RM_FurnaceHide
+R6_THIRST_HOURS = 72
+R6_ARRIVAL_HOURS = 168
+R6_THIRST_RATIO = 1.0 / 3        # the ullai's fall at most a third of the muffalo's
+R6_DRINK_CELLS = 2
+R6_HERD_RADIUS = 10              # MapComponent_PyrelandsHerdThirst.HerdRadius
+R6_HERD_STAGGER_TICKS = 2600     # one CheckIntervalTicks (2500) and a little: spawned animals are staggered first
+R6_HERD_THIRST = "RimMandrake.Pyrelands.MapComponent_PyrelandsHerdThirst"
+R6_GIANT_BS = 9.0
+R6_GIANT_DRAW = (3.3, 5.2, 7.5)  # RM_FurnaceBeast giant draw sizes by life stage
+R6_ULLAI_BS = 1.8
+R6_ROSTER_MIN = 9                # inv_animal_roster's nine native kinds: fewer is a blind read
+R6_CENSUS_MUTATORS = ("jawa/set_plants", "jawa/spawn_pawn", "jawa/spawn_batch", "jawa/set_terrain",
+                      "jawa/set_terrain_batch", "jawa/spawn_fill_area", "rimworld/spawn_thing")
+R6_WITHER_LINE = "Withering: it needs open sky."   # Languages/English/Keyed/Pyrelands.xml RM_WithersUnderRoof
+
+
+def _r6_log_calls(t):
+    """Record every mutating bridge call this run makes (R6_CENSUS_MUTATORS) in _GEN["mutations"], once per context: the
+    script's own call log, read by sc_grass_regreens' census-first check."""
+    if getattr(t, "_r6_logged", False) or not hasattr(t, "bridge_call"):
+        return
+    orig = t.bridge_call
+
+    def logged(tool, **kw):
+        if tool in R6_CENSUS_MUTATORS:
+            _GEN.setdefault("mutations", []).append(tool)
+        return orig(tool, **kw)
+    t.bridge_call = logged
+    t._r6_logged = True
+
+
+def _r6_incidents(t):
+    """The storyteller's pending incident queue -> [def names], None offline or unread."""
+    r = t.bridge_call("jawa/incident_queue_peek")
+    if not _live(t) or not isinstance(r, dict) or r.get("success") is False:
+        return None
+    rows = r.get("queue") or r.get("incidents") or r.get("queued") or []
+    return sorted(str(q.get("def") or q.get("incidentDef") or q.get("defName") or q) for q in rows)
+
+
+def _r6_guard(t):
+    """Colony vitals and the pending incidents, recorded together (the script audit's guard around a long wait)."""
+    return {"vitals": _vitals(t), "incidents": _r6_incidents(t)}
+
+
+def _r6_guard_changes(before, after):
+    """Pure. -> [reason]: a colonist lost, newly downed or starving (vitals_damage), or a pending incident added."""
+    why = vitals_damage((before or {}).get("vitals") or {}, (after or {}).get("vitals") or {})
+    b, a = (before or {}).get("incidents"), (after or {}).get("incidents")
+    if b is not None and a is not None:
+        new = sorted(set(a) - set(b))
+        if new:
+            why.append("pending incidents added: %r" % new)
+    return why
+
+
+def _r6_shot(t, rect, name):
+    """A capture of `rect` at play zoom; its path, None offline."""
+    return t.screenshot(name=name, rect=tuple(rect), ppc=R6_PLAY_PPC)
+
+
+def _r6_fires(t):
+    """Free-standing Fire cells on the map -> [(x, z)]."""
+    out = []
+    for f in _things(t, "Fire", limit=2000):
+        if f.get("parent"):
+            continue
+        p = f.get("position") or {}
+        x, z = (p.get("x"), p.get("z")) if isinstance(p, dict) else (f.get("x"), f.get("z"))
+        if x is None and isinstance(p, (list, tuple)) and len(p) >= 2:
+            x, z = p[0], p[-1]
+        if x is not None and z is not None:
+            out.append((int(x), int(z)))
+    return out
+
+
+def front_walks(rows, min_shift=R6_FRONT_MIN_SHIFT):
+    """Pure. rows: [{hour, fires, cx, cz}] one per capture. -> (True/False/None, why): every hour holds fire and the
+    fire's centroid moved at least `min_shift` cells from its first to its farthest reading; None with no rows."""
+    if not rows:
+        return None, "no hourly reads"
+    dark = [r["hour"] for r in rows if not r.get("fires")]
+    if dark:
+        return False, "no fire at hour(s) %r: the front did not walk the whole day" % dark
+    c0 = (rows[0]["cx"], rows[0]["cz"])
+    shift = max(_dist(c0, (r["cx"], r["cz"])) for r in rows)
+    if shift < min_shift:
+        return False, "the front's centroid moved at most %.1f cells over the day (< %.1f)" % (shift, min_shift)
+    return True, "fire every hour; the centroid moved up to %.1f cells" % shift
+
+
+def _r6_burn_line(t):
+    """sc_burn_line_walks: the opening front asserted lit (ProbeOpeningFront done, lit > 0); vitals and pending incidents
+    recorded; 24 hourly captures at play zoom of the front's box, each capture's clock hour asserted; one save while the
+    front walks (burn_line_walking, kept for his review); front_walks decides; the guard read again at the end.
+    Control: the same day with burnLineEnabled off and the map extinguished lights no free-standing Fire."""
+    _independent(t)
+    with _comp(t, "burn_line_walks_hourly"):
+        _set(t, {"burnLineEnabled": True})
+        kv = parse_kv(_ten_static(t, BURN_LINE, "ProbeOpeningFront") or "")
+        guard0 = _r6_guard(t)
+        h0 = _ten_hour(t)
+        rows, shots, saved = [], [], None
+        for i in range(R6_FRONT_HOURS):
+            _wait(t, TEN_HOUR)
+            h = _ten_hour(t)
+            cells = _r6_fires(t)
+            row = {"hour": h, "fires": len(cells), "cx": None, "cz": None}
+            if cells:
+                row["cx"] = sum(c[0] for c in cells) / float(len(cells))
+                row["cz"] = sum(c[1] for c in cells) / float(len(cells))
+                x0, z0 = min(c[0] for c in cells), min(c[1] for c in cells)
+                w = min(R6_FRONT_CROP, max(c[0] for c in cells) - x0 + 1)
+                d = min(R6_FRONT_CROP, max(c[1] for c in cells) - z0 + 1)
+                shots.append(_r6_shot(t, (x0, z0, max(w, 4), max(d, 4)), "burn_line_hour_%02d" % i))
+                if i >= R6_FRONT_SAVE_HOUR and saved is None:
+                    saved = t.bridge_call("rimworld/save_game", saveName="burn_line_walking")
+            rows.append(row)
+        guard1 = _r6_guard(t)
+        if _live(t):
+            _note(t, "front by the hour (captures at %d px/cell)" % R6_PLAY_PPC,
+                  {"opening": kv, "startHour": h0, "rows": rows, "shots": shots, "save": saved})
+            if kv.get("done") != "True" or int(kv.get("lit", 0) or 0) <= 0:
+                _unmeasured(t, "the opening front is not lit on this map (ProbeOpeningFront %r)" % kv)
+            if h0 is None or any(r["hour"] is None for r in rows):
+                _unmeasured(t, "glow_at gave no clock hour at a capture, so its hour cannot be asserted")
+            for i, r in enumerate(rows):
+                want = (h0 + i + 1) % 24
+                if min(abs(r["hour"] - want), 24 - abs(r["hour"] - want)) > R6_HOUR_TOL:
+                    _fail("capture %d read hour %.2f, expected %.2f" % (i, r["hour"], want))
+            if not saved or not saved.get("success", True):
+                _fail("no burn_line_walking save was made while the front walked: %r" % saved)
+            ok, why = front_walks(rows)
+            if not ok:
+                _fail(why)
+            dmg = _r6_guard_changes(guard0, guard1)
+            if dmg:
+                _fail("the day's watch changed the colony: %r" % dmg)
+    _independent(t)
+    with _comp(t, "burn_line_off_control"):
+        _set(t, {"burnLineEnabled": False})
+        _extinguish(t)
+        _wait(t, BURN_LINE_WAIT_TICKS)
+        n = len(_r6_fires(t))
+        _set(t, {"burnLineEnabled": True})
+        if _live(t):
+            _note(t, "burnLineEnabled off, map extinguished: free-standing Fire after the window", n)
+            if n:
+                _fail("%d free-standing fires with burnLineEnabled off" % n)
+
+
+def _r6_terrain_cells(t, rect):
+    """{(x, z): terrain def} over `rect` from get_terrain_batch's run-length ops; {} offline."""
+    r = t.bridge_call("jawa/get_terrain_batch", rects=rect)
+    if not _live(t):
+        return {}
+    _ok(r, "get_terrain_batch(%s)" % rect)
+    return _r6_ops_cells(r.get("ops"))
+
+
+def _r6_ops_cells(ops):
+    """Pure. Run-length ops ('Def:x,z,w,h;...', get_terrain_batch / get_roof_batch) -> {(x, z): def}."""
+    cells = {}
+    for op in str(ops or "").replace("\n", ";").split(";"):
+        d, _, rr = op.partition(":")
+        try:
+            ox, oz, ow, oh = (int(v) for v in rr.split(","))
+        except ValueError:
+            continue
+        for cx in range(ox, ox + ow):
+            for cz in range(oz, oz + oh):
+                cells[(cx, cz)] = d.strip()
+    return cells
+
+
+def _r6_shore_ring(cells):
+    """Pure. {(x, z): terrain} -> (water cells, {land cell next to water: terrain})."""
+    water = set(c for c, d in cells.items() if is_water_family(d))
+    ring = {}
+    for (cx, cz) in water:
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                n = (cx + dx, cz + dz)
+                if n in cells and n not in water:
+                    ring[n] = cells[n]
+    return water, ring
+
+
+def _r6_ash_run(t, weather, hours, settings):
+    """From ashground_noon: `settings` flipped, `weather` locked, ProbeAsh depthSum gain each hour -> [gain]."""
+    t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+    _on_site(t)
+    _set(t, settings)
+    t.bridge_call("jawa/weather_set", weather=weather, lockWeather=True)
+    a0 = _ash(t).get("depthSum")
+    gains = []
+    for _ in range(hours):
+        _wait(t, TEN_HOUR)
+        a = _ash(t).get("depthSum")
+        gains.append(None if a is None or a0 is None else a - a0)
+    t.bridge_call("jawa/weather_set", unlock=True)
+    return gains
+
+
+def _r6_ground_deep_ash(t):
+    """sc_ash_ground (g4, g6, g7): water asserted on the site before the other reads (none: regenerate the fixture on the
+    next seed, never a pass); a vanilla AridShrubland control map's shore read (no rich-soil ring); the same seed with
+    PyrelandsMechanicsGate off has no regeneration tool (UNMEASURED); from ashground_noon the ash fall with
+    ashfallAccumulationEnabled off banks no more than clear weather, and a clear half-day with ambientAshEnabled off banks
+    none; at noon a play-zoom capture pair of ten ash-laden ember-grass cells, as they lie and after ClearAsh."""
+    _independent(t)
+    with _comp(t, "ash_ground_water_asserted"):
+        cells = _r6_terrain_cells(t, _whole(t))
+        water, ring = _r6_shore_ring(cells)
+        if _live(t):
+            _note(t, "site water cells and shore ring size", {"water": len(water), "ring": len(ring)})
+            if not water:
+                _unmeasured(t, "the site rolled no standing water: regenerate the fixture on the next seed (the scene "
+                               "never passes a map with none)")
+    _independent(t)
+    with _comp(t, "ash_ground_vanilla_shore"):
+        ctl = _ten_control_map(t, "AridShrubland")
+        try:
+            cells = _r6_terrain_cells(t, "0,0,%d,%d" % (TEN_CONTROL_SIZE, TEN_CONTROL_SIZE))
+            ash = _ash(t) if _live(t) else {}
+        except ExpectationFailed:
+            ash = {"unread": True}
+        finally:
+            _ten_control_map_drop(t, ctl)
+        water, ring = _r6_shore_ring(cells)
+        if _live(t):
+            tally = {}
+            for d in ring.values():
+                tally[d] = tally.get(d, 0) + 1
+            _note(t, "vanilla AridShrubland control: shore ring terrain, deep ash", {"ring": tally, "ash": ash,
+                                                                                    "deepAsh": sum(1 for d in cells.values() if d == DEEP_ASH)})
+            if not water:
+                _unmeasured(t, "the vanilla control map rolled no water, so its shore cannot be read")
+            if tally.get("RM_FE_Ground_SoilRich"):
+                _fail("the vanilla control's shore carries RM_FE_Ground_SoilRich (%d cells)" % tally["RM_FE_Ground_SoilRich"])
+            if ring and all(d in TEN_WATER_RING for d in ring.values()):
+                _fail("every vanilla shore cell reads the Pyrelands ring terrain: %r" % tally)
+            if any(d == DEEP_ASH for d in cells.values()):
+                _fail("deep ash on the vanilla control map")
+    _independent(t)
+    with _comp(t, "ash_ground_gate_off_regeneration"):
+        _unmeasured(t, "no bridge tool regenerates the site's seed and tile beside the live site with "
+                       "PyrelandsMechanicsGate held off through generation (GenStep_PyrelandsStandingWater, "
+                       "GenStep_PyrelandsGreenRing)")
+    _independent(t)
+    with _comp(t, "ash_fall_accumulation_off"):
+        _ten_noon_hour(t)
+        t.bridge_call("rimworld/save_game", saveName="ashground_noon")
+        clear = _r6_ash_run(t, "Clear", 4, {"ashfallAccumulationEnabled": True})
+        off = _r6_ash_run(t, ASHFALL, 4, {"ashfallAccumulationEnabled": False})
+        _set(t, {"ashfallAccumulationEnabled": True})
+        if _live(t):
+            _note(t, "ProbeAsh gain by hour: clear vs ash fall with accumulation off", {"clear": clear, "off": off})
+            if None in clear or None in off:
+                _unmeasured(t, "ProbeAsh unread at an hour: %r / %r" % (clear, off))
+            if off[-1] > clear[-1] + R6_ASH_EPS:
+                _fail("with ashfallAccumulationEnabled off the ash fall banked %.3f, clear weather %.3f" % (off[-1], clear[-1]))
+    _independent(t)
+    with _comp(t, "ambient_ash_off_half_day"):
+        hours = R6_HALF_DAY // TEN_HOUR
+        off = _r6_ash_run(t, "Clear", hours, {"ambientAshEnabled": False})
+        _set(t, {"ambientAshEnabled": True})
+        if _live(t):
+            _note(t, "clear half-day with ambientAshEnabled off: ProbeAsh gain by hour", off)
+            if None in off:
+                _unmeasured(t, "ProbeAsh unread at an hour: %r" % off)
+            if off[-1] > R6_ASH_EPS:
+                _fail("with ambientAshEnabled off a clear half-day banked %.3f ash" % off[-1])
+    _independent(t)
+    with _comp(t, "ash_drawing_capture_pair"):
+        t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+        _on_site(t)
+        _pad(t, R6_PAD_ASH_DRAW)
+        x, z = t.anchor
+        strip = (x - 5, z, 10, 1)
+        _plants(t, "RM_FE_Plant_EmberGrass", strip)
+        t.bridge_call("jawa/static_call", type=ASH_SAND, method="LayAsh", args="%s|%s" % (_rs(strip), WASH_DEPTH))
+        h = _ten_noon_hour(t)
+        depth = [(_ash(t, "%d,%d,1,1" % (x - 5 + i, z)).get("depthSum")) for i in range(10)]
+        grass = _count(t, "RM_FE_Plant_EmberGrass", _rs(strip))
+        lie = _r6_shot(t, (x - 7, z - 2, 14, 5), "ash_as_they_lie")
+        _clear_ash(t)            # PyrelandsAsh.ClearAsh: the sand-grid depth of every cell
+        cleared = (_ash(t, _rs(strip)).get("depthSum"))
+        bare = _r6_shot(t, (x - 7, z - 2, 14, 5), "ash_cleared")
+        if _live(t):
+            _note(t, "capture pair for a judge (unlabelled at the sitting)",
+                  {"hour": h, "depth": depth, "emberGrass": grass, "asTheyLie": lie, "cleared": bare,
+                   "depthAfterClear": cleared})
+            if grass < 10:
+                _unmeasured(t, "only %d of the ten cells carry ember grass" % grass)
+            if any(d is None or d <= 0 for d in depth):
+                _fail("a cell of the ten reads no ash depth before the capture: %r" % depth)
+            if cleared:
+                _fail("ClearAsh left %.3f ash depth on the ten cells" % cleared)
+            if not lie or not bare:
+                _fail("the capture pair is incomplete: %r / %r" % (lie, bare))
+
+
+def _r6_fresh_burn_bonus(t):
+    """sc_burn_compounds (g14): three deep-ash pads (A fresh burn under a roof, kept dry; B fresh burn in the open; C old
+    ash, never burned this run, in the open); vitals and pending incidents read before the seven-day wait; black rain
+    over the open pads for half a day; ProbeCell on each while it rains (wet fresh above wet old above dry fresh), with
+    freshBurnBonusEnabled off for one read (wet fresh then equals wet old); daily to day 7, the bonus gone; the guard at
+    day 7 unchanged and no fire off the three pads."""
+    _independent(t)
+    with _comp(t, "burn_compounds_with_black_rain"):
+        _pad(t, R6_PAD_COMPOUND)
+        t.clear_area(size=TEST_SIZE)
+        x, z = t.anchor
+        pads = {"A": (x - 9, z - 2, 4, 4), "B": (x - 2, z - 2, 4, 4), "C": (x + 5, z - 2, 4, 4)}
+        _firebreak(t, (x - 9, z - 2, 18, 4))
+        for k, r in pads.items():
+            t.bridge_call("jawa/set_terrain", x=r[0], z=r[1], terrainDef=DEEP_ASH, width=4, height=4, layer="top")
+        t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(pads["A"]))
+        for k in ("A", "B"):
+            _plants(t, "RM_FE_Plant_EmberGrass", pads[k])
+            _fire(t, pads[k])
+        _wait(t, REGROW_BURN_TICKS)
+        _extinguish(t)
+        cell = dict((k, (r[0] + 1, r[1] + 1)) for k, r in pads.items())
+        guard0 = _r6_guard(t)
+        t.bridge_call("jawa/weather_set", weather="RM_FE_BlackRain", lockWeather=True)
+        _wait(t, R6_HALF_DAY // 2)
+        wet = dict((k, _probe(t, *c)) for k, c in cell.items())
+        _set(t, {"freshBurnBonusEnabled": False})
+        off = dict((k, _probe(t, *cell[k])) for k in ("B", "C"))
+        _set(t, {"freshBurnBonusEnabled": True})
+        _wait(t, R6_HALF_DAY // 2)
+        t.bridge_call("jawa/weather_set", unlock=True)
+        days = []
+        for d in range(1, R6_COMPOUND_DAYS + 1):
+            _wait(t, TEN_DAY - (R6_HALF_DAY if d == 1 else 0))
+            days.append(dict((k, _probe(t, *c).get("bonus")) for k, c in cell.items()))
+        guard7 = _r6_guard(t)
+        fires = [c for c in _r6_fires(t) if not any(r[0] <= c[0] < r[0] + r[2] and r[1] <= c[1] < r[1] + r[3]
+                                                    for r in pads.values())]
+        if _live(t):
+            _note(t, "while black rain falls (about %.1f / %.1f / %.1f dry fresh / wet old / wet fresh)"
+                  % (R6_DRY_FRESH, R6_WET_OLD, R6_WET_FRESH), {"wet": wet, "bonusOff": off})
+            _note(t, "bonus by day to day %d; guard before / at day %d" % (R6_COMPOUND_DAYS, R6_COMPOUND_DAYS),
+                  {"days": days, "before": guard0, "day7": guard7, "firesOffPads": fires[:10]})
+            if wet["A"].get("watered") or not wet["B"].get("watered") or not wet["C"].get("watered"):
+                _unmeasured(t, "the pads are not dry / wet as staged: %r" % dict((k, v.get("watered")) for k, v in wet.items()))
+            if str(wet["C"].get("burnTick")) not in ("-1", "None") and float(wet["C"].get("bonus") or 0) > 0:
+                _unmeasured(t, "the old-ash pad C still carries a fresh-burn bonus: %r" % wet["C"])
+            fa, fb, fc = wet["A"]["fertility"], wet["B"]["fertility"], wet["C"]["fertility"]
+            if not fb > fc > fa:
+                _fail("not wet fresh > wet old > dry fresh while it rains: %.2f / %.2f / %.2f" % (fb, fc, fa))
+            if abs(off["B"]["fertility"] - off["C"]["fertility"]) > 0.01:
+                _fail("with freshBurnBonusEnabled off wet fresh %.2f differs from wet old %.2f"
+                      % (off["B"]["fertility"], off["C"]["fertility"]))
+            last = days[-1]
+            if any(float(last[k] or 0) > 0.01 for k in ("A", "B")):
+                _fail("the burn bonus is not gone by day %d: %r" % (R6_COMPOUND_DAYS, last))
+            dmg = _r6_guard_changes(guard0, guard7)
+            if dmg or fires:
+                _fail("the seven-day wait changed the colony or lit fire off the pads: %r, %r" % (dmg, fires[:5]))
+        t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(pads["A"]))
+
+
+def _r6_no_ordinary_rain(t):
+    """sc_no_rain (g8): GameCondition_ForceWeather (Royalty's WeatherController GameConditionDef) started on the site and
+    on a vanilla TemperateForest control, the weather read when it changes and an hour later (jawa/weather_get). The
+    condition's forced weather must read Rain first: WeatherController starts on its def's weatherDef (Fog) and no bridge
+    tool writes GameCondition_ForceWeather.weather, so the run records that and stops UNMEASURED rather than judge Fog."""
+    def forced_run(t):
+        before = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+        r = t.bridge_call("jawa/game_condition", action="start", condition="WeatherController", durationTicks=2 * TEN_DAY)
+        info = t.bridge_call("jawa/weather_get") or {}
+        conds = [c for c in info.get("conditions") or [] if c.get("def") == "WeatherController"]
+        forced = [c.get("forcedWeather") or c.get("weather") for c in conds]
+        _wait(t, SKY_SETTLE_TICKS)
+        now = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+        _wait(t, TEN_HOUR)
+        later = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+        t.bridge_call("jawa/game_condition", action="end", condition="WeatherController")
+        return {"start": r, "before": before, "forced": forced, "changed": now, "hourLater": later}
+
+    _independent(t)
+    with _comp(t, "forced_rain_becomes_black_rain"):
+        site = forced_run(t)
+        if _live(t):
+            _note(t, "WeatherController on the site", site)
+            if not site["forced"] or site["forced"][0] != "Rain":
+                _unmeasured(t, "the condition's forced weather reads %r, not Rain: WeatherController starts on its def's "
+                               "Fog and no bridge tool sets GameCondition_ForceWeather.weather" % (site["forced"],))
+            if "Rain" in (site["changed"], site["hourLater"]):
+                _fail("under a forced-Rain condition the site's weather is Rain: %r" % site)
+            if site["changed"] != BLACKRAIN:
+                _fail("under a forced-Rain condition the site's weather is %r, not %s" % (site["changed"], BLACKRAIN))
+    _independent(t)
+    with _comp(t, "forced_rain_vanilla_control"):
+        ctl = _ten_control_map(t, "TemperateForest")
+        try:
+            van = forced_run(t)
+        finally:
+            _ten_control_map_drop(t, ctl)
+        if _live(t):
+            _note(t, "WeatherController on the vanilla TemperateForest control", van)
+            if not van["forced"] or van["forced"][0] != "Rain":
+                _unmeasured(t, "the control's forced weather reads %r, not Rain (no setter for the condition's weather)"
+                            % (van["forced"],))
+            if van["changed"] != "Rain":
+                _fail("the forced-Rain condition gave the vanilla control %r, not Rain" % van["changed"])
+
+
+def _r6_scorchfruit_fire_born(t):
+    """sc_scorchfruit (g4): a second fresh burn of the same ground with scorchFruitEnabled off reads 0 scorch-fruit during
+    and after it."""
+    _independent(t)
+    with _comp(t, "scorchfruit_off_burn_bears_none"):
+        _pad(t, PAD_FIRE_BORN)
+        x, z = t.anchor
+        rect = (x - 6, z + TEST_SIZE // 2 + 6, 12, 12)
+        _clear_scorchfruit(t)
+        _set(t, {"scorchFruitEnabled": False})
+        _firebreak(t, rect)
+        _soil(t, rect)
+        _plants(t, "RM_FE_Plant_EmberGrass", rect)
+        _fire(t, rect)
+        _wait(t, 3000)
+        during = _count(t, FRUIT_PLANT, _rs(rect))
+        _wait(t, 8600)
+        _extinguish(t)
+        after = _count(t, FRUIT_PLANT, _rs(rect))
+        _set(t, {"scorchFruitEnabled": True})
+        if _live(t):
+            _note(t, "scorch-fruit on a burn with scorchFruitEnabled off: during / after", [during, after])
+            if during or after:
+                _fail("scorchFruitEnabled off, yet the burn bore %d / %d scorch-fruit" % (during, after))
+        t.screenshot(rect=rect)
+
+
+def _r6_heat_dome(t):
+    """sc_heat_dome (g9): a fresh ashwallow struck once with Burn; at +60 on screen at play zoom ProbeDome's bodyGraphic
+    reads the race's domeTexPath (domeArt installed) and a capture is taken; once surfaced (after DOME_HOLD_TICKS) the
+    bodyGraphic reads the standing body, differs from the dome path, and a second capture is taken, for a judge."""
+    _independent(t)
+    with _comp(t, "dome_body_graphic_pair"):
+        _set(t, {"burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True})
+        x, z = PAD_DOME[0] + 4, PAD_DOME[1] + 4
+        g = _spawn_wild(t, "RM_Ashwallow", x, z)
+        _wait(t, 30)
+        fires = _count(t, "Fire", "%d,%d,12,12" % (x - 6, z - 6))
+        t.bridge_call("jawa/damage", damageDef="Burn", amount=2.0, thingId=g)
+        _wait(t, 60)
+        domed_shot = _r6_shot(t, (x - 3, z - 3, 6, 6), "ashwallow_domed")
+        domed = _dome_probe(t, g)
+        _wait(t, DOME_HOLD_TICKS + 300)
+        up_shot = _r6_shot(t, (x - 3, z - 3, 6, 6), "ashwallow_standing")
+        up = _dome_probe(t, g)
+        if _live(t):
+            _note(t, "bodyGraphic at +60 and after surfacing, with the captures",
+                  {"domed": domed, "standing": up, "shots": [domed_shot, up_shot]})
+            if fires:
+                _unmeasured(t, "%d fires near the dome pad before the hit" % fires)
+            if domed.get("domeArt") != "True":
+                _fail("no dome art installed at %r" % domed.get("domeTexPath"))
+            if domed.get("burrowed") != "True" or domed.get("bodyGraphic") != domed.get("domeTexPath"):
+                _fail("at +60 the body draws %r, not the domeTexPath %r" % (domed.get("bodyGraphic"), domed.get("domeTexPath")))
+            if up.get("burrowed") == "True" or not up.get("bodyGraphic") or up.get("bodyGraphic") == domed.get("domeTexPath"):
+                _fail("after the hold the body still draws the dome or nothing: %r" % up)
+            if not domed_shot or not up_shot:
+                _fail("the capture pair is incomplete: %r / %r" % (domed_shot, up_shot))
+
+
+def _r6_floats(v):
+    return [float(m) for m in re.findall(r"-?\d+(?:\.\d+)?", str(v))]
+
+
+def giant_margin(sizes, beast="RM_FurnaceBeast", ratio=2.0):
+    """Pure. sizes {kind: (bodySize, adult drawSize)} -> (ok, why): the beast's body size at least `ratio` times every other
+    kind's and its adult draw size above each of theirs."""
+    if beast not in sizes:
+        return False, "%s not among the sizes read" % beast
+    bs, draw = sizes[beast]
+    low = sorted(k for k, (b, _) in sizes.items() if k != beast and bs < ratio * b)
+    if low:
+        return False, "%s body size %.2f is under %.0fx of %r" % (beast, bs, ratio, low)
+    big = sorted(k for k, (_, d) in sizes.items() if k != beast and draw <= d)
+    if big:
+        return False, "%s adult draw size %.2f is not above %r" % (beast, draw, big)
+    return True, "body size %.2f over %d kinds, adult draw %.2f above each" % (bs, len(sizes) - 1, draw)
+
+
+def _r6_ullai_and_giant(t):
+    """sc_furnace_giant (g10): furnaceBeastGiant on at load; every resolved RM_Pyrelands roster kind (biome_probe, the
+    patch-added cast included, at least R6_ROSTER_MIN kinds or the read is blind) read live: race baseBodySize and the
+    last life stage's drawSize; RM_FurnaceBeast at 9 with R6_GIANT_DRAW, giant_margin over every other kind, more than
+    three times the ullai. Control: RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef, so
+    jawa/static_call (public static only) cannot invoke it without a reload: UNMEASURED."""
+    _independent(t)
+    with _comp(t, "giant_margin_over_roster"):
+        on = _live_setting(t, "furnaceBeastGiant")
+        probe = t.bridge_call("jawa/biome_probe", biomes="RM_Pyrelands", animals=True, plants=False, topN=200)
+        sizes, why = {}, None
+        if _live(t):
+            roster, why = biome_probe_animals(probe, "RM_Pyrelands")
+            if roster is None:
+                _unmeasured(t, why)
+            if len(roster) < R6_ROSTER_MIN:
+                _unmeasured(t, "biome_probe resolved %d roster kinds, under the %d native kinds: a blind read"
+                            % (len(roster), R6_ROSTER_MIN))
+            kinds = _get_defs(t, ";".join("PawnKindDef/%s" % k for k in sorted(roster)), "race", deep=False)
+            stages = _get_defs(t, ";".join("PawnKindDef/%s" % k for k in sorted(roster)), "lifeStages")
+            races = dict((k, str((kinds.get(k) or {}).get("race") or k).split("/")[-1].strip()) for k in roster)
+            bodies = _get_defs(t, ";".join("ThingDef/%s" % r for r in sorted(set(races.values()))), "race")
+            for k in roster:
+                b = _r6_floats(((bodies.get(races[k]) or {}).get("race") or {}).get("baseBodySize")
+                               if isinstance((bodies.get(races[k]) or {}).get("race"), dict) else None)
+                ls = (stages.get(k) or {}).get("lifeStages") or []
+                draws = [(_r6_floats((s.get("bodyGraphicData") or {}).get("drawSize")) or [None])[0]
+                         for s in ls if isinstance(s, dict)]
+                sizes[k] = (b[0] if b else None, draws[-1] if draws else None, draws)
+            _note(t, "live roster sizes (bodySize, adult drawSize, by life stage)", {"giantSwitch": on, "sizes": sizes})
+            if str(on).lower() != "true":
+                _unmeasured(t, "furnaceBeastGiant reads %r at load" % on)
+            blind = sorted(k for k, v in sizes.items() if v[0] is None or v[1] is None)
+            if blind:
+                _unmeasured(t, "body or draw size unread for %r" % blind)
+            fb = sizes.get("RM_FurnaceBeast")
+            if not fb or abs(fb[0] - R6_GIANT_BS) > 1e-3 or [round(d or 0, 2) for d in fb[2]] != list(R6_GIANT_DRAW):
+                _fail("RM_FurnaceBeast live body %r draws %r, not %.0f and %r" % (fb and fb[0], fb and fb[2], R6_GIANT_BS,
+                                                                                R6_GIANT_DRAW))
+            ok, why = giant_margin(dict((k, (v[0], v[1])) for k, v in sizes.items()))
+            if not ok:
+                _fail(why)
+            if fb[0] <= 3 * R6_ULLAI_BS:
+                _fail("the beast's %.2f is not over three times the ullai's %.1f" % (fb[0], R6_ULLAI_BS))
+    _independent(t)
+    with _comp(t, "giant_classic_restore_control"):
+        _unmeasured(t, "RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef; jawa/static_call "
+                       "invokes public static methods only, so the classic 3.2 restore cannot run without a reload")
+
+
+def _r6_embergrass_regrow(t):
+    """sc_grass_regreens (g15): grass_cover's census ran with no sow, spawn or set_terrain call before it (the script's own
+    call log, _r6_log_calls: _GEN["grass_census"]["mutationsBefore"] empty), on at least 0.85 of open plantable cells, and
+    the live RM_Pyrelands plantDensity was read at the census; the same-seed map at plantDensity 1.0 has no tool."""
+    _independent(t)
+    with _comp(t, "grass_census_first"):
+        gc = _GEN.get("grass_census")
+        if _live(t):
+            _note(t, "grass_cover census record", gc)
+            if gc is None:
+                _unmeasured(t, "grass_cover did not run earlier in this run, so no census-first record exists")
+            if gc.get("mutationsBefore"):
+                _fail("the grass census ran after %d mutating calls: %r" % (len(gc["mutationsBefore"]),
+                                                                              sorted(set(gc["mutationsBefore"]))))
+            if not isinstance(gc.get("plantDensity"), (int, float)):
+                _fail("the live RM_Pyrelands plantDensity was not read at the census: %r" % gc.get("plantDensity"))
+            if gc.get("ratio") is None or gc["ratio"] < 0.85:
+                _fail("the census read plants on %r of open plantable cells (< 0.85)" % gc.get("ratio"))
+    _independent(t)
+    with _comp(t, "plant_density_one_control_map"):
+        _unmeasured(t, "no bridge tool regenerates the site's seed and tile with plantDensity set to 1.0 before "
+                       "generation (no def setter, no same-seed regeneration beside the live site)")
+
+
+def _r6_beds_lit(t):
+    """Furnace-beasts whose own cell holds fire now (ProbeSleep fireOnCell) -> (lit count, beasts read)."""
+    r = t.bridge_call("jawa/list_pawns", limit=1000)
+    ids = [p.get("id") for p in ((r or {}).get("pawns") or []) if p.get("kindDef") == "RM_FurnaceBeast" and not p.get("dead")]
+    lit = 0
+    for pid in ids:
+        kv = parse_kv(_ten_static(t, FURNACE_BED, "ProbeSleep", pid) or "")
+        lit += kv.get("fireOnCell") == "True"
+    return lit, len(ids)
+
+
+def _r6_master_day(t, on):
+    """One day with pyrelandsEnabled `on`: hourly fires, bed fires and the burn history; ProbeAsh depthSum gain."""
+    _set(t, {"pyrelandsEnabled": on})
+    a0 = _ash(t).get("depthSum")
+    fires, beds = [], []
+    for _ in range(24):
+        _wait(t, TEN_HOUR)
+        fires.append(len(_r6_fires(t)))
+        beds.append(_r6_beds_lit(t)[0])
+    a1 = _ash(t).get("depthSum")
+    hist = _ten_static(t, BURN_LINE, "ProbeBurnHistory", "0")
+    return {"fires": fires, "beds": beds, "ashGain": None if a0 is None or a1 is None else a1 - a0, "history": hist}
+
+
+def _r6_walk_season(t):
+    """sc_walk (g4; PYRE_WALK=1 only): the Mod enabled master (pyrelandsEnabled) off a day, the map extinguished first:
+    no fire, no ash laid (ProbeAsh), no bed fire (ProbeSleep fireOnCell on every furnace-beast); then on a day: the
+    front walks again and ash is laid. A bed fire on the on-day needs a beast asleep on grass, so its absence there is
+    UNMEASURED in its own row, never a FAIL."""
+    walk = os.environ.get("PYRE_WALK") == "1"
+    _independent(t)
+    with _comp(t, "walk_master_off_then_on"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _extinguish(t)
+        off = _r6_master_day(t, False)
+        on = _r6_master_day(t, True)
+        _GEN["r6_walk_on_beds"] = on["beds"]
+        if _live(t):
+            _note(t, "pyrelandsEnabled off a day, then on a day", {"off": off, "on": on})
+            if any(off["fires"]) or any(off["beds"]):
+                _fail("with pyrelandsEnabled off: fires %r, bed fires %r" % (off["fires"], off["beds"]))
+            if off["ashGain"] is None or off["ashGain"] > R6_ASH_EPS:
+                _fail("with pyrelandsEnabled off ash gained %r" % off["ashGain"])
+            if not any(on["fires"]):
+                _fail("back on, no front walked over the day")
+            if not on["ashGain"] or on["ashGain"] <= R6_ASH_EPS:
+                _fail("back on, no ash was laid over the day: %r" % on["ashGain"])
+    _independent(t)
+    with _comp(t, "walk_master_bed_fire_resumes"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        beds = _GEN.get("r6_walk_on_beds") or []
+        if _live(t) and not any(beds):
+            _unmeasured(t, "no furnace-beast's bed lit over the on-day (none slept on grass): resumption unread")
+
+
+# ---- new chains ----
+
+def _r6_tick_on(t, ctl, n):
+    """Advance `n` ticks and keep the control map `ctl` current (_wait would hop back to the site)."""
+    if not _live(t):
+        return
+    t.wait_ticks(n)
+    t.bridge_call("jawa/set_current_map", mapId=ctl[0])
+
+
+def _r6_temp(t, xz):
+    r = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % tuple(xz)) or {}
+    return r.get("temperature", r.get("temp")), r.get("outdoorTemp")
+
+
+def _r6_stack(t, defName):
+    return sum(int(r.get("stackCount") or 1) for r in _things(t, defName, limit=200))
+
+
+@suite.chain("furnace_hide_bank")
+@_teardown(fire=True)
+def furnace_hide_bank(t):
+    """Scene sc_furnace_hide_bank (g1). On a vanilla Tundra (else IceSheet) map below 0 C outdoors: a furnace-beast corpse
+    butchered at a ButcherSpot by a colonist (ButcherCorpseFlesh, DoBillsButcherFlesh) yields RM_FurnaceHide; two twin
+    closed 5x5 rooms, walls only (no thing with CompHeatPusher, CompRefuelable or CompPowerTrader), within 1 C; the bank
+    is placed in room A with build_batch and its costList's 60 hide is set aside out of play (split_stack: the script
+    places it, no colonist hauls); its def carries no fuel or power comp; both rooms read hourly for 12 h: A at least
+    R6_BANK_MARGIN above B from hour 6, never above R6_BANK_CEILING. Live half: scenes.json live_command (UNRUN here)."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "furnace_hide_bank_warms_a_room"):
+        ctl = None
+        for biome in ("Tundra", "IceSheet"):
+            ctl = _ten_control_map(t, biome)
+            if not _live(t):
+                break
+            out = _r6_temp(t, (10, 10))[1]
+            if isinstance(out, (int, float)) and out < 0:
+                break
+            _ten_control_map_drop(t, ctl)
+            ctl = None
+        if _live(t) and ctl is None:
+            _unmeasured(t, "no Tundra or IceSheet control map read below 0 C outdoors")
+        try:
+            cx = cz = TEN_CONTROL_SIZE // 2
+            rooms = {"A": (cx - 8, cz - 3, 7, 7), "B": (cx + 1, cz - 3, 7, 7)}       # 5x5 inside, walls only
+            for r in rooms.values():
+                t.bridge_call("jawa/make_empty_room", rect=_rs(r), stuffDef="Steel", doorDef="Wall", floorDef="Concrete",
+                              roofDef="RoofConstructed")
+            inside = dict((k, (r[0] + 3, r[1] + 3)) for k, r in rooms.items())
+            built = {}
+            for k, r in rooms.items():   # buildings inside the walls: none may push heat, burn fuel or draw power
+                g = t.bridge_call("jawa/list_things", group="BuildingArtificial", rect="%d,%d,5,5" % (r[0] + 1, r[1] + 1),
+                                  limit=1) or {}
+                built[k] = sorted((g.get("perDef") or {}).keys())
+            cook = _spawn_colonist(t, cx - 2, cz - 8)
+            t.bridge_call("jawa/set_work_priority", pawnId=cook, workType="Cooking", priority=1)
+            spot = t.bridge_call("jawa/build_batch", ops="ButcherSpot:%d,%d" % (cx + 2, cz - 8)) or {}
+            giver = ((spot.get("things") or spot.get("built") or [{}])[0]).get("id")
+            beast = _spawn_wild(t, "RM_FurnaceBeast", cx + 4, cz - 8)
+            t.bridge_call("jawa/damage", damageDef="Cut", amount=5000.0, thingId=beast)
+            race = [c.get("def") for c in _things(t, "Corpse_RM_FurnaceBeast", limit=5)]
+            t.bridge_call("jawa/bill_add", giverId=giver, recipe="ButcherCorpseFlesh", repeatMode="RepeatCount", repeatCount=1)
+            order = t.bridge_call("jawa/do_bill_now", pawnId=cook, billGiverId=giver, workGiverDef="DoBillsButcherFlesh",
+                                  waitTicks=0, timeoutSeconds=30)
+            hide, spent = 0, 0
+            while _live(t) and spent < 8000 and not hide:
+                _r6_tick_on(t, ctl, 500)
+                spent += 500
+                hide = _r6_stack(t, "RM_FurnaceHide")
+            comps = _get_defs(t, "ThingDef/RM_FurnaceHideBank", "comps", deep=True).get("RM_FurnaceHideBank") or {}
+            cost = _get_defs(t, "ThingDef/RM_FurnaceHideBank", "costList").get("RM_FurnaceHideBank") or {}
+            if _live(t) and hide >= R6_BANK_COST:
+                stack = (_things(t, "RM_FurnaceHide", limit=5) or [{}])[0].get("id")
+                t.bridge_call("jawa/split_stack", thing=stack, count=R6_BANK_COST, at="%d,%d" % (2, 2))
+            t.bridge_call("jawa/build_batch", ops="RM_FurnaceHideBank:%d,%d" % inside["A"])
+            t0 = dict((k, _r6_temp(t, c)[0]) for k, c in inside.items())
+            series = []
+            for h in range(1, R6_BANK_HOURS + 1):
+                _r6_tick_on(t, ctl, TEN_HOUR)
+                row = dict((k, _r6_temp(t, c)[0]) for k, c in inside.items())
+                row["hour"], row["outdoor"] = h, _r6_temp(t, (2, TEN_CONTROL_SIZE - 3))[1]
+                series.append(row)
+        finally:
+            _ten_control_map_drop(t, ctl)
+        if _live(t):
+            ctext = json.dumps(comps, default=str)
+            _note(t, "butcher, bank and rooms", {"corpse": race, "order": order, "hide": hide, "built": built,
+                                                 "costList": cost, "comps": ctext[:600], "start": t0, "hourly": series})
+            if not race:
+                _unmeasured(t, "no RM_FurnaceBeast corpse lay at the butcher spot after the kill")
+            if built.get("A") or built.get("B"):
+                _fail("the rooms hold more than walls before the bank: %r" % built)
+            if not all(isinstance(v, (int, float)) for v in t0.values()) or abs(t0["A"] - t0["B"]) > 1 or t0["A"] >= 21:
+                _unmeasured(t, "the twin rooms do not start within 1 C of each other below 21 C: %r" % t0)
+            if not hide:
+                _fail("butchering the furnace-beast yielded no RM_FurnaceHide: %r" % order)
+            if hide < R6_BANK_COST:
+                _unmeasured(t, "the butcher gave %d RM_FurnaceHide, under the costList's %d" % (hide, R6_BANK_COST))
+            for bad in ("CompProperties_Refuelable", "CompProperties_Power", "CompRefuelable", "CompPowerTrader"):
+                if bad in ctext:
+                    _fail("RM_FurnaceHideBank carries %s" % bad)
+            for row in series:
+                if None in (row["A"], row["B"]):
+                    _unmeasured(t, "a room temperature was unread at hour %d" % row["hour"])
+                if row["A"] > R6_BANK_CEILING:
+                    _fail("room A read %.1f C at hour %d, above %.1f" % (row["A"], row["hour"], R6_BANK_CEILING))
+                if row["hour"] >= R6_BANK_FROM_HOUR and row["A"] - row["B"] < R6_BANK_MARGIN:
+                    _fail("at hour %d room A %.1f C is not %.0f C above room B %.1f C"
+                          % (row["hour"], row["A"], R6_BANK_MARGIN, row["B"]))
+
+
+def _r6_hp(rows):
+    return dict((r.get("id"), r.get("hitPoints")) for r in rows)
+
+
+def _r6_roof_withers_pair(t, x, z, label):
+    """Two walled 5x5 ember-grass patches 3 cells apart on deep ash, a roof on A only; hourly for R6_WITHER_HOURS: live
+    counts, hit points, the wither line on A, fire within 20 cells. -> dict."""
+    a, b = (x - 7, z - 2, 5, 5), (x + 1, z - 2, 5, 5)
+    t.clear_area(size=TEST_SIZE)
+    for r in (a, b):
+        t.bridge_call("jawa/set_terrain", x=r[0], z=r[1], terrainDef=DEEP_ASH, width=5, height=5, layer="top")
+        _plants(t, "RM_FE_Plant_EmberGrass", r)
+        ring = [(cx, r[1] - 1) for cx in range(r[0] - 1, r[0] + 6)] + [(cx, r[1] + 5) for cx in range(r[0] - 1, r[0] + 6)] \
+            + [(r[0] - 1, cz) for cz in range(r[1], r[1] + 5)] + [(r[0] + 5, cz) for cz in range(r[1], r[1] + 5)]
+        t.bridge_call("jawa/build_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")   # grazers kept out
+    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(a))
+    roof = str((t.bridge_call("jawa/get_roof_batch", rects="%s;%s" % (_rs(a), _rs(b))) or {}).get("ops") or "")
+    rc = _r6_ops_cells(roof)
+    inside = lambda r: [(cx, cz) for cx in range(r[0], r[0] + 5) for cz in range(r[1], r[1] + 5)]  # noqa: E731
+    roofed = {"A": sum(1 for c in inside(a) if rc.get(c) == "RoofConstructed"),
+              "B": sum(1 for c in inside(b) if rc.get(c) not in (None, "", "None"))}
+    start = dict((k, _things(t, "RM_FE_Plant_EmberGrass", _rs(r))) for k, r in (("A", a), ("B", b)))
+    near = (x - 27, z - 22, 54, 45)
+    hours = []
+    for h in range(1, R6_WITHER_HOURS + 1):
+        _wait(t, TEN_HOUR)
+        ra, rb = _things(t, "RM_FE_Plant_EmberGrass", _rs(a)), _things(t, "RM_FE_Plant_EmberGrass", _rs(b))
+        ins = t.bridge_call("jawa/inspect_string", rect=_rs(a), limit=30) or {}
+        line = any(R6_WITHER_LINE in str(ln) for row in ins.get("things") or [] for ln in row.get("inspect") or [])
+        hours.append({"hour": h, "A": len(ra), "B": len(rb), "hpA": sum(int(v or 0) for v in _r6_hp(ra).values()),
+                      "line": line, "fire": _count(t, "Fire", _rs(near))})
+    t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(a))
+    return {"label": label, "roofOps": roof, "roofed": roofed, "startA": len(start["A"]), "startB": len(start["B"]),
+            "hpA0": sum(int(v or 0) for v in _r6_hp(start["A"]).values()), "hours": hours}
+
+
+@suite.chain("roof_withers")
+@_teardown(fire=True, weather=True)
+def roof_withers(t):
+    """Scene sc_roof_withers (g5). PyrelandsMechanicsGate on (asserted), weather locked Clear, no fire within 20 cells;
+    two walled 5x5 mature ember-grass patches on deep ash 3 cells apart, a roof on A only (asserted from get_roof_batch);
+    hourly for 48 h: A's plants lose hit points, show RM_WithersUnderRoof's line and are all gone by hour 36; B keeps every
+    plant; no fire at any read. Then the same pair again with the gate off (pyrelandsEnabled False; the shell's roster
+    toggle has no bridge setter): neither patch loses a plant. Live half: scenes.json live_command (UNRUN here)."""
+    _pad(t, R6_PAD_WITHER)
+    x, z = t.anchor
+    with _comp(t, "roofed_ember_grass_withers"):
+        on = _ten_gate_on(t)
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        _extinguish(t)
+        run = _r6_roof_withers_pair(t, x, z, "gate on")
+        if _live(t):
+            _note(t, "roofed A vs open B, hourly", run)
+            hs = run["hours"]
+            if on is not True:
+                _unmeasured(t, "PyrelandsMechanicsGate.get_On reads %r on the site" % on)
+            if run["roofed"]["A"] < 25 or run["roofed"]["B"]:
+                _unmeasured(t, "the roof is not on every A cell and no B cell: %r" % run["roofOps"])
+            if not run["startA"] or not run["startB"]:
+                _unmeasured(t, "a patch took no ember grass: A %d, B %d" % (run["startA"], run["startB"]))
+            if any(r["fire"] for r in hs):
+                _unmeasured(t, "fire within 20 cells at hour(s) %r" % [r["hour"] for r in hs if r["fire"]])
+            if not hs[0]["hpA"] < run["hpA0"]:
+                _fail("A's plants lost no hit points in the first hour: %r -> %r" % (run["hpA0"], hs[0]["hpA"]))
+            if not any(r["line"] for r in hs[:6]):
+                _fail("the roofed plants never showed '%s'" % R6_WITHER_LINE)
+            if hs[R6_WITHER_GONE_BY - 1]["A"]:
+                _fail("%d roofed plants still stand at hour %d" % (hs[R6_WITHER_GONE_BY - 1]["A"], R6_WITHER_GONE_BY))
+            if any(r["B"] < run["startB"] for r in hs):
+                _fail("the open patch B lost plants: %r" % [r["B"] for r in hs])
+    _independent(t)
+    with _comp(t, "gate_off_kills_nothing"):
+        _set(t, {"pyrelandsEnabled": False})
+        off = _ten_gate_on(t)
+        run = _r6_roof_withers_pair(t, x, z + 10, "gate off")
+        _set(t, {"pyrelandsEnabled": True})
+        if _live(t):
+            _note(t, "gate off: roofed A vs open B, hourly", run)
+            if off is not False:
+                _fail("pyrelandsEnabled False left PyrelandsMechanicsGate.get_On %r" % off)
+            hs = run["hours"]
+            if any(r["A"] < run["startA"] or r["B"] < run["startB"] for r in hs):
+                _fail("with the gate off a patch lost plants: A %r, B %r" % ([r["A"] for r in hs], [r["B"] for r in hs]))
+    _independent(t)
+    with _comp(t, "roof_withers_roster_toggle_off"):
+        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"]) has no bridge "
+                       "setter; gate_off_kills_nothing runs through pyrelandsEnabled")
+
+
+def herds_of(animals, radius=R6_HERD_RADIUS):
+    """Pure. animals [(id, kind, x, z)] -> [[id, ...]]: same-kind animals linked within `radius` cells
+    (MapComponent_PyrelandsHerdThirst's herd), each herd sorted, herds by first id."""
+    left = list(animals)
+    out = []
+    while left:
+        seed = left.pop(0)
+        herd, frontier = [seed], [seed]
+        while frontier:
+            a = frontier.pop()
+            near = [b for b in left if b[1] == a[1] and _dist((a[2], a[3]), (b[2], b[3])) <= radius]
+            for b in near:
+                left.remove(b)
+            herd += near
+            frontier += near
+        out.append(sorted(h[0] for h in herd))
+    return sorted(out)
+
+
+def arrival_overlaps(arrivals):
+    """Pure. {herd: [hours at the water]} -> sorted hours two or more herds share; None when no herd arrived at all."""
+    if not any(arrivals.values()):
+        return None
+    seen = {}
+    for hours in arrivals.values():
+        for h in set(hours):
+            seen[h] = seen.get(h, 0) + 1
+    return sorted(h for h, n in seen.items() if n > 1)
+
+
+@suite.chain("herd_thirst")
+@_teardown(fire=True)
+def herd_thirst(t):
+    """Scene sc_herd_thirst (g5). FlowWorks' RM_Thirst resolves, PyrelandsMechanicsGate on, MapComponent_PyrelandsHerdThirst
+    present; every wild native herd's RM_Thirst at the first read (herds_of: same kind within 10 cells); 4 RM_Ullai (with
+    RM_ThirstGrassWateredExtension) and 4 Muffalo (without) spawned equidistant from one water cell, staggered once and
+    then set to one level; RM_Thirst hourly for 72 h (the ullai fall at most R6_THIRST_RATIO of the muffalo's); each wild
+    herd's arrivals within R6_DRINK_CELLS of water by the hour over 168 h (arrival_overlaps: none shared; none at all is
+    UNMEASURED); no native dehydrates; vitals and incidents unchanged. The toggle-off same-seed map has no tool."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "natives_thirst_slow_and_staggered"):
+        need = t.bridge_call("jawa/get_defs", defs="NeedDef/RM_Thirst", fields="label")
+        on = _ten_gate_on(t)
+        mc = t.bridge_call("jawa/map_comp_read", comp=R6_HERD_THIRST)
+        ext = _get_defs(t, "ThingDef/RM_Ullai;ThingDef/Muffalo", "modExtensions", deep=True)
+        if _live(t):
+            if (need or {}).get("notFound") or not (need or {}).get("defs"):
+                _unmeasured(t, "RM_Thirst does not resolve: FlowWorks is not on this list")
+            if on is not True:
+                _unmeasured(t, "PyrelandsMechanicsGate.get_On reads %r" % on)
+            if not (mc or {}).get("success", False):
+                _fail("MapComponent_PyrelandsHerdThirst is not on the site: %r" % mc)
+            u, m = (json.dumps(ext.get(k) or {}, default=str) for k in ("RM_Ullai", "Muffalo"))
+            if "RM_ThirstGrassWateredExtension" not in u or "RM_ThirstGrassWateredExtension" in m:
+                _fail("the extension is not on RM_Ullai alone: ullai %s / muffalo %s" % (u[:200], m[:200]))
+        guard0 = _r6_guard(t)
+        cells = _r6_terrain_cells(t, _whole(t))
+        water = sorted(c for c, d in cells.items() if is_water_family(d))
+        if _live(t) and not water:
+            _unmeasured(t, "the site rolled no standing water for a herd to visit")
+        wx, wz = water[len(water) // 2] if water else t.anchor
+        tests = {"RM_Ullai": [_spawn_wild(t, "RM_Ullai", wx - 12, wz + i) for i in range(4)],
+                 "Muffalo": [_spawn_wild(t, "Muffalo", wx + 12, wz + i) for i in range(4)]}
+        _wait(t, R6_HERD_STAGGER_TICKS)
+        for ids in tests.values():
+            for pid in ids:
+                t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="RM_Thirst", level=0.8)
+        test_ids = set(i for ids in tests.values() for i in ids)
+        r = t.bridge_call("jawa/list_pawns", limit=1000, includeHealth=True)
+        wild = [(p.get("id"), p.get("kindDef"), p.get("x"), p.get("z")) for p in ((r or {}).get("pawns") or [])
+                if p.get("faction") is None and p.get("kindDef") in ANIMAL_MANIFEST and p.get("id") not in test_ids]
+        herds = herds_of(wild)
+        start = dict((h[0], [_need(t, pid, "RM_Thirst") for pid in h]) for h in herds)
+        wset = set(water)
+        series = dict((k, []) for k in tests)
+        arrivals = dict((h[0], []) for h in herds)
+        dehydrated = set()
+        for hour in range(1, R6_ARRIVAL_HOURS + 1):
+            _wait(t, TEN_HOUR)
+            if hour <= R6_THIRST_HOURS:
+                for k, ids in tests.items():
+                    series[k].append([_need(t, pid, "RM_Thirst") for pid in ids])
+            rows = dict((p.get("id"), p) for p in ((t.bridge_call("jawa/list_pawns", limit=1000, includeHealth=True)
+                                                    or {}).get("pawns") or []))
+            for h in herds:
+                for pid in h:
+                    p = rows.get(pid) or {}
+                    if _has_hediff(p, "RM_Dehydration"):
+                        dehydrated.add(pid)
+                    if p.get("x") is not None and any(_dist((p["x"], p["z"]), w) <= R6_DRINK_CELLS for w in wset
+                                                      if abs(w[0] - p["x"]) <= R6_DRINK_CELLS):
+                        arrivals[h[0]].append(hour)
+                        break
+        guard1 = _r6_guard(t)
+        if _live(t):
+            def fall(rows):
+                return sum(max(0.0, a - b) for prev, cur in zip(rows, rows[1:]) for a, b in zip(prev, cur)
+                           if a is not None and b is not None)
+            falls = dict((k, fall(v)) for k, v in series.items())
+            overlap = arrival_overlaps(arrivals)
+            _note(t, "herd thirst", {"herds": len(herds), "startLevels": start, "falls": falls,
+                                     "arrivalHours": arrivals, "overlap": overlap, "dehydrated": sorted(dehydrated),
+                                     "guard": [guard0, guard1]})
+            if not falls["Muffalo"]:
+                _unmeasured(t, "the muffalo's RM_Thirst never fell: the test herd was never thirsty")
+            if falls["RM_Ullai"] > R6_THIRST_RATIO * falls["Muffalo"]:
+                _fail("the ullai's RM_Thirst fell %.3f, over a third of the muffalo's %.3f" % (falls["RM_Ullai"],
+                                                                                            falls["Muffalo"]))
+            levels = [round(sum(v) / len(v), 2) for v in start.values() if v and None not in v]
+            if len(herds) > 1 and len(set(levels)) < 2:
+                _fail("the wild herds start at one shared RM_Thirst level: %r" % levels)
+            if any(v and None not in v and max(v) - min(v) > 0.05 for v in start.values()):
+                _fail("a herd's animals start far apart: %r" % start)
+            if dehydrated:
+                _fail("natives dehydrated: %r" % sorted(dehydrated))
+            dmg = _r6_guard_changes(guard0, guard1)
+            if dmg:
+                _fail("the week changed the colony: %r" % dmg)
+            if overlap is None:
+                _unmeasured(t, "no wild herd reached the water over %d hours" % R6_ARRIVAL_HOURS)
+            if overlap:
+                _fail("two herds at the water in the same hour: %r" % overlap[:10])
+    _independent(t)
+    with _comp(t, "herd_thirst_gate_off_map"):
+        _unmeasured(t, "no bridge tool regenerates the site's seed and tile with PyrelandsMechanicsGate held off "
+                       "through generation, where MapComponent_PyrelandsHerdThirst would return before it staggers")
 
 
 # Fire-hawk hunt rewards and the map-wide ember carry: live chains built WITH their items (owner 2026-11-13), kept in their own
