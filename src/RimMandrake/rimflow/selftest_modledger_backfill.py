@@ -103,6 +103,7 @@ w(os.path.join(IT, "RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED.md"),
   "## spec\n\nfile: Source/E.cs: drain the right faction.\n")
 w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM.md"), "## spec\n\nPost as the right team.\n")
 EVL = [
+    {"seat": "BENCH", "event": "file", "id": "FIXTUREMOD_OLD_TICKET_WITH_NO_FILE_1", "title": "ledger-only", "tsn": 9},
     {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "title": "Arcs overshoot walls",
      "tsn": 10},
     {"seat": "BENCH", "event": "claim", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "tsn": 11},
@@ -126,7 +127,9 @@ with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BEN
         fh.write(json.dumps(e_) + "\n")
 w(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl"), json.dumps(
     {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL",
-     "ownerSaid": "Reopen it if it ever comes back, never file a new one.", "tsn": 21}) + "\n")
+     "ownerSaid": "Reopen it if it ever comes back, never file a new one.", "tsn": 21}) + "\n" + json.dumps(
+    {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "tsn": 22,
+     "ownerSaid": " ".join("Arc number %d — keep it under the wall’s lip, always." % i for i in range(12))}) + "\n")
 with open(os.path.join(c, "journal.md"), "a", encoding="utf-8") as fh:
     fh.write("\n1. **47, not 48.** `VERSION.json` says 47; the sum is 48 because one row is a leaf too. [measured]\n"
              "2. **The old shock name is a mirror.** `AerialSettings.fallenWireShock` is derived; the setting is\n"
@@ -212,6 +215,9 @@ rows = {r[0]: r for r in B.compare(root, MOD)}
 check("compare: the stage agrees with the stage record", rows["stage (version/stage_record.json)"][3])
 check("compare: a journal claiming every scene UNRUN against live rows is a DIFF",
       rows["journal.md stands: in-game scenes"][3] is False, rows["journal.md stands: in-game scenes"])
+_fx = rows["blind faults marked FIXED in faults.json"]
+check("compare: the FIXED-faults row counts the blind faults, not every claimed ticket", _fx[1] == 2 and
+      "2 claimed_fixed" in str(_fx[2]), _fx)
 txt, info = M.packet(root, MOD)
 check("his words are printed once in the packet (his answers), not again under decisions",
       txt.count("Shelves are open, period.") == 1, txt.count("Shelves are open, period."))
@@ -236,13 +242,16 @@ check("a closed ticket whose closing cannot be stated (a drop with no sha) mines
 fi = F.get("finding:RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED") or {}
 check("a live ticket marked implemented is claimed_fixed on that sha", fi.get("status") == "claimed_fixed" and
       fi.get("code_sha") == "abcdef56", fi)
+check("a ticket with no item file (ledger-only, pre-prose) is counted as left out, not mined",
+      "finding:FIXTUREMOD_OLD_TICKET_WITH_NO_FILE_1" not in F and any("1 tickets of this mod have no item file" in n
+                                                                      for n in res["notes"]), res["notes"])
 check("a pipeline ticket about the mod (a backfill) is not a finding in it",
       "finding:RIMMANDRAKE_BACKFILL_FIXTUREMOD_LEDGER_IN_SHADOW" not in F, sorted(F))
 check("a closed ticket of another concept (SlackMaster) is not mined",
       "finding:RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM" not in F, sorted(F))
 mined_items = [e for e in bevs if any(r == "item:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX" for r in e["evidence"])]
 check("lifecycle is never mined: the claim and the verify make no event of their own",
-      sorted(e["kind"] for e in mined_items) == ["cause.refuted", "finding.claimed_fixed", "finding.open"],
+      sorted(e["kind"] for e in mined_items) == ["cause.refuted", "decision", "finding.claimed_fixed", "finding.open"],
       sorted(e["kind"] for e in mined_items))
 cr = [e for e in bevs if e["kind"] == "cause.refuted"]
 check("a 'False theory:' note is a refuted cause on its finding, with the sha and path it names",
@@ -255,6 +264,9 @@ tr = [e for e in bevs if e["kind"] == "trap.noted"]
 check("the journal's oddities are traps, one each, a wrapped line joined, the first backticked name as where",
       len(tr) == 2 and tr[1]["body"]["where"] == "AerialSettings.fallenWireShock" and "shockReach" in tr[1]["body"]["text"],
       [e["body"] for e in tr])
+check("his long words that overflow the line are fitted to it (deciding sentences kept, the ref for the whole), not "
+      "refused", any(e["kind"] == "decision" and "Arc number 0" in (e["body"].get("said") or "") and
+                     e["body"]["said"].endswith("[…]") for e in bevs), [e["body"] for e in bevs if e["kind"] == "decision"])
 check("his words on a closed ticket's ledger event become a decision on that finding",
       any(e["kind"] == "decision" and e["subject"] == "finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL"
           for e in bevs), [(e["kind"], e["subject"]) for e in bevs if e["kind"] == "decision"])

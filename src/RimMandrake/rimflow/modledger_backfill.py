@@ -527,6 +527,11 @@ def plan(root, mod):
                      % len(closed_unstated))
     if sha_dead:
         notes.append("left out: %d ticket final states whose sha does not resolve on origin/main" % sha_dead)
+    have = {os.path.basename(p)[:-3] for p, _ in cands}
+    nofile = [t for t in titles if t not in have and (mod.upper() in t or set(t.split("_")) & set(words))]
+    if nofile:
+        notes.append("left out: %d tickets of this mod have no item file (ledger-only, from before item prose; the "
+                     "owner's mining scope is items/*.md and items/closed/*.md)" % len(nofile))
     if refuted_no_sha:
         notes.append("left out: %d refuted causes with no sha to pin them to" % refuted_no_sha)
     if elsewhere:
@@ -554,36 +559,56 @@ def plan(root, mod):
     return ev, notes
 
 
+def _fit_line(body, auth, measured):
+    """A line over the byte cap, refused: shorten its longest text (his `said` and its authority copy together) by the
+    overflow, the leading sentences kept and the cut marked; the event cites the old file holding the whole (rule 8).
+    -> True when something was shortened."""
+    m = re.match(r"(\d+) bytes > (\d+)", measured or "")
+    if not m:
+        return False
+    over = int(m.group(1)) - int(m.group(2))
+    field = max((f for f in ("said", "text") if isinstance(body.get(f), str)), key=lambda f: len(body[f]), default=None)
+    if not field:
+        return False
+    old = body[field]
+    copies = [k for k, v in (auth or {}).items() if v == old]
+    cut = over // (1 + len(copies)) + 16
+    if len(old) - cut < 40:
+        return False
+    body[field] = fit(old, len(old) - cut)
+    for k in copies:
+        auth[k] = body[field]
+    return True
+
+
 def run(root, mod, dry=False):
     """Write the plan through `modledger.append` (the standard's refusals included). An event the standard still
     refuses is left out and counted, never forced. A BACKFILL line already in the shard that the plan no longer holds
-    is deleted (delete on sight: it failed the standard, or the old stores no longer say it); a line the plan still
-    holds is kept as it is (same key, same id)."""
+    is deleted after the appends (delete on sight: it failed the standard, or the old stores no longer say it); a line
+    the plan still holds is kept as it is (same key, same id). A line over the byte cap has its longest text fitted
+    (`_fit_line`) and is held under the fitted key."""
     ev, notes = plan(root, mod)
     if dry:
         return {"planned": len(ev), "written": 0, "already": 0, "deleted": 0, "refused": [], "near_duplicates": [],
                 "notes": notes}
     version = next((b.get("version") for k, s, b, *_ in ev if k == "version.open"), None)
-    want = set()
-    for kind, subject, body, evidence, auth, sha in ev:
-        e = {"kind": kind, "subject": subject, "version": version, "body": body, "evidence": evidence,
-             "supersedes": None, "code_sha": sha, "run": None, "token": None,
-             "authority": {k: v for k, v in (auth or {}).items() if v} or None}
-        want.add(M.derive_key(e))
-    old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("key") not in want]
-    if old:
-        M.delete(root, mod, [e["id"] for e in old])
     written = already = 0
-    refused, near = [], []
+    refused, near, held = [], [], set()
     for kind, subject, body, evidence, auth, sha in ev:
         try:
-            _, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
-                                  authority=auth, code_sha=sha, views=False)
+            for _try in range(3):
+                try:
+                    eid, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
+                                          authority=auth, code_sha=sha, views=False)
+                    break
+                except M.Refusal as r:
+                    if r.field != "line" or _try == 2 or not _fit_line(body, auth, r.measured):
+                        raise
         except M.Refusal as r:
             if r.field == "subject" and "looks like" in r.measured:
                 near.append((subject, r.measured))
                 try:
-                    _, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
+                    eid, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
                                           authority=auth, code_sha=sha, views=False,
                                           new_subject="a separate source record (%s); the near-duplicate is listed in "
                                                       "the backfill report" % (evidence[0] if evidence else "?"))
@@ -593,8 +618,14 @@ def run(root, mod, dry=False):
             else:
                 refused.append((kind, subject, str(r)))
                 continue
+        held.add(eid)
         written += created
         already += not created
+    # after the appends (a line fitted to the byte cap is held under its fitted key): a BACKFILL line the plan no
+    # longer holds is deleted
+    old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("id") not in held]
+    if old:
+        M.delete(root, mod, [e["id"] for e in old])
     M.write_views(root, mod)
     return {"planned": len(ev), "written": written, "already": already, "deleted": len(old), "refused": refused,
             "near_duplicates": near, "notes": notes}
@@ -628,9 +659,15 @@ def compare(root, mod):
     vj = _load(os.path.join(cdir, "version", "VERSION.json")) or {}
     out.append(("bars_total (VERSION.json)", vj.get("bars_total"), len(st["bars"]), vj.get("bars_total") ==
                 len(st["bars"])))
-    claimed = [k for k, f in st["findings"].items() if f["status"] == "claimed_fixed"]
-    out.append(("blind faults marked FIXED in faults.json", len(claimed), "claimed_fixed, no judge verdict", False
-                if claimed else True))
+    fixed = set()
+    for fp in glob.glob(os.path.join(cdir, "version", "blind_challenge", "cycle_*", "lane2", "faults.json")):
+        d = _load(fp)
+        for f in d if isinstance(d, list) else (d or {}).get("faults") or []:
+            if isinstance(f, dict) and str(f.get("status") or "").startswith("FIXED"):
+                fixed.add("finding:%s" % f.get("id"))
+    claimed = [k for k in fixed if (st["findings"].get(k) or {}).get("status") == "claimed_fixed"]
+    out.append(("blind faults marked FIXED in faults.json", len(fixed), "%d claimed_fixed, no judge verdict"
+                % len(claimed), not fixed))
     return out
 
 

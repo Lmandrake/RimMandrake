@@ -1136,7 +1136,7 @@ def cursor_of(events):
 def packet_from(mod, events, budget=None, stale=None):
     """-> (text, info). The bounded read a holder starts from (spec §3.3, the standard §3). Never dropped: the open
     findings with their proposed fixes and accept commands, the live traps, the refuted causes, his answers, the open
-    questions, the bars, the holder's last checkpoint. Closed subjects are one line each and are dropped oldest-first
+    questions, the bars, the holder's last checkpoint (a finding claimed fixed prints its claim and accept, not its spent fix). Closed subjects are one line each and are dropped oldest-first
     when over budget, then decisions, causes tried, tests; notes are never printed (they are searchable). `stale(cause)`
     (the CLI passes a git check; views pass none, they are pure) moves a refuted cause whose files changed since its
     code_sha under "Causes stale". Ends with what it left out, then the cursor `since` reads."""
@@ -1176,7 +1176,8 @@ def packet_from(mod, events, budget=None, stale=None):
         keep.append("- %s [%s%s] by %s, %s%s: %s" % (k, f["status"], (", " + f["class"]) if f.get("class") else "",
                                                       f["by"], f["ts"], (" · bars " + ", ".join(f["bars"]))
                                                       if f.get("bars") else "", cl(f["text"], k)))
-        keep.append("  proposed fix: " + cl(f["proposed_fix"], k))
+        if f["status"] != "claimed_fixed":     # claimed done: the fix is spent; `show` keeps it, the packet shows
+            keep.append("  proposed fix: " + cl(f["proposed_fix"], k))      # the claim and the accept a judge runs
         if f.get("accept"):
             keep.append("  accept: " + cl(f["accept"], k))
         if f.get("claim"):

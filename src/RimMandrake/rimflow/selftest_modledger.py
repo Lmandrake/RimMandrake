@@ -238,6 +238,11 @@ put(r, MOD, "HOLDER.L2", "finding.claimed_fixed", FB,
          token=2, ts=ts(13), now=ts(13))
 check("the new holder appends with the current token", M.reduce(M.read(r, MOD))["findings"][FB]["status"]
       == "claimed_fixed")
+_pk = M.packet(r, MOD)[0].split("\n")
+_at = next(i for i, l in enumerate(_pk) if l.startswith("- " + FB + " "))
+_fb = [l for l in _pk[_at + 1:] if l.startswith("  ")][:3]
+check("a claimed-fixed finding prints its accept and its claim, not its spent proposed fix (the packet line rule)",
+      not any(l.startswith("  proposed fix:") for l in _fb) and any(l.startswith("  holder: applied") for l in _fb), _fb)
 put(r, MOD, "HOLDER.L2", "lease.release", "lease", body={"text": "stage done"}, token=2, ts=ts(13, 30),
          now=ts(13, 30))
 why = refuses(M.append, r, MOD, "HOLDER.L2", "note", "stage", body={"text": "after release", "about": "stage"},
