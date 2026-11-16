@@ -14,6 +14,12 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   W8  the grenade leaves the cover: A_ and B_COVER_BROKEN_ONE_DESCENT FAIL
   W9  a good inside a shell's radius gets no journal line: A_REACHED_ACCOUNTED FAIL
   W10 `validation.py --live` (no leaf) and `--live walk_storeroom_raid` under WSL python3 both exit non-zero
+  W11 a sound save whose load runs one tick (PauseOnLoad) while the shell's wave still destroys stacks: A_RELOAD_NO_DUP_LOST
+      PASS (run 2 of visit 2 read "11 before, 7 after" from two different ticks; RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES)
+  W12 nobody on the cover when the grenade goes off: A_ and B_COVER_BROKEN_ONE_DESCENT UNMEASURED (a SITE miss), not FAIL
+  W13 the grenade kills the rider: COVER rows UNMEASURED, and the rider's request answered by its corpse's line keeps
+      A_ and B_REQUESTS_MATCH_PLAN PASS
+  W14 a living rider, the cover gone, no descent: A_ and B_COVER_BROKEN_ONE_DESCENT FAIL (the mod's row still bites)
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py
 """
@@ -38,7 +44,7 @@ class Fake:
         self.brk = brk
         self.saves = {}
         self.w = {"tick": 0, "enabled": True, "cover": True, "goods": {}, "carriers": [], "journal": [], "gas": None,
-                  "burn": []}
+                  "burn": [], "wave": [], "pawns": {} if brk.get("no_rider") else {"Human900": {"pos": [13, 19], "dead": False}}}
         n = 100
         for x in range(11, 16):
             for z in (11, 13, 15):
@@ -57,9 +63,19 @@ class Fake:
         exp = self.next_exp
         self.next_exp += 1
         if at == (13, 19):
+            rider = self.w["pawns"].get("Human900")
+            if rider and not rider["dead"]:
+                self.rec(type="request", exp=exp, thing="Human900", centre=list(at), radius=radius, **{"def": "Human"})
+                if self.brk.get("rider_killed"):
+                    rider["dead"] = True
             if not self.brk.get("cover_stays"):
                 self.w["cover"] = False
-                self.rec(type="descent", exp=0, thing="Steel900", at=[13, 19])
+                if rider and not rider["dead"] and not self.brk.get("no_descent"):
+                    self.rec(type="descent", exp=0, thing="Human900", at=[13, 19], **{"def": "Human"})
+            if rider and rider["dead"]:
+                self.rec(type="skip", exp=exp, thing="Corpse_Human901", reason="in_pit", **{"def": "Corpse_Human"})
+            elif rider:
+                self.rec(type="skip", exp=exp, thing="Human900", reason="in_pit", **{"def": "Human"})
             return
         if not self.w["enabled"] and not self.brk.get("off_throws"):
             return
@@ -73,15 +89,21 @@ class Fake:
             self.rec(type="request", exp=exp, thing=th, centre=list(at), radius=radius)
             if self.brk.get("orphan") and gid == "106":
                 continue
+            if self.brk.get("wave_destroys") and d > radius - 1:
+                self.w["wave"].append(gid)          # the wave's outer ring is reached a tick later, and it burns
+                self.rec(type="skip", exp=exp, thing=th, reason="destroyed")
+                continue
             dx = (x > at[0]) - (x < at[0]) or 1
             dest = [x + dx, z]
             self.rec(type="item_move", exp=exp, thing=th, kind="Item", **{"from": [x, z]}, to=dest, planned=1, cells=1,
                      stop="None", kernelCells=1, wildCells=1, flying=True)
             self.w["goods"].pop(gid)
-            self.w["carriers"].append({"inner": gid, "dest": dest, "left": 5})
+            self.w["carriers"].append({"inner": gid, "dest": dest, "left": 15})   # live: 13 left at the mid-air save
 
     def tick(self):
         self.w["tick"] += 1
+        if self.w["wave"]:
+            self.w["goods"].pop(self.w["wave"].pop(0), None)
         for c in list(self.w["carriers"]):
             c["left"] -= 1
             if c["left"] <= 0:
@@ -105,6 +127,14 @@ class Fake:
     # the bridge
     def call(self, tool, _answer=False, **kw):
         w = self.w
+        if tool == "jawa/time_clock":
+            return {"success": True, "ticksGame": w["tick"]}
+        if tool == "jawa/list_pawns":
+            x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
+            return {"success": True, "pawns": [{"id": i, "def": "Human", "x": p["pos"][0], "z": p["pos"][1], "dead": p["dead"],
+                                                "spawned": not p["dead"]} for i, p in sorted(w["pawns"].items())
+                                               if x <= p["pos"][0] < x + ww and z <= p["pos"][1] < z + hh
+                                               and (kw.get("includeCorpses") or not p["dead"])]}
         if tool == "jawa/time_perf":
             return {"success": False, "error": "No game loaded."} if self.brk.get("no_game") else {"success": True, "meanTickTime": 2.5}
         if tool == "jawa/static_call":
@@ -168,6 +198,8 @@ class Fake:
             self.w["journal"] = j
             if self.brk.get("dup_on_reload") and self.w["carriers"]:
                 self.w["goods"][self.w["carriers"][0]["inner"]] = [12, 12]   # a spawned twin of a good still in its carrier
+            if self.brk.get("load_tick"):
+                self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
         if tool == "jawa/mod_settings_field":
             return {"success": True, "value": "True"}
@@ -179,6 +211,7 @@ class Fake:
 def run(**brk):
     V.active_mods = lambda path=None: list(V.MODS_NEEDED) + ["m%d" % i for i in range(300)]
     f = Fake(**brk)
+    V.TRIPLET_SEAMS = {"saves_stat": lambda: dict((n + ".rws", (1, 1)) for n in f.saves), "wait_saved": lambda name: True}
     out = io.StringIO()
     code = V.walk_storeroom_raid(list(ARGS), bridge=f, wait=lambda B: (True, 0), out=out)
     rows = {}
@@ -220,6 +253,18 @@ def main():
         code, rows, _ = run(**{brk: True})
         got = [rows.get(r) for r in want]
         check(cid, code == 1 and all(g == "FAIL" for g in got), "%s flips %s to FAIL (got %s)" % (brk, want, got))
+    code, rows, txt = run(load_tick=True, wave_destroys=True)
+    check("W11", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
+          "a load one tick late in a moving wave is still a sound save (got %s)" % rows.get("A_RELOAD_NO_DUP_LOST"))
+    cover = ["A_COVER_BROKEN_ONE_DESCENT", "B_COVER_BROKEN_ONE_DESCENT"]
+    code, rows, _ = run(no_rider=True)
+    check("W12", [rows.get(r) for r in cover] == ["UNMEASURED"] * 2, "no rider: %s" % [rows.get(r) for r in cover])
+    code, rows, _ = run(rider_killed=True)
+    plan = ["A_REQUESTS_MATCH_PLAN", "B_REQUESTS_MATCH_PLAN"]
+    check("W13", [rows.get(r) for r in cover] == ["UNMEASURED"] * 2 and [rows.get(r) for r in plan] == ["PASS"] * 2,
+          "rider killed: cover %s, plan %s" % ([rows.get(r) for r in cover], [rows.get(r) for r in plan]))
+    code, rows, _ = run(no_descent=True)
+    check("W14", code == 1 and [rows.get(r) for r in cover] == ["FAIL"] * 2, "living rider, no descent: %s" % [rows.get(r) for r in cover])
     script = os.path.join(HERE, "validation.py")
     r1 = subprocess.run([sys.executable, script, "--live"], capture_output=True, text=True)
     r2 = subprocess.run([sys.executable, script, "--live", "walk_storeroom_raid"] + ARGS[:6], capture_output=True, text=True,

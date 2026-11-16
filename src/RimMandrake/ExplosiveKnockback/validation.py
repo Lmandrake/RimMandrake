@@ -345,6 +345,7 @@ def mock_run():
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
+TRIPLET_SEAMS = {}           # saveload_triplet's saves_stat / wait_saved (the offline selftest passes fakes)
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
              "B_GAS_CLUMP_BY_CLUMP", "B_GAS_GOODS_MOVED", "B_IMPACTS_IN_ROOM", "B_COVER_BROKEN_ONE_DESCENT",
@@ -530,42 +531,94 @@ class _Walk:
             self.unmeasured(["A_RELOAD_NO_DUP_LOST"], "UNMEASURED: nothing in the air to save")
             return
 
-        def census():
+        def census(_B=None):
             ids = [_num(t.get("id")) for t in self.haulables(self.site)]
             for l in self.kp("Flights")[1].splitlines():
                 m = re.search(r"innerId=(\S+)", l)
                 if m:
                     ids.append(_num(m.group(1)))
-            return sorted(ids)
-        before = census()
+            return {"ids": sorted(set(ids)), "dup": sorted(i for i in set(ids) if ids.count(i) > 1)}
+        # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: run 2 read "11 before, 7 after" from a census taken before
+        # the save and one after the load, a tick apart (PauseOnLoad runs one DoSingleTick) while the first shell's wave was
+        # still spreading: two moments, not one state. The arms are now aligned on the measured clock (saveload_triplet: live,
+        # load and reload, each read at save + TRIPLET_MIN_TICKS, carriers still in the air), so only the round trip differs.
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+        import validation_core as VC
         name = "EK_WALK_RAID_MIDAIR_" + self.a.stamp
-        sv = self.save(name)
-        self.row("A_SAVE_MIDAIR", sv.get("success") is not False, "%d carrier(s) in the air; save %s: %s" % (len(fl), name, str(sv)[:80]))
-        ok, why = self.load(name)
-        if not ok:
-            self.unmeasured(["A_RELOAD_NO_DUP_LOST"], "UNMEASURED: reload of %s never reached Playing (%s)" % (name, why))
-            return
-        after = census()
-        dup = sorted(i for i in set(after) if after.count(i) > 1)
-        lost = sorted(set(before) - set(after))
-        new = sorted(set(after) - set(before))
-        self.ev["reload_census"] = {"before": len(before), "after": len(after), "dup": dup, "lost": lost, "new": new}
-        self.row("A_RELOAD_NO_DUP_LOST", not dup and not lost and not new and before,
-                 "%d things before the save, %d after the reload; dup %s lost %s new %s" % (len(before), len(after), dup[:5], lost[:5], new[:5]))
+        walk = self
 
-    def grenade(self):
+        class _TB:
+            def call(self, tool, _answer=False, **kw):
+                return walk.B.call(tool, _answer=_answer, **kw)
+
+            def ticks(self, n):
+                walk.step(n)
+        self.ev.setdefault("saves", []).append(name)
+        try:
+            tr = VC.saveload_triplet(_TB(), census, ticks=VC.TRIPLET_MIN_TICKS, save_name=name, wait_playing=self.wait,
+                                     **TRIPLET_SEAMS)
+        except Exception as e:  # noqa: BLE001 - a bridge fault inside the triplet is an unread row, never a verdict
+            tr = {"verdict": "UNMEASURED", "why": "saveload_triplet raised %r" % e, "arms": {}}
+        self.row("A_SAVE_MIDAIR", tr.get("target") is not None and "rimworld/save_game refused" not in str(tr.get("why")),
+                 "%d carrier(s) in the air; save %s; triplet %s" % (len(fl), name, tr.get("verdict")))
+        arms = tr.get("arms") or {}
+        dups = {k: [v for kk, v in (a.get("state") or {}).items() if kk.startswith("dup[")] for k, a in arms.items()}
+        ids = lambda k: [v for kk, v in ((arms.get(k) or {}).get("state") or {}).items() if kk.startswith("ids[")]  # noqa: E731
+        lost, new = sorted(set(ids("A")) - set(ids("B"))), sorted(set(ids("B")) - set(ids("A")))
+        self.ev["reload_census"] = {"verdict": tr.get("verdict"), "why": tr.get("why"), "target": tr.get("target"),
+                                    "loadedAt": {k: a.get("loadedAt") for k, a in arms.items()},
+                                    "count": {k: len(ids(k)) for k in arms}, "dup": dups, "lost": lost, "new": new,
+                                    "BC": tr.get("BC")}
+        det = "at tick %s: live %d, load %d, reload %d things; dup %s; lost %s new %s (load vs live); %s" % (
+            tr.get("target"), len(ids("A")), len(ids("B")), len(ids("C")), {k: v[:5] for k, v in dups.items() if v},
+            lost[:5], new[:5], tr.get("why"))
+        if any(dups.values()):
+            self.row("A_RELOAD_NO_DUP_LOST", False, "MOD: a thing counted twice; " + det)
+        elif tr.get("verdict") == VC.TRIPLET_IDENTICAL:
+            self.row("A_RELOAD_NO_DUP_LOST", True, det)
+        elif tr.get("verdict") == VC.TRIPLET_SAVE_DROPS:
+            self.row("A_RELOAD_NO_DUP_LOST", False, "MOD: both loads agree and differ from the live game; " + det)
+        else:
+            # LOAD_NONDETERMINISTIC (two loads of one save disagree: the census is not the save's alone) or unread
+            self.row("A_RELOAD_NO_DUP_LOST", "UNMEASURED", "%s: %s" % (tr.get("verdict"), det))
+
+    def pawns_at(self, rect, corpses=False):
+        r = self.c("jawa/list_pawns", rect="%d,%d,%d,%d" % tuple(rect), includeCorpses=corpses, limit=200)
+        return r.get("pawns") or []
+
+    def grenade(self, tag):
+        """RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: run 2 read "0 descents" with nothing saying who stood on
+        the cover. The riders are read before the blast (living, spawned pawns on the cover cell) and their fate after: no
+        rider, or every rider killed by the grenade (a corpse never descends, FlowWorks Building_PitCover.DeSpawn), is a SITE
+        miss, UNMEASURED; a living rider without exactly one descent is the mod's FAIL."""
         self.kp("Clear")
+        riders = [p.get("id") for p in self.pawns_at((self.cover[0], self.cover[1], 1, 1))
+                  if p.get("id") and p.get("spawned", True) and not p.get("dead")]
         e = self.c("jawa/explosion_at", at="%d,%d" % self.cover, radius=GRENADE[1], damType=GRENADE[0])
         self.step(self.a.settle)
         recs = self.journal()
         cov = self.c("jawa/list_things", rect="%d,%d,1,1" % self.cover, limit=20).get("things") or []
         still = [t.get("def") for t in cov if str(t.get("def", "")).startswith("RM_PitCover")]
+        dead = set(p.get("id") for p in self.pawns_at(self.site, corpses=True) if p.get("dead"))
         desc = [r for r in recs if r.get("type") == "descent"]
         per = collections.Counter(r.get("thing") for r in desc)
         twice = [k for k, n in per.items() if n > 1]
-        ok = e.get("success") is not False and not still and desc and not twice
-        return recs, ok, "grenade %s; cover left %s; %d descent(s), twice %s" % (
-            "ok" if e.get("success") is not False else e, still or "none", len(desc), twice)
+        alive = [i for i in riders if i not in dead]
+        self.ev.setdefault("grenade", {})[tag] = {"riders": riders, "killed": sorted(set(riders) & dead),
+                                                  "descents": dict(per),
+                                                  "riderLines": [r for r in recs if r.get("thing") in riders][:20]}
+        det = "grenade %s; cover left %s; riders %s (killed %s); %d descent(s) %s, twice %s" % (
+            "ok" if e.get("success") is not False else e, still or "none", riders, sorted(set(riders) & dead), len(desc),
+            dict(per), twice)
+        if e.get("success") is False:
+            return recs, False, det
+        if not riders:
+            return recs, "UNMEASURED", "SITE: nobody living stood on the cover %d,%d when the grenade went off; %s" % (
+                self.cover + (det,))
+        if not alive and not still and not twice:
+            return recs, "UNMEASURED", "SITE: the grenade killed every rider, and a corpse never descends; " + det
+        ok = not still and not twice and all(per.get(i) == 1 for i in alive)
+        return recs, ok, det
 
     def gas_act(self):
         self.kp("Clear")
@@ -601,9 +654,15 @@ class _Walk:
         d = lambda c: math.hypot(c[0] - self.lit[0], c[1] - self.lit[1]) if len(c) == 2 else 0.0  # noqa: E731
         means = [sum(d(tuple(r["at"])) for r in b if r.get("tick") == t) / max(1, sum(1 for r in b if r.get("tick") == t)) for t in ticks]
         ordered = all(means[i + 1] >= means[i] - 1.0 for i in range(len(means) - 1))
+        # run 2 read "31 bursts, 23 distinct cells" and kept no burst: the repeated cells and their ticks are the evidence
+        # that tells a re-lit cell (gas drifted back onto a cell still on fire) from one cell burst twice in a tick
+        again = dict((str(c), sorted(r.get("tick") for r in b if tuple(r.get("at") or ()) == c))
+                     for c in set(cells) if cells.count(c) > 1)
+        self.ev.setdefault("gas_bursts", {})[tag] = [[r.get("tick"), r.get("at"), r.get("exp"), r.get("queued")] for r in b]
         self.row(tag + "_GAS_CLUMP_BY_CLUMP", len(b) >= 3 and len(ticks) >= 2 and len(set(cells)) == len(cells) and ordered,
-                 "%d bursts on %d ticks, %d distinct cells; mean distance from lit %s by tick %s" % (
-                     len(b), len(ticks), len(set(cells)), self.lit, [round(m, 1) for m in means][:12]))
+                 "%d bursts on %d ticks, %d distinct cells; mean distance from lit %s by tick %s; burst again %s" % (
+                     len(b), len(ticks), len(set(cells)), self.lit, [round(m, 1) for m in means][:12],
+                     dict(list(sorted(again.items()))[:6])))
         ids = set(r.get("exp") for r in b)
         moves = [r for r in recs if r.get("type") in ("item_move", "launch") and r.get("exp") in ids]
         self.row(tag + "_GAS_GOODS_MOVED", bool(b) and any(r.get("type") == "item_move" for r in moves),
@@ -612,7 +671,27 @@ class _Walk:
     def judge_plan(self, tag, recs):
         reqs = [r for r in recs if r.get("type") == "request"]
         out = set((r.get("exp"), r.get("thing")) for r in recs if r.get("type") != "request" and r.get("thing"))
-        bad = ["%s exp %s: no outcome" % (r.get("thing"), r.get("exp")) for r in reqs if (r.get("exp"), r.get("thing")) not in out]
+        # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: a pawn the blast KILLS is requested by its own name and
+        # executed as its corpse (RM_MapComponent_Knockback.Resolve), so every outcome line names Corpse_<race><id>. Such a
+        # request is answered by an outcome of the same blast for a Corpse_<its def> that had no request of its own, one each.
+        asked = set((r.get("exp"), r.get("thing")) for r in reqs)
+        corpses = collections.defaultdict(list)
+        for r in recs:
+            k = (r.get("exp"), r.get("thing"))
+            if r.get("type") != "request" and str(r.get("def", "")).startswith("Corpse_") and k not in asked \
+                    and r.get("thing") not in corpses[(r.get("exp"), r.get("def"))]:
+                corpses[(r.get("exp"), r.get("def"))].append(r.get("thing"))
+        bad, killed = [], []
+        for r in reqs:
+            if (r.get("exp"), r.get("thing")) in out:
+                continue
+            pool = corpses.get((r.get("exp"), "Corpse_%s" % r.get("def")))
+            if pool:
+                killed.append("%s as %s" % (r.get("thing"), pool.pop(0)))
+            else:
+                bad.append("%s exp %s: no outcome" % (r.get("thing"), r.get("exp")))
+        if killed:
+            self.ev.setdefault("killed_by_blast", {})[tag] = killed
         for r in recs:
             t, pl, ce, stop = r.get("type"), r.get("planned"), r.get("cells"), str(r.get("stop"))
             if t == "launch" and isinstance(pl, (int, float)) and isinstance(ce, (int, float)):
@@ -624,7 +703,8 @@ class _Walk:
         if not reqs:
             self.row(tag + "_REQUESTS_MATCH_PLAN", "UNMEASURED", "no throw request in the order's journal")
         else:
-            self.row(tag + "_REQUESTS_MATCH_PLAN", not bad, "%d requests, %d mismatch(es): %s" % (len(reqs), len(bad), bad[:4]))
+            self.row(tag + "_REQUESTS_MATCH_PLAN", not bad, "%d requests, %d mismatch(es): %s; answered by a corpse: %s" % (
+                len(reqs), len(bad), bad[:4], killed[:4]))
 
     def judge_impacts(self, tag, cells, recs, ok_all):
         inside = [r for r in recs if r.get("type") == "request" and _in_rect(tuple(r.get("centre") or ()), self.room)]
@@ -647,7 +727,7 @@ class _Walk:
         self.row(tag + "_REACHED_ACCOUNTED", "UNMEASURED" if not cells else not miss,
                  "%d thing(s) inside a shell's radius with no journal line: %s" % (len(miss), miss[:5]))
         recs += m
-        gr, ok, det = self.grenade()
+        gr, ok, det = self.grenade(tag)
         self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, det)
         recs += gr
         if not gas_first:
