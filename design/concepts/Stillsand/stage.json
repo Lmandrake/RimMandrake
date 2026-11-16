@@ -100,6 +100,12 @@
    "stage": 2,
    "what": "open",
    "why": "run rm-role-designercodex-1794824250, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-16T10:23:56Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794824250: stage 2 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -236,6 +242,37 @@
    "stage": 3,
    "summary": "Found later water authority omitted by the adopted edge claim before freezing stage 3. Wrote stage3_scope_return.md with exact evidence, a concrete current-water/later-film proposal, discriminating water scene contracts, a root-led flagship candidate and remaining drafting obligations. Updated record/log; all inventory impl/proof/scope fields remain intact. Final package intentionally awaits stage-2 reconciliation. No bridge, restart, deploy or live scene.",
    "to": 2
+  },
+  {
+   "at": "2026-11-16T10:23:56Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "Disposable composed-tier Stillsand scene: prepared harbour, sparse crossing beside giant shade, explore and secure unfamiliar island, practical cave find through real workshop/hauling/use to provision another trip. Show current wet line/bloom and charged-thumper wetting/draw in separately recoverable observations; this cannot prove later film integration or settle a version decision.",
+    "settles": [
+     "E1",
+     "E2",
+     "E3",
+     "E7 current built water"
+    ]
+   },
+   "run": "rm-role-designercodex-1794824250",
+   "stage": 2,
+   "summary": "Reconciled E7/c_wetting with later all-game thin-film authority: every built water feature remains in current scope; shared agricultural film integration is later with conserved units, consumption/replenishment, evaporation, migration and reload obligations. Recorded explicit conductor delegated Stillsand sequencing judgment without importing FlowWorks 0.2.0. Separately authenticated expedition_harbour_fortune as the delegated flagship. No owner ask, waiver, runtime proof, bridge, restart or deployment; existing-code live walk remains offered and unrun."
   }
  ],
  "runner": "codex",
@@ -276,30 +313,18 @@
     "input_tokens": 2215574,
     "output_tokens": 12771
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794824250",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2999663,
+    "output_tokens": 13297
+   }
   }
  ],
- "running": {
-  "at": "2026-11-16T10:17:37Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
-   "scenes": null,
-   "sheet": null,
-   "tree": null
-  },
-  "manifest": {
-   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-   "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
-  },
-  "owner_uncited": [],
-  "reserved": 500000,
-  "run": "rm-role-designercodex-1794824250",
-  "runner": "codex",
-  "stage": 2
- },
+ "running": null,
  "schema": 1,
- "stage": 2,
+ "stage": 3,
  "status": "ready"
 }
