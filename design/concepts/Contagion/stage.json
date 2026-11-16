@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -423,6 +422,12 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1794816366: stage 2 blocked"
+  },
+  {
+   "at": "2026-11-16T08:21:38Z",
+   "stage": 2,
+   "what": "unblock",
+   "why": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS fixed at db22459dac4d (was blocked on RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -698,6 +703,6 @@
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
