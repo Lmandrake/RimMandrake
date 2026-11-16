@@ -1,0 +1,3 @@
+lane1: LANE1 {"PASS": 34, "INFO": 2, "UNSETTLED": 8} rows 44 -> /home/mandrake/.seat-tmp/BENCH/ek_blind_cycle1_rows.jsonl | rc 0
+wiring: blind cycle 1 fix wiring: 11/11 PASS | rc 0
+explosive knockback blind cycle 1: PASS

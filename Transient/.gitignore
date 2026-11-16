@@ -1459,6 +1459,9 @@
 !/donor_regen_status_2026-10-19.md
 !/drawbridge_bollards_20261023/**
 !/drawbridge_cables_20261023/**
+!/ek_cover_break/blind_cycle1_green.txt
+!/ek_cover_break/kernel_green.txt
+!/ek_cover_break/storeroom_green.txt
 !/evidence/exempt_landed_presync_selftest.txt
 !/experiment_2026-10-14/gss_review.md
 !/experiment_2026-10-14/live_worklist.md

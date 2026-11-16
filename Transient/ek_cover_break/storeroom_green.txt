@@ -1,0 +1,62 @@
+PASS N0 SceneNames parsed (68 names)
+PASS N1 storeroom_bomb_pit storeroom_bomb_pit is in SceneNames
+PASS N1 storeroom_bomb_pit_control storeroom_bomb_pit_control is in SceneNames
+PASS N2 Build routes both lanes to StoreroomBombPit
+PASS N3 the csproj compiles RM_KnockbackProof_StoreroomBombPit.cs
+PASS N4 scenes.json entry point is storeroom_bomb_pit (src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs::storeroom_bomb_pit)
+PASS G0 the builder StoreroomBombPit exists
+PASS G FlowWorks not loaded builder/verdict carries FlowWorks not loaded
+PASS G LWM_WeaponsLocker builder/verdict carries LWM_WeaponsLocker
+PASS G lwm.deepstorage builder/verdict carries lwm.deepstorage
+PASS G "Shelf" builder/verdict carries "Shelf"
+PASS G "ShelfSmall" builder/verdict carries "ShelfSmall"
+PASS G InClosedContainer builder/verdict carries InClosedContainer
+PASS G IsClosedContainer builder/verdict carries IsClosedContainer
+PASS G closedContainerMassLimit builder/verdict carries closedContainerMassLimit
+PASS G heavyGoodsMinMass builder/verdict carries heavyGoodsMinMass
+PASS G WantCells(s, "g_steel", 2.9f) < 2 builder/verdict carries WantCells(s, "g_steel", 2.9f) < 2
+PASS G RM_PitCover_WovenScrap builder/verdict carries RM_PitCover_WovenScrap
+PASS G Pit(O(s, -3, -5), 7, 2) builder/verdict carries Pit(O(s, -3, -5), 7, 2)
+PASS G the thing trace never ran builder/verdict carries the thing trace never ran
+PASS G not at rest builder/verdict carries not at rest
+PASS G p4 was reached builder/verdict carries p4 was reached
+PASS G planned path crosses builder/verdict carries planned path crosses
+PASS G put no builder/verdict carries put no
+PASS G was not planned onto builder/verdict carries was not planned onto
+PASS G storeroom_bomb_pit_control builder/verdict carries storeroom_bomb_pit_control
+PASS G FillToSurface builder/verdict carries FillToSurface
+PASS G Blast(s.o, 2.9f) builder/verdict carries Blast(s.o, 2.9f)
+PASS G <= 900 builder/verdict carries <= 900
+PASS O east colonist stops dead at the east wall with a wall hit the verdict reads: east colonist stops dead at the east wall with a wall hit
+PASS O lands alive and stunned the verdict reads: lands alive and stunned
+PASS O south colonist carried about three cells straight south the verdict reads: south colonist carried about three cells straight south
+PASS O every stack with a throw request moved the verdict reads: every stack with a throw request moved
+PASS O arc, spin, wall rebounds the verdict reads: arc, spin, wall rebounds
+PASS O zero despawn-spawn pairs the verdict reads: zero despawn-spawn pairs
+PASS O closed container contents unchanged, thrown at least one cell the verdict reads: closed container contents unchanged, thrown at least one cell
+PASS O steel strikes the colonist in line, 2 to 5 blunt, a stagger, stops there the verdict reads: steel strikes the colonist in line, 2 to 5 blunt, a stagger, stops there
+PASS O goods and a colonist on the pit floor, one descent each the verdict reads: goods and a colonist on the pit floor, one descent each
+PASS O covered-cell stack falls through, cover destroyed the verdict reads: covered-cell stack falls through, cover destroyed
+PASS O control: nothing descends, land on the planned cells the verdict reads: control: nothing descends, land on the planned cells
+PASS R the scene spawns through Item/Track (Prepare and the disposable map clean up) and changes no setting or def
+PASS K1 pE (1,0) thrown 3 east stops at the east wall two cells on: (3, 0) Wall
+PASS K2 pS (0,-1) thrown 3 south lands in the pit's near row: (0, -4) Pit
+PASS K3 the steel's 2-cell line from (1,1) reaches p4 at (3,3): [(2, 2), (3, 3)]
+PASS K4 no colonist's 3-cell path crosses another colonist's cell []
+PASS K5 a floor cell within two cells throws exactly onto a near-row pit cell (2 ways, e.g. ((-1, -2), 2, (-2, -4)))
+PASS W the goods row's unmoved list leaves out stacks with a skip too_weak line (k => ForThing(sc, "request", sc.things[k]).Count > 0 && ForThing(sc, "item_move", sc.things[k]).Count == 0
+             ...)
+PASS K6 the locker at (-2,0) has a free cell (-3,0) behind it, then the wall
+PASS P0 kernel constants read: baseCells=4.0 refMass=70.0 maxCells=6.0 wild=1.6 heavy=10.0
+PASS P1 the cover loop's log-count bound read: 75
+PASS P2 the open-pit stack (10 cloth, 4 kg): (-1, -2) -> (-2, -4)
+PASS P3 a floor stack's kernel plan ends on the covered near-row cell, with the cover built: from (1, -2), 61 logs, onto (2, -4)
+PASS P4 that stack's path crosses no colonist: [(2, -3), (2, -4)]
+PASS C1 the kernel decides a landing's cover break (RM_KnockbackMath.LandingBreaksCover)
+PASS C2 the flyer's Land asks LandingBreaksCover of the cover on the cell it landed on
+PASS C3 the flyer's Land breaks the cover through RM_KnockbackCompat.BreakCoverUnder
+PASS C4 the stack is placed first, then the cover under it breaks (it falls with the deck, one descent)
+PASS C5 BreakCoverUnder springs the whole deck through FlowWorks' own Building_PitCover.Spring (RM_PitCoverUtility.Deck)
+PASS C6 the flyer journals a cover_break line
+PASS T test_table.json sc_storeroom_bomb_pit entry_exists is True
+PASS: 0 failed
