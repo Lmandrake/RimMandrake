@@ -1027,8 +1027,6 @@ def race_once(a, b, workers=12, pushes=10, tag="w"):
             lost.append(f)
             if "PUBLISHED" in so:
                 lied.append(f)
-        elif f in onorigin and rc not in (0,):
-            pass
     return lost, lied, res
 
 
