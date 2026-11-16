@@ -33,6 +33,8 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   W22 the frame window over the bar with the mod OFF too (full-list noise; live, visit 3 run 2 read 59.3 ms with nothing in
       the air): FRAME_BUDGET UNMEASURED naming both arms, never a mod FAIL
   W23 nothing in the air in the frame window (the shells threw nothing): FRAME_BUDGET UNMEASURED
+  W24 the first two unpauses after a load do not hold (live, visit 3 run 3: both frame arms read every frame paused,
+      paused=621): the arm unpauses until the clock moves, and FRAME_BUDGET and CARRIER_TICK_COST still PASS
   W21 jawa/time_perf reads 0.0 on a paused clock (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with
       carriers in the air", PASS): the fake answers 0.0 unless the clock runs, and a sound world reads both tick costs
       above 0 (W0); a perf that always reads 0.0 leaves CARRIER_TICK_COST UNMEASURED, never PASS
@@ -157,6 +159,8 @@ class Fake:
     def call(self, tool, _answer=False, **kw):
         w = self.w
         if tool == "jawa/time_clock":
+            if w.get("speed", 0) > 0:
+                w["tick"] += 30                     # a running clock moves between reads
             return {"success": True, "ticksGame": w["tick"]}
         if tool == "jawa/list_pawns":
             x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
@@ -247,13 +251,18 @@ class Fake:
             if self.brk.get("reid_after_save"):
                 self.w["nextId"] = self.w.get("nextId", 5000) + 1000
                 self.w["loaded"] = True
+            if self.brk.get("pause_on_load"):
+                self.w["loaded_pause"] = 2
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
         if tool == "rimworld/set_time_speed":
             w["speed"] = kw.get("speed", 0)
+            if kw.get("speed", 0) > 0 and self.brk.get("pause_on_load") and w.get("loaded_pause", 0) > 0:
+                w["loaded_pause"] -= 1              # Prefs.PauseOnLoad pauses again a frame after the load
+                w["speed"] = 0
             if w.get("probe"):
-                w.setdefault("probe_speed", []).append(kw.get("speed"))
+                w.setdefault("probe_speed", []).append(w["speed"])
             return {"success": True}
         if tool == "jawa/mod_settings_field":
             return {"success": True, "value": "True"}
@@ -349,6 +358,10 @@ def main():
     code, rows, txt = run(nothing_flies=True)
     check("W23", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a frame window with nothing in the air is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(pause_on_load=True)
+    check("W24", rows.get("FRAME_BUDGET") == "PASS" and rows.get("CARRIER_TICK_COST") == "PASS",
+          "unpauses that a load undoes are retried until the clock moves (FRAME_BUDGET %s, CARRIER_TICK_COST %s)"
+          % (rows.get("FRAME_BUDGET"), rows.get("CARRIER_TICK_COST")))
     code, rows, txt = run(perf_blind=True)
     check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
           "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))

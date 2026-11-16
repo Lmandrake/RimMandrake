@@ -788,7 +788,8 @@ class _Walk:
             return
         # CARRIER_TICK_COST is read in the `on` arm, on a running clock: jawa/time_perf's meanTickTime reads 0.0 on a
         # paused one (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with carriers in the air", PASS)
-        self.c("rimworld/set_time_speed", speed=1)
+        moving = self.run_clock(wait)
+        self.ev.setdefault("frame_clock", {})[arm] = moving
         wait(2.0)
         if arm == "on":
             self.ev["tick_rest_running"] = self.perf()
@@ -806,6 +807,20 @@ class _Walk:
         p99, rows, air = num("windowP99Ms"), num("windowRows"), num("maxInAir")
         self.ev["frame_" + arm] = {"text": r[:400], "p99": float(p99.group(1)) if p99 else None,
                                    "rows": int(rows.group(1)) if rows else 0, "inAir": int(air.group(1)) if air else 0}
+
+    def run_clock(self, wait, tries=6):
+        """Unpause at speed 1 until the clock is seen moving -> the tries it took, or 0 if it never moved. Live, visit 3
+        run 3: set_time_speed 1 right after a baseline reload did not hold (Prefs.PauseOnLoad pauses again on a later
+        frame), and both frame arms read every frame paused (paused=621)."""
+        for n in range(1, tries + 1):
+            self.c("rimworld/set_time_speed", speed=1)
+            wait(0.5)
+            t0 = self.c("jawa/time_clock").get("ticksGame")
+            wait(0.5)
+            t1 = self.c("jawa/time_clock").get("ticksGame")
+            if isinstance(t0, int) and isinstance(t1, int) and t1 > t0:
+                return n
+        return 0
 
     def frame_row(self):
         """FRAME_BUDGET: PASS when the `on` arm's 99th-percentile unpaused frame is within the bar; FAIL when it is over
