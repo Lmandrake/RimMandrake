@@ -15,6 +15,8 @@
   "seat": "BENCH",
   "max_live": 4,
   "_max_live_doc": "At most this many live detached runs on advancing mods at once, the Conductor's own launches included. Raised 2 -> 4 on 2026-11-15 by the owner's card (\"Raise to 4\"); in-game runs stay one at a time (one bridge).",
+  "build_batch_bars": 6,
+  "_build_batch_bars_doc": "An offline build owing more refused bars than this goes out in even batches of about this many, one builder per batch, each judged on the whole refused set (a batch resolving none of its bars stops the mod as before). Item RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN: one builder given all 33 refused Graffiti bars spent USD 7.15 of its 8 and stalled; the steward split them by hand into items of about six. 0 or absent sends the whole set.",
   "stage_ceiling_usd": 100,
   "_stage_ceiling_doc": "Set by the builder of this step: one mod's measured dollars at a stage (every run the status page places there, plus this step's launches, a run with no measured dollars counted at its cap) plus the next run's cap must fit this line, or nothing more launches on that mod at that stage, with a Needs Conductor line: the cap is reserved before launch (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH). Read at the offline build (a stop), the blind challenge and in-game acceptance (decision ceiling, read each tick). Raised 60 -> 100 on 2026-11-15 by the owner's card (\"Raise the limit to $100\", item RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB).",
   "settle_s": 180,

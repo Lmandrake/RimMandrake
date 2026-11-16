@@ -13,4 +13,6 @@ already catches it; fix only if a second mod stalls the same way.
 
 ## acceptance test
 
-Acceptance test: none, the group size and whether to split at dispatch or keep the steward route is a design choice not yet made.
+`python3 src/RimMandrake/rimflow/selftest_maturation_dispatch.py` exits 0 (165 PASS, 2026-11-15). Watched failing on the base: the batch, brief and title checks FAIL and `MD.batch_of` is missing (AttributeError). It covers: 7 refused over `build_batch_bars` 6 launch as an even 4 (+3 later); the brief lists only the batch and names the rest as later runs'; the title says "4 of the 7"; batch_of 13 -> 5, 6 -> whole, size 0 -> whole, 33 -> 6, empty -> empty; an unbatched brief lists every bar; launch_mod refuses a batch naming a bar not refused.
+
+Decided (Evidence-for-Ask, the obvious answer): split at dispatch, batches of about six (the steward's hand size), each run judged on the whole refused set as before. `build_batch_bars` 0 restores one run per set.

@@ -1155,9 +1155,11 @@ def _bar_lines(tt, ids):
     return out
 
 
-def brief_text(root, mod, cap_usd=None):
+def brief_text(root, mod, cap_usd=None, bars=None):
     """-> (the mechanical half of an offline-build brief, build_facts). Never refuses for a blank steward section.
-    A mod at the blind challenge gets blind_brief_text instead, one at in-game acceptance ingame_brief_text."""
+    A mod at the blind challenge gets blind_brief_text instead, one at in-game acceptance ingame_brief_text. bars: this
+    run's batch of the refused bars (the Dispatch step's split, RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN);
+    only those are listed as the run's work, the rest named as later runs'."""
     stage = (load(root, mod) or {}).get("stage")
     if stage == "blind_challenge":
         return blind_brief_text(root, mod, cap_usd)
@@ -1177,8 +1179,16 @@ def brief_text(root, mod, cap_usd=None):
     if not f.get("observed"):
         L.append("- nothing (stage %s, owed: %s)" % (f.get("stage"), f.get("owed", UNM)))
     ids = f.get("refused_bars") if isinstance(f.get("refused_bars"), list) else []
-    L += ["", "## Bars with a deciding check that does not run (%d of %s)" % (len(ids), f.get("bars_total", UNM)), ""]
-    L += _bar_lines(tt, set(ids)) or ["- none"]
+    mine = [b for b in ids if b in set(bars)] if bars else list(ids)
+    if len(mine) < len(ids):
+        L += ["", "## Bars with a deciding check that does not run (this run's batch: %d of the %d refused; %s bars in "
+              "the table)" % (len(mine), len(ids), f.get("bars_total", UNM)), ""]
+        L += _bar_lines(tt, set(mine)) or ["- none"]
+        L += ["", "Left for later runs, not yours (the Dispatch step launches the next batch once this run ends and "
+              "has resolved at least one refused bar): %s." % ", ".join("`%s`" % b for b in ids if b not in mine)]
+    else:
+        L += ["", "## Bars with a deciding check that does not run (%d of %s)" % (len(ids), f.get("bars_total", UNM)), ""]
+        L += _bar_lines(tt, set(ids)) or ["- none"]
     if f.get("walk_bars"):
         L += ["", "Bars his Stage 8 walk helps decide (a hand step for the Conductor, not yours): %s."
               % ", ".join(f["walk_bars"])]
@@ -1238,7 +1248,7 @@ def resume_text(f, unit):
 
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
-               resume=None):
+               resume=None, bars=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -1246,12 +1256,13 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     otherwise writes the brief and calls detached_helper.py launch --budget-usd <cap>. It launches nothing else and
     never retries; it never takes the bridge itself (the launched driver does, with --idle-ok). resume (a killed run's
     unit, from the Dispatch step's retry): the cycle or visit that run began may already have a record with no exit
-    block; it is resumed, the brief opening with resume_text."""
+    block; it is resumed, the brief opening with resume_text. bars: an offline build's batch of its refused bars (the
+    Dispatch step's split); a bar not refused now is refused."""
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
         return 2, "REFUSED: --item is required (a ledger item filed on origin/main)", None
-    text, f = brief_text(root, mod, budget_usd)
+    text, f = brief_text(root, mod, budget_usd, bars=bars)
     ok_owed = ("cycle", "run") + (("no exit block",) if resume else ())
     if resume and f.get("stage") in ("blind_challenge", "in_game"):
         head, _, rest = text.partition("\n\n")
@@ -1279,6 +1290,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
                    "launches from here" % (mod, f.get("stage"))), None
     elif f.get("owed") != "build":
         return 2, "REFUSED: %s owes no build work (%s)" % (mod, f.get("owed")), None
+    elif bars and set(bars) - set(f.get("refused_bars") or []):
+        return 2, "REFUSED: the batch names bars %s is not refusing: %s" % (
+            mod, ", ".join(sorted(set(bars) - set(f.get("refused_bars") or []))[:6])), None
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)

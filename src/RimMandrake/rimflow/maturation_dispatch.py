@@ -222,6 +222,18 @@ def item_id(mod, count, known):
     return None
 
 
+def batch_of(bars, size):
+    """-> this run's batch of the refused bars: the whole list at or under size (or size unset), else the first of
+    ceil(n / size) even batches (33 at 6 -> 6, 13 -> 5, 7 -> 4). RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN:
+    one builder given all 33 refused Graffiti bars spent USD 7.15 of its 8 and stalled on its helpers; the steward split
+    them by hand into items of about six."""
+    bars = list(bars or [])
+    if not isinstance(size, int) or isinstance(size, bool) or size <= 0 or len(bars) <= size:
+        return bars
+    groups = -(-len(bars) // size)
+    return bars[:-(-len(bars) // groups)]
+
+
 # ---- what is true now -----------------------------------------------------------------------------------------------
 
 def _ts(iso_s):
@@ -763,7 +775,12 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         if no_slot(cfg, live_total, put):
             continue
         live_total += 1
-        put("launch", "%d bars refused as build work, nothing live on it (%s)" % (n, account[1]))
+        bars = [i for i in ids if i != "table_version"]
+        batch = batch_of(bars, cfg.get("build_batch_bars"))
+        if len(batch) < len(bars):
+            row["batch"] = batch
+        put("launch", "%d bars refused as build work%s, nothing live on it (%s)" % (
+            n, ", this run takes a batch of %d" % len(batch) if row.get("batch") else "", account[1]))
         launches.append(mod)
     return rows, launches
 
@@ -1209,8 +1226,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                        row.get("cycle"), row.get("cycle"), pac(now)))
         else:
             item = item_id(mod, row["refused"], known)
-            title = ("%s Stage 3: build the checks for the %d bars not runnable, offline (launched by the Dispatch step)"
-                     % (mod, row["refused"]))
+            nb = len([i for i in row["refused_ids"] if i != "table_version"])
+            title = ("%s Stage 3: build the checks for %s bars not runnable, offline (launched by the Dispatch step)"
+                     % (mod, "%d of the %d" % (len(row["batch"]), nb) if row.get("batch") else "the %d" % row["refused"]))
             why = ("delegated: maturation_dispatch.py; maturation.py refuses %d bars as build work (%s), nothing live on "
                    "it, measured %s" % (row["refused"], ", ".join(row["refused_ids"][:12]), pac(now)))
         if blind:
@@ -1248,7 +1266,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             ok, text = do_file(item, title, why) if item else (False, "no free item name")
             filed = ok
         if ok:
-            rc, text2, unit = do_launch(mod, cfg["cap_usd"], item)
+            rc, text2, unit = do_launch(mod, cfg["cap_usd"], item, **({"bars": row["batch"]} if row.get("batch") else {}))
             text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
             ok = rc == 0 and bool(unit)
         else:
@@ -1403,7 +1421,7 @@ def reading(cfg, rows, now):
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
                                                        "idle_min", "stage_usd", "cycle", "visit", "exit",
-                                                       "stop_lifted")} for r in rows}}
+                                                       "stop_lifted", "batch")} for r in rows}}
 
 
 CLONE_FETCH_S = 30          # the tick's fetch of its own clone

@@ -36,6 +36,7 @@ hand-launched run that wrote nothing, with no cap, on an account hold, with the 
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -159,8 +160,8 @@ def main():
         fx = {"autonomy": False, "convergence": no_convergence, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
               "clone": lambda: world.get("clone", (0, 0)),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
-              "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model=cfg["model"],
-                                                            seat=cfg["seat"])}
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model=cfg["model"],
+                                                                  seat=cfg["seat"], **kw)}
 
         def tick(apply=True, at=0):
             return MD.tick(root, cfg, apply, fx=fx, now=CLOCK + at, page=False)
@@ -207,6 +208,29 @@ def main():
         a = launches()[0] if launches() else []
         ok(a and a[a.index("--budget-usd") + 1] == "15" and a[a.index("--model") + 1] == "opus",
            "the launch carries the 15 USD cap and opus")
+        # RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN: one builder took all 33 refused Graffiti bars and
+        # stalled; a set above build_batch_bars goes out in even batches of about that many, judged on the whole set
+        bars7 = [i for i in M.refused_ids(M.build_facts(root, "FlowWorks")) or [] if i != "table_version"]
+        br = open(a[a.index("--brief-file") + 1]).read() if a else ""
+        bt = rd["mods"]["FlowWorks"].get("batch") or []
+        ok(base.get("build_batch_bars") == 6 and len(bars7) == 7 and len(bt) == 4 and set(bt) < set(bars7),
+           "7 refused bars over a batch of 6 go out as an even 4 + 3: this run takes 4 (%s)" % bt)
+        nbar = lambda t: len(re.findall(r"^- \*\*\S+\*\* \(", t, re.M))      # a bar line, not the journal's
+        ok(nbar(br) == 4 and all("**%s**" % b in br for b in bt)
+           and not any("**%s**" % b in br for b in set(bars7) - set(bt))
+           and "this run's batch: 4 of the 7" in br and all("`%s`" % b in br for b in set(bars7) - set(bt)),
+           "the brief lists only the batch's bars and names the other 3 as later runs' (%d listed)" % nbar(br))
+        ok(filed and "4 of the 7 bars" in filed[0][1], "the item title says 4 of the 7 bars (%s)" % (
+            filed[0][1] if filed else None))
+        ok([MD.batch_of(list("abcdefghijklm"), 6), MD.batch_of(list("abcdef"), 6), MD.batch_of(list("abcdefg"), 0),
+            len(MD.batch_of(["b%02d" % k for k in range(33)], 6)), MD.batch_of([], 6)]
+           == [list("abcde"), list("abcdef"), list("abcdefg"), 6, []],
+           "batch_of: 13 -> 5 (even thirds), 6 -> whole, size 0 -> whole, 33 -> 6, empty -> empty")
+        text_all, _ = M.brief_text(root, "FlowWorks", 15)
+        ok(nbar(text_all) == 7 and "this run's batch" not in text_all,
+           "a brief with no batch still lists every refused bar")
+        rcb, tb, _ = M.launch_mod(root, "FlowWorks", 15, "SOME_ITEM", bars=bt[:1] + ["no_such_bar"])
+        ok(rcb == 2 and "no_such_bar" in tb, "launch_mod refuses a batch naming a bar not refused (%s)" % tb[:80])
         rec = json.load(open(os.path.join(sd, "state.json")))
         unit = rec["mods"]["FlowWorks"]["watch"]["unit"]
 
@@ -1241,8 +1265,8 @@ def ingame_main():
 
         fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
-              "launch": lambda mod, cap, item: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
-                                                            bridge=lambda p, s: world["bridge"])}
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
+                                                                  bridge=lambda p, s: world["bridge"], **kw)}
 
         def tick(c, at=0, apply=True):
             return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=T0 + at, page=False)
