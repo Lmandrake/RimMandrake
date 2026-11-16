@@ -1440,7 +1440,7 @@
   "failure_modes": [
     "F1: Fortunes scattered through emptiness stop organising play: the biome becomes a busy zoo or disconnected attractions, and distant rock islands and uncertain cave discoveries no longer draw repeated expeditions. Basis: OWNER:1794377002766121379; design/RimMandrake/biome_experiences_2026-10-20.md.",
     "F2: The desert teaches false safety or meaningless rewards: an unfamiliar island promises rest before it is secured, warning or loss signs give no useful decision, or a cave fortune cannot practically fund the next expedition/outpost. Basis: OWNER:1794377002766121379; src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs; src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs.",
-    "F3: Connected systems fail in routine play or its proof: legacy sun contradicts shared geometry, water is lost/double-counted or fails to wet shared growth, jobs stall, or destructive scenes and settings leave state behind. Basis: OWNER:1792410399049610407; OWNER:1793794389686592719; src/RimMandrake/Stillsand/validation.py:495."
+    "F3: Connected systems fail in routine play or its proof: legacy sun contradicts shared geometry, current water is lost/double-counted or its built wet-line/bloom/attraction/thumper consequences fail, jobs stall, or destructive scenes/settings leave state behind. Later shared film must also satisfy plant depletion/replenishment without a second hydration state. Basis: OWNER:1792410399049610407; OWNER:1793794389686592719; OWNER:1794686643633612968; CONDUCTOR:1794824429827934950; src/RimMandrake/Stillsand/validation.py:495."
   ],
   "neighbours": [
     {
@@ -1454,9 +1454,13 @@
       "text": "CreatureBehaviors owns sand-swim state, droid target filter, shared shade/pinned sun/heat, tracks, drum lure, filter feed, shadow following and shade-driven severity. Stillsand opts in and supplies content, sounds, thumper/geophone and event control."
     },
     {
-      "source": "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs",
+      "source": [
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
       "id": "n_water",
-      "text": "FlowWorks owns deep-sand terrain and shared TakenByLand lifecycle; spill/growth wetting must agree with Stillsand wet state. DBH optionally owns real thirst jobs/bottles; RM water items still function without it."
+      "text": "FlowWorks owns deep-sand terrain and shared TakenByLand. Current Stillsand water and gale-return coverage remain. Shared agricultural wetting/FlowWorks agreement belongs to later one-film integration under d_water_version_disposition; FlowWorks 0.2.0 assigns no Stillsand version. DBH optionally owns real thirst jobs/bottles; RM water items function without it."
     },
     {
       "source": "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs",
@@ -1485,8 +1489,12 @@
     },
     {
       "id": "n_growth",
-      "source": "src/RimMandrake/ExplosiveGrowth/Source/RM_WetSources.cs",
-      "text": "ExplosiveGrowth owns the wet-source registry and consumable plant-water interface. FlowWorks spill opts in using WaterSpill filth. Stillsand WetSand still has its own expiring map and needs the ruled shared-consumption integration; do not add a second independent plant hydration model."
+      "source": [
+        "src/RimMandrake/ExplosiveGrowth/Source/RM_WetSources.cs",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "text": "ExplosiveGrowth owns the wet-source registry and consumable plant-water interface; current FlowWorks spill opts in through WaterSpill filth. Stillsand WetSand is still expiry-based. Shared agricultural consumption moves to later one-film integration under d_water_version_disposition, with actual consumer/readers, conserved units and explicit legacy migration, not a second saved hydration pool."
     }
   ],
   "scene_audit": [
@@ -2194,14 +2202,16 @@
     },
     {
       "id": "s_wetting",
-      "speaker": "owner",
+      "speaker": "agent",
       "source": [
         "OWNER:1793794389686592719",
         "OWNER:1794686643633612968",
         "OWNER:1794721673433243094",
-        "OWNER:1794790758150606113"
+        "OWNER:1794790758150606113",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
       ],
-      "text": "Historical November 4 purpose: FlowWorks and Stillsand share consumable plant-accessible wetting. Later OWNER:1794686643633612968 replaces all game wetness with thin film and points to the next version; OWNER:1794721673433243094 explicitly defers FlowWorks wetting to 0.2.0. Stillsand version disposition must be reconciled at stage 2 before this historical purpose becomes a current integration bar."
+      "text": "The November 4 purpose is shared consumable plant water. The later all-game thin-film ruling controls representation. FlowWorks wetting explicitly moves to FlowWorks 0.2.0; that card assigns no Stillsand version. The explicit Stillsand sequencing judgment is d_water_version_disposition: built current water remains covered; shared agricultural film integration is later."
     },
     {
       "id": "s_fortunes_lead",
@@ -2232,6 +2242,16 @@
       "speaker": "owner",
       "source": "OWNER:1794686643633612968",
       "text": "All game wetness migrates to a thin film. Drained natural water reveals wet mud that dries; some terrains vary wet/dry while Tile and Cement do not change. The owner places this probably in the next version of the relevant mods. This does not authorise removal of current Stillsand pour/wet-line features."
+    },
+    {
+      "id": "s_water_current_later",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "text": "Current package retains every built water capability. Shared consumable agricultural wetting and FlowWorks integration are later under the all-game one-film design, including explicit units, plant depletion/replenishment, conservation, evaporation/drainage, reload and justified legacy migration. No numbered Stillsand release or waiver is inferred."
     }
   ],
   "decisions": [
@@ -2360,6 +2380,48 @@
         "design/concepts/Stillsand/stage3_scope_return.md"
       ],
       "text": "Return to stage 2 before writing the final package: E7 and c_wetting omitted the later all-game thin-film ruling and explicit FlowWorks version deferral. stage3_scope_return.md proposes a current built-water/later film-integration split and an evidence-derived flagship candidate. These are proposals for reconciliation, not adopted stage-3 scope changes or an authenticated flagship pick. No owner ask is proposed or sent."
+    },
+    {
+      "id": "d_water_version_disposition",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "status": "delegated",
+      "source": [
+        "CONDUCTOR:1794824429827934950",
+        "OWNER:1793794389686592719",
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "text": "Adopt current built-water/later shared-film integration boundary. Current production/use/accounting, pour/wet-line/bloom/attraction, charged-thumper wetting/draw, saved expiry/gale clear and tier-owned Debt/Return retain full coverage. Shared agricultural consumption and FlowWorks agreement belong to later one-film integration under the existing design item. This is a fresh delegated sequencing judgment, not an owner Stillsand release ruling; FlowWorks 0.2.0 remains FlowWorks-only. Legacy expiry is not measured film volume. No present integration or runtime harmony is claimed.",
+      "evidence_against": [],
+      "review": "design/concepts/Stillsand/stage2_return_review.json"
+    },
+    {
+      "id": "d_flagship_pick",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "flagship": "expedition_harbour_fortune",
+      "status": "delegated",
+      "source": [
+        "CONDUCTOR:1794824436177586321",
+        "OWNER:1794377002766121379",
+        "CONDUCTOR:1794805294378261874",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "text": "Select expedition_harbour_fortune as showcase 1: prepared harbour, sparse crossing beside giant, explore and secure unfamiliar island, practical cave discovery and ordinary work/use provision the next undertaking. Retain an emptied-cave variant and independent feature coverage; label arranged scenes. No enjoyment, current proof or first-touch certification is inferred.",
+      "evidence_against": [],
+      "review": "design/concepts/Stillsand/stage2_return_review.json"
+    },
+    {
+      "id": "d_stage2_return_review",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_return_review.json",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "text": "Fresh reviewer /root/water_flagship_review passed the authority reconciliation and found no concrete evidence requiring a human ask. Preserve charged-thumper wetting/draw and distinguish legacy expiry from physical film volume. Correct the historical return proposal so later shared film stays outside the current tree after split adoption. All observations remain unrun."
     }
   ],
   "asks": [
@@ -2440,18 +2502,21 @@
         "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:276",
         "OWNER:1794686643633612968",
         "OWNER:1794721673433243094",
-        "OWNER:1794790758150606113"
+        "OWNER:1794790758150606113",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
       ],
       "speaker": "agent",
-      "text": "Current Stillsand wetUntil and direct hourbloom spawning do not establish shared consumable growth wetting. Later all-game thin-film authority supersedes a new separate-state integration prescription; the current-versus-later version disposition must be reconciled before acceptance is drafted.",
-      "status": "historical_purpose_version_reconciliation_pending",
+      "text": "Current Stillsand wetUntil and direct hourbloom spawning do not establish shared plant-water consumption. All-game thin film controls the later integration. Current built water remains in scope; the shared agricultural consumer discrepancy is retained as later work, not accepted by bloom/colour.",
+      "status": "later_implementation_proof_gap",
       "related": [
         "pour",
         "wet_line"
       ],
       "core": true,
       "resolved": true,
-      "resolution": "The November 4 shared-consumption purpose is recorded. Its stage-2 implementation/proof disposition is incomplete because the November 14 all-game thin-film ruling and November 15 FlowWorks deferral were omitted. See c_wetting_version. No present shared integration is claimed."
+      "resolution": "d_water_version_disposition explicitly resolves design scope: preserve every built water capability in current acceptance, defer shared agricultural wetting/FlowWorks integration to later thin film under its existing design item. Retain units, consumption/replenishment, conservation, evaporation/drainage, reload and explicit legacy migration; no current integration or Stillsand release number is claimed.",
+      "decision": "d_water_version_disposition"
     },
     {
       "id": "c_decay",
@@ -2525,12 +2590,14 @@
         "OWNER:1794790758150606113",
         "infrastructure/state/items/RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE.md",
         "infrastructure/state/items/RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT.md",
-        "design/concepts/Stillsand/stage3_scope_return.md"
+        "design/concepts/Stillsand/stage3_scope_return.md",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
       ],
-      "text": "Stage-2 E7 and c_wetting commission current shared agricultural wetting without accounting for later thin-film representation and next-version direction. The FlowWorks 0.2.0 card is not itself a Stillsand version decision. Reconcile the Stillsand boundary explicitly using existing authority and preserve every built water capability.",
-      "status": "return_to_stage2",
+      "text": "The earlier E7 current shared-wetting prescription is superseded by explicit d_water_version_disposition. Existing Stillsand water remains current; shared agricultural integration follows the later all-game thin-film design. FlowWorks 0.2.0 is not a Stillsand release choice.",
+      "status": "design_resolved_current_later",
       "core": true,
-      "resolved": false,
+      "resolved": true,
       "related": [
         "pour",
         "wet_line",
@@ -2540,7 +2607,9 @@
         "ledger",
         "return_ritual"
       ],
-      "on": "ITEM:RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE"
+      "on": "ITEM:RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE",
+      "resolution": "Authenticated conductor Evidence-for-Ask call adopts the current/later split, preserving all built water features and later migration/consumer obligations. This resolves the missing scope decision only; it provides no source or runtime proof.",
+      "decision": "d_water_version_disposition"
     }
   ],
   "grounding": {
@@ -3178,23 +3247,26 @@
   },
   "dialogue": {
     "stage": 2,
-    "run": "rm-role-designercodex-1794808321",
-    "source": "design/concepts/Stillsand/stage2_edges.md",
+    "run": "rm-role-designercodex-1794824250",
+    "source": "design/concepts/Stillsand/stage2_reconciliation.md",
     "turns": 2,
     "owner_questions_sent": 0,
     "asks_proposed": 0,
     "walk_offered_first": "walk_existing_first",
-    "review": "design/concepts/Stillsand/stage2_review.json",
-    "evidence_search": "Historical proposal/card-ledger/cast chronology and same-commission git history resolve appraisal. Later explicit titan harvest/spoilage OWNER events clarify corpse scope. No original September card transcript recovered. All resulting observations remain unrun.",
+    "review": "design/concepts/Stillsand/stage2_return_review.json",
+    "evidence_search": "Original 11/4 plant-water purpose, 11/14 all-game film ruling, full FlowWorks version card, actual wet-sand/thumper/consumer seams, original Stillsand question/answer pictures and root delegation. No contrary flagship choice or concrete evidence requiring a human ask recovered.",
     "carry_forward": [
       "c_sun",
       "c_gale_oracle",
-      "c_wetting",
       "c_decay",
       "c_appraisal"
     ],
-    "resolution": "All core design contradictions are resolved by existing authority. Source/proof gaps remain explicit for stage 3.",
-    "delegated_resolution": "CONDUCTOR:1794809023340457492"
+    "later_carry_forward": [
+      "c_wetting"
+    ],
+    "resolution": "Returned scope contradiction resolved by explicit authenticated current/later sequencing call; missing flagship recorded through a separate authenticated delegated pick. Implementation/proof obligations remain.",
+    "delegated_resolution": "CONDUCTOR:1794824429827934950",
+    "flagship_resolution": "CONDUCTOR:1794824436177586321"
   },
   "edge_claims": [
     {
@@ -3327,22 +3399,33 @@
       "speaker": "agent",
       "source": [
         "OWNER:1793794389686592719",
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113",
+        "CONDUCTOR:1794824429827934950",
+        "design/concepts/Stillsand/stage2_reconciliation.md",
         "design/concepts/Stillsand/stage2_edges.md"
       ],
       "status": "does",
-      "text": "Water production/use remains consistent and ground wetting participates in shared consumable growth, with tier-owned Debt/Return.",
+      "text": "Current water production/use/accounting and every built wetting consequence retain coverage; tier-owned Debt/Return remain. Shared agricultural film consumption and FlowWorks integration are later, with explicit units, conservation, replenishment, evaporation, migration and reload.",
       "about": [
         "pour",
         "wet_line",
         "thumper",
         "solar_still",
         "ledger",
-        "return_ritual"
+        "return_ritual",
+        "hourbloom",
+        "wringing",
+        "brine",
+        "duumma",
+        "guzzka"
       ],
       "failure_mode": "F3",
       "argument": "design/concepts/Stillsand/stage2_edges.md",
       "acceptance_state": "drafting_obligations_unrun",
-      "section": "E7"
+      "section": "E7",
+      "later": "Shared agricultural film integration remains outside the current tree after adoption of this split."
     },
     {
       "id": "E8",
@@ -3406,6 +3489,21 @@
       ],
       "status": "does_not",
       "text": "Extend ordinary-giant or roofed-cave preservation into general outdoor-item or T3-resource immunity from rot."
+    },
+    {
+      "id": "B_shared_film_later",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794824429827934950",
+        "OWNER:1793794389686592719",
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113",
+        "design/concepts/Stillsand/stage2_reconciliation.md"
+      ],
+      "status": "later",
+      "text": "Shared consumable agricultural wetting and FlowWorks agreement follow the all-game thin film in later scope. Preserve plant consumption/replenishment, explicit units, conservation, evaporation/drainage, actual source/consumer reads, legacy migration and reload. No current shared-growth claim from wet colour/direct bloom, no second hydration pool, no Stillsand version number, and no permission to remove built current water."
     }
   ],
   "dialogue_history": [
@@ -3427,6 +3525,26 @@
         "c_cast",
         "c_appraisal"
       ]
+    },
+    {
+      "stage": 2,
+      "run": "rm-role-designercodex-1794808321",
+      "source": "design/concepts/Stillsand/stage2_edges.md",
+      "turns": 2,
+      "owner_questions_sent": 0,
+      "asks_proposed": 0,
+      "walk_offered_first": "walk_existing_first",
+      "review": "design/concepts/Stillsand/stage2_review.json",
+      "evidence_search": "Historical proposal/card-ledger/cast chronology and same-commission git history resolve appraisal. Later explicit titan harvest/spoilage OWNER events clarify corpse scope. No original September card transcript recovered. All resulting observations remain unrun.",
+      "carry_forward": [
+        "c_sun",
+        "c_gale_oracle",
+        "c_wetting",
+        "c_decay",
+        "c_appraisal"
+      ],
+      "resolution": "All core design contradictions are resolved by existing authority. Source/proof gaps remain explicit for stage 3.",
+      "delegated_resolution": "CONDUCTOR:1794809023340457492"
     }
   ],
   "write_return": {
@@ -3439,8 +3557,14 @@
       "d_flagship_pick"
     ],
     "owner_questions_sent": 0,
-    "proposal_status": "not_adopted",
+    "proposal_status": "reconciled_stage2",
     "retained_scope": "All present inventory capabilities retain their impl/proof/scope fields. Exact root and E1-E8 argument files are preserved as historical input.",
-    "next": "Stage 2 reconciles the version boundary and records a flagship pick through existing Evidence-for-Ask authority before the final stage-3 package is written."
+    "next": "Stage 3 writes current package with later film outside its tree, uses authenticated flagship decision and independently covers every retained capability.",
+    "resolved_by": [
+      "d_water_version_disposition",
+      "d_flagship_pick"
+    ],
+    "resolution_run": "rm-role-designercodex-1794824250",
+    "resolution_source": "design/concepts/Stillsand/stage2_reconciliation.md"
   }
 }

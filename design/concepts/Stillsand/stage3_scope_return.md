@@ -47,7 +47,7 @@ Proposed leaf: water_accounting. Proposed independent acceptance scene: water_pr
 
 ## Later integration scene retained as an obligation
 
-Proposed later leaf: shared_film_consumption. It is not a current tree leaf until the version disposition is adopted.
+Proposed later leaf: shared_film_consumption. It remains outside the current tree after adoption of the current/later disposition; a later integration package must adopt it with its own declared scope. See stage2_reconciliation.md for the return resolution.
 
 - Start: a declared shared film implementation with a source/consumer reader; one asserted native sand patch, an eligible plant with unsatisfied water demand, known cell area and item-volume conversion, and no hidden water source. Separate an adjacent flooded patch so surface water and a shallow film remain observable quantities of the same liquid model.
 - Action: apply measured water by the normal Stillsand source, observe consumption by the actual growth consumer, deplete, replenish, then save/reload midway through another consumption cycle. Compare an equivalent FlowWorks-supplied patch using the same reader.

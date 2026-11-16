@@ -58,3 +58,15 @@ Stage-3 source reading recovered later OWNER:1794686643633612968 (all-game wetne
 The concrete version proposal, current/later water scene contracts, root-led flagship candidate and exact stage-2 decisions needed are in stage3_scope_return.md. The proposed boundary keeps built current water and moves shared agricultural integration into the later thin-film design, subject to explicit stage-2 reconciliation. expedition_harbour_fortune is a proposed delegated flagship derived from the three owner answers; it is not recorded as an owner pick. No new owner question is drafted or sent. Existing live walk remains offered; no scene was opened. No final tree/sheet/package, runtime proof, waiver or owner enjoyment verdict is claimed.
 
 The run returns to stage 2 through result.json. It does not advance or edit stage.json, request waiting_owner, take the bridge, restart or deploy.
+
+## Stage 2 return reconciliation, run rm-role-designercodex-1794824250
+
+The existing-code live walk remains offered first and unrun on a disposable composed-tier scene. No game, bridge, restart or deployment action was taken. Two written rounds in stage2_reconciliation.md reconcile current water versus later film and select the missing flagship from existing owner answers. Corrected E7 is in stage2_edges.md; its superseded text is preserved as historical argument.
+
+Fresh reviewer /root/water_flagship_review passed the authority reconciliation with no evidence requiring a human ask. Charged-thumper wetting/draw remains explicit. Legacy wetUntil expiry supplies no measured film volume; later migration must resolve conversion or saved-version boundary. The earlier return wording was corrected so later film stays outside the current tree after the split is adopted. Final review and usage are in stage2_return_review.json.
+
+CONDUCTOR:1794824429827934950 is the authenticated Evidence-for-Ask d_water_version_disposition: current built water retains coverage, shared agricultural wetting and FlowWorks agreement are later under the all-game film design. It is a new conductor delegated sequencing judgment; the owner’s broad “probably” and FlowWorks 0.2.0 card are not a numbered Stillsand release ruling.
+
+CONDUCTOR:1794824436177586321 is the separate authenticated d_flagship_pick: expedition_harbour_fortune is showcase 1. It follows the three existing owner choices and exact adopted root, includes practical use and empty-cave uncertainty, and certifies no natural frequency, enjoyment, runtime result or first touch.
+
+No owner question is proposed or sent. No built inventory capability or impl/proof/scope field was removed or changed; there is no waiver. The root and E1-E6/E8 remain adopted. Stage-3 acceptance/package writing remains for the launcher’s next stage; this run does not advance stage.json.
