@@ -813,6 +813,12 @@ def holder_brief(mod, lease, token, role, stage):
         "(never stage 1). You write as `%s` with fencing token %d (RM_MODLEDGER_WRITER is set to it; any other shard "
         "refuses you). Every append carries `--writer %s --token %d`." % (stage or UNM_STAGE, w, token, w, token),
         "",
+        "Keep the lease alive (RIMMANDRAKE_RENEW_HOLDER_LEASE_BRIEF_NEVER_SAID_HOW): it lapses for good after %d minutes "
+        "with no ledger event of yours (rimflow notes do not count), and a lapsed lease refuses every later append, "
+        "your checkpoint included. In a long stretch (a game load, a live run) append "
+        "`%s append --mod %s --writer %s --token %d --kind lease.renew --subject session` at least every %d minutes."
+        % (config()["lease_idle_minutes"], me, mod, w, token, max(5, config()["lease_idle_minutes"] - 10)),
+        "",
         "Before you stop, and at each natural boundary, write a checkpoint of the fixed shape; a run that ends "
         "without one is flagged NO_CHECKPOINT:",
         "",

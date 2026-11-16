@@ -74,6 +74,10 @@ check("a pilot launch passes the packet as the brief's opening", str(kw.get("pre
     "# %s — mod ledger packet" % PILOT), str(kw.get("preface"))[:80])
 check("the unit carries RM_MODLEDGER_WRITER=HOLDER.<lease>", (kw.get("env") or {}).get("RM_MODLEDGER_WRITER") ==
       "HOLDER.run-1000", kw.get("env"))
+idle = L.config()["lease_idle_minutes"]
+pre = str(kw.get("preface", ""))
+check("the holder brief says how to keep the lease alive (RIMMANDRAKE_RENEW_HOLDER_LEASE_BRIEF_NEVER_SAID_HOW)",
+      "--kind lease.renew" in pre and ("%d minutes" % idle) in pre, pre[-600:])
 evs = L.read(root, PILOT)
 check("run.start is recorded at the mod's stage", any(e["kind"] == "run.start" and e["body"].get("stage") ==
                                                       "offline_build" for e in evs))
