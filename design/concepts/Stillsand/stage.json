@@ -201,6 +201,12 @@
    "stage": 4,
    "what": "open",
    "why": "run rm-role-designercodex-1794839860, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T14:44:43Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794839860: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -392,6 +398,27 @@
    "run": "rm-role-designercodex-1794836727",
    "stage": 3,
    "summary": "Revalidated the existing Stillsand Write package after stage-2 causal-only intake repair. Gate A, all 33 scene contracts, seven ordered showcases and 23 floor lines pass; every planned entry point has its filed implementation item. The pipeline selftest reports ALL PASS, including the prior cross-clone rejection regression. Preserved the adopted current built-water/later shared-film boundary, separately authenticated expedition_harbour_fortune flagship, root and all 71 inventory entries. No Stillsand release number is inferred. Checks and hashes are recorded in write_checks.json. Existing-code walk and all runtime observations remain unrun; no bridge, game, restart or deployment action. Launcher owns stage advancement."
+  },
+  {
+   "at": "2026-11-16T14:44:43Z",
+   "inputs": {
+    "exam": "d103f013e7263a969a34565fcab9c62f7a8990e69d3e29d8588842a34c4c42da",
+    "floor": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+    "scenes": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
+    "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794839860",
+   "stage": 4,
+   "summary": "Passed the frozen Stillsand Cold Reader exam: both fresh Claude Opus Readers matched all 24 sourced scenarios, with zero accept-where-reject-core errors and no Challenger misses. A separate fresh Opus Control accepted e10 and c01 after program removal and paraphrase scrubbing of hydration_exclusion, proving discrimination. Examiner, Challenger, both Readers and Control have distinct returned session ids; saved tool-free prompts mechanically exclude expected verdicts and design notes from Readers. All five raw usages are charged as helper work (238828 weighted tokens). Root, tree, sheet, scenes, floor, adopted water boundary, flagship and all 71 inventory entries remain intact. This establishes written-contract comprehension only; runtime observations, current live proof, oracle binding and owner first-touch certification remain unrun or owed. No bridge, restart or deployment action; launcher owns stage advancement."
   }
  ],
  "runner": "codex",
@@ -472,30 +499,18 @@
     "input_tokens": 929437,
     "output_tokens": 5819
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794839860",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2625626,
+    "output_tokens": 11089
+   }
   }
  ],
- "running": {
-  "at": "2026-11-16T14:37:47Z",
-  "inputs": {
-   "exam": null,
-   "floor": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
-   "scenes": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
-   "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
-   "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68"
-  },
-  "manifest": {
-   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-  },
-  "owner_uncited": [],
-  "reserved": 500000,
-  "run": "rm-role-designercodex-1794839860",
-  "runner": "codex",
-  "stage": 4
- },
+ "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
