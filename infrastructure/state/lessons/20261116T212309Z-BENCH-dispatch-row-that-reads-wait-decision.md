@@ -1,0 +1,1 @@
+A Dispatch row that reads a WAIT decision (certificate) never reaches maturation_autonomy's road-back branch, which fires only on LAUNCH rows: an open road-back item sat with no fixer while Explosive Knockback's certificate waited on stale stamps (2026-11-16). When a new wait kind is added, ask what the WAIT masks.
