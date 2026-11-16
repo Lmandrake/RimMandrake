@@ -114,10 +114,38 @@
     "ref": "ecfbbbeb-d278-4d4b-bd9a-c54f39e45afa",
     "stage": 4,
     "tokens": 17279
+   },
+   {
+    "at": "2026-11-16T16:29:16Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794846217",
+    "stage": 5,
+    "tokens": 745282
+   },
+   {
+    "at": "2026-11-16T16:30:52Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794846217",
+    "stage": 5,
+    "tokens": 174528
+   },
+   {
+    "at": "2026-11-16T16:31:02Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794846217-reader",
+    "stage": 5,
+    "tokens": 102852
+   },
+   {
+    "at": "2026-11-16T16:31:04Z",
+    "kind": "stage",
+    "ref": "run rm-role-designercodex-1794846206",
+    "stage": 5,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 2360620
+  "spent": 3383282
  },
  "coverage_rounds": [
   {
@@ -152,6 +180,23 @@
    },
    "tokens": 1056412,
    "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8",
+   "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-16T16:23:37Z",
+   "error": null,
+   "gaps": 2,
+   "ids": [
+    "cuts",
+    "gale_exposure"
+   ],
+   "judge": "rm-coverage-judge-1794846217",
+   "late": [],
+   "tags": {
+    "changed": 2
+   },
+   "tokens": 919810,
+   "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
    "verdict": "not_covered"
   }
  ],
@@ -323,6 +368,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794843033: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T16:23:34Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794846206, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T16:31:04Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794846206: stage 5 return"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -338,7 +395,7 @@
    "why": "stage 2 ends in your answer (1 ask(s) sent) while you are away: no sitting: the owner has not interacted for 45+ min (last: 2026-10-30T02:40:56Z (OWNER ledger event, 25074 min ago))"
   }
  ],
- "pending_decision": "root validation: the canonical LeaningScrub north star remains DRAFT and tree root_hash is null. designer_lock.md step 1 requires owner-only validation before a subsequent Stage 3 write and Stage 4 exam. Preserve the existing delegated sentence approval. All 12 coverage findings and unchecked=[] are retained in lock_review_05.json: g1-g11 are advisory Stage 3 corrections; g12 is a flawed-criterion conflict for the neutral criteria fixer. The UNTESTED coverage brief makes its not_covered refusal advisory, not a basis for this return.",
+ "pending_decision": "rm-coverage-judge-1794846217 returned not_covered; every gap returns to stage 3: g1: The Gale exposure scene stages roofed pawns and a mechanoid but never asserts that they are spared, so a penalty applied to every pawn would pass; g2: The cuts scene asserts 'no drying scar', but its control can reject only a guardian promise or an active farmerFaction, so a check blind to drying scars passes",
  "recovery": [],
  "results": [
   {
@@ -641,9 +698,32 @@
    "run": "rm-role-designercodex-1794843033",
    "stage": 4,
    "summary": "Fresh independent Claude Opus exam passed against unchanged corrected validated tree/sheet: both Readers 18/18, zero core false accepts; all six Challenger cases matched. Program-created raid_weight control missed its non-raid spillover case. Five CLI sessions and 468259 weighted helper tokens retained/charged. No live acceptance, coverage signature or Lock certification inferred."
+  },
+  {
+   "at": "2026-11-16T16:31:04Z",
+   "by": "program",
+   "decision": "rm-coverage-judge-1794846217 returned not_covered; every gap returns to stage 3: g1: The Gale exposure scene stages roofed pawns and a mechanoid but never asserts that they are spared, so a penalty applied to every pawn would pass; g2: The cuts scene asserts 'no drying scar', but its control can reject only a guardian promise or an active farmerFaction, so a check blind to drying scars passes",
+   "inputs": {
+    "exam": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794846206",
+   "stage": 5,
+   "to": 3
   }
  ],
- "runner": "codex",
+ "runner": "claude",
  "runner_spend": [
   {
    "run": "rm-role-designercodex-1794791300",
@@ -741,7 +821,7 @@
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

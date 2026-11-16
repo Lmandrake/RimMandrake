@@ -1,0 +1,8 @@
+{
+ "by": "program",
+ "decision": "rm-coverage-judge-1794846217 returned not_covered; every gap returns to stage 3: g1: The Gale exposure scene stages roofed pawns and a mechanoid but never asserts that they are spared, so a penalty applied to every pawn would pass; g2: The cuts scene asserts 'no drying scar', but its control can reject only a guardian promise or an active farmerFaction, so a check blind to drying scars passes",
+ "outcome": "return",
+ "run": "rm-role-designercodex-1794846206",
+ "stage": 5,
+ "to": 3
+}

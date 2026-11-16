@@ -1,34 +1,58 @@
 {
- "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
- "at": "2026-11-16T10:04:45Z",
+ "advisory_gaps": [
+  {
+   "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)",
+   "bar_kind": "declared_data",
+   "criterion_verdict": "flawed",
+   "criterion_why": "The clause predates the Evidence-for-Ask and Conductor-authority rulings and has no case for an owner who declines to pick and delegates the order, which is what he did; it checks provenance, not anything a player sees.",
+   "evidence": [
+    "scenes.json:2785",
+    "record.json:242",
+    "record.json:375",
+    "sheet.md:96"
+   ],
+   "ids": [],
+   "new_since": "unfixed",
+   "observed": "Showcase 1 has source 'CONDUCTOR:1794794271528276351' and decision stage2_flagship_home_routes, whose speaker is 'conductor'. The owner's decision stage2_owner_corrected_bar records that 'he declined to pick (These are all important)' and that 'the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer'.",
+   "return_to": 2,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Neutral criteria fixer amends the showcase-1 clause in src/RimMandrake/rimflow/roles/designer_scene_contract.md (item RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK)"
+   },
+   "what": "Flagship showcase 1 is still bound to a Conductor-speaker decision, not the owner-speaker decision the contract text requires",
+   "where": "scenes.json showcases[0] home_routes_expedition",
+   "would_pass": "designer_scene_contract.md admits a recorded owner decision that declines the pick and delegates the order, so designer_stage.py showcases accepts showcase 1; or showcase 1 cites an owner-speaker record carrying flagship=home_routes_expedition and its OWNER:<tsn>."
+  }
+ ],
+ "at": "2026-11-16T16:23:37Z",
  "checklist": [
   {
    "evidence": [
     "record.json",
-    "scenes.json",
-    "tree.json"
+    "scenes.json"
    ],
    "id": "biome_cast",
    "parts": [
     {
      "ok": true,
      "scene": "sc_native_cast",
-     "what": "own wildlife roster with natural population"
+     "what": "native ground cover and scrub generate naturally (census, disabled-row control)"
     },
     {
      "ok": true,
      "scene": "sc_native_cast",
-     "what": "ordinary plant/animal products and lifecycles"
+     "what": "native wildlife present"
     },
     {
      "ok": true,
      "scene": "sc_native_cast",
-     "what": "optional franchise rows are conditional additions (base-only composition)"
+     "what": "ordinary products and lifecycles complete"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "own ground cover and scrub flora generate naturally on a Scrub map"
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "base-only composition resolves; franchise rows conditional"
     }
    ]
   },
@@ -40,24 +64,24 @@
    "id": "weather_calendar",
    "parts": [
     {
-     "ok": false,
+     "ok": true,
      "scene": "sc_wind_plain",
-     "what": "ordinary weather defs maintain wind"
+     "what": "ordinary weathers keep wind"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "Stall is calm"
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "Stall calm"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "Gale is strong wind"
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "Gale strong wind"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "windy twins replace stock overcast, gray pall and dry thunderstorm in the biome weather table"
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "windy twins replace stock rows only in Scrub"
     }
    ]
   },
@@ -71,17 +95,17 @@
     {
      "ok": true,
      "scene": "sc_wind_audio",
-     "what": "steady wind carries vanilla wind and jungle insect beds"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "fog carries the same beds"
+     "what": "wind bed in steady wind"
     },
     {
      "ok": true,
      "scene": "sc_wind_audio",
-     "what": "Stall quiet and transitions, human sound pass"
+     "what": "fog carries wind-fog and insect beds"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wind_audio",
+     "what": "Stall quieter; clean transitions (human pass)"
     }
    ]
   },
@@ -93,19 +117,14 @@
    "id": "lean_heading",
    "parts": [
     {
-     "ok": false,
-     "scene": "",
-     "what": "heading derived from tile-to-substellar geometry"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "Scrub maps share a heading (more than one map/tile)"
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "heading matches independent geometry on two tiles"
     },
     {
      "ok": true,
      "scene": "sc_wind_plain",
-     "what": "heading recomputed, not serialized: same after reload"
+     "what": "same heading across maps and reload"
     }
    ]
   },
@@ -119,12 +138,12 @@
     {
      "ok": true,
      "scene": "sc_wind_plain",
-     "what": "listed ground-cover plants face the shared direction instead of random mirroring"
+     "what": "plants visibly face the wind side"
     },
     {
      "ok": true,
      "scene": "sc_wind_plain",
-     "what": "texture-specific orientation data across all effective variants"
+     "what": "lean off ends forced facing"
     }
    ]
   },
@@ -138,12 +157,17 @@
     {
      "ok": true,
      "scene": "sc_gale_drawing",
-     "what": "owned A/B overlay textures load and pan with the Lean"
+     "what": "dust overlay pans with the Lean"
     },
     {
-     "ok": false,
-     "scene": "",
-     "what": "absent owned art falls back to vanilla fog material"
+     "ok": true,
+     "scene": "sc_gale_drawing",
+     "what": "overlay leaves in normal weather"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_drawing",
+     "what": "missing art falls back to vanilla fog copy"
     }
    ]
   },
@@ -157,12 +181,7 @@
     {
      "ok": true,
      "scene": "sc_stall_wait",
-     "what": "eligible small wild animals wait in Stall instead of wandering"
-    },
-    {
-     "ok": true,
-     "scene": "sc_stall_wait",
-     "what": "higher-priority feeding/fleeing jobs attributed separately; large animals unaffected"
+     "what": "small idle wild animals wait in Stall; others active; wandering returns"
     }
    ]
   },
@@ -170,20 +189,24 @@
    "evidence": [
     "record.json",
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "gale_exposure",
    "parts": [
     {
      "ok": true,
      "scene": "sc_gale_exposure",
-     "what": "unroofed living non-mechanoids gain RM_GaleDeafened hearing/speech penalty"
+     "what": "exposed organics gain the Gale penalty"
     },
     {
      "ok": true,
      "scene": "sc_gale_exposure",
-     "what": "roofed and mechanoid pawns excluded; recovery after Gale"
+     "what": "penalty expires"
+    },
+    {
+     "ok": false,
+     "scene": "sc_gale_exposure",
+     "what": "roofed pawns and mechanoids spared (staged, never asserted)"
     }
    ]
   },
@@ -197,12 +220,12 @@
     {
      "ok": true,
      "scene": "sc_working_wind",
-     "what": "Gale multiplies positive turbine output"
+     "what": "Gale raises delivered turbine power"
     },
     {
      "ok": true,
      "scene": "sc_working_wind",
-     "what": "Gale rolls breakdowns for eligible working player turbines"
+     "what": "Gale breakdown and real repair"
     }
    ]
   },
@@ -217,12 +240,7 @@
     {
      "ok": true,
      "scene": "sc_raid_weight",
-     "what": "enemy raid weight multiplied only in enabled Gale"
-    },
-    {
-     "ok": true,
-     "scene": "sc_raid_weight",
-     "what": "no guaranteed or extra incident"
+     "what": "raid weight up only in enabled Gale, no incident made"
     }
    ]
   },
@@ -236,7 +254,7 @@
     {
      "ok": true,
      "scene": "sc_scent",
-     "what": "eligible wild non-predators flee an upwind humanlike within configured range"
+     "what": "wild non-predators flee upwind in-range person; controls do not"
     }
    ]
   },
@@ -250,7 +268,7 @@
     {
      "ok": true,
      "scene": "sc_fire_bias",
-     "what": "fire spread attempts biased downwind on leaning maps"
+     "what": "fire spreads preferentially downwind"
     }
    ]
   },
@@ -264,22 +282,12 @@
     {
      "ok": true,
      "scene": "sc_concealment",
-     "what": "small wild animals on marked cover invisible with shimmer"
+     "what": "shimmer and untargetable"
     },
     {
      "ok": true,
      "scene": "sc_concealment",
-     "what": "Gale expands size band; moving in Stall reveals"
-    },
-    {
-     "ok": true,
-     "scene": "sc_concealment",
-     "what": "mental-state animals excluded"
-    },
-    {
-     "ok": true,
-     "scene": "sc_surrik",
-     "what": "active crust swimmers not double-hidden"
+     "what": "Gale band, Stall-move reveal, exclusions"
     }
    ]
   },
@@ -293,7 +301,7 @@
     {
      "ok": true,
      "scene": "sc_lee_reveal",
-     "what": "wind-blocking impassable buildings create a local lee that reveals moving animals"
+     "what": "wall lee reveals moving animals"
     }
    ]
   },
@@ -307,7 +315,12 @@
     {
      "ok": true,
      "scene": "sc_stall_predation",
-     "what": "idle wild stall hunter selects visible eligible reachable prey in Stall and starts PredatorHunt"
+     "what": "Stall hunter attacks visible reachable prey"
+    },
+    {
+     "ok": true,
+     "scene": "ix_conceal_hunt",
+     "what": "hidden prey avoided with ripple on"
     }
    ]
   },
@@ -321,17 +334,7 @@
     {
      "ok": true,
      "scene": "sc_island_land",
-     "what": "tall venomvine islands with rarer forms as rooms"
-    },
-    {
-     "ok": true,
-     "scene": "sc_island_land",
-     "what": "target share"
-    },
-    {
-     "ok": true,
-     "scene": "sc_island_land",
-     "what": "start clearance/traversability"
+     "what": "vine islands and form rooms on fresh maps, start passable"
     }
    ]
   },
@@ -345,12 +348,7 @@
     {
      "ok": true,
      "scene": "sc_creep",
-     "what": "mature unsmothered forms emit safe young runners, downwind bias, map cap"
-    },
-    {
-     "ok": true,
-     "scene": "sc_creep",
-     "what": "natural-ground filter rejects roofs, buildings, zones, floors, protected plants"
+     "what": "safe capped downwind runners, protected cells untouched"
     }
    ]
   },
@@ -364,32 +362,26 @@
     {
      "ok": true,
      "scene": "sc_creep",
-     "what": "no-soak and no-everyday-band ExplosiveGrowth exemptions"
+     "what": "ExplosiveGrowth paths do not advance vine clocks"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "vine_hazard",
    "parts": [
     {
      "ok": true,
      "scene": "sc_vine_contact",
-     "what": "strict greater-than body-size boundary"
+     "what": "per-form bands for all 16 lanes"
     },
     {
      "ok": true,
      "scene": "sc_vine_contact",
-     "what": "Scrub passability gate and young-runner minimum growth 0.5"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "contact venom and size barrier on every form that carries them (only Thicket/Weeper/Hollow/Walking lanes staged)"
+     "what": "contact venom independently switchable"
     }
    ]
   },
@@ -403,17 +395,12 @@
     {
      "ok": true,
      "scene": "sc_dripping",
-     "what": "yields raw venom and resets growth when regrowing harvest enabled"
+     "what": "venom and regrow"
     },
     {
      "ok": true,
      "scene": "sc_dripping",
-     "what": "Apply runs on settings write"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "Apply runs at startup (saved setting honoured after a game start)"
+     "what": "Apply at startup and at settings write"
     }
    ]
   },
@@ -428,17 +415,7 @@
     {
      "ok": true,
      "scene": "sc_twitcher",
-     "what": "strikes once, saves recovery tick"
-    },
-    {
-     "ok": true,
-     "scene": "sc_twitcher",
-     "what": "poised/spent on inspect and visible spent pose"
-    },
-    {
-     "ok": true,
-     "scene": "sc_twitcher",
-     "what": "no repeat while spent; recovered positive strikes"
+     "what": "one lash, spent pose, saved recovery"
     }
    ]
   },
@@ -452,12 +429,7 @@
     {
      "ok": true,
      "scene": "sc_hollow",
-     "what": "wider free-pass band"
-    },
-    {
-     "ok": true,
-     "scene": "sc_hollow",
-     "what": "no contact-venom comp; huge body blocked"
+     "what": "wider band, no venom, huge body blocked"
     }
    ]
   },
@@ -471,12 +443,7 @@
     {
      "ok": true,
      "scene": "sc_crown",
-     "what": "Stall crown attracts idle wild dustflutters"
-    },
-    {
-     "ok": true,
-     "scene": "sc_crown",
-     "what": "residents plus in-transit counted against cap"
+     "what": "Stall mob within cap"
     }
    ]
   },
@@ -491,17 +458,7 @@
     {
      "ok": true,
      "scene": "sc_rearing",
-     "what": "pushed mature stand sets saved reared state"
-    },
-    {
-     "ok": true,
-     "scene": "sc_rearing",
-     "what": "reveals intruders, conditionally alerts; Gale masks alert"
-    },
-    {
-     "ok": true,
-     "scene": "sc_rearing",
-     "what": "state tied to pose, not random variant"
+     "what": "push rears, reveals, alerts; saved state"
     }
    ]
   },
@@ -516,22 +473,12 @@
     {
      "ok": true,
      "scene": "sc_walking",
-     "what": "Gale onset advances stands downwind"
+     "what": "Gale advance with cane tail, cap, exclusions"
     },
     {
      "ok": true,
      "scene": "sc_walking",
-     "what": "dead-cane tail"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walking",
-     "what": "connected smothering stops its stand"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walking",
-     "what": "map-wide cap and developed exclusions"
+     "what": "connected smother stops its stand"
     }
    ]
   },
@@ -546,12 +493,7 @@
     {
      "ok": true,
      "scene": "sc_hoard",
-     "what": "stores eligible goods and corpse apparel/equipment with saved ownership/clocks"
-    },
-    {
-     "ok": true,
-     "scene": "sc_hoard",
-     "what": "drops on despawn; corpse stays outside"
+     "what": "stores and returns exact objects once; corpse outside"
     }
    ]
   },
@@ -566,12 +508,7 @@
     {
      "ok": true,
      "scene": "sc_quench",
-     "what": "ready quench extinguishes nearby fire with foam burst"
-    },
-    {
-     "ok": true,
-     "scene": "sc_quench",
-     "what": "saved recharge clock; readable spent/ready"
+     "what": "one foam burst, spent/ready, saved recharge"
     }
    ]
   },
@@ -586,27 +523,12 @@
     {
      "ok": true,
      "scene": "sc_sworn",
-     "what": "sap-marked pawn spared regardless of faction"
+     "what": "research gates sowing; real sow and grow"
     },
     {
      "ok": true,
      "scene": "sc_sworn",
-     "what": "mark expiry re-exposes"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "real research of the hedge (start asserts 'Researched')"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "real sowing of the hedge (action never sows)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_sworn",
-     "what": "sap recipe/use"
+     "what": "sap marks pawn; marked spared regardless of faction"
     }
    ]
   },
@@ -621,12 +543,7 @@
     {
      "ok": true,
      "scene": "sc_shedding",
-     "what": "Gale onset places downwind thorn litter fan"
-    },
-    {
-     "ok": true,
-     "scene": "sc_shedding",
-     "what": "litter scratch under shared damage controls"
+     "what": "Gale downwind litter scratches and decays"
     }
    ]
   },
@@ -641,12 +558,7 @@
     {
      "ok": true,
      "scene": "sc_strangler",
-     "what": "wraps adjacent wall/tree and damages it"
-    },
-    {
-     "ok": true,
-     "scene": "sc_strangler",
-     "what": "self-designates for cutting near player structures"
+     "what": "wraps and damages target; self-designates near structures"
     }
    ]
   },
@@ -661,12 +573,7 @@
     {
      "ok": true,
      "scene": "sc_weeper",
-     "what": "pools and bounded cumulative pollution"
-    },
-    {
-     "ok": true,
-     "scene": "floor_payload",
-     "what": "safe-passage text reconciled with contact/barrier"
+     "what": "pools and bounded pollution; still harmful"
     }
    ]
   },
@@ -681,12 +588,7 @@
     {
      "ok": true,
      "scene": "sc_sleeper",
-     "what": "large grounded traffic wakes dormant sleeper into awakened def"
-    },
-    {
-     "ok": true,
-     "scene": "sc_sleeper",
-     "what": "wake-area hit under shared controls; no re-wake after reload"
+     "what": "wakes once; wake hit under shared controls"
     }
    ]
   },
@@ -701,47 +603,31 @@
     {
      "ok": true,
      "scene": "sc_lure",
-     "what": "emits fruit up to nearby supply cap"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lure",
-     "what": "hungry animals approach and eat"
+     "what": "fruit to cap, actually eaten"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json",
-    "sheet.md"
+    "scenes.json"
    ],
    "id": "smother_craft",
    "parts": [
     {
      "ok": true,
      "scene": "sc_smother_claim",
-     "what": "tailoring recipe from fuzz fiber and sweetline felt"
-    },
-    {
-     "ok": true,
-     "scene": "sc_smother_claim",
-     "what": "ordered use consumes one blanket, banks serialized timed claim"
+     "what": "blanket tailored and consumed for one claim"
     },
     {
      "ok": true,
      "scene": "sc_cane_fuel",
-     "what": "maturation swaps plant for dead cane"
+     "what": "maturation yields dead cane"
     },
     {
      "ok": true,
      "scene": "sc_smother_claim",
-     "what": "feature off blocks new jobs and holds due claims"
-    },
-    {
-     "ok": false,
-     "scene": "sc_smother_claim",
-     "what": "legacy import matrix (saved 30-day/custom overrides, old start-only claims) requires save-migration code against the 2026-11-08 no-migration ruling"
+     "what": "off blocks new jobs, holds due claims"
     }
    ]
   },
@@ -755,7 +641,7 @@
     {
      "ok": true,
      "scene": "sc_cane_fuel",
-     "what": "wood-filter CompRefuelable consumers accept dead cane"
+     "what": "wood-burning consumers accept cane"
     }
    ]
   },
@@ -769,12 +655,7 @@
     {
      "ok": true,
      "scene": "sc_tree_landmark",
-     "what": "rare map step places mature ancient landmark"
-    },
-    {
-     "ok": true,
-     "scene": "sc_tree_landmark",
-     "what": "generated name, saved history, History gizmo"
+     "what": "rare named ancient tree; history survives reload"
     }
    ]
   },
@@ -788,7 +669,7 @@
     {
      "ok": true,
      "scene": "sc_tree_landmark",
-     "what": "BiomesShell canopy with separate trunk/canopy pools at viewing scales"
+     "what": "trunk and canopy match at scales"
     }
    ]
   },
@@ -802,7 +683,7 @@
     {
      "ok": true,
      "scene": "sc_tree_shed",
-     "what": "once-mature tree keeps timed free shed after harvest; everMature saved"
+     "what": "once-mature tree sheds after harvest"
     }
    ]
   },
@@ -816,12 +697,7 @@
     {
      "ok": true,
      "scene": "sc_tree_scratch",
-     "what": "ready shearable animal chooses reachable tree, rubs coat off, banks felt"
-    },
-    {
-     "ok": true,
-     "scene": "sc_tree_scratch",
-     "what": "rope and allowed-area gates; pen containment investigated only"
+     "what": "autonomous rub, coat lost, felt banked; roped refused"
     }
    ]
   },
@@ -835,7 +711,7 @@
     {
      "ok": true,
      "scene": "sc_tree_bank",
-     "what": "tree pays accumulated felt once through harvest and debits store"
+     "what": "bank paid once through harvest"
     }
    ]
   },
@@ -843,20 +719,14 @@
    "evidence": [
     "record.json",
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "felt_comfort",
    "parts": [
     {
      "ok": true,
      "scene": "sc_felt_comfort",
-     "what": "felt stuff adds furniture comfort"
-    },
-    {
-     "ok": true,
-     "scene": "sc_felt_comfort",
-     "what": "single apparel thought independent of garment count"
+     "what": "furniture comfort and one apparel thought"
     }
    ]
   },
@@ -870,7 +740,7 @@
     {
      "ok": true,
      "scene": "sc_tree_traces",
-     "what": "timed home-map visits leave ash/token and history, no visitor pawns"
+     "what": "abstract ash/token trace, no pawns"
     }
    ]
   },
@@ -884,32 +754,7 @@
     {
      "ok": true,
      "scene": "sc_bloom",
-     "what": "scatter/flee"
-    },
-    {
-     "ok": true,
-     "scene": "sc_bloom",
-     "what": "sway/hold"
-    },
-    {
-     "ok": true,
-     "scene": "sc_bloom",
-     "what": "force-surface/exit hole"
-    },
-    {
-     "ok": true,
-     "scene": "sc_bloom",
-     "what": "shed item"
-    },
-    {
-     "ok": true,
-     "scene": "sc_bloom",
-     "what": "erupt/flight (owner attended)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_bloom",
-     "what": "mental-state animals retain behaviour"
+     "what": "movement-triggered species responses; mental-state kept"
     }
    ]
   },
@@ -923,7 +768,7 @@
     {
      "ok": true,
      "scene": "sc_arm_food",
-     "what": "shed arms are ingestible rotting meat behind a settings gate"
+     "what": "arm actually eaten and rots"
     }
    ]
   },
@@ -937,7 +782,7 @@
     {
      "ok": true,
      "scene": "sc_thornhold_quill",
-     "what": "quill-lash melee uses venom damage wiring distinct from ordinary hunting"
+     "what": "quill venom attributed"
     }
    ]
   },
@@ -951,12 +796,7 @@
     {
      "ok": true,
      "scene": "sc_thornhold_den",
-     "what": "chooses reachable vine den and tethers"
-    },
-    {
-     "ok": true,
-     "scene": "sc_thornhold_den",
-     "what": "external attacker near den triggers scoped stand; passing does not"
+     "what": "den binding and scoped stand"
     }
    ]
   },
@@ -970,12 +810,7 @@
     {
      "ok": true,
      "scene": "sc_surrik",
-     "what": "sand-swim on named crust terrain and surfacing strike"
-    },
-    {
-     "ok": true,
-     "scene": "sc_surrik",
-     "what": "bloom forces it up; ripple avoids double-hiding"
+     "what": "crust swim, surface strike, bloom exit"
     }
    ]
   },
@@ -989,32 +824,26 @@
     {
      "ok": true,
      "scene": "sc_concealment",
-     "what": "ribbonwhip in ripple concealment"
+     "what": "ripple hides ribbonwhip"
     },
     {
      "ok": true,
-     "scene": "sc_ribbon_route",
-     "what": "ribbonwhip bloom sway preserved"
+     "scene": "sc_bloom",
+     "what": "bloom sway"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "scenes.json",
-    "floor.json"
+    "scenes.json"
    ],
    "id": "shirrel_glide",
    "parts": [
     {
      "ok": true,
      "scene": "sc_shirrel_flight",
-     "what": "real downwind Gale glide from eligible tree, owner present"
-    },
-    {
-     "ok": true,
-     "scene": "sc_shirrel_flight",
-     "what": "HomeTether bind to sweetline; launchFromAnyTree"
+     "what": "owner-attended Gale glide, landing, sweetline return"
     }
    ]
   },
@@ -1028,7 +857,7 @@
     {
      "ok": true,
      "scene": "sc_shirrel_flight",
-     "what": "directional flying flip-book frames play in flight"
+     "what": "directional flip-book in flight"
     }
    ]
   },
@@ -1042,18 +871,14 @@
     {
      "ok": true,
      "scene": "sc_rollbug",
-     "what": "collects corpse to larder incl. colony dead by default"
-    },
-    {
-     "ok": true,
-     "scene": "sc_rollbug",
-     "what": "strips gear, bites progressively, drops on interruption"
+     "what": "carry, strip, eat, safe drop"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
+    "sheet.md",
     "scenes.json"
    ],
    "id": "ruin_injections",
@@ -1061,12 +886,37 @@
     {
      "ok": true,
      "scene": "sc_ruins",
-     "what": "dead farmstead, mid-cycle smother field, hedge homestead on new home maps"
-    },
+     "what": "deferred in his words (OWNER:1794835478275153823 'NOT THIS VERSION'); characterization only"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "sheet.md",
+    "scenes.json"
+   ],
+   "id": "wind_vaporator",
+   "parts": [
     {
      "ok": true,
-     "scene": "sc_ruins",
-     "what": "spacing and start clearance"
+     "scene": "sc_vaporator",
+     "what": "deferred in his words; characterization only"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "sheet.md",
+    "scenes.json"
+   ],
+   "id": "scavenger_camps",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_camps",
+     "what": "deferred in his words; characterization only"
     }
    ]
   },
@@ -1076,61 +926,19 @@
     "scenes.json",
     "exam.json"
    ],
-   "id": "wind_vaporator",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_vaporator",
-     "what": "farmstead techprint to research to build"
-    },
-    {
-     "ok": true,
-     "scene": "sc_vaporator",
-     "what": "powered fog-water spawner, no drying scar"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json"
-   ],
-   "id": "scavenger_camps",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_camps",
-     "what": "camp defends at peace, assaults when hostile, returns on peace"
-    },
-    {
-     "ok": true,
-     "scene": "sc_camps",
-     "what": "empty base list; campaign patch populates"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json"
-   ],
    "id": "fire_stamping",
    "parts": [
     {
      "ok": true,
      "scene": "sc_stamping",
-     "what": "marked wild giants converge and stamp open fire"
-    },
-    {
-     "ok": true,
-     "scene": "sc_stamping",
-     "what": "roofed/enclosed and fueled-building overlays excluded"
+     "what": "base thundersteps stamp open blazes; enclosed excluded"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
+    "sheet.md",
     "scenes.json"
    ],
    "id": "calling_pyre",
@@ -1138,32 +946,21 @@
     {
      "ok": true,
      "scene": "sc_pyre_beliefs",
-     "what": "forbidden, last-rite, venerated beliefs and meme eligibility"
-    },
-    {
-     "ok": true,
-     "scene": "sc_pyre_ritual",
-     "what": "ritual outcome, field fires, marked herd with rage/aftermath"
+     "what": "moved to next version in his words; characterization only"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "tree.json",
     "scenes.json"
    ],
    "id": "save_aliases",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_save_aliases",
-     "what": "absorbed fauna/products/eggs and old SWB names resolve via aliases"
-    },
-    {
-     "ok": true,
-     "scene": "sc_save_aliases",
-     "what": "objects, gear and jobs preserved, no duplicates or live-name shadowing"
+     "scene": "sc_removed_save_preservation",
+     "what": "out in his words ('drop save_aliases'); removal check"
     }
    ]
   },
@@ -1178,12 +975,7 @@
     {
      "ok": true,
      "scene": "sc_acoustic_payload",
-     "what": "buried creatures, sweetline, hollow vine, hidden cave readings"
-    },
-    {
-     "ok": true,
-     "scene": "sc_acoustic_payload",
-     "what": "scanner-absent composition clean"
+     "what": "banded readings from real pulses; absent cases quiet"
     }
    ]
   },
@@ -1198,21 +990,15 @@
     {
      "ok": true,
      "scene": "sc_proximity_hatch",
-     "what": "near-pawn trigger hatch with integration"
-    },
-    {
-     "ok": true,
-     "scene": "sc_proximity_hatch",
-     "what": "vanilla timer hatch without integration; egg consumed once"
+     "what": "near-pawn hatch with engine; timer hatch without"
     }
    ]
   },
   {
    "evidence": [
     "record.json",
-    "tree.json",
-    "scenes.json",
     "floor.json",
+    "scenes.json",
     "sheet.md"
    ],
    "id": "settings",
@@ -1220,22 +1006,12 @@
     {
      "ok": true,
      "scene": "sc_settings",
-     "what": "per-feature switches/tuning saved with groups and now/new-map scope"
+     "what": "each toggle on/off/on persists"
     },
     {
      "ok": true,
      "scene": "sc_settings",
-     "what": "settings write reapplies dripping harvest"
-    },
-    {
-     "ok": true,
-     "scene": "sc_settings",
-     "what": "complete census including shirrelGlideEnabled; every setting changes its effect and persists"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "all features off together degrade gracefully without losing stored ownership"
+     "what": "all off together degrades gracefully"
     }
    ]
   },
@@ -1249,12 +1025,7 @@
     {
      "ok": true,
      "scene": "sc_home_routes",
-     "what": "home and maintained routes dependable at recorded labour cost"
-    },
-    {
-     "ok": true,
-     "scene": "ix_route_growth",
-     "what": "creep and Walking share developed-ground protection"
+     "what": "maintained routes carry work; wilderness invaded"
     }
    ]
   },
@@ -1269,36 +1040,7 @@
     {
      "ok": true,
      "scene": "sc_ordered_travel",
-     "what": "routine hauling uses clear detour or waits"
-    },
-    {
-     "ok": true,
-     "scene": "sc_ordered_travel",
-     "what": "crossing only by explicit order, not reusable after cancel/finish/reload"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json"
-   ],
-   "id": "fire_maker_witness_trail",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_maker",
-     "what": "maker identified by witness or fresh trail, never nearest innocent"
-    },
-    {
-     "ok": true,
-     "scene": "sc_maker",
-     "what": "loss of contact, ages/IDs persist and expire"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "shared storage reused by ownership/property without changing its humanlike reporting"
+     "what": "routine never crosses; order covers only its trip"
     }
    ]
   },
@@ -1308,12 +1050,31 @@
     "scenes.json",
     "exam.json"
    ],
+   "id": "fire_maker_witness_trail",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "maker by witness/trail only, never innocent"
+    },
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "ownership reuse via property consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
    "id": "premium_dead_cane",
    "parts": [
     {
      "ok": true,
      "scene": "sc_cane_fuel",
-     "what": "longer burn and 1.25 heat rate versus matched wood (agent tuning)"
+     "what": "cane burns longer/hotter than equal wood"
     }
    ]
   },
@@ -1327,7 +1088,7 @@
     {
      "ok": true,
      "scene": "sc_shokka",
-     "what": "flat-hold ambush at fuzz-edge crossing"
+     "what": "edge ambush on crossing"
     }
    ]
   },
@@ -1341,7 +1102,7 @@
     {
      "ok": true,
      "scene": "sc_fuzzviper",
-     "what": "run-wall ambush"
+     "what": "run-wall hold and attack"
     }
    ]
   },
@@ -1355,7 +1116,7 @@
     {
      "ok": true,
      "scene": "sc_ribbon_route",
-     "what": "canopy-only travel refusing bare gaps"
+     "what": "canopy-only travel"
     }
    ]
   },
@@ -1369,7 +1130,7 @@
     {
      "ok": true,
      "scene": "sc_pillowmoss",
-     "what": "fog condensation into bounded wet ground"
+     "what": "fog condenses to wet ground under moss"
     }
    ]
   },
@@ -1383,7 +1144,7 @@
     {
      "ok": true,
      "scene": "sc_tanglefuzz",
-     "what": "den-anchor residence and reassignment"
+     "what": "root-hollow residence"
     }
    ]
   },
@@ -1397,7 +1158,7 @@
     {
      "ok": true,
      "scene": "sc_cruststar",
-     "what": "crustweevil grazing with resource debit/recovery"
+     "what": "real lichen grazing"
     }
    ]
   },
@@ -1411,7 +1172,7 @@
     {
      "ok": true,
      "scene": "sc_arm_regrowth",
-     "what": "finite arm loss per shed and 15-day regrowth"
+     "what": "finite arms, seasonal regrowth"
     }
    ]
   },
@@ -1425,7 +1186,7 @@
     {
      "ok": true,
      "scene": "sc_cuts",
-     "what": "scoped out and impl absent, so not a coverage unit; absence check kept"
+     "what": "no guardian; stale promise rejected"
     }
    ]
   },
@@ -1439,7 +1200,32 @@
     {
      "ok": true,
      "scene": "sc_cuts",
-     "what": "scoped out and impl absent, so not a coverage unit; absence check kept"
+     "what": "no farmer camps; active faction rejected"
+    },
+    {
+     "ok": true,
+     "scene": "sc_removed_save_preservation",
+     "what": "no save-only tombstone ships"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "sheet.md",
+    "scenes.json"
+   ],
+   "id": "sweetline_scratching_healing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_healing",
+     "what": "healing hediff from completed rub only"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tree_healing",
+     "what": "parasites and disease removed over time"
     }
    ]
   },
@@ -1453,7 +1239,7 @@
     {
      "ok": true,
      "scene": "sc_route_observer",
-     "what": "offline instrument: reconstructs trips, rejects corrupted traces"
+     "what": "instrument rejects corrupted traces"
     }
    ]
   },
@@ -1467,7 +1253,7 @@
     {
      "ok": true,
      "scene": "sc_witness_observer",
-     "what": "offline instrument: witnessed/trailed/guessed/lost, no injected knowledge"
+     "what": "instrument separates witnessed/trailed/lost"
     }
    ]
   },
@@ -1481,7 +1267,7 @@
     {
      "ok": true,
      "scene": "sc_economy_observer",
-     "what": "offline instrument: count/identity/time accounting rejects mismatches"
+     "what": "instrument accounts once"
     }
    ]
   },
@@ -1496,22 +1282,7 @@
     {
      "ok": true,
      "scene": "sc_wind_plain",
-     "what": "ground cover faces one consistent heading across reload"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "heading matches the tile's substellar geometry"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "ordinary days retain wind (measured)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_wind_plain",
-     "what": "trees/vines outside the roster; reads as fuzz and scrub"
+     "what": "visible lean, geometry heading, wind values, table"
     }
    ]
   },
@@ -1525,17 +1296,7 @@
     {
      "ok": true,
      "scene": "sc_gale_drawing",
-     "what": "dust/fuzz travels with heading, ground readable"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gale_drawing",
-     "what": "normal weather removes overlay"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "fallback to vanilla fog with owned art absent"
+     "what": "driven dust, fallback arms"
     }
    ]
   },
@@ -1549,42 +1310,35 @@
     {
      "ok": true,
      "scene": "sc_wind_audio",
-     "what": "ordinary wind/insect beds, Stall quiet, return without stuck loops"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "fog weather bed"
+     "what": "wind/fog/insect beds, quiet Stall"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "working_wind",
    "parts": [
     {
      "ok": true,
      "scene": "sc_working_wind",
-     "what": "Gale output ratio on a real load, breakdown and repair attributed"
+     "what": "useful power, surge, breakdown and repair"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "raid_weight",
    "parts": [
     {
      "ok": true,
      "scene": "sc_raid_weight",
-     "what": "raid weight multiplied only in enabled Gale, no incident"
+     "what": "weight changes only in enabled Gale"
     }
    ]
   },
@@ -1598,7 +1352,7 @@
     {
      "ok": true,
      "scene": "sc_scent",
-     "what": "attributed scent flee for upwind in-range person"
+     "what": "attributed scent flee"
     }
    ]
   },
@@ -1612,7 +1366,7 @@
     {
      "ok": true,
      "scene": "sc_fire_bias",
-     "what": "64 fixed-seed opportunities show directional bias"
+     "what": "downwind ignition over seeded attempts"
     }
    ]
   },
@@ -1626,32 +1380,21 @@
     {
      "ok": true,
      "scene": "sc_stall_wait",
-     "what": "small wanderers wait, large and higher-priority remain, wandering returns"
+     "what": "small wanderers wait in Stall"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "concealment",
    "parts": [
     {
      "ok": true,
      "scene": "sc_concealment",
-     "what": "shimmer agrees with target selection"
-    },
-    {
-     "ok": true,
-     "scene": "sc_concealment",
-     "what": "Stall movement reveals, Gale extends size"
-    },
-    {
-     "ok": true,
-     "scene": "sc_concealment",
-     "what": "crust swimmers/mental-state not double-hidden"
+     "what": "shimmer, reveal, band, no double-hide"
     }
    ]
   },
@@ -1665,7 +1408,7 @@
     {
      "ok": true,
      "scene": "sc_lee_reveal",
-     "what": "local lee loss of concealment and return beyond"
+     "what": "lee reveals moving animals"
     }
    ]
   },
@@ -1679,7 +1422,7 @@
     {
      "ok": true,
      "scene": "sc_stall_predation",
-     "what": "selects visible reachable prey, completes attack, avoids hidden/blocked"
+     "what": "hunter completes attack"
     }
    ]
   },
@@ -1693,17 +1436,7 @@
     {
      "ok": true,
      "scene": "sc_island_land",
-     "what": "abundant tall islands and rarer rooms on three seeds"
-    },
-    {
-     "ok": true,
-     "scene": "sc_island_land",
-     "what": "share within tolerance, real start exits passable"
-    },
-    {
-     "ok": true,
-     "scene": "sc_island_land",
-     "what": "Sworn not a wild room"
+     "what": "islands, rooms, usable start"
     }
    ]
   },
@@ -1717,12 +1450,7 @@
     {
      "ok": true,
      "scene": "sc_creep",
-     "what": "safe runners, downwind preference, cap, protected cells"
-    },
-    {
-     "ok": true,
-     "scene": "sc_creep",
-     "what": "half-growth arming; both ExplosiveGrowth paths"
+     "what": "safe capped downwind creep"
     }
    ]
   },
@@ -1736,52 +1464,35 @@
     {
      "ok": true,
      "scene": "sc_home_routes",
-     "what": "maintained routes carry work at recorded labour; wilderness can spread"
+     "what": "maintained routes dependable"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "ordered_travel",
    "parts": [
     {
      "ok": true,
      "scene": "sc_ordered_travel",
-     "what": "routine work safe or waits; order permits only its trip; reload grants nothing"
+     "what": "no-path is never permission"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "vine_contact",
    "parts": [
     {
      "ok": true,
      "scene": "sc_vine_contact",
-     "what": "strict >1.5 blocking"
-    },
-    {
-     "ok": true,
-     "scene": "sc_vine_contact",
-     "what": "Hollow wider free band, runners safe until armed"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "per-form free/thread/blocked bands for every form (only 4 lanes)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_vine_contact",
-     "what": "shared controls govern scratches"
+     "what": "every form gets a band result"
     }
    ]
   },
@@ -1795,12 +1506,7 @@
     {
      "ok": true,
      "scene": "sc_dripping",
-     "what": "venom delivered, same stand regrows for second harvest across reload"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "startup Apply of saved regrowth setting"
+     "what": "venom, regrow, startup and write rows"
     }
    ]
   },
@@ -1814,7 +1520,7 @@
     {
      "ok": true,
      "scene": "sc_hollow",
-     "what": "galleries, wider band, no venom, huge-body block"
+     "what": "hollow galleries and band"
     }
    ]
   },
@@ -1828,7 +1534,7 @@
     {
      "ok": true,
      "scene": "sc_crown",
-     "what": "attributed arrivals within cap, busy jobs intact, owner for flight"
+     "what": "attributed arrivals within cap"
     }
    ]
   },
@@ -1836,7 +1542,6 @@
    "evidence": [
     "tree.json",
     "scenes.json",
-    "record.json",
     "sheet.md"
    ],
    "id": "smother_claim",
@@ -1844,17 +1549,7 @@
     {
      "ok": true,
      "scene": "sc_smother_claim",
-     "what": "one job, one blanket, one saved countdown; 120-day default, 120-600 range, frozen per claim"
-    },
-    {
-     "ok": true,
-     "scene": "sc_smother_claim",
-     "what": "off/hold/re-enable pays once"
-    },
-    {
-     "ok": false,
-     "scene": "sc_smother_claim",
-     "what": "legacy import/migration arms (old 30-day and start-only claims) demand banned save-migration code"
+     "what": "one blanket, one frozen claim, off holds, pays once"
     }
    ]
   },
@@ -1868,7 +1563,7 @@
     {
      "ok": true,
      "scene": "sc_cane_fuel",
-     "what": "two wood-equivalent units and 1.25 heat rate, mixed credit conserved across reload"
+     "what": "longer, hotter useful burn"
     }
    ]
   },
@@ -1882,22 +1577,21 @@
     {
      "ok": true,
      "scene": "sc_tree_landmark",
-     "what": "rare named ancient landmark, trunk/canopy match, history after reload"
+     "what": "named landmark, canopy, history"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json",
-    "exam.json"
+    "scenes.json"
    ],
    "id": "tree_shed",
    "parts": [
     {
      "ok": true,
      "scene": "sc_tree_shed",
-     "what": "shed persists after harvest via everMature"
+     "what": "once-mature shed"
     }
    ]
   },
@@ -1911,7 +1605,7 @@
     {
      "ok": true,
      "scene": "sc_tree_scratch",
-     "what": "coat growth, autonomous rub, product plus felt share, rope/area refused"
+     "what": "autonomous rub"
     }
    ]
   },
@@ -1921,12 +1615,26 @@
     "scenes.json",
     "exam.json"
    ],
+   "id": "tree_healing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_healing",
+     "what": "rub heals parasites and disease over time"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
    "id": "tree_bank",
    "parts": [
     {
      "ok": true,
      "scene": "sc_tree_bank",
-     "what": "bank paid once on real harvest, failed harvest keeps balance"
+     "what": "bank paid once"
     }
    ]
   },
@@ -1940,36 +1648,27 @@
     {
      "ok": true,
      "scene": "sc_tree_traces",
-     "what": "ash/token plus history, no visitor pawn"
+     "what": "abstract trace"
     }
    ]
   },
   {
    "evidence": [
     "tree.json",
-    "scenes.json"
+    "scenes.json",
+    "exam.json"
    ],
    "id": "native_cast",
    "parts": [
     {
      "ok": true,
      "scene": "sc_native_cast",
-     "what": "distinct native animals, natural population vs spawning"
+     "what": "fuzz plain generates naturally"
     },
     {
      "ok": true,
      "scene": "sc_native_cast",
-     "what": "base refs resolve without franchise mods"
-    },
-    {
-     "ok": true,
-     "scene": "sc_native_cast",
-     "what": "every lifecycle mechanism produces products/offspring"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "native ground cover/scrub flora present (the 'fuzz plain' it claims)"
+     "what": "native animals and lifecycles"
     }
    ]
   },
@@ -1983,7 +1682,7 @@
     {
      "ok": true,
      "scene": "sc_bloom",
-     "what": "scatter, sway, submerged exit, finite shed, attended eruption from real movement"
+     "what": "movement-triggered responses"
     }
    ]
   },
@@ -1997,7 +1696,7 @@
     {
      "ok": true,
      "scene": "sc_arm_regrowth",
-     "what": "one arm per shed, no infinite bait, 15-day regrowth after reload"
+     "what": "finite arms regrow"
     }
    ]
   },
@@ -2011,7 +1710,7 @@
     {
      "ok": true,
      "scene": "sc_arm_food",
-     "what": "actual ingestion, nutrition and rot"
+     "what": "arm eaten and rots"
     }
    ]
   },
@@ -2025,7 +1724,7 @@
     {
      "ok": true,
      "scene": "sc_thornhold_quill",
-     "what": "attributed quill venom distinct from ordinary damage"
+     "what": "quill venom"
     }
    ]
   },
@@ -2039,7 +1738,7 @@
     {
      "ok": true,
      "scene": "sc_thornhold_den",
-     "what": "den binding, scoped stand, bounded recovery, passing harmless"
+     "what": "den stand"
     }
    ]
   },
@@ -2053,7 +1752,7 @@
     {
      "ok": true,
      "scene": "sc_surrik",
-     "what": "crust travel, surface strike, exit hole only when under"
+     "what": "crust swim and strike"
     }
    ]
   },
@@ -2067,7 +1766,7 @@
     {
      "ok": true,
      "scene": "sc_shokka",
-     "what": "motionless edge ambush on crossing traffic"
+     "what": "edge ambush"
     }
    ]
   },
@@ -2081,7 +1780,7 @@
     {
      "ok": true,
      "scene": "sc_fuzzviper",
-     "what": "run-wall hold and attack"
+     "what": "run-wall ambush"
     }
    ]
   },
@@ -2095,7 +1794,7 @@
     {
      "ok": true,
      "scene": "sc_ribbon_route",
-     "what": "canopy-only routes, readable inability, concealment/sway preserved"
+     "what": "canopy-only routes"
     }
    ]
   },
@@ -2109,7 +1808,7 @@
     {
      "ok": true,
      "scene": "sc_pillowmoss",
-     "what": "bounded wet ground under moss in fog versus dry plot"
+     "what": "wet ground under moss"
     }
    ]
   },
@@ -2123,7 +1822,7 @@
     {
      "ok": true,
      "scene": "sc_tanglefuzz",
-     "what": "stable root-hollow residence, reassignment on anchor removal"
+     "what": "root-hollow residence"
     }
    ]
   },
@@ -2137,7 +1836,7 @@
     {
      "ok": true,
      "scene": "sc_cruststar",
-     "what": "chosen grazing with nutrition and resource debit/recovery"
+     "what": "lichen grazing"
     }
    ]
   },
@@ -2152,7 +1851,7 @@
     {
      "ok": true,
      "scene": "sc_shirrel_flight",
-     "what": "owner-attended bounded downwind flight, flip-book, landing, sweetline return"
+     "what": "owner-attended real glide and return"
     }
    ]
   },
@@ -2166,50 +1865,7 @@
     {
      "ok": true,
      "scene": "sc_rollbug",
-     "what": "carry to den, gear conserved, progressive eating, safe drop, colony-dead setting"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json"
-   ],
-   "id": "ruins",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_ruins",
-     "what": "spaced legible ruins with honest claim age"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json",
-    "exam.json"
-   ],
-   "id": "vaporator",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_vaporator",
-     "what": "plans to research to build to powered RM_FogWater, no scar"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json"
-   ],
-   "id": "camps",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_camps",
-     "what": "defend/assault/return with campaign faction; base empty list gives none"
+     "what": "carry, strip, eat, drop"
     }
    ]
   },
@@ -2223,7 +1879,21 @@
     {
      "ok": true,
      "scene": "sc_stamping",
-     "what": "base franchise-free convergence and stamp; campaign binding separate"
+     "what": "base stamping without franchise; campaign separately"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "maker",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "witness/trail maker identification; property reuse"
     }
    ]
   },
@@ -2231,47 +1901,29 @@
    "evidence": [
     "tree.json",
     "scenes.json",
-    "exam.json"
+    "sheet.md"
    ],
-   "id": "maker",
+   "id": "cuts",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_maker",
-     "what": "witness/fresh trail only, never innocent B, escape on lost contact, persistence/expiry"
+     "scene": "sc_cuts",
+     "what": "no guardian; injection rejected"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "no farmer camps; injection rejected"
     },
     {
      "ok": false,
-     "scene": "",
-     "what": "shared storage supports property without changing its humanlike reporting policy"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json"
-   ],
-   "id": "pyre_beliefs",
-   "parts": [
+     "scene": "sc_cuts",
+     "what": "no drying scar: asserted but no control can reject one"
+    },
     {
      "ok": true,
-     "scene": "sc_pyre_beliefs",
-     "what": "three beliefs have distinct consequences; meme eligibility"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json"
-   ],
-   "id": "pyre_ritual",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_pyre_ritual",
-     "what": "completed ritual fire/herd/rage, history, thin-fire message"
+     "scene": "sc_removed_save_preservation",
+     "what": "no save preservation ships"
     }
    ]
   },
@@ -2281,364 +1933,413 @@
     "scenes.json",
     "floor.json"
    ],
-   "id": "cuts",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "no guardians, farmer camps or drying scar; no text promising them"
-    },
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "CombHolds loadable tombstone only; tree systems still work"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json"
-   ],
    "id": "colony_walk",
    "parts": [
     {
      "ok": true,
      "scene": "sc_colony_walk",
-     "what": "real journey, mid-way save reload, both action orders, pay once"
+     "what": "core trip in both orders across real reload"
+    },
+    {
+     "ok": true,
+     "scene": "sc_colony_walk",
+     "what": "useful wind power and premium fuel observed"
+    },
+    {
+     "ok": true,
+     "scene": "floor_runtime",
+     "what": "floor lines covered"
     }
    ]
   }
  ],
  "contract": {
-  "advisory": true,
+  "advisory": false,
   "alarms": [
    {
     "family": "coverage_judge",
     "first_at": "2026-11-15T09:32:09Z",
     "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-16T10:14:36Z",
+    "last_at": "2026-11-16T16:31:02Z",
     "open": true,
     "subject": "family:coverage_judge",
     "told_at": "2026-11-15T09:32:09Z",
-    "trips": 7,
-    "why": "refused all of its last 8 verdicts across 4 items"
+    "trips": 14,
+    "why": "refused 20 of its last 20 verdicts (limit 70%)"
    }
   ],
   "cached": [],
-  "calibration": "UNTESTED",
+  "calibration": "CALIBRATED",
   "counted": true,
   "may_judge": true,
   "ok": true,
   "repair_due": []
  },
  "contract_reasked": [
-  "passed: 'settings_leaf_note' is not in the criterion set"
- ],
- "criteria_suspect": [
-  "rest"
+  "refusal 0 (gale_exposure): evidence 'record.json inventory gale_exposure' is not one of the inputs the judge was given",
+  "refusal 0 (gale_exposure): evidence 'tree.json leaf gale_exposure' is not one of the inputs the judge was given",
+  "refusal 0 (gale_exposure): evidence 'scenes.json sc_gale_exposure' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'tree.json leaf cuts' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'record.json inventory wind_vaporator' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'sheet.md ## does not' is not one of the inputs the judge was given",
+  "refusal 1 (cuts): evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
+  "passed biome_cast: evidence 'record.json inventory biome_cast' is not one of the inputs the judge was given",
+  "passed biome_cast: evidence 'scenes.json sc_native_cast' is not one of the inputs the judge was given",
+  "passed biome_cast: evidence 'scenes.json coverage_rest biome_cast' is not one of the inputs the judge was given",
+  "passed weather_calendar: evidence 'record.json inventory weather_calendar' is not one of the inputs the judge was given",
+  "passed weather_calendar: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
+  "passed wind_sound: evidence 'record.json inventory wind_sound' is not one of the inputs the judge was given",
+  "passed wind_sound: evidence 'scenes.json sc_wind_audio' is not one of the inputs the judge was given",
+  "passed lean_heading: evidence 'record.json inventory lean_heading' is not one of the inputs the judge was given",
+  "passed lean_heading: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
+  "passed plant_lean: evidence 'record.json inventory plant_lean' is not one of the inputs the judge was given",
+  "passed plant_lean: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
+  "passed gale_dust: evidence 'record.json inventory gale_dust' is not one of the inputs the judge was given",
+  "passed gale_dust: evidence 'scenes.json sc_gale_drawing' is not one of the inputs the judge was given",
+  "passed stall_freeze: evidence 'record.json inventory stall_freeze' is not one of the inputs the judge was given",
+  "passed stall_freeze: evidence 'scenes.json sc_stall_wait' is not one of the inputs the judge was given",
+  "passed gale_turbines: evidence 'record.json inventory gale_turbines' is not one of the inputs the judge was given",
+  "passed gale_turbines: evidence 'scenes.json sc_working_wind' is not one of the inputs the judge was given",
+  "passed gale_raid_weight: evidence 'record.json inventory gale_raid_weight' is not one of the inputs the judge was given",
+  "passed gale_raid_weight: evidence 'scenes.json sc_raid_weight' is not one of the inputs the judge was given",
+  "passed gale_raid_weight: evidence 'exam.json exam_raid_weight_read_only_gale_factor' is not one of the inputs the judge was given",
+  "passed upwind_scent: evidence 'record.json inventory upwind_scent' is not one of the inputs the judge was given",
+  "passed upwind_scent: evidence 'scenes.json sc_scent' is not one of the inputs the judge was given",
+  "passed downwind_fire: evidence 'record.json inventory downwind_fire' is not one of the inputs the judge was given",
+  "passed downwind_fire: evidence 'scenes.json sc_fire_bias' is not one of the inputs the judge was given",
+  "passed ripple: evidence 'record.json inventory ripple' is not one of the inputs the judge was given",
+  "passed ripple: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
+  "passed ripple: evidence 'scenes.json ix_conceal_hunt' is not one of the inputs the judge was given",
+  "passed windbreak_lee: evidence 'record.json inventory windbreak_lee' is not one of the inputs the judge was given",
+  "passed windbreak_lee: evidence 'scenes.json sc_lee_reveal' is not one of the inputs the judge was given",
+  "passed stall_hunter: evidence 'record.json inventory stall_hunter' is not one of the inputs the judge was given",
+  "passed stall_hunter: evidence 'scenes.json sc_stall_predation' is not one of the inputs the judge was given",
+  "passed stall_hunter: evidence 'scenes.json ix_conceal_hunt' is not one of the inputs the judge was given",
+  "passed vine_islands: evidence 'record.json inventory vine_islands' is not one of the inputs the judge was given",
+  "passed vine_islands: evidence 'scenes.json sc_island_land' is not one of the inputs the judge was given",
+  "passed vine_creep: evidence 'record.json inventory vine_creep' is not one of the inputs the judge was given",
+  "passed vine_creep: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
+  "passed vine_creep: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
+  "passed vine_growth_exemption: evidence 'record.json inventory vine_growth_exemption' is not one of the inputs the judge was given",
+  "passed vine_growth_exemption: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
+  "passed vine_hazard: evidence 'record.json inventory vine_hazard' is not one of the inputs the judge was given",
+  "passed vine_hazard: evidence 'scenes.json sc_vine_contact' is not one of the inputs the judge was given",
+  "passed dripping_harvest: evidence 'record.json inventory dripping_harvest' is not one of the inputs the judge was given",
+  "passed dripping_harvest: evidence 'scenes.json sc_dripping' is not one of the inputs the judge was given",
+  "passed twitcher: evidence 'record.json inventory twitcher' is not one of the inputs the judge was given",
+  "passed twitcher: evidence 'tree.json leaf twitcher' is not one of the inputs the judge was given",
+  "passed twitcher: evidence 'scenes.json sc_twitcher' is not one of the inputs the judge was given",
+  "passed twitcher: evidence 'scenes.json floor_visual' is not one of the inputs the judge was given",
+  "passed hollow_passage: evidence 'record.json inventory hollow_passage' is not one of the inputs the judge was given",
+  "passed hollow_passage: evidence 'scenes.json sc_hollow' is not one of the inputs the judge was given",
+  "passed crown_mob: evidence 'record.json inventory crown_mob' is not one of the inputs the judge was given",
+  "passed crown_mob: evidence 'scenes.json sc_crown' is not one of the inputs the judge was given",
+  "passed rearing: evidence 'record.json inventory rearing' is not one of the inputs the judge was given",
+  "passed rearing: evidence 'tree.json leaf rearing' is not one of the inputs the judge was given",
+  "passed rearing: evidence 'scenes.json sc_rearing' is not one of the inputs the judge was given",
+  "passed walking: evidence 'record.json inventory walking' is not one of the inputs the judge was given",
+  "passed walking: evidence 'tree.json leaf walking' is not one of the inputs the judge was given",
+  "passed walking: evidence 'scenes.json sc_walking' is not one of the inputs the judge was given",
+  "passed walking: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
+  "passed hoard: evidence 'record.json inventory hoard' is not one of the inputs the judge was given",
+  "passed hoard: evidence 'tree.json leaf hoard' is not one of the inputs the judge was given",
+  "passed hoard: evidence 'scenes.json sc_hoard' is not one of the inputs the judge was given",
+  "passed quench: evidence 'record.json inventory quench' is not one of the inputs the judge was given",
+  "passed quench: evidence 'tree.json leaf quench' is not one of the inputs the judge was given",
+  "passed quench: evidence 'scenes.json sc_quench' is not one of the inputs the judge was given",
+  "passed sworn: evidence 'record.json inventory sworn' is not one of the inputs the judge was given",
+  "passed sworn: evidence 'tree.json leaf sworn' is not one of the inputs the judge was given",
+  "passed sworn: evidence 'scenes.json sc_sworn' is not one of the inputs the judge was given",
+  "passed shedding: evidence 'record.json inventory shedding' is not one of the inputs the judge was given",
+  "passed shedding: evidence 'tree.json leaf shedding' is not one of the inputs the judge was given",
+  "passed shedding: evidence 'scenes.json sc_shedding' is not one of the inputs the judge was given",
+  "passed strangler: evidence 'record.json inventory strangler' is not one of the inputs the judge was given",
+  "passed strangler: evidence 'tree.json leaf strangler' is not one of the inputs the judge was given",
+  "passed strangler: evidence 'scenes.json sc_strangler' is not one of the inputs the judge was given",
+  "passed weeper: evidence 'record.json inventory weeper' is not one of the inputs the judge was given",
+  "passed weeper: evidence 'tree.json leaf weeper' is not one of the inputs the judge was given",
+  "passed weeper: evidence 'scenes.json sc_weeper' is not one of the inputs the judge was given",
+  "passed sleeper: evidence 'record.json inventory sleeper' is not one of the inputs the judge was given",
+  "passed sleeper: evidence 'tree.json leaf sleeper' is not one of the inputs the judge was given",
+  "passed sleeper: evidence 'scenes.json sc_sleeper' is not one of the inputs the judge was given",
+  "passed lure: evidence 'record.json inventory lure' is not one of the inputs the judge was given",
+  "passed lure: evidence 'tree.json leaf lure' is not one of the inputs the judge was given",
+  "passed lure: evidence 'scenes.json sc_lure' is not one of the inputs the judge was given",
+  "passed smother_craft: evidence 'record.json inventory smother_craft' is not one of the inputs the judge was given",
+  "passed smother_craft: evidence 'scenes.json sc_smother_claim' is not one of the inputs the judge was given",
+  "passed smother_craft: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
+  "passed dead_cane_fuel: evidence 'record.json inventory dead_cane_fuel' is not one of the inputs the judge was given",
+  "passed dead_cane_fuel: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
+  "passed sweetline_landmark: evidence 'record.json inventory sweetline_landmark' is not one of the inputs the judge was given",
+  "passed sweetline_landmark: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
+  "passed sweetline_canopy: evidence 'record.json inventory sweetline_canopy' is not one of the inputs the judge was given",
+  "passed sweetline_canopy: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
+  "passed sweetline_canopy: evidence 'scenes.json floor_visual' is not one of the inputs the judge was given",
+  "passed sweetline_shed: evidence 'record.json inventory sweetline_shed' is not one of the inputs the judge was given",
+  "passed sweetline_shed: evidence 'scenes.json sc_tree_shed' is not one of the inputs the judge was given",
+  "passed sweetline_scratching: evidence 'record.json inventory sweetline_scratching' is not one of the inputs the judge was given",
+  "passed sweetline_scratching: evidence 'scenes.json sc_tree_scratch' is not one of the inputs the judge was given",
+  "passed sweetline_felt_bank: evidence 'record.json inventory sweetline_felt_bank' is not one of the inputs the judge was given",
+  "passed sweetline_felt_bank: evidence 'scenes.json sc_tree_bank' is not one of the inputs the judge was given",
+  "passed felt_comfort: evidence 'record.json inventory felt_comfort' is not one of the inputs the judge was given",
+  "passed felt_comfort: evidence 'tree.json leaf felt_comfort' is not one of the inputs the judge was given",
+  "passed felt_comfort: evidence 'scenes.json sc_felt_comfort' is not one of the inputs the judge was given",
+  "passed sweetline_visits: evidence 'record.json inventory sweetline_visits' is not one of the inputs the judge was given",
+  "passed sweetline_visits: evidence 'scenes.json sc_tree_traces' is not one of the inputs the judge was given",
+  "passed runway_bloom: evidence 'record.json inventory runway_bloom' is not one of the inputs the judge was given",
+  "passed runway_bloom: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
+  "passed vissler_arm_food: evidence 'record.json inventory vissler_arm_food' is not one of the inputs the judge was given",
+  "passed vissler_arm_food: evidence 'scenes.json sc_arm_food' is not one of the inputs the judge was given",
+  "passed thornhold_quills: evidence 'record.json inventory thornhold_quills' is not one of the inputs the judge was given",
+  "passed thornhold_quills: evidence 'scenes.json sc_thornhold_quill' is not one of the inputs the judge was given",
+  "passed thornhold_den_stand: evidence 'record.json inventory thornhold_den_stand' is not one of the inputs the judge was given",
+  "passed thornhold_den_stand: evidence 'scenes.json sc_thornhold_den' is not one of the inputs the judge was given",
+  "passed surrik_crustswim: evidence 'record.json inventory surrik_crustswim' is not one of the inputs the judge was given",
+  "passed surrik_crustswim: evidence 'scenes.json sc_surrik' is not one of the inputs the judge was given",
+  "passed ribbonwhip_wind_concealment: evidence 'record.json inventory ribbonwhip_wind_concealment' is not one of the inputs the judge was given",
+  "passed ribbonwhip_wind_concealment: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
+  "passed ribbonwhip_wind_concealment: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
+  "passed shirrel_glide: evidence 'record.json inventory shirrel_glide' is not one of the inputs the judge was given",
+  "passed shirrel_glide: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
+  "passed shirrel_flight_art: evidence 'record.json inventory shirrel_flight_art' is not one of the inputs the judge was given",
+  "passed shirrel_flight_art: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
+  "passed rollbug_carrion: evidence 'record.json inventory rollbug_carrion' is not one of the inputs the judge was given",
+  "passed rollbug_carrion: evidence 'scenes.json sc_rollbug' is not one of the inputs the judge was given",
+  "passed ruin_injections: evidence 'record.json inventory ruin_injections' is not one of the inputs the judge was given",
+  "passed ruin_injections: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "passed ruin_injections: evidence 'sheet.md ## later' is not one of the inputs the judge was given",
+  "passed ruin_injections: evidence 'scenes.json sc_ruins' is not one of the inputs the judge was given",
+  "passed wind_vaporator: evidence 'record.json inventory wind_vaporator' is not one of the inputs the judge was given",
+  "passed wind_vaporator: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "passed wind_vaporator: evidence 'scenes.json sc_vaporator' is not one of the inputs the judge was given",
+  "passed scavenger_camps: evidence 'record.json inventory scavenger_camps' is not one of the inputs the judge was given",
+  "passed scavenger_camps: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "passed scavenger_camps: evidence 'scenes.json sc_camps' is not one of the inputs the judge was given",
+  "passed fire_stamping: evidence 'record.json inventory fire_stamping' is not one of the inputs the judge was given",
+  "passed fire_stamping: evidence 'scenes.json sc_stamping' is not one of the inputs the judge was given",
+  "passed fire_stamping: evidence 'exam.json exam_stamping_misfiled_as_deferred' is not one of the inputs the judge was given",
+  "passed calling_pyre: evidence 'record.json inventory calling_pyre' is not one of the inputs the judge was given",
+  "passed calling_pyre: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "passed calling_pyre: evidence 'scenes.json sc_pyre_beliefs' is not one of the inputs the judge was given",
+  "passed calling_pyre: evidence 'scenes.json sc_pyre_ritual' is not one of the inputs the judge was given",
+  "passed save_aliases: evidence 'record.json inventory save_aliases' is not one of the inputs the judge was given",
+  "passed save_aliases: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
+  "passed save_aliases: evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
+  "passed acoustic_payload: evidence 'record.json inventory acoustic_payload' is not one of the inputs the judge was given",
+  "passed acoustic_payload: evidence 'tree.json leaf acoustic_payload' is not one of the inputs the judge was given",
+  "passed acoustic_payload: evidence 'scenes.json sc_acoustic_payload' is not one of the inputs the judge was given",
+  "passed proximity_hatch: evidence 'record.json inventory proximity_hatch' is not one of the inputs the judge was given",
+  "passed proximity_hatch: evidence 'tree.json leaf proximity_hatch' is not one of the inputs the judge was given",
+  "passed proximity_hatch: evidence 'scenes.json sc_proximity_hatch' is not one of the inputs the judge was given",
+  "passed settings: evidence 'record.json inventory settings' is not one of the inputs the judge was given",
+  "passed settings: evidence 'floor.json lines.mod_settings' is not one of the inputs the judge was given",
+  "passed settings: evidence 'scenes.json sc_settings' is not one of the inputs the judge was given",
+  "passed settings: evidence 'sheet.md [floor:mod_settings]' is not one of the inputs the judge was given",
+  "passed dependable_home_routes: evidence 'record.json inventory dependable_home_routes' is not one of the inputs the judge was given",
+  "passed dependable_home_routes: evidence 'scenes.json sc_home_routes' is not one of the inputs the judge was given",
+  "passed dependable_home_routes: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
+  "passed ordered_crossing_policy: evidence 'record.json inventory ordered_crossing_policy' is not one of the inputs the judge was given",
+  "passed ordered_crossing_policy: evidence 'scenes.json sc_ordered_travel' is not one of the inputs the judge was given",
+  "passed ordered_crossing_policy: evidence 'exam.json exam_ordered_trip_leaks_after_reload' is not one of the inputs the judge was given",
+  "passed fire_maker_witness_trail: evidence 'record.json inventory fire_maker_witness_trail' is not one of the inputs the judge was given",
+  "passed fire_maker_witness_trail: evidence 'scenes.json sc_maker' is not one of the inputs the judge was given",
+  "passed fire_maker_witness_trail: evidence 'exam.json exam_giant_pursues_nearest_innocent' is not one of the inputs the judge was given",
+  "passed premium_dead_cane: evidence 'record.json inventory premium_dead_cane' is not one of the inputs the judge was given",
+  "passed premium_dead_cane: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
+  "passed shokka_ambush: evidence 'record.json inventory shokka_ambush' is not one of the inputs the judge was given",
+  "passed shokka_ambush: evidence 'scenes.json sc_shokka' is not one of the inputs the judge was given",
+  "passed fuzzviper_ambush: evidence 'record.json inventory fuzzviper_ambush' is not one of the inputs the judge was given",
+  "passed fuzzviper_ambush: evidence 'scenes.json sc_fuzzviper' is not one of the inputs the judge was given",
+  "passed ribbonwhip_canopy_route: evidence 'record.json inventory ribbonwhip_canopy_route' is not one of the inputs the judge was given",
+  "passed ribbonwhip_canopy_route: evidence 'scenes.json sc_ribbon_route' is not one of the inputs the judge was given",
+  "passed pillowmoss_wet_spot: evidence 'record.json inventory pillowmoss_wet_spot' is not one of the inputs the judge was given",
+  "passed pillowmoss_wet_spot: evidence 'scenes.json sc_pillowmoss' is not one of the inputs the judge was given",
+  "passed tanglefuzz_den_ecology: evidence 'record.json inventory tanglefuzz_den_ecology' is not one of the inputs the judge was given",
+  "passed tanglefuzz_den_ecology: evidence 'scenes.json sc_tanglefuzz' is not one of the inputs the judge was given",
+  "passed cruststar_grazing_ecology: evidence 'record.json inventory cruststar_grazing_ecology' is not one of the inputs the judge was given",
+  "passed cruststar_grazing_ecology: evidence 'scenes.json sc_cruststar' is not one of the inputs the judge was given",
+  "passed vissler_finite_arm_regrowth: evidence 'record.json inventory vissler_finite_arm_regrowth' is not one of the inputs the judge was given",
+  "passed vissler_finite_arm_regrowth: evidence 'scenes.json sc_arm_regrowth' is not one of the inputs the judge was given",
+  "passed bark_wardens_removed: evidence 'record.json inventory bark_wardens_removed' is not one of the inputs the judge was given",
+  "passed bark_wardens_removed: evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
+  "passed farmer_camps_removed: evidence 'record.json inventory farmer_camps_removed' is not one of the inputs the judge was given",
+  "passed farmer_camps_removed: evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
+  "passed farmer_camps_removed: evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
+  "passed sweetline_scratching_healing: evidence 'record.json inventory sweetline_scratching_healing' is not one of the inputs the judge was given",
+  "passed sweetline_scratching_healing: evidence 'sheet.md his words 2026-11-16' is not one of the inputs the judge was given",
+  "passed sweetline_scratching_healing: evidence 'scenes.json sc_tree_healing' is not one of the inputs the judge was given",
+  "passed route_observer: evidence 'tree.json leaf route_observer' is not one of the inputs the judge was given",
+  "passed route_observer: evidence 'scenes.json sc_route_observer' is not one of the inputs the judge was given",
+  "passed witness_observer: evidence 'tree.json leaf witness_observer' is not one of the inputs the judge was given",
+  "passed witness_observer: evidence 'scenes.json sc_witness_observer' is not one of the inputs the judge was given",
+  "passed economy_observer: evidence 'tree.json leaf economy_observer' is not one of the inputs the judge was given",
+  "passed economy_observer: evidence 'scenes.json sc_economy_observer' is not one of the inputs the judge was given",
+  "passed wind_plain: evidence 'tree.json leaf wind_plain' is not one of the inputs the judge was given",
+  "passed wind_plain: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
+  "passed wind_plain: evidence 'sheet.md [leaf:wind_plain]' is not one of the inputs the judge was given",
+  "passed gale_drawing: evidence 'tree.json leaf gale_drawing' is not one of the inputs the judge was given",
+  "passed gale_drawing: evidence 'scenes.json sc_gale_drawing' is not one of the inputs the judge was given",
+  "passed wind_audio: evidence 'tree.json leaf wind_audio' is not one of the inputs the judge was given",
+  "passed wind_audio: evidence 'scenes.json sc_wind_audio' is not one of the inputs the judge was given",
+  "passed working_wind: evidence 'tree.json leaf working_wind' is not one of the inputs the judge was given",
+  "passed working_wind: evidence 'scenes.json sc_working_wind' is not one of the inputs the judge was given",
+  "passed raid_weight: evidence 'tree.json leaf raid_weight' is not one of the inputs the judge was given",
+  "passed raid_weight: evidence 'scenes.json sc_raid_weight' is not one of the inputs the judge was given",
+  "passed scent: evidence 'tree.json leaf scent' is not one of the inputs the judge was given",
+  "passed scent: evidence 'scenes.json sc_scent' is not one of the inputs the judge was given",
+  "passed fire_bias: evidence 'tree.json leaf fire_bias' is not one of the inputs the judge was given",
+  "passed fire_bias: evidence 'scenes.json sc_fire_bias' is not one of the inputs the judge was given",
+  "passed stall_wait: evidence 'tree.json leaf stall_wait' is not one of the inputs the judge was given",
+  "passed stall_wait: evidence 'scenes.json sc_stall_wait' is not one of the inputs the judge was given",
+  "passed concealment: evidence 'tree.json leaf concealment' is not one of the inputs the judge was given",
+  "passed concealment: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
+  "passed lee_reveal: evidence 'tree.json leaf lee_reveal' is not one of the inputs the judge was given",
+  "passed lee_reveal: evidence 'scenes.json sc_lee_reveal' is not one of the inputs the judge was given",
+  "passed stall_predation: evidence 'tree.json leaf stall_predation' is not one of the inputs the judge was given",
+  "passed stall_predation: evidence 'scenes.json sc_stall_predation' is not one of the inputs the judge was given",
+  "passed island_land: evidence 'tree.json leaf island_land' is not one of the inputs the judge was given",
+  "passed island_land: evidence 'scenes.json sc_island_land' is not one of the inputs the judge was given",
+  "passed creep: evidence 'tree.json leaf creep' is not one of the inputs the judge was given",
+  "passed creep: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
+  "passed home_routes: evidence 'tree.json leaf home_routes' is not one of the inputs the judge was given",
+  "passed home_routes: evidence 'scenes.json sc_home_routes' is not one of the inputs the judge was given",
+  "passed home_routes: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
+  "passed ordered_travel: evidence 'tree.json leaf ordered_travel' is not one of the inputs the judge was given",
+  "passed ordered_travel: evidence 'scenes.json sc_ordered_travel' is not one of the inputs the judge was given",
+  "passed vine_contact: evidence 'tree.json leaf vine_contact' is not one of the inputs the judge was given",
+  "passed vine_contact: evidence 'scenes.json sc_vine_contact' is not one of the inputs the judge was given",
+  "passed dripping: evidence 'tree.json leaf dripping' is not one of the inputs the judge was given",
+  "passed dripping: evidence 'scenes.json sc_dripping' is not one of the inputs the judge was given",
+  "passed hollow: evidence 'tree.json leaf hollow' is not one of the inputs the judge was given",
+  "passed hollow: evidence 'scenes.json sc_hollow' is not one of the inputs the judge was given",
+  "passed crown: evidence 'tree.json leaf crown' is not one of the inputs the judge was given",
+  "passed crown: evidence 'scenes.json sc_crown' is not one of the inputs the judge was given",
+  "passed smother_claim: evidence 'tree.json leaf smother_claim' is not one of the inputs the judge was given",
+  "passed smother_claim: evidence 'scenes.json sc_smother_claim' is not one of the inputs the judge was given",
+  "passed smother_claim: evidence 'sheet.md [leaf:smother_claim]' is not one of the inputs the judge was given",
+  "passed cane_fuel: evidence 'tree.json leaf cane_fuel' is not one of the inputs the judge was given",
+  "passed cane_fuel: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
+  "passed tree_landmark: evidence 'tree.json leaf tree_landmark' is not one of the inputs the judge was given",
+  "passed tree_landmark: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
+  "passed tree_shed: evidence 'tree.json leaf tree_shed' is not one of the inputs the judge was given",
+  "passed tree_shed: evidence 'scenes.json sc_tree_shed' is not one of the inputs the judge was given",
+  "passed tree_scratch: evidence 'tree.json leaf tree_scratch' is not one of the inputs the judge was given",
+  "passed tree_scratch: evidence 'scenes.json sc_tree_scratch' is not one of the inputs the judge was given",
+  "passed tree_healing: evidence 'tree.json leaf tree_healing' is not one of the inputs the judge was given",
+  "passed tree_healing: evidence 'scenes.json sc_tree_healing' is not one of the inputs the judge was given",
+  "passed tree_healing: evidence 'exam.json exam_sweetline_rub_badge_without_cure' is not one of the inputs the judge was given",
+  "passed tree_bank: evidence 'tree.json leaf tree_bank' is not one of the inputs the judge was given",
+  "passed tree_bank: evidence 'scenes.json sc_tree_bank' is not one of the inputs the judge was given",
+  "passed tree_traces: evidence 'tree.json leaf tree_traces' is not one of the inputs the judge was given",
+  "passed tree_traces: evidence 'scenes.json sc_tree_traces' is not one of the inputs the judge was given",
+  "passed native_cast: evidence 'tree.json leaf native_cast' is not one of the inputs the judge was given",
+  "passed native_cast: evidence 'scenes.json sc_native_cast' is not one of the inputs the judge was given",
+  "passed native_cast: evidence 'exam.json exam_native_census_staged_ground_cover' is not one of the inputs the judge was given",
+  "passed bloom: evidence 'tree.json leaf bloom' is not one of the inputs the judge was given",
+  "passed bloom: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
+  "passed arm_regrowth: evidence 'tree.json leaf arm_regrowth' is not one of the inputs the judge was given",
+  "passed arm_regrowth: evidence 'scenes.json sc_arm_regrowth' is not one of the inputs the judge was given",
+  "passed arm_food: evidence 'tree.json leaf arm_food' is not one of the inputs the judge was given",
+  "passed arm_food: evidence 'scenes.json sc_arm_food' is not one of the inputs the judge was given",
+  "passed thornhold_quill: evidence 'tree.json leaf thornhold_quill' is not one of the inputs the judge was given",
+  "passed thornhold_quill: evidence 'scenes.json sc_thornhold_quill' is not one of the inputs the judge was given",
+  "passed thornhold_den: evidence 'tree.json leaf thornhold_den' is not one of the inputs the judge was given",
+  "passed thornhold_den: evidence 'scenes.json sc_thornhold_den' is not one of the inputs the judge was given",
+  "passed surrik: evidence 'tree.json leaf surrik' is not one of the inputs the judge was given",
+  "passed surrik: evidence 'scenes.json sc_surrik' is not one of the inputs the judge was given",
+  "passed shokka: evidence 'tree.json leaf shokka' is not one of the inputs the judge was given",
+  "passed shokka: evidence 'scenes.json sc_shokka' is not one of the inputs the judge was given",
+  "passed fuzzviper: evidence 'tree.json leaf fuzzviper' is not one of the inputs the judge was given",
+  "passed fuzzviper: evidence 'scenes.json sc_fuzzviper' is not one of the inputs the judge was given",
+  "passed ribbon_route: evidence 'tree.json leaf ribbon_route' is not one of the inputs the judge was given",
+  "passed ribbon_route: evidence 'scenes.json sc_ribbon_route' is not one of the inputs the judge was given",
+  "passed pillowmoss: evidence 'tree.json leaf pillowmoss' is not one of the inputs the judge was given",
+  "passed pillowmoss: evidence 'scenes.json sc_pillowmoss' is not one of the inputs the judge was given",
+  "passed tanglefuzz: evidence 'tree.json leaf tanglefuzz' is not one of the inputs the judge was given",
+  "passed tanglefuzz: evidence 'scenes.json sc_tanglefuzz' is not one of the inputs the judge was given",
+  "passed cruststar: evidence 'tree.json leaf cruststar' is not one of the inputs the judge was given",
+  "passed cruststar: evidence 'scenes.json sc_cruststar' is not one of the inputs the judge was given",
+  "passed shirrel_flight: evidence 'tree.json leaf shirrel_flight' is not one of the inputs the judge was given",
+  "passed shirrel_flight: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
+  "passed shirrel_flight: evidence 'floor.json lines.flight' is not one of the inputs the judge was given",
+  "passed rollbug: evidence 'tree.json leaf rollbug' is not one of the inputs the judge was given",
+  "passed rollbug: evidence 'scenes.json sc_rollbug' is not one of the inputs the judge was given",
+  "passed stamping: evidence 'tree.json leaf stamping' is not one of the inputs the judge was given",
+  "passed stamping: evidence 'scenes.json sc_stamping' is not one of the inputs the judge was given",
+  "passed stamping: evidence 'scenes.json ix_fire_accountability' is not one of the inputs the judge was given",
+  "passed maker: evidence 'tree.json leaf maker' is not one of the inputs the judge was given",
+  "passed maker: evidence 'scenes.json sc_maker' is not one of the inputs the judge was given",
+  "passed maker: evidence 'scenes.json ix_fire_accountability' is not one of the inputs the judge was given",
+  "passed colony_walk: evidence 'tree.json leaf colony_walk' is not one of the inputs the judge was given",
+  "passed colony_walk: evidence 'scenes.json sc_colony_walk' is not one of the inputs the judge was given",
+  "passed colony_walk: evidence 'floor.json lines' is not one of the inputs the judge was given",
+  "passed colony_walk: evidence 'scenes.json showcases' is not one of the inputs the judge was given",
+  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json, record.json, scenes.json, sheet.md, tree.json"
  ],
  "gaps": [
   {
+   "bar_kind": "experience",
+   "criterion_by": "second_reader",
    "criterion_verdict": "sound",
-   "criterion_why": "Each built inventory part needs an acceptance scene, and plant generation is a separate mechanism from animal spawning.",
+   "criterion_why": "The criterion says only unroofed organic pawns are deafened, and a player would notice roofed colonists or mechanoids losing hearing; asking the scene to prove they are spared is a fair, attainable bar that names no number.",
    "evidence": [
-    "record.json:392",
-    "tree.json:1039",
-    "scenes.json:1379"
+    "record.json:666",
+    "tree.json:198",
+    "scenes.json:170"
    ],
    "gid": "g1",
    "ids": [
-    "biome_cast",
-    "native_cast"
+    "gale_exposure"
    ],
-   "new_since": "first",
-   "observed": "biome_cast says 'The composed biome provides its own ground cover, scrub, wildlife and ordinary plant/animal products', but sc_native_cast only censuses animals ('view all native races/life-stages/facings') and lifecycles; no scene measures the wild-plant roster or its density on a fresh map. sc_wind_plain looks only at the appearance of the seven leanPlants.",
+   "judge_criterion_verdict": "sound",
+   "judge_criterion_why": "Shelter from Gale under a roof is a rule the player sees and plans around, and the scene already stages the actors it needs.",
+   "late_why": "sc_gale_exposure and the gale_exposure leaf are unchanged since ff64e249a2; the prior judge passed this row and missed that the exclusion is staged but never asserted.",
+   "new_since": "changed",
+   "observed": "The inventory says the penalty applies to 'unroofed non-mechanoid living pawns'. The scene's start stages 'Healthy organic actors outdoors/roofed and mechanoid outdoors', but its expect only says 'unroofed living non-mechanoids gain RM_GaleDeafened', and the only control is 'galeDeafenEnabled off'.",
    "return_to": 3,
+   "since": "entries gale_exposure changed since rm-coverage-judge-1794823485",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "Add a flora census arm to sc_native_cast and a 'native ground cover and scrub generate naturally' clause to the native_cast leaf"
+    "what": "scenes.json sc_gale_exposure: add roofed and mechanoid negative arms to expect, and a roof-ignoring mutant to control"
    },
-   "what": "The biome's own ground cover and scrub flora (the 'fuzz plain') is never asserted to generate naturally",
-   "where": "scenes.json sc_native_cast (line 1379); tree.json native_cast (line 1039)",
-   "would_pass": "sc_native_cast (or a new acceptance scene) lists the effective wildPlants roster in start, measures per-species natural plant counts/density on its three fresh Scrub maps, and has a control (a roster entry disabled on the same seed) that shows zero natural count for that entry"
+   "what": "The Gale exposure scene stages roofed pawns and a mechanoid but never asserts that they are spared, so a penalty applied to every pawn would pass",
+   "where": "scenes.json sc_gale_exposure expect and control",
+   "would_pass": "sc_gale_exposure expect or control states that in the same Gale the roofed organic and the outdoor mechanoid gain no RM_GaleDeafened while the unroofed organic does, and a roof-ignoring fixture fails the checker."
   },
   {
+   "bar_kind": "experience",
+   "criterion_by": "second_reader",
    "criterion_verdict": "sound",
-   "criterion_why": "The capability names specific behaviour that a script can read and control directly.",
+   "criterion_why": "The cuts experience says outright that no drying scar appears, and a player would notice one; a control that can catch an injected scar is an attainable way to make that clause checkable, and it pins no tuning value or art variant.",
    "evidence": [
-    "record.json:419",
-    "scenes.json:22",
-    "tree.json:102",
-    "sheet.md:10"
+    "scenes.json:2228",
+    "scenes.json:2243",
+    "tree.json:1471",
+    "record.json:1527",
+    "sheet.md:77"
    ],
    "gid": "g2",
    "ids": [
-    "weather_calendar",
-    "wind_plain"
+    "cuts"
    ],
-   "new_since": "first",
-   "observed": "weather_calendar says 'Stall is calm; Gale is strong wind. Windy twins replace stock overcast, gray pall and dry thunderstorm in the biome table.' sc_wind_plain only views the twins ('three windy twins') and its control is leanPlantsEnabled off. No scene reads wind speed in ordinary weather, Stall or Gale, or checks that the stock weathers can no longer be chosen.",
+   "judge_criterion_verdict": "sound",
+   "judge_criterion_why": "An absence check needs a mutant it can reject, or it cannot tell 'absent' from 'not looked at'; the other two cuts already have one.",
+   "late_why": "sc_cuts' control case is word for word the same as at ff64e249a2, which already expected 'no ... drying scar' with no control for it; the prior judge missed it.",
+   "new_since": "changed",
+   "observed": "sc_cuts expects 'No active guardian/roost/rage, farmer camps or drying scar', but its control case is only 'Inject stale guardian promise or active farmerFaction in isolated manifest'. The sheet promises 'No active guardians, farmer camps or drying scar', and the owner said the drying-scar cut stands.",
    "return_to": 3,
+   "since": "entries cuts changed since rm-coverage-judge-1794823485",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "Add wind-speed and weather-table assertions plus the non-Scrub table control to sc_wind_plain (or a new sc_weather_calendar in coverage_rest)"
+    "what": "scenes.json sc_cuts control: add a drying-scar injection arm with expect 'rejected'"
    },
-   "what": "The weather calendar's wind values and the windy-twin replacement in the biome weather table are not asserted or controlled",
-   "where": "scenes.json sc_wind_plain (line 22); tree.json wind_plain (line 102)",
-   "would_pass": "An acceptance scene reads the live map wind speed in ordinary weather, each twin, Stall and Gale against configured values (Stall below and Gale above an ordinary-weather baseline), and reads the effective biome weather commonality table: the three stock defs at weight 0 with their twins present. A control on a non-Scrub biome shows the stock defs still selectable."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Direct Sun and the Lean are ruled pure functions of geometry, so correctness against geometry is the property, not consistency.",
-   "evidence": [
-    "record.json:456",
-    "scenes.json:22",
-    "tree.json:102"
-   ],
-   "gid": "g3",
-   "ids": [
-    "lean_heading",
-    "wind_plain"
-   ],
-   "new_since": "first",
-   "observed": "lean_heading says 'heading derived from tile-to-substellar geometry'; sc_wind_plain uses one 'Real Scrub tile, sun-derived heading' and expects 'one consistent heading across reload'. A heading that is constant or wrong but stable would pass, and the only control turns plant lean off.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add a second tile with a different bearing and an independent geometry comparison to sc_wind_plain's start/expect"
-   },
-   "what": "The claim that the lean heading derives from tile-to-substellar geometry and is shared across Scrub maps is untested; the scene checks only consistency",
-   "where": "scenes.json sc_wind_plain (line 22)",
-   "would_pass": "The scene measures plant facing on two Scrub tiles with different substellar bearings and asserts each equals a heading computed independently from that tile's position (within a stated tolerance), and that both maps of the same tile agree"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Each weather that ships an ambient bed is a separate part a human sound pass can confirm.",
-   "evidence": [
-    "record.json:440",
-    "scenes.json:98",
-    "tree.json:150"
-   ],
-   "gid": "g4",
-   "ids": [
-    "wind_sound",
-    "wind_audio"
-   ],
-   "new_since": "first",
-   "observed": "wind_sound says 'Steady wind and fog carry vanilla wind and jungle insect ambient beds'; sc_wind_audio's action is 'Listen across ordinary day/night wind, Stall, Gale and return', with no fog arm.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add a fog arm to sc_wind_audio's action and expect"
-   },
-   "what": "The fog ambient bed is not part of the audio scene",
-   "where": "scenes.json sc_wind_audio (line 98)",
-   "would_pass": "sc_wind_audio's action includes the fog weather, and its expect asserts the wind/insect beds are audible in fog"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A built fallback path is a shipped behaviour that can fail silently.",
-   "evidence": [
-    "record.json:495",
-    "scenes.json:63",
-    "tree.json:126"
-   ],
-   "gid": "g5",
-   "ids": [
-    "gale_dust",
-    "gale_drawing"
-   ],
-   "new_since": "first",
-   "observed": "gale_dust says 'absent art falls back to vanilla fog material'. sc_gale_drawing starts with 'both effective owned overlay textures', and its control turns the overlay off; no arm runs with the textures missing.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add a missing-texture fixture arm to sc_gale_drawing (an offline fixture is enough)"
-   },
-   "what": "The Gale overlay's fallback to vanilla fog material when owned art is absent is untested",
-   "where": "scenes.json sc_gale_drawing (line 63)",
-   "would_pass": "An offline or live arm loads the overlay with RM_GaleDust_A/B unresolved and asserts the vanilla fog material is used with no error logged; the positive arm asserts the owned textures"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Startup Apply is a separate code path from the write hook, and a player relies on it every session.",
-   "evidence": [
-    "record.json:750",
-    "scenes.json:616",
-    "tree.json:511"
-   ],
-   "gid": "g6",
-   "ids": [
-    "dripping_harvest",
-    "dripping"
-   ],
-   "new_since": "first",
-   "observed": "dripping_harvest says 'Apply runs at startup and settings writes.' sc_dripping uses the 'real WriteSettings Apply path' and a save/reload, but a save reload does not re-run startup. No arm starts the game with regrowth saved off (or on) and checks the harvest behaviour.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add a startup-Apply arm to sc_dripping, or to floor_runtime's authorized cold load"
-   },
-   "what": "Dripping's Apply at game startup is untested; only Apply on settings write is exercised",
-   "where": "scenes.json sc_dripping (line 616)",
-   "would_pass": "An arm saves regrowth off, cold-starts (the minimal list is enough), and asserts a Dripping harvest follows the vanilla path without changing the setting in that session; it is repeated with regrowth on"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The leaf's own wording promises every form; the scene must either test that or the wording must shrink.",
-   "evidence": [
-    "tree.json:487",
-    "scenes.json:580",
-    "record.json:729",
-    "sheet.md:25"
-   ],
-   "gid": "g7",
-   "ids": [
-    "vine_hazard",
-    "vine_contact"
-   ],
-   "new_since": "first",
-   "observed": "The leaf says 'The observer sees per-form free/thread/blocked bands', but sc_vine_contact stages only 'Thicket/Weeper/Hollow/Walking lanes'. The other forms that carry the shared contact/barrier comps (Dripping, Twitcher, Crown, Rearing, Hoard, Quench, Sworn, Shedding, Strangler, Sleeper, Lure) get no band check.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Extend the lane list in sc_vine_contact, or narrow the leaf wording and add an offline per-form parameter check"
-   },
-   "what": "The 'per-form' free/thread/blocked bands are staged for only four of the vine forms",
-   "where": "scenes.json sc_vine_contact (line 580); tree.json vine_contact (line 487)",
-   "would_pass": "Either sc_vine_contact's lane matrix covers every form whose def carries the barrier/contact comps (bodies 0.79/0.8/1.0/1.5/1.51 per form), or the leaf and sheet name exactly the four forms tested and a defs check proves the rest share those parameters"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The leaf names research and sowing as tested parts; a pre-researched fixture cannot show them.",
-   "evidence": [
-    "tree.json:703",
-    "scenes.json:887",
-    "record.json"
-   ],
-   "gid": "g8",
-   "ids": [
-    "sworn"
-   ],
-   "new_since": "first",
-   "observed": "The leaf says 'real research/sowing/recipe/use are included', but sc_sworn's start is 'Researched sowable hedge' and its action is 'Craft/use sap, authorize crossings, expire mark and repeat'. Research is pre-completed and no hedge is sown.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Change sc_sworn's start and action to include real research and sowing, with an unresearched-sowing control"
-   },
-   "what": "The sworn scene never performs the research or sowing that its leaf says are included",
-   "where": "scenes.json sc_sworn (line 887); tree.json sworn (line 703)",
-   "would_pass": "sc_sworn starts with the sworn research unfinished, a colonist completes it, then sows and grows the hedge through real jobs before the sap arms; a control shows sowing refused before the research"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "An expect clause with no staged action is an untested claim, and this one is his stated purpose.",
-   "evidence": [
-    "record.json:1569",
-    "scenes.json:2060",
-    "tree.json:1495",
-    "sheet.md:6"
-   ],
-   "gid": "g9",
-   "ids": [
-    "fire_maker_witness_trail",
-    "maker"
-   ],
-   "new_since": "first",
-   "observed": "His words: 'We will need this later for the ownership mod anyway. So worth investing on a robust witness violator relationship tracking system.' sc_maker's expect claims 'Shared storage supports property without changing its humanlike reporting policy', but its start and action stage only fire makers and giants. No RimProperty consumer, query or control appears.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add a property-reuse arm (an offline fixture is acceptable) to sc_maker's start, action and control"
-   },
-   "what": "Reuse of the witness/violator store by ownership, the reason he asked for it, has no staged arm",
-   "where": "scenes.json sc_maker (line 2060)",
-   "would_pass": "sc_maker (or an offline arm) writes a taking event through the property path into the shared store and reads it back with the same identity/age semantics; RimProperty's humanlike-only reporting still excludes an animal witness, and a fire-maker record is not misread as a taking"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The project's Mod Settings rule requires all-off graceful degradation, and per-feature toggles do not prove the combined state.",
-   "evidence": [
-    "tree.json:1567",
-    "scenes.json:2169",
-    "floor.json",
-    "sheet.md:70"
-   ],
-   "gid": "g10",
-   "ids": [
-    "settings"
-   ],
-   "new_since": "first",
-   "observed": "The leaf says 'all-off degrades gracefully without losing stored ownership', but the action is 'every feature on/off/on', one at a time. No arm disables every switch at once and plays the map.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Add an all-off-together arm and its expect to sc_settings"
-   },
-   "what": "The settings scene never turns all features off together, so 'all-off degrades gracefully' is untested",
-   "where": "scenes.json sc_settings (line 2169); tree.json settings (line 1567)",
-   "would_pass": "sc_settings has an arm with every feature switch off together that loads the map, ticks a bounded window with zero errors, and finds stored claims/banks/hoards intact; turning everything back on restores the effects"
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A scene whose pass needs work a standing ruling forbids cannot be built as written.",
-   "evidence": [
-    "scenes.json:1092",
-    "record.json:244",
-    "sheet.md:101",
-    "tree.json:847"
-   ],
-   "gid": "g11",
-   "ids": [
-    "smother_craft",
-    "smother_claim"
-   ],
-   "new_since": "first",
-   "observed": "The sc_smother_claim start carries an 'Import matrix: ... saved 30/custom retain labelled legacy override; missing old field=>30-day old-claim fallback ... old start-only due frozen on import', and its control tests 'legacy 30 and custom 7/90/120 days ... imports'. The sheet says 'imported old due dates preserved'. Owner ruling 2026-11-08 (no save-migration code before release): 'don't maintain code that converts previous debug versions. There are no official savegames yet.' The acceptance can only pass by building banned migration code.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Remove the import matrix from sc_smother_claim's start and control, the 'imported old due dates' clause from sheet.md:101, and the migration text from the record decision"
-   },
-   "what": "The smother scene requires legacy save-migration code, which a standing owner ruling bans",
-   "where": "scenes.json sc_smother_claim (line 1092); record.json decision stage3_finite_smother_migration (line 244)",
-   "would_pass": "sc_smother_claim and the sheet drop the legacy-import arms; the remaining arms test the new schema only (120-day default, 120-600 range, per-claim frozen duration, tuning changes apply to new claims, off/hold/re-enable), and stage3_finite_smother_migration is rewritten to match"
-  },
-  {
-   "criterion_verdict": "flawed",
-   "criterion_why": "The contract's 'speaker owner' clause conflicts with later standing rulings that let the Conductor's delegated pick replace an ask, so it is ambiguous which governs.",
-   "evidence": [
-    "scenes.json:2746",
-    "scenes.json:2763",
-    "record.json:229",
-    "sheet.md:99"
-   ],
-   "gid": "g12",
-   "ids": [],
-   "new_since": "first",
-   "observed": "The showcase's source is 'CONDUCTOR:1794794271528276351', and its decision has speaker 'conductor', delegated 'evidence-for-ask'. The contract says showcase 1's decision is 'speaker owner' and its source shares that decision's 'OWNER:<tsn>'. The later Evidence-for-Ask ruling (2026-11-15) and the Conductor-authority ruling make a delegated Conductor pick valid authority. The contract text predates both and does not say whether it may stand in.",
-   "return_to": 2,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "A neutral fixer reconciles the contract's showcase-1 clause with the Evidence-for-Ask and Conductor-authority rulings; no concept edit if the delegated pick is accepted"
-   },
-   "what": "Flagship showcase 1 is bound to a Conductor decision, not to the owner-speaker decision the contract's text names",
-   "where": "scenes.json showcases[0] home_routes_expedition (line 2746); record.json stage2_flagship_home_routes (line 229)",
-   "would_pass": "Either designer_scene_contract.md states that a Conductor decision delegated under evidence-for-ask may bind showcase 1 (and designer_stage.py showcases accepts it), or record.json holds an owner-speaker flagship decision with an OWNER:<tsn> that the showcase cites"
+   "what": "The cuts scene asserts 'no drying scar', but its control can reject only a guardian promise or an active farmerFaction, so a check blind to drying scars passes",
+   "where": "scenes.json sc_cuts control",
+   "would_pass": "The sc_cuts control adds an isolated fixture whose vaporator or terrain effect produces a drying scar, and the checker rejects it alongside the guardian and farmerFaction injections."
   }
  ],
  "hashes": {
@@ -2646,26 +2347,32 @@
   "dec:proof_freshness_policy": "80f2fca432f895a2",
   "dec:stage1_root_delegation": "749de6d20e3af18d",
   "dec:stage2_existing_description_promises": "ce4d69057925edbb",
-  "dec:stage2_flagship_home_routes": "7345c8b34e3e85e8",
+  "dec:stage2_flagship_home_routes": "6a1a9945b2d70d0b",
   "dec:stage2_home_and_ordered_routes": "764c5e1fa697f351",
-  "dec:stage2_proof_boundaries": "ea33f7767157c881",
+  "dec:stage2_owner_corrected_bar": "f0d61f7cc8246f86",
+  "dec:stage2_park_renderer_repair": "a0c8d74ce8e697b0",
+  "dec:stage2_proof_boundaries": "bc71b11ec0e9c8b6",
+  "dec:stage2_root_validation_wait": "5ec998ade59e6793",
   "dec:stage2_shared_witness_and_base_binding": "d63e8995006d9dc3",
-  "dec:stage2_sweetline_ecology_and_technology": "422efa77bb3d9b12",
+  "dec:stage2_sweetline_ecology_and_technology": "494aac26b5d6148b",
   "dec:stage2_vine_hazards_and_signs": "85a35cf74856a130",
-  "dec:stage2_years_and_material_payoff": "ad982a28b5d84a37",
-  "dec:stage3_canonical_root_observations": "13eacfc6f737b39a",
-  "dec:stage3_finite_smother_migration": "7750cc4d28dcd6b2",
-  "dec:stage3_proof_catalog_and_floor": "7f508fa71d8111e2",
-  "dec:stage3_retry_root_references": "4a38568fd64a6d01",
+  "dec:stage2_years_and_material_payoff": "c1a5514261f2f9a5",
+  "dec:stage3_canonical_root_observations": "fcd6117b246057a1",
+  "dec:stage3_finite_smother_migration": "519f3e2ede6af5f1",
+  "dec:stage3_owner_bar_rewrite": "7ec49c33383a2ebb",
+  "dec:stage3_proof_catalog_and_floor": "0c869b94a36eb594",
+  "dec:stage3_retry_root_references": "aab20870d7434a69",
   "dec:stage3_useful_fuel_and_ecology_tuning": "230d0d85fd4ce4ce",
-  "dec:stage4_cold_reader_exam": "874a8ed1add92a9c",
-  "dec:stage4_helper_budget_overrun": "510247bb1f5eae49",
-  "exam": "23ecc3ba6cdb0b88",
-  "floor": "9f9394af68fba687",
+  "dec:stage4_cold_reader_exam": "a943bff28d08ccde",
+  "dec:stage4_corrected_bar_cold_reader_exam": "8f91b8da77b57a05",
+  "dec:stage4_helper_budget_overrun": "4b75113e09685601",
+  "dec:stage5_lock_return_root_validation": "e9b30e5887c82b70",
+  "exam": "425d9b7400f90cb4",
+  "floor": "25043641e5db0302",
   "inv:acoustic_payload": "c61574fec8326dcd",
   "inv:bark_wardens_removed": "d9a9d3c9c90007f7",
   "inv:biome_cast": "c4d37e7ec08d0985",
-  "inv:calling_pyre": "0c2ff89c6e28eb5b",
+  "inv:calling_pyre": "99cee9520bc774be",
   "inv:crown_mob": "1b455a5da052d642",
   "inv:cruststar_grazing_ecology": "218053f485bbd50f",
   "inv:dead_cane_fuel": "460601666c4bac84",
@@ -2696,11 +2403,11 @@
   "inv:ribbonwhip_wind_concealment": "55355d99095332c2",
   "inv:ripple": "a81799addd206a96",
   "inv:rollbug_carrion": "b7b8cc2709eb7f26",
-  "inv:ruin_injections": "29c5fb993aceefe2",
+  "inv:ruin_injections": "44ee40d5dfafda65",
   "inv:runway_bloom": "6e1f424a034a01de",
-  "inv:save_aliases": "68d2b1a2b0cc9b8d",
-  "inv:scavenger_camps": "0c31c4844f325197",
-  "inv:settings": "f31337e3a0533953",
+  "inv:save_aliases": "14802b0465ac4852",
+  "inv:scavenger_camps": "31cc4e2d79517022",
+  "inv:settings": "c175ffcb913f786d",
   "inv:shedding": "1c2b1aa025729bab",
   "inv:shirrel_flight_art": "19034e9e38837ffd",
   "inv:shirrel_glide": "42fa1048f661d9f0",
@@ -2715,6 +2422,7 @@
   "inv:sweetline_felt_bank": "a732dd33b18edd66",
   "inv:sweetline_landmark": "3ba0114c52fe54af",
   "inv:sweetline_scratching": "9901f4677f1d168f",
+  "inv:sweetline_scratching_healing": "58da7776eb92e3db",
   "inv:sweetline_shed": "a5f91db5c6ab2d04",
   "inv:sweetline_visits": "326568a1f1b587e7",
   "inv:sworn": "8e6349cccd2a1e70",
@@ -2733,94 +2441,92 @@
   "inv:weather_calendar": "8b545e01965b83dd",
   "inv:weeper": "164539ce492efbe2",
   "inv:wind_sound": "dd2ce2f146b31313",
-  "inv:wind_vaporator": "731058a3e6ca7b64",
+  "inv:wind_vaporator": "8eeaa659eb580d55",
   "inv:windbreak_lee": "92d1c85de712d5ae",
-  "leaf:acoustic_payload": "9205b114e26d9db1",
-  "leaf:arm_food": "cd50f152bac71e1a",
-  "leaf:arm_regrowth": "ce4f4d0ab5cf5fee",
-  "leaf:bloom": "723e69c51e229a85",
-  "leaf:camps": "7bbdc9930b4ff454",
-  "leaf:cane_fuel": "44aeca2287ae9c98",
-  "leaf:colony_walk": "1df11343026be7be",
-  "leaf:concealment": "bf8486a868ddddcf",
-  "leaf:creep": "2807723a4e9004bd",
-  "leaf:crown": "aeda4a7faaf4e210",
-  "leaf:cruststar": "239b88cc5d958f2d",
-  "leaf:cuts": "72fcde6e98541242",
-  "leaf:dripping": "4d770a6589996fac",
-  "leaf:economy_observer": "38f831664ef15a04",
-  "leaf:felt_comfort": "a8806a731761bf7e",
-  "leaf:fire_bias": "eb25db4322aced78",
-  "leaf:fuzzviper": "5b558a72a93724bb",
-  "leaf:gale_drawing": "001a0eea54b9c414",
-  "leaf:gale_exposure": "4da2dba4523e915f",
-  "leaf:hoard": "966e366f5b6cd648",
-  "leaf:hollow": "8951c86955b13da7",
-  "leaf:home_routes": "1f2ec97c3f57610d",
-  "leaf:island_land": "f462bb302b5eb4c3",
-  "leaf:lee_reveal": "4b29e4286e257869",
-  "leaf:lure": "0c29aa10a3f464db",
-  "leaf:maker": "10594075bdf26f72",
-  "leaf:native_cast": "3d0adeee32c08bff",
-  "leaf:ordered_travel": "9f8df3f006c5c004",
-  "leaf:pillowmoss": "08701b338fd564a8",
-  "leaf:proximity_hatch": "a3590de48f522658",
-  "leaf:pyre_beliefs": "6034a3ddc79b52e8",
-  "leaf:pyre_ritual": "e881caa4a8175789",
-  "leaf:quench": "4828587e60728c95",
-  "leaf:raid_weight": "bbc35d1a89aa386a",
-  "leaf:rearing": "23b9cfc47c5235e3",
-  "leaf:ribbon_route": "0403e41b8b2bb1bc",
-  "leaf:rollbug": "071cc522da7eaa27",
-  "leaf:route_observer": "291c8af659028aaf",
-  "leaf:ruins": "52648937995460cd",
-  "leaf:save_aliases": "b4dec7a099f1bf3d",
-  "leaf:scent": "aea55d1f19552bc1",
-  "leaf:settings": "38e3be7d77f56406",
-  "leaf:shedding": "74bfefa9f277cb7c",
-  "leaf:shirrel_flight": "fa67526de3582566",
-  "leaf:shokka": "7f6823a4c8a49236",
-  "leaf:sleeper": "8c9a2dd7bc205891",
-  "leaf:smother_claim": "8ae9a1541801a2e7",
-  "leaf:stall_predation": "8e199313544a4a66",
-  "leaf:stall_wait": "e16078557fbde062",
-  "leaf:stamping": "689690e24bcf568f",
-  "leaf:strangler": "15f238ed2689cb0b",
-  "leaf:surrik": "1b5e47123171166d",
-  "leaf:sworn": "0f202f5f9d9fe553",
-  "leaf:tanglefuzz": "e3b657a3fa5bafd2",
-  "leaf:thornhold_den": "7778dffb2c34fb4b",
-  "leaf:thornhold_quill": "0cdd1f9a6a9b4c02",
-  "leaf:tree_bank": "273e47f62810eab1",
-  "leaf:tree_landmark": "01dce3f8345006f4",
-  "leaf:tree_scratch": "8673b7c7c5b78d26",
-  "leaf:tree_shed": "57287c2396e31789",
-  "leaf:tree_traces": "07b377e401503745",
-  "leaf:twitcher": "62c61a69b7f24a10",
-  "leaf:vaporator": "08109b794b47715d",
-  "leaf:vine_contact": "960d6fe89fb18314",
-  "leaf:walking": "1cab1f51cc8c1732",
-  "leaf:weeper": "1f4668db4de9f3b7",
-  "leaf:wind_audio": "7a9100ec12b29570",
-  "leaf:wind_plain": "b08f23693f093910",
-  "leaf:witness_observer": "7b572e05dde65497",
-  "leaf:working_wind": "25b55357623097d6",
-  "record:scope": "60dfb7e136f226a0",
+  "leaf:acoustic_payload": "649a19db3562be92",
+  "leaf:arm_food": "f0050230bf3a6fa5",
+  "leaf:arm_regrowth": "0f8458359c43b3c2",
+  "leaf:bloom": "69a7d4c2ad88d1de",
+  "leaf:cane_fuel": "6d2422e8cd269d5c",
+  "leaf:colony_walk": "8e6dc6a44aa3293b",
+  "leaf:concealment": "e6e3ac410bf43192",
+  "leaf:creep": "80b892b06da86d2e",
+  "leaf:crown": "9aa140ddb251050f",
+  "leaf:cruststar": "0965f21a93ccb0de",
+  "leaf:cuts": "f19123d9355ee14f",
+  "leaf:dripping": "16ea2811ac6f32fa",
+  "leaf:economy_observer": "6f29fe99997ed6d9",
+  "leaf:felt_comfort": "a776b120c3b2a47e",
+  "leaf:fire_bias": "c3bd4535742866a4",
+  "leaf:fuzzviper": "d2ddede302e35393",
+  "leaf:gale_drawing": "cb1d35cbdeaf3d83",
+  "leaf:gale_exposure": "93ed913463b83dd4",
+  "leaf:hoard": "b7c146f51979d515",
+  "leaf:hollow": "dd54aa131ada00da",
+  "leaf:home_routes": "a8ecab99f6e3f336",
+  "leaf:island_land": "e9024ab1ce46a1be",
+  "leaf:lee_reveal": "cce741f1037f2f52",
+  "leaf:lure": "8611b8b05a69c631",
+  "leaf:maker": "ab246225a119aac7",
+  "leaf:native_cast": "537a8c05843137b3",
+  "leaf:ordered_travel": "b9f3c6c49215ce11",
+  "leaf:pillowmoss": "84a787eb69258ece",
+  "leaf:proximity_hatch": "48b62be9c7f5e10d",
+  "leaf:quench": "6322e1fb576d0a33",
+  "leaf:raid_weight": "7b5718d384906ff9",
+  "leaf:rearing": "49feabf70a026230",
+  "leaf:ribbon_route": "23ade6188f6702a3",
+  "leaf:rollbug": "6291b548e7046dfa",
+  "leaf:route_observer": "7c7e0677a2d61af9",
+  "leaf:scent": "659551450d7acbc9",
+  "leaf:shedding": "bb7a9447fc061019",
+  "leaf:shirrel_flight": "0d3dcfe3808bc8b4",
+  "leaf:shokka": "ab3912fe636811dd",
+  "leaf:sleeper": "f5735ad6c0724040",
+  "leaf:smother_claim": "2ef7b734590d7ccc",
+  "leaf:stall_predation": "28b7a3fe7fbacfbd",
+  "leaf:stall_wait": "fe5d1b25bb95145e",
+  "leaf:stamping": "c81c66a865010558",
+  "leaf:strangler": "d9dc8c58eeb656a6",
+  "leaf:surrik": "8a922b93033730c1",
+  "leaf:sworn": "9b3cb4124bc5cf04",
+  "leaf:tanglefuzz": "b9408629c53cb9c8",
+  "leaf:thornhold_den": "7b6e6b246c9c791d",
+  "leaf:thornhold_quill": "6ce9b0da176fc6cb",
+  "leaf:tree_bank": "186a0b8d2d2d1a2b",
+  "leaf:tree_healing": "a153576ee520cca8",
+  "leaf:tree_landmark": "9120736527988f8c",
+  "leaf:tree_scratch": "4f1187e8dd525a3c",
+  "leaf:tree_shed": "fe6cc6a8eff68a49",
+  "leaf:tree_traces": "c6f9be40986177be",
+  "leaf:twitcher": "0dda00d0b30cb4cf",
+  "leaf:vine_contact": "982e77d99f89e0ae",
+  "leaf:walking": "6fadc21d8b955b67",
+  "leaf:weeper": "e37307d3a54137df",
+  "leaf:wind_audio": "59f33ed18b959c5f",
+  "leaf:wind_plain": "c01f46720590d7e7",
+  "leaf:witness_observer": "101b7c2a7d2394a4",
+  "leaf:working_wind": "f1ae7c41bbe50c84",
+  "record:scope": "b104337541d12728",
   "rest:acoustic_payload": "0f556a075ef51475",
   "rest:biome_cast": "8ce3cbbeeca110d0",
+  "rest:calling_pyre": "ecbc39261723a21c",
   "rest:gale_raid_weight": "e7709fec97f90d45",
   "rest:proximity_hatch": "61cdee23000e2b47",
-  "rest:save_aliases": "7bd2aac4f040cb36",
-  "rest:settings": "4b9cf1e6d106f4d7",
+  "rest:ruin_injections": "b3e64b4dc82b0014",
+  "rest:save_aliases": "5606fb21dde15cf8",
+  "rest:scavenger_camps": "89ecc5e11cef40ed",
+  "rest:settings": "f3f17d826e8967a4",
   "rest:vine_growth_exemption": "15ded87962061344",
-  "scene:floor_payload": "c060c578ef986f2b",
-  "scene:floor_persistence": "3dbe95e3c109e070",
-  "scene:floor_recovery": "2255c42dd00e1adf",
-  "scene:floor_runtime": "bd0bdd529f17116f",
-  "scene:floor_visual": "5d16c1f4271ded5f",
+  "rest:wind_vaporator": "fd7f0f4ab9d4bde8",
+  "scene:floor_payload": "658539e5406b377e",
+  "scene:floor_persistence": "33ac771e413e1883",
+  "scene:floor_recovery": "40be4f412ff276b2",
+  "scene:floor_runtime": "dfd9e032e3c1958d",
+  "scene:floor_visual": "fb41d73fc01b4b5f",
   "scene:ix_conceal_hunt": "5c78fff98edabe82",
   "scene:ix_ecology_places": "e15eb58f09baaa1b",
-  "scene:ix_fire_accountability": "0bc8b30039a29945",
+  "scene:ix_fire_accountability": "9bc5700d2c48680a",
   "scene:ix_materials": "9b838be26359c756",
   "scene:ix_route_growth": "97e0da42f46f80bc",
   "scene:look_existing_home": "86c85e3ecabae7f2",
@@ -2828,20 +2534,20 @@
   "scene:sc_arm_food": "5458282469ed29e3",
   "scene:sc_arm_regrowth": "fec48078c13f0c75",
   "scene:sc_bloom": "9d763b616baba893",
-  "scene:sc_camps": "eec94e06a20ef2e8",
+  "scene:sc_camps": "b829f1760a7262d9",
   "scene:sc_cane_fuel": "0bd87af1d2184ca3",
-  "scene:sc_colony_walk": "c89ad86f87446906",
+  "scene:sc_colony_walk": "e43d181c6621fad1",
   "scene:sc_concealment": "266ce990f4b1d841",
   "scene:sc_creep": "899769027960f5bf",
   "scene:sc_crown": "ad1ec334158a03fb",
   "scene:sc_cruststar": "386188ae85b8df85",
-  "scene:sc_cuts": "ad01db0ed6a8ed78",
-  "scene:sc_dripping": "87ed6853631afe98",
+  "scene:sc_cuts": "700aa286244f31f2",
+  "scene:sc_dripping": "b788ff5fbe50f5b7",
   "scene:sc_economy_observer": "8c862e9f5ea84212",
   "scene:sc_felt_comfort": "a465114d786b6a57",
   "scene:sc_fire_bias": "d21e4bdc7643ec74",
   "scene:sc_fuzzviper": "1bb4f0069adfbc35",
-  "scene:sc_gale_drawing": "80dfc83d053e1353",
+  "scene:sc_gale_drawing": "37b33e4ad9f9a488",
   "scene:sc_gale_exposure": "090993a7bb2fedec",
   "scene:sc_hoard": "d08acee8944695ad",
   "scene:sc_hollow": "caab169c27e5ee24",
@@ -2849,82 +2555,83 @@
   "scene:sc_island_land": "daa44bda310bccb1",
   "scene:sc_lee_reveal": "70a1515bda0a6215",
   "scene:sc_lure": "fe704f364ed305ec",
-  "scene:sc_maker": "da2acf8cfff83055",
-  "scene:sc_native_cast": "0c79426fa4a1e690",
+  "scene:sc_maker": "c20cdcc4a6b6cc47",
+  "scene:sc_native_cast": "f8e9727a9d5f6a57",
   "scene:sc_ordered_travel": "9c459f89012cd8ad",
   "scene:sc_pillowmoss": "5b254a0f9cd48f29",
   "scene:sc_proximity_hatch": "7a2152a80ae64074",
-  "scene:sc_pyre_beliefs": "fdf1b93da047821c",
-  "scene:sc_pyre_ritual": "be8fcec8d48a6fcd",
+  "scene:sc_pyre_beliefs": "893fcb73e211308f",
+  "scene:sc_pyre_ritual": "62df659fc3c4ae07",
   "scene:sc_quench": "1c3ce4824aebf006",
   "scene:sc_raid_weight": "1480854fddc92b3f",
   "scene:sc_rearing": "c31adf912ea84292",
+  "scene:sc_removed_save_preservation": "018444aea177b8aa",
   "scene:sc_ribbon_route": "655754f0b9cc980a",
   "scene:sc_rollbug": "40ee2c62180eb51a",
   "scene:sc_route_observer": "4330e9518cb03ec9",
-  "scene:sc_ruins": "33cd8bde908fc37b",
-  "scene:sc_save_aliases": "2f052487cddb10c8",
+  "scene:sc_ruins": "73ebad40fd6d9d70",
   "scene:sc_scent": "10849e69b17eec77",
-  "scene:sc_settings": "a16b29041d468aa2",
+  "scene:sc_settings": "b144fc48bfe94eb9",
   "scene:sc_shedding": "022d9b60eca1511c",
   "scene:sc_shirrel_flight": "e9b6ee06dd98f90c",
   "scene:sc_shokka": "a67bfc9c111503bf",
   "scene:sc_sleeper": "f8ece3afdb6eba54",
-  "scene:sc_smother_claim": "db338e8ef753e52c",
+  "scene:sc_smother_claim": "b5cdfead18e7badd",
   "scene:sc_stall_predation": "9a0e2098f38f330b",
   "scene:sc_stall_wait": "9f275093a1c112f7",
-  "scene:sc_stamping": "680ea1c529b39255",
+  "scene:sc_stamping": "ab185b581991a3bf",
   "scene:sc_strangler": "da8b5082bc22d223",
   "scene:sc_surrik": "116d54b6129eb998",
-  "scene:sc_sworn": "3ec31e0b1f219a61",
+  "scene:sc_sworn": "5367955edcc7fb8d",
   "scene:sc_tanglefuzz": "0753ccfe8d1b3c38",
   "scene:sc_thornhold_den": "ce7afa89c7991bd5",
   "scene:sc_thornhold_quill": "01c9893cd218b17e",
   "scene:sc_tree_bank": "53799dbb14ec452e",
+  "scene:sc_tree_healing": "1a51a290fca63a48",
   "scene:sc_tree_landmark": "9e85895e520f0fab",
   "scene:sc_tree_scratch": "f73806c16ac32e45",
   "scene:sc_tree_shed": "9a0eab36d5a36074",
   "scene:sc_tree_traces": "43185277a971610e",
   "scene:sc_twitcher": "838c03303addb34f",
-  "scene:sc_vaporator": "ec96dc83751f34cd",
-  "scene:sc_vine_contact": "d210610a17ed1cc6",
+  "scene:sc_vaporator": "08c95e8de1525e61",
+  "scene:sc_vine_contact": "653062bfbd34e2e8",
   "scene:sc_walking": "85238328f789f6b8",
   "scene:sc_weeper": "4ba900c2e3c694bb",
-  "scene:sc_wind_audio": "007b15ad95b2efa6",
-  "scene:sc_wind_plain": "d5d24fb114827709",
+  "scene:sc_wind_audio": "3a9a3ecd089a025e",
+  "scene:sc_wind_plain": "073c3787c3e96c6e",
   "scene:sc_witness_observer": "ae8a43d89fac7409",
   "scene:sc_working_wind": "eca45b513c70c4c8",
   "sheet:": "82d6f1cb3a33ac64",
-  "sheet:delegated": "fe2a6bf0c0a72184",
-  "sheet:does": "82065d562370680f",
-  "sheet:does not": "a8f20aed7da39a31",
-  "sheet:his words": "6b4563e7fb9ffa1b",
-  "sheet:open": "3ac9061b98022fde",
-  "sheet:pruning": "bba6020f53b829fa",
+  "sheet:delegated": "ab57ed85bdfc2852",
+  "sheet:does": "243d2f7a88e7eb16",
+  "sheet:does not": "5bef197051f04f82",
+  "sheet:his words": "33ba07ef0f9f8b68",
+  "sheet:later": "5fb1bb4648a55e9d",
+  "sheet:open": "e41c24e0506b52c1",
+  "sheet:pruning": "45c7e6a485697875",
   "sheet:waived": "dc9df4091e056fd1",
-  "showcase:farmstead_learning": "f8cdd0f7f94635ea",
-  "showcase:fire_and_belief": "24320dc21048b373",
-  "showcase:home_routes_expedition": "b5472d5cb66a2d5e",
+  "showcase:fire_accountability": "0e12f489c5b5bdb4",
+  "showcase:home_routes_expedition": "1914fbad97216b95",
   "showcase:runway_ecology": "ebfdddb75ca3772e",
-  "showcase:sweetline_economy": "9631a0cc60622918",
+  "showcase:sweetline_economy": "6752f758b3d8a687",
   "showcase:vine_rooms": "6dd73345028b7752",
-  "showcase:weather_plain": "52a97ec020d945bf",
-  "tree:rest": "e9d307a6f7babbab"
+  "showcase:weather_plain": "940a9b6fdf606054",
+  "tree:rest": "890aaffd00afebfa"
  },
  "inputs": {
-  "exam.json": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
-  "floor.json": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9",
-  "record.json": "a801be0d451b6825eb93691e81a58078305c36cf18591ead1fcfe8cf86876c48",
-  "scenes.json": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
-  "sheet.md": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6"
+  "exam.json": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
+  "floor.json": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+  "record.json": "ca6aa4ca344fbfaa9e92d794cec58bdaf989c537fd3105e77620ed5d07a27294",
+  "scenes.json": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+  "sheet.md": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1"
  },
- "judge": "rm-coverage-judge-1794823485",
+ "judge": "rm-coverage-judge-1794846217",
  "mode": "full",
- "prompt_chars": 5413,
- "reasons": "Not covered: 12 gaps. Structure is sound: all 71 coverage units appear in a showcase or in coverage_rest, every leaf has a script-staged acceptance scene with start, control and restore, no leaf is accepted only by the exploration scene, and the overlap and greedy order of the 7 showcases hold. The gaps are parts of a capability or leaf that no scene stages: (1) native flora generation; (2) wind values and the windy-twin weather-table replacement; (3) lean heading checked against geometry; (4) the fog ambient bed; (5) the Gale overlay's fallback with owned art missing; (6) Dripping's Apply at startup; (7) 'per-form' vine bands staged for only 4 forms; (8) sworn research and sowing; (9) ownership reuse of the witness store, his stated purpose; (10) an all-off-together settings arm; (11) the smother legacy-import arms, which demand migration code the owner banned on 2026-11-08 (the scene and sheet should drop them). The Designer can fix all of these as stage 3 edits. (12) Showcase 1 is bound to a Conductor decision rather than an owner one. That is a flawed-criterion conflict between the contract text and the later Evidence-for-Ask ruling, for a neutral fixer rather than the Designer. The ids that are both an inventory capability and a leaf (gale_exposure, twitcher, rearing, walking, hoard, quench, sworn, shedding, strangler, weeper, sleeper, lure, felt_comfort, settings, save_aliases, acoustic_payload, proximity_hatch) are judged once each, in a single row covering both texts. Outside coverage, for the lock stage: tree.json root_state is DRAFT and root_hash is null, so packet step 1 applies.",
- "sheet": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+ "prompt_chars": 7543,
+ "reasons": "Round 2. All six artifacts changed since the prior verdict (rm-coverage-judge-1794823485); I diffed scenes.json and tree.json against ff64e249a2 and judged every changed or added scene in full. Prior gaps g1-g11 are fixed in the scenes as claimed: wild-plant census with a disabled-row control, measured wind values and the weather table, two-tile independent heading geometry with mutants, a fog audio arm, offline fallback-material arms, true clean-start Dripping arms, all 16 vine form/state lanes, real research and sowing for Sworn, a property consumer fixture with a disconnected-adapter control, a simultaneous all-off settings arm, and the smother legacy-import arms removed. Structure holds: every tree leaf has a script-staged acceptance scene with start, control and restore; no leaf rests on an exploration scene; every inventory unit is in one of six showcases or in coverage_rest (computed: none uncovered); the owner's 2026-11-16 card ruling (OWNER:1794835478275153823) moves the technology and calling-pyre units to the next version (characterization only) and drops save preservation (removal check sc_removed_save_preservation). The sheet lists every player-facing leaf and the later/cut scope. Three gaps remain. (1) g12 is unfixed: showcase 1 is still bound to a Conductor decision. The owner declined to pick and called the clause a flawed criterion, so this is a provenance field: advisory, for the neutral fixer. (2) Late: sc_gale_exposure stages roofed and mechanoid actors but never asserts that they are spared. (3) Late: sc_cuts asserts 'no drying scar' but its control cannot reject one.",
+ "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
  "signed": false,
- "tokens": 1056412,
- "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8",
+ "tokens": 919810,
+ "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
  "verdict": "not_covered"
 }
