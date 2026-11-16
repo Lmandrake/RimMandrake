@@ -1014,6 +1014,26 @@ def blind_main():
             ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
             ok(ex.get("state") == "not_met" and word in " ".join(ex.get("why") or []),
                "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:90]))
+        # RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK: a locked table whose every bar proves live (Graffiti
+        # 0.1.0, 47 of 47 at stage 6) has no offline bar to be green; a clean record meets the exit on its Problems alone
+        ttp = os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")
+        tt_saved = open(ttp).read()
+        tt0 = json.loads(tt_saved)
+        for b in tt0["bars"]:
+            b["proves_at"] = "6"
+        with open(ttp, "w") as f:
+            json.dump(tt0, f)
+        write_cycle(root, "FlowWorks", 1)
+        ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+        ok(ex.get("state") == "met" and ex.get("checks", {}).get("offline_bars") == 0,
+           "a table with no offline bar: a clean record reads met, and the reading counts 0 offline bars (%s)"
+           % ex.get("why"))
+        write_cycle(root, "FlowWorks", 1, pending_problem=True)
+        ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+        ok(ex.get("state") == "not_met" and "RIMMANDRAKE_LEAVE_SELFTEST_PROBLEM_OPEN" in " ".join(ex.get("why") or []),
+           "a table with no offline bar: an open Problem still reads not met (%s)" % (ex.get("why") or ["-"])[0][:90])
+        with open(ttp, "w") as f:
+            f.write(tt_saved)
         # a fix shown as a list of runs (Pyrelands cycle 1 wrote it so); a lane-1 FAIL cleared by lane 1 after the fixes
         runs = dict(red=[{"cmd": "a", "rc": 1}, {"cmd": "b", "rc": 1}], green=[{"cmd": "a", "rc": 0}, {"cmd": "b", "rc": 0}])
         # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: a cycle whose Problems were FIXED owes a new judge, never met

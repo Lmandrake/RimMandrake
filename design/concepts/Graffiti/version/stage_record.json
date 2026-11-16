@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T13:37:29-08:00",
+  "since": "2026-11-16T14:37:31-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -14,8 +14,8 @@
     "previous": "version/stage_record_UNMEASURED.json"
   },
   "cycles": {
-    "visit": 1,
-    "total": 1
+    "visit": 2,
+    "total": 2
   },
   "pre_human_arrivals": 0,
   "spend": [],
@@ -64,6 +64,25 @@
         "hold",
         "every_bar_has_a_check_that_runs",
         "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T14:37:31-08:00",
+      "by": "BENCH",
+      "why": "steward road back from blind cycle 1 (exit not met): raider pressure unbuilt (REAL MISS) refiled as RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS for a fixer; ugliness_visible's wording waits on his card (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS); the zero-offline-bar block was a reader flaw, fixed (RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK)",
+      "unit": "rm-detached-bench-rimmandrake-route-graffiti-cycle-one-fai-1794868263",
+      "confirmed": {
+        "steward_confirms": "read cycle_1/SUMMARY.md, faults.json, tests_edited.json ([], no test touched) and next's three reasons: exit_met false (consequence), no offline bar (CRITERION FLAW in maturation.py, fixed), 2 Problems open (raider pressure REAL MISS; ugliness CRITERION FLAW whose bar words are his card). Verdict: not met; cycle 2 opens after the fixer"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
         "fourth_cycle",
         "judge_certificate"
       ]

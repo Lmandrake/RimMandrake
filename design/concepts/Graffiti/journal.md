@@ -11,14 +11,14 @@ it among the advancing mods; the Dispatch step never launches the Designer.
 
 ## The mod as it stands
 
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:37 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 2:37 PM PST (`version/stage_record.json`).
 - **Design Version:** none yet; it is cut at the Designer's Lock step, which Graffiti has not passed.
 - **Designer:** `stage.json` reads its Lock step, status waiting_owner, parked (second_refusal, 2026-11-15T09:32Z) on
   `park_summary.md`. Accepted: Read, Argue the idea, Argue the edge, Write, Exam (64 frozen scenarios, both Readers
   matched). The coverage judge (rm-coverage-judge-1794734941) holds 22 of 24 fixes; gaps g1 (after_the_raid shares
   inv_player_orders with the spree corridor) and g18 (a wall's far side takes paint, no live control) stay open. The
   Designer can fix both at its Write step without him.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:37 PM PST).
+- **Waiting on:** the fixer on RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS; his card on ugliness_visible's wording (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS); then blind cycle 2
 - **Budget:** 6.94M weighted tokens of the 4M task cap spent (advisory outside a judge loop); the judge-and-rework loop
   since 2026-11-15T08:27Z has spent about 3.4M of its 8M ceiling (twice the cap).
 - **Next:** on his word, the Designer (`role_launch.py`) reopens; rework sends it to the Write step for g1 and g18.
@@ -68,4 +68,14 @@ was launched: the park waits on his word.
 - Blind cycle 1 of this visit (1 in all).
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 1:01 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 1:01 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 2:37 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward road back from blind cycle 1 (exit not met): raider pressure unbuilt (REAL MISS) refiled as RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS for a fixer; ugliness_visible's wording waits on his card (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS); the zero-offline-bar block was a reader flaw, fixed (RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK)
+- Checks passed: order, by, version, hold, fourth_cycle, judge_certificate.
+- Steward confirms: read cycle_1/SUMMARY.md, faults.json, tests_edited.json ([], no test touched) and next's three reasons: exit_met false (consequence), no offline bar (CRITERION FLAW in maturation.py, fixed), 2 Problems open (raider pressure REAL MISS; ugliness CRITERION FLAW whose bar words are his card). Verdict: not met; cycle 2 opens after the fixer
+- Blind cycle 2 of this visit (2 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:37 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:37 PM PST).
 - Record: `version/stage_record.json`.

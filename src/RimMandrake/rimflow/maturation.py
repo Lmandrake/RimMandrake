@@ -1723,8 +1723,10 @@ def read_exit(root, mod, n, tt=None):
     if not blk["exit_met"]:
         why.append("the judge's block says exit_met false")
     bars = offline_bars(tt)
-    if not bars:
-        why.append("the test table names no offline bar (proves_at 2 or 4-5)")
+    # zero offline bars is a locked table whose every bar proves live (Graffiti 0.1.0): "every offline bar green" holds
+    # with nothing to rerun, and the exit rests on the Problems and the file checks below. It was a block, so such a
+    # version could never leave the stage (RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK)
+    out["checks"]["offline_bars"] = len(bars)
     for b, _ in bars:
         v = blk["offline_bars"].get(b)
         if v != "green":
