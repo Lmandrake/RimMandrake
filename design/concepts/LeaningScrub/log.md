@@ -23,3 +23,29 @@ The home/routes direction comes from `OWNER:1794327080747931066`. Integral abund
 ### Live walk
 
 `turn_01.md` opens with the proposed attended walk from the registered `RM_TestSite_leaningscrub_v3` recipe. Current scene availability, deployed behavior, sound, appearance and the useful journey require observation. First-touch certification is due at Lock.
+
+## Stage 2 — rm-role-designercodex-1794793155
+
+### Candidate a_smother_horizon_2 (never sent)
+
+For a fresh smother claim, which payoff horizon governs: years of drying as the frozen sheet describes (recommended), or the current 30-day default?
+
+Considered evidence against the recommendation: Current implementation saves smotherDays=30 and presents a countdown and a 1–120-day slider; this establishes a much earlier material payoff than years. No specific later OWNER amendment to the frozen years wording was located. Reviewer must determine whether this is only a product mismatch under already-settled scope, in which case strike rather than ask.
+
+### Fresh review and disposition
+
+/root/review_stage2_edges STRUCK the ask as redundant. Frozen arid_shrubland.md:222 already says years of drying, and no later scope amendment was located. Current 30-day implementation is a product mismatch, not counter-authority. No question was sent and no owner answer is fabricated. The source-backed promise remains; exact finite tuning and save treatment are Stage 3 agent work.
+
+The reviewer PASSED the revised turn/edge audit and the home_routes_expedition flagship recommendation. Review details: review_02.md.
+
+### Delegated call
+
+CONDUCTOR:1794794271528276351 records the adopted edge decisions, explicit adoption of existing description promises, and flagship home_routes_expedition under Evidence-for-Ask. Acting author is BENCH DesignerCodex; this is not his quotation. Two engine years is a provisional tuning candidate, not an owner number. Built capabilities stay in scope and pending code/proof work stays open.
+
+### Additional primary authority found
+
+OWNER:1792856115688559019 already authorizes migrating invented ShrublandGiant to RM. OWNER:1792859729611947407 reports the technical SW-library skip, not a canon prohibition or scope cancellation. OWNER:1793682620784395844 reassigns the item to BENCH. Current XML confirms the unresolved dependencies; FOUNDRY:1792857069275444046 is historical technical context.
+
+### Live walk and certification
+
+The existing attended walk remains proposed, not run. First-touch certification remains reserved at Lock. No owner-dependent step or sent ask is left at Stage 2.

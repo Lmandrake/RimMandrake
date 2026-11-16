@@ -89,6 +89,26 @@
         "design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md"
       ],
       "text": "Historical recorded tree rulings retain scratching, felt bank, free shedding after harvest, naming and rare map placement. Guardian was subsequently cut; old guardian approval cannot reinstate it."
+    },
+    {
+      "id": "owner_invented_thunderstep_rehome",
+      "speaker": "owner",
+      "source": [
+        "OWNER:1792856115688559019",
+        "OWNER:1792859729611947407",
+        "OWNER:1793682620784395844"
+      ],
+      "text": "ShrublandGiant is explicitly included among invented species approved for migration into RM. The later SW-library skip is technical; migration was subsequently reassigned to BENCH. Complete that existing direction rather than invent a new giant or treat its RSW prefix as canon proof."
+    },
+    {
+      "id": "frozen_smother_scope",
+      "speaker": "agent",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/arid_shrubland.md:3",
+        "design/Jawa/worldbuilding/biomes/arid_shrubland.md:222",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75"
+      ],
+      "text": "The frozen years-long desiccation promise remains authoritative. Current 30-day default is an implementation mismatch. No specific later owner amendment located; exact finite numeric tuning is delegated detail, not an owner quotation."
     }
   ],
   "decisions": [
@@ -113,6 +133,112 @@
       "delegated": "evidence-for-ask",
       "source": "CONDUCTOR:1794792677711573340",
       "text": "Adopt the exact root recorded in root, answering a_root_1. Fresh review passed its text and struck sending its redundant approval question. Acting author is BENCH DesignerCodex under the all-role standing ruling. Current play and Lock-stage first-touch certification remain pending."
+    },
+    {
+      "id": "stage2_home_and_ordered_routes",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Preserve owner-approved dependable home/maintained routes and ordered-dangerous-trip policy. Use shared job/path behavior that never treats the absence of a safe ordinary route as implicit expedition authorization. Developed-ground treatment must agree across creep and Walking; dirt-route upkeep remains to measure, not an invulnerability promise.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_vine_hazards_and_signs",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Preserve all ruled forms and built Weeper contact/barrier hazards, reconcile its unsupported safe-passage text, preserve strict greater-than blocking at the current1.5 threshold and reconcile conflicting prose. Shared hazard controls must govern applicable effects; ready/spent visual states require actual state wiring and play evidence.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_years_and_material_payoff",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Preserve frozen years-long smothering and premium useful fuel. Strike a_smother_horizon_2 rather than reopen settled scope. Two engine years is a provisional tuning candidate only; Stage3 sets finite default, range and existing-save/settings behavior with explicit assumptions. Current30-day default and fuel-filter-only premium evidence remain product/proof gaps.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_existing_description_promises",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Adopt premium dead-cane usefulness, Shokka/Fuzzviper ambush, Ribbonwhip canopy-only travel, Pillowmoss wet-ground/fog behavior, Tanglefuzz den ecology, Cruststar grazing and finite Vissler arm/regrowth as existing promised obligations. Missing implementations are not grounds for silent deferral. Their source and delegated provenance are retained; no owner quotation invented.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_sweetline_ecology_and_technology",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Preserve independent landmark/canopy/name/history, free shedding after harvest, autonomous scratching/bank, felt effects, native lifecycle/ecology and farmstead-plan→research→vaporator→water observations. Abstract tree visits are traces, not arriving pawns. Pen gates remain an investigation, not a current guarantee. Removed guardians, farmer camps and drying scar stay out.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_shared_witness_and_base_binding",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Implement the already-requested shared witness/violator system with maker identity, witness or fresh trail and loss of contact, reusing suitable property work without its humanlike-only limitation. Complete already-authorized invented thunderstep migration plus SW-library dependency untangle and positive franchise-free binding. Current campaign binding and a no-stamper control cannot certify base completeness. No new species or canon port is proposed.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_proof_boundaries",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "text": "Retain implementation/proof/scope separation. Keep independent capability scenes, finite discriminating controls, all settings, optional integration/aliases and cut-absence coverage, plus real reload and changed action-order journey at representative colony scale. No current play, performance, acceptance, waiver, version lock or first-touch certification is inferred from source review.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage2_flagship_home_routes",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "flagship": "home_routes_expedition",
+      "source": "CONDUCTOR:1794794271528276351",
+      "text": "Ordinary hauling and usable wind at a maintained home, then a deliberately ordered vine expedition and return. It directly expresses the adopted root and existing home/trip answers; no source argues for a different flagship. Independent tree/ecology/technology/fire/ritual scenes remain required.",
+      "author": "rm-role-designercodex-1794793155",
+      "ran_by": "BENCH",
+      "review": {
+        "by": "/root/review_stage2_edges",
+        "verdict": "pass",
+        "source": "design/concepts/LeaningScrub/review_02.md"
+      }
     }
   ],
   "asks": [
@@ -160,6 +286,36 @@
         "why": "Exact proposed sentence and turn page checked against primary events and current implementation.",
         "source": "design/concepts/LeaningScrub/turn_01.md"
       }
+    },
+    {
+      "id": "a_smother_horizon_2",
+      "text": "For a fresh smother claim, which payoff horizon governs: years of drying as the frozen sheet describes (recommended), or the current 30-day default?",
+      "decision": "smother_horizon",
+      "about": [
+        "smother_craft",
+        "premium_dead_cane"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794793155",
+      "status": "struck",
+      "recommended": "Preserve the frozen years-of-drying scope.",
+      "source": [
+        "design/concepts/LeaningScrub/turn_02.md",
+        "design/Jawa/worldbuilding/biomes/arid_shrubland.md:222",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:63",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:440"
+      ],
+      "considered_evidence_against": "Current implementation saves smotherDays=30 and presents a countdown and a 1–120-day slider; this establishes a much earlier material payoff than years. No specific later OWNER amendment to the frozen years wording was located. Reviewer must determine whether this is only a product mismatch under already-settled scope, in which case strike rather than ask.",
+      "evidence_against": "",
+      "review": {
+        "by": "/root/review_stage2_edges",
+        "verdict": "struck",
+        "why": "Already answered by the frozen years-long promise. A provisional 30-day implementation is a product mismatch, not evidence that the settled scope must be reopened. No later specific owner amendment found.",
+        "source": "design/concepts/LeaningScrub/review_02.md"
+      },
+      "disposition": "No owner ask or invented reply. Preserve frozen years scope; exact finite tuning and save treatment are agent Stage 3 work."
     }
   ],
   "inventory": [
@@ -1361,13 +1517,17 @@
       "speaker": "agent",
       "source": [
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
-        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml"
+        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "Existing vanilla CompRefuelable filter is adequate for acceptance but supplies no per-fuel advantage in the read patch. First compare matched consumers and quantities; do not certify premium from filter membership."
+      "feasibility": "Existing vanilla CompRefuelable filter is adequate for acceptance but supplies no per-fuel advantage in the read patch. First compare matched consumers and quantities; do not certify premium from filter membership.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "shokka_ambush",
@@ -1375,13 +1535,17 @@
       "speaker": "agent",
       "source": [
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "absent",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0."
+      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "fuzzviper_ambush",
@@ -1389,13 +1553,17 @@
       "speaker": "agent",
       "source": [
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "absent",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0."
+      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "ribbonwhip_canopy_route",
@@ -1403,52 +1571,68 @@
       "speaker": "agent",
       "source": [
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "absent",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0."
+      "feasibility": "Current def is ordinary predator behavior plus separately listed shared effects. Bespoke habitat/AI choice is not supplied by those effects; SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY owns the stub. No new implementation choice in stage 0.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "pillowmoss_wet_spot",
       "text": "Pillowmoss promised wet ground/fog condensation is stubbed.",
       "speaker": "agent",
       "source": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine."
+      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "tanglefuzz_den_ecology",
       "text": "Tanglefuzz promised den-anchor ecology is stubbed.",
       "speaker": "agent",
       "source": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine."
+      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "cruststar_grazing_ecology",
       "text": "Cruststar promised crustweevil grazing relationship is stubbed; ordinary ingestibility is not a specialized ecology proof.",
       "speaker": "agent",
       "source": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "approved",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
-      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine."
+      "feasibility": "No specialized implementation identified in src search; vanilla plant/ingestible behavior may supply part of grazing and must be measured before adding a new engine.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "vissler_finite_arm_regrowth",
@@ -1456,12 +1640,16 @@
       "speaker": "agent",
       "source": [
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734",
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:217"
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:217",
+        "CONDUCTOR:1794794271528276351"
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
-      "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried."
+      "scope": "approved",
+      "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried.",
+      "previous_scope": "open_question",
+      "scope_source": "CONDUCTOR:1794794271528276351",
+      "scope_note": "Stage2 explicitly adopted the existing description/commission promise by recorded delegation; approved here is the delegated scope decision, never an invented OWNER quotation. Implementation and proof fields are unchanged."
     },
     {
       "id": "bark_wardens_removed",
@@ -1501,8 +1689,18 @@
         "OWNER:1794334503877366549",
         "design/RimMandrake/designer_codex_2026-11-09/LeaningScrub/ANSWERS_OWNER.md"
       ],
-      "status": "resolved",
-      "text": "Original home/routes OWNER event found; completed-answer OWNER event names the source file and contains witness ownerSaid. Secondary Q2 wording is retained as secondary record backed by the completed-answer event. No root approval or flagship pick exists in this record."
+      "status": "design_resolved",
+      "text": "Home/routes primary authority and completed-answer/Q2 provenance remain distinct. Root and flagship are separate recorded delegated calls; neither is promoted into owner quotation.",
+      "core": false,
+      "resolved": true,
+      "resolution": "No new owner quote is claimed. Root remains the existing recorded delegated synthesis, and flagship is now a separate delegated pick; home/routes are primary and ordered Q2 wording stays secondary.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "none",
+      "product_resolved": null
     },
     {
       "id": "ground_shared_ownership",
@@ -1512,8 +1710,18 @@
         "src/RimMandrake/Biomes.compose.json",
         "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs"
       ],
-      "status": "resolved",
-      "text": "Direct services and owners are listed in neighbors. Shared mechanisms are already present; no generic engine should be reinvented. Remaining feature-specific gaps are recorded separately."
+      "status": "design_resolved",
+      "text": "Direct services and owners are listed in neighbors. Shared mechanisms are already present; no generic engine should be reinvented. Remaining feature-specific gaps are recorded separately.",
+      "core": false,
+      "resolved": true,
+      "resolution": "Existing engines/services remain authoritative neighbors. Shared attribution must be extended suitably rather than duplicated; no generic engine reinvention.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "feature_gaps_open",
+      "product_resolved": false
     },
     {
       "id": "ground_cut_and_stub",
@@ -1523,8 +1731,18 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
         "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
       ],
-      "status": "resolved",
-      "text": "Current source confirms guardian removal, disabled farmer camps, built thornhold/surrik/ribbonwhip concealment/shirrel/rollbug and remaining ambush/plant stubs. Closed ledger work is reconciled rather than treated as a fresh blanket approval."
+      "status": "design_resolved",
+      "text": "Current source confirms guardian removal, disabled farmer camps, built thornhold/surrik/ribbonwhip concealment/shirrel/rollbug and remaining ambush/plant stubs. Closed ledger work is reconciled rather than treated as a fresh blanket approval.",
+      "core": false,
+      "resolved": true,
+      "resolution": "Cuts remain out; built hooks and remaining stubs retain their distinct implementation states. Existing description promises are now explicit delegated scope, not claimed completed.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "stubs_open",
+      "product_resolved": false
     },
     {
       "id": "ground_proof_contract",
@@ -1533,8 +1751,18 @@
         "src/RimMandrake/LeaningScrub/validation.py",
         "src/RimMandrake/Utils/rimdrive/session.py:359"
       ],
-      "status": "resolved",
-      "text": "Every suite chain component group and auxiliary live entry is audited below. Per-fixture cleanup and session sweep do not recover the prior persistent world; missing acceptance controls/recovery/hold become stage 3 planning work."
+      "status": "design_resolved",
+      "text": "Every suite chain component group and auxiliary live entry is audited below. Per-fixture cleanup and session sweep do not recover the prior persistent world; missing acceptance controls/recovery/hold become stage 3 planning work.",
+      "core": false,
+      "resolved": true,
+      "resolution": "Keep Stage0 script audit and missing recovery/control/hold work for Stage3. Current script hooks do not establish acceptance or restoration.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "proof_work_open",
+      "product_resolved": false
     },
     {
       "id": "routes_vs_walking_creep",
@@ -1544,9 +1772,19 @@
         "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:918",
         "OWNER:1794327080747931066"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "implementation_and_measurement",
-      "text": "Walking destination predicate lacks explicit zones/floors/roofs checks used by ordinary creep. Owner dependable routes need a shared guarantee across both mechanisms; actual invasion on a maintained route was not observed."
+      "text": "Walking destination predicate lacks explicit zones/floors/roofs checks used by ordinary creep. Owner dependable routes need a shared guarantee across both mechanisms; actual invasion on a maintained route was not observed.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Dependable maintained home/routes govern both slow creep and Walking. Share developed-ground protection and test both; ordinary dirt-route upkeep remains measured work. No whole-wilderness safety or immunity to unrelated events promised.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "implementation_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "ordered_haul_distinction",
@@ -1555,9 +1793,19 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs",
         "OWNER:1794334503877366549"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "implementation_and_measurement",
-      "text": "Read path hooks use size and cost without deliberate-order status. Owner policy is already answered; measure real hauling and implement policy rather than ask whether harmful automatic trips are acceptable."
+      "text": "Read path hooks use size and cost without deliberate-order status. Owner policy is already answered; measure real hauling and implement policy rather than ask whether harmful automatic trips are acceptable.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Ordinary work cannot authorize a dangerous crossing by losing its detour; report an unfulfilled/refused task. Explicit expedition permission applies to that trip, not future automatic work. Existing shared policy needs integration and real job/path evidence.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "implementation_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "maker_not_blaze",
@@ -1567,9 +1815,19 @@
         "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs",
         "OWNER:1794334503877366549"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "implementation",
-      "text": "Fire-stamping remembers blaze location and damages burning things/buildings, not a maker tracked by witness/trail. Shared property witness function excludes wild animals. This is a build/design integration gap under approved direction, not a new owner fork."
+      "text": "Fire-stamping remembers blaze location and damages burning things/buildings, not a maker tracked by witness/trail. Shared property witness function excludes wild animals. This is a build/design integration gap under approved direction, not a new owner fork.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Witness/physical trail identifies the actual maker, not the nearest pawn or blaze. Build robust shared actor/witness/violator relationships reusable by ownership; fresh/broken contact and innocent bystanders must discriminate. Existing utility is a neighbor to extend.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "shared_implementation_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "base_stamper_binding",
@@ -1577,11 +1835,25 @@
       "source": [
         "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:332",
         "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:144"
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:144",
+        "OWNER:1792856115688559019",
+        "OWNER:1792859729611947407",
+        "OWNER:1793682620784395844",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml:160"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "dependency_scope",
-      "text": "The only XML marker binding found across src is the campaign giant patch. Base firing/stamping and ritual herd availability cannot be certified franchise-free from data-driven code alone. First resolve composition/roster design using existing requirements; no invented giant or canon port is authorized by this finding."
+      "text": "Current sole XML stamper binding remains campaign-only. Existing invented thunderstep migration is already owner-approved but skipped for SW-library dependencies. Base completion needs that authorized rehome and positive binding, not a new giant or an inferred canon port.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Existing invented thunderstep has explicit RM migration authority: OWNER:1792856115688559019. Later skip is technical, not canon or cancellation. Complete authorized migration and actual library dependencies, aliases, effective roster/marker binding; require positive base and campaign scenes. No new giant choice needed; no-stamper is a negative control only.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "migration_dependencies_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "state_art",
@@ -1590,9 +1862,19 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:22",
         "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:91"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "implementation_and_visual",
-      "text": "Rearing/quench graphic folders are randomly selected, not state poses; twitcher spent/drooping is inspect text. The promised readable state needs actual graphic/state evidence."
+      "text": "Rearing/quench graphic folders are randomly selected, not state poses; twitcher spent/drooping is inspect text. The promised readable state needs actual graphic/state evidence.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Dangerous/ready/spent states must be visibly tied to state as already promised; random Graphic_Random selections and inspect counters are not state-pose proof. Actual wiring and visual play proof remain pending.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "implementation_and_visual_proof_open",
+      "product_resolved": false
     },
     {
       "id": "weeper_safe_text",
@@ -1601,9 +1883,19 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:83",
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:81"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "description_vs_behavior",
-      "text": "Weeper says safe to pass but carries contact venom and a body-size barrier. Reconcile description with authoritative hazard scope; do not repeat both as compatible facts."
+      "text": "Weeper says safe to pass but carries contact venom and a body-size barrier. Reconcile description with authoritative hazard scope; do not repeat both as compatible facts.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Retain built common contact venom/body-size barrier and added pool/pollution behavior. Correct unsupported safe-passage description to agree; no owner-approved exception to common hazard was located and built hazards are not put up for removal.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "player_text_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "sleeper_shared_controls",
@@ -1612,9 +1904,19 @@
         "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:219",
         "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:715"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "implementation",
-      "text": "Wake strike calls TakeDamage directly, unlike form Scratch contactVenomEnabled, damage multipliers and nonlethal cap path. Live consequences remain unmeasured."
+      "text": "Wake strike calls TakeDamage directly, unlike form Scratch contactVenomEnabled, damage multipliers and nonlethal cap path. Live consequences remain unmeasured.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Sleeper wake-area effect must respect relevant shared hazard switches/multipliers/nonlethal policy and preserve its distinct wake behavior. Direct TakeDamage bypass remains a product gap; measure on/off and boundary consequences.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "implementation_and_play_open",
+      "product_resolved": false
     },
     {
       "id": "body_boundary",
@@ -1623,9 +1925,19 @@
         "design/RimMandrake/venomvine_design_2026-10-16.md:67",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:190"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "spec_vs_code",
-      "text": "Historical design says 1.5 and up blocked; implementation blocks strictly above threshold. Exact boundary needs a deciding check and accurate wording, not an inferred live failure."
+      "text": "Historical design says 1.5 and up blocked; implementation blocks strictly above threshold. Exact boundary needs a deciding check and accurate wording, not an inferred live failure.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Preserve actual strict bodySize>blockBodySize, including1.5 not blocked by this gate. Historical design is internally contradictory: prose says1.5 and up while inspect contract says blocks above. Reconcile text with the current gate and decide with exact-boundary checks, not an inferred live failure.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "text_and_boundary_proof_open",
+      "product_resolved": false
     },
     {
       "id": "smother_horizon",
@@ -1634,9 +1946,19 @@
         "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:63",
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "tuning_vs_text",
-      "text": "Configured 30-day claim conflicts with item years-in-the-making wording. First walk existing countdown/economy; if a remaining certification question is required, cite this concrete disagreement. No question is sent at stage 0."
+      "text": "Configured 30-day claim conflicts with item years-in-the-making wording. First walk existing countdown/economy; if a remaining certification question is required, cite this concrete disagreement. No question is sent at stage 0.",
+      "core": true,
+      "resolved": true,
+      "resolution": "Frozen scope says years; retain it and strike redundant horizon ask. Current30-day default is a product mismatch. Two engine years is only a provisional finite tuning candidate; Stage3 defines exact finite tuning and existing-save/settings behavior without inventing owner-picked numbers.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "tuning_implementation_economy_and_reload_open",
+      "product_resolved": false
     },
     {
       "id": "stale_player_text",
@@ -1647,9 +1969,19 @@
         "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:38",
         "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6"
       ],
-      "status": "open",
+      "status": "design_resolved",
       "classification": "description",
-      "text": "About still promises removed wardens and says concealment not yet built; old felt/warden and CombHolds-to-Outlander comments trail actual cuts. Source truth is current comps/genstep data. Correct text in later product work; do not reopen cuts."
+      "text": "About still promises removed wardens and says concealment not yet built; old felt/warden and CombHolds-to-Outlander comments trail actual cuts. Source truth is current comps/genstep data. Correct text in later product work; do not reopen cuts.",
+      "core": false,
+      "resolved": true,
+      "resolution": "Correct stale promises of removed wardens, missing concealment and active farmer camps in later product work. Preserve removed-feature absence checks and actual loadable save tombstone distinctions. No cut is reopened.",
+      "resolution_source": [
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "remaining_work": "player_text_open",
+      "product_resolved": false
     }
   ],
   "failure_modes": [
@@ -2278,10 +2610,13 @@
       "source": [
         "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml",
         "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml"
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+        "OWNER:1792856115688559019",
+        "OWNER:1792859729611947407",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml"
       ],
       "owner": "UtinniPatches / SWBestiary",
-      "text": "Owns campaign giant stamper binding and scavenger faction additions. Base code is data-driven; empty campaign binding is a composition/site boundary, not proof that the mechanic passed. Do not move canon species into base as an unapproved repair."
+      "text": "UtinniPatches currently supplies giant-stamper/scavenger bindings. Thunderstep is an invented species explicitly approved for RM migration; its current RSW library dependencies remain unfinished technical work. Complete that authorized migration and positive base binding; do not infer canon from its current folder/prefix or accept an empty binding as coverage."
     },
     {
       "id": "neighbor_optional",
@@ -3024,6 +3359,25 @@
         "design/concepts/LeaningScrub/log.md"
       ],
       "finding": "Independently checked the proposed root against the integral-vine, home/routes, completed-answer and visible-wind events and turbine/creep source. Fresh review passes this synthesis. Evidence-for-Ask now supplies a recorded delegated root. The draft assertion of an owner-chosen original experience sentence exceeds its located secondary provenance, as stage 0 recorded. No draft quotation is promoted into his words. Flagship remains a proposal for later stage work."
+    },
+    {
+      "id": "draft_stage2_horizon_question_struck",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/arid_shrubland.md:3",
+        "design/Jawa/worldbuilding/biomes/arid_shrubland.md:222",
+        "design/concepts/LeaningScrub/review_02.md"
+      ],
+      "finding": "Draft recommendation to ask about30 days versus years is unnecessary. Independently read frozen scope and current tuning; fresh review strikes the scope question because no later specific owner amendment was located. Preserve years and treat30-day default as product mismatch."
+    },
+    {
+      "id": "draft_native_stamper_authority_omission",
+      "source": [
+        "OWNER:1792856115688559019",
+        "OWNER:1792859729611947407",
+        "OWNER:1793682620784395844",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml:160"
+      ],
+      "finding": "Draft and initial grounding omitted existing owner authority to migrate invented ShrublandGiant into RM. Current campaign-only marker does not imply an unresolved new creature/canon choice. Existing migration was skipped for technical library dependencies, independently confirmed in current XML. Preserve positive base completeness and carry authorized rehome/dependencies forward."
     }
   ],
   "live_walk_first": {
@@ -3423,6 +3777,14 @@
     {
       "path": "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml",
       "sha256": "fa2a303bbee958e0b3d95f4c549c46d074a9f5aaa1082b76da4a26d6ff0c21cf"
+    },
+    {
+      "path": "design/Jawa/worldbuilding/biomes/arid_shrubland.md",
+      "sha256": "12ad79ae4ad3054542adc920eba13975106d63a29ca4f70e1ff1c4b190f3d9bb"
+    },
+    {
+      "path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml",
+      "sha256": "79aba7013ff4bd21a70e87472a07c88ffd739349dc0b8acbbb14d0d804ebc166"
     }
   ],
   "stage_1": {
@@ -3475,5 +3837,180 @@
       "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:186",
       "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:444"
     ]
+  },
+  "stage_2": {
+    "run": "rm-role-designercodex-1794793155",
+    "status": "done",
+    "source": "design/concepts/LeaningScrub/turn_02.md",
+    "live_walk_offered_first": true,
+    "reviewer": "/root/review_stage2_edges",
+    "owner_asks_sent": [],
+    "limits": "Only design scope is settled here. Built scopes remain unopened; eight description/commission gaps were explicitly adopted by delegation. No inventory implementation or proof field was upgraded, and no mod code/art/game/deploy action occurred.",
+    "capability_families": [
+      {
+        "id": "E1",
+        "inventory": [
+          "weather_calendar",
+          "wind_sound",
+          "lean_heading",
+          "plant_lean",
+          "gale_dust",
+          "gale_exposure",
+          "gale_turbines",
+          "gale_raid_weight",
+          "upwind_scent",
+          "downwind_fire"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E2",
+        "inventory": [
+          "vine_creep",
+          "walking",
+          "dependable_home_routes",
+          "ordered_crossing_policy"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E3",
+        "inventory": [
+          "vine_islands",
+          "vine_growth_exemption",
+          "vine_hazard",
+          "dripping_harvest",
+          "twitcher",
+          "hollow_passage",
+          "crown_mob",
+          "rearing",
+          "hoard",
+          "quench",
+          "sworn",
+          "shedding",
+          "strangler",
+          "weeper",
+          "sleeper",
+          "lure"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E4",
+        "inventory": [
+          "smother_craft",
+          "dead_cane_fuel",
+          "premium_dead_cane"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E5",
+        "inventory": [
+          "sweetline_landmark",
+          "sweetline_canopy",
+          "sweetline_shed",
+          "sweetline_scratching",
+          "sweetline_felt_bank",
+          "felt_comfort",
+          "sweetline_visits"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E6",
+        "inventory": [
+          "biome_cast",
+          "stall_freeze",
+          "ripple",
+          "windbreak_lee",
+          "stall_hunter",
+          "runway_bloom",
+          "vissler_arm_food",
+          "thornhold_quills",
+          "thornhold_den_stand",
+          "surrik_crustswim",
+          "ribbonwhip_wind_concealment",
+          "shirrel_glide",
+          "shirrel_flight_art",
+          "rollbug_carrion",
+          "shokka_ambush",
+          "fuzzviper_ambush",
+          "ribbonwhip_canopy_route",
+          "pillowmoss_wet_spot",
+          "tanglefuzz_den_ecology",
+          "cruststar_grazing_ecology",
+          "vissler_finite_arm_regrowth"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E7",
+        "inventory": [
+          "fire_stamping",
+          "calling_pyre",
+          "fire_maker_witness_trail"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      },
+      {
+        "id": "E8",
+        "inventory": [
+          "ruin_injections",
+          "wind_vaporator",
+          "scavenger_camps",
+          "save_aliases",
+          "acoustic_payload",
+          "proximity_hatch",
+          "settings",
+          "bark_wardens_removed",
+          "farmer_camps_removed"
+        ],
+        "source": "design/concepts/LeaningScrub/edge_argument_02.md",
+        "limits": "Argument grouping only; independent experiences keep their own leaves/scenes. This mapping is not Lock-stage exercised coverage."
+      }
+    ],
+    "source_snapshot_review": {
+      "unchanged": 93,
+      "changed": [],
+      "method": "SHA256 recomputed for each prior source_snapshots path. Critical edge passages and cited OWNER events also read afresh. No historical proof upgraded."
+    },
+    "ask_history_check": "concept_tree.py askcheck returned HISTORY_NOT_CHECKED because no tree exists; record asks and short full log were read manually. Existing root ask answered; no prior smother question sent here.",
+    "completed_at": "2026-11-16T02:00:38.611852+00:00",
+    "source_head": "e7b76afee7f2187c536759d8b2046c6b6aef1f02",
+    "delegation_source": "CONDUCTOR:1794794271528276351",
+    "review_source": "design/concepts/LeaningScrub/review_02.md",
+    "review_verdict": "pass",
+    "review_tokens_estimated": 100000,
+    "review_usage_quality": "Conservative reviewer estimate; exact telemetry unavailable.",
+    "asks_struck": [
+      "a_smother_horizon_2"
+    ],
+    "unresolved_core_design": [],
+    "all_remaining_work": "Product, dependency and proof work remains explicit in contradiction remaining_work and Stage0 audits. Design resolution does not claim product repair.",
+    "flagship": "home_routes_expedition",
+    "next_stage_work": [
+      "Write separate leaves and finite observation contracts from the edge audit; do not collapse independently failing capabilities into eight generic leaves.",
+      "Carry each remaining product/proof/dependency gap into plan and script-contract build work before acceptance, including authorized thunderstep migration and shared attribution.",
+      "Specify finite smother tuning, settings/default/save treatment under frozen years scope and useful fuel comparison; two engine years is provisional, not owner-picked.",
+      "Build orthogonal showcase set and coverage_rest for every inventory capability, with actual recovery/control/hold and owner-present flight constraints.",
+      "Keep the complete journey with real reload and changed action order, plus settings and other floor checks. First-touch certification stays reserved at Lock."
+    ],
+    "pipeline_repair": {
+      "item": "RIMMANDRAKE_FIX_DESIGNER_DELEGATION_UNREAD_REPLY",
+      "source": [
+        "src/RimMandrake/rimflow/designer_stage.py:155",
+        "src/RimMandrake/rimflow/selftest_designer_stage.py:600"
+      ],
+      "sha": "e7b76afee7f2187c536759d8b2046c6b6aef1f02",
+      "reason": "Valid CONDUCTOR citations of delegated calls in OWNER shard were treated as unread new replies, causing stage2 close rejection. Focused reproduction red before fix; stage, turns and chaining suites green after."
+    }
   }
 }
