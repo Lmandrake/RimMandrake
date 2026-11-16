@@ -174,8 +174,16 @@ def retired_sane(status, metric):
     key) is the retirement, not a blind instrument, as ops_watch.andon reads it. -> True for a `relentless.` key while
     `relentless.retired` reads 1, else None. Without it an incident holding such a key never closes on its readings
     (work_belt-20261101160557: 56 churn keys absent, at his rung for good after the Relentless retirement)."""
-    p = ((status or {}).get("points") or {}).get("relentless.retired") or {}
-    return True if metric.startswith("relentless.") and p.get("m") == "MEASURED" and p.get("v") == 1 else None
+    pts = (status or {}).get("points") or {}
+    p = pts.get("relentless.retired") or {}
+    if metric.startswith("relentless.") and p.get("m") == "MEASURED" and p.get("v") == 1:
+        return True
+    # a nightly red group's key exists only while the group is red: absent while the collector reports the night (or the
+    # held nightly reads 0) is the group cleared, as ops_watch.andon reads it (testing-20261101162433: 145 such keys)
+    k = pts.get("testing.nightly_known_reds") or {}
+    if metric.startswith("testing.red_") and metric not in pts and k.get("m") == "MEASURED" and k.get("v") is not None:
+        return True
+    return None
 
 
 def chain_of(table, inc):

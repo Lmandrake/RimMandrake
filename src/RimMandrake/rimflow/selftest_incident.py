@@ -1689,6 +1689,24 @@ def test_retired_belt_keys_read_sane():
     check("control: with the belt live the absent key is unknown and the incident stays open", "sane" not in evs, evs)
 
 
+def test_cleared_red_group_keys_read_sane():
+    """A nightly red group's key exists only while the group is red: absent while testing.nightly_known_reds is MEASURED
+    (the collector reports the night, or the held nightly reads 0) is the group cleared, so the incident holding it
+    closes on its readings (testing-20261101162433: 145 such keys, at his rung for good after the nightly hold);
+    with the collector blind the absent key stays unknown (the check can fail)."""
+    table, rev, rows = at_his_rung("tr-1")
+    key = "testing.red_abcdef"
+    rows[0]["metrics"] = {key: {"class": "distressed", "event": False}}
+    rows[0]["revisit_read"] = {}
+    now = T0 + 2 * M
+    gone = {"t": now, "points": {"testing.nightly_known_reds": {"m": "MEASURED", "v": 0}}, "alarms": {}}
+    evs = [x["ev"] for x in IN.step(table, rows, gone, now)["rows"] if x["id"] == "tr-1"]
+    check("cleared: an absent red group key reads sane while the nightly's collector reports", "sane" in evs, evs)
+    blind = {"t": now, "points": {"testing.nightly_known_reds": {"m": "UNMEASURED", "v": None}}, "alarms": {}}
+    evs = [x["ev"] for x in IN.step(table, rows, blind, now)["rows"] if x["id"] == "tr-1"]
+    check("control: with the collector blind the absent red key is unknown and the incident stays open", "sane" not in evs, evs)
+
+
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_standing_source_holds_incident_open, test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
@@ -1697,7 +1715,8 @@ for t in (test_standing_source_holds_incident_open, test_silent_reader, test_cha
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries,
           test_disjoint_reopen_is_new_incident, test_role_relapse_kinds_do_not_reopen,
-          test_seat_relapse_kinds_do_not_reopen, test_retired_belt_keys_read_sane):
+          test_seat_relapse_kinds_do_not_reopen, test_retired_belt_keys_read_sane,
+          test_cleared_red_group_keys_read_sane):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
