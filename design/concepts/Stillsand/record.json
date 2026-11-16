@@ -2440,7 +2440,7 @@
       "id": "d_stage3_rejection_repair",
       "speaker": "agent",
       "source": [
-        "infrastructure/state/items/DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE.md",
+        "infrastructure/state/items/closed/DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE.md",
         "src/RimMandrake/rimflow/designer_stage.py",
         "src/RimMandrake/rimflow/selftest_designer_stage.py",
         "design/concepts/Stillsand/root.md"
@@ -3712,7 +3712,10 @@
       "item": "DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE",
       "regression": "selftest_designer_stage.py cross-clone stage-3 fixture",
       "result": "red_before_green_after",
-      "runtime": "unrun"
+      "runtime": "unrun",
+      "published_sha": "45e3f2d4c7e65f7489397b60d1119c041c01843e",
+      "item_state": "closed after L0 verification",
+      "dispatcher_checkout_check": "result.json would be accepted"
     }
   }
 }
