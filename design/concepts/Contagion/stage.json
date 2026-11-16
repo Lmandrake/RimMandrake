@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: judge spend 3151034 tokens (limit 3007272, 4x the p90); judging stopped on Contagion (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -219,10 +220,31 @@
     "ref": "run rm-role-designer-1794821256",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-16T09:44:56Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794821839",
+    "stage": 5,
+    "tokens": 752830
+   },
+   {
+    "at": "2026-11-16T09:45:23Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794821839",
+    "stage": 5,
+    "tokens": 366958
+   },
+   {
+    "at": "2026-11-16T09:45:33Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794821827",
+    "stage": 5,
+    "tokens": 500000
    }
   ],
   "reserve": 60000,
-  "spent": 10398442
+  "spent": 12018230
  },
  "coverage_rounds": [
   {
@@ -374,8 +396,94 @@
    "tokens": 598022,
    "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb",
    "verdict": "malformed"
+  },
+  {
+   "at": "2026-11-16T09:37:19Z",
+   "error": null,
+   "gaps": 25,
+   "ids": [
+    "biome_def_declared",
+    "biome_roster",
+    "bodyprints",
+    "bodyprints_phased",
+    "bulloo",
+    "burn_clock",
+    "burn_pressure_dive",
+    "cast_lives_here",
+    "coalescence_formation",
+    "coalescence_grows_and_breaks",
+    "coalescence_growth",
+    "coalescence_payoff",
+    "coalescence_threat",
+    "draftprints",
+    "fauna_blisterfloat",
+    "fauna_bloodlurk",
+    "fauna_bloody_mess",
+    "fauna_contagion_ikee",
+    "fauna_crispling",
+    "fauna_danglemaw",
+    "fauna_doublemaw",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_gawpsack",
+    "fauna_gnashling",
+    "fauna_gorekite",
+    "fauna_meltgut",
+    "fauna_ogleknot",
+    "fauna_peeper",
+    "fauna_scaldhide",
+    "fauna_scorchpod",
+    "fauna_skinflap",
+    "fauna_sloshbelly",
+    "fauna_sparkleech",
+    "fauna_sparkleech_grub",
+    "fauna_specials_declared",
+    "flora_halfmade_blighted",
+    "flora_halfmade_tree",
+    "flora_lashgrass",
+    "flora_rattlegrope",
+    "flora_yields_declared",
+    "genome_brings_tissue",
+    "genome_inject",
+    "gestation",
+    "helix_contracts",
+    "helix_trade",
+    "legacy_placement_worker",
+    "limbs_stay_built",
+    "mutation_deck",
+    "natural_match",
+    "preburn_dive",
+    "repulsor",
+    "repulsor_warns_and_clears",
+    "settings",
+    "settings_superb",
+    "touched_exposure",
+    "touched_reads_early",
+    "unfinished_budding",
+    "unfinished_malformed",
+    "unfinished_variation",
+    "visible_tells",
+    "waiting_costs_more",
+    "wrecks",
+    "zhool_haze",
+    "zhool_render",
+    "zhooliza",
+    "zhooliza_lives_here"
+   ],
+   "judge": "rm-coverage-judge-1794821839",
+   "late": [],
+   "tags": {
+    "unfixed": 25
+   },
+   "tokens": 1119788,
+   "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-16T09:45:24Z",
+  "why": "judge spend 3151034 tokens (limit 3007272, 4x the p90)"
+ },
  "history": [
   {
    "at": "2026-11-15T14:00:37Z",
@@ -622,6 +730,30 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794821256 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-16T09:37:19Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "10398442 of 4000000 spent; run rm-role-designer-1794821827 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T09:37:19Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794821827, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:45:24Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: judge spend 3151034 tokens (limit 3007272, 4x the p90); judging stopped on Contagion (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-16T09:45:33Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794821827 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -978,12 +1110,21 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-16T09:45:33Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794821827",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
