@@ -35,6 +35,10 @@ tmp = tempfile.mkdtemp(prefix="holder_resume_")
 root = os.path.join(tmp, "repo")
 projects = os.path.join(tmp, "projects")
 MOD = ML.config()["pilot_mods"][0]
+# hermetic: the temp ledger stands for a backfilled one. Unstubbed, ledger_ready ran the backfill acceptance on the REAL
+# pilot ledger, so this test went red whenever that drifted (2026-11-16: ExplosiveKnockback's ledger stage offline_build
+# vs its stage record in_game), whatever the code under test did (RIMMANDRAKE_STUB_HOLDER_RESUME_READINESS_REAL_LEDGER_LEAKED).
+MD.ledger_ready = lambda r, m: (True, "PASS 7/7 (stubbed)")
 os.makedirs(os.path.join(root, "design", "concepts", MOD, "ledger"))
 SID = "0a1b2c3d-1111-2222-3333-444455556666"
 clone1, clone2 = os.path.join(tmp, "clones", "A.det"), os.path.join(tmp, "clones", "B.det")
