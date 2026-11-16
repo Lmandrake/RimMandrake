@@ -1,21 +1,82 @@
 {
-  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green.",
+  "_doc": "The mod ledger's one config (modledger.py; spec design/specs/2026-11-15-holder-pipeline-fusion.md §3, item RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE). Every number the holder-pipeline fusion runs on lives here and nowhere else. holder_context_ceiling_tokens: his card 2026-11-15, 'Try 400k first.' (the holder rotates at its next natural boundary past it). packet_budget_tokens: the spec's 15k packet bound (tokens = bytes/4). lease_idle_minutes: a holder lease lapses after this long with no lease or holder event (a starting number, borrowed from the bridge rule). writers: which event kinds each writer class may append; a finder (JUDGE, STEWARD, OWNER) writes finding.open with the precise fix it would make (his card 2026-11-15: 'Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed.'); only a JUDGE turns a finding green. packet_line_chars: one text in the packet past this many characters is clipped with a pointer to the command that prints it whole (fulltext.clip); the ledger keeps it whole. backfill_item_words: per mod, the item-name words that alone mark a live rimflow item as that mod's at backfill (an item naming the mod in its name or opening lines needs none); a short word is listed only where it names nothing else.",
   "holder_context_ceiling_tokens": 400000,
   "packet_budget_tokens": 15000,
+  "packet_line_chars": 500,
   "lease_idle_minutes": 45,
   "proposed_fix_min_chars": 12,
   "writers": {
-    "DISPATCH": ["lease.grant", "lease.revoke", "judge.sealed", "run.start", "run.end", "stage.enter", "stage.accepted",
-                 "stage.rejected", "version.open", "spend", "note"],
-    "HOLDER": ["lease.renew", "lease.release", "session.id", "session.checkpoint", "stage.exit_claimed", "test.run",
-               "live.run", "finding.claimed_fixed", "finding.disputed", "cause.tried", "cause.refuted",
-               "cause.reopened", "question.ask", "question.withdrawn", "decision", "spend", "note"],
-    "JUDGE": ["finding.open", "finding.verified", "finding.reopened", "stage.exit_confirmed", "test.run", "live.run",
-              "note"],
-    "OWNER": ["question.answer", "decision", "bar.locked", "bar.added", "bar.eased", "bar.deferred", "finding.open",
-              "note"],
-    "STEWARD": ["decision", "bar.locked", "bar.added", "bar.eased", "bar.deferred", "stage.exit_confirmed",
-                "question.ask", "question.withdrawn", "finding.open", "version.open", "note"],
-    "BACKFILL": ["*"]
+    "DISPATCH": [
+      "lease.grant",
+      "lease.revoke",
+      "judge.sealed",
+      "run.start",
+      "run.end",
+      "stage.enter",
+      "stage.accepted",
+      "stage.rejected",
+      "version.open",
+      "spend",
+      "note"
+    ],
+    "HOLDER": [
+      "lease.renew",
+      "lease.release",
+      "session.id",
+      "session.checkpoint",
+      "stage.exit_claimed",
+      "test.run",
+      "live.run",
+      "finding.claimed_fixed",
+      "finding.disputed",
+      "cause.tried",
+      "cause.refuted",
+      "cause.reopened",
+      "question.ask",
+      "question.withdrawn",
+      "decision",
+      "spend",
+      "note"
+    ],
+    "JUDGE": [
+      "finding.open",
+      "finding.verified",
+      "finding.reopened",
+      "stage.exit_confirmed",
+      "test.run",
+      "live.run",
+      "note"
+    ],
+    "OWNER": [
+      "question.answer",
+      "decision",
+      "bar.locked",
+      "bar.added",
+      "bar.eased",
+      "bar.deferred",
+      "finding.open",
+      "note"
+    ],
+    "STEWARD": [
+      "decision",
+      "bar.locked",
+      "bar.added",
+      "bar.eased",
+      "bar.deferred",
+      "stage.exit_confirmed",
+      "question.ask",
+      "question.withdrawn",
+      "finding.open",
+      "version.open",
+      "note"
+    ],
+    "BACKFILL": [
+      "*"
+    ]
+  },
+  "backfill_item_words": {
+    "ExplosiveKnockback": [
+      "KNOCKBACK"
+    ]
   }
 }

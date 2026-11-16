@@ -319,6 +319,15 @@ check("the open finding, its fix, the refuted cause and his answer survive the c
       all(s in small for s in ("F_STILL_OPEN", "the precise open fix", "C_KEEP", "his kept answer")), small[-1500:])
 check("the packet ends by naming what it left out", "## Left out" in small and "closed findings" in
       small.split("## Left out")[1], small[-600:])
+LONG = "his long answer " + "word " * 400 + "THE_END"
+M.append(r9, MOD, "OWNER", "question.answer", "Q_LONG", body={"text": LONG}, authority={"owner_said": "long"},
+         ts=ts(7), views=False)
+lp, _ = M.packet(r9, MOD, budget=100000)
+line = [l for l in lp.split("\n") if l.startswith("- Q_LONG")][0]
+check("a long text is clipped in the packet with a pointer to the command that prints it whole",
+      "THE_END" not in line and "modledger.py show --mod %s Q_LONG" % MOD in line, line[-200:])
+check("the ledger keeps the long text whole", any(e.get("subject") == "Q_LONG" and "THE_END" in (e["body"].get("text")
+                                                                                         or "") for e in M.read(r9, MOD)))
 tiny, tinfo = M.packet(r9, MOD, budget=50)
 check("a packet whose must-keep part alone passes the budget says OVER BUDGET",
       tinfo["over_budget"] and "OVER BUDGET" in tiny, tinfo)

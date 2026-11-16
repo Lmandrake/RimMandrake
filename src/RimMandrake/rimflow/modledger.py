@@ -451,7 +451,7 @@ def reduce(events):
     by, current = leases(events)
     st = {"reducer": REDUCER_VERSION, "version": None, "stage": None, "exit_claims": [], "bars": {}, "findings": {},
           "causes": {}, "questions": {}, "answers": {}, "decisions": {}, "checkpoint": None, "session": None,
-          "lease": None, "spend_usd": 0.0, "tests": [], "notes": [], "superseded": superseded, "fenced": [],
+          "lease": None, "spend_usd": 0.0, "spend_tokens": 0, "tests": [], "notes": [], "superseded": superseded, "fenced": [],
           "events": len(events), "shards": sorted({e.get("_shard") or e.get("writer") for e in events})}
     sup = set(superseded)
     ceiling = config()["holder_context_ceiling_tokens"]
@@ -522,7 +522,8 @@ def reduce(events):
             st["questions"][s]["status"] = "withdrawn"
         elif k == "decision":
             st["decisions"][s] = {"text": _text(ev), "by": w, "ts": when, "authority": ev.get("authority")}
-            if w == "OWNER":
+            auth = ev.get("authority") or {}
+            if w == "OWNER" or auth.get("owner_said") or auth.get("by_card"):
                 st["answers"]["decision:" + s] = {"question": None, "answer": _text(ev), "ts": when,
                                                   "authority": ev.get("authority")}
         elif k == "session.id":
@@ -534,8 +535,10 @@ def reduce(events):
                                 "ruled_out": b.get("ruled_out")}
         elif k == "spend":
             usd = b.get("usd")
-            if isinstance(usd, (int, float)):
+            if isinstance(usd, (int, float)) and not isinstance(usd, bool):
                 st["spend_usd"] = round(st["spend_usd"] + usd, 4)
+            if isinstance(b.get("tokens"), int) and not isinstance(b.get("tokens"), bool):
+                st["spend_tokens"] += b["tokens"]
         elif k == "note":
             st["notes"].append({"ts": when, "by": w, "subject": s, "text": _text(ev)})
     if current:
@@ -546,8 +549,17 @@ def reduce(events):
 
 # ---- packet ---------------------------------------------------------------------------------------------------------
 
-def _one(text):
-    return " ".join(str(text or "").split())
+def _one(text, where=None):
+    """One line. With `where` (the command that prints the whole event), a text past the configured packet_line_chars
+    is clipped with fulltext.clip, which says it is cut and where the rest is; the ledger keeps it whole."""
+    t = " ".join(str(text or "").split())
+    if where:
+        try:
+            from . import fulltext
+        except ImportError:
+            import fulltext  # noqa: E402
+        t = fulltext.clip(t, config()["packet_line_chars"], where)
+    return t
 
 
 def packet_from(mod, events, budget=None):
@@ -557,6 +569,10 @@ def packet_from(mod, events, budget=None):
     what it left out."""
     budget = budget or config()["packet_budget_tokens"]
     st = reduce(events)
+
+    def cl(text, subject):
+        return _one(text, "modledger.py show --mod %s %s" % (mod, subject))
+
     keep = ["# %s — mod ledger packet" % mod,
             "version %s · stage %s · %d events in %d shards · reducer %d"
             % (st["version"] or "unknown", st["stage"] if st["stage"] is not None else "unknown", st["events"],
@@ -573,58 +589,58 @@ def packet_from(mod, events, budget=None):
                                                                       S["ceiling"], " — ROTATE DUE" if
                                                                       S["rotate_due"] else ""))
     for c in st["exit_claims"]:
-        keep.append("exit claimed by %s at %s: %s%s" % (c["by"], c["ts"], _one(c["text"]),
+        keep.append("exit claimed by %s at %s: %s%s" % (c["by"], c["ts"], cl(c["text"], "stage"),
                                                         " (confirmed by %s)" % c["confirmed_by"]
                                                         if c.get("confirmed_by") else ""))
     if st["checkpoint"]:
         C = st["checkpoint"]
-        keep += ["", "## Last checkpoint (%s, %s)" % (C["by"], C["ts"]), "- done: " + _one(C["done"]),
-                 "- next: " + _one(C["next"]), "- ruled out: " + _one(C["ruled_out"])]
+        keep += ["", "## Last checkpoint (%s, %s)" % (C["by"], C["ts"]), "- done: " + cl(C["done"], "checkpoint"),
+                 "- next: " + cl(C["next"], "checkpoint"), "- ruled out: " + cl(C["ruled_out"], "checkpoint")]
     opened = sorted(((k, f) for k, f in st["findings"].items() if f["status"] != "verified"), key=lambda t: t[1]["ts"])
     keep += ["", "## Open findings (%d)" % len(opened)]
     for k, f in opened:
-        keep.append("- %s [%s] by %s, %s: %s" % (k, f["status"], f["by"], f["ts"], _one(f["text"])))
-        keep.append("  proposed fix: " + _one(f["proposed_fix"]))
+        keep.append("- %s [%s] by %s, %s: %s" % (k, f["status"], f["by"], f["ts"], cl(f["text"], k)))
+        keep.append("  proposed fix: " + cl(f["proposed_fix"], k))
         if f.get("claim"):
-            keep.append("  holder: " + _one(f["claim"]))
+            keep.append("  holder: " + cl(f["claim"], k))
     refuted = sorted(((k, c) for k, c in st["causes"].items() if c["status"] == "refuted"), key=lambda t: t[1]["ts"])
     keep += ["", "## Causes refuted (%d) — do not chase these again" % len(refuted)]
     for k, c in refuted:
         on = ", ".join(x for x in [("on %s" % c["code_sha"]) if c.get("code_sha") else "",
                                     ("depends on %s" % ", ".join(c["depends_on"])) if c.get("depends_on") else ""] if x)
-        keep.append("- %s: %s%s" % (k, _one(c["text"]), (" (%s)" % on) if on else ""))
+        keep.append("- %s: %s%s" % (k, cl(c["text"], k), (" (%s)" % on) if on else ""))
     keep += ["", "## His answers (%d)" % len(st["answers"])]
     for k, a in sorted(st["answers"].items(), key=lambda t: t[1]["ts"]):
-        keep.append("- %s%s: %s" % (k, (" (Q: %s)" % _one(a["question"])) if a.get("question") else "",
-                                    _one(a["answer"])))
+        keep.append("- %s%s: %s" % (k, (" (Q: %s)" % cl(a["question"], k)) if a.get("question") else "",
+                                    cl(a["answer"], k)))
     openq = [(k, q) for k, q in st["questions"].items() if q.get("status") == "open"]
     keep += ["", "## Open questions (%d)" % len(openq)]
     for k, q in openq:
-        keep.append("- %s: %s (obvious answer: %s; against it: %s)" % (k, _one(q["text"]), _one(q.get("obvious")),
-                                                                      _one(q.get("against"))))
+        keep.append("- %s: %s (obvious answer: %s; against it: %s)" % (k, cl(q["text"], k), cl(q.get("obvious"), k),
+                                                                      cl(q.get("against"), k)))
     keep += ["", "## Bars (%d)" % len(st["bars"])]
     for k, b in sorted(st["bars"].items()):
         keep.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
-                                               (": " + _one(b["text"])) if b.get("text") else ""))
+                                               (": " + cl(b["text"], k)) if b.get("text") else ""))
     keep.append("")
-    keep.append("spend recorded: USD %.2f" % st["spend_usd"])
+    keep.append("spend recorded: USD %.2f, %d tokens" % (st["spend_usd"], st["spend_tokens"]))
     # droppable material: (ts, group, line)
     drop = []
     for k, f in st["findings"].items():
         if f["status"] == "verified":
             drop.append((f["ts"], "closed findings", "- %s [verified] by %s: %s — fix was: %s"
-                         % (k, f["by"], _one(f["text"]), _one(f["proposed_fix"]))))
+                         % (k, f["by"], cl(f["text"], k), cl(f["proposed_fix"], k))))
     for k, d in st["decisions"].items():
         if d["by"] != "OWNER":
-            drop.append((d["ts"], "decisions", "- %s (%s, %s): %s" % (k, d["by"], d["ts"], _one(d["text"]))))
+            drop.append((d["ts"], "decisions", "- %s (%s, %s): %s" % (k, d["by"], d["ts"], cl(d["text"], k))))
     for k, c in st["causes"].items():
         if c["status"] == "tried":
-            drop.append((c["ts"], "causes tried", "- %s: %s" % (k, _one(c["text"]))))
+            drop.append((c["ts"], "causes tried", "- %s: %s" % (k, cl(c["text"], k))))
     for t in st["tests"]:
         drop.append((t["ts"], "tests", "- %s %s %s: %s %s" % (t["ts"], t["kind"], t["subject"], t["result"],
-                                                              _one(t["text"]))))
+                                                              cl(t["text"], t["subject"]))))
     for n in st["notes"]:
-        drop.append((n["ts"], "notes", "- %s %s %s: %s" % (n["ts"], n["by"], n["subject"], _one(n["text"]))))
+        drop.append((n["ts"], "notes", "- %s %s %s: %s" % (n["ts"], n["by"], n["subject"], cl(n["text"], n["subject"]))))
     drop.sort(key=lambda t: (t[0] or "", t[1], t[2]))
     groups = ("decisions", "closed findings", "causes tried", "tests", "notes")
 
