@@ -10,6 +10,11 @@ The owner, 2026-11-15 ~10:03 PM PST: *"We should also think of a way to structur
 arbitrary in size and pedantic detail. Are there standards in what to put here that will be useful and how to structure
 it for rapid search?"*
 
+And, relayed by the Conductor the same evening (binding on this standard), ~10:12 PM PST: *"Also we must resist
+unlimited provenance. If a wrong number is found fix it, don't document every aspect of its wrongness unless it matters
+to understanding. There must also be a way to drain items if they are shown to be useless or wrong."* ~10:16 PM PST:
+*"Delete on sight. I really don't think that's going to be abused to pass a judge. But we can monitor."*
+
 Tags: `[measured]` (how is said) · `[guess ~N%]` · `[read]` a source read on its page this run · `[snippet]` a source
 seen only as a search result.
 
@@ -32,8 +37,11 @@ do not write it. Everything below is that test made checkable.
 4. **Use the subject that exists.** Subjects are `bar:<bar id>`, `finding:<NAME>`, `cause:<slug>`, `trap:<slug>`,
    `q:<slug>`, or a singleton (`stage`, `version`, `session`). Before minting one, `modledger find` it; the append
    refuses a new subject that matches a live one unless you say why it differs.
-5. **Change by a new entry, never by editing.** A later event moves a subject's status or supersedes an earlier event;
-   the shard only grows.
+5. **Wrong or useless: delete it on sight. Overtaken: a new entry.** Any writer may delete a wrong or useless entry
+   (anyone's) in its own commit; git history is the archive, and a monitor lists deletions on the Conductor's digest
+   (no gate). A wrong value is fixed by writing the right one, with at most one sentence of why, and only when the why
+   matters to understanding. Something that *was* true and no longer is (a cause refuted, a fix reopened, a decision
+   reversed) is a later event, because the change itself is what the next holder needs.
 6. **Every kind has its required fields** (table §2.2). `finding.open` needs `class`, `bars`, `text`,
    `proposed_fix`, `accept` (a runnable command and expected result, or `none, <reason>`). A fix claim or verdict needs
    `code_sha`. A live run that did not happen is `live.run` with `result: UNRUN` and its command.
@@ -61,7 +69,7 @@ Each source, the one idea taken, and what is deliberately not taken.
 
 | standard | source | the idea we take | what we do not take |
 |---|---|---|---|
-| Architecture Decision Records (Nygard, 2011) | https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions `[read]` | Supersede, never delete: *"If a decision is reversed, we will keep the old one around, but mark it as superseded. (It's still relevant to know that it was the decision, but is no longer the decision.)"* And small beats complete: *"Large documents are never kept up to date. Small, modular documents have at least a chance at being updated. Nobody ever reads large documents, either."* | The one-to-two-page essay form (*"full sentences organized into paragraphs"*): our unit is one fact, a paragraph at most; a decision's reasoning, when long, lives in a spec the entry cites. |
+| Architecture Decision Records (Nygard, 2011) | https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions `[read]` | Supersede what was overtaken: *"If a decision is reversed, we will keep the old one around, but mark it as superseded. (It's still relevant to know that it was the decision, but is no longer the decision.)"* And small beats complete: *"Large documents are never kept up to date. Small, modular documents have at least a chance at being updated. Nobody ever reads large documents, either."* | The one-to-two-page essay form (*"full sentences organized into paragraphs"*): our unit is one fact, a paragraph at most. And keeping *wrong* entries: his "Delete on sight." removes them, git keeps them. |
 | MADR (Markdown Any Decision Records) | https://adr.github.io/madr/ `[read: the page's own decision list]` | Its record carries **considered options** and a **confirmation** heading (how you will know the decision holds): our `finding.open` carries `accept`, the command that confirms the fix, and `cause.refuted` carries what refuted it. | Pros-and-cons tables per entry. |
 | CloudEvents 1.0 envelope | https://raw.githubusercontent.com/cloudevents/spec/main/cloudevents/spec.md `[read]` | A small fixed envelope (`id`, `source`, `type`, optional `subject`) around a free body, and *"Consumers MAY assume that Events with identical `source` and `id` are duplicates"*: our `writer`+`key` idempotency, and our `subject` as the routing key the index is built on. | Transport bindings, `datacontenttype`, `dataschema`. |
 | OpenTelemetry semantic conventions | https://opentelemetry.io/docs/specs/semconv/general/naming/ `[read]` | A **registry** of names, reused before new ones are minted, and *"Attributes, metrics, and events SHOULD NOT be removed … When the convention is renamed or no longer recommended, it SHOULD be deprecated."*: our closed kind, facet and bar sets, and subjects that are superseded, never renamed. | Dotted attribute namespaces per field; we have eight facets, not a taxonomy. |
@@ -71,7 +79,7 @@ Each source, the one idea taken, and what is deliberately not taken.
 | Blameless postmortems (Google SRE book, ch. 15) | https://sre.google/sre-book/postmortem-culture/ `[read]` | Write one only on a **trigger**, not by habit (*"we are deliberate in choosing when to write one"*), and focus *"on identifying the contributing causes"*: our "would a holder act differently" test, and `cause.*` entries about mechanisms, never about which run erred. Action items with an owner and tracking: our `proposed_fix` goes to the holder. | The full document (timeline, impact, lessons): timelines are what the shards already are. |
 | Long-running agent harness (Anthropic, Nov 2025) | https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents `[read]` | A progress file plus a feature list each session reads first; they chose JSON because *"the model is less likely to inappropriately change or overwrite JSON files compared to Markdown files"*, and agents may only flip a `passes` field. Our typed JSON events, where the only way to change state is a new typed event. | Hand-edited progress text (`claude-progress.txt`): our packet is generated. |
 | Context engineering (Anthropic, Sep 2025) | https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents `[read]` | Structured notes outside the window, and *"the minimal set of information that fully outlines your expected behavior. (Note that minimal does not necessarily mean short …)"*: the packet's bound is a budget of current facts, not a truncation of history. | — |
-| Lab-notebook / ALCOA data integrity | search results only, e.g. https://www.research.colostate.edu/integrity-security-compliance/quality-assurance/good-documentation-practice-gdp `[snippet]` | Attributable, contemporaneous, never obscured: changes are recorded *"without obscuring the original"* (secondary source). Our writer-per-shard and append-only. | Signatures; no primary GLP text was read. |
+| Lab-notebook / ALCOA data integrity | search results only, e.g. https://www.research.colostate.edu/integrity-security-compliance/quality-assurance/good-documentation-practice-gdp `[snippet]` | Attributable and contemporaneous: our writer-per-shard and system timestamps. | "Never obscure the original" (*"without obscuring the original"*, secondary source) inside the working file: a wrong entry is deleted and git is the audit trail; no primary GLP text was read. |
 | W3C PROV-O | https://www.w3.org/TR/prov-o/ `[snippet; not read on the page]` | Entity / activity / agent, `wasDerivedFrom`: our `item:` and `ledger:` refs on mined events (derived from that ticket) and `writer`/`run` (the agent and activity). | RDF, qualified relations. |
 | SQLite FTS5 | https://sqlite.org/fts5.html `[read: contents and the external-content section headings]` | An external-content FTS table indexes text kept elsewhere, and the `rebuild` command regenerates it: our index is built from the shards and thrown away. | Triggers to keep it in sync: we rebuild whole when the shard offsets change. |
 
@@ -149,7 +157,20 @@ the checks fire, not their recall.
 
 ---
 
-## 3. "Only grows" and "not arbitrary in size", both
+## 3. Not arbitrary in size: what grows, what is drained
+
+His 10:16 PM ruling replaces the fusion spec's "nothing is ever edited or deleted" for the mod ledger: the mod's
+*state* only moves forward; the *file* need not keep dead weight. Two kinds of change, two mechanisms:
+
+- **Overtaken** (it was true or believed, then something happened): a new typed event (`cause.refuted`,
+  `finding.reopened`, `decision` with `supersedes`). The change is information.
+- **Wrong or useless** (a mistyped number, a duplicate, an entry that fails the test on the rule sheet's first line, a
+  miner's misreading): delete the line, and if a right value exists, append it. No retraction event, no essay. Git
+  history keeps the deleted line for anyone who must know.
+- **Monitor, not gate** (his "But we can monitor"): a program reads git for line deletions in `design/concepts/*/ledger/`
+  and counts them per mod and per writer; every deletion of another writer's entry (above all a holder deleting a JUDGE
+  finding or an OWNER answer, and any deletion of a finding that was open) is listed on the Conductor's daily digest.
+  No alarm, no refusal.
 
 - **Growth follows facts, not activity.** A run that changes nothing writes nothing (status-without-change is refused).
   The worked example: 10 tickets and their 41 ledger events became 23 entries `[measured]`; 14 of the 41 were
@@ -165,8 +186,8 @@ the checks fire, not their recall.
   the pipeline drives down, not on how long the mod has lived.
 - **Snapshots are views.** At every `version.open` (and on demand), `modledger views` writes `views/closed_<version>.md`:
   one line per subject closed in that version, its final status and sha. It is a generated file checked by the views
-  lint like the others; nothing is deleted, and `modledger show <subject>` still returns the full trail.
-- **Supersession keeps it current.** A refuted cause whose `depends_on` paths changed after its `code_sha` shows as
+  lint like the others; it removes nothing, and `modledger show <subject>` still returns the subject's trail.
+- **Draining keeps it lean, supersession keeps it current.** Wrong and useless entries leave the file (above); a refuted cause whose `depends_on` paths changed after its `code_sha` shows as
   *stale* in the packet (not as refuted), so a growing history never preserves a stale verdict as current
   (fusion spec §3.1).
 
@@ -309,6 +330,13 @@ In `src/RimMandrake/rimflow/modledger.py` and `modledger.json`:
 11. **Views**: `views/closed_<version>.md` written at `version.open`.
 12. **The lint**: rerun the append checks over new lines since `origin/main`; selftest cases for each refusal (the five
     planted entries of `worked_example.py` are a ready start).
+13. **Deletion on sight** (his ~10:16 PM ruling, the Conductor's addendum): `NOT_APPEND` for mod-ledger shards accepts
+    a commit that only deletes whole lines (any writer, anyone's lines); it still refuses changed lines in place
+    (a correction is delete + append), a hand-edited generated view, and a stale-lease HOLDER write. The reducer and
+    views must tolerate a `supersedes` or `finding` reference to a deleted id (treat it as absent, never crash). A
+    `modledger deletions --since <date>` monitor counts deletions per mod and writer from git and lists cross-writer
+    deletions and deleted open findings for the Conductor's daily digest. Tests first: a deletion commit by any writer
+    passes the lint; the monitor lists a holder deleting a JUDGE finding.
 
 In `design/specs/2026-11-15-holder-pipeline-fusion.md`:
 
@@ -318,3 +346,6 @@ In `design/specs/2026-11-15-holder-pipeline-fusion.md`:
 3. §3.3 "The packet": add the cursor line, the stale-cause rule and the traps section.
 4. §3.2 / the backfill brief: the miner's rule (rule sheet line 10) and the facts-not-history count, with this spec's
    worked example as the backfill judge's reference.
+5. §3.1 "Monotonic": the sentence "nothing is ever edited or deleted" is no longer true for the mod ledger (his
+   ~10:16 PM "Delete on sight."); replace it with rule sheet line 5 and §3 above, and narrow "Publish refuses a shard
+   that is not a strict extension" to "… that changes a line in place".
