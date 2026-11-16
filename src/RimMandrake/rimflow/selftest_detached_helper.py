@@ -426,7 +426,7 @@ def _test_return():
     unit = argv[argv.index("--unit") + 1]
     check(len(posts) == 3 and posts[0].endswith("finish --unit " + unit) and "wrapup.py" in posts[1]
           and posts[2].startswith("ExecStopPost=-/usr/bin/systemd-run ") and "--no-block" in posts[2]
-          and posts[2].endswith("detached_helper.py return --unit " + unit),
+          and "detached_helper.py" in posts[2] and posts[2].endswith(" -- return --unit " + unit),
           "argv: the unit's third and last ExecStopPost starts the return step, detached from TimeoutStopSec=30 (%s)" % posts[-1][-90:])
 
 

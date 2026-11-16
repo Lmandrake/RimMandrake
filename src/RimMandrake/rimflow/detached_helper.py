@@ -376,6 +376,37 @@ def stop_scope(seat, unit, runner=subprocess.run):
     return "scope %s: %s; now %s" % (scope, "; ".join(said), RL.unit_state(scope, runner=runner))
 
 
+# A stop step's script is resolved when the step runs, never fixed to the launcher's clone
+# (RIMMANDRAKE_RUN_FINISH_WITHOUT_LAUNCHER_CLONE_HOLDER_LOST_RESULT: Explosive Knockback's first holder run's finish
+# named the clone pilot-launch ran in, deleted by its end: "can't open file", finish never ran, its result read
+# "unknown"). The resolver runs the first candidate that exists, with the step's arguments; none left fails naming
+# them. No '$' or '%' in it: systemd expands both in an Exec line. No single quote either (shlex.join quotes it whole).
+STOP_RESOLVER_MARK = "detached_helper stop resolver"
+_RESOLVER = ("import os,sys;a=sys.argv[1:];i=a.index(chr(45)*2);c=[x for x in a[:i] if os.path.isfile(x)];"
+             "c or sys.exit(chr(10).join([\"no stop-step script among:\"]+a[:i]));"
+             "os.execv(sys.executable,[sys.executable,c[0]]+a[i+1:])#" + STOP_RESOLVER_MARK)
+
+
+def stop_resolver(candidates, args):
+    """-> argv: python runs the first of `candidates` that exists at stop time with `args`."""
+    return ["/usr/bin/python3", "-c", _RESOLVER] + list(dict.fromkeys(candidates)) + ["--"] + list(args)
+
+
+def stop_candidates(rec, name, run_clone_last=False):
+    """-> the paths a stop step's script `name` (in src/RimMandrake/rimflow) may run from: the run's own clone (it
+    lives until the return, the last step), this launcher's, then the seat clones (wrapup.seat_clones). The return
+    deletes the run's clone, so it puts that clone last."""
+    rel = os.path.join("src", "RimMandrake", "rimflow", name)
+    own = [os.path.join(rec["clone"], rel)] if rec.get("clone") else []
+    try:
+        import wrapup
+        seats = [os.path.join(c, rel) for c in wrapup.seat_clones()]
+    except Exception:       # noqa: BLE001  the seat clones are a fallback only
+        seats = []
+    mine = [os.path.join(HERE, name)]
+    return (mine + seats + own) if run_clone_last else (own + mine + seats)
+
+
 def return_argv(rec):
     """The unit's last ExecStopPost: start the return step in a unit of its own and let go (--no-block). ExecStopPost runs
     under the run's TimeoutStopSec=30, and a bundle of a 3.6 GB clone, a landing and a ./sync take longer than that."""
@@ -387,7 +418,8 @@ def return_argv(rec):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     return ["/usr/bin/systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", rec["unit"] + "-return",
             "-p", "RuntimeMaxSec=1800", "-p", "StandardOutput=file:" + rec["out"] + ".return", "-p", "StandardError=inherit",
-            *env, "/usr/bin/python3", me, "return", "--unit", rec["unit"]]
+            *env, *stop_resolver(stop_candidates(rec, os.path.basename(me), run_clone_last=True),
+                                 ["return", "--unit", rec["unit"]])]
 
 
 def owns_clone(rec):
@@ -635,10 +667,10 @@ def launch_argv(rec, msg, claude):
     bound = int(rec["max_s"]) + GRACE_S if rec.get("max_s") else None     # None: unbounded
     path = unit_path(os.environ.get("PATH"), claude)
     soc = unit_interop()
-    finish = "/usr/bin/python3 %s finish --unit %s" % (shlex.quote(os.path.abspath(__file__)), unit)
-    wrapup = "-+/usr/bin/python3 %s unit --unit %s --seat %s --clone %s" % (
-        shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")), shlex.quote(unit),
-        shlex.quote(seat), shlex.quote(clone))
+    finish = shlex.join(stop_resolver(stop_candidates(rec, os.path.basename(os.path.abspath(__file__))),
+                                      ["finish", "--unit", unit]))
+    wrapup = "-+" + shlex.join(stop_resolver(stop_candidates(rec, "wrapup.py"),
+                                             ["unit", "--unit", unit, "--seat", seat, "--clone", clone]))
     back = "-" + shlex.join(return_argv(rec))
     cmd = [bounded, "-p", msg, "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
