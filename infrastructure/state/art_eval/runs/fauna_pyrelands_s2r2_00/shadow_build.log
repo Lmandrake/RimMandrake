@@ -1,0 +1,27 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_pyrelands_s2r2_00",
+ "html": "Transient/biome_ffar/art_eval_shadow_fauna_pyrelands_s2r2_00_sheet_2026-11-15.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_fauna_pyrelands_s2r2_00_sheet_2026-11-15.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_fauna_pyrelands_s2r2_00_sheet_2026-11-15.snapshot.json",
+ "snapshotId": "a14c08d93f971f1c",
+ "census_rows": 1,
+ "rows": 1,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 2,
+ "images": 911
+}
+
+--- stderr ---
+/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REDRAW_FURNACE_BEAST_BIGGER_ART_CARD_PROMISED_IT.det/src/RimMandrake/Utils/art/art_sheet.py:2565: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_FurnaceBeast: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/furnace_beast_giant_art/s2r2_fixed/FurnaceBeast_Giant_south.png', '/mnt/d/ClaudeWork/rimmandrake/furnace_beast_giant_art/s2r2_fixed/FurnaceBeast_Giant_east.png', '/mnt/d/ClaudeWork/rimmandrake/furnace_beast_giant_art/s2r2_fixed/FurnaceBeast_Giant_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

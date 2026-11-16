@@ -1,0 +1,20 @@
+{
+ "sheet": "art_eval_shadow_fauna_pyrelands_s2r2_00_sheet_2026-11-15.html",
+ "looked_by": "judge:UNMEASURED+claude-opus-5-5",
+ "when": "2026-11-15T17:38:22-0800",
+ "caught": "pipeline decided 1 ACCEPT; nothing dropped",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RM_FurnaceBeast": {
+   "fp": "ff386233695e317c",
+   "verdict": "OK",
+   "note": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT strong_accept"
+  }
+ },
+ "dropped": []
+}

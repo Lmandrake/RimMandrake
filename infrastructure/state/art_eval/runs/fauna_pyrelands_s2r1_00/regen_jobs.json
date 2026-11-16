@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_FurnaceBeast_s2r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast",
+  "prompt": "A realistic, painterly vanilla RimWorld-style sprite of the furnace-beast, a colossal migratory megafauna, the largest animal on its world, that reads as a huge mineral mass on legs, like a walking stone kiln the size of a house, on a transparent background with a clean dark outline. Its hide is made of separate, weighty stone-like mineral plates, not continuous skin, banded in visible horizontal strata of differing mineral colours across the whole body: cool grey, tan and ochre stone on the plate faces. The surfaces are painted in the soft, hand-painted manner of vanilla RimWorld sprites: broad shaded plate forms with flat tonal blocks, texture used sparingly on a few plates only, and softly rounded plate edges. The cracks and seams between the plates glow a warm ember orange-yellow like coals showing through gaps in a stove: narrow lines with a gentle inner light, bright yellow-orange at a few joints (shoulder, flank, haunch) and dimmer deep red elsewhere, so the beast reads as hot inside at a glance while the stone plates carry the image. The only strong orange on the body is this heat inside the plate joints; the plates themselves stay cool stone, and the glow sits set back from the outer silhouette, fully covered by the dark outline at the edge. The underbelly is covered in smaller interlocking stone plates with glowing seams and visible strata, so every part of the body shows stone plate. The body is enormous, broad and deep-chested, much heavier than any grazing animal. There are exactly four legs, one at each corner of the body: very thick, straight, columnar stone pillars like the legs of the very largest land giants, short relative to the depth of the body, with broad flat feet, plated, with heated joints matching the body. The body plan, proportions and palette stay consistent throughout, with the tail and haunches built from the same heavy plates. The head is an animal head, small relative to the huge body and carried low: a long, blunt, wide muzzle built from banded stone plates like a big herbivore's head, a smooth low flat brow plate, small, dull, dark eyes set wide apart on the sides of the head, and a closed jaw drawn as one plain straight seam of stone, with the calm, blank expression of a grazing animal. It is one full-height animal with a long body, standing tall on straight pillar legs with a high back and a dorsal ridge of plates that peaks above the shoulder. The crown plate, the dorsal slab tops, the ridge crest, the tail tip and every outer plate edge end in clean, crisp stone edges against fully transparent background, anti-aliased in the stone's own grey, tan and ochre tones, with opaque pixels right up to the dark outline and nothing floating outside it. The tail hangs close to the body and ends well inside the frame. The plates are cold, hard rock: chipped and fractured edges, granular mineral grain and a dusting of grey ash, never wood grain or bark. The animal is drawn at one fixed scale with a clear transparent margin of at least one tenth of the canvas width on every side, the full tail tip and every foot complete inside the canvas.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, ALPHA_HALO, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_s2r1_00",
+  "drawsize": 7.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+ }
+]

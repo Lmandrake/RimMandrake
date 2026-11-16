@@ -1,0 +1,45 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_pyrelands_s2r2_00",
+ "built": "2026-11-15T17:38:13-0800",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_pyrelands_s2r2_00.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "live ModsConfig.xml: 316 active",
+ "noncanonOptions": {},
+ "rows": {
+  "RM_FurnaceBeast": {
+   "columns": {
+    "A": {
+     "east": "0aa7f3884e804fcc8bd5362932cb2cb85bf04ecd6c1f76b5df207872fbe7e80d",
+     "north": "433238cccc2c6b575f73533d254b9354f19832ea2aacd9f712fcd5b564dadede",
+     "south": "af08268eccd96c18b19893652164e5a06c80da64775e3b06b448fc9ce198b13a"
+    },
+    "B": {
+     "east": "86a7bb6060532c603caf23819f5cfde873ab327ad28a93060c72302f3f4bc802",
+     "north": "517d9fa881ca2421bf3cbf91f158f34eb68576934d54339a7eaf5f2f4498cdf6",
+     "south": "1631fc0e6811e40c0f00aac23dafbc59e7bf297d177feb606f89d2655a86839f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+    "B": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render arteval_RM_FurnaceBeast_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "furnacebeast"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_pyrelands_s2r2_00_sheet_2026-11-15",
+ "snapshotId": "a14c08d93f971f1c"
+}

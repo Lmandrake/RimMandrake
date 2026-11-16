@@ -1,0 +1,34 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_FurnaceBeast": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT strong_accept",
+   "context": "judged candidate s2r2 (image sha af08268ecc); STYLE_CARTOON: The head is a simple blunt block with two small round eyes and a straight horizontal mouth line. Next to the detailed hide it reads slightly; F_INCONSISTENT: North shows a long segmented conical tail hanging down the centre. In east the tail is only a short, ambiguous drooping plate at the lower r"
+  }
+ }
+}
