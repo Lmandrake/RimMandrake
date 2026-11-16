@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 9:07 AM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:17 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 9:07 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:17 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -350,4 +350,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Blind cycle 2 of this visit (3 in all).
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 4:14 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 4:14 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 1:17 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: delegated: steward road back after blind cycle 3: its 4 Problems were FIXED by the judge (96941bfa43) and the 5th (pit census pin) by the steward (d0d33973116a), so a judge who did not make the fixes must judge them; certificate rerun OK on 55 bars
+- Checks passed: order, by, version, hold, fourth_cycle, judge_certificate.
+- Steward confirms: read cycle_3/SUMMARY.md, faults.json, tests_edited.json and the 96941bfa43 diff (135 lines added, 0 removed: no weakened assertion). Sort: 4 FIXED Problems -> new judge owed; census Problem REAL MISS (stale pin after GSS b560ff91e8 removed ripple) re-pinned as a stronger ABSENT law, closed at d0d33973116a; certificate refusals RECORD GAP (stale ran_on_this_build), redone by certificate --run (7 reruns, OK on 55 bars); no CRITERION FLAW. Verdict: exit not met, open cycle 4 (visit 2's third).
+- Blind cycle 3 of this visit (4 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 9:07 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 9:07 AM PST).
 - Record: `version/stage_record.json`.

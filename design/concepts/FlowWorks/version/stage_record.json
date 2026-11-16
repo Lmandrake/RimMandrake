@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T09:07:49-08:00",
+  "since": "2026-11-16T13:17:49-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 2,
-    "total": 3
+    "visit": 3,
+    "total": 4
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -102,6 +102,25 @@
       "confirmed": {
         "steward_confirms": "read cycle_2/SUMMARY.md, faults.json, tests_edited.json and the 5 test diffs a395d97a12..4b33b22f00; 5 Problems FIXED and closed, 4 Polish filed (Polish list); certificate --run OK; verdict: new blind judge owed, cycle 3",
         "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: blind cycle 2 FIXED all 5 Problems at 4b33b22f00 (problems_open 0, 5 offline bars green), so a new blind judge is owed to judge the fixes; judge-the-judge: the 11 certificate refusals were all RECORD GAP (ran_on_this_build stale after the fixes changed the tests), redone for real by certificate --run, now OK on 55 bars; tests_edited.json diffs only add or tighten (3 replaced lines are stricter supersets); no CRITERION FLAW, no REAL MISS"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T13:17:49-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back after blind cycle 3: its 4 Problems were FIXED by the judge (96941bfa43) and the 5th (pit census pin) by the steward (d0d33973116a), so a judge who did not make the fixes must judge them; certificate rerun OK on 55 bars",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-cycle-three-1794861680",
+      "confirmed": {
+        "steward_confirms": "read cycle_3/SUMMARY.md, faults.json, tests_edited.json and the 96941bfa43 diff (135 lines added, 0 removed: no weakened assertion). Sort: 4 FIXED Problems -> new judge owed; census Problem REAL MISS (stale pin after GSS b560ff91e8 removed ripple) re-pinned as a stronger ABSENT law, closed at d0d33973116a; certificate refusals RECORD GAP (stale ran_on_this_build), redone by certificate --run (7 reruns, OK on 55 bars); no CRITERION FLAW. Verdict: exit not met, open cycle 4 (visit 2's third)."
       },
       "checks_passed": [
         "order",

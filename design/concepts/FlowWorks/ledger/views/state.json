@@ -1,13 +1,13 @@
 {
  "_view": {
-  "body_sha256": "8122ba2d91971806da86577061d8a1e4692dd4809e65341a6e3aa9625db4ca19",
+  "body_sha256": "8779e5a062c16d053c4f1c921d6441201b2f9fdcf44eb0e2f975cda6a98855c9",
   "reducer": 1,
   "shards": {
    "BACKFILL": 881268,
    "DISPATCH": 6767,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
-   "HOLDER.run-1794861652": 1928,
+   "HOLDER.run-1794861652": 2822,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "STEWARD": 2597
@@ -1208,11 +1208,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794848129",
-   "done": "Steward read blind cycle 2: 5 Problems fixed and closed at 4b33b22f00, 4 Polish filed; 11 certificate refusals were RECORD GAP (stale ran_on_this_build), redone by maturation.py certificate --run (8 reruns, OK on 55 bars); test edits only add or tighten; advanced to blind cycle 3",
-   "next": "Run blind cycle 3 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the fixes judges them",
-   "ruled_out": "No CRITERION FLAW and no REAL MISS in cycle 2: every not-met reason was the fixes themselves (new judge owed) or stale run stamps",
-   "ts": "2026-11-16T17:08:01Z"
+   "by": "HOLDER.run-1794861652",
+   "done": "Steward read blind cycle 3: 4 Problems FIXED by the judge at 96941bfa43 (additions only); census Problem re-pinned as an ABSENT ripple law and closed at d0d33973116a; certificate --run redone (7 reruns, OK on 55 bars) at d5cdc5ffa3; advanced to blind cycle 4 (visit 2, third)",
+   "next": "Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them",
+   "ruled_out": "No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect",
+   "ts": "2026-11-16T21:17:55Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1672,7 +1672,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1287,
+  "events": 1288,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7798,7 +7798,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T21:15:26Z",
+   "last": "2026-11-16T21:17:55Z",
    "lease": "run-1794861652",
    "released": false,
    "token": 4

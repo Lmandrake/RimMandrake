@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6767,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":1928,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=82084c91281e5d61a3b11dfc12b47d28b9b62595d4f762a70ffc384f1ab83718 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":6767,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=0fee4ea88d5de4fe657441ad18e703dce0863340fd795fd00a1ccecfcad7c0e3 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1287 events in 8 shards · reducer 1
-holder lease run-1794861652, token 4, last active 2026-11-16T21:15:26Z
+version 0.1.0 · stage blind_challenge · 1288 events in 8 shards · reducer 1
+holder lease run-1794861652, token 4, last active 2026-11-16T21:17:55Z
 holder session 014e863d-f9f9-45c0-af41-7f39afdcf454, context 118003 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794848129, 2026-11-16T17:08:01Z)
-- done: Steward read blind cycle 2: 5 Problems fixed and closed at 4b33b22f00, 4 Polish filed; 11 certificate refusals were RECORD GAP (stale ran_on_this_build), redone by maturation.py certificate --run (8 reruns, OK on 55 bars); test edits only add or tighten; advanced to blind cycle 3
-- next: Run blind cycle 3 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the fixes judges them
-- ruled out: No CRITERION FLAW and no REAL MISS in cycle 2: every not-met reason was the fixes themselves (new judge owed) or stale run stamps
+## Last checkpoint (HOLDER.run-1794861652, 2026-11-16T21:17:55Z)
+- done: Steward read blind cycle 3: 4 Problems FIXED by the judge at 96941bfa43 (additions only); census Problem re-pinned as an ABSENT ripple law and closed at d0d33973116a; certificate --run redone (7 reruns, OK on 55 bars) at d5cdc5ffa3; advanced to blind cycle 4 (visit 2, third)
+- next: Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them
+- ruled out: No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect
 
 ## Open findings (142)
 (claimed fixes, awaiting a judge, on one line each with the oldest 141 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -469,6 +469,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1287 events (views/history.md; never read whole)
+- the full history: 1288 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T21:15:26Z.1794863726518042315 (modledger.py since --mod FlowWorks t=2026-11-16T21:15:26Z.1794863726518042315 prints what changed after this packet)
+cursor: t=2026-11-16T21:17:55Z.1794863875812068281 (modledger.py since --mod FlowWorks t=2026-11-16T21:17:55Z.1794863875812068281 prints what changed after this packet)
