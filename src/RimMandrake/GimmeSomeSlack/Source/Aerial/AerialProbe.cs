@@ -167,6 +167,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     ",\"kinetic\":" + B(Patch_GenExplosion_CutSpans.IsKineticBlast(damage)) +
                     ",\"harmsHealth\":" + B(damage.harmsHealth) + ",\"spansReached\":" + reached);
             }
+            if (cmd.StartsWith("swaystation:"))   // swaystation:clear | swaystation:x,z,Look,wind;x,z,Look,wind;... (review matrix)
+            {
+                string body = cmd.Substring(12);
+                var list = body == "clear" ? new List<string>() : body.Split(';').Where(e => e.Split(',').Length == 4).ToList();
+                comp.SetReviewStations(list);
+                return Ok(cmd, "\"stations\":" + list.Count);
+            }
             if (cmd.StartsWith("set:"))
             {
                 string[] kv = cmd.Substring(4).Split(new[] { '=' }, 2);

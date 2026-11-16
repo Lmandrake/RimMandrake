@@ -21,6 +21,7 @@ game's wind speed (clamped 0..2.5) times a map-wide gust envelope that drifts ac
     python3 tools/pole_sway_sweep.py --out <dir>      # metrics.json, sheet_<wind>.png, strip_<cand>_<span>_<wind>.gif
 """
 import argparse
+import sys
 import json
 import math
 import os
@@ -225,5 +226,49 @@ def main():
     print(os.path.join(a.out, "metrics.json"))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and "--matrix" not in sys.argv:
     main()
+
+
+def preview_matrix(out, fps=20, secs=8, scale=26):
+    """The owner's matrix as an OFFLINE preview: look x span x wind, one looping GIF per cell (a 35-degree span, the Python
+    twin of AerialMath.SwayPose), numbered as the in-game stations of stage_pole_sway_matrix.py, plus index.html."""
+    picks = [("Pendulum", "pendulum"), ("Rope", "rope"), ("Gust", "gust")]
+    p = {"deg": 22, "t0": 2.6, "lag": 0.15, "k": 2.2}
+    os.makedirs(out, exist_ok=True)
+    cells, n = [], 0
+    for look, fam in picks:
+        for sn, L in SPANS.items():
+            for wn, wv in WINDS.items():
+                n += 1
+                frames = []
+                W, H = int(18 * 0.82 * scale) + 40, int(18 * 0.57 * scale) + 60
+                for f in range(fps * secs):
+                    im = Image.new("RGB", (W, H), (214, 196, 160))
+                    d = ImageDraw.Draw(im)
+                    ox, oy = 20, H - 30
+                    for si in range(3):
+                        x, z = strand_points_diag(fam, L, wv, f / fps, si, p)
+                        d.line([(ox + a * scale, oy - b * scale) for a, b in zip(x, z)], fill=(25, 25, 25), width=2)
+                    for end in (0.0, L):
+                        ex, ez = end * math.cos(math.radians(35)), end * math.sin(math.radians(35))
+                        d.rectangle([ox + ex * scale - 4, oy - ez * scale - 4, ox + ex * scale + 4, oy - ez * scale + 4], fill=(90, 60, 30))
+                    d.text((5, 5), "%d  %s  %s %d cells  %s %.2f" % (n, look, sn, L, wn, wv), fill="black")
+                    frames.append(im)
+                name = "cell%02d_%s_%s_%s.gif" % (n, look, sn, wn)
+                frames[0].save(os.path.join(out, name), save_all=True, append_images=frames[1:], duration=int(1000 / fps), loop=0)
+                cells.append((n, look, sn, wn, name))
+    rows = []
+    for look, _ in picks:
+        for sn in SPANS:
+            tds = "".join('<td><img src="%s" width="300"><br>%d</td>' % (c[4], c[0]) for c in cells if c[1] == look and c[2] == sn)
+            rows.append("<tr><th>%s<br>%s</th>%s</tr>" % (look, sn, tds))
+    html = ("<html><body style='background:#eee;font-family:sans-serif'><h2>Pole-wire sway: offline preview (Python twin of the"
+            " C# math, not a game capture)</h2><p>Rows: look x span. Columns: calm 0.15, breezy 0.9, storm 2.2. Numbers match"
+            " the in-game stations.</p><table><tr><th></th><th>calm</th><th>breezy</th><th>storm</th></tr>%s</table></body></html>" % "".join(rows))
+    open(os.path.join(out, "index.html"), "w").write(html)
+    return cells
+
+
+if __name__ == "__main__" and "--matrix" in sys.argv:
+    preview_matrix(sys.argv[sys.argv.index("--matrix") + 1])

@@ -71,6 +71,41 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public readonly Dictionary<IntVec3, (int verts, int fallen, int shadows)> groundPrinted = new Dictionary<IntVec3, (int, int, int)>();
         public int lastSwayDraws, lastSpanDraws, lastTopDraws, lastGlowDraws, lastDropDraws;
         public string lastSwayReason = "";
+        /// <summary>Review stations (RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT, the owner's sway matrix): a span whose
+        /// midpoint cell is listed ("x,z,Look,wind") always sways in that look at that fixed wind, so one map can show every
+        /// look x wind cell side by side. Saved with the map; empty on every ordinary map. Set by the probe's swaystation:.</summary>
+        public List<string> reviewSwayStations = new List<string>();
+        private Dictionary<(int, int), (WireSwayLook, float)> stationCache;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Collections.Look(ref reviewSwayStations, "reviewSwayStations", LookMode.Value);
+            if (reviewSwayStations == null) reviewSwayStations = new List<string>();
+            stationCache = null;
+        }
+
+        public void SetReviewStations(List<string> st) { reviewSwayStations = st ?? new List<string>(); stationCache = null; }
+
+        private bool ReviewStation(SpanMesh m, out WireSwayLook look, out float wind)
+        {
+            look = AerialSettings.swayLook; wind = 0;
+            if (reviewSwayStations.Count == 0) return false;
+            if (stationCache == null)
+            {
+                stationCache = new Dictionary<(int, int), (WireSwayLook, float)>();
+                foreach (string e in reviewSwayStations)
+                {
+                    string[] p = e.Split(',');
+                    if (p.Length == 4 && int.TryParse(p[0], out int x) && int.TryParse(p[1], out int z) && Enum.TryParse(p[2], out WireSwayLook lk) &&
+                        float.TryParse(p[3], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float w))
+                        stationCache[(x, z)] = (lk, w);
+                }
+            }
+            if (!stationCache.TryGetValue(((int)Math.Floor(m.MidX), (int)Math.Floor(m.MidZ)), out var v)) return false;
+            look = v.Item1; wind = v.Item2;
+            return true;
+        }
 
         public RM_MapComponent_Aerial(Map map) : base(map) { }
 
@@ -598,7 +633,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     SpanMesh m = MeshFor(a, l.other, spanY);
                     if (m == null || !m.rect.Overlaps(view)) continue;
                     bool swung = SwingOf(a, l.other, out BlastSwing bs, out int age);
-                    if ((sway || swung) && AerialKinds.Sways(a.Kind))   // phase 4: a pipe span is rigid, it never sways
+                    if (AerialKinds.Sways(a.Kind) && ReviewStation(m, out WireSwayLook stLook, out float stWind))
+                    {
+                        m.Sway(time, stWind, Mathf.Max(AerialSettings.swayStrength, 0.25f), swung ? age : -1, bs.kick, bs.side, 0.12f * Mathf.Max(AerialSettings.swayStrength, 0.25f), stLook);
+                        lastSwayDraws++;
+                    }
+                    else if ((sway || swung) && AerialKinds.Sways(a.Kind))   // phase 4: a pipe span is rigid, it never sways
                     {
                         float amp = 0.12f * Mathf.Max(AerialSettings.swayStrength, 0.25f);
                         m.Sway(sway ? time : 0f, sway ? wind : 0f, sway ? AerialSettings.swayStrength : 0f, swung ? age : -1, bs.kick, bs.side, amp);
@@ -1007,6 +1047,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Each strand's mid-span sag (cells) and the span midpoint: the hanging-wire sway reads them (AerialMath.SwayFrame).</summary>
         private readonly List<double> strandSag = new List<double>();
         private double midX, midZ;
+        public double MidX => midX;
+        public double MidZ => midZ;
         private Vector3[] verts;
         private P2 dir;
         private float y;
@@ -1085,20 +1127,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>Wind sway (the chosen AerialSettings.swayLook at <paramref name="strength"/>) plus, while
         /// <paramref name="blastAge"/> is in [0, BlastSwayTicks), a kinetic blast's swing.</summary>
-        public void Sway(float time, float wind, float strength, int blastAge, double kick, int side, float blastAmp)
+        public void Sway(float time, float wind, float strength, int blastAge, double kick, int side, float blastAmp, WireSwayLook? look = null)
         {
-            WriteVerts(time, wind, strength, blastAge, kick, side, blastAmp);
+            WriteVerts(time, wind, strength, blastAge, kick, side, blastAmp, look ?? AerialSettings.swayLook);
             mesh.vertices = verts;
             atRest = false;
         }
 
         /// <summary>Ribbon vertices; each sample swung as a hanging wire (AerialMath.SwayPose: sideways along the span's ground
         /// normal, rising toward the chord as it swings out), the insulator samples (t 0 and 1) never moved.</summary>
-        private void WriteVerts(float time, float wind, float strength, int blastAge = -1, double kick = 0, int side = 0, float blastAmp = 0f)
+        private void WriteVerts(float time, float wind, float strength, int blastAge = -1, double kick = 0, int side = 0, float blastAmp = 0f,
+                                WireSwayLook look = WireSwayLook.Rope)
         {
             var n = new P2(-dir.Z, dir.X);
             int v = 0;
-            WireSwayLook look = AerialSettings.swayLook;
             for (int si = 0; si < strands.Count; si++)
             {
                 List<P2> s = strands[si];
