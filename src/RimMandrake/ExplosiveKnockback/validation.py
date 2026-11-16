@@ -533,14 +533,22 @@ class _Walk:
 
         # A thing born after the save (a leaving of the shell's wave) takes its id from the game's counter, which a load
         # advances (live 2026-11-16: 42837 live, 43837 in both loads; the triplet's reading must hold no per-load ids):
-        # an id above every haulable id read just before the save is keyed by def and cell, not by id.
+        # an id above every haulable id read just before the save is NOT the save's: its id, cell and even its count come
+        # from the RNG, whose state a load changes (live 2026-11-16: a WoodLog leaving at 101,42 live and 102,42 loaded,
+        # then 9 vs 10 things in two loads). The judged census holds the things the save holds; born things are counted
+        # per arm in the evidence, unjudged. Blind spot: a load-made twin under a NEW id reads as born.
         hi = [0]
+        born_seen = self.ev.setdefault("reload_born", [])
 
         def census(_B=None):
-            ids = []
+            ids, born = [], collections.Counter()
             for t in self.haulables(self.site):
                 n = _num(t.get("id"))
-                ids.append(n if n and int(n) <= hi[0] else "born:%s@%s" % (t.get("def"), _pos(t)))
+                if n and int(n) <= hi[0]:
+                    ids.append(n)
+                else:
+                    born[t.get("def")] += 1
+            born_seen.append(dict(born))
             for l in self.kp("Flights")[1].splitlines():
                 m = re.search(r"innerId=(\S+)", l)
                 if m:

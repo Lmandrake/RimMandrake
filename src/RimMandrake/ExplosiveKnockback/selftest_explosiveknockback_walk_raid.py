@@ -24,6 +24,8 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       grenade thrown after met no cover): the grenade is thrown first in each order, so the COVER rows still PASS
   W17 a thing born after the mid-air save takes its id from the game's counter, which a load advances (live 2026-11-16:
       42837 live, 43837 in both loads): A_RELOAD_NO_DUP_LOST still PASSes; ids are compared only for things the save holds
+  W18 a thing born after the save is placed with the RNG, whose state a load changes (live 2026-11-16: a WoodLog leaving at
+      101,42 live, 102,42 in both loads): born things are counted by def, not by cell, and the row still PASSes
   W16 the cover already gone when the grenade comes: COVER rows UNMEASURED naming it, never a mod FAIL read off an empty
       journal
 
@@ -116,7 +118,8 @@ class Fake:
         if self.brk.get("reid_after_save") and self.w.get("savedAt") is not None and self.w["tick"] == self.w["savedAt"] + 3:
             # a leaving born after the save (the shell's wave breaks a shelf): its id comes from the game's counter, which a
             # load advances (live 2026-11-16: 42837 live, 43837 after both loads)
-            self.w["goods"][str(self.w.get("nextId", 5000))] = [14, 13]
+            self.w["goods"][str(self.w.get("nextId", 5000))] = [14, 14] if self.w.get("loaded") and self.brk.get(
+                "born_cell_differs") else [14, 13]   # a leaving is placed with the RNG, whose state a load changes
             self.w["nextId"] = self.w.get("nextId", 5000) + 1
         if self.w["wave"]:
             self.w["goods"].pop(self.w["wave"].pop(0), None)
@@ -217,6 +220,7 @@ class Fake:
                 self.w["goods"][self.w["carriers"][0]["inner"]] = [12, 12]   # a spawned twin of a good still in its carrier
             if self.brk.get("reid_after_save"):
                 self.w["nextId"] = self.w.get("nextId", 5000) + 1000
+                self.w["loaded"] = True
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
@@ -297,6 +301,10 @@ def main():
     check("W17", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
           "a thing born after the save, re-numbered by the load, is neither lost nor new (live 2026-11-16): %s"
           % rows.get("A_RELOAD_NO_DUP_LOST"))
+    code, rows, txt = run(reid_after_save=True, born_cell_differs=True)
+    check("W18", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
+          "a thing born after the save lands on another cell after a load (the RNG; live 2026-11-16: WoodLog 101,42 live,"
+          " 102,42 loaded): still PASS: %s" % rows.get("A_RELOAD_NO_DUP_LOST"))
     script = os.path.join(HERE, "validation.py")
     r1 = subprocess.run([sys.executable, script, "--live"], capture_output=True, text=True)
     r2 = subprocess.run([sys.executable, script, "--live", "walk_storeroom_raid"] + ARGS[:6], capture_output=True, text=True,

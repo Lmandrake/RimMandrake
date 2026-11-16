@@ -38,3 +38,9 @@ before it (W15/W16). Run 5: cover rows PASS in both orders; reload row read SAVE
 re-numbered by the load (+1000): the census keys such things by def and cell (W17). Gas rows FAIL in both orders: drifted gas relit
 under a burned cell's fire burst again 30-60 ticks later; Explosive Knockback now bursts a cell at most once per 600 ticks (model
 test with drift, selftest_explosiveknockback_gas_clumps.py). Runs 3-5 here predate the gas gate and the census fix in the game.
+After the gas gate reached the game (full list, proof DLL eb8025ac from f03d8d4f4a's source): run 6 gas and cover rows PASS in both
+orders; the reload row read a WoodLog born after the save at 101,42 live and 102,42 in both loads, then (run 7) 9 vs 10 born things
+in two loads: a thing born after the save takes its id, cell and count from the RNG, whose state a load changes. The judged census
+now holds only the things the save holds (born things counted per arm in ev.reload_born, unjudged; W17/W18). Runs 8 and 9: 17 of 17
+judged rows PASS; FRAME_BUDGET UNMEASURED by construction (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED), so the
+command still exits 1.
