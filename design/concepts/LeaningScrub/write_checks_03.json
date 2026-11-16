@@ -1,33 +1,306 @@
 {
   "schema": 1,
-  "run": "rm-role-designercodex-1794799806",
+  "run": "rm-role-designercodex-1794806809",
   "stage": 3,
-  "checked_at": "2026-11-16T04:40:23.437000+00:00",
-  "scope": "Design artifact validation only; no mod code, art, build, bridge, restart, deploy or gameplay proof.",
-  "commands": [
+  "checked_at": "2026-11-16T05:29:09.120884+00:00",
+  "scope": "Stage 3 artifact validation",
+  "previous_attempt": {
+    "run": "rm-role-designercodex-1794799806",
+    "launcher_outcome": "rejected",
+    "reported_reasons": 20,
+    "source": "design/concepts/LeaningScrub/stage.json"
+  },
+  "cross_checkout_checks": [
     {
-      "command": "python3 src/RimMandrake/rimflow/concept_tree.py write design/concepts/LeaningScrub --draft design/concepts/LeaningScrub/tree.draft.json",
-      "result": "PASS; writer stamped tree/floor/root hashes and no signature"
+      "repo": "/home/mandrake/rm/bench",
+      "state": "DRAFT",
+      "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
+      "ids": [
+        "scrub_fire_and_belief",
+        "scrub_native_ecology",
+        "scrub_routes_deliberate",
+        "scrub_saved_use",
+        "scrub_technology",
+        "scrub_tree_economy",
+        "scrub_vines_integral",
+        "scrub_wind_home"
+      ],
+      "lint_errors": [],
+      "missing_root_control": "rejected by existing shape validation"
     },
     {
+      "repo": "/home/mandrake/rm/dispatch",
+      "state": "DRAFT",
+      "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
+      "ids": [
+        "scrub_fire_and_belief",
+        "scrub_native_ecology",
+        "scrub_routes_deliberate",
+        "scrub_saved_use",
+        "scrub_technology",
+        "scrub_tree_economy",
+        "scrub_vines_integral",
+        "scrub_wind_home"
+      ],
+      "lint_errors": [],
+      "missing_root_control": "rejected by existing shape validation"
+    }
+  ],
+  "rejection_resolutions": [
+    {
+      "rejection": "lint: leaf route_observer: root id scrub_routes_deliberate is not in the north star",
+      "leaf": "route_observer",
+      "root": "scrub_routes_deliberate",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:133",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf witness_observer: root id scrub_fire_and_belief is not in the north star",
+      "leaf": "witness_observer",
+      "root": "scrub_fire_and_belief",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:138",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf economy_observer: root id scrub_vines_integral is not in the north star",
+      "leaf": "economy_observer",
+      "root": "scrub_vines_integral",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:134",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf wind_plain: root id scrub_wind_home is not in the north star",
+      "leaf": "wind_plain",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf gale_drawing: root id scrub_wind_home is not in the north star",
+      "leaf": "gale_drawing",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf wind_audio: root id scrub_wind_home is not in the north star",
+      "leaf": "wind_audio",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf working_wind: root id scrub_wind_home is not in the north star",
+      "leaf": "working_wind",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf gale_exposure: root id scrub_wind_home is not in the north star",
+      "leaf": "gale_exposure",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf raid_weight: root id scrub_wind_home is not in the north star",
+      "leaf": "raid_weight",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf scent: root id scrub_wind_home is not in the north star",
+      "leaf": "scent",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf fire_bias: root id scrub_wind_home is not in the north star",
+      "leaf": "fire_bias",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf stall_wait: root id scrub_wind_home is not in the north star",
+      "leaf": "stall_wait",
+      "root": "scrub_wind_home",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:132",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf stall_wait: root id scrub_native_ecology is not in the north star",
+      "leaf": "stall_wait",
+      "root": "scrub_native_ecology",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:136",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf concealment: root id scrub_native_ecology is not in the north star",
+      "leaf": "concealment",
+      "root": "scrub_native_ecology",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:136",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf lee_reveal: root id scrub_native_ecology is not in the north star",
+      "leaf": "lee_reveal",
+      "root": "scrub_native_ecology",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:136",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf stall_predation: root id scrub_native_ecology is not in the north star",
+      "leaf": "stall_predation",
+      "root": "scrub_native_ecology",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:136",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf island_land: root id scrub_vines_integral is not in the north star",
+      "leaf": "island_land",
+      "root": "scrub_vines_integral",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:134",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf creep: root id scrub_vines_integral is not in the north star",
+      "leaf": "creep",
+      "root": "scrub_vines_integral",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:134",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf home_routes: root id scrub_routes_deliberate is not in the north star",
+      "leaf": "home_routes",
+      "root": "scrub_routes_deliberate",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:133",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    },
+    {
+      "rejection": "lint: leaf ordered_travel: root id scrub_routes_deliberate is not in the north star",
+      "leaf": "ordered_travel",
+      "root": "scrub_routes_deliberate",
+      "source": "design/validation_walks/RimMandrake/LeaningScrub.md:133",
+      "verified_in": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "status": "resolved"
+    }
+  ],
+  "source_continuity": {
+    "checked": 95,
+    "changed_since_previous_write": []
+  },
+  "integrity": {
+    "leaves": 70,
+    "scenes": 81,
+    "scene_kinds": {
+      "exploration": 1,
+      "acceptance": 75,
+      "interaction": 5
+    },
+    "showcases": 7,
+    "coverage_rest": 7,
+    "required_inventory_units": 71,
+    "floor_lines_applicable": 23,
+    "signature": null
+  },
+  "commands": [
+    {
       "command": "python3 src/RimMandrake/rimflow/concept_tree.py lint design/concepts/LeaningScrub",
-      "result": "PASS Gate A"
+      "exit_code": 0,
+      "result": "lint (Gate A): PASS"
     },
     {
       "command": "python3 src/RimMandrake/rimflow/designer_stage.py showcases design/concepts/LeaningScrub",
-      "result": "PASS: 7 showcases; new counts 5,20,15,10,8,3,3; final showcase necessary overlap downwind_fire 1/4=0.25; 7 rest checks; all71 units covered"
+      "exit_code": 0,
+      "result": "showcase set accepted; new counts 5,20,15,10,8,3,3; final overlap 0.25"
     },
     {
       "command": "python3 src/RimMandrake/rimflow/designer_stage.py check design/concepts/LeaningScrub",
+      "exit_code": 0,
       "result": "result.json would be accepted"
-    },
-    {
-      "command": "Focused design integrity assertions on tree/scenes/item files",
-      "result": "PASS:70 unique leaves,81 unique scenes,5 filed item specs, every claimed showcase exercise supported by direct scene exercise,71 units have scenes,all complete proposed acceptance entries honestly missing,no forged signature"
-    },
-    {
-      "command": "git diff --check on authored paths",
-      "result": "PASS"
     }
   ],
   "core_file_sha256": {
