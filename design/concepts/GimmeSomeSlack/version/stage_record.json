@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-15T23:33:31-08:00",
+  "since": "2026-11-16T01:28:36-08:00",
   "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 5,
-    "total": 5
+    "visit": 6,
+    "total": 6
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -132,6 +132,25 @@
         "judge_certificate"
       ],
       "cycle_not_counted": "cycle 5 has no record (no judge ran it), so the cycle counter stays at 5"
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T01:28:36-08:00",
+      "by": "CONDUCTOR",
+      "why": "Conductor decision 2026-11-16 1:20 AM PST under his 2026-11-13 three-cycle rule: allow blind cycle 6. Cycle 5 ended not met only because it found and fixed one real Problem (Mod Settings header promised flexible pipes; the no-hose test missed four shipping routes; 396433f04a), and a cycle that fixes a Problem goes to a new blind judge. Its 6 remaining fails are filed Polish; 39 rows are game-side, Stage 6. Cycle 6 confirms that fix and exits met unless it finds a new Problem",
+      "unit": null,
+      "confirmed": {
+        "conductor_decision": "Conductor decision 2026-11-16 1:20 AM PST under his 2026-11-13 three-cycle rule: allow blind cycle 6. Cycle 5 ended not met only because it found and fixed one real Problem (Mod Settings header promised flexible pipes; the no-hose test missed four shipping routes; 396433f04a), and a cycle that fixes a Problem goes to a new blind judge. Its 6 remaining fails are filed Polish; 39 rows are game-side, Stage 6. Cycle 6 confirms that fix and exits met unless it finds a new Problem"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
     }
   ],
   "spend": [
