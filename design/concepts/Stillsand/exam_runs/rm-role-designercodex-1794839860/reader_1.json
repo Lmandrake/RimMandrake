@@ -1,0 +1,194 @@
+{
+  "verdicts": [
+    {
+      "id": "e01",
+      "verdict": "accept",
+      "leaves": [
+        "expedition_ocean"
+      ],
+      "reason": "The crossing is broad, apparently empty sand with a distant giant, and an uncertain unexplored chamber motivates another departure."
+    },
+    {
+      "id": "e02",
+      "verdict": "reject",
+      "leaves": [
+        "prepared_harbour"
+      ],
+      "reason": "Dependable rest is granted on unfamiliar rock while a resident threat remains and no cover exists."
+    },
+    {
+      "id": "e03",
+      "verdict": "reject",
+      "leaves": [
+        "ordinary_work"
+      ],
+      "reason": "Workers reserve every tool and never finish, so routine jobs stall under contention in a 40-colonist harbour."
+    },
+    {
+      "id": "e04",
+      "verdict": "accept",
+      "leaves": [
+        "practical_fortune"
+      ],
+      "reason": "The contract explicitly does not guarantee a fortune in every cave. An emptied cave yielding nothing preserves uncertainty."
+    },
+    {
+      "id": "e05",
+      "verdict": "reject",
+      "leaves": [
+        "practical_fortune"
+      ],
+      "reason": "A valuable-looking discovery cannot be processed or used to provision the next undertaking. The market-value label alone is disallowed evidence."
+    },
+    {
+      "id": "e06",
+      "verdict": "reject",
+      "leaves": [
+        "direct_sun"
+      ],
+      "reason": "Roofs must protect at every angle. Low-sun roof failure is the legacy regime the leaf rejects."
+    },
+    {
+      "id": "e07",
+      "verdict": "reject",
+      "leaves": [
+        "sand_signs"
+      ],
+      "reason": "Fishing danger and body loss have no readable sign or consequence."
+    },
+    {
+      "id": "e08",
+      "verdict": "accept",
+      "leaves": [
+        "sand_signs"
+      ],
+      "reason": "Gale suppression and track erasure preserve the stated uncertainty with a coarse bearing, and signs return afterward."
+    },
+    {
+      "id": "e09",
+      "verdict": "reject",
+      "leaves": [
+        "giant_encounters"
+      ],
+      "reason": "Target death during pursuit leaves the visit unresolved with no departure, so the encounter route fails to complete."
+    },
+    {
+      "id": "e10",
+      "verdict": "reject",
+      "leaves": [
+        "hydration_exclusion"
+      ],
+      "reason": "Prey selection depends on carried water."
+    },
+    {
+      "id": "e11",
+      "verdict": "reject",
+      "leaves": [
+        "gale_passage"
+      ],
+      "reason": "The saved off-map carried pawn never returns and is never accounted for."
+    },
+    {
+      "id": "e12",
+      "verdict": "reject",
+      "leaves": [
+        "current_water"
+      ],
+      "reason": "Water is duplicated across split, merge and reload, which breaks single accounting."
+    },
+    {
+      "id": "e13",
+      "verdict": "accept",
+      "leaves": [],
+      "reason": "The wet line, bloom and attraction are retained. Shared agricultural film watering is deferred to later work, so no prohibition applies."
+    },
+    {
+      "id": "e14",
+      "verdict": "accept",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "Franchise-free RM is required to stay ledger-inert."
+    },
+    {
+      "id": "e15",
+      "verdict": "reject",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "The same water is charged on production and again on drinking. Sun-Debt must apply once."
+    },
+    {
+      "id": "e16",
+      "verdict": "reject",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "Titan resources must follow ordinary temperature-driven meat spoilage, not rot faster than ordinary meat."
+    },
+    {
+      "id": "e17",
+      "verdict": "accept",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "The giant becomes a skeleton landmark and outdoor items get no spoilage immunity."
+    },
+    {
+      "id": "e18",
+      "verdict": "accept",
+      "leaves": [
+        "stillsand_walk"
+      ],
+      "reason": "The mid-work reload preserves hauling, wet expiry and the warning, provisioning continues, and the emptied cave is not regenerated."
+    },
+    {
+      "id": "c01",
+      "verdict": "reject",
+      "leaves": [
+        "hydration_exclusion"
+      ],
+      "reason": "A renamed 'physical suitability' built from hydration and carried water is a water proxy. The changelog claim does not change the observed dependency."
+    },
+    {
+      "id": "c02",
+      "verdict": "reject",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "A flat temperature-independent daily loss is not ordinary spoilage and outpaces meat in the cold. The single-pair comparison is a disallowed false pass."
+    },
+    {
+      "id": "c03",
+      "verdict": "reject",
+      "leaves": [
+        "prepared_harbour"
+      ],
+      "reason": "A surfaced swimmer within attack range leaves the threat unresolved. Absent sand jobs do not make it harmless, and dependable rest is granted without preparation."
+    },
+    {
+      "id": "c04",
+      "verdict": "reject",
+      "leaves": [
+        "direct_sun"
+      ],
+      "reason": "The roof fails at low sun, and the log observes only the high-angle roof case, which is a listed false pass."
+    },
+    {
+      "id": "c05",
+      "verdict": "reject",
+      "leaves": [
+        "current_water"
+      ],
+      "reason": "The merge inflates the declared volume and delivered hydration. Comparing item counts hides the duplication."
+    },
+    {
+      "id": "c06",
+      "verdict": "reject",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "Franchise-free RM must be ledger-inert, but the ledger records entries and bands rise. Calling it cosmetic does not satisfy inertness."
+    }
+  ]
+}

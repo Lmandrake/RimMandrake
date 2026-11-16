@@ -1,0 +1,98 @@
+[
+  {
+    "id": "e01",
+    "text": "A crew of four leaves a working harbour on a shipped-defaults Stillsand map and walks toward a distant rock island. At normal play zoom the crossing is a broad stretch of open sand with no small encounters along the way. A single giant passes far off to the flank. The island's cave turns out to have an unexplored second chamber the crew could not reach, so the player queues another departure to return and search it."
+  },
+  {
+    "id": "e02",
+    "text": "Two colonists reach an unfamiliar rock island at dusk. A hostile cave resident is still inside the adjacent cave and has not been fought or driven off, and no roof or cover has been built. The game immediately treats the rock as a dependable rest site, and the colonists sleep there as if fully secure."
+  },
+  {
+    "id": "e03",
+    "text": "In a 40-colonist harbour, the player places several sieve and still bills that share inputs, with only two tools available. Workers reserve both tools and the shared inputs, then stand idle. None of the bills ever completes, and no explicit refusal is shown."
+  },
+  {
+    "id": "e04",
+    "text": "A crew revisits a cave they emptied on an earlier expedition, hoping for water supplies for the next outpost. The cave contains nothing useful this time. The crew returns empty-handed, and the outpost's declared water shortage remains."
+  },
+  {
+    "id": "e05",
+    "text": "Explorers haul a cave lens back to the harbour, and its label shows a high market value. At the harbour workshop no bill accepts the lens as an input, and it cannot be used for the next expedition's declared missing supply. The next expedition departs still lacking that supply."
+  },
+  {
+    "id": "e06",
+    "text": "With the sun at a low elevation, a colonist stands under an intact roof. The colonist receives the same Direct Sun exposure as an unroofed colonist beside them at the same air temperature. At high sun elevation the same roof protects normally."
+  },
+  {
+    "id": "e07",
+    "text": "A colonist runs a real Fish job on open sand with sound on at play zoom. A submerged swimmer approaches and strikes the colonist, who is killed. Before the strike there was no rumble, wake, track or geophone bearing, and the loss leaves no readable consequence."
+  },
+  {
+    "id": "e08",
+    "text": "During an active gale, a colonist with a geophone listens for movement near the harbour edge. Gale noise suppresses the rumble, existing tracks are erased, and the geophone shows only a coarse bearing marked as uncertain rather than a species marker. After the gale ends, rumble and new tracks become readable again."
+  },
+  {
+    "id": "e09",
+    "text": "An unforced Muurrok visit gives its warning and rumble, arrives and begins hunting a colonist. The targeted colonist dies from other causes mid-pursuit. The Muurrok then stops in place on the sand indefinitely, never diving or departing, and the visit never resolves."
+  },
+  {
+    "id": "e10",
+    "text": "Two identical pawns stand at equal distance on sand within a swimmer's reach, with the same random seed and identical non-water inputs. One pawn carries several water bottles and the other carries none. Across repeated trials, the swimmer always chooses the pawn carrying water."
+  },
+  {
+    "id": "e11",
+    "text": "A gale carries an exposed colonist off the map. The player saves while the colonist is held off-map and reloads. The natural due-return time passes, and the colonist never returns, alive or dead, and is never accounted for."
+  },
+  {
+    "id": "e12",
+    "text": "A colonist splits a stack of 10 units of still-produced water into two stacks of 5. After merging them back and saving and reloading, the stockpile shows 12 units. No new water was produced in the meantime."
+  },
+  {
+    "id": "e13",
+    "text": "A colonist pours water onto eligible sand next to a field of crops. A visible wet line appears and fades over time, an hourbloom sprouts, and swimmer attraction is saved through reload. The adjacent crops receive no watering from the wet sand."
+  },
+  {
+    "id": "e14",
+    "text": "On a franchise-free RM map with no faith or campaign tier, a colonist produces water at a sun-still and later drinks it. No Sun-Debt ledger entry, debt band, mood thought or goodwill change appears."
+  },
+  {
+    "id": "e15",
+    "text": "In the supplying campaign tier with faith, a believer colonist produces one unit of water at a sun-still, and the Sun-Debt ledger rises. The colonist later drinks that same unit, and the ledger rises again for it."
+  },
+  {
+    "id": "e16",
+    "text": "In T3, a classified titan dies and its corpse site is harvested. Its meat is stored at the same temperature as a stack of ordinary animal meat. The titan meat spoils roughly three times faster than the ordinary meat."
+  },
+  {
+    "id": "e17",
+    "text": "An ordinary eligible giant dies outdoors and desiccates into a species skeleton landmark. A colonist's stack of ordinary meat left outdoors beside the skeleton spoils at the normal rate for its temperature."
+  },
+  {
+    "id": "e18",
+    "text": "A crew departs a prepared harbour, crosses sparse sand, secures an island and hauls cave supplies home. Midway through return hauling, with a wet sand interval active and a giant warning pending, the player saves and reloads. The hauling finishes, the wet line expires on schedule, the warning resolves, and the workshop provisions the next departure. A repeat visit to the same cave finds it still emptied."
+  },
+  {
+    "id": "c01",
+    "text": "In a campaign game, a Muurrok's prey-selection code no longer reads the hydration need directly. Each eligible colonist now gets a 'physical suitability' score: body size multiplied by a 'vigour' factor. The vigour factor is computed from the pawn's current hydration level plus the volume of water items in its inventory. Two colonists of identical body size stand on open sand. One carries three full waterskins and the other carries none. Under the same random seed, the Muurrok consistently targets the colonist with the waterskins. The changelog states that hydration ranking has been removed and that selection is now purely physical."
+  },
+  {
+    "id": "c02",
+    "text": "In a T3 game, a classified titan dies on open sand. Its corpse-site harvestable meat loses a flat 6% of its remaining total each in-game day, independent of temperature. A colonist's butchered ordinary animal meat lies nearby at 25 C and rots away on roughly the same timescale. A matching titan site in a -10 C cold snap keeps losing 6% per day, while ordinary meat beside it does not rot at all. The designer's report compares only the 25 C pair and states that titan resources rot no faster than normal meat."
+  },
+  {
+    "id": "c03",
+    "text": "An expedition reaches an unexplored rock island. A sand swimmer that had been stalking the crew surfaces and climbs onto the rock edge. Its hostile sand-hunting state switches off because it is no longer in sand, while it stays awake and within attack range of the landing spot. The game immediately marks the landing spot as a Prepared Harbour. Colonists there receive the dependable-rest bonus and sleep in the open. The tester notes that no hostile sand jobs are active on the island."
+  },
+  {
+    "id": "c04",
+    "text": "At a matched 30 C air temperature, a colonist under a constructed roof shows zero Direct Sun exposure when the sun is at 80 degrees elevation. When the sun drops to 12 degrees, the same roofed colonist shows the same exposure value as a colonist on open ground. The exposure text gives the reason as 'low sun regime'. The test log only records the high-angle roof case and the low-angle open-ground case. It reports that roofs protect and that low sun exposure is correctly mild."
+  },
+  {
+    "id": "c05",
+    "text": "A colonist splits a stack of 10 sun-still water units into stacks of 4 and 6. Each stack's water-volume comp keeps the original per-unit volume. When the stacks are hauled together and merged, the merge takes the larger stack's volume value for the combined stack. The merged stack again shows 10 items, but its declared water volume totals 12 units, and drinking from it delivers 12 units of hydration. The accounting check compares item counts before and after (10 and 10) and reports water conserved."
+  },
+  {
+    "id": "c06",
+    "text": "On a franchise-free RimMandrake install with no faith campaign tier, colonists produce and drink sun-still water. A Sun-Debt ledger tab appears and records entries for each production and drink, and the debt band rises from 'Light' to 'Heavy' over a season. No mood thoughts, goodwill changes or incident weight changes are applied. The developer states that the ledger is cosmetic in this configuration and therefore harmless."
+  }
+]

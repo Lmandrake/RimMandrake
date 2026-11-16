@@ -1,0 +1,70 @@
+{
+  "run": "rm-role-designercodex-1794836727",
+  "stage": 3,
+  "at": "2026-11-16T13:48:08.262629+00:00",
+  "checks": {
+    "gate_a": [],
+    "scene_contracts": [],
+    "showcases": [],
+    "floor": []
+  },
+  "unchanged_since_accepted_stage2": {
+    "run": "rm-role-designercodex-1794832693",
+    "inputs": {
+      "root": true,
+      "tree": true,
+      "sheet": true,
+      "floor": true,
+      "scenes": true
+    }
+  },
+  "stage_input_hashes": {
+    "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+    "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68",
+    "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "floor": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+    "scenes": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040"
+  },
+  "artifact_sha256": {
+    "sheet.md": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "tree.json": "4ab5b11db7a30e136a4f79b10a07f497020fb3aa2bc6d7a42816e6a92f60ff27",
+    "plan.md": "9627ce3d1ccccc8090529276564cd603d3258c24c15c7778683f01792b72c333",
+    "scenes.json": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
+    "floor.json": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+    "root.md": "52d497dedddc13ce59e1d7173f624aefa89ccc8cf6d6cb618fa121cdbe9b037f"
+  },
+  "inventory": {
+    "count": 71,
+    "sha256": "001a9a05829441e7c0a4cabbdafbee685992da1a742e0f31564973f9a3e6602f",
+    "changed": false
+  },
+  "leaf_count": 14,
+  "scene_counts": {
+    "exploration": 1,
+    "acceptance": 28,
+    "interaction": 4
+  },
+  "observation_status": {
+    "proposed_unrun": 1,
+    "unrun": 32
+  },
+  "planned_entry_points_without_filed_item": [],
+  "floor_line_count": 23,
+  "pipeline_regression": {
+    "command": "python3 src/RimMandrake/rimflow/selftest_designer_stage.py",
+    "exit_code": 0,
+    "result": "ALL PASS",
+    "includes": [
+      "cross-clone artifact/root resolution",
+      "genuinely missing concept source refusal",
+      "causal-only owner-input exclusion"
+    ]
+  },
+  "authority": {
+    "root": "CONDUCTOR:1794805294378261874",
+    "water_boundary": "CONDUCTOR:1794824429827934950",
+    "flagship": "CONDUCTOR:1794824436177586321"
+  },
+  "runtime_observations": "unrun; existing-code live walk remains proposed",
+  "stage_advancement": "launcher only"
+}

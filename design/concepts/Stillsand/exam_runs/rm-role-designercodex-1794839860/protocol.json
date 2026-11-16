@@ -1,0 +1,23 @@
+{
+  "run": "rm-role-designercodex-1794839860",
+  "author": "rm-role-designercodex-1794826273",
+  "frozen_at": "2026-11-16T14:39:27.129904+00:00",
+  "inputs": {
+    "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68",
+    "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40"
+  },
+  "independence": {
+    "maker": "Codex",
+    "helpers": "five separate fresh Claude Opus CLI processes, no continuation or resume",
+    "mechanical_boundary": "--safe-mode disables automatic context; --tools empty and strict empty MCP config prevent reading other files. Allowed content is embedded in each saved prompt.",
+    "non_inputs": "No expected verdicts, record, log, design notes or previous helper outputs go to Readers or Control. Exam cases are held-out validation and never used to edit this frozen package.",
+    "scope": "Comprehension and discrimination of the written contract, not runtime implementation or owner enjoyment."
+  },
+  "roles": {
+    "examiner": "sheet and tree only; writes independent sourced scenarios",
+    "challenger": "sheet and tree only; independently writes adversarial sourced scenarios",
+    "reader_1": "sheet, tree and id/text scenarios only",
+    "reader_2": "sheet, tree and id/text scenarios only",
+    "control": "program-made ablation copy with redundant rule paraphrases stripped, plus same id/text scenarios"
+  }
+}

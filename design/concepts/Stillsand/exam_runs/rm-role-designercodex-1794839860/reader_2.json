@@ -1,0 +1,198 @@
+{
+  "verdicts": [
+    {
+      "id": "e01",
+      "verdict": "accept",
+      "leaves": [
+        "expedition_ocean"
+      ],
+      "reason": "The crossing is broad and apparently empty, with no small encounters and a distant passing giant. An uncertain unexplored chamber gives a reason for another expedition, which is the intended experience."
+    },
+    {
+      "id": "e02",
+      "verdict": "reject",
+      "leaves": [
+        "prepared_harbour"
+      ],
+      "reason": "Dependable rest is granted on first arrival at unfamiliar rock while a cave threat is unresolved and no cover exists. The 'does not' clause forbids this."
+    },
+    {
+      "id": "e03",
+      "verdict": "reject",
+      "leaves": [
+        "ordinary_work"
+      ],
+      "reason": "Routine jobs stall under contention: workers reserve the tools and inputs and never finish, with no explicit refusal. This matches the leaf's red condition and a listed false pass."
+    },
+    {
+      "id": "e04",
+      "verdict": "accept",
+      "leaves": [
+        "practical_fortune"
+      ],
+      "reason": "The contract explicitly does not guarantee a useful fortune in every cave. An emptied cave yielding nothing, with the shortage remaining, is the intended uncertainty."
+    },
+    {
+      "id": "e05",
+      "verdict": "reject",
+      "leaves": [
+        "practical_fortune"
+      ],
+      "reason": "A valuable-looking lens cannot be processed or used to supply the next undertaking. A market-value label without use is a listed false pass, and this matches the red condition."
+    },
+    {
+      "id": "e06",
+      "verdict": "reject",
+      "leaves": [
+        "direct_sun"
+      ],
+      "reason": "Roofs must protect at every sun angle. Here the legacy low-sun regime defeats the roof."
+    },
+    {
+      "id": "e07",
+      "verdict": "reject",
+      "leaves": [
+        "sand_signs"
+      ],
+      "reason": "Fishing danger and body loss have no player-visible or audible sign, and the loss leaves no readable consequence."
+    },
+    {
+      "id": "e08",
+      "verdict": "accept",
+      "leaves": [
+        "sand_signs",
+        "gale_passage"
+      ],
+      "reason": "Gale silence, track erasure and a coarse uncertain bearing preserve the signs' stated uncertainty. Signs become readable again after the gale."
+    },
+    {
+      "id": "e09",
+      "verdict": "reject",
+      "leaves": [
+        "giant_encounters"
+      ],
+      "reason": "The giant visit must complete its route through departure, including target death during pursuit. Here the visit never resolves."
+    },
+    {
+      "id": "e10",
+      "verdict": "reject",
+      "leaves": [
+        "hydration_exclusion"
+      ],
+      "reason": "Prey selection depends on carried water while all non-water inputs are held fixed. This is explicitly prohibited."
+    },
+    {
+      "id": "e11",
+      "verdict": "reject",
+      "leaves": [
+        "gale_passage"
+      ],
+      "reason": "A saved off-map carried pawn must return correctly, living or dead. Never returning is the red condition."
+    },
+    {
+      "id": "e12",
+      "verdict": "reject",
+      "leaves": [
+        "current_water"
+      ],
+      "reason": "Water is duplicated across split, merge and reload, which violates single accounting."
+    },
+    {
+      "id": "e13",
+      "verdict": "accept",
+      "leaves": [
+        "current_water"
+      ],
+      "reason": "The built wet line, fade, hourbloom and saved attraction are retained. Shared agricultural film watering is deferred to later work, so its absence is not a violation."
+    },
+    {
+      "id": "e14",
+      "verdict": "accept",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "Franchise-free RM is required to be ledger-inert, and here it is."
+    },
+    {
+      "id": "e15",
+      "verdict": "reject",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "The same water is charged once on production and again on drinking. The leaf's red condition and false pass name this double charge."
+    },
+    {
+      "id": "e16",
+      "verdict": "reject",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "T3 titan meat must follow ordinary temperature-driven spoilage. The owner states titan resources shouldn't rot faster than normal meat, but here it spoils about three times faster."
+    },
+    {
+      "id": "e17",
+      "verdict": "accept",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "An eligible giant becomes a skeleton landmark without granting general outdoor-item spoilage immunity. Nearby meat spoils normally."
+    },
+    {
+      "id": "e18",
+      "verdict": "accept",
+      "leaves": [
+        "stillsand_walk",
+        "practical_fortune"
+      ],
+      "reason": "The mid-work reload preserves hauling, wet expiry, warnings and provisioning. The repeat visit does not regenerate the cave reward."
+    },
+    {
+      "id": "c01",
+      "verdict": "reject",
+      "leaves": [
+        "hydration_exclusion"
+      ],
+      "reason": "The 'vigour' factor is a hydration and carried-water proxy renamed as physical suitability. This is a listed false pass and a prohibited ranking."
+    },
+    {
+      "id": "c02",
+      "verdict": "reject",
+      "leaves": [
+        "giant_history"
+      ],
+      "reason": "A flat daily titan resource loss is a listed false pass. At -10 C the titan meat rots faster than ordinary meat, contrary to ordinary temperature-driven spoilage and the owner's ruling."
+    },
+    {
+      "id": "c03",
+      "verdict": "reject",
+      "leaves": [
+        "prepared_harbour"
+      ],
+      "reason": "Dependable rest is granted on first arrival while an awake swimmer threatens the landing. Treating a surfaced swimmer as harmless because it left sand is a listed false pass."
+    },
+    {
+      "id": "c04",
+      "verdict": "reject",
+      "leaves": [
+        "direct_sun"
+      ],
+      "reason": "The roof fails at low sun under a legacy low-sun regime. The test observes only the high-angle roof case, which is a listed false pass."
+    },
+    {
+      "id": "c05",
+      "verdict": "reject",
+      "leaves": [
+        "current_water"
+      ],
+      "reason": "The merge creates water volume (10 to 12) and delivers extra hydration. An item-count check hides the duplication."
+    },
+    {
+      "id": "c06",
+      "verdict": "reject",
+      "leaves": [
+        "debt_return"
+      ],
+      "reason": "Franchise-free RM must be ledger-inert. A Sun-Debt ledger recording entries and bands violates this even if it is called cosmetic."
+    }
+  ]
+}

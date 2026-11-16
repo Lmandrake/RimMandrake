@@ -1,0 +1,38 @@
+{
+  "right_ids": [
+    "e01",
+    "e02",
+    "e03",
+    "e04",
+    "e05",
+    "e06",
+    "e07",
+    "e08",
+    "e09",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16",
+    "e17",
+    "e18",
+    "c01",
+    "c02",
+    "c03",
+    "c04",
+    "c05",
+    "c06"
+  ],
+  "missed_ids": [],
+  "accept_where_reject_core": 0,
+  "control_missed_ids": [
+    "e10",
+    "c01"
+  ],
+  "removed_leaf_missed_ids": [
+    "e10",
+    "c01"
+  ]
+}

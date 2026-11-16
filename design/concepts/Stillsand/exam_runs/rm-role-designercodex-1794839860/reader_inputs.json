@@ -1,0 +1,32 @@
+{
+  "reader_1": {
+    "sheet_sha256": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "tree_file_sha256": "4ab5b11db7a30e136a4f79b10a07f497020fb3aa2bc6d7a42816e6a92f60ff27",
+    "prompt_sha256": "6885fd961c4126fb942aa28ea1448e1bc90353c1b5db38d5fbfa624212c2c65c",
+    "scenario_text_sha256": "a0b784e05c30372981a14503268638a5a6598a38319cde257cc8053eb022457b",
+    "allowed_keys_in_scenarios": [
+      "id",
+      "text"
+    ]
+  },
+  "reader_2": {
+    "sheet_sha256": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+    "tree_file_sha256": "4ab5b11db7a30e136a4f79b10a07f497020fb3aa2bc6d7a42816e6a92f60ff27",
+    "prompt_sha256": "6885fd961c4126fb942aa28ea1448e1bc90353c1b5db38d5fbfa624212c2c65c",
+    "scenario_text_sha256": "a0b784e05c30372981a14503268638a5a6598a38319cde257cc8053eb022457b",
+    "allowed_keys_in_scenarios": [
+      "id",
+      "text"
+    ]
+  },
+  "control": {
+    "sheet_sha256": "640fb4e1afb5f4930a4244cc993158ce67277501afd3ecc82a041222f40be6db",
+    "tree_file_sha256": "c250db30582277d2e24bac928002e2188448cecfd793b0e38aa332ce7e00eebd",
+    "prompt_sha256": "254a68af14edbc93a695766f370f721c2c687c6e4c870f1b036421e6ec251b6a",
+    "scenario_text_sha256": "a0b784e05c30372981a14503268638a5a6598a38319cde257cc8053eb022457b",
+    "allowed_keys_in_scenarios": [
+      "id",
+      "text"
+    ]
+  }
+}

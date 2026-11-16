@@ -1,0 +1,47 @@
+{
+  "scenarios": [
+    {
+      "id": "c01",
+      "text": "In a campaign game, a Muurrok's prey-selection code no longer reads the hydration need directly. Each eligible colonist now gets a 'physical suitability' score: body size multiplied by a 'vigour' factor. The vigour factor is computed from the pawn's current hydration level plus the volume of water items in its inventory. Two colonists of identical body size stand on open sand. One carries three full waterskins and the other carries none. Under the same random seed, the Muurrok consistently targets the colonist with the waterskins. The changelog states that hydration ranking has been removed and that selection is now purely physical.",
+      "expect": "reject: prey ordering still depends on hydration and carried water through a renamed proxy (vigour derived from hydration and carried water volume), which the leaf excludes; renaming hydration-times-size as physical suitability is a listed false pass",
+      "expect_source": "leaf:hydration_exclusion",
+      "by": "challenger"
+    },
+    {
+      "id": "c02",
+      "text": "In a T3 game, a classified titan dies on open sand. Its corpse-site harvestable meat loses a flat 6% of its remaining total each in-game day, independent of temperature. A colonist's butchered ordinary animal meat lies nearby at 25 C and rots away on roughly the same timescale. A matching titan site in a -10 C cold snap keeps losing 6% per day, while ordinary meat beside it does not rot at all. The designer's report compares only the 25 C pair and states that titan resources rot no faster than normal meat.",
+      "expect": "reject: titan resources must follow ordinary temperature-driven meat spoilage; a flat daily loss that continues in the cold, where ordinary meat is preserved, is not ordinary spoilage (a listed false pass), and the matching single-temperature comparison is only a proxy",
+      "expect_source": "leaf:giant_history",
+      "by": "challenger"
+    },
+    {
+      "id": "c03",
+      "text": "An expedition reaches an unexplored rock island. A sand swimmer that had been stalking the crew surfaces and climbs onto the rock edge. Its hostile sand-hunting state switches off because it is no longer in sand, while it stays awake and within attack range of the landing spot. The game immediately marks the landing spot as a Prepared Harbour. Colonists there receive the dependable-rest bonus and sleep in the open. The tester notes that no hostile sand jobs are active on the island.",
+      "expect": "reject: dependable rest is granted on first arrival on unfamiliar rock while the demonstrated threat remains unresolved and no cover has been prepared; treating a surfaced swimmer as harmless because it left the sand is a listed false pass",
+      "expect_source": "leaf:prepared_harbour",
+      "by": "challenger"
+    },
+    {
+      "id": "c04",
+      "text": "At a matched 30 C air temperature, a colonist under a constructed roof shows zero Direct Sun exposure when the sun is at 80 degrees elevation. When the sun drops to 12 degrees, the same roofed colonist shows the same exposure value as a colonist on open ground. The exposure text gives the reason as 'low sun regime'. The test log only records the high-angle roof case and the low-angle open-ground case. It reports that roofs protect and that low sun exposure is correctly mild.",
+      "expect": "reject: roofs must protect at every sun angle under shared geometry; the legacy low-sun regime defeating a roof is the leaf's red outcome, and observing only the high-angle roof case is a listed false pass",
+      "expect_source": "leaf:direct_sun",
+      "by": "challenger"
+    },
+    {
+      "id": "c05",
+      "text": "A colonist splits a stack of 10 sun-still water units into stacks of 4 and 6. Each stack's water-volume comp keeps the original per-unit volume. When the stacks are hauled together and merged, the merge takes the larger stack's volume value for the combined stack. The merged stack again shows 10 items, but its declared water volume totals 12 units, and drinking from it delivers 12 units of hydration. The accounting check compares item counts before and after (10 and 10) and reports water conserved.",
+      "expect": "reject: water duplicates across ordinary split/merge use, which is the leaf's red outcome; a matching item count is a proxy that hides the gain in declared volume",
+      "expect_source": "leaf:current_water",
+      "by": "challenger"
+    },
+    {
+      "id": "c06",
+      "text": "On a franchise-free RimMandrake install with no faith campaign tier, colonists produce and drink sun-still water. A Sun-Debt ledger tab appears and records entries for each production and drink, and the debt band rises from 'Light' to 'Heavy' over a season. No mood thoughts, goodwill changes or incident weight changes are applied. The developer states that the ledger is cosmetic in this configuration and therefore harmless.",
+      "expect": "reject: franchise-free RM must be ledger-inert; a recording and banded Sun-Debt ledger there means the ledger is not inert, regardless of whether downstream consequences are suppressed",
+      "expect_source": "leaf:debt_return",
+      "by": "challenger"
+    }
+  ],
+  "coverage_note": "Targets six core leaves (hydration_exclusion, giant_history, prepared_harbour, direct_sun, current_water, debt_return). Each scenario offers a plausible workaround or proxy: renamed selector inputs, a single-temperature spoilage comparison, a cleared hostile flag, high-angle-only roof evidence, item-count conservation, and suppressed downstream effects. In each case a leaf's experience, cannot_show, red or false_pass text gives a decisive reject. No new scope is introduced, and unrelated obligations are assumed conforming."
+}

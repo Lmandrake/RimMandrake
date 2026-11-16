@@ -1,0 +1,6 @@
+{
+  "run": "rm-role-designercodex-1794839860",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Passed the frozen Stillsand Cold Reader exam: both fresh Claude Opus Readers matched all 24 sourced scenarios, with zero accept-where-reject-core errors and no Challenger misses. A separate fresh Opus Control accepted e10 and c01 after program removal and paraphrase scrubbing of hydration_exclusion, proving discrimination. Examiner, Challenger, both Readers and Control have distinct returned session ids; saved tool-free prompts mechanically exclude expected verdicts and design notes from Readers. All five raw usages are charged as helper work (238828 weighted tokens). Root, tree, sheet, scenes, floor, adopted water boundary, flagship and all 71 inventory entries remain intact. This establishes written-contract comprehension only; runtime observations, current live proof, oracle binding and owner first-touch certification remain unrun or owed. No bridge, restart or deployment action; launcher owns stage advancement."
+}

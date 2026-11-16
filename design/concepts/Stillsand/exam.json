@@ -1,0 +1,218 @@
+{
+  "author": "rm-role-designercodex-1794826273",
+  "examiner": "28ed37af-a787-4624-b88c-1ef11a5d13c9",
+  "challenger": "986b4341-f13b-4105-abc3-1758da464d0f",
+  "inputs": {
+    "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68",
+    "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40"
+  },
+  "scenarios": [
+    {
+      "id": "e01",
+      "text": "A crew of four leaves a working harbour on a shipped-defaults Stillsand map and walks toward a distant rock island. At normal play zoom the crossing is a broad stretch of open sand with no small encounters along the way. A single giant passes far off to the flank. The island's cave turns out to have an unexplored second chamber the crew could not reach, so the player queues another departure to return and search it.",
+      "expect": "accept: the crossing reads as apparently empty sand crossed by a giant, and an uncertain discovery draws a repeated expedition, as required",
+      "expect_source": "leaf:expedition_ocean",
+      "by": "examiner"
+    },
+    {
+      "id": "e02",
+      "text": "Two colonists reach an unfamiliar rock island at dusk. A hostile cave resident is still inside the adjacent cave and has not been fought or driven off, and no roof or cover has been built. The game immediately treats the rock as a dependable rest site, and the colonists sleep there as if fully secure.",
+      "expect": "reject: dependable rest is granted on unfamiliar rock while its actual threat and exposure remain unresolved, which the contract explicitly excludes",
+      "expect_source": "leaf:prepared_harbour",
+      "by": "examiner"
+    },
+    {
+      "id": "e03",
+      "text": "In a 40-colonist harbour, the player places several sieve and still bills that share inputs, with only two tools available. Workers reserve both tools and the shared inputs, then stand idle. None of the bills ever completes, and no explicit refusal is shown.",
+      "expect": "reject: routine jobs stall under contention in a 40-colonist harbour instead of remaining usable",
+      "expect_source": "leaf:ordinary_work",
+      "by": "examiner"
+    },
+    {
+      "id": "e04",
+      "text": "A crew revisits a cave they emptied on an earlier expedition, hoping for water supplies for the next outpost. The cave contains nothing useful this time. The crew returns empty-handed, and the outpost's declared water shortage remains.",
+      "expect": "accept: a previously taken cave may yield no useful fortune, and the contract does not guarantee a useful fortune in every cave",
+      "expect_source": "leaf:practical_fortune",
+      "by": "examiner"
+    },
+    {
+      "id": "e05",
+      "text": "Explorers haul a cave lens back to the harbour, and its label shows a high market value. At the harbour workshop no bill accepts the lens as an input, and it cannot be used for the next expedition's declared missing supply. The next expedition departs still lacking that supply.",
+      "expect": "reject: a valuable-looking discovery cannot actually provision the next undertaking through ordinary work and use",
+      "expect_source": "leaf:practical_fortune",
+      "by": "examiner"
+    },
+    {
+      "id": "e06",
+      "text": "With the sun at a low elevation, a colonist stands under an intact roof. The colonist receives the same Direct Sun exposure as an unroofed colonist beside them at the same air temperature. At high sun elevation the same roof protects normally.",
+      "expect": "reject: roofs must protect at every sun angle, and here the low-sun case defeats the roof",
+      "expect_source": "leaf:direct_sun",
+      "by": "examiner"
+    },
+    {
+      "id": "e07",
+      "text": "A colonist runs a real Fish job on open sand with sound on at play zoom. A submerged swimmer approaches and strikes the colonist, who is killed. Before the strike there was no rumble, wake, track or geophone bearing, and the loss leaves no readable consequence.",
+      "expect": "reject: buried movement and fishing danger must have readable signs, and here hidden movement and body loss had no usable sign",
+      "expect_source": "leaf:sand_signs",
+      "by": "examiner"
+    },
+    {
+      "id": "e08",
+      "text": "During an active gale, a colonist with a geophone listens for movement near the harbour edge. Gale noise suppresses the rumble, existing tracks are erased, and the geophone shows only a coarse bearing marked as uncertain rather than a species marker. After the gale ends, rumble and new tracks become readable again.",
+      "expect": "accept: gale suppression preserves the signs' stated uncertainty while keeping a coarse, readable bearing",
+      "expect_source": "leaf:sand_signs",
+      "by": "examiner"
+    },
+    {
+      "id": "e09",
+      "text": "An unforced Muurrok visit gives its warning and rumble, arrives and begins hunting a colonist. The targeted colonist dies from other causes mid-pursuit. The Muurrok then stops in place on the sand indefinitely, never diving or departing, and the visit never resolves.",
+      "expect": "reject: the giant encounter must complete its warning, action and consequence route, and target death during pursuit leaves it unable to depart",
+      "expect_source": "leaf:giant_encounters",
+      "by": "examiner"
+    },
+    {
+      "id": "e10",
+      "text": "Two identical pawns stand at equal distance on sand within a swimmer's reach, with the same random seed and identical non-water inputs. One pawn carries several water bottles and the other carries none. Across repeated trials, the swimmer always chooses the pawn carrying water.",
+      "expect": "reject: prey selection depends on carried water, which is explicitly excluded",
+      "expect_source": "leaf:hydration_exclusion",
+      "by": "examiner"
+    },
+    {
+      "id": "e11",
+      "text": "A gale carries an exposed colonist off the map. The player saves while the colonist is held off-map and reloads. The natural due-return time passes, and the colonist never returns, alive or dead, and is never accounted for.",
+      "expect": "reject: gale carry must retain its saved return, and a stranded pawn defeats it",
+      "expect_source": "leaf:gale_passage",
+      "by": "examiner"
+    },
+    {
+      "id": "e12",
+      "text": "A colonist splits a stack of 10 units of still-produced water into two stacks of 5. After merging them back and saving and reloading, the stockpile shows 12 units. No new water was produced in the meantime.",
+      "expect": "reject: water duplicates across ordinary split, merge and reload, violating current water accounting",
+      "expect_source": "leaf:current_water",
+      "by": "examiner"
+    },
+    {
+      "id": "e13",
+      "text": "A colonist pours water onto eligible sand next to a field of crops. A visible wet line appears and fades over time, an hourbloom sprouts, and swimmer attraction is saved through reload. The adjacent crops receive no watering from the wet sand.",
+      "expect": "accept: current wet-line, bloom and attraction consequences are retained, and shared agricultural film integration is explicitly later",
+      "expect_source": "leaf:current_water",
+      "by": "examiner"
+    },
+    {
+      "id": "e14",
+      "text": "On a franchise-free RM map with no faith or campaign tier, a colonist produces water at a sun-still and later drinks it. No Sun-Debt ledger entry, debt band, mood thought or goodwill change appears.",
+      "expect": "accept: franchise-free RM must remain ledger-inert",
+      "expect_source": "leaf:debt_return",
+      "by": "examiner"
+    },
+    {
+      "id": "e15",
+      "text": "In the supplying campaign tier with faith, a believer colonist produces one unit of water at a sun-still, and the Sun-Debt ledger rises. The colonist later drinks that same unit, and the ledger rises again for it.",
+      "expect": "reject: Sun-Debt must be affected once, and charging the same water on production and again on drinking double-counts it",
+      "expect_source": "leaf:debt_return",
+      "by": "examiner"
+    },
+    {
+      "id": "e16",
+      "text": "In T3, a classified titan dies and its corpse site is harvested. Its meat is stored at the same temperature as a stack of ordinary animal meat. The titan meat spoils roughly three times faster than the ordinary meat.",
+      "expect": "reject: titan resources must follow ordinary temperature-driven meat spoilage and must not rot faster than ordinary meat",
+      "expect_source": "leaf:giant_history",
+      "by": "examiner"
+    },
+    {
+      "id": "e17",
+      "text": "An ordinary eligible giant dies outdoors and desiccates into a species skeleton landmark. A colonist's stack of ordinary meat left outdoors beside the skeleton spoils at the normal rate for its temperature.",
+      "expect": "accept: giant preservation must not grant general outdoor-item immunity from ordinary spoilage",
+      "expect_source": "leaf:giant_history",
+      "by": "examiner"
+    },
+    {
+      "id": "e18",
+      "text": "A crew departs a prepared harbour, crosses sparse sand, secures an island and hauls cave supplies home. Midway through return hauling, with a wet sand interval active and a giant warning pending, the player saves and reloads. The hauling finishes, the wet line expires on schedule, the warning resolves, and the workshop provisions the next departure. A repeat visit to the same cave finds it still emptied.",
+      "expect": "accept: the expedition and resupply loop continues through a mid-work reload without losing work or persistent consequences, and the repeat expedition does not regenerate the reward",
+      "expect_source": "leaf:stillsand_walk",
+      "by": "examiner"
+    },
+    {
+      "id": "c01",
+      "text": "In a campaign game, a Muurrok's prey-selection code no longer reads the hydration need directly. Each eligible colonist now gets a 'physical suitability' score: body size multiplied by a 'vigour' factor. The vigour factor is computed from the pawn's current hydration level plus the volume of water items in its inventory. Two colonists of identical body size stand on open sand. One carries three full waterskins and the other carries none. Under the same random seed, the Muurrok consistently targets the colonist with the waterskins. The changelog states that hydration ranking has been removed and that selection is now purely physical.",
+      "expect": "reject: prey ordering still depends on hydration and carried water through a renamed proxy (vigour derived from hydration and carried water volume), which the leaf excludes; renaming hydration-times-size as physical suitability is a listed false pass",
+      "expect_source": "leaf:hydration_exclusion",
+      "by": "challenger"
+    },
+    {
+      "id": "c02",
+      "text": "In a T3 game, a classified titan dies on open sand. Its corpse-site harvestable meat loses a flat 6% of its remaining total each in-game day, independent of temperature. A colonist's butchered ordinary animal meat lies nearby at 25 C and rots away on roughly the same timescale. A matching titan site in a -10 C cold snap keeps losing 6% per day, while ordinary meat beside it does not rot at all. The designer's report compares only the 25 C pair and states that titan resources rot no faster than normal meat.",
+      "expect": "reject: titan resources must follow ordinary temperature-driven meat spoilage; a flat daily loss that continues in the cold, where ordinary meat is preserved, is not ordinary spoilage (a listed false pass), and the matching single-temperature comparison is only a proxy",
+      "expect_source": "leaf:giant_history",
+      "by": "challenger"
+    },
+    {
+      "id": "c03",
+      "text": "An expedition reaches an unexplored rock island. A sand swimmer that had been stalking the crew surfaces and climbs onto the rock edge. Its hostile sand-hunting state switches off because it is no longer in sand, while it stays awake and within attack range of the landing spot. The game immediately marks the landing spot as a Prepared Harbour. Colonists there receive the dependable-rest bonus and sleep in the open. The tester notes that no hostile sand jobs are active on the island.",
+      "expect": "reject: dependable rest is granted on first arrival on unfamiliar rock while the demonstrated threat remains unresolved and no cover has been prepared; treating a surfaced swimmer as harmless because it left the sand is a listed false pass",
+      "expect_source": "leaf:prepared_harbour",
+      "by": "challenger"
+    },
+    {
+      "id": "c04",
+      "text": "At a matched 30 C air temperature, a colonist under a constructed roof shows zero Direct Sun exposure when the sun is at 80 degrees elevation. When the sun drops to 12 degrees, the same roofed colonist shows the same exposure value as a colonist on open ground. The exposure text gives the reason as 'low sun regime'. The test log only records the high-angle roof case and the low-angle open-ground case. It reports that roofs protect and that low sun exposure is correctly mild.",
+      "expect": "reject: roofs must protect at every sun angle under shared geometry; the legacy low-sun regime defeating a roof is the leaf's red outcome, and observing only the high-angle roof case is a listed false pass",
+      "expect_source": "leaf:direct_sun",
+      "by": "challenger"
+    },
+    {
+      "id": "c05",
+      "text": "A colonist splits a stack of 10 sun-still water units into stacks of 4 and 6. Each stack's water-volume comp keeps the original per-unit volume. When the stacks are hauled together and merged, the merge takes the larger stack's volume value for the combined stack. The merged stack again shows 10 items, but its declared water volume totals 12 units, and drinking from it delivers 12 units of hydration. The accounting check compares item counts before and after (10 and 10) and reports water conserved.",
+      "expect": "reject: water duplicates across ordinary split/merge use, which is the leaf's red outcome; a matching item count is a proxy that hides the gain in declared volume",
+      "expect_source": "leaf:current_water",
+      "by": "challenger"
+    },
+    {
+      "id": "c06",
+      "text": "On a franchise-free RimMandrake install with no faith campaign tier, colonists produce and drink sun-still water. A Sun-Debt ledger tab appears and records entries for each production and drink, and the debt band rises from 'Light' to 'Heavy' over a season. No mood thoughts, goodwill changes or incident weight changes are applied. The developer states that the ledger is cosmetic in this configuration and therefore harmless.",
+      "expect": "reject: franchise-free RM must be ledger-inert; a recording and banded Sun-Debt ledger there means the ledger is not inert, regardless of whether downstream consequences are suppressed",
+      "expect_source": "leaf:debt_return",
+      "by": "challenger"
+    }
+  ],
+  "scenarios_hash": "50cfd21392f5685a5d37785f823974ddd60d149602105b11037741e84f2bc3ab",
+  "readers": [
+    "6101a370-13e3-4bc5-ad14-335da67239d5",
+    "a0cc2e9a-bbda-4d7c-9c7e-e2b2821095ea"
+  ],
+  "control": {
+    "agent": "dbb442b9-216e-4f85-978e-22a7937b8131",
+    "broken_leaf": "hydration_exclusion",
+    "missed": true,
+    "missed_ids": [
+      "e10",
+      "c01"
+    ],
+    "removed_leaf_missed_ids": [
+      "e10",
+      "c01"
+    ],
+    "responses": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/control.json",
+    "copy": "design/concepts/Stillsand/exam_control/copy.json"
+  },
+  "score": {
+    "right": 24,
+    "total": 24
+  },
+  "accept_where_reject_core": 0,
+  "challenger_misses": [],
+  "evidence": {
+    "run": "rm-role-designercodex-1794839860",
+    "protocol": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/protocol.json",
+    "frozen_scenarios": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/scenarios.frozen.json",
+    "reader_inputs": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/reader_inputs.json",
+    "responses": {
+      "reader_1": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/reader_1.json",
+      "reader_2": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/reader_2.json",
+      "control": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/control.json"
+    },
+    "usage": "design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/usage.json",
+    "interpretation": "Written-contract comprehension only; no runtime proof, owner enjoyment, first-touch certification or oracle binding."
+  }
+}

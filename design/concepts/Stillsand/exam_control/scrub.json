@@ -1,0 +1,13 @@
+{
+  "removed_rule": "hydration_exclusion",
+  "manual_edits": [
+    {
+      "leaf": "scene_observer",
+      "field": "tier_reason",
+      "before": "Actual saved engine state and source/provider-independent normal targeting require composed-tier runtime reads after isolated offline can-fail checks.",
+      "after": "Actual saved engine state requires composed-tier runtime reads after isolated offline can-fail checks.",
+      "why": "Strip residual provider-independent targeting paraphrase of the removed rule."
+    }
+  ],
+  "audit": "No hydration, water appraisal/score/content, carried-water targeting or thirst-provider rule survives in the input copy. Living-body eligibility, droid immunity, hunts and thumper draw remain independent obligations. No additional leaf removed."
+}

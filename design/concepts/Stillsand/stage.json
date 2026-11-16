@@ -23,10 +23,45 @@
     "ref": "rm-role-designercodex-1794824250 /root/water_flagship_review authority and final artifact review; combined reviewer estimate; stage2_return_review.json",
     "stage": 2,
     "tokens": 50000
+   },
+   {
+    "at": "2026-11-16T14:40:14Z",
+    "kind": "helper",
+    "ref": "challenger 986b4341-f13b-4105-abc3-1758da464d0f raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/challenger.raw.json",
+    "stage": 4,
+    "tokens": 42917
+   },
+   {
+    "at": "2026-11-16T14:40:43Z",
+    "kind": "helper",
+    "ref": "examiner 28ed37af-a787-4624-b88c-1ef11a5d13c9 raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/examiner.raw.json",
+    "stage": 4,
+    "tokens": 58416
+   },
+   {
+    "at": "2026-11-16T14:42:25Z",
+    "kind": "helper",
+    "ref": "reader_1 6101a370-13e3-4bc5-ad14-335da67239d5 raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/reader_1.raw.json",
+    "stage": 4,
+    "tokens": 45195
+   },
+   {
+    "at": "2026-11-16T14:42:25Z",
+    "kind": "helper",
+    "ref": "reader_2 a0cc2e9a-bbda-4d7c-9c7e-e2b2821095ea raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/reader_2.raw.json",
+    "stage": 4,
+    "tokens": 46470
+   },
+   {
+    "at": "2026-11-16T14:42:26Z",
+    "kind": "helper",
+    "ref": "control dbb442b9-216e-4f85-978e-22a7937b8131 raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/control.raw.json",
+    "stage": 4,
+    "tokens": 45830
    }
   ],
   "reserve": 60000,
-  "spent": 123000
+  "spent": 361828
  },
  "history": [
   {
@@ -160,6 +195,12 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794836727: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T14:37:47Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794839860, stage 4, budget 500000"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -433,7 +474,27 @@
    }
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-16T14:37:47Z",
+  "inputs": {
+   "exam": null,
+   "floor": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+   "scenes": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
+   "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+   "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68"
+  },
+  "manifest": {
+   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+  },
+  "owner_uncited": [],
+  "reserved": 500000,
+  "run": "rm-role-designercodex-1794839860",
+  "runner": "codex",
+  "stage": 4
+ },
  "schema": 1,
  "stage": 4,
  "status": "ready"
