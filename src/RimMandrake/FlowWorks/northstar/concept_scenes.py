@@ -385,6 +385,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
 EXC = 'RimMandrake.FlowWorks.RM_PromotionProofs'
 NSP = 'RimMandrake.FlowWorks.RM_NorthstarProofs'
 FLUIDID = 'RimMandrake.FlowWorks.RM_FluidIdentityProof'
+HPROBE = 'RimMandrake.FlowWorks.Hose.HoseProbe'
 WATER, TAR, FUEL, OIL = 'RM_Fluid_Water', 'RM_Fluid_Tar', 'RM_Fluid_Chemfuel', 'RM_Fluid_Oil'
 O = (60, 60)  # scene origin on the prepared map; Stage 6 moves it to the dense map's free block
 
@@ -416,6 +417,13 @@ class _Stage:
         r = self.B.call('jawa/static_call', type=typ, method=method, args=arg)
         self.r['calls'].append({'tool': 'jawa/static_call', 'args': [typ, method, arg], 'result': r})
         return str((r or {}).get('result', 'REFUSED: no result %s' % r))
+
+    def hp(self, cmd):
+        """One HoseProbe verb (census | lay: | pump: | tank: ...), recorded; a reply that never came is {'success': False}."""
+        r = self.B.probe_of(HPROBE, cmd, 20.0, 0.3)
+        r = r if isinstance(r, dict) else {'success': False, 'raw': r}
+        self.r['calls'].append({'tool': 'hose_probe', 'args': cmd, 'result': r})
+        return r
 
     def setting(self, name, value, typ=SETTINGS):
         if (typ, name) not in self.prior:
@@ -567,16 +575,102 @@ def _pawn_height(S):
     S.row('PH_control_undug_no_offset', ctl is not None and abs(float(ctl)) < 1e-3, ctl)
 
 
+# sc_hose_look, staged from proof_hose.py's realflow plot (scene 0, measured live): a 3-cell channel dug 2 and filled 1 m, the
+# pump on its north bank, a charged battery, the reel north of the pump facing a tank 14 cells east, the hose laid to the
+# tank's west neighbour. Visit 1 (2026-11-15) spawned a bare pump and reel side by side: no source, no power, no laid hose,
+# so the pump never ran and "flat" passed on a hose that was never there (RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_
+# NO_SOURCE). Every row reads the hose census (state, tintLiquid) and the far tank, and a read that cannot carry a verdict
+# (no hose in the census, an unpowered pump in the flowing case) is UNMEASURED, never PASS.
+HOSE_LIQUID = 'RM_Liquid_FreshWater'
+HOSE_PLUMP_BOUND, HOSE_FLAT_BOUND, HOSE_CONTROL_WAIT = 300, 915, 600   # realflow: plump <= 300 ticks; flat <= 1.5 x 250 + 530
+HOSE_CYCLE = 250
+
+
+def _hose_plot(S, battery=True):
+    import validation_core as V
+    ox, oz = O
+    P = {'channel': [(ox + 2 + k, oz + 6) for k in range(3)], 'pump': (ox + 3, oz + 7), 'battery': (ox + 6, oz + 6),
+         'reel': (ox + 3, oz + 8), 'end': (ox + 16, oz + 9), 'tank': (ox + 17, oz + 9)}
+    S.call('jawa/destroy_batch', rects='%d,%d,32,14' % (ox - 6, oz), categories='Building,Plant,Item,Filth')
+    S.call('jawa/set_terrain_batch', ops='Soil:%d,%d,32,14' % (ox - 6, oz))
+    S.call('jawa/set_roof_batch', ops='None:%d,%d,32,14' % (ox - 6, oz))
+    S.dig(P['channel'], 2)
+    S.dig(P['channel'], 0, water_m=1.0)
+    ops = ['RM_LiquidPump:%d,%d' % P['pump'], V.reel_toward(P['reel'], P['end']), 'RM_LiquidTank:%d,%d' % P['tank']]
+    ops += ['Battery:%d,%d' % P['battery']] if battery else []
+    b = S.call('jawa/build_batch', ops=';'.join(ops), faction='player', wipeExisting=False)
+    require(int(b.get('survived') or 0) >= len(ops), 'build_batch built less than asked: %s' % b)   # survived, never placed
+    S.ticks(2)
+    if battery:
+        bid = ((S.call('jawa/list_things', defName='Battery', rect='%d,%d,1,2' % P['battery'], limit=2).get('things') or [{}])[0]).get('id')
+        require(bid is not None, 'no battery at %s' % (P['battery'],))
+        S.call('jawa/battery_set', thing=bid, mode='setPct', value=1.0)
+    P['powered'] = _poll_ticks(S, lambda: S.hp('pump:%d,%d' % P['pump']).get('powered'), 400 if battery else 0)
+    lay = S.hp('lay:%d,%d,%d,%d' % (P['reel'] + P['end']))
+    require(lay.get('success') and lay.get('layOk'), 'the hose would not lay: %s' % lay)
+    P['at_reel'] = lambda pos: V.reel_at(pos, P['reel'])
+    return P
+
+
+def _poll_ticks(S, fn, bound, step=10):
+    """Ticks until fn() is truthy (None if never within bound)."""
+    waited = 0
+    while not fn():
+        if waited >= bound:
+            return None
+        S.ticks(step)
+        waited += step
+    return waited
+
+
+def _hose_of(S, P):
+    for h in S.hp('census').get('hoses') or []:
+        if P['at_reel'](h.get('reel')):
+            return h
+    return {}
+
+
+def _tank_units(S, cell):
+    r = S.hp('tank:%d,%d' % cell)
+    return r.get('units') if r.get('success') else None
+
+
 def _hose_look(S):
-    S.call('jawa/spawn_batch', ops='RM_LiquidPump:%d,%d' % O)
-    S.call('jawa/spawn_batch', ops='RM_HoseReel:%d,%d' % (O[0] + 10, O[1]))
-    on = S.sc(NSP, 'ProofPump', '%d,%d' % O)
-    S.shot('flowing', O, 14, 6)
-    S.row('HOSE_plump_when_flowing', 'running=True' in on, on)
-    S.call('jawa/static_call', type=NSP, method='ProofPump', args='%d,%d;draw' % O)
-    S.shot('stopped', O, 14, 6)
-    off = S.sc(NSP, 'ProofPump', '%d,%d' % O)
-    S.row('HOSE_flat_when_not', 'running=False' in off, off)
+    P = _hose_plot(S)
+    require(P['powered'] is not None, 'the pump never read powered with a charged battery beside it')
+    u0 = _tank_units(S, P['tank'])
+    plump = _poll_ticks(S, lambda: _hose_of(S, P).get('state') == 'Plump', HOSE_PLUMP_BOUND)
+    h = _hose_of(S, P)
+    # the far tank gains by the next pump cycle (250 ticks at the pump's own phase), not at the plump tick
+    _poll_ticks(S, lambda: u0 is None or (_tank_units(S, P['tank']) or 0) > u0, HOSE_CYCLE + 10)
+    u1 = _tank_units(S, P['tank'])
+    S.shot('flowing', P['reel'], 18, 8)
+    seen = bool(h.get('state')) and u0 is not None and u1 is not None
+    S.row('HOSE_plump_when_flowing', seen and plump is not None and u1 > u0,
+          {'plumpAfterTicks': plump, 'state': h.get('state'), 'tank': [u0, u1], 'netLink': h.get('netLink')}, unmeasured=not seen)
+    S.row('HOSE_tinted_carried_liquid', h.get('tintLiquid') == HOSE_LIQUID, {'tintLiquid': h.get('tintLiquid'), 'want': HOSE_LIQUID},
+          unmeasured=not h.get('state') or plump is None)
+    cut = S.call('jawa/destroy_batch', rects='%d,%d,1,2' % P['battery'], categories='Building')
+    require(int(cut.get('destroyed') or 0) >= 1, 'battery not destroyed: %s' % cut)
+    flat = _poll_ticks(S, lambda: _hose_of(S, P).get('state') == 'Flat', HOSE_FLAT_BOUND)
+    a = _tank_units(S, P['tank'])
+    S.ticks(300)
+    b = _tank_units(S, P['tank'])
+    S.shot('stopped', P['reel'], 18, 8)
+    S.row('HOSE_flat_when_not', flat is not None and a is not None and a == b,
+          {'flatAfterCut': flat, 'bound': HOSE_FLAT_BOUND, 'tankAfterCut': [a, b], 'state': _hose_of(S, P).get('state')},
+          unmeasured=plump is None or a is None)
+    # control: the same plot with no battery -- a laid reel alone must not plump (rules out the look keyed to the lay)
+    S.again()
+    C = _hose_plot(S, battery=False)
+    states = []
+    for _ in range(HOSE_CONTROL_WAIT // 30):
+        S.ticks(30)
+        states.append(_hose_of(S, C).get('state'))
+    S.shot('control_unpowered', C['reel'], 18, 8)
+    S.row('HOSE_control_unpowered_stays_flat', all(x == 'Flat' for x in states),
+          {'states': sorted(set(map(str, states))), 'pumpPowered': C['powered'] is not None},
+          unmeasured=not states or None in states or C['powered'] is not None)
 
 
 def _trench_cover(S):
