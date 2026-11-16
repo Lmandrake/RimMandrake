@@ -8,7 +8,9 @@ Daily judging:
 1. Run `python3 src/RimMandrake/Utils/findings_fold.py run` so the fold is fresh, then read
    /mnt/d/ClaudeWork/rimmandrake/findings_fold/findings_fold.md TOP FIRST with offset/limit or grep, never whole:
    CONTRADICTIONS (a done/validated item whose own latest run of a row failed), then NEW, then
-   DECIDED-and-failed-again. HEALTH rows are Operations': leave them.
+   DECIDED-and-failed-again. HEALTH rows are Operations': leave them. A failed-again finding keeps NO outcome (and
+   keeps `flow.untriaged_findings` above 0) until its signature gets a decide dated after it: a note on the item is
+   not one. Re-decide each such signature in step 2, even when the fix already landed (cite the fix sha in `--why`).
 2. Per signature, decide ONCE: work (`python3 src/RimMandrake/rimflow/cli.py spawn --from <finding> ...`; check
    `--help` first), or `python3 src/RimMandrake/Utils/findings_fold.py decide <SIG> --as merge|memory|route|retire|undo
    --into ... --why "..." --seat BENCH`. A CONTRADICTION is reopened by a fail `verify` on the item only when its own
