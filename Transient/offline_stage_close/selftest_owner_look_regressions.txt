@@ -1,0 +1,37 @@
+PASS fixed world: every scene row PASS (82 rows)
+PASS fixed world: every row family is exercised
+PASS planted old_build goes red in ['OL_buildings_covered', 'OL_corpses_covered', 'OL_goods_covered']
+PASS planted corpse_refused goes red in ['OL_corpses_covered']
+PASS planted goods_dry goes red in ['OL_goods_covered']
+PASS planted tar_seen goes red in ['OL_opaque_hides']
+PASS planted shadow_faded goes red in ['OL_no_surface_shadow']
+PASS planted shadow_lost goes red in ['OL_no_surface_shadow']
+PASS planted shadow_over_sheet goes red in ['OL_no_surface_shadow']
+PASS planted label_bright goes red in ['OL_labels_fade']
+PASS planted non_monotone goes red in ['OL_one_law_over_fill']
+PASS shadow under the sheet in clear water at the dry alpha -> PASS
+PASS planted shadow over the sheet -> its per-thing rows and the sheet row FAIL
+PASS no shadowQueue in the reply: the sheet row is BLOCKED ON HOOK, never PASS
+PASS tar: a shadow seen through it -> FAIL
+PASS label: top exactly at the line, label 1 -> PASS
+PASS scene: TableButcher's top at the BP3 line reads PASS
+PASS label: 1 m over the top in clear water at full brightness -> FAIL
+PASS label: under tar over the top but still shown -> FAIL
+PASS vacuous read (no map) -> every row UNMEASURED
+PASS vacuous read (no engine) -> every row UNMEASURED
+PASS vacuous read (no pit cell) -> every row UNMEASURED
+PASS vacuous read (thing not in a pit) -> every row UNMEASURED
+PASS empty plan -> one UNMEASURED row, not an empty PASS
+PASS dry copy: covered rows PASS on share 0
+PASS pour: OK with overflow is PASS
+PASS pour: a refusal for room is FAIL
+PASS pour: OK that kept a remainder for room is FAIL
+PASS screenshot: off before and after PASS
+PASS screenshot: left on before the run FAIL
+PASS screenshot: still on at the end FAIL
+PASS screenshot: unreadable is UNMEASURED, never PASS
+PASS refused read -> FAIL
+PASS other thing first at the cell -> UNMEASURED
+PASS blocked hooks make the exit 2, not 0
+PASS a FAIL makes the exit 1
+selftest_owner_look_regressions: PASS (0 bad)

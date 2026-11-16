@@ -1,0 +1,37 @@
+scene under test: working tree
+ok    (a) the scene source names only declared tool parameters (6 functions) 
+      healthy calm: SRC_pond_drops             PASS       ('litres', 2000.0, 1273.0, 'moat took', 272700)
+      healthy calm: SRC_shore_recedes          PASS       ('wet squares', 200, 160)
+      healthy calm: SRC_control_tap_zero       PASS       ('litres', 1273.0, 1273.0, 'drained', 0.0)
+      healthy calm: SRC_flow_stops_when_empty  PASS       ('pond dry', True, 'drained', 560.0, 560.0, 'litres', 0.0)
+      healthy calm: SRC_refill_visible         PASS       ('litres', (0.0, 945.0, 2000.0, 2000.0), 'full', 2000.0)
+      healthy calm: SRC_lake_reads_endless     UNMEASURED this map has no limitless body (1 bodies, none limitless): the calm site has no edge lake 
+ok    (a) every bridge call the scene made matched its C# [Tool] parameters 
+ok    (a) every static_call names a real C# method with that many | arguments ['PlaceSink', 'Remove', 'Report', 'ProofFillWithFluid', 'ProofReadout'] 
+ok    (a) every filled square was dug first 
+ok    (b) every bar row is asked 
+ok    (b) the healthy calm fake reads every row PASS, the endless row UNMEASURED 
+ok    (b) the calm endless row states its reason (no limitless body, owed on the river site) 
+ok    (b) the calm scene is not PASS while a row is UNMEASURED 
+ok    (b) a fake map with a limitless body reads every row PASS 
+ok    (b) the sinks came off and the weather lock was released 
+ok    (c) fault pays_nothing: SRC_pond_drops reads FAIL 
+ok    (c) fault pays_nothing: SRC_shore_recedes reads FAIL 
+ok    (c) fault shore_frozen: SRC_shore_recedes reads FAIL 
+ok    (c) fault zero_tap_drains: SRC_control_tap_zero reads FAIL 
+ok    (c) fault endless_pond: SRC_flow_stops_when_empty reads FAIL 
+ok    (c) fault never_refills: SRC_refill_visible reads FAIL 
+ok    (c) fault instant_refill: SRC_refill_visible reads FAIL 
+ok    (c) fault lake_drops: SRC_lake_reads_endless reads FAIL 
+ok    (c) fault refused_readout: SRC_pond_drops reads UNMEASURED 
+ok    (c) fault refused_readout: SRC_refill_visible reads UNMEASURED 
+ok    (c) fault refused_readout: SRC_control_tap_zero reads UNMEASURED 
+ok    (c) fault zero_rect: SRC_shore_recedes reads UNMEASURED 
+ok    (c) fault zero_rect: SRC_pond_drops reads UNMEASURED 
+ok    (c) fault zero_rect: SRC_flow_stops_when_empty reads UNMEASURED 
+ok    (c) fault sink_refused: SRC_control_tap_zero reads UNMEASURED 
+ok    (c) fault sink_refused: SRC_flow_stops_when_empty reads UNMEASURED 
+ok    (c) fault drained_blind: SRC_flow_stops_when_empty reads UNMEASURED 
+ok    (c) fault no_rain: SRC_refill_visible reads UNMEASURED 
+ok    (c) fault refused_bodies: SRC_lake_reads_endless reads UNMEASURED 
+selftest_source_pays_scene [working tree]: ok (0 failed)

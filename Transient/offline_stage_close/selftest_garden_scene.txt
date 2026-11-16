@@ -1,0 +1,11 @@
+ok    every staging call keeps its tool contract []
+ok    healthy garden: every row PASS {'GARDEN_head_draws_its_net': 'PASS', 'GARDEN_no_pump_no_spray': 'PASS', 'GARDEN_faucet_drinks_from_its_tank': 'PASS', 'GARDEN_filter_keeps_its_rate': 'PASS', 'GARDEN_still_within_its_def_rate': 'PASS', 'GARDEN_drill_pours_its_yield': 'PASS', 'GARDEN_drill_charges_what_landed': 'PASS', 'GARDEN_walled_yard_lies_level': 'PASS'}
+ok    planted CALLER_CONV_DROPS_CLIPPED turns GARDEN_filter_keeps_its_rate FAIL (got FAIL)
+ok    planted CALLER_SPR_SPRAYS_WITHOUT_PUMP turns GARDEN_no_pump_no_spray FAIL (got FAIL)
+ok    planted DEF_STILL_RATE_TENFOLD turns GARDEN_still_within_its_def_rate FAIL (got FAIL)
+ok    planted DRILL_CHARGES_WHOLE_LEVEL turns GARDEN_drill_charges_what_landed FAIL (got FAIL)
+ok    planted SHEET_DRY_ISLAND turns GARDEN_walled_yard_lies_level FAIL (got FAIL)
+ok    no sun: the still row is UNMEASURED, not PASS
+ok    a broken clock: no row PASSes [('GARDEN_head_draws_its_net', 'UNMEASURED'), ('GARDEN_no_pump_no_spray', 'UNMEASURED'), ('GARDEN_faucet_drinks_from_its_tank', 'UNMEASURED'), ('GARDEN_filter_keeps_its_rate', 'UNMEASURED')]
+ok    the filter window (32, 33) excludes a dropped-clip run (30 batches at its best)
+selftest_garden_scene: ok

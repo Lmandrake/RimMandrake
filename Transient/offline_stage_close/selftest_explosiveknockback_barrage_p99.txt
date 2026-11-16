@@ -1,0 +1,41 @@
+PASS W0 the decider read every fixture (13 of 13; dotnet exit 0)
+file                                   windowRows  p99(ms)  worst(ms)  verdict
+RM_FrameProbe_20261115T172102.csv             583     56.0     1115.8  FAIL
+PASS W RM_FrameProbe_20261115T172102.csv decider (583, 56.03, 1115.784, 23.972, False) equals reference (583, 56.0, 1115.8, False)
+RM_FrameProbe_20261115T172255.csv             949     13.6      145.5  PASS
+PASS W RM_FrameProbe_20261115T172255.csv decider (949, 13.55, 145.508, 24.973, True) equals reference (949, 13.6, 145.5, True)
+RM_FrameProbe_20261115T172430.csv             441     18.7      173.1  PASS
+PASS W RM_FrameProbe_20261115T172430.csv decider (441, 18.677, 173.096, 25.03, True) equals reference (441, 18.7, 173.1, True)
+RM_FrameProbe_20261115T172127.csv             925     15.0      151.3  PASS
+PASS W RM_FrameProbe_20261115T172127.csv decider (925, 14.954, 151.306, 25.018, True) equals reference (925, 15.0, 151.3, True)
+RM_FrameProbe_20261115T172320.csv            1027     11.4      144.4  PASS
+PASS W RM_FrameProbe_20261115T172320.csv decider (1027, 11.353, 144.409, 25.074, True) equals reference (1027, 11.4, 144.4, True)
+RM_FrameProbe_20261115T172455.csv             832     24.7      104.6  PASS
+PASS W RM_FrameProbe_20261115T172455.csv decider (832, 24.658, 104.614, 25.017, True) equals reference (832, 24.7, 104.6, True)
+RM_FrameProbe_20261115T172152.csv             441     21.6      153.9  PASS
+PASS W RM_FrameProbe_20261115T172152.csv decider (441, 21.606, 153.931, 25.018, True) equals reference (441, 21.6, 153.9, True)
+RM_FrameProbe_20261115T172345.csv             441     20.8       65.3  PASS
+PASS W RM_FrameProbe_20261115T172345.csv decider (441, 20.752, 65.308, 25.019, True) equals reference (441, 20.8, 65.3, True)
+RM_FrameProbe_20261115T172520.csv             912     17.8      155.2  PASS
+PASS W RM_FrameProbe_20261115T172520.csv decider (912, 17.822, 155.151, 24.981, True) equals reference (912, 17.8, 155.2, True)
+planted_sustained_75ms_1.5s.csv               371     75.0       75.0  FAIL
+PASS W planted_sustained_75ms_1.5s.csv decider (371, 75.0, 75.0, 25.005, False) equals reference (371, 75.0, 75.0, False)
+planted_sustained_55ms_2s.csv                 358     55.0       65.3  FAIL
+PASS W planted_sustained_55ms_2s.csv decider (358, 55.0, 65.308, 24.999, False) equals reference (358, 55.0, 65.3, False)
+planted_single_200ms.csv                      430     21.5      200.0  PASS
+PASS W planted_single_200ms.csv decider (430, 21.484, 200.0, 25.003, True) equals reference (430, 21.5, 200.0, True)
+planted_stopped_at_6s.csv                     306     21.5       25.8  FAIL
+PASS W planted_stopped_at_6s.csv decider (306, 21.484, 25.757, 5.996, False) equals reference (306, 21.5, 25.8, False)
+PASS O mod-on run 172152 passes the p99-in-window bar (p99 21.606 ms)
+PASS O mod-on run 172345 passes the p99-in-window bar (p99 20.752 ms)
+PASS O mod-on run 172520 passes the p99-in-window bar (p99 17.822 ms)
+PASS S planted_sustained_75ms_1.5s.csv fails (p99 75.0 ms; why=p99 frame in the window 75 ms over 50)
+PASS S planted_sustained_55ms_2s.csv fails (p99 55.0 ms; why=p99 frame in the window 55 ms over 50)
+PASS P one 200 ms stall in the window passes and is the reported worst ((430, 21.484, 200.0, 25.003, True))
+PASS E a probe stopped at 6 s fails (why=the probe stopped at 6.00 s, before the window closed at 8.25 s)
+PASS T1 tree.json barrage_frame_budget experience (today's tree) names the p99, the window and 50 ms
+PASS T2 scenes.json sc_barrage_perf expect names the p99, the window and 50 ms
+PASS T3 the control reports its own p99 in the same window
+PASS T4 the single-worst-frame wording is gone from the bar and the scene (today's tree)
+PASS T5 BarragePerf stops the probe with the 0.9-8.25 s window
+ALL PASS

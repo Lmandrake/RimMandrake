@@ -1,0 +1,16 @@
+under test: /home/mandrake/rm/relentless/clones/RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED.det/src/RimMandrake/FlowWorks/northstar/concept_scenes.py
+ok    the scene's own raid never stops the strict governor (narrowed for every tick of it) 
+ok    the scene leaves the governor as it found it 
+ok    the owner's cover settings are restored 
+ok    every staging call keeps its tool contract (C# parameters, ProofTrenchCover target;shooter with a ranged shooter, a placed live raid) 
+ok    cover is read as combat cover (RM_TrenchCover.ProofTrenchCover), never the pit-lid ProofCover 
+ok    healthy fake (0.441 in the trench, 0 on open ground, raiders stop at the lip): every row PASS 
+ok    planted fault, trench cover equal to open ground (0 in the trench): the cover and hit rows FAIL 
+ok    planted fault, open ground reads trench cover: the control FAILs 
+ok    planted fault, a raider standing in the cage pit: TR_no_raider_shelters_in_pit FAIL 
+ok    an all-zero TRENCH vector: every cover row UNMEASURED, never PASS 
+ok    a REFUSED ProofTrenchCover reply: every cover row UNMEASURED, never PASS 
+ok    a raid that never came: TR_no_raider_shelters_in_pit UNMEASURED, never PASS 
+ok    a raid of nobody: TR_no_raider_shelters_in_pit UNMEASURED, never PASS 
+ok    a raid that never came cannot FAIL or PASS the pit row on its own 
+selftest_trench_cover_scene: ok (0 failed)

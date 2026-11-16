@@ -1,0 +1,14 @@
+under test: /home/mandrake/rm/relentless/clones/RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED.det/src/RimMandrake/FlowWorks/northstar/concept_scenes.py
+ok    the scene's own raid never stops the clock (no GovernorStop hostile_arrival; visit 1 died at tick 60 of it) 
+ok    every staging call keeps its tool contract (C# parameters, ProofCover x,z, set_plants def, lids on two banks, RM_CaptureDown by a colonist from an undug lip) 
+ok    the scene leaves the governor as it found it 
+ok    healthy fake (two fall, both captured from the lip, the open pit holds nobody): every row PASS 
+ok    a mod whose capture makes no prisoner: PTR_fallen_become_prisoners FAIL, the fall and the control PASS 
+ok    raiders that fall into the open pit: the control FAILs 
+ok    a raid that never reaches the trench: every row UNMEASURED, none PASS 
+ok    a raid of nobody (an all-zero watch): every row UNMEASURED, none PASS 
+ok    lids that never give way (nobody fell): PTR_two_fall FAIL, the capture UNMEASURED, never PASS 
+ok    ProofCaptureDown REFUSED: the capture row UNMEASURED, never PASS or FAIL 
+ok    ProofTrap REFUSED: the fall row UNMEASURED, never PASS 
+ok    ProofTrap REFUSED on raiders standing in the open pit: the control UNMEASURED, never PASS 
+selftest_pit_trap_raid_scene: ok (0 failed)

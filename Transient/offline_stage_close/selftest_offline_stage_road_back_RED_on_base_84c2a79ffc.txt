@@ -1,0 +1,40 @@
+FAIL  the tick at Stage 3 gives no fixer to game-only items; it reads game_only  {'mod': 'ExplosiveKnockback', 'stage': 'offline_build', 'aut': 'fixer', 'fix_item': 'RIMMANDRAKE_FIX_LIVE_ONE_A', 'decision': 'fixer', 'why': 'road-back item RIMMANDRAKE_FIX_LIVE_ONE_A (of 2 open, caused by ROUTE_X) gets one fixer run'}
+FAIL  its Needs Conductor line is the move back to Stage 6  {'mod': 'ExplosiveKnockback', 'stage': 'offline_build', 'aut': 'fixer', 'fix_item': 'RIMMANDRAKE_FIX_LIVE_ONE_A', 'decision': 'fixer', 'why': 'road-back item RIMMANDRAKE_FIX_LIVE_ONE_A (of 2 open, caused by ROUTE_X) gets one fixer run'}
+FAIL  the tick at Stage 3 with a mix: the fixer goes to the offline item only  {'mod': 'ExplosiveKnockback', 'stage': 'offline_build', 'aut': 'fixer', 'fix_item': 'RIMMANDRAKE_FIX_LIVE_ONE_A', 'decision': 'fixer', 'why': 'road-back item RIMMANDRAKE_FIX_LIVE_ONE_A (of 2 open, caused by ROUTE_X) gets one fixer run'}
+PASS  the tick at Stage 6: a game-up item still gets its fixer (it may have the game there)
+FAIL  evaluate game_only  TypeError: evaluate() got an unexpected keyword argument 'game_only'
+FAIL  advance --to in_game --game-only from Stage 3, every named item open and game-only: order and game_only pass  []
+FAIL  evaluate game_only mix  TypeError: evaluate() got an unexpected keyword argument 'game_only'
+FAIL  --game-only naming an offline item is refused (an offline test can show it)  None
+PASS  Stage 3 -> Stage 6 without --game-only is still refused (forward is one stage)
+FAIL  evaluate never at 6  TypeError: evaluate() got an unexpected keyword argument 'game_only'
+FAIL  --game-only on a record that never came back from Stage 6 is refused  None
+FAIL  Stage 6 -> Stage 6 is a drawn road (a game-only failure opens the next visit)  ('offline_build', 'blind_challenge')
+FAIL  record_unrun  AttributeError: module 'maturation' has no attribute 'record_unrun'
+FAIL  read_unrun  AttributeError: module 'maturation' has no attribute 'read_unrun'
+FAIL  maturation.py unrun records the item's in-game check UNRUN with its exact command  []
+FAIL  an UNRUN record with no command is refused  
+FAIL  the Stage 6 brief lists the UNRUN in-game check with its item and exact command  k beyond them, and fix in the sitting what a small fix can fix. Do not change a bar, its wording, the Design Version or the stage.
+
+## Defects in the pipeline itself
+
+- The pipeline fixes its own defects (owner, 2026-11-15): a defect you find in the pipeline itself (its code, tools, records, tests, status page) with a clear cause and a known fix is yours: file it (its acceptance test in the body),
+FAIL  the Stage 6 steward files an offline acceptance command for a line it sends to Stage 3  # Maturation steward run: ExplosiveKnockback, In-game acceptance (Stage 6) (exit_not_met)
+
+Item: %(item)s. Seat BENCH. Spend bound $%(cap)s.
+
+## The state the Dispatch tick read
+
+- decision: steward
+- why: visit ended not met
+- maturation.py next: NEXT (automatic: the Dispatch tick launches it when the game is free, queued fairly): in-game visit 2 (maturation.py launch ExplosiveKnockback --budget-
+FAIL  the Stage 6 steward keeps a game-only line at Stage 6 (advance --to in_game), never parks it at Stage 3  # Maturation steward run: ExplosiveKnockback, In-game acceptance (Stage 6) (exit_not_met)
+
+Item: %(item)s. Seat BENCH. Spend bound $%(cap)s.
+
+## The state the Dispatch tick read
+
+- decision: steward
+- why: visit ended not met
+- maturation.py next: NEXT (automatic: the Dispatch tick launches it when the game is free, queued fairly): in-game visit 2 (maturation.py launch ExplosiveKnockback --budget-
+FAIL 26 of 31

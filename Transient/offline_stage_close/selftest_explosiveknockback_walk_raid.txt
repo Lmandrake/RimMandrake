@@ -1,0 +1,16 @@
+PASS W0   a sound world passes every row but FRAME_BUDGET (code 1, not PASS: ['FRAME_BUDGET'])
+PASS W1   no game refuses with exit 2 (got 2)
+PASS W2   the release DLL exits 3 (got 3)
+PASS W3   no closed container: preconditions INVALID, the rest UNMEASURED (INVALID)
+PASS W4   dup_on_reload flips ['A_RELOAD_NO_DUP_LOST'] to FAIL (got ['FAIL'])
+PASS W5   gas_at_once flips ['A_GAS_CLUMP_BY_CLUMP', 'B_GAS_CLUMP_BY_CLUMP'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W6   orphan flips ['A_REQUESTS_MATCH_PLAN', 'B_REQUESTS_MATCH_PLAN'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W7   off_throws flips ['C_OFF_IMPACTS_NO_THROWS'] to FAIL (got ['FAIL'])
+PASS W8   cover_stays flips ['A_COVER_BROKEN_ONE_DESCENT', 'B_COVER_BROKEN_ONE_DESCENT'] to FAIL (got ['FAIL', 'FAIL'])
+PASS W9   unjournalled flips ['A_REACHED_ACCOUNTED'] to FAIL (got ['FAIL'])
+PASS W11  a load one tick late in a moving wave is still a sound save (got PASS)
+PASS W12  no rider: ['UNMEASURED', 'UNMEASURED']
+PASS W13  rider killed: cover ['UNMEASURED', 'UNMEASURED'], plan ['PASS', 'PASS']
+PASS W14  living rider, no descent: ['FAIL', 'FAIL']
+PASS W10  --live without a leaf (2) and with no reachable game (2) refuse
+PASS walk_storeroom_raid leaf: 0 failed

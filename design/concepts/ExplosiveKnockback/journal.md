@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3, offline build, since 2026-11-15 5:50 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 1:18 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:50 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:18 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -349,4 +349,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 3:13 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 3:13 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 1:18 AM PST, stage change: Offline build (Stage 3) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: every open road-back item of the visit 2 road back needs the live game: the dry-pit hauler fault has no offline cause yet (only a live job-logging experiment can show it); walk-raid and barrage have their offline halves landed and green, and only their live reruns remain, being worked now by live holder rm-detached-bench-rimmandrake-fix-dry-pit-hauler-descent-s-1794816095. Offline stages never wait for a game (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
+- Checks passed: order, game_only, by, version, hold.
+- Game only: RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT, RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-15 5:50 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:50 PM PST).
 - Record: `version/stage_record.json`.

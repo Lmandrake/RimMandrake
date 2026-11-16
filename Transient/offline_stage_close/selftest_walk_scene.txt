@@ -1,0 +1,29 @@
+ok    every bar row is asked (pond pays again, no leftovers, log clean among them) 
+ok    the healthy fake reads every row PASS and the scene PASS 
+ok    settings poked are restored (live switch off again, engine on) 
+ok    fault reload_loses_water: WALK_reload_digest_matches reads FAIL 
+ok    fault snap: WALK_switch_off_holds_water reads FAIL 
+ok    fault pond_endless: WALK_pond_pays reads FAIL 
+ok    fault pond_endless: WALK_pond_pays_again reads FAIL 
+ok    fault leftover_fluid: WALK_no_leftovers reads FAIL 
+ok    fault fw_error: WALK_log_clean reads FAIL 
+ok    fault lost: WALK_log_clean reads UNMEASURED 
+ok    fault blind_keys: WALK_toggle_off_on_digest_matches reads UNMEASURED 
+ok    fault blind_keys: WALK_reload_digest_matches reads UNMEASURED 
+ok    fault refused_census: WALK_no_leftovers reads UNMEASURED 
+ok    fault refused_census: WALK_toggle_off_on_digest_matches reads UNMEASURED 
+ok    fault no_hooks: WALK_reload_digest_matches reads UNMEASURED 
+ok    fault swimmer_moved: WALK_swimmer_survives_reload reads FAIL 
+ok    fault reload_loses_water: WALK_swimmer_survives_reload reads FAIL 
+ok    fault spawn_ashore: WALK_swimmer_survives_reload reads UNMEASURED 
+ok    fault no_hooks: WALK_swimmer_survives_reload reads UNMEASURED 
+ok    fault blind_keys: WALK_swimmer_survives_reload reads UNMEASURED 
+ok    fault fuel_drains: WALK_second_order_fuel_holds reads FAIL 
+ok    fault fuel_turns_water: WALK_second_order_no_leftovers reads FAIL 
+ok    fault fuel_unrecorded: WALK_second_order_no_leftovers reads FAIL 
+ok    fault fuel_blind: WALK_second_order_fuel_holds reads UNMEASURED 
+ok    fault refused_census: WALK_second_order_no_leftovers reads UNMEASURED 
+ok    fault pond_endless: WALK_second_order_pond_pays reads FAIL 
+ok    vacuous reads: None, REFUSED, an all-zero vector 
+ok    litres parse: the live readout line, a dry hole, a blind line 
+selftest_walk_scene: ok

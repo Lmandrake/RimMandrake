@@ -1,0 +1,42 @@
+staging src/RimMandrake/bridgetools/StaticCallArgsSelfTest/StaticCallArgsSelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\StaticCallArgsSelfTest
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
+  src/RimMandrake/bridgetools/StaticCallArgsSelfTest/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\StaticCallArgsSelfTest\src\RimMandrake\bridgetools\StaticCallArgsSelfTest\StaticCallArgsSelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  StaticCallArgsSelfTest -> D:\ClaudeWork\rimmandrake\build\StaticCallArgsSelfTest\src\RimMandrake\bridgetools\StaticCallArgsSelfTest\bin\Release\net8.0\StaticCallArgsSelfTest.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.67
+ok   long.100 ok
+ok   long.1000 ok
+ok   long.full_pit_2048000 ok
+ok   long.beyond_int32 ok
+ok   long.negative ok
+ok   long.garbage_refused ok
+ok   long.overflow_refused ok
+ok   ulong.max ok
+ok   uint.big ok
+ok   short ok
+ok   ushort ok
+ok   byte ok
+ok   sbyte ok
+ok   byte.overflow_refused ok
+ok   decimal ok
+ok   int ok
+ok   int.beyond_int32_refused ok
+ok   float.invariant ok
+ok   double.invariant ok
+ok   bool ok
+ok   string ok
+ok   enum.by_name ok
+ok   enum.by_name_any_case ok
+ok   enum.by_number ok
+ok   enum.unknown_name_refused ok
+ok   enum.undefined_number_refused ok
+ok   handles.not_object ok
+ok   handles.not_array ok
+static-call-args core: 28/28 passed

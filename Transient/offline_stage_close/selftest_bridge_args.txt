@@ -1,0 +1,117 @@
+<unknown>:2344: SyntaxWarning: "\." is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\."? A raw string is also an option.
+ok    the C# signatures were read (set_draft takes drafted, pawn_health takes confirmDestructive) 
+ok    can-fail: a wrong name is caught 
+ok    can-fail: an unknown tool is caught 
+ok    control: the right names pass 
+ok    the driver glob found the drivers (not an empty loop) 
+ok    a single-quoted driver is covered (concept_scenes.py, the Stage 3 scenes) 
+ok    can-fail: a single-quoted wrong name is caught 
+ok    engine_state's returned fields were read (not an empty set) 
+ok    the walk digest reads only fields engine_state returns 
+ok    can-fail: the draft's 'stock' key is not a returned field 
+ok    big_pit_scene.py: every jawa/ call names declared parameters 
+ok    climb_proof.py: every jawa/ call names declared parameters 
+ok    concept_scenes.py: every jawa/ call names declared parameters 
+ok    dead_settings_live.py: every jawa/ call names declared parameters 
+ok    deep_lake_proof.py: every jawa/ call names declared parameters 
+ok    deep_stone_live.py: every jawa/ call names declared parameters 
+ok    depth_rebuild_proofs.py: every jawa/ call names declared parameters 
+ok    drawbridge_proof.py: every jawa/ call names declared parameters 
+ok    driver_stamp.py: every jawa/ call names declared parameters 
+ok    droid_dig_live.py: every jawa/ call names declared parameters 
+ok    extension_proof.py: every jawa/ call names declared parameters 
+ok    extensions.py: every jawa/ call names declared parameters 
+ok    extensions_rivers.py: every jawa/ call names declared parameters 
+ok    fakegame.py: every jawa/ call names declared parameters 
+ok    fixture_pit_prison_cleanup.py: every jawa/ call names declared parameters 
+ok    flow_bignet_live.py: every jawa/ call names declared parameters 
+ok    fw_walk_common.py: every jawa/ call names declared parameters 
+ok    geyser_pit_scene.py: every jawa/ call names declared parameters 
+ok    geyser_tub_live.py: every jawa/ call names declared parameters 
+ok    glow_tank_live.py: every jawa/ call names declared parameters 
+ok    gravel_live.py: every jawa/ call names declared parameters 
+ok    jawa_shallows_proof.py: every jawa/ call names declared parameters 
+ok    jetty_drop_live.py: every jawa/ call names declared parameters 
+ok    joint_check.py: every jawa/ call names declared parameters 
+ok    ladder_wall_proof.py: every jawa/ call names declared parameters 
+ok    lake_floor_stage.py: every jawa/ call names declared parameters 
+ok    legacy_fill_live.py: every jawa/ call names declared parameters 
+ok    level_surface_bar.py: every jawa/ call names declared parameters 
+ok    lines_proof.py: every jawa/ call names declared parameters 
+ok    liquid_checks.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_channel_ctrl.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_fluid_off.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_one_water_grid_exact.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_pond_outflow_regression.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_recede_topology.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_slime_slip_exact.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_superdeep_target.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_water_headline.py: every jawa/ call names declared parameters 
+ok    live_probes/fw_water_pump_sluice.py: every jawa/ call names declared parameters 
+ok    live_session.py: every jawa/ call names declared parameters 
+ok    modern_fittings_live.py: every jawa/ call names declared parameters 
+ok    objects_sheet.py: every jawa/ call names declared parameters 
+ok    owner_look_regressions.py: every jawa/ call names declared parameters 
+ok    owner_review_stage.py: every jawa/ call names declared parameters 
+ok    pipe_levelling_perf_proof.py: every jawa/ call names declared parameters 
+ok    pit_exposure_live.py: every jawa/ call names declared parameters 
+ok    pit_exposure_raised_ladder_live.py: every jawa/ call names declared parameters 
+ok    pit_fittings_matrix.py: every jawa/ call names declared parameters 
+ok    pit_look_1114_live.py: every jawa/ call names declared parameters 
+ok    pit_rescue_live.py: every jawa/ call names declared parameters 
+ok    pit_superdeep_walk.py: every jawa/ call names declared parameters 
+ok    pit_water_fixes_live.py: every jawa/ call names declared parameters 
+ok    player_missions.py: every jawa/ call names declared parameters 
+ok    playtest_runner.py: every jawa/ call names declared parameters 
+ok    pond_pump.py: every jawa/ call names declared parameters 
+ok    preflight_flowworks.py: every jawa/ call names declared parameters 
+ok    prep_site.py: every jawa/ call names declared parameters 
+ok    proof_hose.py: every jawa/ call names declared parameters 
+ok    proof_pit_lip_cover.py: every jawa/ call names declared parameters 
+ok    proof_tar_fire_gate.py: every jawa/ call names declared parameters 
+ok    pump_outflow_live.py: every jawa/ call names declared parameters 
+ok    quarry_find_live.py: every jawa/ call names declared parameters 
+ok    raid_ladder_live.py: every jawa/ call names declared parameters 
+ok    raid_siege_live.py: every jawa/ call names declared parameters 
+ok    raid_trench_proof.py: every jawa/ call names declared parameters 
+ok    rail_walk_live.py: every jawa/ call names declared parameters 
+ok    railing_toggle_live.py: every jawa/ call names declared parameters 
+ok    reach_map_proof.py: every jawa/ call names declared parameters 
+ok    reel_body_inlet_live.py: every jawa/ call names declared parameters 
+ok    river_scenes_walk.py: every jawa/ call names declared parameters 
+ok    river_site.py: every jawa/ call names declared parameters 
+ok    scenarios_map.py: every jawa/ call names declared parameters 
+ok    sheet_overflow_proof.py: every jawa/ call names declared parameters 
+ok    shovel_stage.py: every jawa/ call names declared parameters 
+ok    shovels_live.py: every jawa/ call names declared parameters 
+ok    site_spec.py: every jawa/ call names declared parameters 
+ok    sitting_gaps_proof.py: every jawa/ call names declared parameters 
+ok    sprinkler_live.py: every jawa/ call names declared parameters 
+ok    station_port_live.py: every jawa/ call names declared parameters 
+ok    station_reach_live.py: every jawa/ call names declared parameters 
+ok    style_readback_proof.py: every jawa/ call names declared parameters 
+ok    suspension_bridge_proof.py: every jawa/ call names declared parameters 
+ok    suspension_settings_live.py: every jawa/ call names declared parameters 
+ok    sweep_identity_proof.py: every jawa/ call names declared parameters 
+ok    tank_theft_live.py: every jawa/ call names declared parameters 
+ok    thirst_fake.py: every jawa/ call names declared parameters 
+ok    thirst_live.py: every jawa/ call names declared parameters 
+ok    trench_blast_live.py: every jawa/ call names declared parameters 
+ok    trench_cast_live.py: every jawa/ call names declared parameters 
+ok    trench_cover_proof.py: every jawa/ call names declared parameters 
+ok    trench_crossing_live.py: every jawa/ call names declared parameters 
+ok    trial_site.py: every jawa/ call names declared parameters 
+ok    underpass_raid_live.py: every jawa/ call names declared parameters 
+ok    underpass_reach_live.py: every jawa/ call names declared parameters 
+ok    validation_v2.py: every jawa/ call names declared parameters 
+ok    wakes_checks.py: every jawa/ call names declared parameters 
+ok    walk_gaps_proof.py: every jawa/ call names declared parameters 
+ok    wall_art_scene.py: every jawa/ call names declared parameters 
+ok    wall_faces_proof.py: every jawa/ call names declared parameters 
+ok    water_looks_proof.py: every jawa/ call names declared parameters 
+ok    water_scenes_mock.py: every jawa/ call names declared parameters 
+ok    water_scenes_walk.py: every jawa/ call names declared parameters 
+ok    wet_costs_live.py: every jawa/ call names declared parameters 
+ok    work_bar.py: every jawa/ call names declared parameters 
+ok    x10_canal_fire_live.py: every jawa/ call names declared parameters 
+selftest_bridge_args: ok

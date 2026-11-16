@@ -1,0 +1,9 @@
+ok    every staging call keeps its tool contract []
+ok    healthy plot: every row PASS {'HOSE_plump_when_flowing': 'PASS', 'HOSE_tinted_carried_liquid': 'PASS', 'HOSE_flat_when_not': 'PASS', 'HOSE_control_unpowered_stays_flat': 'PASS'}
+ok    planted NEVER_PLUMPS turns HOSE_plump_when_flowing FAIL (got FAIL)
+ok    planted PLUMP_ON_LAY turns HOSE_control_unpowered_stays_flat FAIL (got FAIL)
+ok    planted STAYS_PLUMP_AFTER_CUT turns HOSE_flat_when_not FAIL (got FAIL)
+ok    planted TINT_WRONG turns HOSE_tinted_carried_liquid FAIL (got FAIL)
+ok    no_census: no row PASSes on a vacuous read {'HOSE_plump_when_flowing': 'UNMEASURED', 'HOSE_tinted_carried_liquid': 'UNMEASURED', 'HOSE_flat_when_not': 'UNMEASURED', 'HOSE_control_unpowered_stays_flat': 'UNMEASURED'}
+ok    no_power: no row PASSes on a vacuous read {'scene_hose_look_staging': 'UNMEASURED'}
+selftest_hose_look_scene: ok
