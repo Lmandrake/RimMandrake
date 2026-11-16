@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666} body_sha256=f97bbf04ffdfe36f658858a13fa3404fa7c200633dfea132799302cef6a63207 -->
-# ExplosiveKnockback — mod ledger history (328 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666,"HOLDER.run-1794813483":1382} body_sha256=4052c8e0e2d1bc8819150db3f45798b1c1edcc8c1ad5de459165b5195248e2be -->
+# ExplosiveKnockback — mod ledger history (330 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -329,3 +329,5 @@
 - 2026-11-16T07:20:20Z BACKFILL#324 finding.open finding:RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT v0.1.0: ExplosiveKnockback sc_goods_obstacles UNMEASURED at Stage 6 visit 1: entry goods_obstacles is named by test_table.json but absent from RM_KnockbackProof.SceneNames ('unknown scene'); write the scene with its offline selftest
 - 2026-11-16T07:20:20Z BACKFILL#325 finding.open finding:RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST v0.1.0: ExplosiveKnockback sc_storeroom_bomb_pit UNMEASURED at Stage 6 visit 1: test_table.json names entry storeroom_bomb_pit in RM_KnockbackProof.cs but no such scene exists ('unknown scene' on every build); write the scene (observes per test_table) with its offline selftest
 - 2026-11-16T07:22:45Z BACKFILL#326 finding.open finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE v0.1.0: Explosive Knockback 0.1.0: run the blind offline challenge (Stages 4 and 5, tests first) by hand, one cycle, and write down its record format
+- 2026-11-16T07:23:23Z HOLDER.run-1794813483#1 session.checkpoint session v0.1.0: 
+- 2026-11-16T07:33:24Z HOLDER.run-1794813483#2 session.checkpoint session v0.1.0: 

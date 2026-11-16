@@ -1,7 +1,12 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666} body_sha256=5c850f0e4b629d7ec4db012d1b83c509c9d9a29dc016d92be98c6bd4f06dd681 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666,"HOLDER.run-1794813483":1382} body_sha256=4e229f5dbd88243c09deb85fe087178e9b8032f484d04316dd1bbbd16d8599f3 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 328 events in 2 shards · reducer 1
-holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
+version 0.1.0 · stage offline_build · 330 events in 3 shards · reducer 1
+holder lease run-1794813483, token 1, last active 2026-11-16T07:33:24Z
+
+## Last checkpoint (HOLDER.run-1794813483, 2026-11-16T07:33:24Z)
+- done: 3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)
+- next: on the next game-up visit run the 3 live acceptance commands named in the item notes and fix what answers false
+- ruled out: RM_PitPathing TryPlan/OutsiderBarredFromFloor and portable-ladder Reaches as the dry-pit cause (read)
 
 ## Open findings (76)
 - finding:RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter named lightMassLimit) is called by no game code; ThrowContainer throws the container ThrowCells cells with its own loop [measured, grep]
@@ -342,11 +347,7 @@ spend recorded: USD 70.74, 138207197 tokens
 ## Closed findings (1)
 - finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB withdrawn (reading) c20328a876
 
-## Tests (49, 15 older left out)
-- 2026-11-16T06:51:52Z live.run bar:frame_time_probe: PASS on 2f74ac9094e5 visit_2 sc_frame_probe_check PASS (runner PASS)
-- 2026-11-16T06:51:52Z live.run bar:inv_caps: PASS on 2f74ac9094e5 visit_2 sc_all_fly_no_cap PASS (runner PASS)
-- 2026-11-16T06:51:52Z live.run bar:inv_closed_guard: PASS on 2f74ac9094e5 visit_2 sc_closed_containers PASS (runner PASS)
-- 2026-11-16T06:51:52Z live.run bar:inv_creature_mass_limit: PASS on 2f74ac9094e5 visit_2 sc_mass_and_power PASS (runner PASS)
+## Tests (45, 19 older left out)
 - 2026-11-16T06:51:52Z live.run bar:inv_gas_tags: PASS on 2f74ac9094e5 visit_2 sc_cauldron_gas PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_heavy_knock: PASS on 2f74ac9094e5 visit_2 sc_heavy_knock PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_hook: PASS on 366bed691c96 visit_2 sc_mortar_throw PASS (runner PASS)
@@ -395,7 +396,7 @@ spend recorded: USD 70.74, 138207197 tokens
 
 ## Left out
 - decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- tests: 15, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- the full history: 328 events (views/history.md; never read whole)
+- tests: 19, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- the full history: 330 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:22:45Z.1794813765874252453 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:22:45Z.1794813765874252453 prints what changed after this packet)
+cursor: t=2026-11-16T07:33:24Z.1794814404795583265 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:33:24Z.1794814404795583265 prints what changed after this packet)

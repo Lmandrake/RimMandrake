@@ -1,10 +1,11 @@
 {
  "_view": {
-  "body_sha256": "f2006588cb715aac5e8d9feb7b6728f2e4e52d03f70be81973c5d6623cc30a04",
+  "body_sha256": "446e93e2268f6986851560b1f4974245278925039842f829d62b62c9e010bd49",
   "reducer": 1,
   "shards": {
    "BACKFILL": 226529,
-   "DISPATCH": 666
+   "DISPATCH": 666,
+   "HOLDER.run-1794813483": 1382
   }
  },
  "state": {
@@ -599,7 +600,13 @@
    }
   },
   "causes": {},
-  "checkpoint": null,
+  "checkpoint": {
+   "by": "HOLDER.run-1794813483",
+   "done": "3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)",
+   "next": "on the next game-up visit run the 3 live acceptance commands named in the item notes and fix what answers false",
+   "ruled_out": "RM_PitPathing TryPlan/OutsiderBarredFromFloor and portable-ladder Reaches as the dry-pit cause (read)",
+   "ts": "2026-11-16T07:33:24Z"
+  },
   "decisions": {
    "bar:inv_items_teleport": {
     "authority": {
@@ -858,7 +865,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 328,
+  "events": 330,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2118,7 +2125,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T07:18:18Z",
+   "last": "2026-11-16T07:33:24Z",
    "lease": "run-1794813483",
    "released": false,
    "token": 1
@@ -2129,7 +2136,8 @@
   "session": null,
   "shards": [
    "BACKFILL",
-   "DISPATCH"
+   "DISPATCH",
+   "HOLDER.run-1794813483"
   ],
   "spend_tokens": 138207197,
   "spend_usd": 70.7417,
