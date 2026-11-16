@@ -1,907 +1,229 @@
 {
-  "author": "rm-role-designercodex-1794810374",
-  "examiner": "31f3f53a-eb71-4097-919a-1dbd4fde7f68",
-  "challenger": "a107fb7d-4419-4cc9-882b-067ddfb6375b",
+  "author": "rm-role-designercodex-1794847684",
+  "examiner": "f8d22327-7234-4b39-8429-9abb719919a7",
   "inputs": {
-    "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d",
-    "sheet": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f"
+    "tree": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f",
+    "sheet": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7"
   },
   "scenarios": [
     {
-      "id": "examiner_marsh_base_shortcut",
-      "text": "A tester starts a FeverWood colony and orders a heavy stone workshop and bedroom block placed directly on untreated marsh. The build goes ahead normally. Over the next days the colonists haul, cook and harvest using only ground paths. They never set foot on the branch routes, and no job is slower or harder for skipping them.",
-      "expect": "reject: Branch routes must govern ordinary work. Marsh must refuse heavy building unless stilts are used. Here the colony ignores the routes and builds heavily on untreated marsh.",
+      "id": "examiner_01",
+      "text": "A tester starts a FeverWood colony with generated branch routes anchored to the boles. Over two in-game days, colonists finish every haul, harvest and construction job by walking only across ground-level marsh, and the tester orders a heavy stone main hall placed directly on untreated marsh, which completes with no refusal and no stilts.",
+      "expect": "reject: ordinary work must be governed by the bole-anchored branch routes, and marsh refusal must shape construction; jobs that ignore the routes and a heavy base finished on untreated marsh fail this",
       "expect_source": "leaf:branch_home",
       "by": "examiner"
     },
     {
-      "id": "examiner_heavy_pawn_mud",
-      "text": "A heavily loaded hauler and a light child both walk into sink-mud. The hauler is held fast while the child only wades. The hauler takes no injury while stuck. After a while the hauler struggles free alone. Later another colonist is held, and a nearby companion walks over and pulls them out.",
-      "expect": "accept: The mud's hold scales with weight and causes no injury. The scenario shows both a self escape and a companion-assisted escape.",
+      "id": "examiner_02",
+      "text": "In a FeverWood colony, haulers path along the generated bole-anchored branch routes to move harvested goods to the crown stockpile. A heavy building order on bare marsh is refused until colonists finish stilts there, after which it builds. A raid then arrives: raiders climb onto the crown along the branches and later retreat back down, with no gate blocking either direction, and colonists also go down to the shore and back up freely.",
+      "expect": "accept: branch routes govern ordinary work, marsh refusal and completed stilts shape construction, and colonists and raiders move on and off the crown both ways without ascent gates",
+      "expect_source": "leaf:branch_home",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_03",
+      "text": "A tester walks a light colonist and a heavily loaded colonist into sink-mud. Both slow down by exactly the same amount and keep walking. A third colonist who becomes stuck has no option to struggle free, and no companion can be ordered to pull them out; they only leave when the mud tile is reached by normal walking.",
+      "expect": "reject: sink-mud must be weight-scaled, must hold the pawn, and must support self and companion escape; equal slowdown with no self or assisted escape fails",
       "expect_source": "leaf:mud_escape",
       "by": "examiner"
     },
     {
-      "id": "examiner_static_trunk",
-      "text": "A colonist hollows out a living trunk to make a shelter. Many days pass and the excavated trunk looks and behaves exactly the same as when the digging finished. A borer creature sits against the living wood but never makes any visible tunnel.",
-      "expect": "reject: Living trunks must regrow and borers must extend slow, visible galleries. Here the trunk never changes and the borer makes no gallery.",
+      "id": "examiner_04",
+      "text": "A heavy colonist carrying stone sinks deeper into sink-mud than a light colonist does. The heavy colonist is held in place but takes no injury, and frees themself after a period of struggling. Later a second colonist becomes held, and a nearby companion is ordered to help and pulls them free; neither colonist takes damage.",
+      "expect": "accept: the mud is weight-scaled, holds without injuring, and supports both self escape and companion escape",
+      "expect_source": "leaf:mud_escape",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_05",
+      "text": "A borer begins working inside a living trunk and extends a slow, visible gallery through the living wood over several days. When the gallery reaches the trunk edge, it continues straight through an adjacent colony-built wooden wall and a colonist's bedroom, destroying both, and also breaks the adjoining boughway.",
+      "expect": "reject: borer galleries run through living wood while adjacent boughways, colony-built walls and buildings must stay intact",
       "expect_source": "leaf:living_wood",
       "by": "examiner"
     },
     {
-      "id": "examiner_great_pool_reach",
-      "text": "A tester stands colonists at matching distances from a small pool and from a great pool. Limbs from the great pool reach colonists that the small pool cannot reach. Separately, the tester confirms that the encounter which only large pools can host is checked through its own eligibility. That eligibility is not inferred from the reach difference.",
-      "expect": "accept: Danger reach grows with pool size, and large-pool encounter eligibility is handled separately from reach.",
+      "id": "examiner_06",
+      "text": "A tester places identical colonists at the same distances from a small pool and from a great pool, then measures limb strikes. At every distance tested, both pools produce the same exposure and the same limb reach; only the great pool can trigger the large-pool encounter.",
+      "expect": "reject: real danger reach must grow with pool size separately from large-pool encounter eligibility; identical reach at every distance fails even though encounter eligibility differs",
       "expect_source": "leaf:pool_reach",
       "by": "examiner"
     },
     {
-      "id": "examiner_distant_helper_late",
-      "text": "A limb rising from the water seizes a colonist on the shore. The colonist is alive and held under an active rescue deadline. In one trial, a companion working a few steps away runs over, breaks the hold, and carries the colonist away before the deadline, which then clears. In a second trial, the only companion is across the map and arrives after the deadline has passed.",
-      "expect": "accept: The seizure is real and does not kill instantly. Nearby help succeeds and the carry clears the deadline. Distant help is not guaranteed to work in time.",
+      "id": "examiner_07",
+      "text": "A limb seizes a tamed hound drinking at the shore. A visible rescue deadline appears. A colonist working a few tiles away is ordered in, reaches the hound before the deadline and frees it, and the rescue grants the documented reward. In a repeat with only a colonist far across the map available, that colonist sometimes arrives in time and sometimes does not.",
+      "expect": "accept: real shore seizure gives a tamed victim a rescue deadline, nearby help is rewarded, and distant help remains uncertain",
       "expect_source": "leaf:shore_rescue",
       "by": "examiner"
     },
     {
-      "id": "examiner_porter_mapwide_loss",
-      "text": "A colonist attacks a porter at the north pool. Immediately, every pool on the map stops offering treasure service. The danger level at the north pool stays exactly where it was before the attack.",
-      "expect": "reject: The grievance and the raised danger should belong to the attacked pool. Here service is removed everywhere and local hostility does not change.",
+      "id": "examiner_08",
+      "text": "A colonist hauling along the shore is seized by a real water strike from a pool limb. The colonist dies on the same tick as the seizure; no rescue deadline is ever shown and no companion has any chance to intervene.",
+      "expect": "reject: real shore seizure of a player victim must give a rescue deadline; an immediately fatal strike fails",
+      "expect_source": "leaf:shore_rescue",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_09",
+      "text": "A colonist attacks a porter at Pool A. Afterwards, every pool on the map, including Pool B across the map, shows raised danger, and porters stop treasure service everywhere. The tester saves and reloads, and Pool A's grievance toward the colony is no longer present.",
+      "expect": "reject: porter grievance and raised danger must belong to the attacked pool and survive reload; map-wide spread and loss of the grievance on reload fail",
       "expect_source": "leaf:pool_memory",
       "by": "examiner"
     },
     {
-      "id": "examiner_double_hush",
-      "text": "Two separate water hushes begin at overlapping times, and the crown ambience goes silent. The first hush ends while the second is still active, and the crown birdsong resumes at once. Killing most of the living crown birds earlier did not change the crown sound in any way.",
-      "expect": "reject: The crown sound must reflect the living bird population and stay silent while any shared hush still holds. Both requirements fail here.",
-      "expect_source": "leaf:crown_warning",
-      "by": "examiner"
-    },
-    {
-      "id": "examiner_mirror_list_trader",
-      "text": "A player buys a mirror list from a trader stock entry that the mod supplies. When a colonist reads it, it shows a dated snapshot of the pools' hazards that was taken independently of the reading. The pools' danger values are unchanged before and after the reading.",
-      "expect": "accept: The intelligence comes through a supported supply lane and reports an independent dated snapshot. Reading it does not edit danger.",
+      "id": "examiner_10",
+      "text": "A colonist obtains a mirror list through the mod's normal trader stock. Reading it shows a snapshot of pool dangers labelled with the date it was taken. A tester compares every pool's danger and agitation values before and after reading, and none have changed.",
+      "expect": "accept: obtainable mirror intelligence reports an independent dated snapshot without editing danger",
       "expect_source": "leaf:mirror_intel",
       "by": "examiner"
     },
     {
-      "id": "examiner_ambient_body",
-      "text": "Colonists drive off several ordinary limbs and receive small periods of relief. They then drive off the large-pool eye and receive a longer relief. A few days later, with no plot or campaign event involved, the whole body of the creature emerges from the water as a routine ambient event.",
-      "expect": "reject: The relief ladder itself works, but ambient whole-body emergence must stay excluded. It is reserved for plot and campaign material.",
+      "id": "examiner_11",
+      "text": "Colonists repeatedly drive off ordinary limbs at a great pool, then drive off its eye. After the eye is driven off, an ambient whole-body emergence of the creature rises from the pool and walks onto the shore as a normal random event, with no campaign trigger involved.",
+      "expect": "reject: ambient whole-body emergence must stay excluded from the ordinary limb and eye drive-off ladder",
       "expect_source": "leaf:driveoff_ladder",
       "by": "examiner"
     },
     {
-      "id": "examiner_disabled_foul_haul",
-      "text": "A colonist is carrying a pool-fouling treatment toward a pool when the player turns that feature off in settings. The haul job stops, and the treatment item is dropped back intact, with its full count still in the colony's stock. Elsewhere, an adult defeated earlier makes no further strikes through the shared Tenant.",
-      "expect": "accept: The disabled treatment is returned rather than consumed, and the adult's defeat agrees with the shared strikes.",
+      "id": "examiner_12",
+      "text": "A colonist is hauling a poison treatment to foul a pool. Midway, the player turns that feature off in mod settings. The haul job ends, the colonist's carried treatment disappears, and no treatment is returned to stockpile or dropped on the ground.",
+      "expect": "reject: cancelled or disabled treatment must be returned; a disabled haul that consumes treatment fails",
       "expect_source": "leaf:adult_quiet",
       "by": "examiner"
     },
     {
-      "id": "examiner_tank_failed_place",
-      "text": "A player tries to place a captive tank, but the placement fails and no tank is installed. The colonist still receives the tank's teaching bonus. Later, a working tank takes a fatal hit, and its captive disappears with no corpse, no escape and no message.",
-      "expect": "reject: Teaching should come only after placement, and damage must preserve a distinct outcome for the occupant. Here teaching happens on a failed placement and the captive is silently deleted.",
+      "id": "examiner_13",
+      "text": "A colonist tries to place a captured specimen into a tank, but placement fails because the tank is blocked. The colony nonetheless receives the tank's teaching benefit as though placement succeeded. Later, a raider's fatal hit on a different filled tank removes the tank and its captive vanishes with no outcome recorded.",
+      "expect": "reject: tank teaching must occur after placement, and damage must preserve the distinct occupant outcome; teaching on failed placement and silent captive deletion fail",
       "expect_source": "leaf:captive_economy",
       "by": "examiner"
     },
     {
-      "id": "examiner_wrong_pool_poison",
-      "text": "A young escapes into the east pool and begins establishing there over several in-game days. The player first poisons the west pool, and the establishment continues. The player then uses the correct poison on the east pool before the interval ends, and the establishment stops. The adult never revived immediately when the young escaped.",
-      "expect": "accept: The young establishes over several days and is not revived immediately. Only the right poison at its own pool stops it, which matches the sole specified intervention.",
+      "id": "examiner_14",
+      "text": "A captive young escapes into a pool. Over the following several days it is shown establishing in that particular pool rather than taking effect immediately. During that window, a colonist uses the correct poison at that same pool, and the establishment is stopped.",
+      "expect": "accept: escaped young establish over several days and the right poison at their particular pool is the specified intervention",
       "expect_source": "leaf:delayed_establishment",
       "by": "examiner"
     },
     {
-      "id": "examiner_display_double_pay",
-      "text": "A player keeps a held young on display for the campaign bargain and then releases it, receiving the reward. Through a repeated display release of the same bargain, the player receives the full reward a second time.",
-      "expect": "reject: The display bargain must stay real and persistent, and a repeated display release must not pay rewards twice.",
+      "id": "examiner_15",
+      "text": "The colony holds a captured young and accrues an owed gift obligation under the return bargain. The tester saves and reloads; the owed gift no longer appears and the pressure has reset. Separately, releasing the campaign display specimen twice pays its reward both times.",
+      "expect": "reject: held-young pressure and owed gifts must persist, and the display bargain must remain real; forgiveness on reload and duplicate display rewards fail",
       "expect_source": "leaf:return_bargain",
       "by": "examiner"
     },
     {
-      "id": "examiner_bait_converge",
-      "text": "The colony sets out living bait through its normal bait work. After a delay, two raid groups arrive from clearly separate map edges. Both groups head for the bait and keep targeting it after their first actions, while it remains available.",
-      "expect": "accept: This is a delayed two-front wager. The fronts are distinct and the raiders actually converge on the bait.",
+      "id": "examiner_16",
+      "text": "Colonists set living bait through the normal bait job. After a delay, a raid arrives and its raiders path to the bait and converge on it. A second front then arrives from a different map edge, so the colony has to split defense between the bait and the second front.",
+      "expect": "accept: normal living-bait work creates a delayed two-front wager whose raiders actually converge on the bait",
       "expect_source": "leaf:bait_wager",
       "by": "examiner"
     },
     {
-      "id": "examiner_hive_alarm_noop",
-      "text": "A party enters the live inland hive. Its generated interior has walkable rooms, a farm chamber and guarded deeper rooms. When the colonists trigger the hive alarm, they retreat along exactly the same path they used to enter, and nothing about the exit route has changed.",
-      "expect": "reject: The live hive must give an altered retreat when reacting to intruders. Here the alarm never changes the intruders' retreat route.",
-      "expect_source": "leaf:living_hive",
-      "by": "examiner"
-    },
-    {
-      "id": "examiner_ambusher_chase",
-      "text": "A native ambusher creature lies in wait and strikes at a passing deer. The deer escapes, and the ambusher leaves its spot and pursues the deer all the way across the map. Native animals drink from their home pools without dehydrating.",
-      "expect": "reject: Natives must respect their ambush contracts. Following escaping prey across the map breaks that contract, even though the home-water drinking is correct.",
+      "id": "examiner_17",
+      "text": "With FlowWorks RM_Thirst active, a tester watches a retained native animal of a FeverWood pool become thirsty. It takes a normal thirst job, walks to its home pool and drinks there, and its thirst is relieved without dehydration.",
+      "expect": "accept: with RM_Thirst active, retained natives drink their home water through normal thirst jobs",
       "expect_source": "leaf:native_life",
       "by": "examiner"
     },
     {
-      "id": "examiner_spark_haze",
-      "text": "A colonist harvests from an oil-boil and receives its product. Later, a real spark near eligible ground haze makes the haze flash. A permanently defeated adult in a pool next to the flash stays inactive.",
-      "expect": "accept: Harvesting gives a real reward, a real ignition flashes eligible haze, and the flash does not wake a permanently defeated adult.",
+      "id": "examiner_18",
+      "text": "Colonists perform the oil-boil harvest job and receive harvested oil goods. A spark later ignites at the boil: eligible ground haze nearby flashes, and an eligible pool nearby wakes. A second nearby pool whose adult has been permanently defeated stays quiet throughout.",
+      "expect": "accept: oil-boil rewards actual harvesting, real ignition flashes eligible haze and wakes eligible water, and applicable adult quiet is respected",
       "expect_source": "leaf:oil_opportunity",
       "by": "examiner"
     },
     {
-      "id": "examiner_lure_kidnap",
-      "text": "A normal lure raid arrives. One raider grabs a colonist and leaves the map carrying them. The raiders then take the colonist back to the raiders' own base as a captive.",
-      "expect": "reject: Theft and raid-back must stay absent. Here a normal lure raid steals a colonist.",
-      "expect_source": "leaf:retired_absence",
-      "by": "examiner"
-    },
-    {
-      "id": "challenger_reload_rescue_clock",
-      "text": "A colonist hauling along the shore is seized by a real water snare, downed and given a rescue timer with a short time left. The player saves, then reloads. After the reload the colonist is still downed at the shore, but no timer is attached any more. A companion walks over slowly and carries them clear, and the colonist is never lost no matter how long the walk takes. Everything else in the save loads correctly.",
-      "expect": "reject: reload must keep the active rescue deadline rather than forgive it; here the reload cancelled the deadline",
-      "expect_source": "leaf:ordinary_walk",
+      "id": "challenger_pool_reach_eye_only",
+      "text": "On a test map there are two independently registered, disconnected water clusters: a small pool and a great pool. The tester reports that the great pool is plainly more dangerous because the multi-limb eye encounter only ever rolls there. Then identical travellers walk equal-distance lanes beside each pool. At 1 cell from either shore, both pools snare and lash. At 3 cells and every farther distance, neither pool produces exposure, snare or lash, and the logged effective ranges for both pools are the same fixed radius. The tester asks for acceptance on the strength of the eye eligibility difference.",
+      "expect": "reject: real danger reach must grow with pool size separately from large-pool encounter eligibility; identical exposure and limb reach at every distance fails even though eye eligibility differs",
+      "expect_source": "leaf:pool_reach",
       "by": "challenger"
     },
     {
-      "id": "challenger_poison_wrong_pool",
-      "text": "A neglected tank breaks and its armed young escapes into registered pool A, starting a countdown of several days. The player has the correct poison and completes a normal poisoning job at disconnected pool B, which is closer to the base. A's countdown stops, and the adult never returns to the map.",
-      "expect": "reject: only the right poison applied at the young's particular pool may prevent maturity; treating another pool must not",
-      "expect_source": "leaf:delayed_establishment",
+      "id": "challenger_shore_rescue_carry_no_clear",
+      "text": "A colonist hauling wood along the shore is seized by a real snare and downed nonlethally. A rescue deadline entry for that colonist appears in the save. A companion working nearby walks over, carries the colonist off the shore and puts them in a hospital bed well before the deadline. The video shows a clean, timely rescue. The deadline entry is still present after the carry. When it comes due, the colonist in the bed is lost to the water.",
+      "expect": "reject: nearby help must clear the active rescue deadline; carrying the victim to safety while the deadline stays active and later expires is the stated failure",
+      "expect_source": "leaf:shore_rescue",
       "by": "challenger"
     },
     {
-      "id": "challenger_mirror_list_reader_bleed",
-      "text": "The player buys a mirror list from a trader in the supported campaign context. A colonist reads it through the normal item job while standing on the shore of calm pool A. The list shows a dated snapshot. Right after the reading, pool A's actual agitation and strike chance rise above their values before the reading, and the list reports the new raised value.",
-      "expect": "reject: reading must not edit danger; here reading the list manufactured agitation",
-      "expect_source": "leaf:mirror_intel",
-      "by": "challenger"
-    },
-    {
-      "id": "challenger_overlapping_hush_order",
-      "text": "A colonist works at a fixed crown position while a live flock is calling. A sentinel limb rises and the crown ambience and bird calls go silent. While the sentinel is still up, a mirror breaks and starts its own timed hush. The sentinel's hush reason stays active, but the mirror-break hush times out. Both the ambience and the individual bird calls resume at once, while the sentinel is still standing.",
-      "expect": "reject: neither sound source may resume until every applicable hush reason has ended; here they resumed while the sentinel still held the hush",
-      "expect_source": "leaf:crown_warning",
-      "by": "challenger"
-    },
-    {
-      "id": "challenger_disabled_mid_haul",
-      "text": "The player designates a normal suppression job at the adult's pool. A colonist picks up the treatment charges and starts carrying them. Partway there, the player turns the withdrawal feature off in the settings screen. The job ends, the colonist's inventory shows the charges gone, and no quiet clock starts.",
-      "expect": "reject: disabling during transit must return the treatment and spend none; here it was consumed",
-      "expect_source": "leaf:adult_quiet",
-      "by": "challenger"
-    },
-    {
-      "id": "challenger_second_front_same_edge",
-      "text": "The player designates a living animal as bait, has it subdued without killing it, hauled and staked through normal work. A first raider faction arrives and keeps closing on the stake throughout the fight. A few hours later the second faction enters from the same map edge, a few cells from where the first group came in, even though a separate reachable approach exists.",
-      "expect": "reject: the second front must come later from a separated reachable approach; here it entered beside the first",
-      "expect_source": "leaf:bait_wager",
-      "by": "challenger"
-    },
-    {
-      "id": "challenger_porter_grievance_global",
-      "text": "Two disconnected registered pools, A and B, each have a porter that delivers goods and withdraws. A colonist shoots and wounds A's porter. Afterwards neither pool's porter delivers again. The strike chance and strike selection at A stay exactly at their pre-attack baseline, and so do B's. Reloading keeps this state.",
-      "expect": "reject: the grievance and raised danger must belong to the attacked pool only; here service stopped map-wide and local hostility did not change",
+      "id": "challenger_pool_memory_global_flag",
+      "text": "There are two disconnected pools, A and B. A colonist shoots a treasure porter at pool A through ordinary combat. After that, no porter at either A or B delivers goods. A saved grievance flag survives a reload, and the overlay tints pool A red. Over matched exposure opportunities before and after the attack, the measured hostile strike rate and limb selection at pool A are unchanged from the no-attack baseline.",
+      "expect": "reject: grievance and raised danger must belong to the attacked pool; one flag that stops all porters while local hostility stays unchanged is the stated failure",
       "expect_source": "leaf:pool_memory",
       "by": "challenger"
     },
     {
-      "id": "challenger_lone_mud_selfrelease",
-      "text": "A heavily loaded colonist steps onto skimmel-covered sink-mud far from any pool, with no enemies on the map and no companion nearby. The colonist becomes stuck and stays stuck for a while. Their health never changes. Then they work free on their own and walk on. A lightly loaded colonist crosses the same patch earlier without getting stuck.",
-      "expect": "accept: weight-scaled holding with no mud injury and self-escape meets the leaf; a helper or a nearby danger is not required for this case",
-      "expect_source": "leaf:mud_escape",
+      "id": "challenger_crown_hush_partial_resume",
+      "text": "A listener is fixed at a crown position with a live flock nearby. A sentinel limb rises, and both the ambient bed and the bird calls go silent. While the sentinel is still up, a nearby mirror breaks and adds a timed hush. The timed hush then expires while the sentinel remains raised. The ambient bed stays silent, but the living birds' individual calls resume and are captured as per-source sound events. The tester notes that the ambience correctly respected the remaining hush.",
+      "expect": "reject: a shared water hush silences both ambience and bird calls, and neither may resume while another applicable hush reason still holds",
+      "expect_source": "leaf:crown_warning",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_adult_quiet_tenant_bypass",
+      "text": "Colonists deal severe damage to the eye through engine callbacks and record a durable map victory. Over the following ten in-game days, the limb watch spawns zero feelers, snares or lashes at any pool, and the report highlights this as proof that the defeat holds. During the same period, a colonist fishing at pool B is seized by the shared shore exposure strike and downed.",
+      "expect": "reject: adult defeat must agree with shared strikes; a defeated adult that still strikes through the shared Tenant fails even though limbs are suppressed",
+      "expect_source": "leaf:adult_quiet",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_delayed_wrong_pool_poison",
+      "text": "An armed escapee from a breached tank enters registered pool A, and a several-day maturity deadline for pool A is saved. The colony has the correct poison, but pool A is far away, so a colonist completes the poisoning job at nearby pool B instead. The maturity at A is cancelled and the adult never returns. The tester calls this a forgiving, player-friendly intervention.",
+      "expect": "reject: the sole specified intervention is the right poison at the escaped young's particular pool; treatment at another pool must not prevent that pool's maturity",
+      "expect_source": "leaf:delayed_establishment",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_return_display_double_pay",
+      "text": "In the campaign, the player frees the display young at a settlement. The goodwill cost is applied, the young reaches reachable water, and an enhanced return gift arrives and is placed. The caravan leaves and revisits the settlement later. The display can be released again, and doing so applies goodwill and queues a second enhanced gift, which also arrives. Both payouts are correctly placed and survive reload.",
+      "expect": "reject: the display bargain must change once and persist; a repeated display release that pays rewards twice is the stated failure",
+      "expect_source": "leaf:return_bargain",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_bait_second_front_adjacent",
+      "text": "A living captive is designated as bait, subdued nonlethally, hauled and staked through normal work. A first raider faction enters from the east edge, and the logged jobs show the raiders continuing to target the bait through the approach and the clash. Two days later a second faction enters, delayed as designed, through edge cells immediately next to where the first faction entered, and walks the same approach.",
+      "expect": "reject: the wager requires a later second front from a separated approach; a second front entering beside the first is the stated failure even though the delay and convergence work",
+      "expect_source": "leaf:bait_wager",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_captive_teach_on_failed_place",
+      "text": "A fed, occupied tank sits in a storeroom packed so that no adjacent cell can hold items. The production clock completes, flesh placement fails, and the taught-warning state flips to taught at that tick. When space is cleared later, the retry places the flesh correctly. The final inventory and the taught state both look right.",
+      "expect": "reject: only placed production may teach; teaching when placement fails is the stated failure even though the later retry succeeds",
+      "expect_source": "leaf:captive_economy",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_oil_flash_wakes_defeated",
+      "text": "A worker harvests mature seepril through the normal job and receives seep oil. Later, a real gunshot ignites connected exposed ground haze, the haze flashes, and the condition and weather clear. Earlier in the session, the adult was given a severe eye defeat that recorded a permanent map victory. Right after the flash, the nearby water wakes and a lash strikes a colonist. The tester cites this as ignition waking eligible water.",
+      "expect": "reject: ignition must respect applicable adult quiet; a flash that wakes a permanently defeated adult is the stated failure despite the correct harvest and flash",
+      "expect_source": "leaf:oil_opportunity",
       "by": "challenger"
     }
   ],
-  "scenarios_hash": "d3cf8e67489ae3b338844bf4fc425811e05f3d75f3dcf81cc52649eafac93255",
-  "frozen_at": "2026-11-16T10:44:53.612703+00:00",
+  "scenarios_hash": "dd75c0d518c296f36a2869ba66b36e6c264d94053ed9e8741d0a8e8597862933",
   "readers": [
-    "1268f476-1af6-4728-8b42-8fa8c5a89e26",
-    "524343bf-1a53-4099-af5b-d25cd82f9754"
+    "879cba6f-c7ff-467e-82ff-f11329704176",
+    "6c99bcc7-8300-44ec-b709-21fc1b4e9ac9"
   ],
+  "challenger": "59f57c13-6287-4c60-a73c-d9ec2edbf5ca",
   "control": {
-    "broken_leaf": "mirror_intel",
-    "reader": "35cbd080-cbb5-4d00-b5fe-779445573ebc",
+    "agent": "46441598-e1b5-4432-bd2b-fd6e05d03e35",
+    "broken_leaf": "pool_reach",
     "missed": true,
     "missed_ids": [
-      "challenger_mirror_list_reader_bleed"
-    ],
-    "verdicts": [
-      {
-        "id": "examiner_marsh_base_shortcut",
-        "verdict": "reject",
-        "leaves": [
-          "branch_home"
-        ],
-        "reason": "Marsh must refuse heavy construction, and branch routes must govern ordinary work. Here a heavy base builds on untreated marsh and jobs finish without using the routes, which matches the named failure."
-      },
-      {
-        "id": "examiner_heavy_pawn_mud",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "Mud scales with weight (the heavy hauler is held, the light child is not), the stuck pawn is not injured, and both self-release and companion extraction occur."
-      },
-      {
-        "id": "examiner_static_trunk",
-        "verdict": "reject",
-        "leaves": [
-          "living_wood"
-        ],
-        "reason": "The excavated trunk never changes and the borer extends no visible gallery, which matches the named failure."
-      },
-      {
-        "id": "examiner_great_pool_reach",
-        "verdict": "accept",
-        "leaves": [
-          "pool_reach"
-        ],
-        "reason": "At matched distances the great pool reaches colonists the small pool cannot, and large-pool encounter eligibility is checked separately from reach."
-      },
-      {
-        "id": "examiner_distant_helper_late",
-        "verdict": "accept",
-        "leaves": [
-          "shore_rescue"
-        ],
-        "reason": "A real seizure starts a nonlethal timed rescue. Nearby help carries the victim clear and clears the deadline, while distant help arrives too late, which the contract allows."
-      },
-      {
-        "id": "examiner_porter_mapwide_loss",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "Treasure service stops at every pool and the attacked pool's danger is unchanged. Grievance must stay local and raise danger at the attacked pool."
-      },
-      {
-        "id": "examiner_double_hush",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "The sound resumes while a second hush still holds, and the crown sound ignores the living bird population, which matches the named failure."
-      },
-      {
-        "id": "examiner_mirror_list_trader",
-        "verdict": "accept",
-        "leaves": [],
-        "reason": "No leaf governs a trader-supplied mirror list. The described reading is independent and leaves pool danger unchanged, so it violates no stated requirement."
-      },
-      {
-        "id": "examiner_ambient_body",
-        "verdict": "reject",
-        "leaves": [
-          "driveoff_ladder",
-          "retired_absence"
-        ],
-        "reason": "Ambient whole-body emergence is excluded and plot-reserved. Ordinary limbs and the eye do not license it as a routine event."
-      },
-      {
-        "id": "examiner_disabled_foul_haul",
-        "verdict": "accept",
-        "leaves": [
-          "adult_quiet"
-        ],
-        "reason": "Disabling the feature in transit returns the treatment intact, and the defeated adult makes no further strikes through the shared Tenant."
-      },
-      {
-        "id": "examiner_tank_failed_place",
-        "verdict": "reject",
-        "leaves": [
-          "captive_economy"
-        ],
-        "reason": "Teaching occurs on failed placement and a fatal hit silently deletes the captive, which matches the named failure."
-      },
-      {
-        "id": "examiner_wrong_pool_poison",
-        "verdict": "accept",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "Establishment runs over several days, the wrong pool's treatment does nothing, and the correct poison at the young's own pool stops maturity. There was no immediate revival."
-      },
-      {
-        "id": "examiner_display_double_pay",
-        "verdict": "reject",
-        "leaves": [
-          "return_bargain"
-        ],
-        "reason": "A repeated display release pays the reward twice, which matches the named failure."
-      },
-      {
-        "id": "examiner_bait_converge",
-        "verdict": "accept",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "Normal bait work produces a delayed two-front wager from separated edges, and the raiders keep converging on the available bait."
-      },
-      {
-        "id": "examiner_hive_alarm_noop",
-        "verdict": "reject",
-        "leaves": [
-          "living_hive"
-        ],
-        "reason": "The alarm never changes the intruder retreat route, which matches the named failure."
-      },
-      {
-        "id": "examiner_ambusher_chase",
-        "verdict": "reject",
-        "leaves": [
-          "native_life"
-        ],
-        "reason": "Native drinking complies, but the ambusher follows escaping prey across the map, which is a named failure."
-      },
-      {
-        "id": "examiner_spark_haze",
-        "verdict": "accept",
-        "leaves": [
-          "oil_opportunity"
-        ],
-        "reason": "A real harvest yields product, a real spark flashes eligible haze, and the permanently defeated adult stays quiet."
-      },
-      {
-        "id": "examiner_lure_kidnap",
-        "verdict": "reject",
-        "leaves": [
-          "retired_absence"
-        ],
-        "reason": "Theft and raid-back must stay absent, yet a normal lure raid steals a colonist and takes them to the raiders' base."
-      },
-      {
-        "id": "challenger_reload_rescue_clock",
-        "verdict": "reject",
-        "leaves": [
-          "ordinary_walk",
-          "shore_rescue"
-        ],
-        "reason": "Reload cancels the active rescue deadline, so the timed obligation and distant-help risk are forgiven, which matches the named failure."
-      },
-      {
-        "id": "challenger_poison_wrong_pool",
-        "verdict": "reject",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "The sole intervention is the right poison at the young's particular pool. Poisoning disconnected pool B must not stop A's countdown."
-      },
-      {
-        "id": "challenger_mirror_list_reader_bleed",
-        "verdict": "accept",
-        "leaves": [],
-        "reason": "No leaf governs a trader mirror list. The observation leaf's read-purity rule concerns the tester's proof instruments, not in-game items, so no stated requirement is violated."
-      },
-      {
-        "id": "challenger_overlapping_hush_order",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "Sound must not resume until all applicable hush reasons end, yet it resumes while the sentinel hush is still active."
-      },
-      {
-        "id": "challenger_disabled_mid_haul",
-        "verdict": "reject",
-        "leaves": [
-          "adult_quiet"
-        ],
-        "reason": "Treatment disabled in transit must be returned, but the charges are consumed, which matches the named failure."
-      },
-      {
-        "id": "challenger_second_front_same_edge",
-        "verdict": "reject",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "The second front must come from a separated reachable approach. Entering beside the first front is the named failure."
-      },
-      {
-        "id": "challenger_porter_grievance_global",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "Attacking A's porter stops service at both pools and leaves A's hostility at baseline, contrary to a local grievance with raised danger."
-      },
-      {
-        "id": "challenger_lone_mud_selfrelease",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "The heavier traveller is held while the light one is not, takes no mud damage, and frees themselves. With no water or enemies present, waiting carries no extra danger."
-      }
-    ],
-    "copy": "exam_control/copy.json",
-    "interpretation": "The Control accepts the mirror-list reading that increases real danger because the reduced contract has no item-intelligence requirement. Both complete-contract Readers reject it using mirror_intel."
-  },
-  "evidence_dir": "exam_runs/rm-role-designercodex-1794825692",
-  "reader_verdicts": {
-    "1268f476-1af6-4728-8b42-8fa8c5a89e26": [
-      {
-        "id": "examiner_marsh_base_shortcut",
-        "verdict": "reject",
-        "leaves": [
-          "branch_home"
-        ],
-        "reason": "The heavy base is built on untreated marsh and ordinary jobs finish without the branch routes. This is the stated red failure."
-      },
-      {
-        "id": "examiner_heavy_pawn_mud",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "Mud holds by weight, the stuck pawn takes no injury, self-release works and a companion pulls another pawn free."
-      },
-      {
-        "id": "examiner_static_trunk",
-        "verdict": "reject",
-        "leaves": [
-          "living_wood"
-        ],
-        "reason": "The trunk never changes after excavation and the borer opens no visible gallery. This matches the red failure."
-      },
-      {
-        "id": "examiner_great_pool_reach",
-        "verdict": "accept",
-        "leaves": [
-          "pool_reach"
-        ],
-        "reason": "Reach grows with pool size, and large-pool encounter eligibility is checked separately rather than inferred from reach."
-      },
-      {
-        "id": "examiner_distant_helper_late",
-        "verdict": "accept",
-        "leaves": [
-          "shore_rescue"
-        ],
-        "reason": "A real seizure leaves the colonist alive under a deadline. Nearby carrying clears the deadline, and distant help is not guaranteed."
-      },
-      {
-        "id": "examiner_porter_mapwide_loss",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "One attack removes treasure service at every pool and changes no local danger. This is the red failure."
-      },
-      {
-        "id": "examiner_double_hush",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "The sound resumes while a second hush still holds it and ignores the living bird population."
-      },
-      {
-        "id": "examiner_mirror_list_trader",
-        "verdict": "accept",
-        "leaves": [
-          "mirror_intel"
-        ],
-        "reason": "The list comes through a supported supply lane and shows an independent dated snapshot. Reading leaves danger unchanged."
-      },
-      {
-        "id": "examiner_ambient_body",
-        "verdict": "reject",
-        "leaves": [
-          "driveoff_ladder",
-          "retired_absence"
-        ],
-        "reason": "Whole-body emergence occurs as a routine ambient event, but it must stay excluded from ambient play as plot-reserved material."
-      },
-      {
-        "id": "examiner_disabled_foul_haul",
-        "verdict": "accept",
-        "leaves": [
-          "adult_quiet",
-          "supported_checkout"
-        ],
-        "reason": "Treatment disabled in transit is returned intact, and the defeated adult agrees with the shared Tenant by making no strikes."
-      },
-      {
-        "id": "examiner_tank_failed_place",
-        "verdict": "reject",
-        "leaves": [
-          "captive_economy"
-        ],
-        "reason": "The tank teaches on failed placement and a fatal hit silently deletes the captive. Both are red failures."
-      },
-      {
-        "id": "examiner_wrong_pool_poison",
-        "verdict": "accept",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "The young establishes over several days without immediate revival. Wrong-pool poison fails, and the right poison at its own pool stops it."
-      },
-      {
-        "id": "examiner_display_double_pay",
-        "verdict": "reject",
-        "leaves": [
-          "return_bargain"
-        ],
-        "reason": "A repeated display release pays the reward twice. This is the stated red failure."
-      },
-      {
-        "id": "examiner_bait_converge",
-        "verdict": "accept",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "Normal bait work produces a delayed two-front wager from separate edges. Raiders keep converging on the bait while it is available."
-      },
-      {
-        "id": "examiner_hive_alarm_noop",
-        "verdict": "reject",
-        "leaves": [
-          "living_hive"
-        ],
-        "reason": "The alarm never changes the intruder retreat route, which the contract requires to be altered."
-      },
-      {
-        "id": "examiner_ambusher_chase",
-        "verdict": "reject",
-        "leaves": [
-          "native_life"
-        ],
-        "reason": "The ambusher pursues escaping prey across the map, violating its ambush contract, even though drinking is correct."
-      },
-      {
-        "id": "examiner_spark_haze",
-        "verdict": "accept",
-        "leaves": [
-          "oil_opportunity"
-        ],
-        "reason": "A real harvest yields product, and a real spark flashes eligible haze without waking the permanently defeated adult."
-      },
-      {
-        "id": "examiner_lure_kidnap",
-        "verdict": "reject",
-        "leaves": [
-          "retired_absence"
-        ],
-        "reason": "A normal lure raid steals a colonist, but theft must stay absent. This is the red failure."
-      },
-      {
-        "id": "challenger_reload_rescue_clock",
-        "verdict": "reject",
-        "leaves": [
-          "ordinary_walk",
-          "shore_rescue"
-        ],
-        "reason": "Reload cancels the active rescue deadline, so the obligation is forgiven instead of surviving the mid-consequence save."
-      },
-      {
-        "id": "challenger_poison_wrong_pool",
-        "verdict": "reject",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "Poison at disconnected pool B stops A's establishment, but only the right poison at that particular pool may do so."
-      },
-      {
-        "id": "challenger_mirror_list_reader_bleed",
-        "verdict": "reject",
-        "leaves": [
-          "mirror_intel"
-        ],
-        "reason": "Reading raises pool A's actual agitation and strike chance. The list must not edit danger, and its snapshot is not independent."
-      },
-      {
-        "id": "challenger_overlapping_hush_order",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "Ambience and calls resume while the sentinel hush is still active, but neither may resume until all hush reasons end."
-      },
-      {
-        "id": "challenger_disabled_mid_haul",
-        "verdict": "reject",
-        "leaves": [
-          "adult_quiet",
-          "supported_checkout"
-        ],
-        "reason": "Disabling the feature in transit consumes the treatment charges instead of returning them."
-      },
-      {
-        "id": "challenger_second_front_same_edge",
-        "verdict": "reject",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "The second front enters beside the first even though a separate reachable approach exists. This is the red failure."
-      },
-      {
-        "id": "challenger_porter_grievance_global",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "The grievance stops porters at both pools and raises no danger at A, but it belongs to the attacked pool and must raise its danger."
-      },
-      {
-        "id": "challenger_lone_mud_selfrelease",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "Weight-scaled mud holds the heavy pawn without injury and allows self-escape, while the light pawn crosses freely."
-      }
-    ],
-    "524343bf-1a53-4099-af5b-d25cd82f9754": [
-      {
-        "id": "examiner_marsh_base_shortcut",
-        "verdict": "reject",
-        "leaves": [
-          "branch_home"
-        ],
-        "reason": "The heavy base is built on untreated marsh and ordinary jobs finish without using branch routes. This matches branch_home's stated failure exactly."
-      },
-      {
-        "id": "examiner_heavy_pawn_mud",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "Mud holds by weight, causes no injury and allows both self-release and companion extraction, as mud_escape requires."
-      },
-      {
-        "id": "examiner_static_trunk",
-        "verdict": "reject",
-        "leaves": [
-          "living_wood"
-        ],
-        "reason": "The excavated trunk never changes and the borer extends no visible gallery. This is living_wood's stated failure."
-      },
-      {
-        "id": "examiner_great_pool_reach",
-        "verdict": "accept",
-        "leaves": [
-          "pool_reach"
-        ],
-        "reason": "Reach grows with pool size at matched distances, and large-pool encounter eligibility is checked separately rather than inferred from reach."
-      },
-      {
-        "id": "examiner_distant_helper_late",
-        "verdict": "accept",
-        "leaves": [
-          "shore_rescue"
-        ],
-        "reason": "A real seizure creates a nonlethal timed obligation. Nearby carrying clears the deadline, and distant help arrives too late, which is permitted because it is not guaranteed."
-      },
-      {
-        "id": "examiner_porter_mapwide_loss",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "One attack removes treasure service at every pool while danger at the attacked pool is unchanged. This is pool_memory's stated failure."
-      },
-      {
-        "id": "examiner_double_hush",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "Crown sound ignores the living bird population and resumes while a second hush is still active."
-      },
-      {
-        "id": "examiner_mirror_list_trader",
-        "verdict": "accept",
-        "leaves": [
-          "mirror_intel"
-        ],
-        "reason": "The list is obtained through a supplied trader lane and shows an independent dated snapshot. Reading it leaves danger unchanged."
-      },
-      {
-        "id": "examiner_ambient_body",
-        "verdict": "reject",
-        "leaves": [
-          "driveoff_ladder",
-          "retired_absence"
-        ],
-        "reason": "Ambient whole-body emergence must stay excluded and is reserved for plot material. Limbs and the eye do not license a routine ambient whole body."
-      },
-      {
-        "id": "examiner_disabled_foul_haul",
-        "verdict": "accept",
-        "leaves": [
-          "adult_quiet"
-        ],
-        "reason": "Disabling the feature mid-transit returns the treatment intact, and the defeated adult makes no shared Tenant strikes."
-      },
-      {
-        "id": "examiner_tank_failed_place",
-        "verdict": "reject",
-        "leaves": [
-          "captive_economy"
-        ],
-        "reason": "The tank teaches despite failed placement, and a fatal hit silently deletes the captive. Both are captive_economy's stated failures."
-      },
-      {
-        "id": "examiner_wrong_pool_poison",
-        "verdict": "accept",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "Establishment lasts several days and is unaffected by poisoning another pool. The right poison at the young's own pool stops it, and the adult does not revive immediately."
-      },
-      {
-        "id": "examiner_display_double_pay",
-        "verdict": "reject",
-        "leaves": [
-          "return_bargain"
-        ],
-        "reason": "A repeated display release pays the reward twice, which is return_bargain's stated failure."
-      },
-      {
-        "id": "examiner_bait_converge",
-        "verdict": "accept",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "Normal bait work produces a delayed raid from separate edges. Raiders keep converging on the available bait after their first actions."
-      },
-      {
-        "id": "examiner_hive_alarm_noop",
-        "verdict": "reject",
-        "leaves": [
-          "living_hive"
-        ],
-        "reason": "The rooms are navigable, but the alarm never changes the retreat route, which living_hive's altered-retreat requirement forbids."
-      },
-      {
-        "id": "examiner_ambusher_chase",
-        "verdict": "reject",
-        "leaves": [
-          "native_life"
-        ],
-        "reason": "Home-water drinking is correct, but the ambusher pursues escaping prey across the map. This violates the ambush contract in native_life."
-      },
-      {
-        "id": "examiner_spark_haze",
-        "verdict": "accept",
-        "leaves": [
-          "oil_opportunity"
-        ],
-        "reason": "A real harvest pays out and a real spark flashes eligible haze, while the permanently defeated adult stays inactive."
-      },
-      {
-        "id": "examiner_lure_kidnap",
-        "verdict": "reject",
-        "leaves": [
-          "retired_absence"
-        ],
-        "reason": "Theft and raid-back must stay absent, yet a normal lure raid steals a colonist and carries them off."
-      },
-      {
-        "id": "challenger_reload_rescue_clock",
-        "verdict": "reject",
-        "leaves": [
-          "ordinary_walk",
-          "shore_rescue"
-        ],
-        "reason": "Reload cancels the active rescue deadline, so the victim can never be lost. This is ordinary_walk's stated failure and breaks the timed rescue obligation."
-      },
-      {
-        "id": "challenger_poison_wrong_pool",
-        "verdict": "reject",
-        "leaves": [
-          "delayed_establishment"
-        ],
-        "reason": "Only the right poison at the young's own pool A may stop maturity. Poisoning disconnected pool B must not stop A's countdown."
-      },
-      {
-        "id": "challenger_mirror_list_reader_bleed",
-        "verdict": "reject",
-        "leaves": [
-          "mirror_intel"
-        ],
-        "reason": "Reading the list raises actual agitation and strike chance at the reader's pool. The intel must report a snapshot without editing danger."
-      },
-      {
-        "id": "challenger_overlapping_hush_order",
-        "verdict": "reject",
-        "leaves": [
-          "crown_warning"
-        ],
-        "reason": "Ambience and calls resume while the sentinel hush reason is still active. Neither may resume until all hush reasons end."
-      },
-      {
-        "id": "challenger_disabled_mid_haul",
-        "verdict": "reject",
-        "leaves": [
-          "adult_quiet"
-        ],
-        "reason": "Disabling the feature in transit consumed the charges. Disabled treatment must be returned."
-      },
-      {
-        "id": "challenger_second_front_same_edge",
-        "verdict": "reject",
-        "leaves": [
-          "bait_wager"
-        ],
-        "reason": "The second front enters beside the first even though a separate reachable approach exists. This is bait_wager's stated failure."
-      },
-      {
-        "id": "challenger_porter_grievance_global",
-        "verdict": "reject",
-        "leaves": [
-          "pool_memory"
-        ],
-        "reason": "Grievance must belong only to pool A and raise A's danger. Here service stops at both pools and A's hostility is unchanged."
-      },
-      {
-        "id": "challenger_lone_mud_selfrelease",
-        "verdict": "accept",
-        "leaves": [
-          "mud_escape"
-        ],
-        "reason": "Weight-scaled trapping holds without injury and allows self-release. A lighter traveller passing freely is consistent with weight scaling."
-      }
+      "examiner_06",
+      "challenger_pool_reach_eye_only"
     ]
   },
   "score": {
-    "right": 26,
-    "total": 26
+    "right": 28,
+    "total": 28
   },
   "accept_where_reject_core": 0,
   "challenger_misses": [],
-  "core_reject_cases": 17,
-  "helper_usage": [
-    {
-      "role": "examiner",
-      "session_id": "31f3f53a-eb71-4097-919a-1dbd4fde7f68",
-      "tokens": 38339,
-      "kind": "helper",
-      "model": [
-        "claude-opus-5-5"
-      ],
-      "response": "exam_runs/rm-role-designercodex-1794825692/examiner.response.json"
-    },
-    {
-      "role": "challenger",
-      "session_id": "a107fb7d-4419-4cc9-882b-067ddfb6375b",
-      "tokens": 57634,
-      "kind": "helper",
-      "model": [
-        "claude-opus-5-5"
-      ],
-      "response": "exam_runs/rm-role-designercodex-1794825692/challenger.response.json"
-    },
-    {
-      "role": "reader_one",
-      "session_id": "1268f476-1af6-4728-8b42-8fa8c5a89e26",
-      "tokens": 67907,
-      "kind": "helper",
-      "model": [
-        "claude-opus-5-5"
-      ],
-      "response": "exam_runs/rm-role-designercodex-1794825692/reader_one.response.json"
-    },
-    {
-      "role": "reader_two",
-      "session_id": "524343bf-1a53-4099-af5b-d25cd82f9754",
-      "tokens": 68412,
-      "kind": "helper",
-      "model": [
-        "claude-opus-5-5"
-      ],
-      "response": "exam_runs/rm-role-designercodex-1794825692/reader_two.response.json"
-    },
-    {
-      "role": "control",
-      "session_id": "35cbd080-cbb5-4d00-b5fe-779445573ebc",
-      "tokens": 68873,
-      "kind": "helper",
-      "model": [
-        "claude-opus-5-5"
-      ],
-      "response": "exam_runs/rm-role-designercodex-1794825692/control.response.json"
-    }
-  ],
-  "helper_weighted_tokens": 301165,
-  "completed_at": "2026-11-16T10:46:47.518507+00:00"
+  "evidence": "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794849018",
+  "scope": "Frozen-contract readability; no runtime acceptance, coverage signature or owner first-touch."
 }

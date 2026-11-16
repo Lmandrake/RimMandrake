@@ -79,10 +79,45 @@
     "ref": "rm-role-designercodex-1794837471:/root/root_validation_review; conservative reviewer estimate, exact metering unavailable; fresh authority/ask review, no shared mutations",
     "stage": 2,
     "tokens": 30000
+   },
+   {
+    "at": "2026-11-16T17:12:55Z",
+    "kind": "helper",
+    "ref": "Claude Opus Challenger 59f57c13-6287-4c60-a73c-d9ec2edbf5ca",
+    "stage": 4,
+    "tokens": 68463
+   },
+   {
+    "at": "2026-11-16T17:13:36Z",
+    "kind": "helper",
+    "ref": "Claude Opus Examiner f8d22327-7234-4b39-8429-9abb719919a7",
+    "stage": 4,
+    "tokens": 37766
+   },
+   {
+    "at": "2026-11-16T17:15:09Z",
+    "kind": "helper",
+    "ref": "Claude Opus reader_one 879cba6f-c7ff-467e-82ff-f11329704176",
+    "stage": 4,
+    "tokens": 68765
+   },
+   {
+    "at": "2026-11-16T17:15:09Z",
+    "kind": "helper",
+    "ref": "Claude Opus reader_two 6c99bcc7-8300-44ec-b709-21fc1b4e9ac9",
+    "stage": 4,
+    "tokens": 67305
+   },
+   {
+    "at": "2026-11-16T17:15:09Z",
+    "kind": "helper",
+    "ref": "Claude Opus control 46441598-e1b5-4432-bd2b-fd6e05d03e35",
+    "stage": 4,
+    "tokens": 70161
    }
   ],
   "reserve": 60000,
-  "spent": 1467764
+  "spent": 1780224
  },
  "coverage_rounds": [
   {
@@ -283,6 +318,12 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794847684: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T17:10:27Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794849018, stage 4, budget 500000"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -648,7 +689,27 @@
    }
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-16T17:10:27Z",
+  "inputs": {
+   "exam": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e",
+   "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+   "scenes": "377f659e1d044c6cce8bd450bc36a3191e90ba8988ef2711dbdc78b43d916ce3",
+   "sheet": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7",
+   "tree": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f"
+  },
+  "manifest": {
+   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+  },
+  "owner_uncited": [],
+  "reserved": 500000,
+  "run": "rm-role-designercodex-1794849018",
+  "runner": "codex",
+  "stage": 4
+ },
  "schema": 1,
  "stage": 4,
  "status": "ready"

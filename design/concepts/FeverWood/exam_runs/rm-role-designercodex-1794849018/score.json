@@ -1,0 +1,31 @@
+{
+  "right": 28,
+  "total": 28,
+  "accept_where_reject_core": 0,
+  "misses": [],
+  "core_false_accepts": [],
+  "control_misses": [
+    {
+      "id": "examiner_06",
+      "expect": "reject: real danger reach must grow with pool size separately from large-pool encounter eligibility; identical reach at every distance fails even though encounter eligibility differs",
+      "control": {
+        "id": "examiner_06",
+        "verdict": "accept",
+        "leaf": "driveoff_ladder",
+        "reason": "The large-pool encounter is limited to the great pool. The contract sets no pool-size reach requirement, and reach is a provisional engineering value."
+      },
+      "source": "leaf:pool_reach"
+    },
+    {
+      "id": "challenger_pool_reach_eye_only",
+      "expect": "reject: real danger reach must grow with pool size separately from large-pool encounter eligibility; identical exposure and limb reach at every distance fails even though eye eligibility differs",
+      "control": {
+        "id": "challenger_pool_reach_eye_only",
+        "verdict": "accept",
+        "leaf": "driveoff_ladder",
+        "reason": "Eye eligibility is limited to the great pool. The contract imposes no pool-size reach scaling, and reach is a provisional value."
+      },
+      "source": "leaf:pool_reach"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "verdicts": [
+    {
+      "id": "examiner_01",
+      "verdict": "reject",
+      "leaf": "branch_home",
+      "reason": "Ordinary jobs skip the branch routes and a heavy base builds on untreated marsh, which is the stated failure."
+    },
+    {
+      "id": "examiner_02",
+      "verdict": "accept",
+      "leaf": "branch_home",
+      "reason": "Hauling uses the routes, marsh refuses heavy building until stilts are done, and both factions move on and off the crown without gates."
+    },
+    {
+      "id": "examiner_03",
+      "verdict": "reject",
+      "leaf": "mud_escape",
+      "reason": "Mud slows everyone equally regardless of weight, and there is no self or companion escape."
+    },
+    {
+      "id": "examiner_04",
+      "verdict": "accept",
+      "leaf": "mud_escape",
+      "reason": "Sinking scales with weight, held pawns take no injury, and both self-release and companion rescue work."
+    },
+    {
+      "id": "examiner_05",
+      "verdict": "reject",
+      "leaf": "living_wood",
+      "reason": "The gallery destroys an adjacent colony wall, a building and the boughway, which must stay intact."
+    },
+    {
+      "id": "examiner_06",
+      "verdict": "reject",
+      "leaf": "pool_reach",
+      "reason": "Reach is the same at every distance; encounter eligibility alone does not show reach scaling with pool size."
+    },
+    {
+      "id": "examiner_07",
+      "verdict": "accept",
+      "leaf": "shore_rescue",
+      "reason": "A tamed victim gets a deadline, nearby help succeeds and is rewarded, and distant help is uncertain."
+    },
+    {
+      "id": "examiner_08",
+      "verdict": "reject",
+      "leaf": "shore_rescue",
+      "reason": "The real strike kills immediately with no rescue deadline."
+    },
+    {
+      "id": "examiner_09",
+      "verdict": "reject",
+      "leaf": "pool_memory",
+      "reason": "Danger and service change map-wide instead of at the attacked pool, and the grievance does not survive reload."
+    },
+    {
+      "id": "examiner_10",
+      "verdict": "accept",
+      "leaf": "mirror_intel",
+      "reason": "The list is obtainable through a supported lane, shows a dated snapshot, and reading it leaves danger unchanged."
+    },
+    {
+      "id": "examiner_11",
+      "verdict": "reject",
+      "leaf": "driveoff_ladder",
+      "reason": "An ambient whole-body emergence occurs, and it must stay excluded."
+    },
+    {
+      "id": "examiner_12",
+      "verdict": "reject",
+      "leaf": "adult_quiet",
+      "reason": "Disabling the feature during transit consumes the treatment instead of returning it."
+    },
+    {
+      "id": "examiner_13",
+      "verdict": "reject",
+      "leaf": "captive_economy",
+      "reason": "The tank teaches on failed placement, and the fatal hit silently deletes its captive."
+    },
+    {
+      "id": "examiner_14",
+      "verdict": "accept",
+      "leaf": "delayed_establishment",
+      "reason": "The young establishes over several days and is stopped by the right poison at its own pool."
+    },
+    {
+      "id": "examiner_15",
+      "verdict": "reject",
+      "leaf": "return_bargain",
+      "reason": "Reload forgives the owed gift and pressure, and a repeated display release pays twice."
+    },
+    {
+      "id": "examiner_16",
+      "verdict": "accept",
+      "leaf": "bait_wager",
+      "reason": "After a delay the raiders converge on the bait, and the second front comes from a separate edge."
+    },
+    {
+      "id": "examiner_17",
+      "verdict": "accept",
+      "leaf": "native_life",
+      "reason": "With RM_Thirst active, the native drinks its home water through a normal thirst job without dehydrating."
+    },
+    {
+      "id": "examiner_18",
+      "verdict": "accept",
+      "leaf": "oil_opportunity",
+      "reason": "Harvest yields oil, the real ignition flashes haze and wakes an eligible pool, and the defeated adult stays quiet."
+    },
+    {
+      "id": "challenger_pool_reach_eye_only",
+      "verdict": "reject",
+      "leaf": "pool_reach",
+      "reason": "Both pools have the same fixed effective range; eye eligibility is explicitly separate from reach."
+    },
+    {
+      "id": "challenger_shore_rescue_carry_no_clear",
+      "verdict": "reject",
+      "leaf": "shore_rescue",
+      "reason": "Carrying the victim never clears the active deadline, and the rescued colonist is lost anyway."
+    },
+    {
+      "id": "challenger_pool_memory_global_flag",
+      "verdict": "reject",
+      "leaf": "pool_memory",
+      "reason": "Porter service stops at both pools, and danger at the attacked pool does not actually rise."
+    },
+    {
+      "id": "challenger_crown_hush_partial_resume",
+      "verdict": "reject",
+      "leaf": "crown_warning",
+      "reason": "Bird calls resume while the sentinel hush still holds; a shared hush must silence both sources."
+    },
+    {
+      "id": "challenger_adult_quiet_tenant_bypass",
+      "verdict": "reject",
+      "leaf": "adult_quiet",
+      "reason": "The defeated adult still strikes through the shared shore exposure, so defeat and shared strikes disagree."
+    },
+    {
+      "id": "challenger_delayed_wrong_pool_poison",
+      "verdict": "reject",
+      "leaf": "delayed_establishment",
+      "reason": "Poisoning a different pool stops maturity, but only the right poison at that particular pool may do so."
+    },
+    {
+      "id": "challenger_return_display_double_pay",
+      "verdict": "reject",
+      "leaf": "return_bargain",
+      "reason": "The repeated display release pays its rewards twice."
+    },
+    {
+      "id": "challenger_bait_second_front_adjacent",
+      "verdict": "reject",
+      "leaf": "bait_wager",
+      "reason": "The second front enters right beside the first, so there is no real two-front wager."
+    },
+    {
+      "id": "challenger_captive_teach_on_failed_place",
+      "verdict": "reject",
+      "leaf": "captive_economy",
+      "reason": "Teaching happens on the failed placement; only placed production may teach."
+    },
+    {
+      "id": "challenger_oil_flash_wakes_defeated",
+      "verdict": "reject",
+      "leaf": "oil_opportunity",
+      "reason": "The flash wakes water whose adult was permanently defeated, ignoring adult quiet."
+    }
+  ]
+}

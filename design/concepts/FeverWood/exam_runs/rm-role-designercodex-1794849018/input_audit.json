@@ -1,0 +1,32 @@
+{
+  "examiner": {
+    "session_id": "f8d22327-7234-4b39-8429-9abb719919a7",
+    "transcript_user_equals_brief": true,
+    "tool_calls": 0,
+    "transcript_sha256": "2402851bc80ddca689b3be8e459944a699c263861edbfa4a7629f3b3cc64d198"
+  },
+  "challenger": {
+    "session_id": "59f57c13-6287-4c60-a73c-d9ec2edbf5ca",
+    "transcript_user_equals_brief": true,
+    "tool_calls": 0,
+    "transcript_sha256": "c9f04410630b9b0b0db43d54db961dc836d291e34aa80eebbe62c2eb50ba0c0d"
+  },
+  "reader_one": {
+    "session_id": "879cba6f-c7ff-467e-82ff-f11329704176",
+    "transcript_user_equals_brief": true,
+    "tool_calls": 0,
+    "transcript_sha256": "4fcae5f4a44bfb9043a016c23234cd99e8e3e80d142b4ee0544c87437a426e9e"
+  },
+  "reader_two": {
+    "session_id": "6c99bcc7-8300-44ec-b709-21fc1b4e9ac9",
+    "transcript_user_equals_brief": true,
+    "tool_calls": 0,
+    "transcript_sha256": "0290c2b6e8e14dda1d5701a3f85329a8f5cbf5c6d48f6d6565c096d78c7503e9"
+  },
+  "control": {
+    "session_id": "46441598-e1b5-4432-bd2b-fd6e05d03e35",
+    "transcript_user_equals_brief": true,
+    "tool_calls": 0,
+    "transcript_sha256": "63b4e5f5cabe1f0f03a9cdc0425a8be1371ad4579df343fd4818feb56d0e8e99"
+  }
+}

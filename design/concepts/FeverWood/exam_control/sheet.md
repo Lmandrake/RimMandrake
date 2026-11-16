@@ -9,13 +9,13 @@
 ## does
 
 - [leaf:observation] Independent observations and interruption recovery precede acceptance.
-- [leaf:branch_home] Branch routes govern ordinary work; marsh refusal and usable stilts make the choice real.
+- [leaf:branch_home] Generated, bole-anchored branch routes govern ordinary work. Marsh refusal and completed stilts shape construction, and colonists and raiders walk on and off the crown in both directions without ascent gates.
 - [leaf:mud_escape] Weight-scaled sink-mud holds without injuring and supports self and companion escape.
-- [leaf:living_wood] Living trunks regrow and can be sealed; borers extend slow visible galleries without a new directed-control promise.
-- [leaf:pool_reach] Real danger reach grows with pool size, separately from large-pool encounter eligibility.
-- [leaf:shore_rescue] Real shore seizure rewards nearby help; distant help is not guaranteed.
+- [leaf:living_wood] Living trunks regrow and can be sealed. Borers extend slow visible galleries through living wood while adjacent boughways, colony-built walls and buildings stay intact.
+- [leaf:shore_rescue] Real shore seizure gives player and tamed victims a rescue deadline and rewards nearby help. Unrescued victims expire, wild victims are lost, and distant help remains uncertain.
 - [leaf:pool_memory] Porter grievance and raised danger belong to the attacked pool and survive reload.
 - [leaf:crown_warning] Living birds add their own calls to retained crown ambience; shared water hush silences both.
+- [leaf:mirror_intel] Obtainable mirror intelligence reports an independent dated snapshot without editing danger.
 - [leaf:driveoff_ladder] Ordinary limb encounters and the large-pool eye earn progressively stronger relief; ambient whole-body emergence stays excluded.
 - [leaf:adult_quiet] Adult defeat and suppression agree with shared strikes; cancelled or disabled treatment is returned.
 - [leaf:captive_economy] Tank upkeep produces real goods and teaches after placement; neglect, damage and deconstruction preserve the distinct occupant outcomes.
@@ -24,9 +24,9 @@
 - [leaf:bait_wager] Normal living-bait work creates a delayed two-front wager whose raiders actually converge on the bait.
 - [leaf:living_hive] The live inland hive functions as a reactive dungeon, with farm, guarded depth and an altered retreat.
 - [leaf:broken_hives] Lootable broken mirror-side hives coexist with the separate living inland dungeons.
-- [leaf:crown_livelihood] Crown provisions use real gather and harvest jobs; fear, guild refusals and the documented ecological roles matter.
-- [leaf:native_life] Retained natives drink their own water, respect their targeting and ambush contracts, and retain their products and optional integration.
-- [leaf:oil_opportunity] Oil-boil rewards actual harvesting and real ignition flashes eligible ground haze.
+- [leaf:crown_livelihood] Crown provisions use real gather and harvest jobs. Damage, failed tame, failed training and fear trigger the guild’s seal, swelling or alarm even after taming, with calm and successful-handling controls. Documented ecological roles function.
+- [leaf:native_life] With FlowWorks RM_Thirst active, retained natives drink their home water through normal thirst jobs. Absent thirst is unmeasured for drinking. Targeting, bounded ambush, plumage and optional theft retain independent checks.
+- [leaf:oil_opportunity] Oil-boil rewards actual harvesting. Real ignition flashes eligible ground haze and wakes eligible water while respecting applicable adult quiet.
 - [leaf:supported_checkout] Supported composition, wreck salvage, scanner payloads, scoped settings and geometry-only sun survive checkout.
 - [leaf:ordinary_walk] Reload mid-consequence, repeat the core trip and do the main actions in a second order.
 - [floor:mod_settings] Clear settings, per-feature off behavior and all-off checkout retain each owning service’s scope.
@@ -35,7 +35,7 @@
 
 ## does not
 
-- [leaf:retired_absence] Theft, raid-back, hive parasitism and rite stay absent; shipped dormant glomvar content keeps load coverage.
+- [leaf:retired_absence] Theft, raid-back, hive parasitism and rite stay absent. Shipped dormant glomvar keeps load coverage, and arrival/creature descriptions are aligned with the theft cuts, geometry-only heat and dormant status.
 - [floor:worldgen] No natural placement or world-generation work.
 - [floor:multiplayer] No multiplayer support or work.
 - [floor:flight] No live flight test without the owner attending.
@@ -47,23 +47,23 @@
 ## open
 
 - No core intent question remains. Delivery and live acceptance stay open as filed build and proof work.
-- The old validation-walk north-star is still DRAFT; this stage does not validate it.
+- The north star was separately validated under CONDUCTOR:1794838259873987749 at c568d46eacf7. This stage restamps that hash. Fresh exam, coverage review and owner first-touch remain pending.
 
 ## delegated
 
 - CONDUCTOR:1794804413045937607, evidence-for-ask root: Make a home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans.
 - CONDUCTOR:1794806166917699063, evidence-for-ask flagship: branches-and-shore ordinary harvest and haul, then real shore rescue with nearby and distant companions compared.
-- Stage 3 agent choices: proposed leaf grouping, greedy later showcases, script scenes and implementation sequence. These are not owner quotations.
+- Stage 3 agent choices include leaf grouping, seven-showcase ordering, script controls, proposed missing-feature settings and a campaign-only output from the existing dangerous irradiated-wreck salvage lane. These remain implementation proposals subject to fresh exam and coverage review.
 
 ## pruning
 
 - branch_home: OWNER:1794374372850231423; design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525; src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127. Reject on this failure because the colony finishes ordinary jobs without using the claimed routes and can build its heavy base on untreated marsh.
 - mud_escape: design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220; design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525. Reject on this failure because mud merely slows every pawn equally and offers no self or assisted escape.
 - living_wood: design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248; src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7. Reject on this failure because a trunk never changes after excavation and the borer cannot extend a visible gallery through living wood.
-- pool_reach: design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:251. Reject on this failure because small and great pools have the same exposure and limb reach at every distance.
 - shore_rescue: OWNER:1794374372850231423; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289; src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185. Reject on this failure because the actual water strike kills immediately or carrying never clears its active deadline.
 - pool_memory: design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:160; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204. Reject on this failure because attacking one porter removes all treasure service but changes no local hostility.
 - crown_warning: CONDUCTOR:1794806166917699063; design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611; src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:102. Reject on this failure because the crown sound ignores living bird population and resumes while a second water hush still holds it.
+- mirror_intel: design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md:113; src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:45; src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:31. Reject on this failure because reading the list manufactures agitation and no player can obtain it through a supported supply lane.
 - driveoff_ladder: design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:176; src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:24; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:156. Reject on this failure because the eye is unreachable in normal eligibility or fatal damage skips the promised map-wide consequence.
 - adult_quiet: src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549; src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51; src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:31; CONDUCTOR:1794806166917699063. Reject on this failure because a defeated adult continues to strike through the shared Tenant and the disabled haul consumes treatment.
 - captive_economy: src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:130; src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475. Reject on this failure because the tank teaches on failed placement or a fatal hit silently deletes its captive.

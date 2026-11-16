@@ -1,0 +1,5 @@
+{
+  "started": false,
+  "tokens": 0,
+  "reason": "systemd refused inherited CLAUDE_SCOPE_UNIT collision before Claude launch; retry clears inherited scope identity"
+}

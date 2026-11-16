@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 3,
-  "run": "rm-role-designercodex-1794847684",
+  "stage": 4,
+  "run": "rm-role-designercodex-1794849018",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -199,7 +199,7 @@
       "speaker": "agent",
       "text": "Frozen tree and sheet passed the cold-reader exam. Fresh Claude Opus Examiner and Challenger produced 26 scenarios, including 17 core reject cases. Two fresh Claude Opus Readers both matched all 26 expectations, with zero accepts against core rejection. A separate fresh Control on the program-made mirror_intel removal copy missed challenger_mirror_list_reader_bleed. All five helpers are named by returned session UUID and charged 301165 weighted tokens. This establishes contract readability under the frozen scenarios. Runtime experience, coverage signature, validated north star and owner first-touch certification remain pending.",
       "source": [
-        "design/concepts/FeverWood/exam.json",
+        "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794849018/superseded_exam.json",
         "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json"
       ]
     },
@@ -264,6 +264,17 @@
         "design/concepts/FeverWood/scenes.json",
         "design/concepts/FeverWood/plan.md",
         "CONDUCTOR:1794838259873987749"
+      ]
+    },
+    {
+      "id": "stage4_fresh_exam_after_root_and_coverage_rework",
+      "speaker": "agent",
+      "text": "Fresh Claude Opus Examiner and Challenger wrote and froze 28 scenarios against the restamped root and reworked stage-3 tree/sheet. Two fresh Claude Opus Readers matched all 28 expectations, with zero accepts against core rejection. The fresh Control on the program-made pool_reach removal copy accepted both fixed-reach failure cases; both misses cite the removed leaf. Five distinct returned session UUIDs identify the helpers; their 312460 weighted tokens are charged. Transcript audits show exact frozen briefs and no tool calls. This establishes contract readability only. Stage-5 coverage review, runtime experience and owner first-touch remain pending.",
+      "source": [
+        "design/concepts/FeverWood/exam.json",
+        "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794849018/protocol.json",
+        "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794849018/input_audit.json",
+        "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794849018/score.json"
       ]
     }
   ],

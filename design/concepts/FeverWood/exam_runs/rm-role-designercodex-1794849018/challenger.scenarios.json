@@ -1,0 +1,74 @@
+{
+  "scenarios": [
+    {
+      "id": "challenger_pool_reach_eye_only",
+      "text": "On a test map there are two independently registered, disconnected water clusters: a small pool and a great pool. The tester reports that the great pool is plainly more dangerous because the multi-limb eye encounter only ever rolls there. Then identical travellers walk equal-distance lanes beside each pool. At 1 cell from either shore, both pools snare and lash. At 3 cells and every farther distance, neither pool produces exposure, snare or lash, and the logged effective ranges for both pools are the same fixed radius. The tester asks for acceptance on the strength of the eye eligibility difference.",
+      "expect": "reject: real danger reach must grow with pool size separately from large-pool encounter eligibility; identical exposure and limb reach at every distance fails even though eye eligibility differs",
+      "expect_source": "leaf:pool_reach",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_shore_rescue_carry_no_clear",
+      "text": "A colonist hauling wood along the shore is seized by a real snare and downed nonlethally. A rescue deadline entry for that colonist appears in the save. A companion working nearby walks over, carries the colonist off the shore and puts them in a hospital bed well before the deadline. The video shows a clean, timely rescue. The deadline entry is still present after the carry. When it comes due, the colonist in the bed is lost to the water.",
+      "expect": "reject: nearby help must clear the active rescue deadline; carrying the victim to safety while the deadline stays active and later expires is the stated failure",
+      "expect_source": "leaf:shore_rescue",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_pool_memory_global_flag",
+      "text": "There are two disconnected pools, A and B. A colonist shoots a treasure porter at pool A through ordinary combat. After that, no porter at either A or B delivers goods. A saved grievance flag survives a reload, and the overlay tints pool A red. Over matched exposure opportunities before and after the attack, the measured hostile strike rate and limb selection at pool A are unchanged from the no-attack baseline.",
+      "expect": "reject: grievance and raised danger must belong to the attacked pool; one flag that stops all porters while local hostility stays unchanged is the stated failure",
+      "expect_source": "leaf:pool_memory",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_crown_hush_partial_resume",
+      "text": "A listener is fixed at a crown position with a live flock nearby. A sentinel limb rises, and both the ambient bed and the bird calls go silent. While the sentinel is still up, a nearby mirror breaks and adds a timed hush. The timed hush then expires while the sentinel remains raised. The ambient bed stays silent, but the living birds' individual calls resume and are captured as per-source sound events. The tester notes that the ambience correctly respected the remaining hush.",
+      "expect": "reject: a shared water hush silences both ambience and bird calls, and neither may resume while another applicable hush reason still holds",
+      "expect_source": "leaf:crown_warning",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_adult_quiet_tenant_bypass",
+      "text": "Colonists deal severe damage to the eye through engine callbacks and record a durable map victory. Over the following ten in-game days, the limb watch spawns zero feelers, snares or lashes at any pool, and the report highlights this as proof that the defeat holds. During the same period, a colonist fishing at pool B is seized by the shared shore exposure strike and downed.",
+      "expect": "reject: adult defeat must agree with shared strikes; a defeated adult that still strikes through the shared Tenant fails even though limbs are suppressed",
+      "expect_source": "leaf:adult_quiet",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_delayed_wrong_pool_poison",
+      "text": "An armed escapee from a breached tank enters registered pool A, and a several-day maturity deadline for pool A is saved. The colony has the correct poison, but pool A is far away, so a colonist completes the poisoning job at nearby pool B instead. The maturity at A is cancelled and the adult never returns. The tester calls this a forgiving, player-friendly intervention.",
+      "expect": "reject: the sole specified intervention is the right poison at the escaped young's particular pool; treatment at another pool must not prevent that pool's maturity",
+      "expect_source": "leaf:delayed_establishment",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_return_display_double_pay",
+      "text": "In the campaign, the player frees the display young at a settlement. The goodwill cost is applied, the young reaches reachable water, and an enhanced return gift arrives and is placed. The caravan leaves and revisits the settlement later. The display can be released again, and doing so applies goodwill and queues a second enhanced gift, which also arrives. Both payouts are correctly placed and survive reload.",
+      "expect": "reject: the display bargain must change once and persist; a repeated display release that pays rewards twice is the stated failure",
+      "expect_source": "leaf:return_bargain",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_bait_second_front_adjacent",
+      "text": "A living captive is designated as bait, subdued nonlethally, hauled and staked through normal work. A first raider faction enters from the east edge, and the logged jobs show the raiders continuing to target the bait through the approach and the clash. Two days later a second faction enters, delayed as designed, through edge cells immediately next to where the first faction entered, and walks the same approach.",
+      "expect": "reject: the wager requires a later second front from a separated approach; a second front entering beside the first is the stated failure even though the delay and convergence work",
+      "expect_source": "leaf:bait_wager",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_captive_teach_on_failed_place",
+      "text": "A fed, occupied tank sits in a storeroom packed so that no adjacent cell can hold items. The production clock completes, flesh placement fails, and the taught-warning state flips to taught at that tick. When space is cleared later, the retry places the flesh correctly. The final inventory and the taught state both look right.",
+      "expect": "reject: only placed production may teach; teaching when placement fails is the stated failure even though the later retry succeeds",
+      "expect_source": "leaf:captive_economy",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_oil_flash_wakes_defeated",
+      "text": "A worker harvests mature seepril through the normal job and receives seep oil. Later, a real gunshot ignites connected exposed ground haze, the haze flashes, and the condition and weather clear. Earlier in the session, the adult was given a severe eye defeat that recorded a permanent map victory. Right after the flash, the nearby water wakes and a lash strikes a colonist. The tester cites this as ignition waking eligible water.",
+      "expect": "reject: ignition must respect applicable adult quiet; a flash that wakes a permanently defeated adult is the stated failure despite the correct harvest and flash",
+      "expect_source": "leaf:oil_opportunity",
+      "by": "challenger"
+    }
+  ]
+}

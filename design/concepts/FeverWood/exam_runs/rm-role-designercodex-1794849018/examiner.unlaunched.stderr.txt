@@ -1,0 +1,1 @@
+Failed to start transient scope unit: Unit claude-seat-BENCH-rm-role-designercodex-1794849018.scope was already loaded or has a fragment file.
