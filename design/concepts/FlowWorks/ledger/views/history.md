@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":1636,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=71b6391ffb9207d23bfa3609bd1907f2e2dedd9a7eca3c557b653c073717c886 -->
-# FlowWorks — mod ledger history (1107 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2183,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=9bbabdf115c3beba88530c228431f10540b4eef7b2a9845a3e99921feb0cd483 -->
+# FlowWorks — mod ledger history (1109 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -101,6 +101,8 @@
 - 2026-11-16T08:50:23Z HOLDER.run-1794816885#1 session.checkpoint session v0.1.0: 
 - 2026-11-16T08:52:12Z DISPATCH#3 run.end run v0.1.0: 
 - 2026-11-16T08:52:12Z DISPATCH#4 session.id session v0.1.0: 
+- 2026-11-16T09:54:08Z DISPATCH#6 lease.grant lease v0.1.0: 
+- 2026-11-16T09:54:14Z DISPATCH#7 lease.revoke lease v0.1.0: 
 - 2026-11-16T10:11:41Z BACKFILL#96 stage.accepted stage v0.1.0: in_game -> offline_build: delegated: steward road back: visit 1 exit not met (16 PASS, 3 FAIL, 12 UNMEASURED of 31, two earlier FAIL rows); two failures are unbuilt mod behaviour (toss-flame order, coating condition), so the road is offline_build, not blind_challenge
 - 2026-11-16T10:11:43Z BACKFILL#97 live.run bar:inv_fire v0.1.0: visit_1 sc_canal_fire PASS (runner None)
 - 2026-11-16T10:11:43Z BACKFILL#98 live.run bar:inv_liquid_coating v0.1.0: visit_1 sc_coating_wash FAIL (runner None)

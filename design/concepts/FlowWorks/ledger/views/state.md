@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":1636,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=052ccbb47309d9d1ea711cdc90311636b838da89b718ee487598bec4390add6b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2183,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=c5f526649344a5587758576e776d819665ac6a1593e8114a21e4b3f69ef77915 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1107 events in 4 shards · reducer 1
-holder lease run-1794816885, token 1, last active 2026-11-16T08:50:23Z
+version 0.1.0 · stage blind_challenge · 1109 events in 4 shards · reducer 1
+holder lease run-1794822790, token 2, last active 2026-11-16T09:54:08Z, released
 holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794816885, 2026-11-16T08:50:23Z)
@@ -559,6 +559,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 2, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1107 events (views/history.md; never read whole)
+- the full history: 1109 events (views/history.md; never read whole)
 
 cursor: t=2026-11-16T12:14:04Z.1794831244263232898 (modledger.py since --mod FlowWorks t=2026-11-16T12:14:04Z.1794831244263232898 prints what changed after this packet)

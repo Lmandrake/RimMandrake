@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":1636,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=a663a5d9d34df04cc7333ae4b9d69fde659ae1d42feb00771cb6b34b1e246b4f -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2183,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=a663a5d9d34df04cc7333ae4b9d69fde659ae1d42feb00771cb6b34b1e246b4f -->
 # FlowWorks — closed in Design Version 0.1.0 (106)
 
 - trap:rm-raidertrench-only-crosses-it-does-not-fetch cleared (2026-11-16T10:13:59Z)
