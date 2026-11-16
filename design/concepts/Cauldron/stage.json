@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-16T04:55:38Z",
+    "kind": "review",
+    "ref": "cauldron_root_review: conservative estimated allowance for independent root/authority review, including inherited context; actual token usage unavailable through collaboration tool",
+    "stage": 1,
+    "tokens": 50000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 50000
  },
  "history": [
   {
@@ -24,6 +32,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designercodex-1794796348: stage 0 done"
+  },
+  {
+   "at": "2026-11-16T04:52:12Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794804719, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-16T04:58:27Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794804719: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -51,6 +71,38 @@
    "run": "rm-role-designercodex-1794796348",
    "stage": 0,
    "summary": "Grounded the current Cauldron capability inventory, accounted for every required built-evidence reference, incorporated the existing owner health/gas/settlement answers, audited every current proof chain and recorded three failure modes. Historical proof remains distinguished from current acceptance. The existing saved-site live walk is proposed for the next owner sitting."
+  },
+  {
+   "at": "2026-11-16T04:58:27Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "On a disposable copy of the registered Cauldron site, inspect the rainless dusk, thornwood and garden art, then observe the falter and exposed versus sheltered bodies. Follow a tap into a touching tank and Filter-Works with a wild vexxiss nearby. A separate gas-over-water lane includes a clear gap and sealed barrier. Its displacement arm requires ExplosiveKnockback loaded.",
+    "settles": [
+     "forest and weather appearance",
+     "warning readability and timing",
+     "actual pool terrain and liquid binding",
+     "current gas-chain continuation and displacement",
+     "the existing production loop"
+    ]
+   },
+   "run": "rm-role-designercodex-1794804719",
+   "stage": 1,
+   "summary": "Adopted the independently reviewed expanded Cauldron root through recorded Evidence-for-Ask delegation from the existing owner rulings and built inventory. The redundant owner approval question is answered by delegation, with no new owner ask. The existing saved-site quick look was offered first. Current source and proof gaps carry forward."
   }
  ],
  "runner": "codex",
@@ -62,10 +114,18 @@
     "input_tokens": 7266680,
     "output_tokens": 33792
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794804719",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 1582944,
+    "output_tokens": 10030
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready"
 }
