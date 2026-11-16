@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 5,
-  "run": "rm-role-designercodex-1794837152",
+  "stage": 2,
+  "run": "rm-role-designercodex-1794837471",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -225,6 +225,21 @@
         "g10"
       ],
       "return_to": 2
+    },
+    {
+      "id": "stage2_new_bar_validation_route",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": [
+        "CONDUCTOR:1794837810453463606",
+        "ITEM:RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
+        "design/concepts/FeverWood/root_validation_review.json",
+        "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+        "design/RimMandrake/delegation_policy.md:55",
+        "src/RimMandrake/Utils/modcheck/cli.py:564",
+        "design/validation_walks/RimMandrake/FeverWood.md:75"
+      ],
+      "text": "Strike the repeated owner preference ask and route the separate binding act for the two NEW north-star bars to authorized Conductor/Arbiter validation under delegation_policy section 2.1. The independent authority/ask review found no earlier validated baseline and no contrary design evidence. The Designer does not bind the bars or supply the final bar judge verdict. Stage 2 remains blocked on RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS; no root hash or frozen artifact is changed. All ten stage-3 coverage gaps retain their exact paths to pass."
     }
   ],
   "asks": [
@@ -295,6 +310,44 @@
       "resolution": "Never sent. Retain built crown ambience alongside individual living-bird calls; water-warning hush covers both. Individual calls and their hush remain delivery gaps, not accepted implementation.",
       "answer_source": "CONDUCTOR:1794806166917699063",
       "history_check": "askcheck returned HISTORY_NOT_CHECKED because no tree exists. Read current record and original stage-1 log excerpt; no sent ask or waiver on this decision exists."
+    },
+    {
+      "id": "a_north_star_validation",
+      "text": "FeverWood’s two proposed north-star bars are: ordinary branch routes shape daily work and travel above black water; water remembers colony actions and sometimes changes plans, with consequences legible through rescue, treatment and reload. Which direction for these acceptance bars: validate them as written, or name the change needed?",
+      "decision": "Whether the two existing agent-authored north-star bars should be bound; concept-root approval and runtime first-touch are separate acts.",
+      "about": [
+        "fw_routes",
+        "fw_pools",
+        "fw_shore_rescue",
+        "fw_persistence"
+      ],
+      "owner_cites": [
+        "OWNER:1794374372850231423"
+      ],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794837471",
+      "status": "struck",
+      "recommended_answer": "Use the authorized NEW-bar judging and validation route; no owner preference question is required.",
+      "evidence_against": [],
+      "candidate_evidence_rebutted": [
+        "The walk is DRAFT with an empty validated hash and the tree is DRAFT with root_hash null. The concept-root delegation does not certify these bars. This establishes that the binding act is outstanding, not contrary evidence against the selected experience. Read-only validated_baseline found no previously validated section, so the new-bar autonomy exception applies."
+      ],
+      "review": {
+        "by": "/root/root_validation_review",
+        "verdict": "struck",
+        "why": "The existing concept-root approval does not validate the north star, but these are NEW bars. Delegation policy section 2.1 and the exact Contagion precedent permit an authorized Conductor/Arbiter binding act with independent judgment. Missing certification is not evidence for repeating the owner preference question. The Designer must route, not perform, that act."
+      },
+      "source": [
+        "CONDUCTOR:1794837810453463606",
+        "ITEM:RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
+        "design/concepts/FeverWood/root_validation_review.json",
+        "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+        "design/RimMandrake/delegation_policy.md:55",
+        "src/RimMandrake/Utils/modcheck/cli.py:564",
+        "design/validation_walks/RimMandrake/FeverWood.md:75"
+      ],
+      "resolution": "Never sent. Separate binding act filed as RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS. No final bar approval, north-star validation or owner first-touch is inferred.",
+      "history_check": "concept_tree.py askcheck clear; original asks a_root answered by concept-root delegation and a_chorus_source struck. This ask concerns separate north-star certification, but review found an authorized new-bar route rather than a new human decision."
     }
   ],
   "inventory": [
@@ -3841,5 +3894,47 @@
     "helpers": "All five Claude Opus processes ran fresh during rm-role-designercodex-1794825692 and were charged there. This retry starts zero new helpers.",
     "agent_decisions": "Retain the existing frozen scenario set and mirror_intel removal Control because the dependent inputs still match.",
     "runtime_acceptance": "UNMEASURED"
+  },
+  "stage2_root_validation_review": {
+    "run": "rm-role-designercodex-1794837471",
+    "review": "design/concepts/FeverWood/root_validation_review.json",
+    "binding_task": "RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
+    "state": "blocked_on_authorized_validation_act",
+    "source": [
+      "CONDUCTOR:1794837810453463606",
+      "ITEM:RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
+      "design/concepts/FeverWood/root_validation_review.json",
+      "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+      "design/RimMandrake/delegation_policy.md:55",
+      "src/RimMandrake/Utils/modcheck/cli.py:564",
+      "design/validation_walks/RimMandrake/FeverWood.md:75"
+    ],
+    "observations": {
+      "walk_state": "DRAFT",
+      "validated_hash": "",
+      "tree_root_state": "DRAFT",
+      "tree_root_hash": null,
+      "previous_validated_baseline": null,
+      "must_show": [
+        "feverwood_branch_home",
+        "feverwood_water_memory"
+      ],
+      "cannot_show": []
+    },
+    "live_walk": "Existing-code walk offered before additional design: proposed disposable authored FeverWood holding with asserted crown destinations and registered water, ordinary harvest/haul then actual shore seizure and nearby-companion rescue versus distant helper. No ready save or complete runnable scene is claimed. Water-memory and reload delivery gaps remain unmeasured; the look cannot supply authority.",
+    "coverage_judge": "rm-coverage-judge-1794833596",
+    "coverage_gap_ids": [
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "g5",
+      "g6",
+      "g7",
+      "g8",
+      "g9",
+      "g10"
+    ],
+    "next_after_binding": "Authorized validator publishes actual validation and unblocks stage 2. Stage 3 must restamp root_hash, address all ten gaps with coverage_fixes.json against the recorded judge, then repeat the exam and coverage review. Existing Preflight admission ceiling remains."
   }
 }

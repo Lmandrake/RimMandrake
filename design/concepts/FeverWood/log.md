@@ -56,3 +56,20 @@ Review usage: 50000 plus 15000 weighted tokens, conservative reviewer estimates 
 Stage-2 disposition: every recorded core contradiction now has an explicit design resolution; implementation/proof remains open. Saved water memory and rescue obligations, pool-scaled reach, local porter consequences, the several-day young interval and matching intervention, genuine mirror intelligence, the sound contract and lure targeting are carried into planning. Mud, slow visible galleries and exceptional broken hives retain their existing documented obligations rather than becoming repeat approval questions. Their rate/curve/detail is engineering and observation within those promises; no directed borer tool is added. Moving lanes stay later, density asymmetry stays discharged, no rite stays settled, cuts stay cut, current art remains accepted, native drinking and truce remain separately evidenced, and heat follows the later geometry-only OWNER ruling.
 
 Stage 2 settles intent, not live delivery or enjoyment. Enjoyment is a prediction for the owner's later reaction. Write must preserve each gap in the plan, name actual or missing scene entry points, require read-only discriminating observations, normal player entry paths, complete recovery and every-inventory coverage. Exact fatal flesh quantity remains an observation question, not an allegation of duplication. No tree, sheet, scene, floor, build, art, bridge, restart or deployment was produced in this run. Only the launcher advances the recorded stage after validating result.json.
+
+
+## Stage 2 root-validation return — rm-role-designercodex-1794837471
+
+Claim (agent): the delegated concept root does not bind the walk north star; the missing act must use the proper authority.
+
+Attack (agent): asking the owner again would confuse an outstanding certification with an unresolved preference. Read-only northstar.validated_baseline found no earlier validated section, so both bars are NEW; delegation_policy section 2.1 and the completed Contagion precedent offer the authorized new-bar route.
+
+Picture / existing-code walk offered first: proposed disposable authored FeverWood holding; ordinary harvest/haul between crown destinations, then actual shore seizure and nearby-companion rescue compared with a distant helper. No ready save is claimed, and missing water-memory/reload behavior cannot be shown as delivered. No bridge, restart, deployment or live mutation occurred.
+
+Candidate ask (agent, never sent): “FeverWood’s two proposed north-star bars are: ordinary branch routes shape daily work and travel above black water; water remembers colony actions and sometimes changes plans, with consequences legible through rescue, treatment and reload. Which direction for these acceptance bars: validate them as written, or name the change needed?”
+
+Fresh review /root/root_validation_review: “STRUCK — route the binding act to authorized Conductor/Arbiter authority; do not send this owner ask.” The review distinguishes missing north-star certification from contrary design evidence. The authority/ask review is recorded in root_validation_review.json; it is not a final bar judge verdict. Conservative review estimate 30000 weighted tokens charged.
+
+Routing decision recorded as CONDUCTOR:1794837810453463606, delegated evidence-for-ask. Filed RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS with concrete spec, verification and criteria for authorized judgment and binding. It descends from the concept item and does not replace it. The Designer does not validate or unblock itself.
+
+Result: blocked on the filed validation act. No owner question sent. Walk and frozen artifacts unchanged. All ten rm-coverage-judge-1794833596 gaps, including every would_pass and smallest_fix, are copied unchanged into result.json. Actual validation must precede stage-3 root stamping and the full ten-gap rework, then a new exam and coverage review. Runtime experience, coverage acceptance and owner first-touch remain pending.

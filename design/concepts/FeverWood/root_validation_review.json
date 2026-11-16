@@ -1,0 +1,36 @@
+{
+  "run": "rm-role-designercodex-1794837471",
+  "reviewer": "/root/root_validation_review",
+  "verdict": "struck",
+  "subject": "Proposed owner ask to validate the two existing candidate FeverWood north-star bars",
+  "candidate_ask": "FeverWood’s two proposed north-star bars are: ordinary branch routes shape daily work and travel above black water; water remembers colony actions and sometimes changes plans, with consequences legible through rescue, treatment and reload. Which direction for these acceptance bars: validate them as written, or name the change needed?",
+  "why": "Existing concept-root approval does not validate the north star. However, the proposed evidence against automatic approval establishes a missing certification, not a reason to reopen the already selected experience. Lock step 1 requires proper authority; delegation_policy section 2.1 and modcheck support judging and binding NEW bars through delegated authority. Read-only validated_baseline found no earlier validated section. Contagion provides the directly matching route: strike the repeated owner ask, file the binding act for Conductor, and complete stage 2 only after it is enacted.",
+  "handoff_wording": "FeverWood’s two drafted north-star bars are new: its walk has never carried a validated baseline. Bind the two existing must-show lines through the authorized new-bar route under delegation_policy section 2.1, with a passing independent judge verdict. This is a separate north-star validation act; CONDUCTOR:1794804413045937607 approved only the concept root. Preserve all implementation and proof gaps, and make no claim of live acceptance or owner first-touch certification.",
+  "sources": [
+    "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+    "design/RimMandrake/delegation_policy.md:55",
+    "src/RimMandrake/Utils/modcheck/cli.py:564",
+    "design/validation_walks/RimMandrake/FeverWood.md:75",
+    "design/concepts/Contagion/result.rm-role-designer-1794816366.json",
+    "design/concepts/Contagion/result.rm-role-designer-1794819505.json",
+    "OWNER:1794374372850231423",
+    "CONDUCTOR:1794804413045937607",
+    "CONDUCTOR:1794806166917699063"
+  ],
+  "baseline": {
+    "state": "DRAFT",
+    "recorded_hash": "",
+    "previous_validated_section": null,
+    "new_bars": [
+      "feverwood_branch_home",
+      "feverwood_water_memory"
+    ]
+  },
+  "limits": "This is an independent ask/authority review, not a passing north-star bar judge verdict, a validation act, implementation acceptance, a coverage signature, or first-touch certification. The authorized validator must obtain judgment on the final section before binding it.",
+  "quick_look_note": "Retain the proposed disposable authored existing-code branch-work and real shore-rescue scene. No ready save is claimed. Missing water-memory/reload behavior cannot be demonstrated by current code, and the look does not supply binding authority.",
+  "usage": {
+    "weighted_tokens_charged": 30000,
+    "measurement": "conservative reviewer estimate; exact metering unavailable"
+  },
+  "mutations_by_reviewer": []
+}
