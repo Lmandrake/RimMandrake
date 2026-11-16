@@ -1,10 +1,11 @@
 {
  "_view": {
-  "body_sha256": "a1597de870029dd15360e53fba668b5ba4c45bcf677849bed645b4d376c78e60",
+  "body_sha256": "ce87704ae4823e4530c52ada5402af7e165233fef486b4a901c6e6e6559b57ab",
   "reducer": 1,
   "shards": {
    "BACKFILL": 984216,
-   "DISPATCH": 648
+   "DISPATCH": 648,
+   "HOLDER.run-1794816885": 928
   }
  },
  "state": {
@@ -1407,7 +1408,13 @@
     "ts": "2026-11-16T08:32:35Z"
    }
   },
-  "checkpoint": null,
+  "checkpoint": {
+   "by": "HOLDER.run-1794816885",
+   "done": "All 9 road-back items have their offline half landed: pit-trap, source-pays, trench scenes and OL shadow judge at e9f2f50fd215; walk swimmer + chemfuel-first second order at f1e06be47a88. Filed RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER. None closed: every acceptance test is live.",
+   "next": "Hold the bridge on the calm site and run the live rerun named in each item LEFT OPEN note (Int64 companion deploy at game-down first); close each on its sha.",
+   "ruled_out": "OL FAILs are not a mod defect: dry shadow alpha drawn at UnderSheetQueue 2448 < SheetQueue 2449 is the owner 11-13 design; no bar wording changes.",
+   "ts": "2026-11-16T08:50:23Z"
+  },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
     "authority": {
@@ -1946,7 +1953,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1277,
+  "events": 1278,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7777,7 +7784,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T08:14:45Z",
+   "last": "2026-11-16T08:50:23Z",
    "lease": "run-1794816885",
    "released": false,
    "token": 1
@@ -7788,7 +7795,8 @@
   "session": null,
   "shards": [
    "BACKFILL",
-   "DISPATCH"
+   "DISPATCH",
+   "HOLDER.run-1794816885"
   ],
   "spend_tokens": 24322723,
   "spend_usd": 33.1927,
