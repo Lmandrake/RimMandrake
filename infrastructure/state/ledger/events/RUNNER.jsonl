@@ -7983,3 +7983,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T21:48:21Z","tsn":1794865701856786127}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 1199 min (MEASURED), line > 60","ts":"2026-11-16T21:49:32Z","tsn":1794865772468647860}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T21:49:40Z","tsn":1794865780933875787}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 1199 min (MEASURED), line > 60","ts":"2026-11-16T21:50:54Z","tsn":1794865854508565311}
