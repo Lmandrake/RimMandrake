@@ -29,6 +29,9 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       101,42 live, 102,42 in both loads): born things are counted by def, not by cell, and the row still PASSes
   W19 the frame probe reads a 99th-percentile frame of 75 ms in the real-time window: FRAME_BUDGET FAIL
   W20 the frame probe saw no frame (Frame stop answers NONE): FRAME_BUDGET UNMEASURED, never PASS
+  W21 jawa/time_perf reads 0.0 on a paused clock (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with
+      carriers in the air", PASS): the fake answers 0.0 unless the clock runs, and a sound world reads both tick costs
+      above 0 (W0); a perf that always reads 0.0 leaves CARRIER_TICK_COST UNMEASURED, never PASS
   W16 the cover already gone when the grenade comes: COVER rows UNMEASURED naming it, never a mod FAIL read off an empty
       journal
 
@@ -158,7 +161,10 @@ class Fake:
                                                if x <= p["pos"][0] < x + ww and z <= p["pos"][1] < z + hh
                                                and (kw.get("includeCorpses") or not p["dead"])]}
         if tool == "jawa/time_perf":
-            return {"success": False, "error": "No game loaded."} if self.brk.get("no_game") else {"success": True, "meanTickTime": 2.5}
+            if self.brk.get("no_game"):
+                return {"success": False, "error": "No game loaded."}
+            running = w.get("speed", 0) > 0 and not self.brk.get("perf_blind")
+            return {"success": True, "meanTickTime": 2.5 if running else 0.0}
         if tool == "jawa/static_call":
             m, a = kw["method"], kw.get("args", "")
             if self.brk.get("release") and kw["type"] == V.PROOF:
@@ -238,6 +244,7 @@ class Fake:
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
         if tool == "rimworld/set_time_speed":
+            w["speed"] = kw.get("speed", 0)
             if w.get("probe"):
                 w.setdefault("probe_speed", []).append(kw.get("speed"))
             return {"success": True}
@@ -329,6 +336,9 @@ def main():
     code, rows, txt = run(probe_blind=True)
     check("W20", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(perf_blind=True)
+    check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
+          "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))
     script = os.path.join(HERE, "validation.py")
     r1 = subprocess.run([sys.executable, script, "--live"], capture_output=True, text=True)
     r2 = subprocess.run([sys.executable, script, "--live", "walk_storeroom_raid"] + ARGS[:6], capture_output=True, text=True,

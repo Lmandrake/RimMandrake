@@ -784,21 +784,28 @@ class _Walk:
         if not b.startswith("BEGUN"):
             self.row("FRAME_BUDGET", "UNMEASURED", "Frame begin answered %r" % b[:200])
             return
+        # CARRIER_TICK_COST is read here too, on a running clock: jawa/time_perf's meanTickTime reads 0.0 on a paused one
+        # (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with carriers in the air" and scored PASS)
+        self.c("rimworld/set_time_speed", speed=1)
+        wait(2.0)
+        self.ev["tick_rest_running"] = self.perf()
         cx, cz = self.room[0] + self.room[2] // 2, self.room[1] + self.room[3] // 2
         for x, z in [(cx, cz), (cx - 1, cz + 1), (cx + 1, cz - 1)][:max(1, self.a.shells)]:
             self.c("jawa/explosion_at", at="%d,%d" % (x, z), radius=SHELL[1], damType=SHELL[0])
-        self.c("rimworld/set_time_speed", speed=1)
-        wait(secs)
+        wait(1.0)
+        self.ev["tick_air_running"] = self.perf()
+        self.ev["in_air_at_tick_read"] = len([l for l in self.kp("Flights")[1].splitlines() if l and not l.startswith("NONE")])
+        wait(max(0.0, secs - 1.0))
         self.c("rimworld/set_time_speed", speed=0)
-        r = self.kp("Frame", "stop,0.5,%g" % secs)[1]
+        r = self.kp("Frame", "stop,0.5,%g" % (secs + 2.0))[1]
         self.ev["frame_probe"] = r
         p99, rows = re.search(r"windowP99Ms=([0-9.]+)", r), re.search(r"windowRows=(\d+)", r)
         if not r.startswith("FRAME") or not p99 or not rows or int(rows.group(1)) < FRAME_MIN_ROWS:
             self.row("FRAME_BUDGET", "UNMEASURED", "no frame reading (%d s unpaused after the shells): %s" % (secs, r[:300]))
             return
         self.row("FRAME_BUDGET", float(p99.group(1)) <= FRAME_BUDGET_MS,
-                 "99th-percentile unpaused frame %s ms (bar %g) over %s rows, %g s at speed 1 after %d shell(s): %s"
-                 % (p99.group(1), FRAME_BUDGET_MS, rows.group(1), secs, max(1, self.a.shells), r[:240]))
+                 "99th-percentile unpaused frame %s ms (bar %g) over %s rows, %g s at speed 1 (2 s before %d shell(s)): %s"
+                 % (p99.group(1), FRAME_BUDGET_MS, rows.group(1), secs + 2.0, max(1, self.a.shells), r[:240]))
 
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
@@ -854,9 +861,12 @@ class _Walk:
             self.load(base)
             for f, v in snap.items():
                 self.c("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=f, value=str(v))
-        air, rest = self.ev.get("tick_air"), self.ev.get("tick_rest")
-        self.row("CARRIER_TICK_COST", "PASS" if air is not None and rest is not None else "UNMEASURED",
-                 "meanTickTime %s ms at rest, %s ms with carriers in the air (recorded, not judged)" % (rest, air))
+        air, rest = self.ev.get("tick_air_running"), self.ev.get("tick_rest_running")
+        seen = isinstance(air, (int, float)) and isinstance(rest, (int, float)) and air > 0 and rest > 0
+        self.row("CARRIER_TICK_COST", "PASS" if seen else "UNMEASURED",
+                 "meanTickTime %s ms at rest, %s ms 1 s after the shells with %s carrier(s) in the air, clock running "
+                 "(recorded, not judged)%s" % (rest, air, self.ev.get("in_air_at_tick_read"),
+                                                "" if seen else ": a reading of 0 or none is a blind instrument"))
         self.unmeasured(["FRAME_BUDGET"], "UNMEASURED: order A never reached the frame act")
         return 0
 
