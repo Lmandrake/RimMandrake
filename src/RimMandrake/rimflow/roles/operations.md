@@ -187,8 +187,11 @@ vs. the baseline of the recently tagged Rimflow v2 (Bench + Foundry). We MUST pr
 After it's settled down and optimized of course. One of the v3 roles must own this regular assessment." You own it
 (Conductor ruling, `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): you are the one role that may read cost.
 
-- **The program measures, you judge nothing by hand.** `src/RimMandrake/Utils/v3_vs_v2.py run` (schedule
-  `measure[name=v3_vs_v2]`, Monday 07:05) measures the week ending Monday 07:00 with the baseline's own definitions
+- 🔴 **Not running.** Its timer was never enabled (switching it on is the owner's) and was uninstalled 2026-11-04
+  (783d1f1c76, TIMERS_PRUNE_AUDIT_FINALLY_READ); the last `verdict.md` is the week ending 2026-10-26. Until he
+  decides `RIMMANDRAKE_REVIVE_V3_VERDICT_TIMER_PRUNED_NEVER_ENABLED`, Monday's run reports the verdict as UNMEASURED.
+- **The program measures, you judge nothing by hand.** `src/RimMandrake/Utils/v3_vs_v2.py run` (once
+  `rm-v3-vs-v2.timer`, Monday 07:05) measures the week ending Monday 07:00 with the baseline's own definitions
   against the tag week of `system-baseline-two-seat-2026-10-26`, applies the pre-registered rule
   `src/RimMandrake/Utils/v3_vs_v2_rules.json` (its sha256 is pinned in the program; a changed byte stops it with
   RULES CHANGED), and writes `D:\ClaudeWork\rimmandrake\v3_vs_v2\verdict.md` (yours), `quality_blind.md` (the
