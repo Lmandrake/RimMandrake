@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-16T01:32:39Z",
+    "kind": "review",
+    "ref": "/root/review_stage1_root",
+    "stage": 1,
+    "tokens": 105000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 105000
  },
  "draft_input": {
   "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/LeaningScrub.check.json)",
@@ -30,6 +38,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designercodex-1794791300: stage 0 done"
+  },
+  {
+   "at": "2026-11-16T01:27:13Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794792411, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-16T01:36:02Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794792411: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -57,6 +77,39 @@
    "run": "rm-role-designercodex-1794791300",
    "stage": 0,
    "summary": "Source-verified stage 0 inventory and proof/scope provenance recorded; every mandatory built-evidence ref reconciled, related done history reviewed, suite and auxiliary scene contract gaps audited, direct neighbors and three failure modes recorded. Draft corrections include present shirrel flipbook and omitted sweetline canopy/settings coverage. Existing live walk proposed; no bridge, game, deploy or implementation action."
+  },
+  {
+   "at": "2026-11-16T01:36:02Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "dbea0e598f21083b8f64b223fcd1b543f547d8c782a8aabc287b0e96213fa4ef",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794792677711573340"
+   ],
+   "quick_look": {
+    "offer": true,
+    "scene": "At the next attended bridge-owner sitting, begin from registered RM_TestSite_leaningscrub_v3 after confirming it exists and matches the composed build; the existing venomvine keeper recipe can provide numbered plant stations. First look at ordinary wind/Stall/Gale, tall vine islands and clear routes, sweetline landmark/canopy/history and current shirrel frames. Then stage a working-home routine haul with a clear detour beside a mature-vine shortcut, followed by an explicitly ordered crossing. Existing drafted island walks cannot decide the hauling arm. Use a recovery save before any mutation and explicit owner_review hold. Flight portion only with owner present.",
+    "settles": [
+     "state_art",
+     "routes_vs_walking_creep",
+     "ordered_haul_distinction",
+     "smother_horizon"
+    ]
+   },
+   "run": "rm-role-designercodex-1794792411",
+   "stage": 1,
+   "summary": "Adopted source-checked LeaningScrub root by recorded Evidence-for-Ask delegation CONDUCTOR:1794792677711573340. Fresh reviewer passed the exact sentence and turn page, struck sending the redundant approval question, and found no contrary evidence requiring an owner decision. a_root_1 answered by delegation with BENCH author provenance. Attended live walk prominently proposed. Current live play and first-touch certification remain pending."
   }
  ],
  "runner": "codex",
@@ -68,10 +121,18 @@
     "input_tokens": 9879045,
     "output_tokens": 31816
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794792411",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2389199,
+    "output_tokens": 10804
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready"
 }
