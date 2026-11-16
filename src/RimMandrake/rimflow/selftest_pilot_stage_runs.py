@@ -35,6 +35,7 @@ os.makedirs(os.path.join(root, "design", "concepts", PILOT))
 L.append(root, PILOT, "DISPATCH", "version.open", "version", body={"version": "0.1.0"}, version="0.1.0")
 L.append(root, PILOT, "DISPATCH", "stage.enter", "stage", body={"stage": "offline_build"})
 M.load = lambda r, m: {"stage": "offline_build"}            # the stage record the launch reads
+D.ledger_ready = lambda r, m: (True, "PASS 7/7")            # the temp ledger stands for a backfilled one
 calls, landed = [], []
 fx = {"land_ledger": lambda paths: landed.append(paths) or "landed"}
 
@@ -68,6 +69,11 @@ calls.clear()
 D.launch_stage(root, {"seat": "BENCH"}, st, "NotAPilot", 15, "ITEM_C", now=3000, fx=fx, launch=fake(0, "u3"))
 check("any other mod launches as before (no preface, no env)", calls and "preface" not in calls[-1] and
       "env" not in calls[-1], calls)
+D.ledger_ready = lambda r, m: (False, "FAIL 7 of 7")
+calls.clear()
+D.launch_stage(root, {"seat": "BENCH"}, st, PILOT, 15, "ITEM_D", now=3500, fx=fx, launch=fake(0, "u35"))
+check("a pilot whose ledger is not ready launches the old way", calls and "preface" not in calls[-1], calls)
+D.ledger_ready = lambda r, m: (True, "PASS 7/7")
 out = D.end_ledger_runs(root, st, {PILOT: {"ended_runs": []}}, 4000,
                         dict(fx, record=lambda u: {"status": "running"}))
 check("a live run is not ended", not out, out)
@@ -85,15 +91,10 @@ check("detached_helper's unit sets the run's RM_ env", "RM_MODLEDGER_WRITER=HOLD
 rc = DH.main(["launch", "--seat", "BENCH", "--item", "I", "--brief", "b", "--env", "PATH=/x"])
 check("detached_helper refuses a non-RM_ --env", rc == 2, rc)
 
-class R:
-    def __init__(self, rc, out=""):
-        self.returncode, self.stdout = rc, out
-
-
-ok_ready = {"ready": lambda m: R(0, "PASS 7/7"), "land_ledger": lambda paths: "landed"}
+ok_ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda paths: "landed"}
 rc, text = D.pilot_launch(root, {"cap_usd": 15}, "NotAPilot", "t", fx=ok_ready)
 check("pilot-launch refuses a mod that is not a pilot", rc == 2 and "not a pilot" in text, text)
-rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", fx=dict(ok_ready, ready=lambda m: R(1, "FAIL 7 of 7")))
+rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", fx=dict(ok_ready, ready=lambda r, m: (False, "FAIL 7 of 7")))
 check("pilot-launch refuses a ledger its backfill acceptance fails", rc == 2 and "not ready" in text and
       "FAIL 7 of 7" in text, text)
 M.brief_text = lambda r, m, cap, **k: ("", {"stage": "offline_build", "owed": "ready to advance"})

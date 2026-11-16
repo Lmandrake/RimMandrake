@@ -1212,10 +1212,22 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
 ROLE_OF_STAGE = {"offline_build": "builder", "blind_challenge": "blind_judge", "in_game": "live_driver"}
 
 
+READY_TEST = os.path.join(HERE, "acceptance", "modledger_backfill_accept.py")
+
+
+def ledger_ready(root, mod):
+    """-> (ready, its last line): the mod's ledger passes its backfill acceptance (plan step 3; ~0.2 s)."""
+    r = subprocess.run([sys.executable, READY_TEST, mod], capture_output=True, text=True, timeout=300,
+                       stdin=subprocess.DEVNULL, cwd=root)
+    return r.returncode == 0, ((r.stdout or "").strip().splitlines() or ["no output"])[-1]
+
+
 def pilot_ledger(root, mod):
-    """-> True for a pilot mod (modledger.json pilot_mods) that has a ledger: its stage runs start from the packet."""
+    """-> True for a pilot mod (modledger.json pilot_mods) whose ledger is ready (ledger_ready): its stage runs start
+    from the packet. A half-built ledger (a backfill still running) launches the old way, never from a wrong packet."""
     try:
-        return mod in (modledger.config().get("pilot_mods") or []) and bool(modledger.read(root, mod))
+        return (mod in (modledger.config().get("pilot_mods") or []) and bool(modledger.read(root, mod))
+                and ledger_ready(root, mod)[0])
     except Exception:       # noqa: BLE001  an unreadable ledger launches the old way, never not at all
         return False
 
@@ -1285,9 +1297,6 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     return rc, "%s; %s" % (text, ledger_after(root, st, mod, led, unit, item, now, fx)), unit
 
 
-READY_TEST = os.path.join(HERE, "acceptance", "modledger_backfill_accept.py")
-
-
 def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     """`pilot-launch MOD`: start one pilot holder run from the ledger packet at the stage the mod stands at, through
     the Dispatch step's own launches (the Conductor's act, on a mod the tick has paused or not reached). Refuses a mod
@@ -1299,12 +1308,9 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     now = now or time.time()
     if mod not in (modledger.config().get("pilot_mods") or []):
         return 2, "REFUSED: %s is not a pilot mod (modledger.json pilot_mods)" % mod
-    ready = fx.get("ready") or (lambda m: subprocess.run([sys.executable, READY_TEST, m], capture_output=True, text=True,
-                                                         timeout=900, stdin=subprocess.DEVNULL))
-    r = ready(mod)
-    if r.returncode:
-        return 2, "REFUSED: %s's ledger is not ready: %s (%s)" % (
-            mod, ((r.stdout or "").strip().splitlines() or ["no output"])[-1], READY_TEST)
+    ok, line = (fx.get("ready") or ledger_ready)(root, mod)
+    if not ok:
+        return 2, "REFUSED: %s's ledger is not ready: %s (%s)" % (mod, line, READY_TEST)
     cap = usd or cfg["cap_usd"]
     with state_lock():
         p = os.path.join(sdir(), "state.json")
