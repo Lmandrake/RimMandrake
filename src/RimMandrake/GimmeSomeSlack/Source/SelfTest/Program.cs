@@ -81,7 +81,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // T_CORD_GEOMETRY_OFFLINE (slack ratio, excursion, unforced bends per strand: CordGeometryChecks.cs) is red on the builder
             // as it stands (item RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR); it runs with --geometry so T_CORE stays a green gate.
             if (args.Contains("--geometry")) CordGeometryChecks.Run(scenes);
-            else Console.WriteLine("geometry: skipped (known red; run with --geometry)");
+            else
+            {
+                Console.WriteLine("geometry: skipped (known red; run with --geometry)");
+                // cords_never_repeat's own offline decider is T_CORE, so the twin-lead check runs here too (blind cycle 3: a twin pass
+                // planted broken, TwinApart 0 or the closer twin picked, passed T_CORE and was caught only by the --geometry run)
+                CordGeometryChecks.TwinLeads();
+            }
             AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
             // the flexible-hose suites moved to FlowWorks/Source/SelfTest at the hose port (2026-10-11)
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs

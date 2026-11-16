@@ -29,6 +29,16 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(total == 0 && acc == day - step, "less than a day costs nothing yet and the time is carried");
             total += AerialMath.TheftGoodwillAccrue(ref acc, step, true, 2, day);
             Check(total == -2 && acc == 0, "the tick that completes the day charges once and resets");
+            // blind cycle 3: the caller hands over a drain window of any length (CompPowerTap.drainTicksSinceEvent), so a day is crossed
+            // mid-window; the part of that window past the day must be carried, or every charged day loses it and the drain runs slow
+            acc = 0; total = 0; int drained = 0;
+            foreach (int w in new[] { 7000, 13000, 2500, 41000, 999, 30001, 17500, 60000, 3, 88888 })
+            {
+                total += AerialMath.TheftGoodwillAccrue(ref acc, w, true, 2, day);
+                drained += w;
+            }
+            Check(total == -2 * (drained / day) && acc == drained % day,
+                  "windows that do not divide a day: " + drained + " drained ticks cost " + (-2 * (drained / day)) + " and carry " + (drained % day) + " (got " + total + ", carried " + acc + ")");
             acc = 100; total = 0;
             for (int t = 0; t < day * 5; t += step) total += AerialMath.TheftGoodwillAccrue(ref acc, step, false, 2, day);
             Check(total == 0 && acc == 100, "an idle clamp (not draining) accrues nothing: the drain stops when the theft stops");

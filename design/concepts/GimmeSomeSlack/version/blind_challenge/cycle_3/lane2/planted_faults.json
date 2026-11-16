@@ -1,0 +1,314 @@
+{
+ "faults": [
+  {
+   "id": "NH_TEX_FILE_PIPESPAN",
+   "file": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/PipeSpan.png",
+   "old": null,
+   "new": "\u0089PNG",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "a GSS-shipped pipe span texture"
+  },
+  {
+   "id": "NH_DEF_TEXPATH_FLOWWORKS_PIPE",
+   "file": "src/RimMandrake/GimmeSomeSlack/Defs/MapMeshFlagDefs.xml",
+   "old": "</Defs>",
+   "new": "<ThingDef><defName>RM_CordCoil</defName><thingClass>Building</thingClass><graphicData><texPath>RimMandrake/FlowWorks/PipePole/Modern/PipeSpan</texPath></graphicData></ThingDef></Defs>",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "a GSS def drawing FlowWorks' pipe art"
+  },
+  {
+   "id": "NH_DEF_LABEL_HOSE_REEL",
+   "file": "src/RimMandrake/GimmeSomeSlack/Defs/MapMeshFlagDefs.xml",
+   "old": "</Defs>",
+   "new": "<ThingDef><defName>RM_CordCoil</defName><label>garden hose reel</label><thingClass>Building</thingClass><graphicData><texPath>RimMandrake/GimmeSomeSlack/Aerial/Coil</texPath></graphicData></ThingDef></Defs>",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "a hose reel shipped under an innocent defName and texture"
+  },
+  {
+   "id": "NH_CALLER_HOSE_TEXTURE_LITERAL",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
+   "old": "Texture2D glow = ContentFinder<Texture2D>.Get(Dir + \"SparkGlow\", false);",
+   "new": "Texture2D glow = ContentFinder<Texture2D>.Get(Dir + \"SparkGlow\", false) ?? ContentFinder<Texture2D>.Get(\"RimMandrake/FlowWorks/Hose/HoseSegment\", false);",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "GSS code drawing a hose texture by path, no hose-named type or def"
+  },
+  {
+   "id": "NH_CALLER_PIPEMATS_OWN_ART",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
+   "old": "string contract = ext?.spanTexPath.NullOrEmpty() == false ? ext.spanTexPath.Replace(\"{look}\", look) : null;",
+   "new": "string contract = \"RimMandrake/GimmeSomeSlack/Aerial/\" + look + \"/PipeSpan\";",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss",
+    "pipe_pole_switch"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "the pipe span drawn from GSS-owned pipe art"
+  },
+  {
+   "id": "NH_CALLER_HOSE_TYPE",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/CordMaterials.cs",
+   "old": "namespace RimMandrake.GimmeSomeSlack",
+   "new": "namespace RimMandrake.GimmeSomeSlack.Planted { internal static class HoseReelDraw { } }\nnamespace RimMandrake.GimmeSomeSlack",
+   "bars": [
+    "no_hose",
+    "no_hose_in_gss"
+   ],
+   "suites": [
+    "NOHOSE",
+    "LANE1"
+   ],
+   "why": "a hose class in a caller (control)"
+  },
+  {
+   "id": "K_CANLINK_NO_RANGE",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "            if (!InRange(a.X, a.Z, b.X, b.Z, range)) return LinkVerdict.OutOfRange;\n",
+   "new": "",
+   "bars": [
+    "spans_above_everything",
+    "overhead_spans"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_TAP_NO_AVAIL_CAP",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "            return Math.Min(rateW * k, avail);",
+   "new": "            return rateW * k;",
+   "bars": [
+    "tap_steals_and_costs_goodwill",
+    "power_theft"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_GOODWILL_REMAINDER_LOST",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "            drainTicks -= days * ticksPerDay;",
+   "new": "            drainTicks = 0;",
+   "bars": [
+    "tap_steals_and_costs_goodwill",
+    "power_theft"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_SHOCK_FIXER_NOT_EXEMPT",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "=> flesh && !dead && !alreadyOut && !restringing;",
+   "new": "=> flesh && !dead && !alreadyOut;",
+   "bars": [
+    "fallen_wire_shocks_crossers",
+    "fallen_wire_shock"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_REMOVAL_CUT_FALLS_AGAIN",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "if (killed && st == SpanState.Up) plan.Fallen",
+   "new": "if (killed) plan.Fallen",
+   "bars": [
+    "fallen_span_on_ground",
+    "downed_spans"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_PIPE_POLE_HOSTAGE_TO_MASTER",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "CarriesPower(k) ? powerOn : pipeOn;",
+   "new": "CarriesPower(k) ? powerOn : powerOn && pipeOn;",
+   "bars": [
+    "settings_switch_cleanly",
+    "pipe_pole_switch"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "K_THEFT_SIGHT_DOUBLED",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+   "old": "            return dist <= sightRange;",
+   "new": "            return dist <= sightRange * 2;",
+   "bars": [
+    "tap_steals_and_costs_goodwill",
+    "power_theft"
+   ],
+   "suites": [
+    "LANE1",
+    "CORE"
+   ]
+  },
+  {
+   "id": "C_TWIN_APART_ZERO",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "internal const double TwinApart = 0.15;",
+   "new": "internal const double TwinApart = 0.0;",
+   "bars": [
+    "cords_never_repeat"
+   ],
+   "suites": [
+    "CORE",
+    "GEOM"
+   ]
+  },
+  {
+   "id": "C_TWIN_PICKS_CLOSER",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "if (d > bestD) { bestD = d; bestT = ti; bestS = s; }",
+   "new": "if (d < bestD) { bestD = d; bestT = ti; bestS = s; }",
+   "bars": [
+    "cords_never_repeat"
+   ],
+   "suites": [
+    "CORE",
+    "GEOM"
+   ]
+  },
+  {
+   "id": "C_STRANDFAULTS_OVERFACE_ZERO",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "            if (s.OverFace || s.DiveA || s.DiveB) return f;",
+   "new": "            if (s.OverFace || s.DiveA || s.DiveB) return 0;",
+   "bars": [
+    "no_unforced_sharp_turn",
+    "cords_lie_slack"
+   ],
+   "suites": [
+    "CORE",
+    "GEOM"
+   ]
+  },
+  {
+   "id": "C_TWIN_MAY_ADD_FAULTS",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "StrandFaults(w, e, piece, s.With(Q), 0, ref line) <= own) piece.TwinPts[t] = Q;",
+   "new": "StrandFaults(w, e, piece, s.With(Q), 0, ref line) <= own + 99) piece.TwinPts[t] = Q;",
+   "bars": [
+    "no_unforced_sharp_turn",
+    "cords_lie_slack",
+    "cords_never_repeat"
+   ],
+   "suites": [
+    "CORE",
+    "GEOM"
+   ]
+  },
+  {
+   "id": "C_GRAPH_FAULT_LEAVES_RUNNING",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "lock (layLock) { graphFault = ex.ToString(); graphRunning = false; graphWorld = null; }",
+   "new": "lock (layLock) { graphFault = ex.ToString(); graphWorld = null; }",
+   "bars": [
+    "no_stall_on_rewire",
+    "rebuild_cost"
+   ],
+   "suites": [
+    "CORE"
+   ],
+   "why": "aimed at SliceGateChecks' changed graph-worker check"
+  },
+  {
+   "id": "C_GRAPH_FAULT_FORGOTTEN",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "old": "if (graphFault != null) { LastGraphFault = graphFault; graphFault = null; graphFaulted = true; }",
+   "new": "if (graphFault != null) { LastGraphFault = graphFault; graphFault = null; }",
+   "bars": [
+    "no_stall_on_rewire",
+    "rebuild_cost"
+   ],
+   "suites": [
+    "CORE"
+   ],
+   "why": "aimed at SliceGateChecks' changed graph-worker check"
+  },
+  {
+   "id": "R_STEPTRACE_RESET_DROPPED",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+   "old": "            Core.CordBuilder.StepTrace = null;",
+   "new": "",
+   "bars": [
+    "statics_clear_between_games",
+    "game_statics_reset"
+   ],
+   "suites": [
+    "CENSUS"
+   ]
+  },
+  {
+   "id": "R_RESET_RETURNS_EARLY",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+   "old": "            resets++;",
+   "new": "            resets++;\n            if (resets > 0) return;",
+   "bars": [
+    "statics_clear_between_games",
+    "game_statics_reset"
+   ],
+   "suites": [
+    "CENSUS"
+   ],
+   "why": "behaviour broken, every reset line still in the text"
+  }
+ ],
+ "not_planted": {
+  "design/concepts/GimmeSomeSlack/journal.md": "a record; no test reads it for a bar",
+  "design/concepts/GimmeSomeSlack/version/run_spend.jsonl": "a spend record; no bar",
+  "design/concepts/GimmeSomeSlack/version/stage_record.json": "the pipeline's stage record; maturation.py reads it, no mod test",
+  "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll": "binary; every C# fault above is planted in its source and rebuilt by the selftests, and lane 1's NH_DLL rows read the shipped one",
+  "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash": "the DLL's source stamp (dll_source_stamp.py, a commit-time guard), no bar test",
+  "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs": "a test: its two changed checks are aimed at by C_TWIN_APART_ZERO and C_TWIN_PICKS_CLOSER (TwinLeads) and C_STRANDFAULTS_OVERFACE_ZERO / C_TWIN_MAY_ADD_FAULTS (StrandFaults)",
+  "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs": "a test: aimed at by C_GRAPH_FAULT_LEAVES_RUNNING and C_GRAPH_FAULT_FORGOTTEN",
+  "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py": "the decider: aimed at by the six NH_ faults",
+  "src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py": "a test: aimed at by R_STEPTRACE_RESET_DROPPED and R_RESET_RETURNS_EARLY"
+ }
+}

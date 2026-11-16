@@ -309,7 +309,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// parted; and the pass is a pure function of the base pieces: a builder that drops the twin's partner row and brings it back draws what a cold build
         /// draws, and the lone lead gets its base lay back.
         /// </summary>
-        private static void TwinLeads()
+        internal static void TwinLeads()
         {
             Func<Cell, bool> live = c => true;
             var all = Enumerable.Range(0, 8).ToList();

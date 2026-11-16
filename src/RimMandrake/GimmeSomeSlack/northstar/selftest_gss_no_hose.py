@@ -2,15 +2,17 @@
 # selftest-timeout: 60
 """L22 no_hose_in_gss (GSS dense proofs 2026-11-12): the hose moved to FlowWorks, so Gimme Some Slack ships no hose.
 
-The check: no def under Defs/ or Patches/ whose defName, thingClass or texPath names a hose, a reel or a pipe; no texture file
-so named; no C# type so named under Source/. XML is PARSED (comments and the About description that says where the
+The check: no def under Defs/ or Patches/ whose defName, label, thingClass or texPath names a hose, a reel or a pipe; no texture
+file so named; no C# type so named under Source/; and no texture path in shipped C# (a string literal holding a "/", or a piece
+of one built by concatenation, under Source/ outside SelfTest/, which is its own project and never ships) that names one. XML is PARSED (comments and the About description that says where the
 hose went are not defs). The shared draw-order table (_Shared/SlackGeometry/DrawOrder.cs: LayerHose, HoseQueue) is
 compiled into the DLL but is not under this mod's Source/ and names an altitude, not a thing; it is not scanned.
 
 Mutants, each in a temp copy of the mod (never the tree): a planted RM_HoseReel ThingDef, a planted texture, a planted
 C# class, a planted Patches def, a texture inside a Hose/ folder and a comp named only by its Class attribute (both added by the
-blind challenge of 2026-11-15, which saw them pass the old scan) and a planted pipe ThingDef (blind cycle 2: the bar says "no pipe",
-the old scan read hose|reel only) must each go red BY NAME; the clean copy and a hose COMMENT must stay green.
+blind challenge of 2026-11-15, which saw them pass the old scan), a planted pipe ThingDef (blind cycle 2: the bar says "no pipe",
+the old scan read hose|reel only), and three blind cycle 3 saw pass (a hose texture drawn from C# by a path literal, a pipe span
+path built by concatenation, a ThingDef labelled "garden hose reel" under an innocent defName) must each go red BY NAME; the clean copy and a hose COMMENT must stay green.
 Exit 0 green, 1 red, 2 instrument broke (a mutant that never applied, or the clean copy read red).
 """
 import re
@@ -22,6 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent   # the mod folder; this file sits in northstar/ so it never moves the mod hash
 WORD = re.compile(r"hose|reel|pipe", re.I)   # the bar: "No hose, reel or pipe is drawn by this mod" (pipe added, blind cycle 2)
+LIT = re.compile(r'"((?:[^"\\\n]|\\.)*)"')   # a C# string literal; one holding a "/" is (part of) a texture path
 TYPE = re.compile(r"\b(?:class|struct|enum|interface|record)\s+(\w*(?:Hose|Reel|Pipe|hose|reel|pipe)\w*)")
 
 
@@ -38,7 +41,8 @@ def scan(mod):
                 hits.append("unparsable: %s (%s)" % (f.name, e))
                 continue
             for el in root.iter():
-                if el.tag in ("defName", "thingClass", "texPath", "graphicClass", "compClass", "workerClass") and el.text and WORD.search(el.text):
+                # label too: a hose reel shipped under an innocent defName and texPath is still a ThingDef for a reel (blind cycle 3)
+                if el.tag in ("defName", "label", "thingClass", "texPath", "graphicClass", "compClass", "workerClass") and el.text and WORD.search(el.text):
                     hits.append("%s: %s (%s)" % (el.tag, el.text.strip(), f.relative_to(mod)))
                 # a comp, worker or graphic named by its Class attribute (<li Class="CompProperties_HoseReel" />) is a class too
                 cls = el.get("Class")
@@ -54,6 +58,11 @@ def scan(mod):
         text = re.sub(r"//[^\n]*|/\*.*?\*/", "", f.read_text(encoding="utf-8", errors="replace"), flags=re.S)
         for m in TYPE.finditer(text):
             hits.append("type: %s (%s)" % (m.group(1), f.relative_to(mod)))
+        if "SelfTest" in f.relative_to(src).parts:
+            continue                        # the selftest project is never shipped: its literals draw nothing
+        for m in LIT.finditer(text):
+            if "/" in m.group(1) and WORD.search(m.group(1)):
+                hits.append("texpath: %s (%s)" % (m.group(1)[:80], f.relative_to(mod)))
     return hits
 
 
@@ -115,6 +124,33 @@ def _plant_pipe(m):
     return "defName: RM_WaterPipe"
 
 
+def _plant_code_literal(m):
+    (m / "Source" / "PlantedLiteral.cs").write_text('namespace X { static class D { static object T() => Verse.ContentFinder<UnityEngine.Texture2D>'
+                                                    '.Get("RimMandrake/FlowWorks/Hose/HoseSegment", false); } }\n', encoding="utf-8")
+    return "texpath: RimMandrake/FlowWorks/Hose/HoseSegment"
+
+
+def _plant_code_concat(m):
+    (m / "Source" / "PlantedConcat.cs").write_text('namespace X { static class D { static string P(string look) => '
+                                                   '"RimMandrake/GimmeSomeSlack/Aerial/" + look + "/PipeSpan"; } }\n', encoding="utf-8")
+    return "texpath: /PipeSpan"
+
+
+def _plant_label(m):
+    p = m / "Defs" / "RM_PlantedLabel.xml"
+    p.write_text('<?xml version="1.0" encoding="utf-8"?>\n<Defs><ThingDef><defName>RM_CordCoil</defName><label>garden hose reel</label>'
+                 '<thingClass>Building</thingClass><graphicData><texPath>RimMandrake/GimmeSomeSlack/Aerial/Coil</texPath></graphicData>'
+                 '</ThingDef></Defs>\n', encoding="utf-8")
+    return "label: garden hose reel"
+
+
+def _green_selftest_literal(m):
+    d = m / "Source" / "SelfTest"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "PlantedTestString.cs").write_text('namespace X { static class T { const string S = "a/hose/legacy name read"; } }\n', encoding="utf-8")
+    return None
+
+
 def _green_comment(m):
     p = m / "Defs" / "RM_PlantedComment.xml"
     p.write_text('<?xml version="1.0" encoding="utf-8"?>\n<Defs><!-- the hose reel lives in FlowWorks now --></Defs>\n', encoding="utf-8")
@@ -130,7 +166,10 @@ def main():
     ok &= not real
     for name, plant in (("M1_planted_thingdef", _plant_def), ("M2_planted_texture", _plant_tex), ("M3_planted_class", _plant_type),
                         ("M4_planted_patch_def", _plant_patch),
-                        ("M5_planted_texture_folder", _plant_tex_folder), ("M6_planted_comp_class_attr", _plant_class_attr), ("M7_planted_pipe_def", _plant_pipe), ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
+                        ("M5_planted_texture_folder", _plant_tex_folder), ("M6_planted_comp_class_attr", _plant_class_attr), ("M7_planted_pipe_def", _plant_pipe),
+                        ("M8_planted_code_texture_literal", _plant_code_literal), ("M9_planted_code_concat_path", _plant_code_concat),
+                        ("M10_planted_label_hose_reel", _plant_label), ("G2_selftest_literal_stays_green", _green_selftest_literal),
+                        ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
         with tempfile.TemporaryDirectory(prefix="gss_nohose_") as tmp:
             m = _copy(tmp)
             before = scan(m)
