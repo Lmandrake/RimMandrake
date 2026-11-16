@@ -1,0 +1,2416 @@
+{
+  "schema": 1,
+  "mod": "Cauldron",
+  "grounded_by": "rm-role-designercodex-1794796348",
+  "stage": 1,
+  "scope": [
+    {
+      "id": "s_storm",
+      "source": "OWNER:1792370870264139349",
+      "speaker": "agent",
+      "text": "Dry thunderstorms are welcome. do not treat the stock DryThunderstorm row as an accidental defect or ask him again."
+    },
+    {
+      "id": "s_falter",
+      "source": "OWNER:1792108481222070856",
+      "speaker": "agent",
+      "text": "About one in-game hour of warning is already ruled. The weather-transition mechanism needs measurement against that, not another duration vote."
+    },
+    {
+      "id": "s_gas",
+      "source": "OWNER:1792114302644040420",
+      "speaker": "agent",
+      "text": "A brand-new burnable gas type is ruled. the separate grid is built. Preserve other gases."
+    },
+    {
+      "id": "s_extras",
+      "source": "OWNER:1792111463695647001",
+      "speaker": "agent",
+      "text": "Filter-Works, ruins and Oomo shrine are in. Seismometer is out. The old rejected GPT extensions do not cancel the ruled machines."
+    },
+    {
+      "id": "s_rhossak",
+      "source": "OWNER:1792460018243907000",
+      "speaker": "agent",
+      "text": "They are his mechanic: animals that bind. Existing sprouting, rooting and edible galls are built, not donor ideas offered for keeping."
+    },
+    {
+      "id": "s_soils",
+      "source": "OWNER:1792525010750756319",
+      "speaker": "agent",
+      "text": "Dark distinguishable soil art was commissioned. source PNGs and terrain wiring now exist."
+    },
+    {
+      "id": "s_imports",
+      "source": "ITEM:CAULDRON_RULED_CONTENT_1",
+      "speaker": "agent",
+      "text": "Owner-kept imports override older sheet bans where stated. no evictions or roster cuts proposed. Current source and the Utinni patch supersede historical roster names."
+    },
+    {
+      "id": "s_audio",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "speaker": "agent",
+      "text": "Vanilla sounds for now. no new sound-source question or bespoke soundscape work inferred."
+    },
+    {
+      "id": "s_protection",
+      "source": "ITEM:VEXXITH_USES_1",
+      "speaker": "agent",
+      "text": "Containers, gates, environmental suits and ship lining are already requested and built. No poor-weapons restriction, no scab-scrapers. strong general material stands."
+    },
+    {
+      "id": "s_experience_anchor",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "speaker": "agent",
+      "text": "The owner experience sentence is preserved in the experience sheet and validation walk. Its original OWNER event was not located in the bounded shard search. The expanded root is adopted by the reviewed Evidence-for-Ask call recorded in d_stage1_root."
+    },
+    {
+      "id": "s_lasting_health",
+      "source": "OWNER:1794373071501926623",
+      "speaker": "owner",
+      "words": "1:2 heavy metal poisoning requires advanced medicine to purge, never on its own. Acid disfigures and harms sensory organs permanently. 2:1 absolutely it should be dramatic and should blow back items like an explosion (see mod that throws things away with explosions, our own mod design... let's do Designer on that next) 3:1",
+      "agent_interpretation": "The original numbered questions and answer sheet establish lasting poisoning, permanent acid injuries, gas burning across water with item displacement, and dependable industry with risky expeditions."
+    },
+    {
+      "id": "s_pool_location",
+      "source": "OWNER:1793251119194850898",
+      "speaker": "owner",
+      "words": "Umbra: Why have I had to rule ok this multiple times? Look at the painted worldmap please. | Twins: Looks the painted worldmap. Why have I had to rule on this multiple times? Look for the auroral baroque biomes there. | Seas: There is only the sea floor. Of course. That's all they ever was. | Cauldron: It is absolutely ok the sheets. Toxic pools. Near the terminator. Yes it's there. Look harder.",
+      "agent_interpretation": "The owner already establishes toxic pools near the terminator. Read the delivered site to establish actual terrain and liquid binding."
+    },
+    {
+      "id": "s_knockback",
+      "source": "OWNER:1794468874358971350",
+      "speaker": "owner",
+      "words": "2 and remember the gas in the Cauldron",
+      "agent_interpretation": "ExplosiveKnockback owns displacement and registers the Cauldron gas interaction."
+    },
+    {
+      "id": "s_names",
+      "source": "OWNER:1792993630061573590",
+      "speaker": "owner",
+      "words": "I want only our names everywhere, alwys. The Cauldron. Period.",
+      "agent_interpretation": "The Cauldron is the owner-ruled name throughout the campaign-facing labels."
+    },
+    {
+      "id": "s_firespit",
+      "source": "OWNER:1792161415424935554",
+      "speaker": "owner",
+      "words": "Keep it for a Cauldron creature. Add firespit to something in the Cauldron that needs some pizzaz.",
+      "agent_interpretation": "The owner keeps firespit for a Cauldron creature. The agent assignment to zisska appears in the same event and is implemented in its optional VEF ability comp."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d_stage0_root",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "Leave root approval to stage 1. The owner answered the earlier numbered choices while no event approving the complete expanded root was found.",
+      "settled_by": "d_stage1_root"
+    },
+    {
+      "id": "d_historical_proof",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "speaker": "agent",
+      "text": "Historical passes retain stale proof status until acceptance scene, source and loaded build are matched. Failed site runs carry their harness fault with no feature verdict."
+    },
+    {
+      "id": "d_walk_first",
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer.md",
+        "src/RimMandrake/Cauldron/site_spec.py"
+      ],
+      "speaker": "agent",
+      "text": "Propose a live walk of the existing saved Cauldron site before adding design or sending further questions. Measure observable gaps at that sitting."
+    },
+    {
+      "id": "d_no_reask_answered",
+      "source": [
+        "OWNER:1794373071501926623",
+        "design/RimMandrake/designer_codex_2026-11-09/Cauldron/ANSWERS_OWNER.md"
+      ],
+      "speaker": "agent",
+      "text": "Carry the existing health, gas and settlement answers into the next stage. Any future owner ask needs a remaining real fork and evidence against the obvious answer."
+    },
+    {
+      "id": "d_toggle_scope",
+      "source": "ITEM:CAULDRON_TOGGLE_FIX_JOBS_FINISH_ANYWAY",
+      "speaker": "agent",
+      "text": "The implemented event covers aborting the vent-drink walk and explicitly says the melee half was skipped per grading. Instant cancellation of an existing AttackMelee job is still unverified."
+    },
+    {
+      "id": "d_latest_vent_evidence",
+      "speaker": "agent",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "text": "BENCH:1794739272903849979 records repeated live vents passes after the reused-vent fix. RUNNER:1794713413703963999 records the later enrichment pass. These replace the earlier dry draft's November 6 failure as the latest scoped evidence. Their scope does not cover every Cauldron chain."
+    },
+    {
+      "id": "d_stage1_root",
+      "source": "CONDUCTOR:1794804951784038130",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "text": "Adopt the reviewed expanded root from the existing owner answers and built inventory. No evidence against this direction was found. The redundant owner approval ask is answered through delegation. The existing-code walk remains proposed, and source and proof gaps carry forward."
+    }
+  ],
+  "asks": [
+    {
+      "id": "a_root_synthesis",
+      "text": "Adopt the source-backed expanded Cauldron root recorded in root_proposal?",
+      "decision": "The expanded root text for stage 1, incorporating the existing health, gas and settlement answers.",
+      "about": [
+        "biome_identity",
+        "weather",
+        "vent_cycle_falter",
+        "forestry",
+        "rhossak_bind",
+        "rhossak_sprout",
+        "rhossak_grove",
+        "vent_drinking",
+        "gas_grid",
+        "gas_ignition",
+        "filter_works",
+        "vexxith_gear",
+        "lasting_metal_poisoning",
+        "permanent_acid_injuries"
+      ],
+      "owner_cites": [
+        "OWNER:1794373071501926623",
+        "OWNER:1792108481222070856",
+        "OWNER:1792370870264139349",
+        "OWNER:1793251119194850898"
+      ],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794804719",
+      "status": "answered",
+      "evidence_against": "",
+      "recommended_answer": "The Cauldron is a mineral forest beneath an angry sky of lightning without rain. Acid pools and vent chemistry shape its plants, animals and the people who work there. A lull in vent breathing and nearby animals’ stillness give about an in-game hour of warning before a bloom burdens exposed bodies with metal. Thornwood pays wood and metal for slow, exposed work. Mineral creatures offer food, danger and protective material, while grove-bound rhossak renew the forest and wild vexxiss compete for tapped vents. Connected vent gas carries fire across water with dramatic blasts that throw nearby goods. Shelter, sealed clothing, vexxith protection and Filter-Works support dependable production of fresh water and useful chemicals. Preparation earns manageable daily work and worthwhile industry, with risky expeditions and wildlife still demanding choices. Heavy-metal poisoning persists until advanced medicine purges it, and acid can permanently disfigure and injure sensory organs.",
+      "source": "design/concepts/Cauldron/log.md",
+      "review": {
+        "by": "/root/cauldron_root_review",
+        "verdict": "pass",
+        "why": "Root synthesis preserves the existing owner answers and built content. No concrete evidence argues against adopting it via Evidence-for-Ask. Sending the adoption question to the owner would be redundant."
+      },
+      "owner_send_review": {
+        "verdict": "struck",
+        "why": "No concrete evidence against the source-backed recommended answer. Adopt through recorded Evidence-for-Ask delegation."
+      },
+      "answer": "The Cauldron is a mineral forest beneath an angry sky of lightning without rain. Acid pools and vent chemistry shape its plants, animals and the people who work there. A lull in vent breathing and nearby animals’ stillness give about an in-game hour of warning before a bloom burdens exposed bodies with metal. Thornwood pays wood and metal for slow, exposed work. Mineral creatures offer food, danger and protective material, while grove-bound rhossak renew the forest and wild vexxiss compete for tapped vents. Connected vent gas carries fire across water with dramatic blasts that throw nearby goods. Shelter, sealed clothing, vexxith protection and Filter-Works support dependable production of fresh water and useful chemicals. Preparation earns manageable daily work and worthwhile industry, with risky expeditions and wildlife still demanding choices. Heavy-metal poisoning persists until advanced medicine purges it, and acid can permanently disfigure and injure sensory organs.",
+      "answer_source": "CONDUCTOR:1794804951784038130",
+      "answered_by": "conductor",
+      "delegated": "evidence-for-ask"
+    }
+  ],
+  "inventory": [
+    {
+      "id": "biome_identity",
+      "source": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "text": "Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties. Ships through the Baroque Biomes composition.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Load/roster checks exist. historical roster data and tile records are not today's resolved roster.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "soils",
+      "source": "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml",
+      "text": "Own plain/rich terrain defs, distinct installed dark soil textures and fertility bands.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 3 offline soil/art verification at 53a4897ba80a05f4423c13fe8e0403297d51329f. no current in-place visual acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:2272",
+        "src/RimMandrake/Cauldron/selftest_cauldron_soils.py"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "weather",
+      "source": "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml",
+      "text": "Scatter-dusk, vapour bank, dewfall and vent bloom provide different sky, visibility and wind conditions with no rain or snow. Dry thunderstorms remain in the biome weather table.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical suite/ledger evidence only. not matched to today's runtime. Selection/def reads cannot prove storm mood, eternal dusk or lightning cadence.",
+      "scope": "approved",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/Cauldron.md"
+      ],
+      "scope_source": "OWNER:1792370870264139349",
+      "speaker": "agent"
+    },
+    {
+      "id": "placement_legacy",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs",
+      "text": "Existing tile-scoring worker with temperature, rainfall, elevation and seeded rarity gates. Its rarity setting is persistent.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "The suite reads worker identity and rarity field roundtrips. A placement-score acceptance probe remains missing.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "settings",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+      "text": "Persistent feature toggles, strength sliders, scroll/search/collapse/reset UI, timing labels and Harmony failure notice.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Roundtrip tests read fields. they do not demonstrate every toggle's effect, startup timing or all-off interaction.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "flora_base",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+      "text": "Owned thornwood, dark crust, crystal flower, blood bouquet, raven nettle, red bugloss, giant agaritox, keening cordax, giant toxic flower and xithess form the base roster. Xithess yields chemfuel and selected chemotrophs declare zero light requirements.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Flora spawn and def reads exist. yield/appearance/species-by-species light survival are not established by merely spawning them.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/Cauldron.md"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "forestry",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+      "text": "Successful thornwood harvest produces growth-scaled steel beside wood. Thornwood has elevated harvest work and the vanilla smithing sound.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Yield rerun verified and closed Oct 20 at e9d3ca356. actual harvest controls exist. Forty-colonist economy and sustained labour not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6384",
+        "ITEM:CAULDRON_YIELD_LIVE_RERUN_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "assay",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+      "text": "Inspect grade and expected metal amount follow growth and tuning. unripe/fair/rich/lode distinctions.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The latest folded ledger includes a targeted pass dated 2026-11-15 at 9aef14eca009eaeb9c9a2dc9d654126859bcacd3. Current loaded code and the complete scene contract have not been matched. The nettle off-arm item remains separate.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+        "infrastructure/state/ledger/events/RUNNER.jsonl"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "assay_flecks",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+      "text": "Installed light and heavy fleck overlays follow assay grade through the Plant.Print hook and remesh on relevant settings changes.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Light.png",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Heavy.png"
+      ],
+      "proof": "stale",
+      "proof_note": "October texture existence verified. separate off-trunk/palette defect remains filed. No visual pass or newly measured alpha percentages claimed.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6935",
+        "ITEM:CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "dew_beads",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+      "text": "Chemical-dew filth during dewfall outside the home area, bounded density and automatic expiry. no contact dose added by this visual.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "dew_saturation",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+      "text": "Installed dew variants for crystal flower, blood bouquet, red bugloss, keening cordax and giant toxic flower swap with weather and remesh through the saturation hook.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_CrystalFlower_dew.png"
+      ],
+      "proof": "stale",
+      "proof_note": "Texture-existence close Oct 23. old 'none installed/dormant' walk text is obsolete. Silhouette registration and in-game transitions not judged.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6935"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "shore_gardens",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs",
+      "text": "Roster-opted raven nettles colonise toxic-water shore cells at map creation and by slow sampling. existing zones/occupants respected.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The latest folded ledger includes a targeted pass dated 2026-11-15 at 9aef14eca009eaeb9c9a2dc9d654126859bcacd3. Current loaded code and the complete scene contract have not been matched. The nettle off-arm item remains separate.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+        "infrastructure/state/ledger/events/RUNNER.jsonl"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vent_gardens",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs",
+      "text": "State-keyed rings: crystal at stable vents, blood bouquet at leaks, giant toxic flower after blowout. mapgen replaces eligible wild non-trees, later fills empty space.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Map-generation density and off-map arms exist in the suite. Recent targeted vents passes cover the vents chain. Ring distribution and ongoing spread still need their own current result.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4955",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:7053"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "tsevrix_food",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml",
+      "text": "Harvested toxic raw pulp and a stove recipe for safe roasted food, including corrected raw-food thought handling.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_TsevrixRoast.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 23 live roasted-food memory check passed with an injected-memory control. Full raw-versus-roasted ingestion/normal recipe path not proven here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6940"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "ixalith_beauty",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Fragile iridescent beauty plant with no harvest yield.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "fexxil_hazard",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Cobalt thicket with path cost, contact scratch/toxic hediff via EnvironmentalHazards, glass-shard harvest and startup venom toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/DamageDefs/RM_FexxilScratch.xml",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "No live contact-versus-plain-cell or real shard-harvest acceptance found.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "sessarix_fuel",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Slow chemfuel resin plant with explicit soil blacklist and fertility bypass. expansion roster switch.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Blacklist/spawn wiring is not a measured no-soil field sample or harvested-fuel proof.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "kissaveth_gas",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs",
+      "text": "Kissaveth releases toxic gas on external violence and plant cutting through damage and cut components.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Cut comp exists. no real cut/damage/plain control and no-explosion observation located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "selvix_medicine",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Crystal-rimmed medicine plant yielding herbal medicine.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "suush_ecology",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Docile tamable atmospheric feeder: no food need, no attack tools, solitary native and directional art.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Built resolution recorded in Suush item. routine taming and airborne appearance not accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "suush_flight",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Core flight stats and race fields support the suush floating behavior.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite reports canEverFly only. real motion judged with owner present. No flight test run.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1358",
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "suush_burst",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Bullet/Bomb starts wick, death backstop and toxic gas blast. melee is not a wick trigger.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Current suite compares live melee/shot subjects but equates death/disappearance with detonation. no blast-specific acceptance established.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1377",
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vexxiss_shear",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Solid giant, no explosive comp, tame-only shear of vexxith, living material supply, native art/variant and ordinary animal systems.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Def reads check shear material and absence of explosion comp. actual tame/shear cycle and economic cadence not demonstrated.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "water_poisoning",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs",
+      "text": "Vexxiss converts clean named water terrains around its feet to toxic equivalents. per-animal warning letter/cooldown and independent toggles.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The latest folded ledger includes a targeted pass dated 2026-11-15 at 9aef14eca009eaeb9c9a2dc9d654126859bcacd3. Current loaded code and the complete scene contract have not been matched. The nettle off-arm item remains separate.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+        "infrastructure/state/ledger/events/RUNNER.jsonl"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "fire_warden",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs",
+      "text": "Awake able vexxiss takes BeatFire or attacks reachable recorded igniter, spares same faction. bounded attack job.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite can see BeatFire job. it does not prove fire extinguished, original igniter chased, same-faction exception, or combined gas/raid interaction.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1868"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vent_drinking",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Wild vexxiss seek drinkable vents and accumulate suppression until the vent falls silent. Disabling vent drinking aborts its walk and drink job.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The 2026-11-15 BENCH note records repeated targeted vents-chain passes on a reused map after ProofResetVentsIn fixed stale suppressed vents. Natural map-generation placement, warning feel and current loaded fingerprints still need their own evidence.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vexxiss_tracks",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs",
+      "text": "Walking vexxiss write prints to the CreatureBehaviors track grid. Cauldron saves maker and expiry metadata for hover identification and timed removal.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Own code and grid API link present. no complete record-hover-expire-reload acceptance located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "vent_sites",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Natural chemical vents on new Cauldron maps, safe start/spacing, mixed stable/leaking states and recent-blowout memory. generation idempotent and setting-gated.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The 2026-11-15 BENCH note records repeated targeted vents-chain passes on a reused map after ProofResetVentsIn fixed stale suppressed vents. Natural map-generation placement, warning feel and current loaded fingerprints still need their own evidence.",
+      "scope": "not_opened",
+      "speaker": "agent",
+      "proof_evidence": [
+        "ITEM:CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "vent_cycle_falter",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Weather changes scale vent output. The transition into a bloom provides a falter, native hush jobs and an optional warning, with the hush count saved.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The 2026-11-15 BENCH note records repeated targeted vents-chain passes on a reused map after ProofResetVentsIn fixed stale suppressed vents. Natural map-generation placement, warning feel and current loaded fingerprints still need their own evidence.",
+      "scope": "approved",
+      "proof_evidence": [
+        "ITEM:CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ],
+      "scope_source": "OWNER:1792108481222070856",
+      "speaker": "agent"
+    },
+    {
+      "id": "bloom_load",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+      "text": "Vent bloom adds a separate metal-load condition to eligible exposed flesh pawns while roofed pawns and biome-native animals are exempt. Resistance stats scale dose and vanilla weather toxin buildup is disabled.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Roof/native/exposed/off/factor controls exist. Long decay, worn-gear behaviour and safety for already impaired pawns remain unaccepted.",
+      "scope": "opened_by_owner",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1630"
+      ],
+      "speaker": "agent",
+      "scope_source": "OWNER:1794373071501926623",
+      "scope_note": "The later persistence and advanced-medicine ruling changes this existing condition. The separate lasting_metal_poisoning entry records the missing implementation."
+    },
+    {
+      "id": "local_exposure",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Bloom dose strongest near recovering active vents, with residual floor and old-map/no-vent fallback.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The 2026-11-15 BENCH note records repeated targeted vents-chain passes on a reused map after ProofResetVentsIn fixed stale suppressed vents. Natural map-generation placement, warning feel and current loaded fingerprints still need their own evidence. ExposureWeight uses recovery and distance without reading cap state. Capping stops gas emission while bloom-dose weighting remains unchanged.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "gas_grid",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "text": "Separate persistent vent-gas byte grid, passability-aware emission/diffusion/dissipation and section rendering. vanilla gas storage kept separate.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical gas rows plus kernel tests. no current loaded grid/renderer/gas-isolation fingerprint or colony-scale cost measurement.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_MECHANICS_BUILD_1",
+        "src/RimMandrake/Cauldron/validation.py:2186"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "gas_drift",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+      "text": "Wind-driven cloud movement, daily map-seeded heading, diagonal wall-corner guard and centroid tooling.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b: actual seeded cloud centroid PASS plus heading/chance PASS. This is targeted historical state proof, not visual judgement.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json",
+        "src/RimMandrake/Cauldron/validation.py:2644"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "gas_ignition",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "text": "Thick vent gas ignites cell by cell, consumes gas, leaves toxic smoke and preserves the original instigator. A flame front lets combustion continue after a fuel-less ground fire expires.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "ITEM:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Commit d1817022db adds the in-memory flame front. The ledger records offline mutation and fuzz evidence with live reruns owed. The front is absent from ExposeData, so interrupted combustion across save and load remains a concrete gap.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2230"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "gas_tap",
+      "source": "src/RimMandrake/Cauldron/Source/RM_GasTap.cs",
+      "text": "A vent-only scaffold caps emission, banks condensate and delivers whole bank units to touching FlowWorks tanks. Each bank unit represents 200 litres.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_GasTap.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite reads capped line/bank/delivered counts. Pipeline through actual tanks to production and no-tank/full-tank/reload conservation not comprehensively accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2276"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "tap_prying",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Wild drinking damages ordinary scaffold. lined tap is pry-proof. prying toggle leaves drinking.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "ON/OFF HP comparison exists. no acceptance for warning-before-damage, destroyed-cap leak recovery or lined-control interaction.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2302"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "ruin_site",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+      "text": "Mapgen corroded filter rig with once-only dressed tanks/toxic water, broken pipes/slag, kept-clear study interaction ring.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+        "src/RimMandrake/Cauldron/Defs/GenStepDefs/RM_CauldronRuinScatter.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b actual generated-map rig/dressing PASS. Empty open site failure, mapgen-off and no-duplicate-after-reload still need controls.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "study_research",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "text": "Study corroded rig in place using vanilla analysis system, unlock Filter-Works research, then normal research prerequisite.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+        "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Built definitions and unlock wiring. works proof directly builds machinery and bypasses study/research/construction.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "filter_works",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "text": "Powered cartridge-fed Industrial refine/detox converter: condensate to reagent items, toxic/acid water to fresh, existing FlowWorks process and machine toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/LiquidDefs/RM_Liquid_VentCondensate.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 c works run PASS for condensate, toxic water, cartridge and power controls. Acid input, normal research path and full tap-to-works supply loop not proved.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vexxith_material",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+      "text": "Rare Metallic/plate stuff. general structural strength, zero flammability and high heat armour. acid marker on stuff/Thing defs and guarded AcidBurn/BloomAcid damage markers.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Vexxith-versus-steel AcidBurn and toggle controls are scripted. material durability is not universal temperature or pawn immunity.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_CLOSED_LOOP_BUILD_1",
+        "src/RimMandrake/Cauldron/validation.py:1297"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vexxith_door",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml",
+      "text": "Plate-only acid-proof door, startup architect-menu gate, already built doors preserved.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Acid state comparison scripted. normal placement, opening and startup menu timing not established here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1297"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "containers_gates",
+      "source": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+      "text": "Dedicated vexxith bottle, bucket and barrel recipes preserve material identity. FlowWorks recognizes vexxith containers and passes canal-gate acid damage through the material immunity hook.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterialMath.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 1 offline acceptance of uses. first live gear/load/art work separately owed. No real craft/fill/pour/canal shutoff proof inferred.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:9673",
+        "ITEM:VEXXITH_USES_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "lined_machines",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "text": "Vexxith filter vessel gives quarter cartridge use and acid immunity. lined vent tap acid/pry protection. existing rates/processes retained.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Uses offline checks and c works proof runs the vexxith vessel. not a comparative 4x cartridge-lifetime proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json",
+        "ITEM:VEXXITH_USES_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vexxith_gear",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+      "text": "Environmental suit/helmet and recipes with sealing, heat protection and acid-proof item markers. startup availability switch.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Offline uses acceptance. first live load, worn sealing, crafting and own art were separately owed by VEXXITH_GEAR_PROVE_ONE_LOAD_AWAY.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630",
+        "ITEM:VEXXITH_USES_1"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "acid_air",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+      "text": "Cauldron/Forge opt into hourly ambient AcidBurn on unroofed, unsealed non-native pawns, all factions. existing native/condition immunity rules and strength toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Kernel/offline checks. no live colonist/raider/suit/roof comparison accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_USES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "acid_hull",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+      "text": "Exposed player buildings on ship substructure slowly burn toward a 30% floor. warning once. vexxith immunity or one hull liner rig stops sampled damage.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Offline uses proof. no live separated ships, edge exposure, actual floor, save/reload warning or protected-control proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_USES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "rhossak_bind",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+      "text": "Own rhossak/galled animals bind nearest thornwood, report bound/unbound, rebind after loss. existing CreatureBehaviors tether acts on wild idle wandering.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "The folded ledger records a 2026-11-14 pass at 2178d1c342e9d1a978e10ce1a577f19e1eae6071 and a later harness-fault run with no verdict. Current loaded code and rebind behavior remain unverified.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4957",
+        "ITEM:RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD"
+      ],
+      "scope_source": "OWNER:1792460018243907000",
+      "speaker": "agent"
+    },
+    {
+      "id": "rhossak_sprout",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+      "text": "Sleeping seed-bearing rhossak seeds nearby eligible non-tree plants from current biome roster. galled excluded.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Grove script exists but only counts nearby plants after lowering Rest. it does not assert sleep/location/parentage or provide off/galled controls.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "rhossak_grove",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+      "text": "Three nearby seed-bearing kin accumulate awake time, hold progress asleep, reset when apart. root thornwood with cooldown, bind trio and message.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Pen-and-wait count scene exists. no two-animal/off/galled/sleep-resume control or natural unpenned cadence accepted.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "galled_food",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml",
+      "text": "Seedless galled rhossak sheds edible rhossak-meat galls periodically, including wild. own animal lifecycle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Grove script checks map-wide meat total without isolated producer/starting total. not adequate attribution.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "zisska",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Herd mineral rasper with toxic valued meat, trace steel on butcher. fire-spit ability/projectile when VEF is present.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+        "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "FireSpit owner assignment recorded. def reads not actual butcher/ingestion/fire-spit combat proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "OWNER:1792161415424935554"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "eskith",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Ground-sensing small flock with native hush role and ordinary animal behaviour/art.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Spawn and hush-job reads exist. signalling in play and flock experience not visually judged.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2013"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "bedbug",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml",
+      "text": "Owned bedbugs have paralysis bites, egg laying and hatching. EnvironmentalHazards owns their shared paralysis condition.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "crystalmit",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "text": "Owned crystal-bodied mineral eater with VEF guarded chunk-eating and random stone-block production.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Optional VEF comps built. no actual eating/output/load-set proof. Generic animal spawn is insufficient.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "garsulix",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml",
+      "text": "Owned floating predator port: guarded VEF jelly production, asexual reproduction/floating, death explosion and native roster.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "ossrith",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml",
+      "text": "Radyak/ossrith owned port, milk, guarded crystal production and refinery recipe turning crystals into uranium.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "sikka",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml",
+      "text": "Owned Sikka Sikka, eggs/hatching, sheared silk and ordinary animal lifecycle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "shared_cast",
+      "source": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "text": "Roster also uses owned neighbours' visceral, decay drake, bileworm and mullgoth. guards/load-set matter. These are real roster capabilities, not locally defined natives.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No new cross-biome guarantee inferred. Current post-compose availability must be read in game.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "campaign_cast",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+      "text": "Utinni patch adds Neebray, Mynock, GraniteSlug, VentStalker, Lylek, Skalder and Silooth. campaign toxic-prized-meat layer remains external.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_CauldronPrizedMeats.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 3 roster-boundary offline pass at 8454f352342f01f1492677e6346bf3f4a2712586. No current resolved cast or individual mechanics pass implied.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:2110"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "oomo_shrine",
+      "source": "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+      "text": "Utinni-only grudging shrine patched into ruin-kit slot. Natural meditation focus and biome-local lore.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_OomoGrudgingShrine.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b shrine-at-mapgen PASS. actual meditation usefulness remains inferred from def.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "scanner_payload",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml",
+      "text": "Optional AcousticScanner readings for vents, listening fauna, resin and hidden cavities. existing scanner owns the mechanic.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "growth_stalled",
+      "source": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "text": "ExplosiveGrowth data registers Cauldron in stalled terminator band, using shared engine rather than new local growth mechanics.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "aerosol_neighbour",
+      "source": "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml",
+      "text": "Warscar marks Cauldron as polluted for its aerosol-screen system. consumer and mechanics live in Scarlands.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read. adequate current experience acceptance not located.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "trunk_deposit_coat",
+      "source": "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md",
+      "text": "An additional age-based scab and crystal-fan coat for existing thornwood is specified in the trunk-deposit design. The searched runtime and art implementation remains absent.",
+      "impl": "absent",
+      "search_scope": "Searched src/ for RM_TrunkDepositsExtension, DepositTier and trunkDepositsEnabled, then checked Cauldron Source, Defs, plant textures, project inputs and the trunk-deposit selftest. Hits are in design-pinning tests. Runtime classes and deposit assets were not found.",
+      "impl_note": "No RM_TrunkDepositsExtension, DepositTier, trunkDepositsEnabled or deposit PNGs found. Selftest pins the design and conditionally tests any installed overlays. it does not implement the coat.",
+      "proof": "missing",
+      "scope": "not_opened",
+      "scope_note": "Already filed build work, not a new keep/remove decision.",
+      "speaker": "agent",
+      "proof_note": "The existing selftest pins a design and conditionally examines overlays. The design item closing does not establish implementation of the separate build item."
+    },
+    {
+      "id": "acid_pool_binding",
+      "source": "OWNER:1793251119194850898",
+      "text": "The owner-established toxic pools and acid-water experience depend on selected map terrain and FlowWorks liquid binding. Their delivered state requires a read of the intended saved site.",
+      "impl": "unknown",
+      "impl_note": "FlowWorks supplies toxic and acid liquid defs, terrain forms and conversion rows. The owner says toxic pools exist. This run does not inspect a loaded save or its pool chemistry.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1793251119194850898",
+      "speaker": "agent",
+      "impl_evidence": null
+    },
+    {
+      "id": "lasting_metal_poisoning",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "speaker": "agent",
+      "text": "Owner-approved metal poisoning persists after leaving exposure and requires advanced medicine to purge.",
+      "impl": "absent",
+      "search_scope": "Searched src/ C#, XML and Python for RM_VentMetalLoad, chelation and metal-poisoning treatment references. Read Cauldron hediff and recipe defs and the exposure consumer plus the historical roster. The existing load still decays and no removal recipe was found.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1794373071501926623",
+      "implementation_gap": "Current RM_VentMetalLoad has severityPerDay -0.08, tendable false and no treatment recipe.",
+      "feasibility": {
+        "source": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+        "external_source": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/RimWorld/Recipe_RemoveHediff.cs",
+        "finding": "Vanilla Recipe_RemoveHediff locates the specified visible condition and removes it after successful treatment. A persistent condition and advanced-medicine recipe can reuse this path. Later build work must specify ingredients, skills, dosing and old-save behavior."
+      }
+    },
+    {
+      "id": "permanent_acid_injuries",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
+      ],
+      "speaker": "agent",
+      "text": "Owner-approved acid exposure leaves permanent disfigurement and sensory-organ injury.",
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1794373071501926623",
+      "impl_note": "Ambient acid currently calls ordinary AcidBurn. The searched source contains no Cauldron-specific injury-persistence or sensory-targeting code. Vanilla injury behavior can leave scars, so ordinary damage alone does not settle the complete ruled result.",
+      "search_scope": "Read Cauldron acid-air and acid-immunity consumers and searched src/ for acid scarring, disfigurement and metal-load treatment. Examined on-disk vanilla injury consumers.",
+      "feasibility": {
+        "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "external_sources": [
+          "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/DamageWorker_AddInjury.cs",
+          "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/HediffComp_GetsPermanent.cs"
+        ],
+        "finding": "Vanilla damage supports explicit hit parts and a permanent-injury path through HediffComp_GetsPermanent. The existing ordinary AcidBurn call does not request those. A builder can reuse vanilla injury state and prove sensory capacity and persistence after recovery."
+      }
+    },
+    {
+      "id": "gas_knockback",
+      "source": [
+        "OWNER:1794468874358971350",
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
+      ],
+      "speaker": "agent",
+      "text": "ExplosiveKnockback registers Cauldron ignition and supplies gas-clump bursts that displace nearby goods and eligible pawns. Cauldron owns gas transport and combustion.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs",
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+        "design/concepts/ExplosiveKnockback/version/in_game/visit_1/evidence/sc_cauldron_gas.txt"
+      ],
+      "proof_note": "The first recorded visit exposed an intermittent stopped combustion chain. Cauldron source now contains the fix. A fresh combined gas-chain and displacement proof is still owed.",
+      "scope": "approved",
+      "scope_source": "OWNER:1794468874358971350"
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "ground_health",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs"
+      ],
+      "speaker": "agent",
+      "status": "open",
+      "text": "Does current source implement the owner's permanent heavy-metal poisoning and acid disfigurement ruling? Locate existing medicine and injury behavior before treating either as absent.",
+      "resolution": "The owner decision is settled. Current metal load decays and lacks a treatment recipe, so lasting_metal_poisoning is absent. Complete permanent acid-injury behavior remains unknown pending a targeted proof."
+    },
+    {
+      "id": "ground_gas_integration",
+      "source": [
+        "OWNER:1794468874358971350",
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs"
+      ],
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Identify current ownership of connected gas ignition across water and ExplosiveKnockback displacement, including existing integration and recorded failed runs.",
+      "resolution": "Current Cauldron source contains the flame-front fix. ExplosiveKnockback hooks successful Ignite calls and owns displacement. Live combined retest and save/load continuity remain unproven."
+    },
+    {
+      "id": "ground_changed_roster",
+      "source": [
+        "src/RimMandrake/Cauldron/About/About.xml",
+        "design/validation_walks/RimMandrake/Cauldron.md"
+      ],
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "The walk still names martyr trees and says no required dependencies. Current About names its cut and required service mods. Reconcile current roster and source so removed features receive no scenes.",
+      "resolution": "Current About and XML require Harmony, FlowWorks, EnvironmentalHazards and CreatureBehaviors. TreeMartyr was removed in 8b2b453188. Current roster and tier patches supersede the old roster and walk counts."
+    },
+    {
+      "id": "ground_proof_recovery",
+      "source": "src/RimMandrake/Cauldron/validation.py",
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Audit each suite chain for asserted start, a discriminating control, restoration and hold. Inspect shared suite behavior only to settle whether destructive pad preparation is recoverable.",
+      "resolution": "Every current suite chain has an audit row. Shared modcheck restores prior settings while Cauldron pad and preflight mutations lack the scene journal and original-state recovery."
+    },
+    {
+      "id": "ground_owner_context",
+      "source": [
+        "OWNER:1794373071501926623",
+        "design/RimMandrake/designer_codex_2026-11-09/Cauldron/QUESTIONS_OWNER.md",
+        "design/RimMandrake/designer_codex_2026-11-09/Cauldron/ANSWERS_OWNER.md"
+      ],
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Recover the original numbered Cauldron question excerpt behind the owner's 1:2, 2:1, 3:1 answers before expanding the narrative or seeking another decision.",
+      "resolution": "Recovered QUESTIONS_OWNER.md and ANSWERS_OWNER.md and matched the verbatim write-in to OWNER:1794373071501926623. The earlier temporary-versus-lasting, water-boundary and successful-day questions are answered."
+    },
+    {
+      "id": "ground_trunk_deposits",
+      "source": "ITEM:CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS",
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Check whether the later trunk scab/crystal-fan design was implemented separately from existing assay flecks.",
+      "resolution": "The additive trunk coat is design-only. Assay flecks and dew variants are installed. The separate build item remains the runtime and art dependency."
+    },
+    {
+      "id": "ground_pool_binding",
+      "source": "OWNER:1793251119194850898",
+      "speaker": "agent",
+      "status": "open",
+      "text": "Locate toxic pool map-generation and terrain-to-liquid binding in existing owner-approved Cauldron placement. Source absence local to the biome cannot establish absence from the campaign.",
+      "resolution": "The owner already rules that toxic pools exist. FlowWorks owns matching liquid and terrain forms, while the selected delivered site has not been inspected. acid_pool_binding remains unknown."
+    },
+    {
+      "id": "ground_dark_growth",
+      "source": "ITEM:DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Find the current low-light override for roster plants whose own plant block lacks growMinGlow/growOptimalGlow.",
+      "resolution": "Current XML sets zero glow on declared chemotrophs. Some base plants retain inherited glow behavior and the historical sheet permits marginal phototrophs. The blanket historical fix title cannot certify species survival at the intended site."
+    },
+    {
+      "id": "ground_health_feasibility",
+      "source": "OWNER:1794373071501926623",
+      "speaker": "agent",
+      "status": "resolved",
+      "text": "Read existing vanilla treatment and permanent injury seams on disk to establish feasible construction of the already-ruled lasting health effects.",
+      "resolution": "On-disk vanilla Recipe_RemoveHediff and permanent-injury consumers provide suitable seams. These can support the already-ruled health outcomes."
+    }
+  ],
+  "built_reviewed": [
+    {
+      "ref": "src/RimMandrake/Cauldron",
+      "covered_by": "biome_identity",
+      "note": "Current source tree and individual capabilities read."
+    },
+    {
+      "ref": "ITEM:CAULDRON_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+      "not_a_capability": "Completed GPT art triage that classified existing candidates. It grants no owner art approval."
+    },
+    {
+      "ref": "ITEM:CAULDRON_BEDAZZLE_SITTING_1",
+      "not_a_capability": "Completed sitting and ticketing. Its cast and mechanics are inventoried."
+    },
+    {
+      "ref": "ITEM:CAULDRON_BIOME_FIX_DRY_STORM_LEFTOVER",
+      "covered_by": "weather",
+      "note": "The owner explicitly retains dry thunderstorms."
+    },
+    {
+      "ref": "ITEM:CAULDRON_DESCS_CORRECT_GPT_REWRITES",
+      "covered_by": "biome_identity",
+      "note": "Existing cast descriptions were revised. GPT proposals retain agent provenance."
+    },
+    {
+      "ref": "ITEM:CAULDRON_FIRST_SCRIPT_1",
+      "not_a_capability": "Developer proof tooling with each current suite chain covered by scene_audit."
+    },
+    {
+      "ref": "ITEM:CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK",
+      "covered_by": "dew_saturation",
+      "note": "Dew variants and assay fleck textures are installed. Visual acceptance remains separate."
+    },
+    {
+      "ref": "ITEM:CAULDRON_FLORA_EXPANSION_BUILD_1",
+      "covered_by": "tsevrix_food",
+      "note": "The other admitted plants have ixalith_beauty, fexxil_hazard, sessarix_fuel, kissaveth_gas and selvix_medicine inventory entries."
+    },
+    {
+      "ref": "ITEM:CAULDRON_FULL_RENAME_1",
+      "covered_by": "biome_identity",
+      "note": "Current source and world-map art use Cauldron naming."
+    },
+    {
+      "ref": "ITEM:CAULDRON_GARDEN_FIX_EDGE_OFF_MAP_STEP",
+      "covered_by": "vent_gardens",
+      "note": "TryPlant checks bounds before GetPlant."
+    },
+    {
+      "ref": "ITEM:CAULDRON_GAS_FIX_INT_WRAP_LATENT",
+      "covered_by": "gas_grid",
+      "note": "Kernel Add widens arithmetic before clamping."
+    },
+    {
+      "ref": "ITEM:CAULDRON_GAS_FIX_SEALED_CORNER_LEAK",
+      "covered_by": "gas_drift",
+      "note": "The completed fix guards diagonal drift. Ignition barriers still need their own proof."
+    },
+    {
+      "ref": "ITEM:CAULDRON_GPT_ENRICHMENT_1",
+      "covered_by": "local_exposure",
+      "note": "Weather, gardens, assay, vexxiss and material capabilities are inventoried with their split follow-up work."
+    },
+    {
+      "ref": "ITEM:CAULDRON_HUSH_FIX_COUNT_FORGETS_ON_LOAD",
+      "covered_by": "vent_cycle_falter",
+      "note": "The map component scribes hushedThisFalter."
+    },
+    {
+      "ref": "ITEM:CAULDRON_PULP_FIX_CAMPFIRE_PROMISE_UNKEPT",
+      "covered_by": "tsevrix_food",
+      "note": "The fix aligned the description to the stove-only recipe."
+    },
+    {
+      "ref": "ITEM:CAULDRON_ROAST_FIX_RAW_FOOD_MOOD_STAYS",
+      "covered_by": "tsevrix_food",
+      "note": "Cooked food overrides inherited raw-food thought behavior."
+    },
+    {
+      "ref": "ITEM:CAULDRON_ROSTER_BOUNDARY_RECONCILE_PATCH",
+      "covered_by": "campaign_cast",
+      "note": "The campaign patch and About exclusion list identify the current external cast."
+    },
+    {
+      "ref": "ITEM:CAULDRON_RULED_CONTENT_1",
+      "covered_by": "flora_base",
+      "note": "Current flora, fauna, metal yields, vexxith and imports have separate entries. Removed TreeMartyr receives no new scene."
+    },
+    {
+      "ref": "ITEM:CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES",
+      "covered_by": "soils",
+      "note": "Terrain art is installed with historical offline evidence."
+    },
+    {
+      "ref": "ITEM:CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD",
+      "not_a_capability": "Developer suite expansion for ruins, works and drift. The chains are audited and their player capabilities inventoried."
+    },
+    {
+      "ref": "ITEM:CAULDRON_TOGGLE_FIX_JOBS_FINISH_ANYWAY",
+      "covered_by": "vent_drinking",
+      "note": "Implemented evidence covers drink-job cancellation and explicitly records the melee half as skipped."
+    },
+    {
+      "ref": "ITEM:CAULDRON_TREE_METAL_YIELD_1",
+      "covered_by": "forestry",
+      "note": "The comp remains on thornwood after TreeMartyr was removed."
+    },
+    {
+      "ref": "ITEM:CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS",
+      "covered_by": "trunk_deposit_coat",
+      "note": "The completed deliverable is design. Runtime and art implementation remain in the separate build item."
+    },
+    {
+      "ref": "ITEM:CAULDRON_YIELD_HARVEST_ORDER_FAIL_1",
+      "covered_by": "forestry",
+      "note": "Harvest orders interrupt wandering with queue=False."
+    },
+    {
+      "ref": "ITEM:CAULDRON_YIELD_LIVE_RERUN_1",
+      "covered_by": "forestry",
+      "note": "Historical factor and off-arm live evidence is retained as stale."
+    }
+  ],
+  "failure_modes": [
+    "The Cauldron can read as an ordinary forest under generic fog if the rainless lightning sky, mineral bodies, wet dark soils, chemistry-shaped gardens and pre-bloom hush fail to appear clearly in play.",
+    "Exposure can break the lasting-consequence promise if metal poisoning fades without advanced treatment, acid leaves no persistent sensory or disfiguring injury, or shelter and gear lack dependable observable protection.",
+    "Settlement can fail to deliver dependable industry with risky expeditions if the gas chain stops or crosses sealed barriers incorrectly, production silently loses stock, the discovery path is bypassed in proof, or vexxiss competition cannot be read and managed."
+  ],
+  "grounding_basis": {
+    "source": "design/RimMandrake/designer_codex_2026-11-09/Cauldron/record.json",
+    "speaker": "agent",
+    "text": "Reused the earlier agent capability breakdown after checking current runtime source, XML, proof chains and folded ledger evidence. Later owner answers and subsequent source changes are incorporated here."
+  },
+  "neighbours": [
+    {
+      "id": "n_flowworks",
+      "source": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterialMath.cs",
+      "speaker": "agent",
+      "text": "FlowWorks owns liquid identity/stock, containers, canal-gate corrosion, networks and converter. Cauldron supplies content/markers/recipes and the tap adapter. Do not build another liquid system."
+    },
+    {
+      "id": "n_eh",
+      "source": "src/RimMandrake/Cauldron/About/About.xml:20",
+      "speaker": "agent",
+      "text": "EnvironmentalHazards owns reusable contact venom and map scatterer. Cauldron authors fexxil and ruin site content."
+    },
+    {
+      "id": "n_creatures",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:14",
+      "speaker": "agent",
+      "text": "CreatureBehaviors owns home tether and the planet's track grid. Cauldron owns grove state and maker/expiry metadata."
+    },
+    {
+      "id": "n_growth",
+      "source": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "speaker": "agent",
+      "text": "ExplosiveGrowth owns the stalled growth regime. do not infer all Cauldron plants need new local growth code."
+    },
+    {
+      "id": "n_tiers",
+      "source": "src/RimMandrake/Cauldron/About/About.xml:108",
+      "speaker": "agent",
+      "text": "Utinni owns campaign fauna patches, toxic prized meat and the Oomo shrine. Cauldron owns the general biome systems."
+    },
+    {
+      "id": "n_other_biomes",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+      "speaker": "agent",
+      "text": "The Forge opts into acid air. Warscar supplies guarded acid damage, bileworm content and aerosol integration. AcousticScanner consumes optional Cauldron payloads."
+    },
+    {
+      "id": "n_vanilla",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "speaker": "agent",
+      "text": "Vanilla already provides study/research, roof shelter, gear stats, animal shearing, explosive wick and weather machinery. Existing converter/tank work is already shared. no redundant engine proposed."
+    },
+    {
+      "id": "n_vef",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "speaker": "agent",
+      "text": "Optional VEF guards implement several ported animal products/feeding/fission/FireSpit. Ported def identity alone does not mean independent native implementation of every behaviour."
+    },
+    {
+      "id": "n_knockback",
+      "source": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs",
+      "speaker": "agent",
+      "text": "ExplosiveKnockback owns displacement and optionally hooks existing Cauldron ignition through reflection and Harmony. Cauldron owns the gas source and transport."
+    }
+  ],
+  "failure_mode_sources": [
+    "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+    "OWNER:1794373071501926623",
+    "OWNER:1792370870264139349",
+    "src/RimMandrake/Cauldron/validation.py"
+  ],
+  "scene_audit": [
+    {
+      "id": "audit_load",
+      "source": "src/RimMandrake/Cauldron/validation.py:743",
+      "start": "Def/type probes include deliberately nonexistent entries. live settings required at defaults. Source wiring reads included.",
+      "control": "Useful missing-def/field controls. field roundtrip, comp existence, logged patch census or diet declaration is not live feature acceptance. Log buffer/truncation limits remain.",
+      "restore": "This chain reads existing state. It needs a named scene boundary and explicit hold policy. Generated-map reads require a fresh site before destructive chains run.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "load",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::load_chain",
+      "components": [
+        "defs_resolve",
+        "acid_wiring_shape",
+        "flora_expansion_shape",
+        "fexxil_venom_shape",
+        "types_resolve",
+        "biome_weather_table",
+        "biome_roster",
+        "biome_worker_and_terrain",
+        "nettle_habitat_wired",
+        "vent_habitat_wired"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_ruins",
+      "source": "src/RimMandrake/Cauldron/validation.py:987",
+      "start": "Generated RM_Cauldron map checked. rig, tanks, pipes, toxic content, clear interaction ring and campaign shrine read.",
+      "control": "Existing map census is useful but no absent-mapgen toggle or guaranteed valid site control. Rig study, research gating and meditation remain undriven.",
+      "restore": "This chain reads existing state. It needs a named scene boundary and explicit hold policy. Generated-map reads require a fresh site before destructive chains run.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "ruins",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::ruins_chain",
+      "components": [
+        "ruin_rig_at_mapgen",
+        "ruin_site_dressed_at_mapgen",
+        "oomo_shrine_at_mapgen"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_vent_gardens",
+      "source": "src/RimMandrake/Cauldron/validation.py:1075",
+      "start": "Requires Cauldron map, ring-pass marker, matching vents and enough fertile ring/far-control cells.",
+      "control": "Density contrast can reject flat rings. a separately generated off map intended. Source thresholds are provisional. not ongoing spread or nettle-toggle proof.",
+      "restore": "This chain reads existing state. It needs a named scene boundary and explicit hold policy. Generated-map reads require a fresh site before destructive chains run.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "vent_gardens",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::vent_gardens_chain",
+      "components": [
+        "vent_flowers_ring_vs_control"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_weather",
+      "source": "src/RimMandrake/Cauldron/validation.py:1116",
+      "start": "Live WeatherDef rates/wind and each forced-weather readback.",
+      "control": "Does not observe natural storm/phase cadence, actual sky/lighting, precipitation over time or useful visibility.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "weather",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::weather_chain",
+      "components": [
+        "weather_defs_laws",
+        "weathers_selectable"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_settings",
+      "source": "src/RimMandrake/Cauldron/validation.py:1165",
+      "start": "Def/type probes include deliberately nonexistent entries. live settings required at defaults. Source wiring reads included.",
+      "control": "A nonexistent field must fail loudly and roundtrips prove field writes. Startup availability, save persistence, all-off behavior and effect-specific acceptance remain to be exercised.",
+      "restore": "The shared modcheck chain records prior settings values and attempts restoration in its finally. A failed or unreadable prior restoration is recorded but does not enforce recovery before another scene.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "settings",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::settings_chain",
+      "components": [
+        "defaults",
+        "acidAirFactor_roundtrip",
+        "biomeRarityFactor_roundtrip"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "verified recovery",
+        "effect controls for switches exercised only by roundtrip"
+      ]
+    },
+    {
+      "id": "audit_items",
+      "source": "src/RimMandrake/Cauldron/validation.py:1228",
+      "start": "Def/type probes include deliberately nonexistent entries. live settings required at defaults. Source wiring reads included.",
+      "control": "Useful missing-def/field controls. field roundtrip, comp existence, logged patch census or diet declaration is not live feature acceptance. Log buffer/truncation limits remain.",
+      "restore": "This chain reads existing state. It needs a named scene boundary and explicit hold policy. Generated-map reads require a fresh site before destructive chains run.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "items",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::items_chain",
+      "components": [
+        "suush_and_vexxiss_comps",
+        "zisska_yields_and_toxic_meat"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_acid",
+      "scene": "acid",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::acid_chain",
+      "source": "src/RimMandrake/Cauldron/validation.py:1297",
+      "components": [
+        "acid_site_ready",
+        "vexxith_acid_proof",
+        "vexxith_acid_toggle_off"
+      ],
+      "speaker": "agent",
+      "start": "Build readbacks assert the vexxith wall, vexxith door and steel controls stand with the intended stuff.",
+      "control": "Steel must lose hit points to the same AcidBurn that vexxith ignores. Turning immunity off must make a separate vexxith wall lose hit points. The material comparison is discriminating.",
+      "restore": "Local pad cleanup and shared settings restoration exist. A pre-scene snapshot and verified restoration of the original site are missing.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded.",
+      "missing_contract": [
+        "persistent-state restoration",
+        "hold"
+      ]
+    },
+    {
+      "id": "audit_fauna",
+      "source": "src/RimMandrake/Cauldron/validation.py:1340",
+      "start": "Cleared pad, every locally parsed kind spawned/read alive. Suush canEverFly report.",
+      "control": "No read of motion, body selection, taming, feeding, reproduction or conditional VEF effects. spawn floor alone insufficient.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "fauna",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::fauna_chain",
+      "components": [
+        "fauna_spawns",
+        "suush_can_fly"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_suush",
+      "source": "src/RimMandrake/Cauldron/validation.py:1377",
+      "start": "Separated melee and shot subjects. small Cut/Bullet damage and 400-tick windows.",
+      "control": "Melee subject surviving is useful. Shot subject merely dead/absent passes: no explosion-specific trace, blast radius/damage or toxin attribution asserted.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "suush",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::suush_chain",
+      "components": [
+        "suush_ignores_melee",
+        "suush_detonates_when_shot"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_flora",
+      "source": "src/RimMandrake/Cauldron/validation.py:1428",
+      "start": "Cleared pad. blacklisted plants staged on rock. growth set for assay grades.",
+      "control": "Unripe/fair/lode, assay off and factor controls. No actual no-soil rejection, fexxil contact, kissaveth gas/cut, yields or dew/fleck visual transition acceptance.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "flora",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::flora_chain",
+      "components": [
+        "flora_spawns",
+        "assay_grades",
+        "assay_toggle_off",
+        "assay_factor_scales"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_yield",
+      "source": "src/RimMandrake/Cauldron/validation.py:1542",
+      "start": "Three full-grown thornwoods, healthy worker, starting steel=0, wood read to distinguish actual completed harvest.",
+      "control": "Factor-1/factor-2/off steel with wood guard is discriminating. slow-work cost, young trees, unripe loss and sustained forestry not measured.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "yield",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::yield_chain",
+      "components": [
+        "yield_site_ready",
+        "harvest_pays_metal",
+        "yield_factor_scales",
+        "yield_toggle_off"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration"
+      ]
+    },
+    {
+      "id": "audit_bloom",
+      "source": "src/RimMandrake/Cauldron/validation.py:1630",
+      "start": "Sealed roofed room read back, exposed/roofed colonists, live roster native/non-native pair, completed weather transition and scheduled exposure tick.",
+      "control": "Roof, native animal, feature-off, severity-factor and double-tax comparisons exist. Worn gear, impaired subjects, persistent poisoning and medicine, and permanent acid injuries remain outside this chain.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "bloom",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::bloom_chain",
+      "components": [
+        "bloom_site_ready",
+        "bloom_loads_exposed",
+        "bloom_no_double_tax",
+        "bloom_spares_roofed",
+        "bloom_spares_natives",
+        "bloom_toggle_off",
+        "bloom_factor_scales"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_water",
+      "source": "src/RimMandrake/Cauldron/validation.py:1771",
+      "start": "Three clean ponds read back, fresh animals, baseline letter count. repeated water laid under same animal for cooldown.",
+      "control": "Poison-on/off and letter-on/off/cooldown meaningful. Actor location not checked equally in all arms. no whole-pool chemistry or terrain/liquid conversion proof.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "water",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::water_chain",
+      "components": [
+        "water_site_ready",
+        "water_poison_on",
+        "water_letter_arrives",
+        "water_letter_cooldown",
+        "water_letter_toggle_off",
+        "water_poison_toggle_off"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_fire",
+      "source": "src/RimMandrake/Cauldron/validation.py:1868",
+      "start": "Spawn wood/actual fire, awake fed vexxiss. poll standing fire and job.",
+      "control": "BeatFire versus feature-off. job uptake is not completion, igniter retaliation, same-faction guard, bellow or original-instigator attribution.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "fire",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::fire_chain",
+      "components": [
+        "fire_warden_beats_fire",
+        "fire_warden_toggle_off"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_vents",
+      "source": "src/RimMandrake/Cauldron/validation.py:1965",
+      "start": "A hand-spawned vent is selected at the anchor and existing vents in the pad are reset with ProofResetVentsIn. Competing vexxiss are removed and output and state are read before comparisons.",
+      "control": "Weather-off, hush-off, near/far with local exposure off, drinking-off and shortened silence/recovery comparisons exist. Ruled warning duration, full default recovery, natural generation and mid-job toggle cancellation still need explicit checks.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "vents",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::vents_chain",
+      "components": [
+        "vents_site_ready",
+        "vent_weather_multiplier",
+        "fauna_hush_in_falter",
+        "vent_falter_precedes_bloom",
+        "vent_exposure_is_local",
+        "vexxiss_drinks_vent",
+        "vent_silences_and_recovers"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_gas",
+      "source": "src/RimMandrake/Cauldron/validation.py:2200",
+      "start": "Hand-spawn vent on cleared open-sky site. cloud density/standing fire/tap/touching tank and drink actors.",
+      "control": "Emission-off, ignition-off, banking-off and prying-off comparisons exist. Add isolated smoke-off, cloud continuity over bare ground and water, gap and sealed-barrier controls, save/load during combustion and tank-volume conservation. This chain does not exercise ExplosiveKnockback.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "gas",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::gas_chain",
+      "components": [
+        "gas_site_ready",
+        "vent_gas_emits",
+        "vent_gas_burns_toxic",
+        "gas_tap_caps_and_banks",
+        "vexxiss_pries_tap",
+        "ruin_kit_dresses"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_works",
+      "source": "src/RimMandrake/Cauldron/validation.py:2423",
+      "start": "Directly builds vexxith vessel, battery and tanks. fills/refuels with fixtures, validates status and input content.",
+      "control": "Empty-cartridge guard, input/totals/product movement, toxic-water run and no-power stop are useful. No study/research/build path, acid-water arm, cartridge lifetime ratio, item placement/full output conservation or tap-to-works loop.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "works",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::works_chain",
+      "components": [
+        "works_site_ready",
+        "works_refines_condensate",
+        "works_filters_toxic_water",
+        "works_stops_without_power"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_drift",
+      "source": "src/RimMandrake/Cauldron/validation.py:2568",
+      "start": "Calls live kernel for heading/chance. seeds full-density cloud on a clear pad, emission off, reads centroid mass and heading/wind conditions.",
+      "control": "The chain compares seeded cloud displacement with drift off and on, checks mass, wind and heading and rejects a changing heading. Obstacle and water-boundary acceptance need separate scenes.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "drift",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::drift_chain",
+      "components": [
+        "gas_heading_is_daily_and_map_seeded",
+        "gas_drift_chance_follows_wind"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_rhossak",
+      "source": "src/RimMandrake/Cauldron/validation.py:2725",
+      "start": "One thornwood, both animal kinds. bind line, stay-near window and own-comp/bridge identity diagnostics.",
+      "control": "Off read guards stale type identity, but no killed-tree/rebind, no-tree, inaccessible-tree or tame-versus-wild control. Distance after one window is weaker than demonstrated return home.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "rhossak",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::rhossak_chain",
+      "components": [
+        "rhossak_binds_to_thornwood",
+        "rhossak_stays_by_its_tree",
+        "rhossak_bind_off_unbinds"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_grove",
+      "source": "src/RimMandrake/Cauldron/validation.py:2836",
+      "start": "Counted closed pen with hay, three rhossak. a separate intended sleeper and galled animal on cleared ground.",
+      "control": "Rest=0 is not asserted sleep or stable location. Nearby plant counts admit wild regrowth. rooted tree count has no two-animal/off control. galls use map-wide total without starting delta. No proven no-seed galled contrast.",
+      "restore": "The local finally clears actors and pad things, removes roofs and resets weather. Shared modcheck tracks prior settings values and attempts restoration at chain end. Terrain, removed objects, wildlife, health, letters, time jumps and map-wide gas clears need saved-state recovery with a scene journal.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "grove",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::grove_chain",
+      "components": [
+        "rhossak_grove_site_ready",
+        "rhossak_sprouts_while_asleep",
+        "three_rhossak_root_a_grove",
+        "galled_rhossak_drops_meat"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "persistent-state restoration",
+        "complete discriminating control for the claimed experience"
+      ]
+    },
+    {
+      "id": "audit_log",
+      "source": "src/RimMandrake/Cauldron/validation.py:2903",
+      "start": "Def/type probes include deliberately nonexistent entries. live settings required at defaults. Source wiring reads included.",
+      "control": "A nonempty buffer guards a blind instrument. The owned-def filter and bounded drain read cannot certify all historical errors or replace loading the target build.",
+      "restore": "This chain reads existing state. It needs a named scene boundary and explicit hold policy. Generated-map reads require a fresh site before destructive chains run.",
+      "hold": "No explicit immediate or owner_review hold policy is recorded by this entry point.",
+      "scene": "log",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::log_chain",
+      "components": [
+        "log_clean"
+      ],
+      "speaker": "agent",
+      "missing_contract": [
+        "hold",
+        "complete discriminating control for the claimed experience"
+      ]
+    }
+  ],
+  "proof_recovery": {
+    "id": "proof_recovery",
+    "source": [
+      "src/RimMandrake/Cauldron/validation.py",
+      "src/RimMandrake/Cauldron/northstar_site.py",
+      "src/RimMandrake/Utils/modcheck/suite.py",
+      "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+    ],
+    "speaker": "agent",
+    "text": "The site preflight disables the storyteller, clears incident queues and unlocks weather. Active chains also alter terrain, actors, gas and time. The shared settings tracker restores prior values on normal Python unwind. No Cauldron entry point calls scene-begin, scene-end or scene-hold. Stage 3 should file missing scene recovery and measurement work with a checkpoint and verified reload path.",
+    "stage3_work": [
+      "Record scene-begin before the first persistent change with a saved-site recovery recipe.",
+      "Restore or explicitly hold each scene and verify resulting state on normal and interrupted exits.",
+      "Assert actual sleep, location and attribution in grove scenes and isolate galls by producer and starting delta.",
+      "Add actual raw and cooked ingestion, plant contact and cut behavior, species products and the study-to-research-to-machine route.",
+      "Add an explosion-specific observation to the suush shot scene.",
+      "Exercise persistent health effects, worn gear and the combined Cauldron gas and ExplosiveKnockback interaction."
+    ]
+  },
+  "live_walk_proposal": {
+    "id": "walk_existing_cauldron",
+    "source": [
+      "src/RimMandrake/Cauldron/site_spec.py",
+      "src/RimMandrake/Cauldron/validation.py",
+      "src/RimMandrake/rimflow/roles/designer.md"
+    ],
+    "speaker": "agent",
+    "status": "proposed_for_next_owner_sitting",
+    "save": "RM_TestSite_cauldron_v3",
+    "scene": "On a disposable copy of the registered Cauldron site, inspect the rainless dusk, thornwood and garden art, then observe the falter and exposed versus sheltered bodies. Follow a tap into a touching tank and Filter-Works with a wild vexxiss nearby. A separate gas-over-water lane includes a clear gap and sealed barrier. Its displacement arm requires ExplosiveKnockback loaded.",
+    "settles": [
+      "forest and weather appearance",
+      "warning readability and timing",
+      "actual pool terrain and liquid binding",
+      "the source-defined cap and bloom exposure behavior",
+      "current gas-chain continuation and displacement",
+      "the existing production loop"
+    ],
+    "proof_before_acceptance": "Check the site registry, loaded assemblies and def availability, record a recovery checkpoint and stage controls through named script entry points. The current entry points have the audit gaps recorded here.",
+    "offer": true
+  },
+  "vanilla_comparison": {
+    "id": "vanilla_comparison",
+    "source": [
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "src/RimMandrake/Cauldron/Source/RM_VentGas.cs"
+    ],
+    "speaker": "agent",
+    "text": "Vanilla RimWorld supplies roof and sealing checks, shearing, explosive wicks, study-to-research and injury permanence. Cauldron reuses these seams. Its separate vent-gas grid accommodates a gas type beyond the packed vanilla storage. FlowWorks supplies liquid identity, stock, containers and converters."
+  },
+  "reading_limits": {
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "speaker": "agent",
+    "text": "Read current mod source and defs, all suite chains, earlier owner question context, required built evidence, related ledger items and directly referenced services. Current runtime and saved-site fingerprints were not measured. Code behavior and appearance retain the later acceptance and owner examination stages."
+  },
+  "ledger_read": {
+    "source": "infrastructure/state/ledger",
+    "method": "model.replay(model.read()) and designer_stage.built_evidence",
+    "unmeasured": [],
+    "text": "The ledger folded successfully. Closed item state is accounted for separately from source presence and current proof."
+  },
+  "related_items_reviewed": [
+    {
+      "ref": "ITEM:ASHKARR_LABELS_RENAME_TO_RULED_NAMES",
+      "source": "infrastructure/state/ledger",
+      "text": "OWNER:1792993630061573590 settles the label rule. Current biome identity carries it."
+    },
+    {
+      "ref": "ITEM:BEDAZZLE_FLORA_EXPANSION_1",
+      "source": "infrastructure/state/ledger",
+      "text": "The six flora have individual inventory entries."
+    },
+    {
+      "ref": "ITEM:BEDBUG_FIX_PARALYSIS_HEDIFF_IN_THEROT",
+      "source": "infrastructure/state/ledger",
+      "text": "EnvironmentalHazards now owns the shared paralysis condition."
+    },
+    {
+      "ref": "ITEM:DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+      "source": "infrastructure/state/ledger",
+      "text": "The completed growth fix is historical evidence. Current XML declares zero glow on selected chemotrophs. Species survival at the intended site remains to be measured."
+    },
+    {
+      "ref": "ITEM:DESTROY_BATCH_NEVER_KILLS_PAWNS_1",
+      "source": "infrastructure/state/ledger",
+      "text": "Cauldron uses explicit pawn removal. Full original-state recovery is still missing."
+    },
+    {
+      "ref": "ITEM:JAWABENCH_DESTROY_PAWNS_1",
+      "source": "infrastructure/state/ledger",
+      "text": "The current helper tries vanish and reads destroyedAfter with a damage fallback."
+    },
+    {
+      "ref": "ITEM:MAPGEN_SCATTER_NRE_1",
+      "source": "infrastructure/state/ledger",
+      "text": "Historical shared mapgen repair. Current Cauldron ruin scatter has a biome validator."
+    },
+    {
+      "ref": "ITEM:MODCHECK_CLEARAREA_FIX_PAWNS_STILL_LOITER",
+      "source": "infrastructure/state/ledger",
+      "text": "Shared clear_area clears pawns by id. Snapshot restoration remains a separate scene gap."
+    },
+    {
+      "ref": "ITEM:MODCHECK_ULTRAFAST_CLOCK_STALL_1",
+      "source": "infrastructure/state/ledger",
+      "text": "Current _wait uses fast_advance and steps the remainder while recording stalls."
+    },
+    {
+      "ref": "ITEM:OFFLINE_PILE_DEPLOY_ONE_TRIP_FOR_ALL",
+      "source": "infrastructure/state/ledger",
+      "text": "Historical deployment batch whose completion does not establish current runtime fingerprints."
+    },
+    {
+      "ref": "ITEM:PIPELINE_TUNING_HARVEST_CAULDRON_VERDICTS",
+      "source": "infrastructure/state/ledger",
+      "text": "Art-pipeline tuning has no additional player capability. Owner choices and judge opinions retain distinct provenance."
+    },
+    {
+      "ref": "ITEM:PIT_RENAME_STENCHLANDS_1",
+      "source": "infrastructure/state/ledger",
+      "text": "Another biome rename cites Cauldron precedent and adds no Cauldron capability."
+    },
+    {
+      "ref": "ITEM:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+      "source": "infrastructure/state/ledger",
+      "text": "Source includes the flame-front fix. The folded ledger distinguishes offline evidence from owed live reruns."
+    },
+    {
+      "ref": "ITEM:RONTO_PACK_TEXTURE_REPAIR_SADDLEBAGS_MISSING",
+      "source": "infrastructure/state/ledger",
+      "text": "The Cauldron portion was superseded by its installed owned world-map texture."
+    },
+    {
+      "ref": "ITEM:SUUSH_CAULDRON_DRIFTER_1",
+      "source": "infrastructure/state/ledger",
+      "text": "Suush ecology, flight and burst behavior are individually inventoried."
+    },
+    {
+      "ref": "ITEM:SWB_MOVE_VET_UNREVIEWED",
+      "source": "infrastructure/state/ledger",
+      "text": "Current owned cast references and tier guards reflect the completed port review."
+    },
+    {
+      "ref": "ITEM:VEXXISS_VARIANT_WIRING_VET_REVIEW",
+      "source": "infrastructure/state/ledger",
+      "text": "PawnKindDef carries alternate V_E graphics and historical review evidence."
+    },
+    {
+      "ref": "ITEM:VEXXITH_USES_SELFTEST_FIX_250S_TIMEOUT",
+      "source": "infrastructure/state/ledger",
+      "text": "Developer test-timeout repair adds no material capability."
+    }
+  ],
+  "historical_evidence": [
+    {
+      "id": "CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794637424713689195",
+      "event": "verify",
+      "result": "pass",
+      "sha": "56de43818eace9f7a4b41930de90840210c39147",
+      "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Cauldron_20261114T062213Z.html (testq J20261114T055719Z-f4b083.a2)",
+      "text": null
+    },
+    {
+      "id": "CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794674439619933812",
+      "event": "verify",
+      "result": "pass",
+      "sha": "2178d1c342e9d1a978e10ce1a577f19e1eae6071",
+      "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Cauldron_20261114T163949Z.html (testq J20261114T163004Z-32fa6a.a1)",
+      "text": null
+    },
+    {
+      "id": "CAULDRON_ENRICHMENT_LIVE_PROOF_1",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794713413703963999",
+      "event": "verify",
+      "result": "pass",
+      "sha": "9aef14eca009eaeb9c9a2dc9d654126859bcacd3",
+      "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Cauldron_20261115T032905Z.html (testq J20261115T030800Z-971b4a.a1)",
+      "text": null
+    },
+    {
+      "id": "CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794739161284108381",
+      "event": "verify",
+      "result": "pass",
+      "sha": "a678a925c5",
+      "evidence": "/home/mandrake/rm/relentless/clones/WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE.det/Transient/modcheck/Cauldron_20261115T103919Z.html",
+      "text": null
+    },
+    {
+      "id": "CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794739217763366010",
+      "event": "verify",
+      "result": "pass",
+      "sha": "a678a925c5",
+      "evidence": "/home/mandrake/rm/relentless/clones/WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE.det/Transient/modcheck/Cauldron_20261115T104015Z.html",
+      "text": null
+    },
+    {
+      "id": "CAULDRON_VENT_ENRICHMENT_HOOKS_1",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794739272903849979",
+      "event": "note",
+      "result": null,
+      "sha": null,
+      "evidence": null,
+      "text": "Live confirm of 9f7b107840 (Archmagi 02:40 PST, BENCH): modcheck run Cauldron --chains vents TWICE on one map (MINIMAL+Baroque Biomes, 31 mods, 5 DLC. FlowWorks DLL = 5ad85bde26 build, MODCHECK_SKIP_DEPLOY). Run 1 7/7 PASS. run 2 7/7 PASS incl. vent_weather_multiplier, on the SAME vent RM_CauldronVent52654 (tick 1 -> 55103), ProofResetVentsIn answered 'RESET 2', inspect 'Vent: stable'. Evidence Transient/modcheck/Cauldron_20261115T103919Z.json and _104015Z.json. The .a2-retry stale-site cause is confirmed fixed live."
+    },
+    {
+      "id": "CAULDRON_GAS_FIX_INT_WRAP_LATENT",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "tsn": "1792211299353248700",
+      "event": "implemented",
+      "result": null,
+      "sha": "9368e943ebd9",
+      "evidence": null,
+      "text": "long sum before clamp. kernel fuzz row"
+    },
+    {
+      "id": "CAULDRON_GAS_FIX_SEALED_CORNER_LEAK",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "tsn": "1792211298143000240",
+      "event": "implemented",
+      "result": null,
+      "sha": "9368e943ebd9",
+      "evidence": null,
+      "text": "diagonal drift needs both cardinal sides open. kernel fuzz rows"
+    },
+    {
+      "id": "CAULDRON_GARDEN_FIX_EDGE_OFF_MAP_STEP",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "tsn": "1792211296897553945",
+      "event": "implemented",
+      "result": null,
+      "sha": "9368e943ebd9",
+      "evidence": null,
+      "text": "InBounds guard at top of TryPlant"
+    },
+    {
+      "id": "CAULDRON_TOGGLE_FIX_JOBS_FINISH_ANYWAY",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "tsn": "1792211301518836660",
+      "event": "implemented",
+      "result": null,
+      "sha": "9368e943ebd9",
+      "evidence": null,
+      "text": "drink job FailOn covers the walk. melee half skipped per grading"
+    },
+    {
+      "id": "CAULDRON_TOGGLE_FIX_JOBS_FINISH_ANYWAY",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "tsn": "1792735919415453047",
+      "event": "verify",
+      "result": "pass",
+      "sha": "9368e943ebd9",
+      "evidence": "wild vexxiss at (124,120) on RM_VexxissDrinkVent toward vent (96,89). setting off. 60 ticks later job Wait_Wander at (123,119)",
+      "text": "FOUNDRY sweep"
+    },
+    {
+      "id": "RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794761180673363244",
+      "event": "verify",
+      "result": "pass",
+      "sha": "d1817022db35",
+      "evidence": "design/concepts/ExplosiveKnockback/version/in_game/visit_1/evidence/gas_chain_front_offline_fuzz.txt",
+      "text": null
+    },
+    {
+      "id": "RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794761243746757356",
+      "event": "note",
+      "result": null,
+      "sha": null,
+      "evidence": null,
+      "text": "DETACHED run rm-detached-bench-rimmandrake-find-why-gas-chain-stops-fiv-1794760829 ended success (exited 0) after 411 s, 647507 tokens (model opus). Result: I've fixed it offline and closed the item at `d1817022db35`. the ledger shard and evidence landed at `aa684136d57e`. The live gas scenes have not been rerun, because a detached helper doesn't take the bridge. 1. **Cause** [measured from vanilla source]: the gas is lit on a cell with nothing to burn. Vanilla destroys a fuel-less Fire at its first 150-tick check, and that check can come before the Cauldron's next 30-tick burn scan. The scan only spread from Fires that were still alive, so the cloud burned one clump and stopped. That matches the failing runs exactly (`bursts=1 burstTicks=1`). 2. **Fix** (in the Cauldron mod, not the test harness): a cell that burns now lights its eight neighbours at the next scan whether or not its Fire survived. It keeps the per-scan cap and still says who lit the first spark. The change is in `D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\Cauldron\\Source\\Kernel\\RM_VentGasKernel.cs` and `D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\Cauldron\\Source\\RM_VentGas.cs`, and the Cauldron DLL is rebuilt. 3. **Offline test:** a new check in the Cauldron fuzz test (`selftest_cauldron_fuzz.py`). With the fix switched off it fails with \"burnt 1, left 12\", the live failure. With the fix it passes, as do the full fuzz (17,002 cases), `selftest_cauldron` (97/97) and the ExplosiveKnockback gas-clumps selftest. 4. **Not yet run:** the live check. It needs the Cauldron deployed with the game down, then the gas_chain, gas_census and gas_clumps scenes run 17 times on both mod lists. the bar is the chain continuing every time [guess ~80% it does]. The exact command is in the item's note. I closed the item on the offline evidence, since a close with a sha was the job. if the next ExplosiveKnockback visit sees `bursts=1` again, it needs refiling. 5. **One gap:** the flame front isn't saved with the game. After a load, only the Fires still burning spread the cloud, which is the old behaviour.. Output /mnt/d/ClaudeWork/rimmandrake/dispatcher/detached/rm-detached-bench-rimmandrake-find-why-gas-chain-stops-fiv-1794760829.out.json. clone /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN.det."
+    },
+    {
+      "id": "RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "tsn": "1794761266640268000",
+      "event": "note",
+      "result": null,
+      "sha": null,
+      "evidence": null,
+      "text": "DETACHED run rm-detached-bench-rimmandrake-find-why-gas-chain-stops-fiv-1794760829 left work no remote had. its clone /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN.det is bundled at /home/mandrake/rm/relentless/store/orphans/bundles/20261115T164744Z-RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN.det and goes back to the pool. NEXT: restore it from that bundle (relentless restore_bundle) if the work is still wanted."
+    },
+    {
+      "id": "RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794637441510348980",
+      "event": "verify",
+      "result": "pass",
+      "sha": "56de43818eace9f7a4b41930de90840210c39147",
+      "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Cauldron_20261114T062213Z.html (testq J20261114T055719Z-f4b083.a2)",
+      "text": null
+    },
+    {
+      "id": "RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794674451525834669",
+      "event": "verify",
+      "result": "pass",
+      "sha": "2178d1c342e9d1a978e10ce1a577f19e1eae6071",
+      "evidence": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Cauldron_20261114T163949Z.html (testq J20261114T163004Z-32fa6a.a1)",
+      "text": null
+    },
+    {
+      "id": "RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl",
+      "tsn": "1794713407156404514",
+      "event": "note",
+      "result": null,
+      "sha": null,
+      "evidence": null,
+      "text": "testq J20261115T030800Z-971b4a.a1 on SteveDesktop: harness fault, no verdict recorded (surprise: surprise: safe_advance stopped after # of # tick(s): downed: downed (health #). surprise: surprise: safe_advance stopped after # of # tick(s): hurt: h)"
+    }
+  ],
+  "history_review": {
+    "id": "history_review",
+    "source": [
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+      "src/RimMandrake/Cauldron/Source/RM_VentGas.cs"
+    ],
+    "speaker": "agent",
+    "method": "git log -S RM_TreeMartyr and git log -S RM_VentGasFront scoped to the mod",
+    "findings": [
+      "8b2b453188 removed TreeMartyr. Current forestry scenes use thornwood.",
+      "d1817022db introduced RM_VentGasFront and is present in the current source."
+    ]
+  },
+  "source_risks": [
+    {
+      "id": "risk_gas_save",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "speaker": "agent",
+      "text": "ExposeData persists gas density and counters while the flame front remains an in-memory field. A mid-combustion reload needs a regression scene."
+    },
+    {
+      "id": "risk_hull_scope",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+      "speaker": "agent",
+      "text": "BurnHull collects player ship buildings across the map and one liner sets the shared lined flag. Separated hulls need a control to establish protection scope."
+    },
+    {
+      "id": "risk_health_regression",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "speaker": "agent",
+      "text": "The shipped decay comp contradicts the later persistent-poisoning ruling. Health acceptance must use the later owner requirement."
+    },
+    {
+      "id": "risk_cap_dose",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "speaker": "agent",
+      "text": "ExposureWeight reads vent recovery and distance without consulting IsCapped. A capped and uncapped control will measure the current safety boundary."
+    }
+  ],
+  "root_proposal": {
+    "id": "root_stage1_candidate",
+    "text": "The Cauldron is a mineral forest beneath an angry sky of lightning without rain. Acid pools and vent chemistry shape its plants, animals and the people who work there. A lull in vent breathing and nearby animals’ stillness give about an in-game hour of warning before a bloom burdens exposed bodies with metal. Thornwood pays wood and metal for slow, exposed work. Mineral creatures offer food, danger and protective material, while grove-bound rhossak renew the forest and wild vexxiss compete for tapped vents. Connected vent gas carries fire across water with dramatic blasts that throw nearby goods. Shelter, sealed clothing, vexxith protection and Filter-Works support dependable production of fresh water and useful chemicals. Preparation earns manageable daily work and worthwhile industry, with risky expeditions and wildlife still demanding choices. Heavy-metal poisoning persists until advanced medicine purges it, and acid can permanently disfigure and injure sensory organs.",
+    "speaker": "agent",
+    "status": "adopted_by_delegation",
+    "source": "design/concepts/Cauldron/log.md"
+  },
+  "review_budget": {
+    "source": "design/concepts/Cauldron/log.md",
+    "speaker": "agent",
+    "tokens": 50000,
+    "kind": "review",
+    "measurement": "conservative estimate",
+    "why": "The collaboration reviewer cannot report actual token usage. An allowance including inherited context is charged explicitly as an estimate."
+  },
+  "root": {
+    "text": "The Cauldron is a mineral forest beneath an angry sky of lightning without rain. Acid pools and vent chemistry shape its plants, animals and the people who work there. A lull in vent breathing and nearby animals’ stillness give about an in-game hour of warning before a bloom burdens exposed bodies with metal. Thornwood pays wood and metal for slow, exposed work. Mineral creatures offer food, danger and protective material, while grove-bound rhossak renew the forest and wild vexxiss compete for tapped vents. Connected vent gas carries fire across water with dramatic blasts that throw nearby goods. Shelter, sealed clothing, vexxith protection and Filter-Works support dependable production of fresh water and useful chemicals. Preparation earns manageable daily work and worthwhile industry, with risky expeditions and wildlife still demanding choices. Heavy-metal poisoning persists until advanced medicine purges it, and acid can permanently disfigure and injure sensory organs.",
+    "source": "CONDUCTOR:1794804951784038130",
+    "speaker": "conductor",
+    "delegated": "evidence-for-ask",
+    "answers": "a_root_synthesis"
+  }
+}
