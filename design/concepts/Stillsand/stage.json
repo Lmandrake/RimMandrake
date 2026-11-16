@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-16T05:01:55Z",
+    "kind": "review",
+    "ref": "rm-role-designercodex-1794805106 /root/root_review reviewer-estimated weighted usage, stage1_review.json",
+    "stage": 1,
+    "tokens": 13000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 13000
  },
  "history": [
   {
@@ -36,6 +44,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designercodex-1794797937: stage 0 done"
+  },
+  {
+   "at": "2026-11-16T04:58:40Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794805106, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-16T05:03:02Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794805106: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -73,6 +93,36 @@
    "run": "rm-role-designercodex-1794797937",
    "stage": 0,
    "summary": "Grounded current Stillsand source/spec, recovered the newer owner decisions, inventoried implementation/proof/scope separately, accounted for every built packet reference, audited proof-scene start/control/recovery/hold gaps, and named three failure modes. Proposed an existing-code live walk for dialogue. Root remains unapproved; no questions sent and no live state changed."
+  },
+  {
+   "at": "2026-11-16T05:03:02Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "A disposable composed-tier Stillsand exploration scene begins at a prepared harbour, crosses open sand beside a giant, inspects an unfamiliar cave and returns to an established glass-and-water workshop. Observe landscape sparsity, refuge legibility and a practical discovery supporting another expedition. Snapshot and recovery preparation precede scene mutation. The walk remains proposed.",
+    "settles": [
+     "walk_existing_first",
+     "F1",
+     "F2"
+    ]
+   },
+   "run": "rm-role-designercodex-1794805106",
+   "stage": 1,
+   "summary": "Recorded the root synthesis through the standing Evidence-for-Ask delegation, CONDUCTOR:1794805294378261874. Fresh review passed the synthesis and struck another human approval ask as redundant. Existing owner answers establish scattered fortunes, prepared harbours and discoveries that supply the next expedition or outpost. Offered the existing-code live walk first. The dialogue, review and answered delegated decision are recorded in the concept folder."
   }
  ],
  "runner": "codex",
@@ -89,10 +139,18 @@
     "input_tokens": 3328780,
     "output_tokens": 17666
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794805106",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 1703418,
+    "output_tokens": 8393
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready"
 }
