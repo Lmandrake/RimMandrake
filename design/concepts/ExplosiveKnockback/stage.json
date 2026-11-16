@@ -1719,6 +1719,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "owner 2026-11-15 '1 agree.' (OWNER:1794799770273329641): barrage bar reworded to the p99 frame in the 0.9-8.25 s window at most 50 ms, carried out by 9c8c37aced (scenes.json, record.json, plan.md; tree/sheet held as a patch); OWNER:1794790816821560212 is the backfilled card 'Certify, and fix the rule', already carried out by 0774d3bc1a; re-pinned stage 2 (owner); stage 3 (scenes); stage 4 (scenes, owner); sources OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a, OWNER:1794790816821560212"
+  },
+  {
+   "at": "2026-11-16T04:34:23Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN: barrage bar reworded to the p99 frame in the 0.9-8.25 s window (his '1 agree.'), tree re-certified on that event (fab7999d8f); his earlier certificate card is superseded by it; re-pinned stage 2 (owner); stage 3 (sheet, tree); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, owner changed): the next open retakes it; sources OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33, OWNER:1794748823561950419"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1817,7 +1823,7 @@
    "inputs": {
     "exam": null,
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "68d8ef5bc68be1bf579d834b4b8d95ae41bcc119cb5dd292e3c1cb8f4eec8ec5",
+    "owner": "46b92b3c771dda9241a041a42714b29435d0304dfdead97ca01966487f4fd19a",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "b539805141b4ce7de67ea63f9fd516527fbad243cdcb38ab33fe861d09c90936",
     "sheet": "a5638216a5395f359d008c4fa234972c5c520f51d2924bb2233d72f5c6f4fe35",
@@ -1830,6 +1836,7 @@
    "outcome": "done",
    "owner_uncited": [
     "1794610188062865138",
+    "1794748823561950419",
     "1794790816821560212"
    ],
    "repinned": [
@@ -1856,6 +1863,16 @@
      "sources": [
       "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
       "OWNER:1794790816821560212"
+     ]
+    },
+    {
+     "at": "2026-11-16T04:34:23Z",
+     "inputs": [
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
      ]
     }
    ],
@@ -2002,8 +2019,8 @@
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "346b20d4fdad2ccbc5cddc62b5765d2072d7137db3a741a3e8e8a2939aca59bb",
-    "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d",
-    "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0"
+    "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
+    "tree": "9cf213032f6d0cd308d8d930c2817e2deeb65db81db547d92840c4452481271b"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2038,6 +2055,17 @@
      "sources": [
       "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
       "OWNER:1794790816821560212"
+     ]
+    },
+    {
+     "at": "2026-11-16T04:34:23Z",
+     "inputs": [
+      "sheet",
+      "tree"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
      ]
     }
    ],
@@ -2099,7 +2127,22 @@
    ],
    "run": "bench-ek-owner-lock-st4-20261113",
    "stage": 4,
-   "summary": "No model run: exam.json as it stands meets the exam checks against the stage-3 artifacts."
+   "summary": "No model run: exam.json as it stands meets the exam checks against the stage-3 artifacts.",
+   "voided": [
+    {
+     "at": "2026-11-16T04:34:23Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
+    }
+   ]
   },
   {
    "at": "2026-11-13T22:49:02Z",
@@ -2109,8 +2152,8 @@
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "d16a2aec414a6dd250a9036c95005753f87ae1bf29dcd1e00986d4ed8753baba",
-    "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d",
-    "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0"
+    "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
+    "tree": "9cf213032f6d0cd308d8d930c2817e2deeb65db81db547d92840c4452481271b"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2133,6 +2176,17 @@
       "OWNER:1794688782235148624@8498e2b493",
       "OWNER:1794696195350158091@8bd7e7e715",
       "OWNER:1794748404753740828@709c740f76"
+     ]
+    },
+    {
+     "at": "2026-11-16T04:34:23Z",
+     "inputs": [
+      "tree",
+      "sheet"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
+      "OWNER:1794748823561950419"
      ]
     }
    ],

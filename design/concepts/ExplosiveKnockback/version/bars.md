@@ -8,8 +8,8 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 | file | git blob at the lock | role |
 |---|---|---|
-| `design/concepts/ExplosiveKnockback/tree.json` | `cc7cf6ea949696d106fae01cd7a2d2ff0688aaf0` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
-| `design/concepts/ExplosiveKnockback/sheet.md` | `8e943ff5670f345153cd58d37cf8369ebad4897d` | his plain-words sheet: does, does not, his words |
+| `design/concepts/ExplosiveKnockback/tree.json` | `5fed74b534506f5874d9a0e0a5a89a814f83fd47` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/ExplosiveKnockback/sheet.md` | `0cd48ce7a8e382cb968064990c5d49eabc4a4014` | his plain-words sheet: does, does not, his words |
 | `design/concepts/ExplosiveKnockback/scenes.json` | `fd275c0130c8bb3d3e67e78451b83232ccb53597` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/ExplosiveKnockback/floor.json` | `a322de650cb13e4bf77f91c24828ea008fe0ddf8` | the quality floor lines every mod meets |
 | `design/concepts/ExplosiveKnockback/exam.json` | `5a8f2e579bed5cb0c8f7e95ee823162eb6b25538` | the Cold Reader exam of tree and sheet |
@@ -27,7 +27,9 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 **Re-pinned 2026-11-15 7:37 PM PST (his answer on the barrage bar; RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO).** He agreed (OWNER:1794799770273329641, *"1 agree."*) that `barrage_frame_budget` reads the 99th-percentile frame inside the barrage-and-gas-chain window (0.9-8.25 s) at most 50 ms instead of the single worst frame, which the mod-off control broke on random list stalls. `scenes.json` (sc_barrage_perf expect and control), `record.json` (dl_perf_budget prose) and `plan.md` changed at `9c8c37aced`; `designer_stage.py repin` re-pinned stages 2-4 citing it and the backfilled card OWNER:1794790816821560212 (already carried out at `0774d3bc1a`). `tree.json` and `sheet.md` are unchanged: their new words are held as `version/criterion_repairs/sc_barrage_perf_2026-11-15/tree_sheet_rewording.patch` until he re-certifies the tree.
 
-Tree hash (`concept_tree.py hash`): `82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0`; sheet hash: `c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d`.
+**Re-pinned 2026-11-15 8:35 PM PST (his re-certification on the barrage bar; RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN).** The held patch is applied at `3aa7e5c15d`: `tree.json` leaf barrage_frame_budget and `sheet.md` say the 99th-percentile frame inside the 0.9-8.25 s window at most 50 ms (the leaf's experience leads with "at most 50 ms", the shape lint asks of a constraint). His "1 agree." (OWNER:1794799770273329641) sits on the repair item, which a refusal record of this concept (`version/criterion_repairs/sc_barrage_perf_2026-11-15/refusal.json`) ties to the mod; `concept_tree.py certify` now takes his words on an item caused by the concept's item or by one of its refusal records (the Conductor's evidence-for-ask call carrying out the "fix the rule" half of his card OWNER:1794748823561950419), and re-stamped the coverage on that event (`fab7999d8f`). `designer_stage.py repin` re-pinned stages 2, 3 and 5 and left stage 4 stale by its own rule: the Cold Reader exam is frozen against the old tree and sheet and is retaken at the next open (no exam scenario reads this leaf).
+
+Tree hash (`concept_tree.py hash`): `9cf213032f6d0cd308d8d930c2817e2deeb65db81db547d92840c4452481271b`; sheet hash: `def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc`.
 
 ## Counts at the lock
 

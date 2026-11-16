@@ -59,8 +59,7 @@ Planted, from the settled mod-on run: 1.5 s of 75 ms frames in the window FAIL (
 
 - **What p99 gives up:** it counts frames, not time. The top 1% of the window's frames (4 at ~60 fps, 9 at ~120 fps) never
   decide it, so up to that many separate long hitches pass. A stretch of slow frames longer than 1% of the window fails.
-- **Held:** `tree_sheet_rewording.patch` (this folder) carries the leaf's and the sheet's words. His coverage certificate
-  is bound to the tree hash and needs an event of his on the concept's item (`RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH`), so the
-  patch waits for his re-certification, as the container rewording did.
+- **Applied:** `tree_sheet_rewording.patch` (this folder) carries the leaf's and the sheet's words; it was applied and the tree
+  re-certified on his "1 agree." at `3aa7e5c15d`/`fab7999d8f` (`RECERTIFY.md`).
 - **Live acceptance: UNRUN.** `python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25`
   on the proof build and the owner's full list on Archmagi.
