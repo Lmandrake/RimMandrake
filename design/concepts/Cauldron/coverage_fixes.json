@@ -1,0 +1,37 @@
+{
+  "against": "rm-coverage-judge-1794844087",
+  "claims": [
+    {
+      "gap": "g1",
+      "evidence": "scenes.json: arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day and resume_walk each have hold owner_review and restore naming an individual RM_Cauldron_review_<scene> keeper, replay checkpoint, explicit owner-finished/released review end and verified entry recovery. tree.json retains their seven owner_part yes declarations."
+    },
+    {
+      "gap": "g2",
+      "evidence": "sheet.md: does now carries leaf:cauldron_walk and expands leaf:vent_competition with water poisoning, fire/original-igniter response, identifiable expiring tracks and separate drink/retaliation cancellation."
+    },
+    {
+      "gap": "g3",
+      "evidence": "tree.json: supported_ecology experience/scenario names all seven existing capabilities and their provider-owned intent. scenes.json: supported_integrations and optional_services cite only supported_ecology; sheet.md: does and pruning carry the leaf. State-only suush checking preserves owner-present visible-motion review."
+    },
+    {
+      "gap": "g4",
+      "evidence": "scenes.json: mapgen_vents_gardens start/action/expect/control explicitly cover natural vents, safe arrival/separation, mixed states, blowout memory/reload, shore nettles, state-keyed rings, eligible wild non-tree replacement, protected cells, component orders, generation gates and idempotent vent generation. tree.json: mineral_forest scenario cites it. Counts/radii/chances are not pinned."
+    },
+    {
+      "gap": "g7",
+      "evidence": "scenes.json: falter_hour requires eskith flock in start, observes normal activity/resolved art and falter stillness/resumption in action/expect; two matched-state non-bloom weathers give different measured output, with ventWeatherEnabled-off control. tree.json: falter_warning scenario states these checks. No flock size, variant count or output multiplier is a bar."
+    },
+    {
+      "gap": "g8",
+      "evidence": "scenes.json: water_fire_tracks starts an unfinished feature-issued AttackMelee, switches warden and attacks-igniter off independently, expects job-end at the first pawn job update before a further hit, and controls with stays-on and drinking-only-off arms. vent_competition retains independent walk/drink cancellation and points to that melee verdict. tree.json: vent_competition scenario/oracle/false_pass state the requirement."
+    },
+    {
+      "gap": "g9",
+      "evidence": "tree.json: thornwood_work has no age-coat clause or acceptance dependency. scenes.json: trunk_coat_check is exploration with a question, no requirement and no coverage exercises; UNBUILT has no core verdict. sheet.md: open explains absent/unopened coat versus required installed flecks. plan.md retains the separate design/build item without opening scope."
+    },
+    {
+      "gap": "g11",
+      "evidence": "scenes.json: material_routes normally places/builds/opens plate-only door, completes dedicated bottle/bucket/barrel and suit/helmet recipes, traces ingredients/new outputs and uses them, with forbidden-stuff/missing-input/incomplete-work controls. ambient_routes includes crafted gear and exposed/protected player, visitor and hostile subjects under ambient acid. tree.json: ambient_protection scenario and sheet.md does state these routes. Heat-insulation numeric readback remains advisory under the independent criterion reading."
+    }
+  ]
+}

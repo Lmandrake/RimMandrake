@@ -426,6 +426,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794843525: stage 5 return"
+  },
+  {
+   "at": "2026-11-16T16:35:26Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794846919, stage 3, budget 407632"
+  },
+  {
+   "at": "2026-11-16T16:45:53Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794846919: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -670,6 +682,39 @@
    "stage": 5,
    "summary": "Return to Stage 3 for eight sound experience-coverage gaps after independent criterion reading under the new owner bar rule. Six further findings are advisory and impose no passing bar. The current brief passed four planted cases. The frozen design artifacts remain intact. Lock has no coverage signature. The unchanged-advisory recovery defect is repaired and closed.",
    "to": 3
+  },
+  {
+   "at": "2026-11-16T16:45:53Z",
+   "inputs": {
+    "exam": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
+    "floor": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": "8e1c71b594e5f31f1f4c90b85def05292a372e2a641cdf2b27f127329de0731e",
+    "sheet": "7d429862b7a78178931a91d9bac198250f35a4738632e862ce99f47c03a4e41f",
+    "tree": "48e466ce17547f5e06aa4732edca0b8c7c5d588dc1c4e17a3d4aeacb1bad651a"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "On a disposable RM_TestSite_cauldron_v3 inspect the intact forest and actual pools first, then required eskith warning, exposed/roofed/crafted fully sealed workers, thornwood and normal rig study/research into tap/Filter-Works supplies. Separate connected-water gas lanes use maintained gaps and straight/diagonal barriers with ExplosiveKnockback. Planned owner-review scenes retain named keeper saves and explicit release/recovery; no live action occurs in this run.",
+    "settles": [
+     "existing forest and pool appearance",
+     "gap_falter_duration",
+     "gap_sealed_protection",
+     "gap_pool_binding",
+     "gap_gas_continuity"
+    ]
+   },
+   "run": "rm-role-designercodex-1794846919",
+   "stage": 3,
+   "summary": "Fixed all eight blocking Stage-3 gaps from rm-coverage-judge-1794844087 and wrote coverage_fixes.json against that judge. Eighteen leaves, thirty-six planned scenes (35 acceptance/interaction, one independent exploration), seven explicit owner-review holds, five unchanged ordered showcases and all 67 mandatory capabilities covered. Preserved six advisory findings and existing owner rulings. Gate A, scene/floor checks and showcases pass. Existing script-work item is amended; no runtime scenes ran. Tree/sheet edits invalidate the historical exam: the launcher must advance to Stage 4 for the required fresh independent exam before any coverage re-judge or lock. No signature or certification is asserted."
   }
  ],
  "runner": "codex",
@@ -760,10 +805,18 @@
     "input_tokens": 21245637,
     "output_tokens": 37663
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794846919",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2021837,
+    "output_tokens": 17636
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready"
 }

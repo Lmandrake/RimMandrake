@@ -1,6 +1,5 @@
 {
-  "run": "rm-role-designercodex-1794831672",
-  "at": "2026-11-16T12:23:02.366614+00:00",
+  "run": "rm-role-designercodex-1794846919",
   "gate_a": "PASS",
   "scene_contracts": "PASS",
   "floor_applicability": "PASS",
@@ -8,41 +7,37 @@
   "mandatory_units": 67,
   "showcase_covered": 56,
   "coverage_rest": 11,
-  "planned_scenes": 35,
+  "leaves": 18,
+  "planned_scenes": 36,
+  "acceptance_scenes": 32,
+  "interaction_scenes": 3,
+  "exploration_scenes": 1,
+  "owner_review_scenes": 7,
   "runtime_scenes_run": 0,
-  "entry_points_missing_and_filed": 35,
+  "entry_points_missing_and_filed": 36,
   "build_items_filed": 7,
-  "final_stage_check": "PASS in BENCH and actual Dispatcher checkout: result.json would be accepted",
-  "designer_stage_selftest": "ALL PASS, including cross-clone resolution and genuine missing-source refusal",
-  "rejection_resolution": {
-    "system_item": "DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE",
-    "source_paths": [
-      "design/concepts/Cauldron/plan.md",
-      "design/concepts/Cauldron/scenes.json"
-    ],
-    "root_id": "cauldron_experience",
-    "root_ref": "design/concepts/Cauldron/root.md#north-star",
-    "leaves": [
-      "scene_observer",
-      "mineral_forest",
-      "pool_chemistry",
-      "falter_warning",
-      "ambient_protection",
-      "persistent_metal",
-      "permanent_acid",
-      "thornwood_work",
-      "rhossak_renewal",
-      "wildlife_livelihood",
-      "vent_competition",
-      "connected_gas",
-      "explosive_displacement",
-      "filter_industry",
-      "settings_control",
-      "prepared_day",
-      "cauldron_walk"
-    ],
-    "resolved_reason_count": 19,
-    "bench_errors": [],
-    "dispatcher_errors": []
-  }
+  "script_item_amended": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+  "final_stage_check": "PASS: result.json would be accepted",
+  "against_judge": "rm-coverage-judge-1794844087",
+  "claims": [
+    "g1",
+    "g2",
+    "g3",
+    "g4",
+    "g7",
+    "g8",
+    "g9",
+    "g11"
+  ],
+  "advisory_findings_preserved": [
+    "g5",
+    "g6",
+    "g10",
+    "g12",
+    "g13",
+    "g14"
+  ],
+  "manual_contract_audit": "write_runs/rm-role-designercodex-1794846919/fix_review.json",
+  "exam_status": "Old exam preserved as historical; fresh independent Stage 4 required after launcher acceptance.",
+  "limits": "No runtime, bridge, build, deploy, restart, coverage signature or owner certification."
 }

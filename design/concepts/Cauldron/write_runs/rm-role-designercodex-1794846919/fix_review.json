@@ -1,0 +1,32 @@
+{
+  "run": "rm-role-designercodex-1794846919",
+  "errors": [],
+  "blocking_claims": [
+    "g1",
+    "g11",
+    "g2",
+    "g3",
+    "g4",
+    "g7",
+    "g8",
+    "g9"
+  ],
+  "owner_review_leaves": [
+    "mineral_forest",
+    "falter_warning",
+    "ambient_protection",
+    "connected_gas",
+    "explosive_displacement",
+    "prepared_day",
+    "cauldron_walk"
+  ],
+  "leaves": 18,
+  "scenes": 36,
+  "acceptance": 32,
+  "interaction": 3,
+  "exploration": 1,
+  "root_floor_authority_and_showcase_selection": "unchanged",
+  "old_exam_matches_new_tree": false,
+  "runtime_scenes_run": 0,
+  "exam": "historical; fresh Stage 4 required"
+}

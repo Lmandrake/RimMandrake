@@ -1,0 +1,17 @@
+{
+  "run": "rm-role-designercodex-1794846919",
+  "stage": 3,
+  "outcome": "done",
+  "summary": "Fixed all eight blocking Stage-3 gaps from rm-coverage-judge-1794844087 and wrote coverage_fixes.json against that judge. Eighteen leaves, thirty-six planned scenes (35 acceptance/interaction, one independent exploration), seven explicit owner-review holds, five unchanged ordered showcases and all 67 mandatory capabilities covered. Preserved six advisory findings and existing owner rulings. Gate A, scene/floor checks and showcases pass. Existing script-work item is amended; no runtime scenes ran. Tree/sheet edits invalidate the historical exam: the launcher must advance to Stage 4 for the required fresh independent exam before any coverage re-judge or lock. No signature or certification is asserted.",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "existing forest and pool appearance",
+      "gap_falter_duration",
+      "gap_sealed_protection",
+      "gap_pool_binding",
+      "gap_gas_continuity"
+    ],
+    "scene": "On a disposable RM_TestSite_cauldron_v3 inspect the intact forest and actual pools first, then required eskith warning, exposed/roofed/crafted fully sealed workers, thornwood and normal rig study/research into tap/Filter-Works supplies. Separate connected-water gas lanes use maintained gaps and straight/diagonal barriers with ExplosiveKnockback. Planned owner-review scenes retain named keeper saves and explicit release/recovery; no live action occurs in this run."
+  }
+}

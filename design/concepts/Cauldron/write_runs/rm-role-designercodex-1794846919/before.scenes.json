@@ -1,0 +1,1274 @@
+{
+  "schema": 1,
+  "mod": "Cauldron",
+  "authored_by": "rm-role-designercodex-1794827705",
+  "status": "planned_unrun",
+  "scene_contract": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+  "recovery_policy": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+  "scenes": [
+    {
+      "id": "observer_recovery",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_observer_recovery",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "An intact disposable copy of RM_TestSite_cauldron_v3 and prior settings are durably saved before preflight; independent engine readers and a nonempty live log tap are available."
+      ],
+      "action": "Validate reads with known health, gas-cell, job, liquid and inventory mutations, then interrupt after a mutation and recover before any further scene.",
+      "expect": "Every read changes with its known state; source/list/assembly match; a recovery manifest matches the entry; log sentinel arrives and lost count is zero.",
+      "control": {
+        "case": "Withhold one required read, use an intentionally mismatched assembly fingerprint, kill a sentinel and interrupt after weather/terrain/settings mutation.",
+        "expect": "Affected observations report UNMEASURED and no functional success; interrupted state remains journaled until restored or explicitly held.",
+        "rules_out": "Expected constants, empty logs, a different running build and finally-only cleanup masquerading as proof."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "scene_observer"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "arrival_identity",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_arrival_identity",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Read the registered saved-site terrain, pools, vents, flora and fauna before any clearing. Both soil defs and current native/patch rosters resolve."
+      ],
+      "action": "Walk and frame the intact mineral forest at ordinary play zoom and selected close views with a human for scale; select both soils and living examples from the current roster. Observe standing dusk and a dry thunderstorm as the rainless sky contrast before returning to the entry weather.",
+      "expect": "A reader recognizes mineral bodies, wet dark distinguishable soils and rainless dusk with no placeholder art; terrain fertility, roster/appearance and current owned names agree.",
+      "control": {
+        "case": "Show a labelled reject image of an ordinary forest under grey fog at matched zoom; temporarily hide labels in both views.",
+        "expect": "The reader identifies the reject as failing mineral identity; labels alone cannot rescue it.",
+        "rules_out": "A prepared exhibit or renamed ordinary vegetation standing in for the natural biome."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "biome_identity",
+        "soils",
+        "flora_base",
+        "weather"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "mineral_forest"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "weather_gardens",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_weather_gardens",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Intact comparison plots and empty eligible shore/vent cells are separately recorded, with occupied/zoned cells preserved; current light requirements are read by species."
+      ],
+      "action": "Observe scatter-dusk, vapour bank, dewfall, bloom and dry thunderstorm, then dewfall ending. Trigger the production garden sampler on declared eligible cells, labelled compressed where needed. Read/capture before moving camera when testing remesh.",
+      "expect": "No rain/snow; distinct light/visibility/wind and dry lightning; dew beads outside home area remain bounded and expire without adding dose; all five installed dew-variant species swap and revert. Nettles colonise toxic shores, crystal/blood bouquet/toxic flower rings follow stable/leak/blowout, and occupied/zoned cells stay intact.",
+      "control": {
+        "case": "Weather feature arms off, roofed/home bead plots, fresh-water/nonshore plots, ineligible or occupied garden cells, and same dew-variant plants under non-dew weather.",
+        "expect": "No new beads/swaps/colonisation from disabled or ineligible mechanism; ordinary weather still changes independently. Read no unexpected damage attributable to cosmetic beads.",
+        "rules_out": "Wild regrowth, old filth, camera repaint or generic colour grading called chemistry-shaped gardens."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "weather",
+        "dew_beads",
+        "dew_saturation",
+        "shore_gardens",
+        "vent_gardens"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "mineral_forest"
+      ],
+      "observations": [
+        "Record low-light growth and survival of current roster plants against their actual loaded light requirements; do not infer a blanket zero-glow promise from an old item title.",
+        "Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence; no new planet generation is part of this plan."
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "pool_identity",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_pool_identity",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Locate the intended toxic pools near the terminator on the painted/delivered world using the registered site and location evidence. Read selected terrain, LiquidDef, fluid/body identity and components. A scratch fixture is labelled separately."
+      ],
+      "action": "Fill a container and pump from a real site pool and then a vexxiss-converted pool; follow each actual liquid to tank and works input. In a separate controlled contact lane expose ordinary material and an eligible body to the identified liquid.",
+      "expect": "Dangerous chemistry remains the same through transfer and has attributable contact consequences. Report toxic and acid routes separately; a site lacking one is a delivery gap, not permission to rename the other. water_works proves both supported processing inputs.",
+      "control": {
+        "case": "A clean named water terrain is transferred by identical jobs; a protected-material contact lane receives the same dangerous liquid.",
+        "expect": "Clean transfer remains fresh; protected-item contrast follows actual immunity; the dangerous input is never certified using a clean-output fixture.",
+        "rules_out": "Terrain colour, compatibility apparel damage or hand-filled tanks standing in for actual pool binding."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "acid_pool_binding"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "pool_chemistry"
+      ],
+      "implementation_items": [
+        "CAULDRON_SITE_POOL_IDENTITY_THROUGH_USE"
+      ]
+    },
+    {
+      "id": "falter_hour",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_falter_hour",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Default-duration pre-bloom weather and actual vent output asserted; an eligible idle wild native, preferably eskith, and asleep/fighting/owned comparison animals are identified. Worker route to roof is clear."
+      ],
+      "action": "Allow the normal bloom transition, record cue-onset tick, vent output, hush jobs, full bloom onset and first dose separately. Send worker to roof after the cue; repeat with mid-falter reload.",
+      "expect": "Visible falter and eligible native stillness precede full bloom by about 2500 ticks with recorded scheduling resolution, and worker reaches shelter. Hush state/count survives reload. Full default recovery timing is distinct from compressed vent fixtures.",
+      "control": {
+        "case": "Use an ordinary non-bloom transition, hush off and message off in separate restored arms.",
+        "expect": "No bloom-specific hush on ordinary transition or hush-off; message-off removes only message and keeps physical tell. A 4000-tick blend alone does not meet the ruled hour.",
+        "rules_out": "A boolean or late scheduled dose substitutes for a measured usable warning."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "vent_sites",
+        "vent_cycle_falter",
+        "eskith"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "falter_warning"
+      ],
+      "implementation_items": [
+        "CAULDRON_FALTER_MATCH_RULED_HOUR"
+      ]
+    },
+    {
+      "id": "ambient_routes",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_ambient_routes",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Healthy matched ordinary bodies with actual worn stats: exposed, roofed, full suit/helmet, suit-only and helmet-only, plus native/non-native pairs. All relevant exposure timers are due and read, no health immunity harness."
+      ],
+      "action": "Run actual bloom and ambient acid independently; compare body dose/injury and item HP, then near/far active versus recovering, capped and uncapped vent arms and old-map/no-vent fallback.",
+      "expect": "Roof and full functioning seal prevent new ambient injury/load; exposed bodies show positive source-attributed effects. Partial gear has measured partial effects; native guards hold. Local gradient/background/cap reads agree with named source behavior and no vanilla ToxicBuildup double tax appears.",
+      "control": {
+        "case": "Independently disable bloom exposure, acid air and local-dose scaling; retain an exposed positive control for each enabled route.",
+        "expect": "Disabled route adds no new effect; unrelated effects remain readable. An untriggered timer or item-only survival is UNMEASURED for wearer protection.",
+        "rules_out": "No exposure opportunity, different resistance stats or acid-proof item HP mistaken for bodily protection."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "bloom_load",
+        "local_exposure",
+        "acid_air",
+        "vexxith_gear"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "ambient_protection"
+      ],
+      "implementation_items": [
+        "CAULDRON_FULL_SEAL_AMBIENT_PROTECTION"
+      ]
+    },
+    {
+      "id": "material_routes",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_material_routes",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Ordinary and vexxith walls/door, canonical acid liquids, bottle/bucket/barrel, canal gates and vulnerable ship-substructure buildings have recorded stuff/HP/contents. Ship fixture lies in the documented opt-in biome."
+      ],
+      "action": "Apply actual AcidBurn and present guarded BloomAcid sources to matched Things; fill/use dedicated containers and canal gates. Observe ambient ship damage with and without one hull liner, plus vexxith control through equal samples.",
+      "expect": "Vexxith material and dedicated items retain identity and HP under acid while ordinary controls damage. Material retains general strength, heat armour and zero flammability. Ship damage approaches its 30 percent floor with warning once; a liner or vexxith stops sampled damage without claiming wearer sealing.",
+      "control": {
+        "case": "Immunity off, ordinary steel items/gates and unlined ship under the same source; place a separate liner-inactive fixture.",
+        "expect": "Ordinary and immunity-off material loses HP; valid liner halts its specified sampled damage; startup door-off hides menu entry without deleting existing door.",
+        "rules_out": "Invulnerability applied to the scene or an irrelevant ship tile passes material and hull protection."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "vexxith_material",
+        "vexxith_door",
+        "containers_gates",
+        "acid_hull"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "ambient_protection"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "metal_purge",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_metal_purge",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "At least one actual bloom-exposed ordinary worker and independent low-severity trace on a compatible prior save are recorded; ordinary and advanced medical supplies separately counted."
+      ],
+      "action": "Remove exposure, shelter and tend normally, leave the Cauldron, advance a bounded recovery window and reload. Attempt ordinary care, missing-advanced-ingredient, interrupted/failed and completed advanced purge through normal medical bills.",
+      "expect": "Positive load survives time/care/departure/reload including saved low trace. Completed advanced medical treatment consumes its recorded ingredients and purges load; interrupted/failed behavior follows documented vanilla operation semantics. Treatment tuning is explicitly recorded before execution.",
+      "control": {
+        "case": "Matched no-advanced-medicine/ordinary-care subject and noncompleted treatment, plus unexposed healthy worker.",
+        "expect": "Ordinary time/care cannot purge; unavailable bill cannot complete; healthy control does not gain load from staging.",
+        "rules_out": "Reduced natural decay, debug removal, visible-only treatment or off-map hediff reset called lasting poisoning."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "lasting_metal_poisoning"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "persistent_metal"
+      ],
+      "implementation_items": [
+        "CAULDRON_METAL_PERSIST_MEDICAL_PURGE"
+      ]
+    },
+    {
+      "id": "acid_injuries",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_acid_injuries",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Matched nonimmune workers have baseline body parts, capacities and disfigurement; protected control receives the same actual acid opportunity. Damage tracing is active."
+      ],
+      "action": "Through actual ambient/contact acid obtain independent disfigurement and sensory-organ cases, record injuries and parts, then ordinary healing and reload; use a declared finite batch/controlled source opportunity rather than adding a scar by debug.",
+      "expect": "Acid-caused lasting disfigurement and enduring sensory capacity loss remain after ordinary recovery and reload, with source attribution and real Health UI; report probabilities/severity as candidate tuning, and absence of a qualifying wound in a finite run as unmeasured for possibility.",
+      "control": {
+        "case": "Protected acid exposure and a matched ordinarily healable nonacid injury through the same recovery window.",
+        "expect": "Protected arm avoids its protected route; ordinary wound recovers while established acid consequence remains; no pre-existing scar is counted.",
+        "rules_out": "Cosmetic labels, temporary pain or harness-added permanent injuries certify the bodily consequence."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "permanent_acid_injuries"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "permanent_acid"
+      ],
+      "implementation_items": [
+        "CAULDRON_ACID_ENDURING_PART_INJURIES"
+      ]
+    },
+    {
+      "id": "thornwood_harvest",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_thornwood_harvest",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Identify RM_TwistingThornwood at unripe, eligible younger and full growth with assay/fleck grades; wood and steel baseline zero in bounded output area; ordinary worker/job and work speed recorded."
+      ],
+      "action": "Order ordinary harvest, measure work and successful completion, collect wood and steel, then compare eligible growth and factor arms. Toggle assay/flecks and observe on/off/remesh without moving camera to force refresh.",
+      "expect": "Completed slow work yields both resources with growth-scaled metal; inspect estimate and light/heavy flecks agree with actual tuning and update on settings change; no reward before completion.",
+      "control": {
+        "case": "Interrupted/failed harvest, unripe tree and metal yield off; restored factor 1 versus 2 comparison.",
+        "expect": "No extra metal from failed/interrupted/unripe arms; off pays ordinary wood only; factor changes actual output and advertised estimate consistently.",
+        "rules_out": "Old piles or harness destruction masquerading as successful harvest and scale."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "forestry",
+        "assay",
+        "assay_flecks"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "thornwood_work"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "trunk_coat_check",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_trunk_coat_check",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "The existing separate CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS dependency is identified; young, mature and old thornwood share a matched assay grade."
+      ],
+      "action": "Compare age/growth coat tiers and toggle coat independently of assay; compare fleck grades at the same age. Cross the old-age threshold without a camera remesh.",
+      "expect": "The specified additive scab/crystal-fan coat follows age and remains registered on the existing trunk; assay flecks separately follow metal. Base art stays the kept tree. If implementation remains absent report UNBUILT, not an inferred fleck pass.",
+      "control": {
+        "case": "Equal age with different assay, and coat off with assay on.",
+        "expect": "Age coat does not follow assay and disabling it preserves assay flecks/base art.",
+        "rules_out": "Installed assay overlays are misreported as the absent age-based design."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "trunk_deposit_coat"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "mineral_forest",
+        "thornwood_work"
+      ],
+      "implementation_items": [
+        "CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS"
+      ]
+    },
+    {
+      "id": "rhossak_cycle",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_rhossak_cycle",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Bind candidates, no-tree lane, sleeping seed-bearer and galled subject have recorded producer ids; closed pens contain zero pre-existing candidate plants/galls and actual sleep/location is asserted."
+      ],
+      "action": "Observe bind and wild idle return; remove bound tree and observe rebind/no-tree. Follow an actual sleeping animal seeding, then one/two/three awake seed-bearing kin; test sleep holding and separation resetting progress with reload. Collect and eat a gall from its galled producer.",
+      "expect": "Binding/return/rebinding and attributable seeding/rooting occur under their correct conditions; sleep holds progress, separation resets, new thornwood binds trio with cooldown/message; galled animal sheds edible gall and no seeds.",
+      "control": {
+        "case": "Two seed-bearers, awake nonseeding subject, seedless galled trio and feature-off arms in equivalent empty plots.",
+        "expect": "No trio-rooting from two or galled group; no sleeping-seed mechanism in awake/off lane; gall ingestion raises nutrition with its actual thoughts/effects.",
+        "rules_out": "Ambient regrowth, lowered Rest without sleep or map-wide output counts certify renewal."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "rhossak_bind",
+        "rhossak_sprout",
+        "rhossak_grove",
+        "galled_food"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "rhossak_renewal"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "flora_uses",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_flora_uses",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Current six expansion species and Xithess plus named harvested items resolve on recorded eligible/ineligible soils; hazard effects, worker health and stocks start known."
+      ],
+      "action": "Harvest and eat toxic tsevrix pulp; cook it by its stove recipe and eat roast. Traverse fexxil and harvest shards, cut and damage kissaveth externally, harvest sessarix fuel and selvix medicine, inspect fragile ixalith beauty/no yield, and harvest Xithess chemfuel.",
+      "expect": "Raw pulp adds its real toxin/thought and cooked food gives safe nutrition; fexxil scratch/toxic contact/path cost and shards are attributed; kissaveth releases gas on both cut and violence; fuel/medicine/chemfuel come from completed work; ixalith supplies beauty without invented harvest loot.",
+      "control": {
+        "case": "Matched cooked/raw ingestion and clean path, venom startup off, kissaveth undamaged/uncut, sessarix blacklisted soil versus valid poor soil with declared fertility bypass, feature off and failed harvest.",
+        "expect": "No raw-pulp toxicity from roast; no contact hediff on clean path/venom off; no gas without trigger; no sessarix placement/survival on blacklisted soil and no output before successful work.",
+        "rules_out": "Def-only products, nearby toxin or spawned loot stand in for usable plants."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "tsevrix_food",
+        "ixalith_beauty",
+        "fexxil_hazard",
+        "sessarix_fuel",
+        "kissaveth_gas",
+        "selvix_medicine"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "wildlife_livelihood"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "animal_products",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_animal_products",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Current owned species, body needs and tier guards resolve; producer-specific inventories, food and bystanders recorded; default time constants preserved before compressed fixtures."
+      ],
+      "action": "Perform zisska butchery and actual meat ingestion, and guarded fire-spit use; observe bedbug paralysis bite/eggs/hatch; crystalmit chunk eating/block product; garsulix jelly/reproduction/death explosion; ossrith milk/crystals and ordinary refinery uranium recipe; sikka eggs/hatch and silk shearing. Compare ordinary animal needs and selected facings with human scale.",
+      "expect": "Each named action creates its own attributed health effect, consumed input or product/hatch identity; zisska meat has the actual toxic/valued role and trace steel; guarded functions occur only with their loaded provider; creatures retain ordinary lifecycle rather than generic product dispensers.",
+      "control": {
+        "case": "Independent no-chunk/no-bill/not-ready/noncompleted-work arms, nonbiting matched subject, nonlethal versus actual death triggers, VEF-absent wiring check and ordinary uninvolved bystanders.",
+        "expect": "No product or ability is counted from an absent provider or incomplete mechanism; paralysis/hatches/explosion require their actual cause; eggs and product starting counts cannot supply output.",
+        "rules_out": "A roster spawn census certifies all animal ecology, products and danger."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "zisska",
+        "bedbug",
+        "crystalmit",
+        "garsulix",
+        "ossrith",
+        "sikka"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "wildlife_livelihood"
+      ],
+      "observations": [
+        "For all aerial species use tracker/race state only during unattended checkout. Visible aerial motion is reserved for his presence. Record each guarded product/ability and provider context independently."
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "suush_burst",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_suush_burst",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Separated healthy batches of suush with baseline food needs, tameness and no tools; isolated bystanders/gas cells start clear. No unattended motion test is included."
+      ],
+      "action": "Observe atmospheric no-food-need behavior and ordinary taming, then matched melee, Bullet and Bomb damage arms and actual death backstop; trace wick, blast and toxin.",
+      "expect": "Docile tameable atmospheric feeder requires no feed; Bullet/Bomb wick and death backstop produce an actual attributed toxic blast with damage/gas footprint; melee does not start wick. State-only suush flight check lives in supported_integrations.",
+      "control": {
+        "case": "Melee survivors, nonlethal undamaged suush and an isolated empty lane with equal time passage.",
+        "expect": "No wick/blast on melee or empty lane; mere death/absence without explosion-specific trace cannot pass.",
+        "rules_out": "A dead or despawned pawn called a toxic detonation."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "suush_ecology",
+        "suush_burst"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "wildlife_livelihood"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "vexxiss_products",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_vexxiss_products",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Matched tame and wild healthy vexxiss with shear progress and resource counts recorded, no explosive comp; settings/default fullness interval recorded."
+      ],
+      "action": "Use ordinary tame shear work at eligible fullness, read vexxith output and animal survival; compare wild and not-ready subjects, inspect native art/variant and ordinary feeding/handling.",
+      "expect": "Tame completed shear produces identified vexxith, living animal remains renewable; wild shear is unavailable; solid giant remains nonexplosive. A compressed fullness fixture states the inference and restores the default interval.",
+      "control": {
+        "case": "Wild, unready and interrupted shear subjects, plus attempted explosive-trigger damage in an isolated nonlethal comparison.",
+        "expect": "No wild/incomplete yield and no suush-like detonation; existing output cannot satisfy a new shear.",
+        "rules_out": "Killing or debug-giving wool passes the renewable protective material route."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "vexxiss_shear"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "vent_competition"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "vent_competition",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_vent_competition",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "An active vent with known output/bank/suppression and natural recovery state; wild and tame animals separated; ordinary scaffold and lined tap have matched HP."
+      ],
+      "action": "Let wild vexxiss choose, walk to and drink; observe output suppression, silence and recovery. Compare pry damage on ordinary versus lined tap, then drinking off mid-walk and mid-drink, prying off while drinking remains. Observe an already-issued fire retaliation melee job separately.",
+      "expect": "Actual drinking changes vent state and supply; ordinary scaffold loses HP, lined does not; prying toggle retains drinking. Drink-off aborts its walk and drink without new suppression; report melee toggle behavior independently of old walk evidence. Default recovery and repeated reused-vent trials are explicitly measured.",
+      "control": {
+        "case": "Tame/nonseeking subject, drinking off, prying off, no vent and lined counterpart with identical timing and reachable geometry.",
+        "expect": "No wild drink mechanism in off/no-vent lane; no scaffold pry damage when off or lined; suppression does not rise from an unexecuted job.",
+        "rules_out": "Job uptake, stale reused vent state or walk-only abort receipt certifies drinking, recovery and melee cancellation."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "vent_drinking",
+        "tap_prying"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "vent_competition"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "water_fire_tracks",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_water_fire_tracks",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Fresh named water terrains and unmodified cells, separate fresh vexxiss per warning arm, real standing fire with recorded igniter/faction, and clean track grid/expiry ledger."
+      ],
+      "action": "Let vexxiss wade and convert water; repeat within/outside cooldown and notification toggle arms. Allow real fire beating to completion and hostile/same-faction igniter response. Walk a known route then hover maker prints and follow expiry/save reload.",
+      "expect": "Converted terrain and filled liquid are toxic; letter fires once per documented cooldown. Fire actually shrinks/is extinguished, reachable original hostile igniter receives bounded retaliation, same faction spared. Tracks identify maker and expire with saved metadata.",
+      "control": {
+        "case": "Poison off, letter off with poison on, repeated same-animal cooldown, warden/retaliation off and same-faction igniter, stationary animal/prints off.",
+        "expect": "No poison when off, no extra notification within cooldown; no warden/hostile job from disabled cause or same-faction source; no new prints from stationary/off subject.",
+        "rules_out": "A letter without conversion, queued fire job, inferred igniter or stale unrelated tracks passes behavior."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "water_poisoning",
+        "fire_warden",
+        "vexxiss_tracks"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "vent_competition"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "gas_transport",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_gas_transport",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "A real vent and disjoint wind/drift plots with bounded density; other vanilla/third-party gases seeded with recorded values; straight wall and sealed diagonal-corner fixtures read back."
+      ],
+      "action": "Observe real emission, passability diffusion, decay, cloud rendering and wind-driven centroid under fixed daily heading; save/reload gas and compare mass/heading; test boundary corners.",
+      "expect": "Separate persistent gas grid emits/transports/dissipates without altering other gases; map-seeded heading holds within day and changes at the documented boundary; stronger wind affects drift with actual centroid displacement and contained edges.",
+      "control": {
+        "case": "Emission/drift off, zero wind, maintained sealed straight/diagonal barriers and unrelated gas readbacks.",
+        "expect": "No drift contribution when off/calm, no transport through sealed barrier; other-gas storage remains as its own controlled evolution predicts.",
+        "rules_out": "Kernel heading alone, visual overlay alone or cleared vanilla gas storage passes live transport."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "gas_grid",
+        "gas_drift"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "connected_gas"
+      ],
+      "implementation_items": [
+        "CAULDRON_GAS_RELOAD_AND_SEALED_BOUNDARIES"
+      ]
+    },
+    {
+      "id": "gas_chain",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_gas_chain",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Independent thick connected lanes over bare ground and water, maintained empty-gas break, sealed straight wall and diagonal wall corner; no secondary ignition source; unique original spark/instigator."
+      ],
+      "action": "Ignite only the first connected cell, track propagation/consumption/smoke, repeat on water; save during an active front before unburned downstream cells and reload. Repeat the combined candidate lanes at least three times, naming trial outcomes against the historical intermittent chain failure.",
+      "expect": "Fire reaches downstream connected cells over water after first ground fire expires, retains instigator and active-front continuity through reload, emits configured toxic smoke and stops at maintained gap/straight/diagonal barrier.",
+      "control": {
+        "case": "Ignition off, smoke off in a previously clean separate lane, maintained empty gap and both sealed barrier forms with same single spark.",
+        "expect": "No chain when ignition off; smoke-off adds no toxic smoke from vent combustion; no downstream burn beyond barriers/gap. Refilled gaps or seeded downstream fires invalidate a trial.",
+        "rules_out": "Multiple spark injection, pre-existing smoke or remaining unlit saved gas conceals stopped propagation."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "gas_ignition"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "connected_gas"
+      ],
+      "implementation_items": [
+        "CAULDRON_GAS_RELOAD_AND_SEALED_BOUNDARIES"
+      ]
+    },
+    {
+      "id": "gas_displacement",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_gas_displacement",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "ExplosiveKnockback loaded with Cauldron registration, real thick gas clump, identified eligible goods at near/distant cells and barrier arms, all positions/counts recorded."
+      ],
+      "action": "Ignite clump once and observe attributed bursts, stable Thing identities and displacement sequence; include eligible pawn arm according to shared policy with health/position readback.",
+      "expect": "Actual combustion bursts dramatically throw nearby eligible goods; original instigator survives attribution and shared eligibility/obstruction rules explain eligible-pawn outcomes.",
+      "control": {
+        "case": "Same gas ignition and goods with knockback off, plus far/blocked goods.",
+        "expect": "Gas still burns but knockback-off lacks thrown goods; far/blocked controls follow actual shared policy. Destroyed/resurrected items never count as moved.",
+        "rules_out": "Manually rearranged goods, blast graphics or vanished items certify explosive knockback."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "gas_knockback"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "explosive_displacement"
+      ],
+      "implementation_items": [
+        "CAULDRON_GAS_RELOAD_AND_SEALED_BOUNDARIES"
+      ]
+    },
+    {
+      "id": "rig_study",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_rig_study",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "A natural corroded rig in the intact site has once-only dressed tanks/toxic contents, broken pipes/slag and clear reachable interaction ring; analysis/research starts incomplete with normal prerequisites."
+      ],
+      "action": "Order ordinary in-place study, complete analysis and then normal research, construct the unlocked works by ordinary materials/work. Revisit/reload rig and optional shrine site without rerunning dressing.",
+      "expect": "Actual study unlocks Filter-Works research; completed normal research enables construction; once-only ruin dressing does not duplicate supplies or block study after reload.",
+      "control": {
+        "case": "Unstudied rig and incomplete prerequisite/research before construction.",
+        "expect": "Research/build stays correctly locked before discovery/prerequisites; debug completion cannot certify the route.",
+        "rules_out": "A prebuilt works or forced research skips the discovery promise."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "ruin_site",
+        "study_research"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "filter_industry"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "tap_refine",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_tap_refine",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Active vent/tap and touching known-capacity tank, power network and works actually ready, cartridge and all bank/fluid/product amounts measured; configured condensate identity asserted."
+      ],
+      "action": "Build tap on vent, collect real banked condensate into touching tank, feed works and place/haul reagent produced by a complete process. Pause/resume at full or non-touching receiver, bank cap and power/cartridge absence.",
+      "expect": "Tap caps emission and transfers whole bank units of 200 L; fractional and capped bank values remain accounted. Actual input condensate becomes identified usable reagent without duplicate or lost litres/items; pause/resume conserves stock.",
+      "control": {
+        "case": "No vent, non-touching or full receiver, banking off, no power and no cartridge in separately reset arms.",
+        "expect": "No unavailable transfer/process and no invisible stock deletion; blocked arm retains bank/input until actual transfer; unrelated component gas is separately read.",
+        "rules_out": "Manually filled tank, integer truncation or old products certify the tap-to-reagent chain."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "gas_tap",
+        "filter_works"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "filter_industry"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "water_works",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_water_works",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Both genuine toxic-water and acid-water inputs from identified terrain/liquid routes are separately staged, fresh output tank empty, power/cartridge live, ordinary works and bounded inventories read."
+      ],
+      "action": "Process each input independently, collect output through normal FlowWorks storage/transfer and use fresh product; reconcile input, output, byproducts and cartridges. Test blockage then restore/resume.",
+      "expect": "Both dangerous inputs produce actual fresh usable water at candidate rates/ratios; receiver identity and volumes agree; blocked/missing-supply arms preserve stock until resumed.",
+      "control": {
+        "case": "Wrong/clean input control, no power, no cartridge and full/blocked output with repeated work opportunities.",
+        "expect": "No conversion credit from prefilled fresh water or wrong input; disabled process does not consume input; resumed output is attributable.",
+        "rules_out": "XML recipes, fresh source input or vanished toxic litres masquerade as detox."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "filter_industry"
+      ],
+      "implementation_items": [
+        "CAULDRON_SITE_POOL_IDENTITY_THROUGH_USE"
+      ]
+    },
+    {
+      "id": "lined_stock",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_lined_stock",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Matched ordinary/lined vessel and tap recipes/costs, real material construction, same completed workload and cartridge counters; same acid source and pry opportunity."
+      ],
+      "action": "Craft/build lined machines normally, run equal completed work, apply the same acid and wild pry opportunity, then saturate output and resume.",
+      "expect": "Lined vessel uses quarter ordinary cartridge per equal completed work, retains rates/processes and acid immunity; lined tap resists acid/prying while still collecting; no output or fuel accounting loss under saturation.",
+      "control": {
+        "case": "Ordinary counterpart with equal input/output work and separate acid/pry exposure; protection off where controlled.",
+        "expect": "Ordinary uses full cartridge rate and suffers relevant damage; unequal work does not certify a quarter-rate ratio.",
+        "rules_out": "Displayed fuelPerDay or idle unequal machines pass actual savings and protection."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "lined_machines"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "filter_industry",
+        "ambient_protection"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "settings_effects",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_settings_effects",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Every current RM_CauldronSettings field has a recorded scope, default, timing label and behavior case; current nondefault settings backup and ongoing relevant jobs/stock/health manifest saved."
+      ],
+      "action": "Use the actual settings UI search/scroll/collapse/reset. Run every toggle/factor on its named behavior at live/startup/map-creation boundary, then all-off/save/reload/re-enable; exercise failed Harmony installation notice through declared offline fault fixture.",
+      "expect": "Controls persist, effects occur at stated boundary, full UI usable; existing objects/health/stock survive availability changes. All-off stops new optional effects and re-enable resumes; natural medical persistence remains until treatment.",
+      "control": {
+        "case": "Nonexistent field read, each feature-off paired with its positive action, startup switch applied without a startup boundary and unchanged marker settings.",
+        "expect": "Unknown field fails loudly; startup arm cannot claim immediate availability change; no silent reset of entry values or existing stock; no natural purge from all-off.",
+        "rules_out": "Roundtrip-only settings checks or mass deletion produce a false all-off success."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "settings"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "settings_control"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "routine_day",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_routine_day",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Forty ordinary fed colonists with real jobs, supplied shelter/gear/food/water/research and actual default Cauldron systems; no harness invulnerability/need bypass; preperiod stock/health and job ledger."
+      ],
+      "action": "Run bounded normal duty phases: forestry/haul/food, warned bloom shelter or sealed work, tap/works production and exposed expedition, with independent wild competition lane. Observe shortages/queues and actual completed duties.",
+      "expect": "Prepared routine work completes with fresh water/reagent and accounted stocks without new ambient harm; exposed expedition and competition retain attributable hazards. Observe actual hot-path costs and ongoing worker availability; thresholds only inherited calibrated/advisory floor.",
+      "control": {
+        "case": "Equivalent worker lacking roof/full gear, disabled power supply and wild competition at ordinary versus lined tap.",
+        "expect": "Unprepared exposure and supply interruptions visibly affect their own jobs/health/output; a hazard-disabled or immortal colony cannot pass prepared-day.",
+        "rules_out": "One output item or need-free actors certify dependable settlement."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "prepared_day"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "resume_walk",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_resume_walk",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Mid-warning save with tap bank, partly processed liquid, completed study flags, injured worker and bound grove recorded; no substitute newly created map."
+      ],
+      "action": "Reload save, repeat ordinary thornwood harvest and tap/works conversion, then execute a second order of main actions: protection/water before forestry versus forestry before industry. Revisit grove and persistent-health patient and complete purge after persistence read. Run separate gas_chain for mid-flame reload.",
+      "expect": "Named state survives reload, repeated and reordered jobs complete with exact new deltas, no duplicate supplies or discovery and no missing binding/health; source and scene metadata remain matched.",
+      "control": {
+        "case": "Compare uninterrupted arm on the same entry checkpoint and repeated no-input/noncompleted-work arm.",
+        "expect": "No duplicated output on reload/retry or credit for pre-existing products; order-only changes do not erase saved state.",
+        "rules_out": "Reloading a fresh fixture or static completed-only site passes persistent active work."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "cauldron_walk"
+      ],
+      "implementation_items": [
+        "CAULDRON_METAL_PERSIST_MEDICAL_PURGE"
+      ]
+    },
+    {
+      "id": "supported_integrations",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_supported_integrations",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Canonical supported composed load set and optional provider contexts separately fingerprinted; current shared and campaign species table comes from resolved biome/Utinni patch, no historical martyr tree."
+      ],
+      "action": "Read suush race/flight tracker state only; ordinary grounded lifecycle and scale/facing checks for owned shared visceral, decay drake, bileworm and mullgoth; in the supported campaign context use Neebray, Mynock, GraniteSlug, VentStalker, Lylek, Skalder and Silooth in their normal native role. Observe Utinni Oomo shrine natural meditation use and local lore at ruin slot.",
+      "expect": "Provider and ownership guards resolve the actual current cast and behaviors; suush state supports its declared capability without unattended motion review. Shrine sits in the proper guarded slot and actually serves meditation. Campaign toxic-prized-meat layers stay external.",
+      "control": {
+        "case": "Minimal dependency-complete list without optional providers, absent Utinni shrine slot, and a nonmeditation ordinary object.",
+        "expect": "Guarded content is absent only when its provider is absent; no unresolved reference or invented local reimplementation; ordinary object does not certify shrine use.",
+        "rules_out": "Spawn-only roster, def-only meditation or full-list content claims from a missing-provider tier."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "suush_flight",
+        "shared_cast",
+        "campaign_cast",
+        "oomo_shrine"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "wildlife_livelihood",
+        "mineral_forest"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "optional_services",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_optional_services",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "AcousticScanner, ExplosiveGrowth and Scarlands aerosol-screen contexts independently loaded with their actual owning engine, baseline measurements and fixed delivered Cauldron tile."
+      ],
+      "action": "Use actual scanner on vents/listening fauna/resin/hidden cavities; invoke shared growth classification on the fixed tile and observe its growth effect; operate Scarlands aerosol screen using Cauldron polluted classification.",
+      "expect": "Actual scanner gives banded payloads with cause; shared engine supplies stalled terminator growth rather than a local duplicate; aerosol screen consumer sees Cauldron classification and changes its own response.",
+      "control": {
+        "case": "Matched scanner target lacking payload, non-stalled existing tile and nonpolluted biome classification with same owner engine.",
+        "expect": "No targeted payload/stalled effect/pollution response from absent classification; source registration alone cannot count as consumer behavior.",
+        "rules_out": "A patch node is counted as an effective optional integration."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "scanner_payload",
+        "growth_stalled",
+        "aerosol_neighbour"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "mineral_forest",
+        "settings_control"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "legacy_floor",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_legacy_floor",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Canonical package/assembly composition and existing fixed-world Cauldron tile recorded. Prior-save/settings formats available. No world creation or placement expansion is authorized."
+      ],
+      "action": "Offline read current metadata, names, package composition and required services. Call the existing tile-score/rarity logic on recorded tile values as an isolated legacy check, then verify the delivered existing tile remains usable. Document removal consequences and prior-save defaults.",
+      "expect": "Own worker/rarity persistence and source wiring remain accounted without promising new world placement. Current required Harmony, FlowWorks, EnvironmentalHazards and CreatureBehaviors resolve through the canonical composition; old cut roster receives no scene. Removal consequences are explicit.",
+      "control": {
+        "case": "Nonexistent def/package, rarity zero and unsupported tile-score inputs; known old defaults omitted from prior save.",
+        "expect": "Invalid refs fail loudly, zero rarity suppresses only the isolated legacy score, omitted old fields receive documented defaults; no new planet is generated.",
+        "rules_out": "Legacy world placement expands the concept past the standing floor, or old no-dependencies text supplies a false supported list."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "placement_legacy"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "settings_control"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "floor_checkout",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_floor_checkout",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Canonical minimal dependency-complete list and current full supported list declared, all DLC assumed; real prior save available; floor.json line-to-evidence matrix covers every inherited line."
+      ],
+      "action": "Check real load/save compatibility, supported-list effects, live log tap/sentinel, names/text/settings, order uptake, oversized art click, scale/facings/state transitions and hot-path timing. Measure memory/save growth using bounded compressed/decomposed cycles and label inferred horizon.",
+      "expect": "Every applicable floor line has its stated evidence mode, actual response/read or visual assessment; no errors hidden behind log cap; default compatibility documents removal without executing it; numeric uncalibrated values reported advisory.",
+      "control": {
+        "case": "Known log sentinel/read failure, changed-state versus unchanged-state view, click on oversized visible art outside its cell and no-order control; compare same-list noise when attributing logs/cost.",
+        "expect": "Blind log or missing metric is UNMEASURED, unchanged state cannot pass motion and unqueued work cannot pass uptake. No unsupported multiplayer/extra DLC gating or world creation is introduced.",
+        "rules_out": "Source-only compliance, unmeasured performance or screenshots of motion substitute for inherited floor proof."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "settings_control",
+        "mineral_forest"
+      ],
+      "implementation_items": []
+    },
+    {
+      "id": "gas_warden_interaction",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_gas_warden_interaction",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Independent own acceptance scenes have run; vent cloud connected over water to nearby fire-response animal, real original hostile/same-faction spark and identified goods."
+      ],
+      "action": "Ignite one clump, follow over-water front, displaced goods and vexxiss completed response to the original igniter.",
+      "expect": "Transport, source attribution, knockback and bounded faction-aware response remain coherent together.",
+      "control": {
+        "case": "Same-faction spark and disconnected cloud with all other actors unchanged.",
+        "expect": "Same faction is spared and cloud gap halts propagation even though local source fire and knockback may still occur.",
+        "rules_out": "Last fire cell replaces original instigator or explosion clears a barrier unnoticed."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "features": [
+        "connected_gas",
+        "explosive_displacement",
+        "vent_competition"
+      ],
+      "implementation_items": [
+        "CAULDRON_GAS_RELOAD_AND_SEALED_BOUNDARIES"
+      ]
+    },
+    {
+      "id": "protected_production_interaction",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_protected_production_interaction",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Individual acceptance cases complete; ordinary workers have source-backed seals/roofs and ongoing forestry/processing with actual due exposure."
+      ],
+      "action": "Respond to falter while retaining normal work and supply jobs, process output and haul it through the bloom; include a separate wild competitor.",
+      "expect": "Worker protection and useful conserved production hold together at normal duty scale with observable management cost.",
+      "control": {
+        "case": "A route loses roof/gear and a separate machine loses power/output space.",
+        "expect": "Only unprepared body gains ambient effects; blocked process pauses with stock held, rather than an invisible global protection or output cheat.",
+        "rules_out": "Separated safe actors conceal broken worker/production interaction."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "features": [
+        "ambient_protection",
+        "thornwood_work",
+        "filter_industry",
+        "prepared_day"
+      ],
+      "implementation_items": [
+        "CAULDRON_FULL_SEAL_AMBIENT_PROTECTION"
+      ]
+    },
+    {
+      "id": "lasting_health_work_interaction",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_lasting_health_work_interaction",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Causally injured workers have individually proven persistent metal and acid consequences; ordinary healthy matched worker and medical supplies known."
+      ],
+      "action": "Resume normal duty, depart/reload and return, then perform advanced metal purge and compare enduring acid consequences.",
+      "expect": "Work capacity and health reflect actual lasting injuries; purge removes metal without silently curing independent permanent acid injury.",
+      "control": {
+        "case": "Healthy worker with identical duties and metal patient without completed purge.",
+        "expect": "Healthy worker lacks attributable impairment and untreated metal persists; ordinary care cannot reset both injuries.",
+        "rules_out": "One generic toxic meter or scene reset hides two independent lasting health outcomes."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "features": [
+        "persistent_metal",
+        "permanent_acid",
+        "prepared_day"
+      ],
+      "implementation_items": [
+        "CAULDRON_METAL_PERSIST_MEDICAL_PURGE",
+        "CAULDRON_ACID_ENDURING_PART_INJURIES"
+      ]
+    }
+  ],
+  "showcases": [
+    {
+      "id": "prepared_livelihood",
+      "scenes": [
+        "arrival_identity",
+        "pool_identity",
+        "falter_hour",
+        "ambient_routes",
+        "thornwood_harvest",
+        "rig_study",
+        "tap_refine",
+        "water_works",
+        "protected_production_interaction"
+      ],
+      "exercises": [
+        "biome_identity",
+        "soils",
+        "flora_base",
+        "acid_pool_binding",
+        "vent_sites",
+        "vent_cycle_falter",
+        "eskith",
+        "bloom_load",
+        "local_exposure",
+        "acid_air",
+        "vexxith_gear",
+        "forestry",
+        "assay",
+        "assay_flecks",
+        "ruin_site",
+        "study_research",
+        "gas_tap",
+        "filter_works",
+        "weather"
+      ],
+      "source": [
+        "CONDUCTOR:1794817206876916259"
+      ],
+      "decision": "d_flagship_prepared_livelihood"
+    },
+    {
+      "id": "mineral_ecology",
+      "scenes": [
+        "rhossak_cycle",
+        "animal_products",
+        "suush_burst"
+      ],
+      "exercises": [
+        "rhossak_bind",
+        "rhossak_sprout",
+        "rhossak_grove",
+        "galled_food",
+        "zisska",
+        "bedbug",
+        "crystalmit",
+        "garsulix",
+        "ossrith",
+        "sikka",
+        "suush_ecology",
+        "suush_burst"
+      ]
+    },
+    {
+      "id": "vexxith_frontier",
+      "scenes": [
+        "vexxiss_products",
+        "vent_competition",
+        "water_fire_tracks",
+        "material_routes",
+        "lined_stock"
+      ],
+      "exercises": [
+        "vexxiss_shear",
+        "vent_drinking",
+        "tap_prying",
+        "water_poisoning",
+        "fire_warden",
+        "vexxiss_tracks",
+        "vexxith_material",
+        "vexxith_door",
+        "containers_gates",
+        "acid_hull",
+        "lined_machines",
+        "vent_sites",
+        "gas_tap"
+      ],
+      "overlap_why": {
+        "vent_sites": "A live drinkable vent is the object contested by the wild animal.",
+        "gas_tap": "The existing ordinary tap is needed to expose competition and compare the lined route."
+      }
+    },
+    {
+      "id": "chemical_gardens",
+      "scenes": [
+        "weather_gardens",
+        "flora_uses"
+      ],
+      "exercises": [
+        "weather",
+        "dew_beads",
+        "dew_saturation",
+        "shore_gardens",
+        "vent_gardens",
+        "tsevrix_food",
+        "ixalith_beauty",
+        "fexxil_hazard",
+        "sessarix_fuel",
+        "kissaveth_gas",
+        "selvix_medicine"
+      ]
+    },
+    {
+      "id": "connected_fire",
+      "scenes": [
+        "gas_transport",
+        "gas_chain",
+        "gas_displacement",
+        "gas_warden_interaction"
+      ],
+      "exercises": [
+        "gas_grid",
+        "gas_drift",
+        "gas_ignition",
+        "gas_knockback",
+        "fire_warden"
+      ],
+      "overlap_why": {
+        "fire_warden": "The already established animal makes original igniter attribution visible after a travelling gas ignition."
+      }
+    }
+  ],
+  "coverage_rest": [
+    {
+      "capability": "placement_legacy",
+      "by": [
+        "legacy_floor"
+      ],
+      "why": "Only the isolated inherited score/rarity path and fixed delivered map are checked; no world creation is proposed."
+    },
+    {
+      "capability": "settings",
+      "by": [
+        "settings_effects"
+      ],
+      "why": "Each toggle needs its own effect matrix and persistence check; a UI demonstration does not replace them."
+    },
+    {
+      "capability": "suush_flight",
+      "by": [
+        "supported_integrations"
+      ],
+      "why": "State-only capability read is sufficient for unattended checkout; any visible motion review waits for his presence."
+    },
+    {
+      "capability": "shared_cast",
+      "by": [
+        "supported_integrations"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "campaign_cast",
+      "by": [
+        "supported_integrations"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "oomo_shrine",
+      "by": [
+        "supported_integrations"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "scanner_payload",
+      "by": [
+        "optional_services"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "growth_stalled",
+      "by": [
+        "optional_services"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "aerosol_neighbour",
+      "by": [
+        "optional_services"
+      ],
+      "why": "The guarded provider-specific consumer/lifecycle check needs its own declared load context; combining unrelated integrations would add display cost without a distinct coherent showcase."
+    },
+    {
+      "capability": "lasting_metal_poisoning",
+      "by": [
+        "metal_purge"
+      ],
+      "why": "A focused departure/reload/medical-bill scene demonstrates the lasting consequence more cheaply and clearly than making it another theatrical showcase."
+    },
+    {
+      "capability": "permanent_acid_injuries",
+      "by": [
+        "acid_injuries"
+      ],
+      "why": "Causal injury and ordinary healing need longitudinal body/part reads, not another scenic display."
+    }
+  ]
+}

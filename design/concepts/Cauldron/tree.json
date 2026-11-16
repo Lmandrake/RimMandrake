@@ -18,7 +18,7 @@
   "All scene observations are proposed and unrun; source presence and historical scoped passes are not current acceptance.",
   "Numeric inherited floor thresholds remain advisory until per-line calibration.",
   "The adopted root and flagship have separate authenticated Evidence-for-Ask delegations. No waiver or owner first-touch certification is asserted.",
-  "The additive trunk coat remains the existing separate build dependency; supported cast and integration scenes preserve current ownership and guards."
+  "The additive trunk coat remains an absent, unopened independent design/build dependency. trunk_coat_check is exploration and never accepts or rejects a core leaf. Supported cast and integration scenes preserve current ownership and guards."
  ],
  "leaves": [
   {
@@ -63,7 +63,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "At ordinary play zoom a reader arriving in the intact Cauldron sees mineral plants and animals above distinguishable wet dark plain and rich soil, under a lightning sky without rain. Dusk, vapour bank, dewfall, bloom and dry thunderstorm have distinct readable states; the place reads as a mineral forest rather than ordinary trees under grey fog.",
-   "scenario": "arrival_identity and weather_gardens observe an untouched registered site before any pad clearing; compare the five declared weather groups, both soils and current plant/animal roster at play zoom and selected close views. Capture dew and fleck transitions independently of camera remeshing.",
+   "scenario": "arrival_identity and weather_gardens observe an untouched registered site before any pad clearing; compare the five declared weather groups, both soils and current plant/animal roster at play zoom and selected close views. Capture dew and fleck transitions independently of camera remeshing. mapgen_vents_gardens separately checks safe arrival among natural separated vents, mixed vent states and remembered blowout, shore gardens, state-keyed rings, protected vegetation and idempotent vent generation on a disposable local fixture; it creates no world.",
    "false_pass": [
     "A cleared hand-painted display pad is called a natural site",
     "Labels identify species while their silhouettes and chemistry remain generic"
@@ -113,7 +113,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "At play zoom a player sees vent breathing diminish and eligible nearby idle native animals hold still about one in-game hour before full bloom, with time for a worker to reach shelter. The optional warning supplements those cues and the bloom dose begins after the warning.",
-   "scenario": "falter_hour measures actual cue onset, full-output bloom onset and first dose independently at default duration, nominally 2500 ticks for the warning. Include ordinary weather transition, hush/message off, eligible idle versus asleep/fighting/owned natives and mid-falter reload. Record polling granularity and actual interval; the existing 4000-tick transition alone cannot pass.",
+   "scenario": "falter_hour measures actual cue onset, full-output bloom onset and first dose independently at default duration, nominally 2500 ticks for the warning. Include ordinary weather transition, hush/message off, eligible idle versus asleep/fighting/owned natives and mid-falter reload. Record polling granularity and actual interval; the existing 4000-tick transition alone cannot pass. Require eskith, observe its normal flock activity and resolved art around the hush, and compare actual output in two non-bloom weathers at matched recovery/suppression against weather-scaling-off; no tuned output number is a bar.",
    "false_pass": [
     "A Faltering boolean passes without a visible cue or timed interval",
     "A late exposure sample is miscounted as an hour of warning"
@@ -138,7 +138,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "A player can depend on a roof or functioning complete environmental seal during routine ambient bloom and acid exposure. Matched exposed eligible bodies receive attributable metal or acid effects while roofed and fully sealed workers retain their starting health; native and partial-equipment results follow their actual rules.",
-   "scenario": "ambient_routes independently exercises bloom and ambient acid with exposed, roofed, full vexxith set, suit-only and helmet-only workers, native/non-native controls and actual exposure opportunities. material_routes separately tests immunity of things, containers, gates, lined machines and ship lining. Read full worn stats and near/far, capped/uncapped vent dose.",
+   "scenario": "ambient_routes independently exercises bloom and ambient acid with exposed, roofed, full vexxith set, suit-only and helmet-only workers, native/non-native controls and actual exposure opportunities. material_routes separately tests immunity of things, containers, gates, lined machines and ship lining. Read full worn stats and near/far, capped/uncapped vent dose. material_routes normally constructs and opens the plate-only door, crafts the dedicated bottle/bucket/barrel and suit/helmet through real bills, then uses their outputs. ambient_routes includes exposed and protected player, visitor and hostile non-player bodies; faction alone grants no ambient-acid exemption.",
    "false_pass": [
     "Acid-proof clothing keeps item hit points while its wearer accumulates metal",
     "No exposure sample occurs and all equipment passes"
@@ -203,7 +203,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Observe PlantWork completion and tree identity, work ticks, growth/grade/fleck changes and wood/steel deltas. Compare current 1200 harvest work and full-growth 12 steel as candidate tuning, not a new owner price.",
+   "oracle_proposed": "Observe ordinary PlantWork completion and tree identity, work duration, growth/grade/fleck changes and newly produced wood/steel deltas. Assay and payout must agree and completed forestry must pay both useful materials; current work and yield numbers are construction tuning, never fixed acceptance targets.",
    "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -214,12 +214,11 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "A player choosing thornwood by growth and assay completes slow exposed harvesting and receives both wood and growth-scaled metal. Inspect grades and installed flecks follow the payout; the separately specified age coat remains distinct from assay.",
-   "scenario": "thornwood_harvest compares eligible younger and mature RM_TwistingThornwood, interrupted work, yield off and factor changes. Record starting resources, ordinary work completion and bounded produced stacks. trunk_coat_check carries the existing additive age design dependency separately from assay fleck transitions.",
+   "experience": "A player choosing thornwood by growth and assay completes slow exposed harvesting and receives both wood and growth-scaled metal. Inspect grades and installed flecks follow the payout.",
+   "scenario": "thornwood_harvest compares eligible younger and mature RM_TwistingThornwood, interrupted work, yield off and factor changes. Record starting resources, ordinary work completion and bounded produced stacks.",
    "false_pass": [
     "Old steel lying nearby supplies the apparent harvest reward",
-    "A plant is destroyed and loot spawned by the harness",
-    "Rich flecks stand in for the missing age coat"
+    "A plant is destroyed and loot spawned by the harness"
    ],
    "red": "A completed thornwood harvest pays no metal, pays unrelated metal or avoids the promised work cost.",
    "tier_proposed": "live_minimal",
@@ -281,7 +280,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Vent and job identities through walk/drink/suppression/recovery, scaffold HP and bank output, original instigator/faction, completed tame shear resource delta and track maker/expiry reads. The old walk cancellation receipt does not certify melee cancellation.",
+   "oracle_proposed": "Vent and job identities through walk/drink/suppression/recovery, scaffold HP and bank output, original instigator/faction, completed tame shear resource delta and track maker/expiry reads. The old walk cancellation receipt does not certify melee cancellation. Cancellation requires job-end before the next hit at the first pawn job update after the relevant warden/retaliation toggle; an enabled counterpart must remain active through that window.",
    "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -293,11 +292,12 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player can read and manage wild vexxiss competing for tapped vents. Wild animals walk to and drink vents, suppress output, pry ordinary scaffolds and leave tracks; a lined tap resists prying, and tame shear supplies vexxith. Water poisoning and fire response remain distinct causal behaviors.",
-   "scenario": "vent_competition, vexxiss_products and water_fire_tracks cover wild/tame distinction, natural silence/recovery, drinking off mid-walk/drink, prying off with drinking retained, lined control and an existing melee job as a separately observed case. Include real water conversion, warning cooldown, completed fire beating and original hostile versus same-faction igniter response.",
+   "scenario": "vent_competition, vexxiss_products and water_fire_tracks cover wild/tame distinction, natural silence/recovery, drinking off mid-walk/drink, prying off with drinking retained, lined control and an existing feature-issued retaliation AttackMelee job cancelled by warden-off or attacks-igniter-off at the next pawn job update before a further hit, against a stays-on control; drinking-off alone leaves unrelated melee eligible. Include real water conversion, warning cooldown, completed fire beating and original hostile versus same-faction igniter response.",
    "false_pass": [
     "A queued drink or BeatFire job is declared complete",
     "A feature toggle changes its field while the existing drink continues",
-    "Dead vexxiss or wild shear supplies supposed tame renewable material"
+    "Dead vexxiss or wild shear supplies supposed tame renewable material",
+    "Warden-off prevents new jobs but the existing retaliation AttackMelee keeps hitting"
    ],
    "red": "Wild competition cannot reduce a working tap, lined taps take pry damage or the usable material route requires killing the animal.",
    "tier_proposed": "live_minimal",
@@ -377,6 +377,32 @@
     "Source terrain says toxic while the machine actually receives fresh water"
    ],
    "red": "The rig cannot be studied, production silently loses input or the installed acid-water process does not produce usable fresh water.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Observe real provider-owned lifecycle/use jobs, meditation and lore, scanner readings and consumer effects against matched controls; record suush race/tracker state without testing visible motion unattended. A source registration or spawned roster alone cannot accept a consumer behaviour; provider absence limits that arm rather than passing it.",
+   "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "supported_ecology",
+   "by": "concept",
+   "root": [
+    "cauldron_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom and normal interaction views, the player encounters the owned neighbouring and Utinni campaign cast in the Cauldron when their providers are loaded, and uses the Utinni Oomo shrine for natural meditation and local lore. Suush retains its floating capability; unattended checkout reads state, with visible aerial motion reserved for the owner's presence. With their providers loaded, AcousticScanner makes vents, listening fauna, resin and hidden cavities readable; ExplosiveGrowth supplies the stalled terminator growth behaviour and the Scarlands aerosol screen responds to Cauldron pollution. Missing optional providers leave the remaining biome usable without broken references.",
+   "scenario": "supported_integrations exercises suush_flight state only, shared_cast (visceral, decay drake, bileworm, mullgoth), campaign_cast (Neebray, Mynock, GraniteSlug, VentStalker, Lylek, Skalder, Silooth) and oomo_shrine in their separately fingerprinted provider contexts. optional_services exercises scanner_payload through AcousticScanner, growth_stalled through the shared ExplosiveGrowth engine, and aerosol_neighbour through Scarlands, each against a missing-payload or classification control. No new local service implementation or unattended aerial motion review is implied.",
+   "false_pass": [
+    "All optional providers are absent but the full integration is called accepted",
+    "A registered patch or spawned cast substitutes for actual consumer use",
+    "A def that names meditation passes without a meditation job"
+   ],
+   "red": "The loaded campaign cast or shrine is unusable, an optional consumer ignores the Cauldron payload, or a missing optional provider breaks the remaining biome.",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },

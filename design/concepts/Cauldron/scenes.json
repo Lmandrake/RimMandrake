@@ -49,8 +49,8 @@
         "expect": "The reader identifies the reject as failing mineral identity; labels alone cannot rescue it.",
         "rules_out": "A prepared exhibit or renamed ordinary vegetation standing in for the natural biome."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for mineral_forest: retain keeper save RM_Cauldron_review_arrival_identity, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes arrival_identity review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [
         "biome_identity",
         "soils",
@@ -94,9 +94,40 @@
         "mineral_forest"
       ],
       "observations": [
-        "Record low-light growth and survival of current roster plants against their actual loaded light requirements; do not infer a blanket zero-glow promise from an old item title.",
-        "Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence; no new planet generation is part of this plan."
+        "Record low-light growth and survival of current roster plants against their actual loaded light requirements; do not infer a blanket zero-glow promise from an old item title."
       ],
+      "implementation_items": []
+    },
+    {
+      "id": "mapgen_vents_gardens",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_mapgen_vents_gardens",
+      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "Disposable local Cauldron map fixture at the pre-MapGenerated checkpoint on an already supplied tile; no world creation, tile scoring or campaign placement change. Record player start, clear eligible footprints and ordinary starting vegetation, toxic/fresh shore cells, wild non-tree plants, trees, zones and occupied cells before the production callbacks. Fixed RNG stream and loaded settings are recorded; no test inserts finished vents or gardens after the callbacks.",
+        "The fixture has room for separated vents outside the arrival area and eligible shore/ring cells. Keep a matched generation-off checkpoint and record actor/plant identities. If a suitable pre-generation fixture cannot be supplied, report UNMEASURED rather than calling a hand-painted exhibit map generation."
+      ],
+      "action": "Invoke the production vent and garden MapGenerated callbacks on the disposable local fixture in both component orders from the same recorded checkpoint. Inspect resulting vents, stable/leaking states and recent-blowout memory, shore nettles and state-keyed vent rings. Reinvoke EnsureGenerated on the resulting map and compare vent identities/positions. Save/reload the recent-blowout branch. Compare separate restored arms with vents, condensate gardens or vent gardens off.",
+      "expect": "Arrival has natural vents away from the player start and separated from one another, without obstructing the safe arrival area. Stable and leaking vents both occur and a recent-blowout vent retains its memory through reload. Shore nettles establish on eligible toxic shores; stable, leaking and recent-blowout vents have their distinct crystal, blood bouquet and giant toxic flower gardens. At map creation eligible wild non-tree vegetation can be replaced by the appropriate ring; trees, zones and occupied cells remain intact. Repeating EnsureGenerated preserves the original vent identities and positions without duplicates. Vents-before-gardens and reversed component order deliver the same functional habitats. Presence, safe arrival and legible chemistry are the bar; counts, radii and colonisation probabilities are recorded tuning, never fixed acceptance targets.",
+      "control": {
+        "case": "Matched pre-generation fixture with vents off; independently gardens off or vent gardens off; fresh/nonshore and occupied/tree/zoned cells; repeated EnsureGenerated on the enabled result.",
+        "expect": "Vents-off creates no vents. Gardens-off creates no new shore or ring plants; vent-gardens-off leaves shore gardens possible but creates no vent rings. Ineligible/protected cells are not colonised or replaced. The repeated vent-generation call creates no extra vent or state reset.",
+        "rules_out": "Later wild regrowth, hand-spawned vents, one callback order or duplicate generation conceals missing arrival habitats."
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
+      "hold": "immediate",
+      "exercises": [
+        "vent_sites",
+        "shore_gardens",
+        "vent_gardens"
+      ],
+      "status": "planned_unrun",
+      "requirement": [
+        "mineral_forest"
+      ],
+      "observations": [],
       "implementation_items": []
     },
     {
@@ -137,17 +168,18 @@
       "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Default-duration pre-bloom weather and actual vent output asserted; an eligible idle wild native, preferably eskith, and asleep/fighting/owned comparison animals are identified. Worker route to roof is clear."
+        "Default-duration pre-bloom weather and actual vent output asserted; an identified awake idle wild eskith flock is required, with asleep/fighting/owned comparison natives. Record normal flock activity before the hush, body/art identities and a clear worker route to roof. A substitute native cannot certify the flagship eskith claim.",
+        "For the separate weather-output arm, identify the same uncapped unsuppressed vent at matched recovery and gas conditions in scatter-dusk and dewfall, recording weather identities and actual output; do not confound weather scaling with a recovering or silenced vent."
       ],
-      "action": "Allow the normal bloom transition, record cue-onset tick, vent output, hush jobs, full bloom onset and first dose separately. Send worker to roof after the cue; repeat with mid-falter reload.",
-      "expect": "Visible falter and eligible native stillness precede full bloom by about 2500 ticks with recorded scheduling resolution, and worker reaches shelter. Hush state/count survives reload. Full default recovery timing is distinct from compressed vent fixtures.",
+      "action": "Allow the normal bloom transition, record cue-onset tick, vent output, hush jobs, full bloom onset and first dose separately. Send worker to roof after the cue; repeat with mid-falter reload. Before the timed warning arm, compare actual vent output in scatter-dusk and dewfall at matched vent state; restore warning defaults. Observe normal eskith flock activity before falter, stillness during it and resumption afterwards at play zoom.",
+      "expect": "Visible falter and eligible native stillness precede full bloom by about 2500 ticks with recorded scheduling resolution, and worker reaches shelter. Hush state/count survives reload. Full default recovery timing is distinct from compressed vent fixtures. Eskith are present as a recognisable ground-sensing flock, with resolved native art and normal activity before and after the hush, then eligible idle flock members visibly still during falter. Measured vent output differs between the two non-bloom weathers at the matched vent state; no multiplier or emission-rate value is pinned.",
       "control": {
-        "case": "Use an ordinary non-bloom transition, hush off and message off in separate restored arms.",
-        "expect": "No bloom-specific hush on ordinary transition or hush-off; message-off removes only message and keeps physical tell. A 4000-tick blend alone does not meet the ruled hour.",
+        "case": "Use an ordinary non-bloom transition, hush off and message off in separate restored arms. In a separate restored weather-output arm disable ventWeatherEnabled while retaining the same vent state and the two weather identities.",
+        "expect": "No bloom-specific hush on ordinary transition or hush-off; message-off removes only message and keeps physical tell. A 4000-tick blend alone does not meet the ruled hour. With weather scaling disabled the weather-caused output difference disappears; vent recovery/suppression remains separately measurable. Asleep/fighting/owned natives are not commandeered into the hush.",
         "rules_out": "A boolean or late scheduled dose substitutes for a measured usable warning."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for falter_warning: retain keeper save RM_Cauldron_review_falter_hour, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes falter_hour review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [
         "vent_sites",
         "vent_cycle_falter",
@@ -169,17 +201,18 @@
       "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Healthy matched ordinary bodies with actual worn stats: exposed, roofed, full suit/helmet, suit-only and helmet-only, plus native/non-native pairs. All relevant exposure timers are due and read, no health immunity harness."
+        "Healthy matched ordinary bodies with actual worn stats: exposed, roofed, full suit/helmet, suit-only and helmet-only, plus native/non-native pairs. All relevant exposure timers are due and read, no health immunity harness.",
+        "For the independent ambient-acid arm include a healthy non-native non-player visitor, a hostile non-player subject and a player colonist with matched exposed bodies, plus roofed/sealed counterparts. Record factions, opt-in Cauldron context and due acid sampling; faction alone supplies no immunity. The full-set acquisition branch uses material_routes' normally crafted suit and helmet."
       ],
-      "action": "Run actual bloom and ambient acid independently; compare body dose/injury and item HP, then near/far active versus recovering, capped and uncapped vent arms and old-map/no-vent fallback.",
-      "expect": "Roof and full functioning seal prevent new ambient injury/load; exposed bodies show positive source-attributed effects. Partial gear has measured partial effects; native guards hold. Local gradient/background/cap reads agree with named source behavior and no vanilla ToxicBuildup double tax appears.",
+      "action": "Run actual bloom and ambient acid independently; compare body dose/injury and item HP, then near/far active versus recovering, capped and uncapped vent arms and old-map/no-vent fallback. Compare exposed player, visitor and hostile non-player subjects under the same due ambient-acid sampling, then roof/full-seal counterparts. The separate material_routes recipe branch establishes acquisition before declaring the gear route complete.",
+      "expect": "Roof and full functioning seal prevent new ambient injury/load; exposed bodies show positive source-attributed effects. Partial gear has measured partial effects; native guards hold. Local gradient/background/cap reads agree with named source behavior and no vanilla ToxicBuildup double tax appears. Ambient acid reaches eligible unroofed unsealed bodies across the player, visitor and hostile factions; roof and functioning full seal protect matched counterparts across factions. Crafted gear protects its wearer by the same body-health observation as the comparison set. A missing faction arm is UNMEASURED for that claim.",
       "control": {
-        "case": "Independently disable bloom exposure, acid air and local-dose scaling; retain an exposed positive control for each enabled route.",
-        "expect": "Disabled route adds no new effect; unrelated effects remain readable. An untriggered timer or item-only survival is UNMEASURED for wearer protection.",
+        "case": "Independently disable bloom exposure, acid air and local-dose scaling; retain an exposed positive control for each enabled route. Exposed visitor/hostile counterparts with acid air off, then roofed or fully sealed with acid air on.",
+        "expect": "Disabled route adds no new effect; unrelated effects remain readable. An untriggered timer or item-only survival is UNMEASURED for wearer protection. No new ambient acid injury in the disabled, roofed or functioning-full-seal counterparts; faction is not the explanation for protection.",
         "rules_out": "No exposure opportunity, different resistance stats or acid-proof item HP mistaken for bodily protection."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for ambient_protection: retain keeper save RM_Cauldron_review_ambient_routes, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes ambient_routes review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [
         "bloom_load",
         "local_exposure",
@@ -192,6 +225,9 @@
       ],
       "implementation_items": [
         "CAULDRON_FULL_SEAL_AMBIENT_PROTECTION"
+      ],
+      "observations": [
+        "Gear heat insulation and other declared stat values may be recorded for selftest diagnosis; matching a numeric insulation/armour value is advisory under the owner experience rule, not an additional passing bar."
       ]
     },
     {
@@ -202,13 +238,13 @@
       "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Ordinary and vexxith walls/door, canonical acid liquids, bottle/bucket/barrel, canal gates and vulnerable ship-substructure buildings have recorded stuff/HP/contents. Ship fixture lies in the documented opt-in biome."
+        "Ordinary material controls, canonical acid liquids, canal gates and vulnerable ship-substructure buildings have recorded stuff/HP/contents. Stockpiles contain genuine vexxith plates, steel and required components; ordinary construction/crafting workers, enabled recipes, benches and research are available. No finished target door, dedicated containers or suit/helmet is pre-spawned for the acquisition arms. Ship fixture lies in the documented opt-in biome."
       ],
-      "action": "Apply actual AcidBurn and present guarded BloomAcid sources to matched Things; fill/use dedicated containers and canal gates. Observe ambient ship damage with and without one hull liner, plus vexxith control through equal samples.",
-      "expect": "Vexxith material and dedicated items retain identity and HP under acid while ordinary controls damage. Material retains general strength, heat armour and zero flammability. Ship damage approaches its 30 percent floor with warning once; a liner or vexxith stops sampled damage without claiming wearer sealing.",
+      "action": "Through the normal architect menu attempt the dedicated door with steel/non-plate stuff, then place and complete it using vexxith plates; order a pawn through it to open and close it. Complete RM_Make_Bottle_Vexxith, RM_Make_Bucket_Vexxith and RM_Make_Barrel_Vexxith bills, then the generated RM_VexxithSuit and RM_VexxithSuitHelmet recipes at the machining bench. Record input consumption, actual work completion and new output Thing identities; equip the crafted full set for ambient_routes. Apply actual AcidBurn and present guarded BloomAcid sources to matched Things; fill/use the crafted containers and canal gates. Observe ambient ship damage with and without one hull liner, plus vexxith control through equal samples.",
+      "expect": "Vexxith material and dedicated items retain identity and HP under acid while ordinary controls damage. Material retains general strength, heat armour and zero flammability. Ship damage approaches its 30 percent floor with warning once; a liner or vexxith stops sampled damage without claiming wearer sealing. Normal placement refuses non-plate stuff for the dedicated door, accepts vexxith and completes a usable door that opens for passage and closes. Completed dedicated container and gear recipes consume real inputs and create the correct new products; bottle, bucket and barrel retain vexxith material identity through filling/use, and the crafted suit/helmet can be worn together and serve the full-seal ambient_routes check. A pre-existing stock item cannot supply a claimed recipe output.",
       "control": {
-        "case": "Immunity off, ordinary steel items/gates and unlined ship under the same source; place a separate liner-inactive fixture.",
-        "expect": "Ordinary and immunity-off material loses HP; valid liner halts its specified sampled damage; startup door-off hides menu entry without deleting existing door.",
+        "case": "Immunity off, ordinary steel items/gates and unlined ship under the same source; place a separate liner-inactive fixture. Independently withhold required vexxith or interrupt the container/gear bill; try the dedicated door using steel; retain a matched ordinary container for fill/material contrast.",
+        "expect": "Ordinary and immunity-off material loses HP; valid liner halts its specified sampled damage; startup door-off hides menu entry without deleting existing door. No door made with forbidden stuff and no finished craft product from missing ingredients or unfinished work; resuming valid supplied work delivers usable new products.",
         "rules_out": "Invulnerability applied to the scene or an irrelevant ship tile passes material and hull protection."
       },
       "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
@@ -217,7 +253,8 @@
         "vexxith_material",
         "vexxith_door",
         "containers_gates",
-        "acid_hull"
+        "acid_hull",
+        "vexxith_gear"
       ],
       "status": "planned_unrun",
       "requirement": [
@@ -317,7 +354,7 @@
     },
     {
       "id": "trunk_coat_check",
-      "kind": "acceptance",
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_trunk_coat_check",
       "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
@@ -326,7 +363,7 @@
         "The existing separate CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS dependency is identified; young, mature and old thornwood share a matched assay grade."
       ],
       "action": "Compare age/growth coat tiers and toggle coat independently of assay; compare fleck grades at the same age. Cross the old-age threshold without a camera remesh.",
-      "expect": "The specified additive scab/crystal-fan coat follows age and remains registered on the existing trunk; assay flecks separately follow metal. Base art stays the kept tree. If implementation remains absent report UNBUILT, not an inferred fleck pass.",
+      "expect": "The specified additive scab/crystal-fan coat follows age and remains registered on the existing trunk; assay flecks separately follow metal. Base art stays the kept tree. If implementation remains absent report UNBUILT, not an inferred fleck pass. UNBUILT is an inventory/exploration result only and neither accepts nor rejects any core leaf; no owner scope opening or deferral is inferred.",
       "control": {
         "case": "Equal age with different assay, and coat off with assay on.",
         "expect": "Age coat does not follow assay and disabling it preserves assay flecks/base art.",
@@ -334,17 +371,12 @@
       },
       "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
       "hold": "immediate",
-      "exercises": [
-        "trunk_deposit_coat"
-      ],
+      "exercises": [],
       "status": "planned_unrun",
-      "requirement": [
-        "mineral_forest",
-        "thornwood_work"
-      ],
       "implementation_items": [
         "CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS"
-      ]
+      ],
+      "question": "Does the separately specified additive age coat exist and remain visually distinct from installed assay flecks? This absent, not_opened inventory entry remains outside core acceptance; this exploration accepts no leaf, including mineral_forest and thornwood_work."
     },
     {
       "id": "rhossak_cycle",
@@ -513,8 +545,8 @@
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
         "An active vent with known output/bank/suppression and natural recovery state; wild and tame animals separated; ordinary scaffold and lined tap have matched HP."
       ],
-      "action": "Let wild vexxiss choose, walk to and drink; observe output suppression, silence and recovery. Compare pry damage on ordinary versus lined tap, then drinking off mid-walk and mid-drink, prying off while drinking remains. Observe an already-issued fire retaliation melee job separately.",
-      "expect": "Actual drinking changes vent state and supply; ordinary scaffold loses HP, lined does not; prying toggle retains drinking. Drink-off aborts its walk and drink without new suppression; report melee toggle behavior independently of old walk evidence. Default recovery and repeated reused-vent trials are explicitly measured.",
+      "action": "Let wild vexxiss choose, walk to and drink; observe output suppression, silence and recovery. Compare pry damage on ordinary versus lined tap, then drinking off mid-walk and mid-drink, prying off while drinking remains. For an already-issued fire-warden AttackMelee job use water_fire_tracks' independent cancellation arms; drinking off must not be misreported as cancelling unrelated combat.",
+      "expect": "Actual drinking changes vent state and supply; ordinary scaffold loses HP, lined does not; prying toggle retains drinking. Drink-off aborts its walk and drink without new suppression; The melee verdict comes from water_fire_tracks, never from the old walk-only receipt; drinking-off alone does not cancel an unrelated melee job. Default recovery and repeated reused-vent trials are explicitly measured.",
       "control": {
         "case": "Tame/nonseeking subject, drinking off, prying off, no vent and lined counterpart with identical timing and reachable geometry.",
         "expect": "No wild drink mechanism in off/no-vent lane; no scaffold pry damage when off or lined; suppression does not rise from an unexecuted job.",
@@ -540,14 +572,15 @@
       "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Fresh named water terrains and unmodified cells, separate fresh vexxiss per warning arm, real standing fire with recorded igniter/faction, and clean track grid/expiry ledger."
+        "Fresh named water terrains and unmodified cells, separate fresh vexxiss per warning arm, real standing fire with recorded igniter/faction, and clean track grid/expiry ledger.",
+        "Separate matched fire-retaliation arms have a living reachable hostile original igniter, positive AttackMelee job identity and target, and an unfinished attack before expiry or target death. Pause before toggling and record the next pawn job-update and damage events; preserve an enabled counterpart from the same checkpoint."
       ],
-      "action": "Let vexxiss wade and convert water; repeat within/outside cooldown and notification toggle arms. Allow real fire beating to completion and hostile/same-faction igniter response. Walk a known route then hover maker prints and follow expiry/save reload.",
-      "expect": "Converted terrain and filled liquid are toxic; letter fires once per documented cooldown. Fire actually shrinks/is extinguished, reachable original hostile igniter receives bounded retaliation, same faction spared. Tracks identify maker and expire with saved metadata.",
+      "action": "Let vexxiss wade and convert water; repeat within/outside cooldown and notification toggle arms. Allow real fire beating to completion and hostile/same-faction igniter response. Walk a known route then hover maker prints and follow expiry/save reload. After the warden has issued AttackMelee, independently switch vexxissFireWardenEnabled off and vexxissAttacksIgniter off in restored arms while the other remains on. Resume through the first pawn job update and compare the original job and target-hit events with the stays-on control. Test drinking-off alone as an unrelated-toggle control.",
+      "expect": "Converted terrain and filled liquid are toxic; letter fires once per documented cooldown. Fire actually shrinks/is extinguished, reachable original hostile igniter receives bounded retaliation, same faction spared. Tracks identify maker and expire with saved metadata. Switching either fire-warden or attacks-igniter off ends the feature-issued retaliation AttackMelee on the first pawn job update after the setting change, before any further melee hit from that job, and it is not reissued while disabled. Record toggle, job-end and attempted-hit ticks, not a tuned attack duration. An already completed hit before the toggle is outside the cancellation claim. Drink-off separately cancels the vent walk/drink as required.",
       "control": {
-        "case": "Poison off, letter off with poison on, repeated same-animal cooldown, warden/retaliation off and same-faction igniter, stationary animal/prints off.",
-        "expect": "No poison when off, no extra notification within cooldown; no warden/hostile job from disabled cause or same-faction source; no new prints from stationary/off subject.",
-        "rules_out": "A letter without conversion, queued fire job, inferred igniter or stale unrelated tracks passes behavior."
+        "case": "Poison off, letter off with poison on, repeated same-animal cooldown, warden/retaliation off and same-faction igniter, stationary animal/prints off. Keep both warden and retaliation enabled on the matched unfinished AttackMelee checkpoint; separately disable only vent drinking while warden/retaliation stay enabled.",
+        "expect": "No poison when off, no extra notification within cooldown; no warden/hostile job from disabled cause or same-faction source; no new prints from stationary/off subject. The enabled AttackMelee remains active through the matched job-update window and can continue its attack; drinking-off alone leaves that unrelated retaliation eligible. Natural expiry, target death, downing, loss of path or harness EndCurrentJob cannot supply the off-arm cancellation.",
+        "rules_out": "A letter without conversion, queued fire job, inferred igniter or stale unrelated tracks passes behavior. Distinguishes true live toggle cancellation from natural job completion or cancelling only a drink walk."
       },
       "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
       "hold": "immediate",
@@ -610,8 +643,8 @@
         "expect": "No chain when ignition off; smoke-off adds no toxic smoke from vent combustion; no downstream burn beyond barriers/gap. Refilled gaps or seeded downstream fires invalidate a trial.",
         "rules_out": "Multiple spark injection, pre-existing smoke or remaining unlit saved gas conceals stopped propagation."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [
         "gas_ignition"
       ],
@@ -640,8 +673,8 @@
         "expect": "Gas still burns but knockback-off lacks thrown goods; far/blocked controls follow actual shared policy. Destroyed/resurrected items never count as moved.",
         "rules_out": "Manually rearranged goods, blast graphics or vanished items certify explosive knockback."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for explosive_displacement: retain keeper save RM_Cauldron_review_gas_displacement, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_displacement review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [
         "gas_knockback"
       ],
@@ -813,8 +846,8 @@
         "expect": "Unprepared exposure and supply interruptions visibly affect their own jobs/health/output; a hazard-disabled or immortal colony cannot pass prepared-day.",
         "rules_out": "One output item or need-free actors certify dependable settlement."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for prepared_day: retain keeper save RM_Cauldron_review_routine_day, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes routine_day review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [],
       "status": "planned_unrun",
       "requirement": [
@@ -839,8 +872,8 @@
         "expect": "No duplicated output on reload/retry or credit for pre-existing products; order-only changes do not erase saved state.",
         "rules_out": "Reloading a fresh fixture or static completed-only site passes persistent active work."
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs.",
-      "hold": "immediate",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for cauldron_walk: retain keeper save RM_Cauldron_review_resume_walk, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes resume_walk review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "owner_review",
       "exercises": [],
       "status": "planned_unrun",
       "requirement": [
@@ -877,8 +910,7 @@
       ],
       "status": "planned_unrun",
       "requirement": [
-        "wildlife_livelihood",
-        "mineral_forest"
+        "supported_ecology"
       ],
       "implementation_items": []
     },
@@ -908,8 +940,7 @@
       ],
       "status": "planned_unrun",
       "requirement": [
-        "mineral_forest",
-        "settings_control"
+        "supported_ecology"
       ],
       "implementation_items": []
     },
@@ -1270,5 +1301,6 @@
       ],
       "why": "Causal injury and ordinary healing need longitudinal body/part reads, not another scenic display."
     }
-  ]
+  ],
+  "revised_by": "rm-role-designercodex-1794846919"
 }

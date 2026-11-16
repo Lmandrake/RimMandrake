@@ -251,6 +251,19 @@
         "design/RimMandrake/standing_rulings.md",
         "src/RimMandrake/rimflow/coverage_judge.py"
       ]
+    },
+    {
+      "id": "d_stage3_coverage_rework",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Cauldron/coverage_fixes.json",
+        "design/concepts/Cauldron/plan.md",
+        "design/concepts/Cauldron/scenes.json",
+        "design/concepts/Cauldron/tree.json",
+        "design/RimMandrake/standing_rulings.md",
+        "infrastructure/state/items/CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER.md"
+      ],
+      "text": "Reworked all eight blocking experience gaps g1,g2,g3,g4,g7,g8,g9,g11 against rm-coverage-judge-1794844087 in one batch. Added seven planned owner-review holds, sheet walk and full vexxiss behaviour, supported_ecology intent, causal local map-generation scene, required eskith/weather-output observation, defined live retaliation cancellation, separate nonaccepting coat exploration and normal material acquisition/use with all-faction ambient acid. Preserved six advisory findings and all owner rulings; no numeric tuning or variant-count demand is promoted. Eighteen leaves, thirty-six planned scenes, five showcases and sixty-seven mandatory capabilities. Updated the existing script item, without implementing or running it. Prior exam is historical and a fresh Stage-4 exam must follow launcher acceptance. No coverage signature or runtime certification."
     }
   ],
   "asks": [
@@ -3430,9 +3443,9 @@
       ],
       "requirement": "The specified additive age-based trunk deposits retain their existing design.",
       "smallest_work": "Carry the existing coat build dependency into the plan and give its age/readability behavior a scene distinct from installed assay flecks.",
-      "proof": "Young/old trunk deposit observation and an independent assay-grade/fleck comparison.",
+      "proof": "Independent exploratory young/old deposit observation versus assay flecks only; UNBUILT has no core leaf verdict and opens no scope.",
       "build_item": "CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS",
-      "acceptance_scenes": [
+      "exploration_scenes": [
         "trunk_coat_check"
       ]
     },
@@ -3684,10 +3697,10 @@
     "id": "stage3_write",
     "speaker": "agent",
     "source": "design/concepts/Cauldron/plan.md",
-    "run": "rm-role-designercodex-1794827705",
+    "run": "rm-role-designercodex-1794846919",
     "status": "written_checks_passed",
-    "leaves": 17,
-    "scenes": 35,
+    "leaves": 18,
+    "scenes": 36,
     "showcases": 5,
     "mandatory_inventory_units": 67,
     "proof_status": "All observations planned and unrun. Historical scoped proof status unchanged.",
@@ -3760,6 +3773,28 @@
     "gate_a": "PASS",
     "scene_contracts": "PASS",
     "floor_applicability": "PASS",
-    "showcase_set": "PASS"
+    "showcase_set": "PASS",
+    "acceptance_interaction_scenes": 35,
+    "exploration_scenes": 1,
+    "against_judge": "rm-coverage-judge-1794844087",
+    "blocking_gaps_claimed": [
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "g7",
+      "g8",
+      "g9",
+      "g11"
+    ],
+    "advisory_gaps_preserved": [
+      "g5",
+      "g6",
+      "g10",
+      "g12",
+      "g13",
+      "g14"
+    ],
+    "exam_status": "Prior exam invalidated by changed tree and sheet; fresh Stage 4 required."
   }
 }
