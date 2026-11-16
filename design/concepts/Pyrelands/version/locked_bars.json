@@ -45,7 +45,8 @@
   "fire_rite_hook_silent_alone",
   "biome_text_says_engineered",
   "flamefang_bite_carries_venom",
-  "inv_firehawk_hunt_rewards"
+  "inv_firehawk_hunt_rewards",
+  "ullai_cross_the_map_as_vanilla_herds"
  ],
  "history": [
   {
@@ -59,6 +60,18 @@
    ],
    "removed": [],
    "count": 42
+  },
+  {
+   "at": "2026-11-16T15:51:33Z",
+   "by": "BENCH",
+   "why": "leaf ullai_cross_the_map_as_vanilla_herds came in with the locked change 91a7c61989 his card carded (fix the coverage judge's 12 Problem gaps), so it is a 0.1.0 bar; the leaf firehawk_hunt_rewards from the same change states inv_firehawk_hunt_rewards' promise and is mapped as that bar's coverage in make_test_table.py, not counted (Conductor, delegated: evidence-for-ask)",
+   "how": "changed by his card",
+   "source": "OWNER:1794748469904049550",
+   "added": [
+    "ullai_cross_the_map_as_vanilla_herds"
+   ],
+   "removed": [],
+   "count": 43
   }
  ]
 }

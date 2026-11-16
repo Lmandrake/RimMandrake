@@ -58,6 +58,18 @@ for fn, obs in [('firehawk_first_sighting_letter', 'a staged hawk carrying an em
         why_game=GAME, why_full_list=None, entry_exists=fn in fhdefs)
 T['RECORD_ART_SHEET'] = dict(id='RECORD_ART_SHEET', kind='record', stage='2', file='infrastructure/state/ledger/events/', observes='his approval of the shipped art sheet exists on the ledger (OWNER:1792122659817386516)', reads=['infrastructure/state/ledger/events/'])
 T['LOOK_STAGE8'] = dict(id='LOOK_STAGE8', kind='look', stage='8', file='(his walk)', observes='his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9)', reads=[], runs_today={'ran': False, 'why': 'Stage 8'})
+# RIMMANDRAKE_KEEP_PYRELANDS_TABLE_ADDITIONS_THE_MAKER_ERASES: other tools write into the table this replaces (testq_blocks.py's
+# testq blocks, round-6 tests, a record's rerun command). Keep every test this file does not define and every key it does not
+# write (never runs_today or new: those are measured here); carried offline tests are rerun below with the rest.
+import os
+PREV = json.load(open(V + 'test_table.json')) if os.path.exists(V + 'test_table.json') else {}
+MADE = set(T)
+for tid, t in (PREV.get('tests') or {}).items():
+    if tid not in T:
+        T[tid] = {k: v for k, v in t.items() if k != 'runs_today'}
+    else:
+        for k, v in t.items():
+            if k not in T[tid] and k not in ('runs_today', 'new'): T[tid][k] = v
 # ---- bars: decides / supports (hand judgment)
 B = [
  ('burn_line_walks', ['sc_burn_line_walks'], ['T_FUZZ', 'P_opening_front', 'LOOK_STAGE8']),
@@ -102,7 +114,15 @@ B = [
  ('inv_settings_gate', ['T_SETTINGS_SWEEP_OFFLINE', 'T_SETTINGS_SCREENS', 'T_SITE'], ['sc_walk', 'P_gate']),
  ('inv_art_and_text', ['RECORD_ART_SHEET', 'T_DEFS_OFFLINE'], ['sc_three_skies', 'T_BARBSLINGER', 'T_TRACKS', 'T_REVIEW_MAP']),
  ('inv_firehawk_hunt_rewards', ['T_FH_LETTER', 'T_FH_CRESTFEATHER', 'firehawk_first_sighting_letter', 'firehawk_crestfeather_yield'], ['T_FUZZ', 'LOOK_STAGE8']),
+ # his card 2026-11-14 ("Yes, let them cross"), leaf added by the locked change 91a7c61989 (OWNER:1794748469904049550)
+ ('ullai_cross_the_map_as_vanilla_herds', ['T_ULLAI_HERD_MIGRATES', 'sc_foreign_arrivals', 'T_CUT_STAYS_CUT'], []),
 ]
+# a leaf that states an existing bar's promise is coverage of that bar, not a bar (locked change 91a7c61989; the leaf's
+# experience is the bar's text, letter and crestfeather alike, and promises nothing a player would notice beyond it)
+COVERAGE = {'firehawk_hunt_rewards': 'inv_firehawk_hunt_rewards'}
+PB = {b['id']: b for b in PREV.get('bars') or [] if isinstance(b, dict)}
+B = [(bid, dec + [x for x in PB.get(bid, {}).get('decides', []) if x not in MADE and x not in dec],
+      sup + [x for x in PB.get(bid, {}).get('supports', []) if x not in MADE and x not in sup]) for bid, dec, sup in B]
 # ---- measure: run every built offline test
 for t in T.values():
     if t['kind'] != 'offline': 
@@ -127,7 +147,7 @@ def runnable(tid):
     if t['kind'] in ('offline', 'record'): return rt.get('ran') and rt.get('result') == 'PASS'
     if t['kind'].startswith('live'): return t['entry_exists']
     return False
-SO = {'2': 2, '4-5': 4, '6': 6, '8': 8}
+SO = {'2': 2, '3': 3, '4-5': 4, '6': 6, '8': 8}
 bars = []
 for bid, dec, sup in B:
     src = 'tree.json' if bid in leaves else 'record.json'
@@ -136,13 +156,21 @@ for bid, dec, sup in B:
     bars.append(dict(id=bid, source=src, kind=kind, proves_at=max((T[x]['stage'] for x in dec), key=lambda s: SO[s]), decides=dec, supports=sup, held=[],
         offline_decides=offd, offline_green_today=bool(offd) and all(runnable(x) for x in offd),
         every_decider_runnable_today=all(runnable(x) for x in dec), any_test_runnable_today=any(runnable(x) for x in dec + sup)))
-assert set(b['id'] for b in bars) == set(leaves) | set(inv) and len(bars) == 42, 'bar set differs from bars.md'
+LOCKED = json.load(open(V + 'locked_bars.json'))['ids']
+assert set(COVERAGE) <= set(leaves) and set(COVERAGE.values()) <= set(LOCKED) and not set(COVERAGE) & set(LOCKED), 'a coverage leaf must map onto a locked bar'
+assert set(b['id'] for b in bars) == (set(leaves) - set(COVERAGE)) | set(inv) == set(LOCKED) and len(bars) == len(LOCKED), 'bar set differs from locked_bars.json (bars.md)'
+for b in bars: b['covered_by_leaves'] = sorted(l for l, t in COVERAGE.items() if t == b['id'])
 for b in bars:
     for x in b['decides'] + b['supports']: assert x in T, x
+lost = [(tid, k) for tid, t in (PREV.get('tests') or {}).items() for k in t if k not in ('runs_today', 'new') and k not in T.get(tid, {})]
+lost += [(bid, x) for bid, pb in PB.items() for x in pb.get('decides', []) + pb.get('supports', []) if x not in MADE and bid in {b['id'] for b in bars}
+         and x not in next(b for b in bars if b['id'] == bid)['decides'] + next(b for b in bars if b['id'] == bid)['supports']]
+assert not lost, 'the remake would lose what the previous table held: %s' % lost[:5]
 out = dict(mod='Pyrelands', version='0.1.0', made=NOW, made_by='rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)',
     stages={'2': 'preflight (a program)', '4-5': 'blind offline challenge and game-logic testing', '6': 'in-game acceptance', '8': 'his live walk'},
     rule='a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing',
     settings_move='inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_walk keeps only the gate-off read in play, as support. No bar text is edited.',
+    coverage_leaves={l: dict(bar=t, why='the leaf states the bar\'s promise; it is that bar\'s coverage, not a bar') for l, t in COVERAGE.items()},
     held_statements=[], held_note='0 held look statements name Pyrelands (grep of design/RimMandrake/validation_holding/*.md for pyre|ember|scorch|ash, 2026-11-14; the same grep for knockback finds 7 lines)',
     corrections=json.load(open('/mnt/d/ClaudeWork/scratch/pyrelands_advance/corrections.json')), tests=T, bars=bars)
 json.dump(out, open(V + 'test_table.json', 'w'), indent=1, ensure_ascii=False); open(V + 'test_table.json', 'a').write('\n')
@@ -166,6 +194,7 @@ md = ['# Pyrelands 0.1.0: test-and-stage table', '', 'Generated %s from `test_ta
 for b in bars:
     r = 'all' if b['every_decider_runnable_today'] else ('some' if any(runnable(x) for x in b['decides']) else 'none')
     md.append('| `%s` | %s | %s | %s | %s | %s |' % (b['id'], b['source'].split('.')[0], b['proves_at'], ', '.join(b['decides']), ', '.join(b['supports']) or '-', r))
+md += ['', '## Leaves that are coverage of a bar (not bars)', ''] + ['- `%s` covers bar `%s`' % (l, t) for l, t in COVERAGE.items()]
 md += ['', '## Tests', '', '| test | kind | stage | file | runs today |', '|---|---|---|---|---|']
 for t in T.values():
     rt = t.get('runs_today', {})

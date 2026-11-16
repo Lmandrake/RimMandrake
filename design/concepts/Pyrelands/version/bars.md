@@ -44,7 +44,8 @@ Tree hash (`concept_tree.py hash`): `3ffd15d1aa89521618cd9b2c595684e582a864c7ccf
 
 ## Counts at the lock
 
-- Bars (the coverage checklist): **42** = 21 inventory rows + 21 tree leaves (41 at the lock; `inv_firehawk_hunt_rewards` added by his card 2026-11-14).
+- Bars: **43** = 21 inventory rows + 22 tree leaves (41 at the lock; `inv_firehawk_hunt_rewards` added by his card 2026-11-14; leaf `ullai_cross_the_map_as_vanilla_herds` added by the locked change 91a7c61989, his card OWNER:1794748469904049550). The record is `version/locked_bars.json`.
+- Not a bar: leaf `firehawk_hunt_rewards` (same change) states `inv_firehawk_hunt_rewards`' promise, so it is that bar's coverage; `make_test_table.py` maps it there. The coverage judge's checklist still owes it a row (44 rows).
 - Floor lines: 23 (23 applicable).
 - Exam: 22 of 22 scenarios right (against an earlier tree and sheet; see VERSION.json caveats).
 - Waived lines: 0.
@@ -72,6 +73,8 @@ Tree hash (`concept_tree.py hash`): `3ffd15d1aa89521618cd9b2c595684e582a864c7ccf
 - `fire_rite_hook_silent_alone` (experience)
 - `biome_text_says_engineered` (experience)
 - `flamefang_bite_carries_venom` (experience)
+- `ullai_cross_the_map_as_vanilla_herds` (experience; added 2026-11-15 by the locked change 91a7c61989, his card)
+- `firehawk_hunt_rewards` (experience; coverage of `inv_firehawk_hunt_rewards`, not a bar)
 
 ## The inventory rows (ids only; the text is in record.json)
 

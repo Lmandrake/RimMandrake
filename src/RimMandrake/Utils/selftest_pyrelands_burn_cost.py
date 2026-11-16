@@ -55,7 +55,6 @@ MUTANTS = [
      "fire scan escapes the gate"),
     ("RM_JobDriver_Burrow.cs", "pawn.thingIDNumber, PyrelandsTuning.BurrowEmergeCheckIntervalTicks)",
      "pawn.thingIDNumber, 1)", "interval 1 at the call site"),
-    ("PyrelandsTuning.cs", "BurrowEmergeCheckIntervalTicks = 30", "BurrowEmergeCheckIntervalTicks = 1", "interval 1 in tuning"),
     ("RM_JobGiver_BurrowOnFire.cs", "                return false;\n            }\n            for (int i",
      "            }\n            for (int i", "radial branch falls through to the all-fires walk"),
     ("FireEcologyHook.cs", "if (rolledFires != null && !rolledFires.Contains(", "if (true || rolledFires != null && !rolledFires.Contains(",
@@ -64,6 +63,12 @@ MUTANTS = [
      "int spot0 = FirstLegalFruitSpot(pos, map);\n                if (rolledFires != null && !rolledFires.Contains(",
      "9 probes hoisted above the not-yet-rolled gate"),
 ]
+
+
+def tuning_mutants():
+    """Mutants built from the shipped tuning, so no tuning value is pinned here: the interval set to 1 must go red."""
+    m = re.search(r"BurrowEmergeCheckIntervalTicks\s*=\s*\d+", read("PyrelandsTuning.cs"))
+    return [("PyrelandsTuning.cs", m.group(0), "BurrowEmergeCheckIntervalTicks = 1", "interval 1 in tuning")] if m else []
 
 
 def stamp_check():
@@ -83,7 +88,7 @@ def stamp_check():
 def sabotage():
     """Every mutant must turn the call-site checks red; restores nothing on disk because nothing on disk is touched."""
     survivors = []
-    for f, a, b, why in MUTANTS:
+    for f, a, b, why in MUTANTS + tuning_mutants():
         orig = read(f)
         if orig.count(a) < 1:
             survivors.append("%s: mutant anchor missing (%s)" % (f, why))
@@ -129,7 +134,10 @@ def strip_comments(code):
 
 def call_sites():
     hook = read("FireEcologyHook.cs")
-    post = method_body(hook, "public static void Postfix(Fire __instance, int delta)")
+    # Inside its own class: FireEcologyHook.cs holds more than one Fire postfix with this signature (Patch_FireTick_BlackRainDouses,
+    # 24a2069d18, sits above it), and the first one in the file is not the scorch-fruit roll.
+    cls = method_body(hook, "public static class Patch_FireTick_AshAndScorchFruit")
+    post = method_body(cls, "public static void Postfix(Fire __instance, int delta)") if cls else None
     check(post is not None, "Patch_FireTick_AshAndScorchFruit.Postfix not found in FireEcologyHook.cs")
     if post:
         code = strip_comments(post)
