@@ -13,7 +13,7 @@ before step 4 (cutover).
 
 ## Step 1 — amend the spec, write this plan
 
-Done by the first item. Acceptance: none, prose (the spec carries the four answers and his additions; no line still
+Done by the first item (e44792cf2f). Acceptance: none, prose (the spec carries the four answers and his additions; no line still
 says two pilot mods, a 600k ceiling, or that a judge fixes what it finds).
 
 ## Step 2 — `modledger`: append, lint, show, packet, views
@@ -22,7 +22,8 @@ says two pilot mods, a 600k ceiling, or that a judge fixes what it finds).
 `model.canonical_order`; `ledger_lint.lint_blob` for MALFORMED / NO_NEWLINE / NOT_APPEND / DUP_DIFFERENT), config
 `modledger.json`, ledgers at `design/concepts/<Mod>/ledger/<WRITER>.jsonl`, views at `design/concepts/<Mod>/ledger/views/`.
 
-Acceptance test: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_modledger` (the test is
+Done by the first item (6b4fb634a7; backfill and compare 872a7657e2). Acceptance test:
+`python3 src/RimMandrake/Utils/run_selftests.py --only modledger` (the test is
 `src/RimMandrake/rimflow/selftest_modledger.py`; it is in `pipeline_tests.json`, so `./publish` runs it). It fails on
 the base commit (no `modledger.py` there).
 
@@ -31,7 +32,8 @@ the base commit (no `modledger.py` there).
 `modledger.py backfill --mod <Mod>` reads today's stores (stage record, journal "stands", bars, coverage verdict and
 fixes, exam, results, open items naming the mod, his answers) and appends one `BACKFILL` event per fact, each citing
 its old file. Views are generated beside the old files; nothing is redirected. Explosive Knockback first (the smallest;
-done in the first item if its budget allowed, see its close), then Gimme Some Slack and FlowWorks:
+done by the first item at 872a7657e2: 383 events, packet 14,980 of 15,000 tokens, `compare` 3 of 8 agree),
+then Gimme Some Slack and FlowWorks:
 `RIMMANDRAKE_BACKFILL_SLACK_AND_FLOWWORKS_LEDGERS_IN_SHADOW`.
 
 Acceptance test: `python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py GimmeSomeSlack FlowWorks`
