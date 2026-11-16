@@ -1,7 +1,7 @@
 {
  "mod": "LeaningScrub",
  "version": "0.1.0",
- "made": "2026-11-16T18:47:36Z",
+ "made": "2026-11-16T19:00:39Z",
  "made_by": "design/concepts/LeaningScrub/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
  "stages": {
   "4-5": "offline (blind)",
@@ -48,9 +48,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 31.1,
-    "last": "[lscrub] 10:47:22 log_clean PASS ",
-    "at": "2026-11-16T18:47:22Z",
+    "seconds": 32.9,
+    "last": "[lscrub] 11:00:16 log_clean PASS ",
+    "at": "2026-11-16T19:00:16Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub.txt",
     "result": "PASS"
    }
@@ -76,7 +76,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "PASS selftest_leaningscrub_fauna_behaviours (7 rows, 35 planted breaks)",
-    "at": "2026-11-16T18:47:22Z",
+    "at": "2026-11-16T19:00:16Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fauna_behaviours.txt",
     "result": "PASS"
    }
@@ -102,7 +102,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "all ok",
-    "at": "2026-11-16T18:47:22Z",
+    "at": "2026-11-16T19:00:16Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_gpt_fixes.txt",
     "result": "PASS"
    }
@@ -128,7 +128,7 @@
     "rc": 0,
     "seconds": 0.5,
     "last": "PASS selftest_leaningscrub_shirrel_glide (5 rows, 23 planted breaks)",
-    "at": "2026-11-16T18:47:22Z",
+    "at": "2026-11-16T19:00:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_shirrel_glide.txt",
     "result": "PASS"
    }
@@ -154,7 +154,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "  roster = [e.tag for e in (d.find(\"wildAnimals\") or []) if \"MayRequire\" not in e.attrib]",
-    "at": "2026-11-16T18:47:23Z",
+    "at": "2026-11-16T19:00:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_site.txt",
     "result": "PASS"
    }
@@ -178,9 +178,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.3,
+    "seconds": 12.4,
     "last": "0 failure(s)",
-    "at": "2026-11-16T18:47:27Z",
+    "at": "2026-11-16T19:00:29Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_soundscape.txt",
     "result": "PASS"
    }
@@ -204,9 +204,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 2.3,
+    "seconds": 2.5,
     "last": "  Z5 code: ['RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs changed since review (fingerprint ba4ab711d3e3291a, reviewed a243636a2b2fc529): re-read it']",
-    "at": "2026-11-16T18:47:29Z",
+    "at": "2026-11-16T19:00:32Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wildlife_zero_paths.txt",
     "result": "FAIL"
    }
@@ -230,9 +230,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.8,
+    "seconds": 2.1,
     "last": "selftest scrub wind: 7 lean plants, 149 variants measured, 11 breaks -> OK",
-    "at": "2026-11-16T18:47:31Z",
+    "at": "2026-11-16T19:00:34Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wind.txt",
     "result": "PASS"
    }
@@ -258,7 +258,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "0 failure(s)",
-    "at": "2026-11-16T18:47:31Z",
+    "at": "2026-11-16T19:00:34Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_sweetline_shed_probe.txt",
     "result": "PASS"
    }
@@ -282,9 +282,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.8,
-    "last": "leaningscrub fuzz: 19000 cases, 637912 steps, 1.70s total -> OK",
-    "at": "2026-11-16T18:47:35Z",
+    "seconds": 3.4,
+    "last": "leaningscrub fuzz: 19000 cases, 637912 steps, 1.69s total -> OK",
+    "at": "2026-11-16T19:00:37Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fuzz.txt",
     "result": "PASS"
    }
@@ -310,7 +310,7 @@
     "rc": 0,
     "seconds": 1.5,
     "last": "leaningscrub lint: 51 defs + 9 patch files, 119 classes, 131 class/def refs, 92 field checks, 3 drivers, 82 settings, 0 ERROR, 0 WARN",
-    "at": "2026-11-16T18:47:36Z",
+    "at": "2026-11-16T19:00:39Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/lint_leaningscrub_defs.txt",
     "result": "PASS"
    }

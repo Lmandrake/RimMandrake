@@ -449,7 +449,12 @@ class Fake(object):
         msgs = []
         if "log_error" in self.broken and contains == "LeaningScrub":
             msgs = [{"type": "Error", "text": "[RM LeaningScrub] stall-freeze: rule NOT armed"}]
-        msgs += [m for m in self.log if contains and contains in m["text"] and (not errorsOnly or m["type"] == "Error")]
+        if contains:
+            msgs += [m for m in self.log if contains in m["text"] and (not errorsOnly or m["type"] == "Error")]
+        else:       # the whole buffer, oldest first; a broken mod's error lands inside the latest window
+            msgs = list(self.log)
+            if "log_error" in self.broken and msgs:
+                msgs.insert(len(msgs) - 1, {"type": "Error", "text": "[RM LeaningScrub] stall-freeze: rule NOT armed"})
         return {"success": True, "totalInBuffer": 321, "messages": msgs}
 
     def t_spawn_pawn(self, kindDef=None, x=0, z=0, faction="none", count=1, **k):
@@ -1137,7 +1142,8 @@ class Fake(object):
             # regex read the RATE line and failed a correct 30% stand)
             lines = ["%d%% grown" % int(100 * t.get("growth", 1)), "Growth rate: 100%"]
         elif d in (V.CRUST, V.CRUST_ALT, V.THICKET):
-            lines = ["%d%% grown" % int(round(100 * t.get("growth", 1))), "Growth rate: 100%"]
+            g = t.get("growth", 1)      # vanilla Plant.GetInspectString: "Mature." at full growth, never "100% grown"
+            lines = (["Mature."] if g >= 1 else ["%d%% grown" % int(round(100 * g))]) + ["Growth rate: 100%"]
         elif d == "Campfire":
             lines = ["Fuel: %d / 20" % round(self.fuel(t["id"]))]
         elif d == V.TREE and (self.on("sweetlineStationsEnabled") or "station_ignores_toggle" in self.broken):

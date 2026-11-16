@@ -505,6 +505,9 @@ def _setting(t, field, value):
             was = _get_setting(t, field)
         except ExpectationFailed:
             was = None
+    if was is not None and not _same(was, DEFAULTS[field]):
+        print("[lscrub] SETTING CAPTURED OFF-DEFAULT %s = %r (shipped %r): restored to the captured value"
+              % (field, was, DEFAULTS[field]), file=sys.stderr, flush=True)
     try:
         _set(t, field, value)    # inside the try: a set whose read-back failed may still have changed the field
         yield
@@ -3876,7 +3879,9 @@ def _growth(t, tid):
         m = re.match(r"\s*(\d+)% grown", str(ln))
         if m:
             return int(m.group(1)) / 100.0
-    _unmeasured(t, "inspect_string(%s) carries no '%% grown' line: %s" % (tid, lines[:3]))
+        if re.match(r"\s*Mature\b", str(ln)):     # vanilla prints "Mature." instead of "100% grown" (LIVE: the twitcher stand, lash chain)
+            return 1.0
+    _unmeasured(t, "inspect_string(%s) carries no '%% grown' or 'Mature' line: %s" % (tid, lines[:3]))
 
 
 def _vec2(text):
@@ -3934,8 +3939,11 @@ def _crown_cap_offences(samples, cap):
 
 
 def _crown_arrival_offences(samples):
-    on_way = set(p for s in samples for p in s["transit"])
-    arrived = sorted(p for p in on_way if any(p in s["held"] for s in samples))
+    first = {}
+    for i, s in enumerate(samples):
+        for p in s["transit"]:
+            first.setdefault(p, i)
+    arrived = sorted(p for p, i in first.items() if any(p in s["held"] for s in samples[i + 1:]))
     return [] if len(arrived) >= 2 else ["%d attributed crown arrival(s) (a flutter seen on its way, then at the stand); "
                                          "nearby wanderers do not count" % len(arrived)]
 
@@ -4041,13 +4049,14 @@ def scene_crown(t):
                 injected = {
                     "second wave over the cap": _crown_cap_offences(ok + [s(["a", "b"], ["c"])], 2),
                     "nearby wanderers counted as gathering": _crown_arrival_offences([s(["a", "b"], [])]),
+                    "resident later sent counted as arrival": _crown_arrival_offences([s(["a", "b"], []), s([], ["a", "b"])]),
                     "busy flutter hijacked": _crown_busy_offences([s(["a"], [], (0, 0))], goal),
                     "control drew a flutter": _crown_control_offences([s([], ["a"])]),
                 }
                 missed = sorted(k for k, v in injected.items() if not v)
                 if missed:
                     _fail("the crown checker passed injected run(s) %s: it is blind there" % missed)
-    with _scene(t, "sc_crown", "owner_review"):
+    with _scene(t, "sc_crown", "owner_review" if OWNER_PRESENT else "immediate"):    # no hold for a scene that never ran
         _stable(t, body)
 
 
@@ -4209,8 +4218,8 @@ def scene_creep(t):
     ringed by protected cells (roof, wall, stockpile zone, plank floor, tree). The runner interval is compressed
     (venomvineCreepDays 0.01, so a sweep's runner chance is ~1) and the clock is moved to three ticks short of the
     map's own creep sweep, which then runs on its real tick: runners are young (under half grown, unarmed), beside an
-    emitter, lean downwind more than a uniform pick, and never take a protected cell. Controls: creep off lays nothing;
-    the cap set to today's share lays nothing. Explosive Growth: the live roster def lists every venomvine in both
+    emitter, lean downwind more than a uniform pick, and never take a protected cell. Controls, counted map-wide and
+    only after the on arm reached the test emitters: creep off lays nothing; the cap set to today's share lays nothing. Explosive Growth: the live roster def lists every venomvine in both
     exemption paths (soak and band), so the vine keeps its own clock. Not driven here: a real soak/band growth pass
     (RM_ExplosiveGrowthAPI.Soak takes a Map, which jawa/static_call cannot pass), Explosive Growth absent (an
     integration-absent list), a smothered emitter, a sown neighbour, and half-growth contact (the vine_contact scene's)."""
@@ -4260,16 +4269,9 @@ def scene_creep(t):
                 got["wind"] = _vec2(_ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_Lean",
                                                       members="Downwind"), "map_comp_read(Lean)").get("values", {}).get("Downwind"))
                 got["before"] = set(thickets())
-        with _comp(t, "creep_scene_toggle_off_quiet", toggle="venomvineCreepEnabled"):
-            if _live(t):
-                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0), \
-                        _setting(t, "venomvineCreepEnabled", False):
-                    sweep()
-                new = sorted(set(thickets()) - got["before"])
-                if new:
-                    _fail("venomvineCreepEnabled OFF but the sweep laid runner(s) at %s" % new[:6])
         with _comp(t, "creep_scene_runners_young_downwind", toggle="venomvineCreepEnabled"):
             if _live(t):
+                n0 = _count_all(t, THICKET)
                 with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
                     sweep()
                     sweep()
@@ -4277,6 +4279,9 @@ def scene_creep(t):
                 runners = dict((c, _growth(t, now[c])) for c in sorted(set(now) - got["before"]) if c not in guard_cells)
                 guarded = dict((c, 1 if c in now else 0) for c in guard_cells)
                 got["runners"] = runners
+                if not runners and _count_all(t, THICKET) > n0:
+                    _unmeasured(t, "the sweeps laid runners elsewhere on the map but none beside the test emitters (a "
+                                   "sweep spends maxRunnersPerSweep on stands in list order): SITE, not the mod")
                 _note(t, "creep runners", {"runners": sorted(runners.items())[:12], "downwind": got.get("wind")})
                 if got.get("wind") is None or not any(got["wind"]):
                     _unmeasured(t, "RM_MapComponent_Lean.Downwind unreadable or zero: the lean cannot be judged")
@@ -4290,6 +4295,17 @@ def scene_creep(t):
                 if taken:
                     _fail("venomvine took protected cell(s) %s (%s)" % (
                         taken, [CREEP_GUARDS[guard_cells.index(c)] for c in taken]))
+        with _comp(t, "creep_scene_toggle_off_quiet", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                if not got.get("runners"):
+                    _unmeasured(t, "no sweep reached the test emitters with creep on: an off arm laying nothing proves nothing")
+                n0 = _count_all(t, THICKET)          # the whole map: a sweep spends its runners in list order
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0), \
+                        _setting(t, "venomvineCreepEnabled", False):
+                    sweep()
+                n1 = _count_all(t, THICKET)
+                if n1 > n0:
+                    _fail("venomvineCreepEnabled OFF but the sweep laid %d runner(s) on the map" % (n1 - n0))
         with _comp(t, "creep_scene_cap_stops", toggle="venomvineCreepEnabled"):
             if _live(t):
                 st = creep_state()
@@ -4297,14 +4313,16 @@ def scene_creep(t):
                     open_cells, vine = int(st.get("openCells")), int(st.get("vineCells"))
                 except (TypeError, ValueError):
                     open_cells, vine = 0, 0
-                if open_cells <= 0:
-                    _unmeasured(t, "openCells unread (%r): the cap cannot be set to today's share" % st)
-                before = set(thickets())
+                if open_cells <= 0 or not got.get("runners"):
+                    _unmeasured(t, "openCells unread (%r) or no runner seen with creep on: a cap arm laying nothing "
+                                   "proves nothing" % st)
+                n0 = _count_all(t, THICKET)
                 with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", vine / float(open_cells)):
                     sweep()
-                new = sorted(set(thickets()) - before)
-                if new:
-                    _fail("the cap was set to today's share (%d of %d) but the sweep laid %s" % (vine, open_cells, new[:6]))
+                n1 = _count_all(t, THICKET)
+                if n1 > n0:
+                    _fail("the cap was set to today's share (%d of %d) but the sweep laid %d runner(s) on the map"
+                          % (vine, open_cells, n1 - n0))
         with _comp(t, "creep_scene_explosive_growth_exempt"):
             if _live(t):
                 rows, _r = _get_defs(t, EG_ROSTER, "exemptPlants,bandExemptPlants")
@@ -4350,6 +4368,12 @@ def _def_blocks(root=None):
     return out
 
 
+def _source_files():
+    """Every shipped .cs under Source/ (Kernel/ included; the SelfTest/ harness is not shipped)."""
+    return sorted(p for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True)
+                  if "SelfTest" not in os.path.relpath(p, HERE).split(os.sep))
+
+
 ALIAS_TYPE = "RimMandrake.EnvironmentalHazards.RM_DefAliasDef"
 ALIAS_CONTROL = ALIAS_TYPE + "/RM_PlantTierReconcileAliases"   # the kit's own alias def: proves the type spelling resolves
 LEGACY_SOURCE = re.compile(r"BackCompatibility|RM_DefAlias|LoadSaveMode\.PostLoadInit[^\n]*(?:old|legacy)|legacy import|"
@@ -4367,7 +4391,7 @@ def _save_manifest():
     eggs = sorted("ThingDef/%s" % n for tag, n, _b, _f in blocks if tag == "ThingDef" and "Egg" in n
                   and any("<eggFertilizedDef>%s<" % n in b or "<eggUnfertilizedDef>%s<" % n in b for _t, _n, b, _f in blocks))
     legacy = []
-    for path in sorted(glob.glob(os.path.join(HERE, "Source", "*.cs"))):
+    for path in _source_files():
         with open(path, encoding="utf-8-sig") as fh:
             for i, ln in enumerate(fh, 1):
                 if LEGACY_SOURCE.search(ln) and not ln.strip().startswith("//"):
@@ -4473,9 +4497,9 @@ def _payload_manifest():
     """The offline half of the payload: dependencies, def types, def names, namespaces, worldgen and multiplayer hits."""
     blocks = _def_blocks()
     src = {}
-    for path in sorted(glob.glob(os.path.join(HERE, "Source", "*.cs"))):
+    for path in _source_files():
         with open(path, encoding="utf-8-sig") as fh:
-            src[os.path.basename(path)] = fh.read()
+            src[os.path.relpath(path, os.path.join(HERE, "Source"))] = fh.read()
     return {"deps": _about_deps(), "folds": _composed_folds(),
             "worldgen": sorted(["Defs:%s/%s" % (tag, n) for tag, n, _b, _f in blocks if tag == "WorldGenStepDef"]
                                + ["%s:%d" % (f, s[:m.start()].count("\n") + 1) for f, s in src.items()
@@ -4600,14 +4624,24 @@ def _recovery_offences(before, after, records):
             out.append("the state did not return (%s) but the recovery was closed (scene-end)" % "; ".join(why))
         elif "scene-hold" not in records:
             out.append("the state did not return (%s); the recovery stays open, blocking further runs" % "; ".join(why))
+    elif "scene-end" not in records and "scene-hold" not in records:
+        out.append("the state returned but the recovery was left open (no scene-end)")
     return out
 
 
-def _log_window(sentinel_seen, errors):
-    """-> ("UNMEASURED", why) on a dead tap, ("FAIL", msgs) on attributable errors, ("PASS", None) otherwise."""
-    if not sentinel_seen:
-        return "UNMEASURED", "the log sentinel never reached the tap: a clean window would prove nothing"
-    return ("FAIL", errors) if errors else ("PASS", None)
+def _log_window(msgs, start, end):
+    """The log-window checker, pure. msgs: jawa/drain_log rows (the whole Log.Messages buffer, oldest first: the tool
+    keeps no cursor); start/end: the sentinels written around the scene. -> ("UNMEASURED", why) when a sentinel is not
+    in the buffer (a dead tap, or the buffer rolled past the start), ("FAIL", texts) for LeaningScrub errors between
+    them, ("PASS", None) otherwise. Messages before the start belong to earlier chains and are never judged."""
+    texts = [str(m.get("text") or "") for m in msgs or []]
+    i = next((k for k, x in enumerate(texts) if start in x), None)
+    j = next((k for k, x in enumerate(texts) if end in x), None)
+    if i is None or j is None or j < i:
+        return "UNMEASURED", "a log sentinel is not in the buffer (start %s, end %s): the window cannot be read" % (i, j)
+    errs = [texts[k] for k in range(i + 1, j) if str(msgs[k].get("type")) in ("Error", "Exception") and
+            "LeaningScrub" in texts[k]]
+    return ("FAIL", errs) if errs else ("PASS", None)
 
 
 class _ProbeBoom(Exception):
@@ -4648,9 +4682,14 @@ def scene_floor_recovery(t):
             globals()["SCENE_RECORD"], globals()["_scene_load"] = real, load
         return records
 
+    def mark(what):
+        got[what] = "LSCRUB_RECOVERY_%s_%d" % (what.upper(), int(time.time() * 1000))
+        t.bridge_call("jawa/static_call", type="Verse.Log", method="Warning", args=got[what])
+
     def body():
         with _comp(t, "recovery_exact_state_returns"):
             if _live(t):
+                mark("start")
                 got["bystanders"] = [_spawn(t, RECOVERY_KIND, x - 3, z), _spawn(t, RECOVERY_KIND, x + 30, z)]
                 _set(t, RECOVERY_SETTING, 11.0)
                 before = digest()
@@ -4675,13 +4714,9 @@ def scene_floor_recovery(t):
                     _vanish(t, p)
         with _comp(t, "recovery_log_window_clean"):
             if _live(t):
-                mark = "LSCRUB_RECOVERY_SENTINEL_%d" % int(time.time())
-                t.bridge_call("jawa/static_call", type="Verse.Log", method="Warning", args=mark)
-                seen = (_ok(t.bridge_call("jawa/drain_log", contains=mark, limit=5), "drain_log(sentinel)")
-                        .get("messages") or [])
-                errs = [m.get("text") for m in (_ok(t.bridge_call("jawa/drain_log", contains="LeaningScrub", errorsOnly=True,
-                                                                  limit=20), "drain_log").get("messages") or [])]
-                verdict, why = _log_window(bool(seen), errs)
+                mark("end")
+                msgs = _ok(t.bridge_call("jawa/drain_log", limit=5000), "drain_log").get("messages") or []
+                verdict, why = _log_window(msgs, got.get("start") or "(no start sentinel)", got["end"])
                 if verdict == "UNMEASURED":
                     _unmeasured(t, why)
                 if verdict == "FAIL":
@@ -4698,7 +4733,14 @@ def scene_floor_recovery(t):
                             "fixture left behind": _recovery_offences(b, dict(b, fixtures=["x"]), ok),
                             "omitted restore": _recovery_offences(b, dict(b, tick=9), ["scene-begin"]),
                             "no recovery opened": _recovery_offences(b, dict(b), ["scene-end"]),
-                            "dead log sentinel": [1] if _log_window(False, [])[0] != "PASS" else []}
+                            "restored but left open": _recovery_offences(b, dict(b), ["scene-begin"]),
+                            "dead log sentinel": [1] if _log_window([], "S", "E")[0] != "PASS" else [],
+                            "error inside the window": [1] if _log_window(
+                                [{"text": "S"}, {"type": "Error", "text": "[RM LeaningScrub] x"}, {"text": "E"}], "S", "E")[0]
+                                == "FAIL" else [],
+                            "earlier chain's error judged": [1] if _log_window(      # correct = not judged
+                                [{"type": "Error", "text": "[RM LeaningScrub] x"}, {"text": "S"}, {"text": "E"}], "S", "E")[0]
+                                == "PASS" else []}
                 missed = sorted(k for k, v in injected.items() if not v)
                 # an omitted restore with the recovery left open is the CORRECT outcome, so it must read as open, not pass
                 if "omitted restore" not in missed and "stays open" not in " ".join(injected["omitted restore"]):
@@ -4709,8 +4751,7 @@ def scene_floor_recovery(t):
         try:
             _stable(t, body)
         finally:
-            if _live(t):
-                _restore(t, RECOVERY_SETTING)
+            _restore(t, RECOVERY_SETTING)        # unguarded: a failed component must not leave the setting moved
 
 
 # --------------------------------------------------------------------------- chain: the log (last)

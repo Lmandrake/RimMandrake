@@ -1,6 +1,6 @@
 # LeaningScrub 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T18:47:36Z. A bar passes when every deciding test passes. Every bar-to-test pair is read from the locked files (coverage_verdict.json checklist parts; scenes.json requirement, exercises, coverage_rest, showcases); none is hand-written.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T19:00:39Z. A bar passes when every deciding test passes. Every bar-to-test pair is read from the locked files (coverage_verdict.json checklist parts; scenes.json requirement, exercises, coverage_rest, showcases); none is hand-written.
 
 ## Counts
 
