@@ -7901,3 +7901,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T18:02:39Z","tsn":1794852159504770011}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T18:04:07Z","tsn":1794852247454393882}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T18:05:23Z","tsn":1794852323724677710}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T18:07:58Z","tsn":1794852478699528088}
