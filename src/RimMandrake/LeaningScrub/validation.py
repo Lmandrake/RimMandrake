@@ -7096,6 +7096,7 @@ def scene_working_wind(t):
                 ids["col"] = _spawn(t, "Colonist", tx, tz - 4, faction="player")
                 _full(t, ids["col"])
                 got["factor"] = float(_get_setting(t, "galeTurbineSurgeFactor"))
+                got["mtb_was"] = _get_setting(t, "galeTurbineBreakdownMtbDays")   # restored, not DEFAULTS
                 _set(t, "galeTurbineBreakdownMtbDays", 0)
         try:
             with _comp(t, "wind_ordinary_no_surge", toggle="galeTurbineSurgeEnabled"):
@@ -7170,7 +7171,7 @@ def scene_working_wind(t):
                         "broken still surges": dict(good, broken_power=650.0), "never fixed": dict(good, repaired=False)})
         finally:
             if _live(t):
-                _restore(t, "galeTurbineBreakdownMtbDays")
+                _restore(t, "galeTurbineBreakdownMtbDays", got.get("mtb_was"))
     with _scene(t, "sc_working_wind", "immediate"):
         _stable(t, body)
 
@@ -7211,7 +7212,10 @@ def scene_raid_weight(t):
     def snapshot():
         q = _ok(t.bridge_call("jawa/incident_queue_peek"), "incident_queue_peek")
         j = _ok(t.bridge_call("jawa/incident_journal", sinceSeq=-1, limit=200), "incident_journal")
-        return int(q.get("count") or 0), len(j.get("rows") or [])
+        if j.get("installed") is False:
+            got["journal_blind"] = True
+        # the newest aseq, not len(rows): a journal holding >= limit rows reads 200 before and after a new incident
+        return int(q.get("count") or 0), max([int(r.get("aseq") or -1) for r in (j.get("rows") or [])] or [-1])
 
     def body():
         with _comp(t, "raid_binding_armed", toggle="galeRaidWeightingEnabled"):
@@ -7253,6 +7257,8 @@ def scene_raid_weight(t):
         with _comp(t, "raid_nothing_scheduled"):
             if _live(t):
                 after = snapshot()
+                if got.get("journal_blind") or got.get("before") is None:
+                    _unmeasured(t, "incident journal not installed or no baseline: a fired incident would be unseen")
                 got["scheduled"] = after != got.get("before")
                 _note(t, "incident queue count / journal rows (before, after)", [got.get("before"), after])
                 _only(_raid_offences(got), "queued or fired")
@@ -7372,6 +7378,8 @@ def scene_hollow(t):
                 _only(_hollow_offences(got), "did not cross the Hollow", "never seen", "no freer")
         with _comp(t, "hollow_no_contact_venom"):
             if _live(t):
+                if not got["on_hollow"]:
+                    _unmeasured(t, "the colonist was never on a Hollow cell: no contact to be spared")
                 _only(_hollow_offences(got), "Hollow gave contact venom")
         with _comp(t, "hollow_huge_blocked"):
             if _live(t):
