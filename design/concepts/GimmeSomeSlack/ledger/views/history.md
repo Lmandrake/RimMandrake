@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393548,"DISPATCH":9538,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=77eb971427cbb05dc70e2d953c29e8412089b6f268d4752732abbd469963aceb -->
-# GimmeSomeSlack — mod ledger history (547 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393548,"DISPATCH":10196,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=22fce6ea55d9c00c0004dbd987f5d937df49466ac922bd70aa6335729a988b35 -->
+# GimmeSomeSlack — mod ledger history (549 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -548,3 +548,5 @@
 - 2026-11-16T12:18:55Z DISPATCH#24 lease.grant lease v0.1.0: 
 - 2026-11-16T12:18:56Z DISPATCH#25 run.start run v0.1.0: 
 - 2026-11-16T12:19:04Z DISPATCH#26 run.end run v0.1.0: 
+- 2026-11-16T13:05:11Z DISPATCH#27 lease.grant lease v0.1.0: 
+- 2026-11-16T13:05:13Z DISPATCH#28 run.start run v0.1.0: 
