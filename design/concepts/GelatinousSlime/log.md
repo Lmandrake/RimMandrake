@@ -23,3 +23,21 @@ This is Conductor-authority text recorded through the standing Evidence-for-Ask 
 The review charge is 39,000 weighted tokens, based on the reviewer’s estimate including inherited context (33,000 input plus 1,200 output at five times), not a metered reading. The primary run’s usage remains the launcher’s responsibility.
 
 Stage-1 completion establishes the root only. It supplies no flagship selection, runtime proof, art verdict or first-touch certification.
+
+## Stage 2 — rm-role-designercodex-1794809122
+
+The adopted root and stage record were read first, including prior UI/family/weapon answer excerpts. The existing-content gene expedition/rescue and stages-one-and-five art walk was offered again before further design. Its save identity is unverified and it remains unrun. No bridge/game/deployment action or persistent game-state change occurred.
+
+stage2_argument.md records eleven claims with attacks, dumb versions, counterexamples, reuse boundaries, distinct transition variants, source-backed dispositions and pruning tests. A costs/scale table labels source defaults and agent assumptions. The root is unchanged. Existing rain scope was separated from unknown delivery: its authored promise remains; no keep/remove choice is left pending.
+
+Fresh reviewer /root/edge_review passed completion and struck a fresh ratification ask as redundant: no concrete evidence needs a new human scope choice. No stage-2 ask was sent, and no substantive decision was waived. Review clarifications applied: explicitly spend one released/bursting piece once; label mid-vat pause as an agent implementation choice derived from existing off text and saved power-pause behaviour. The review is persisted in stage2_review.json and charged 58,000 weighted tokens (conservative reviewer estimate, not actual metered usage). The launcher owns the primary run charge.
+
+### Delegated edge disposition — CONDUCTOR:1794810108456236688
+
+This is Conductor-authority text under Evidence-for-Ask, not a fresh reply or quotation from the owner. Ledger text and reason follow verbatim.
+
+**text:** GelatinousSlime Designer stage 2, run rm-role-designercodex-1794809122: preserve the adopted root and existing built/authored scope after independent edge review /root/edge_review. Dispositions and finite counterexamples/variants: design/concepts/GelatinousSlime/stage2_argument.md; review: stage2_review.json. Prior UI, changed-family grief and immediate weapon/ally danger answers remain settled. Derive one released/bursting chunk being spent once from its authored on-release burst; actual launch accounting remains unproven. Choose safe pause/resume preserving paid progress for archive-off, grounded in existing vat-does-nothing/entries-kept UI and saved power-pause behaviour. These are delegated agent implementation choices, not owner quotations. Preserve historical archive health/memory/contact and field-list-review obligations, authored rain services, and actual V5 breach. Runtime/integration/checker faults remain explicit stage-3 plan/proof work; no bridge, game restart, deployment, runtime acceptance, flagship pick, art verdict, first-touch certification or owner waiver.
+
+**why:** delegated: evidence-for-ask: GelatinousSlime: retain source-backed edge dispositions and complete the design dialogue without a new owner ratification ask. The existing root delegation and November UI/family/weapon answers settle the design, and fresh independent review found no concrete contrary evidence requiring a human choice. Technical archive, seal, settings, expiry and rain-service discrepancies challenge delivery, not existing scope. An on-release bursting piece is expended once; an off vat pauses like its existing power pause and keeps paid progress/entries, avoiding invented loss or refunds. No built capability is removed or reopened, and no missing runtime proof is promoted to acceptance.
+
+Stage-2 completion settles design edges only. Archive snapshot/field-list review, actual V5 integration, active-state settings, thrown-item accounting/expiry, rain services, legacy tags and proof-instrument corrections remain in stage-3 planning. Historical/runtime proof statuses are unchanged. No flagship, human art/experience verdict or first-touch certification has been supplied.

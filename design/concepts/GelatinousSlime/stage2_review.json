@@ -1,0 +1,50 @@
+{
+  "run": "rm-role-designercodex-1794809122",
+  "by": "/root/edge_review",
+  "fresh": true,
+  "verdict": "pass",
+  "ask_send_verdict": "struck",
+  "why": "The source-backed dispositions preserve built scope, historical obligations and prior UI/family/weapon answers, distinguish technical faults from unresolved design, and provide no concrete evidence requiring a new owner choice.",
+  "concrete_evidence_requiring_owner_choice": [],
+  "applied_clarifications": [
+    "One released, bursting harvested piece is expended once; the retained source cannot launch that same piece again. Actual ordinary launch accounting remains unobserved.",
+    "The safe mid-vat pause preserves paid progress and entries as an agent implementation choice derived from the off UI and existing saved power-pause behaviour, not owner words."
+  ],
+  "findings": [
+    "Settings-off contradictions are supported by the actual kernel/application routes; direct injection/raw ingestion differ from guarded chunk drench. Keep gene/coma effects distinct from film suppression.",
+    "Charm/Reek increments are correctly treated as authored exceptions to the general social bargain. Injection has no resistance guard; resistance must not be broadened into all-route immunity or engulf immunity.",
+    "Historical archive field list, health/memories, touch/rain/engulf wording and field-list review obligation remain; current missing fields, memory clearing, indiscriminate relation restoration and narrower filing are delivery gaps.",
+    "Changed-family answer is sourced as a recorded choice, not an invented verbatim owner quotation. Superseded marriage remains ended with lasting adjustment mood; no new number.",
+    "Multi-vat eligibility, ticker inheritance and campaign Helix gating remain implementation/proof gaps; no runtime stall or gate is declared proved.",
+    "Butchering is an authored alternative with a real butcher product; no new live tear-off mechanic is required.",
+    "Normal launch has no explicit inspected source-item consumption hook, unlike targeted seal use. Finite one-piece expenditure must be checked through the ordinary route.",
+    "Actual V5 lacks the generic extension; burst lacks the campaign API call; proximity leaves the chunk unconsumed and lacks the promised burst hazard. Actual seal and settings integration remain acceptance obligations.",
+    "RainRate/duration and generic excavation water are not proof of potable barrel collection or brief flooding/draining; living-slime drinking is a separate last-resort service. Retain authored rain obligation with impl unknown/proof missing."
+  ],
+  "limits": "Source-backed argument review only. No bridge/game/deployment or runtime observation, no helpers, no art/experience verdict, no historical snapshot-field review fulfillment or first-touch certification.",
+  "source": [
+    "design/concepts/GelatinousSlime/stage2_argument.md",
+    "design/concepts/GelatinousSlime/record.json",
+    "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "OWNER:1790977575993603898",
+    "OWNER:1790977582144466830",
+    "OWNER:1794346263694156545",
+    "CONDUCTOR:1794805789204977373",
+    "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+    "ITEM:GELATINOUSSLIME_ARCHIVE_RESURRECTION_1",
+    "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs",
+    "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+    "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+    "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+    "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+    "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs"
+  ],
+  "usage": {
+    "actual_available": false,
+    "basis": "Reviewer estimate: 35–50k input plus approximately 1.6k output, input + 5 × output; conservatively charge upper estimate.",
+    "estimated_input_tokens_upper": 50000,
+    "estimated_output_tokens": 1600,
+    "weighted_tokens": 58000
+  }
+}

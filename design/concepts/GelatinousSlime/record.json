@@ -170,6 +170,386 @@
       "delegated": "evidence-for-ask",
       "source": "CONDUCTOR:1794805789204977373",
       "text": "Adopt the independently reviewed existing-scope root synthesis. No concrete evidence argues against it. No flagship selection, runtime acceptance or first-touch certification is supplied by this call."
+    },
+    {
+      "id": "stage2_edge_body_work",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeWorks.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimePitSolvent.xml",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "OWNER:1792257249044295818",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain ordinary production, the raw-slime cure plus absorption fee in the same ingestion, scoped farm reversion, solvent bills and ruins. Demonstrate the production and use of results. Do not require perpetual inconvenience once a colony prepares well.",
+      "boundary": "The coupled poison/film charge belongs to raw-slime ingestion and the established living-slime drinking service. It does not impose a new direct film charge on every rendered meal or block. Safe floors and resistance remain legitimate answers to ordinary contact.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "raw_slime_bargain",
+        "compressor_economy",
+        "pit_meals",
+        "pit_solvent",
+        "farm_conversion",
+        "farm_ruins",
+        "slime_flora"
+      ]
+    },
+    {
+      "id": "stage2_edge_ordinary_film",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeAlerts.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "ITEM:CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Preserve the full ladder, ordinary-versus-injected identification, existing UI, drying geography and subterminal toxic treatment. Use actual contact and a completed untreated terminal arm; inspect exact victim gear and inventory. Numbers remain current defaults/tuning rather than a new owner-approved deadline.",
+      "boundary": "Slimification itself adds no aggression. Early off-body wipe-off applies only below the existing threshold on the ordinary clock. Tagged drying country has priority even on the injected clock. Antidote before terminal dissolution clears film, not genes, the lasting mark, or an already dead person.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "exposure",
+        "slimification_ladder",
+        "cure_geography",
+        "dissolution",
+        "warnings",
+        "antidote"
+      ]
+    },
+    {
+      "id": "stage2_edge_gene_journey",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/GeneSeeker.xml",
+        "src/RimUtinni/UtinniPatches/Defs/GeneArchiveDefs/RUT_SlimeGeneArchive.xml",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain the ordinary archive dialog and scanner/work route with item accounting, chosen-target identity and visible state. Exercise both archive contexts. A direct helper may diagnose internals but cannot accept this experience.",
+      "boundary": "No home console or remote gene production replaces field extraction. The rider remains unknown until injection but observable afterwards. Normal refrigeration is the existing loaded-item mercy, not a new strict wall-clock expiry. No universal-mod dependency on campaign genes is introduced.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection"
+      ]
+    },
+    {
+      "id": "stage2_edge_friend_rescue",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeSeekerProof.cs",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Use actual ordered injection and friend-administered treatment, verify completion/consumption before accepting cure, compare untreated dissolution, and retain the toxic price. An existing UI failure is delivery work, not a reopened owner UI question.",
+      "boundary": "Rescue is possible with preparation, not guaranteed regardless of travel, missing medicine or competing needs. The warning currently occurs after injection; do not invent a pre-injection veto. Antidote kills film but does not promise to cancel the independent vanilla coma or erase acquired genes/social consequences.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "gene_injection",
+        "antidote",
+        "warnings",
+        "slimification_ladder"
+      ]
+    },
+    {
+      "id": "stage2_edge_gene_price",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneConditions.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain heritable endogenes, visible/felt rider effects and lasting mark/opinion consequences with the already authored exceptions. Keep generic behaviour in the universal layer and campaign gene contents in the campaign layer.",
+      "boundary": "The root describes the general bargain, not a claim that every curated target produces the same mark increment. Preserve Reek doubling and pheromone charm offset, and distinguish unknown-before-injection from invisible-after-injection. No new romance prohibition or universal hostility is inferred.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "gene_injection",
+        "slime_marked",
+        "archive_selection"
+      ]
+    },
+    {
+      "id": "stage2_edge_living_ecology",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GappoChannel.cs",
+        "src/RimMandrake/GelatinousSlime/Source/DwommoFlight.cs",
+        "src/RimMandrake/GelatinousSlime/Source/FubbumHunting.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain every inventoried native family, flora and visitor capability and plan observable species-specific behaviour where implemented, with conditional framework coverage. A single ecology core cluster does not waive scene coverage for any listed capability.",
+      "boundary": "No claim that all animals are harmless: fubbum predation and native acid death bursts remain. Non-hostility means conversion itself supplies no aggression; it does not delete other systems. The removed Glurro and v2 Joining Water do not return under an ecology label.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "biome_worldgen",
+        "slime_terrain",
+        "slime_flora",
+        "gelatid",
+        "oomb_family",
+        "wuum",
+        "gappo_family",
+        "gappo_channels",
+        "dwommo_flight",
+        "fubbum_hunting",
+        "visitor_ecology",
+        "kit_art"
+      ]
+    },
+    {
+      "id": "stage2_edge_titan",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/RM_titanoslime_spec.md",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Source/TitanoslimeVerb.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+        "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py",
+        "OWNER:1792336679095161980",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain the locked-stage giant, real feeding/engulf route, visible held countdown and supported escape/rescue/release. Read classified gate rows and require actual behaviour; screenshots and process exit alone cannot accept it. Preserve the owner’s pending in-game stage-one/five art review.",
+      "boundary": "Permanent is the shipped default, with the existing reversible option, cap and growth switch. Escape is a supported possibility, not universal survival or a guarantee that every attack engulfs. Resistance to film does not itself grant immunity to being swallowed.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "titan_engulf",
+        "titan_growth",
+        "titan_shedding",
+        "gelatid",
+        "kit_art"
+      ]
+    },
+    {
+      "id": "stage2_edge_chunk",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1790977575993603898",
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain real acquisition, normal throwing, ally danger, immediate impairment and short-lived material. Use butchering as the source-backed baseline. Audit thrown-item consumption separately from seal-use consumption; a successful targeted breach proves no launch accounting. Record gaps without declaring unobserved runtime failures. One released, bursting harvested piece is expended once; the retained source cannot launch that same piece again. This is an agent derivation of the item’s on-release burst promise, not an observed runtime result or a new ammunition system.",
+      "boundary": "A chunk burst applies the ordinary ladder at an advanced stage; it does not start the injected fast clock. Its temporary ground must not rewrite built floors/water or revert later player changes blindly. Shelf duration is the existing setting. No novel live-harvesting interaction is made a requirement where butchering fulfils the authored alternative.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "chunk_weapon",
+        "chunk_ground",
+        "chunk_shelf"
+      ]
+    },
+    {
+      "id": "stage2_edge_vault",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1790977575993603898",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_BREACH_1",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_PLUG_1",
+        "src/RimMandrake/GelatinousSlime/Source/SealBreach.cs",
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+        "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/CompFleshSeal.cs",
+        "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/ThingDefs_Buildings/RUT_VaultFleshSeal.xml",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Keep the V5 plug and chunk-only breach. Accept against the placed campaign object with actual material accounting and hazard, never a substituted dummy or direct DissolveAround call. The mismatch is known implementation/integration work.",
+      "boundary": "The only-way-through rule is for the authored V5 plug with its mechanic enabled, not every vanilla or modded door. Preserve the campaign seal-off opening option and free generic breach-off control as distinct settings to reconcile, not a contradiction to ask the owner to redesign.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "slime_breach_api",
+        "campaign_vault_seal",
+        "chunk_weapon"
+      ]
+    },
+    {
+      "id": "stage2_edge_archive",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1790977582144466830",
+        "OWNER:1794346263694156545",
+        "ITEM:GELATINOUSSLIME_ARCHIVE_RESURRECTION_1",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeArchiveVat.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ResearchProjectDefs/ArchiveGrowing.xml",
+        "design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Retain last-touch fidelity, saved per-person entries, normal paid/powered return and single-return lifecycle integrity. Preserve existing field coverage and carry historical memories/health/contact-route omissions as explicit reconciliation work, not a waiver. Apply the prior changed-family answer: the old marriage stays ended and the returnee adjusts with a lasting mood hit. Verify the universal research and expensive campaign gate independently.",
+      "boundary": "No world rewind, resumed superseded marriage, deletion of the old death record or memory of unrecorded intervening life. The November recorded answer supplies grief and adjustment with a lasting mood hit; no new mood number is chosen. The historical field-list review obligation is retained, not asserted fulfilled by source inspection.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "archive_snapshot",
+        "archive_growing"
+      ]
+    },
+    {
+      "id": "stage2_edge_settings_scope",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/standing_rulings.md:128",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml",
+        "src/RimMandrake/Biomes.compose.json",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "disposition": "does",
+      "text": "Keep shipped defaults, searchable settings, reset, worldgen labels and safe disabling. Treat comment/UI-versus-consumer mismatches as implementation gaps. A safe pause of an active paid vat while off is the minimal interpretation to verify/plan, preserving paid progress and stored entries rather than inventing cancellation loss. Do not certify recovery from setter success alone. This pause is an agent implementation choice derived from the existing archive-off text and the existing saved power-pause behaviour, not an owner quotation.",
+      "boundary": "No promise that every reward retains its default danger when the player deliberately disables that danger. No new cross-biome retrofit guarantee beyond the standing framework scope. Conditional ecology, scanner and liquid integrations retain their owners; unrelated source-member IDs are not the actual loaded package list.",
+      "basis": "Source-backed derivation of adopted scope; no new owner reply or waiver.",
+      "about": [
+        "feature_settings",
+        "biome_worldgen",
+        "farm_ruins",
+        "visitor_ecology",
+        "acoustic_payload",
+        "legacy_ground_flora",
+        "rain_water_services"
+      ]
+    },
+    {
+      "id": "stage2_no_conversion_aggression",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md"
+      ],
+      "disposition": "does_not",
+      "text": "Slimification grants no hostility; native predation, acid bursts and unrelated hostility are separate existing mechanics.",
+      "basis": "Existing scope/answer; no waiver created."
+    },
+    {
+      "id": "stage2_no_remote_gene_factory",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs"
+      ],
+      "disposition": "does_not",
+      "text": "No home console replaces archive choice plus field extraction; helpers cannot accept that player journey.",
+      "basis": "Existing scope/answer; no waiver created."
+    },
+    {
+      "id": "stage2_no_history_rewind",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md"
+      ],
+      "disposition": "does_not",
+      "text": "Archive return does not restore a superseded marriage or erase the colony’s intervening life. The already recorded changed-family answer is retained.",
+      "basis": "Existing scope/answer; no waiver created."
+    },
+    {
+      "id": "stage2_no_universal_retrofit",
+      "speaker": "agent",
+      "source": [
+        "design/RimMandrake/standing_rulings.md:128",
+        "src/RimMandrake/GelatinousSlime/Defs/RM_GelatinousSlime_DonorPorts.xml"
+      ],
+      "disposition": "does_not",
+      "text": "Support follows authored framework/tag contracts; no newly guaranteed retrofit into arbitrary third-party biomes. Existing compatible legacy defs still need scoped coverage.",
+      "basis": "Existing scope/answer; no waiver created."
+    },
+    {
+      "id": "stage2_rites_later",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1792755170245820662",
+        "design/RimMandrake/v2_nine_rituals.md",
+        "Transient/biome_ffar/gelatinousslime_sheet_2026-10-05.decisions.json",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md"
+      ],
+      "disposition": "later",
+      "text": "Joining Water and the Nine biome rites stay v2. Glurro and cosmetic entry/read hooks remain removed history, not new asks.",
+      "basis": "Existing scope/answer; no waiver created."
+    },
+    {
+      "id": "stage2_edges_delegated",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": "CONDUCTOR:1794810108456236688",
+      "disposition": "delegated",
+      "text": "Retain the source-backed stage-2 edges without a new human ratification ask. A released bursting piece is expended once; archive-off safely pauses/resumes paid saved progress. These are source-grounded agent implementation choices. Preserve every historical/built obligation and all remaining delivery/proof gaps; no owner quotation, waiver, runtime acceptance, flagship pick or first-touch certification is supplied.",
+      "about": [
+        "biome_worldgen",
+        "slime_terrain",
+        "slime_flora",
+        "gelatid",
+        "oomb_family",
+        "wuum",
+        "gappo_family",
+        "gappo_channels",
+        "dwommo_flight",
+        "fubbum_hunting",
+        "visitor_ecology",
+        "exposure",
+        "slimification_ladder",
+        "cure_geography",
+        "dissolution",
+        "warnings",
+        "raw_slime_bargain",
+        "antidote",
+        "compressor_economy",
+        "pit_meals",
+        "pit_solvent",
+        "farm_conversion",
+        "farm_ruins",
+        "slime_rain",
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection",
+        "slime_marked",
+        "archive_snapshot",
+        "archive_growing",
+        "titan_engulf",
+        "titan_growth",
+        "titan_shedding",
+        "chunk_weapon",
+        "chunk_ground",
+        "chunk_shelf",
+        "slime_breach_api",
+        "campaign_vault_seal",
+        "feature_settings",
+        "kit_art",
+        "acoustic_payload",
+        "rain_water_services",
+        "legacy_ground_flora"
+      ],
+      "evidence_against": []
     }
   ],
   "asks": [
@@ -898,7 +1278,8 @@
         "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
         "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
         "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
-        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml:138"
       ],
       "speaker": "agent",
       "text": "Taking a titanoslime chunk yields a thrown bioweapon whose burst coats resistant-gated pawns into advanced film without an armour gate.",
@@ -914,7 +1295,8 @@
       "proof_evidence": [
         "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
       ],
-      "notes": "Current film impairs movement/manipulation/sight and suppresses panic. It uses ordinary advanced film outside slime. November immediate-struggle direction is already recorded. Ally/out-of-radius/resistant controls and actual throwing are needed."
+      "notes": "Current film impairs movement/manipulation/sight and suppresses panic. It uses ordinary advanced film outside slime. November immediate-struggle direction is already recorded. Ally/out-of-radius/resistant controls and actual throwing are needed.",
+      "acquisition_clarification": "The inspected normal acquisition is the authored butcher-product alternative. This stage establishes no live tear-off action and no normal-throw consumption proof."
     },
     {
       "id": "chunk_ground",
@@ -1047,15 +1429,19 @@
       "id": "rain_water_services",
       "source": [
         "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml",
-        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml"
+        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs:3458",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
       ],
       "speaker": "agent",
       "text": "The brief and weather description promise potable collection plus brief flooding/drainage. The inspected WeatherDef and living-slime drinking integration establish only their own fields and services.",
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
+      "scope": "not_opened",
       "search_scope": "Bounded read of Slime WeatherDef, validation weather chain and directly connected FlowWorks living-slime/thirst/slippery-ground patches. No complete rain collection/flood/drain ownership trace or runtime experiment was undertaken.",
-      "notes": "Agent-owned service tracing and measurement remain necessary before asserting the full water experience. This uncertainty supplies no owner question or new implementation proposal."
+      "notes": "Agent-owned service tracing and measurement remain necessary before asserting the full water experience. This uncertainty supplies no owner question or new implementation proposal.",
+      "scope_clarification": "Authored rain collection/potability/flood-drain obligation retained from the primary brief and weather description. The unknown is delivery, not an unanswered keep/remove question; no owner approval or runtime proof is inferred."
     },
     {
       "id": "legacy_ground_flora",
@@ -1127,8 +1513,9 @@
       "resolved": false,
       "owner_decision_needed": false,
       "text": "Snapshot omits health/memories, filing routes are narrower than item language, the vat def lacks an explicit Rare ticker, and multiple vats can target the same entry. Direct relation restoration also needs the already recorded changed-family ruling applied.",
-      "next_action": "Stage 3 plan technical reconciliation and normal-entry acceptance. Verify inherited ticker in the actual definition environment before calling the vat demonstrably stalled.",
-      "classification": "implementation_and_proof_gap"
+      "next_action": "Stage 3 plan actual contact-to-vat acceptance, a snapshot field matrix retaining historical health/memories obligations, ticker inheritance verification, entry reservation/completion guard and changed-family reconciliation. Keep field-list review and campaign Helix integration unverified.",
+      "classification": "implementation_and_proof_gap",
+      "design_disposition": "Settled: last-touch return, normal expensive procedure, continued family history and no concurrent duplicate return. Existing authored health/memory/contact obligations are not waived."
     },
     {
       "id": "vault_api_mismatch",
@@ -1144,20 +1531,26 @@
       "owner_decision_needed": false,
       "text": "Generic targeted breach requires an extension the V5 seal lacks, burst omits the seal API, and proximity dissolution spends no piece. The requested vault use is already settled.",
       "next_action": "Stage 3 plan one compatible actual-use route with chunk consumption, damage rejection, blocked/open path and drench-cost controls.",
-      "classification": "implementation_and_proof_gap"
+      "classification": "implementation_and_proof_gap",
+      "design_disposition": "Settled: actual V5 plug opens only through the supported chunk route while enabled, with material/drench cost. Internal API choice is implementation work."
     },
     {
       "id": "water_service_claim",
       "source": [
         "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml",
-        "src/RimMandrake/GelatinousSlime/validation.py:1014"
+        "src/RimMandrake/GelatinousSlime/validation.py:1014",
+        "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs:3458",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml:706",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md"
       ],
       "speaker": "agent",
       "core": false,
       "resolved": false,
       "owner_decision_needed": false,
       "text": "Forced weather identity does not settle the collection, potability or flood/drain promises.",
-      "next_action": "Trace existing FlowWorks/weather services before proposing any build or owner decision. rain_water_services remains unknown."
+      "next_action": "Stage 3 trace the actual loaded collection/flood services and define a collector/fill/drain/potability scene with roofed/no-rain controls, in universal/campaign contexts. Keep rain_water_services impl unknown/proof missing until observed; never silently remove the authored obligation.",
+      "design_disposition": "Retain the authored rain promise; do not infer collection, potability or brief flooding/drainage from weather identity or from drinking living slime. Source tracing narrows but does not close implementation coverage.",
+      "investigation": "Slime WeatherDef has rainRate 1.5, duration and descriptive promises. FlowWorks RainLevelsNow consumes generic RainRate for unroofed excavated cells with its rain-fill switch and water fluid; it is not a slime-specific barrel collector or proof of brief whole-map flood/drain. Living-slime LiquidDef is a LastResort drink with SlimeDose, distinct from rain water. Source searches of FlowWorks Source/Defs/Patches and src .cs/.xml found no dedicated slime-rain collection route. No runtime or external collector inventory was performed."
     },
     {
       "id": "animation_prefix_checker",
@@ -1184,7 +1577,43 @@
       "resolved": false,
       "owner_decision_needed": false,
       "text": "Packaged legacy RM_Slime/RM_RichSlime terrains omit RM_SlimeTerrain, while contact exposure reads that tag. The current biome generates its primary tagged suite. Compatibility-map contact behaviour needs a scoped coverage check before any claim that all slime-labelled ground reads pawns.",
-      "next_action": "Stage 3 cover shipped legacy defs and source their intended compatibility role. Use terrain tags as the actual current exposure criterion."
+      "next_action": "Stage 3 cover shipped legacy defs and source their intended compatibility role. Use terrain tags as the actual current exposure criterion.",
+      "design_disposition": "Retain tag-based exposure plus scoped packaged-legacy coverage. Neither every slime-labelled terrain nor arbitrary external biome is promised by inference."
+    },
+    {
+      "id": "settings_active_state_mismatch",
+      "speaker": "agent",
+      "core": false,
+      "resolved": false,
+      "owner_decision_needed": false,
+      "classification": "implementation_and_proof_gap",
+      "source": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs:76",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs:411"
+      ],
+      "text": "The hazard-off UI promises no application/growth and film wipe-off, but advanced ordinary film off-body still returns zero rate, and raw ingestion/injection can still apply film directly. The archive-off UI promises the vat does nothing, while an already-growing vat TickRare does not check archiveResurrection. Source-level contradictions; actual runtime remains unobserved.",
+      "design_disposition": "Advertised opt-outs must be honest across application routes and active state. Preserve paid vat state/entries while disabled rather than inventing cancellation loss.",
+      "next_action": "Stage 3 plan consumer reconciliation and controls for contact/raw dose/injection/chunk, advanced off-body film, mid-vat off/reload/on and payment/progress preservation. Distinguish hazard suppression from intended gene/coma effects; do not assume field readback settles it."
+    },
+    {
+      "id": "chunk_release_accounting",
+      "speaker": "agent",
+      "core": false,
+      "resolved": false,
+      "owner_decision_needed": false,
+      "classification": "implementation_and_proof_gap",
+      "source": [
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml:138",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SealBreach.cs"
+      ],
+      "text": "Butcher product supplies a real chunk acquisition route. The equipped weapon declares a plain Verb_LaunchProjectile and the projectile burst has no explicit source-item consumption hook in the inspected member, unlike targeted seal use. The shelf sweep covers map stacks and spawned-pawn inventory/equipment, not every holder context. This identifies normal-use accounting/expiry checks, not a confirmed live exploit.",
+      "design_disposition": "Use the authored butcher alternative as baseline; do not invent a live tear-off interaction. A released bursting piece and timed material must have honest accounting and expiry.",
+      "next_action": "Stage 3 observe butcher-to-equipped-throw with source-item identity/count, a second launch attempt and expiry in distinct supported holders/reload. Reconcile observed accounting with a released piece before accepting the weapon."
     }
   ],
   "failure_modes": [
@@ -1194,7 +1623,7 @@
   ],
   "schema": 1,
   "mod": "GelatinousSlime",
-  "run": "rm-role-designercodex-1794805536",
+  "run": "rm-role-designercodex-1794809122",
   "reading_limits": {
     "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
     "id": "bounded_grounding",
@@ -1848,14 +2277,15 @@
     }
   ],
   "next_stage_context": {
-    "id": "stage_two_input",
+    "id": "stage_three_input",
+    "speaker": "agent",
     "source": [
+      "design/concepts/GelatinousSlime/stage2_argument.md",
+      "design/concepts/GelatinousSlime/record.json",
       "CONDUCTOR:1794805789204977373",
-      "design/concepts/GelatinousSlime/stage1_argument.md",
-      "design/concepts/GelatinousSlime/stage1_review.json",
-      "OWNER:1794346263694156545"
+      "CONDUCTOR:1794810108456236688"
     ],
-    "text": "Stage 1 root adopted via recorded Evidence-for-Ask delegation after independent review. No owner ask is sent or pending. Preserve the recovered UI, changed-family reunion and weapon-effect answers. Stage 2 should argue the edges from this root and inventory without reopening established capabilities or asking the owner to predict runtime. The existing-content live walk remains proposed and unrun; exact save identity is unverified. Flagship selection is not made here. Rain-service tracing and the archive, seal, legacy terrain and proof-script gaps remain agent-owned investigation/planning work. First-touch certification and Titanoslime art review remain outstanding."
+    "text": "Use the adopted root and stage-2 edge arguments for stage-3 sheet/tree/plan/scenes/floor writing. All remaining faults are agent-owned implementation/instrumentation/proof obligations, not unanswered owner questions. Preserve every built capability for scene/showcase coverage even where it is not a separate core leaf; do not shrink the authored rain or archive snapshot obligations to match missing code. Independent weapon, actual campaign vault, archive procedure and changed-family outcomes need their own observation scenes plus interactions. Keep numbers labelled authored defaults, preserve curated resistance/charm/Reek/setting exceptions, and distinguish universal/campaign/optional-framework/DLC contexts. Resolve no faults by helper-only evidence. Existing-content live walk remains offered and unrun with unverified save identity. Flagship delegation, owner art review and first-touch certification remain outstanding; no live actions or game-state changes were performed in stage 2."
   },
   "root_proposal": {
     "id": "root_synthesis_stage1",
@@ -1870,5 +2300,459 @@
     "delegated": "evidence-for-ask",
     "source": "CONDUCTOR:1794805789204977373",
     "answers": "root_definition"
+  },
+  "edge_arguments": [
+    {
+      "id": "edge_body_work",
+      "title": "A useful body on an ordinary workday",
+      "claim": "The colony can obtain food, blocks and poison relief from the body while managing exposure and unstable cultivated ground.",
+      "attack": "A green map and recipes in a list can appear generous while no one can produce or use their outputs; alternatively an invented penalty on every processed meal would make a stronger bargain than the sources describe.",
+      "dumb_version": "Spawn finished blocks and meals; clear a poison by helper; call that the economy.",
+      "counterexample": "A poisoned worker eats raw slime: the poison disappears, but no film is charged. Or a slime-grass farm quietly becomes permanently safe despite conversion being enabled.",
+      "other_side": "Vanilla bills and ingestion already perform the work. Slime supplies inputs, the compressor/pit recipes and the coupled raw-slime dose; it needs no replacement production UI.",
+      "unsaid_sweep": "First bill, repeated bills, insufficient ingredients and a 40-colonist workday test different problems: unavailable workflow, input/output accounting, refusal and aggregate chores. Compare a sown slime-grass plot with untouched slime grass and non-opted-in terrain.",
+      "boundary": "The coupled poison/film charge belongs to raw-slime ingestion and the established living-slime drinking service. It does not impose a new direct film charge on every rendered meal or block. Safe floors and resistance remain legitimate answers to ordinary contact.",
+      "resolution": "Retain ordinary production, the raw-slime cure plus absorption fee in the same ingestion, scoped farm reversion, solvent bills and ruins. Demonstrate the production and use of results. Do not require perpetual inconvenience once a colony prepares well.",
+      "situations": [
+        "Normal compressor and pit bills with actual input consumption and usable output; solvent food cooked and eaten, with its toxic/drug effects checked separately.",
+        "Poisoned raw-slime eater versus untreated poisoned pawn; verify poison relief and film together, with an injury/addiction exclusion.",
+        "Sown versus unsown slime grass over repeated work, then one representative large-colony workday."
+      ],
+      "pruning": "Reject a non-working useful-body loop or a free raw-slime cure. Individual recipe quantities, plant silhouettes and ledger prose are coverage or tuning, not new independent core leaves.",
+      "about": [
+        "raw_slime_bargain",
+        "compressor_economy",
+        "pit_meals",
+        "pit_solvent",
+        "farm_conversion",
+        "farm_ruins",
+        "slime_flora"
+      ],
+      "source": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeWorks.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimePitSolvent.xml",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "OWNER:1792257249044295818"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_ordinary_film",
+      "title": "Absorption has a readable course and an exit",
+      "claim": "Ordinary contact can impair and ultimately dissolve a colonist, but its stage and circumstances give the player an actionable response.",
+      "attack": "One hediff label can conceal different clocks, and a test which sets severity directly proves neither ordinary exposure nor a rescue.",
+      "dumb_version": "Show a high-severity pawn and a passing rate calculation, without waiting for any actual contact, cure or terminal outcome.",
+      "counterexample": "A heavily coated colonist leaves slime for ordinary soil and the player assumes all film will wipe away; or gear vanishes with a dissolved body.",
+      "other_side": "RimWorld health information, letters and alerts already convey health races. The owner explicitly chose their existing UI; a critical-time message is permitted, not a new triage panel requirement.",
+      "unsaid_sweep": "Group flesh/colonist and outsider contact by the shared ladder, then test resistance separately because it gates application. Early off-body reversal, advanced ordinary holding, drying-biome reversal, injected off-body progression and dissolution are different transitions. Map and caravan location resolution, save/load and a bed death can fail independently.",
+      "boundary": "Slimification itself adds no aggression. Early off-body wipe-off applies only below the existing threshold on the ordinary clock. Tagged drying country has priority even on the injected clock. Antidote before terminal dissolution clears film, not genes, the lasting mark, or an already dead person.",
+      "resolution": "Preserve the full ladder, ordinary-versus-injected identification, existing UI, drying geography and subterminal toxic treatment. Use actual contact and a completed untreated terminal arm; inspect exact victim gear and inventory. Numbers remain current defaults/tuning rather than a new owner-approved deadline.",
+      "situations": [
+        "Ordinary susceptible contact and a resistant control; early versus advanced film off-body.",
+        "Advanced ordinary and injected patients in tagged drying contexts, including caravan location; save/load a progressing patient.",
+        "Untreated dissolution in bed with labelled equipment/inventory; treated matching patient with actual item use and toxic cost."
+      ],
+      "pruning": "Reject an unreadable or inescapable authored race, colonist immunity, a missing terminal result or lost victim equipment. Do not add a dedicated triage interface or require immunity to every other game hazard.",
+      "about": [
+        "exposure",
+        "slimification_ladder",
+        "cure_geography",
+        "dissolution",
+        "warnings",
+        "antidote"
+      ],
+      "source": [
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeAlerts.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "ITEM:CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_gene_journey",
+      "title": "A chosen gene requires the field journey",
+      "claim": "The player chooses an archive entry, locates its current and completes extraction into a perishable dose before injecting it.",
+      "attack": "A helper-loaded item could grant the right gene and pass every gene assertion while the defining expedition is unusable.",
+      "dumb_version": "Directly load the sought gene and rider, spawn the injectable at home and invoke its target effect.",
+      "counterexample": "The mark expires during the walk, extraction is interrupted or the loaded item spoils in a pack; the player must see the relevant state rather than silently receive a different target.",
+      "other_side": "Vanilla stores genes/endogenes and supplies item jobs and rotting. The slime seeker contributes selection, location and field extraction. Universal and higher-priority campaign archives are data choices on this same route.",
+      "unsaid_sweep": "Blank, primed and loaded states; normal completion; expired mark and interrupted work; loaded-item spoilage; save/load while primed/loaded. Universal Biotech archive and campaign override expose different dependencies. Without Biotech verify the advertised non-gene baseline rather than simulate genes.",
+      "boundary": "No home console or remote gene production replaces field extraction. The rider remains unknown until injection but observable afterwards. Normal refrigeration is the existing loaded-item mercy, not a new strict wall-clock expiry. No universal-mod dependency on campaign genes is introduced.",
+      "resolution": "Retain the ordinary archive dialog and scanner/work route with item accounting, chosen-target identity and visible state. Exercise both archive contexts. A direct helper may diagnose internals but cannot accept this experience.",
+      "situations": [
+        "One whole universal archive journey through ordinary UI; one campaign archive journey and priority-switch check.",
+        "Interrupted/expired extraction and loaded-sample rotting with item identity and count; reload at a representative intermediate state.",
+        "Biotech-disabled availability/defs check in the actual composed configuration."
+      ],
+      "pruning": "Reject a correct gene supplied without a usable chosen-gene journey. Exact beacon lifetime and unrefrigerated shelf days are current author tuning; their functional expiry and readability are the acceptance point.",
+      "about": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection"
+      ],
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/GeneSeeker.xml",
+        "src/RimUtinni/UtinniPatches/Defs/GeneArchiveDefs/RUT_SlimeGeneArchive.xml"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_friend_rescue",
+      "title": "The deliberate coma bargain can really be rescued",
+      "claim": "Injection grants target plus rider, induces coma and accelerates absorption, leaving another capable pawn to administer the toxic antidote in time.",
+      "attack": "Seeing coma and a cure function does not establish that an ordinary friend can target, reach and finish the treatment job before death.",
+      "dumb_version": "Invoke injection and antidote functions back to back; never order the friend to use the item.",
+      "counterexample": "Two comatose patients share one friend; a treatment order is unavailable or fails to finish while the displayed clock continues. A solo recipient receives a warning but has no magic self-treatment.",
+      "other_side": "UseItem and xenogermination coma supply the mechanics. The existing health UI and permitted remaining-time message supply the decision surface already chosen by the owner.",
+      "unsaid_sweep": "Completed timely rescue versus an otherwise equivalent untreated terminal arm discriminate a real race. A late order tests job duration; an unavailable friend tests refusal/warning. Several patients within a 40-colonist scene test conflicting orders without inventing a bulk-rescue guarantee. Reload must preserve the injected flag and urgency.",
+      "boundary": "Rescue is possible with preparation, not guaranteed regardless of travel, missing medicine or competing needs. The warning currently occurs after injection; do not invent a pre-injection veto. Antidote kills film but does not promise to cancel the independent vanilla coma or erase acquired genes/social consequences.",
+      "resolution": "Use actual ordered injection and friend-administered treatment, verify completion/consumption before accepting cure, compare untreated dissolution, and retain the toxic price. An existing UI failure is delivery work, not a reopened owner UI question.",
+      "situations": [
+        "Whole ordered injection and timely friend treatment with gene/rider/coma/film/toxicity observations.",
+        "Untreated and too-late rescue outcomes, capable-friend absence, and a shared-friend multiple-patient situation.",
+        "Reload a patient while the injected clock is active."
+      ],
+      "pruning": "Reject a race whose nominal rescue cannot be ordered or finished. Fair warning does not mean a guaranteed save after any delay.",
+      "about": [
+        "gene_injection",
+        "antidote",
+        "warnings",
+        "slimification_ladder"
+      ],
+      "source": [
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeSeekerProof.cs"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_gene_price",
+      "title": "Genes keep their unwanted and social consequences",
+      "claim": "The selected gene comes with a rider and the established persistent social-mark rules; curing absorption does not turn acquisition into pure upside.",
+      "attack": "The rider can exist in storage while having no readable effect, or an unconditional mark rule could wrongly delete the accepted campaign charm exception.",
+      "dumb_version": "Check gene names only, then remove every hediff after treatment and call the bargain complete.",
+      "counterexample": "An acquired rider never affects the pawn, or antidote clears Slime-marked along with film. Conversely a charm carrier is charged a new mark despite the existing curation rule.",
+      "other_side": "Vanilla endogenes provide inheritance; archive curation supplies tradeoffs and gene-condition helpers supply effects. Slime-marked uses the existing social opinion path, not a new social simulation.",
+      "unsaid_sweep": "Ordinary universal target/rider with known observer opinion; repeat acquisition; Reek and charm exceptions in campaign; save/load and antidote. Gene transmission needs an inheritance observation rather than assuming that a successful AddGene call proves it.",
+      "boundary": "The root describes the general bargain, not a claim that every curated target produces the same mark increment. Preserve Reek doubling and pheromone charm offset, and distinguish unknown-before-injection from invisible-after-injection. No new romance prohibition or universal hostility is inferred.",
+      "resolution": "Retain heritable endogenes, visible/felt rider effects and lasting mark/opinion consequences with the already authored exceptions. Keep generic behaviour in the universal layer and campaign gene contents in the campaign layer.",
+      "situations": [
+        "Post-injection genes and a meaningful rider effect, then ordered antidote and persistence of the social mark/opinion.",
+        "Repeat-entry opinion stages and separate campaign Reek/charm cases; reload; a real inheritance case."
+      ],
+      "pruning": "Reject pure-upside or cosmetic-only gene pricing; preserve authored exceptions rather than inventing an unavoidable penalty for every possible archive.",
+      "about": [
+        "gene_injection",
+        "slime_marked",
+        "archive_selection"
+      ],
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneConditions.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_living_ecology",
+      "title": "A living biome has resistant natives and vulnerable outsiders",
+      "claim": "The generated body visibly supports its native ecology alongside partly absorbed neighbouring animals, without conversion creating enemies.",
+      "attack": "An animal roster and texture paths can pass while flight, feeding, visitor arrival and ecological interactions never appear in play.",
+      "dumb_version": "Spawn a line of animals for a screenshot; never watch a grazer, predator, flier or visiting animal act.",
+      "counterexample": "A generated map has only inert scenery, a grounded dwommo despite flight being enabled, or an outsider becomes a manhunter because it advanced in slimification.",
+      "other_side": "Vanilla predator/grazing behaviour and load-guarded frameworks already own much of animal life. Slime owns native resistance, roster, outsider seeding/trickle, channel hardening and its flight/hunting switches.",
+      "unsaid_sweep": "Generated-map native presence and seeded visitors, then ongoing arrivals; susceptible outsider progression versus native resistance; gappo terrain work, dwommo flight/grounded mode and fubbum hunt/disabled mode. Optional VEF behaviour is a distinct loaded context, not mandatory with VEF absent. Observe a routine large colony without inventing an arbitrary tick budget.",
+      "boundary": "No claim that all animals are harmless: fubbum predation and native acid death bursts remain. Non-hostility means conversion itself supplies no aggression; it does not delete other systems. The removed Glurro and v2 Joining Water do not return under an ecology label.",
+      "resolution": "Retain every inventoried native family, flora and visitor capability and plan observable species-specific behaviour where implemented, with conditional framework coverage. A single ecology core cluster does not waive scene coverage for any listed capability.",
+      "situations": [
+        "Generated native/flora/ruin context and seeded outsiders, followed by arrival/progression with neutral controls.",
+        "Gappo channel work, dwommo movement, fubbum predation and acid-burst behaviour on appropriate independent pads.",
+        "Framework-conditioned feeding/fission/reproduction in a declared loaded context and ordinary behaviour without optional VEF."
+      ],
+      "pruning": "Reject disconnected scenery or hostility caused by absorption. Species stats, lore and incidental spawn variation need coverage or tuning rather than a leaf per animal.",
+      "about": [
+        "biome_worldgen",
+        "slime_terrain",
+        "slime_flora",
+        "gelatid",
+        "oomb_family",
+        "wuum",
+        "gappo_family",
+        "gappo_channels",
+        "dwommo_flight",
+        "fubbum_hunting",
+        "visitor_ecology",
+        "kit_art"
+      ],
+      "source": [
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GappoChannel.cs",
+        "src/RimMandrake/GelatinousSlime/Source/DwommoFlight.cs",
+        "src/RimMandrake/GelatinousSlime/Source/FubbumHunting.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_titan",
+      "title": "The giant is a predator whose feeding changes its future",
+      "claim": "Titanoslime naturally engulfs and digests eligible prey, allows the established escape/rescue routes, and grows permanently by default.",
+      "attack": "Forced holding and mass assignment can make a giant appear functional while its melee entry, prey limits or player rescue fail.",
+      "dumb_version": "Use helpers to put prey inside, force stage five, and take a still image.",
+      "counterexample": "A colonist is visibly held but cannot be rescued before the hidden timer; feeding never changes the giant, or a reload shrinks a permanently grown one.",
+      "other_side": "Vanilla melee and AI supply encounters. Slime owns engulfing, the held timer, digestion/release, mass and stage logic. HugeThings and Large Pawns consume size and footprint rather than authoring the feeding rule.",
+      "unsaid_sweep": "Natural melee entry; eligible versus oversized prey; rescue/release versus completed digestion; inventory/gear outcomes; ordinary feeding into a higher stage; dry-ground/starvation/wounding permanence; save/load and held-prey release on death/engulf-off. Stage-one/five movement and footprint are distinct from mass arithmetic.",
+      "boundary": "Permanent is the shipped default, with the existing reversible option, cap and growth switch. Escape is a supported possibility, not universal survival or a guarantee that every attack engulfs. Resistance to film does not itself grant immunity to being swallowed.",
+      "resolution": "Retain the locked-stage giant, real feeding/engulf route, visible held countdown and supported escape/rescue/release. Read classified gate rows and require actual behaviour; screenshots and process exit alone cannot accept it. Preserve the owner’s pending in-game stage-one/five art review.",
+      "situations": [
+        "Natural eligible/oversized fights, one successful player rescue and one completed digestion with exact victim belongings.",
+        "Actual feeding/growth followed by endurance and reload under permanent defaults, plus the reversible/growth-off alternatives.",
+        "Held-prey death/off release and footprint cleanup; separate stage-one/five in-game art/motion look."
+      ],
+      "pruning": "Reject a helper-only giant, a hidden unrescuable held state or default shrinking after real growth. No new universal rescue guarantee or giant personality is added.",
+      "about": [
+        "titan_engulf",
+        "titan_growth",
+        "titan_shedding",
+        "gelatid",
+        "kit_art"
+      ],
+      "source": [
+        "design/RimMandrake/RM_titanoslime_spec.md",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Source/TitanoslimeVerb.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+        "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py",
+        "OWNER:1792336679095161980"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_chunk",
+      "title": "The harvested weapon is dangerous to both sides",
+      "claim": "A harvested piece can be thrown to cause immediate fighting/movement impairment and persistent contamination for susceptible victims, including nearby allies.",
+      "attack": "A burst helper can drench a pawn without a player ever obtaining or throwing a chunk, and shelf enforcement can miss different holders.",
+      "dumb_version": "Spawn a chunk and call Drench on an unarmoured enemy while skipping harvesting, aiming, allies and expiry.",
+      "counterexample": "An armoured raider and an allied rescuer stand together: only the enemy gets film. Or the equipped piece can be launched repeatedly without any visible material accounting.",
+      "other_side": "The ordinary projectile/weapon UI is the cheap existing route. The body supplies a harvested piece; it does not spontaneously manufacture weapons. Native/gene resistance is the authored exception to coating, not armour or faction.",
+      "unsaid_sweep": "Butcher acquisition is wired in the Titanoslime def; a live tear-off route is not established by this read. Observe real throw/release and item counts, same-burst hostile/ally/resistant controls, immediate impaired action, advanced film off-body, temporary ground expiry, and shelf age in ground/equipment/inventory/caravan or nested-holder contexts that can avoid the current sweep. Save/load age and converted terrain.",
+      "boundary": "A chunk burst applies the ordinary ladder at an advanced stage; it does not start the injected fast clock. Its temporary ground must not rewrite built floors/water or revert later player changes blindly. Shelf duration is the existing setting. No novel live-harvesting interaction is made a requirement where butchering fulfils the authored alternative.",
+      "resolution": "Retain real acquisition, normal throwing, ally danger, immediate impairment and short-lived material. Use butchering as the source-backed baseline. Audit thrown-item consumption separately from seal-use consumption; a successful targeted breach proves no launch accounting. Record gaps without declaring unobserved runtime failures. One released, bursting harvested piece is expended once; the retained source cannot launch that same piece again. This is an agent derivation of the item’s on-release burst promise, not an observed runtime result or a new ammunition system.",
+      "situations": [
+        "Butcher an eligible corpse, equip/throw through ordinary orders and inspect the source item before and after release and a second order attempt.",
+        "One burst spanning armour/ally/resistant cases with actual movement/combat impairment and post-exit film; ordinary clock control.",
+        "Temporary natural-ground recovery plus built-floor/water controls and reload; shelf expiry in representative distinct holder paths."
+      ],
+      "pruning": "Reject harmless, enemy-only or indefinitely usable extracted weapon material. Whether a live tear-off mechanic would improve play is not an unresolved core scope choice.",
+      "about": [
+        "chunk_weapon",
+        "chunk_ground",
+        "chunk_shelf"
+      ],
+      "source": [
+        "OWNER:1790977575993603898",
+        "OWNER:1794346263694156545",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_vault",
+      "title": "The piece must open the actual campaign vault",
+      "claim": "In the campaign the chunk provides the special way through the Slough V5 flesh plug, at the established material/drench cost.",
+      "attack": "A dummy extended seal can pass while the placed V5 plug rejects the targeted use and the thrown burst never reaches its API.",
+      "dumb_version": "Test only a generic building carrying RM_SlimeBreachable; call that campaign acceptance.",
+      "counterexample": "The real vault remains blocked after the advertised chunk action, or a loose unconsumed chunk opens several plugs by proximity.",
+      "other_side": "The generic breach extension and campaign flesh-seal component are two existing routes with different owners. Their connection needs one honest normal-use path, not a new vault system or an owner choice between APIs.",
+      "unsaid_sweep": "Actual V5 placement, impassable/damage-absorbing start, ordinary explosive refusal, one supported chunk order, changed path and doorway drench. Target-extension and burst/proximity paths can fail differently, so stage-3 planning must reconcile them and their settings. The universal package needs no campaign vault to remain usable.",
+      "boundary": "The only-way-through rule is for the authored V5 plug with its mechanic enabled, not every vanilla or modded door. Preserve the campaign seal-off opening option and free generic breach-off control as distinct settings to reconcile, not a contradiction to ask the owner to redesign.",
+      "resolution": "Keep the V5 plug and chunk-only breach. Accept against the placed campaign object with actual material accounting and hazard, never a substituted dummy or direct DissolveAround call. The mismatch is known implementation/integration work.",
+      "situations": [
+        "Campaign V5 generated/placed seal with damage refusal and blocked-path observations, then the advertised chunk use and open path.",
+        "Generic authored extension and disabled-setting alternatives kept separate; verify no unintended multi-seal use of one unspent piece."
+      ],
+      "pruning": "Reject failure at the actual requested vault even if the universal weapon works. Keep its independent campaign scene and acceptance obligation.",
+      "about": [
+        "slime_breach_api",
+        "campaign_vault_seal",
+        "chunk_weapon"
+      ],
+      "source": [
+        "OWNER:1790977575993603898",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_BREACH_1",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_PLUG_1",
+        "src/RimMandrake/GelatinousSlime/Source/SealBreach.cs",
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+        "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/CompFleshSeal.cs",
+        "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/ThingDefs_Buildings/RUT_VaultFleshSeal.xml"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_archive",
+      "title": "The archive returns the recorded life without undoing the colony",
+      "claim": "Expensive archive machinery returns a dead recorded person from their last filed touch, while subsequent colony relationships and history continue.",
+      "attack": "Copying names and some stats onto a new pawn can masquerade as last-touch return; blindly restoring an old spouse relation can overrule the already answered reunion.",
+      "dumb_version": "Call Grow directly using a hand-built snapshot, skip paid powered work, and restore every old direct relation.",
+      "counterexample": "The pawn learns a skill after their last touch and returns with that later level; two vats grow the same eligible entry; or the former partner is pulled out of a new marriage.",
+      "other_side": "Ordinary research, power, resources and pawn state provide the substrate. Slime owns contact filing and the return procedure; the campaign owns the expensive Helix/Ascendant Ladder access. Resurrection is a separate promise, not another gene-seeker reward.",
+      "unsaid_sweep": "Two distinct touches with an off-body change distinguish last touch from death-time state. Later memory/health changes distinguish a copied field subset from the historical snapshot obligation. Paid normal menu start, power interruption, insufficient/unavailable resources, save/load and two-vat contention expose different lifecycle failures. Reunion after separation/remarriage differs from intact kinship. An unfiled or still-living pawn supplies a rejection case.",
+      "boundary": "No world rewind, resumed superseded marriage, deletion of the old death record or memory of unrecorded intervening life. The November recorded answer supplies grief and adjustment with a lasting mood hit; no new mood number is chosen. The historical field-list review obligation is retained, not asserted fulfilled by source inspection.",
+      "resolution": "Retain last-touch fidelity, saved per-person entries, normal paid/powered return and single-return lifecycle integrity. Preserve existing field coverage and carry historical memories/health/contact-route omissions as explicit reconciliation work, not a waiver. Apply the prior changed-family answer: the old marriage stays ended and the returnee adjusts with a lasting mood hit. Verify the universal research and expensive campaign gate independently.",
+      "situations": [
+        "Actual eligible touch, off-body skill/state changes, death, normal paid vat start and completion; compare returned fields to the recorded touch and preserve death history.",
+        "Save/load, power-off/resume, payment refusal, unfiled/living rejection and simultaneous vats targeting the same entry.",
+        "Snapshot marriage followed by later separation/remarriage and returned-person adjustment, plus unaffected kin continuity; field-list matrix includes historical health/memories gaps.",
+        "Universal research path and campaign Helix access checked independently."
+      ],
+      "pruning": "Reject a name-only copy, a wrong recorded life, duplicate concurrent return, stalled ordinary procedure or restoration that overrides present relationships. The identity/enjoyment question remains for human experience, not a numeric same-person oracle.",
+      "about": [
+        "archive_snapshot",
+        "archive_growing"
+      ],
+      "source": [
+        "OWNER:1790977582144466830",
+        "OWNER:1794346263694156545",
+        "ITEM:GELATINOUSSLIME_ARCHIVE_RESURRECTION_1",
+        "design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/ANSWERS_OWNER.md",
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeArchiveVat.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ResearchProjectDefs/ArchiveGrowing.xml",
+        "design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    },
+    {
+      "id": "edge_settings_scope",
+      "title": "Defaults, opt-outs and neighbours tell the truth",
+      "claim": "The default bargain and each advertised setting have observable consumers and honest scope, including already-active state.",
+      "attack": "A checkbox can save successfully while the hazard or vat continues, or a broad compatibility claim can make a universal release depend on every unrelated biome.",
+      "dumb_version": "Set and read a field, reset to invented defaults, and declare feature-off and recovery proven.",
+      "counterexample": "Advanced ordinary film outside the body holds when the UI says off makes it wipe away; a growing vat finishes despite archive off promising that the vat does nothing; a campaign seal still dissolves through a proximity path after generic breach off.",
+      "other_side": "Shared SettingsKit already supplies search/default reset/scope presentation. FlowWorks owns living-slime drinking and liquid services; authored biome tags and optional framework guards are the existing boundaries.",
+      "unsaid_sweep": "Defaults and one meaningful changed value, disabled-before-use and disabled-during-active-state where those differ, save/load and independent restoration readback. Distinguish new-world/new-map generation settings from immediate mechanics. One 40-colonist mixed workday records playability/tick behaviour without declaring an uncited performance threshold.",
+      "boundary": "No promise that every reward retains its default danger when the player deliberately disables that danger. No new cross-biome retrofit guarantee beyond the standing framework scope. Conditional ecology, scanner and liquid integrations retain their owners; unrelated source-member IDs are not the actual loaded package list.",
+      "resolution": "Keep shipped defaults, searchable settings, reset, worldgen labels and safe disabling. Treat comment/UI-versus-consumer mismatches as implementation gaps. A safe pause of an active paid vat while off is the minimal interpretation to verify/plan, preserving paid progress and stored entries rather than inventing cancellation loss. Do not certify recovery from setter success alone. This pause is an agent implementation choice derived from the existing archive-off text and the existing saved power-pause behaviour, not an owner quotation.",
+      "situations": [
+        "Default play plus meaningful consumer alternatives for hazard/clock, ecology, Titanoslime, solvent, chunk/breach and archive; active-film/held-prey/mid-vat transitions.",
+        "New-world rarity and new-map ruins/visitor generation; reset and reload with independent consumer readback.",
+        "Composed universal and campaign contexts with declared DLC/framework availability; complete original-save/settings recovery recorded by the authorised live runner."
+      ],
+      "pruning": "Reject deceptive or non-functional existing settings and destructive unannounced active-state handling. Cross-cutting checks should attach to the promises they govern rather than produce a leaf for every slider.",
+      "about": [
+        "feature_settings",
+        "biome_worldgen",
+        "farm_ruins",
+        "visitor_ecology",
+        "acoustic_payload",
+        "legacy_ground_flora",
+        "rain_water_services"
+      ],
+      "source": [
+        "design/RimMandrake/standing_rulings.md:128",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml",
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "speaker": "agent",
+      "disposition": "does",
+      "owner_decision_needed": false,
+      "evidence_against_obvious_answer": [],
+      "resolution_basis": "derived_existing_scope",
+      "runtime_acceptance": false
+    }
+  ],
+  "stage2_summary": {
+    "id": "edge_argument_complete",
+    "speaker": "agent",
+    "source": "design/concepts/GelatinousSlime/stage2_argument.md",
+    "run": "rm-role-designercodex-1794809122",
+    "status": "independently_reviewed_complete",
+    "text": "Eleven claim clusters have explicit attacks, cheap wrong versions, counterexamples, reuse comparators, distinct transition variants, boundaries and source-backed dispositions. No evidence requires a new owner scope decision. Technical delivery gaps remain unresolved as such and carry finite paths to acceptance.",
+    "owner_questions_sent": 0,
+    "owner_waivers_created": 0,
+    "flagship_selected": false,
+    "first_touch_certified": false,
+    "runtime_proof_supplied": false,
+    "root_unchanged": true,
+    "review": "design/concepts/GelatinousSlime/stage2_review.json",
+    "review_cautions_applied": [
+      "Explicit one released/bursting piece is spent once; normal launch accounting remains unobserved.",
+      "Mid-vat pause is an agent implementation choice grounded in existing off UI and power-pause behaviour."
+    ],
+    "delegated_source": "CONDUCTOR:1794810108456236688"
   }
 }
