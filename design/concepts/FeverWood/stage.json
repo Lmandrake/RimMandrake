@@ -18,15 +18,60 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  },
+  {
+   "at": "2026-11-16T02:07:03Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794794776, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-16T02:27:28Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794794776: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
  "mod": "FeverWood",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-16T02:27:27Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_grounding.md": "1cb7de3e0c7b1103a87fa57c7322967ff87a92cc2a0c613348195415805ab374",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794794776",
+   "stage": 0,
+   "summary": "Verified FeverWood source/spec/ledger inventory with separate implementation, proof and scope fields, complete built-evidence accounting, three failure modes, neighboring ownership and every staged proof-chain audit. Corrected stale draft claims about tank destruction, ordinary settings restoration and oil proof coverage. Existing offline suite and campaign wiring selftests passed. Recorded source gaps and an existing-code live-walk proposal for the next design stage. Current in-game experience remains unmeasured."
+  }
+ ],
  "runner": "codex",
+ "runner_spend": [
+  {
+   "run": "rm-role-designercodex-1794794776",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 8549285,
+    "output_tokens": 30724
+   }
+  }
+ ],
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
