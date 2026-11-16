@@ -280,10 +280,10 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)",
     "owed build RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE landed and deployed (asserted by its selftest on the deployed DLL hash), else the transition-message arm records UNMEASURED",
-    "a placed Coalescence with a fourth colonist ordered to stand adjacent to its ring; for the flesh-only arm, a humanlike race whose RaceProps.IsFlesh is false read from the loaded defs: Core plus all five DLC hold none (measured 2026-11-16: the only humanlike races are Human and CreepJoiner, both flesh), so on this list that arm records UNMEASURED with that reason and the flesh guard is the source read RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271"
+    "for the flesh-only arm, a humanlike race whose RaceProps.IsFlesh is false read from the loaded defs: Core plus all five DLC hold none (measured 2026-11-16: the only humanlike races are Human and CreepJoiner, both flesh), so on this list that arm records UNMEASURED with that reason and the flesh guard is the source read RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271"
    ],
-   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a fourth adjacent to the Coalescence; a muffalo, and a non-flesh humanlike when the load holds one, out in the Bloom",
-   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the colonist by the Coalescence gains the hediff; the muffalo gains none, and a non-flesh humanlike gains none (UNMEASURED on Core plus five DLC, which hold no such race)",
+   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a muffalo, and a non-flesh humanlike when the load holds one, out in the Bloom",
+   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the muffalo gains none, and a non-flesh humanlike gains none (UNMEASURED on Core plus five DLC, which hold no such race)",
    "control": {
     "case": "the same colonist kept indoors for the day",
     "expect": "no touched hediff and no message",
@@ -344,60 +344,6 @@
    "hold": "owner_review"
   },
   {
-   "id": "sc_coalescence_grows_and_breaks",
-   "kind": "acceptance",
-   "requirement": [
-    "coalescence_grows_and_breaks"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_coalescence_grows_and_breaks",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
-   "start": [
-    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
-    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a placed Coalescence at stage 1 (asserted mass)",
-    "six Unfinished within 20 cells",
-    "a second stage-1 Coalescence 40 cells away, placed for the gunfire arm (asserted mass, recorded as M)",
-    "COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE read first: if not closed, the absorption arm records UNMEASURED, never PASS",
-    "the Burn reads one map-wide sky (Building_RM_Coalescence.cs:118, sky.BurnActive), so any Burn collapses every Coalescence on the map: the arms run in the order the action gives, and the natural Burn tick is known from the saved schedule (asserted)"
-   ],
-   "action": "jump passive growth and let the Unfinished walk; read mass, stage, the inspect string and manhunters; with no Burn active, destroy the second Coalescence by colonist gunfire and read its remains; then power a Repulsor to force a Burn and read the first Coalescence's remains; after the forced Burn lapses, place a third stage-1 Coalescence at the second's mass M (asserted) and jump to the natural Burn, reading its remains",
-   "expect": "at least one stage up with absorption counted from arrivals; the inspect string names mass and stage equal to the comp's saved values; manhunters within the cap; the Repulsor-Burn collapse leaves Monstrous samples and mulch; the gunfire-destroyed Coalescence leaves zero Monstrous samples and less mulch than the third Coalescence, at equal stage and mass M, leaves in the natural Burn (gunfire mulch = round(killedMulchFactor 0.5 x the Burn mulch) from RM_CoalescenceKernel.Mulch); the third Coalescence collapses in the natural Burn with Monstrous samples; mass read before and after a save-reload is equal; a manhunter the Coalescence emitted standing on the ring is not absorbed",
-   "control": {
-    "case": "the same Unfinished held by a wall one cell outside the ring for the same span",
-    "expect": "it is alive, mass rises only by the passive-growth amount read from the comp",
-    "rules_out": "mass rising from passive growth or from Unfinished removed by another cause"
-   },
-   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "owner_review"
-  },
-  {
-   "id": "sc_waiting_costs_more",
-   "kind": "acceptance",
-   "requirement": [
-    "waiting_costs_more"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_waiting_costs_more",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
-   "start": [
-    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
-    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a placed Coalescence at stage 1, incidents off except its own emission (asserted storyteller quiet)",
-    "three colonists ordered to work the Coalescence site as the recovery party at each stage (asserted: three pawns with a job targeting a cell within 8 of the ring, untouched at stage 1)",
-    "the cap is map-wide: TryEmit counts every manhunter of the Coalescence's unfinishedKind on the map against maxManhunters at the emitter's stage (2, 4, 6 in RM_Coalescence.xml), so the cap arm's Coalescence is placed only after the stage reads"
-   ],
-   "action": "read manhunter count and spread at stage 1 with the recovery party working the site for 2500 ticks, reading each worker's RM_ContagionTouched severity and the nearest manhunter's distance to them; jump to stage 2, send the same party for the same span and read again; after the stage-2 reads, despawn the first Coalescence, place one at stage 3 (asserted mass), and hold it through emissions until the map count reaches its stage cap (maxManhunters[2], read from the def) and for five emissions after",
-   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident; the recovery workers at the stage-2 site gain more touched severity than at stage 1 and the manhunters come closer to them; the stage-3 arm reaches its stage cap and the count equals the cap, never above it, for five emissions after",
-   "control": {
-    "case": "the same span with growth held at stage 1",
-    "expect": "no rise in emissions",
-    "rules_out": "pressure from an unrelated raid"
-   },
-   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
-  },
-  {
    "id": "sc_genome_brings_tissue",
    "kind": "acceptance",
    "requirement": [
@@ -414,40 +360,14 @@
     "a second Bloody Mess for the interrupt control",
     "the wanted part is a Heart, named before the injection; the gestation roll is seeded to miss it",
     "the open fix items CONTAGION_INJECT_FIX_CANCEL_STILL_STABS, CONTAGION_INJECT_FIX_HOST_WANDERS_OFF and CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES are read first; an arm whose item is open records UNMEASURED",
-    "a third and a fourth Bloody Mess host, a Monstrous sample from a collapsed Coalescence and a normal sample both carried by one colonist (asserted)",
     "a non-donor colonist needing the same organ, and an ineligible host (a dead Bloody Mess corpse) (asserted)"
    ],
-   "action": "extract a sample, read the odds before ordering the injection, inject while the host walks, jump four days; install one organ on the donor; then kill a second host outside gestation; install the same kind of part on the non-donor and a grown natural arm or leg from the batch on the donor; order an injection into the ineligible host; turn the injection setting off and order one, then back on; with the Monstrous and normal samples both carried, inject the third host and jump four days; turn grownLimbsEnabled off, inject the fourth host with a Monstrous sample and jump four days",
-   "expect": "the extraction adds blood loss and a donor-labelled nonstacking sample; odds shown before the job; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero; the injection completes on the moving host; no acid burst at birth; matched install gives the mood and no mismatch; the same part on the non-donor gives no matched mood; the grown arm or leg on the donor gives the mood; the ineligible host is refused with a reason; with the setting off the injection order is refused; the Monstrous sample is the one injected; the Monstrous batch yields one of the five grown limb items and its art draws; with grownLimbsEnabled off the Monstrous batch is an ordinary 2 to 4 part batch",
+   "action": "extract a sample, read the odds before ordering the injection, inject while the host walks, jump four days; install one organ on the donor; then kill a second host outside gestation; install the same kind of part on the non-donor and a grown natural arm or leg from the batch on the donor; order an injection into the ineligible host; turn the injection setting off and order one, then back on",
+   "expect": "the extraction adds blood loss and a donor-labelled nonstacking sample; odds shown before the job; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero; the injection completes on the moving host; no acid burst at birth; matched install gives the mood and no mismatch; the same part on the non-donor gives no matched mood; the grown arm or leg on the donor gives the mood; the ineligible host is refused with a reason; with the setting off the injection order is refused",
    "control": {
     "case": "a second injection cancelled mid-bar, and a host killed outside gestation",
     "expect": "the sample is still carried and no gestation starts; the killed host bursts acid",
     "rules_out": "a batch spawned by the test, or a birth with no burst because the explosion is off everywhere"
-   },
-   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
-  },
-  {
-   "id": "sc_prints_pay",
-   "kind": "acceptance",
-   "requirement": [
-    "prints_pay"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_prints_pay",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
-   "start": [
-    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
-    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a living Unfinished with a known roll, the colony with a Contagion home (asserted)",
-    "a Helix contract fixture that offers a device, and a second scan target whose touch-range job is forced to provoke (asserted)"
-   ],
-   "action": "scan it, fire a Helix contract for that roll, deliver; scan it again; save and reload with a print in storage; scan the forced-provoke target",
-   "expect": "one print whose label names the roll; its inspect text names the rolled limbs, Monstrous status, extreme stat and failure, matching the Unfinished's comp; the label is unchanged after the save-reload; the contract consumes it and pays silver, and the device-offering contract delivers the device by drop pod; the second scan is refused; the forced-provoke scan turns the target on the scanner; the print's market value is above zero; the contract is offered only while the colony has a Contagion home",
-   "control": {
-    "case": "a contract asking for a different roll",
-    "expect": "the print is not accepted",
-    "rules_out": "a print spawned by the test"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
    "hold": "immediate"
@@ -542,10 +462,11 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "quicktest map retiled to the Contagion",
-    "fix item CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK read first: while it is open the Burn-off walk arm records UNMEASURED, never PASS"
+    "fix item CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK read first: while it is open the Burn-off walk arm records UNMEASURED, never PASS",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN landed and deployed (asserted by its acceptance test on the deployed DLL hash), else the three shipped-off reads record UNMEASURED"
    ],
-   "action": "flip each bool in RM_ContagionSettings, read by reflection from the deployed type, off in turn and run its feature step: genomeOrganGrowingEnabled (gestation), unfinishedSpawnerEnabled (budding), burnEnabled (natural and forced Burn; a colonist ordered across the map walks), burnTellsEnabled (tells), cloudRepulsorEnabled (Repulsor warmup), coalescenceEnabled (formation), grownLimbsEnabled (Monstrous batch), draftprintsEnabled (scan), zhoolHazeEnabled (haze look), zhoolConversionEnabled (plant conversion), zhoolConvertsCrops (crop conversion, shipped off), touchedEnabled (exposure), sunbeamArrestEnabled (arrest), mulchDropsEnabled (mulch); every bool the owed dive, bodyprints, sundash and odds builds add is in the same reflected list, and a bool the walk does not name fails the sweep by name; set each tuning multiplier to 0 and to 2 and read the sign of its effect; type a feature name in the search box and collapse a group; reset to defaults",
-   "expect": "each switch stops its feature alone (zhoolHazeEnabled and zhoolConversionEnabled independently of each other); with burnEnabled off a colonist ordered across the map arrives; reset restores shipped values; each multiplier changes its effect in the right direction; search filters to the named feature; groups collapse and reopen",
+   "action": "flip each bool in RM_ContagionSettings, read by reflection from the deployed type, off in turn and run its feature step: genomeOrganGrowingEnabled (gestation), unfinishedSpawnerEnabled (budding), burnEnabled (natural and forced Burn; a colonist ordered across the map walks), burnTellsEnabled (tells), cloudRepulsorEnabled (Repulsor warmup), coalescenceEnabled (formation, shipped off: Design Version 0.2.0), grownLimbsEnabled (Monstrous batch, shipped off: 0.2.0), draftprintsEnabled (scan and Helix contracts, shipped off: 0.2.0), zhoolHazeEnabled (haze look), zhoolConversionEnabled (plant conversion), zhoolConvertsCrops (crop conversion, shipped off), touchedEnabled (exposure), sunbeamArrestEnabled (arrest), mulchDropsEnabled (mulch); every bool the owed dive, bodyprints, sundash and odds builds add is in the same reflected list, and a bool the walk does not name fails the sweep by name; set each tuning multiplier to 0 and to 2 and read the sign of its effect; type a feature name in the search box and collapse a group; reset to defaults",
+   "expect": "each switch stops its feature alone (zhoolHazeEnabled and zhoolConversionEnabled independently of each other); with burnEnabled off a colonist ordered across the map arrives; reset restores shipped values, with coalescenceEnabled, grownLimbsEnabled and draftprintsEnabled off: at shipped defaults no Coalescence forms, no scan option or Helix contract appears; each multiplier changes its effect in the right direction; search filters to the named feature; groups collapse and reopen",
    "control": {
     "case": "every switch on",
     "expect": "every feature runs",
@@ -590,8 +511,8 @@
    "start": [
     "a lived-in Contagion save made mid-way through two in-game weeks, owner's full list plus all five DLC (asserted save path and list hash)"
    ],
-   "action": "take a natural Burn with one dash, then a Coalescence harvest under a Repulsor Burn and a gestation; reload and take them in the second order, harvest first; repeat the dash on the next Burn",
-   "expect": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same samples and letters; the repeated dash costs a dose again",
+   "action": "take a natural Burn with one dash, then a Repulsor Burn and a gestation; reload and take them in the second order, gestation first; repeat the dash on the next Burn",
+   "expect": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same batch and letters; the repeated dash costs a dose again",
    "control": {
     "case": "the same walk on a fresh quicktest map",
     "expect": "refused as not lived-in, recorded INVALID",
@@ -645,54 +566,6 @@
     "case": "the same sac read after two days by clock",
     "expect": "not yet hatched",
     "rules_out": "a hatch from some spawn timer other than the sac's own three-day clock"
-   },
-   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
-  },
-  {
-   "id": "sc_helix_trade",
-   "kind": "acceptance",
-   "requirement": [
-    "prints_pay"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_helix_trade",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
-   "start": [
-    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
-    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "mandrake.rut.patches active and HelixCurators_Contagion.xml applied (asserted: the patched faction's caravanTraderKinds holds RM_Caravan_HelixCurators), else UNMEASURED; a Helix Curators caravan called through that attachment"
-   ],
-   "action": "open the trade dialog; offer genome tissue and a print",
-   "expect": "the curators sell Contagion devices and the ship gift, and buy the tissue at a price",
-   "control": {
-    "case": "the same caravan on a colony with no Contagion home",
-    "expect": "its device stock is unchanged and contracts are not offered",
-    "rules_out": "a stock that comes from the general trader rather than RM_HelixCurators"
-   },
-   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
-  },
-  {
-   "id": "sc_coalescence_forms",
-   "kind": "acceptance",
-   "requirement": [
-    "coalescence_grows_and_breaks"
-   ],
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_coalescence_forms",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
-   "start": [
-    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
-    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "no Coalescence on the map; burnEnabled on; a site outside the home area"
-   ],
-   "action": "jump the long-Bloom clock past its formation threshold; then jump it past the threshold a second time",
-   "expect": "one Coalescence forms outside the home area, clears the plants on its cells and announces a threat letter; its inspect string names mass and stage, matching the comp; the second jump forms no second Coalescence (count stays 1) and sends no second letter",
-   "control": {
-    "case": "the same jump with burnEnabled off",
-    "expect": "no Coalescence forms",
-    "rules_out": "a Coalescence placed by the test"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
    "hold": "immediate"
@@ -821,28 +694,6 @@
    ]
   },
   {
-   "id": "coalescence_harvest",
-   "scenes": [
-    "sc_coalescence_grows_and_breaks",
-    "sc_waiting_costs_more",
-    "sc_unfinished_malformed",
-    "sc_coalescence_forms",
-    "sc_mulched_soil"
-   ],
-   "exercises": [
-    "unfinished_budding",
-    "unfinished_variation",
-    "unfinished_mulch",
-    "coalescence_formation",
-    "coalescence_growth",
-    "coalescence_threat",
-    "coalescence_payoff",
-    "fauna_bloody_mess",
-    "repulsor",
-    "mulched_soil"
-   ]
-  },
-  {
    "id": "genome_bench",
    "scenes": [
     "sc_genome_brings_tissue",
@@ -859,17 +710,17 @@
    ]
   },
   {
-   "id": "helix_market",
+   "id": "unfinished_harvest",
    "scenes": [
-    "sc_prints_pay",
-    "sc_bodyprints_phased",
-    "sc_helix_trade"
+    "sc_unfinished_malformed",
+    "sc_mulched_soil"
    ],
    "exercises": [
-    "draftprints",
-    "helix_contracts",
-    "helix_trade",
-    "bodyprints"
+    "unfinished_budding",
+    "unfinished_variation",
+    "unfinished_mulch",
+    "fauna_bloody_mess",
+    "mulched_soil"
    ]
   }
  ],
@@ -926,44 +777,50 @@
   {
    "capability": "pillar_arm",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "lash",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "eyeburst",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "caudal_spring",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "bellows",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "limb_removal",
    "by": [
-    "limbs_stay_built"
+    "sc_settings_superb",
+    "no_magenta"
    ],
-   "why": "built, scoped later: 0.1.0 only proves it still resolves and draws; its costs are 0.2.0 by his 2026-11-15 ruling"
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (grownLimbsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load; its costs were moved by his 2026-11-15 ruling"
   },
   {
    "capability": "scanner_payload",
@@ -985,6 +842,96 @@
     "biome_def_declared"
    ],
    "why": "a guarded row owned by TheRot: the guard read both ways is the whole capability"
+  },
+  {
+   "capability": "coalescence_formation",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (coalescenceEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "coalescence_growth",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (coalescenceEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "coalescence_threat",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (coalescenceEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "coalescence_payoff",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (coalescenceEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "draftprints",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (draftprintsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "helix_contracts",
+   "by": [
+    "sc_settings_superb",
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878); switched off at shipped defaults (draftprintsEnabled false) by the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN, which sc_settings_superb asserts in its start (else UNMEASURED) before reading it does not run, and no_magenta reads its defs still load"
+  },
+  {
+   "capability": "helix_trade",
+   "by": [
+    "no_magenta"
+   ],
+   "why": "built, Design Version 0.2.0 by his 2026-11-16 ruling (OWNER:1794842455892769878, 'Defer Helix trade'); the curator trader def ships and no_magenta reads it loads; its faction attachment is the campaign patch's (mandrake.rut.patches), outside this mod"
+  },
+  {
+   "capability": "repulsor",
+   "by": [
+    "sc_repulsor_warns_and_clears"
+   ],
+   "why": "its own acceptance scene covers warmup, the whole-map Burn and the lapse; with the Coalescence harvest gone no showcase stages it"
+  },
+  {
+   "capability": "bodyprints",
+   "by": [
+    "sc_bodyprints_phased"
+   ],
+   "why": "an owed build with its own acceptance scene; with Helix trade gone it is too small a showcase (one new capability)"
+  },
+  {
+   "capability": "repulsor_warning",
+   "by": [
+    "sc_repulsor_warns_and_clears"
+   ],
+   "why": "an owed build (RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP) whose warning arm is in the Repulsor's own acceptance scene, asserted in its start"
+  },
+  {
+   "capability": "touched_transition_message",
+   "by": [
+    "sc_touched_reads_early"
+   ],
+   "why": "an owed build (RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE) whose one-message arm is in the touched scene, asserted in its start"
+  },
+  {
+   "capability": "deferred_switches_off",
+   "by": [
+    "sc_settings_superb"
+   ],
+   "why": "an owed build (RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN) whose shipped-off read is the settings scene's reset arm, asserted in its start"
   }
  ]
 }

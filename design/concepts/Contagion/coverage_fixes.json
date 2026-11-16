@@ -3,15 +3,15 @@
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_coalescence_grows_and_breaks: with no Burn active the second Coalescence (stage 1, mass M) is destroyed by colonist gunfire (zero Monstrous samples); then the Repulsor Burn collapses the first; after it lapses a third stage-1 Coalescence at mass M collapses in the natural Burn with Monstrous samples, and the gunfire mulch is less than the third's at equal stage and mass (killedMulchFactor 0.5, RM_CoalescenceKernel.Mulch). Ordered because the Burn reads one map-wide sky.BurnActive (Building_RM_Coalescence.cs:118) and collapses every Coalescence at once"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Coalescence and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_COALESCENCE_NEXT_VERSION_GAPS_KEPT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json sc_waiting_costs_more: after the stage-2 reads the first Coalescence is despawned and a stage-3 one placed and held through emissions until the map-wide count of its unfinishedKind manhunters reaches its stage cap (maxManhunters[2] = 6, RM_Coalescence.xml; TryEmit counts the whole map), expect the count equals the cap and never exceeds it for five emissions after; placed late so its emissions do not enter the stage-1/stage-2 comparison"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Coalescence and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_COALESCENCE_NEXT_VERSION_GAPS_KEPT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g3",
-   "evidence": "scenes.json sc_waiting_costs_more: start asserts a three-colonist recovery party ordered to the site at each stage; action reads each worker's RM_ContagionTouched severity and nearest manhunter distance at stage 1 and stage 2"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Coalescence and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_COALESCENCE_NEXT_VERSION_GAPS_KEPT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g4",
@@ -27,11 +27,11 @@
   },
   {
    "gap": "g7",
-   "evidence": "scenes.json sc_touched_reads_early: a fourth colonist adjacent to a Coalescence ring gains the hediff; the non-flesh humanlike arm reads the loaded defs for a humanlike race with IsFlesh false and records UNMEASURED on Core plus five DLC, which hold none (measured 2026-11-16: Human and CreepJoiner only, both flesh); the guard itself is RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271, and the muffalo (non-humanlike flesh) gains none"
+   "evidence": "scenes.json sc_touched_reads_early: the non-flesh humanlike arm reads the loaded defs for a humanlike race with IsFlesh false and records UNMEASURED on Core plus five DLC, which hold none (measured 2026-11-16), the flesh guard read at RM_ContagionTouched.cs:271; the Coalescence-contact half MOVED to 0.2.0 (OWNER:1794842455892769878); contact exposure stays tested by the colonist adjacent to an Unfinished off-biome"
   },
   {
    "gap": "g8",
-   "evidence": "scenes.json sc_genome_brings_tissue: a Monstrous sample injected expects one of the five grown limb items whose art draws; with grownLimbsEnabled off the Monstrous batch is an ordinary 2 to 4 part batch (sheet.md line kept, now run)"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Grown Limbs and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_GROWN_LIMBS_NEXT_VERSION_SWITCH_OFF; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g9",
@@ -39,7 +39,7 @@
   },
   {
    "gap": "g10",
-   "evidence": "scenes.json sc_genome_brings_tissue: an ineligible host (dead Bloody Mess) refused with a reason; injection setting off refuses the order; with a Monstrous and a normal sample both carried, the Monstrous one is injected"
+   "evidence": "scenes.json sc_genome_brings_tissue: an ineligible host (dead Bloody Mess) refused with a reason; injection setting off refuses the order; the Monstrous-first half MOVED to 0.2.0 with the Grown Limbs (OWNER:1794842455892769878)"
   },
   {
    "gap": "g11",
@@ -63,7 +63,7 @@
   },
   {
    "gap": "g16",
-   "evidence": "tree.json fauna_specials_declared scenario: a defName/field/expected-value table with one row per inventory special (acid and slime deaths, leaker and armored lists, Gnashling, Meltgut, Bloodlurk, Doublemaw, Peeper, Eyestinger, Fleshsop, Danglemaw, RM_ContagionIkee, grub, Blisterfloat leave-map, Bulloo meat and leather, Zhool body, render tree and life stages); VEF comps a def read, live VEF marked out with its reason"
+   "evidence": "DROPPED by his ruling (OWNER:1794842455892769878, 'The mod passing bars should not specify flora and fauna yield rates'): fauna special field VALUES are tuning: the leaf now reads each special as a kind (death, Burn class, predator, flight, body, render tree), never a size, speed, chance, meat, armor or commonality value"
   },
   {
    "gap": "g17",
@@ -71,11 +71,11 @@
   },
   {
    "gap": "g18",
-   "evidence": "tree.json flora_yields_declared: every RM_Contagion wildPlants entry, adding Lashgrass, Rattlegrope and RM_HalfmadeTreeBlighted; the Halfmade Tree's Graphic_Random resolves two or more variants"
+   "evidence": "DROPPED by his ruling (OWNER:1794842455892769878, 'The mod passing bars should not specify flora and fauna yield rates'): plant yield and ingestible fields are yield rates and the Halfmade Tree's variant count is an asset count: leaf flora_yields_declared is deleted"
   },
   {
    "gap": "g19",
-   "evidence": "scenes.json sc_prints_pay: inspect text names rolled limbs, Monstrous status, extreme stat and failure; label unchanged after save-reload; a forced-provoke scan turns the target; the device-offering contract delivers its device by drop pod"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Helix trade and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_HELIX_TRADE_NEXT_VERSION_PRINTS_WAIT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g20",
@@ -95,11 +95,11 @@
   },
   {
    "gap": "g24",
-   "evidence": "scenes.json sc_coalescence_forms: a second formation-clock jump forms no second Coalescence and no second letter; its inspect string names mass and stage matching the comp (also read in sc_coalescence_grows_and_breaks)"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Coalescence and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_COALESCENCE_NEXT_VERSION_GAPS_KEPT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   },
   {
    "gap": "g25",
-   "evidence": "scenes.json sc_helix_trade start asserts mandrake.rut.patches active and HelixCurators_Contagion.xml applied (the patched faction's caravanTraderKinds holds RM_Caravan_HelixCurators), else UNMEASURED"
+   "evidence": "MOVED to Design Version 0.2.0 by his ruling (OWNER:1794842455892769878): the Helix trade and its leaves and scenes left 0.1.0 (later_version.md); the would_pass text is the acceptance test of RIMMANDRAKE_PROVE_CONTAGION_HELIX_TRADE_NEXT_VERSION_PRINTS_WAIT; the owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN switches it off at shipped defaults and coverage_rest reads that"
   }
  ]
 }

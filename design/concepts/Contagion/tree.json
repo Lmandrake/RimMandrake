@@ -5,7 +5,7 @@
  "authored_by": "concept",
  "root_ref": "design/validation_walks/RimMandrake/Contagion.md#north-star",
  "root_state": "VALIDATED",
- "root_hash": "d46c52671f8caceb8fe21aadbea217f85b7b6768ac59a22d1a5b75567f60d7e8",
+ "root_hash": "8a3e576a90c6df0f11a0563986a7c53efb008b56f2c98135f334ab322ef9fa66",
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
@@ -348,56 +348,6 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "at least one stage up with absorption counted from arrivals; manhunters within the map cap; Burn collapse yields Monstrous samples and mulch, gunfire yields less mulch and no samples",
-   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "coalescence_grows_and_breaks",
-   "by": "concept",
-   "root": [
-    "contagion_coalescence_reads_as_mass"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The player sees a Coalescence form, Unfinished walk to its ring and be absorbed, its body visibly grow a stage, its manhunters stay bounded, and a Burn collapse it into Monstrous samples where killing it gives less.",
-   "scenario": "Saved site: place a Coalescence, spawn six Unfinished, jump passive growth; read mass, stage graphic and manhunter count; force a Burn and read what it leaves; control: a second Coalescence killed by gunfire.",
-   "false_pass": [
-    "the stage graphic is set by the test",
-    "absorption is counted from Unfinished despawned by the cleanup"
-   ],
-   "red": "a build where the Unfinished never reach the ring and the mass stays at stage 1, or where the Burn collapse yields nothing more than gunfire",
-   "tier_proposed": "live_minimal",
-   "owner_part": "yes: the same Coalescence at two stages"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "stage 2 emits more manhunters than stage 1, still within the cap, all from the Coalescence; no unrelated incident fires",
-   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "waiting_costs_more",
-   "by": "concept",
-   "root": [
-    "contagion_coalescence_reads_as_mass"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The player who waits for one more Coalescence stage faces more pressure reaching the site and on the workers sent to recover the tissue, not a threat unrelated to the creature.",
-   "scenario": "Saved site: the same Coalescence read at stage 1 and stage 2 by clock; read manhunter count, their reach toward the colony and the recovery path.",
-   "false_pass": [
-    "pressure grows because an unrelated raid was fired",
-    "the stage 2 read is a different Coalescence"
-   ],
-   "red": "a build where a later stage adds no pressure, or adds pressure from outside the creature",
-   "tier_proposed": "live_minimal",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
    "oracle_proposed": "odds visible in the existing UI before the job starts; batch of 2 to 4 donor-labelled parts; matched install gives the mood and no mismatch; the interrupted injection keeps the sample and starts no gestation",
    "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
    "cannot_show": null,
@@ -416,31 +366,6 @@
     "odds are written in a dev log only"
    ],
    "red": "a build where a missed batch yields nothing, the odds are hidden until after the stab, or an interrupted injection still spends the sample",
-   "tier_proposed": "live_minimal",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "one print per Unfinished; its saved label names the roll; the matching contract consumes it and pays",
-   "tier_reason": "sky, weather, pawn health, jobs and things are runtime state of a running Contagion map; the offline selftest proves only the pure rules",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "prints_pay",
-   "by": "concept",
-   "root": [
-    "contagion_unfinished_read_malformed"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The player scans a living Unfinished for a draftprint and sees a Helix contract that asks for that combination pay silver for it.",
-   "scenario": "Saved site with a Contagion home: scan a living Unfinished; fire a Helix contract asking for its roll; deliver the print.",
-   "false_pass": [
-    "the print item is spawned by the test",
-    "the contract asks for any print at all"
-   ],
-   "red": "a build where a print can be scanned twice, or the contract never consumes the matching print",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },
@@ -622,7 +547,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every row of the table reads its field present with the expected value; a missing field fails by name; one row per inventory special, none skipped",
+   "oracle_proposed": "every row of the table reads its special present on the resolved race; a missing special fails by name; one row per inventory special, none skipped; no number is read",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -633,8 +558,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The tester reading defs sees each Contagion native carry the special its description promises: acid deaths on Bloody Mess, Scorchpod and Bulloo, slime deaths on the goo-buds, the Scorchpod leaker flag, pack and size on Gnashling and Meltgut, the Bloodlurk's pool habitat, and the Zhool's and Bulloo's custom bodies and render trees.",
-   "scenario": "Selftest over RM_ContagionFauna.xml, RM_ContagionBulloos.xml and RM_OcularJelly_Twitch.xml, each race resolved through its ParentName: read the table's field per row. Table (defName: field = expected): RM_BloodyMess, RM_Scorchpod, RM_InfectedAerofleet: deathAction = DeathActionProperties_ScaledExplosion; RM_Skinflap, RM_Gorekite, RM_Danglemaw, RM_Crispling, RM_Sloshbelly, RM_Ogleknot: deathAction = DeathActionProperties_Vanish; RM_Scorchpod: listed in RM_Contagion's RM_ContagionSkyExtension leakerNatives; RM_Scaldhide, RM_Crispling: listed in armoredNatives; RM_Gnashling: herdAnimal true, baseBodySize 1; RM_Meltgut: baseBodySize 4.0, MoveSpeed 0.6; RM_Bloodlurk: predator true, MoveSpeed 3.8, and its pool-margin home is its RM_Contagion wildAnimals commonality 0.2 (no race habitat field exists, grep 2026-11-16); RM_Doublemaw: MoveSpeed 4.6; RM_Peeper: predator false, manhunterOnDamageChance 0.05; RM_Eyestinger: predator true, baseBodySize 2.5, ArmorRating_Sharp 0.4; RM_Fleshsop: manhunterOnDamageChance 1.0; RM_Danglemaw: MoveSpeed 1.0, predator true; RM_ContagionIkee: defName present and distinct from any vanilla or donor ikee defName; RM_SparkleechGrub: no MaxFlightTime, baseBodySize 0.2 below RM_Sparkleech's 0.45; RM_Blisterfloat: MaxFlightTime 15, canLeaveMapFlying true; RM_InfectedAerofleet: body RM_BullooBody, MeatAmount 0, leatherDef Leather_Light; RM_OcularJelly: body RM_ZhoolBody, renderTree RM_OcularJelly_Twitch, three lifeStageAges whose render tree scales with life stage; RM_InfectedAerofleet and RM_OcularJelly: VEF CompProperties_Floating and CompProperties_AsexualReproduction declared (a def read, run without VEF loaded; the live VEF behaviour is out of this leaf because VEF is not on the minimal list)",
+   "experience": "The tester reading defs sees each Contagion native carry the kind of special its description promises: acid deaths on Bloody Mess, Scorchpod and Bulloo, slime deaths on the goo-buds, the Scorchpod leaker and the armored natives' Burn class, the flyers' flight, the Bloodlurk and Eyestinger as predators, and the Zhool's and Bulloo's custom bodies and render trees.",
+   "scenario": "Selftest over RM_ContagionFauna.xml, RM_ContagionBulloos.xml and RM_OcularJelly_Twitch.xml, each race resolved through its ParentName: read the table's special per row, as a kind, never a value. Table (defName: special): RM_BloodyMess, RM_Scorchpod, RM_InfectedAerofleet: deathAction DeathActionProperties_ScaledExplosion; RM_Skinflap, RM_Gorekite, RM_Danglemaw, RM_Crispling, RM_Sloshbelly, RM_Ogleknot: deathAction DeathActionProperties_Vanish; RM_Scorchpod: listed in RM_Contagion's RM_ContagionSkyExtension leakerNatives; RM_Scaldhide, RM_Crispling: listed in armoredNatives; RM_Gnashling: herdAnimal; RM_Bloodlurk, RM_Eyestinger, RM_Danglemaw: predator; RM_Peeper: not a predator; RM_ContagionIkee: defName present and distinct from any vanilla or donor ikee defName; RM_SparkleechGrub: grounded (no MaxFlightTime) while RM_Sparkleech flies; RM_Blisterfloat: MaxFlightTime declared and canLeaveMapFlying; RM_InfectedAerofleet: body RM_BullooBody; RM_OcularJelly: body RM_ZhoolBody, renderTree RM_OcularJelly_Twitch with life stages; RM_InfectedAerofleet and RM_OcularJelly: VEF CompProperties_Floating and CompProperties_AsexualReproduction declared (a def read, run without VEF loaded; the live VEF behaviour is out of this leaf because VEF is not on the minimal list). Sizes, speeds, chances, meat, armor and commonality are tuning and are not read (owner 2026-11-16, OWNER:1794842455892769878).",
    "false_pass": [
     "the fields are read from the parent def only",
     "a description that names no special is skipped silently"
@@ -647,7 +572,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each declared field present with its value on the post-patch def; every disease def resolves; RustPuff present with TheRot and absent without; TentacularPlant absent from wildPlants; validate_patch reports every operation matched; the workerClass's GetScore is -100 or less on every return and biomeRarityFactor is absent from every Contagion .cs file",
+   "oracle_proposed": "each declared field present on the post-patch def (terrain its own, plant and animal density nonzero, forage zero; no density value is read); every disease def resolves; RustPuff present with TheRot and absent without; TentacularPlant absent from wildPlants; validate_patch reports every operation matched; the workerClass's GetScore is -100 or less on every return and biomeRarityFactor is absent from every Contagion .cs file",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -658,7 +583,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The tester reading defs sees RM_Contagion declare its own terrain, plant density, disease table and zero forage, keep the RustPuff row only when TheRot is loaded, leave the legacy TentacularPlant off the roster, and the Acoustic Scanner payload patch match AcousticScanner's defs. The scoped-out placement worker is retired: the workerClass on RM_Contagion never scores a tile and no rarity setting remains.",
+   "experience": "The tester reading defs sees RM_Contagion declare its own terrain, a nonzero plant and animal density, its disease table and zero forage, keep the RustPuff row only when TheRot is loaded, leave the legacy TentacularPlant off the roster, and the Acoustic Scanner payload patch match AcousticScanner's defs. The scoped-out placement worker is retired: the workerClass on RM_Contagion never scores a tile and no rarity setting remains.",
    "scenario": "Selftest over the post-patch RM_Contagion def: the fingerprinted offline def dump (refresh.py) read only when its fingerprint matches the current mod set, else UNMEASURED; the RustPuff guard parsed with and without TheRot's packageId, every disease def in the disease table resolved in that dump, and validate_patch.py over RM_AcousticPayload_Contagion.xml with --defs. Absence arm, over RM_Contagion.xml and src/RimMandrake/Contagion/Source: the workerClass named on the BiomeDef has a GetScore that returns -100 or less on every return, and biomeRarityFactor appears in no Contagion .cs file; red until RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN lands.",
    "false_pass": [
     "counting <li> instead of parsing the elements",
@@ -669,56 +594,6 @@
     "the rarity setting removed from the UI but still scribed"
    ],
    "red": "a build whose biome falls back to vanilla terrain or forage, lists RustPuff without its mod, or whose scanner payload matches nothing",
-   "tier_proposed": "offline",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "each rostered plant's yield thing and amount match its row; each inedible plant has no ingestible food value; no rostered plant is missing from the table; the Halfmade Tree resolves two or more variants",
-   "tier_reason": null,
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "flora_yields_declared",
-   "by": "concept",
-   "root": [
-    "contagion_flora_reads_as_flesh"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The tester reading defs sees each Contagion plant yield what its description says (Eyebark and Halfmade wood, red sap, seed-fists, the Wombpod sac) and the inedible ones carry no food nutrition.",
-   "scenario": "Selftest over RM_ContagionFlora.xml, every plant on RM_Contagion's wildPlants parsed as elements: harvestedThingDef, harvestYield and ingestible fields for Eyebark, Lashgrass, Bleedleaf, Gorestalk, Rattlegrope, Sapblister, Bloody Fist, Halfmade Tree, Blighted Halfmade Tree (RM_HalfmadeTreeBlighted), Meatvine, Toothmoss and Wombpod; and the Halfmade Tree's Graphic_Random folder resolves more than one texture",
-   "false_pass": [
-    "a yield read from the abstract parent",
-    "inedibility inferred from a missing tag"
-   ],
-   "red": "a build where a flesh plant is edible forage or harvests nothing",
-   "tier_proposed": "offline",
-   "owner_part": "no"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "every limb def, item and recipe resolves; every declared texPath has a file; the emerge comp is on all five",
-   "tier_reason": null,
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "limbs_stay_built",
-   "by": "concept",
-   "root": [
-    "contagion_never_magenta"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "preserve",
-   "experience": "The tester reading defs sees the five grown limbs, their install recipes and the removal-emerge comp still resolve, with art for every one that draws; what they cost is Design Version 0.2.0 and is not judged here.",
-   "scenario": "Selftest over RM_GrownLimbHediffs.xml and the limb items and recipes: each def resolves, each texPath exists, HediffComp_UnfinishedEmerge is declared on each limb, grownLimbsEnabled exists.",
-   "false_pass": [
-    "Bellows counted as missing art though it declares no render node",
-    "a recipe checked without its ingredient"
-   ],
-   "red": "a build where a limb def or its recipe stops resolving, or a limb texture points at nothing",
    "tier_proposed": "offline",
    "owner_part": "no"
   },
@@ -751,7 +626,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same samples and letters; the repeated dash costs a dose again",
+   "oracle_proposed": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same batch and letters; the repeated dash costs a dose again",
    "tier_reason": "the walk is the mod in play on the full list",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -760,18 +635,17 @@
    "root": [
     "contagion_bloom_reads_unwholesome",
     "contagion_burn_reads_as_danger",
-    "contagion_repulsor_clears_sky",
-    "contagion_coalescence_reads_as_mass"
+    "contagion_repulsor_clears_sky"
    ],
    "leaf_kind": "walk",
    "clause_kind": "preserve",
-   "experience": "The player walks a lived-in Contagion colony through a Bloom day, a natural Burn with a dash, a Coalescence harvest and a gestation, and the sky and the body tell one story.",
-   "scenario": "Load a lived-in Contagion save made mid-way through two in-game weeks; take a natural Burn with one dash, then harvest a Coalescence under a Repulsor Burn and start a gestation; reload and take them in the second order, harvest first; repeat the dash on the next Burn; read doses, hediffs, samples and letters each time.",
+   "experience": "The player walks a lived-in Contagion colony through a Bloom day, a natural Burn with a dash, a Repulsor Burn and a gestation, and the sky and the body tell one story.",
+   "scenario": "Load a lived-in Contagion save made mid-way through two in-game weeks; take a natural Burn with one dash, then a Repulsor Burn and a gestation; reload and take them in the second order, gestation first; repeat the dash on the next Burn; read doses, hediffs, the batch and letters each time.",
    "false_pass": [
     "a fresh map stands in for the lived-in save",
     "the second order is never run"
    ],
-   "red": "a build where the Burn schedule, touched progression or gestation is lost on reload, or the order of harvest and Burn changes the outcome",
+   "red": "a build where the Burn schedule, touched progression or gestation is lost on reload, or the order of the Repulsor Burn and the gestation changes the outcome",
    "tier_proposed": "live_full",
    "owner_part": "no"
   }

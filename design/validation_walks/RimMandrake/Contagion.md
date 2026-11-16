@@ -103,8 +103,8 @@ Offline: `python3 src/RimMandrake/Contagion/selftest_contagion.py` runs the suit
 
 ## north star
 state: VALIDATED
-validated-hash: d46c52671f8caceb8fe21aadbea217f85b7b6768ac59a22d1a5b75567f60d7e8
-validated-by: delegated: new north-star bars; judge verdict infrastructure/state/delegated/2026-11-16/Contagion_north_star_bars_r2.json
+validated-hash: 8a3e576a90c6df0f11a0563986a7c53efb008b56f2c98135f334ab322ef9fa66
+validated-by: Official ruling: Everything about the Coalescence is next version. Everything about the Grown Limbs is next version. The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that! How do we get the Judges to not demand pendantic stuff like this? Who cares the halfmade tree has more than one graphic? There's variants all the time. Defer Helix trade to next version. (OWNER:1794842455892769878)
 
 Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
 `## must be true` and the mod's shipped sprites, defs and settings, on the owner's
@@ -144,8 +144,6 @@ least certain. `### the experience` is his to dictate.
 - [ ] `contagion_unfinished_read_malformed` — the Unfinished (`RM_TheUnfinished`),
       several side by side, read as half-made, wrong creatures, each visibly
       different.
-- [ ] `contagion_coalescence_reads_as_mass` — an `RM_Coalescence` reads as a
-      living mass that is clearly the source of something. (guess)
 
 ### cannot show
 
@@ -162,6 +160,14 @@ version, not the current one."*; item RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FI
 Its drafted bar, to be weighed when 0.2.0 opens: `contagion_grown_limb_visible`,
 a colonist fitted with a Monstrous grown limb looks different from one with a
 natural arm (guess: hediffs often draw nothing).
+
+Everything about the Coalescence, everything about the Grown Limbs, and Helix trade
+are Design Version 0.2.0 too (owner 2026-11-16, OWNER:1794842455892769878:
+*"Everything about the Coalescence is next version. Everything about the Grown Limbs
+is next version. ... Defer Helix trade to next version."*; `design/concepts/Contagion/later_version.md`).
+The Coalescence's bar moved here unchanged, to be weighed when 0.2.0 opens:
+`contagion_coalescence_reads_as_mass`, an `RM_Coalescence` reads as a living mass
+that is clearly the source of something (guess).
 
 ## anti-guessing notes
 - RULED OUT: "the Burn needs a generated Contagion map" — `Map.Biome => TileInfo.PrimaryBiome` (decompiled `Verse/Map.cs:398`, RimSage 2026-10-01) and `jawa/map_info` says it is a live passthrough, so re-tiling the quicktest map's own tile reaches `RM_ContagionSky.ExtFor`. site.retile_to_contagion is the guard: if the map's biome does not follow, every Contagion chain records UNMEASURED, never PASS.

@@ -85,6 +85,12 @@
     "OWNER:1792619044663650704"
    ],
    "text": "By card 2026-10-21: the Titan passage pool takes sea/juvenile kinds per his notes; the Contagion homes no giant yet (CONTAGION_TITAN_POPULATE_PLAGUE_OF_SMALLS, needs him at this biome's roster sitting)."
+  },
+  {
+   "id": "s_next_version_2026_11_16",
+   "speaker": "owner",
+   "source": "OWNER:1794842455892769878",
+   "text": "Official ruling: Everything about the Coalescence is next version. Everything about the Grown Limbs is next version. The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that! How do we get the Judges to not demand pendantic stuff like this? Who cares the halfmade tree has more than one graphic? There's variants all the time. Defer Helix trade to next version."
   }
  ],
  "decisions": [
@@ -167,7 +173,7 @@
     "OWNER:1794364405453876478"
    ],
    "date": "2026-11-15",
-   "what": "Waiting for another Coalescence stage puts more pressure on reaching the site and on the workers who go out to recover the tissue, not a threat unrelated to the creature; emissions stay bounded; shown as the same colony at two stages. Certified by him 2026-11-15.",
+   "what": "Waiting for another Coalescence stage puts more pressure on reaching the site and on the workers who go out to recover the tissue, not a threat unrelated to the creature; emissions stay bounded; shown as the same colony at two stages. Certified by him 2026-11-15. Design Version 0.2.0 with the Coalescence (OWNER:1794842455892769878).",
    "why": "Evidence-for-Ask rule (owner 2026-11-15, RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): no evidence against the Designer's own guess; his card puts weather and body first, with trips out as the reasons to risk them; no word of his on the Coalescence exists (owner_rulings --grep coalescence: 0 rulings)."
   },
   {
@@ -185,7 +191,7 @@
    "speaker": "owner",
    "source": "OWNER:1794772416196929336",
    "date": "2026-11-15",
-   "what": "The grown-limb work (what a grown limb costs, its tuning and testing) is not in Design Version 0.1.0. It moves to 0.2.0 as a Divergent item with its acceptance test. The limbs stay built; 0.1.0 does not design or judge their costs."
+   "what": "The grown-limb work (what a grown limb costs, its tuning and testing) is not in Design Version 0.1.0. It moves to 0.2.0 as a Divergent item with its acceptance test. The limbs stay built; 0.1.0 does not design or judge their costs. Since 2026-11-16 everything about the Grown Limbs is 0.2.0 (OWNER:1794842455892769878), and 0.1.0 is to ship grownLimbsEnabled off (owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN)."
   },
   {
    "kind": "delegated",
@@ -228,7 +234,7 @@
     "OWNER:1792162786418789127",
     "ITEM:CONTAGION_GPT_ENRICHMENT_1"
    ],
-   "what": "The anticipatory pre-Burn Dive and the phased Bodyprints are current Design Version 0.1.0 work (owed builds), per his card 2026-10-16 'keep both in'. He moved only the grown limbs out of 0.1.0, by name."
+   "what": "The anticipatory pre-Burn Dive and the phased Bodyprints are current Design Version 0.1.0 work (owed builds), per his card 2026-10-16 'keep both in'. He moved the grown limbs (2026-11-15), then the Coalescence and Helix trade (2026-11-16) out of 0.1.0, by name; the Dive and Bodyprints stay."
   },
   {
    "id": "d_walk_bars_delegated",
@@ -240,6 +246,14 @@
     "OWNER:1794772416196929336",
     "design/RimMandrake/delegation_policy.md"
    ]
+  },
+  {
+   "id": "d_next_version_2026_11_16",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": "OWNER:1794842455892769878",
+   "date": "2026-11-16",
+   "what": "The Coalescence, the Grown Limbs and Helix trade (draftprints, contracts, curators) are Design Version 0.2.0, not 0.1.0; their code stays built and 0.1.0 is to ship coalescenceEnabled, grownLimbsEnabled and draftprintsEnabled off (owed build RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN). No bar reads a flora or fauna yield rate, a fauna tuning value or an asset-variant count. Listed in later_version.md."
   }
  ],
  "asks": [
@@ -733,7 +747,7 @@
    "proof_note": "Contact and toggle arms are scripted; no complete sky/contact/reload/medical player journey located.",
    "scope": "approved",
    "scope_source": "OWNER:1792114303556704085",
-   "what": "Open Bloom exposure, stronger Burn exposure and adjacent Unfinished/Coalescence contact feed saved Contagion-touched progression; humanlike flesh only; contact acts off-biome too.",
+   "what": "Open Bloom exposure, stronger Burn exposure and adjacent Unfinished/Coalescence contact feed saved Contagion-touched progression; humanlike flesh only; contact acts off-biome too. Coalescence contact is Design Version 0.2.0 with the Coalescence (OWNER:1794842455892769878).",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
   },
   {
@@ -811,9 +825,12 @@
    ],
    "proof": "missing",
    "proof_note": "Implementation located; no adequate acceptance result established by this reading.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "One stationary organism may form after long Bloom outside home area; requires Burns enabled; placement clears plants and announces threat.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "coalescence_growth",
@@ -824,9 +841,12 @@
    ],
    "proof": "stale",
    "proof_note": "Old stuck-stage diagnosis drove fixes; source now has reachable-ring search and atomic arrival eating. No current runtime fingerprint.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Saved mass, passive growth, staged graphics, explicit walk-to-ring absorption and on-arrival consumption; own emitted manhunters excluded; inspect and diagnostic counts.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "coalescence_threat",
@@ -837,9 +857,12 @@
    ],
    "proof": "stale",
    "proof_note": "Emission driven by script; strength and incentive to wait for growth are provisional.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Stage-dependent manhunter emission with map-wide count cap.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "coalescence_payoff",
@@ -850,9 +873,12 @@
    ],
    "proof": "stale",
    "proof_note": "Script drives placed organism and forced Burn; no natural formation-to-payoff play acceptance.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Any active Burn collapses organism into Monstrous samples plus mulch; combat destruction gives less mulch and no samples.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "genome_extract",
@@ -877,7 +903,7 @@
    "proof": "stale",
    "proof_note": "Old cancellation/reach/off-switch defects already fixed at 11555ca8cd44; do not refile from old item titles.",
    "scope": "not_opened",
-   "what": "Carry sample to existing Bloody Mess and complete injection toil; eligibility, setting, interruption and moving-host reach checked; Monstrous samples selected first.",
+   "what": "Carry sample to existing Bloody Mess and complete injection toil; eligibility, setting, interruption and moving-host reach checked; Monstrous samples selected first. The Monstrous-first rule is Design Version 0.2.0 with the Grown Limbs (OWNER:1794842455892769878).",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
   },
   {
@@ -890,7 +916,7 @@
    "proof": "stale",
    "proof_note": "Suite accelerates severity and checks batch; no proof of four-day expedition, caravan completion or reload-on-deadline.",
    "scope": "not_opened",
-   "what": "Saved donor and grade, four-day gestation and consumable host; normal output 2–4 random natural organs/arms/legs, Monstrous output one of five limbs; disabled limbs fall back to ordinary batch.",
+   "what": "Saved donor and grade, four-day gestation and consumable host; normal output 2–4 random natural organs/arms/legs, Monstrous output one of five limbs; disabled limbs fall back to ordinary batch. The Monstrous output and its fallback are Design Version 0.2.0 with the Grown Limbs (OWNER:1794842455892769878); 0.1.0 is the normal batch.",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
   },
   {
@@ -916,7 +942,7 @@
    "proof": "stale",
    "proof_note": "Build/def patch evidence exists; live matched/mismatched/failing install surgeries not established.",
    "scope": "not_opened",
-   "what": "Donor identity on ordinary organs and grown natural arm/leg items; patched vanilla natural-organ install recipes and custom limb recipes give matched patient mood, no mismatch penalty.",
+   "what": "Donor identity on ordinary organs and grown natural arm/leg items; patched vanilla natural-organ install recipes and custom limb recipes give matched patient mood, no mismatch penalty. The custom limb recipes are Design Version 0.2.0 with the Grown Limbs (OWNER:1794842455892769878).",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
   },
   {
@@ -932,7 +958,8 @@
    "what": "Pillar Arm: heavy melee/stun, reduced manipulation, slower movement and hunger/beauty costs; own directional body art",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -948,7 +975,8 @@
    "what": "Lash: rapid stun melee with clumsy work, social-fight and beauty costs; twitching directional body art",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -964,7 +992,8 @@
    "what": "Eyeburst: eye efficiency and aim with pain, rest, break-threshold and beauty costs; inherited bionic-eye art",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -980,7 +1009,8 @@
    "what": "Caudal Spring: spine replacement, jump ability and lasting mobility/pain/cold costs; placeholder tentacle art",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -996,7 +1026,8 @@
    "what": "Bellows: lung efficiency, toxin resistance and blind smoke ability with hunger/bleeding/beauty costs; no body render node",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -1012,7 +1043,8 @@
    "what": "Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "scope_source": [
-    "OWNER:1794772416196929336"
+    "OWNER:1794772416196929336",
+    "OWNER:1794842455892769878"
    ]
   },
   {
@@ -1024,12 +1056,15 @@
    ],
    "proof": "stale",
    "proof_note": "Enrichment Part 1 verified Oct 7 at fb10ce3fce56; that event does not establish Parts 2/3 or present runtime.",
-   "scope": "not_opened",
+   "scope": "later",
    "proof_evidence": [
     "infrastructure/state/ledger/events/FOUNDRY.jsonl"
    ],
    "what": "Once-only scan of living Unfinished records rolled limbs, Monstrous status, extreme stat and failure; completed touch-range job may provoke; saved item label, inspect and market value.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "helix_contracts",
@@ -1040,9 +1075,12 @@
    ],
    "proof": "stale",
    "proof_note": "Historical Draftprint verification; real contract availability, matching/nonmatching and reward loop not traced live.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Quest asks for combinations; matching print is transmitted/consumed for silver and optional device via drop pod; only offered with a Contagion home.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "helix_trade",
@@ -1053,9 +1091,12 @@
    ],
    "proof": "missing",
    "proof_note": "Own trader defined; franchise-free quest and campaign-faction caravan availability need separate proof.",
-   "scope": "not_opened",
+   "scope": "later",
    "what": "Curator caravan sells devices and buys appropriate goods; campaign patch owns actual Helix faction trader attachment. Since 2026-11-09 (9fe1f933f0) the curators stock the ship gift.",
-   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+   "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   },
   {
    "id": "zhool_haze",
@@ -1739,6 +1780,19 @@
    "scope": "approved",
    "scope_source": "OWNER:1792114303556704085",
    "what": "Owed build: one transition message when the touched progression reaches active change."
+  },
+  {
+   "id": "deferred_switches_off",
+   "source": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN",
+   "impl": "absent",
+   "impl_evidence": [],
+   "proof": "missing",
+   "proof_note": "Owed build; sc_settings_superb asserts it in its start, else UNMEASURED.",
+   "scope": "approved",
+   "what": "Owed build: coalescenceEnabled, grownLimbsEnabled and draftprintsEnabled ship false, so 0.1.0 is whole without the Coalescence, the Grown Limbs and Helix trade (Design Version 0.2.0); the old live suite opts in where it tests them.",
+   "scope_source": [
+    "OWNER:1794842455892769878"
+   ]
   }
  ],
  "built_reviewed": [
@@ -1985,9 +2039,9 @@
    "text": "The 2026-10-23 sweep read the Coalescence stuck at Stage 1 (6 of 6 Unfinished never reached the ring); the item sits at verify since 2026-11-07, so absorption is not shown current.",
    "core": false,
    "resolved": true,
-   "resolution": "Design settled by d_efa_q08; whether absorption works today is proof, scened at stage 3 after COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE's verify.",
+   "resolution": "Moved to Design Version 0.2.0 with the Coalescence (d_next_version_2026_11_16); not a 0.1.0 question.",
    "resolved_by": [
-    "d_efa_q08"
+    "d_next_version_2026_11_16"
    ],
    "resolved_in": "rm-role-designer-1794774283"
   },
