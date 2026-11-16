@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666,"HOLDER.run-1794813483":1382} body_sha256=4052c8e0e2d1bc8819150db3f45798b1c1edcc8c1ad5de459165b5195248e2be -->
-# ExplosiveKnockback — mod ledger history (330 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":1362,"HOLDER.run-1794813483":1382} body_sha256=b3c4f17640d133b416a04f24e03f6df3ded13a072620f57f2f73ab05e2eb10b8 -->
+# ExplosiveKnockback — mod ledger history (332 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -331,3 +331,5 @@
 - 2026-11-16T07:22:45Z BACKFILL#326 finding.open finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE v0.1.0: Explosive Knockback 0.1.0: run the blind offline challenge (Stages 4 and 5, tests first) by hand, one cycle, and write down its record format
 - 2026-11-16T07:23:23Z HOLDER.run-1794813483#1 session.checkpoint session v0.1.0: 
 - 2026-11-16T07:33:24Z HOLDER.run-1794813483#2 session.checkpoint session v0.1.0: 
+- 2026-11-16T07:38:07Z DISPATCH#3 run.end run v0.1.0: 
+- 2026-11-16T07:38:07Z DISPATCH#4 session.id session v0.1.0: 

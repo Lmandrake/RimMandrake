@@ -1,7 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666,"HOLDER.run-1794813483":1382} body_sha256=4e229f5dbd88243c09deb85fe087178e9b8032f484d04316dd1bbbd16d8599f3 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":1362,"HOLDER.run-1794813483":1382} body_sha256=8dca01f0813eaf32ac6e0ddf91b442b0998e792eaa69a80e9e9e0a4920a7940a -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 330 events in 3 shards · reducer 1
+version 0.1.0 · stage offline_build · 332 events in 3 shards · reducer 1
 holder lease run-1794813483, token 1, last active 2026-11-16T07:33:24Z
+holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794813483, 2026-11-16T07:33:24Z)
 - done: 3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)
@@ -347,8 +348,7 @@ spend recorded: USD 70.74, 138207197 tokens
 ## Closed findings (1)
 - finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB withdrawn (reading) c20328a876
 
-## Tests (45, 19 older left out)
-- 2026-11-16T06:51:52Z live.run bar:inv_gas_tags: PASS on 2f74ac9094e5 visit_2 sc_cauldron_gas PASS (runner PASS)
+## Tests (44, 20 older left out)
 - 2026-11-16T06:51:52Z live.run bar:inv_heavy_knock: PASS on 2f74ac9094e5 visit_2 sc_heavy_knock PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_hook: PASS on 366bed691c96 visit_2 sc_mortar_throw PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_hook: PASS on ae820721648d visit_1 sc_mortar_throw PASS (runner PASS)
@@ -396,7 +396,7 @@ spend recorded: USD 70.74, 138207197 tokens
 
 ## Left out
 - decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- tests: 19, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- the full history: 330 events (views/history.md; never read whole)
+- tests: 20, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- the full history: 332 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:33:24Z.1794814404795583265 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:33:24Z.1794814404795583265 prints what changed after this packet)
+cursor: t=2026-11-16T07:38:07Z.1794814687376904934 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:38:07Z.1794814687376904934 prints what changed after this packet)
