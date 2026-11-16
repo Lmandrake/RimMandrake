@@ -15,34 +15,27 @@ import sys
 import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
-import rimbridge_client as rb  # noqa: E402
+import validation_core as vc  # noqa: E402
 
 SAVE = "GSS_OWNER_LOOK_20261116"
 PROBE = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackProbe"
 
 
-def main(argv):
-    h, p, t = rb.resolve_endpoint()
-    S = rb.RimBridge(host=h, port=p, token=t, timeout=240.0)
-    S.connect()
+def probe_of(B, cmd, wait_s=60.0):
+    """Post cmd to GimmeSomeSlackProbe through validation_core's probe_of (jawa/mod_settings_fields). Never the single-field
+    `mod_settings_field set`: the companion refuses it for a probe class (not a Settings class), and a refused post used to
+    be read as "the mod stopped answering after the save loaded" (measured 2026-11-16, selftest_live_stub_joins_probe.py)."""
+    return B.probe_of(PROBE, cmd, wait_s, 0.3)
+
+
+def main(argv, bridge=None):
+    B = bridge if bridge is not None else vc.Bridge()
 
     def call(tool, **kw):
-        r = S.call(tool, kw) or {}
-        return json.loads(r["content"][0]["text"]) if isinstance(r, dict) and r.get("content") else r
+        return B.call(tool, **kw)
 
     def probe(cmd, wait_s=60.0):
-        before = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value")
-        call("jawa/mod_settings_field", typeName=PROBE, action="set", field="request", value=cmd)
-        t0 = time.time()
-        while time.time() - t0 < wait_s:
-            if call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value") != before:
-                res = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="result").get("value")
-                try:
-                    return json.loads(res)
-                except (TypeError, ValueError):
-                    return {"success": False, "raw": res}
-            time.sleep(0.3)
-        return {"success": False, "error": "probe timed out"}
+        return probe_of(B, cmd, wait_s)
 
     if "--load" in argv:
         print("load:", str(call("rimworld/load_game_ready", saveName=SAVE))[:200], flush=True)
