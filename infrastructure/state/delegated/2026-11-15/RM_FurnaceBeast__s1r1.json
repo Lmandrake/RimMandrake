@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_FurnaceBeast",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): south d_south 1.621 (band 0.64..1.35); north d_north 1.52 (band 0.63..1.20); south feet 0.2197 (band -0.03..0.03); north feet 0.1709 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3710d73606bf26fa9ac0ea33b10777c1bf6d607fbcedd4ed6a34d3e77f73d476",
+  "east.png": "acb2c290602b7cc55e3d6ed63bd78dab4c42abf425c25b77d5ba1dbf42e87c53",
+  "north.png": "705a73397f1519c69319b6743e17e7b4a7b7bf386a49ea36dbb108fa06fd6916",
+  "scale.png": "919dcfe914f22a52527eea4302cfda5cab4102f2ff0489f021725bd29bb2afb7",
+  "facings.png": "8b9e3f06df4296bf7246f55234a55b3a366f6fb21e18ccc38bbe9ffa1ae83678"
+ }
+}

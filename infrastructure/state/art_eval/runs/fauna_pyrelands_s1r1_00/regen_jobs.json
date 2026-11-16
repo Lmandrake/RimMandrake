@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_FurnaceBeast_s1r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast",
+  "prompt": "furnace-beast: A migratory megafauna whose banded mineral hide stores heat like a stove \u2014 a slow thermal capacitor on legs. It charges in the Deep Desert, basking for weeks, then walks into the Pyrelands on purpose when the grass burns: it helps the fire along and drinks the heat of it, glowing brighter at the seams between its plates. Fully charged, a herd marches all the way out to the near terminator and eats everything in sight \u2014 it is one of the only things that will strip a thornvine patch \u2014 bleeding its banked warmth into the cold air for weeks before turning back to charge again. Fire cannot touch it. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight. It is NOT an Earth animal: banded hide of mineral, not skin or fur. The north view is drawn at the same body height as the east view (measured: rescale). The south view is drawn at the same body height as the east view (measured: rescale). Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_s1r1_00",
+  "drawsize": 7.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+ }
+]
