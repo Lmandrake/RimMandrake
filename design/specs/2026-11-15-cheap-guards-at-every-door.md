@@ -82,15 +82,17 @@ item and no code.
 - **Protects against:** a Designer run that ends without a `result.json` the stage machine accepts, so the whole run is
   rejected after it is paid for.
 - **Evidence:** 16 rejected stage runs in eleven days `[measured, each concept's stage.json]`. Eight read "no
-  result.json (a closing message is not a result)". Four read "source path ... does not exist" for a file origin/main
-  held (the retry runs say so in their own words, twice); each was followed by a paid retry (USD 0.99, 0.79, 1.28).
+  result.json (a closing message is not a result)". Four read "source path ... does not exist"; origin/main held the
+  file at the rejection in three (landed 23 s, 54 s and 84 s before) and not in one (GimmeSomeSlack 2026-11-06 09:14Z,
+  landed 57 min after) `[measured, git history]`; each was followed by a paid retry (USD 0.99, 0.79, 1.28).
 - **The guard:** a Stop hook on stage-machine runs runs `designer_stage.py check <folder>`, the check the launcher will
   run anyway. If it fails, the run is told why and gets up to two more turns to write the result, while its context is
   still loaded. And `source_errors` asks origin/main before calling a cited path missing.
 - **Its cost:** one program call of a second or two; a blocked stop costs the run one short turn.
 - **Cannot run:** the hook lets the run end and says "did not run"; after two blocks it lets go.
-- **Backtest:** catches the 8 no-result runs and the path rejections that origin held (2 confirmed, 2 probable); does
-  not catch the 4 other form faults (wrong stage number, an owner event not found, two unsigned locks).
+- **Backtest:** catches the 8 no-result runs and the 3 path rejections origin held `[measured]`, 11 of 16; does not
+  catch the path origin did not yet hold, nor the 4 other form faults (wrong stage number, an owner event not found,
+  two "no coverage signature" gates).
 - **Ticket:** `RIMMANDRAKE_CHECK_DESIGNER_RESULT_BEFORE_EXIT_EIGHT_REJECTED`.
 
 ### 3.2 Gate first
