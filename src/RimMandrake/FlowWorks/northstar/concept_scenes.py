@@ -728,7 +728,7 @@ def _ph_swim(S, pid, pool):
     """(ProofSwim kv, raw) for pid wherever it is in the pool; (None, why) when it is not there or the read is not its own."""
     r = _ph_read(S, pid)
     if not r or r['cell'] not in pool:
-        return None, 'not in the pool: %s' % (r and r['cell'])
+        return None, 'not in the pool: %s' % ((r and r['cell']),)
     txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % r['cell'])
     return (kv(txt) if txt.startswith('SWIM ' + pid + ' ') else None), txt
 
@@ -1744,10 +1744,17 @@ def _walk(S):
     the pond pays again after the reload and an off/on of the master switch; no leftovers; the log clean (FlowWorks lines).
     Stage 6 visit 1 (RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED): the draft compared 'stock'/'cells', keys
     engine_state never returns (None == None passed); and depthEngineEnabled snaps at game load unless depthEngineLiveForTests
-    is set, so its off/on never stopped anything. Every row below refuses a vacuous read (UNMEASURED, never PASS)."""
+    is set, so its off/on never stopped anything. Every row below refuses a vacuous read (UNMEASURED, never PASS).
+    Holder run-1794816885 added the bar's swimmer (one in 2 m of water at the mid-way save, read again after the reload: same
+    cell, still in deep water; "the swimmers stand on the bed" is its red) and its second order on the same map (chemfuel
+    into its own pit first, then the pond drained into a third moat). Not here: prisoners at the save, the wetted garden
+    (moved to 0.2.0), and a PUMPED chemfuel fill (the scene pours it through ProofFillWithFluid)."""
     import validation_core as V
     tap = V.tap_start(S.B)
     pond = [(O[0] - 4 + i, O[1] - 1 + j) for i in range(3) for j in range(3)]
+    swim = [(O[0] + 2 + i, O[1] - 6 + j) for i in range(3) for j in range(3)]      # apart from the pond, moat and fuel pit
+    fuel_pit = [(O[0] + 2 + i, O[1] + 4 + j) for i in range(3) for j in range(3)]
+    moat3 = _line(O[0] - 14, O[1], 10)                                                 # west of the pond, joins (O-4, O)
     moat = _line(O[0] - 1, O[1], 21)
     moat1, moat2 = moat[:10], moat[10:]
     keys = ('excavatedCellCount', 'superdeepCellCount', 'bodyCount', 'activeFluid')
@@ -1767,17 +1774,29 @@ def _walk(S):
 
     S.setting('depthEngineLiveForTests', True)        # the off/on below must reach the running engine, not the next load
     S.dig(pond, 4); S.fill(pond, 2.0, WATER)
+    S.dig(swim, 4); S.fill(swim, 2.0, WATER)          # brim-full 2 m: deep enough to swim (>= 1.8 m), a bank to leave by
     p0 = litres()
     S.dig(moat1, 4); S.pulse(40)
     pays('WALK_pond_pays', p0, moat1)
 
+    swimmer = S.pawn('Colonist', swim[4], 'player')
     a = digest()
     if S.save_mid is None:
         S.row('WALK_reload_digest_matches', False, 'no mid-way save hook passed to the scene', unmeasured=True)
+        S.row('WALK_swimmer_survives_reload', False, 'no mid-way save hook passed to the scene', unmeasured=True)
     else:
+        r0 = _ph_read(S, swimmer)
+        k0, t0 = _ph_swim(S, swimmer, swim)
         S.save_mid(); S.ticks(600); S.load_mid()
         b = digest()
         S.row('WALK_reload_digest_matches', a == b, (a, b), unmeasured=_vacuous(a) or _vacuous(b))
+        r1 = _ph_read(S, swimmer)
+        k1, t1 = _ph_swim(S, swimmer, swim)
+        afloat = bool(k0) and k0.get('deepCell') == 'True'
+        S.row('WALK_swimmer_survives_reload', afloat and bool(k1) and bool(r1) and r1['cell'] == r0['cell']
+              and k1.get('deepCell') == 'True' and k1.get('water') == k0.get('water'),
+              {'before': (r0 and r0['cell'], t0), 'after': (r1 and r1['cell'], t1)},
+              unmeasured=not afloat or r0 is None or _vacuous(b))
         S.again()                                      # the control: the scene-begin save, made before the fill
         c = digest()
         S.row('WALK_control_prefill_reload_differs', c != a, (c, a), unmeasured=_vacuous(a) or c[0] is None)
@@ -1806,6 +1825,24 @@ def _walk(S):
     bad = m is None or e.get('bodyCount') is None or a2[2] is None
     S.row('WALK_no_leftovers', not bad and m.group(1) == '0' and m.group(2) == WATER and e.get('bodyCount') == a2[2],
           (census, e.get('bodyCount'), a2[2]), unmeasured=bad)
+
+    # the second order, on this same map (its false pass is "the repeat runs on a fresh map"): chemfuel first, into its own
+    # pit, then the water drained after; the fuel keeps its stock, the pond pays a third time, the census holds exactly
+    # water and chemfuel with every wet cell recorded
+    S.walk(swimmer, (O[0] + 6, O[1] - 5), 600)        # out of the swim pool before the long run (not a row)
+    S.dig(fuel_pit, 4); S.fill(fuel_pit, 1.0, FUEL); S.pulse(10)
+    f0, p3 = S.dl(fuel_pit), litres()
+    S.dig(moat3, 4); S.pulse(40)
+    pays('WALK_second_order_pond_pays', p3, moat3)
+    f1 = S.dl(fuel_pit)
+    bad = None in f0 or None in f1 or not any(f0)
+    S.row('WALK_second_order_fuel_holds', not bad and all(abs(x - y) <= 1e-6 for x, y in zip(f0, f1)), (f0, f1),
+          unmeasured=bad)
+    census2 = S.sc(FLUIDID, 'ProofCensus')
+    m2 = re.search(r'unrecorded (\d+) \| fluids \[([^\]]*)\]', census2)
+    fl = None if m2 is None else {x.strip() for x in m2.group(2).split(',') if x.strip()}
+    S.row('WALK_second_order_no_leftovers', m2 is not None and m2.group(1) == '0' and fl == {WATER, FUEL}, census2,
+          unmeasured=m2 is None)
 
     # the log: no warning or error naming FlowWorks over the whole scene, on a journal proven live and read without a gap
     alive = V.log_alive(S.B, 'sc_walk').get('alive')

@@ -21,7 +21,7 @@ class Fake:
 
     def __init__(self, fault=None):
         self.fault = fault
-        self.g = {'dug': {}, 'water': {}, 'fluid': {}}
+        self.g = {'dug': {}, 'water': {}, 'fluid': {}, 'pawns': {}}
         self.settings = {'depthEngineEnabled': True, 'depthEngineLiveForTests': False}
         self.at_load = True
         self.journal, self.seq = [{'Sequence': 100, 'Level': 'Message', 'Message': 'loaded', 'RepeatCount': 1}], 100
@@ -55,6 +55,11 @@ class Fake:
                 if fl and total and not (self.fault == 'leftover_fluid' and self.settings['depthEngineEnabled'] is True
                                          and q == comp[-1]):
                     self.g['fluid'][q] = fl
+        for q, f in self.g['fluid'].items():
+            if f == C.FUEL and self.fault == 'fuel_drains':
+                self.g['water'][q] = self.g['water'].get(q, 0.0) / 2
+            if f == C.FUEL and self.fault == 'fuel_turns_water':
+                self.g['fluid'][q] = C.WATER
         if self.fault == 'leftover_fluid':
             for q in list(self.g['fluid'])[-1:]:
                 del self.g['fluid'][q]
@@ -78,6 +83,8 @@ class Fake:
         self.g = deepcopy(self.saves[name])
         if self.fault == 'reload_loses_water' and name == 'mid':
             self.g['water'] = {}
+        if self.fault == 'swimmer_moved' and name == 'mid':
+            self.g['pawns'] = {k: (c[0], c[1] - 3) for k, c in self.g['pawns'].items()}
         self.at_load = self.settings['depthEngineEnabled'] in (True, 'True')
 
     # ---- the bridge
@@ -88,7 +95,8 @@ class Fake:
             g['dug'][c] = g['dug'].get(c, 0) + kw['deepenLevels']
             return {'success': True}
         if tool == 'jawa/flowworks_excavation_rect':
-            return {'success': True, 'rows': [{'x': x, 'z': z, 'dl': round(g['water'].get((x, z), 0.0), 3)}
+            blind = lambda c: self.fault == 'fuel_blind' and g['fluid'].get(c) == C.FUEL   # noqa: E731
+            return {'success': True, 'rows': [{'x': x, 'z': z, 'dl': None if blind((x, z)) else round(g['water'].get((x, z), 0.0), 3)}
                                               for x in range(kw['x'], kw['x'] + kw['w']) for z in range(kw['z'], kw['z'] + kw['h'])]}
         if tool == 'jawa/flowworks_pulse':
             for _ in range(min(kw.get('count', 1), 3)):
@@ -111,6 +119,14 @@ class Fake:
             if kw.get('minimumLevel') == 'warning':
                 logs = [e for e in logs if e['Level'] != 'Message']
             return {'success': True, 'logs': logs[-kw.get('limit', 1000):]}
+        if tool == 'jawa/spawn_pawn':
+            pid = 'Human%d' % (len(g['pawns']) + 1)
+            g['pawns'][pid] = (kw['x'], kw['z'] + (10 if self.fault == 'spawn_ashore' else 0))
+            return {'success': True, 'pawns': [{'id': pid}]}
+        if tool == 'jawa/order_pawn':
+            if kw['pawnId'] in g['pawns']:
+                g['pawns'][kw['pawnId']] = (kw['x'], kw['z'])
+            return {'success': True}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}
         raise AssertionError('unexpected tool %s %s' % (tool, kw))
@@ -125,7 +141,9 @@ class Fake:
             c = (int(x), int(z))
             if c not in g['dug']:
                 return 'REFUSED: not excavated'
-            g['water'][c], g['fluid'][c] = float(m) * 10, fl
+            g['water'][c] = float(m) * 10
+            if not (self.fault == 'fuel_unrecorded' and fl == C.FUEL):
+                g['fluid'][c] = fl
             return 'FILLED %s' % (c,)
         if method == 'ProofReadout':
             c = tuple(int(v) for v in arg.split(','))
@@ -133,6 +151,20 @@ class Fake:
                 return 'OK -'
             w = g['water'].get(c, 0.0)
             return 'OK Hole %g m · Water %.2f m (%s L)' % (g['dug'][c] / 2.0, w / 10, format(int(round(w * L_PER_DL)), ','))
+        if method == 'ProofPawnSink':
+            if arg not in g['pawns']:
+                return 'REFUSED: no spawned pawn ' + arg
+            c = g['pawns'][arg]
+            return 'SINK id=%s cell=%d,%d depth=%d waterDl=%d fluid=none sink=0 drawDz=0 moving=False enabled=True' % (
+                arg, c[0], c[1], g['dug'].get(c, 0), g['water'].get(c, 0))
+        if method == 'ProofSwim':
+            c = tuple(int(v) for v in arg.split(','))
+            for pid, at in g['pawns'].items():
+                if at == c:
+                    w = g['water'].get(c, 0.0) / 10 if c in g['dug'] else 0.0
+                    return 'SWIM %s class=Swimmer natural=False load=0.00 water=%.2f deepCell=%s exhaustion=0.000' % (
+                        pid, w, w >= 1.8)
+            return 'REFUSED: no pawn at %s' % (c,)
         if method == 'ProofCensus':
             if self.fault == 'refused_census':
                 return 'REFUSED: no excavation component on the current map'
@@ -161,7 +193,9 @@ def check(label, ok, why=''):
 
 
 BAR = ('WALK_pond_pays', 'WALK_reload_digest_matches', 'WALK_control_prefill_reload_differs', 'WALK_toggle_off_on_digest_matches',
-       'WALK_switch_off_holds_water', 'WALK_pond_pays_again', 'WALK_no_leftovers', 'WALK_log_clean')
+       'WALK_switch_off_holds_water', 'WALK_pond_pays_again', 'WALK_no_leftovers', 'WALK_log_clean',
+       'WALK_swimmer_survives_reload', 'WALK_second_order_pond_pays', 'WALK_second_order_fuel_holds',
+       'WALK_second_order_no_leftovers')
 
 rows, out, F = run()
 check('every bar row is asked (pond pays again, no leftovers, log clean among them)', set(BAR) <= set(rows), sorted(rows))
@@ -183,6 +217,18 @@ CASES = (
     ('refused_census', 'WALK_no_leftovers', 'UNMEASURED'),
     ('refused_census', 'WALK_toggle_off_on_digest_matches', 'UNMEASURED'),
     ('no_hooks', 'WALK_reload_digest_matches', 'UNMEASURED'),
+    # holder run-1794816885: the swimmer at the mid-way save, and the second order (chemfuel first, water drained after)
+    ('swimmer_moved', 'WALK_swimmer_survives_reload', 'FAIL'),        # the red: the swimmer is not where the save had it
+    ('reload_loses_water', 'WALK_swimmer_survives_reload', 'FAIL'),   # "the swimmers stand on the bed"
+    ('spawn_ashore', 'WALK_swimmer_survives_reload', 'UNMEASURED'),   # nobody was in the water at the save
+    ('no_hooks', 'WALK_swimmer_survives_reload', 'UNMEASURED'),
+    ('blind_keys', 'WALK_swimmer_survives_reload', 'UNMEASURED'),
+    ('fuel_drains', 'WALK_second_order_fuel_holds', 'FAIL'),
+    ('fuel_turns_water', 'WALK_second_order_no_leftovers', 'FAIL'),
+    ('fuel_unrecorded', 'WALK_second_order_no_leftovers', 'FAIL'),
+    ('fuel_blind', 'WALK_second_order_fuel_holds', 'UNMEASURED'),
+    ('refused_census', 'WALK_second_order_no_leftovers', 'UNMEASURED'),
+    ('pond_endless', 'WALK_second_order_pond_pays', 'FAIL'),
 )
 for fault, rid, want in CASES:
     r, o, _ = run(fault)
