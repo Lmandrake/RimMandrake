@@ -8632,6 +8632,828 @@ def scene_lure(t):
         _stable(t, body)
 
 
+# --------------------------------------------------------------------------- scenes: rearing, quench, proximity_hatch,
+# pillowmoss, ribbon_route
+
+PADS.update(rearing=(-40, 40), quench=(40, 40), hatch=(-40, -40), pillow=(40, -40), ribbon=(0, 40))
+SIX_XML = os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_VenomvineSixForms.xml")
+REARING = "RM_RearingVenomvine"
+QUENCH = "RM_QuenchVenomvine"
+REAR_BLOCK = r'RM_CompProperties_Rearing">(?:(?!</li>).)*?'
+REAR_MIN_BODY = _shipped_text(SIX_XML, REAR_BLOCK + r"<minBodySize>([\d.]+)</minBodySize>")
+REAR_MIN_GROWTH = _shipped_text(SIX_XML, REAR_BLOCK + r"<minGrowth>([\d.]+)</minGrowth>")
+REAR_STALL = _shipped_text(SIX_XML, REAR_BLOCK + r"<stallFactor>([\d.]+)</stallFactor>")
+REAR_SLACK = 60            # two SweepRearing passes (30): the stand re-arms on every pass while it is stood on
+QUENCH_BLOCK = r'RM_CompProperties_Quench">(?:(?!</li>).)*?'
+QUENCH_REACH = _shipped_text(SIX_XML, QUENCH_BLOCK + r"<triggerRadius>([\d.]+)</triggerRadius>")
+QUENCH_MIN_GROWTH = _shipped_text(SIX_XML, QUENCH_BLOCK + r"<minGrowth>([\d.]+)</minGrowth>")
+FOAM = "Filth_FireFoam"
+# LSCRUB_MESSAGE_HOOK names a public static (substring) -> count of live Messages carrying it; LSCRUB_REVEAL_HOOK a
+# public static ("pawnId|conceal" makes the pawn invisible, "pawnId|read" -> True while it is). Neither has a bridge tool.
+MESSAGE_HOOK = os.environ.get("LSCRUB_MESSAGE_HOOK", "").strip()
+REVEAL_HOOK = os.environ.get("LSCRUB_REVEAL_HOOK", "").strip()
+REAR_ALERT = "A rearing venomvine has stood up"
+
+
+def _rear_ticks(hours, stall=False, factor=1.0):
+    """RM_FormsKernel.RearTicks: round(max(0.05, hours) * 2500), times stallFactor in a Stall."""
+    return int(round(max(0.05, float(hours)) * 2500 * (float(factor) if stall else 1.0)))
+
+
+def _form_comp(t, tid, comp, members):
+    r = _ok(t.bridge_call("jawa/comp_read", thing=tid, comp=comp, members=members), "comp_read(%s)" % comp)
+    if r.get("missing"):
+        _unmeasured(t, "%s members missing: %s" % (comp, r.get("missing")))
+    return r.get("values") or {}
+
+
+def _stand(t, defName, cx, cz):
+    s = _things(t, defName, "%d,%d,1,1" % (cx, cz))
+    if not s:
+        _unmeasured(t, "the %s stand did not take at %d,%d" % (defName, cx, cz))
+    return s[0].get("id")
+
+
+def _rearing_offences(r):
+    """The rearing checker, pure. r {"want" RearTicks, "span" until - now while a colonist stood in it, "reared",
+    "inspect" reared line shown, "saved" (until before, after a save/load), "settled" (Reared, line) after the until
+    tick, "stall" (span, want), "gale_reared", "alerts" (in Gale, in Clear), "reveal" (hidden off the stand after the
+    wait, hidden in the stand), "ctl" {small, young, off: reared}}. -> offences."""
+    out = []
+    want = r.get("want") or 0
+    if not r.get("reared") or not r.get("inspect"):
+        out.append("rear: a colonist in a grown stand did not rear it (Reared %s, line %s)" % (r.get("reared"), r.get("inspect")))
+    elif not (want - REAR_SLACK <= (r.get("span") or 0) <= want + 5):
+        out.append("rear: rest %s ticks, not rearingHours' %s" % (r.get("span"), want))
+    sv = r.get("saved") or (None, None)
+    if sv[0] is None or sv[0] != sv[1]:
+        out.append("rest: the rest did not survive a save/load (until %s -> %s)" % sv)
+    st = r.get("settled") or (True, True)
+    if st[0] or st[1]:
+        out.append("rest: still reared past its until tick (Reared %s, line %s)" % st)
+    ss = r.get("stall") or (0, 0)
+    if not ss[1] or abs(ss[0] - ss[1]) > REAR_SLACK:
+        out.append("stall: a Stall rest of %s ticks, not %s" % ss)
+    if not r.get("gale_reared"):
+        out.append("gale: a Gale stopped the stand rearing (it masks only the alert)")
+    al = r.get("alerts") or (None, None)
+    if not al[1]:
+        out.append("alert: an outsider rearing a stand in Clear sent no alert (%s): the reader is blind" % (al[1],))
+    elif al[0]:
+        out.append("alert: a Gale did not mask the rearing alert (%s sent)" % al[0])
+    rv = r.get("reveal") or (False, True)
+    if not rv[0]:
+        out.append("reveal: the concealed pawn was visible before it entered the stand: the fixture proves nothing")
+    elif rv[1]:
+        out.append("reveal: a reared stand left the pawn inside it hidden")
+    for k, v in sorted((r.get("ctl") or {}).items()):
+        if v:
+            out.append("control: the %s case reared the stand" % k)
+    return out
+
+
+@suite.chain("scene_rearing")
+def scene_rearing(t):
+    """sc_rearing (rearing): a colonist held in a grown rearing stand rears it for rearingHours (comp + inspect line);
+    the rest survives a save/load and settles at its until tick; a Stall stretches it by stallFactor; a Gale still
+    rears but masks the outsider alert that Clear sends; a reared stand reveals a concealed pawn; a ribbonwhip, a young
+    stand and rearingEnabled off rear nothing. Rules out a reveal shown as art alone and a Gale read as immunity."""
+    _prep(t, "rearing")
+    x, z = t.anchor
+    r = {"ctl": {}}
+
+    def rear(cx, cz, growth=1.0):
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (REARING, cx, cz), growth=growth)
+        return _stand(t, REARING, cx, cz)
+
+    def state(tid):
+        v = _form_comp(t, tid, "RM_CompRearing", "rearedUntilTick,Reared")
+        return int(v.get("rearedUntilTick") or 0), _as_bool(v.get("Reared"))
+
+    def stood(kind, cx, cz, faction="player", n=90):
+        p = _spawn(t, kind, cx, cz, faction=faction)
+        if faction == "player":
+            _full(t, p)
+            t.bridge_call("jawa/ordered_job", pawnId=p, jobDef="Wait", targetAX=cx, targetAZ=cz, waitTicks=0)
+        t.wait_ticks(n)
+        return p
+
+    def alerts():
+        return int(re.findall(r"-?\d+", _hook_value(t, MESSAGE_HOOK, REAR_ALERT, "live Messages") + " 0")[0])
+
+    def body():
+        with _comp(t, "rearing_rears_for_big_intruder", toggle="rearingEnabled"):
+            if _live(t):
+                r["want"] = _rear_ticks(_get_setting(t, "rearingHours"))
+                sid = rear(x, z)
+                p = stood("Colonist", x, z)
+                until, r["reared"] = state(sid)
+                r["span"] = until - t.session._ticks()
+                r["inspect"] = any("Reared upright" in ln for ln in _inspect(t, sid)[1])
+                _vanish(t, p)
+                _note(t, "rearing: until - now, want, line", [r["span"], r["want"], r["inspect"]])
+                _only(_rearing_offences(r), "rear:")
+        with _comp(t, "rearing_rest_saved_and_settles", toggle="rearingEnabled"):
+            if _live(t):
+                sid = _stand(t, REARING, x, z)
+                u0, reared = state(sid)
+                if not reared:
+                    _unmeasured(t, "the stand was not reared going into the save")
+                name = "lscrub_rearing_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                sid = _stand(t, REARING, x, z)
+                r["saved"] = (u0, state(sid)[0])
+                _ok(t.bridge_call("jawa/time_set_ticks", ticks=int(u0 + 30), timeException=True), "time_set_ticks")
+                t.wait_ticks(60)
+                r["settled"] = (state(sid)[1], any("Reared upright" in ln for ln in _inspect(t, sid)[1]))
+                _note(t, "rearing: until before/after load, settled", [r["saved"], r["settled"]])
+                _only(_rearing_offences(r), "rest:")
+        with _comp(t, "rearing_stall_extends", toggle="rearingEnabled"):
+            if _live(t):
+                _lock_weather(t, "RM_Stall")
+                try:
+                    sid = rear(x + 3, z)
+                    p = stood("Colonist", x + 3, z)
+                    until, _r = state(sid)
+                    r["stall"] = (until - t.session._ticks(),
+                                  _rear_ticks(_get_setting(t, "rearingHours"), True, REAR_STALL or 1.0))
+                    _vanish(t, p)
+                finally:
+                    _lock_weather(t, "Clear")
+                _note(t, "rearing: Stall span, want", r["stall"])
+                _only(_rearing_offences(r), "stall:")
+        with _comp(t, "rearing_gale_still_rears", toggle="rearingEnabled"):
+            if _live(t):
+                _lock_weather(t, "RM_Gale")
+                try:
+                    sid = rear(x - 3, z)
+                    p = stood("Colonist", x - 3, z)
+                    r["gale_reared"] = state(sid)[1]
+                    _vanish(t, p)
+                finally:
+                    _lock_weather(t, "Clear")
+                _only(_rearing_offences(r), "gale:")
+        with _comp(t, "rearing_gale_masks_alert", toggle="rearingEnabled"):
+            if _live(t):
+                # an outsider (factionless humanlike) alerts; Gale first, so the 1200-tick message gap cannot mask it
+                a0 = alerts()
+                _lock_weather(t, "RM_Gale")
+                try:
+                    rear(x, z + 4)
+                    p = stood("Colonist", x, z + 4, faction="none", n=60)
+                    gale = alerts() - a0
+                    _vanish(t, p)
+                finally:
+                    _lock_weather(t, "Clear")
+                a1 = alerts()
+                rear(x, z - 4)
+                p = stood("Colonist", x, z - 4, faction="none", n=60)
+                r["alerts"] = (gale, alerts() - a1)
+                _vanish(t, p)
+                _note(t, "rearing alerts (Gale, Clear)", r["alerts"])
+                _only(_rearing_offences(r), "alert:")
+        with _comp(t, "rearing_reveals_concealed", toggle="rearingEnabled"):
+            if _live(t):
+                if not REVEAL_HOOK:
+                    _unmeasured(t, "no fixture conceals a pawn outside fuzz cover (RM_Ripple_Cover.xml) and no bridge "
+                                   "tool reads InvisibilityComp: set LSCRUB_REVEAL_HOOK")
+                sid = rear(x + 6, z + 4)
+                p = _spawn(t, "Colonist", x + 6, z + 8, faction="player")
+                _full(t, p)
+                _hook_value(t, REVEAL_HOOK, "%s|conceal" % p, "pawn invisibility")
+                t.wait_ticks(90)
+                off = _as_bool(_hook_value(t, REVEAL_HOOK, "%s|read" % p, "pawn invisibility"))
+                t.bridge_call("jawa/ordered_job", pawnId=p, jobDef="Goto", targetAX=x + 6, targetAZ=z + 4, waitTicks=0)
+                t.wait_ticks(360)
+                r["reveal"] = (off, _as_bool(_hook_value(t, REVEAL_HOOK, "%s|read" % p, "pawn invisibility")))
+                _note(t, "rearing reveal (hidden off the stand, hidden in it; stand reared)", [r["reveal"], state(sid)[1]])
+                _vanish(t, p)
+                _only(_rearing_offences(r), "reveal:")
+        with _comp(t, "rearing_controls_do_not_rear", toggle="rearingEnabled"):
+            if _live(t):
+                # the ribbonwhip wanders: a 5x5 block of grown stands, and only samples on a stand count
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,5,5" % (REARING, x - 10, z + 4), growth=1.0)
+                block = set((s.get("x"), s.get("z")) for s in _things(t, REARING, "%d,%d,5,5" % (x - 10, z + 4), 50))
+                rw = _spawn(t, "RM_Ribbonwhip", x - 8, z + 6)
+                on, reared = 0, False
+                for _ in range(6):
+                    t.wait_ticks(30)
+                    pos = _xz(_rows(t, _rs(_rect(t, PAD_SIZE + 8))).get(rw))
+                    if pos in block:
+                        on += 1
+                        sid = _stand(t, REARING, pos[0], pos[1])
+                        reared = reared or state(sid)[1]
+                _vanish(t, rw)
+                if not on:
+                    _unmeasured(t, "the ribbonwhip never stood on a rearing stand")
+                r["ctl"]["small"] = reared
+                yid = rear(x + 10, z + 4, growth=max(0.05, (REAR_MIN_GROWTH or 0.5) / 4.0))
+                p = stood("Colonist", x + 10, z + 4)
+                r["ctl"]["young"] = state(yid)[1]
+                _vanish(t, p)
+                with _setting(t, "rearingEnabled", False):
+                    oid = rear(x + 10, z - 4)
+                    p = stood("Colonist", x + 10, z - 4)
+                    r["ctl"]["off"] = state(oid)[1]
+                    _vanish(t, p)
+                _note(t, "rearing controls (small, young, off reared)", r["ctl"])
+                _only(_rearing_offences(r), "control:")
+        with _comp(t, "rearing_checker_rejects_injections"):
+            if _live(t):
+                good = {"want": 5000, "span": 4990, "reared": True, "inspect": True, "saved": (9000, 9000),
+                        "settled": (False, False), "stall": (9990, 10000), "gale_reared": True, "alerts": (0, 1),
+                        "reveal": (True, False), "ctl": {"small": False, "young": False, "off": False}}
+                _rejects("rearing", _rearing_offences, good, {
+                    "never rears": dict(good, reared=False), "art only": dict(good, inspect=False),
+                    "wrong rest": dict(good, span=900), "lost on load": dict(good, saved=(9000, 0)),
+                    "never settles": dict(good, settled=(True, True)), "stall ignored": dict(good, stall=(5000, 10000)),
+                    "gale immunity": dict(good, gale_reared=False), "gale alerts": dict(good, alerts=(1, 1)),
+                    "blind reader": dict(good, alerts=(0, 0)), "no reveal": dict(good, reveal=(True, True)),
+                    "never concealed": dict(good, reveal=(False, False)),
+                    "small rears": dict(good, ctl={"small": True}), "off rears": dict(good, ctl={"off": True})})
+    with _scene(t, "sc_rearing", "owner_review"):
+        _stable(t, body)
+
+
+def _quench_offences(r):
+    """The quench checker, pure. r {"burst" (readyTick rose, fires left in reach, foam), "ready" (Ready, line) right
+    after, "spent" (readyTick before, after a second fire, that fire still burning), "recover" (readyTick before,
+    after a save/load, Ready and swollen line past it, a fresh fire burst it again), "ctl" {off, reach, young: burst}}."""
+    out = []
+    b = r.get("burst") or (False, 0, 0)
+    if not b[0]:
+        out.append("burst: a fire in reach of a ready stand set off no burst")
+    elif b[1] or not b[2]:
+        out.append("burst: the burst left %s fire(s) in reach and %s foam" % (b[1], b[2]))
+    rd = r.get("ready") or (True, False)
+    if rd[0] or not rd[1]:
+        out.append("burst: after bursting the stand reads Ready %s, spent line %s" % rd)
+    s = r.get("spent") or (0, 1, False)
+    if s[0] != s[1]:
+        out.append("spent: a spent stand burst again (readyTick %s -> %s)" % s[:2])
+    elif not s[2]:
+        out.append("spent: the second fire went out with no burst to show: it proves no restraint")
+    rc = r.get("recover") or (0, 1, False, False, False)
+    if rc[0] != rc[1]:
+        out.append("recovery: the spent clock did not survive a save/load (%s -> %s)" % rc[:2])
+    elif not rc[2] or not rc[3]:
+        out.append("recovery: past its readyTick the stand reads Ready %s, swollen line %s" % rc[2:4])
+    elif not rc[4]:
+        out.append("recovery: the recovered stand did not burst at a fresh fire")
+    for k, v in sorted((r.get("ctl") or {}).items()):
+        if v:
+            out.append("control: the %s stand burst" % k)
+    return out
+
+
+@suite.chain("scene_quench")
+def scene_quench(t):
+    """sc_quench (quench): a ready stand bursts ONCE at a fire in reach (fire in reach out, foam laid, readyTick
+    forward, spent line); a second fire while spent burns on with no second burst; the spent clock survives a
+    save/load and past it the stand reads swollen and bursts again; quenchEnabled off, a fire out of reach and a young
+    stand burst nothing. Rules out repeat bursts while spent and a state shown only as art."""
+    _prep(t, "quench")
+    x, z = t.anchor
+    r = {"ctl": {}}
+    reach = QUENCH_REACH or 1.5
+
+    def stand(cx, cz, growth=1.0):
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,7,7" % (GRASS, cx - 3, cz - 3), growth=1.0)    # the fuel
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (QUENCH, cx, cz), growth=growth)
+        return _stand(t, QUENCH, cx, cz)
+
+    def state(tid):
+        v = _form_comp(t, tid, "RM_CompQuench", "readyTick,Ready")
+        return int(v.get("readyTick") or 0), _as_bool(v.get("Ready"))
+
+    def lines(tid):
+        return _inspect(t, tid)[1]
+
+    def fire(cx, cz):
+        t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (cx, cz), fireSize=1.0)
+
+    def out(cx, cz):
+        t.bridge_call("jawa/map_fire", action="extinguish", rect="%d,%d,9,9" % (cx - 4, cz - 4))
+
+    def burst_by(tid, r0, polls=10):
+        for _ in range(polls):
+            t.wait_ticks(60)
+            if state(tid)[0] > r0:
+                return True
+        return False
+
+    def body():
+        with _comp(t, "quench_bursts_once_at_fire", toggle="quenchEnabled"):
+            if _live(t):
+                sid = stand(x, z)
+                r0, ready = state(sid)
+                if not ready:
+                    _unmeasured(t, "a fresh grown quench stand read not Ready (readyTick %s)" % r0)
+                fire(x + 1, z)
+                hit = burst_by(sid, r0)
+                near = (x - int(reach), z - int(reach), 2 * int(reach) + 1, 2 * int(reach) + 1)
+                r["burst"] = (hit, len(_fire_cells(t, near)), _count(t, FOAM, "%d,%d,9,9" % (x - 4, z - 4)))
+                r["ready"] = (state(sid)[1], any("Spent" in ln for ln in lines(sid)))
+                _note(t, "quench burst (rose, fires in reach, foam), (Ready, spent line)", [r["burst"], r["ready"]])
+                _only(_quench_offences(r), "burst:")
+        with _comp(t, "quench_spent_no_repeat", toggle="quenchEnabled"):
+            if _live(t):
+                sid = _stand(t, QUENCH, x, z)
+                r0 = state(sid)[0]
+                fire(x - 1, z)
+                t.wait_ticks(120)
+                burning = bool(_fire_cells(t, (x - 2, z - 1, 3, 3)))
+                t.wait_ticks(180)
+                r["spent"] = (r0, state(sid)[0], burning)
+                out(x, z)
+                _note(t, "quench spent (readyTick before, after, fire burned on)", r["spent"])
+                _only(_quench_offences(r), "spent:")
+        with _comp(t, "quench_recovery_saved", toggle="quenchEnabled"):
+            if _live(t):
+                sid = _stand(t, QUENCH, x, z)
+                r0 = state(sid)[0]
+                name = "lscrub_quench_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                sid = _stand(t, QUENCH, x, z)
+                r1 = state(sid)[0]
+                _ok(t.bridge_call("jawa/time_set_ticks", ticks=int(r0 + 60), timeException=True), "time_set_ticks")
+                _clear_wildlife(t)
+                t.wait_ticks(120)
+                ready = state(sid)[1]
+                swollen = any("Knuckles swollen" in ln for ln in lines(sid))
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (GRASS, x, z + 1), growth=1.0)
+                fire(x, z + 1)
+                again = burst_by(sid, state(sid)[0])
+                out(x, z)
+                r["recover"] = (r0, r1, ready, swollen, again)
+                _note(t, "quench recovery (readyTick, after load, Ready, swollen, burst again)", r["recover"])
+                _only(_quench_offences(r), "recovery:")
+        with _comp(t, "quench_controls_hold", toggle="quenchEnabled"):
+            if _live(t):
+                with _setting(t, "quenchEnabled", False):
+                    oid = stand(x - 8, z - 8)
+                    o0 = state(oid)[0]
+                    fire(x - 7, z - 8)
+                    r["ctl"]["off"] = burst_by(oid, o0, 6)
+                    out(x - 8, z - 8)
+                # out of reach: bare soil all round, one grass cell three away so the fire cannot creep into reach
+                fx, fz = x + 8, z - 8
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (QUENCH, fx, fz), growth=1.0)
+                fid = _stand(t, QUENCH, fx, fz)
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (GRASS, fx + 3, fz), growth=1.0)
+                f0 = state(fid)[0]
+                fire(fx + 3, fz)
+                t.wait_ticks(30)
+                if not _fire_cells(t, (fx + 3, fz, 1, 1)):
+                    _unmeasured(t, "the out-of-reach fire went out before the first quench sweep")
+                r["ctl"]["reach"] = burst_by(fid, f0, 5)
+                out(fx, fz)
+                yid = stand(x - 8, z + 8, growth=max(0.05, (QUENCH_MIN_GROWTH or 0.5) / 4.0))
+                y0 = state(yid)[0]
+                fire(x - 7, z + 8)
+                r["ctl"]["young"] = burst_by(yid, y0, 6)
+                out(x - 8, z + 8)
+                _note(t, "quench controls (off, out of reach, young burst)", r["ctl"])
+                _only(_quench_offences(r), "control:")
+        with _comp(t, "quench_checker_rejects_injections"):
+            if _live(t):
+                good = {"burst": (True, 0, 3), "ready": (False, True), "spent": (9000, 9000, True),
+                        "recover": (9000, 9000, True, True, True), "ctl": {"off": False, "reach": False, "young": False}}
+                _rejects("quench", _quench_offences, good, {
+                    "no burst": dict(good, burst=(False, 0, 0)), "no foam": dict(good, burst=(True, 0, 0)),
+                    "fire survives": dict(good, burst=(True, 2, 3)), "art only": dict(good, ready=(False, False)),
+                    "repeat burst": dict(good, spent=(9000, 12000, True)), "no second fire": dict(good, spent=(9000, 9000, False)),
+                    "lost on load": dict(good, recover=(9000, 0, True, True, True)),
+                    "never recovers": dict(good, recover=(9000, 9000, False, False, True)),
+                    "recovered but dead": dict(good, recover=(9000, 9000, True, True, False)),
+                    "off bursts": dict(good, ctl={"off": True}), "reach ignored": dict(good, ctl={"reach": True}),
+                    "young bursts": dict(good, ctl={"young": True})})
+    with _scene(t, "sc_quench", "owner_review"):
+        _stable(t, body)
+
+
+EGGS_XML = os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_Absorbed_Eggs.xml")
+HATCH_EGG = "RM_ProtovermesEggFertilized"
+HATCH_INFERTILE = "RM_ProtovermesEggUnFertilized"
+HATCH_EGG_BLOCK = r"<defName>%s</defName>(?:(?!</ThingDef>).)*?" % HATCH_EGG
+HATCH_PAWN = _shipped_text(EGGS_XML, HATCH_EGG_BLOCK + r"<hatcherPawn>(\w+)</hatcherPawn>", str)
+HATCH_DAYS = _shipped_text(EGGS_XML, HATCH_EGG_BLOCK + r"<hatcherDaystoHatch>([\d.]+)</hatcherDaystoHatch>")
+HATCH_RADIUS = _shipped_text(os.path.join(HERE, "Patches", "ProximityHatch", "RM_ProtovermesEgg_ProximityHatch.xml"),
+                             r"<triggerRadius>([\d.]+)</triggerRadius>")
+HATCH_PKG = "mandrake.rm.proximityhatch"
+HATCH_SETTINGS = "RimMandrake.ProximityHatch.RM_ProximityHatchSettings"
+
+
+def _hatch_offences(r):
+    """The proximity-hatch checker, pure. r {"near" (eggs left, offspring at the hatch, offspring 300 ticks on),
+    "far_left", "infertile_left" eggs left, "early_left" eggs left before due with the engine off and a pawn beside it,
+    "timer" (eggs left, offspring) past the normal due time}. -> offences."""
+    out = []
+    n = r.get("near") or (1, 0, 0)
+    if n[0]:
+        out.append("near: a pawn beside the fertilized egg did not hatch it (%s egg(s) left)" % n[0])
+    elif n[1] != 1 or n[2] != 1:
+        out.append("near: the egg gave %s offspring, then %s: not exactly one" % n[1:3])
+    if not r.get("far_left"):
+        out.append("control: a pawn outside the radius hatched the egg")
+    if not r.get("infertile_left"):
+        out.append("control: an infertile egg hatched")
+    if not r.get("early_left"):
+        out.append("timer: with the engine off the egg hatched before its due time")
+    tm = r.get("timer") or (1, 0)
+    if tm[0] or tm[1] != 1:
+        out.append("timer: past its due time the egg left %s egg(s), %s offspring" % tm)
+    return out
+
+
+@suite.chain("scene_proximity_hatch")
+def scene_proximity_hatch(t):
+    """sc_proximity_hatch (proximity_hatch): with mandrake.rm.proximityhatch running a colonist one cell from a
+    fertilized egg hatches it within a few scans into exactly one offspring, and no second appears; a pawn outside the
+    radius and an infertile egg leave it; with the engine off (its enabled setting, or not loaded) the egg waits out its
+    hatcherDaystoHatch and then hatches exactly once. Rules out a double hatch and an early hatch with no engine."""
+    _prep(t, "hatch")
+    x, z = t.anchor
+    r = {}
+    area = _rs(_rect(t, PAD_SIZE + 8))
+    radius = int(HATCH_RADIUS or 3)
+
+    def engine():
+        mods = _ok(t.bridge_call("jawa/running_mods"), "running_mods").get("packageIds") or []
+        return HATCH_PKG in [str(m).lower() for m in mods]
+
+    def egg(defName, cx, cz):
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (defName, cx, cz))
+        if _count(t, defName, "%d,%d,1,1" % (cx, cz)) < 1:
+            _unmeasured(t, "the %s did not spawn at %d,%d" % (defName, cx, cz))
+
+    def held(cx, cz):
+        p = _spawn(t, "Colonist", cx, cz, faction="player")
+        _full(t, p)
+        t.bridge_call("jawa/ordered_job", pawnId=p, jobDef="Wait", targetAX=cx, targetAZ=cz, waitTicks=0)
+        return p
+
+    def young():
+        return [i for i, p in _rows(t, area).items() if p.get("kindDef") == HATCH_PAWN and not p.get("dead")]
+
+    def reset(*pids):
+        _vanish(t, *(list(pids) + young()))
+        t.bridge_call("jawa/destroy_batch", rects=area, categories="Item")
+
+    def body():
+        with _comp(t, "hatch_near_pawn_hatches_once"):
+            if _live(t):
+                if not HATCH_PAWN:
+                    _unmeasured(t, "hatcherPawn unread off %s" % HATCH_EGG)
+                if not engine():
+                    _unmeasured(t, "%s is not running: the integrated hatch cannot be seen" % HATCH_PKG)
+                egg(HATCH_EGG, x, z)
+                p = held(x + 1, z)
+                for _ in range(10):
+                    t.wait_ticks(30)
+                    if not _count(t, HATCH_EGG, area):
+                        break
+                left, n1 = _count(t, HATCH_EGG, area), len(young())
+                t.wait_ticks(300)
+                r["near"] = (left, n1, len(young()))
+                reset(p)
+                _note(t, "hatch near (eggs left, offspring, offspring later)", r["near"])
+                _only(_hatch_offences(r), "near:")
+        with _comp(t, "hatch_controls_leave_egg"):
+            if _live(t):
+                if not engine():
+                    _unmeasured(t, "%s is not running: a control egg staying proves nothing" % HATCH_PKG)
+                egg(HATCH_EGG, x, z)
+                p = held(x + radius + 2, z)
+                t.wait_ticks(300)
+                r["far_left"] = _count(t, HATCH_EGG, area)
+                reset(p)
+                egg(HATCH_INFERTILE, x, z)
+                p = held(x + 1, z)
+                t.wait_ticks(300)
+                r["infertile_left"] = _count(t, HATCH_INFERTILE, area)
+                reset(p)
+                _note(t, "hatch controls (far egg left, infertile egg left)", [r["far_left"], r["infertile_left"]])
+                _only(_hatch_offences(r), "control:")
+        with _comp(t, "hatch_timer_without_engine"):
+            if _live(t):
+                if not HATCH_DAYS:
+                    _unmeasured(t, "hatcherDaystoHatch unread off %s" % HATCH_EGG)
+                on = engine()
+                was = None
+                if on:
+                    was = _ok(t.bridge_call("jawa/mod_settings_field", typeName=HATCH_SETTINGS, action="get",
+                                            field="enabled"), "mod_settings_field(get enabled)").get("value")
+                try:
+                    if on:
+                        _ok(t.bridge_call("jawa/mod_settings_field", typeName=HATCH_SETTINGS, action="set",
+                                          field="enabled", value="False"), "mod_settings_field(set enabled)")
+                    egg(HATCH_EGG, x, z)
+                    p = held(x + 1, z)
+                    t.wait_ticks(600)
+                    r["early_left"] = _count(t, HATCH_EGG, area)
+                    _vanish(t, p)
+                    # CompHatcher accrues per tick: a clock jump would not move it, so the days are run
+                    _wait(t, int(HATCH_DAYS * 60000) + 2500)
+                    r["timer"] = (_count(t, HATCH_EGG, area), len(young()))     # before the cull: the hatchling is wild
+                    _clear_wildlife(t)
+                    eggs = _things(t, HATCH_EGG, area)
+                    if eggs:
+                        _note(t, "hatch timer: egg still there", _inspect(t, eggs[0].get("id"))[1])
+                finally:
+                    if on:
+                        t.bridge_call("jawa/mod_settings_field", typeName=HATCH_SETTINGS, action="set",
+                                      field="enabled", value=str(was if was is not None else True))
+                reset()
+                _note(t, "hatch timer (engine running, early eggs left, (eggs, offspring) past due)",
+                      [on, r["early_left"], r["timer"]])
+                _only(_hatch_offences(r), "timer:")
+        with _comp(t, "hatch_checker_rejects_injections"):
+            if _live(t):
+                good = {"near": (0, 1, 1), "far_left": 1, "infertile_left": 1, "early_left": 1, "timer": (0, 1)}
+                _rejects("proximity_hatch", _hatch_offences, good, {
+                    "no hatch": dict(good, near=(1, 0, 0)), "double hatch": dict(good, near=(0, 1, 2)),
+                    "twins": dict(good, near=(0, 2, 2)), "far hatches": dict(good, far_left=0),
+                    "infertile hatches": dict(good, infertile_left=0), "early without engine": dict(good, early_left=0),
+                    "never on timer": dict(good, timer=(1, 0)), "timer twins": dict(good, timer=(0, 2))})
+    with _scene(t, "sc_proximity_hatch", "immediate"):
+        _stable(t, body)
+
+
+# LSCRUB_PILLOWMOSS_HOOK names a public static ("x,z") -> the cell's under-plant wetness (0 dry .. 1). Nothing ships it:
+# Pillowmoss condensation is a STUB (RM_LeaningScrubFuzzFlora.xml) and the adapter is only planned (plan.md, Pillowmoss).
+PILLOW_HOOK = os.environ.get("LSCRUB_PILLOWMOSS_HOOK", "").strip()
+PILLOW_WHY = ("no shipped Pillowmoss condensation (RM_LeaningScrubFuzzFlora.xml STUB, plan.md) and no bridge tool "
+              "reads under-plant wetness: set LSCRUB_PILLOWMOSS_HOOK")
+PILLOW = "RM_Pillowmoss"
+PILLOW_INTERVAL = 2500     # one hour: the planned fog / dry interval ships no constant yet
+
+
+def _pillow_offences(r):
+    """The pillowmoss checker, pure. r {"fog" (under moss, matched bare plot) after a fog interval, "edge" one cell
+    past the moss, "dry" under moss after one dry interval, "removed" (wet again in fog, after the moss is gone),
+    "ctl" {off, clear: wetness}}. -> offences."""
+    out = []
+    f = r.get("fog") or (0.0, 0.0)
+    if not f[0] > 0:
+        out.append("wet: no wetness under moss after a fog interval")
+    if f[1] > 0:
+        out.append("control: the bare plot beside it read wet (%s): not the moss" % f[1])
+    if f[0] > 1.0 or (r.get("edge") or 0) > 0:
+        out.append("bound: wetness %s under moss, %s past its edge" % (f[0], r.get("edge")))
+    if (r.get("dry") or 0) > 0:
+        out.append("expire: still wet (%s) after one dry interval" % r["dry"])
+    rm = r.get("removed") or (0.0, 1.0)
+    if not rm[0] > 0 or rm[1] > 0:
+        out.append("recover: re-wetted %s, after removal %s" % rm)
+    for k, v in sorted((r.get("ctl") or {}).items()):
+        if v and v > 0:
+            out.append("control: the %s plot read wet (%s)" % (k, v))
+    return out
+
+
+@suite.chain("scene_pillowmoss")
+def scene_pillowmoss(t):
+    """sc_pillowmoss (pillowmoss): a fog interval leaves bounded, readable wetness under a pillowmoss patch and none on a
+    matched bare plot or one cell past the moss; one dry interval expires it; once the moss is removed it dries; modEnabled
+    off (no ecology switch ships) and Clear weather wet nothing. Rules out plant art alone standing for condensation."""
+    _prep(t, "pillow")
+    x, z = t.anchor
+    r = {"ctl": {}}
+
+    def wet(cx, cz):
+        try:
+            return float(_hook_value(t, PILLOW_HOOK, "%d,%d" % (cx, cz), "under-plant wetness"))
+        except ValueError:
+            _unmeasured(t, "LSCRUB_PILLOWMOSS_HOOK answered no number for %d,%d" % (cx, cz))
+
+    def moss(cx, cz):
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,3,3" % (PILLOW, cx - 1, cz - 1), growth=1.0)
+        if _count(t, PILLOW, "%d,%d,3,3" % (cx - 1, cz - 1)) < 1:
+            _unmeasured(t, "pillowmoss did not take at %d,%d" % (cx, cz))
+
+    def weather(w, n=PILLOW_INTERVAL):
+        _lock_weather(t, w)
+        _wait(t, n)
+
+    def body():
+        with _comp(t, "pillowmoss_wet_under_moss_in_fog"):
+            if _live(t):
+                if not PILLOW_HOOK:
+                    _unmeasured(t, PILLOW_WHY)
+                moss(x, z)
+                weather("RM_ScrubWindFog")
+                r["fog"] = (wet(x, z), wet(x + 8, z))
+                _note(t, "pillowmoss in fog (moss, bare)", r["fog"])
+                _only(_pillow_offences(r), "wet:", "control: the bare")
+        with _comp(t, "pillowmoss_bounded"):
+            if _live(t):
+                if not PILLOW_HOOK:
+                    _unmeasured(t, PILLOW_WHY)
+                if r.get("fog", (0,))[0] <= 0:
+                    _unmeasured(t, "no wetness under moss in fog, so the edge proves nothing")
+                r["edge"] = wet(x + 2, z)
+                _only(_pillow_offences(r), "bound:")
+        with _comp(t, "pillowmoss_expires_dry"):
+            if _live(t):
+                if not PILLOW_HOOK:
+                    _unmeasured(t, PILLOW_WHY)
+                if r.get("fog", (0,))[0] <= 0:
+                    _unmeasured(t, "no wetness under moss in fog, so drying proves nothing")
+                weather("Clear")
+                r["dry"] = wet(x, z)
+                _only(_pillow_offences(r), "expire:")
+        with _comp(t, "pillowmoss_recovers_after_removal"):
+            if _live(t):
+                if not PILLOW_HOOK:
+                    _unmeasured(t, PILLOW_WHY)
+                weather("RM_ScrubWindFog")
+                w = wet(x, z)
+                t.bridge_call("jawa/destroy_batch", rects="%d,%d,3,3" % (x - 1, z - 1), categories="Plant")
+                weather("Clear")
+                r["removed"] = (w, wet(x, z))
+                _only(_pillow_offences(r), "recover:")
+        with _comp(t, "pillowmoss_controls_dry", toggle="modEnabled"):
+            if _live(t):
+                if not PILLOW_HOOK:
+                    _unmeasured(t, PILLOW_WHY)
+                moss(x - 8, z)
+                weather("Clear")
+                r["ctl"]["clear"] = wet(x - 8, z)
+                moss(x, z + 8)
+                with _setting(t, "modEnabled", False):
+                    weather("RM_ScrubWindFog")
+                    r["ctl"]["off"] = wet(x, z + 8)
+                _lock_weather(t, "Clear")
+                _note(t, "pillowmoss controls", r["ctl"])
+                _only(_pillow_offences(r), "control: the off", "control: the clear")
+        with _comp(t, "pillowmoss_checker_rejects_injections"):
+            if _live(t):
+                good = {"fog": (0.6, 0.0), "edge": 0.0, "dry": 0.0, "removed": (0.6, 0.0),
+                        "ctl": {"off": 0.0, "clear": 0.0}}
+                _rejects("pillowmoss", _pillow_offences, good, {
+                    "never wet": dict(good, fog=(0.0, 0.0)), "bare wet": dict(good, fog=(0.6, 0.6)),
+                    "unbounded": dict(good, edge=0.3), "over one": dict(good, fog=(3.0, 0.0)),
+                    "never dries": dict(good, dry=0.4), "wet after removal": dict(good, removed=(0.6, 0.5)),
+                    "off wets": dict(good, ctl={"off": 0.5}), "clear wets": dict(good, ctl={"clear": 0.5})})
+    with _scene(t, "sc_pillowmoss", "owner_review"):
+        _stable(t, body)
+
+
+RIBBON = "RM_Ribbonwhip"
+RIBBON_POLLS = 16          # samples of 250 ticks: 4000 ticks of travel
+
+
+def _ribbon_offences(r):
+    """The ribbon-route checker, pure. r {"ordinary" (samples, bare samples), "gap" (bare samples, crossed to the far
+    patch), "hunt" (PredatorHunt seen, bare samples) over a connected canopy, "readable" an inspect line names the
+    missing canopy, "hidden" (on fuzz, on bare), "sway" (most swaying, fled)}. -> offences."""
+    out = []
+    o = r.get("ordinary") or (0, 1)
+    if o[1]:
+        out.append("route: %s of %s samples of ordinary travel stood on bare ground" % (o[1], o[0]))
+    g = r.get("gap") or (1, True)
+    if g[0] or g[1]:
+        out.append("gap: a hunt across a broken canopy left it (%s bare samples, crossed %s)" % g)
+    h = r.get("hunt") or (False, 1)
+    if h[1]:
+        out.append("hunt: a canopy hunt stepped onto %s bare cell(s)" % h[1])
+    if not r.get("readable"):
+        out.append("readable: nothing on the ribbonwhip says the canopy is broken")
+    hd = r.get("hidden") or (False, True)
+    if not hd[0] or hd[1]:
+        out.append("conceal: hidden on fuzz %s, on bare soil %s" % hd)
+    s = r.get("sway") or (0, True)
+    if not s[0] or s[1]:
+        out.append("sway: a bloom swayed %s, fled %s" % s)
+    return out
+
+
+@suite.chain("scene_ribbon_route")
+def scene_ribbon_route(t):
+    """sc_ribbon_route (ribbon_route): a ribbonwhip's ordinary travel and its hunts stay on the fuzz canopy; with only
+    the canopy link broken and a hare beyond it, it never steps onto the bare gap and its inspect says why; over a
+    connected canopy a hunt runs on fuzz; Ripple concealment and the bloom sway still hold. Canopy confinement is a
+    STUB (RM_LeaningScrubFauna.xml): the route rows read red until it ships."""
+    _prep(t, "ribbon")
+    x, z = t.anchor
+    r = {}
+    area = _rs(_rect(t, PAD_SIZE + 8))
+    pa, gap, pb = (x - 12, z - 3, 9, 7), (x - 3, z - 3, 3, 7), (x, z - 3, 9, 7)
+
+    def cells(rc):
+        return set((rc[0] + i, rc[1] + j) for i in range(rc[2]) for j in range(rc[3]))
+
+    def canopy(*rcs):
+        for rc in rcs:
+            t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%s" % _rs(rc), growth=1.0)
+        return set().union(*[cells(rc) for rc in rcs])
+
+    def follow(pid, top, polls=RIBBON_POLLS):
+        """-> (samples, bare samples, positions, PredatorHunt seen) every 250 ticks."""
+        seen, bare, hunt = [], 0, False
+        for _ in range(polls):
+            t.wait_ticks(250)
+            pos = _xz(_rows(t, area).get(pid))
+            hunt = hunt or str(_jobs(t).get(pid) or "").startswith("PredatorHunt")
+            if pos is None:
+                continue
+            seen.append(pos)
+            bare += pos not in top
+        return len(seen), bare, seen, hunt
+
+    def body():
+        with _comp(t, "ribbon_ordinary_route_on_canopy"):
+            if _live(t):
+                top = canopy(pa, pb)
+                rw = _spawn(t, RIBBON, x - 8, z)
+                _full(t, rw)
+                n, bare, seen, _h = follow(rw, top)
+                _vanish(t, rw)
+                if len(set(seen)) < 2:
+                    _unmeasured(t, "the ribbonwhip never moved in %d ticks" % (250 * RIBBON_POLLS))
+                r["ordinary"] = (n, bare)
+                _note(t, "ribbon ordinary (samples, bare)", r["ordinary"])
+                _only(_ribbon_offences(r), "route:")
+        with _comp(t, "ribbon_hunt_refuses_bare_gap"):
+            if _live(t):
+                top = canopy(pa, pb)
+                hare = _spawn(t, LURE_EATER, x + 4, z)
+                rw = _hungry(t, RIBBON, x - 8, z)
+                n, bare, seen, hunt = follow(rw, top)
+                if not hunt and len(set(seen)) < 2:
+                    _vanish(t, rw, hare)
+                    _unmeasured(t, "the hungry ribbonwhip neither hunted nor moved, so the gap was not tested")
+                r["gap"] = (bare, any(p[0] >= x for p in seen))
+                r["readable"] = any("canopy" in ln.lower() for ln in _inspect(t, rw)[1])
+                _vanish(t, rw, hare)
+                _note(t, "ribbon gap (bare samples, crossed), readable", [r["gap"], r["readable"]])
+                _only(_ribbon_offences(r), "gap:")
+        with _comp(t, "ribbon_inability_readable"):
+            if _live(t):
+                if "readable" not in r:
+                    _unmeasured(t, "the broken-canopy hunt did not run")
+                _only(_ribbon_offences(r), "readable:")
+        with _comp(t, "ribbon_connected_hunt_on_canopy"):
+            if _live(t):
+                top = canopy(pa, gap, pb)
+                hare = _spawn(t, LURE_EATER, x + 4, z)
+                rw = _hungry(t, RIBBON, x - 8, z)
+                n, bare, seen, hunt = follow(rw, top)
+                _vanish(t, rw, hare)
+                if not hunt:
+                    _unmeasured(t, "the hungry ribbonwhip started no PredatorHunt in %d ticks" % (250 * RIBBON_POLLS))
+                r["hunt"] = (hunt, bare)
+                _only(_ribbon_offences(r), "hunt:")
+        with _comp(t, "ribbon_concealment_preserved", toggle="rippleEnabled"):
+            if _live(t):
+                canopy(pa)
+                on = _spawn(t, RIBBON, x - 8, z)
+                off = _spawn(t, RIBBON, x + 12, z + 8)
+                _full(t, on)
+                _full(t, off)
+                t.wait_ticks(300)
+                rows = _rows(t, area, health=True)
+                if off not in rows:
+                    _vanish(t, on, off)
+                    _unmeasured(t, "the off-canopy ribbonwhip left the read area")
+                r["hidden"] = (_hidden(rows.get(on)), _hidden(rows.get(off)))
+                _vanish(t, on, off)
+                _only(_ribbon_offences(r), "conceal:")
+        with _comp(t, "ribbon_sway_preserved", toggle="runwayBloomEnabled"):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,30,5" % (x - 15, z + 6), growth=1.0)
+                rw = _spawn(t, RIBBON, x - 2, z + 8)
+                _full(t, rw)
+                w = _spawn(t, "Colonist", x - 15, z + 8, faction="player")
+                _full(t, w)
+                t.bridge_call("jawa/order_pawn", pawnId=w, x=x + 14, z=z + 8, waitTicks=0, unpause=False)
+                most, fled = 0, False
+                for _ in range(16):
+                    t.wait_ticks(30)
+                    m = re.search(r"\d+", str(((t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_RunwayBloom",
+                                                               members="swaying") or {}).get("values") or {}).get("swaying", "")))
+                    most = max(most, int(m.group(0)) if m else 0)
+                    fled = fled or str(_jobs(t).get(rw) or "").startswith("Flee")
+                r["sway"] = (most, fled)
+                _vanish(t, rw, w)
+                _only(_ribbon_offences(r), "sway:")
+        with _comp(t, "ribbon_checker_rejects_injections"):
+            if _live(t):
+                good = {"ordinary": (16, 0), "gap": (0, False), "hunt": (True, 0), "readable": True,
+                        "hidden": (True, False), "sway": (1, False)}
+                _rejects("ribbon_route", _ribbon_offences, good, {
+                    "ground travel": dict(good, ordinary=(16, 3)), "gap crossed": dict(good, gap=(0, True)),
+                    "gap stepped": dict(good, gap=(2, False)), "bare hunt": dict(good, hunt=(True, 2)),
+                    "silent": dict(good, readable=False), "no concealment": dict(good, hidden=(False, False)),
+                    "hidden everywhere": dict(good, hidden=(True, True)), "no sway": dict(good, sway=(0, False)),
+                    "flees": dict(good, sway=(1, True))})
+    with _scene(t, "sc_ribbon_route", "immediate"):
+        _stable(t, body)
+
+
 def _run_offline(name):
     """`python3 validation.py <offline scene>`: run one offline chain with no game; exit 0 when every row PASSes."""
     from suite import TestContext

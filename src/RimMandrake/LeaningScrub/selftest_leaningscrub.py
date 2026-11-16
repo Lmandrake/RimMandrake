@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (healthy + ~270 breaks run ~420 s alone; the 240 s default CRASHed it as [timeout])
 """Offline selftest for LeaningScrub's validation.py: a scripted FAKE GAME that implements the
 mod's behaviours, run (1) healthy -- every component must PASS -- and (2) once per mod behaviour
 broken -- the named component must go FAIL and no other component may.
@@ -43,6 +44,9 @@ V.WIND_TILES = (21, 22)                            # sc_wind_plain's two fixture
 V.WIND_HOOK = "RimMandrake.LeaningScrub.FakeWind.Speed"        # sc_wind_plain's live wind reader (fake type)
 V.ISLAND_TILES = (31, 32, 33)                      # sc_island_land's three fixture tiles
 V.ISLAND_START_HOOK = "RimMandrake.LeaningScrub.FakeIslandStart.Start"   # sc_island_land's start reader (fake)
+V.MESSAGE_HOOK = "RimMandrake.LeaningScrub.FakeMessages.Count"       # sc_rearing's live Messages reader (fake)
+V.REVEAL_HOOK = "RimMandrake.LeaningScrub.FakeReveal.Pawn"           # sc_rearing's conceal fixture + reader (fake)
+V.PILLOW_HOOK = "RimMandrake.LeaningScrub.FakeWetness.At"            # sc_pillowmoss's wetness reader (fake)
 FAKE_WIND = {"RM_ScrubWind": (1.0, 0.5), "RM_ScrubWindFog": (1.0, 0.4), "RM_ScrubOvercast": (1.0, 0.5),
              "RM_ScrubGrayPall": (1.0, 0.4), "RM_ScrubDryThunderstorm": (1.5, 1.25), "RM_Stall": (0.0, 0.0),
              "RM_Gale": (1.5, 1.5)}       # the loaded (factor, offset) of the seven, as RM_LeaningScrub_*.xml ship them
@@ -126,6 +130,9 @@ class Fake(object):
         # batch 5: the base stamper the rehome owes (a fake franchise-free kind), the Gale overlay clock, the selection
         self.stamper_kinds = {V.STAMPER} | (set() if "no_base_stamper" in self.broken else {"RM_Thunderstep"})
         self.gale_last, self.selected, self.shots = None, None, {}
+        # batch 8: live Messages, Pillowmoss wetness (cell -> last fog tick), the ProximityHatch settings, ribbon dice
+        self.messages, self.wet, self.hatch, self.ribbon_rng = [], {}, {"enabled": "True"}, random.Random(11)
+        self.scene = None
         self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
                                                        in self.broken else "")
 
@@ -167,12 +174,18 @@ class Fake(object):
             self.ticks += d
             self.last_d = d
             self.creep_tick(self.ticks - d, self.ticks)
+            self.rear_pass()              # the 30-tick sweep sees a pawn where it spawned, and again where it walked
             self.chunk(d)
             self.ripple_pass()
             self.lure_pass(d)
             self.fire_pass()
             self.route_pass()
             self.viper_pass()
+            self.rear_pass()
+            self.quench_pass()
+            self.hatch_pass()
+            self.pillow_pass()
+            self.ribbon_pass(d)
 
     def chunk(self, d):
         b = self.broken
@@ -305,7 +318,7 @@ class Fake(object):
                     for p in self.pawns.values():
                         if not cover or p["faction"] != "none":
                             continue
-                        if p["kind"] == "RM_Ribbonwhip":
+                        if p["kind"] == "RM_Ribbonwhip" and not ("ribbon_no_sway" in b and self.in_ribbon_scene()):
                             p["sway_until"] = self.ticks + (10 ** 9 if "sway_never_released" in b else 180)
                         if p["kind"] == "RM_Surrik" and "hole_never" not in b:
                             self.new(V.SURRIK_HOLE, p["x"], p["z"], stackCount=1)
@@ -398,6 +411,10 @@ class Fake(object):
         return {"success": True, "weather": {"current": self.weather}}
 
     def t_mod_settings_field(self, typeName=None, action=None, field=None, value=None, **k):
+        if typeName == V.HATCH_SETTINGS:
+            if action == "set":
+                self.hatch[field] = str(value)
+            return {"success": True, "value": self.hatch.get(field)}
         if typeName == V.SCANNER_SETTINGS:
             if action == "set":
                 self.scanner[field] = str(value)
@@ -640,6 +657,15 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        if type == "RimMandrake.LeaningScrub.FakeMessages":
+            return {"success": True, "result": str(len([m for m in self.messages if args in m]))}
+        if type == "RimMandrake.LeaningScrub.FakeReveal":
+            pid, what = args.split("|")
+            if what == "conceal":
+                self.pawns[pid]["concealed"] = True
+            return {"success": True, "result": str(bool(self.pawns[pid].get("concealed")))}
+        if type == "RimMandrake.LeaningScrub.FakeWetness":
+            return {"success": True, "result": "%.2f" % self.wetness(*[int(v) for v in args.split(",")])}
         if type == "Verse.Log":
             self.log.append({"type": method, "text": args})
             return {"success": True}
@@ -1029,6 +1055,12 @@ class Fake(object):
                 "held": "Count=%d [%s]" % (len(held), ", ".join(h["id"] for h in held)),
                 "firstSeen": "Count=%d [%s]" % (len(t.get("seen") or {}), ", ".join(
                     "%s:%d" % kv for kv in sorted((t.get("seen") or {}).items()))), "HeldCount": str(len(held))}}
+        if comp == "RM_CompRearing" and t and t["def"] == V.REARING:
+            u = t.get("until", 0)
+            return {"success": True, "missing": [], "values": {"rearedUntilTick": str(u), "Reared": str(self.ticks < u)}}
+        if comp == "RM_CompQuench" and t and t["def"] == V.QUENCH:
+            r = t.get("ready", 0)
+            return {"success": True, "missing": [], "values": {"readyTick": str(r), "Ready": str(self.ticks >= r)}}
         if comp == "SandSwim" and thing in self.pawns:
             return {"success": True, "values": {"Submerged": "True"}}
         return {"success": False, "message": "no comp %s on %s" % (comp, thing)}
@@ -1074,7 +1106,7 @@ class Fake(object):
             moving = self.ticks < p.get("moving_until", 0) and "ripple_stall_move_hidden" not in b
             still = self.weather == "RM_Stall" or (cover and self.lee(p))
             hide = (on and wild and not p["dead"] and cover and BODY.get(p["kind"], 1.0) <= limit
-                    and not (still and moving))
+                    and not (still and moving) and not ("ribbon_unhidden" in b and self.in_ribbon_scene()))
             hs = p["hediffs"]
             if hide and "RM_RippleHidden" not in hs:
                 hs.append("RM_RippleHidden")
@@ -1204,7 +1236,7 @@ class Fake(object):
 
     def t_running_mods(self, **k):
         ids = [p for p in V.DLC_PACKAGES if not ("dlc_missing" in self.broken and p.endswith("odyssey"))]
-        ids += ["brrainz.harmony", V.OUR_PACKAGES[1], V.SCANNER_PKG]
+        ids += ["brrainz.harmony", V.OUR_PACKAGES[1], V.SCANNER_PKG, V.HATCH_PKG]
         return {"success": True, "count": len(ids), "packageIds": ids}
 
     def t_list_selected_gizmos(self, **k):
@@ -1341,11 +1373,15 @@ class Fake(object):
         return {"success": True, "meanTickTime": 4.2}
 
     def t_save_game(self, saveName=None, **k):
+        if saveName.startswith("lscrub_sc_"):
+            self.scene = saveName            # _scene's recovery save: which scene is on the map
         self.saves[saveName] = copy.deepcopy((self.ticks, self.pawns, self.things))
         return {"success": True}
 
     def t_load_game_ready(self, saveName=None, **k):
         ticks, pawns, things = copy.deepcopy(self.saves[saveName])
+        if saveName == self.scene:
+            self.scene = None
         if "hoard_forgets_on_reload" in self.broken:
             for t in things.values():
                 if t["def"] == V.HOARD:
@@ -1368,6 +1404,11 @@ class Fake(object):
             del pawns[min((p for p in pawns if pawns[p]["kind"] == V.RECOVERY_KIND), key=lambda p: int(p[1:]))]
         if "probe" in saveName and "restore_tick_drift" in self.broken:
             ticks += 1
+        for t in things.values():
+            if t["def"] == V.REARING and "rear_lost_on_load" in self.broken:
+                t["until"] = 0
+            if t["def"] == V.QUENCH and "quench_lost_on_load" in self.broken:
+                t["ready"] = 0
         if "pursuit_forgets_on_reload" in self.broken:     # the saved maker relation does not survive the load
             self.pursuit = None
             for t in things.values():
@@ -1502,6 +1543,138 @@ class Fake(object):
                 out[path] = "RM_QuenchVenomvine" if "blind_misread" in self.broken and d == "RM_SleeperVenomvine" else d
         return out
 
+    # ------------------------------------------------------------ batch 8: rearing, quench, hatch, pillowmoss, ribbon
+    def rear_pass(self):
+        """SweepRearing (every 30 ticks, so before a spawned pawn wanders off): a big body in a grown stand rears it
+        (RearTicks, Stall-stretched; an outsider's alert unless Gale; a concealed pawn revealed)."""
+        b = self.broken
+        stood = {}
+        for p in self.pawns.values():
+            if not p["dead"]:
+                stood.setdefault((p["x"], p["z"]), []).append(p)
+        for st in self.of(V.REARING):
+            if not (self.on("rearingEnabled") or "rear_ignores_toggle" in b) or st.get("growth", 1.0) < V.REAR_MIN_GROWTH:
+                continue
+            for p in stood.get((st["x"], st["z"]), []):
+                if BODY.get(p["kind"], 1.0) < V.REAR_MIN_BODY and "rear_small_rears" not in b:
+                    continue
+                if self.weather == "RM_Gale" and "rear_gale_immune" in b:
+                    continue
+                was = self.ticks < st.get("until", 0)
+                stall = self.weather == "RM_Stall" and "rear_stall_ignored" not in b
+                st["until"] = self.ticks + V._rear_ticks(self.settings["rearingHours"], stall, V.REAR_STALL)
+                if (not was and p["faction"] == "none" and p["kind"] == "Colonist"
+                        and (self.weather != "RM_Gale" or "rear_gale_alerts" in b)):
+                    self.messages.append(V.REAR_ALERT + ".")
+                if "rear_no_reveal" not in b:
+                    p["concealed"] = False
+
+    def quench_pass(self):
+        """SweepQuench: a ready grown stand with a fire in reach bursts once, foams, and is spent for the recovery."""
+        b = self.broken
+        fires = [f for f in self.things.values() if f["def"] == "Fire"]
+        for st in self.of(V.QUENCH):
+            if not (self.on("quenchEnabled") or "quench_ignores_toggle" in b) or st.get("growth", 1.0) < V.QUENCH_MIN_GROWTH:
+                continue
+            if self.ticks < st.get("ready", 0) and "quench_repeat_burst" not in b:
+                continue
+            if not any(math.hypot(f["x"] - st["x"], f["z"] - st["z"]) <= V.QUENCH_REACH for f in fires):
+                continue
+            box = (st["x"] - 4, st["z"] - 4, 9, 9)
+            for tid in [f["id"] for f in fires if inrect(f["x"], f["z"], box)]:
+                self.things.pop(tid, None)
+            self.pending_fire = [q for q in self.pending_fire if not inrect(q[1], q[2], box)]
+            if "quench_no_foam" not in b:
+                for dx in (-1, 0, 1):
+                    self.new(V.FOAM, st["x"] + dx, st["z"], stackCount=1)
+            st["ready"] = self.ticks + int(float(self.settings["quenchRecoveryDays"]) * 60000)
+            fires = [f for f in fires if f["id"] in self.things]
+
+    def hatch_pass(self):
+        """CompHatcher's clock, and ProximityHatch: an enabled engine hatches a fertilized egg with a pawn in reach."""
+        b = self.broken
+        engine = self.hatch.get("enabled") == "True" or "hatch_ignores_enabled" in b
+        reach = V.HATCH_RADIUS + (5 if "hatch_far" in b else 0)
+        for e in self.of(V.HATCH_EGG) + self.of(V.HATCH_INFERTILE):
+            fert = e["def"] == V.HATCH_EGG
+            due = fert and self.ticks - e.get("born", self.ticks) >= V.HATCH_DAYS * 60000
+            near = engine and (fert or "hatch_infertile" in b) and "hatch_never" not in b and any(
+                not p["dead"] and p["kind"] != V.HATCH_PAWN and math.hypot(p["x"] - e["x"], p["z"] - e["z"]) <= reach
+                for p in self.pawns.values())
+            if due or near:
+                del self.things[e["id"]]
+                for _ in range(2 if "hatch_twins" in b else 1):
+                    self.t_spawn_pawn(kindDef=V.HATCH_PAWN, x=e["x"], z=e["z"])
+
+    def pillow_pass(self):
+        if self.weather == "RM_ScrubWindFog" and "pillow_dry" not in self.broken and (
+                self.settings.get("modEnabled") == "True" or "pillow_ignores_toggle" in self.broken):
+            for m in self.of(V.PILLOW):
+                self.wet[(m["x"], m["z"])] = self.ticks
+
+    def wetness(self, x, z):
+        b = self.broken
+        cells = [(x, z)] + ([(x + dx, z + dz) for dx in range(-3, 4) for dz in range(-3, 4)] if "pillow_unbounded" in b
+                            else [])
+        last = max([self.wet[c] for c in cells if c in self.wet] or [None], key=lambda v: -1 if v is None else v)
+        if last is None:
+            return 0.0
+        if "pillow_never_dries" in b and any((m["x"], m["z"]) == (x, z) for m in self.of(V.PILLOW)):
+            return 0.6
+        return 0.6 if self.ticks - last < V.PILLOW_INTERVAL else 0.0
+
+    def in_ribbon_scene(self):
+        return (self.scene or "").startswith("lscrub_sc_ribbon_route_")
+
+    def canopy_path(self, start, prey, fuzz):
+        """A ribbonwhip's route over connected fuzz to a cell beside its prey: [cells after start], or None."""
+        goal = set((prey["x"] + dx, prey["z"] + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)) & fuzz
+        back, frontier = {start: None}, [start]
+        while frontier:
+            nxt = []
+            for c in frontier:
+                if c in goal:
+                    path = []
+                    while c != start:
+                        path.append(c)
+                        c = back[c]
+                    return path[::-1]
+                for dx in (-1, 0, 1):
+                    for dz in (-1, 0, 1):
+                        n = (c[0] + dx, c[1] + dz)
+                        if n in fuzz and n not in back:
+                            back[n] = c
+                            nxt.append(n)
+            frontier = nxt
+        return None
+
+    def ribbon_pass(self, d):
+        """The ribbon pad's ribbonwhips: travel stays on fuzz; a hungry one hunts a hare only over connected canopy."""
+        b = self.broken
+        if not self.in_ribbon_scene():
+            return
+        fuzz = set((t["x"], t["z"]) for t in self.of("RM_Fuzz"))
+        prey = [q for q in self.pawns.values() if q["kind"] == V.LURE_EATER and not q["dead"]]
+        for p in self.pawns.values():
+            if p["kind"] != V.RIBBON or p["dead"]:
+                continue
+            hungry = p.get("food", 0.9) < 0.3 and bool(prey)
+            path = self.canopy_path((p["x"], p["z"]), prey[0], fuzz) if hungry else None
+            p["blocked"] = hungry and path is None
+            if path is not None:
+                p["job"] = "PredatorHunt"
+                if path:
+                    p["x"], p["z"] = path[:max(1, d // 50)][-1]
+            elif p["blocked"] and "ribbon_crosses_gap" in b:
+                p["x"] = min(prey[0]["x"] - 1, p["x"] + max(1, d // 50))
+            elif "ribbon_touches_ground" in b and not hungry:
+                p["x"] += 1
+            else:
+                nb = [(p["x"] + dx, p["z"] + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)
+                      if (dx or dz) and (p["x"] + dx, p["z"] + dz) in fuzz]
+                if nb:
+                    p["x"], p["z"] = self.ribbon_rng.choice(nb)
+
     def t_order_pawn(self, pawnId=None, x=None, z=None, **k):
         if self.cur_map in self.gen_maps:      # a walk from the start: blocked east under the break
             blocked = "start_exit_blocked" in self.broken and x > ISLAND_START[0] + 20
@@ -1513,6 +1686,10 @@ class Fake(object):
 
     def t_inspect_string(self, thingIds=None, **k):
         t = self.things.get(thingIds)
+        if t is None and thingIds in self.pawns:      # a ribbonwhip says when no canopy reaches its prey
+            p = self.pawns[thingIds]
+            lines = ["No canopy route to prey."] if p.get("blocked") and "ribbon_silent" not in self.broken else []
+            return {"success": True, "things": [{"id": thingIds, "label": p["kind"], "inspect": lines}]}
         if t is None:
             return {"success": True, "things": []}
         lines, label = [], t["def"]
@@ -1524,6 +1701,13 @@ class Fake(object):
             lines = ["Power output: %d W" % round(1000 * (f if surge else 1.0))]
             if t.get("broken"):
                 lines = ["Broken down"] + (lines if "broken_still_surges" in self.broken else [])
+        elif d == V.REARING:
+            if self.ticks < t.get("until", 0) and "rear_art_only" not in self.broken:
+                lines = ["Reared upright against the lean: settles in 1 hour."]
+        elif d == V.QUENCH:
+            ready = self.ticks >= t.get("ready", 0)
+            lines = (["Knuckles swollen: will burst at fire."] if ready and t.get("growth", 1.0) >= V.QUENCH_MIN_GROWTH
+                     else [] if ready else ["Spent, knuckles cracked: swells again in 3 days."])
         elif d == "RM_TwitcherVenomvine":
             if self.on("twitcherLashEnabled") or "lash_ignores_toggle" in self.broken:
                 lines = ["Poised to strike." if self.ticks >= t.get("ready", 0)
@@ -1804,7 +1988,8 @@ BREAKS = {
     "no_crown": ("crown.crown_mob_gathers", "scene_crown.crown_scene_arrivals_attributed"),
     "bloom_ignores_toggle": ("bloom.bloom_toggle_off_quiet", "scene_bloom.bloom_scene_toggle_off_quiet",
                              "scene_arm_regrowth.arm_regrowth_off_sheds_nothing"),
-    "no_bloom": ("bloom.bloom_answers_a_walker", "scene_bloom.bloom_scene_walk_answers"),
+    "no_bloom": ("bloom.bloom_answers_a_walker", "scene_bloom.bloom_scene_walk_answers",
+                 "scene_ribbon_route.ribbon_sway_preserved"),
     "no_exit_hole": "bloom.bloom_sway_and_exit_hole",
     "dens_empty": "dens.thornhold_dens_in_venomvine",
     "dens_blind": "dens.thornhold_dens_in_venomvine",
@@ -1893,7 +2078,8 @@ BREAKS.update({
     "payload_not_attached": "scene_acoustic_payload.acoustic_payload_attached",
     "pulse_reads_quiet": "scene_acoustic_payload.acoustic_pulses_read_their_target",
     "pulse_reads_without_target": "scene_acoustic_payload.acoustic_pulses_read_their_target",
-    "ripple_bare_hides": "scene_concealment.concealment_bare_lane_visible",
+    "ripple_bare_hides": ("scene_concealment.concealment_bare_lane_visible",
+                          "scene_ribbon_route.ribbon_concealment_preserved"),
     "ripple_stall_move_hidden": ("scene_concealment.concealment_stall_move_reveals",
                                  "scene_lee_reveal.lee_moving_in_lee_revealed"),
     "ripple_gale_no_extend": "scene_concealment.concealment_gale_extends_size",
@@ -1901,7 +2087,8 @@ BREAKS.update({
     "ripple_ignores_toggles": ("scene_concealment.concealment_toggle_off_nobody_hidden",
                                "scene_settings.settings_all_off_quiet"),
     "ripple_dead_after_master_off": ("scene_settings.settings_reenabled_effect_returns",
-                                     "scene_lee_reveal.lee_still_in_lee_hidden"),
+                                     "scene_lee_reveal.lee_still_in_lee_hidden",
+                                     "scene_ribbon_route.ribbon_concealment_preserved"),
     "cane_no_premium": "scene_cane_fuel.cane_more_burn_per_item",
     "cane_no_heat_bonus": "scene_cane_fuel.cane_heat_rate_higher",
     "cane_credit_lost_on_reload": "scene_cane_fuel.cane_credit_survives_reload",
@@ -2038,6 +2225,35 @@ BREAKS.update({
     "lure_never_eaten": "scene_lure.lure_hungry_herbivore_eats_fruit",
     "lure_ignores_toggle": "scene_lure.lure_off_and_young_drop_none",
     "lure_young_drops": "scene_lure.lure_off_and_young_drop_none",
+})
+
+BREAKS.update({         # batch 8: rearing, quench, proximity_hatch, pillowmoss, ribbon_route
+    "rear_art_only": "scene_rearing.rearing_rears_for_big_intruder",
+    "rear_lost_on_load": "scene_rearing.rearing_rest_saved_and_settles",
+    "rear_stall_ignored": "scene_rearing.rearing_stall_extends",
+    "rear_gale_immune": "scene_rearing.rearing_gale_still_rears",
+    "rear_gale_alerts": "scene_rearing.rearing_gale_masks_alert",
+    "rear_no_reveal": "scene_rearing.rearing_reveals_concealed",
+    "rear_small_rears": "scene_rearing.rearing_controls_do_not_rear",
+    "rear_ignores_toggle": "scene_rearing.rearing_controls_do_not_rear",
+    "quench_no_foam": "scene_quench.quench_bursts_once_at_fire",
+    "quench_repeat_burst": "scene_quench.quench_spent_no_repeat",
+    "quench_lost_on_load": "scene_quench.quench_recovery_saved",
+    "quench_ignores_toggle": ("forms.quench_toggle_off", "scene_quench.quench_controls_hold"),
+    "hatch_never": "scene_proximity_hatch.hatch_near_pawn_hatches_once",
+    "hatch_twins": "scene_proximity_hatch.hatch_near_pawn_hatches_once",
+    "hatch_far": "scene_proximity_hatch.hatch_controls_leave_egg",
+    "hatch_infertile": "scene_proximity_hatch.hatch_controls_leave_egg",
+    "hatch_ignores_enabled": "scene_proximity_hatch.hatch_timer_without_engine",
+    "pillow_dry": "scene_pillowmoss.pillowmoss_wet_under_moss_in_fog",
+    "pillow_unbounded": "scene_pillowmoss.pillowmoss_bounded",
+    "pillow_never_dries": "scene_pillowmoss.pillowmoss_expires_dry",
+    "pillow_ignores_toggle": "scene_pillowmoss.pillowmoss_controls_dry",
+    "ribbon_touches_ground": "scene_ribbon_route.ribbon_ordinary_route_on_canopy",
+    "ribbon_crosses_gap": "scene_ribbon_route.ribbon_hunt_refuses_bare_gap",
+    "ribbon_silent": "scene_ribbon_route.ribbon_inability_readable",
+    "ribbon_unhidden": "scene_ribbon_route.ribbon_concealment_preserved",
+    "ribbon_no_sway": "scene_ribbon_route.ribbon_sway_preserved",
 })
 
 
