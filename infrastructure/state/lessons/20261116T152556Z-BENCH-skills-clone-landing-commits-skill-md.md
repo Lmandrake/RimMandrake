@@ -1,0 +1,1 @@
+skills/clone-landing-commits/SKILL.md says land.sh is installed as /home/mandrake/.seat-tmp/land.sh; on BENCH 2026-11-16 that path did not exist (exit 127): run src/RimMandrake/Utils/land.sh from the clone instead.
