@@ -1155,12 +1155,14 @@ def M_word(n):
     return MD.word(n or 0) if isinstance(n, int) else "ONE"
 
 
-def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run):
+def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, env=None):
     path = os.path.join(M.brief_dir(), "%s-%d.md" % (item, int(time.time())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, M.detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
             "--model", model, "--budget-usd", "%g" % cap]
+    for k, v in sorted((env or {}).items()):        # a pilot holder's RM_MODLEDGER_WRITER (maturation_dispatch.ledger_open)
+        argv += ["--env", "%s=%s" % (k, v)]
     r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip(), (m.group(1) if m and not r.returncode else None)
@@ -1225,11 +1227,17 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         filed = ok
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
                  if ok else "")
-    unit = None
+    unit, led = None, None
+    if ok and MD.pilot_ledger(root, mod):       # a pilot mod's run starts from its ledger packet (modledger.launch)
+        led = MD.ledger_open(root, mod, row["aut"], brief, stage=row.get("stage"), now=now)
+        brief = led["brief"]
     if ok:
-        rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"))
+        rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"),
+                                    **({"env": led["env"]} if led else {}))
         ok = rc == 0 and bool(unit)
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
+    if led:
+        text = "%s; %s" % (text, MD.ledger_after(root, st, mod, led, unit if ok else None, item, now))
     book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
                  "tries": tries, "filed": filed}
     if not ok and cfg.get("_code"):

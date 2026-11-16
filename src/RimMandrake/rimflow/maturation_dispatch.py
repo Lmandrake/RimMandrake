@@ -1241,6 +1241,29 @@ def land_ledger(root, mods, what, fx=None):
     return land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)" % what))
 
 
+def ledger_open(root, mod, role, brief, stage=None, now=None):
+    """A pilot holder's run begins: modledger.launch grants the lease and records run.start; -> {"brief": the packet
+    and holder lines, then `brief`, "env": the unit's RM_MODLEDGER_WRITER/TOKEN, "run", "stage"}."""
+    now = now or time.time()
+    lease = "run-%d" % int(now)
+    out = modledger.launch(root, mod, lease, role, stage=stage)
+    return {"run": lease, "stage": out["stage"], "packet": out["brief"],
+            "brief": out["brief"].rstrip("\n") + ("\n\n---\n\n" + brief if brief else ""),
+            "env": {"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}}
+
+
+def ledger_after(root, st, mod, led, unit, item, now, fx=None):
+    """After the launch: remember a started run for its end (end_ledger_runs), or record run.end at once for one that
+    never started; land the ledger. -> one line for the launch text."""
+    if unit:
+        st.setdefault("mods", {}).setdefault(mod, {}).setdefault("ledger_runs", []).append(
+            {"run": led["run"], "unit": unit, "item": item, "at": now, "stage": led["stage"]})
+    else:
+        modledger.end_run(root, mod, led["run"], "never_started")
+    land_ledger(root, [mod], "run %s on %s %s" % (led["run"], mod, "started" if unit else "never started"), fx)
+    return "ledger run %s (packet %d tokens)" % (led["run"], modledger.tokens(led["packet"]))
+
+
 def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, **kw):
     """The Dispatch step's stage launch. A pilot mod's run starts from its ledger (plan step 5): modledger.launch grants
     the holder lease and records run.start at the stage the mod stands at, the brief opens with the packet, then the
@@ -1252,21 +1275,67 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     if not pilot_ledger(root, mod):
         return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
-    lease = "run-%d" % int(now)
     try:
-        out = modledger.launch(root, mod, lease, ROLE_OF_STAGE.get(stage, "holder"), stage=stage)
+        led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now)
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
-    rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=out["brief"],
-                            env={"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}, **kw)
-    runs = st.setdefault("mods", {}).setdefault(mod, {}).setdefault("ledger_runs", [])
-    if rc == 0 and unit:
-        runs.append({"run": lease, "unit": unit, "item": item, "at": now, "stage": out["stage"]})
-    else:
-        modledger.end_run(root, mod, lease, "never_started")
-    text = "%s; ledger run %s (packet %d tokens)" % (text, lease, modledger.tokens(out["brief"]))
-    land_ledger(root, [mod], "run %s on %s %s" % (lease, mod, "started" if unit else "never started"), fx)
-    return rc, text, unit
+    rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=led["brief"],
+                            env=led["env"], **kw)
+    unit = unit if rc == 0 else None
+    return rc, "%s; %s" % (text, ledger_after(root, st, mod, led, unit, item, now, fx)), unit
+
+
+READY_TEST = os.path.join(HERE, "acceptance", "modledger_backfill_accept.py")
+
+
+def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
+    """`pilot-launch MOD`: start one pilot holder run from the ledger packet at the stage the mod stands at, through
+    the Dispatch step's own launches (the Conductor's act, on a mod the tick has paused or not reached). Refuses a mod
+    that is not a pilot, a ledger its backfill acceptance does not pass, and a mod owing nothing launchable. At a
+    stage with work owed (a build, a blind cycle, a visit) it is that stage's launch for `item` (required: a filed
+    item); on an open road back whose fixers are spent it is one holder run on all the open road-back items together
+    (`item` or the first of them). -> (rc, text)."""
+    fx = fx or {}
+    now = now or time.time()
+    if mod not in (modledger.config().get("pilot_mods") or []):
+        return 2, "REFUSED: %s is not a pilot mod (modledger.json pilot_mods)" % mod
+    ready = fx.get("ready") or (lambda m: subprocess.run([sys.executable, READY_TEST, m], capture_output=True, text=True,
+                                                         timeout=900, stdin=subprocess.DEVNULL))
+    r = ready(mod)
+    if r.returncode:
+        return 2, "REFUSED: %s's ledger is not ready: %s (%s)" % (
+            mod, ((r.stdout or "").strip().splitlines() or ["no output"])[-1], READY_TEST)
+    cap = usd or cfg["cap_usd"]
+    with state_lock():
+        p = os.path.join(sdir(), "state.json")
+        st = read_state(p)
+        s = st.setdefault("mods", {}).setdefault(mod, {})
+        _, f = M.brief_text(root, mod, cap)
+        stage, owed = f.get("stage"), f.get("owed")
+        rb = s.get("road_back")
+        opened = (fx.get("open_items") or (lambda ids: M.ledger_items_caused_by(root, ids)))(
+            AUT._road_back_ids(s, rb)) if rb else []
+        if owed == "build" or (stage in ("blind_challenge", "in_game") and owed in ("cycle", "run")):
+            if not item:
+                return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
+            rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"))
+        elif opened:
+            ids = [x["id"] for x in opened]
+            item = item or ids[0]
+            led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap) + (
+                "\nThis is the mod's holder run: work every open road-back item together, from the packet above: %s. "
+                "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
+                % ", ".join(ids)), stage=stage, now=now)
+            rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
+                item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"])
+            unit = unit if rc == 0 else None
+            text = "%s; %s" % ((text or "").splitlines()[0] if text else rc, ledger_after(root, st, mod, led, unit, item,
+                                                                                         now, fx))
+        else:
+            return 2, "REFUSED: %s owes nothing launchable at %s (%s) and has no open road-back item" % (mod, stage, owed)
+        s.setdefault("pilot_launches", []).append({"at": now, "item": item, "unit": unit, "why": why, "stage": stage})
+        _write(p, st)
+    return (0 if unit else 1), "%s %s: %s" % ("LAUNCHED" if unit else "NOT STARTED", mod, text)
 
 
 def end_ledger_runs(root, st, facts, now, fx=None):
@@ -1749,6 +1818,12 @@ def main(argv=None):
     r.add_argument("--usd", type=float, required=True, help="dollars released past the ceiling, for one more run")
     r.add_argument("--why", required=True)
     r.add_argument("--by", default=None, help="who releases (default: this window's seat)")
+    pl = sub.add_parser("pilot-launch", help="start one pilot holder run from MOD's ledger packet at its current stage "
+                                              "(the Conductor's act; the run's end is recorded by the tick)")
+    pl.add_argument("mod")
+    pl.add_argument("--why", required=True)
+    pl.add_argument("--item", help="the filed item the run works under (default on a road back: its first open item)")
+    pl.add_argument("--usd", type=float, help="the run's spend cap (default maturation_dispatch.json cap_usd)")
     sub.add_parser("releases", help="every ceiling release with its spend, amount and why, and whether a launch spent it")
     o = ap.parse_args(argv)
     cfg = load_cfg()
@@ -1760,6 +1835,10 @@ def main(argv=None):
             rd["idle_owed_max_min"], (" (over %s: %s)" % (rd["idle_alarm_min"], ", ".join(rd["idle_owed_mods"])))
             if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "not regenerated")))
         return 0
+    if o.cmd == "pilot-launch":
+        rc, text = pilot_launch(os.path.abspath(o.root), cfg, o.mod, o.why, item=o.item, usd=o.usd)
+        print(text)
+        return rc
     if o.cmd == "status":
         rd = _read(os.path.join(sdir(), "reading.json"), None)
         if not rd:
