@@ -497,22 +497,31 @@ def _set(t, field, value):
 
 @contextlib.contextmanager
 def _setting(t, field, value):
-    """Flip one field for a block; ALWAYS restore the shipped default and re-read it."""
+    """Flip one field for a block; ALWAYS put back the value it held before (the shipped default when that read
+    failed) and re-read it. floor_recovery (2026-11-16): restoring DEFAULTS lost a non-default value a scene captured."""
+    was = None
+    if _live(t):
+        try:
+            was = _get_setting(t, field)
+        except ExpectationFailed:
+            was = None
     try:
         _set(t, field, value)    # inside the try: a set whose read-back failed may still have changed the field
         yield
     finally:
-        _restore(t, field)
+        _restore(t, field, was)
 
 
-def _restore(t, field):
+def _restore(t, field, value=None):
+    """Put `field` back to `value` (the shipped default when None) and re-read it."""
     if t.session is None:
         return
+    want = DEFAULTS[field] if value is None else (_as_bool(value) if isinstance(DEFAULTS[field], bool) else value)
     try:
         r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field,
-                           value=str(DEFAULTS[field]))
+                           value=str(want))
         got = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
-        if not _same((got or {}).get("value"), DEFAULTS[field]):
+        if not _same((got or {}).get("value"), want):
             print("[lscrub] RESTORE FAILED %s -> %r (set returned %r)" % (field, got, r),
                   file=sys.stderr, flush=True)
     except Exception as ex:   # restoring must never mask the verdict that got us here
@@ -2224,6 +2233,11 @@ def _game_tick(t):
     return (r or {}).get("ticksGame")
 
 
+def _scene_load(t, name):
+    """The recovery reload (floor_recovery swaps it to inject a failed restore)."""
+    return t.session.call("rimworld/load_game_ready", saveName=name, timeoutMs=240000)
+
+
 @contextlib.contextmanager
 def _scene(t, sid, hold):
     """scene-begin, recovery save, body, restore (settings by _setting, the save reloaded, its tick read back),
@@ -2243,7 +2257,7 @@ def _scene(t, sid, hold):
         try:
             if hold == "owner_review":
                 t.session.call("rimworld/save_game", saveName=name + "_review")
-            ld = t.session.call("rimworld/load_game_ready", saveName=name, timeoutMs=240000)
+            ld = _scene_load(t, name)
             restored = isinstance(ld, dict) and ld.get("success") is not False and _game_tick(t) == tick0
         except Exception as ex:   # restoring must never mask the verdict that got us here
             print("[lscrub] SCENE RESTORE FAILED %s: %s" % (sid, ex), file=sys.stderr, flush=True)
@@ -3847,6 +3861,856 @@ def scene_floor_persistence(t):
             _stable(t, body)
         finally:
             _clear_fuzz_patch(t)
+
+
+# =========================================================================== scenes, batch 3 (Stage 3, 2026-11-16)
+# sc_crown, sc_cruststar, sc_creep, sc_removed_save_preservation, floor_payload, floor_recovery
+# (design/concepts/LeaningScrub/scenes.json). Each scene is UNRUN in game until Stage 6; each keeps its verdict in a pure
+# checker the scene also shows refusing injected bad readings.
+
+
+def _growth(t, tid):
+    """A plant's growth (0..1) off vanilla Plant.GetInspectString's "<N>% grown" line; list_things carries no growth."""
+    _label, lines = _inspect(t, tid)
+    for ln in lines:
+        m = re.match(r"\s*(\d+)% grown", str(ln))
+        if m:
+            return int(m.group(1)) / 100.0
+    _unmeasured(t, "inspect_string(%s) carries no '%% grown' line: %s" % (tid, lines[:3]))
+
+
+def _vec2(text):
+    """(x, z) off a Unity Vector2 rendered as text, e.g. "(0.71, -0.71)"; None when unreadable."""
+    nums = re.findall(r"-?\d+(?:\.\d+)?", str(text or ""))
+    return (float(nums[0]), float(nums[1])) if len(nums) >= 2 else None
+
+
+def _resolves(t, want):
+    """The subset of `want` ("Type/defName") the running game resolves, read off get_defs' notFound (an empty answer
+    with no notFound list is UNMEASURED, never "all found")."""
+    if not want:
+        return set()
+    r = _ok(t.bridge_call("jawa/get_defs", defs=";".join(want), fields="label", limit=500), "get_defs(%d defs)" % len(want))
+    if r.get("notFound") is None:
+        _unmeasured(t, "get_defs answered no notFound list: resolution unreadable")
+    gone = set(str(n) for n in r["notFound"])
+    return set(w for w in want if w not in gone and w.split("/", 1)[1] not in gone)
+
+
+# --------------------------------------------------------------------------- scene: crown
+
+def _crown_ext():
+    """(maxMobbers, settleRadius) of RM_CrownVenomvine's RM_StallMobExtension, read off the def."""
+    with open(os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_LeaningScrubVenomvineForms.xml"), encoding="utf-8") as fh:
+        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    m = re.search(r"<defName>RM_CrownVenomvine</defName>.*?RM_StallMobExtension\">(.*?)</li>", txt, re.S)
+    return (int(re.search(r"<maxMobbers>(\d+)</maxMobbers>", m.group(1)).group(1)),
+            float(re.search(r"<settleRadius>([\d.]+)</settleRadius>", m.group(1)).group(1)))
+
+
+CROWN_CAP, CROWN_SETTLE = _crown_ext()
+CROWN_NEAR = CROWN_SETTLE + 1     # RM_MapComponent_CrownMob's settleSq is (settleRadius + 1)^2
+
+
+def _crown_sample(rows, jobs, stand, busy=None):
+    """One read of the cohort: flutters within CROWN_NEAR of the stand (held), flutters on a Goto elsewhere (in transit;
+    the mob's TrySendToStand gives a plain Goto), and where the busy flutter is."""
+    held, transit = [], []
+    for pid, r in rows.items():
+        if r.get("kindDef") != "RM_Dustflutter" or r.get("dead") or pid == busy:
+            continue
+        xz = _xz(r)
+        if xz and _dist(xz, stand) <= CROWN_NEAR:
+            held.append(pid)
+        elif jobs.get(pid) == "Goto":
+            transit.append(pid)
+    return {"held": sorted(held), "transit": sorted(transit), "busy_at": _xz(rows.get(busy)) if busy else None}
+
+
+def _crown_cap_offences(samples, cap):
+    over = [(i, len(s["held"]) + len(s["transit"])) for i, s in enumerate(samples)
+            if len(s["held"]) + len(s["transit"]) > cap]
+    return ["residents plus in-transit flutters passed the cap of %d: %s (sample, count)" % (cap, over[:4])] if over else []
+
+
+def _crown_arrival_offences(samples):
+    on_way = set(p for s in samples for p in s["transit"])
+    arrived = sorted(p for p in on_way if any(p in s["held"] for s in samples))
+    return [] if len(arrived) >= 2 else ["%d attributed crown arrival(s) (a flutter seen on its way, then at the stand); "
+                                         "nearby wanderers do not count" % len(arrived)]
+
+
+def _crown_busy_offences(samples, goal):
+    if any(s.get("busy_at") and _dist(s["busy_at"], goal) <= 2 for s in samples):
+        return []
+    return ["the busy flutter never reached its own goal %s: the mob took it off its job" % (goal,)]
+
+
+def _crown_control_offences(samples):
+    drawn = sorted(set(p for s in samples for p in s["transit"]))
+    return ["crown-directed gathering with the mob off: %s on a Goto" % drawn[:6]] if drawn else []
+
+
+@suite.chain("scene_crown")
+def scene_crown(t):
+    """sc_crown (crown, crown_mob): a crown stand in the Stall, CROWN_CAP + 6 idle wild dustflutters inside its draw
+    radius and one busy flutter on an ordered walk away from it. Arrivals are attributed (seen on the mob's Goto, then at
+    the stand); residents plus flutters in transit never pass the cap, before or after a save/reload taken while flutters
+    are on their way; the busy flutter reaches its own goal. Control: the same cohort with crownMobEnabled off sends
+    nobody (wanderers near the stand are not gathering). The mob launches flyers (RM_Flight.TryLaunch), so the scene
+    runs only with the owner present (LSCRUB_OWNER_PRESENT=1; CLAUDE.md flyer rule) and holds its end state for him."""
+    _prep(t, "crown")
+    x, z = t.anchor
+    stand = (x, z)
+    goal = (x - 12, z - 10)
+    got = {"samples": [], "reload": []}
+
+    def cohort():
+        ids = []
+        for i in range(CROWN_CAP + 6):
+            p = _spawn(t, "RM_Dustflutter", x + 10 + i % 6, z - 9 + 3 * (i // 6))
+            _full(t, p)
+            ids.append(p)
+        return ids
+
+    def sample(n, busy=None, into=None):
+        for _ in range(n):
+            t.wait_ticks(250)
+            s = _crown_sample(_rows(t), _jobs(t), stand, busy)
+            into.append(s)
+        return into
+
+    def body():
+        with _comp(t, "crown_scene_flight_attended", poison=True):
+            if _live(t) and not OWNER_PRESENT:
+                _unmeasured(t, "the crown mob launches dustflutters into flight: the scene runs only with the owner "
+                               "present (LSCRUB_OWNER_PRESENT=1 in a joint sitting; CLAUDE.md flyer rule)")
+        with _comp(t, "crown_scene_site_ready", poison=True):
+            if _live(t):
+                _lock_weather(t, "RM_Stall")
+                t.bridge_call("jawa/set_plants", ops="RM_CrownVenomvine:%d,%d,1,1" % stand, growth=1.0)
+                if not _count(t, "RM_CrownVenomvine", "%d,%d,1,1" % stand):
+                    _unmeasured(t, "the crown stand did not stand after set_plants")
+        with _comp(t, "crown_scene_toggle_off_quiet", toggle="crownMobEnabled"):
+            if _live(t):
+                with _setting(t, "crownMobEnabled", False):
+                    cohort()
+                    off = sample(6, into=[])
+                _remove_pawns_in(t.bridge_call, _rs(_rect(t, PAD_SIZE + 8)))
+                _note(t, "crown off", [(len(s["held"]), len(s["transit"])) for s in off])
+                bad = _crown_control_offences(off)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "crown_scene_arrivals_attributed", toggle="crownMobEnabled"):
+            if _live(t):
+                cohort()
+                busy = _spawn(t, "RM_Dustflutter", x - 12, z)
+                _full(t, busy)
+                _order_goto(t, busy, goal[0], goal[1])
+                got["busy"] = busy
+                sample(2, busy, got["samples"])
+                if got["samples"][-1]["transit"]:
+                    got["save"] = "lscrub_crown_en_route_%d" % int(time.time())
+                    _ok(t.bridge_call("rimworld/save_game", saveName=got["save"]), "save_game(%s)" % got["save"])
+                sample(6, busy, got["samples"])
+                _note(t, "crown on", [(len(s["held"]), len(s["transit"])) for s in got["samples"]])
+                bad = _crown_arrival_offences(got["samples"])
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "crown_scene_busy_job_intact"):
+            if _live(t):
+                bad = _crown_busy_offences(got["samples"], goal)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "crown_scene_cap_held_across_reload"):
+            if _live(t):
+                if not got.get("save"):
+                    _unmeasured(t, "no flutter was in transit at the save point: the reload arm has nobody en route")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=got["save"], timeoutMs=240000), "load_game_ready")
+                sample(4, got.get("busy"), got["reload"])
+                _note(t, "crown after reload", [(len(s["held"]), len(s["transit"])) for s in got["reload"]])
+                bad = _crown_cap_offences(got["samples"] + got["reload"], CROWN_CAP)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "crown_scene_checker_rejects_injections"):
+            if _live(t):
+                s = lambda h, tr, b=None: {"held": h, "transit": tr, "busy_at": b}
+                ok = [s([], ["a", "b"], (0, 0)), s(["a", "b"], [], goal)]
+                if _crown_cap_offences(ok, 2) or _crown_arrival_offences(ok) or _crown_busy_offences(ok, goal):
+                    _fail("the crown checker refuses a clean run")
+                injected = {
+                    "second wave over the cap": _crown_cap_offences(ok + [s(["a", "b"], ["c"])], 2),
+                    "nearby wanderers counted as gathering": _crown_arrival_offences([s(["a", "b"], [])]),
+                    "busy flutter hijacked": _crown_busy_offences([s(["a"], [], (0, 0))], goal),
+                    "control drew a flutter": _crown_control_offences([s([], ["a"])]),
+                }
+                missed = sorted(k for k, v in injected.items() if not v)
+                if missed:
+                    _fail("the crown checker passed injected run(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_crown", "owner_review"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: cruststar
+
+CRUST, WEEVIL, CRUST_ALT = "RM_Cruststar", "RM_Crustweevil", "Plant_Grass"   # Plant_Grass: the equal everyday graze
+
+
+def _graze_offences(start, samples):
+    """The grazing checker, pure. start/samples {"food": need level, "crust": summed cruststar growth, "alt": summed
+    grass growth}. -> offences: no cruststar debit; a debit with no nutrition gained; the alternative eaten instead.
+    Mere ingestibility is never evidence: only a debit the weevil's food agrees with is."""
+    if not samples:
+        return ["no sample was read"]
+    debit = [i for i, s in enumerate(samples) if s["crust"] < start["crust"] - 0.2]
+    out = []
+    if not debit:
+        alt = any(s["alt"] < start["alt"] - 0.2 for s in samples)
+        out.append("no cruststar was grazed in %d samples%s" % (len(samples), " (it grazed the grass instead)" if alt else ""))
+    elif max(s["food"] for s in samples[debit[0]:]) < start["food"] + 0.1:
+        out.append("the cruststar was debited (%.2f -> %.2f) but the weevil's food did not rise (%.2f -> %.2f)"
+                   % (start["crust"], samples[debit[0]]["crust"], start["food"], samples[-1]["food"]))
+    return out
+
+
+@suite.chain("scene_cruststar")
+def scene_cruststar(t):
+    """sc_cruststar (cruststar, cruststar_grazing_ecology): a hungry native crustweevil between a mature cruststar
+    patch and an equal grass patch chooses the lichen: the cruststar is debited, the weevil's food rises with it, and
+    the debited cruststar recovers on its own. Control: a hungry weevil walled away from the patch leaves it untouched
+    (unrelated meals are not evidence). Grazing is not built in C# today (RM_Cruststar is PlantBaseNonEdible with
+    Nutrition 0, RM_LeaningScrubFuzzFlora.xml), so this scene is expected red at Stage 6 until it is."""
+    _prep(t, "dripping")
+    x, z = t.anchor
+    patch, alt = (x + 4, z - 1, 3, 3), (x - 6, z - 1, 3, 3)
+    got = {}
+
+    def resource(rect, d):
+        return sum(_growth(t, th.get("id")) for th in _things(t, d, _rs(rect), 50))
+
+    def read(pid):
+        return {"food": _food(t, pid), "crust": resource(patch, CRUST), "alt": resource(alt, CRUST_ALT)}
+
+    def body():
+        with _comp(t, "cruststar_scene_site", poison=True):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,%d,%d" % ((CRUST,) + patch), growth=1.0)
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,%d,%d" % ((CRUST_ALT,) + alt), growth=1.0)
+                if not _count(t, CRUST, _rs(patch)) or not _count(t, CRUST_ALT, _rs(alt)):
+                    _unmeasured(t, "the cruststar or the grass patch did not stand after set_plants")
+        with _comp(t, "cruststar_scene_unreachable_untouched"):
+            if _live(t):
+                t.bridge_call("jawa/make_empty_room", rect="%d,%d,5,5" % (x - 2, z + 8))
+                walled = _hungry(t, WEEVIL, x, z + 10)
+                c0 = resource(patch, CRUST)
+                t.wait_ticks(3000)
+                c1 = resource(patch, CRUST)
+                _vanish(t, walled)
+                if c1 < c0 - 0.2:
+                    _fail("a crustweevil walled away from the patch debited the cruststar (%.2f -> %.2f)" % (c0, c1))
+        with _comp(t, "cruststar_scene_grazed_and_fed"):
+            if _live(t):
+                pid = _hungry(t, WEEVIL, x, z)
+                got["pid"], got["start"], got["samples"] = pid, read(pid), []
+                for _ in range(24):
+                    t.wait_ticks(250)
+                    got["samples"].append(read(pid))
+                    s = got["samples"][-1]
+                    if s["crust"] < got["start"]["crust"] - 0.2 and s["food"] >= got["start"]["food"] + 0.1:
+                        break
+                _note(t, "cruststar graze", {"start": got["start"], "last": got["samples"][-1]})
+                bad = _graze_offences(got["start"], got["samples"])
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "cruststar_scene_resource_recovers"):
+            if _live(t):
+                after = got["samples"][-1]["crust"]
+                if after >= got["start"]["crust"] - 0.2:
+                    _unmeasured(t, "no debit to recover from (the grazing component says why)")
+                _vanish(t, got["pid"])
+                t.wait_ticks(6000)
+                now = resource(patch, CRUST)
+                _note(t, "cruststar recovery", {"debited": after, "6000 ticks later": now})
+                if now <= after:
+                    _fail("the grazed cruststar did not recover over 6000 ticks (%.2f -> %.2f)" % (after, now))
+        with _comp(t, "cruststar_scene_checker_rejects_injections"):
+            if _live(t):
+                st = {"food": 0.05, "crust": 9.0, "alt": 9.0}
+                ok = [{"food": 0.05, "crust": 9.0, "alt": 9.0}, {"food": 0.6, "crust": 8.2, "alt": 9.0}]
+                if _graze_offences(st, ok):
+                    _fail("the grazing checker refuses a clean graze: %s" % _graze_offences(st, ok))
+                injected = {"ate the grass instead": [{"food": 0.6, "crust": 9.0, "alt": 8.0}],
+                            "debit without nutrition": [{"food": 0.05, "crust": 8.0, "alt": 9.0}],
+                            "edible but never grazed": [{"food": 0.05, "crust": 9.0, "alt": 9.0}] * 3}
+                missed = sorted(k for k, v in injected.items() if not _graze_offences(st, v))
+                if missed:
+                    _fail("the grazing checker passed injected graze(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_cruststar", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: creep
+
+THICKET = "RM_VenomvineThicket"
+CREEP_SWEEP = 15000          # RM_MapComponent_VenomvineCreep.SweepTicks; its tick runs at (TicksGame + uniqueID*1777) % it
+CREEP_DX = (1, 1, 0, -1, -1, -1, 0, 1)
+CREEP_DZ = (0, 1, 1, 1, 0, -1, -1, -1)
+# Emitter B's eight neighbours, one protection each (RM_VenomvineIslandsUtil.NaturalFree): roof, building, zone, floor
+# and tree. A sown plant is not staged (no bridge tool sows); NaturalFree's `p.sown` refusal is offline only.
+CREEP_GUARDS = ("roof", "wall", "zone", "floor", "tree", "roof", "wall", "floor")
+EG_ROSTER = "RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef/RM_LeaningScrub_VenomvineExempt"
+VINE_CLOCK_OWN = (THICKET, "RM_DrippingVenomvine", "RM_TwitcherVenomvine", "RM_HollowVenomvine",
+                  "RM_CrownVenomvine") + FORM_PLANTS
+
+
+def _creep_offences(emitters, runners, guarded, downwind):
+    """The creep checker, pure. emitters [(x, z)]; runners {(x, z): growth} new thicket cells after the sweeps;
+    guarded {(x, z): thicket count now} on protected cells; downwind (dx, dz). -> offences: no runner; a runner not
+    beside an emitter or armed (growth >= 0.5); a protected cell taken; runners no more downwind than a uniform pick."""
+    out = []
+    if not runners:
+        return ["no runner after the compressed sweeps"]
+    for c, g in sorted(runners.items()):
+        if not any(max(abs(c[0] - e[0]), abs(c[1] - e[1])) == 1 for e in emitters):
+            out.append("runner at %s is not beside an emitter" % (c,))
+        if g >= 0.5:
+            out.append("runner at %s is armed at growth %.2f (a runner starts young)" % (c, g))
+    taken = sorted(c for c, n in guarded.items() if n)
+    if taken:
+        out.append("venomvine took protected cell(s) %s" % taken[:6])
+    if downwind is None or not any(downwind):
+        out.append("no downwind vector to judge the runners' lean against")
+        return out
+    dot = lambda c, e: (c[0] - e[0]) * downwind[0] + (c[1] - e[1]) * downwind[1]
+    uniform = len([1 for dx, dz in zip(CREEP_DX, CREEP_DZ) if dx * downwind[0] + dz * downwind[1] > 0]) / 8.0
+    near = lambda c: min(emitters, key=lambda e: _dist(c, e))
+    share = len([c for c in runners if dot(c, near(c)) > 0]) / float(len(runners))
+    if share <= uniform:
+        out.append("runners lean downwind no more than a uniform pick (%.2f <= %.2f)" % (share, uniform))
+    return out
+
+
+def _eg_offences(exempt, band, own=VINE_CLOCK_OWN):
+    """Both Explosive Growth paths (soak and everyday band) must leave every venomvine on its own clock."""
+    out = []
+    for name, roster in (("exemptPlants (soak)", exempt), ("bandExemptPlants (band)", band)):
+        if roster is None:
+            out.append("%s unreadable" % name)
+            continue
+        miss = sorted(set(own) - set(roster))
+        if miss:
+            out.append("%s lacks %s" % (name, miss[:6]))
+    return out
+
+
+@suite.chain("scene_creep")
+def scene_creep(t):
+    """sc_creep (creep, vine_creep, vine_growth_exemption): six mature thicket emitters on natural soil and one more
+    ringed by protected cells (roof, wall, stockpile zone, plank floor, tree). The runner interval is compressed
+    (venomvineCreepDays 0.01, so a sweep's runner chance is ~1) and the clock is moved to three ticks short of the
+    map's own creep sweep, which then runs on its real tick: runners are young (under half grown, unarmed), beside an
+    emitter, lean downwind more than a uniform pick, and never take a protected cell. Controls: creep off lays nothing;
+    the cap set to today's share lays nothing. Explosive Growth: the live roster def lists every venomvine in both
+    exemption paths (soak and band), so the vine keeps its own clock. Not driven here: a real soak/band growth pass
+    (RM_ExplosiveGrowthAPI.Soak takes a Map, which jawa/static_call cannot pass), Explosive Growth absent (an
+    integration-absent list), a smothered emitter, a sown neighbour, and half-growth contact (the vine_contact scene's)."""
+    _prep(t, "smother")
+    x, z = t.anchor
+    emitters = [(x - 10 + 4 * k, z - 6) for k in range(6)]
+    guarded_at = (x, z + 6)
+    guard_cells = [(guarded_at[0] + dx, guarded_at[1] + dz) for dx, dz in zip(CREEP_DX, CREEP_DZ)]
+    got = {}
+
+    def thickets():
+        return dict(((int(th.get("x")), int(th.get("z"))), th.get("id")) for th in _things(t, THICKET, _rs(_rect(t)), 500))
+
+    def sweep():
+        mid, now = _map_id(t), _game_tick(t)
+        nxt = now + (CREEP_SWEEP - (now + int(mid) * 1777) % CREEP_SWEEP)
+        _ok(t.bridge_call("jawa/time_set_ticks", ticks=int(nxt - 3), timeException=True,
+                          why="sc_creep: compress the six-hour creep sweep"), "time_set_ticks")
+        t.wait_ticks(6)
+
+    def creep_state():
+        r = _ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_VenomvineCreep",
+                              members="Applies,openCells,vineCells"), "map_comp_read(VenomvineCreep)")
+        return r.get("values") or {}
+
+    def body():
+        with _comp(t, "creep_scene_site", poison=True):
+            if _live(t):
+                for e in emitters + [guarded_at]:
+                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % ((THICKET,) + e), growth=1.0)
+                for (cx, cz), g in zip(guard_cells, CREEP_GUARDS):
+                    if g == "roof":
+                        t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,1,1" % (cx, cz))
+                    elif g == "wall":
+                        t.bridge_call("jawa/spawn_batch", ops="Wall:%d,%d" % (cx, cz), stuff="Steel")
+                    elif g == "zone":
+                        t.bridge_call("jawa/map_zones", action="createZone", zoneType="stockpile", rect="%d,%d,1,1" % (cx, cz))
+                    elif g == "floor":
+                        t.bridge_call("jawa/set_terrain_batch", ops="WoodPlankFloor:%d,%d,1,1" % (cx, cz), layer="top")
+                    else:
+                        t.bridge_call("jawa/set_plants", ops="Plant_TreeOak:%d,%d,1,1" % (cx, cz), growth=1.0)
+                have = thickets()
+                if any(e not in have for e in emitters + [guarded_at]):
+                    _unmeasured(t, "an emitter did not stand after set_plants: %s" % sorted(have)[:8])
+                if not _as_bool(creep_state().get("Applies")):
+                    _unmeasured(t, "RM_MapComponent_VenomvineCreep.Applies is false: not a Leaning Scrub map")
+                got["wind"] = _vec2(_ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_Lean",
+                                                      members="Downwind"), "map_comp_read(Lean)").get("values", {}).get("Downwind"))
+                got["before"] = set(thickets())
+        with _comp(t, "creep_scene_toggle_off_quiet", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0), \
+                        _setting(t, "venomvineCreepEnabled", False):
+                    sweep()
+                new = sorted(set(thickets()) - got["before"])
+                if new:
+                    _fail("venomvineCreepEnabled OFF but the sweep laid runner(s) at %s" % new[:6])
+        with _comp(t, "creep_scene_runners_young_downwind", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
+                    sweep()
+                    sweep()
+                now = thickets()
+                runners = dict((c, _growth(t, now[c])) for c in sorted(set(now) - got["before"]) if c not in guard_cells)
+                guarded = dict((c, 1 if c in now else 0) for c in guard_cells)
+                got["runners"] = runners
+                _note(t, "creep runners", {"runners": sorted(runners.items())[:12], "downwind": got.get("wind")})
+                if got.get("wind") is None or not any(got["wind"]):
+                    _unmeasured(t, "RM_MapComponent_Lean.Downwind unreadable or zero: the lean cannot be judged")
+                bad = [b for b in _creep_offences(emitters, runners, guarded, got["wind"]) if "protected" not in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "creep_scene_protected_cells_kept"):
+            if _live(t):
+                now = thickets()
+                taken = sorted(c for c in guard_cells if c in now)
+                if taken:
+                    _fail("venomvine took protected cell(s) %s (%s)" % (
+                        taken, [CREEP_GUARDS[guard_cells.index(c)] for c in taken]))
+        with _comp(t, "creep_scene_cap_stops", toggle="venomvineCreepEnabled"):
+            if _live(t):
+                st = creep_state()
+                try:
+                    open_cells, vine = int(st.get("openCells")), int(st.get("vineCells"))
+                except (TypeError, ValueError):
+                    open_cells, vine = 0, 0
+                if open_cells <= 0:
+                    _unmeasured(t, "openCells unread (%r): the cap cannot be set to today's share" % st)
+                before = set(thickets())
+                with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", vine / float(open_cells)):
+                    sweep()
+                new = sorted(set(thickets()) - before)
+                if new:
+                    _fail("the cap was set to today's share (%d of %d) but the sweep laid %s" % (vine, open_cells, new[:6]))
+        with _comp(t, "creep_scene_explosive_growth_exempt"):
+            if _live(t):
+                rows, _r = _get_defs(t, EG_ROSTER, "exemptPlants,bandExemptPlants")
+                row = rows.get("RM_LeaningScrub_VenomvineExempt")
+                if row is None:
+                    _fail("the venomvine exemption roster RM_LeaningScrub_VenomvineExempt did not load")
+                as_list = lambda v: v if isinstance(v, list) else None
+                bad = _eg_offences(as_list(row.get("exemptPlants")), as_list(row.get("bandExemptPlants")))
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "creep_scene_checker_rejects_injections"):
+            if _live(t):
+                em, wind = [(0, 0)], (1.0, 0.0)
+                ok = {(1, 0): 0.05, (1, 1): 0.05}
+                if _creep_offences(em, ok, {(0, 5): 0}, wind) or _eg_offences(VINE_CLOCK_OWN, VINE_CLOCK_OWN):
+                    _fail("the creep checker refuses a clean sweep")
+                injected = {"runner armed": _creep_offences(em, {(1, 0): 0.6}, {}, wind),
+                            "existing plant counted as runner": _creep_offences(em, {(5, 5): 0.05}, {}, wind),
+                            "protected cell taken": _creep_offences(em, ok, {(0, 5): 1}, wind),
+                            "upwind runners": _creep_offences(em, {(-1, 0): 0.05, (-1, 1): 0.05}, {}, wind),
+                            "no runner": _creep_offences(em, {}, {}, wind),
+                            "band path not exempt": _eg_offences(VINE_CLOCK_OWN, VINE_CLOCK_OWN[1:])}
+                missed = sorted(k for k, v in injected.items() if not v)
+                if missed:
+                    _fail("the creep checker passed injected sweep(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_creep", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: removed_save_preservation
+
+def _def_blocks(root=None):
+    """[(tag, defName, body, file)] for every concrete top-level def in this mod's Defs/ (any def type)."""
+    out = []
+    for path in sorted(glob.glob(os.path.join(root or HERE, "Defs", "**", "*.xml"), recursive=True)):
+        with open(path, encoding="utf-8") as fh:
+            txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+        body = re.search(r"<Defs>(.*)</Defs>", txt, re.S)
+        for m in re.finditer(r"<([\w.]+)\b([^>]*)>(.*?)</\1>", body.group(1) if body else "", re.S):
+            nm = re.search(r"<defName>([^<]+)</defName>", m.group(3))
+            if nm and not re.search(r'Abstract\s*=\s*"[Tt]rue"', m.group(2)):
+                out.append((m.group(1), nm.group(1).strip(), m.group(3), os.path.relpath(path, HERE)))
+    return out
+
+
+ALIAS_TYPE = "RimMandrake.EnvironmentalHazards.RM_DefAliasDef"
+ALIAS_CONTROL = ALIAS_TYPE + "/RM_PlantTierReconcileAliases"   # the kit's own alias def: proves the type spelling resolves
+LEGACY_SOURCE = re.compile(r"BackCompatibility|RM_DefAlias|LoadSaveMode\.PostLoadInit[^\n]*(?:old|legacy)|legacy import|"
+                           r"historical name|old[- ]name", re.I)
+
+
+def _save_manifest():
+    """What this mod ships that could be save-only preservation: alias registrations, hidden factions nothing else in our
+    Defs names (save-only tombstones), and source lines matching a legacy-import pattern; plus the current products
+    (egg defs a race lays) that must stay."""
+    blocks = _def_blocks()
+    aliases = sorted("%s/%s" % (tag, n) for tag, n, _b, _f in blocks if tag.endswith("RM_DefAliasDef"))
+    tombs = sorted("FactionDef/%s" % n for tag, n, b, f in blocks if tag == "FactionDef" and "<hidden>true</hidden>" in b
+                   and not any(">%s<" % n in ob for _t, _n, ob, of in blocks if of != f))     # named only by its own file
+    eggs = sorted("ThingDef/%s" % n for tag, n, _b, _f in blocks if tag == "ThingDef" and "Egg" in n
+                  and any("<eggFertilizedDef>%s<" % n in b or "<eggUnfertilizedDef>%s<" % n in b for _t, _n, b, _f in blocks))
+    legacy = []
+    for path in sorted(glob.glob(os.path.join(HERE, "Source", "*.cs"))):
+        with open(path, encoding="utf-8-sig") as fh:
+            for i, ln in enumerate(fh, 1):
+                if LEGACY_SOURCE.search(ln) and not ln.strip().startswith("//"):
+                    legacy.append("%s:%d" % (os.path.basename(path), i))
+    return {"aliases": aliases, "tombstones": tombs, "products": eggs, "legacy": legacy}
+
+
+def _preservation_offences(live_aliases, live_tombs, legacy, products_found, products):
+    """The removal checker, pure. live_aliases / live_tombs: alias or tombstone defs that RESOLVE in the running game;
+    legacy: source lines of a legacy-import branch; products_found: current product defs that resolve. -> offences."""
+    out = []
+    if live_aliases:
+        out.append("Scrub-owned alias registration(s) still ship: %s" % live_aliases[:4])
+    if live_tombs:
+        out.append("save-only tombstone(s) still ship: %s" % live_tombs[:4])
+    if legacy:
+        out.append("legacy import / old-name conversion in the source: %s" % legacy[:4])
+    lost = sorted(set(products) - set(products_found))
+    if lost:
+        out.append("current product def(s) deleted along with their aliases: %s" % lost[:4])
+    if not products:
+        out.append("no current product def was named: the deletion arm sees nothing")
+    return out
+
+
+@suite.chain("scene_removed_save_preservation")
+def scene_removed_save_preservation(t):
+    """sc_removed_save_preservation (cuts, save_aliases): no Scrub-owned alias registration (RM_DefAliasDef), no
+    save-only tombstone (a hidden faction nothing names) and no legacy-import branch ships, read off the RUNNING game's
+    def database and our source; the current egg products the absorbed layers still lay keep resolving. The alias type
+    is proven readable on the kit's own alias def first, so a mis-spelled type cannot pass as "removed". Today the
+    aliases (RM_SWBRehome_Aliases.xml, RM_Chikka_Aliases.xml) and the hidden RM_Faction_CombHolds still ship: a product
+    removal gap, so this scene is expected red at Stage 6 until they are removed. No old save is loaded: there is no
+    pre-release save preservation to rescue."""
+    _prep(t, "spawn")
+    man = _save_manifest()
+    got = {}
+
+    def body():
+        with _comp(t, "saves_scene_alias_type_readable", poison=True):
+            if _live(t):
+                if ALIAS_CONTROL not in _resolves(t, [ALIAS_CONTROL]):
+                    _unmeasured(t, "get_defs could not read the kit's own alias def %s: an absent Scrub alias would "
+                                   "prove nothing" % ALIAS_CONTROL)
+        with _comp(t, "saves_scene_no_preservation_ships"):
+            if _live(t):
+                want = man["aliases"] + man["tombstones"]
+                live = _resolves(t, want)
+                got["live_aliases"] = sorted(a for a in man["aliases"] if a in live)
+                got["live_tombs"] = sorted(a for a in man["tombstones"] if a in live)
+                _note(t, "preservation manifest", dict(man, live_aliases=got["live_aliases"], live_tombs=got["live_tombs"]))
+                bad = _preservation_offences(got["live_aliases"], got["live_tombs"], man["legacy"], man["products"],
+                                             man["products"])
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "saves_scene_current_products_kept"):
+            if _live(t):
+                found = sorted(_resolves(t, man["products"]))
+                bad = [b for b in _preservation_offences([], [], [], found, man["products"])]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "saves_scene_checker_rejects_injections"):
+            if _live(t):
+                prod = ["ThingDef/RM_XEgg"]
+                if _preservation_offences([], [], [], prod, prod):
+                    _fail("the removal checker refuses a clean manifest")
+                injected = {"old-name alias row": _preservation_offences(["X/RM_OldAliases"], [], [], prod, prod),
+                            "old-start-only conversion branch": _preservation_offences([], [], ["RM_X.cs:12"], prod, prod),
+                            "save-only tombstone": _preservation_offences([], ["FactionDef/RM_Gone"], [], prod, prod),
+                            "current egg deleted": _preservation_offences([], [], [], [], prod)}
+                missed = sorted(k for k, v in injected.items() if not v)
+                if LEGACY_SOURCE.search("Scribe_Values.Look(ref x, \"smother\")"):
+                    missed.append("an ordinary current-schema Scribe read as legacy")
+                if missed:
+                    _fail("the removal checker passed injected manifest(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_removed_save_preservation", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: floor_payload
+
+DLC_PACKAGES = ("ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+                "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
+WORLDGEN_SOURCE = re.compile(r":\s*WorldGenStep\b|WorldGenerator|WorldGenStepDef|WorldGrid\b.*\bbiome\b\s*=|"
+                             r"\[HarmonyPatch\(typeof\(World", re.I)
+MULTIPLAYER_TEXT = re.compile(r"\bmultiplayer\b|\bco-?op\b", re.I)
+
+
+def _about_deps():
+    with open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8") as fh:
+        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    deps = re.search(r"<modDependencies>(.*?)</modDependencies>", txt, re.S)
+    return sorted(set(p.strip().lower() for p in re.findall(r"<packageId>([^<]+)</packageId>", deps.group(1) if deps else "")))
+
+
+def _composed_folds():
+    """Package ids the composed Baroque Biomes (mandrake.rm.biomes) carries inside it (Biomes.compose.json entries)."""
+    with open(os.path.join(REPO, "src", "RimMandrake", "Biomes.compose.json"), encoding="utf-8") as fh:
+        return sorted("mandrake.rm.%s" % e["source"].lower() for e in json.load(fh).get("entries") or [] if e.get("source"))
+
+
+def _payload_manifest():
+    """The offline half of the payload: dependencies, def types, def names, namespaces, worldgen and multiplayer hits."""
+    blocks = _def_blocks()
+    src = {}
+    for path in sorted(glob.glob(os.path.join(HERE, "Source", "*.cs"))):
+        with open(path, encoding="utf-8-sig") as fh:
+            src[os.path.basename(path)] = fh.read()
+    return {"deps": _about_deps(), "folds": _composed_folds(),
+            "worldgen": sorted(["Defs:%s/%s" % (tag, n) for tag, n, _b, _f in blocks if tag == "WorldGenStepDef"]
+                               + ["%s:%d" % (f, s[:m.start()].count("\n") + 1) for f, s in src.items()
+                                  for m in WORLDGEN_SOURCE.finditer(re.sub(r"//[^\n]*", "", s))]),
+            "names": sorted(n for _tag, n, _b, _f in blocks if not re.match(r"(RM|RSW|RUT)_", n)),
+            "namespaces": sorted(set(ns for s in src.values() for ns in re.findall(r"^namespace ([\w.]+)", s, re.M)
+                                     if not ns.startswith("RimMandrake"))),
+            "texts": {}}
+
+
+def _payload_offences(m, running, missing_defs):
+    """The payload checker, pure. m _payload_manifest(); running the live package ids; missing_defs shipped defs the
+    running game lacks. -> offences: a DLC or dependency not running (folded-in kit packages count through the composed
+    biome), a shipped def missing, a worldgen hook, a name outside the three tiers, a multiplayer or cut-content promise.
+    Zero naturally allocated Scrub tiles is expected (the planet is painted once, at the end) and is never read."""
+    out = []
+    run = set(p.lower() for p in running)
+    if not run & set(OUR_PACKAGES):
+        out.append("neither %s is running" % (OUR_PACKAGES,))
+    out += ["DLC %s is not running (all DLC are assumed)" % d for d in DLC_PACKAGES if d not in run]
+    folded = set(m["folds"]) if "mandrake.rm.biomes" in run else set()
+    out += ["dependency %s is not running" % d for d in m["deps"] if d not in run and d not in folded]
+    if missing_defs:
+        out.append("shipped def(s) missing from the running game: %s" % missing_defs[:4])
+    if m["worldgen"]:
+        out.append("worldgen hook(s) ship: %s" % m["worldgen"][:4])
+    if m["names"] or m["namespaces"]:
+        out.append("names outside the three tiers: %s %s" % (m["names"][:4], m["namespaces"][:2]))
+    for where, txt in sorted(m["texts"].items()):
+        hit = MULTIPLAYER_TEXT.search(txt or "") or CUT_WORDS.search(txt or "")
+        if hit:
+            out.append("%s promises %r" % (where, hit.group(0)))
+    return out
+
+
+@suite.chain("scene_floor_payload")
+def scene_floor_payload(t):
+    """floor_payload (native_cast, cuts): the effective running package list (every DLC, our package or the composed
+    biome, each About.xml dependency running or folded into the composed biome), every shipped def resolving in the
+    running game, no worldgen hook in Defs or source, three-tier names, and no live text (hidden placeholders excluded)
+    promising multiplayer or cut content.
+    Base effects are observed, not trusted to a clean log: the biome resolves with its lean extension and weather table.
+    Zero naturally allocated Scrub tiles is expected and never read (CLAUDE.md, paint once at the end)."""
+    _prep(t, "spawn")
+    man = _payload_manifest()
+
+    def body():
+        with _comp(t, "payload_running_list_and_defs"):
+            if _live(t):
+                mods = _ok(t.bridge_call("jawa/running_mods"), "running_mods").get("packageIds") or []
+                missing = sorted(set(SHIPPED) - _resolves(t, SHIPPED))
+                _note(t, "payload", {"running": len(mods), "missing": missing[:8], "worldgen": man["worldgen"]})
+                bad = [b for b in _payload_offences(man, mods, missing) if "promises" not in b]
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "payload_base_effects_present"):
+            if _live(t):
+                rows, _r = _get_defs(t, "BiomeDef/RM_LeaningScrub", "modExtensions,baseWeatherCommonalities")
+                row = rows.get("RM_LeaningScrub") or {}
+                if "RM_LeanExtension" not in json.dumps(row.get("modExtensions")):
+                    _fail("RM_LeaningScrub resolves without its RM_LeanExtension: the base effect is absent")
+                if not row.get("baseWeatherCommonalities"):
+                    _fail("RM_LeaningScrub resolves with no weather table")
+        with _comp(t, "payload_text_promises_nothing_cut"):
+            if _live(t):
+                defs, _r = _get_defs(t, ";".join(SHIPPED), "description,label,hidden", deep=False)
+                man["texts"] = dict(("%s.description" % n, str(f.get("description") or "")) for n, f in defs.items()
+                                    if not _as_bool(f.get("hidden")))     # live text, hidden placeholders excluded
+                man["texts"]["About.xml"] = _about_text()
+                if len(man["texts"]) < 2:
+                    _unmeasured(t, "get_defs returned no description: the text cannot be read")
+                bad = [b for b in _payload_offences(man, list(DLC_PACKAGES) + [OUR_PACKAGES[0]] + man["deps"], [])
+                       if "promises" in b]
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "payload_checker_rejects_injections"):
+            if _live(t):
+                clean = {"deps": ["mandrake.rm.environmentalhazards"], "folds": ["mandrake.rm.environmentalhazards"],
+                         "worldgen": [], "names": [], "namespaces": [], "texts": {"About.xml": "A wind-scoured plain."}}
+                run = list(DLC_PACKAGES) + ["mandrake.rm.biomes"]
+                if _payload_offences(clean, run, []):
+                    _fail("the payload checker refuses a clean payload: %s" % _payload_offences(clean, run, []))
+                injected = {"missing dependency": (dict(clean, deps=["brrainz.harmony"]), run, []),
+                            "stale guardian promise": (dict(clean, texts={"About.xml": "Bark-wardens guard it."}), run, []),
+                            "worldgen hook": (dict(clean, worldgen=["RM_X.cs:4"]), run, []),
+                            "missing DLC": (clean, run[:-2] + ["mandrake.rm.biomes"], []),
+                            "absent effect behind a clean load": (clean, run, ["ThingDef/RM_Fuzz"])}
+                missed = sorted(k for k, a in injected.items() if not _payload_offences(*a))
+                if missed:
+                    _fail("the payload checker passed injected payload(s) %s: it is blind there" % missed)
+    with _scene(t, "floor_payload", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: floor_recovery
+
+RECOVERY_KIND = "RM_Fuzzrunner"     # the same-def bystanders and the fixture
+RECOVERY_SETTING = "sweetlineVisitIntervalDays"   # a non-boolean setting the scene moves off its default (8)
+
+
+def _recovery_offences(before, after, records):
+    """The recovery checker, pure. before/after {"tick", "bystanders": [ids], "fixtures": [ids], "settings": {f: v}};
+    records the SCENE_RECORD verbs the probe emitted. -> offences: the captured state did not return (tick, a bystander
+    lost, a fixture left, a setting off its value) while the scene was closed; a failed restore that recorded scene-end."""
+    out = []
+    restored = (after.get("tick") == before.get("tick") and set(before["bystanders"]) <= set(after["bystanders"])
+                and not set(after.get("fixtures") or []) and after.get("settings") == before.get("settings"))
+    if "scene-begin" not in records:
+        out.append("the probe never opened a recovery (no scene-begin)")
+    if not restored:
+        why = []
+        if after.get("tick") != before.get("tick"):
+            why.append("tick %s -> %s" % (before.get("tick"), after.get("tick")))
+        lost = sorted(set(before["bystanders"]) - set(after["bystanders"]))
+        if lost:
+            why.append("bystander(s) %s lost" % lost[:4])
+        if after.get("fixtures"):
+            why.append("fixture(s) %s left" % after["fixtures"][:4])
+        if after.get("settings") != before.get("settings"):
+            why.append("settings %s -> %s" % (before.get("settings"), after.get("settings")))
+        if "scene-end" in records:
+            out.append("the state did not return (%s) but the recovery was closed (scene-end)" % "; ".join(why))
+        elif "scene-hold" not in records:
+            out.append("the state did not return (%s); the recovery stays open, blocking further runs" % "; ".join(why))
+    return out
+
+
+def _log_window(sentinel_seen, errors):
+    """-> ("UNMEASURED", why) on a dead tap, ("FAIL", msgs) on attributable errors, ("PASS", None) otherwise."""
+    if not sentinel_seen:
+        return "UNMEASURED", "the log sentinel never reached the tap: a clean window would prove nothing"
+    return ("FAIL", errors) if errors else ("PASS", None)
+
+
+class _ProbeBoom(Exception):
+    pass
+
+
+@suite.chain("scene_floor_recovery")
+def scene_floor_recovery(t):
+    """floor_recovery (cuts): the scene harness itself. Same-def bystanders inside and outside the pad and a setting
+    moved off its default are captured; a probe scene (the real _scene) mutates the pad (a fixture of the bystanders'
+    def, the setting moved again through _setting) and then raises, once after staging and once with its restore made to fail. After the
+    first, the exact captured state is back and the recovery closed; after the second the recovery stays open and no
+    scene-end is recorded (the probe's records are kept, not written to stage.json). A log sentinel must reach the tap
+    before a clean window counts; attributable LeaningScrub errors in the window fail it."""
+    _prep(t, "fuel")
+    x, z = t.anchor
+    got = {}
+
+    def digest():
+        rows = _rows(t)
+        return {"tick": _game_tick(t), "bystanders": sorted(p for p in got["bystanders"] if p in rows),
+                "fixtures": sorted(p for p in got.get("fixtures", []) if p in rows),
+                "settings": {RECOVERY_SETTING: str(_get_setting(t, RECOVERY_SETTING))}}
+
+    def probe(fail_restore):
+        records, real, load = [], SCENE_RECORD, _scene_load
+        globals()["SCENE_RECORD"] = lambda *a: records.append(a[0])
+        if fail_restore:
+            globals()["_scene_load"] = lambda _t, _n: {"success": False, "message": "injected restore failure"}
+        try:
+            with _scene(t, "floor_recovery_probe", "immediate"):
+                got["fixtures"] = [_spawn(t, RECOVERY_KIND, x + 2, z + 2)]
+                with _setting(t, RECOVERY_SETTING, 13.0):      # the harness's own way to move a setting
+                    raise _ProbeBoom("injected exception after staging")
+        except _ProbeBoom:
+            pass
+        finally:
+            globals()["SCENE_RECORD"], globals()["_scene_load"] = real, load
+        return records
+
+    def body():
+        with _comp(t, "recovery_exact_state_returns"):
+            if _live(t):
+                got["bystanders"] = [_spawn(t, RECOVERY_KIND, x - 3, z), _spawn(t, RECOVERY_KIND, x + 30, z)]
+                _set(t, RECOVERY_SETTING, 11.0)
+                before = digest()
+                records = probe(False)
+                after = digest()
+                _note(t, "recovery", {"before": before, "after": after, "records": records})
+                bad = _recovery_offences(before, after, records)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "recovery_failed_restore_stays_open"):
+            if _live(t):
+                before = digest()
+                records = probe(True)
+                after = digest()
+                if "scene-end" in records:
+                    _fail("the probe's restore was made to fail but the recovery was closed (scene-end): %s" % records)
+                if "scene-begin" not in records:
+                    _fail("the probe never opened a recovery (no scene-begin): %s" % records)
+                got["leftover"] = after.get("fixtures")
+                _note(t, "failed restore", {"before": before, "after": after, "records": records})
+                for p in after.get("fixtures") or []:     # the open recovery's fixture, by its recorded id only
+                    _vanish(t, p)
+        with _comp(t, "recovery_log_window_clean"):
+            if _live(t):
+                mark = "LSCRUB_RECOVERY_SENTINEL_%d" % int(time.time())
+                t.bridge_call("jawa/static_call", type="Verse.Log", method="Warning", args=mark)
+                seen = (_ok(t.bridge_call("jawa/drain_log", contains=mark, limit=5), "drain_log(sentinel)")
+                        .get("messages") or [])
+                errs = [m.get("text") for m in (_ok(t.bridge_call("jawa/drain_log", contains="LeaningScrub", errorsOnly=True,
+                                                                  limit=20), "drain_log").get("messages") or [])]
+                verdict, why = _log_window(bool(seen), errs)
+                if verdict == "UNMEASURED":
+                    _unmeasured(t, why)
+                if verdict == "FAIL":
+                    _fail("attributable LeaningScrub error(s) in the window: %s" % [str(e)[:160] for e in why[:3]])
+        with _comp(t, "recovery_checker_rejects_injections"):
+            if _live(t):
+                b = {"tick": 5, "bystanders": ["a", "b"], "fixtures": [], "settings": {"f": "0.7"}}
+                ok = ["scene-begin", "scene-end"]
+                if _recovery_offences(b, dict(b), ok):
+                    _fail("the recovery checker refuses a clean restore: %s" % _recovery_offences(b, dict(b), ok))
+                injected = {"bystander destroyed": _recovery_offences(b, dict(b, bystanders=["a"]), ok),
+                            "clock not restored": _recovery_offences(b, dict(b, tick=9), ok),
+                            "setting left moved": _recovery_offences(b, dict(b, settings={"f": "0.9"}), ok),
+                            "fixture left behind": _recovery_offences(b, dict(b, fixtures=["x"]), ok),
+                            "omitted restore": _recovery_offences(b, dict(b, tick=9), ["scene-begin"]),
+                            "no recovery opened": _recovery_offences(b, dict(b), ["scene-end"]),
+                            "dead log sentinel": [1] if _log_window(False, [])[0] != "PASS" else []}
+                missed = sorted(k for k, v in injected.items() if not v)
+                # an omitted restore with the recovery left open is the CORRECT outcome, so it must read as open, not pass
+                if "omitted restore" not in missed and "stays open" not in " ".join(injected["omitted restore"]):
+                    missed.append("omitted restore not named as an open recovery")
+                if missed:
+                    _fail("the recovery checker passed injected run(s) %s: it is blind there" % missed)
+    with _scene(t, "floor_recovery", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            if _live(t):
+                _restore(t, RECOVERY_SETTING)
 
 
 # --------------------------------------------------------------------------- chain: the log (last)

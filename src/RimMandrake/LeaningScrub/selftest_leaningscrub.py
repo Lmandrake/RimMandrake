@@ -101,6 +101,7 @@ class Fake(object):
         self.saves, self.walker_z = {}, None
         self.cur_map, self.gen_maps, self.letters, self.scanner = 0, {}, [], {}
         self.master_was_off, self.save_count = False, 0
+        self.crown_forgets, self.roofed, self.floors, self.zones = False, set(), set(), set()
         self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
                                                        in self.broken else "")
 
@@ -140,6 +141,7 @@ class Fake(object):
             d = min(250, n)
             n -= d
             self.ticks += d
+            self.creep_tick(self.ticks - d, self.ticks)
             self.chunk(d)
             self.ripple_pass()
 
@@ -175,6 +177,8 @@ class Fake(object):
                     else:
                         pl["growth"] = 1.0 if "regrow_full" in b else 0.3
         # --- the Stall freeze and wandering
+        self.crown_pass()
+        self.graze_pass(d)
         for p in self.pawns.values():
             if p["faction"] != "none" or p["dead"]:
                 continue
@@ -185,12 +189,8 @@ class Fake(object):
                 gate = True
             frozen = (self.weather == "RM_Stall" and BODY.get(p["kind"], 1) <= 0.5
                       and "no_freeze" not in b and gate)
-            crown = [t for t in self.of("RM_CrownVenomvine")]
-            if (self.weather == "RM_Stall" and p["kind"] == "RM_Dustflutter" and crown
-                    and self.on("crownMobEnabled") and "no_crown" not in b) \
-                    or ("crown_ignores_toggle" in b and p["kind"] == "RM_Dustflutter" and crown):
-                p["x"], p["z"] = crown[0]["x"] + 2, crown[0]["z"]
-                continue
+            if p["kind"] == "RM_Dustflutter" and (p.get("mob") or p.get("goto")):
+                continue      # on the crown mob's Goto, settled at the stand, or on an ordered walk: keeps its job
             if p.get("job") == "Ingest":     # the scenes: a hungry animal walking to its meal does not wander
                 continue
             p["job"] = "Wait_Wander" if frozen else "GotoWander"
@@ -408,7 +408,18 @@ class Fake(object):
             if "guardian_text" in self.broken:
                 rows[0]["fields"]["description"] = "A guardian sleeps in its branches."
             return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
+        if want == [V.EG_ROSTER]:
+            own = list(V.VINE_CLOCK_OWN)
+            soak = [n for n in own if not ("no_exempt" in self.broken and n == V.THICKET)]
+            return {"success": True, "foundCount": 1, "notFound": [], "defs": [{
+                "defName": "RM_LeaningScrub_VenomvineExempt", "fields": {"exemptPlants": soak, "bandExemptPlants": own}}]}
         missing = [d for d in want if d.endswith("NoSuchDef_Probe")]
+        if fields == "label":       # _resolves: the removal manifest as the shipped game should hold it
+            man = V._save_manifest()
+            missing += [d for d in want if d in man["aliases"] and "aliases_still_ship" not in self.broken]
+            missing += [d for d in want if d in man["tombstones"] and "tombstone_ships" not in self.broken]
+            if "egg_deleted" in self.broken:
+                missing += [d for d in want if d == man["products"][0]]
         if "missing_def" in self.broken and want and want[0] in V.SHIPPED:
             missing.append(want[3])
         return {"success": True, "notFound": missing, "foundCount": len(want) - len(missing)}
@@ -438,6 +449,7 @@ class Fake(object):
         msgs = []
         if "log_error" in self.broken and contains == "LeaningScrub":
             msgs = [{"type": "Error", "text": "[RM LeaningScrub] stall-freeze: rule NOT armed"}]
+        msgs += [m for m in self.log if contains and contains in m["text"] and (not errorsOnly or m["type"] == "Error")]
         return {"success": True, "totalInBuffer": 321, "messages": msgs}
 
     def t_spawn_pawn(self, kindDef=None, x=0, z=0, faction="none", count=1, **k):
@@ -481,6 +493,9 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        if type == "Verse.Log":
+            self.log.append({"type": method, "text": args})
+            return {"success": True}
         n = 0 if not args else len(args.split("|"))
         if n not in cs_arities(type, method):
             return {"success": False, "message": "No public static %s with %d params." % (method, n),
@@ -770,6 +785,9 @@ class Fake(object):
             d, nums = op.split(":")
             if d in ("None", "Clear"):
                 ROOF_STRIPS.append(tuple(int(v) for v in nums.split(",")))
+                self.roofed -= self.cells(nums)
+            if d == "RoofConstructed":
+                self.roofed |= self.cells(nums)
             if d == "RoofConstructed":
                 rr = tuple(int(v) for v in nums.split(","))
                 for f in self.of("Campfire"):
@@ -811,6 +829,11 @@ class Fake(object):
         return {"success": False, "message": "no comp %s on %s" % (comp, thing)}
 
     def t_map_comp_read(self, comp=None, members=None, **k):
+        if comp == "RM_MapComponent_VenomvineCreep":
+            return {"success": True, "values": {"Applies": "True", "openCells": str(self.OPEN_CELLS),
+                                                "vineCells": str(len(self.of(V.THICKET)))}}
+        if comp == "RM_MapComponent_Lean":
+            return {"success": True, "values": {"Downwind": "(1.00, 0.00)"}}
         n = len([p for p in self.pawns.values() if self.ticks < p.get("sway_until", 0)])
         return {"success": True, "values": {"swaying": "Count=%d" % n}}
 
@@ -888,7 +911,9 @@ class Fake(object):
         return {"success": True, "temperature": 20.0}
 
     def t_running_mods(self, **k):
-        return {"success": True, "count": 3, "packageIds": ["ludeon.rimworld", V.OUR_PACKAGES[1], V.SCANNER_PKG]}
+        ids = [p for p in V.DLC_PACKAGES if not ("dlc_missing" in self.broken and p.endswith("odyssey"))]
+        ids += ["brrainz.harmony", V.OUR_PACKAGES[1], V.SCANNER_PKG]
+        return {"success": True, "count": len(ids), "packageIds": ids}
 
     def t_list_selected_gizmos(self, **k):
         return {"success": True, "gizmos": [{"label": V.PULSE_LABEL + " (ready)", "gizmoId": "g1"}]}
@@ -917,6 +942,109 @@ class Fake(object):
             {"type": "RimMandrake.LeaningScrub.RM_MapComponent_Ripple", "packageId": V.OUR_PACKAGES[1], "calls": calls,
              "msPerTick": 0.01}]}
 
+    # ------------------------------------------------------------ scenes batch 3 (crown .. recovery)
+    OPEN_CELLS = 10000
+
+    @staticmethod
+    def cells(nums):
+        n = [int(v) for v in nums.split(",")]
+        w, h = (n[2], n[3]) if len(n) > 3 else (1, 1)
+        return set((x, z) for x in range(n[0], n[0] + w) for z in range(n[1], n[1] + h))
+
+    def crown_pass(self):
+        """RM_MapComponent_CrownMob: residents and flutters already on their way count toward maxMobbers; only idle
+        flutters are sent (a plain Goto arriving 500 ticks later), never one busy on another job."""
+        b = self.broken
+        stands = self.of("RM_CrownVenomvine")
+        fl = sorted((p for p in self.pawns.values() if p["kind"] == "RM_Dustflutter" and not p["dead"]
+                     and p["faction"] == "none"), key=lambda p: int(p["id"][1:]))
+        for p in fl:
+            if p.get("mob") == "transit" and self.ticks >= p["mob_at"] and stands:
+                p["x"], p["z"], p["mob"], p["job"] = stands[0]["x"] + 2, stands[0]["z"], "held", "Wait_Wander"
+            if p.get("job") == "Goto" and not p.get("goto") and not p.get("mob"):
+                p["job"] = "Wait_Wander"      # an ordered walk ended
+        on = (self.weather == "RM_Stall" and self.on("crownMobEnabled") and "no_crown" not in b) or "crown_ignores_toggle" in b
+        if not on or not stands:
+            return
+        if "crown_hijacks_busy" in b:
+            fl.sort(key=lambda p: not p.get("goto"))      # a hijacking mob reaches the busy flutter first
+        blind = "crown_over_cap" in b or self.crown_forgets
+        held = len([p for p in fl if p.get("mob") == "held" or (p.get("mob") == "transit" and not blind)])
+        for p in fl:
+            if held >= V.CROWN_CAP:
+                break
+            if p.get("mob") or (p.get("goto") and "crown_hijacks_busy" not in b):
+                continue
+            p["goto"], p["mob"], p["mob_at"], p["job"] = None, "transit", self.ticks + 500, "Goto"
+            held += 1
+
+    def graze_pass(self, d):
+        """The designed cruststar ecology (not built in C# yet): a hungry crustweevil that can reach the patch grazes one
+        cruststar (growth -0.8, food +0.6); a grazed cruststar regrows 0.01 per 250 ticks."""
+        b = self.broken
+        for c in self.of(V.CRUST):
+            if c.get("growth", 1) < 1 and "cruststar_never_recovers" not in b:
+                c["growth"] = min(1.0, c["growth"] + 0.01 * d / 250.0)
+        for p in self.pawns.values():
+            if p["kind"] != V.WEEVIL or p["dead"] or p.get("food", 0.9) >= 0.3:
+                continue
+            if any(inrect(p["x"], p["z"], r) for r in self.rooms) and "cruststar_through_walls" not in b:
+                continue
+            meal = [t for t in self.of(V.CRUST_ALT if "cruststar_never_grazed" in b else V.CRUST) if t.get("growth", 1) >= 0.5]
+            if meal:
+                meal[0]["growth"] -= 0.8
+                if "cruststar_no_nutrition" not in b:
+                    p["food"] = p.get("food", 0.9) + 0.6
+
+    def creep_free(self, c, taken):
+        if c in taken:
+            return False
+        if "creep_overruns_protection" in self.broken:
+            return True
+        return c not in self.roofed and c not in self.floors and c not in self.zones and not any(
+            (t["x"], t["z"]) == c for t in self.things.values() if t["def"] in ("Wall", "Plant_TreeOak"))
+
+    def creep_tick(self, t0, t1):
+        """RM_MapComponent_VenomvineCreep: its sweep runs when (TicksGame + uniqueID*1777) % 15000 == 0. A runner is laid
+        only at a compressed interval (venomvineCreepDays < 1, chance ~1), downwind (+x) first, young (growth 0.05)."""
+        off = self.cur_map * 1777
+        if (t0 + off) // V.CREEP_SWEEP == (t1 + off) // V.CREEP_SWEEP:
+            return
+        b = self.broken
+        if not (self.on("venomvineCreepEnabled") or "creep_ignores_toggle" in b) or "no_creep" in b:
+            return
+        if float(self.settings.get("venomvineCreepDays", 10)) >= 1:
+            return
+        vine = self.of(V.THICKET)
+        room = 99 if "creep_ignores_cap" in b else int(float(self.settings["venomvineCreepCap"]) * self.OPEN_CELLS) - len(vine)
+        taken = set((t["x"], t["z"]) for t in vine)
+        for e in [t for t in vine if t.get("growth", 0) >= 1.0]:
+            if room <= 0:
+                break
+            free = [k for k in range(8) if self.creep_free((e["x"] + V.CREEP_DX[k], e["z"] + V.CREEP_DZ[k]), taken)]
+            if not free:
+                continue
+            order = sorted(free, key=lambda k: V.CREEP_DX[k]) if "creep_no_downwind" in b else \
+                [k for k in free if V.CREEP_DX[k] > 0] + [k for k in free if V.CREEP_DX[k] <= 0]
+            c = (e["x"] + V.CREEP_DX[order[0]], e["z"] + V.CREEP_DZ[order[0]])
+            self.new(V.THICKET, c[0], c[1], growth=0.6 if "creep_runner_armed" in b else 0.05, stackCount=1)
+            taken.add(c)
+            room -= 1
+
+    def t_set_terrain_batch(self, ops="", **k):
+        for op in ops.split(";"):
+            d, nums = op.split(":", 1)
+            if d == "WoodPlankFloor":
+                self.floors |= self.cells(nums)
+            else:
+                self.floors -= self.cells(nums)
+        return {"success": True}
+
+    def t_map_zones(self, action=None, rect=None, **k):
+        if action == "createZone":
+            self.zones |= self.cells(rect)
+        return {"success": True}
+
     def t_time_perf(self, **k):
         return {"success": True, "meanTickTime": 4.2}
 
@@ -940,6 +1068,12 @@ class Fake(object):
         if "missing_lost_on_reload" in self.broken:
             for p in pawns.values():
                 p["lost"] = []
+        if "probe" in saveName and "restore_drops_bystander" in self.broken:
+            del pawns[min((p for p in pawns if pawns[p]["kind"] == V.RECOVERY_KIND), key=lambda p: int(p[1:]))]
+        if "probe" in saveName and "restore_tick_drift" in self.broken:
+            ticks += 1
+        if "crown_reload_forgets" in self.broken:
+            self.crown_forgets = True
         self.ticks, self.pawns, self.things = ticks, pawns, things
         return {"success": True}
 
@@ -962,6 +1096,8 @@ class Fake(object):
         if jobDef == "Goto":        # the scenes: an ordered walk arrives 300 ticks later and is "moving" until then
             p = self.pawns[pawnId]
             p["goto"], p["moving_until"] = (targetAX, targetAZ), self.ticks + 300
+            if p["kind"] == "RM_Dustflutter":
+                p["job"] = "Goto"
             if "trip_never_returns" in self.broken and p["kind"] == "Colonist" and targetAX < p["x"]:
                 p["goto"] = None
             return {"success": True, "accepted": True}
@@ -1000,6 +1136,8 @@ class Fake(object):
             # vanilla Plant.GetInspectString: "<N>% grown" plus "Growth rate: <R>%" (the trap 4cdec5dd8 fixed: the old
             # regex read the RATE line and failed a correct 30% stand)
             lines = ["%d%% grown" % int(100 * t.get("growth", 1)), "Growth rate: 100%"]
+        elif d in (V.CRUST, V.CRUST_ALT, V.THICKET):
+            lines = ["%d%% grown" % int(round(100 * t.get("growth", 1))), "Growth rate: 100%"]
         elif d == "Campfire":
             lines = ["Fuel: %d / 20" % round(self.fuel(t["id"]))]
         elif d == V.TREE and (self.on("sweetlineStationsEnabled") or "station_ignores_toggle" in self.broken):
@@ -1043,14 +1181,15 @@ def run(broken=()):
 
 # break -> the component that must go FAIL
 BREAKS = {
-    "missing_def": "defs.defs_resolve",
+    "missing_def": ("defs.defs_resolve", "scene_floor_payload.payload_running_list_and_defs",
+                    "scene_removed_save_preservation.saves_scene_current_products_kept"),
     "pyre_counts_fires": "edge_fixes.pyre_thin_line_follows_blaze",
     "bloom_scares_manhunter": ("edge_fixes.bloom_spares_manhunter", "scene_bloom.bloom_scene_manhunter_keeps_its_state"),
     "genstep_tidies": "edge_fixes.map_step_refuses_pawn_cell",
     "arm_draws_none": "edge_fixes.vissler_arm_draws_meat_eaters",
     "arm_ignores_toggle": "edge_fixes.vissler_arm_off_draws_none",
     "no_weather_entry": "defs.biome_weather_table",
-    "no_lean_ext": "defs.biome_lean_extension",
+    "no_lean_ext": ("defs.biome_lean_extension", "scene_floor_payload.payload_base_effects_present"),
     "rule_unarmed": "patches.rules_armed",
     "thicket_unpatched": "patches.thicket_smotherable",
     "arm_not_rotting": "patches.vissler_arm_is_rotting_meat",
@@ -1076,8 +1215,8 @@ BREAKS = {
     "no_mature": "smother.smother_matures_to_dead_wood",
     "regrow_broken": "dripping.dripping_survives_harvest",
     "regrow_full": "dripping.dripping_survives_harvest",
-    "crown_ignores_toggle": "crown.crown_toggle_off_stays_away",
-    "no_crown": "crown.crown_mob_gathers",
+    "crown_ignores_toggle": ("crown.crown_toggle_off_stays_away", "scene_crown.crown_scene_toggle_off_quiet"),
+    "no_crown": ("crown.crown_mob_gathers", "scene_crown.crown_scene_arrivals_attributed"),
     "bloom_ignores_toggle": ("bloom.bloom_toggle_off_quiet", "scene_bloom.bloom_scene_toggle_off_quiet",
                              "scene_arm_regrowth.arm_regrowth_off_sheds_nothing"),
     "no_bloom": ("bloom.bloom_answers_a_walker", "scene_bloom.bloom_scene_walk_answers"),
@@ -1114,7 +1253,7 @@ BREAKS = {
     "map_step_ignores_chance": "sweetline.map_step_chance_zero_plants_none",
     "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
     "no_visits": "sweetline.visitors_come_and_leave_marks",
-    "log_error": "log.log_clean",
+    "log_error": ("log.log_clean", "scene_floor_recovery.recovery_log_window_clean"),
     "stamp_never": "stamp.stamp_answers_a_blaze",
     "stamp_ignores_toggle": "stamp.stamp_toggle_off_ignores_fire",
     "stallhunt_never": "stallhunt.stallhawk_hunts_in_the_stall",
@@ -1132,10 +1271,10 @@ BREAKS = {
     "no_farmstead": "injections.map_holds_ruins_and_camps",
     "no_camp_people": "injections.map_holds_ruins_and_camps",
     "no_islands": "islands.islands_laid_share",
-    "no_creep": "islands.creep_runner_unarmed",
-    "creep_ignores_toggle": "islands.creep_toggle_off",
-    "creep_ignores_cap": "islands.creep_cap_stops",
-    "no_exempt": "islands.growth_exempt_from_explosive_growth",
+    "no_creep": ("islands.creep_runner_unarmed", "scene_creep.creep_scene_runners_young_downwind"),
+    "creep_ignores_toggle": ("islands.creep_toggle_off", "scene_creep.creep_scene_toggle_off_quiet"),
+    "creep_ignores_cap": ("islands.creep_cap_stops", "scene_creep.creep_scene_cap_stops"),
+    "no_exempt": ("islands.growth_exempt_from_explosive_growth", "scene_creep.creep_scene_explosive_growth_exempt"),
     "stock_overcast": "defs.biome_weather_table",
     "twin_calm": "windlean.twins_carry_wind",
     "lean_mixed": "windlean.lean_faces_wind",
@@ -1157,8 +1296,8 @@ BREAKS.update({
     "sway_never_released": "scene_bloom.bloom_scene_sway_released",
     "hole_never": "scene_bloom.bloom_scene_exit_hole_only_from_under",
     "eruptor_grounded": "scene_bloom.bloom_scene_eruptor_takes_off_owner_present",
-    "guardian_text": "scene_cuts.cuts_no_cut_content",
-    "about_promises_wardens": "scene_cuts.cuts_no_cut_content",
+    "guardian_text": ("scene_cuts.cuts_no_cut_content", "scene_floor_payload.payload_text_promises_nothing_cut"),
+    "about_promises_wardens": ("scene_cuts.cuts_no_cut_content", "scene_floor_payload.payload_text_promises_nothing_cut"),
     "farmer_camps_back": "scene_cuts.cuts_no_cut_content",
     "vaporator_dries": "scene_cuts.cuts_vaporator_ground_kept",
     # scenes batch 2 (2026-11-16)
@@ -1185,6 +1324,24 @@ BREAKS.update({
     "timing_no_work": "scene_floor_runtime.runtime_work_counted",
     "save_grows": "scene_floor_persistence.persist_no_growth",
     "reload_adds_thing": "scene_floor_persistence.persist_three_cycles",
+    # scenes batch 3 (2026-11-16)
+    "crown_over_cap": "scene_crown.crown_scene_cap_held_across_reload",
+    "crown_reload_forgets": "scene_crown.crown_scene_cap_held_across_reload",
+    "crown_hijacks_busy": "scene_crown.crown_scene_busy_job_intact",
+    "cruststar_never_grazed": "scene_cruststar.cruststar_scene_grazed_and_fed",
+    "cruststar_no_nutrition": "scene_cruststar.cruststar_scene_grazed_and_fed",
+    "cruststar_never_recovers": "scene_cruststar.cruststar_scene_resource_recovers",
+    "cruststar_through_walls": "scene_cruststar.cruststar_scene_unreachable_untouched",
+    "creep_runner_armed": "scene_creep.creep_scene_runners_young_downwind",
+    "creep_no_downwind": "scene_creep.creep_scene_runners_young_downwind",
+    "creep_overruns_protection": "scene_creep.creep_scene_protected_cells_kept",
+    "aliases_still_ship": "scene_removed_save_preservation.saves_scene_no_preservation_ships",
+    "tombstone_ships": "scene_removed_save_preservation.saves_scene_no_preservation_ships",
+    "egg_deleted": ("scene_removed_save_preservation.saves_scene_current_products_kept",
+                    "scene_floor_payload.payload_running_list_and_defs"),
+    "dlc_missing": "scene_floor_payload.payload_running_list_and_defs",
+    "restore_drops_bystander": "scene_floor_recovery.recovery_exact_state_returns",
+    "restore_tick_drift": "scene_floor_recovery.recovery_exact_state_returns",
 })
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
