@@ -146,7 +146,9 @@ def main():
         tree, held = _patched_tree()
     node = _leaf(tree) or {"experience": ""}
     scene = next(s for s in json.load(open(os.path.join(CONCEPT, "scenes.json")))["scenes"] if s["id"] == "sc_barrage_perf")
-    stat = re.compile(r"99th-percentile frame .*0\.9.8\.25 s.*at most 50 ms", re.S)
+    # each fact, in any order: lint's constraint shape puts the limit first ("at most 50 ms for the ... on Archmagi")
+    parts = [re.compile(r"99th-percentile frame"), re.compile(r"0\.9.8\.25 s"), re.compile(r"at most 50 ms")]
+    stat = type("AllOf", (), {"search": staticmethod(lambda t: all(r.search(t) for r in parts))})
     check("T1", bool(stat.search(node["experience"])), "tree.json barrage_frame_budget experience (%s) names the p99, the window and 50 ms" % held)
     check("T2", bool(stat.search(scene["expect"])), "scenes.json sc_barrage_perf expect names the p99, the window and 50 ms")
     check("T3", "99th-percentile" in scene["control"]["expect"], "the control reports its own p99 in the same window")
