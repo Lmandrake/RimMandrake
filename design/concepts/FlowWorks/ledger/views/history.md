@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":2562,"HOLDER.run-1794816885":928,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=4cb5e9d91d6a95231c6750af64c612af239686dff2f684f5bd11c951f233bd0a -->
-# FlowWorks — mod ledger history (1206 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":3214,"HOLDER.run-1794816885":928,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=2215534f484234af722287b17097744d7c7a2954eee42c4ec705cc26dfcde6e0 -->
+# FlowWorks — mod ledger history (1208 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1207,3 +1207,5 @@
 - 2026-11-16T16:31:23Z JUDGE.judge-1794833810#94 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
 - 2026-11-16T16:31:23Z JUDGE.judge-1794833810#95 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
 - 2026-11-16T16:31:23Z JUDGE.judge-1794833810#96 note judge v0.1.0: RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK: fixed red-first by this judge at 4b33b22f (cycle 2 fix-in-place; red/green in blind_challenge/cycle_2/lane2/fixes.jsonl). A judge's own fix cannot pass its exit: the next blind judge verifies it.
+- 2026-11-16T16:56:03Z DISPATCH#9 lease.grant lease v0.1.0: 
+- 2026-11-16T16:56:10Z DISPATCH#10 run.start run v0.1.0: 
