@@ -21,6 +21,22 @@ namespace RimMandrake.ExplosiveKnockback
         }
     }
 
+    /// <summary>A pawn our knockback throws lands without vanilla's job search. PawnFlyer.RespawnPawn ends with
+    /// pawn.jobs.CheckForJobOverride(), a full think-tree search, and our RespawnPawn postfix then starts the job suspended
+    /// at takeoff (or the remembered haul) anyway: the search was spent and thrown away. A pawn with nothing to resume finds
+    /// its job on its next tick (curJob == null -> TryFindAndStartJob), as any idle pawn does. Measured live 2026-11-16
+    /// (SteveDesktop, the Explosive Knockback tier, the walk storeroom): 19-25 ms of each landing frame was RespawnPawn, and
+    /// the walk's frame row read +17.4% over mod off with five colonists in the room, +1.2% without them
+    /// (RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES). Only the pawn our landing holds is skipped.</summary>
+    [HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.CheckForJobOverride))]
+    public static class RM_Patch_JobTracker_KnockbackLandingNoSearch
+    {
+        public static bool Prefix(Pawn ___pawn)
+        {
+            return ___pawn != RM_Patch_PawnFlyer_KnockbackLanding.LandingPawn;
+        }
+    }
+
     /// <summary>Our own landing check (GPT #7/#11): if the destination became unusable mid-flight (a wall built, a
     /// door closed, another pawn landed there), walk back along the travelled line toward the takeoff; if nothing
     /// is valid, land at the takeoff. Never across a wall.</summary>
@@ -31,10 +47,15 @@ namespace RimMandrake.ExplosiveKnockback
         private static readonly AccessTools.FieldRef<PawnFlyer, Vector3> StartVec = AccessTools.FieldRefAccess<PawnFlyer, Vector3>("startVec");
         private static readonly AccessTools.FieldRef<PawnFlyer, JobQueue> JobQueueOf = AccessTools.FieldRefAccess<PawnFlyer, JobQueue>("jobQueue");
 
+        /// <summary>The pawn our RespawnPawn is landing, while it runs (RM_Patch_JobTracker_KnockbackLandingNoSearch); null
+        /// otherwise. Cleared by the Finalizer, which runs even when RespawnPawn throws.</summary>
+        internal static Pawn LandingPawn;
+
         public sealed class Landing
         {
             public Pawn pawn;
             public Job resume;   // the job MakeFlyer suspended into the captured queue at takeoff
+            public long t0;      // proof build: when the landing began (RM_FrameProbe.LandMs)
         }
 
         public static void Prefix(PawnFlyer __instance, out Landing __state)
@@ -48,6 +69,10 @@ namespace RimMandrake.ExplosiveKnockback
             Map map = __instance.Map;
             JobQueue q = JobQueueOf(__instance);
             __state = new Landing { pawn = p, resume = q != null && q.Count > 0 ? q[0].job : null };
+            LandingPawn = p;
+#if RM_PROOFS
+            __state.t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
             if (p == null || map == null)
             {
                 return;
@@ -84,11 +109,27 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static void Postfix(Landing __state)
         {
+#if RM_PROOFS
+            long resumeT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
             if (__state?.pawn != null)
             {
                 Resume(__state.pawn, __state.resume);
             }
             Landed(__state?.pawn);
+#if RM_PROOFS
+            if (__state != null && __state.t0 != 0)
+            {
+                RM_FrameProbe.ResumeMs += RM_FrameProbe.MsSince(resumeT0);
+                RM_FrameProbe.LandMs += RM_FrameProbe.MsSince(__state.t0);
+                RM_FrameProbe.Lands++;
+            }
+#endif
+        }
+
+        public static void Finalizer()
+        {
+            LandingPawn = null;
         }
 
         /// <summary>Back to what it was doing (bar pawn_flight_arc). RespawnPawn restores the captured queue, but its

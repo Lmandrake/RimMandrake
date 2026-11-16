@@ -298,6 +298,11 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return;
             }
+#if RM_PROOFS
+            long flushT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            try
+            {
+#endif
             var snapshot = new List<KnockbackRequest>(queue);
             queue.Clear();
             var groups = new Dictionary<int, List<KnockbackRequest>>();
@@ -363,6 +368,13 @@ namespace RimMandrake.ExplosiveKnockback
                     }
                 }
             }
+#if RM_PROOFS
+            }
+            finally
+            {
+                RM_FrameProbe.FlushMs += RM_FrameProbe.MsSince(flushT0);
+            }
+#endif
         }
 
         private static Thing Resolve(Thing t)
@@ -1033,12 +1045,19 @@ namespace RimMandrake.ExplosiveKnockback
             int lo = Mathf.Max(0, RimMandrakeExplosiveKnockbackSettings.landingStunMin);
             def.pawnFlyer.stunDurationTicksRange = new IntRange(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.landingStunMax));
             RM_Patch_PawnFlyer_KnockbackLanding.RememberHaul(p);    // back to its haul after landing (bar pawn_flight_arc)
+#if RM_PROOFS
+            long takeoffT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
             PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: true);
             if (flyer == null)
             {
                 return false;
             }
             GenSpawn.Spawn(flyer, start, map);
+#if RM_PROOFS
+            RM_FrameProbe.PawnTakeoffMs += RM_FrameProbe.MsSince(takeoffT0);
+            RM_FrameProbe.Takeoffs++;
+#endif
             RM_KnockbackJournal.Launches++;
             RM_KnockbackJournal.Add("launch", r.explosionId, p, "from", start, "to", dest, "planned", res.cellsPlanned,
                 "cells", res.cellsTravelled, "stop", res.stop.ToString(), "impact", res.impact, "otherImpact", res.otherImpact,

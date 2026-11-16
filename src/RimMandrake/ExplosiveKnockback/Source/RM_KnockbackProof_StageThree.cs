@@ -833,6 +833,18 @@ namespace RimMandrake.ExplosiveKnockback
         private readonly List<int> inAir = new List<int>();
         private float firstReal = -1f, lastReal;
         private int firstFrame, lastFrame;
+        // what each frame's mod work cost (the Test Pilot sitting on RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES): the
+        // request flush, the pawn takeoffs inside it, the pawn landings (vanilla RespawnPawn included) and the job resume
+        // inside them, plus gen-0 collections. Stopwatch timestamps at those call sites, no extra Harmony patches.
+        internal static double FlushMs, PawnTakeoffMs, LandMs, ResumeMs;
+        internal static int Takeoffs, Lands;
+        private readonly List<string> parts = new List<string>();
+        private int lastGc = -1;
+
+        internal static double MsSince(long t0)
+        {
+            return (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+        }
 
         internal static void Begin()
         {
@@ -861,11 +873,11 @@ namespace RimMandrake.ExplosiveKnockback
             try
             {
                 string path = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath, "RM_FrameProbe_" + DateTime.Now.ToString("yyyyMMddTHHmmss") + ".csv");
-                var sb = new System.Text.StringBuilder("row,ms,paused,in_air\n");
+                var sb = new System.Text.StringBuilder("row,ms,paused,in_air,flush_ms,takeoff_ms,takeoffs,land_ms,resume_ms,lands,gc\n");
                 for (int i = 0; i < p.ms.Count; i++)
                 {
                     sb.Append(i).Append(',').Append(p.ms[i].ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)).Append(',')
-                        .Append(p.paused[i] ? 1 : 0).Append(',').Append(p.inAir[i]).Append('\n');
+                        .Append(p.paused[i] ? 1 : 0).Append(',').Append(p.inAir[i]).Append(',').Append(i < p.parts.Count ? p.parts[i] : "").Append('\n');
                 }
                 System.IO.File.WriteAllText(path, sb.ToString());
                 LastPath = path;
@@ -891,9 +903,16 @@ namespace RimMandrake.ExplosiveKnockback
                 ms.Add((now - lastReal) * 1000f);
                 paused.Add(Find.TickManager == null || Find.TickManager.Paused);
                 inAir.Add(InAir());
+                var ci = System.Globalization.CultureInfo.InvariantCulture;
+                int gc = GC.CollectionCount(0);
+                parts.Add(FlushMs.ToString("0.###", ci) + "," + PawnTakeoffMs.ToString("0.###", ci) + "," + Takeoffs + ","
+                    + LandMs.ToString("0.###", ci) + "," + ResumeMs.ToString("0.###", ci) + "," + Lands + "," + (lastGc < 0 ? 0 : gc - lastGc));
+                lastGc = gc;
             }
             lastReal = now;
             lastFrame = Time.frameCount;
+            FlushMs = PawnTakeoffMs = LandMs = ResumeMs = 0;
+            Takeoffs = Lands = 0;
             if (SleepNextMs > 0)
             {
                 int z = SleepNextMs;
