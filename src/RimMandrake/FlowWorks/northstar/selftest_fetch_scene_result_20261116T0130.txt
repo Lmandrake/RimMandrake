@@ -1,0 +1,22 @@
+== fix 1cb69f96f6
+ok    every staging call keeps its tool contract (ProofCover x,z; set_plants names a def; lids rest on two banks) 
+ok    the scene leaves the governor as it found it 
+ok    healthy fake (two fall, the mod ladders the pit): every row PASS 
+ok    today's mod (no fetch job): FETCH_ladder_into_pit FAIL, the fall and the control PASS 
+ok    a raid that never reaches the trench: every row UNMEASURED, none PASS 
+ok    a crossing ladder with nobody fallen: the control FAILs 
+ok    one raider falls: FETCH_two_fell FAILs, the ladder still judged 
+ok    scene_pit_trap_raid shares the staging: fallen become prisoners, open pit holds nobody 
+selftest_fetch_scene: ok
+rc=0
+== base 2b4bffe212
+FAIL  every staging call keeps its tool contract (ProofCover x,z; set_plants names a def; lids rest on two banks) ["ProofCover given '61,61;cover' (its contract is x,z)"]
+ok    the scene leaves the governor as it found it 
+FAIL  healthy fake (two fall, the mod ladders the pit): every row PASS {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'FETCH_control_none_fallen_no_ladder': 'PASS'}
+FAIL  today's mod (no fetch job): FETCH_ladder_into_pit FAIL, the fall and the control PASS {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'FETCH_control_none_fallen_no_ladder': 'PASS'}
+FAIL  a raid that never reaches the trench: every row UNMEASURED, none PASS {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'FETCH_control_none_fallen_no_ladder': 'PASS'}
+FAIL  a crossing ladder with nobody fallen: the control FAILs {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'FETCH_control_none_fallen_no_ladder': 'PASS'}
+FAIL  one raider falls: FETCH_two_fell FAILs, the ladder still judged {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'FETCH_control_none_fallen_no_ladder': 'PASS'}
+FAIL  scene_pit_trap_raid shares the staging: fallen become prisoners, open pit holds nobody {'FETCH_two_fell': 'FAIL', 'FETCH_ladder_into_pit': 'FAIL', 'PTR_control_open_pit_no_one_falls': 'PASS'}
+selftest_fetch_scene: FAIL
+rc=1
