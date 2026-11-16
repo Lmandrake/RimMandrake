@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":984216,"DISPATCH":648,"HOLDER.run-1794816885":928} body_sha256=fc22ea87f701a8f78cc215b805a9fce6f2e96cbb96825c337db1fcb383c46227 -->
-# FlowWorks — mod ledger history (1278 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":984216,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=e94fcfc173b5fa309918d51d4da42018387b57eec37ea0d37c1410132a841615 -->
+# FlowWorks — mod ledger history (1280 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1279,3 +1279,5 @@
 - 2026-11-16T08:33:06Z BACKFILL#1274 decision finding:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT v0.1.0: Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next version, 0.2.0; 0.1.0's bars do not move
 - 2026-11-16T08:40:26Z BACKFILL#1275 finding.open finding:RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO v0.1.0: With liquidIgnitionEnabled ON, a burning log beside RM_FuelSapShallow for 500 ticks lit no sap cell (firesStarted=0 cellsFailed=0). Vanilla FireUtility refuses terrain with 0 Flammability.
 - 2026-11-16T08:50:23Z HOLDER.run-1794816885#1 session.checkpoint session v0.1.0: 
+- 2026-11-16T08:52:12Z DISPATCH#3 run.end run v0.1.0: 
+- 2026-11-16T08:52:12Z DISPATCH#4 session.id session v0.1.0: 
