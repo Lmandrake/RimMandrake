@@ -1,0 +1,97 @@
+{
+  "run": "rm-role-designercodex-1794840444",
+  "stage": 5,
+  "outcome": "blocked",
+  "on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS",
+  "summary": "Stage-5 lock is blocked on the existing coverage-judge calibration dependency. The current verdict is advisory because its brief is UNTESTED. The gate refuses with no coverage signature. All twelve findings remain recorded as advisory evidence. A calibrated coverage verdict and the program-recorded signature are required before lock can finish.",
+  "coverage": {
+    "judge": "rm-coverage-judge-1794838039",
+    "verdict": "not_covered",
+    "advisory": true,
+    "calibration": "UNTESTED",
+    "signed": false,
+    "source": "design/concepts/Cauldron/coverage_verdict.json",
+    "contract_ok": true,
+    "unchecked": [],
+    "advisory_findings": [
+      {
+        "gap": "g1",
+        "what": "Leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g2",
+        "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits water poisoning, fire-warden retaliation and tracks, which its leaf and scenes test.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g3",
+        "what": "The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g4",
+        "what": "Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g5",
+        "what": "The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g6",
+        "what": "biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g7",
+        "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g8",
+        "what": "The melee-cancellation half of the toggles is observed with no pass condition.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g9",
+        "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, not-opened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g10",
+        "what": "Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g11",
+        "what": "Vexxith door, containers, gear and acid air ship parts no scene exercises.",
+        "proposed_return_to": 3
+      },
+      {
+        "gap": "g12",
+        "what": "Suush ecology and ixalith ship traits no scene asserts.",
+        "proposed_return_to": 3
+      }
+    ]
+  },
+  "checks": {
+    "gate": "REFUSED: no coverage signature",
+    "showcases": "accepted, 5 showcases",
+    "recovery": "no open or held scene recovery",
+    "frozen_artifacts": {
+      "sheet": true,
+      "scenes": true,
+      "floor": true,
+      "exam": true
+    }
+  },
+  "dependency_evidence": [
+    "infrastructure/state/items/RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS.md",
+    "infrastructure/state/judge_calibration.json",
+    "src/RimMandrake/rimflow/coverage_judge.py:705",
+    "src/RimMandrake/rimflow/refusal_contract.py:578"
+  ],
+  "resume_condition": "Complete the existing calibration item with recorded known-good and known-bad cases at the current brief hash, then obtain valid coverage through the launcher. Retain the twelve advisory findings for that independent review."
+}

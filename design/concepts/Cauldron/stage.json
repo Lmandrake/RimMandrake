@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -269,6 +270,18 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designercodex-1794838000 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
+  },
+  {
+   "at": "2026-11-16T14:47:38Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794840444, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T14:50:07Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794840444: stage 5 blocked"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -467,6 +480,28 @@
     "no result.json (a closing message is not a result)",
     "Codex transport failed: no Codex transport result"
    ]
+  },
+  {
+   "at": "2026-11-16T14:50:07Z",
+   "inputs": {
+    "exam": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
+    "floor": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
+    "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
+    "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS",
+   "outcome": "blocked",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794840444",
+   "stage": 5,
+   "summary": "Stage-5 lock is blocked on the existing coverage-judge calibration dependency. The current verdict is advisory because its brief is UNTESTED. The gate refuses with no coverage signature. All twelve findings remain recorded as advisory evidence. A calibrated coverage verdict and the program-recorded signature are required before lock can finish."
   }
  ],
  "runner": "codex",
@@ -541,10 +576,18 @@
    "run": "rm-role-designercodex-1794838000",
    "runner": "codex",
    "usage": "UNMEASURED"
+  },
+  {
+   "run": "rm-role-designercodex-1794840444",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 763844,
+    "output_tokens": 3856
+   }
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready"
+ "status": "blocked"
 }
