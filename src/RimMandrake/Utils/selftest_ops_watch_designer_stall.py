@@ -207,6 +207,55 @@ _routes = json.loads((HERE.parent / "rimflow" / "alarm_routes.json").read_text(e
 import fnmatch  # noqa: E402
 _hit = next((r for r in _routes if fnmatch.fnmatch(KEY, r["match"])), None)
 check("the alarm routes to Operations", bool(_hit) and _hit.get("reader") == "Operations", _hit)
+# RIMMANDRAKE_FIX_DESIGNER_STALL_READING_BLIND_TO_CODEX_LANE (incident queues-20261116013824): the Codex lane's own
+# marks are movement: a live run's files in the runs dir, and a stage its lane landed (a codex concept's history row).
+for _d in list(ROOT.iterdir()):
+    shutil.rmtree(_d)
+RUNS = _TMP / "runs"
+RUNS.mkdir()
+QR = {"queues": [dict(QR["queues"][0], runs_dir=str(RUNS))]}
+
+
+def setrunner(name, runner):
+    f = ROOT / name / "stage.json"
+    st = json.loads(f.read_text())
+    st["runner"] = runner
+    f.write_text(json.dumps(st))
+
+
+def runfile(run, age_min):
+    f = RUNS / (run + ".json.events.jsonl")
+    f.write_text("{}")
+    os.utime(f, (NOW - age_min * 60, NOW - age_min * 60))
+
+
+concept("Forgotten", "ready", 120)
+check("base: a claude concept ready 120 min with no run reads ~120", 119.5 <= stalled()["v"] <= 120.5, stalled())
+concept("CodexRun", "ready", 100, running_min=100)
+_f = json.loads((ROOT / "CodexRun" / "stage.json").read_text())
+_f["running"]["run"] = "rm-role-designercodex-1"
+(ROOT / "CodexRun" / "stage.json").write_text(json.dumps(_f))
+setrunner("CodexRun", "codex")
+runfile("rm-role-designercodex-1", 2)
+check("a live Codex run (its events file touched 2 min ago, open 100 min) reads under the alarm", stalled()["v"] <= 59.5, stalled())
+runfile("rm-role-designercodex-1", 90)
+check("the same run with its files silent 90 min is a stall again, not hidden", stalled()["v"] > 60, stalled())
+shutil.rmtree(ROOT / "CodexRun")
+concept("Lander", "ready", 5)
+setrunner("Lander", "codex")
+check("a stage the Codex lane landed 5 min ago is movement: reads under the alarm, not 120", stalled()["v"] <= 59.5, stalled())
+shutil.rmtree(ROOT / "Lander")
+concept("Lander", "ready", 70)
+setrunner("Lander", "codex")
+check("neither a live run nor a landing inside the hour: still rings (landing 70 min ago reads ~70)", 69.5 <= stalled()["v"] <= 70.5, stalled())
+shutil.rmtree(ROOT / "Lander")
+concept("ClaudeLander", "ready", 5)
+check("a CLAUDE-lane stage landing is not Codex movement: still ~120", 119.5 <= stalled()["v"] <= 120.5, stalled())
+shutil.rmtree(ROOT / "ClaudeLander")
+QR = {"queues": [dict(QR["queues"][0], runs_dir=str(_TMP / "nope"))]}
+concept("CodexRun", "ready", 100, running_min=100)
+setrunner("CodexRun", "codex")
+check("a missing runs dir does not blind the reading (the history marks still read)", stalled()["m"] == "MEASURED", stalled())
 shutil.rmtree(_TMP, ignore_errors=True)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

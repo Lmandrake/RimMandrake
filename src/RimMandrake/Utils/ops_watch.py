@@ -3734,12 +3734,26 @@ def _q_designer(q, now, pcache, cpath):
         root = Path(DS.concepts_root())
     if not root.is_dir():
         raise OSError("concepts dir missing: %s" % root)
-    plist, alist = [], []
+    runs_dir = Path(q.get("runs_dir") or os.path.join(
+        os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"), "roles"))
+    plist, alist, marks = [], [], []
     for f in sorted(root.glob("*/stage.json")):
         with open(f, encoding="utf-8") as fh:
             st = json.load(fh)
         if not isinstance(st, dict):
             raise ValueError("stage.json is not an object: %s" % f)
+        if st.get("runner") == "codex":     # the Codex lane's own marks (queues-20261116013824): a stage it landed ...
+            for h in (st.get("history") or []):
+                t = _iso_epoch(h.get("at")) if isinstance(h, dict) else None
+                if t is not None:
+                    marks.append(t)
+        run_id = (st.get("running") or {}).get("run") if isinstance(st.get("running"), dict) else None
+        if run_id and runs_dir.is_dir():    # ... and a live run's files (events, stderr, spend) in the dispatcher's roles dir
+            for rf_ in runs_dir.glob(glob.escape(str(run_id)) + ".*"):
+                try:
+                    marks.append(rf_.stat().st_mtime)
+                except OSError:
+                    pass
         run_at = _iso_epoch((st.get("running") or {}).get("at")) if isinstance(st.get("running"), dict) else None
         if run_at is not None:
             alist.append(run_at)
@@ -3760,7 +3774,7 @@ def _q_designer(q, now, pcache, cpath):
         if last is None and run_at is None:
             raise ValueError("ready concept with no readable history or run time: %s" % f)
         plist.append(max(t for t in (last, run_at) if t is not None))
-    return plist, alist, []
+    return plist, alist, marks
 
 
 QUEUE_READERS = {"dirs": _q_dirs, "designer_stage": _q_designer}
