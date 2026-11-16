@@ -1,0 +1,10 @@
+steward re-pin of PY_FLOWWORKS_PIT_DRAW_CENSUS at d0d33973116a
+HEAD run (rc 0):
+  listed: Projectile, Gas, Attachment, Mote, Ethereal, PsychicEmitter -- LISTED: in the air or not a standing thing
+  listed: GSS floor cords -- LISTED gap: CordUnderLiquid.Faded keeps the own-alpha fade (no liquid colour)
+PASS
+--base b560ff91e8^ run (rc 1):
+FAIL RETURNED (no ground cord ripples, under liquid or not): GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs  [(?i)ripple]
+FAIL RETURNED (the ground cords' motion kernel has no ripple): GimmeSomeSlack/Source/Core/CordMotion.cs  [(?i)ripple]
+FAIL RETURNED (no floor ripple setting can turn it back on): GimmeSomeSlack/Source/GimmeSomeSlackMod.cs  [floorRipple]
+FAILED (3)

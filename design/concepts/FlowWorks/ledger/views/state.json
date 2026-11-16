@@ -1,12 +1,13 @@
 {
  "_view": {
-  "body_sha256": "af4ba87ca3401acc6cb8dfab09daa2c3c4d65951dbc2f7bf02dec2cc669fec47",
+  "body_sha256": "8122ba2d91971806da86577061d8a1e4692dd4809e65341a6e3aa9625db4ca19",
   "reducer": 1,
   "shards": {
    "BACKFILL": 881268,
    "DISPATCH": 6767,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
+   "HOLDER.run-1794861652": 1928,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "STEWARD": 2597
@@ -1671,7 +1672,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1282,
+  "events": 1287,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -6829,14 +6830,14 @@
      "no_snared_standing"
     ],
     "by": "JUDGE.judge-1794849236",
-    "claim": null,
+    "claim": "re-pinned at d0d33973116a: the route row for the guard GSS b560ff91e8 deleted is now an ABSENT pin (no ripple in the ground-cord path, no floorRipple setting); rc 0 at HEAD, rc 1 at 96941bfa43 and --base b560ff91e8^; evidence design/concepts/FlowWorks/version/blind_challenge/cycle_3/steward_census_repin.txt",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "d0d33973116a56ea96e87153e1d5c95a6893b402",
     "proposed_fix": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py: the steward re-pins the GSS floor-cord row (ripple gone everywhere) instead of the deleted guard",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "PY_FLOWWORKS_PIT_DRAW_CENSUS (recorded PASS 2026-11-16T10:52Z) is red on rerun: ROUTE MISSING GimmeSomeSlack RM_MapComponent_CordGraph.cs CordUnderLiquid.SeenAt(...) >= 1f; GSS b560ff91e8 removed all ground ripple by owner ruling 2026-11-16",
-    "ts": "2026-11-16T19:43:43Z",
+    "ts": "2026-11-16T20:45:15Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER": {
@@ -7797,7 +7798,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T20:41:10Z",
+   "last": "2026-11-16T21:15:26Z",
    "lease": "run-1794861652",
    "released": false,
    "token": 4
@@ -7884,6 +7885,7 @@
    "DISPATCH",
    "HOLDER.run-1794816885",
    "HOLDER.run-1794848129",
+   "HOLDER.run-1794861652",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "STEWARD"
