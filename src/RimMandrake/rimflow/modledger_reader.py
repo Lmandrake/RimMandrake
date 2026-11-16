@@ -20,10 +20,13 @@ import re
 import subprocess
 import time
 
-PROMPT_VERSION = "2026-11-16.1"
+PROMPT_VERSION = "2026-11-16.2"
 LIFECYCLE = {"lease", "claim", "start", "reassign", "needs", "raise", "block", "unblock", "retarget", "spawn",
              "reclaim", "bridge", "game", "seat", "release", "priority", "park", "unpark"}
 EVENT_CAP = 1600
+# a test-queue quarantine or re-queue note is pipeline lifecycle (the round-3 judge, GSS 74): never handed to a reader
+QUARANTINE_RE = re.compile(r"(?i)\bquarantin\w*\b[^.]*?(?:\bre-?queued?\b|\bno verdict\b|\bnot (?:a )?pass)|"
+                           r"\bre-?queued?\b[^.]*\bquarantin")
 PROSE_CAP = 9000
 BATCH_CHARS = 36000
 
@@ -33,7 +36,9 @@ Rules (the ledger's entry standard, rule 10 and its field caps):
 - Facts only, each stated in the record. Never invent a sha, path, number or cause. Never narrate (no "Started",
   "I", "We", "Now"), never write history or provenance ("found by GPT review", "fixed by the blind cycle's fixer",
   "closed at X by Y", "Producer re-plan", "detached run").
-- defect: what is wrong, observable, in one or two sentences (<= 300 chars). For a task ticket, what it must achieve.
+- defect: what is wrong, observable, in one or two sentences (<= 300 chars): the failure MECHANISM the record states
+  (what loops, re-queues, is refused, stranded or misread, and where in the code), never a paraphrase of the title's
+  requirement list. For a task ticket with no defect, what it must achieve.
 - proposed_fix: what to change, concretely (the ticket's Fix: line, spec, or smallest_fix) (<= 300 chars).
 - accept: the acceptance test the ticket FILED: a command and its expected result, or a blind fault's would_pass;
   "none, <reason>" when it filed none (<= 230 chars).
@@ -48,6 +53,11 @@ Rules (the ledger's entry standard, rule 10 and its field caps):
 - traps: what a reader would otherwise get wrong (an instrument green for the wrong reason, a sha that no longer
   resolves, a test that reads less than it claims, a misleading name or setting): {"text": the mistake and the truth
   (<= 300), "where": the path, row or instrument (<= 150)}.
+- Never state a judgement the record does not state ("the pass is weaker than it reads"): a text cut mid-sentence
+  is read for what it says, never for what its cut seems to imply.
+- A card's QUESTION (the part before "→") is the premise he was asked about, never a fact: mine his answer, not it.
+- A trap or limit ("cannot", "until X", "no X exists") is mined only when no later event in the record says it was
+  done, reworded or lifted.
 - The owner's words that only order work (scheduling, reassigning, stopping, pausing) are not facts about the mod.
 Answer with ONE JSON object and nothing else: {"<TICKET_ID>": {"defect": ..., "proposed_fix": ..., "accept": ...,
 "class": ..., "bars": [...], "changed": ... or null, "causes_refuted": [...], "traps": [...]}, ...} with one key per
@@ -73,6 +83,22 @@ ruled out. DROP only: agent workflow trivia (which helper, branch, clone, queue 
 certify, how screenshots were captured, design-process rules for agents), bare status lines (UNRUN, still owed, not yet \
 built, waits for X) that hold no reading a holder could get wrong, and restatements of the ticket's own defect or fix. \
 When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [kept numbers]}, one key per ticket."""
+
+
+CURRENT_SYSTEM = """You check whether old warnings about a software mod are still true. For each ticket you get its \
+title and its limit warnings, numbered, each with the date it was stated and the LATER work that may have lifted it \
+(commits on the main branch, closes of other tickets, each with its date). Return the numbers of the warnings that the \
+later work plainly lifted: the thing said impossible, missing or blocked was done, added, staged, reworded or unblocked. \
+Keep (leave out of your answer) a warning the later work only mentions, works around for one run, restates, or does \
+not clearly address, and every permanent fact about how a tool or instrument behaves. When unsure, keep. Answer with \
+ONE JSON object and nothing else: {"<TICKET_ID>": [lifted numbers]}, one key per ticket (an empty list when none)."""
+
+
+def current_text(name, title, items):
+    """One ticket's limit traps as the currency reader sees them: [n] (stated <date>) text, then its later work."""
+    return "=== CURRENT %s\nTITLE: %s\n%s" % (name, title or "-", "\n".join(
+        "[%d] (stated %s) %s\n%s" % (i + 1, str(t0)[:10] or "?", " ".join(str(t).split()), "\n".join(
+            "    later: " + " ".join(str(c).split()) for c in cs)) for i, (t0, t, cs) in enumerate(items)))
 
 
 def keep_text(name, title, defect, items):
@@ -108,8 +134,10 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
         k = e.get("event")
         if k in LIFECYCLE:
             continue
-        body = {f: e.get(f) for f in ("title", "text", "why", "reason", "noCode", "config", "result", "sha", "criteria",
-                                      "ownerSaid", "byCard", "live", "by") if e.get(f)}
+        if QUARANTINE_RE.search(str(e.get("text") or "")):
+            continue
+        body = {f: e.get(f) for f in ("title", "spec", "text", "why", "reason", "noCode", "config", "result", "sha",
+                                      "criteria", "ownerSaid", "byCard", "live", "by") if e.get(f)}
         if not body:
             continue
         lines.append("[%s %s %s] %s" % (k, e.get("seat"), str(e.get("ts") or "")[:10],
@@ -119,7 +147,8 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
     return "\n".join(out)
 
 
-FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2"}
+FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2",
+                 "current": "current-2026-11-16.1"}
 
 
 def rec_hash(text, field="reading"):

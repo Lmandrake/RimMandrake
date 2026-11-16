@@ -648,6 +648,9 @@ def fake_call(prompt, model, system=None):
 
 
 R.CALL = fake_call
+# this fake reader answers with words its fixture records never state ('Reading: T_GEOM reads seven scenes only'): the
+# round-3 grounding rule would leave them all out, so it is off here and tested in selftest_modledger_round4.py
+B.GROUND_MIN = 0.0
 _lines = lambda: {json.loads(l)["id"]: l for l in open(oldp, encoding="utf-8") if l.strip()}
 pre_ = _lines()
 rr = B.run(root, MOD, read=True, budget_usd=0.6)
