@@ -322,6 +322,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/capture_card_answer.py\" 2>/dev/null || true",
+            "timeout": 30
+          }
+        ]
       }
     ]
   },

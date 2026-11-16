@@ -14,6 +14,9 @@ Line shape:  2026-10-24 19:08Z  said  ITEM_ID  "his words"   (`card` = a decisio
 The date is when the words were RECORDED on the ledger; an agent relaying older words records
 them late, so the date is never later than the truth but may be later than the saying.
 Identical words on several events print once, at their FIRST date.
+A card's whole text (the `card` field: question, picked option's description, his words, other options;
+RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART) prints under its line and is searched by --grep, so a promise
+made only in an option's description ("needs bigger art") is found.
 """
 import argparse
 import glob
@@ -21,6 +24,9 @@ import json
 import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import card_capture  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 EVENTS = os.path.join(REPO, "infrastructure", "state", "ledger", "events")
@@ -53,14 +59,22 @@ def rulings(events_dir=EVENTS):
                         continue
                     key = (kind, norm(words))
                     row = {"ts": ts, "kind": kind, "id": e.get("id") or e.get("event") or "-",
-                           "words": norm(words)}
+                           "words": norm(words), "card": ""}
+                    if kind == "card" and isinstance(e.get("card"), dict):
+                        row["card"] = card_capture.flatten(e["card"])
                     if key not in seen or ts < seen[key]["ts"]:
+                        row["card"] = row["card"] or (seen.get(key) or {}).get("card", "")
                         seen[key] = row
+                    elif row["card"] and not seen[key]["card"]:
+                        seen[key]["card"] = row["card"]     # a later relay (or the backfill) carried the whole card
     return sorted(seen.values(), key=lambda r: (r["ts"], r["id"]))
 
 
 def fmt(r):
-    return f'{r["ts"][:10]} {r["ts"][11:16]}Z  {r["kind"]}  {r["id"]}  "{r["words"]}"'
+    line = f'{r["ts"][:10]} {r["ts"][11:16]}Z  {r["kind"]}  {r["id"]}  "{r["words"]}"'
+    if r.get("card"):
+        line += "\n    " + r["card"].replace("\n", "\n    ")
+    return line
 
 
 def main(argv=None):
@@ -85,7 +99,7 @@ def main(argv=None):
         rows = [r for r in rows if r["ts"][:10] >= a.since]
     if a.grep:
         rx = re.compile(a.grep, re.I)
-        rows = [r for r in rows if rx.search(r["words"]) or rx.search(r["id"])]
+        rows = [r for r in rows if rx.search(r["words"]) or rx.search(r["id"]) or rx.search(r.get("card") or "")]
     if a.last:
         rows = rows[-a.last:]
     for r in rows:

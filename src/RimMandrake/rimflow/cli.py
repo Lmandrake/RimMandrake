@@ -210,7 +210,7 @@ def _stamp_owner_and_override(ev):
             "✅ Acting as OWNER on his instruction, recorded on the event:\n"
             "     “%s”\n" % said)
     for attr, field in (("BY_CARD", "byCard"), ("PER_RULING", "perRuling"),
-                        ("AGENT_WHY", "why")):
+                        ("AGENT_WHY", "why"), ("BY_CARD_FULL", "card")):
         val = getattr(model, attr, "")
         if val and field not in ev:
             ev[field] = val
@@ -351,6 +351,12 @@ def _write_one(ev):
         model.append(ev)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
+    if isinstance(ev.get("card"), dict) and ev.get("event") in ("file", "note") and ev.get("id"):
+        # the card's whole text into the item's prose (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART)
+        import card_capture
+        wrote = card_capture.append_prose(model.ITEMS, ev["id"], ev["card"], ev["event"], ev.get("seat", "?"))
+        if wrote:
+            print("items/%s.md: added \"%s\" (commit it with the shard)" % (ev["id"], card_capture.HEADING[3:]))
     if ev.get("event") != "bridge":     # here, not in `_emit`: a lease group's writes are the holder working too
         model.touch_shared_bridge(ev.get("seat"))
     return ev
@@ -1928,6 +1934,25 @@ def cmd_file(args, seat):
     return 0
 
 
+def _card_owed_or_die(args, evs):
+    """A consequence a card's picked option states ("needs bigger art") is work owed: the close's words must name each
+    one, saying where it was done or filed (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART)."""
+    import card_capture
+    cards = card_capture.item_cards(args.id, evs=evs)
+    if not cards:
+        return
+    said = " ".join(x for x in (model.AGENT_WHY, model.OWNER_SAID, model.BY_CARD, getattr(args, "no_code", None) or "") if x)
+    missing = card_capture.close_missing(said, cards)
+    if missing:
+        die("close refused: %s was decided by card, and the card's picked option states work this close does not "
+            "account for:\n%s\n\nPath to pass: name each one in the close's words, with where it was done or filed, e.g.\n"
+            "    --why \"%s: done in <path or sha> | filed <ITEM_ID>\"\n"
+            "The card's whole text: python3 src/RimMandrake/rimflow/card_capture.py show %s\n"
+            "Not built (and not yours to waive)? Leave the item open with a `LEFT OPEN:` note saying so."
+            % (args.id, "\n".join("  - " + m for m in missing),
+               re.sub(r"^needs\s+(to\s+)?", "", missing[0]), args.id))
+
+
 def _move_prose_to_closed(iid):
     """After `iid` goes terminal, move its live prose to `items/closed/` if any
     exists there — so `items/*.md` stays the LIVE glob CHARTER.md documents
@@ -2578,7 +2603,8 @@ def _close_gate(args, it, sha, no_code):
 
 
 def cmd_close(args, seat):
-    _, w = load()
+    evs, w = load()
+    _card_owed_or_die(args, evs)
     no_code = (args.no_code or "").strip()
     if args.no_code is not None and not no_code:
         die("close: --no-code needs the words: what was finished that no commit shows.")
@@ -4241,7 +4267,10 @@ def build_parser():
                         metavar="\"question → picked option\"",
                         help="act as OWNER on a decision he took by question card. The "
                              "option label is OUR text, so it goes here, not in "
-                             "--owner-said (his typed notes may still go there).")
+                             "--owner-said (his typed notes may still go there). The "
+                             "WHOLE card (question, picked option's description, other "
+                             "options) is found in the card store and stamped as `card`; "
+                             "a bare --by-card takes the card answered last.")
     common.add_argument("--per-ruling", dest="per_ruling", metavar="<item-id|event>",
                         help="act as OWNER under a standing ruling of his, cited by its "
                              "item id or ledger event (tsn) instead of re-quoting it. A "
@@ -4712,6 +4741,8 @@ def _resolve_command_seat(args):
             "quote. %r has spaces or punctuation in it." % per_ruling[:80])
     if per_ruling:
         _check_per_ruling(per_ruling)
+    if getattr(args, "by_card", None) is not None:
+        by_card = _find_card(by_card)
     model.BY_CARD, model.PER_RULING = by_card, per_ruling
     # ⛔ AN EMPTY QUOTE IS NOT "NO QUOTE". `--owner-said ""` (or a shell that expanded a
     # variable to nothing) used to fall straight through to ordinary seat resolution:
@@ -4746,6 +4777,31 @@ def _resolve_command_seat(args):
         seat = model.canonical(seat.strip().upper())
         return seat if seat in model.SEATS else "BUILD"
     return resolve_seat(getattr(args, "seat", None))
+
+
+def _find_card(by_card):
+    """The answered card a --by-card relays, found in the host's card store or this repo's recent transcripts and set on
+    model.BY_CARD_FULL, so the event carries the picked option's DESCRIPTION, not just our label
+    (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: "needs bigger art" lived only there and was lost).
+    A bare --by-card takes the card answered last, and its summary becomes the text. -> the byCard text to record."""
+    import card_capture
+    try:
+        card = card_capture.find(by_card, session=os.environ.get("CLAUDE_CODE_SESSION_ID", ""))
+    except Exception as e:  # noqa: BLE001
+        card, why = None, "%s: %s" % (type(e).__name__, e)
+    else:
+        why = "store %s and this repo's recent transcripts" % os.environ.get("RM_CARDS_STORE", "<agent storage>/cards")
+    if not card:
+        sys.stderr.write("⚠️  --by-card: no answered card matched %r (searched %s). The event records only this text; "
+                         "if the picked option had a description, quote it in --why or the item's prose.\n"
+                         % (by_card[:80], why))
+        return by_card
+    model.BY_CARD_FULL = card
+    if card_capture.norm(by_card) in ("", "yes"):
+        by_card = "; ".join("%s → %s" % (q.get("header") or q.get("question", "")[:80],
+                                         ", ".join(o.get("label", "") for o in q.get("picked") or []) or q.get("answer", ""))
+                            for q in card.get("questions") or [])
+    return by_card
 
 
 def _relentless_guard(args, argv):

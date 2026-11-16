@@ -159,6 +159,12 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    `--per-ruling`), then propagate it (`deciding-and-superseding`) or file the propagation as an item; an
    instruction → a ticket for the right seat (`rimflow namecheck`, `rimflow spawn --for …`) or a schedule-change
    proposal; game-state words → `./game --said`; a canon line → `canon.yml`.
+   🔴 **A card answer travels WHOLE** (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: a picked option's
+   description said "needs bigger art"; the label alone reached the ledger, the brief retold it from memory, no art was
+   made). `--by-card` (bare = the card just answered) stamps the whole card from the card store: question, picked
+   option's description, his words, the other options; the item's prose gets `## What the card said`. A brief for a
+   by-card item pastes the picked description verbatim (`card_capture.py show <ID>` prints it; `detached_helper.py
+   launch` refuses without it), and each "needs X" it states is work owed that the builder's close names.
    An incident rung to you (a `DISPATCHER ESCALATION (incident:<id>)` line in your log, or `rimflow incidents`): take it with
    `rimflow ack <id> --plan "<next>"`, or it goes on to a fresh Operations run and then him. Reading it is not an ack.
 3. **The scheduled check** (no message needed): (a) pending enact items from his rulings: each one has a builder

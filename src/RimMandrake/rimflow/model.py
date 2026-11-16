@@ -876,8 +876,10 @@ def now():
 # `session` (WRAPUP_CLAIMS_FIX_ROBOT_BLAMED_ON_WINDOW): the Claude Code session that wrote a `claim`/`start`, stamped by
 # cli._stamp_session from CLAUDE_CODE_SESSION_ID (never in a Relentless process). The wrap-up's session census counts
 # a window's claims by it, not by seat: the Conductor's windows and the Relentless supervisor share the BENCH key.
+# `card` (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART): the whole answered card a `--by-card` relays (question,
+# picked label AND description, his words, the other labels), stamped by cli from card_capture; `byCard` stays the summary.
 UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
-                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands", "session")
+                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands", "session", "card")
 
 
 def _check_verb(ev):
@@ -2010,6 +2012,7 @@ OVERRIDE_NOTICES = []
 OWNER_SAID = ""
 # The other three provenance fields, set by the CLI's `--by-card`, `--per-ruling` and `--why`.
 BY_CARD = ""
+BY_CARD_FULL = None     # the matched card (card_capture.match), stamped as `card`
 PER_RULING = ""
 AGENT_WHY = ""
 

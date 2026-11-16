@@ -587,6 +587,34 @@ def launch_argv(rec, msg, claude):
             "--setenv", "PATH=" + path, "--"] + cmd
 
 
+def card_refusal(item, brief, events_dir=None):
+    """-> None, or the refusal for a brief on a by-card item that lacks a picked option's description verbatim
+    (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: "needs bigger art" was retold from memory as "check if the
+    sprite is blurry", and no art was made). Whitespace and quote style aside, the description must be in the brief."""
+    import card_capture
+    cards = card_capture.item_cards(item, events_dir=events_dir or os.path.join(REPO, EVENTS_REL))
+    missing = card_capture.brief_missing(brief, cards)
+    if not missing:
+        return None
+    return ("refused: %s was decided by card, and the brief does not carry the picked option's description verbatim:\n%s\n"
+            "Smallest fix: paste it into the brief, word for word (e.g. under \"What the card said\"); the card's whole "
+            "text: python3 src/RimMandrake/rimflow/card_capture.py show %s"
+            % (item, "\n".join("  \u00ab%s\u00bb" % d for d in missing), item))
+
+
+def card_footer(item, events_dir=None):
+    """-> the footer lines naming each consequence the item's cards state ("needs X"): work owed at close. "" if none."""
+    import card_capture
+    owed = []
+    for c in card_capture.item_cards(item, events_dir=events_dir or os.path.join(REPO, EVENTS_REL)):
+        owed += [x for x in card_capture.consequences(c) if x not in owed]
+    if not owed:
+        return ""
+    return ("- This item was decided by card, and the picked option states work owed: %s. Each is yours to do or to file;"
+            " your close's --why must name where each was done or filed (`rimflow close` refuses otherwise).\n"
+            % "; ".join(owed))
+
+
 def parse_max_s(v):
     """None, 0, "", "none", "0" -> None (unbounded); else whole seconds (ValueError on junk)."""
     if v is None or str(v).strip().lower() in ("", "none", "0", "infinity", "unbounded"):
@@ -594,7 +622,8 @@ def parse_max_s(v):
     return int(v)
 
 
-def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep):
+def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
+           events_dir=None):
     """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     a clone another run still holds (after waiting for one that is being given back)."""
     now = now or time.time()
@@ -604,6 +633,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         return 2, "refused: model %r is not one of %s" % (model, ", ".join(MODELS))
     if not (brief or "").strip():
         return 2, "refused: empty brief"
+    carded = card_refusal(item, brief, events_dir)     # a by-card item's brief carries the card's own words
+    if carded:
+        return 2, carded
     max_s = parse_max_s(max_s)
     if max_s is not None and max_s < MIN_MAX_S:
         return 2, "refused: --max-s %d is under %d (use none for no limit)" % (max_s, MIN_MAX_S)
@@ -642,6 +674,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
                                          bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound", budget="%g" % budget)
+    msg += card_footer(item)
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)
