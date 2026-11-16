@@ -16,6 +16,7 @@ import role_launch as RL
 import designer_stage as DS
 import relentless as R
 import relentless_usage as RU
+import maturation_autonomy as MA
 
 
 def meter(used=50):
@@ -218,6 +219,23 @@ class CodexRunnerTests(unittest.TestCase):
             self.assertIsNone(DS.helper_line(dict(st, stage=3)))
             self.assertIsNone(DS.helper_line(dict(st, stage=4, runner="claude")))
             self.assertIsNone(DS.helper_line({"stage": 4}))
+
+
+    def test_maturation_sees_the_codex_lane(self):
+        """The pipeline's Designer reading sees a DesignerCodex run live on its concept (it read only the Claude lane
+        and called LeaningScrub's live Codex run 'waiting on nothing running', 2026-11-15 17:14 PST)."""
+        import doorbell
+        with tempfile.TemporaryDirectory() as d:
+            line = lambda role, unit, mod: json.dumps({"blind": {"outcome": "launched", "role": role, "unit": unit},
+                                                       "concept": "/x/design/concepts/" + mod, "do": "role_launch"})
+            Path(d, "journal.jsonl").write_text("\n".join([line("Designer", "u-claude", "Other"),
+                                                           line("DesignerCodex", "u-codex", "M"),
+                                                           line("Designerish", "u-bad", "Z")]) + "\n")
+            active = lambda argv, **kw: subprocess.CompletedProcess(argv, 0, "active\ninactive\n", "")
+            with patch.object(doorbell, "state_dir", return_value=d), patch.object(MA.subprocess, "run", side_effect=active):
+                self.assertEqual(MA.designer_unit("M"), "u-codex")
+                self.assertNotEqual(MA.designer_unit("Z"), "u-bad")      # not a Designer lane
+                self.assertIn("the Designer slot", MA.designer_unit("Nobody"))
 
 
 if __name__ == "__main__":

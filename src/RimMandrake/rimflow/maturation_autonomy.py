@@ -181,6 +181,11 @@ def designer_state(root, mod):
     return st
 
 
+# The Designer's Dispatcher lanes: Claude's and Codex's (dispatcher_schedule.json, item
+# RIMMANDRAKE_DRAFT_BIOME_DESIGNER_PASSES_WITH_CODEX_BEFORE_RESET); a reader of one lane alone calls a Codex run "nothing".
+DESIGNER_ROLES = ("Designer", "DesignerCodex")
+
+
 def designer_unit(mod, tail=600):
     """-> the Dispatcher's Designer role unit live on this concept, or None: the newest Designer launch for
     design/concepts/<mod> in the Dispatcher's journal, if systemd says it is active."""
@@ -192,11 +197,13 @@ def designer_unit(mod, tail=600):
         return None
     seen, other = set(), None
     for ln in reversed(lines):
-        if '"Designer"' not in ln or '"launched"' not in ln:
+        if '"Designer' not in ln or '"launched"' not in ln:
             continue
         try:
             e = json.loads(ln)
         except ValueError:
+            continue
+        if (e.get("blind") or {}).get("role") not in DESIGNER_ROLES:
             continue
         unit, concept = (e.get("blind") or {}).get("unit"), os.path.basename(str(e.get("concept") or ""))
         if not unit or unit in seen:
@@ -219,7 +226,7 @@ def designer_chain(mod, now):
         import doorbell
         import role_launch as RL
         with open(os.path.join(doorbell.state_dir(), "state.json"), encoding="utf-8") as f:
-            rs = ((json.load(f).get("roles") or {}).get("Designer")) or {}
+            allrs = json.load(f).get("roles") or {}
         with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
             sched = json.load(f)
     except (OSError, ValueError, ImportError, AttributeError):
@@ -227,6 +234,13 @@ def designer_chain(mod, now):
     roles = sched.get("roles", sched) if isinstance(sched, dict) else sched
     cap = next((r.get("chain_max_per_day") for r in roles or [] if isinstance(r, dict) and r.get("name") == "Designer"),
                None)
+    lanes = [allrs.get(n) or {} for n in DESIGNER_ROLES]
+    rs = {"chain_day": {}, "chain_cap_said": []}
+    for lane in lanes:
+        for k, v in (lane.get("chain_day") or {}).items():
+            if isinstance(v, int):
+                rs["chain_day"][k] = rs["chain_day"].get(k, 0) + v
+        rs["chain_cap_said"] += list(lane.get("chain_cap_said") or [])
     cap = cap if isinstance(cap, int) and not isinstance(cap, bool) else RL.CHAIN_MAX_PER_DAY
     day = RL.day_of(now)
     n = sum(v for k, v in (rs.get("chain_day") or {}).items() if isinstance(v, int) and str(k).startswith(day + " ")
