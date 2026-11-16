@@ -6,8 +6,8 @@
   "exam_waived": null,
   "waived": [],
   "advisory": [
-    "Numeric floor targets uncalibrated/advisory. 120-day claim /120–600-day range, two wood-equivalent fuel units/cane, 1.25 heat-rate factor and 15-day regrowth are agent tuning, not owner quotations.",
-    "Existing north star is a DRAFT visual backlink, not certified owner words. Adopted root CONDUCTOR:1794792677711573340; exam, signature, live acceptance and Lock first-touch certification remain pending."
+    "Numeric floor targets remain uncalibrated/advisory. Initial claim 120 days/range 120–600, cane 2 wood-equivalent units/1.25 heat, arm regrowth 15 days and healing rates are agent tuning, not owner quotations.",
+    "Corrected six-family canonical bar validated by OWNER:1794835478275153823; preserve delegated root sentence CONDUCTOR:1794792677711573340. Tree rewrite invalidates the prior exam. Fresh exam, coverage signature, live acceptance and owner Lock first-touch certification remain pending."
   ],
   "leaves": [
     {
@@ -19,7 +19,7 @@
       "leaf_kind": "instrument",
       "clause_kind": "change",
       "experience": "The tester reconstructs automatic/ordered trips including stale tokens; trace agrees with independent cells/IDs.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Known safe/hazard route, deliberate token, independent IDs/ticks. Trace production job start/cancel/finish, cells, recalculation, tokens/growth/damage and saved links.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Known safe/hazard route, deliberate token, independent IDs/ticks. Trace production job start/cancel/finish, cells, recalculation, tokens/growth/damage and saved links.",
       "false_pass": [
         "Only endpoints hide the dangerous middle."
       ],
@@ -37,7 +37,7 @@
       "leaf_kind": "instrument",
       "clause_kind": "change",
       "experience": "The tester distinguishes witnessed/trailed/guessed/lost makers; replay preserves ages/IDs without display granting knowledge.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Known maker/witness/trail stream, two IDs, production perception and geometry. Trace act, perceptions, evidence edges, continuity/target changes/expiry and reload without mutating AI.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Known maker/witness/trail stream, two IDs, production perception and geometry. Trace act, perceptions, evidence edges, continuity/target changes/expiry and reload without mutating AI.",
       "false_pass": [
         "Debug display injects omniscient target and proves it knows the maker."
       ],
@@ -55,7 +55,7 @@
       "leaf_kind": "instrument",
       "clause_kind": "change",
       "experience": "The tester can account once for resources consumed/held/paid and time; missing/duplicate objects or reset clocks fail specifically.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Known input/output and held IDs, claims/coats/arms/bank including fractions and due ticks. Observe production counts/ownership/clocks before/after jobs, compressed boundaries and reload without modifying them.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Known input/output and held IDs, claims/coats/arms/bank including fractions and due ticks. Observe production counts/ownership/clocks before/after jobs, compressed boundaries and reload without modifying them.",
       "false_pass": [
         "Replacement items or clock writes hide lost saved claims."
       ],
@@ -72,15 +72,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The player sees ground cover face one consistent heading across reload and ordinary days retain wind. Trees and vine forms are outside this mirroring roster. The plain reads as fuzz and scrub, not opposing random lean or still vanilla grass.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Real Scrub tile, sun-derived heading, seven configured leanPlants and all effective texture variants; non-Scrub control. View variants at ordinary colony zoom in steady wind, fog and three windy twins; reload the same tile.",
+      "experience": "The tester measures the production heading within 0.1 degree of independent geometry on both different-bearing tiles; maps of the same tile and reload agree. Normal-zoom plant facings match the expected east/west snap including the documented east tie, with one shared visual lean per map. Stabilized Stall wind is zero, ordinary/twin values match their configured offsets/factors and remain positive, and Gale exceeds RM_ScrubWind at the same raw input. The effective Scrub table has zero/absent Overcast, GrayPall and DryThunderstorm rows and positive corresponding twins (5, 1 and 1 before eligibility weighting); non-Scrub retains its stock rows. Numeric checks cannot substitute for visible lean.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Real Scrub tile, sun-derived heading, seven configured leanPlants and all effective texture variants; non-Scrub control. Two Scrub tiles with nondegenerate different tile-to-substellar bearings, chosen on opposite east/west sides of the substellar meridian; two independently generated maps of the first tile plus its same-save reload. Capture tile latitude/longitude and configured substellar coordinates. Freeze loaded weather factors/offsets: RM_ScrubWind 0.5 offset; RM_ScrubWindFog 0.4; RM_ScrubOvercast 0.5; RM_ScrubGrayPall 0.4; RM_ScrubDryThunderstorm factor 1.5/offset 1.25; RM_Stall factor 0; RM_Gale factor 1.5/offset 1.5. Capture raw wind, transition blend and effective weather table. Non-Scrub control uses each stock weather in a biome/table where its eligibility gates permit it. View all configured plant/texture variants at ordinary colony zoom in steady wind, fog, each of the three windy twins, Stall and Gale. Read live wind after transition stabilization against the loaded engine wind transform with matched raw wind input. Read the effective Scrub and matched non-Scrub weather tables. Independently calculate spherical initial bearing from the captured tile coordinates to the configured substellar point, convert clockwise-from-north bearing to east-based heading (90 minus bearing modulo 360), and compare to the production map heading on both tiles and both first-tile maps and reload. Verify each texture mirrors to its authored east/west side closest to that heading; the picture is snapped to a side, not a continuously rotated plant.",
       "false_pass": [
-        "A wind-speed number passes graphics leaning opposite ways."
+        "A stable but wrong global heading, random mirror selection, or weather-table text without actual wind is called a correct leaning wind plain."
       ],
-      "red": "A build where a wind-speed number passes graphics leaning opposite ways.",
+      "red": "A build where a stable but wrong global heading, random mirror selection, or weather-table text without actual wind is called a correct leaning wind plain.",
       "tier_proposed": "live_minimal",
       "owner_part": "yes: shared lean and windy ordinary days",
-      "oracle_proposed": "sc_wind_plain: The player sees ground cover face one consistent heading across reload and ordinary days retain wind. Trees and vine forms are outside this mirroring roster. The plain reads as fuzz and scrub, not opposing random lean or still vanilla grass. Control: Forced facing ceases; ordinary weather wind offsets remain.",
+      "oracle_proposed": "sc_wind_plain: The tester measures the production heading within 0.1 degree of independent geometry on both different-bearing tiles; maps of the same tile and reload agree. Normal-zoom plant facings match the expected east/west snap including the documented east tie, with one shared visual lean per map. Stabilized Stall wind is zero, ordinary/twin values match their configured offsets/factors and remain positive, and Gale exceeds RM_ScrubWind at the same raw input. The effective Scrub table has zero/absent Overcast, GrayPall and DryThunderstorm rows and positive corresponding twins (5, 1 and 1 before eligibility weighting); non-Scrub retains its stock rows. Numeric checks cannot substitute for visible lean. Control: Forced plant facing ceases without changing weather offsets. Stock weather remains selectable where eligible outside Scrub; twins do not globally replace it. Constant or reversed headings fail the independent two-tile check.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -91,15 +91,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: RM_Gale, both effective owned overlay textures, shared heading and readable ground landmarks. Capture a motion sequence in Gale, overlay off/on and return to normal weather at same zoom.",
+      "experience": "The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay. With neither owned texture resolved the material is a private copy of vanilla fog, ArtState reports PLACEHOLDER (vanilla fog sheet), and no error is logged; positive and one-texture arms bind exactly the resolved owned textures. This offline/material arm does not accept the separate live motion requirement.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: RM_Gale, both effective owned overlay textures, shared heading and readable ground landmarks. Separate isolated material-loader fixtures execute the production BuildMaterial initialization with both A/B resolved, A-only, B-only and neither resolved; vanilla Weather/FogOverlayWorld is available. Asset resolution is fixture-local; do not rename/delete installed art or mutate the running session. Capture a motion sequence in Gale, overlay off/on and return to normal weather at same zoom. Run each isolated production material-load arm, recording material/shader/texture bindings, ArtState and logs; verify the original vanilla material remains untouched.",
       "false_pass": [
         "A loaded-overlay flag passes a motionless fog sheet."
       ],
       "red": "A build where a loaded-overlay flag passes a motionless fog sheet.",
       "tier_proposed": "live_minimal",
       "owner_part": "yes: gale shows driven dust and fuzz",
-      "oracle_proposed": "sc_gale_drawing: The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay. Control: Driven owned overlay is absent while Gale stays active.",
+      "oracle_proposed": "sc_gale_drawing: The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay. With neither owned texture resolved the material is a private copy of vanilla fog, ArtState reports PLACEHOLDER (vanilla fog sheet), and no error is logged; positive and one-texture arms bind exactly the resolved owned textures. This offline/material arm does not accept the separate live motion requirement. Control: Driven owned overlay is absent while Gale stays active. Both loader regressions are rejected by the fallback/copy checks.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -110,15 +110,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The player hears ordinary wind/insect beds, a discernible Stall quiet and returning wind without stuck or doubled loops.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Known mixer volume, ordinary day/night ambient defs and other sound sources; capture audio. Listen across ordinary day/night wind, Stall, Gale and return.",
+      "experience": "The player hears the appropriate wind bed and day/night insect bed in both ordinary steady wind and wind-fog, quieter Stall, and returning wind without stuck/doubled loops. No audio pass is inferred from a SoundDef or screenshot.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Known mixer volume, ordinary day/night ambient defs and other sound sources; capture audio. Include RM_ScrubWindFog at day and night, Ambient_Wind_Fog and the effective day/night jungle-insect beds; preserve normal mixer levels. Listen/capture across RM_ScrubWind day/night, RM_ScrubWindFog day/night, Stall, Gale and return to each ordinary weather; record transitions after settling.",
       "false_pass": [
         "SoundDef names pass inaudible or continuously stuck ambience."
       ],
       "red": "A build where soundDef names pass inaudible or continuously stuck ambience.",
       "tier_proposed": "live_minimal",
       "owner_part": "yes: wind and wildlife beds quiet in stall",
-      "oracle_proposed": "sc_wind_audio: The player hears ordinary wind/insect beds, a discernible Stall quiet and returning wind without stuck or doubled loops. Control: Target beds disappear in muted control and return audibly.",
+      "oracle_proposed": "sc_wind_audio: The player hears the appropriate wind bed and day/night insect bed in both ordinary steady wind and wind-fog, quieter Stall, and returning wind without stuck/doubled loops. No audio pass is inferred from a SoundDef or screenshot. Control: Target beds disappear in muted control and return audibly.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -130,7 +130,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer reads supplied load, stored energy and Gale output ratio matching the configured factor within meter precision; eligible breakdown and completed repair are separately attributed. Useful wind does not promise uninterrupted electricity.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Owned unbroken working turbine, clear exclusion area, positive baseline, connected battery/load, actual surge factor and MTB. Use ordinary wind/Gale, off/on surge and one seeded compressed breakdown opportunity; repair with a real job.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Owned unbroken working turbine, clear exclusion area, positive baseline, connected battery/load, actual surge factor and MTB. Use ordinary wind/Gale, off/on surge and one seeded compressed breakdown opportunity; repair with a real job.",
       "false_pass": [
         "A disconnected inspect number passes usable electricity."
       ],
@@ -149,7 +149,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees unroofed living non-mechanoids gain RM_GaleDeafened and reduced hearing/speech, then recover.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Healthy organic actors outdoors/roofed and mechanoid outdoors; no prior Gale hediff. Enter Gale, sample through one application interval, leave and observe expiry.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Healthy organic actors outdoors/roofed and mechanoid outdoors; no prior Gale hediff. Enter Gale, sample through one application interval, leave and observe expiry.",
       "false_pass": [
         "Heatstroke or an old hearing injury passes Gale exposure."
       ],
@@ -168,7 +168,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The reader sees enemy raid weight multiplied by galeRaidWeightFactor only in enabled Gale, other weights unchanged and no extra incident scheduled. A raid is not guaranteed.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Production hook with enemy-raid and two non-raid workers and equal input weights. Evaluate Gale/non-Gale and enabled/disabled production arms.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Production hook with enemy-raid and two non-raid workers and equal input weights. Assert actual loaded Harmony target binding and read IncidentWorker.ChanceFactorNow for the declared workers. No raid or extra incident is triggered. Evaluate Gale/non-Gale and enabled/disabled production arms.",
       "false_pass": [
         "A debug raid proves a weight multiplier."
       ],
@@ -187,7 +187,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees eligible wild non-predators choose attributed scent flee for an upwind in-range person.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Wild non-predator without current flee/mental state; person, measured heading/range and predator/tame controls. Move person upwind, downwind and out of range in reset lanes; observe production jobs.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Wild non-predator without current flee/mental state; person, measured heading/range and predator/tame controls. Move person upwind, downwind and out of range in reset lanes; observe production jobs.",
       "false_pass": [
         "An unrelated Flee job passes directional scent."
       ],
@@ -206,7 +206,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees real downwind ignition and directional attempt counts agreeing with production bias, not a lucky single fire.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Identical fuel around isolated fires; heading known, stampers/quench excluded. Record 64 fixed-seed eligible production spread opportunities on/off, direction and actual ignitions.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Identical fuel around isolated fires; heading known, stampers/quench excluded. Record 64 fixed-seed eligible production spread opportunities on/off, direction and actual ignitions.",
       "false_pass": [
         "Downwind-only fuel passes directional spread."
       ],
@@ -226,7 +226,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "At ordinary zoom the observer sees eligible small wanderers wait in Stall while larger animals and higher-priority jobs remain active, then normal wandering returns.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Fed wild idle small and large cohorts; one higher-priority feeding/flee job; readable job origins. Normal to Stall and back, 600-tick samples per arm.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Fed wild idle small and large cohorts; one higher-priority feeding/flee job; readable job origins. Normal to Stall and back, 600-tick samples per arm.",
       "false_pass": [
         "Blocked animals pass Stall freezing."
       ],
@@ -245,7 +245,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees shimmer when ripple hides an animal and target selection agrees; moving in Stall reveals it, Gale extends size range, and active crust swimmers/mental-state actors are not double-hidden.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Marked/bare lanes, small wild animals including Ribbonwhip, Gale-expanded size, tame/downed/mental-state controls and target probe. Move/stop animals in normal wind, Gale and Stall; attempt genuine targeting and capture ordinary zoom.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Marked/bare lanes, small wild animals including Ribbonwhip, Gale-expanded size, tame/downed/mental-state controls and target probe. Move/stop animals in normal wind, Gale and Stall; attempt genuine targeting and capture ordinary zoom.",
       "false_pass": [
         "A hediff passes absent shimmer or still-targetable wildlife."
       ],
@@ -264,7 +264,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees local loss of moving concealment in lee and return beyond it; stationary animal obeys Stall-like logic.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Covered lanes either side of impassable blockWind wall; production WakeLength and heading. Move animal through and beyond downwind lee during normal wind.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Covered lanes either side of impassable blockWind wall; production WakeLength and heading. Move animal through and beyond downwind lee during normal wind.",
       "false_pass": [
         "Bare ground or global Stall passes a local windbreak."
       ],
@@ -283,7 +283,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees the actual Stall hunter select eligible visible reachable prey and complete approach/attack, avoiding hidden/blocked prey.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Idle marked hunter, visible/hidden/unreachable prey, no pre-existing normal hunt or starvation. Enter Stall; let scheduling select prey, approach and attack. Owner attends any flight.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Idle marked hunter, visible/hidden/unreachable prey, no pre-existing normal hunt or starvation. Enter Stall; let scheduling select prey, approach and attack. Owner attends any flight.",
       "false_pass": [
         "Direct PredatorHunt assignment passes prey choice."
       ],
@@ -302,7 +302,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "At ordinary zoom the player sees abundant tree-tall islands and rarer form rooms with usable clear ground. Share meets configured target within declared finite generator tolerance and real start exits remain passable. Sworn is not a wild island room.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Three fixed fresh Scrub seeds; actual stored start, open-ground denominator, configured target/clearance/traversability, before cleanup. Generate maps normally, survey rooms and walk actual start exits.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Three fixed fresh Scrub seeds; actual stored start, open-ground denominator, configured target/clearance/traversability, before cleanup. Generate maps normally, survey rooms and walk actual start exits.",
       "false_pass": [
         "A hand-planted lineup or substitute start passes map generation."
       ],
@@ -321,7 +321,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees safe young runners, downwind preference and map cap; protected cells stay unchanged. Half-growth contact can arm. Both ExplosiveGrowth paths preserve independent vine clock ownership.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature unsmothered emitter, free natural neighbors, cap accounting and roof/building/zone/floor/tree/sown exclusion matrix; both growth exemption rosters. Observe compressed runner interval and direction, grow runner through 0.5, apply actual ExplosiveGrowth soak and everyday-band opportunities.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature unsmothered emitter, free natural neighbors, cap accounting and roof/building/zone/floor/tree/sown exclusion matrix; both growth exemption rosters. Observe compressed runner interval and direction, grow runner through 0.5, apply actual ExplosiveGrowth soak and everyday-band opportunities.",
       "false_pass": [
         "Existing plants are counted as new runners or a second engine advances them."
       ],
@@ -340,7 +340,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees maintained routes carry useful work. Creep and Walking share developed-ground exclusions; dirt-route maintenance holds at a recorded labor cost, while unmaintained wilderness can spread. Dependability is not blanket wilderness safety.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: 250x250 map, 40 fed colonists, developed home, zoned/floored/roofed routes and maintained dirt route; active creep and upwind Walking; wilderness controls. Run maintenance and routine hauling through two Gale onsets with compressed growth; log labor, deliveries and invasion cells.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: 250x250 map, 40 fed colonists, developed home, zoned/floored/roofed routes and maintained dirt route; active creep and upwind Walking; wilderness controls. Reference fixture: two 3-cell-wide maintained routes, 20 requested routine deliveries and at least one independent research/crafting workload. Record cutting labor and supply completion rather than claim an unmeasured universal upkeep percentage. Run maintenance and routine hauling through two Gale onsets with compressed growth; log labor, deliveries and invasion cells.",
       "false_pass": [
         "One cleared path passes while Walking invades zones or upkeep consumes all labor."
       ],
@@ -360,7 +360,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The player sees routine work use safe routes or visibly wait/refuse when none exists. One explicit order permits only its trip and return, subject to hazards and size limits; cancellation/completion/reload cannot authorize later automatic work.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Armed island shortcut, longer clear detour, ordinary haul sources beyond/inside vines; job/token/path trace and free/thread/blocked bodies. Allow ordinary work, close detour and recalculate, explicitly order one expedition/return, cancel/finish and resume ordinary work, including reload.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Armed island shortcut, longer clear detour, ordinary haul sources beyond/inside vines; job/token/path trace and free/thread/blocked bodies. Allow ordinary work, close detour and recalculate, explicitly order one expedition/return, cancel/finish and resume ordinary work, including reload.",
       "false_pass": [
         "High path cost passes one detour but allows later automatic poison crossing."
       ],
@@ -380,15 +380,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Thicket/Weeper/Hollow/Walking lanes, known growth/health, bodies 0.79,0.8,1.0,1.5,1.51 and actual shared controls. Order authorized crossings; measure path/time and attributed injuries with damage/passability off/on, zero and nonlethal tuning.",
+      "experience": "The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches. Every named form gets a result, including absent-comp behavior for dormant forms; inherited comps are not inferred from four representative lanes. Hollow uses its effective wider free band; Sworn mark and sleeper wake have their own independent scenes.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Loaded per-form lanes: Thicket, Dripping, Twitcher, Hollow, Crown, Rearing, Walking, Hoard, Quench, Sworn, Shedding, Strangler, Weeper, dormant Sleeper, awakened Sleeper and Lure. Resolve actual defNames/comps after inheritance/patching; record every effective free/thread/block threshold and contact component, explicitly absent where appropriate. Bodies 0.79, 0.8, 1.0, 1.5 and 1.51 run per form, plus just-below/at/above any different effective form threshold; young/mature/smothered and marked/immune eligibility are finite grouped arms. For every loaded form/size/state row, order an explicitly authorized crossing and record path traversal/refusal, elapsed movement and attributed injury under independent contact/passability off/on, zero and nonlethal tuning. Do not launch flyers to simulate an airborne control.",
       "false_pass": [
         "All health loss is called venom or >= silently replaces >."
       ],
       "red": "A build where all health loss is called venom or >= silently replaces >.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_vine_contact: The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches. Control: No contact damage off/zero while independent barrier remains; passability-off removes only barrier policy.",
+      "oracle_proposed": "sc_vine_contact: The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches. Every named form gets a result, including absent-comp behavior for dormant forms; inherited comps are not inferred from four representative lanes. Hollow uses its effective wider free band; Sworn mark and sleeper wake have their own independent scenes. Control: No contact damage off/zero while independent barrier remains; passability-off removes only barrier policy.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -399,15 +399,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature Dripping, actual harvester, empty raw-venom stock and real WriteSettings Apply path. Finish harvest, count venom/growth, regrow and repeat across save/reload.",
+      "experience": "The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled. Startup false gives vanilla one-shot harvest and startup true retains/reset/regrows the same harvested stand, with completed work and delivered venom asserted. Startup Apply and write Apply have separate result rows.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature Dripping, actual harvester, empty raw-venom stock and real WriteSettings Apply path. Two future authorized clean-start minimal-list sessions, one with drippingRegrowEnabled saved false, one saved true; no settings write in either startup observation before the first harvest. Capture the settings file and startup identity, separate from same-session save/reload. Finish harvest, count venom/growth, regrow and repeat across save/reload. In each future clean-start arm finish the first real Dripping harvest without touching its setting in that session; then compare the existing WriteSettings on/off/on arms separately. A save reload is never labelled startup.",
       "false_pass": [
         "Canceled harvest leaves plant standing and passes regrowth."
       ],
       "red": "A build where canceled harvest leaves plant standing and passes regrowth.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_dripping: The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled. Control: Vanilla harvest replaces special regrowth; completed job is asserted first.",
+      "oracle_proposed": "sc_dripping: The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled. Startup false gives vanilla one-shot harvest and startup true retains/reset/regrows the same harvested stand, with completed work and delivered venom asserted. Startup Apply and write Apply have separate result rows. Control: Vanilla harvest replaces special regrowth; completed job is asserted first. The startup-only omission is rejected; a subsequent settings write cannot repair the evidence for that first harvest.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -419,7 +419,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "At ordinary zoom the player sees one lash, spent/drooping pose and recovery agreeing with saved clock/inspect; no repeated spent lash.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature poised stand, eligible pawn, readyTick and graphics; other hazards absent. Enter range, repeat while spent, reload mid-recovery, then re-enter when ready.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature poised stand, eligible pawn, readyTick and graphics; other hazards absent. Enter range, repeat while spent, reload mid-recovery, then re-enter when ready.",
       "false_pass": [
         "Inspect text passes random ready/spent art."
       ],
@@ -438,7 +438,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer recognizes hollow galleries, wider free-pass band, no contact venom and huge-body block. Existing implementation does not establish a dedicated crawl job/animation.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Hollow/thicket lanes, no detour, bodies around free/block thresholds. Cross both and view at ordinary zoom; attribute cost and damage.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Hollow/thicket lanes, no detour, bodies around free/block thresholds. Cross both and view at ordinary zoom; attribute cost and damage.",
       "false_pass": [
         "An adjacent clear cell passes Hollow travel."
       ],
@@ -457,7 +457,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees attributed crown arrivals; residents plus in-transit actors stay within cap and busy jobs remain intact.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Crown in Stall, idle wild Dustflutters above cap, residents, in-transit and busy control. Observe repeated natural mob scheduling and arrivals; reload with en-route actors. Owner attends flight.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Crown in Stall, idle wild Dustflutters above cap, residents, in-transit and busy control. Observe repeated natural mob scheduling and arrivals; reload with en-route actors. Owner attends flight.",
       "false_pass": [
         "Nearby wanderers pass gathering while second wave exceeds cap."
       ],
@@ -476,7 +476,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees rearing/reveal then rest tied to saved state. Stall extends duration; Gale masks alert rather than granting general immunity.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature stand, concealed push-size intruder, small free passer; normal/Stall/Gale. Push, view pose/reveal/alert, reload reared, wait compressed recovery.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature stand, concealed push-size intruder, small free passer; normal/Stall/Gale. Push, view pose/reveal/alert, reload reared, wait compressed recovery.",
       "false_pass": [
         "Random upright art passes a saved state."
       ],
@@ -495,7 +495,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees bounded onset-driven advance, safe young front and production-rule tail cane; one trim is not permanent control. Connected smother stops its stand, not other stands. Cap and developed exclusions hold.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Connected mature stand, downwind natural/developed matrix, cap budget, unconnected control. Enter Gale twice; log leading runners/tail cane, trim one front and retry, then smother a connected cell.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Connected mature stand, downwind natural/developed matrix, cap budget, unconnected control. Enter Gale twice; log leading runners/tail cane, trim one front and retry, then smother a connected cell.",
       "false_pass": [
         "Calling Walk once passes onset and weaker home protection."
       ],
@@ -514,7 +514,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees exact eligible objects stored and returned once, corpse stays outside, ownership/clocks survive reload.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Identified goods, corpse gear/apparel, corpse and excluded bystander; firstSeen clock. Allow normal storage, reload with held items, cut/despawn.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Identified goods, corpse gear/apparel, corpse and excluded bystander; firstSeen clock. Allow normal storage, reload with held items, cut/despawn.",
       "false_pass": [
         "New replacement steel hides lost unique gear."
       ],
@@ -534,7 +534,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees one foam extinguish, readable spent/ready states and saved recovery, not repeat bursts while spent.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Ready Quench, known fire and unburning bystanders; readyTick/graphics. Ignite, record burst, add second fire spent, reload and retry after recharge.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Ready Quench, known fire and unburning bystanders; readyTick/graphics. Ignite, record burst, add second fire spent, reload and retry after recharge.",
       "false_pass": [
         "Natural expiry and random pale art pass ready-state wiring."
       ],
@@ -553,14 +553,14 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees marked bodies spared by Sworn regardless of faction, unmarked/expired remain exposed; real research/sowing/recipe/use are included.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Researched sowable hedge, sap recipe/use, matched marked/unmarked pawns from two factions. Craft/use sap, authorize crossings, expire mark and repeat.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: RM_SwornHedgecraft unfinished, research bench and qualified researcher, fertile growing zone and qualified grower (sowMinSkill 6); no pre-grown hedge for the positive research/sow chain. Sap materials/recipe and matched marked/unmarked pawns from two factions are available. Attempt sowing before research and record refusal; complete RM_SwornHedgecraft through actual research work, sow RM_SwornVenomvine through the normal growing job and grow it to armed maturity using disclosed growth compression. Craft/use sap through actual recipe/use jobs, authorize crossings, let the mark expire and repeat.",
       "false_pass": [
         "Proof-injected hediff passes a broken sap recipe/use chain."
       ],
       "red": "A build where proof-injected hediff passes a broken sap recipe/use chain.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_sworn: The observer sees marked bodies spared by Sworn regardless of faction, unmarked/expired remain exposed; real research/sowing/recipe/use are included. Control: No marked protection in either arm; ownership alone grants none.",
+      "oracle_proposed": "sc_sworn: The observer sees marked bodies spared by Sworn regardless of faction, unmarked/expired remain exposed; real research/sowing/recipe/use are included. Control: Sowing is unavailable/refused before completed research and becomes available afterward; only the completed planted hedge is used in positive crossings. Mark-sparing off and unmarked owner faction give no protection; ownership alone grants none.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -572,7 +572,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees configured downwind litter and attributed shared scratch on contact; litter lifetime and appearance agree.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature stand, litter-free up/downwind plots and healthy ground passer. Enter Gale naturally, cross fan and observe compressed decay.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature stand, litter-free up/downwind plots and healthy ground passer. Enter Gale naturally, cross fan and observe compressed decay.",
       "false_pass": [
         "Hand-spawned litter passes deposition or bypasses damage controls."
       ],
@@ -591,7 +591,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees selected target wrapped/damaged and configured nearby auto-trim; saved wrap/target persist.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature stand, neighboring wrappable wall/tree, player structure and unwrappable control; target HP/ID. Observe normal compressed wrap ticks, reload mid-wrap and auto-cut behavior.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature stand, neighboring wrappable wall/tree, player structure and unwrappable control; target HP/ID. Observe normal compressed wrap ticks, reload mid-wrap and auto-cut behavior.",
       "false_pass": [
         "Direct wall damage or set wrap passes selection/trim."
       ],
@@ -610,7 +610,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees pools and no more than configured cumulative polluted-cell cap across reload. Shared contact/barrier remain; text no longer promises safe passage.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature stand, known pools/pollution, enabled pollution and shared hazard baseline. Observe compressed long ticks, reload cumulative count, authorize crossing.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature stand, known pools/pollution, enabled pollution and shared hazard baseline. Observe compressed long ticks, reload cumulative count, authorize crossing.",
       "false_pass": [
         "Disabling pollution hides unbounded output or safe text contradicts harm."
       ],
@@ -629,7 +629,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees one awakening preserving growth and shared-controlled grounded wake hits; saved awake stand does not wake-hit again.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Dormant stand, qualifying grounded traffic, small/airborne-state controls without flight; known health. Move qualifying traffic through production watcher, sample replacement/wake hits, reload awake.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Dormant stand, qualifying grounded traffic, small/airborne-state controls without flight; known health. Move qualifying traffic through production watcher, sample replacement/wake hits, reload awake.",
       "false_pass": [
         "Only def replacement is checked while damage bypasses controls."
       ],
@@ -648,7 +648,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees actual fruit chosen and eaten; local supply never exceeds cap. Food-search result alone is insufficient.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Mature stand, zero fruit, hungry/fed eligible herbivore, equal alternative food. Allow emission, autonomous approach/eating and local cap saturation.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Mature stand, zero fruit, hungry/fed eligible herbivore, equal alternative food. Allow emission, autonomous approach/eating and local cap saturation.",
       "false_pass": [
         "Spawned fruit passes unobserved attraction."
       ],
@@ -667,14 +667,14 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees one finished job consume one blanket for one saved countdown. Fresh default 120 engine days is two 60-day years; ordinary range 120–600 days. Per-claim duration is frozen. Off refuses new jobs/holds due claims; re-enable pays once. Compression proves boundaries without a years-long live run.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual fiber harvest, felt supply, bench, 40 fiber/15 felt recipe, two identified blankets and reachable stand; migration matrix in plan.md. Harvest/craft, order use, interrupt before consume/retry, reload mid-claim, change tuning, disable while due then enable.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual fiber harvest, felt supply, tailoring bench, 40 fiber/15 felt recipe, two identified blankets and reachable stand; current-schema 120-day default, normal range 120–600 and per-claim frozen duration/due fields. No legacy settings/claim import fixture. Harvest/craft, order use, interrupt before consume/retry, reload mid-claim, change tuning, disable while due then enable.",
       "false_pass": [
         "Spawned blanket and forced start tick hide tailoring or retroactive timer changes."
       ],
       "red": "A build where spawned blanket and forced start tick hide tailoring or retroactive timer changes.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_smother_claim: The observer sees one finished job consume one blanket for one saved countdown. Fresh default 120 engine days is two 60-day years; ordinary range 120–600 days. Per-claim duration is frozen. Off refuses new jobs/holds due claims; re-enable pays once. Compression proves boundaries without a years-long live run. Control: No fabricated/double-consumed blanket, no duplicate claim; old due dates obey declared migration rather than retroactive global tuning.",
+      "oracle_proposed": "sc_smother_claim: The observer sees one finished job consume one blanket for one saved countdown. Fresh default 120 engine days is two 60-day years; ordinary range 120–600 days. Per-claim duration is frozen. Off refuses new jobs/holds due claims; re-enable pays once. Compression proves boundaries without a years-long live run. Control: No fabricated or double-consumed blanket or duplicate claim. Current-schema active claims keep their saved duration/due after tuning changes and reload; only later claims use new tuning. Off refuses new jobs and holds due payouts; re-enable pays once. Invalid fields are diagnosed without an import/conversion path.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
       "needs_instrument": "economy_observer"
     },
@@ -687,7 +687,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees wood-filter acceptance and two wood-equivalent fuel units per cane as agent tuning: longer operation and integrated heat/work/energy per equal count. Heat-coupled consumers also emit 1.25 times their matched wood heat rate while burning cane credit, with longer useful burn and integrated heat. Count/ownership and mixed-fuel credit are conserved across reload. These ratios are agent tuning.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Exact mature-claim yield; empty identical campfire/stove/generator pairs with equal item-count cane/wood and equal capacity/demand/ambient. Mature compressed claim, haul/refuel through jobs, compare depletion time, completed work, energy, heat rate and integrated heating; reload part-way through a mixed wood/cane burn.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Exact mature-claim yield; empty identical campfire/stove/generator pairs with equal item-count cane/wood and equal capacity/demand/ambient. Mature compressed claim, haul/refuel through jobs, compare depletion time, completed work, energy, heat rate and integrated heating; reload part-way through a mixed wood/cane burn.",
       "false_pass": [
         "Filter acceptance passes wood-equivalent duration and heat."
       ],
@@ -707,7 +707,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees a huge ancient named landmark above scrub, matching trunk/canopy at viewing scales and identical usable name/history after reload.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Fresh-map chance, mature ancient age, all trunk/canopy variant pools; no pre-existing fixture. Chance one/zero map steps and ordinary seed, select History, colony/close zoom then reload.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Fresh-map chance, mature ancient age, all trunk/canopy variant pools; no pre-existing fixture. Chance one/zero map steps and ordinary seed, select History, colony/close zoom then reload.",
       "false_pass": [
         "Hand-spawned tree passes rarity and matching canopy."
       ],
@@ -726,7 +726,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees free felt before/after harvest only from once-mature tree; saved everMature preserves it at low growth.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Never-mature sapling and mature tree, nextWoolTick/everMature and item IDs; no scratch contribution. Observe compressed due shed, actual harvest, reload same reduced-growth tree and next shed.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Never-mature sapling and mature tree, nextWoolTick/everMature and item IDs; no scratch contribution. Observe compressed due shed, actual harvest, reload same reduced-growth tree and next shed.",
       "false_pass": [
         "Fresh mature replacement hides lost post-harvest everMature."
       ],
@@ -745,7 +745,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees wild/tame coat growth and ready unrestrained actors choose/finish rubbing, lose coat, leave own product plus conserved felt share. Roped/area-excluded special trips are refused.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Wild/tame shearable cohorts below readiness, accessible tree, rope/area exclusions and pen with tree inside/outside; initial coats/products. Let coats grow at disclosed compressed rate, ordinary scheduling choose rub, record path, coat debit, wool and bank. Investigate pen containment without assuming an unbuilt guarantee.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Wild/tame shearable cohorts below readiness, accessible tree, rope/area exclusions and pen with tree inside/outside; initial coats/products. Let coats grow at disclosed compressed rate, ordinary scheduling choose rub, record path, coat debit, wool and bank. Investigate pen containment without assuming an unbuilt guarantee.",
       "false_pass": [
         "Manually filled sheep sent to trunk passes autonomous wild coats."
       ],
@@ -753,6 +753,26 @@
       "tier_proposed": "live_minimal",
       "owner_part": "no",
       "oracle_proposed": "sc_tree_scratch: The observer sees wild/tame coat growth and ready unrestrained actors choose/finish rubbing, lose coat, leave own product plus conserved felt share. Roped/area-excluded special trips are refused. Control: No special rub excluded; prefilled coat/direct Rub cannot accept natural readiness. Pen inside/outside observations are reported separately and cannot be asserted as a proven containment guarantee.",
+      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+      "needs_instrument": "economy_observer"
+    },
+    {
+      "id": "tree_healing",
+      "by": "concept",
+      "root": [
+        "scrub_tree_economy"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "change",
+      "experience": "The observer sees: Only completed eligible rubbing grants one readable healing hediff; parasites and disease are removed over time by observed production pulses, not an instant Rub cure or only a coat/felt change. Refresh never stacks strength; active age/remaining duration survives current-schema reload and expires. The disease manifest has no silently skipped family; any distinct non-severity cure mechanism needs its own adapter/result. Health gains cannot be attributed solely to medicine, immunity or natural recovery.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Matched wild/tame shearable cohorts with real available coats, reachable tree and asserted parasite/disease severity/age/immunity, no other treatment. Freeze the complete effective animal-applicable parasite/disease eligibility manifest, grouped by genuinely identical cure mechanism; at least a parasite and an infectious disease are independent arms. Include healthy and permanent-injury/mechanical conditions as non-disease controls. Proposed healing condition/timer is not implemented proof. Initial agent tuning: one engine day duration, one pulse every 250 ticks, 0.01 normalized severity reduction per eligible condition per pulse; refresh duration without stacking. Preview every group and bounded compressed phases; verify uncompressed boundaries on the production path. Let normal animal scheduling complete a real rub; inspect the resulting healing hediff, then observe time-spaced severity changes and actual parasite/disease removal for each manifest group. Reload the same current-schema animal partway through active healing, repeat a permitted rub and compare matched untreated/no-rub cohorts. Exercise effect off/zero, expiry and healthy/permanent-condition arms. No proof helper may directly apply the positive healing condition.",
+      "false_pass": [
+        "A wool payout, hediff name, spontaneous recovery or direct debug cure stands in for healing caused by completed rubbing."
+      ],
+      "red": "Rubbing yields coat and felt but no animal healing, or gives a badge while parasites and disease remain.",
+      "tier_proposed": "live_minimal",
+      "owner_part": "yes: healing hediff from rubbing removes parasites and disease over time; OWNER:1794835478275153823",
+      "oracle_proposed": "sc_tree_healing: Only completed eligible rubbing grants one readable healing hediff; parasites and disease are removed over time by observed production pulses, not an instant Rub cure or only a coat/felt change. Refresh never stacks strength; active age/remaining duration survives current-schema reload and expires. The disease manifest has no silently skipped family; any distinct non-severity cure mechanism needs its own adapter/result. Health gains cannot be attributed solely to medicine, immunity or natural recovery. Control: No healing hediff from failed/no rub; no pulse off/zero/expired, no strength stacking or unrelated permanent-part repair. The untreated cohort does not show the attributed accelerated cure; the checker rejects retained disease, swapped identity or skipped eligibility groups.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
       "needs_instrument": "economy_observer"
     },
@@ -765,7 +785,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer receives bank through real harvest once, retaining fraction and no duplicate on reload; failed harvest does not debit it.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Bank from completed rubs with integer/fraction balance, item IDs and isolated free-shed schedule. Actual successful harvest, regrow/repeat; reload between rub and payout.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Bank from completed rubs with integer/fraction balance, item IDs and isolated free-shed schedule. Actual successful harvest, regrow/repeat; reload between rub and payout.",
       "false_pass": [
         "Calling yield directly debits bank without delivering harvest."
       ],
@@ -785,7 +805,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees configured material comfort offset and a single apparel thought regardless of garment count, gone when all felt is removed.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Same-quality identical felt/ordinary seats, matched needs, one/two felt garments. Use seats/read explanation; wear one/two/zero garments through apparel jobs.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Same-quality identical felt/ordinary seats, matched needs, one/two felt garments. Use seats/read explanation; wear one/two/zero garments through apparel jobs.",
       "false_pass": [
         "Higher quality or stacked thoughts pass material comfort."
       ],
@@ -804,7 +824,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees ash/token and matching saved history entry described as an abstract trace; no arriving pawn is promised or counted.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Once-mature home tree, due clock/history, no ash/token; non-home control. Let compressed due visit occur, reconcile trace/history and reload.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Once-mature home tree, due clock/history, no ash/token; non-home control. Let compressed due visit occur, reconcile trace/history and reload.",
       "false_pass": [
         "History text proves that actual travelers arrived."
       ],
@@ -822,15 +842,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The player sees distinct native animals in a fuzz plain. Base refs resolve without franchise mods; natural population is measured separately from spawning. Every distinct lifecycle mechanism produces configured products/offspring without dangling/duplicate refs.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Freeze effective base/conditional roster and every distinct product/egg/harvest/birth mechanism; DLC, defs/textures/map identity before wildlife clearing. Census three fresh Scrub maps, view all native races/life-stages/facings grouped by equal graphic; complete finite product/reproduction/hatch/harvest/butcher/rot manifest.",
+      "experience": "The player sees native ground cover and scrub generate naturally as a fuzz plain, alongside distinct native animals. Every effective wildPlants entry has a per-map count/density row checked against its configured generation eligibility; no staged lineup is counted as natural generation. Base references resolve without franchise mods. Each distinct lifecycle mechanism produces its configured product/offspring without duplicate or dangling references.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Freeze effective base/conditional roster and every distinct product/egg/harvest/birth mechanism; DLC, defs/textures/map identity before wildlife clearing. Freeze the effective wildPlants roster with weights, eligibility/terrain/fertility/density rules and each plant-generation mechanism before any clearing. Preview three fresh Scrub tile/seed maps and the matched same-seed roster-disabled control. Identify a common non-island species naturally present in the positive arm for the disabled-row control. Before any artificial planting or wildlife clearing, census three fresh Scrub maps: per-species natural plant counts and count per eligible ground cell, ground-cover/scrub density and spatial distribution, with island-genstep plants attributed separately. Record zero counts honestly; rare species not encountered are not marked visually proven. View all native races/life-stages/facings grouped by equal graphic; complete the finite product/reproduction/hatch/harvest/butcher/rot manifest. Repeat the matched seed with the selected common non-island wildPlants entry disabled.",
       "false_pass": [
-        "Spawned lineup passes map generation and every product lifecycle."
+        "An animal-only census, hand-planted fuzz, or island-only vine placement passes the native ground-cover roster."
       ],
-      "red": "A build where spawned lineup passes map generation and every product lifecycle.",
+      "red": "A build where an animal-only census, hand-planted fuzz, or island-only vine placement passes the native ground-cover roster.",
       "tier_proposed": "live_minimal",
       "owner_part": "yes: composed native cast has real lifecycles",
-      "oracle_proposed": "sc_native_cast: The player sees distinct native animals in a fuzz plain. Base refs resolve without franchise mods; natural population is measured separately from spawning. Every distinct lifecycle mechanism produces configured products/offspring without dangling/duplicate refs. Control: Bad ref rejected, disabled entry contributes no natural spawn, complete base remains useful.",
+      "oracle_proposed": "sc_native_cast: The player sees native ground cover and scrub generate naturally as a fuzz plain, alongside distinct native animals. Every effective wildPlants entry has a per-map count/density row checked against its configured generation eligibility; no staged lineup is counted as natural generation. Base references resolve without franchise mods. Each distinct lifecycle mechanism produces its configured product/offspring without duplicate or dangling references. Control: Bad reference is rejected. The selected plant has positive natural count in its positive arm and zero natural count in the disabled-row control; animal disabled rows contribute no natural population. Island rooms cannot stand in for wild-plant generation. Rare zero-count rows remain bounded observations, not an invented guarantee.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -842,7 +862,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees delayed scatter, sway with release, true submerged exit only, finite shed and attended eruption. Mental-state animals retain behavior; movement triggers this rather than direct helper calls.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Marked/bare corridor, moving disturber, Scatter/Sway/Surface/Shed/Erupt cohorts, no existing response jobs; known manhunter. Walk real cover, record queued delay/response/recovery; owner attends every actual Erupt/flight arm.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Marked/bare corridor, moving disturber, Scatter/Sway/Surface/Shed/Erupt cohorts, no existing response jobs; known manhunter. Walk real cover, record queued delay/response/recovery; owner attends every actual Erupt/flight arm.",
       "false_pass": [
         "Direct Answer or invisible persistent sway hold passes traffic/recovery."
       ],
@@ -861,7 +881,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees one available arm lost per physical shed item, no infinite bait, and a saved missing arm regrow after one 15-day engine season before shedding again. Fifteen days is agent translation of seasonal description.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual Vissler arm anatomy/IDs and zero shed items; accepted regrowth manifest. Disturb/shed repeatedly to exhaustion, reload missing arms, compress one season and repeat.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual Vissler arm anatomy/IDs and zero shed items; accepted regrowth manifest. Agent adapter choices/bounds from plan.md must be implemented and enumerated before the scene runs; they are design obligations, not source-presence claims. Disturb/shed repeatedly to exhaustion, reload missing arms, compress one season and repeat.",
       "false_pass": [
         "Every bloom spawns a limb without anatomical loss."
       ],
@@ -881,7 +901,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees actual meat ingestion/nutrition/debit and rot, not only a food-search result.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Naturally shed fresh arm, hungry ground meat eater, herbivore and no nearer food. Observe autonomous food choice, completed approach/eating and separate compressed rot.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Naturally shed fresh arm, hungry ground meat eater, herbivore and no nearer food. Observe autonomous food choice, completed approach/eating and separate compressed rot.",
       "false_pass": [
         "TryFindBestFoodSource proves eating that never completes."
       ],
@@ -900,7 +920,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees attributed quill wound/venom through its damage path, distinguishing ordinary hunting setup.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual combat tools, known target armor/health, venom wiring and ordinary-hunt lane. Allow a real quill melee strike and compare ordinary tool damage.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual combat tools, known target armor/health, venom wiring and ordinary-hunt lane. Allow a real quill melee strike and compare ordinary tool damage.",
       "false_pass": [
         "Nearby vine contact is called quill damage."
       ],
@@ -919,7 +939,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees den binding and scoped stand against actual attacker with bounded recovery/return; peaceful passing alone causes no attack.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Wild Thornhold, reachable vine den/HomeTether, passerby and near/far attacker. Let it choose den; actual external damaging attack, withdraw and observe recovery.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Wild Thornhold, reachable vine den/HomeTether, passerby and near/far attacker. Let it choose den; actual external damaging attack, withdraw and observe recovery.",
       "false_pass": [
         "Injected aggression hides broken hit trigger or endless pursuit."
       ],
@@ -938,7 +958,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player sees crust travel/surface strike on eligible terrain, bloom exit hole only when previously under, and no double concealment.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Shared extension/terrains, genuine submerged state, prey and no extra ripple hiding. Observe normal swim/strike; real bloom under/above ground.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Shared extension/terrains, genuine submerged state, prey and no extra ripple hiding. Observe normal swim/strike; real bloom under/above ground.",
       "false_pass": [
         "Hediff/direct ForceSurface passes movement/strike."
       ],
@@ -957,7 +977,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "At ordinary zoom the player sees motionless edge ambush react to crossing traffic, not normal predator chase.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual edge gap, small prey, idle predator and matched open lane; no assigned hunt. Allow natural flat-hold position and prey crossing.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual edge gap, small prey, idle predator and matched open lane; no assigned hunt. Allow natural flat-hold position and prey crossing.",
       "false_pass": [
         "Ordinary PredatorHunt passes unbuilt crossing ambush."
       ],
@@ -976,7 +996,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The player sees root-like wall hold and attack from the chosen run wall when traffic arrives.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Marked run wall, prey, idle predator and bare control. Allow niche selection/hold then prey run traffic.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Marked run wall, prey, idle predator and bare control. Allow niche selection/hold then prey run traffic.",
       "false_pass": [
         "Open-ground chase passes run-wall ambush."
       ],
@@ -995,7 +1015,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees ordinary/hunt routes stay on canopy and refuse bare gaps; concealment/sway are independently preserved.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Connected canopy, bare gap and prey/destinations; no current hunt. Offer connected/disconnected ordinary travel and prey, return and recalculate.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Connected canopy, bare gap and prey/destinations; no current hunt. Offer connected/disconnected ordinary travel and prey, return and recalculate.",
       "false_pass": [
         "Concealment passes ordinary ground travel as canopy confinement."
       ],
@@ -1014,7 +1034,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The player sees bounded inspectable wet ground under moss in fog versus dry matched plot, not plant art alone.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Matched moisture/terrain plots with/without moss, no water/rain; fog/dry arms. Observe compressed condensation, actual wetness and recovery after removal.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Matched moisture/terrain plots with/without moss, no water/rain; fog/dry arms. Agent adapter choices/bounds from plan.md must be implemented and enumerated before the scene runs; they are design obligations, not source-presence claims. Observe compressed condensation, actual wetness and recovery after removal.",
       "false_pass": [
         "Pre-painted wet tile passes unbuilt condensation."
       ],
@@ -1033,7 +1053,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees stable root-hollow residence, not accidental nearby animals; removing anchor ends/reassigns binding.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Matched root-hollow/absent plots and eligible native den users with ordinary needs. Let scheduling choose/use/return to den; remove anchor and observe reassignment.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Matched root-hollow/absent plots and eligible native den users with ordinary needs. Agent adapter choices/bounds from plan.md must be implemented and enumerated before the scene runs; they are design obligations, not source-presence claims. Let scheduling choose/use/return to den; remove anchor and observe reassignment.",
       "false_pass": [
         "Animals spawned near a decorative bush pass den ecology."
       ],
@@ -1052,7 +1072,7 @@
       "leaf_kind": "experience",
       "clause_kind": "change",
       "experience": "The observer sees chosen lichen grazing, nutrition and resource debit/recovery agree; mere ingestibility is insufficient.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Hungry native crustweevil, resource-accounted lichen and equal alternative food. Let autonomous selection/approach/grazing complete and resource recover.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Hungry native crustweevil, resource-accounted lichen and equal alternative food. Agent adapter choices/bounds from plan.md must be implemented and enumerated before the scene runs; they are design obligations, not source-presence claims. Let autonomous selection/approach/grazing complete and resource recover.",
       "false_pass": [
         "An edible def passes a relationship without grazing."
       ],
@@ -1071,7 +1091,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "At play zoom the observer beside the owner sees actual bounded downwind flight, matching directional animation, landing and sweetline return. A capability flag does not prove flight; no sweetline does not imply no eligible launch tree.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Owner present; 20 idle wild shirrels, sweetline home and other-tree launchFromAnyTree cases; 4 frames x cardinal directions and juvenile/adult graphic groups. Observe normal Gale launch, downwind glide, flipbook, land and return; reset for no-Gale/busy/cooldown/no-eligible-tree arms. Abort any actual-flight arm without owner.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Owner present; 20 idle wild shirrels, sweetline home and other-tree launchFromAnyTree cases; 4 frames x cardinal directions and juvenile/adult graphic groups. Observe normal Gale launch, downwind glide, flipbook, land and return; reset for no-Gale/busy/cooldown/no-eligible-tree arms. Abort any actual-flight arm without owner.",
       "false_pass": [
         "CanEverFly passes no launch or static flying art."
       ],
@@ -1090,7 +1110,7 @@
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees corpse carried to den, stripped gear conserved on ground, progressive actual consumption and safe drop on interruption. Colony dead are eligible by default but setting excludes them; exact identities survive reload.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Wild idle rollbug, reachable identified corpse with gear, colony corpse setting and interruption/save baseline. Let actual giver scheduling collect corpse to larder, complete progressive bites; interrupt carrying, reload and resume.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Wild idle rollbug, reachable identified corpse with gear, colony corpse setting and interruption/save baseline. Let actual giver scheduling collect corpse to larder, complete progressive bites; interrupt carrying, reload and resume.",
       "false_pass": [
         "Forced order/hunger/direct Bite passes autonomy or destroys unique gear."
       ],
@@ -1101,63 +1121,6 @@
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
-      "id": "ruins",
-      "by": "concept",
-      "root": [
-        "scrub_technology"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Three fresh home seeds and enemy/quest control; actual start/used rects/count before prep. Generate normally, survey farmstead/claimed field/hedge homestead contents.",
-      "false_pass": [
-        "Direct generation on cleared pad passes normal entry or impossible claim age."
-      ],
-      "red": "A build where direct generation on cleared pad passes normal entry or impossible claim age.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "yes: home maps contain spaced legible ruins",
-      "oracle_proposed": "sc_ruins: The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle. Control: No step ruins off/non-home and overlap is rejected.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
-    },
-    {
-      "id": "vaporator",
-      "by": "concept",
-      "root": [
-        "scrub_technology"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Unfinished research, Electricity prerequisite, actual farmstead plans, build materials and zero water. Recover/apply techprint, complete real research/build/power/collect; reload spawner clock.",
-      "false_pass": [
-        "Correct defs pass an unusable learn/build/produce chain."
-      ],
-      "red": "A build where correct defs pass an unusable learn/build/produce chain.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "no",
-      "oracle_proposed": "sc_vaporator: The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar. Control: No research/build bypass or unpowered/capped water.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
-    },
-    {
-      "id": "camps",
-      "by": "concept",
-      "root": [
-        "scrub_technology"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Campaign eligible scavenger faction/nonhostile; separately base empty list; no farmer faction. Normal camp generation, needs/defend, hostility/assault, peace/return, reload lord.",
-      "false_pass": [
-        "Empty base list proves a positive faction transition."
-      ],
-      "red": "A build where empty base list proves a positive faction transition.",
-      "tier_proposed": "live_full",
-      "owner_part": "no",
-      "oracle_proposed": "sc_camps: The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior. Control: No camp in controls; farmer camps absent.",
-      "tier_reason": "Actual engine campaign faction/lord behavior is required; source or direct helper call alone cannot establish this play result."
-    },
-    {
       "id": "stamping",
       "by": "concept",
       "root": [
@@ -1165,15 +1128,15 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
-      "experience": "The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. Authorized migration/aliases are required; blaze targeting differs from maker pursuit.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Franchise-free migrated thunderstep with resolved refs/marker; optional campaign separately, distant available wild herd and reachable cluster. Start above-threshold open cluster; observe normal approach/stomp/burning-source damage; repeat campaign.",
+      "experience": "The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. The authorized invented-species rehome and positive base binding are required; no aliases or historical-save conversion; blaze targeting differs from maker pursuit.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Franchise-free migrated thunderstep with resolved refs/marker; optional campaign separately, distant available wild herd and reachable cluster. Start above-threshold open cluster; observe normal approach/stomp/burning-source damage; repeat campaign.",
       "false_pass": [
         "Teleported campaign giant passes approach and franchise-free completeness."
       ],
       "red": "A build where teleported campaign giant passes approach and franchise-free completeness.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_stamping: The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. Authorized migration/aliases are required; blaze targeting differs from maker pursuit. Control: Excluded fires do not qualify; missing base kind is UNMEASURED/base gap, never a passing negative.",
+      "oracle_proposed": "sc_stamping: The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. The authorized invented-species rehome and positive base binding are required; no aliases or historical-save conversion; blaze targeting differs from maker pursuit. Control: Excluded fires do not qualify; missing base kind is UNMEASURED/base gap, never a passing negative.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
@@ -1184,94 +1147,38 @@
       ],
       "leaf_kind": "experience",
       "clause_kind": "change",
-      "experience": "The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual lighter A/innocent B, animal-capable witness, physical fire instigator and bounded evidence settings; two concurrent violators. Light by real job witnessed, unwitnessed with fresh trail, broken/expired trail; break contact and reload pursuit.",
+      "experience": "The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy. The taking uses the same bounded identity/age storage as fire (consumer-specific decay policy remains distinct). The humanlike can report the taking, animal-only witnessing creates no RimProperty report, and fire records are never read as taking evidence. Disconnecting the property adapter must fail this arm rather than merely testing a synthetic store writer.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual lighter A/innocent B, animal-capable witness, physical fire instigator and bounded evidence settings; two concurrent violators. Agent default evidence bounds: direct witness 24 cells plus LOS/awake; fresh trail 2500 ticks, at most one moved-cell sample/30 ticks; pursuit loss after 600 ticks with neither direct contact nor continuous fresh trail; one pursuit/observer, 64 recent events and 256 trail samples/map. All exposed through adapter settings. Trail acquisition is local within4 cells plus LOS and continuous fresh links; no global current-actor-position lookup. Unwitnessed trail confirms actor identity on contact or previously identified continuity. Eviction clears unsupported pursuit. Separate offline production-consumer fixture with RimProperty enabled: owned thing, unauthorized taker, awake humanlike reporter and animal witness at equal clear LOS/range. Observe TakingEvent through PropertyEngine.Fire, the proposed shared evidence adapter/store and the property reader; include a fire event with the same actor at a different event ID. Light by real job witnessed, unwitnessed with fresh trail, broken/expired trail; break contact and reload pursuit. In the property fixture issue an unauthorized TakingEvent via PropertyEngine.Fire, read its typed event/actor/witness/tick edges through the shared store and the property consumer before/after age advance and current-schema serialization roundtrip. Compare taking and fire with identical actor/location and distinct event types; exercise animal-only reporting and humanlike reporting separately.",
       "false_pass": [
         "Map-wide instigator pointer or nearest pawn substitutes for knowledge."
       ],
       "red": "A build where map-wide instigator pointer or nearest pawn substitutes for knowledge.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_maker: The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy. Control: No omniscient/nearest-pawn pursuit; controlled evidence restores positive.",
+      "oracle_proposed": "sc_maker: The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy. The taking uses the same bounded identity/age storage as fire (consumer-specific decay policy remains distinct). The humanlike can report the taking, animal-only witnessing creates no RimProperty report, and fire records are never read as taking evidence. Disconnecting the property adapter must fail this arm rather than merely testing a synthetic store writer. Control: No omniscient/nearest-pawn pursuit; controlled evidence restores positive. Animal-only/occluded/no-event/expired taking and fire-only inputs yield no taking report; omitted adapter and identity/age corruption fail the checker; the humanlike taking positive still succeeds.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
       "needs_instrument": "witness_observer"
-    },
-    {
-      "id": "pyre_beliefs",
-      "by": "concept",
-      "root": [
-        "scrub_fire_and_belief"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Forbidden/last-rite/venerated ideoligions, eligible/ineligible memes, known participant thoughts/history. Use real belief/ritual UI for each; compare start gates and actual thoughts/history after call.",
-      "false_pass": [
-        "Three resolved precepts pass identical play."
-      ],
-      "red": "A build where three resolved precepts pass identical play.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "no",
-      "oracle_proposed": "sc_pyre_beliefs: The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs. Control: Ineligible/disabled start refused readably; consequence difference follows precept data.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
-    },
-    {
-      "id": "pyre_ritual",
-      "by": "concept",
-      "root": [
-        "scrub_fire_and_belief"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Real ritual gates, flammable crop, outcome tables, base marked kind and valid edge; thin/adequate fire patterns. Complete actual ritual for each outcome tier with controlled outcome RNG; follow ignition, edge arrivals, rage, stamping and aftermath.",
-      "false_pass": [
-        "Separate debug ignition/spawn passes a ritual whose normal outcome never runs."
-      ],
-      "red": "A build where separate debug ignition/spawn passes a ritual whose normal outcome never runs.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "yes: completed rituals ignite fields and call a real herd",
-      "oracle_proposed": "sc_pyre_ritual: The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous. Control: Disabled/ineligible cannot start, thin message truthful and separate Ignite/CallHerd cannot accept completion.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
-    },
-    {
-      "id": "settings",
-      "by": "concept",
-      "root": [
-        "scrub_saved_use"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The player gets grouped readable dependent controls; every setting changes actual effect, persists and all-off degrades gracefully without losing stored ownership. Dripping Apply/redraw execute on write.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Complete serialized/static/UI/consumer census, including shirrelGlideEnabled, shared gates/new migration; nondefault baseline. Real UI/write, every feature on/off/on, tuning endpoints/reset and reload; distinguish now/new-map. Glide checks read state only; actual launches belong to the separate owner-attended scene.",
-      "false_pass": [
-        "Five-field roundtrip and incomplete DEFAULTS pass all settings."
-      ],
-      "red": "A build where five-field roundtrip and incomplete DEFAULTS pass all settings.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "no",
-      "oracle_proposed": "sc_settings: The player gets grouped readable dependent controls; every setting changes actual effect, persists and all-off degrades gracefully without losing stored ownership. Dripping Apply/redraw execute on write. Control: Missing/disconnected checker fails and exact nondefaults are restored.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
       "id": "cuts",
       "by": "concept",
       "root": [
-        "scrub_saved_use"
+        "scrub_tree_economy",
+        "scrub_routes_deliberate"
       ],
       "leaf_kind": "experience",
       "clause_kind": "change",
-      "experience": "The reader/player sees no active guardian/roost/rage, farmer camps or drying scar and no text promising them. CombHolds is loadable tombstone only; retained tree systems still work.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Effective tree comps, unset farmerFaction, CombHolds tombstone, descriptions and old supported save. Inspect tree/camp generation, old faction resolution, vaporator ground and About/tooltips; preserved shed/scratch separately tested.",
+      "experience": "The observer sees: No active guardian/roost/rage, farmer camps or drying scar and no text promising them. Retained tree systems still work; deleting them does not pass cuts. No loadable tombstone is required.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Effective tree comps, unset farmerFaction, current mapgen and descriptions; no old-save/faction resolution fixture. Save-only CombHolds retention is governed by the removal check. Inspect tree/camp generation and current About/tooltips for guardian/farmer/drying-scar promises; inspect local terrain effects of any still-shipping deferred vaporator without accepting its next-version technology chain. Preserved shed/scratch/healing are tested separately.",
       "false_pass": [
-        "Deleting all tree features or treating tombstones as live camps passes removal."
+        "Deleting retained tree functions or preserving banned aliases while claiming the cuts are done."
       ],
-      "red": "A build where deleting all tree features or treating tombstones as live camps passes removal.",
+      "red": "Cut guardians/farmer camps/drying scar or banned save-preservation promises still ship, or retained tree functions were removed instead.",
       "tier_proposed": "live_minimal",
       "owner_part": "no",
-      "oracle_proposed": "sc_cuts: The reader/player sees no active guardian/roost/rage, farmer camps or drying scar and no text promising them. CombHolds is loadable tombstone only; retained tree systems still work. Control: Checker rejects both; loadable tombstone alone is not active camp behavior.",
+      "oracle_proposed": "sc_cuts: No active guardian/roost/rage, farmer camps or drying scar and no text promising them. Retained tree systems still work; deleting them does not pass cuts. No loadable tombstone is required. Control: Both stale guardian promise and active farmerFaction are rejected; preserved tree features remain required independently.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
-      "cannot_show": "Deleting all tree features or treating tombstones as live camps passes removal."
+      "cannot_show": "Deleting retained tree functions or preserving banned aliases while claiming the cuts are done."
     },
     {
       "id": "colony_walk",
@@ -1281,47 +1188,28 @@
       ],
       "leaf_kind": "walk",
       "clause_kind": "change",
-      "experience": "The player sees safe ordinary supply and deliberate trips, saved identities/poses/clocks/bank/mixed-fuel credit/research resume and pay once with useful water/fuel in both orders. Labor/time/damage/counts are recorded; fresh replacement fixtures cannot stand in for saved colony.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: 250x250 map, 40 fed colonists, ordinary work, islands/maintained routes, tree/coat/felt, plans, base stampers and saved-state manifest; no forced completed jobs. Observer does routine haul, ordered expedition/return/harvest, crafts/starts claim, banks tree felt and recovers plans. Save made mid-way with claim/bank/cooldown, reload that exact save, repeat expedition and claim use, complete real harvest/power/water/fuel. Restore baseline for a second order: plans/research/build, then tree/felt/craft, then expedition, ordinary work between.",
+      "experience": "The observer sees: Safe ordinary supply and deliberate trips work in both action orders. Current-schema identities/poses/clocks/bank and mixed-fuel credit resume and pay once after reload; useful wind-powered work and premium fuel are observed. Labor/time/damage/counts are recorded. No technology, ritual or historical-save conversion is needed.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: 250x250 map, 40 fed colonists, ordinary work, islands/maintained routes, tree/coat/felt, current base stampers and current-schema state manifest; no forced completed jobs, ruin plans, vaporator or pyre prerequisites. Observer runs routine haul, ordered expedition/return/harvest, crafts/starts a smother claim and banks tree felt after a real rub. Save mid-way with current-schema claim/bank/cooldown and mixed-fuel state, reload that exact save, repeat expedition and claim use, complete actual felt harvest and useful wind-powered work/cane fuel. Restore baseline for the second order: tree rub/felt/craft first, then expedition/claim, then useful power/fuel and ordinary work between. Do not restage replacement actors after load.",
       "false_pass": [
         "Isolated green hooks and restaged actors hide a broken saved journey."
       ],
       "red": "A build where isolated green hooks and restaged actors hide a broken saved journey.",
       "tier_proposed": "live_minimal",
-      "owner_part": "yes: a real journey survives reload and reordered actions",
-      "oracle_proposed": "sc_colony_walk: The player sees safe ordinary supply and deliberate trips, saved identities/poses/clocks/bank/mixed-fuel credit/research resume and pay once with useful water/fuel in both orders. Labor/time/damage/counts are recorded; fresh replacement fixtures cannot stand in for saved colony. Control: Walk detects every wrong world; positive uses same actors/objects and actual load/repeated core trip. Second-order arm starts from restored baseline.",
+      "owner_part": "no",
+      "oracle_proposed": "sc_colony_walk: Safe ordinary supply and deliberate trips work in both action orders. Current-schema identities/poses/clocks/bank and mixed-fuel credit resume and pay once after reload; useful wind-powered work and premium fuel are observed. Labor/time/damage/counts are recorded. No technology, ritual or historical-save conversion is needed. Control: Walk detects every wrong world; positive uses same actors/objects and actual load/repeated core trip. Second-order arm starts from restored baseline.",
       "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
       "needs_instrument": "route_observer"
-    },
-    {
-      "id": "save_aliases",
-      "by": "concept",
-      "root": [
-        "scrub_saved_use"
-      ],
-      "leaf_kind": "experience",
-      "clause_kind": "preserve",
-      "experience": "The observer sees old names resolve to intended current defs with objects, gear and jobs preserved, no duplicates or live-name shadowing. All alias pairs receive result rows.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Finite complete alias-pair/type manifest including absorbed products/eggs and thunderstep migration; genuine old save with jobs/items; old-name-live control. Load old save under base composition, reconcile every affected ThingDef/PawnKindDef/RecipeDef/product/egg and resumed job; save/reload again.",
-      "false_pass": [
-        "An XML alias list passes an old save that loses its pawn or equipment."
-      ],
-      "red": "A build where an XML alias list passes an old save that loses its pawn or equipment.",
-      "tier_proposed": "live_minimal",
-      "owner_part": "no",
-      "oracle_proposed": "sc_save_aliases: The observer sees old names resolve to intended current defs with objects, gear and jobs preserved, no duplicates or live-name shadowing. All alias pairs receive result rows. Control: Live defs are not redirected and missing target/lost identity is rejected.",
-      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
     },
     {
       "id": "acoustic_payload",
       "by": "concept",
       "root": [
-        "scrub_saved_use"
+        "scrub_native_ecology"
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The player reads the appropriate banded Scrub payload from actual pulses; absent targets give quiet response and absent engine leaves no unresolved extension type. Mere strings are insufficient.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Actual scanner-present/absent compositions and four isolated target groups: buried creatures, sweetline, Hollow and hidden cave; matched empty site. Perform real scanner pulses over each target and empty control; observe target bands/labels and scanner-absent loaded defs.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Actual scanner-present/absent compositions and four isolated target groups: buried creatures, sweetline, Hollow and hidden cave; matched empty site. Perform real scanner pulses over each target and empty control; observe target bands/labels and scanner-absent loaded defs.",
       "false_pass": [
         "Correct XML payload strings pass a scanner that never uses them."
       ],
@@ -1335,12 +1223,12 @@
       "id": "proximity_hatch",
       "by": "concept",
       "root": [
-        "scrub_saved_use"
+        "scrub_native_ecology"
       ],
       "leaf_kind": "experience",
       "clause_kind": "preserve",
       "experience": "The observer sees near-pawn fertilized-egg hatch when integrated and normal timer hatch without the engine. The egg is consumed once for configured offspring; no double hatch.",
-      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Fresh fertilized RM_Protovermes egg with timer far from due, actual ProximityHatch engine present/absent and outside/inside three-cell trigger radius; infertile control. Move pawn through boundary, observe actual hatch and offspring; separately wait a compressed vanilla timer with integration absent.",
+      "scenario": "Observer at normal colony zoom, close view only for inspect/UI: Fresh fertilized RM_Protovermes egg with timer far from due, actual ProximityHatch engine present/absent and outside/inside three-cell trigger radius; infertile control. Move pawn through boundary, observe actual hatch and offspring; separately wait a compressed vanilla timer with integration absent.",
       "false_pass": [
         "Added comp text passes absent near-pawn trigger or broken vanilla fallback."
       ],

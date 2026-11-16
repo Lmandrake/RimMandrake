@@ -29,14 +29,16 @@
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Real Scrub tile, sun-derived heading, seven configured leanPlants and all effective texture variants; non-Scrub control."
+        "Real Scrub tile, sun-derived heading, seven configured leanPlants and all effective texture variants; non-Scrub control.",
+        "Two Scrub tiles with nondegenerate different tile-to-substellar bearings, chosen on opposite east/west sides of the substellar meridian; two independently generated maps of the first tile plus its same-save reload. Capture tile latitude/longitude and configured substellar coordinates.",
+        "Freeze loaded weather factors/offsets: RM_ScrubWind 0.5 offset; RM_ScrubWindFog 0.4; RM_ScrubOvercast 0.5; RM_ScrubGrayPall 0.4; RM_ScrubDryThunderstorm factor 1.5/offset 1.25; RM_Stall factor 0; RM_Gale factor 1.5/offset 1.5. Capture raw wind, transition blend and effective weather table. Non-Scrub control uses each stock weather in a biome/table where its eligibility gates permit it."
       ],
-      "action": "View variants at ordinary colony zoom in steady wind, fog and three windy twins; reload the same tile.",
-      "expect": "The player sees ground cover face one consistent heading across reload and ordinary days retain wind. Trees and vine forms are outside this mirroring roster. The plain reads as fuzz and scrub, not opposing random lean or still vanilla grass.",
+      "action": "View all configured plant/texture variants at ordinary colony zoom in steady wind, fog, each of the three windy twins, Stall and Gale. Read live wind after transition stabilization against the loaded engine wind transform with matched raw wind input. Read the effective Scrub and matched non-Scrub weather tables. Independently calculate spherical initial bearing from the captured tile coordinates to the configured substellar point, convert clockwise-from-north bearing to east-based heading (90 minus bearing modulo 360), and compare to the production map heading on both tiles and both first-tile maps and reload. Verify each texture mirrors to its authored east/west side closest to that heading; the picture is snapped to a side, not a continuously rotated plant.",
+      "expect": "The tester measures the production heading within 0.1 degree of independent geometry on both different-bearing tiles; maps of the same tile and reload agree. Normal-zoom plant facings match the expected east/west snap including the documented east tie, with one shared visual lean per map. Stabilized Stall wind is zero, ordinary/twin values match their configured offsets/factors and remain positive, and Gale exceeds RM_ScrubWind at the same raw input. The effective Scrub table has zero/absent Overcast, GrayPall and DryThunderstorm rows and positive corresponding twins (5, 1 and 1 before eligibility weighting); non-Scrub retains its stock rows. Numeric checks cannot substitute for visible lean.",
       "control": {
-        "case": "Write leanPlantsEnabled off through real settings and view matched non-Scrub map.",
-        "expect": "Forced facing ceases; ordinary weather wind offsets remain.",
-        "rules_out": "A wind-speed number passes graphics leaning opposite ways."
+        "case": "Disable leanPlantsEnabled through real settings; use matched non-Scrub weather table with eligible stock weather rows. In the offline geometry checker substitute a constant/wrong heading and a reversed coordinate convention.",
+        "expect": "Forced plant facing ceases without changing weather offsets. Stock weather remains selectable where eligible outside Scrub; twins do not globally replace it. Constant or reversed headings fail the independent two-tile check.",
+        "rules_out": "A stable but wrong global heading, random mirror selection, or weather-table text without actual wind is called a correct leaning wind plain."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "owner_review",
@@ -70,13 +72,14 @@
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "RM_Gale, both effective owned overlay textures, shared heading and readable ground landmarks."
+        "RM_Gale, both effective owned overlay textures, shared heading and readable ground landmarks.",
+        "Separate isolated material-loader fixtures execute the production BuildMaterial initialization with both A/B resolved, A-only, B-only and neither resolved; vanilla Weather/FogOverlayWorld is available. Asset resolution is fixture-local; do not rename/delete installed art or mutate the running session."
       ],
-      "action": "Capture a motion sequence in Gale, overlay off/on and return to normal weather at same zoom.",
-      "expect": "The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay.",
+      "action": "Capture a motion sequence in Gale, overlay off/on and return to normal weather at same zoom. Run each isolated production material-load arm, recording material/shader/texture bindings, ArtState and logs; verify the original vanilla material remains untouched.",
+      "expect": "The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay. With neither owned texture resolved the material is a private copy of vanilla fog, ArtState reports PLACEHOLDER (vanilla fog sheet), and no error is logged; positive and one-texture arms bind exactly the resolved owned textures. This offline/material arm does not accept the separate live motion requirement.",
       "control": {
-        "case": "Overlay off in the same Gale/camera.",
-        "expect": "Driven owned overlay is absent while Gale stays active.",
+        "case": "Overlay off in the same Gale/camera. Feed a known loader mutant that returns null or errors when both art paths are unresolved, and one that mutates the shared vanilla fog material.",
+        "expect": "Driven owned overlay is absent while Gale stays active. Both loader regressions are rejected by the fallback/copy checks.",
         "rules_out": "A loaded-overlay flag passes a motionless fog sheet."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -105,10 +108,11 @@
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Known mixer volume, ordinary day/night ambient defs and other sound sources; capture audio."
+        "Known mixer volume, ordinary day/night ambient defs and other sound sources; capture audio.",
+        "Include RM_ScrubWindFog at day and night, Ambient_Wind_Fog and the effective day/night jungle-insect beds; preserve normal mixer levels."
       ],
-      "action": "Listen across ordinary day/night wind, Stall, Gale and return.",
-      "expect": "The player hears ordinary wind/insect beds, a discernible Stall quiet and returning wind without stuck or doubled loops.",
+      "action": "Listen/capture across RM_ScrubWind day/night, RM_ScrubWindFog day/night, Stall, Gale and return to each ordinary weather; record transitions after settling.",
+      "expect": "The player hears the appropriate wind bed and day/night insect bed in both ordinary steady wind and wind-fog, quieter Stall, and returning wind without stuck/doubled loops. No audio pass is inferred from a SoundDef or screenshot.",
       "control": {
         "case": "Matched ordinary weather with ambient mixer muted then restored.",
         "expect": "Target beds disappear in muted control and return audibly.",
@@ -587,10 +591,10 @@
       "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Thicket/Weeper/Hollow/Walking lanes, known growth/health, bodies 0.79,0.8,1.0,1.5,1.51 and actual shared controls."
+        "Loaded per-form lanes: Thicket, Dripping, Twitcher, Hollow, Crown, Rearing, Walking, Hoard, Quench, Sworn, Shedding, Strangler, Weeper, dormant Sleeper, awakened Sleeper and Lure. Resolve actual defNames/comps after inheritance/patching; record every effective free/thread/block threshold and contact component, explicitly absent where appropriate. Bodies 0.79, 0.8, 1.0, 1.5 and 1.51 run per form, plus just-below/at/above any different effective form threshold; young/mature/smothered and marked/immune eligibility are finite grouped arms."
       ],
-      "action": "Order authorized crossings; measure path/time and attributed injuries with damage/passability off/on, zero and nonlethal tuning.",
-      "expect": "The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches.",
+      "action": "For every loaded form/size/state row, order an explicitly authorized crossing and record path traversal/refusal, elapsed movement and attributed injury under independent contact/passability off/on, zero and nonlethal tuning. Do not launch flyers to simulate an airborne control.",
+      "expect": "The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches. Every named form gets a result, including absent-comp behavior for dormant forms; inherited comps are not inferred from four representative lanes. Hollow uses its effective wider free band; Sworn mark and sleeper wake have their own independent scenes.",
       "control": {
         "case": "Contact off/zero independently of passability off; immunity and grounded/airborne state fixtures, without launching flyers.",
         "expect": "No contact damage off/zero while independent barrier remains; passability-off removes only barrier policy.",
@@ -602,7 +606,10 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181",
         "src/RimMandrake/EnvironmentalHazards/Source/MapComponent_ContactVenom.cs",
         "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:799"
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:799",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml"
       ],
       "exercises": [
         "vine_hazard"
@@ -623,13 +630,14 @@
       "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Mature Dripping, actual harvester, empty raw-venom stock and real WriteSettings Apply path."
+        "Mature Dripping, actual harvester, empty raw-venom stock and real WriteSettings Apply path.",
+        "Two future authorized clean-start minimal-list sessions, one with drippingRegrowEnabled saved false, one saved true; no settings write in either startup observation before the first harvest. Capture the settings file and startup identity, separate from same-session save/reload."
       ],
-      "action": "Finish harvest, count venom/growth, regrow and repeat across save/reload.",
-      "expect": "The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled.",
+      "action": "Finish harvest, count venom/growth, regrow and repeat across save/reload. In each future clean-start arm finish the first real Dripping harvest without touching its setting in that session; then compare the existing WriteSettings on/off/on arms separately. A save reload is never labelled startup.",
+      "expect": "The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled. Startup false gives vanilla one-shot harvest and startup true retains/reset/regrows the same harvested stand, with completed work and delivered venom asserted. Startup Apply and write Apply have separate result rows.",
       "control": {
-        "case": "Regrowth off through actual WriteSettings.",
-        "expect": "Vanilla harvest replaces special regrowth; completed job is asserted first.",
+        "case": "Regrowth off through actual WriteSettings. A checker fixture omitting startup Apply while keeping WriteSettings Apply is also run.",
+        "expect": "Vanilla harvest replaces special regrowth; completed job is asserted first. The startup-only omission is rejected; a subsequent settings write cannot repair the evidence for that first harvest.",
         "rules_out": "Canceled harvest leaves plant standing and passes regrowth."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -644,7 +652,8 @@
       "status": "planned_missing_complete_entry",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance.",
+      "execution_note": "Future authorized clean-start proof only. Designer performs no launch/restart; the proof item must coordinate with the later operator and use exact recovery before any settings preparation."
     },
     {
       "id": "sc_twitcher",
@@ -894,13 +903,13 @@
       "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Researched sowable hedge, sap recipe/use, matched marked/unmarked pawns from two factions."
+        "RM_SwornHedgecraft unfinished, research bench and qualified researcher, fertile growing zone and qualified grower (sowMinSkill 6); no pre-grown hedge for the positive research/sow chain. Sap materials/recipe and matched marked/unmarked pawns from two factions are available."
       ],
-      "action": "Craft/use sap, authorize crossings, expire mark and repeat.",
+      "action": "Attempt sowing before research and record refusal; complete RM_SwornHedgecraft through actual research work, sow RM_SwornVenomvine through the normal growing job and grow it to armed maturity using disclosed growth compression. Craft/use sap through actual recipe/use jobs, authorize crossings, let the mark expire and repeat.",
       "expect": "The observer sees marked bodies spared by Sworn regardless of faction, unmarked/expired remain exposed; real research/sowing/recipe/use are included.",
       "control": {
-        "case": "Mark-sparing off and unmarked hedge-owner faction pawn.",
-        "expect": "No marked protection in either arm; ownership alone grants none.",
+        "case": "Unresearched sow attempt; later mark-sparing off and unmarked hedge-owner faction pawn. Interrupted sow/research cannot be reported completed.",
+        "expect": "Sowing is unavailable/refused before completed research and becomes available afterward; only the completed planted hedge is used in positive crossings. Mark-sparing off and unmarked owner faction give no protection; ownership alone grants none.",
         "rules_out": "Proof-injected hediff passes a broken sap recipe/use chain."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -1099,14 +1108,13 @@
       "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Actual fiber harvest, felt supply, bench, 40 fiber/15 felt recipe, two identified blankets and reachable stand; migration matrix in plan.md.",
-        "Import matrix: absent settings =>120-day new default; saved 30/custom retain labelled legacy override; missing old field=>30-day old-claim fallback/120-day new claims; old start-only due frozen on import, new-schema due retained; all migrations idempotent."
+        "Actual fiber harvest, felt supply, tailoring bench, 40 fiber/15 felt recipe, two identified blankets and reachable stand; current-schema 120-day default, normal range 120–600 and per-claim frozen duration/due fields. No legacy settings/claim import fixture."
       ],
       "action": "Harvest/craft, order use, interrupt before consume/retry, reload mid-claim, change tuning, disable while due then enable.",
       "expect": "The observer sees one finished job consume one blanket for one saved countdown. Fresh default 120 engine days is two 60-day years; ordinary range 120–600 days. Per-claim duration is frozen. Off refuses new jobs/holds due claims; re-enable pays once. Compression proves boundaries without a years-long live run.",
       "control": {
-        "case": "Insufficient materials, interrupted pre-consume, duplicate claim, off-new-job and legacy/current settings changes. Test legacy 30 and custom 7/90/120 days, absent/present fields, due/not-due/off imports, settings changed before/after import, 119.999/120-day default boundary and overflow/corruption.",
-        "expect": "No fabricated/double-consumed blanket, no duplicate claim; old due dates obey declared migration rather than retroactive global tuning.",
+        "case": "Insufficient materials, interruption before consumption, duplicate order, feature off for new job, current-schema tuning change before/after claim creation, endpoints 120 and 600, just-before/at due boundary, held due claim and corrupt/overflow duration fields.",
+        "expect": "No fabricated or double-consumed blanket or duplicate claim. Current-schema active claims keep their saved duration/due after tuning changes and reload; only later claims use new tuning. Off refuses new jobs and holds due payouts; re-enable pays once. Invalid fields are diagnosed without an import/conversion path.",
         "rules_out": "Spawned blanket and forced start tick hide tailoring or retroactive timer changes."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -1275,6 +1283,43 @@
       "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
     },
     {
+      "id": "sc_tree_healing",
+      "kind": "acceptance",
+      "requirement": [
+        "tree_healing"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_tree_healing",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Matched wild/tame shearable cohorts with real available coats, reachable tree and asserted parasite/disease severity/age/immunity, no other treatment. Freeze the complete effective animal-applicable parasite/disease eligibility manifest, grouped by genuinely identical cure mechanism; at least a parasite and an infectious disease are independent arms. Include healthy and permanent-injury/mechanical conditions as non-disease controls.",
+        "Proposed healing condition/timer is not implemented proof. Initial agent tuning: one engine day duration, one pulse every 250 ticks, 0.01 normalized severity reduction per eligible condition per pulse; refresh duration without stacking. Preview every group and bounded compressed phases; verify uncompressed boundaries on the production path."
+      ],
+      "action": "Let normal animal scheduling complete a real rub; inspect the resulting healing hediff, then observe time-spaced severity changes and actual parasite/disease removal for each manifest group. Reload the same current-schema animal partway through active healing, repeat a permitted rub and compare matched untreated/no-rub cohorts. Exercise effect off/zero, expiry and healthy/permanent-condition arms. No proof helper may directly apply the positive healing condition.",
+      "expect": "Only completed eligible rubbing grants one readable healing hediff; parasites and disease are removed over time by observed production pulses, not an instant Rub cure or only a coat/felt change. Refresh never stacks strength; active age/remaining duration survives current-schema reload and expires. The disease manifest has no silently skipped family; any distinct non-severity cure mechanism needs its own adapter/result. Health gains cannot be attributed solely to medicine, immunity or natural recovery.",
+      "control": {
+        "case": "Matched no-rub/unreachable/rope-excluded animal, interrupted rub, effect off/zero, expired condition, repeated-rub stacking mutant and healthy/permanent injury cohort; retained disease or omitted group checker mutants.",
+        "expect": "No healing hediff from failed/no rub; no pulse off/zero/expired, no strength stacking or unrelated permanent-part repair. The untreated cohort does not show the attributed accelerated cure; the checker rejects retained disease, swapped identity or skipped eligibility groups.",
+        "rules_out": "A wool payout, hediff name, spontaneous recovery or direct debug cure stands in for healing caused by completed rubbing."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "immediate",
+      "sources": [
+        "OWNER:1794835478275153823",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:257",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "exercises": [
+        "sweetline_scratching_healing"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": false,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    },
+    {
       "id": "sc_tree_bank",
       "kind": "acceptance",
       "requirement": [
@@ -1386,14 +1431,15 @@
       "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Freeze effective base/conditional roster and every distinct product/egg/harvest/birth mechanism; DLC, defs/textures/map identity before wildlife clearing."
+        "Freeze effective base/conditional roster and every distinct product/egg/harvest/birth mechanism; DLC, defs/textures/map identity before wildlife clearing.",
+        "Freeze the effective wildPlants roster with weights, eligibility/terrain/fertility/density rules and each plant-generation mechanism before any clearing. Preview three fresh Scrub tile/seed maps and the matched same-seed roster-disabled control. Identify a common non-island species naturally present in the positive arm for the disabled-row control."
       ],
-      "action": "Census three fresh Scrub maps, view all native races/life-stages/facings grouped by equal graphic; complete finite product/reproduction/hatch/harvest/butcher/rot manifest.",
-      "expect": "The player sees distinct native animals in a fuzz plain. Base refs resolve without franchise mods; natural population is measured separately from spawning. Every distinct lifecycle mechanism produces configured products/offspring without dangling/duplicate refs.",
+      "action": "Before any artificial planting or wildlife clearing, census three fresh Scrub maps: per-species natural plant counts and count per eligible ground cell, ground-cover/scrub density and spatial distribution, with island-genstep plants attributed separately. Record zero counts honestly; rare species not encountered are not marked visually proven. View all native races/life-stages/facings grouped by equal graphic; complete the finite product/reproduction/hatch/harvest/butcher/rot manifest. Repeat the matched seed with the selected common non-island wildPlants entry disabled.",
+      "expect": "The player sees native ground cover and scrub generate naturally as a fuzz plain, alongside distinct native animals. Every effective wildPlants entry has a per-map count/density row checked against its configured generation eligibility; no staged lineup is counted as natural generation. Base references resolve without franchise mods. Each distinct lifecycle mechanism produces its configured product/offspring without duplicate or dangling references.",
       "control": {
-        "case": "Invalid offline reference, roster-disabled same-seed arm and base-only composition.",
-        "expect": "Bad ref rejected, disabled entry contributes no natural spawn, complete base remains useful.",
-        "rules_out": "Spawned lineup passes map generation and every product lifecycle."
+        "case": "Invalid offline reference; same-seed generation with the naturally present common non-island plant roster row disabled; animal roster-disabled arm and base-only composition.",
+        "expect": "Bad reference is rejected. The selected plant has positive natural count in its positive arm and zero natural count in the disabled-row control; animal disabled rows contribute no natural population. Island rooms cannot stand in for wild-plant generation. Rare zero-count rows remain bounded observations, not an invented guarantee.",
+        "rules_out": "An animal-only census, hand-planted fuzz, or island-only vine placement passes the native ground-cover roster."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "owner_review",
@@ -1913,109 +1959,91 @@
     },
     {
       "id": "sc_ruins",
-      "kind": "acceptance",
-      "requirement": [
-        "ruins"
-      ],
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_ruins",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Three fresh home seeds and enemy/quest control; actual start/used rects/count before prep."
+        "Existing built capability deferred under OWNER:1794835478275153823; freeze actual source/composed identity. No deferred feature is a precondition for current-version acceptance."
       ],
-      "action": "Generate normally, survey farmstead/claimed field/hedge homestead contents.",
-      "expect": "The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle.",
-      "control": {
-        "case": "Injections off, non-home map and deliberate overlap for detector.",
-        "expect": "No step ruins off/non-home and overlap is rejected.",
-        "rules_out": "Direct generation on cleared pad passes normal entry or impossible claim age."
-      },
+      "action": "At a separately authorized sitting, inspect the existing effective implementation and any naturally available ruins behavior with exact recovery. Record what is present, missing or unmeasured; do not implement or require the deferred chain in this version.",
+      "expect": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "owner_review",
       "sources": [
         "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52",
         "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:190",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "ruin_injections"
       ],
-      "status": "planned_missing_complete_entry",
+      "status": "planned_next_version_characterization_not_executed",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": true,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Characterization entry only; deferred acceptance implementation belongs to the next Design Version.",
+      "question": "What does the still-shipping built ruins capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characterization only, never current-version acceptance."
     },
     {
       "id": "sc_vaporator",
-      "kind": "acceptance",
-      "requirement": [
-        "vaporator"
-      ],
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_vaporator",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Unfinished research, Electricity prerequisite, actual farmstead plans, build materials and zero water."
+        "Existing built capability deferred under OWNER:1794835478275153823; freeze actual source/composed identity. No deferred feature is a precondition for current-version acceptance."
       ],
-      "action": "Recover/apply techprint, complete real research/build/power/collect; reload spawner clock.",
-      "expect": "The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar.",
-      "control": {
-        "case": "No plans, unfinished research, power off and adjacent output cap.",
-        "expect": "No research/build bypass or unpowered/capped water.",
-        "rules_out": "Correct defs pass an unusable learn/build/produce chain."
-      },
+      "action": "At a separately authorized sitting, inspect the existing effective implementation and any naturally available vaporator behavior with exact recovery. Record what is present, missing or unmeasured; do not implement or require the deferred chain in this version.",
+      "expect": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
         "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205",
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:42",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148"
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "wind_vaporator"
       ],
-      "status": "planned_missing_complete_entry",
+      "status": "planned_next_version_characterization_not_executed",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Characterization entry only; deferred acceptance implementation belongs to the next Design Version.",
+      "question": "What does the still-shipping built vaporator capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characterization only, never current-version acceptance."
     },
     {
       "id": "sc_camps",
-      "kind": "acceptance",
-      "requirement": [
-        "camps"
-      ],
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_camps",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Campaign eligible scavenger faction/nonhostile; separately base empty list; no farmer faction."
+        "Existing built capability deferred under OWNER:1794835478275153823; freeze actual source/composed identity. No deferred feature is a precondition for current-version acceptance."
       ],
-      "action": "Normal camp generation, needs/defend, hostility/assault, peace/return, reload lord.",
-      "expect": "The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior.",
-      "control": {
-        "case": "Base empty list, camps off and null faction.",
-        "expect": "No camp in controls; farmer camps absent.",
-        "rules_out": "Empty base list proves a positive faction transition."
-      },
+      "action": "At a separately authorized sitting, inspect the existing effective implementation and any naturally available camps behavior with exact recovery. Record what is present, missing or unmeasured; do not implement or require the deferred chain in this version.",
+      "expect": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
         "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248",
         "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:356",
         "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:22",
-        "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml"
+        "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "scavenger_camps"
       ],
-      "status": "planned_missing_complete_entry",
+      "status": "planned_next_version_characterization_not_executed",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Characterization entry only; deferred acceptance implementation belongs to the next Design Version.",
+      "question": "What does the still-shipping built camps capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characterization only, never current-version acceptance."
     },
     {
       "id": "sc_stamping",
@@ -2031,7 +2059,7 @@
         "Franchise-free migrated thunderstep with resolved refs/marker; optional campaign separately, distant available wild herd and reachable cluster."
       ],
       "action": "Start above-threshold open cluster; observe normal approach/stomp/burning-source damage; repeat campaign.",
-      "expect": "The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. Authorized migration/aliases are required; blaze targeting differs from maker pursuit.",
+      "expect": "The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. The authorized invented-species rehome and positive base binding are required; no aliases or historical-save conversion; blaze targeting differs from maker pursuit.",
       "control": {
         "case": "Subthreshold, roof/enclosed, fueled-building overlays, off and missing-kind diagnostic.",
         "expect": "Excluded fires do not qualify; missing base kind is UNMEASURED/base gap, never a passing negative.",
@@ -2069,13 +2097,14 @@
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
         "Actual lighter A/innocent B, animal-capable witness, physical fire instigator and bounded evidence settings; two concurrent violators.",
         "Agent default evidence bounds: direct witness 24 cells plus LOS/awake; fresh trail 2500 ticks, at most one moved-cell sample/30 ticks; pursuit loss after 600 ticks with neither direct contact nor continuous fresh trail; one pursuit/observer, 64 recent events and 256 trail samples/map. All exposed through adapter settings.",
-        "Trail acquisition is local within4 cells plus LOS and continuous fresh links; no global current-actor-position lookup. Unwitnessed trail confirms actor identity on contact or previously identified continuity. Eviction clears unsupported pursuit."
+        "Trail acquisition is local within4 cells plus LOS and continuous fresh links; no global current-actor-position lookup. Unwitnessed trail confirms actor identity on contact or previously identified continuity. Eviction clears unsupported pursuit.",
+        "Separate offline production-consumer fixture with RimProperty enabled: owned thing, unauthorized taker, awake humanlike reporter and animal witness at equal clear LOS/range. Observe TakingEvent through PropertyEngine.Fire, the proposed shared evidence adapter/store and the property reader; include a fire event with the same actor at a different event ID."
       ],
-      "action": "Light by real job witnessed, unwitnessed with fresh trail, broken/expired trail; break contact and reload pursuit.",
-      "expect": "The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy.",
+      "action": "Light by real job witnessed, unwitnessed with fresh trail, broken/expired trail; break contact and reload pursuit. In the property fixture issue an unauthorized TakingEvent via PropertyEngine.Fire, read its typed event/actor/witness/tick edges through the shared store and the property consumer before/after age advance and current-schema serialization roundtrip. Compare taking and fire with identical actor/location and distinct event types; exercise animal-only reporting and humanlike reporting separately.",
+      "expect": "The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy. The taking uses the same bounded identity/age storage as fire (consumer-specific decay policy remains distinct). The humanlike can report the taking, animal-only witnessing creates no RimProperty report, and fire records are never read as taking evidence. Disconnecting the property adapter must fail this arm rather than merely testing a synthetic store writer.",
       "control": {
-        "case": "No witness/fresh trail, broken/expired trail and nearby innocent. Include 23.99/24/24.01-cell witness with occluding wall, trail age 2499/2500/2501, contact loss 599/600/601, sample/event cap eviction, subject death/despawn/map change and two concurrent makers. Trace across wall, beyond4-cell acquisition, disconnected remote endpoint and cap eviction must not reveal current actor location.",
-        "expect": "No omniscient/nearest-pawn pursuit; controlled evidence restores positive.",
+        "case": "No witness/fresh trail, broken/expired trail and nearby innocent. Include 23.99/24/24.01-cell witness with occluding wall, trail age 2499/2500/2501, contact loss 599/600/601, sample/event cap eviction, subject death/despawn/map change and two concurrent makers. Trace across wall, beyond4-cell acquisition, disconnected remote endpoint and cap eviction must not reveal current actor location. Property arms: animal-only reporter, no humanlike LOS, missing property-store adapter, swapped actor/tick, expired taking and a fire-only record with the same actor.",
+        "expect": "No omniscient/nearest-pawn pursuit; controlled evidence restores positive. Animal-only/occluded/no-event/expired taking and fire-only inputs yield no taking report; omitted adapter and identity/age corruption fail the checker; the humanlike taking positive still succeeds.",
         "rules_out": "Map-wide instigator pointer or nearest pawn substitutes for knowledge."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -2085,7 +2114,9 @@
         "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:49",
         "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs:35",
         "design/concepts/LeaningScrub/plan.md",
-        "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs:30"
+        "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs:30",
+        "src/RimMandrake/RimProperty/Source/PropertyEngine.cs:20",
+        "src/RimMandrake/RimProperty/Source/FactionRecord.cs:30"
       ],
       "exercises": [
         "fire_maker_witness_trail"
@@ -2097,92 +2128,80 @@
     },
     {
       "id": "sc_pyre_beliefs",
-      "kind": "acceptance",
-      "requirement": [
-        "pyre_beliefs"
-      ],
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_pyre_beliefs",
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Forbidden/last-rite/venerated ideoligions, eligible/ineligible memes, known participant thoughts/history."
+        "Existing built capability deferred under OWNER:1794835478275153823; freeze actual source/composed identity. No deferred feature is a precondition for current-version acceptance."
       ],
-      "action": "Use real belief/ritual UI for each; compare start gates and actual thoughts/history after call.",
-      "expect": "The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs.",
-      "control": {
-        "case": "Ineligible meme, feature off and same doer changing only belief.",
-        "expect": "Ineligible/disabled start refused readably; consequence difference follows precept data.",
-        "rules_out": "Three resolved precepts pass identical play."
-      },
+      "action": "At a separately authorized sitting, inspect the existing effective implementation and any naturally available pyre_beliefs behavior with exact recovery. Record what is present, missing or unmeasured; do not implement or require the deferred chain in this version.",
+      "expect": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
         "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
         "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "calling_pyre"
       ],
-      "status": "planned_missing_complete_entry",
+      "status": "planned_next_version_characterization_not_executed",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Characterization entry only; deferred acceptance implementation belongs to the next Design Version.",
+      "question": "What does the still-shipping built pyre_beliefs capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characterization only, never current-version acceptance."
     },
     {
       "id": "sc_pyre_ritual",
-      "kind": "acceptance",
-      "requirement": [
-        "pyre_ritual"
-      ],
+      "kind": "exploration",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_pyre_ritual",
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Real ritual gates, flammable crop, outcome tables, base marked kind and valid edge; thin/adequate fire patterns."
+        "Existing built capability deferred under OWNER:1794835478275153823; freeze actual source/composed identity. No deferred feature is a precondition for current-version acceptance."
       ],
-      "action": "Complete actual ritual for each outcome tier with controlled outcome RNG; follow ignition, edge arrivals, rage, stamping and aftermath.",
-      "expect": "The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous.",
-      "control": {
-        "case": "Off, gate-ineligible belief/meme, thin pattern and helper-only fake ritual.",
-        "expect": "Disabled/ineligible cannot start, thin message truthful and separate Ignite/CallHerd cannot accept completion.",
-        "rules_out": "Separate debug ignition/spawn passes a ritual whose normal outcome never runs."
-      },
+      "action": "At a separately authorized sitting, inspect the existing effective implementation and any naturally available pyre_ritual behavior with exact recovery. Record what is present, missing or unmeasured; do not implement or require the deferred chain in this version.",
+      "expect": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "owner_review",
       "sources": [
         "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
         "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "calling_pyre"
       ],
-      "status": "planned_missing_complete_entry",
+      "status": "planned_next_version_characterization_not_executed",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": true,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Characterization entry only; deferred acceptance implementation belongs to the next Design Version.",
+      "question": "What does the still-shipping built pyre_ritual capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characterization only, never current-version acceptance."
     },
     {
       "id": "sc_settings",
       "kind": "acceptance",
       "requirement": [
-        "settings"
+        "colony_walk"
       ],
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_settings",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Complete serialized/static/UI/consumer census, including shirrelGlideEnabled, shared gates/new migration; nondefault baseline."
+        "Complete effective serialized/static/UI/consumer census, including shirrelGlideEnabled, shared gates and new current-version controls; nondefault baseline plus identified current-schema claim, felt bank and hoard contents. Capture snapshot before toggles. Deferred-feature controls are characterized while they ship, not accepted as current-version feature promises."
       ],
-      "action": "Real UI/write, every feature on/off/on, tuning endpoints/reset and reload; distinguish now/new-map. Glide checks read state only; actual launches belong to the separate owner-attended scene.",
-      "expect": "The player gets grouped readable dependent controls; every setting changes actual effect, persists and all-off degrades gracefully without losing stored ownership. Dripping Apply/redraw execute on write.",
+      "action": "Through real UI/WriteSettings test each feature on/off/on, tuning endpoints/reset and current-schema settings reload, distinguishing now/new-map. Then set every effective feature switch off together (including the master gate), load the same current-schema map, and observe 6000 ticks with no launch-eligible flyers; check identified claims/banks/hoards before/after. Re-enable the saved intended configuration and check effects return. Actual flight stays in the owner-attended scene.",
+      "expect": "Grouped readable dependent controls control each advertised effect and persist. In the simultaneous all-off arm normal colony work continues for 6000 ticks with zero attributable errors, disabled effects absent and existing current-schema claims/banks/hoards intact and not paid twice. Re-enable restores eligible effects once. Dripping Apply/redraw execute on settings write; separate cold-start arms test startup.",
       "control": {
-        "case": "Disconnected consumer, omitted census field and defaults reset versus prior baseline.",
-        "expect": "Missing/disconnected checker fails and exact nondefaults are restored.",
+        "case": "Disconnected consumer, omitted census field and defaults reset versus prior baseline. Leave one switch on in the all-off manifest, drop a stored object, duplicate a held claim payout or leave a consumer active despite all-off.",
+        "expect": "Missing/disconnected checker fails and exact nondefaults are restored. The combined-state checker rejects each corruption; individually green toggles cannot accept the simultaneous all-off arm.",
         "rules_out": "Five-field roundtrip and incomplete DEFAULTS pass all settings."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
@@ -2190,7 +2209,8 @@
       "sources": [
         "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:165",
         "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:804",
-        "src/RimMandrake/LeaningScrub/validation.py:58"
+        "src/RimMandrake/LeaningScrub/validation.py:58",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "settings"
@@ -2198,7 +2218,11 @@
       "status": "planned_missing_complete_entry",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance.",
+      "floor_lines": [
+        "mod_settings"
+      ],
+      "acceptance_scope": "Universal floor support for the walk, not a Leaning Scrub observation or standalone core promise. This does not substitute for sc_colony_walk."
     },
     {
       "id": "sc_cuts",
@@ -2211,14 +2235,14 @@
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Effective tree comps, unset farmerFaction, CombHolds tombstone, descriptions and old supported save."
+        "Effective tree comps, unset farmerFaction, current mapgen and descriptions; no old-save/faction resolution fixture. Save-only CombHolds retention is governed by the removal check."
       ],
-      "action": "Inspect tree/camp generation, old faction resolution, vaporator ground and About/tooltips; preserved shed/scratch separately tested.",
-      "expect": "The reader/player sees no active guardian/roost/rage, farmer camps or drying scar and no text promising them. CombHolds is loadable tombstone only; retained tree systems still work.",
+      "action": "Inspect tree/camp generation and current About/tooltips for guardian/farmer/drying-scar promises; inspect local terrain effects of any still-shipping deferred vaporator without accepting its next-version technology chain. Preserved shed/scratch/healing are tested separately.",
+      "expect": "No active guardian/roost/rage, farmer camps or drying scar and no text promising them. Retained tree systems still work; deleting them does not pass cuts. No loadable tombstone is required.",
       "control": {
         "case": "Inject stale guardian promise or active farmerFaction in isolated manifest.",
-        "expect": "Checker rejects both; loadable tombstone alone is not active camp behavior.",
-        "rules_out": "Deleting all tree features or treating tombstones as live camps passes removal."
+        "expect": "Both stale guardian promise and active farmerFaction are rejected; preserved tree features remain required independently.",
+        "rules_out": "Deleting retained tree behavior instead of removing active cut content, or mistaking a save-only placeholder for required gameplay."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
@@ -2227,7 +2251,8 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33",
         "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
         "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
-        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25"
+        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "bark_wardens_removed",
@@ -2345,10 +2370,10 @@
       "entry_point_item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "250x250 map, 40 fed colonists, ordinary work, islands/maintained routes, tree/coat/felt, plans, base stampers and saved-state manifest; no forced completed jobs."
+        "250x250 map, 40 fed colonists, ordinary work, islands/maintained routes, tree/coat/felt, current base stampers and current-schema state manifest; no forced completed jobs, ruin plans, vaporator or pyre prerequisites."
       ],
-      "action": "Observer does routine haul, ordered expedition/return/harvest, crafts/starts claim, banks tree felt and recovers plans. Save made mid-way with claim/bank/cooldown, reload that exact save, repeat expedition and claim use, complete real harvest/power/water/fuel. Restore baseline for a second order: plans/research/build, then tree/felt/craft, then expedition, ordinary work between.",
-      "expect": "The player sees safe ordinary supply and deliberate trips, saved identities/poses/clocks/bank/mixed-fuel credit/research resume and pay once with useful water/fuel in both orders. Labor/time/damage/counts are recorded; fresh replacement fixtures cannot stand in for saved colony.",
+      "action": "Observer runs routine haul, ordered expedition/return/harvest, crafts/starts a smother claim and banks tree felt after a real rub. Save mid-way with current-schema claim/bank/cooldown and mixed-fuel state, reload that exact save, repeat expedition and claim use, complete actual felt harvest and useful wind-powered work/cane fuel. Restore baseline for the second order: tree rub/felt/craft first, then expedition/claim, then useful power/fuel and ordinary work between. Do not restage replacement actors after load.",
+      "expect": "Safe ordinary supply and deliberate trips work in both action orders. Current-schema identities/poses/clocks/bank and mixed-fuel credit resume and pay once after reload; useful wind-powered work and premium fuel are observed. Labor/time/damage/counts are recorded. No technology, ritual or historical-save conversion is needed.",
       "control": {
         "case": "Known broken claim duration/start, expired permission token, duplicate bank, mixed-fuel credit loss or omitted actual reload.",
         "expect": "Walk detects every wrong world; positive uses same actors/objects and actual load/repeated core trip. Second-order arm starts from restored baseline.",
@@ -2358,7 +2383,8 @@
       "hold": "owner_review",
       "sources": [
         "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
-        "design/concepts/LeaningScrub/edge_argument_02.md"
+        "design/concepts/LeaningScrub/edge_argument_02.md",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [],
       "status": "planned_missing_complete_entry",
@@ -2367,30 +2393,31 @@
       "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
     },
     {
-      "id": "sc_save_aliases",
+      "id": "sc_removed_save_preservation",
       "kind": "acceptance",
       "requirement": [
-        "save_aliases"
+        "cuts"
       ],
       "staged_by": "script",
-      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_save_aliases",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_removed_save_preservation",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
         "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
-        "Finite complete alias-pair/type manifest including absorbed products/eggs and thunderstep migration; genuine old save with jobs/items; old-name-live control."
+        "Current effective source and composed payload manifest of Scrub-owned alias registrations, legacy smother import/conversion paths and save-only tombstones. The built aliases currently exist and are a product removal gap, not evidence removal is done. No genuine old-debug save or old-name fixture is required."
       ],
-      "action": "Load old save under base composition, reconcile every affected ThingDef/PawnKindDef/RecipeDef/product/egg and resumed job; save/reload again.",
-      "expect": "The observer sees old names resolve to intended current defs with objects, gear and jobs preserved, no duplicates or live-name shadowing. All alias pairs receive result rows.",
+      "action": "Inspect the candidate source and composed payload for removal of Scrub-owned aliases and legacy-import/migration branches, including any new thunderstep compatibility mapping or save-only CombHolds maintenance. Document the deliberate lack of pre-release save preservation and removal consequences; run ordinary current-schema reload only in floor_persistence.",
+      "expect": "No Scrub-owned alias registrations, legacy import, historical-name conversion or save-only preservation work ships. Ordinary current-schema settings/reload still work through the floor. Preserved product/egg definitions that have real current gameplay uses are not deleted merely because they once had aliases.",
       "control": {
-        "case": "Old name still resolves live, invalid target alias and known lost-object fixture.",
-        "expect": "Live defs are not redirected and missing target/lost identity is rejected.",
-        "rules_out": "An XML alias list passes an old save that loses its pawn or equipment."
+        "case": "Inject an old-name alias row, an old-start-only conversion branch or a save-only tombstone into the isolated payload fixture; separately remove a real current egg/product def.",
+        "expect": "Each banned preservation branch and unrelated current-product loss is rejected. No old-save rescue success can satisfy this removal check.",
+        "rules_out": "Renaming alias acceptance to compatibility while retaining banned preservation, or deleting current products along with obsolete mappings."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
       "hold": "immediate",
       "sources": [
         "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml"
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml",
+        "OWNER:1794835478275153823"
       ],
       "exercises": [
         "save_aliases"
@@ -2398,7 +2425,11 @@
       "status": "planned_missing_complete_entry",
       "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
       "owner_present": false,
-      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance.",
+      "floor_lines": [
+        "save_compat",
+        "text"
+      ]
     },
     {
       "id": "sc_acoustic_payload",
@@ -2563,20 +2594,19 @@
       "features": [
         "fire_bias",
         "stamping",
-        "maker",
-        "pyre_ritual"
+        "maker"
       ],
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_ix_fire_accountability",
       "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
       "start": [
         "Each component has its own independent acceptance case.",
-        "Real crop ritual, base herd, maker/innocent, separate nonritual open blaze."
+        "Real lighter job, open fuel/fire arrangement, base thundersteps, maker and innocent; actual downwind spread and justified perception/trail are independent recorded events."
       ],
-      "action": "Complete ritual, allow spread/stomp, break maker contact leaving innocent nearby.",
-      "expect": "Blaze target and justified maker stay distinct; history coherent; no blanket blame or cleanup of unrelated fires.",
+      "action": "Let the actual lighter ignite the open fire, observe downwind spread and herd approach/stamping, then break maker contact leaving the innocent nearby.",
+      "expect": "Blaze location and justified maker remain distinct through spread/stamping/pursuit and current-schema reload; no blanket blame or cleanup of unrelated fires. Calling-pyre is not a prerequisite.",
       "control": {
-        "case": "Unwitnessed nonritual qualifying blaze with no fresh trail.",
+        "case": "Unwitnessed qualifying open blaze with no fresh trail.",
         "expect": "Blaze can draw stampers while no maker pursuit is justified.",
         "rules_out": "A blaze destination passes witnessed maker knowledge."
       },
@@ -2587,7 +2617,6 @@
       "exercises": [
         "fire_stamping",
         "fire_maker_witness_trail",
-        "calling_pyre",
         "downwind_fire"
       ]
     },
@@ -2625,7 +2654,7 @@
       "id": "floor_runtime",
       "kind": "acceptance",
       "requirement": [
-        "settings"
+        "colony_walk"
       ],
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_floor_runtime",
@@ -2641,30 +2670,40 @@
         "rules_out": "Empty map or modeled loops pass runtime cost."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
-      "hold": "immediate"
+      "hold": "immediate",
+      "acceptance_scope": "Inherited floor support only; does not replace the complete sc_colony_walk acceptance and does not add a mod-specific settings/save promise."
     },
     {
       "id": "floor_persistence",
       "kind": "acceptance",
       "requirement": [
-        "save_aliases",
         "colony_walk"
       ],
       "staged_by": "script",
       "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_floor_persistence",
       "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
       "start": [
-        "Genuine old save, full identity/settings snapshots, compressed lifecycle configuration."
+        "Real current-schema mid-journey save with full current identity/settings snapshots and bounded lifecycle configuration. Separately, an existing vanilla/unmodded prior save for ordinary add-to-save defaults; no old-debug Scrub data, aliases or conversion fixture."
       ],
-      "action": "Three actual save/load cycles and 30 compressed production lifecycle cycles; measure serialized bytes, object census, texture MB/retainers with profiler. Document removal consequences; removal execution/external compatibility only when requested.",
-      "expect": "Old fields default, identity/jobs survive, no monotonic per-cycle retained-state/save growth. Compression establishes lifecycle retention only; 30-day elapsed behavior stays inferred.",
+      "action": "Three actual current-schema save/load cycles and 30 compressed production lifecycle cycles; measure serialized bytes, object census and texture MB/retainers with profiler. Check ordinary addition to the prior unmodded save with absent mod fields defaulting normally; no pre-release data conversion. Document removal consequences; execution of removal/external compatibility only when requested.",
+      "expect": "Current-schema identities/jobs persist and ordinary absent fields initialize without errors; no monotonic per-cycle retained-state/save growth. No historical-name preservation, imported claim arithmetic, legacy fuel-credit conversion or save-only tombstone support. Compression establishes lifecycle retention only; 30-day elapsed behavior remains inferred.",
       "control": {
         "case": "Known retained-reference leak or duplicate serialized claim.",
         "expect": "Both detected; GC.GetTotalMemory deltas alone do not accept memory.",
         "rules_out": "Small save or a GC delta passes a persistent identity leak."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
-      "hold": "immediate"
+      "hold": "immediate",
+      "acceptance_scope": "Inherited floor support only; does not replace the complete sc_colony_walk acceptance and does not add a mod-specific settings/save promise.",
+      "floor_lines": [
+        "memory",
+        "save_size",
+        "save_compat"
+      ],
+      "sources": [
+        "OWNER:1794835478275153823",
+        "src/RimMandrake/rimflow/concept_floor.json"
+      ]
     },
     {
       "id": "floor_payload",
@@ -2687,7 +2726,8 @@
         "rules_out": "Clean load passes missing features or unauthorized worldgen."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
-      "hold": "immediate"
+      "hold": "immediate",
+      "acceptance_scope": "Inherited floor support only; does not replace the complete sc_colony_walk acceptance and does not add a mod-specific settings/save promise."
     },
     {
       "id": "floor_visual",
@@ -2715,13 +2755,13 @@
         "rules_out": "Counters or promotional crop pass unreadable normal-scale art."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
-      "hold": "immediate"
+      "hold": "immediate",
+      "acceptance_scope": "Inherited floor support only; does not replace the complete sc_colony_walk acceptance and does not add a mod-specific settings/save promise."
     },
     {
       "id": "floor_recovery",
       "kind": "acceptance",
       "requirement": [
-        "settings",
         "cuts"
       ],
       "staged_by": "script",
@@ -2738,7 +2778,8 @@
         "rules_out": "Green log filter/defaults/broad sweep hide swallowed errors and destroyed bystanders."
       },
       "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
-      "hold": "immediate"
+      "hold": "immediate",
+      "acceptance_scope": "Inherited floor support only; does not replace the complete sc_colony_walk acceptance and does not add a mod-specific settings/save promise."
     }
   ],
   "showcases": [
@@ -2760,7 +2801,8 @@
       "source": [
         "CONDUCTOR:1794794271528276351"
       ],
-      "decision": "stage2_flagship_home_routes"
+      "decision": "stage2_flagship_home_routes",
+      "order_authority_note": "Existing delegated first showing preserved. OWNER:1794835478275153823 requires all current showcases and declines a new owner-only pick; g12 remains with the neutral fixer."
     },
     {
       "id": "runway_ecology",
@@ -2853,6 +2895,7 @@
         "sc_tree_landmark",
         "sc_tree_shed",
         "sc_tree_scratch",
+        "sc_tree_healing",
         "sc_tree_bank",
         "sc_felt_comfort",
         "sc_tree_traces",
@@ -2870,9 +2913,10 @@
         "sweetline_visits",
         "smother_craft",
         "dead_cane_fuel",
-        "premium_dead_cane"
+        "premium_dead_cane",
+        "sweetline_scratching_healing"
       ],
-      "selection_reason": "10 newly exercised units, largest remaining distinct-function candidate; contextual background not counted as exercise."
+      "selection_reason": "11 new current-version tree/material units; includes independently observed healing."
     },
     {
       "id": "weather_plain",
@@ -2881,8 +2925,7 @@
         "sc_gale_drawing",
         "sc_wind_audio",
         "sc_gale_exposure",
-        "sc_scent",
-        "sc_fire_bias"
+        "sc_scent"
       ],
       "exercises": [
         "weather_calendar",
@@ -2891,44 +2934,24 @@
         "gale_dust",
         "wind_sound",
         "gale_exposure",
-        "upwind_scent",
-        "downwind_fire"
+        "upwind_scent"
       ],
-      "selection_reason": "8 newly exercised units, largest remaining distinct-function candidate; contextual background not counted as exercise."
+      "selection_reason": "7 new weather/lean/audio/scent units; fire spread is exercised with fire accountability."
     },
     {
-      "id": "farmstead_learning",
+      "id": "fire_accountability",
       "scenes": [
-        "sc_ruins",
-        "sc_vaporator",
-        "sc_camps"
-      ],
-      "exercises": [
-        "ruin_injections",
-        "wind_vaporator",
-        "scavenger_camps"
-      ],
-      "selection_reason": "3 newly exercised units, largest remaining distinct-function candidate; contextual background not counted as exercise."
-    },
-    {
-      "id": "fire_and_belief",
-      "scenes": [
+        "sc_fire_bias",
         "sc_stamping",
         "sc_maker",
-        "sc_pyre_beliefs",
-        "sc_pyre_ritual",
         "ix_fire_accountability"
       ],
       "exercises": [
+        "downwind_fire",
         "fire_stamping",
-        "fire_maker_witness_trail",
-        "calling_pyre",
-        "downwind_fire"
+        "fire_maker_witness_trail"
       ],
-      "selection_reason": "3 newly exercised units, largest remaining distinct-function candidate; contextual background not counted as exercise.",
-      "overlap_why": {
-        "downwind_fire": "The retained fire/accountability interaction observes ritual spread before blaze response and maker pursuit; this common spread is required staging and is the only overlap with weather_plain."
-      }
+      "selection_reason": "3 new current-version fire/spread/maker units; calling-pyre is deferred by the owner."
     }
   ],
   "coverage_rest": [
@@ -2956,9 +2979,9 @@
     {
       "capability": "save_aliases",
       "by": [
-        "sc_save_aliases"
+        "sc_removed_save_preservation"
       ],
-      "why": "Targeted rule/roster/integration/settings check costs less than another play showcase; keeps its own start/control/recovery and no acceptance is deleted."
+      "why": "Built but explicitly out by OWNER:1794835478275153823: removal/absence check only, no old-save compatibility or alias acceptance."
     },
     {
       "capability": "acoustic_payload",
@@ -2979,7 +3002,42 @@
       "by": [
         "sc_settings"
       ],
-      "why": "Targeted rule/roster/integration/settings check costs less than another play showcase; keeps its own start/control/recovery and no acceptance is deleted."
+      "why": "Universal mod_settings floor; sc_settings supports the walk dependency and does not create a Leaning Scrub observation."
+    },
+    {
+      "capability": "ruin_injections",
+      "by": [
+        "sc_ruins"
+      ],
+      "why": "Still-built capability, scope later by OWNER:1794835478275153823. Ordinary characterization of shipping implementation is retained; no current-version feature leaf/acceptance or showcase requirement. Next-version proposals live in next_version_contracts_03.json."
+    },
+    {
+      "capability": "wind_vaporator",
+      "by": [
+        "sc_vaporator"
+      ],
+      "why": "Still-built capability, scope later by OWNER:1794835478275153823. Ordinary characterization of shipping implementation is retained; no current-version feature leaf/acceptance or showcase requirement. Next-version proposals live in next_version_contracts_03.json."
+    },
+    {
+      "capability": "scavenger_camps",
+      "by": [
+        "sc_camps"
+      ],
+      "why": "Still-built capability, scope later by OWNER:1794835478275153823. Ordinary characterization of shipping implementation is retained; no current-version feature leaf/acceptance or showcase requirement. Next-version proposals live in next_version_contracts_03.json."
+    },
+    {
+      "capability": "calling_pyre",
+      "by": [
+        "sc_pyre_beliefs",
+        "sc_pyre_ritual"
+      ],
+      "why": "Still-built capability, scope later by OWNER:1794835478275153823. Ordinary characterization of shipping implementation is retained; no current-version feature leaf/acceptance or showcase requirement. Next-version proposals live in next_version_contracts_03.json."
     }
-  ]
+  ],
+  "revision": {
+    "run": "rm-role-designercodex-1794840775",
+    "authority": "OWNER:1794835478275153823",
+    "unchecked": [],
+    "note": "g1–g11 corrected as advisory design work; g12 neutral criteria repair remains external. Planned, never executed."
+  }
 }

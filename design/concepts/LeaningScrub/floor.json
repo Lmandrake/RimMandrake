@@ -46,7 +46,8 @@
       "status": "applicable",
       "by": [
         "floor_persistence"
-      ]
+      ],
+      "evidence": "floor_persistence: ordinary addition to an unmodded prior save, missing fields use ordinary defaults and current-schema save/reload; removal consequences documented. No historical Scrub data/alias/import/conversion preservation is commissioned. OWNER:1794835478275153823"
     },
     "load_order": {
       "status": "applicable",
@@ -64,7 +65,8 @@
       "status": "applicable",
       "by": [
         "sc_settings"
-      ]
+      ],
+      "evidence": "sc_settings: complete census plus individual and simultaneous all-off/current-schema reload controls. Floor support references colony_walk; no settings leaf."
     },
     "multiplayer": {
       "status": "applicable",
@@ -144,5 +146,6 @@
         "floor_recovery"
       ]
     }
-  }
+  },
+  "authority_note": "OWNER:1794835478275153823: settings/current-schema save/reload remain universal floor duties, no mod-specific saved-use observation. All lines remain applicable; no waiver or disabled floor line."
 }

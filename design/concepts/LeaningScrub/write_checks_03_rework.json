@@ -1,0 +1,116 @@
+{
+  "run": "rm-role-designercodex-1794840775",
+  "at": "2026-11-16T15:08:19.452880+00:00",
+  "status": "passed_stage3_write_checks_only",
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "src/RimMandrake/rimflow/concept_tree.py",
+        "lint",
+        "design/concepts/LeaningScrub"
+      ],
+      "exit_code": 0,
+      "stdout": "lint (Gate A): PASS",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "src/RimMandrake/rimflow/designer_stage.py",
+        "showcases",
+        "design/concepts/LeaningScrub"
+      ],
+      "exit_code": 0,
+      "stdout": "limits: max_overlap 0.25, min_new_after_first 3 (UNMEASURED: both numbers are a first gue)\n1 home_routes_expedition       exercises  5  new  5  overlap 0.00  \n2 runway_ecology               exercises 20  new 20  overlap 0.00  \n3 vine_rooms                   exercises 15  new 15  overlap 0.00  \n4 sweetline_economy            exercises 11  new 11  overlap 0.00  \n5 weather_plain                exercises  7  new  7  overlap 0.00  \n6 fire_accountability          exercises  3  new  3  overlap 0.00  \nshowcase set accepted",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "src/RimMandrake/rimflow/designer_stage.py",
+        "check",
+        "design/concepts/LeaningScrub"
+      ],
+      "exit_code": 0,
+      "stdout": "result.json would be accepted",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "design/concepts/LeaningScrub",
+        "infrastructure/state/items/SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS.md",
+        "infrastructure/state/items/SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY.md",
+        "infrastructure/state/items/SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY.md",
+        "infrastructure/state/items/SCRUB_PROVE_VINE_FORMS_AND_CRAFT.md",
+        "infrastructure/state/items/SCRUB_PROVE_WIND_FIRE_AND_RITUAL.md"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "scene_errors": [],
+  "floor_errors": [],
+  "root_state": "VALIDATED",
+  "root_hash": "3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518",
+  "hashes": {
+    "tree.json": "c5841a6dfee4067edccf903e6b39fb28e8f129aac695ac6d91d09ced24d803bd",
+    "sheet.md": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "plan.md": "9ecdaaae92afaab0ebd8b58df7999b7e28e849dee63bb27c1a2429f86c8196d1",
+    "scenes.json": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+    "floor.json": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "coverage_fixes.json": "f3c2dbf82713df279e36eead55a60d119bf8c4e5750ba77d04fc8e75d7c7360a",
+    "exam.json": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+    "coverage_verdict.json": "37369aeb50e508f7498ad2e4331531a0c5e84b12694e6a4cdfbf37d3d1a45221",
+    "lock_review_05.json": "cf8bd99fcd6efebf8404edd9e9e01afe0f31385183a49786a4a59906625a7af0"
+  },
+  "counts": {
+    "leaves": 64,
+    "instruments": 3,
+    "walks": 1,
+    "scenes": 82,
+    "acceptance": 71,
+    "interactions": 5,
+    "exploration": 6,
+    "showcases": 6,
+    "coverage_rest": 11,
+    "inventory_units": 72,
+    "floor_lines": 23,
+    "audits_mapped": 34,
+    "updated_filed_items": 5
+  },
+  "retained_gap_records": 12,
+  "unchecked": [],
+  "claimed_gaps": [
+    "g1",
+    "g2",
+    "g3",
+    "g4",
+    "g5",
+    "g6",
+    "g7",
+    "g8",
+    "g9",
+    "g10",
+    "g11"
+  ],
+  "unclaimed_g12": "neutral criteria fixer: RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK",
+  "prior_exam": "Bytes preserved unchanged as historical old-version evidence; not valid for new tree/sheet. Fresh Stage4 required.",
+  "provenance": "Original delegated root and first showing preserved. OWNER:1794835478275153823 validates the corrected bar; his words are distinct from event-summary and agent tuning.",
+  "source_review": "source_audit_03_rework.json: changed-contract excerpts read, 94/95 prior source hashes match; canonical bar change authorized. No reliance on draft quotations or draft defNames.",
+  "boundaries": {
+    "mod_code_or_art_changed": false,
+    "bridge_or_game_actions": false,
+    "restart_or_deploy": false,
+    "scene_executed": false,
+    "coverage_signed": false,
+    "owner_certification": false,
+    "stage_advanced_by_agent": false
+  },
+  "result": "result.json would be accepted; launcher alone closes/advances."
+}

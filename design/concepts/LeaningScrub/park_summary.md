@@ -1,7 +1,9 @@
-# Leaning Scrub: owner answer received
+# Leaning Scrub: Stage 3 rework complete
 
-The previous root-validation wait is answered by OWNER:1794835478275153823. No owner question remains pending. The corrected canonical bar is VALIDATED on that answer before Stage 3 rework. See owner_answer_04.md for the source and amendments; later_version.md files technology and calling-pyre for the next Design Version.
+OWNER:1794835478275153823 answered the root-validation wait and validated the corrected six-family bar. No owner question remains pending. Stage 3 has rewritten the tree, sheet, plan, scenes, floor and filed work specs; the tree now carries that validated root hash. Gate A, scene/floor validation and six-showcase coverage structure pass. This is planned design, not current play evidence.
 
-All twelve coverage findings and unchecked=[] remain in lock_review_05.json. The UNTESTED judge refusal is advisory: g1–g11 are Stage 3 corrections; g12 is a flawed criterion for the neutral fixer under RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK. No owner flagship choice is requested.
+The package contains 64 leaves, 82 scenes and 72 built/in-scope inventory units, covered structurally by six showcases and eleven ordinary remainder checks. Sweetline healing is required independently. Technology and calling-pyre are filed for the next Design Version; settings/current-schema reload are floor duties; aliases, legacy import, conversion and save-only preservation are excluded.
 
-The existing attended quick look remains available: ordinary wind/Stall/Gale, tall vine islands, routine hauling along maintained routes and an ordered expedition. It has not run. Fresh Stage 3 artifacts, Stage 4 exam, coverage, live acceptance and owner first-touch certification remain outstanding.
+All twelve advisory coverage findings and unchecked=[] remain in lock_review_05.json. coverage_fixes.json claims g1–g11; g12 stays with the neutral criteria fixer under RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK. The delegated first showing remains home_routes_expedition. No repeated owner pick or coverage certification is inferred.
+
+The old exam is historical. Fresh Stage 4 exam, coverage signature, live acceptance and owner Lock first-touch certification remain outstanding. The attended wind/vines/routes/ordered-expedition look remains offered, unexecuted. Designer took no bridge, game, restart or deployment action. The launcher alone accepts and advances the stage.

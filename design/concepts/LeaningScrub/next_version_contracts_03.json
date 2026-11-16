@@ -1,0 +1,281 @@
+{
+  "schema": 1,
+  "authority": "OWNER:1794835478275153823",
+  "status": "deferred_not_current_acceptance",
+  "note": "Preserved prior proposals for next Design Version, subject to its design/exam. Not coverage or play evidence.",
+  "leaves": [
+    {
+      "id": "ruins",
+      "by": "concept",
+      "root": [
+        "scrub_technology"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "preserve",
+      "experience": "The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle.",
+      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Three fresh home seeds and enemy/quest control; actual start/used rects/count before prep. Generate normally, survey farmstead/claimed field/hedge homestead contents.",
+      "false_pass": [
+        "Direct generation on cleared pad passes normal entry or impossible claim age."
+      ],
+      "red": "A build where direct generation on cleared pad passes normal entry or impossible claim age.",
+      "tier_proposed": "live_minimal",
+      "owner_part": "yes: home maps contain spaced legible ruins",
+      "oracle_proposed": "sc_ruins: The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle. Control: No step ruins off/non-home and overlap is rejected.",
+      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
+    },
+    {
+      "id": "vaporator",
+      "by": "concept",
+      "root": [
+        "scrub_technology"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "preserve",
+      "experience": "The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar.",
+      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Unfinished research, Electricity prerequisite, actual farmstead plans, build materials and zero water. Recover/apply techprint, complete real research/build/power/collect; reload spawner clock.",
+      "false_pass": [
+        "Correct defs pass an unusable learn/build/produce chain."
+      ],
+      "red": "A build where correct defs pass an unusable learn/build/produce chain.",
+      "tier_proposed": "live_minimal",
+      "owner_part": "no",
+      "oracle_proposed": "sc_vaporator: The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar. Control: No research/build bypass or unpowered/capped water.",
+      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
+    },
+    {
+      "id": "camps",
+      "by": "concept",
+      "root": [
+        "scrub_technology"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "preserve",
+      "experience": "The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior.",
+      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Campaign eligible scavenger faction/nonhostile; separately base empty list; no farmer faction. Normal camp generation, needs/defend, hostility/assault, peace/return, reload lord.",
+      "false_pass": [
+        "Empty base list proves a positive faction transition."
+      ],
+      "red": "A build where empty base list proves a positive faction transition.",
+      "tier_proposed": "live_full",
+      "owner_part": "no",
+      "oracle_proposed": "sc_camps: The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior. Control: No camp in controls; farmer camps absent.",
+      "tier_reason": "Actual engine campaign faction/lord behavior is required; source or direct helper call alone cannot establish this play result."
+    },
+    {
+      "id": "pyre_beliefs",
+      "by": "concept",
+      "root": [
+        "scrub_fire_and_belief"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "preserve",
+      "experience": "The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs.",
+      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Forbidden/last-rite/venerated ideoligions, eligible/ineligible memes, known participant thoughts/history. Use real belief/ritual UI for each; compare start gates and actual thoughts/history after call.",
+      "false_pass": [
+        "Three resolved precepts pass identical play."
+      ],
+      "red": "A build where three resolved precepts pass identical play.",
+      "tier_proposed": "live_minimal",
+      "owner_part": "no",
+      "oracle_proposed": "sc_pyre_beliefs: The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs. Control: Ineligible/disabled start refused readably; consequence difference follows precept data.",
+      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
+    },
+    {
+      "id": "pyre_ritual",
+      "by": "concept",
+      "root": [
+        "scrub_fire_and_belief"
+      ],
+      "leaf_kind": "experience",
+      "clause_kind": "preserve",
+      "experience": "The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous.",
+      "scenario": "Observer at normal colony zoom, using close view only for inspect/UI: Real ritual gates, flammable crop, outcome tables, base marked kind and valid edge; thin/adequate fire patterns. Complete actual ritual for each outcome tier with controlled outcome RNG; follow ignition, edge arrivals, rage, stamping and aftermath.",
+      "false_pass": [
+        "Separate debug ignition/spawn passes a ritual whose normal outcome never runs."
+      ],
+      "red": "A build where separate debug ignition/spawn passes a ritual whose normal outcome never runs.",
+      "tier_proposed": "live_minimal",
+      "owner_part": "yes: completed rituals ignite fields and call a real herd",
+      "oracle_proposed": "sc_pyre_ritual: The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous. Control: Disabled/ineligible cannot start, thin message truthful and separate Ignite/CallHerd cannot accept completion.",
+      "tier_reason": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result."
+    }
+  ],
+  "scenes": [
+    {
+      "id": "sc_ruins",
+      "kind": "acceptance",
+      "requirement": [
+        "ruins"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_ruins",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Three fresh home seeds and enemy/quest control; actual start/used rects/count before prep."
+      ],
+      "action": "Generate normally, survey farmstead/claimed field/hedge homestead contents.",
+      "expect": "The observer sees types at configured spacing/clearance with meaningful contents; tick-zero clamped claims are not falsely called aged mid-cycle.",
+      "control": {
+        "case": "Injections off, non-home map and deliberate overlap for detector.",
+        "expect": "No step ruins off/non-home and overlap is rejected.",
+        "rules_out": "Direct generation on cleared pad passes normal entry or impossible claim age."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "owner_review",
+      "sources": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:190",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
+      ],
+      "exercises": [
+        "ruin_injections"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": true,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    },
+    {
+      "id": "sc_vaporator",
+      "kind": "acceptance",
+      "requirement": [
+        "vaporator"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_vaporator",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Unfinished research, Electricity prerequisite, actual farmstead plans, build materials and zero water."
+      ],
+      "action": "Recover/apply techprint, complete real research/build/power/collect; reload spawner clock.",
+      "expect": "The observer completes plans to RM_WindVaporators to RM_WindVaporator to actual RM_FogWater via powered spawner, with no drying scar.",
+      "control": {
+        "case": "No plans, unfinished research, power off and adjacent output cap.",
+        "expect": "No research/build bypass or unpowered/capped water.",
+        "rules_out": "Correct defs pass an unusable learn/build/produce chain."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "immediate",
+      "sources": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:42",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148"
+      ],
+      "exercises": [
+        "wind_vaporator"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": false,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    },
+    {
+      "id": "sc_camps",
+      "kind": "acceptance",
+      "requirement": [
+        "camps"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_camps",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Campaign eligible scavenger faction/nonhostile; separately base empty list; no farmer faction."
+      ],
+      "action": "Normal camp generation, needs/defend, hostility/assault, peace/return, reload lord.",
+      "expect": "The observer sees eligible camp defend, assault when hostile, resume defend at peace. Base empty eligibility legitimately gives none but cannot accept campaign positive behavior.",
+      "control": {
+        "case": "Base empty list, camps off and null faction.",
+        "expect": "No camp in controls; farmer camps absent.",
+        "rules_out": "Empty base list proves a positive faction transition."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "immediate",
+      "sources": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:356",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:22",
+        "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml"
+      ],
+      "exercises": [
+        "scavenger_camps"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": false,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    },
+    {
+      "id": "sc_pyre_beliefs",
+      "kind": "acceptance",
+      "requirement": [
+        "pyre_beliefs"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_pyre_beliefs",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Forbidden/last-rite/venerated ideoligions, eligible/ineligible memes, known participant thoughts/history."
+      ],
+      "action": "Use real belief/ritual UI for each; compare start gates and actual thoughts/history after call.",
+      "expect": "The observer sees forbidden refuse and its believers react negatively to another eligible caller, last-rite require active enemies, and venerated permit without that enemy condition with positive believer response; eligible meme choices follow their loaded defs.",
+      "control": {
+        "case": "Ineligible meme, feature off and same doer changing only belief.",
+        "expect": "Ineligible/disabled start refused readably; consequence difference follows precept data.",
+        "rules_out": "Three resolved precepts pass identical play."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "immediate",
+      "sources": [
+        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+      ],
+      "exercises": [
+        "calling_pyre"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": false,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    },
+    {
+      "id": "sc_pyre_ritual",
+      "kind": "acceptance",
+      "requirement": [
+        "pyre_ritual"
+      ],
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::scene_pyre_ritual",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "start": [
+        "Assert assembly/source identity and actual running package list; minimal supported composed RM base with all DLC unless an explicit integration arm requires otherwise. No current result is implied.",
+        "Real ritual gates, flammable crop, outcome tables, base marked kind and valid edge; thin/adequate fire patterns."
+      ],
+      "action": "Complete actual ritual for each outcome tier with controlled outcome RNG; follow ignition, edge arrivals, rage, stamping and aftermath.",
+      "expect": "The player sees completed ritual cause table-defined fire/herd/rage, history and honest thin-fire message. Base positive responding herd required; raging arrivals remain dangerous.",
+      "control": {
+        "case": "Off, gate-ineligible belief/meme, thin pattern and helper-only fake ritual.",
+        "expect": "Disabled/ineligible cannot start, thin message truthful and separate Ignite/CallHerd cannot accept completion.",
+        "rules_out": "Separate debug ignition/spawn passes a ritual whose normal outcome never runs."
+      },
+      "restore": "Before any preflight mutation call designer_stage.py scene-begin with unique recovery save and digest. Capture actual settings file/static values, storyteller/queued incidents, current world/map/save, weather/lock, ticks, actor health/jobs, terrain/roofs/zones/pollution and fixture/bystander IDs. On success, exception or interrupt restore recovery save plus settings and verify digest/identity census; delete only recorded fixture IDs. DEFAULTS, Clear weather and broad pad/wildlife sweeps are insufficient. Call scene-end only after verified restore; owner_review calls scene-hold with named save/end condition, then later verifies restore. Failed recovery stays open and blocks further runs.",
+      "hold": "owner_review",
+      "sources": [
+        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+      ],
+      "exercises": [
+        "calling_pyre"
+      ],
+      "status": "planned_missing_complete_entry",
+      "time_budget": "At most 6000 observed ticks per declared predicate/job phase, with finite phase count previewed before run, after asserted precondition; compress declared long timers and test original production boundaries offline. No long populated-colony clock warp. Missing preconditions are UNMEASURED.",
+      "owner_present": true,
+      "entry_point_status": "Complete acceptance entry is missing. Existing chain/hook support is partial. Implement filed contract before scheduling acceptance."
+    }
+  ]
+}

@@ -742,11 +742,14 @@
     }
   ],
   "planned_additions": [
-    "claim duration/due schema and legacy-override handling",
+    "current-schema claim duration/due only; no legacy override/import",
     "premium fuel value/heat and feature gates",
     "finite arm regrowth gates/tuning",
     "native ecology adapter gates/rates",
-    "shared witness/trail/range/expiry/caps"
+    "shared witness/trail/range/expiry/caps",
+    "sweetline healing enable/duration/pulse rate; proposed finite defaults in plan.md"
   ],
-  "required_live_census": "All serialized/UI/consumer fields, including shared owners; this static artifact alone cannot accept all settings."
+  "required_live_census": "All serialized/UI/consumer fields, including shared owners; this static artifact alone cannot accept all settings.",
+  "revision_authority": "OWNER:1794835478275153823",
+  "scope_note": "Universal mod_settings floor. Deferred built controls remain characterized while they ship; no standalone settings leaf or legacy conversion is commissioned."
 }

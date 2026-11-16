@@ -8,7 +8,7 @@
       "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::defs_chain",
       "scenes": [
         "sc_native_cast",
-        "sc_save_aliases",
+        "sc_removed_save_preservation",
         "floor_payload"
       ],
       "entry_point_items": [
@@ -19,7 +19,7 @@
         "recovery_journal",
         "hold"
       ],
-      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result. Removed alias success replaced by explicit absence/removal; native definitions/products remain independently checked."
     },
     {
       "id": "audit_windlean",
@@ -341,7 +341,8 @@
         "hold",
         "complete_restore"
       ],
-      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result.",
+      "scope_note": "Technology/calling-pyre scene pointers now denote built next-version characterization, not current acceptance; OWNER:1794835478275153823"
     },
     {
       "id": "audit_injections",
@@ -360,7 +361,8 @@
         "hold",
         "complete_restore"
       ],
-      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result.",
+      "scope_note": "Technology/calling-pyre scene pointers now denote built next-version characterization, not current acceptance; OWNER:1794835478275153823"
     },
     {
       "id": "audit_forms",
@@ -484,7 +486,8 @@
         "hold",
         "complete_restore"
       ],
-      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result.",
+      "scope_note": "Technology/calling-pyre scene pointers now denote built next-version characterization, not current acceptance; OWNER:1794835478275153823"
     },
     {
       "id": "audit_log",
@@ -616,5 +619,6 @@
       ],
       "disposition": "Existing evidence remains stale/partial. New complete entry replaces shortcut acceptance; each case adds exact recovery and own discriminating controls. Retired Stall diagnostic is not revived as defect-must-reproduce acceptance."
     }
-  ]
+  ],
+  "revision_authority": "OWNER:1794835478275153823"
 }

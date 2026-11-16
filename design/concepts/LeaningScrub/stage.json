@@ -264,6 +264,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794838582: stage 2 done"
+  },
+  {
+   "at": "2026-11-16T14:53:03Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794840775, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T15:08:55Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794840775: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -539,6 +551,28 @@
    "run": "rm-role-designercodex-1794838582",
    "stage": 2,
    "summary": "Consumed OWNER:1794835478275153823; answered a_root_validation_2 and validated the corrected six-family canonical bar on his exact words. Preserved delegated root sentence approval. Added sweetline healing obligation; filed technology and calling-pyre for next Design Version; moved settings/current-schema reload to universal floor and excluded aliases/legacy import/migration. All12 advisory coverage findings and unchecked=[] retained; g1-g11 for Stage3, g12 for neutral criteria fixer. Stage3 must rewrite derived artifacts/root hash and Stage4 re-examine. No implementation, coverage, first-touch or version-lock certification; no bridge, restart or deploy."
+  },
+  {
+   "at": "2026-11-16T15:08:55Z",
+   "inputs": {
+    "exam": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794840775",
+   "stage": 3,
+   "summary": "Rewrote Stage 3 against OWNER:1794835478275153823 and validated canonical root hash, preserving delegated sentence approval and first showing. Added independent sweetline healing; technology/pyre deferred, settings/current-schema reload moved to floor, all alias/legacy-import/save-migration acceptance removed. Corrected advisory g1–g11 with coverage_fixes.json; retained g12 for neutral criteria repair and unchecked=[]. Catalog: 64 leaves (3 instruments, 1 walk), 82 planned scenes, 6 showcases, 11 remainder checks, all 72 built/in-scope units and 23 applicable floor lines. Prior exam is historical; fresh Stage 4 exam, coverage signature, actual play and owner Lock first-touch certification remain owed. No mod code/art, bridge, game, restart, deploy, gate bypass or handoff."
   }
  ],
  "runner": "codex",
@@ -619,11 +653,19 @@
     "input_tokens": 2531306,
     "output_tokens": 10254
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794840775",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 5717157,
+    "output_tokens": 36600
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

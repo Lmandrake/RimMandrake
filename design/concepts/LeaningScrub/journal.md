@@ -11,12 +11,12 @@ RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF.
 
 ## The mod as it stands
 
-- **Waiting on:** the Designer's first-touch run, on Codex (the Dispatcher's DesignerCodex lane; stage.json `runner: codex`).
-- **Stage now:** Stage 1, the Designer, since 2026-11-15 5:30 PM PST (`version/stage_record.json`).
-- **Mod:** `src/RimMandrake/LeaningScrub`, the RM_LeaningScrub biome.
-- **Design Version:** none yet; the pipeline locks a new mod at 0.1.0 when the Designer pass is done.
-- **Ceiling:** Stage 2 (Preflight). Not on `maturation_dispatch.json` `advancing`: no builder launches on it.
-- **Input:** a Codex first-touch draft, to verify, never to copy: `D:\ClaudeWork\rimmandrake\codex_designer_drafts_20261115\LeaningScrub.designer_draft.md` (stage.json `draft_input`).
+- **Current work:** Designer Stage 3 rework completed against OWNER:1794835478275153823, pending launcher acceptance of this run's result. Gate A, scenes/floor and showcase structure pass; no implementation or play is certified.
+- **Next:** fresh Stage 4 exam of the rewritten artifacts, then coverage/Lock. Prior exam is historical. Owner first-touch certification remains owed.
+- **Mod:** src/RimMandrake/LeaningScrub, the RM_LeaningScrub biome in the composed package. No Design Version is locked or handed off.
+- **Current bar:** six validated families; sweetline healing included, technology and calling-pyre next version, settings/reload universal floor, no legacy save preservation.
+- **Open criterion work:** g12 with the neutral fixer. g1–g11 have design correction claims. The UNTESTED judge verdict stays advisory; unchecked=[].
+- **Live look:** existing home/routes/ordered-expedition offer remains unexecuted. Designer holds no bridge and makes no game/restart/deploy action.
 
 ## History
 
@@ -45,3 +45,7 @@ Fresh Claude CLI UUID identities exposed an unsupported identity format in the v
 ## Stage 2 owner answer — rm-role-designercodex-1794838582
 
 Read OWNER:1794835478275153823 and answered a_root_validation_2 with its exact amendments. Preserved delegated sentence approval. Corrected canonical bar for owner validation before Stage 3 rework; retained all twelve advisory gaps and unchecked=[]. Next-version technology and calling-pyre filed. Settings/current-schema reload remain floor duties, save preservation is out, and sweetline healing is a new explicit obligation. No derived artifact, game or bridge action. Launcher alone closes/advances.
+
+## Stage 3 rework — rm-role-designercodex-1794840775
+
+Bound the official tree to the corrected validated canonical root, preserving delegated sentence and first-showing provenance. Rewrote all derived scope, filed sweetline health and full advisory corrections in the existing five proof/product items, and retained next-version built characterization/removal checks. Catalog: 64 leaves including three instruments and one walk; 82 planned scenes (71 acceptance, five interactions, six explorations); six showcases plus eleven remainder checks account for all 72 required inventory units. All 23 floor lines remain applicable, with no exception. coverage_fixes.json claims g1–g11 and retains g12 routing; original twelve gaps and unchecked=[] are untouched. New exam, signature, actual play and owner certification remain pending. See write_checks_03_rework.json and source_audit_03_rework.json. result.json is for this run only; the launcher alone advances it.

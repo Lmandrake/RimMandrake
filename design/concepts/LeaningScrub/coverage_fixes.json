@@ -1,0 +1,62 @@
+{
+  "against": "rm-coverage-judge-1794823485",
+  "run": "rm-role-designercodex-1794840775",
+  "status": "advisory_design_corrections_not_executed_proof",
+  "claims": [
+    {
+      "gap": "g1",
+      "evidence": "scenes.json sc_native_cast (start/action/expect/control); tree.json native_cast; plan.md and build_items_03.md: start freezes wildPlants and density/eligibility; action counts each natural flora species/density on three fresh maps before clearing and distinguishes island placement; the same-seed disabled common non-island row has positive count versus zero. Animal lifecycle/roster checks remain independent."
+    },
+    {
+      "gap": "g2",
+      "evidence": "scenes.json sc_wind_plain (start/action/expect/control); tree.json wind_plain; plan.md and build_items_03.md: loaded factors/offsets and actual stabilized wind are measured in steady wind, fog, three twins, Stall and Gale against matched raw wind. Effective table excludes stock rows with positive twins; eligible non-Scrub stock rows remain selectable. Gale comparison is to the ordinary RM_ScrubWind baseline, not a random mismatched sample."
+    },
+    {
+      "gap": "g3",
+      "evidence": "scenes.json sc_wind_plain (start/action/expect/control); tree.json wind_plain; plan.md and build_items_03.md: two nondegenerate different-bearing/opposite-side Scrub tiles, two maps of first tile and reload; independent spherical bearing converted by 90-minus-bearing, 0.1-degree tolerance. Art mirrors to expected E/W snap with east tie; a fixed/wrong heading mutant fails."
+    },
+    {
+      "gap": "g4",
+      "evidence": "scenes.json sc_wind_audio (start/action/expect/control); tree.json wind_audio; plan.md and build_items_03.md: start/action/expect explicitly cover RM_ScrubWindFog at day and night with wind-fog and jungle-insect beds, plus Stall/Gale transitions and muted-mixer control."
+    },
+    {
+      "gap": "g5",
+      "evidence": "scenes.json sc_gale_drawing (start/action/expect/control); tree.json gale_drawing; plan.md and build_items_03.md: isolated production BuildMaterial initialization tests both/A-only/B-only/neither texture available, vanilla material copy/unchanged source, ArtState and no error. Missing-art fixture is separate from actual live motion and never deletes deployed assets."
+    },
+    {
+      "gap": "g6",
+      "evidence": "scenes.json sc_dripping (start/action/expect/control); tree.json dripping; plan.md and build_items_03.md: separate future authorized true startup-on/off sessions observe first completed harvest with no intervening settings write; save/reload is explicitly not startup. A missing-startup-Apply mutant is rejected. This is planned proof, not permission or a claim of restart now."
+    },
+    {
+      "gap": "g7",
+      "evidence": "scenes.json sc_vine_contact (start/action/expect/control); tree.json vine_contact; plan.md and build_items_03.md: complete loaded 16-form/state lane list covers Thicket, all named four/six/four forms including both Sleeper states, five required body sizes plus each different threshold. Read inherited patched comps, record absent comps honestly, and test young/mature/smothered/mark/immunity arms and independent shared controls."
+    },
+    {
+      "gap": "g8",
+      "evidence": "scenes.json sc_sworn (start/action/expect/control); tree.json sworn; plan.md and build_items_03.md: starts with RM_SwornHedgecraft unfinished; pre-research sow refusal, actual research job, real sow/grow to armed maturity, actual sap craft/use, mark expiry and faction controls replace the formerly pre-researched fixture."
+    },
+    {
+      "gap": "g9",
+      "evidence": "scenes.json sc_maker (start/action/expect/control); tree.json maker; plan.md and build_items_03.md: offline production PropertyEngine.Fire/TakingEvent arm writes the proposed shared store and reads through the property consumer with identity/age/expiry, typed-event separation, humanlike reporting positive and animal-only reporting negative. A disconnected property adapter must fail."
+    },
+    {
+      "gap": "g10",
+      "evidence": "scenes.json sc_settings (start/action/expect/control); floor.json mod_settings; plan.md and build_items_03.md: the universal mod_settings floor scene turns every switch off together including master, loads the same current-schema map and observes 6000 ticks with zero attributable errors and current claim/bank/hoard snapshots intact; re-enable restores eligible effects once. Corrupt all-off manifests and lost/duplicate stored data fail. No standalone settings leaf or scrub_saved_use root remains."
+    },
+    {
+      "gap": "g11",
+      "evidence": "scenes.json sc_smother_claim (start/action/expect/control); tree.json smother_claim; plan.md and build_items_03.md: legacy import/custom override and old-start-only conversion matrix removed from scene, tree, sheet, plan and current record decision stage3_finite_smother_migration. Only current-schema 120 default/120–600 range, per-claim frozen due, later-claim tuning changes, mid-claim reload and off/hold/re-enable remain. All alias acceptance is replaced by sc_removed_save_preservation; historical proposal records are explicitly historical, not obligations."
+    }
+  ],
+  "unchecked": [],
+  "unclaimed": [
+    {
+      "gap": "g12",
+      "status": "neutral_criteria_fixer",
+      "item": "RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK",
+      "why": "Flawed criterion already filed. Preserve CONDUCTOR delegation and owner amendment; do not fabricate owner-speaker pick or change the criterion in its own concept pass."
+    }
+  ],
+  "authority": "OWNER:1794835478275153823",
+  "scope_note": "The original UNTESTED-brief not_covered remains advisory. None of these claims is a current live pass, coverage signature or owner certification."
+}

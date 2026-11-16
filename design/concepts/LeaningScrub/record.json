@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "run": "rm-role-designercodex-1794799806",
+  "run": "rm-role-designercodex-1794840775",
   "stage_read": 1,
   "grounded_at": "2026-11-16T01:24:31.263772+00:00",
   "source_head": "0d5122eebdf0ccb43bed72633263cd8313eb7028",
@@ -173,9 +173,10 @@
       "source": [
         "CONDUCTOR:1794794271528276351",
         "design/concepts/LeaningScrub/edge_argument_02.md",
-        "design/concepts/LeaningScrub/review_02.md"
+        "design/concepts/LeaningScrub/review_02.md",
+        "OWNER:1794835478275153823"
       ],
-      "text": "Preserve frozen years-long smothering and premium useful fuel. Strike a_smother_horizon_2 rather than reopen settled scope. Two engine years is a provisional tuning candidate only; Stage3 sets finite default, range and existing-save/settings behavior with explicit assumptions. Current30-day default and fuel-filter-only premium evidence remain product/proof gaps.",
+      "text": "Preserve frozen years-long smothering and premium useful fuel. Strike a_smother_horizon_2 rather than reopen settled scope. Two engine years is a provisional tuning candidate only; Stage3 sets finite default, range and current-schema settings/reload behavior with explicit assumptions; OWNER:1794835478275153823 excludes all legacy preservation. Current30-day default and fuel-filter-only premium evidence remain product/proof gaps.",
       "author": "rm-role-designercodex-1794793155",
       "ran_by": "BENCH"
     },
@@ -266,7 +267,7 @@
         "design/concepts/LeaningScrub/build_items_03.md",
         "OWNER:1794835478275153823"
       ],
-      "text": "Agent proposed default 120 engine days and normal range 120–600, with per-claim frozen duration. OWNER:1794835478275153823 strikes all imported legacy-value overrides and old-start-only migration. Stage 3 must remove those arms from derived artifacts; current-schema settings changes and save/reload remain floor duties. Numeric tuning remains agent-selected.",
+      "text": "Agent selects fresh default 120 engine days, range 120–600, duration/due frozen per current-schema claim. OWNER:1794835478275153823 excludes all imported legacy-value overrides, old-start-only conversion, aliases and migration. Tests cover current-schema tuning, reload, off/hold/re-enable only. Numeric tuning is agent-selected.",
       "author": "rm-role-designercodex-1794799806",
       "ran_by": "BENCH",
       "superseded_in_part_by": "OWNER:1794835478275153823",
@@ -293,7 +294,7 @@
         "design/concepts/LeaningScrub/build_items_03.md",
         "OWNER:1794835478275153823"
       ],
-      "text": "Historical Stage 3 draft had eight observations. OWNER:1794835478275153823 validates the corrected six-family bar: add sweetline healing, defer technology and calling-pyre, and move settings/reload to floor while removing all save preservation. Canonical walk corrected in Stage 2; Stage 3 must rewrite dependent artifacts and Stage 4 re-examine.",
+      "text": "Historical eight-family draft superseded by the corrected six-family canonical bar validated in OWNER:1794835478275153823. Stage 3 now adds healing, defers technology/calling-pyre, moves settings/reload to floor, removes preservation and binds the validated root hash. A fresh Stage 4 exam is required.",
       "author": "rm-role-designercodex-1794799806",
       "ran_by": "BENCH",
       "superseded_in_part_by": "OWNER:1794835478275153823",
@@ -307,7 +308,7 @@
         "design/concepts/LeaningScrub/scenes.json",
         "design/concepts/LeaningScrub/build_items_03.md"
       ],
-      "text": "Authored70 leaves including3 instruments and1 walk,81 planned scenes,7 greedy showcases and7 cheaper remainder checks; all71 built/in-scope inventory units covered. Two absent/out cuts retain explicit absence scene but are not invalid program coverage units. All23 floor lines applicable; no exception/waiver. Filed5 missing-entry/recovery work packages and mapped all34 previous audits. No game action or current proof upgrade.",
+      "text": "Historical initial catalog had 70 leaves/81 scenes/seven showcases. Current revision is counted in write_checks_03_rework.json; preserves all 34 audits, applicable floor and built-unit coverage without claiming current play or excusing deferred built code.",
       "author": "rm-role-designercodex-1794799806",
       "ran_by": "BENCH"
     },
@@ -318,29 +319,33 @@
         "design/concepts/LeaningScrub/write_checks_03.json",
         "design/validation_walks/RimMandrake/LeaningScrub.md"
       ],
-      "text": "Retained the existing Stage 3 design after independently checking every reported root-reference rejection against both validator checkouts. Both expose the same eight DRAFT root observations. Existing root approval, proposed tuning, planned acceptance entries and proof boundaries retain their recorded provenance."
+      "text": "Historical initial Stage 3 retry, before OWNER:1794835478275153823 and the current rewrite: Retained the existing Stage 3 design after independently checking every reported root-reference rejection against both validator checkouts. Both expose the same eight DRAFT root observations. Existing root approval, proposed tuning, planned acceptance entries and proof boundaries retain their recorded provenance.",
+      "status": "historical_superseded"
     },
     {
       "id": "stage4_cold_reader_exam",
       "speaker": "agent",
       "source": "design/concepts/LeaningScrub/exam.json",
-      "text": "Frozen Stage 3 tree and sheet passed the independent Claude Opus Cold Reader exam. Two fresh Readers matched 18/18 expectations with zero accept-where-core-rejects. Challenger contributed six cases. Program-created control removed raid_weight and every mention of its rule. Control missed the non-raid-weight case while full Readers rejected it. All five returned CLI session UUIDs and usage records are retained. No live acceptance, coverage signature, version lock or first-touch certification follows from this exam."
+      "text": "Historical old-version exam; invalidated for the current artifacts by Stage 3 rewrite. Frozen Stage 3 tree and sheet passed the independent Claude Opus Cold Reader exam. Two fresh Readers matched 18/18 expectations with zero accept-where-core-rejects. Challenger contributed six cases. Program-created control removed raid_weight and every mention of its rule. Control missed the non-raid-weight case while full Readers rejected it. All five returned CLI session UUIDs and usage records are retained. No live acceptance, coverage signature, version lock or first-touch certification follows from this exam.",
+      "status": "historical_requires_new_exam"
     },
     {
       "id": "stage4_helper_budget_overrun",
       "speaker": "agent",
       "source": "design/concepts/LeaningScrub/exam.json",
-      "text": "The five independent helper processes consumed 580949 weighted tokens, exceeding this run allowance500000 by80949. All actual helper usage was charged exactly with designer_stage.py charge --kind helper. Remaining task cap is available. No exemption or reset inferred."
+      "text": "Historical Stage 4 run rm-role-designercodex-1794815494: The five independent helper processes consumed 580949 weighted tokens, exceeding this run allowance500000 by80949. All actual helper usage was charged exactly with designer_stage.py charge --kind helper. Remaining task cap is available. No exemption or reset inferred.",
+      "status": "historical_charged"
     },
     {
       "id": "stage5_lock_return_root_validation",
       "speaker": "agent",
-      "text": "Lock audit: canonical north star remains DRAFT and root_hash null, so return to Stage 2 for root validation under Lock step 1. Structural showcase checks pass, but gate refuses root and absent signature. Judge rm-coverage-judge-1794823485 not_covered is explicitly advisory (UNTESTED brief); preserve all12 gaps and unchecked=[] without treating it as a binding refusal. g12 needs neutral criteria repair, not a repeated owner flagship ask. Frozen artifacts and prior proof boundaries preserved. No live action or certification.",
+      "text": "Historical Lock return before the corrected owner answer and current Stage 3 rewrite: Lock audit: canonical north star remains DRAFT and root_hash null, so return to Stage 2 for root validation under Lock step 1. Structural showcase checks pass, but gate refuses root and absent signature. Judge rm-coverage-judge-1794823485 not_covered is explicitly advisory (UNTESTED brief); preserve all12 gaps and unchecked=[] without treating it as a binding refusal. g12 needs neutral criteria repair, not a repeated owner flagship ask. Frozen artifacts and prior proof boundaries preserved. No live action or certification.",
       "source": [
         "design/concepts/LeaningScrub/lock_review_05.json",
         "src/RimMandrake/rimflow/roles/designer_lock.md",
         "design/concepts/LeaningScrub/coverage_verdict.json"
-      ]
+      ],
+      "status": "historical_root_resolved_coverage_pending"
     },
     {
       "id": "stage2_root_validation_wait",
@@ -372,6 +377,16 @@
       "source": "OWNER:1794835478275153823",
       "text": "OWNER ANSWER to a_root_validation_2 and gap 12, three cards 5:07-5:25 AM PST 2026-11-16 (observations of turn_03.md). scrub_wind_home: BINDING as written. scrub_routes_deliberate: BINDING as written. scrub_vines_integral: BINDING as written. scrub_tree_economy: BINDING, with his addition (first owner-said sentence): animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time. scrub_native_ecology: BINDING as written (flight joint only). scrub_technology (ruins to water, scavenger camps): NOT THIS VERSION, file for the next Design Version; the farmer-camp and drying-scar cuts stand. scrub_fire_and_belief: thundersteps stamping plus witness/trail maker tracking BINDING now; calling-pyre beliefs and ritual move to the next version. scrub_saved_use: REMOVED as a Leaning Scrub observation (his words): settings and save/reload are the universal floor every mod owes, not a mod-specific bar; ALL savegame preservation is gone: no aliases, no legacy import, no migration (drop save_aliases, the smother legacy-import arms, and the 'imported old due dates preserved / save migration' delegated tuning). Gap 12 (flagship must be owner-picked): he declined to pick ('These are all important'): every showcase stays required; the showing order is an agent call and home_routes_expedition stays first; the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer. Outcome for the Designer: rework at stage 3 with these corrections and the 11 fixable coverage gaps; this is his validation of the corrected bar.",
       "author": "rm-role-designercodex-1794838582"
+    },
+    {
+      "id": "stage3_owner_bar_rewrite",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794835478275153823",
+        "design/concepts/LeaningScrub/coverage_fixes.json",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "text": "Rewrote derived Stage 3 artifacts to the validated six-family bar, preserved delegated sentence/showing order, added independent sweetline healing contract and selected finite initial pulse tuning. Corrected advisory g1–g11 with evidence; retained g12 as neutral-fixer work and unchecked=[]. Settings/current-schema reload are floor duties. Deferred built capabilities retain characterization, aliases retain removal coverage; prior exam is historical, not current."
     }
   ],
   "asks": [
@@ -2200,22 +2215,32 @@
       "id": "root_validation",
       "core": true,
       "resolved": true,
-      "text": "The prior DRAFT bar/root_hash gap is resolved in design by OWNER:1794835478275153823 and canonical bar validation at 3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518. The existing tree root_hash remains null until Stage 3 rewrites it; prior exam cannot certify the new artifacts.",
+      "text": "Resolved: OWNER:1794835478275153823 validated the corrected canonical six-family bar; the official Stage 3 writer now stamps root_state VALIDATED and root_hash 3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518. The prior exam cannot certify new artifacts; fresh Stage 4 remains required.",
       "source": [
         "design/validation_walks/RimMandrake/LeaningScrub.md:113",
         "src/RimMandrake/rimflow/roles/designer_lock.md:5",
-        "design/concepts/LeaningScrub/turn_03.md"
+        "design/concepts/LeaningScrub/turn_03.md",
+        "design/concepts/LeaningScrub/tree.json"
       ],
       "status": "design_resolved",
       "resolution": "Owner event validates the corrected bar: retain wind/home, routes, vines and ecology; add sweetline healing; defer technology and calling-pyre; settings/reload stay floor duties and no save preservation. Apply canonical correction and validation before Stage 3 rewrites derived artifacts.",
       "resolution_source": "OWNER:1794835478275153823",
       "remaining_work": "Stage 3 root-hash rewrite, complete scoped rework, fresh Stage 4 exam, and later Lock gates remain required."
+    },
+    {
+      "id": "stage3_rework_resolved",
+      "source": [
+        "OWNER:1794835478275153823",
+        "design/concepts/LeaningScrub/coverage_fixes.json"
+      ],
+      "text": "Prior DRAFT/root-hash and stale scope references corrected by Stage 3 rewrite. No unresolved owner decision remains; g12 is an external criterion conflict with existing system item, not a repeated flagship ask. Implementation/proof gaps remain as planned work.",
+      "status": "resolved_in_design"
     }
   ],
   "failure_modes": [
     "The plain fails to communicate its rules: continuous lean, wind/Stall/Gale, tall vine forms and dangerous/ready/spent states are mechanically present but unreadable in play, so footing and wind are arbitrary.",
     "The colony cannot become a dependable home: routine hauling silently chooses harmful vine crossings or maintained routes are overtaken through inconsistent creep/walking rules, undoing the owner-approved distinction between home work and ordered journeys.",
-    "Isolated hooks pass while the useful journey fails: harvest/crafting/felt/water/ritual/ecology chains, maker attribution, settings and saved state do not survive actual play, changed action order and reload; contaminated or weak-control proofs hide the failure."
+    "Isolated hooks pass while the useful journey fails: harvest/crafting/felt/healing/ecology chains, maker attribution, settings and saved state do not survive actual play, changed action order and reload; contaminated or weak-control proofs hide the failure."
   ],
   "built_reviewed": [
     {
@@ -3642,6 +3667,15 @@
         "design/concepts/LeaningScrub/settings_census_03.json"
       ],
       "finding": "Independently extracted82 current public settings fields with serialization keys. DEFAULTS remains an incomplete acceptance census, including omitted shirrel switch. Future added fields/consumer/UI effects must regenerate and expand the manifest; static extraction is not settings proof."
+    },
+    {
+      "id": "draft_owner_corrections_20261116",
+      "source": [
+        "OWNER:1794835478275153823",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:257"
+      ],
+      "finding": "The 2026-11-15 draft is a historical checking map, not current authority: it omits the newly explicit parasite/disease healing benefit and includes technology/pyre and save-alias preservation now deferred/removed by the owner. Fresh Rub/Notify_Scratched source read only establishes coat/product/bank/history, not healing. No draft quotation, defName or file-line claim is newly promoted without source verification."
     }
   ],
   "live_walk_first": {
@@ -4278,21 +4312,21 @@
     }
   },
   "stage_3": {
-    "run": "rm-role-designercodex-1794806809",
+    "run": "rm-role-designercodex-1794840775",
     "author": "BENCH DesignerCodex",
     "source": "design/concepts/LeaningScrub/plan.md",
-    "written_at": "2026-11-16T04:37:16.744679+00:00",
-    "status": "retry_checks_passed_pending_launcher",
-    "leaf_count": 70,
+    "written_at": "2026-11-16T15:04:10.086276+00:00",
+    "status": "write_checks_passed_pending_launcher",
+    "leaf_count": 64,
     "instrument_count": 3,
     "walk_count": 1,
-    "scene_count": 81,
-    "acceptance_count": 75,
+    "scene_count": 82,
+    "acceptance_count": 71,
     "interaction_count": 5,
-    "exploration_count": 1,
-    "showcases": 7,
-    "coverage_rest": 7,
-    "required_inventory_units": 71,
+    "exploration_count": 6,
+    "showcases": 6,
+    "coverage_rest": 11,
+    "required_inventory_units": 72,
     "removed_absence_scene": "sc_cuts",
     "floor_lines": 23,
     "floor_disabled": [],
@@ -4311,7 +4345,7 @@
       "intentional_changes": [
         "design/validation_walks/RimMandrake/LeaningScrub.md"
       ],
-      "evidence": "design/concepts/LeaningScrub/source_audit_03.json"
+      "evidence": "design/concepts/LeaningScrub/source_audit_03_rework.json"
     },
     "product_code_art_changes": false,
     "bridge_game_deploy_actions": false,
@@ -4320,7 +4354,7 @@
     "waivers": [],
     "oracle_bindings": false,
     "exam_or_lock_claims": false,
-    "north_star_status": "DRAFT observation checklist; delegated sentence approval remains record.root",
+    "north_star_status": "VALIDATED corrected six-family bar at OWNER:1794835478275153823; tree written again against canonical hash.",
     "next": "Stage4 Exam only after launcher accepts this result. Live acceptance and Lock first-touch certification remain owed.",
     "filed_events": [
       {
@@ -4359,29 +4393,51 @@
         "seat": "BENCH"
       }
     ],
-    "verification": "design/concepts/LeaningScrub/write_checks_03.json",
-    "showcase_overlap": {
-      "fire_and_belief": {
-        "shared": [
-          "downwind_fire"
-        ],
-        "ratio": 0.25,
-        "why": "Retained fire/accountability interaction needs actual downwind spread; staging reason explicit."
+    "verification": "design/concepts/LeaningScrub/write_checks_03_rework.json",
+    "showcase_overlap": {},
+    "authored_run": "rm-role-designercodex-1794840775",
+    "source_review": "design/concepts/LeaningScrub/source_audit_03_rework.json",
+    "source_count_continuity": 95,
+    "north_star_hash": "3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518",
+    "filed_update_receipts": "design/concepts/LeaningScrub/filed_updates_03.json",
+    "filed_update_events": [
+      {
+        "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "event_tsn": "1794841475941034868",
+        "speaker": "agent",
+        "seat": "BENCH",
+        "source": "ITEM:SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      },
+      {
+        "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "event_tsn": "1794841484063157320",
+        "speaker": "agent",
+        "seat": "BENCH",
+        "source": "ITEM:SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY"
+      },
+      {
+        "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+        "event_tsn": "1794841491652188872",
+        "speaker": "agent",
+        "seat": "BENCH",
+        "source": "ITEM:SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      },
+      {
+        "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "event_tsn": "1794841497397053193",
+        "speaker": "agent",
+        "seat": "BENCH",
+        "source": "ITEM:SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      },
+      {
+        "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+        "event_tsn": "1794841507276719355",
+        "speaker": "agent",
+        "seat": "BENCH",
+        "source": "ITEM:SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
       }
-    },
-    "authored_run": "rm-role-designercodex-1794799806",
-    "rejection_recheck": {
-      "run": "rm-role-designercodex-1794806809",
-      "source": "design/concepts/LeaningScrub/write_checks_03.json",
-      "previous_run": "rm-role-designercodex-1794799806",
-      "reported_reasons_resolved": 20,
-      "checked_repositories": [
-        "/home/mandrake/rm/bench",
-        "/home/mandrake/rm/dispatch"
-      ],
-      "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
-      "text": "All reported leaf/root pairs resolve in both BENCH and Dispatcher checkouts. Each checkout passes Gate A and rejects a deliberately missing root. Source continuity matches all 95 previously verified files. The retry revalidates existing design artifacts."
-    }
+    ],
+    "primary_source_freshness": "Fresh changed-contract source excerpts plus 94/95 prior hash continuity; canonical bar change is authorized. No claim all source lines were reread or any scene executed."
   },
   "stage_4": {
     "run": "rm-role-designercodex-1794815494",
@@ -4395,7 +4451,8 @@
     ],
     "helper_weighted_tokens": 580949,
     "helper_allowance_overrun": 80949,
-    "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES"
+    "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES",
+    "current_status": "Historical old-version exam only; invalidated by this Stage 3 rewrite. Fresh Stage 4 exam required."
   },
   "stage_2_root_validation": {
     "run": "rm-role-designercodex-1794838582",
@@ -4456,5 +4513,124 @@
     "validated_root_hash": "3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518",
     "validation_source": "OWNER:1794835478275153823",
     "validation_command": "python3 src/RimMandrake/Utils/modcheck/cli.py validate LeaningScrub --owner-said <exact event ownerSaid>"
-  }
+  },
+  "stage_3_rework": {
+    "run": "rm-role-designercodex-1794840775",
+    "authority": "OWNER:1794835478275153823",
+    "coverage_fixes": "design/concepts/LeaningScrub/coverage_fixes.json",
+    "status": "write_checks_passed_pending_launcher",
+    "prior_exam": "Historical frozen-version exam only; new artifacts require fresh Stage4 exam.",
+    "all_findings_retained": "lock_review_05.json (g1–g12, unchecked=[])",
+    "g12": "RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK",
+    "scope": "Six validated roots; technology/pyre later, settings/current-schema reload floor, all legacy preservation out.",
+    "source": "design/concepts/LeaningScrub/write_checks_03_rework.json"
+  },
+  "stage_3_history": [
+    {
+      "run": "rm-role-designercodex-1794806809",
+      "author": "BENCH DesignerCodex",
+      "source": "design/concepts/LeaningScrub/plan.md",
+      "written_at": "2026-11-16T04:37:16.744679+00:00",
+      "status": "retry_checks_passed_pending_launcher",
+      "leaf_count": 70,
+      "instrument_count": 3,
+      "walk_count": 1,
+      "scene_count": 81,
+      "acceptance_count": 75,
+      "interaction_count": 5,
+      "exploration_count": 1,
+      "showcases": 7,
+      "coverage_rest": 7,
+      "required_inventory_units": 71,
+      "removed_absence_scene": "sc_cuts",
+      "floor_lines": 23,
+      "floor_disabled": [],
+      "filed_entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "legacy_audits_mapped": 34,
+      "setting_fields_source_censused": 82,
+      "primary_source_continuity": {
+        "checked": 95,
+        "unchanged": 94,
+        "intentional_changes": [
+          "design/validation_walks/RimMandrake/LeaningScrub.md"
+        ],
+        "evidence": "design/concepts/LeaningScrub/source_audit_03.json"
+      },
+      "product_code_art_changes": false,
+      "bridge_game_deploy_actions": false,
+      "current_live_proof": false,
+      "owner_questions_sent": [],
+      "waivers": [],
+      "oracle_bindings": false,
+      "exam_or_lock_claims": false,
+      "north_star_status": "DRAFT observation checklist; delegated sentence approval remains record.root",
+      "next": "Stage4 Exam only after launcher accepts this result. Live acceptance and Lock first-touch certification remain owed.",
+      "filed_events": [
+        {
+          "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+          "event_tsn": "1794803724247254509",
+          "source": "ITEM:SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+          "speaker": "agent",
+          "seat": "BENCH"
+        },
+        {
+          "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+          "event_tsn": "1794803729653013403",
+          "source": "ITEM:SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+          "speaker": "agent",
+          "seat": "BENCH"
+        },
+        {
+          "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+          "event_tsn": "1794803735056800972",
+          "source": "ITEM:SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+          "speaker": "agent",
+          "seat": "BENCH"
+        },
+        {
+          "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+          "event_tsn": "1794803740733705368",
+          "source": "ITEM:SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+          "speaker": "agent",
+          "seat": "BENCH"
+        },
+        {
+          "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+          "event_tsn": "1794803749958285002",
+          "source": "ITEM:SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+          "speaker": "agent",
+          "seat": "BENCH"
+        }
+      ],
+      "verification": "design/concepts/LeaningScrub/write_checks_03.json",
+      "showcase_overlap": {
+        "fire_and_belief": {
+          "shared": [
+            "downwind_fire"
+          ],
+          "ratio": 0.25,
+          "why": "Retained fire/accountability interaction needs actual downwind spread; staging reason explicit."
+        }
+      },
+      "authored_run": "rm-role-designercodex-1794799806",
+      "rejection_recheck": {
+        "run": "rm-role-designercodex-1794806809",
+        "source": "design/concepts/LeaningScrub/write_checks_03.json",
+        "previous_run": "rm-role-designercodex-1794799806",
+        "reported_reasons_resolved": 20,
+        "checked_repositories": [
+          "/home/mandrake/rm/bench",
+          "/home/mandrake/rm/dispatch"
+        ],
+        "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
+        "text": "All reported leaf/root pairs resolve in both BENCH and Dispatcher checkouts. Each checkout passes Gate A and rejects a deliberately missing root. Source continuity matches all 95 previously verified files. The retry revalidates existing design artifacts."
+      }
+    }
+  ]
 }
