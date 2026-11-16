@@ -927,7 +927,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
         is_codex = run.get("runner") == "codex" or (isinstance(res, dict) and res.get("runner") == "codex")
         if is_codex:
             run["runner"] = "codex"
-            run["codex_usage"] = res.get("codex_usage", "UNMEASURED") if isinstance(res, dict) else "UNMEASURED"
+            run["codex_usage"] = codex_usage(run, res)
         tok = run_tokens(res)
         raw = raw_tokens(res)
         if tok is None and not is_codex and obs.get("transcript"):
@@ -2022,6 +2022,20 @@ def coverage_pre(concept):
 CLOSE_OWED_MAX_S = 2 * 86400     # a stage close still raising after this long is given up, said to the Conductor
 
 
+def codex_usage(run, res):
+    """A Codex run's usage: its result line's, else what agent_runner left beside the run's out file (the spend
+    envelope, else the streamed events: a unit stopped at run_max_s never prints a result line). Item
+    RIMMANDRAKE_READ_CODEX_SPEND_OF_A_KILLED_DESIGNER_RUN; UNMEASURED only when none of the three is readable."""
+    u = res.get("codex_usage") if isinstance(res, dict) else None
+    if isinstance(u, dict):
+        return u
+    if not run.get("out"):
+        return "UNMEASURED"
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils"))
+    import agent_runner as AR
+    return AR.usage_of_files(run["out"] + ".spend.json", run["out"] + ".events.jsonl")
+
+
 def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
     """A finished stage-machine run's close: the stage machine charges the task budget and judges result.json (a
     closing message advances nothing). run["close_owed"] is set BEFORE designer_stage's close and cleared the moment it
@@ -2036,7 +2050,7 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         if (run.get("runner") == "codex" or res.get("runner") == "codex") and not obs.get("stage_close"):
             import designer_stage as DS
             ok, errs = DS.close_run(run["concept"], run["unit"], repo=DS.REPO,
-                                   runner="codex", usage=res.get("codex_usage", "UNMEASURED"),
+                                   runner="codex", usage=codex_usage(run, res),
                                    transport_error=(res.get("result") or "no Codex transport result")
                                    if res.get("is_error") or not res or run.get("state") == "failed" else None)
         else:
@@ -2256,8 +2270,11 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
     held |= {r.get("concept") for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"}
     asked = []
     still_parked = set()
+    lane = cfg.get("sweeps_runner")     # a runner lane (Designer: claude, DesignerCodex: codex) sweeps only its own
     for concept, st, since in rows:
         if since is None or not isinstance(st, dict) or st.get("running") or concept in held or now - since < grace:
+            continue
+        if lane and (st.get("runner") or "claude") != lane:
             continue
         res = [r for r in st.get("results") or [] if isinstance(r, dict)]
         reasons = None

@@ -136,5 +136,51 @@ class CodexRunnerTests(unittest.TestCase):
         self.assertEqual(R.charge(None, {"spent":0}, 100, 0, {}, "codex-unit", basis="codex"), 0)
 
 
+    def test_killed_run_usage_is_read(self):
+        """RIMMANDRAKE_READ_CODEX_SPEND_OF_A_KILLED_DESIGNER_RUN: a run that times out, or a unit stopped before it
+        printed its result line, still reads the usage of every turn it completed."""
+        ev = json.dumps({"type": "turn.completed", "usage": {"input_tokens": 70, "output_tokens": 9}}) + "\n"
+        with tempfile.TemporaryDirectory() as d:
+            def slow(argv, **kw):
+                kw["stdout"].write(ev)
+                kw["stdout"].flush()
+                raise subprocess.TimeoutExpired(argv, 5)
+            with patch.object(AR.CX, "on_windows_drive", return_value=True), patch.object(AR, "launch_argv", return_value=["codex", "exec", "-"]):
+                res = AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", invoke=slow, meter=meter())
+            self.assertTrue(res["is_error"])
+            self.assertEqual(res["codex_usage"], {"input_tokens": 70, "output_tokens": 9})
+            self.assertEqual(json.loads((Path(d)/"spend").read_text())["usage"], {"input_tokens": 70, "output_tokens": 9})
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "rm-role-designer-1.json")
+            run = {"out": out, "runner": "codex"}
+            self.assertEqual(RL.codex_usage(run, {}), "UNMEASURED")
+            Path(out + ".events.jsonl").write_text(ev + ev)
+            self.assertEqual(RL.codex_usage(run, {}), {"input_tokens": 140, "output_tokens": 18})
+            Path(out + ".spend.json").write_text(json.dumps({"usage": {"input_tokens": 1, "output_tokens": 2}}))
+            self.assertEqual(RL.codex_usage(run, {}), {"input_tokens": 1, "output_tokens": 2})
+            self.assertEqual(RL.codex_usage(run, {"codex_usage": {"input_tokens": 5, "output_tokens": 6}}),
+                             {"input_tokens": 5, "output_tokens": 6})
+            self.assertEqual(RL.codex_usage({"runner": "codex"}, {"codex_usage": "UNMEASURED"}), "UNMEASURED")
+
+
+    def test_concept_runner_and_lanes(self):
+        """A concept init'ed --runner codex is launched on Codex by the tick's own sweep, on the Codex lane only;
+        the Claude lane leaves it alone, and an unset runner stays the Claude lane's."""
+        with tempfile.TemporaryDirectory() as d:
+            st = DS.init(os.path.join(d, "M"), "M", runner="codex")
+            self.assertEqual(DS.load_state(os.path.join(d, "M"))["runner"], "codex")
+            with self.assertRaises(DS.Refused):
+                DS.init(os.path.join(d, "N"), "N", runner="gpt")
+        rows = lambda: [("/c/M", {"status": "ready", "stage": 0, "runner": "codex"}, 0),
+                        ("/c/G", {"status": "ready", "stage": 1}, 0)]
+        base = {"chain_stages": True, "ledger_item": "fixture"}
+        codex = RL.chain_sweep("DesignerCodex", {}, dict(base, runner="codex", sweeps_runner="codex"), 10000,
+                               lambda **kw: None, rows)
+        self.assertEqual([(q["concept"], q["runner"]) for q in codex], [("/c/M", "codex")])
+        claude = RL.chain_sweep("Designer", {}, dict(base, sweeps_runner="claude"), 10000, lambda **kw: None, rows)
+        self.assertEqual([q["concept"] for q in claude], ["/c/G"])
+        self.assertEqual(len(RL.chain_sweep("Designer", {}, base, 10000, lambda **kw: None, rows)), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

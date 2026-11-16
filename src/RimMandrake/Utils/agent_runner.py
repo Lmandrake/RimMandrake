@@ -77,6 +77,21 @@ def event_usage(stream):
     return total if seen else "UNMEASURED"
 
 
+def usage_of_files(spend, events):
+    """A run's measured usage from what it left on disk: the spend envelope, else the events streamed so far (a run
+    killed before it wrote the envelope). Neither readable -> UNMEASURED, never zero."""
+    try:
+        u = json.loads(Path(spend).read_text(encoding="utf-8")).get("usage")
+        if isinstance(u, dict):
+            return u
+    except (OSError, ValueError, AttributeError):
+        pass
+    try:
+        return event_usage(Path(events).read_text(encoding="utf-8", errors="replace"))
+    except OSError:
+        return "UNMEASURED"
+
+
 def event_error(stream):
     last_message = ""
     for line in stream.splitlines():
@@ -144,9 +159,13 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
         rec["codex_home"] = str(home)
         target.unlink(missing_ok=True)
         argv = launch_argv(work, target, model, effort, sandbox)
-        proc = invoke(argv, input=prompt, cwd=str(work), capture_output=True,
-                      text=True, errors="replace", timeout=timeout, env=CX.child_env(home))
-        stream, rc = proc.stdout or "", proc.returncode
+        # stdout goes straight to the events file, so a run killed from outside (a role's run_max_s stop) leaves
+        # every completed turn's usage on disk (RIMMANDRAKE_READ_CODEX_SPEND_OF_A_KILLED_DESIGNER_RUN)
+        with open(events, "w", encoding="utf-8") as live:
+            proc = invoke(argv, input=prompt, cwd=str(work), stdout=live, stderr=subprocess.PIPE,
+                          text=True, errors="replace", timeout=timeout, env=CX.child_env(home))
+        stream = proc.stdout if isinstance(proc.stdout, str) else events.read_text(encoding="utf-8", errors="replace")
+        rc = proc.returncode
         error = event_error(stream)
         if rc:
             error = error or (proc.stderr or "Codex exited %s" % rc)
@@ -158,13 +177,14 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
             error = error or "Codex produced no last message"
         rec["state"] = "failed" if error else "done"
     except subprocess.TimeoutExpired as e:
-        stream = e.stdout or ""
+        stream = e.stdout or (events.read_text(encoding="utf-8", errors="replace") if events.is_file() else "")
         if isinstance(stream, bytes):
             stream = stream.decode("utf-8", errors="replace")
         error = "Codex timeout: %s" % timeout
     except Exception as e:
         error = "%s: %s" % (type(e).__name__, e)
     rec.update(usage=event_usage(stream), error=error, returncode=rc)
+    rec["usage_from"] = "turn.completed events in %s" % events
     events.write_text(stream, encoding="utf-8")
     spend.write_text(json.dumps(rec, indent=2) + "\n", encoding="utf-8")
     return {"runner": "codex", "is_error": rec["state"] != "done", "codex_usage": rec["usage"],

@@ -17,7 +17,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   exam.json     the Stage 4 record, frozen against the tree and sheet hashes
   result.json   what a run says it did; only `close` (the launcher) reads it and advances
 
-  init     <dir> --mod M [--item ID] [--alias GSS]... [--cap N] [--reserve N]   start a concept's state
+  init     <dir> --mod M [--item ID] [--alias GSS]... [--cap N] [--reserve N] [--runner claude|codex]   start a concept's state
   open     <dir> --run U [--run-cap N]     the launcher: refuse or return the stage packet (stdout) and reserve budget
   close    <dir> --run U [--tokens N]      the launcher: charge the run, validate result.json, advance or not
   charge   <dir> --tokens N --kind K --ref R   a helper, review or consult outside the run's own transcript
@@ -1339,7 +1339,11 @@ def spend_by_stage(st):
     return out
 
 
-def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()):
+def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=(), runner=None):
+    """runner: the concept's own runner (claude|codex), read by every later launch of it, the tick's orphan sweep and
+    chain included (item RIMMANDRAKE_DRAFT_BIOME_DESIGNER_PASSES_WITH_CODEX_BEFORE_RESET); None = the role's default."""
+    if runner not in (None, "claude", "codex"):
+        raise Refused("runner must be claude or codex")
     if os.path.exists(state_path(d)):
         raise Refused("stage.json already exists in %s" % d)
     if not (0 < reserve < cap):
@@ -1348,7 +1352,9 @@ def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()
     st = {"schema": 1, "mod": mod, "item": item, "aliases": list(aliases or []), "stage": 0, "status": "ready",
           "budget": {"cap": cap, "reserve": reserve, "spent": 0, "charges": []},
           "running": None, "results": [], "recovery": [], "history": []}
-    hist(st, "init", "stage 0, budget %d (reserve %d)" % (cap, reserve))
+    if runner:
+        st["runner"] = runner
+    hist(st, "init", "stage 0, budget %d (reserve %d)%s" % (cap, reserve, ", runner %s" % runner if runner else ""))
     write_json(state_path(d), st)
     return st
 
@@ -2405,6 +2411,7 @@ def main(argv=None):
     x.add_argument("--cap", type=int, default=DEFAULT_CAP)
     x.add_argument("--reserve", type=int, default=DEFAULT_RESERVE)
     x.add_argument("--alias", action="append", default=[], help="another item-id subject naming the mod (GSS)")
+    x.add_argument("--runner", choices=("claude", "codex"), help="the concept's runner for every launch (default: the role's)")
     for name in ("open", "close"):
         x = sub.add_parser(name)
         x.add_argument("dir")
@@ -2482,7 +2489,7 @@ def main(argv=None):
         if a.cmd == "manifest":
             print(json.dumps({"stage_%d" % s: manifest_hashes(s) for s in STAGES}, indent=1))
         elif a.cmd == "init":
-            init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias)
+            init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias, a.runner)
             print("init %s: stage 0" % a.dir)
         elif a.cmd == "open":
             text, budget = open_run(a.dir, a.run, a.run_cap)
