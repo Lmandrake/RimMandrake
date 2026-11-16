@@ -54,13 +54,16 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--n", type=int, default=20)
+    ap.add_argument("--round", type=int, default=2, help="the judging round the sample is drawn for")
     ap.add_argument("--root", default=None)
     o = ap.parse_args(argv)
     root = o.root or M.default_root()
     pop, samples = draw(root, o.mod, o.seed, o.n)
-    sha = subprocess.run(["git", "-C", root, "rev-parse", "--short=12", "HEAD"], capture_output=True,
+    led = "design/concepts/%s/ledger/BACKFILL.jsonl" % o.mod
+    # the commit that last wrote the shard, not HEAD at the draw (the round-3 judge found HEAD naming other work)
+    sha = subprocess.run(["git", "-C", root, "log", "-1", "--format=%h", "--abbrev=12", "--", led], capture_output=True,
                          text=True, timeout=60).stdout.strip()
-    doc = {"mod": o.mod, "round": 2, "ledger": "design/concepts/%s/ledger/BACKFILL.jsonl" % o.mod, "ledger_sha": sha,
+    doc = {"mod": o.mod, "round": o.round, "ledger": led, "ledger_sha": sha,
            "population": "BACKFILL events citing an item: ref (ticket-mined), in ledger read order",
            "population_size": len(pop), "seed": o.seed,
            "draw": "random.Random(%d).sample(range(population_size), %d), sorted" % (o.seed, len(samples)),

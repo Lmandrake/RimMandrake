@@ -160,7 +160,8 @@ OVERTAKE_SHARE = 0.4        # a later close or commit holding this share of a li
 OVERTAKE_MIN = 3
 GROUND_MIN = 0.5            # a reading's trap sentence needs this share of its words in the ticket's own record
 # a verdict on a result ('the pass is weaker than it reads'): mined only when the record itself says it (GSS 119)
-JUDGEMENT_RE = re.compile(r"(?i)\b(weaker|stronger|unreliable|untrustworthy|meaningless|hollow|degraded)\b|\b(?:reads|claims|proves|says) (less|more) than\b")
+JUDGEMENT_RE = re.compile(r"(?i)\b(weaker|stronger|unreliable|untrustworthy|meaningless|hollow|degraded)\b|"
+                          r"\b(?:reads|claims|proves|says) (less|more) than\b")
 FIX_SHA_RE = re.compile(r"(?i)\bfix(?:ed|es)?\b")
 PASS_ROW_RE = re.compile(r"\bPASS\b")
 _STOP = set("this that with from have been were what when then than they them their there which while into onto over "
@@ -926,102 +927,115 @@ def _iso(ts):
 
 
 def drop_overtaken(root, mod, ev, tev, titles, states, mod_words, notes, raw_readings=None):
-    """The round-3 judge's class fix: a trap that states a limit later work can lift ('cannot be staged', 'until it is
-    reworded to X', 'no X exists') is mined only while it is still true (EK 51, EK 119). It leaves when the words it
-    waits on are in the mod's own files, when a ticket it names closed after it, or when another of the mod's tickets
-    FILED about that limit (its title holds the limit's words, and its close speaks to them) was closed after it. A later origin/main commit naming the mod, or a later close, that only shares its words is a question for the currency reader (`claude -p`, see
-    modledger_reader.CURRENT_SYSTEM): its committed answer drops the traps it found overtaken; an unread one stays. The
-    limit's date is the ticket event that states it, else the ticket's filing. -> the plan without them (counted in
-    `notes`); the reader's questions go to RECORDS_CURRENT[mod]."""
+    """The round-3 judge's class fix: a trap is mined only while it is still true today, sentence by sentence (all
+    three round-3 WRONG entries were traps later work overtook: EK 51, EK 119, GSS 119). A sentence stating a limit
+    ('cannot be staged', 'until it is reworded to X', 'no X exists') leaves when the words it waits on are in the mod's
+    own files, when a ticket it names closed after it, or when another of the mod's tickets FILED about that limit (its
+    title holds the limit's words, and its close speaks to them) was closed after it. Any other sentence that later
+    work may have made false (a later close, verify or note on one of the mod's tickets, its own included, or a later
+    origin/main commit naming the mod, sharing its words) is a question for the currency reader (`claude -p`,
+    modledger_reader.CURRENT_SYSTEM): its committed answer drops the sentences it found no longer true; an unread one
+    stays. A sentence's date is the ticket event that states it, else the ticket's filing. -> the plan with those
+    sentences out (an entry left under 25 chars leaves whole), counted in `notes`; the questions go to
+    RECORDS_CURRENT[mod]."""
     raw_readings = raw_readings or {}
     drop_w = {w for x in mod_words for w in stems(x)} | stems(re.sub(r"(?<=[a-z])(?=[A-Z])", " ", mod)) | \
         stems(mod.lower())
     name_re = re.compile(r"(?i)\b(?:%s)\b" % "|".join(re.escape(x) for x in sorted(
         set(mod_words) | {mod, re.sub(r"(?<=[a-z])(?=[A-Z])", " ", mod)}) if x))
-    filed, closes = {}, []
-    for n, st in states.items():
-        if st not in ("done", "built", "validated"):
-            continue
-        evs = tev.get(n, [])
-        filed[n] = titles.get(n) or ""
-        for t in evs:
+    later = []           # (ts, ticket, words, is a close of a fix): what happened on the mod's tickets
+    for n in states:
+        for t in tev.get(n, []):
             e = t[2]
-            if e.get("event") in ("close", "implemented"):
-                closes.append((_iso(e.get("ts")), n, clean_lead(e.get("reason") or e.get("why") or "")))
-    lims = []
-    for i, e in enumerate(ev):
-        kind, subject, body, evidence, auth, sha = e
-        if kind == "trap.noted" and CONDITIONAL_RE.search(body.get("text") or ""):
-            lims.append(i)
-    named = {x for i in lims for x in re.findall(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b", ev[i][2]["text"])}
+            k = e.get("event")
+            if k in ("close", "implemented", "note") or (k == "verify" and e.get("result") == "pass"):
+                txt = clean_lead(e.get("reason") or e.get("why") or e.get("text") or e.get("config") or "")
+                if txt and not R.QUARANTINE_RE.search(txt):
+                    later.append((_iso(e.get("ts")), n, txt, k in ("close", "implemented") and
+                                  states.get(n) in ("done", "built", "validated")))
+    traps = [i for i, e in enumerate(ev) if e[0] == "trap.noted"]
+    named = {x for i in traps for x in re.findall(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b", ev[i][2].get("text") or "")}
     nev = ticket_events(root, named) if named else {}
     nstate = rimflow_states(root, sorted(nev), nev) if nev else {}
     low = mod_text(root, mod)
-    commits = None
-    drop, gone, asks = set(), {}, {}
-    for i in lims:
+    commits = COMMITS(root) if traps else []
+    cut, gone, asks = {}, {}, {}
+
+    def out_(i, k, why):
+        cut.setdefault(i, set()).add(k)
+        gone[why[0]] = gone.get(why[0], 0) + 1
+        tick_ = next((r[5:] for r in ev[i][3] if r and r.startswith("item:")), None)
+        DROPPED_OVERTAKEN[mod].append((tick_, _sentences(ev[i][2]["text"])[k], "%s (%s)" % why))
+    for i in traps:
         kind, subject, body, evidence, auth, sha = ev[i]
-        text = body["text"]
         tick = next((r[5:] for r in evidence if r and r.startswith("item:")), None)
-        tw = stems(text) - drop_w
         evs = tev.get(tick, [])
-        src = next((t for t in evs if len(tw) >= 3 and any(len(tw & stems(t[2].get(k))) / len(tw) >= 0.5 for k in (
-            "text", "reason", "why", "byCard", "title", "spec"))), None) or next(
-            (t for t in evs if t[2].get("event") == "file"), None)
-        t0 = _iso(src[2].get("ts")) if src else ""
-        why = next((("the words it waits on are in the mod's files", q) for q in UNTIL_QUOTE_RE.findall(text)
-                    if q.lower() in low), None)
-        for x in sorted(named & set(re.findall(r"\b[A-Z][A-Z0-9_]+\b", text))) if not why else ():
-            later = [t for t in nev.get(x, []) if t[2].get("event") in ("close", "implemented") and
-                     _iso(t[2].get("ts")) > t0]
-            if x != tick and nstate.get(x) == "done" and later:
-                why = ("a ticket it names was closed after it", x)
-                break
-        if not why and t0 and len(tw) >= OVERTAKE_MIN:
-            for ts, n, r_ in closes:
-                sh = tw & stems(filed.get(n))
-                # its close must speak to the limit too: a title that quotes the limit beside another defect
-                # (GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: 'maxSliceMs is a lifetime max') closed on that defect
-                if n != tick and ts > t0 and len(sh) >= OVERTAKE_MIN + 1 and len(sh) / len(tw) >= OVERTAKE_SHARE \
-                        and len(tw & stems(r_)) >= 2:
-                    why = ("a ticket filed about that limit was closed after it", n)
-                    break
-        if why:
-            drop.add(i)
-            gone[why[0]] = gone.get(why[0], 0) + 1
-            DROPPED_OVERTAKEN[mod].append((tick, text, "%s (%s)" % why))
-            continue
-        if not t0 or len(tw) < OVERTAKE_MIN:
-            continue
-        if commits is None:
-            commits = COMMITS(root)
-        cand = [(len(tw & stems(subj)), "commit %s %s: %s" % (csha, str(ts)[:10], subj)) for ts, csha, subj in commits
-                if _iso(ts) > t0 and name_re.search(subj) and len(tw & stems(subj)) >= OVERTAKE_MIN]
-        cand += [(len(tw & stems(r_)), "close of %s %s: %s" % (n, ts[:10], fit(r_, 300))) for ts, n, r_ in closes
-                 if n != tick and ts > t0 and len(tw & stems(r_)) >= OVERTAKE_MIN + 1]
-        if cand:
-            asks.setdefault(tick, []).append((i, t0, text, [c for _n, c in sorted(cand, key=lambda x: -x[0])[:5]]))
+        for k, sen in enumerate(_sentences(body.get("text") or "")):
+            tw = stems(sen) - drop_w
+            if len(tw) < OVERTAKE_MIN:
+                continue
+            src = next((t for t in evs if any(len(tw & stems(t[2].get(f))) / len(tw) >= 0.5 for f in (
+                "text", "reason", "why", "byCard", "title", "spec"))), None) or next(
+                (t for t in evs if t[2].get("event") == "file"), None)
+            t0 = _iso(src[2].get("ts")) if src else ""
+            if CONDITIONAL_RE.search(sen):
+                why = next((("the words it waits on are in the mod's files", q) for q in UNTIL_QUOTE_RE.findall(sen)
+                            if q.lower() in low), None)
+                for x in sorted(named & set(re.findall(r"\b[A-Z][A-Z0-9_]+\b", sen))) if not why else ():
+                    if x != tick and nstate.get(x) == "done" and [t for t in nev.get(x, []) if t[2].get("event") in (
+                            "close", "implemented") and _iso(t[2].get("ts")) > t0]:
+                        why = ("a ticket it names was closed after it", x)
+                        break
+                for ts, n, txt, fixed in later if not why and t0 else ():
+                    sh = tw & stems(titles.get(n))
+                    # its close must speak to the limit too: a title that quotes the limit beside another defect
+                    # (GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: 'maxSliceMs is a lifetime max') closed on that defect
+                    if fixed and n != tick and ts > t0 and len(sh) >= OVERTAKE_MIN + 1 and \
+                            len(sh) / len(tw) >= OVERTAKE_SHARE and len(tw & stems(txt)) >= 2:
+                        why = ("a ticket filed about that limit was closed after it", n)
+                        break
+                if why:
+                    out_(i, k, why)
+                    continue
+            if not t0:
+                continue
+            cand = [(len(tw & stems(subj)), "commit %s %s: %s" % (csha, str(ts)[:10], subj)) for ts, csha, subj in
+                    commits if _iso(ts) > t0 and name_re.search(subj) and len(tw & stems(subj)) >= OVERTAKE_MIN]
+            cand += [(len(tw & stems(txt)), "%s %s %s: %s" % ("close of" if fixed else "note on", n, ts[:10],
+                                                              fit(txt, 300)))
+                     for ts, n, txt, fixed in later if ts > t0 and
+                     len(tw & stems(txt)) >= OVERTAKE_MIN + (0 if n == tick else 1)]
+            if cand:
+                asks.setdefault(tick, []).append((i, k, t0, sen, [c for _n, c in sorted(
+                    cand, key=lambda x: -x[0])[:4]]))
     RECORDS_CURRENT[mod] = {}
+    unread = 0
     for tick, qs in asks.items():
-        rtext = R.current_text(tick, titles.get(tick), [(t0, text, cs) for _i, t0, text, cs in qs])
+        rtext = R.current_text(tick, titles.get(tick), [(t0, sen, cs) for _i, _k, t0, sen, cs in qs])
         RECORDS_CURRENT[mod][tick] = rtext
         rr = raw_readings.get(tick) or {}
-        if isinstance(rr.get("current"), list) and rr.get("current_hash") == R.rec_hash(rtext, "current"):
-            for n_, (i, _t0, text, cs) in enumerate(qs, 1):
-                if n_ in rr["current"]:
-                    drop.add(i)
-                    gone["the currency reader found later work lifted it"] = gone.get(
-                        "the currency reader found later work lifted it", 0) + 1
-                    DROPPED_OVERTAKEN[mod].append((tick, text, "currency reader (%s)" % cs[0]))
+        if not (isinstance(rr.get("current"), list) and rr.get("current_hash") == R.rec_hash(rtext, "current")):
+            unread += 1
+            continue
+        for n_, (i, k, _t0, _sen, cs) in enumerate(qs, 1):
+            if n_ in rr["current"]:
+                out_(i, k, ("the currency reader found later work made it false", cs[0][:120]))
+    out = []
+    for i, e in enumerate(ev):
+        if i not in cut:
+            out.append(e)
+            continue
+        kind, subject, body, evidence, auth, sha = e
+        kept = " ".join(x for k, x in enumerate(_sentences(body["text"])) if k not in cut[i])
+        if len(kept) >= 25:
+            out.append((kind, "trap:" + slug(kept, 8), dict(body, text=kept), evidence, auth, sha))
     if gone:
-        notes.append("left out: traps overtaken by later work (round-3 judge): " + "; ".join(
+        notes.append("left out: trap sentences later work made false (round-3 judge): " + "; ".join(
             "%d %s" % (n, w) for w, n in sorted(gone.items())))
-    unread = sum(1 for t in asks if not isinstance((raw_readings.get(t) or {}).get("current"), list) or
-                 (raw_readings.get(t) or {}).get("current_hash") != R.rec_hash(RECORDS_CURRENT[mod][t], "current"))
     if unread:
-        notes.append("currency: %d tickets with a limit trap later work may have lifted are unread (kept; read with "
-                     "--read)" % unread)
-    return [e for i, e in enumerate(ev) if i not in drop]
+        notes.append("currency: %d tickets with trap sentences later work may have made false are unread (kept; "
+                     "read with --read)" % unread)
+    return out
 
 
 RECORDS_CURRENT = {}        # {mod: {ticket: its limit traps and the later work that may have lifted them}}

@@ -85,13 +85,15 @@ built, waits for X) that hold no reading a holder could get wrong, and restateme
 When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [kept numbers]}, one key per ticket."""
 
 
-CURRENT_SYSTEM = """You check whether old warnings about a software mod are still true. For each ticket you get its \
-title and its limit warnings, numbered, each with the date it was stated and the LATER work that may have lifted it \
-(commits on the main branch, closes of other tickets, each with its date). Return the numbers of the warnings that the \
-later work plainly lifted: the thing said impossible, missing or blocked was done, added, staged, reworded or unblocked. \
-Keep (leave out of your answer) a warning the later work only mentions, works around for one run, restates, or does \
-not clearly address, and every permanent fact about how a tool or instrument behaves. When unsure, keep. Answer with \
-ONE JSON object and nothing else: {"<TICKET_ID>": [lifted numbers]}, one key per ticket (an empty list when none)."""
+CURRENT_SYSTEM = """You check whether old statements about a software mod are still true. For each ticket you get \
+its title and statements from it, numbered, each with the date it was stated and LATER work that may bear on it \
+(commits on the main branch, closes and notes on the mod's tickets, each with its date). Return the numbers of the \
+statements the later work plainly made false: the thing said impossible, missing, blocked or broken was done, added, \
+staged or fixed; the wording, bar, test or setting it describes was changed; the count or state it gives was \
+superseded. Keep (leave out of your answer) a statement the later work restates, confirms, only mentions, works around \
+for one run, or does not clearly address, and every lasting fact about how a tool, test or instrument behaves or what \
+a past run showed. When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [numbers made \
+false]}, one key per ticket (an empty list when none)."""
 
 
 def current_text(name, title, items):
@@ -148,7 +150,7 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
 
 
 FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2",
-                 "current": "current-2026-11-16.1"}
+                 "current": "current-2026-11-16.2"}
 
 
 def rec_hash(text, field="reading"):

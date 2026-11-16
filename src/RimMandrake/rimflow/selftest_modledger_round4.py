@@ -55,7 +55,8 @@ T = {k: "RIMMANDRAKE_%s_FIXTUREMOD_%s" % tuple(x.split(":")) for k, x in dict(
     cut="FIX:CORD_LOOPS_INTO_DOORS", until="BUILD:STAGE_THREE_BARS", cannot="DRIVE:IN_GAME_FIRST",
     stage="STAGE:HEAVY_LOCKER_LANE", gas="TRACE:GAS_CHAIN_DOOR", keep="PROVE:FLIGHT_TRACKER_READ",
     quar="PROVE:LAST_FOUR_SWITCHES", style="RUN:MIXED_LOOKS", tap="FIX:TAP_MIXED_NET",
-    utils="FIX:SELFTEST_ROW_NAMES", bridge="BUILD:MOAT_WITH_MANNERS").items()}
+    utils="FIX:SELFTEST_ROW_NAMES", bridge="BUILD:MOAT_WITH_MANNERS", bars="BUILD:ELEVEN_BARS_UNRUN",
+    reword="RECERTIFY:TREE_AFTER_REWORDING").items()}
 PIPE = "LIVEROUND_FIX_FIXTUREMOD_LESS_SELFTEST_RED_ALONE"
 CUT_HEAD = ("Built and ran the FixtureMod selftest from this tree. The script's own launch of the test exe fails here "
             "with 'dotnet.exe: Invalid argument' because its cwd /mnt/d/scratch/fm_cwd is not visible ")
@@ -75,7 +76,9 @@ ttl = {
     "style": "FixtureMod one-run-one-style: mixed looks after a default change (D1), conduit gaps (D8)",
     "tap": "FixtureMod: power-tap connect guards disagree on mixed-faction nets",
     "utils": "FixtureMod selftest rows: name the door-loop rows",
-    "bridge": "FixtureMod drawbridge: a moat with manners"}
+    "bridge": "FixtureMod drawbridge: a moat with manners",
+    "bars": "FixtureMod Stage 3: give the eleven bars a runnable check",
+    "reword": "FixtureMod: recertify the tree after his rewording of the crate bar"}
 EV = [{"seat": "BENCH", "event": "file", "id": T[k], "title": t, "ts": "2026-11-15T01:00:00Z", "tsn": 100 + i}
       for i, (k, t) in enumerate(sorted(ttl.items()))]
 EV[[e["id"] for e in EV].index(T["tap"])]["spec"] = (
@@ -130,6 +133,13 @@ EV += [
      "reason": "relentless: blind PASS at abcd2003 after 0 return(s): selftest green"},
     {"seat": "BENCH", "event": "note", "id": T["utils"], "ts": "2026-11-06T01:00:00Z", "tsn": 262,
      "text": "Rows live in src/RimMandrake/Utils/selftest_fixturemod.py; name each door-loop row."},
+    # EK, round 4's own re-mine: a stale present-tense claim with no 'cannot' in it, one sentence of a longer trap
+    {"seat": "BENCH", "event": "note", "id": T["bars"], "ts": "2026-11-15T02:00:00Z", "tsn": 280,
+     "text": "11 of 59 bars had no runnable check. The shipped code throws whole closed crates several cells while the "
+             "locked bar and the test say a crate slides exactly one cell."},
+    {"seat": "BENCH", "event": "close", "id": T["reword"], "sha": "abcd2005", "ts": "2026-11-15T09:00:00Z", "tsn": 281,
+     "reason": "rewording applied to tree.json and the sheet: the locked crate bar and its test now say a closed crate "
+               "is thrown a short way, not that it slides exactly one cell"},
     # FlowWorks 1043: validated with an owner-look criterion unmet
     {"seat": "BENCH", "event": "implemented", "id": T["bridge"], "sha": "abcd2004", "ts": "2026-10-22T01:00:00Z",
      "tsn": 270, "criteria": [{"id": "A2", "text": "12/12 live rows pass"},
@@ -168,11 +178,15 @@ ANS = {
                           "where": "sc_gas"}]},
     T["keep"]: {"traps": [{"text": "The bridge cannot read the pawn's flight tracker while the game is paused; read it "
                                    "on a running tick.", "where": "Pawn_FlightTracker"}]},
+    T["bars"]: {"traps": [{"text": "11 of 59 bars had no runnable check, so the stage gate refused. The shipped code "
+                                   "throws whole closed crates several cells while the locked bar and the test say a "
+                                   "crate slides exactly one cell.", "where": "tree.json"}]},
     T["quar"]: {"traps": [{"text": "Runs inside the Steve SIMD fault window (2026-11-08T00:57:39Z onward) were "
                                    "quarantined with no verdict; they are not passes or fails.", "where": "testq"}]},
     T["style"]: {"changed": "D1 fixed at abcd3002: a legacy winner's run stays legacy. D8 fixed at abcd3001: RunOf "
                             "walks through non-stylable conduit without painting it."},
-    T["tap"]: {"proposed_fix": None, "defect": "Power-tap connect guards disagree on mixed nets, so a tap beside a foreign conduit is refused "
+    T["tap"]: {"proposed_fix": None, "defect": "Power-tap connect guards disagree on mixed nets, so a tap beside a "
+                                               "foreign conduit is refused "
                          "or misconnects."}}
 
 
@@ -187,7 +201,8 @@ def fake_call(prompt, model, system=None):
         ans[n] = [int(i) for i in re.findall(r"^\[(\d+)\]", block, re.M)]
     for n, block in re.findall(r"=== CURRENT (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):   # the currency reader
         CURRENT_ASKED.append(block)
-        ans[n] = [int(i) for i, t in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "gas chain" in t]
+        ans[n] = [int(i) for i, t in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "gas chain" in t or
+                  "slides exactly one cell" in t]
     return ans, 0.01
 
 
@@ -223,6 +238,9 @@ check("rule 2: a 'cannot' trap a later commit naming the mod may have lifted goe
       "commit; its answer 'lifted' drops it", not traps("gas") and any("abcd4001" in b for b in CURRENT_ASKED),
       (traps("gas"), CURRENT_ASKED))
 check("rule 2 control: a 'cannot' trap no later commit or close touches stays", traps("keep"), traps("keep"))
+check("class: a present-tense claim later work made false ('the bar says one cell', reworded since) leaves, sentence by "
+      "sentence: the rest of its trap stays", traps("bars") and not [t for t in traps("bars") if "one cell" in t] and
+      [t for t in traps("bars") if "11 of 59" in t], traps("bars"))
 check("rule 3 (GSS 74): a test-queue quarantine / re-queue note is no trap, and the reader is never handed it",
       not traps("quar") and "quarantined" not in rec.get(T["quar"], ""), (traps("quar"), rec.get(T["quar"], "")[-300:]))
 check("rule 4 (GSS 361): a ticket whose every path is pipeline code (rimflow/, Utils/) mines nothing for the mod",
