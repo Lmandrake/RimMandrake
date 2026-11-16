@@ -1,0 +1,16 @@
+[
+ {
+  "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+  "why": "facts gate_wired, entry_gated, sliders and 6 mutants added (faults RIMMANDRAKE_HARDEN_PYRE_GATE_SWEEP_BLIND_TO_OWN_WIRING, RIMMANDRAKE_HARDEN_PYRE_SWEEP_SLIDER_MAY_HIDE_ITS_DEFAULT); no assertion removed or loosened",
+  "before_sha256_16": "c9aa7c100b929300",
+  "after_sha256_16": "0149eda076c9f0cf",
+  "weakened": false
+ },
+ {
+  "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+  "why": "engineered fact now requires 'genetically engineered' with no negation in its clause (was \\bengineered\\b); 2 mutants added (RIMMANDRAKE_HARDEN_PYRE_ENGINEERED_FACT_PASSES_A_NEGATION); stricter only",
+  "before_sha256_16": "69e960435dc7fa00",
+  "after_sha256_16": "cd4d788b7beef591",
+  "weakened": false
+ }
+]

@@ -1,0 +1,380 @@
+[
+ {
+  "id": "K_PROBE_LIFT_WHOLE_WET",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "float lift = wetNow ? wateredFertility - baseFertility : 0f;",
+  "new": "float lift = wetNow ? wateredFertility : 0f;",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "K_PROBE_NO_WATER_REFUSAL",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": ": !waterOn ? \"the ash field is off (ashWaterFertilityEnabled)\" : null",
+  "new": ": null",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "K_ASH_NO_CAP",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "            if (v > cap)\n            {\n                v = cap;\n            }\n",
+  "new": "",
+  "bars": [
+   "ash_fertility_probe",
+   "fresh_burn_compounds_with_black_rain"
+  ]
+ },
+ {
+  "id": "K_BONUS_DOUBLE_CLOCK",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "float f = 1f - (float)(now - burnTick) / durationTicks;",
+  "new": "float f = 1f - (float)(now - burnTick) / (2 * durationTicks);",
+  "bars": [
+   "fresh_burn_compounds_with_black_rain"
+  ]
+ },
+ {
+  "id": "K_GATE_SHELL_INVERTED",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "return modMaster && (!shellPresent || shellOn);",
+  "new": "return modMaster && (!shellPresent && shellOn);",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "K_GATE_MASTER_IGNORED",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "return modMaster && (!shellPresent || shellOn);",
+  "new": "return (!shellPresent || shellOn);",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "K_RAIN_LIST_DROPS_FOGGYRAIN",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "{ \"Rain\", \"FoggyRain\", \"RainyThunderstorm\", \"TorrentialRain\" }",
+  "new": "{ \"Rain\", \"RainyThunderstorm\", \"TorrentialRain\" }",
+  "bars": [
+   "no_ordinary_rain"
+  ]
+ },
+ {
+  "id": "K_DOUSE_IGNORES_SHELTER",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+  "old": "if (!gateOn || !enabled || !exposed || share <= 0f",
+  "new": "if (!gateOn || !enabled || share <= 0f",
+  "bars": [
+   "three_skies"
+  ]
+ },
+ {
+  "id": "K_HERD_ANCHOR_FALLBACK_FRESH",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+  "old": "            }\n            return -1;\n        }\n\n        /// <summary>RM_JobGiver_FollowBurn",
+  "new": "            }\n            return ticks.Count > 0 ? 0 : -1;\n        }\n\n        /// <summary>RM_JobGiver_FollowBurn",
+  "bars": [
+   "ullai_graze_old_burns"
+  ]
+ },
+ {
+  "id": "K_HERD_ANCHOR_CUTOFF_FLIPPED",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+  "old": "if (ticks[i] <= cutoff)",
+  "new": "if (ticks[i] >= cutoff)",
+  "bars": [
+   "ullai_graze_old_burns"
+  ]
+ },
+ {
+  "id": "K_FURNACE_WARMTH_NO_FALLOFF",
+  "file": "src/RimMandrake/Pyrelands/Source/FurnaceWarmthMath.cs",
+  "old": "return maxC * fall * strength;",
+  "new": "return maxC * strength;",
+  "bars": [
+   "furnacebeast_warms"
+  ]
+ },
+ {
+  "id": "K_BED_IGNITES_BARE",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FurnaceKernel.cs",
+  "old": "return !awake && flammablePlantOnCell && restingTicks >= graceTicks;",
+  "new": "return !awake && restingTicks >= graceTicks;",
+  "bars": [
+   "furnacebeast_warms"
+  ]
+ },
+ {
+  "id": "K_LETTER_EVERY_CARRY",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireHawkRewardsKernel.cs",
+  "old": "            announced = true;\n            return true;",
+  "new": "            return true;",
+  "bars": [
+   "inv_firehawk_hunt_rewards"
+  ]
+ },
+ {
+  "id": "K_TROPHY_ALWAYS",
+  "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireHawkRewardsKernel.cs",
+  "old": "return chance > 0f && roll01 < chance;",
+  "new": "return chance > 0f;",
+  "bars": [
+   "inv_firehawk_hunt_rewards"
+  ]
+ },
+ {
+  "id": "C_PROBE_CELL_HANDS_BACK_BASE",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+  "old": "return RM_FireEcoKernel.ProbeLine(m.fertilityGrid.FertilityAt(c), t?.defName,",
+  "new": "return RM_FireEcoKernel.ProbeLine(t?.fertility ?? 0f, t?.defName,",
+  "bars": [
+   "ash_fertility_probe"
+  ]
+ },
+ {
+  "id": "C_PROBE_CELL_GATE_TRUE",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+  "old": "RM_PyrelandsSettings.ashWaterFertilityEnabled,\n                PyrelandsMechanicsGate.On, FertilityCap);",
+  "new": "RM_PyrelandsSettings.ashWaterFertilityEnabled,\n                true, FertilityCap);",
+  "bars": [
+   "ash_fertility_probe",
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "C_FERTILITY_POSTFIX_UNGATED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+  "old": "if (___map == null || !PyrelandsMechanicsGate.On) return;",
+  "new": "if (___map == null) return;",
+  "bars": [
+   "inv_settings_gate",
+   "ash_fertile_when_watered"
+  ]
+ },
+ {
+  "id": "C_DOUSE_POSTFIX_UNGATED",
+  "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+  "old": "BlackRainDouseAmount(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.blackRainDousingEnabled,",
+  "new": "BlackRainDouseAmount(true, RM_PyrelandsSettings.blackRainDousingEnabled,",
+  "bars": [
+   "inv_settings_gate",
+   "three_skies"
+  ]
+ },
+ {
+  "id": "C_DOUSE_POSTFIX_NEVER_DAMAGES",
+  "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+  "old": "if (amount > 0f) __instance.TakeDamage(new DamageInfo(DamageDefOf.Extinguish, amount));",
+  "new": "if (amount < 0f) __instance.TakeDamage(new DamageInfo(DamageDefOf.Extinguish, amount));",
+  "bars": [
+   "three_skies"
+  ]
+ },
+ {
+  "id": "C_NO_RAIN_POSTFIX_UNGATED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsNoOrdinaryRain.cs",
+  "old": "RainBecomesBlackRain(__result.defName, pyre, PyrelandsMechanicsGate.On)",
+  "new": "RainBecomesBlackRain(__result.defName, pyre, true)",
+  "bars": [
+   "no_ordinary_rain",
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "C_NO_RAIN_POSTFIX_NEVER_SWAPS",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsNoOrdinaryRain.cs",
+  "old": "if (blackRain != null) __result = blackRain;",
+  "new": "if (blackRain == null) __result = blackRain;",
+  "bars": [
+   "no_ordinary_rain"
+  ]
+ },
+ {
+  "id": "C_GATE_ROSTER_KEY_TYPO",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
+  "old": "public const string RosterKey = \"Pyrelands\";",
+  "new": "public const string RosterKey = \"Pyrelandz\";",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "C_GATE_MASTER_BYPASSED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
+  "old": "RM_FireEcoKernel.MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled, ShellPresent, ShellOn)",
+  "new": "RM_FireEcoKernel.MechanicsOn(true, ShellPresent, ShellOn)",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "C_GIANT_RESTORE_WRONG_SIZE",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
+  "old": "race.race.baseBodySize = PyrelandsTuning.FurnaceClassicBodySize;",
+  "new": "race.race.baseBodySize = 6f;",
+  "bars": [
+   "furnacebeast_warms",
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "C_GIANT_RESTORE_HUNGER",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
+  "old": "race.race.baseHungerRate = 1.4f;",
+  "new": "race.race.baseHungerRate = 2.1f;",
+  "bars": [
+   "furnacebeast_warms"
+  ]
+ },
+ {
+  "id": "C_CHARRED_PROBE_INVERTED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs",
+  "old": "if (m.terrainGrid.ColorAt(c) == charredDef) charred++;",
+  "new": "if (m.terrainGrid.ColorAt(c) != charredDef) charred++;",
+  "bars": [
+   "ruins_stand_blackened"
+  ]
+ },
+ {
+  "id": "C_CHARRED_PROBE_FLOORS_SKIPPED",
+  "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs",
+  "old": "if (t == null || !t.IsFloor || t.IsRoad || t.IsWater) continue;",
+  "new": "if (t == null || t.IsFloor || t.IsRoad || t.IsWater) continue;",
+  "bars": [
+   "ruins_stand_blackened"
+  ]
+ },
+ {
+  "id": "S_DOUSING_SAVED_OFF",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "Scribe_Values.Look(ref blackRainDousingEnabled, \"blackRainDousingEnabled\", true);",
+  "new": "Scribe_Values.Look(ref blackRainDousingEnabled, \"blackRainDousingEnabled\", false);",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "S_DOUSING_SLIDER_EXCLUDES_DEFAULT",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "blackRainDousing = list.Slider(blackRainDousing, 0f, 100f);",
+  "new": "blackRainDousing = list.Slider(blackRainDousing, 50f, 100f);",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "S_WORLD_SWITCH_SHIPS_ON",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "public static bool biomeGenerationEnabled = false;",
+  "new": "public static bool biomeGenerationEnabled = true;",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "S_DOUSING_OUT_OF_MASTER",
+  "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+  "old": "\"burrowOnFireEnabled\", \"ashWaterFertilityEnabled\", \"blackRainDousingEnabled\")",
+  "new": "\"burrowOnFireEnabled\", \"ashWaterFertilityEnabled\")",
+  "bars": [
+   "inv_settings_gate"
+  ]
+ },
+ {
+  "id": "D_BIOME_TEXT_NEGATED",
+  "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+  "old": "A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds,",
+  "new": "A hot, wind-scoured savanna, never engineered by anyone, though it once fed grazing herds,",
+  "bars": [
+   "biome_text_says_engineered",
+   "inv_art_and_text"
+  ]
+ },
+ {
+  "id": "D_BIOME_ORDINARY_RAIN",
+  "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+  "old": "<Fog>2</Fog>",
+  "new": "<Fog>2</Fog>\n      <Rain>3</Rain>",
+  "bars": [
+   "no_ordinary_rain"
+  ]
+ },
+ {
+  "id": "D_FURNACE_SIZE_SIX",
+  "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+  "old": "<baseBodySize>9</baseBodySize>",
+  "new": "<baseBodySize>6</baseBodySize>",
+  "bars": [
+   "furnacebeast_warms"
+  ]
+ },
+ {
+  "id": "D_CRESTFEATHER_RARE",
+  "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+  "old": "<chance>0.35</chance>",
+  "new": "<chance>0.035</chance>",
+  "bars": [
+   "inv_firehawk_hunt_rewards"
+  ]
+ },
+ {
+  "id": "D_BLACK_RAIN_DRY",
+  "file": "src/RimMandrake/Pyrelands/Defs/WeatherDefs/BlackRain.xml",
+  "old": "<rainRate>1.1</rainRate>",
+  "new": "<rainRate>0</rainRate>",
+  "bars": [
+   "three_skies",
+   "no_ordinary_rain"
+  ]
+ },
+ {
+  "id": "D_BLACK_RAIN_DRIZZLE",
+  "file": "src/RimMandrake/Pyrelands/Defs/WeatherDefs/BlackRain.xml",
+  "old": "<rainRate>1.1</rainRate>",
+  "new": "<rainRate>0.005</rainRate>",
+  "bars": [
+   "three_skies"
+  ]
+ },
+ {
+  "id": "D_ABOUT_PROMISES_FIREBREAK",
+  "file": "src/RimMandrake/Pyrelands/About/About.xml",
+  "old": "with the plants, weather and creatures that live by the fire.",
+  "new": "with the plants, weather and creatures that live by the fire. Build a firebreak floor to hold the line.",
+  "bars": [
+   "inv_firebreak_firefoam"
+  ]
+ },
+ {
+  "id": "D_ABOUT_PROMISES_BREAKER",
+  "file": "src/RimMandrake/Pyrelands/About/About.xml",
+  "old": "with the plants, weather and creatures that live by the fire.",
+  "new": "with the plants, weather and creatures that live by the fire. Forge lightning breakers from fulgurite.",
+  "bars": [
+   "inv_lightning_breaker"
+  ]
+ },
+ {
+  "id": "D_FURNACE_TEXTURE_TYPO",
+  "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+  "old": "FurnaceBeast_Giant</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>3.3</drawSize>",
+  "new": "FurnaceBeast_Gaint</texPath>\n          <graphicClass>Graphic_Multi</graphicClass>\n          <drawSize>3.3</drawSize>",
+  "bars": [
+   "inv_art_and_text"
+  ]
+ },
+ {
+  "id": "D_BIOME_TEXT_NEGATED_KEEPS_PHRASE",
+  "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+  "old": "A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds,",
+  "new": "A hot, wind-scoured savanna, never genetically engineered in a forgotten age to feed grazing herds,",
+  "bars": [
+   "biome_text_says_engineered",
+   "inv_art_and_text"
+  ]
+ }
+]

@@ -1,0 +1,87 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_HARDEN_PYRE_GATE_SWEEP_BLIND_TO_OWN_WIRING",
+   "class": "Problem",
+   "bar": "inv_settings_gate",
+   "criterion": "The Baroque Biomes roster toggle and 'Mod enabled' gate every mechanic (record.json inv_settings_gate); its offline deciders T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS, T_SITE",
+   "evidence": [
+    "planted C_GATE_MASTER_BYPASSED (PyrelandsMechanicsGate.On = MechanicsOn(true, ...)): all three deciders green; only blind lane-1 row gate_wired_to_master_and_roster_toggle went red (lane2/planted_results.jsonl)",
+    "planted C_GATE_ROSTER_KEY_TYPO (RosterKey 'Pyrelandz'): same",
+    "planted C_FERTILITY_POSTFIX_UNGATED, C_DOUSE_POSTFIX_UNGATED, C_NO_RAIN_POSTFIX_UNGATED: every offline test green; the sweep's 'gated' fact is per FILE, and each file still names the gate elsewhere",
+    "red: catch_check rc 1 for all five on 85c4d61bee; green: rc 0 on b7b77c929e (lane2/fixes.jsonl)"
+   ],
+   "would_pass": "a decider that goes red when the gate stops reading Mod enabled or the 'Pyrelands' toggle, or when a mechanic entry postfix drops the gate",
+   "smallest_fix": "facts gate_wired (On's exact expression, RosterKey) and entry_gated (five pinned postfixes consult the gate in their own body) in selftest_pyrelands_settings_sweep.py, with a mutant each",
+   "verdict_on_criterion": "criterion sound; the decider was weaker than it",
+   "status": "FIXED b7b77c929e8c1782c07ee2714d7b62082f9cd7a2",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_HARDEN_PYRE_SWEEP_SLIDER_MAY_HIDE_ITS_DEFAULT",
+   "class": "Problem",
+   "bar": "inv_settings_gate",
+   "criterion": "Superb Mod Settings: defaults = shipped behaviour (floor:mod_settings, inv_settings_gate)",
+   "evidence": [
+    "planted S_DOUSING_SLIDER_EXCLUDES_DEFAULT (blackRainDousing slider 50..100, default 40): T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS, T_SITE green; blind lane-1 row settings_every_slider_holds_its_default red",
+    "today all 17 sliders hold their defaults (lane1 row settings_every_slider_holds_its_default PASS)",
+    "red rc 1 on 85c4d61bee, green rc 0 on b7b77c929e (lane2/fixes.jsonl)"
+   ],
+   "would_pass": "a decider red when any slider's range excludes its field's shipped default",
+   "smallest_fix": "fact sliders in the settings sweep plus one mutant",
+   "verdict_on_criterion": "criterion sound",
+   "status": "FIXED b7b77c929e8c1782c07ee2714d7b62082f9cd7a2",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_HARDEN_PYRE_ENGINEERED_FACT_PASSES_A_NEGATION",
+   "class": "Problem",
+   "bar": "biome_text_says_engineered",
+   "criterion": "the RM_Pyrelands BiomeDef description, as loaded, says the savanna was genetically engineered (tree.json oracle); decider T_DEFS_OFFLINE (also a decider of inv_art_and_text)",
+   "evidence": [
+    "planted D_BIOME_TEXT_NEGATED_KEEPS_PHRASE ('never genetically engineered'): T_DEFS_OFFLINE PASS, 16 of 16 mutants red; blind lane-1 row biome_description_says_genetically_engineered red",
+    "the fact was re.search(r'\\bengineered\\b', desc): 'never engineered' or 'engineered' without 'genetically' also pass",
+    "D_BIOME_TEXT_NEGATED was red in T_DEFS only through a mutant anchor assertion, not the fact (lane2/planted_results.jsonl lasts)",
+    "red rc 1 on 85c4d61bee, green rc 0 on b7b77c929e"
+   ],
+   "would_pass": "the fact red on a negated or 'genetically'-less description",
+   "smallest_fix": "require 'genetically engineered' with no negation earlier in its clause; two mutants",
+   "verdict_on_criterion": "criterion sound",
+   "status": "FIXED b7b77c929e8c1782c07ee2714d7b62082f9cd7a2",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_PYRE_ORDINARY_RAIN_LIST_RIGHT_BUT_UNTESTED",
+   "class": "Polish",
+   "bar": "no_ordinary_rain",
+   "criterion": "Ordinary rain never falls on a Pyrelands map; a game condition forcing rain brings black rain (stage 6, decider sc_no_rain)",
+   "evidence": [
+    "planted K_RAIN_LIST_DROPS_FOGGYRAIN: every builder offline test green (T_FUZZ included); only blind lane-1 row forced_ordinary_rain_becomes_black_rain red",
+    "sc_no_rain's oracle forces only Rain, so the dropped entry would pass stage 6 too",
+    "the list is right today: RimSage shows Core Rain, RainyThunderstorm, FoggyRain and Odyssey TorrentialRain as the ordinary rains (rainRate 1), the rest snow, BloodRain, ToxRain",
+    "steward decision 2026-11-15 11:50 (question 4): sc_no_rain stays the decider and owes the forced-weather case"
+   ],
+   "would_pass": "an offline check tying OrdinaryRainDefNames to the def dump's ordinary rains",
+   "smallest_fix": "one offline test over the def dump; see the item",
+   "verdict_on_criterion": "criterion sound; a stage-6 bar, not part of this exit",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_POLISH_PYRE_PROBE_EXPECTED_SKIPS_POLLUTION_CLAMP",
+   "class": "Polish",
+   "bar": "ash_fertility_probe",
+   "criterion": "the probe reads a burned wet cell and a dry old cell differently, part by part; refuses when the ash field switch is off",
+   "evidence": [
+    "ProbeLine's expected = AshFertility(parts); PyrelandsAshFieldPatches.FertilityPostfix also clamps a polluted cell to 0.5 and leaves an edifice-fertility cell alone, so the probe prints consistent=False on such a cell though the grid is right",
+    "raining= reads curWeather == black rain only, not the transition share the douse and water code use",
+    "the bar's oracle is met: lane-1 rows probe_* PASS, T_ASH_PROBE_OFFLINE PASS"
+   ],
+   "would_pass": "expected applies the same clamp and edifice rule as the postfix",
+   "smallest_fix": "pass polluted and edifice fertility into ProbeLine",
+   "verdict_on_criterion": "criterion sound",
+   "status": "PENDING",
+   "miss_of": 1
+  }
+ ]
+}
